@@ -496,8 +496,6 @@ class calendarmodule {
 	}
 
     static function getExternalEvents($loc,$startdate,$enddate) {
-//        return array();  //FIXME
-
         global $db;
 
         $extevents = array();
@@ -556,8 +554,10 @@ class calendarmodule {
                     $extevents[$eventdate][$dy]->eventdate = $eventdate;
                     $dtend = $times->item(0)->getAttributeNode("endTime")->value;
                     if (strlen($dtstart) > 10) {
-                        $extevents[$eventdate][$dy]->eventstart = (substr($dtstart,12,2)*3600)+(substr($dtstart,15,2)*60);
-                        $extevents[$eventdate][$dy]->eventend = (substr($dtend,12,2)*3600)+(substr($dtend,15,2)*60);
+                        $extevents[$eventdate][$dy]->eventstart = (substr($dtstart,11,2)*3600)+(substr($dtstart,14,2)*60);
+                        if (date("I",$eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600;
+                        $extevents[$eventdate][$dy]->eventend = (substr($dtend,11,2)*3600)+(substr($dtend,14,2)*60);
+                        if (date("I",$eventdate)) $extevents[$eventdate][$dy]->eventend += 3600;
                     } else {
                         $extevents[$eventdate][$dy]->eventstart = null;
                         $extevents[$eventdate][$dy]->is_allday = 1;
@@ -605,18 +605,26 @@ class calendarmodule {
                                 // <DATE> = (string) date("Y-m-d [H:i:s][timezone/UTC offset]")
                                 $dtstart = $vevent->getProperty('dtstart');
                                 //FIXME must convert $dtstart timezone
-                                $extevents[$eventdate][$dy] = new stdClass();
                                 $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart));
+                                $extevents[$eventdate][$dy] = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate = $eventdate;
-                                $extevents[$eventdate][$dy]->eventstart = ($dtstart['hour']*3600)+($dtstart['min']*60);
+                                if (!empty($dtstart['hour'])) {
+                                    $extevents[$eventdate][$dy]->eventstart = ($dtstart['hour']*3600)+($dtstart['min']*60);
+                                    if (date("I",$eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600;
+                                } else {
+                                    $extevents[$eventdate][$dy]->eventstart = null;
+                                    $extevents[$eventdate][$dy]->is_allday = 1;
+                                }
                                 $dtend = $vevent->getProperty('dtend');
                                 //FIXME must convert $dtend timezone
-                                $extevents[$eventdate][$dy]->eventend = ($dtend['hour']*3600)+($dtend['min']*60);
-                                //FIXME check for is_allday
+                                if (!empty($dtend['hour'])) {
+                                    $extevents[$eventdate][$dy]->eventend = ($dtend['hour']*3600)+($dtend['min']*60);
+                                    if (date("I",$eventdate)) $extevents[$eventdate][$dy]->eventend += 3600;
+                                }
                                 // dtstart required, one occurrence, (orig. start date)
                                 $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
                                 $extevents[$eventdate][$dy]->body = $vevent->getProperty('description');
-//                                $extevents[$dy]->location_data = serialize($loc);
+
                                 $extevents[$eventdate][$dy]->location_data = null;
                                 $dy++;
                             }
