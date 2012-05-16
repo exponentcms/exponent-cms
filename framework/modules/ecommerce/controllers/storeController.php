@@ -1042,7 +1042,7 @@ class storeController extends expController {
     
     static public function getProductTypes() {        
         $paths = array(
-            BASE.'framework/modules/ecommerce/products/model',
+            BASE.'framework/modules/ecommerce/products/models',
         );
     
         $products = array();
