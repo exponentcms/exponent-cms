@@ -415,16 +415,20 @@ class helpController extends expController {
      */
 	public static function getSection($params) {
 	    global $db;
-	    $h = new help();
+
+        $help = new help();
         if (empty($params['version']) || $params['version']=='current') {
-            $hv = $db->selectValue('help_version', 'id', 'is_current=1');
+            $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
         } else {
-            $hv = $db->selectValue('help_version', 'id', 'version='.$params['version']);
+            $version_id = $db->selectValue('help_version', 'id', 'version="'.$params['version'].'"');
+            if (empty($version_id)) {
+                $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
+            }
         }
-	    $help = $h->find('first','help_version_id='.$hv.' and sef_url=\''.$params['title'].'\'');
+        $doc = $help->find('first','help_version_id='.$version_id.' and sef_url="'.$params['title'].'"');
 	    $session_section = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
-        $help_sectionref = $db->selectObject('sectionref','module="helpController" AND source="'. expUnserialize($help->location_data)->src.'"');
-        $sid = !empty($help_sectionref) ? $help_sectionref->section : (($help->section!=0) ? $help->section : $session_section);
+        $help_sectionref = $db->selectObject('sectionref','module="helpController" AND source="'. expUnserialize($doc->location_data)->src.'"');
+        $sid = !empty($help_sectionref) ? $help_sectionref->section : (($doc->section!=0) ? $doc->section : $session_section);
         if (!expSession::get('last_section')) {
             expSession::set('last_section',$sid);
         }
