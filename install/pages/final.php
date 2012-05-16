@@ -47,7 +47,8 @@ if (isset($_REQUEST['upgrade'])) {
         user::login($_POST['username'],$_POST['password']);
         $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
         if ($leaveinstaller) { 
-            if ($user->id!=0) {
+//            if ($user->id!=0) {
+            if ($user->is_system_user) {
                 switch ($_POST['next']) {
                     case 'migration':
                         if (SEF_URLS) {

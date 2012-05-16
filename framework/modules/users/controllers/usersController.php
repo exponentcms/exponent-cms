@@ -47,10 +47,10 @@ class usersController extends expController {
         expHistory::set('manageable', $this->params);
 //        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 //        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
-        if ($user->id == 1) {
+        if ($user->is_system_user == 1) {
             $filter = 1; //'1';
         } elseif($user->isSuperAdmin()) {
-            $filter = 2; //"id != 1";
+            $filter = 2; //"is_system_user != 1";
         } else {
             $filter = 3; //"is_admin != 1";
         }
@@ -739,7 +739,7 @@ class usersController extends expController {
                     $filter = '';
                     break;
                 case '2' :
-                    $filter = "id != 1";
+                    $filter = "is_system_user != 1";
                     break;
                 case '3' :
                     $filter = "is_admin != 1";
