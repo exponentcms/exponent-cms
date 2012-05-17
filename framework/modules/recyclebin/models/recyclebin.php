@@ -35,6 +35,7 @@ class recyclebin extends expRecord {
 
         //foreach ($orphans as $orphan) {
         for($i=0; $i<count($orphans); $i++) {
+            $loc = new stdClass();
             $loc->mod = $orphans[$i]->module;
             $loc->src = $orphans[$i]->source;
             $loc->int = $orphans[$i]->internal;
