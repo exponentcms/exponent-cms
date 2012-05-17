@@ -580,9 +580,12 @@ class usersController extends expController {
     }
     
     public function edit_group() {
+        global $db;
+
         expHistory::set('editable', $this->params);
         $id = isset($this->params['id']) ? $this->params['id'] : null;
         $group = new group($id);
+        $group->redirect = $db->selectValue('section','id',"sef_name='".$group->redirect."'");
         assign_to_template(array('record'=>$group));
     }
     
@@ -653,7 +656,12 @@ class usersController extends expController {
     }
     
     public function update_group() {
+        global $db;
+
         $group = new group();
+        if (!empty($this->params['redirect'])) {
+            $this->params['redirect'] = $db->selectValue('section','sef_name','id='.$this->params['redirect']);
+        }
         $group->update($this->params);
         expHistory::back();
     }
