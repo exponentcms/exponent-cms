@@ -374,7 +374,7 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
-	    //FIXME there is NO 'page' object and section has not _construct method
+	    //FIXME there is NO 'page' object and section has no _construct method
         $page = new section($sectionObj->id);
         $modules = $page->getModulesBySource($source);  //FIXME there is no getModulesBySource method anywhere
         //eDebug($modules);exit();
@@ -665,14 +665,6 @@ function get_filedisplay_views() {
     
     return $views;
 }
-
-//function makeLocation($mod=null,$src=null,$int=null) {
-//        $loc = new stdClass();;
-//        $loc->mod = ($mod ? $mod : "");
-//        $loc->src = ($src ? $src : "");
-//        $loc->int = ($int ? $int : "");
-//        return $loc;
-//}
 
 function object2Array($object=null) {
     $ret_array = array();
