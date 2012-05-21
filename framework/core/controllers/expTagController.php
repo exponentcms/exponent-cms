@@ -108,6 +108,7 @@ class expTagController extends expController {
         
         assign_to_template(array('page'=>$page));
     }
+
 }
 
 ?>

@@ -88,6 +88,7 @@ class expCatController extends expController {
             'page'=>$page
         ));
     }
+
     function edit() {
         $modules = expModules::listControllers();
         $mod = array();
