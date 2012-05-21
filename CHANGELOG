@@ -8,22 +8,23 @@ Added / Fixed / changed for 2.0.7
   - incorporates all fixes from v2.0.6 patches
   - Exponent CMS should work on servers running php v5.4.x (v5.2.1 or later required)
   - polishes older modules to better resemble new modules for greater interface consistency
-    -- e.g., all modules now use same rank reordering dialog instead of up/down arrow buttons
+    -- e.g., all modules now use same rank reordering dialog instead of up/down arrow buttons, tabbed configs, etc...
   - removes unnecessary (new) unpublish feature from blog
   - adds publish date feature to filedownloads
-  - adds 'go to date' feature to calendar module
-    -- adds experimental iCalendar aggregation feature (can be slow)
-  - adds new photo album slideshow view with vertical thumbnails
+  - adds 'go to date' feature to calendar module (chrome browser not working yet)
+    -- adds experimental iCalendar/Google Calendar XML event aggregation feature (can be slow)
+  - adds new photo album slideshow view with vertical thumbnails with text
   - better handling of video (and audio) uploads and previews
   - adds tag list/cloud sorting by # hits and setting limits
   - adds option to rename 'Uncategorized' group label per module
   - fixes youtube module to finally handle multiple items (paging, reordering, etc...)
   - fixes some pagination anomalies associated with multiple pages and sorting
-  - manage users now is sortable with more accurate filters
+  - manage users is now is sortable with more accurate filtering
   - adds optional links to display printer friendly views or export pdf for blog, news, filedownload, & portfolio items and calendars
-    -- export to pdf requires optional package installation
-  - adds new delete command to recycle bin items, plus new display of all recycled modules
+    -- export to pdf requires optional 'dompdf' package installation
+  - adds new delete command to recycle bin items, plus new display of all recycled modules (from Exponent menu)
   - translations more widely implemented; machine translations updated
+  - many 3rd party libraries updated (ckeditor, flowplayer, minify, & swiftmailer)
   - plus other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.6
