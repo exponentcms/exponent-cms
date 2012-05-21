@@ -36,8 +36,9 @@
                 <li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
                 <li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>
                 {/if}
-                <li>{ddrerank module="container" where="external='`$containers[0]->external`'" label="Modules"|gettext}</li>
-				<li>{help text="Help with Containers"|gettext}</li>
+                {capture name=rerank}{ddrerank module="container" where="external='`$containers[0]->external`'" label="Modules"|gettext}{/capture}
+                {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
+				{if $smarty.const.HELP_ACTIVE}<li>{help text="Help with Containers"|gettext}</li>{/if}
 			</ul>
 		</div>
 	{/if}

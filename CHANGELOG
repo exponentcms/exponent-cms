@@ -19,6 +19,7 @@ Added / Fixed / changed for 2.0.7
   - adds option to rename 'Uncategorized' group label per module
   - fixes youtube module to finally handle multiple items (paging, reordering, etc...)
   - fixes some pagination anomalies associated with multiple pages and sorting
+  - sorting/ranking lists should be more user accessible (esp for LONG lists)
   - manage users is now is sortable with more accurate filtering
   - adds optional links to display printer friendly views or export pdf for blog, news, filedownload, & portfolio items and calendars
     -- export to pdf requires optional 'dompdf' package installation

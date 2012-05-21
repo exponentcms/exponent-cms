@@ -135,7 +135,7 @@ class expCatController extends expController {
     }
 
     /**
-     * this method fills an multidimensional array from a sorted records object
+     * this method fills a multidimensional array from a sorted records object
      *  it is assumed the records object came from expCatController::addCats
      *
      * @static
