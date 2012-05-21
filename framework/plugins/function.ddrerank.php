@@ -145,15 +145,15 @@ function smarty_function_ddrerank($params,&$smarty) {
         echo $html;
     
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','panel', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','dd-scroll','panel', function(Y) {
             var panel = new Y.Panel({
-                srcNode:'#panel".$uniqueid."',
+                srcNode      : '#panel".$uniqueid."',
                 width        : 500,
                 visible      : false,
                 zIndex       : 50,
                 centered     : false,
                 render       : 'body'
-                // plugins      : [Y.Plugin.Drag]
+//                 plugins      : [Y.Plugin.Drag]
             }).plug(Y.Plugin.Drag);
             
             panel.dd.addHandle('.yui3-widget-hd');
@@ -166,6 +166,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 e.halt();
                 panel.show();
                 panel.set('centered',true);
+                panel.align('#rerank".$uniqueid."',[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]);
             });
 
             //Static Vars
@@ -209,6 +210,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     stickY:true
                 }).plug(Y.Plugin.DDNodeScroll, {
                     node: ul
+                }).plug(Y.Plugin.DDWinScroll, {
                 }).addHandle('.fpdrag');
 
                 dragItems.on('drop:over', function(e) {
