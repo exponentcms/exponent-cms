@@ -47,7 +47,7 @@
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.="http://www.militaryuniformsupply.com/".$item->sef_name;
+		$columns.=URL_FULL.$item->sef_name;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';
@@ -78,7 +78,7 @@
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.="http://www.militaryuniformsupply.com/".$item->sef_url;
+		$columns.=URL_FULL.$item->sef_url;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';
@@ -109,7 +109,7 @@
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.="http://www.militaryuniformsupply.com/".$item->sef_url;
+		$columns.=URL_FULL.$item->sef_url;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';
@@ -141,6 +141,6 @@
     }
     $action_msg = "SC";
     fclose($handle);        
-    echo "\r\nGenerated $count products in the feed.\r\n";       
+    echo "\r\nGenerated $count link(s) in the feed.\r\n";       
 	
 ?>
