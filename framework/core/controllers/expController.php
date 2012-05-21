@@ -435,6 +435,8 @@ abstract class expController {
 	        foreach($tags as $tag) {
                 if (!empty($tag)) {
                     $tag = strtolower(trim($tag));
+                    $tag = str_replace('"', "", $tag); // strip double quotes
+                    $tag = str_replace("'", "", $tag); // strip single quotes
                     $expTag = new expTag($tag);
                     if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
                     $this->params['expTag'][] = $expTag->id;
