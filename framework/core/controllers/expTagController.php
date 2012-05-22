@@ -48,28 +48,35 @@ class expTagController extends expController {
    	 * default view for individual item
    	 */
    	function show() {
-       global $db;
-       expHistory::set('viewable', $this->params);
-       $modelname = $this->basemodel_name;
+        global $db;
 
-       // figure out if we're looking this up by id or title
-       $id = null;
-       if (isset($this->params['id'])) {
-           $id = $this->params['id'];
-       } elseif (isset($this->params['title'])) {
-           $id = $this->params['title'];
-       }
+        expHistory::set('viewable', $this->params);
+        $modelname = $this->basemodel_name;
 
-       $record = new $modelname($id);
-       foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
-              $attatchedat = $record->findWhereAttachedTo($contenttype);
-              if (!empty($attatchedat)) {
-                  $record->attachedcount = @$record->attachedcount + count($attatchedat);
-                  $record->attached[$contenttype] = $attatchedat;
-              }
-       }
+        // figure out if we're looking this up by id or title
+        $id = null;
+        $tag = '';
+        if (isset($this->params['id'])) {
+            $id = $this->params['id'];
+        } elseif (isset($this->params['title'])) {
+            $id = $this->params['title'];
+            $tag = $id;
+        }
 
-       assign_to_template(array('record'=>$record));
+        $record = new $modelname($id);
+        if (empty($tag) && !empty($record->title)) {
+            $tag = $record->title;
+        }
+
+        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+            $attatchedat = $record->findWhereAttachedTo($contenttype);
+            if (!empty($attatchedat)) {
+                $record->attachedcount = @$record->attachedcount + count($attatchedat);
+                $record->attached[$contenttype] = $attatchedat;
+            }
+        }
+
+        assign_to_template(array('record'=>$record,'tag'=>$tag));
     }
 
 	/**
@@ -77,6 +84,7 @@ class expTagController extends expController {
 	 */
 	function manage() {
         global $db;
+
         expHistory::set('manageable', $this->params);
         $modelname = $this->basemodel_name;
         $where = $this->hasSources() ? $this->aggregateWhereClause() : null;

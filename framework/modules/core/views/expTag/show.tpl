@@ -14,10 +14,10 @@
  *}
 
 <div class="module expTags show">
-	<h1>{"Items Tagged with"|gettext} '{$record->title}'</h1>
+	<h1>{"Items Tagged with"|gettext} '{$tag}'</h1>
 	{permissions}
     	{if $permissions.create == 1}
-    		<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>
+    		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
     	{/if}
         {if $permissions.manage == 1}
             {icon controller=expTag action=manage text="Manage Tags"|gettext}
@@ -39,10 +39,12 @@
             <ul>
                 {foreach from=$type item=ai name=ai}
                     <li>
-                        <a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>
+                        <a href="{link controller=$key action="show" title=$ai->sef_url}" title="{$ai->title}">{$ai->title|truncate:50:"..."}</a>
                     </li>
                 {/foreach}
             </ul>
+        {foreachelse}
+            {'No items tagged with'|gettext} '{$tag}'.
         {/foreach}
     </div>
 </div>
