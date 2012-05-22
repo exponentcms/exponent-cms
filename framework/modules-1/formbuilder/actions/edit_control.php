@@ -52,7 +52,7 @@ if ($f) {
 			expHistory::returnTo('editable');
 		} else {
 			$control_type = "";
-			$ctl = new stdClass();
+			$ctl = null;
 			if (isset($_GET['id'])) {
 				$control = $db->selectObject("formbuilder_control","id=".intval($_GET['id']));
 				if ($control) {
