@@ -49,13 +49,18 @@ class notfoundController extends expController {
 	        "link"=>$this->asset_path."css/results.css",
 	        )
 	    );
+        // If magic quotes is on and the user uses modifiers like " (quotes) they get escaped. We don't want that in this case.
+        if (get_magic_quotes_gpc()) {
+            $terms = stripslashes($terms);
+        }
+        $terms = htmlspecialchars($terms);
 
         $search = new search();
 		$page = new expPaginator(array(
 			'model'=>'search',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
-			'records'=>$search->getSearchResults(implode(' ', $params)),
+//			'controller'=>$this->params['controller'],
+//			'action'=>$this->params['action'],
+			'records'=>$search->getSearchResults($terms),
 			//'sql'=>$sql,
 			'order'=>'score',
 			'dir'=>'DESC',
