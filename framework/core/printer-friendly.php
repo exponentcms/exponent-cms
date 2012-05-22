@@ -37,7 +37,6 @@
               display:none;
           }
         }
-
 	</style>
 </head>
 <body style="background:none;text-align: left;">

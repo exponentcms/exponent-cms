@@ -121,13 +121,11 @@ class searchController extends expController {
     function cloud() {
         global $db;
         expHistory::set('manageable', $this->params);
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-        $order = "title";
         $page = new expPaginator(array(
                     'model'=>'expTag',
-                    'where'=>$where,
+                    'where'=>null,
                     'limit'=>999,
-                    'order'=>$order,
+                    'order'=>"title",
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,

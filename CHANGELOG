@@ -10,6 +10,7 @@ Added / Fixed / changed for 2.0.7
   - polishes older modules to better resemble new modules for greater interface consistency
     -- e.g., all modules now use same rank reordering dialog instead of up/down arrow buttons, tabbed configs, etc...
   - removes unnecessary (new) unpublish feature from blog
+  - adds wysiwyg comments
   - adds publish date feature to filedownloads
   - adds 'go to date' feature to calendar module (chrome browser not working yet)
     -- adds experimental iCalendar/Google Calendar XML event aggregation feature (can be slow)
