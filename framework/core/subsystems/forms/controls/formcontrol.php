@@ -60,10 +60,10 @@ class formcontrol {
 		$disabled = $this->disabled != 0 ? "disabled" : "";
 		$class = empty($this->class) ? '' : $this->class;
 		 
-		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled."\"";
-		$html .= (!empty($this->required)) ? ' required">' : '>';
+		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;
+		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
-        if($this->required) $label = "* " . $label;
+        if($this->required) $label = '<span class="required" title="This field is required.">*</span>' . $label;
 		if(empty($this->flip)){
 			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$label."</label>" : "";
 			$html .= $this->controlToHTML($name, $label);
