@@ -63,6 +63,9 @@ class fakeform extends form {
 		foreach ($this->controlIdx as $name) {
 			$even = ($even=="odd") ? "even" : "odd";
 			$html .= "<div class=\"formmoduleedit ".$even." control\" style=\"border: 1px dashed lightgrey; padding: 1em;\" >";
+            if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
+                $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
+            }
 			$html .= "<div class=\"label\">".$this->controlLbl[$name];
 //			$html .= "<div class=\"formmoduleeditactions\">";
 //			if ($rank != count($this->controlIdx)-1) {
@@ -83,7 +86,10 @@ class fakeform extends form {
 //				$html .= "<img src='".ICON_RELATIVE."up.disabled.png' />";
 //			}
 //
-			$html .= "&nbsp;&nbsp;";
+            $html .= "&nbsp;&nbsp;";
+            if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
+                $html .= "<span style=\"display:inline-block\">".$this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "</span>\r\n";
+            }
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
 				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'form_id'=>$form_id)).'" title="'.gt('Edit this Control').'" >';
@@ -104,7 +110,9 @@ class fakeform extends form {
 			$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
 			$html .= '</a>';
 			$html .= "</div>";
-			$html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
+			if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol') || $this->controls[$name]->_controltype == 'radiogroupcontrol') {
+                $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
+            }
 			$html .= "</div>";
 			
 			$rank++;

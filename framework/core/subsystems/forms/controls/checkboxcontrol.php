@@ -31,8 +31,7 @@ class checkboxcontrol extends formcontrol {
 
     var $flip = false;
     var $jsHooks = array();
-    var $nowrap = '';
-    
+
     static function name() { return "Checkbox"; }
     static function isSimpleControl() { return true; }
     function useGeneric() { return false; }
@@ -46,7 +45,6 @@ class checkboxcontrol extends formcontrol {
         $this->flip = $flip;
         $this->jsHooks = array();
         $this->required = $required;
-        $this->nowrap = false;
     }
     
      function toHTML($label,$name) {
@@ -61,16 +59,16 @@ class checkboxcontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '">';
         $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
         if(!empty($this->flip)){
-            $html .= "<td class=\"input\">";
-            $html .= "<label".$for." class=\"label ".$this->nowrap."\">".$label."</label>";
+            $html .= "<td class=\"input\" nowrap>";
+            $html .= "<label".$for." class=\"label\">".$label."</label>";
             $html .= "</td><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
             $html .= "</td>";           
         }else{
-            $html .= "<td class=\"input\">";
+            $html .= "<td class=\"input\" nowrap>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
             $html .= "</td><td>";
-            $html .= "<label".$for." class=\"label ".$this->nowrap."\">".$label."</label>";
+            $html .= "<label".$for." class=\"label\">".$label."</label>";
             $html .= "</td>";           
         }
         $html .= "</tr></table>";

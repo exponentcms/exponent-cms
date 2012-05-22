@@ -30,8 +30,7 @@ if (!defined('EXPONENT')) exit('');
 class radiocontrol extends formcontrol {
 
     var $flip = false;
-    var $nowrap = '';
-    
+
     static function name() { return "Radio Button"; }
     
     function __construct($default = false, $value = "", $groupname="radiogroup", $flip=false, $onclick="") {
@@ -59,9 +58,9 @@ class radiocontrol extends formcontrol {
             $html .= "<td class=\"input\">";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .="</td>";
-            $html .= "<td><label".$for." class='label ".$this->nowrap."'>".$label."</label></td>";
+            $html .= "<td nowrap><label".$for." class='label'>".$label."</label></td>";
         } else {
-            $html .= "<td><label".$for." class='label ".$this->nowrap."'>".$label."</label></td>";
+            $html .= "<td nowrap><label".$for." class='label'>".$label."</label></td>";
             $html .= "<td class=\"input\">";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .="</td>";
