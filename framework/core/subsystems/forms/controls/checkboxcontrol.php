@@ -73,6 +73,7 @@ class checkboxcontrol extends formcontrol {
         }
         $html .= "</tr></table>";
         $html .= "</div>";
+         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
      }
     
@@ -108,6 +109,7 @@ class checkboxcontrol extends formcontrol {
             $html .= 'required="'.rawurlencode($this->default).'" caption="'.rawurlencode($this->caption).'" ';
         }
         $html .= ' />';
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
     
@@ -150,6 +152,7 @@ class checkboxcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
 
         $html .= ' />';
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
 
@@ -166,13 +169,15 @@ class checkboxcontrol extends formcontrol {
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
+            $object->description = "";
             $object->default = false;
             $object->flip = false;
             $object->required = false;
         } 
-        
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
         $form->register("required", gt('Required'), new checkboxcontrol($object->required,false));
@@ -191,6 +196,7 @@ class checkboxcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
+        $object->description = $values['description'];
         $object->default = isset($values['default']);
         $object->flip = isset($values['flip']);
         $object->required = isset($values['required']);

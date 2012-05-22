@@ -50,6 +50,7 @@ class uploadcontrol extends formcontrol {
 		$html .= ($this->tabindex>=0?"tabindex=\"".$this->tabindex."\" ":"");
 		$html .= ($this->accesskey != ""?"accesskey=\"".$this->accesskey."\" ":"");
 		$html .= "/>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 
@@ -59,10 +60,13 @@ class uploadcontrol extends formcontrol {
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
+            $object->description = "";
 			$object->default = "";
 		}
+        if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
@@ -78,6 +82,7 @@ class uploadcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
+        $object->description = $values['description'];
         $object->default = $values['default'];
         return $object;
     }
