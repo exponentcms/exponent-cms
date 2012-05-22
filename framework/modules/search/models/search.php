@@ -38,8 +38,7 @@ class search extends expRecord {
 	    // get the search terms
         //$terms = $this->params['search_string'];
         
-        if (SAVE_SEARCH_QUERIES && $readonly == 0)
-        {
+        if (SAVE_SEARCH_QUERIES && $readonly == 0) {
 		
 			if(INCLUDE_ANONYMOUS_SEARCH == 1 || $user->id <> 0) {
 				$queryObj = new stdClass();
@@ -70,7 +69,7 @@ class search extends expRecord {
         // search results due to permissions...not sure what to do about that.
         $recs = $records;
         for ($i=0; $i < count($records); $i++) {
-            if($records[$i]->ref_type == 'product'){ 
+            if($records[$i]->ref_type == 'product') {
                 $score = $records[$i]->score;               
                 if (!product::canView($records[$i]->original_id))  unset($recs[$i]); 
                 /*else 
@@ -78,7 +77,7 @@ class search extends expRecord {
                     $records[$i] = new product($records[$i]->original_id);
                     $records[$i]->score = $score;   
                 }*/
-           }else if ($records[$i]->ref_type == 'section') {	
+           } else if ($records[$i]->ref_type == 'section') {
 		        $section = $db->selectObject('section', 'id='.$records[$i]->original_id);
                 if (empty($section) || !navigationmodule::canView($section)) {
                     unset($recs[$i]);
