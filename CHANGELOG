@@ -23,10 +23,11 @@ Added / Fixed / changed for 2.0.7
   - manage users is now is sortable with more accurate filtering
   - adds optional links to display printer friendly views or export pdf for blog, news, filedownload, & portfolio items and calendars
     -- export to pdf requires optional 'dompdf' package installation
+  - adds optional formmodule control descriptions
   - adds new delete command to recycle bin items, plus new display of all recycled modules (from Exponent menu)
   - translations more widely implemented; machine translations updated
   - many 3rd party libraries updated (ckeditor, flowplayer, minify, & swiftmailer)
-  - plus other tweaks, fixes, and features
+  - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.6
 -----------------------
