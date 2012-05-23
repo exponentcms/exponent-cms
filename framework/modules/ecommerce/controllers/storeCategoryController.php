@@ -43,14 +43,16 @@ class storeCategoryController extends expNestedNodeController {
 
     public function edit() {
 		global $db;
-		$record = new storeCategoryFeeds($this->params['id']);
+
+        $id = empty($this->params['id']) ? null : $this->params['id'];
+		$record = new storeCategoryFeeds($id);
         $site_page_default = ecomconfig::getConfig('pagination_default');
 		$product_types = ecomconfig::getConfig('product_types');
 	
 		//Declaration of array variables for product types bing and google
 		$arr_product_type = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
 		
-		foreach($product_types as $key => $value) {
+		if (!empty($product_types)) foreach($product_types as $key => $value) {
 		
 			$product_type = $value . 's';
 			$product_type_id = $value . 's_id';

@@ -118,7 +118,7 @@ class shippingController extends expController {
                     $classname = substr($file, 0, -4);
                     $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name="'.$classname.'"');                    
                     if (empty($id)) {
-                        $calcobj = new $classname();                        
+                        $calcobj = new $classname($this->params);
                         if ($calcobj->isSelectable() == true) {                            
                             $calcobj->update(array('title'=>$calcobj->name(),'body'=>$calcobj->description(),'calculator_name'=>$classname,'enabled'=>false));
                         }

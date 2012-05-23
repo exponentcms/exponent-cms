@@ -281,7 +281,9 @@ class searchController extends expController {
 		$count   = $db->countObjects('search_queries');
 	
 		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .DB_TABLE_PREFIX . "_search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
-		
+
+        $records_key_arr = array();
+        $records_values_arr = array();
 		foreach($records as $item) {
 			$records_key_arr[] = '"' . $item->query . '"';
 			$records_values_arr[] = number_format((($item->cnt / $count)*100), 2);

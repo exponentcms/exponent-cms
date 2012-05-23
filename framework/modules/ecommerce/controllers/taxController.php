@@ -87,6 +87,7 @@ class taxController extends expController {
 		
 		//Get the tax_zone
 		$records = $db->selectObjects('tax_zone');
+        $zones = array();
 		foreach($records as $item) {
 			$zones[$item->id] = $item->name;
 		}
