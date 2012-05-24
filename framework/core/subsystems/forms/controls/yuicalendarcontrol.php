@@ -21,6 +21,7 @@ if (!defined('EXPONENT')) exit('');
 
 /**
  * YUI Date Picker Control
+ * standard calendar control w/o time
  *
  * @package Subsystems-Forms
  * @subpackage Control

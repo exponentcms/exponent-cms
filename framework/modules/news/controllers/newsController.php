@@ -119,7 +119,7 @@ class newsController extends expController {
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
             $rss_item->title = $item->title;
-            $rss_item->link = makeLink(array('controller'=>'news', 'action'=>'showByTitle', 'title'=>$item->sef_url));
+            $rss_item->link = makeLink(array('controller'=>'news', 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = $item->body;
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->date = date('r',$item->publish_date);

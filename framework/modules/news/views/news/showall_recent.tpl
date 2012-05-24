@@ -38,7 +38,7 @@
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item">
             <h2>
-                <a href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
+                <a href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
                 </a>
             </h2>
@@ -83,7 +83,7 @@
                 {if $config.filedisplay == "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
-                <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
+                <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
             </div>
             {clear}
         </div>

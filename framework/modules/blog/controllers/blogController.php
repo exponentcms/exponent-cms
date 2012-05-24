@@ -147,7 +147,8 @@ class blogController extends expController {
 	}
 	
 	public function show() {
-	    global $template;	    
+	    global $db, $template;
+
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
 	    $blog = new blog($id);
@@ -156,8 +157,9 @@ class blogController extends expController {
 	    // some of the links (tags in particular) require a source, we will
 	    // populate the location data in the template now.
 	    $loc = expUnserialize($blog->location_data);
-	    
-	    assign_to_template(array('__loc'=>$loc,'record'=>$blog));
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$blog->location_data."'"));
+
+	    assign_to_template(array('record'=>$blog,'__loc'=>$loc,'config'=>$config));
 	}
 
     /**

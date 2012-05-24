@@ -21,7 +21,7 @@ if (!defined('EXPONENT')) exit('');
 
 /**
  * YUI Date/Time Control
- * uses/combines yuicalendarcontrol & datetimecontrol
+ * uses/combines yuicalendarcontrol & datetimecontrol (w/o date)
  *
  * @package Subsystems-Forms
  * @subpackage Control

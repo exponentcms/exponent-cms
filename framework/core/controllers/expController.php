@@ -283,6 +283,8 @@ abstract class expController {
 	 * default view for individual item
 	 */
 	function show() {
+        global $db;
+
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
         
@@ -295,7 +297,9 @@ abstract class expController {
         }
         
         $record = new $modelname($id);
-        assign_to_template(array('record'=>$record));
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+
+        assign_to_template(array('record'=>$record,'config'=>$config));
     }
 
 	/**

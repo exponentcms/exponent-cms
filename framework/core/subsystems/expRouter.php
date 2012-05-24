@@ -316,33 +316,28 @@ class expRouter {
             //if section is empty, we'll look for the page overrides first and route to 
             //routeActionRequest with some hand wacked variables. If we can't find an override
             //then we'll return false as usual
-            if (empty($section))
-            {
+            if (empty($section)) {
                 $sef_url = $this->url_parts[0];
                 //check for a category
                 $c = new storeCategory();                
                 $cat = $c->findBy('sef_url', $sef_url);
-                if (empty($cat))
-                {
+                if (empty($cat)) {
                     //check for a product
                     $p = new product();
                     $prod = $p->findBy('sef_url', $sef_url);
-                    if(!empty($prod))
-                    {                                                           
+                    if(!empty($prod)) {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
                         $this->url_parts[0] = 'store'; //controller
                         $this->url_parts[1] = 'showByTitle'; //controller
-                        $this->url_parts[2] = 'title'; //controller                    
+                        $this->url_parts[2] = 'title'; //controller
                         $this->url_parts[3] = $sef_url; //controller
                         //eDebug($this->url_parts,true);
                         $this->params = $this->convertPartsToParams();
                         return $this->routeActionRequest();
                     }
                     //else fall through
-                }
-                else
-                {
+                } else {
                     //fake parts and route to action 
                     $this->url_type = 'action';                                      
                     $this->url_parts[0] = 'store'; //controller

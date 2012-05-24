@@ -88,8 +88,9 @@ class photosController extends expController {
             $where = $where." AND rank=".$maxrank;
             $prev = $db->selectValue($this->model_table,'sef_url',$where);
         }
-        
-        assign_to_template(array('record'=>$record,'imgnum'=>$record->rank,'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),"next"=>$next,"previous"=>$prev));
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+
+        assign_to_template(array('record'=>$record,'imgnum'=>$record->rank,'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),"next"=>$next,"previous"=>$prev,'config'=>$config));
     }
     
     public function slideshow() {

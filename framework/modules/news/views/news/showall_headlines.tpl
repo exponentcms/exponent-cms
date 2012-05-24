@@ -42,7 +42,7 @@
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
 
         <li>
-            <a class="link" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
+            <a class="link" href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
             </a>
             

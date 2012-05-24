@@ -21,6 +21,7 @@ if (!defined('EXPONENT')) exit('');
 
 /**
  * Date Time Control
+ * simple text entry date and/or time
  *
  * @package Subsystems-Forms
  * @subpackage Control

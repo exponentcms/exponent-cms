@@ -345,10 +345,7 @@ function renderAction(array $parms=array()) {
         }
     } 
     
-    // run the action 
-    $controller->$action();
-    
-    //register this controllers permissions to the view for in view perm checks
+    // register this controllers permissions to the view for in view perm checks
     $template->register_permissions(array_keys($perms), $controller->loc);
     
     // pass this controllers config off to the view
@@ -357,8 +354,11 @@ function renderAction(array $parms=array()) {
     // globalizing $user inside all templates
     $template->assign('user', $user);
     
-    //assign the controllers basemodel to the view
+    // assign the controllers basemodel to the view
     $template->assign('modelname', $controller->basemodel_name);
+
+    // lastly, run the action which can also override the above assignments
+    $controller->$action();
 
     if (empty($parms['no_output'])) {
         $template->output();
