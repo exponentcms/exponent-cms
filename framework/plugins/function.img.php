@@ -90,7 +90,7 @@ function smarty_function_img($params,&$smarty) {
        										Set to "1" or "C" to zoom-crop towards the center,
       										or set to "T", "B", "L", "R", "TL", "TR", "BL", "BR"
        										to gravitate towards top/left/bottom/right directions
-       										(requies ImageMagick for values other than "C" or "1")
+       										(requires ImageMagick for values other than "C" or "1")
 										*/
 								'bc', 	// border hex color (default = 000000)
 								'bg', 	// background hex color (default = FFFFFF)

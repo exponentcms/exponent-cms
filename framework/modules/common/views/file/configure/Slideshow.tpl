@@ -13,11 +13,11 @@
  *
  *}
  
-<h2>{'Slideshow View Settings'|gettext}</h2>
-{control type=text name="width" label="Slideshow Width"|gettext value=$config.width|default:350 size="5"}
-{control type=text name="height" label="Slideshow Height"|gettext value=$config.height|default:200 size="5"}
+<h2>{'Image Slideshow Configuration'|gettext}</h2>
+{control type=text name="width" label="Slideshow width"|gettext value=$config.width|default:350 size="5"}
+{control type=text name="height" label="Slideshow height"|gettext value=$config.height|default:200 size="5"}
 {control type=text name="speed" label="Seconds per slide"|gettext value=$config.speed|default:5 size="5"}
-{control type=text name="quality" label="Slide Thumbnail JPEG Quality"|gettext|cat:" (0 - 95, 100)<br><small>"|cat:("If quality is set to 100, the raw image will be used instead of thumbnailing"|gettext|cat:"</small>") value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
+{control type=text name="quality" label="Slide thumbnail JPEG quality"|gettext|cat:" (0 - 95, 100)<br><small>"|cat:("If quality is set to 100, the raw image will be used instead of thumbnailing"|gettext|cat:"</small>") value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
 {*{control type=checkbox name="hidetext" label="Hide Title and Body text in slides"|gettext checked=$config.hidetext value=1}*}
 {*control type="checkbox" name="hidecontrols" label="Hide controls"|gettext checked=$config.hidecontrols|default:0 value=1*}
 

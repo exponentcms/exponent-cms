@@ -49,11 +49,11 @@
 {script unique="shadowbox" yui3mods=1}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
-           'gallery-lightbox' : {
-               fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-               requires : ['base','node','anim','selector-css3']
-           }
-     }
+    'gallery-lightbox' : {
+       fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+       requires : ['base','node','anim','selector-css3']
+    }
+}
 
 YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
     Y.Lightbox.init();    
