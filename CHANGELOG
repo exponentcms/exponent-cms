@@ -8,19 +8,23 @@ Added / Fixed / changed for 2.0.7
   - incorporates all fixes from v2.0.6 patches
   - Exponent CMS should work on servers running php v5.4.x (v5.2.1 or later required)
   - polishes older modules to better resemble new modules for greater interface consistency
-    -- e.g., all modules now use same rank reordering dialog instead of up/down arrow buttons, tabbed configs, etc...
+    -- all modules now use same rank reordering dialog instead of up/down arrow buttons
+       --- module reordering now found under container chrome
+    -- tabbed item editing, configuration
   - removes unnecessary (new) unpublish feature from blog
   - adds wysiwyg comments
   - adds publish date feature to filedownloads
   - adds 'go to date' feature to calendar module (chrome browser not working yet)
     -- adds experimental iCalendar/Google Calendar XML event aggregation feature (can be slow)
-  - adds new photo album slideshow view with vertical thumbnails with text
+  - adds new photo album slideshow view using vertical thumbnails with text
   - better handling of video (and audio) uploads and previews
   - adds tag list/cloud sorting by # hits and setting limits
   - adds option to rename 'Uncategorized' group label per module
   - fixes youtube module to finally handle multiple items (paging, reordering, etc...)
   - fixes some pagination anomalies associated with multiple pages and sorting
   - sorting/ranking lists should be more user accessible (esp for LONG lists)
+    -- reordering dialog now pops up under 'Order ...' link
+    -- items now can be dragged to above/below the visible list and it will scroll browser window
   - manage users is now is sortable with more accurate filtering
   - adds optional links to display printer friendly views or export pdf for blog, news, filedownload, & portfolio items and calendars
     -- export to pdf requires optional 'dompdf' package installation

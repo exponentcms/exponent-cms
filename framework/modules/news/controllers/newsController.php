@@ -74,9 +74,16 @@ class newsController extends expController {
     public function showUnpublished() {
         expHistory::set('viewable', $this->params);
         
+        $modelname = $this->basemodel_name;
+
+        // setup the where clause for looking up records.
+        $where = parent::aggregateWhereClause();
+        $where = "(unpublish != 0 AND unpublish < ".time().") OR (publish > ".time().") AND ".$where;
+        if (isset($this->config['only_featured'])) $where .= ' AND is_featured=1';
+
         $page = new expPaginator(array(
             'model'=>'news',
-            'where'=>$this->aggregateWhereClause(),
+            'where'=>$where,
             'limit'=>25,
             'order'=>'unpublish',
             'controller'=>$this->baseclassname,
