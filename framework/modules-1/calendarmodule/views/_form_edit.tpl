@@ -13,10 +13,6 @@
  *
  *}
  
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/calendar.css"}
-
-{/css}
-
 {css unique="calendar-edit2" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/cal-edit.css" corecss="button,tables"}
 
 {/css}

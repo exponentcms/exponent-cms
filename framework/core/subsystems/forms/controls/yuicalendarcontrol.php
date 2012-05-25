@@ -61,10 +61,10 @@ class yuicalendarcontrol extends formcontrol {
 
     function controlToHTML($name,$label=null) {
         $html = "
-        <div class=\"yui-skin-sam\">
+        <div class=\"yui3-skin-sam\">
             <div id=\"cal".$name."Container\"></div>
             <div id=\"calinput\">
-                <input class=\"text\" type=\"text\" name=\"".$name."\" id=\"".$name."\" />
+                <input class=\"text\" type=\"text\" name=\"".$name."\" id=\"".$name."\" value=\"".date('m/d/Y',$this->default)."\"/>
                 <button class=\"button\" type=\"button\" id=\"update-".$name."\">Update Calendar</button>
             </div>
         </div>
@@ -72,52 +72,67 @@ class yuicalendarcontrol extends formcontrol {
         ";
         
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-calendar', function(Y) {
-            var YAHOO=Y.YUI2;
-        
-        YAHOO.namespace(\"example.calendar\");
+            YUI(EXPONENT.YUI3_CONFIG).use('calendar', 'datatype-date', 'cssbutton',  function(Y) {
 
-            YAHOO.example.calendar.init = function() {
+                // Create a new instance of calendar, placing it in
+                // #mycalendar container, setting its width to 340px,
+                // the flags for showing previous and next month's
+                // dates in available empty cells to true, and setting
+                // the date to today's date.
+                var calendar = new Y.Calendar({
+                  contentBox: '#cal".$name."Container',
+                  width:'200px',
+                  showPrevMonth: true,
+                  showNextMonth: true,
+                }).render();
 
-                function handleSelect(type,args,obj) {
-                    var dates = args[0]; 
-                    var date = dates[0];
-                    var year = date[0], month = date[1], day = date[2];
-
-                    var txtDate1 = document.getElementById(\"".$name."\");
-                    txtDate1.value = month + \"/\" + day + \"/\" + year;
+                // Parsing the date string into JS Date value
+                var date = Y.DataType.Date.parse('".date('m/d/Y',$this->default)."');
+                if (date) {
+                    // Highlighting the date stored in the text field
+                    calendar.selectDates(date);
+                } else {
+                    date = new Date();
                 }
+                // Setting calendar date to show corresponding month
+                calendar.set('date', date);
+
+                // Get a reference to Y.DataType.Date
+                var dtdate = Y.DataType.Date;
+
+                // Listen to calendar's selectionChange event.
+                calendar.on(\"selectionChange\", function (ev) {
+
+                  // Get the date from the list of selected
+                  // dates returned with the event (since only
+                  // single selection is enabled by default,
+                  // we expect there to be only one date)
+                  var newDate = ev.newSelection[0];
+
+                  // Format the date and output it to a DOM
+                  // element.
+                  Y.one('#".$name."').set('value',dtdate.format(newDate,{format:\"%m/%d/%Y\"}));
+                });
 
                 function updateCal() {
                     var txtDate1 = document.getElementById(\"".$name."\");
-
                     if (txtDate1.value != \"\") {
-                        YAHOO.example.calendar.cal".$name.".select(txtDate1.value);
-                        var selectedDates = YAHOO.example.calendar.cal".$name.".getSelectedDates();
-                        var firstDate = selectedDates[0];
-                        YAHOO.example.calendar.cal".$name.".cfg.setProperty(\"pagedate\", (firstDate.getMonth()+1) + \"/\" + firstDate.getFullYear());
-                        YAHOO.example.calendar.cal".$name.".render();
-
+                        var date = Y.DataType.Date.parse(txtDate1.value);
+                        calendar.deselectDates();
+                        if (date) {
+                            // Highlighting the date stored in the text field
+                            calendar.selectDates(date);
+                        } else {
+                            date = new Date();
+                            calendar.set('date',date);
+                        }
+                        calendar.set('date',date);
                     }
                 }
+                Y.on('click',updateCal,\"#update-".$name."\");
+            });
+            ";
 
-                // For this example page, stop the Form from being submitted, and update the cal instead
-                function handleSubmit(e) {
-                    updateCal();
-                    YAHOO.util.Event.preventDefault(e);
-                }
-                YAHOO.example.calendar.cal".$name." = new YAHOO.widget.Calendar(\"cal".$name."\",\"cal".$name."Container\",{selected:'".date('m/d/Y',$this->default)."'});
-                YAHOO.example.calendar.cal".$name.".selectEvent.subscribe(handleSelect, YAHOO.example.calendar.cal".$name.", true);
-                YAHOO.example.calendar.cal".$name.".select('".date('m/d/Y',$this->default)."');
-                YAHOO.example.calendar.cal".$name.".render();
-                YAHOO.util.Event.addListener(\"update-".$name."\", \"click\", updateCal);
-                YAHOO.util.Event.addListener(\"dates-".$name."\", \"submit\", handleSubmit);
-            }
-
-            YAHOO.util.Event.onDOMReady(YAHOO.example.calendar.init);
-        });
-        
-        ";
         expJavascript::pushToFoot(array(
             "unique"=>'calpop-'.$name,
             "yui3mods"=>1,
