@@ -166,7 +166,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 e.halt();
                 panel.show();
                 panel.set('centered',true);
-                panel.align('#rerank".$uniqueid."',[Y.WidgetPositionAlign.TC, Y.WidgetPositionAlign.BC]);
+                panel.align('#rerank".$uniqueid."',[Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.TL]);
             });
 
             //Static Vars
