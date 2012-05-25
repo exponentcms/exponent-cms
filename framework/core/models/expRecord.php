@@ -370,7 +370,7 @@ class expRecord {
         }
         
         $identifier = $this->identifier;
-       if (!empty($saveObj->$identifier)) { 
+        if (!empty($saveObj->$identifier)) {
             $db->updateObject($saveObj, $this->tablename,null,$identifier,$this->supports_revisions);
             $this->afterUpdate();
         } else {
@@ -453,7 +453,17 @@ class expRecord {
                     $db->delete($itemtype->attachable_table, 'content_type="'.$this->classname.'" AND content_id='.$this->id);
                     $refname = strtolower($type).'s_id';  //FIXME: find a better way to pluralize these names!!!
                     foreach($this->attachable_items_to_save[$type] as $subtype=>$item) {
-                        if (is_array($item)) {
+                        if (is_object($item)) {
+                            if (!empty($item->id)) {
+                                $obj = new stdClass();
+                                $obj->$refname = $item->id;
+                                $obj->subtype = $subtype;
+                                $obj->content_id = $this->id;
+                                $obj->content_type = $this->classname;
+                                if ($type == 'expFile') $obj->rank = $item->rank + 1;
+                                $db->insertObject($obj, $itemtype->attachable_table);
+                            }
+                        } elseif (is_array($item)) {
                             foreach($item as $rank=>$value) {
                                 if (is_numeric($value)) {
                                     $obj = new stdClass();
