@@ -26,7 +26,6 @@ class expModules {
 
 	public static function initializeControllers() {
 	    $controllers = array();
-	//    loadModulesDir(BASE.'themes/'.DISPLAY_THEME_REAL.'/modules', $controllers);
 	    self::loadModulesDir(BASE.'themes/'.DISPLAY_THEME.'/modules', $controllers);
 	    self::loadModulesDir(BASE.'framework/modules', $controllers);
 	    return $controllers;
