@@ -672,7 +672,7 @@ class expTheme {
 			//$section = $db->selectObject("section","id=".$last_section);
 			$src .= $sectionObj->id;
 //		}
-        $module_scope[$src][$module] = new stdClass();
+//        $module_scope[$src][$module] = new stdClass();
         $module_scope[$src][$module]->scope = 'sectional';
 
 		self::showModule($module,$view,$title,$src,$pickable,$sectionObj->id,$hide_menu);
@@ -699,6 +699,7 @@ class expTheme {
 //		$last_section = expSession::get("last_section");
 //		$section = $db->selectObject("section","id=".$last_section);
         $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
+//        $module_scope[$prefix.$section->id][$module] = new stdClass();
         $module_scope[$prefix.$section->id][$module]->scope = 'top-sectional';
 		// Loop until we find the top level parent.
 		while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
@@ -725,6 +726,7 @@ class expTheme {
         global $sectionObj, $module_scope;
         $src = "@section" . $sectionObj->id;
         $params['source'] = $src;
+//        $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
         $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = 'sectional';
         self::module($params);
     }
@@ -759,6 +761,7 @@ class expTheme {
 				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
 				$params['source'] .= $section->id;
 			}
+//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
             $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
 			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
         } else {
@@ -803,7 +806,7 @@ class expTheme {
                 while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
                 $params['source'] .= $section->id;
             }
-            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
+//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
             $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
             self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
         } elseif (isset($params['module'])) {
@@ -830,7 +833,7 @@ class expTheme {
                 $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
                 // Loop until we find the top level parent.
                 while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
-                $module_scope[$source.$section->id][$params['module']."module"]= new stdClass();
+//                $module_scope[$source.$section->id][$params['module']."module"]= new stdClass();
                 $module_scope[$source.$section->id][$params['module']."module"]->scope = 'top-sectional';
                 self::showModule($params['module']."module",$params['view'],$moduletitle,$source.$section->id,false,$section,$chrome);
             }
@@ -845,7 +848,7 @@ class expTheme {
                 if ($source == null) $source = "@section";
                 $src = $source;
                 $src .= $sectionObj->id;
-                $module_scope[$src][$params['module']."module"] = new stdClass();
+//                $module_scope[$src][$params['module']."module"] = new stdClass();
                 $module_scope[$src][$params['module']."module"]->scope = 'sectional';
                 self::showModule($params['module']."module",$params['view'],$moduletitle,$src,false,$sectionObj->id,$chrome);
             }
@@ -891,7 +894,7 @@ class expTheme {
 		$loc = expCore::makeLocation($module,$source."");
 
         if (empty($module_scope[$source][$module]->scope))
-            $module_scope[$source][$module] = new stdClass();
+//            $module_scope[$source][$module] = new stdClass();
             $module_scope[$source][$module]->scope = 'global';
         // make sure we've added this module to the sectionref table
 		if ($db->selectObject("sectionref","module='$module' AND source='".$loc->src."'") == null) {

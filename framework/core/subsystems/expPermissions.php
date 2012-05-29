@@ -127,6 +127,7 @@ class expPermissions {
         }
 
         // check for permission inherited from container(s)
+        $tmpLoc = new stdClass();
         foreach ($permission as $perm) {
             // inclusive container perms
             $tmpLoc->mod = $location->mod;
@@ -250,8 +251,8 @@ class expPermissions {
 //        } elseif ($permission == 'configure')  {
 //            $perms[] = 'order_modules';
 //        }
+        $tmpLoc = new stdClass();
         foreach ($perms as $perm) {
-            $tmpLoc = new stdClass();
             $tmpLoc->mod = $location->mod;
             $tmpLoc->src = $location->src;
             $tmpLoc->int = $location->int;
@@ -382,8 +383,8 @@ class expPermissions {
 //        } elseif ($permission == 'configure')  {
 //            $perms[] = 'order_modules';
 //        }
+        $tmpLoc = new stdClass();
         foreach ($perms as $perm) {
-            $tmpLoc = new stdClass();
             $tmpLoc->mod = $location->mod;
             $tmpLoc->src = $location->src;
             $tmpLoc->int = $location->int;
