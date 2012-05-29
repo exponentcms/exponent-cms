@@ -38,7 +38,7 @@ class update_root_user extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Prior to v2.0.3, there was only one Super-Admin. However, there is a need for a single admin user of higher order to always be available in the system.  This Script creates that user"; }
+	function description() { return "Prior to v2.0.3, there was only one Super-Admin. However, there is a need for a single admin user of higher order to always be available in the system.  This Script flags that user"; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
