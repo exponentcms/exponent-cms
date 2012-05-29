@@ -228,7 +228,7 @@ class expPermissions {
 
         // exit recursive calls for globally scoped modules
         $module_scope['error'] = false;
-        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
                 $module_scope['error'] = true;
@@ -274,7 +274,7 @@ class expPermissions {
 
         // if this is the global sidebar, then exit since we don't care about page permissions
         $module_scope['error'] = false;
-        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
                 $module_scope['error'] = true;
@@ -360,7 +360,7 @@ class expPermissions {
 
         // exit recursive calls for globally scoped modules
         $module_scope['error'] = false;
-        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
                 $module_scope['error'] = true;
@@ -406,7 +406,7 @@ class expPermissions {
 
         // if this is the global sidebar, then exit since we don't care about page permissions
         $module_scope['error'] = false;
-        if (!empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
+        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
             $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
             if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
                 $module_scope['error'] = true;
