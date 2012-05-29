@@ -209,7 +209,7 @@ class expPaginator {
 			    $this->records = $db->selectObjectsBySql($this->sql);
 			}
 		}	
-        if ($this->start > $this->total_records) {
+        if ($this->start >= $this->total_records) {
             $this->start = $this->total_records - $this->limit;
         }
 
