@@ -34,31 +34,28 @@ class filedownloadController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return "File Downloads"; }
-	function description() { return " This module lets you put files on your website for users to download."; }
+	function displayname() { return gt("File Downloads"); }
+	function description() { return gt("This module lets you put files on your website for users to download."); }
 	function isSearchable() { return true; }
 	
     function showall() {
-        $modelname = $this->basemodel_name;
-        $where = $this->aggregateWhereClause();
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-//        $dir   = isset($this->config['dir']) ? $this->config['dir'] : 'ASC';
         $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
             $limit = 999;
         }
 
         $page = new expPaginator(array(
-                    'model'=>$modelname,
-                    'where'=>$where, 
+                    'model'=>$this->basemodel_name,
+                    'where'=>$this->aggregateWhereClause(),
                     'limit'=>$limit,
                     'order'=>$order,
-//                    'dir'=>$dir,
-                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'controller'=>$this->baseclassname,
+                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
 
         include_once(BASE.'external/mp3file.php');
@@ -69,8 +66,6 @@ class filedownloadController extends expController {
                 if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
                     $file->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
                 }
-//            } else {
-//                $file->expFile['downloadable'][0]->duration = '';
             }
         }
 
@@ -85,7 +80,6 @@ class filedownloadController extends expController {
         
         $fd = new filedownload($this->params['fileid']); 
         
-               
         if (empty($fd->expFile['downloadable'][0]->id)) {
             flash('error', gt('There was an error while trying to download your file.  The file you were looking for could not be found.'));
             expHistory::back();

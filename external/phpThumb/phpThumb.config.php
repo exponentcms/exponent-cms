@@ -83,7 +83,7 @@ $PHPTHUMB_CONFIG['cache_default_only_suffix'] = '';           // cached in norma
 $PHPTHUMB_CONFIG['cache_prefix'] = 'phpThumb_cache_'.(isset($_SERVER['SERVER_NAME']) ? str_replace('www.', '', $_SERVER['SERVER_NAME']).'_' : ''); // keep cache file separate by domain
 //$PHPTHUMB_CONFIG['cache_prefix'] = 'phpThumb_cache';                                                                                             // allow phpThumb to share 1 set of cached files even if accessed under different servername/domains on same server
 
-$PHPTHUMB_CONFIG['cache_force_passthru'] = true;  // if true, cached image data will always be passed to browser; if false, HTTP redirect will be used instead
+$PHPTHUMB_CONFIG['cache_force_passthru'] = false;  // if true, cached image data will always be passed to browser; if false, HTTP redirect will be used instead
 
 
 

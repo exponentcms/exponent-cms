@@ -550,80 +550,80 @@ class expMail {
 		$this->setHTMLBody($body);
 	}
 
-	/**
-	 *  addTo() - This adds people to the Recipient List in the To Field.
-	 *
-	 *  If the first variable passed is an array,
-	 *	it assumes you are sending messages to multiple people.
-	 *
-	 *	If you want to add people with their names associated with the email, you must use an outside for loop.
-	 *  This function does not yet support the parsing of associative arrays for a quick add to the To recipient list.
-	 *
-	 * @author Tyler Smart <tyleresmart@gmail.com>
-	 * @example This will send a basic message, looping through an array of email addresses add adding them to the BCC list.
-	 *
-	 *	$emailItem = new expMail();
-	 *
-	 *   $emailItem->addText('My Text ');
-	 *	 $emailItem->addText('Line Two ');
-	 *   $emailItem->addText('Line Three ');
-	 *	 $to_array = array('a@website.com'=>'Mr A.', 'b@website.com'=>'Mr B.', 'c@website.com'=>'Mr C.', 'd@website.com'=>'Mr D.', 'e@website.com'=>'Mr E.', 'f@website.com'=>'Mr F.');
-	 *
-	 *	//add multiple bcc recipients to the email
-	 *	foreach ($to_array as $email => $name)
-	 *	{
-	 *		$emailItem->addBcc($email, $name);
-	 *	}
-	 *	$emailItem->addFrom('from@sender.com');
-	 *	$emailItem->subject('Hello World!');
-	 *
-	 *	$emailItem->send();
-	 *
-	 *	//You can also just specify the email without the name, like so:
-	 *
-	 *	$emailItem = new expMail();
-	 *
-	 *  $emailItem->addText('My Text ');
-	 *	$emailItem->addText('Line Two ');
-	 *  $emailItem->addText('Line Three ');
-	 *
-	 *	$emailItem->addTo('bob@smith.com');
-	 *	$emailItem->addFrom('from@sender.com');
-	 *	$emailItem->subject('Hello World!');
-	 *
-	 *	$emailItem->send();
-	 *
-	 *	//You can also send an array of email addresses as the first argument, like so:
-	 *
-	 *	$emailItem = new expMail();
-	 *
-	 *  $emailItem->addText('My Text ');
-	 *	$emailItem->addText('Line Two ');
-	 *  $emailItem->addText('Line Three ');
-	 *
-	 *	$emailItem->addTo(array('myemail@mysite.com', 'secondemail@website.com', 'third@emailsite.com'));
-	 *	$emailItem->addFrom('from@sender.com');
-	 *	$emailItem->subject('Hello World!');
-	 *
-	 *	$emailItem->send();
-	 *
-	 * @param string $email_address_array This is the array
-	 * @param string $singular_name  This is the name associated with the above email address.
-	 *
-	 * @param string $where
-	 * @todo		 A nice future feature addition would be to allow the passing in of associative arrays like so:
-	 *
-	 *				$emailsToSendTo = array('bob@smith.com'=>'Bob Smith', 'mary@smith.com'=>'Mary Smith');
-	 *
-	 *				$emailItem->addTo($emailsToSendTo);
-	 *
-	 *				OR
-	 *
-	 *				$emailItem->addTo('array('myemail@mysite.com'=>'Website Owner', 'secondemail@website.com'=>'Frank Jones');
-	 *
-	 *	            Actually, cleanup should be done so that this function only takes associative arrays, and nothing else.
-	 */
-	public function addTo($email_address_array = '', $singular_name = '', $where = "to") {
+    /**
+     *  addTo() - This adds people to the Recipient List in the To Field.
+     *
+     *  If the first variable passed is an array,
+     *    it assumes you are sending messages to multiple people.
+     *
+     *    If you want to add people with their names associated with the email, you must use an outside for loop.
+     *  This function does not yet support the parsing of associative arrays for a quick add to the To recipient list.
+     *
+     * @author Tyler Smart <tyleresmart@gmail.com>
+     * @example This will send a basic message, looping through an array of email addresses add adding them to the BCC list.
+     *
+     *    $emailItem = new expMail();
+     *
+     *   $emailItem->addText('My Text ');
+     *     $emailItem->addText('Line Two ');
+     *   $emailItem->addText('Line Three ');
+     *     $to_array = array('a@website.com'=>'Mr A.', 'b@website.com'=>'Mr B.', 'c@website.com'=>'Mr C.', 'd@website.com'=>'Mr D.', 'e@website.com'=>'Mr E.', 'f@website.com'=>'Mr F.');
+     *
+     *    //add multiple bcc recipients to the email
+     *    foreach ($to_array as $email => $name)
+     *    {
+     *        $emailItem->addBcc($email, $name);
+     *    }
+     *    $emailItem->addFrom('from@sender.com');
+     *    $emailItem->subject('Hello World!');
+     *
+     *    $emailItem->send();
+     *
+     *    //You can also just specify the email without the name, like so:
+     *
+     *    $emailItem = new expMail();
+     *
+     *  $emailItem->addText('My Text ');
+     *    $emailItem->addText('Line Two ');
+     *  $emailItem->addText('Line Three ');
+     *
+     *    $emailItem->addTo('bob@smith.com');
+     *    $emailItem->addFrom('from@sender.com');
+     *    $emailItem->subject('Hello World!');
+     *
+     *    $emailItem->send();
+     *
+     *    //You can also send an array of email addresses as the first argument, like so:
+     *
+     *    $emailItem = new expMail();
+     *
+     *  $emailItem->addText('My Text ');
+     *    $emailItem->addText('Line Two ');
+     *  $emailItem->addText('Line Three ');
+     *
+     *    $emailItem->addTo(array('myemail@mysite.com', 'secondemail@website.com', 'third@emailsite.com'));
+     *    $emailItem->addFrom('from@sender.com');
+     *    $emailItem->subject('Hello World!');
+     *
+     *    $emailItem->send();
+     *
+     * @param array|string $email_address_array This is the array
+     * @param string $singular_name  This is the name associated with the above email address.
+     *
+     * @param string $where
+     * @todo         A nice future feature addition would be to allow the passing in of associative arrays like so:
+     *
+     *                $emailsToSendTo = array('bob@smith.com'=>'Bob Smith', 'mary@smith.com'=>'Mary Smith');
+     *
+     *                $emailItem->addTo($emailsToSendTo);
+     *
+     *                OR
+     *
+     *                $emailItem->addTo('array('myemail@mysite.com'=>'Website Owner', 'secondemail@website.com'=>'Frank Jones');
+     *
+     *                Actually, cleanup should be done so that this function only takes associative arrays, and nothing else.
+     */
+	public function addTo($email_address_array = array(), $singular_name = '', $where = "to") {
 		if (is_array($email_address_array)) {
 			foreach ($email_address_array as $addr) {
 				$this->to = $addr;

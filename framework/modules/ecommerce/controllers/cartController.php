@@ -27,8 +27,8 @@ class cartController extends expController {
 	//public $useractions = array('show'=>'Display Cart');
 	public $useractions = array();
 
-	function displayname() { return "Ecommerce Shopping Cart"; }
-	function description() { return "This is the cart users will add products from your store to."; }
+	function displayname() { return gt("Ecommerce Shopping Cart"); }
+	function description() { return gt("This is the cart users will add products from your store to."); }
 
 	function addItem() {
         global $router;
@@ -39,7 +39,7 @@ class cartController extends expController {
         
         //eDebug($this->params);
         //if we're trying to add a parent product ONLY, then we redirect to it's show view
-        $c = null;
+        $c = new stdClass();
         if (isset($this->params['product_id']) && empty($this->params['children'])) $c = $product->find('first', 'parent_id=' . $this->params['product_id']);
         if (!empty($c->id)) 
         {
@@ -314,7 +314,8 @@ class cartController extends expController {
 	
 	function checkout() {
 		global $user, $order;
-              
+
+        $cfg = new stdClass();
         $cfg->mod = "cart";
         $cfg->src = "@globalcartsettings";
         $cfg->int = "";

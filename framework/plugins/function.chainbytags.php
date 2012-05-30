@@ -31,6 +31,7 @@
  *
  * @param         $params
  * @param \Smarty $smarty
+ * @return bool
  */
 function smarty_function_chainbytags($params,&$smarty) {
 	if (empty($params['controller'])) return false;

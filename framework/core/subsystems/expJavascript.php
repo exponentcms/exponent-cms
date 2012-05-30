@@ -35,7 +35,14 @@ class expJavascript {
 	public static function parseJSFiles() {
         global $userjsfiles,$expJS,$yui2js,$yui3js;
         
-    	$scripts = "";
+        ob_start();
+  		include(BASE.'exponent.js.php');
+        $exponent_js = ob_get_clean();
+        if (MINIFY==1&&MINIFY_INLINE_JS==1) {
+            include_once(BASE.'external/minify/min/lib/JSMin.php');
+            $exponent_js = JSMin::minify($exponent_js);
+        }
+        $scripts = '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>';
 
         if (MINIFY==1&&MINIFY_LINKED_JS==1) {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
@@ -44,7 +51,7 @@ class expJavascript {
             $i = 0;
             $srt = array();
 //            $srt[$i] = PATH_RELATIVE.'exponent.js.php,'.YUI3_PATH.'yui/yui-min.js,';
-            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
+//            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
             $srt[$i] = YUI3_PATH.'yui/yui-min.js,';
             foreach ($expJS as $file) {
                 if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen) {
@@ -61,7 +68,7 @@ class expJavascript {
             }
         } else {
             $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
-            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
+//            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
 
             $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_PATH.'yui/yui-min.js"></script>'."\r\n" : "";
             //$scripts .= "\r\n\t"."<meta id=\"yui3marker\" />"."\r\n";
@@ -79,6 +86,7 @@ class expJavascript {
 	
 	public static function footJavascriptOutput() {
         global $js2foot;
+
         $html = "";
         // need to have some control over which scripts execute first.
         // solution: alphabetical by unique

@@ -93,8 +93,10 @@ class expHtmlToPDF {
                 'return'=>$rtn
             );
     }
+
     /**
      * Function that attempts to return the kind of CPU.
+     * @throws Exception
      * @return string CPU kind ('amd64' or 'i386').
      */
     private static function _getCPU(){
@@ -129,8 +131,10 @@ class expHtmlToPDF {
      * PDF generated as landscape (horizontal).
      */
     public static $PDF_LANDSCAPE='Landscape';
+
     /**
      * Constructor: initialize command line and reserve temporary file.
+     * @throws Exception
      */
     public function __construct(){
         $this->cmd = HTMLTOPDF_PATH; //.self::_getCPU();
@@ -221,8 +225,10 @@ class expHtmlToPDF {
         $tmp=self::_pipeExec('"'.$this->cmd.'" --extended-help');
         return $tmp['stdout'];
     }
+
     /**
      * Convert HTML to PDF.
+     * @throws Exception
      */
     public function render(){
         //$web=$GLOBALS['WKPDF_BASE_SITE'].$GLOBALS['WKPDF_BASE_PATH'].'tmp/'.basename($this->tmp);
@@ -246,10 +252,12 @@ class expHtmlToPDF {
         $this->pdf=$this->pdf['stdout'];
         unlink($this->tmp);
     }
+
     /**
      * Return PDF with various options.
      * @param string $mode How two output (constants from this same class).
      * @param string $file The PDF's filename (the usage depends on $mode.
+     * @throws Exception
      * @return string|boolean Depending on $mode, this may be success (boolean) or PDF (string).
      */
     public function output($mode,$file){

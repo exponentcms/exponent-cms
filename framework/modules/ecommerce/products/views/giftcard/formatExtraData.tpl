@@ -15,7 +15,7 @@
 
 <div class="extra-data"> 
     <blockquote>
-        <strong>{'To:'|gettext} </strong>{$extra_data.to} <strong>{'From:'|gettext} </strong>{$extra_data.from}
+        <strong>{'To:'|gettext} </strong>{$extra_data.to} <strong>{'From'|gettext}: </strong>{$extra_data.from}
         {br}{$extra_data.msg}
     </blockquote>
 </div>

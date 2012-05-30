@@ -23,17 +23,28 @@
 
 class recyclebinController extends expController {
     //public $basemodel_name = '';
-    //public $useractions = array('showall'=>'Show all');
+//    public $useractions = array('showall'=>'Show all');
     public $add_permissions = array('show'=>'View Recycle Bin');
     //public $remove_permissions = array('edit');
 
-    function displayname() { return "Recycle Bin Manager"; }
-    function description() { return "Manage modules that have been deleted from your web pages"; }
+    function displayname() { return gt("Recycle Bin Manager"); }
+    function description() { return gt("Manage modules that have been deleted from your web pages"); }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
     function hasSources() { return false; }
     function hasContent() { return false; }
 
     function showall() {
+        global $db, $template;
+
+        expHistory::set('manageable', $this->params);
+        $orig_template = $template;
+
+        //initialize a new recycle bin and grab the previously trashed items
+        $bin = new recyclebin();
+        $orphans = $bin->moduleOrphans(null);
+
+        $template = $orig_template;
+        assign_to_template(array('items'=>$orphans));
     }
     
     public function show() {

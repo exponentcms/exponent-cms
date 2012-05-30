@@ -40,8 +40,8 @@ class searchController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Search Form"; }
-    function description() { return "Add a form to allow users to search for content on your website."; }
+    function displayname() { return gt("Search Form"); }
+    function description() { return gt("Add a form to allow users to search for content on your website."); }
     function hasSources() { return false; }
     function hasContent() { return false; }
 
@@ -121,17 +121,15 @@ class searchController extends expController {
     function cloud() {
         global $db;
         expHistory::set('manageable', $this->params);
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-        $order = "title";
         $page = new expPaginator(array(
                     'model'=>'expTag',
-                    'where'=>$where,
+                    'where'=>null,
                     'limit'=>999,
-                    'order'=>$order,
+                    'order'=>"title",
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array('ID#'=>'id','Title'=>'title','Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
 
         foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
@@ -146,7 +144,9 @@ class searchController extends expController {
         // trim the tag cloud to our limit.
         $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'attachedcount DESC', 'type'=>'a'));
         if (!empty($this->config['limit'])) $page->records = array_slice($page->records,0,$this->config['limit']);
-        $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'title ASC', 'ignore_case'=>true, 'sort_type'=>'a'));
+        if (!empty($this->config['order']) && $this->config['order'] != 'hits') {
+            $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'title ASC', 'ignore_case'=>true, 'sort_type'=>'a'));
+        }
         assign_to_template(array(
             'page'=>$page
         ));
@@ -281,7 +281,9 @@ class searchController extends expController {
 		$count   = $db->countObjects('search_queries');
 	
 		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .DB_TABLE_PREFIX . "_search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
-		
+
+        $records_key_arr = array();
+        $records_values_arr = array();
 		foreach($records as $item) {
 			$records_key_arr[] = '"' . $item->query . '"';
 			$records_values_arr[] = number_format((($item->cnt / $count)*100), 2);

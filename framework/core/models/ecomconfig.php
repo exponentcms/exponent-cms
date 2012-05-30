@@ -37,7 +37,7 @@ class ecomconfig extends expConfig {
         $config = new expConfig($cfg);
         
         
-        //$config = new expConfig(makeLocation('ecomconfig'));
+        //$config = new expConfig(expCore::makeLocation('ecomconfig'));
         if (isset($config->config[$configname])) {
             return $config->config[$configname];
         } else {

@@ -45,6 +45,29 @@
             {$item->title}
             </a>
             </h2>
+            <div class="post-info">
+                <span class="attribution">
+                    {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
+                    {if $item->publish_date > $smarty.now}
+                        <strong>{'Will be'|gettext}&nbsp;
+                    {/if}
+                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
+                    {if $item->publish_date > $smarty.now}
+                        </strong>&nbsp;
+                    {/if}
+                </span>
+
+                | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
+                
+				{if $item->expTag|@count>0 && !$config.disabletags}
+				| <span class="tags">
+					{"Tags"|gettext}: 
+					{foreach from=$item->expTag item=tag name=tags}
+					<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+					{/foreach} 
+				</span>
+				{/if}
+            </div>
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
@@ -62,33 +85,6 @@
                     {/if}
                 </div>
             {/permissions}
-            <div class="post-info">
-                <span class="attribution">
-                    {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
-                    {if $item->publish_date > $smarty.now}
-                        <strong>{'Will be'|gettext}&nbsp;
-                    {elseif ($item->unpublish != 0) && $item->unpublish <= $smarty.now}
-                        <strong>{'Was'|gettext}&nbsp;
-                    {/if}
-                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
-                    {if $item->publish_date > $smarty.now}
-                        </strong>&nbsp;
-                    {elseif ($item->unpublish != 0) && $item->unpublish <= $smarty.now}
-                        {'now unpublished'|gettext}</strong>&nbsp;
-                    {/if}
-                </span>
-
-                | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
-                
-				{if $item->expTag|@count>0 && !$config.disabletags}
-				| <span class="tags">
-					{"Tags"|gettext}: 
-					{foreach from=$item->expTag item=tag name=tags}
-					<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-					{/foreach} 
-				</span>
-				{/if}
-            </div>
             <div class="bodycopy">
                 {if $config.filedisplay != "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
@@ -107,6 +103,6 @@
         {/if}
     {/foreach}    
     {if $page->total_records > $config.headcount}
-        {icon action="showall" text="More Posts in '`$moduletitle`' ..."|gettext}
+        {br}{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>

@@ -25,14 +25,14 @@
 
 <div class="module help select-version">
     <form>
-        {control type="dropdown" name="version" label="Help Version: "|gettext items=$versions default=$selected onchange="switch_ver(this.value)"}
+        {control type="dropdown" name="version" label="Help Version"|gettext|cat:': ' items=$versions default=$selected onchange="switch_ver(this.value)"}
     </form>
 </div>
 
-<script type="text/javascript">
+{script unique="select-version"}
 {literal}
 	function switch_ver(id){
 		location.href="index.php?module=help&action=switch_version&version=" + id
 	}
 {/literal}
-</script>
+{/script}

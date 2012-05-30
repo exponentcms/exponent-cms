@@ -20,15 +20,7 @@ if (!defined('EXPONENT')) exit('');
 
 global $router;
 
-//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 expHistory::set('viewable', $router->params);
-
-$time = (isset($_GET['time']) ? $_GET['time'] : time());
-$info = getdate(intval($time));
-$start = mktime(0,0,0,$info['mon'],$info['mday'],$info['year']);
-$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
-
-$template = new template("calendarmodule","_viewday",$loc,false);
 
 $locsql = "(location_data='".serialize($loc)."'";
 // look for possible aggregate
@@ -36,7 +28,7 @@ $config = $db->selectObject("calendarmodule_config","location_data='".serialize(
 if (!empty($config->aggregate)) {
 	$locations = unserialize($config->aggregate);
 	foreach ($locations as $source) {
-		$tmploc = null;
+		$tmploc = new stdClass();
 		$tmploc->mod = 'calendarmodule';
 		$tmploc->src = $source;
 		$tmploc->int = '';
@@ -44,44 +36,44 @@ if (!empty($config->aggregate)) {
 	}
 }
 $locsql .= ')';
+
+$template = new template("calendarmodule","_viewday",$loc,false);
+
+$time = (isset($_GET['time']) ? $_GET['time'] : time());
+$info = getdate(intval($time));
+$start = mktime(0,0,0,$info['mon'],$info['mday'],$info['year']);
+
 //$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = '" . $start . "'");
 $dates = $db->selectObjects("eventdate",$locsql." AND date = '" . $start . "'");
 $events = array();
+//FIXME add external events to $events for date $start, one day
+$extitems = calendarmodule::getExternalEvents($loc,$start,expDateTime::endOfDayTimestamp($start)+1);
+//FIXME isn't it better to use calendarmodule::_getEventsForDates less permissions
 foreach ($dates as $d) {
 	$o = $db->selectObject("calendar","id=".$d->event_id);
 	if ($o != null) {
 		$o->eventdate = $d;
 		$o->eventstart += $d->date;
 		$o->eventend += $d->date;
-		$thisloc = expCore::makeLocation($loc->mod,$loc->src,$o->id);
-		$o->permissions = array(
-			"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
-			"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
-			"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
-		);
-		//Get the image file if there is one.
-		if (isset($o->file_id) && $o->file_id > 0) {
-			$file = $db->selectObject('file', 'id='.$o->file_id);
-			$o->image_path = $file->directory.'/'.$file->filename;
-		}
-		
+//		$thisloc = expCore::makeLocation($loc->mod,$loc->src,$o->id);
+//		$o->permissions = array(
+//			"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
+//			"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+//			"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
+//		);
 		$events[] = $o;
 	}
 }
+if (!empty($extitems[$start])) $events = array_merge($extitems[$start],$events);
+$events = expSorter::sort(array('array'=>$events,'sortby'=>'eventstart', 'order'=>'ASC'));
 
 $template->register_permissions(
 	array("create","edit","delete","manage"),
 	$loc
 );
-
-if (!$config) {
-	$config->enable_categories = 0;
-	$config->enable_ical = 1;
-}
-
+$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+$template->assign('moduletitle',$title);
 $template->assign("config",$config);
-if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
-$template->assign("enable_ical", $config->enable_ical);
 
 $template->assign("events",$events);
 $template->assign("now",$time);
@@ -91,8 +83,6 @@ $template->assign("prevday",strtotime('-1 days',$time));
 $template->assign("nextday",strtotime('+1 days',$time));
 $template->assign("nextday2",strtotime('+2 days',$time));
 $template->assign("nextday3",strtotime('+3 days',$time));
-
-$template->assign('moduletitle',$title);
 
 $template->output();
 

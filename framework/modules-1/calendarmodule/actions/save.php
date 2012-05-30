@@ -20,27 +20,21 @@
 if (!defined('EXPONENT')) exit('');
 
 $item = null;
-$iloc = null;
+//$iloc = new stdClass();
 
 if (isset($_POST['id']) && !isset($_POST['submitNew'])) {
 	$item = $db->selectObject("calendar","id=".intval($_POST['id']));
 	$loc = unserialize($item->location_data);
-	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
+//	$iloc = expCore::makeLocation($loc->mod,$loc->src,$item->id);
 }
 
 if (($item == null && expPermissions::check("create",$loc)) ||
-	($item != null && expPermissions::check("edit",$loc)) ||
-	($iloc != null && expPermissions::check("edit",$iloc))
+	($item != null && expPermissions::check("edit",$loc))
+//    || ($iloc != null && expPermissions::check("edit",$iloc))
 ) {
 
 	$item = calendar::update($_POST,$item);
 	$item->location_data = serialize($loc);
-
-	// if (isset($_POST['category'])) $item->category_id = $_POST['category'];
-	// else $item->category_id = 0;
-
-	//Get and add the tags selected by the user
-    // $item->tags = serialize(listbuildercontrol::parseData($_POST,'tags'));
 
 	//Check to see if the feedback form is enabled and/or being used for this event.
 	if (isset($_POST['feedback_form'])) {
@@ -50,23 +44,6 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 		$item->feedback_form = "";
 		$item->feedback_email = "";
 	}
-
-	//Get and save the image
-	/*  Yeah, no. Yeah, yes... Maia 6/23/09 */
-	// $file = null;
-	// if ($_FILES['file']['name'] != '') {
-		// $dir = 'files/calendarmodule/'.$loc->src;
-		// $file = file::update('file',$dir,null,time().'_'.$_FILES['file']['name']);
-		// if (is_object($file)) {
-			// $item->file_id = $db->insertObject($file,'file');
-		// } else {
-			// // If file::update() returns a non-object, it should be a string.  That string is the error message.
-			// $post = $_POST;
-			// $post['_formError'] = $file;
-			// expSession::set('last_POST',$post);
-			// header('Location: ' . $_SERVER['HTTP_REFERER']);
-		// }
-    // }
 
 	if (isset($item->id)) {
 		if ($item->is_recurring == 1) {
@@ -148,7 +125,7 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 
 		$item->approved = 1; // Bypass workflow.
 
-		$edate = null;
+		$edate = new stdClass();
 		$item->id = $db->insertObject($item,"calendar");
 		$edate->event_id = $item->id;
 		$edate->location_data = $item->location_data;
@@ -160,7 +137,6 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 //		calendarmodule::spiderContent($item);
 	}
 
-//	exponent_workflow_post($item,'calendar',$loc);
 	expHistory::back();
 } else {
 	echo SITE_403_HTML;

@@ -183,9 +183,9 @@ var YAHOO = Y.YUI2;
 	
 	refreshDD = function () {
 		dds = YAHOO.util.Dom.getElementsByClassName("draggables");
-		//////console.debug(dds);
+		//console.debug(dds);
 		for (dd in dds){
-			////console.debug(dd.getAttribute("id"));
+			//console.debug(dd.getAttribute("id"));
 			new DDSend(dds[dd].getAttribute("id").replace("section",""));
 		}
 	}
@@ -238,47 +238,47 @@ var YAHOO = Y.YUI2;
 	}
 	
 	function addTopNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent=0";
+		window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=add_section&parent=0";
 	}
 
 	function addSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=add_section&parent="+currentMenuNode.data.id;
+		window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=add_section&parent="+currentMenuNode.data.id;
 	}
 	
 	function addContentSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_contentpage&parent="+currentMenuNode.data.id;
+		window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=edit_contentpage&parent="+currentMenuNode.data.id;
 	}
 
 	function addExternalSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_externalalias&parent="+currentMenuNode.data.id;
+		window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=edit_externalalias&parent="+currentMenuNode.data.id;
 	}
 
 	function addInternalSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_internalalias&parent="+currentMenuNode.data.id;
+		window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=edit_internalalias&parent="+currentMenuNode.data.id;
 	}
 
 	function addStandaloneSubNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=move_standalone&parent="+currentMenuNode.data.id;
+		window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=move_standalone&parent="+currentMenuNode.data.id;
 	}
 
 	function viewNode (){
-		window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?section="+currentMenuNode.data.id;
+		window.location=eXp.PATH_RELATIVE+"index.php?section="+currentMenuNode.data.id;
 	}
 	
 	function editNode (){
 		if (currentMenuNode.data.obj.alias_type==0){
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_contentpage&id="+currentMenuNode.data.id;
+			window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=edit_contentpage&id="+currentMenuNode.data.id;
 		} else if (currentMenuNode.data.obj.alias_type==1){
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_externalalias&id="+currentMenuNode.data.id;
+			window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=edit_externalalias&id="+currentMenuNode.data.id;
 		} else {
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=edit_internalalias&id="+currentMenuNode.data.id;
+			window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=edit_internalalias&id="+currentMenuNode.data.id;
 		}
 	}
 	
 	function deleteNode (){
 		var handleYes = function() {
 			this.hide();
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=remove&id="+currentMenuNode.data.id;
+			window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=remove&id="+currentMenuNode.data.id;
 		};
 		var handleNo = function() {
 			this.hide();
@@ -309,22 +309,22 @@ var YAHOO = Y.YUI2;
 
 	function editUserPerms (){
 		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}navigationmodule/userperms/int/"+currentMenuNode.data.id+"/_common/1";
+			window.location=eXp.PATH_RELATIVE+"navigationmodule/userperms/int/"+currentMenuNode.data.id+"/_common/1";
 		{/literal} {else} {literal}
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=userperms&int="+currentMenuNode.data.id+"&_common=1";
+			window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=userperms&int="+currentMenuNode.data.id+"&_common=1";
 		{/literal} {/if} {literal}
 	}
 
 	function editGroupPerms (){
 		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}navigationmodule/groupperms/int/"+currentMenuNode.data.id+"/_common/1";
+			window.location=eXp.PATH_RELATIVE+"navigationmodule/groupperms/int/"+currentMenuNode.data.id+"/_common/1";
 		{/literal} {else} {literal}
-			window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
+			window.location=eXp.PATH_RELATIVE+"index.php?module=navigationmodule&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
 		{/literal} {/if} {literal}
 	}
 
 	function saveToDB(move,target,type) {
-		var iUrl = eXp.URL_FULL+"index.php?ajax_action=1&module=navigationmodule&action=DragnDropReRank";
+		var iUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigationmodule&action=DragnDropReRank";
 		YAHOO.util.Connect.asyncRequest('POST', iUrl, 
 		{
 			success : function (o){
@@ -339,7 +339,7 @@ var YAHOO = Y.YUI2;
 
 	function loadNodeData(node, fnLoadComplete)	 {
 		var nodeid = encodeURI(node.data.id);
-		var sUrl = eXp.URL_FULL+"index.php?ajax_action=1&module=navigationmodule&action=returnChildrenAsJSON&id=" + nodeid;
+		var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigationmodule&action=returnChildrenAsJSON&id=" + nodeid;
 		var callback = {
 			success: function(oResponse) {
 				var oResults = YAHOO.lang.JSON.parse(oResponse.responseText);
@@ -409,15 +409,16 @@ var YAHOO = Y.YUI2;
 		var last = (section.last==true)?'lastonthelist':'';
 		var draggable = (section.manage!=false)? 'draggables' : 'nondraggables' ;
 		var dragafters = (section.manage!=false)? 'addafter' : 'cannotaddafter' ;
-		var dragbefores = (section.manage!=false)? 'addbefore' : 'cannotaddbefore' ;
-		var first = (section.rank==0)?'<div class="'+dragbefores+'" id="addbefore'+section.id+'"></div>':'';
+        if (section.parent==0 && usr.is_acting_admin!=1 && usr.is_admin!=1) dragafters = 'cannotaddafter' ;
+		//var dragbefores = (section.manage!=false)? 'addbefore' : 'cannotaddbefore' ;
+		//var first = (section.rank==0)?'<div class="'+dragbefores+'" id="addbefore'+section.id+'"></div>':'';
 		var drag = (section.manage!=false)?'<div class="draghandle" id="draghandle'+section.id+'">&nbsp;</div>':'';
 		var html = '<div class="'+draggable+'" id="section'+section.id+'">'+drag+'<a href="'+section.link+'"><span class="sectionlabel" id="sectionlabel'+section.id+'">'+section.name+'</span></a></div><div class="'+dragafters+' '+last+'" id="addafter'+section.id+'"></div>';
 		return html;
 	}
 	
 	function initTree (){
-		var sUrl = eXp.URL_FULL+"index.php?ajax_action=1&module=navigationmodule&action=returnChildrenAsJSON&id="+0;
+		var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigationmodule&action=returnChildrenAsJSON&id="+0;
 		var callback = {
 			success: function(oResponse) {
 				var oResults = YAHOO.lang.JSON.parse(oResponse.responseText);

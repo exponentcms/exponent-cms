@@ -16,7 +16,7 @@
 <h2>{"Configure File Display Settings"|gettext}</h2>
     {control id="filedisplay" type='filedisplay-types' name=filedisplay label="Display Files as"|gettext value=$config.filedisplay}
 <div id="ff-options" style="display:none">
-    {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right" values="No Float,Left,Right" value=$config.ffloat}
+    {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.ffloat}
     {control type="text" label="Width of File Display Box"|gettext name="fwidth" value=$config.fwidth size=5}
     {control type="text" label="Width of Margin"|gettext name="fmargin" value=$config.fmargin size=5}
     <hr />
@@ -46,7 +46,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
     			arguments : { 'X-Transaction': 'Load File Config'}
     		};
     		
-	var sUrl = EXPONENT.URL_FULL+"index.php?controller=file&action=get_view_config&ajax_action=1";
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=get_view_config&ajax_action=1";
 
 	var handleSuccess = function(ioId, o){
 		Y.log(o.responseText);

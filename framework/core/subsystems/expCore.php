@@ -52,10 +52,10 @@ class expCore {
 	 * @return null
 	 */
 	public static function makeLocation($mod=null,$src=null,$int=null) {
-		$loc = null;
-		$loc->mod = ($mod ? $mod : "");
-		$loc->src = ($src ? $src : "");
-		$loc->int = (!empty($int) ? strval(intval($int)) : "");
+		$loc = new stdClass();
+		$loc->mod = !empty($mod) ? $mod : '';
+		$loc->src = !empty($src) ? $src : '';
+		$loc->int = !empty($int) ? strval(intval($int)) : '';
 		return $loc;
 	}
 
@@ -174,7 +174,7 @@ class expCore {
 	 * Decrement the reference counts for a given location.  This is used by the Container Module,
 	 * and probably won't be needed by 95% of the code in Exponent.
 	 *
-	 * @param Location $loc The location object to decrement references for.
+	 * @param object $loc The location object to decrement references for.
 	 * @param integer $section The id of the section that the location exists in.
 	 * @node Subsystems:expCore
 	 */
@@ -189,7 +189,7 @@ class expCore {
 	 * Increment the reference counts for a given location.  This is used by the Container Module,
 	 * and probably won't be needed by 95% of the code in Exponent.
 	 *
-	 * @param Location $loc The location object to increment references for.
+	 * @param object $loc The location object to increment references for.
 	 * @param integer $section The id of the section that the location exists in.
 	 * @node Subsystems:expCore
 	 */
@@ -321,9 +321,11 @@ class expCore {
 	 */
 	public static function glob2keyedArray($workArray){
 		$temp = array();
-		foreach($workArray as $myWorkFile){
-			$temp[basename($myWorkFile)] = $myWorkFile;
-		}
+        if (is_array($workArray)) {
+            foreach($workArray as $myWorkFile){
+                $temp[basename($myWorkFile)] = $myWorkFile;
+            }
+        }
 		return $temp;
 	}
 
@@ -485,7 +487,7 @@ class expCore {
 	 * @return array
 	 * @node Subsystems:expCore
 	 */
-	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by 1) calendarmodule edit action (email forms) & 2) expTemplate::listModuleViews
+	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by 1) calendarmodule edit action (email forms) & 2) expTemplate::listModuleViews for OS modules
 		$nameList = array();
 		$fileList = self::resolveFilePaths($type, $name, $subtype, $subname);
 		if ($fileList != false) {
@@ -535,6 +537,15 @@ class expCore {
 	    }
 	}
 
+    /**
+     * Use cUrl to get data from url
+     *
+     * @static
+     * @param $url
+     * @param bool $ref
+     * @param bool $post
+     * @return mixed
+     */
     public static function loadData($url, $ref = false, $post = false) {
     	$chImg = curl_init($url);
     	curl_setopt($chImg, CURLOPT_RETURNTRANSFER, true);
@@ -553,6 +564,15 @@ class expCore {
     	return $curl_scraped_data;
     }
 
+    /**
+     * Use cUrl to save data from url to file (download)
+     *
+     * @static
+     * @param $url
+     * @param $filename
+     * @param bool $ref
+     * @param bool $post
+     */
     public static function saveData($url, $filename, $ref = false, $post = false) {
     	$chImg = curl_init($url);
         $fp = fopen($filename, 'w');

@@ -23,7 +23,7 @@ class navigationmodule {
 	function description() { return 'Allows users to navigate through pages on the site, and allows Administrators to manage the site page structure / hierarchy.'; }
 	
 	function hasContent() { return false; }
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 	function hasViews()   { return true; }
 	
 	function supportsWorkflow() { return false; }
@@ -35,7 +35,7 @@ class navigationmodule {
 		);
 	}
 	
-	function show($view,$loc = null,$title = '') {
+	static function show($view,$loc = null,$title = '') {
 		global $db;
 		//$id = expSession::get('last_section');
 		global $sectionObj;
@@ -115,7 +115,7 @@ class navigationmodule {
 			$ret_array = array();
 			for($i; $i<count($sections); $i++) {
 				// start setting up the objects to return
-				$obj = null;
+				$obj = new stdClass();
 				$obj->text = $sections[$i]->name;
 				
 				if ($sections[$i]->active == 1) { 
@@ -155,7 +155,7 @@ class navigationmodule {
 
 		for($i=0; $i<count($sections); $i++) {
 			if ($sections[$i]->depth == 0) {
-				$obj = null;
+				$obj = new stdClass();
 				$obj->id = $sections[$i]->name.$sections[$i]->id;
 				
 				/*if ($sections[$i]->active == 1) { 
@@ -176,7 +176,7 @@ class navigationmodule {
 	static function spiderContent($item = null) {
 		global $db;
 		//global $sections;
-		global $router;
+//		global $router;
 		
 	 	$db->delete('search',"ref_module='navigationmodule' AND ref_type='section'");
         
@@ -184,7 +184,7 @@ class navigationmodule {
         $sections = $db->selectObjects('section','1');
 
         foreach ($sections as $section) {
-            $search = null;
+            $search = new stdClass();
             $search->category = 'Webpages';
             $search->ref_module = 'navigationmodule';
             $search->ref_type = 'section';
@@ -200,6 +200,7 @@ class navigationmodule {
 			// of all the text module added together.
 			$modnames = array('text', 'textController');
 			foreach ($modnames as $mod) {
+                $loc = new stdClass();
 			    $loc->mod = expModules::getControllerName($mod);
 			    $controllername = expModules::getControllerClassName($mod);
 			    foreach($db->selectObjects('sectionref', "module='".$controllername."' AND section=".$section->id) as $module) {
@@ -238,8 +239,8 @@ class navigationmodule {
 	function levelShowDropdown($parent,$depth=0,$default=0,$ignore_ids = array()) {
 		$html = '';
 		global $db;
-		$nodes = $db->selectObjects('section','parent='.$parent);
-		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
+		$nodes = $db->selectObjects('section','parent='.$parent,'rank');
+//		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if (($node->public == 1 || expPermissions::check('view',expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
 				$html .= '<option value="' . $node->id . '" ';
@@ -260,7 +261,7 @@ class navigationmodule {
     /**
      * Returns a flat representation of the full site hierarchy.
      *
-     * @param       $parent top level parent id
+     * @param int   $parent top level parent id
      * @param int   $depth variable to hold level of recursion
      * @param array $ignore_ids array of pages to ignore
      * @param bool  $full include a 'top' level entry
@@ -275,8 +276,8 @@ class navigationmodule {
 			$ar[0] = '&lt;'.gt('Top of Hierarchy').'&gt;';
 		}
 		global $db;
-		$nodes = $db->selectObjects('section','parent='.$parent);
-		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
+		$nodes = $db->selectObjects('section','parent='.$parent,'rank');
+//		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
 		foreach ($nodes as $node) {
 			if ((($perm=='view' && $node->public == 1) || expPermissions::check($perm,expCore::makeLocation('navigationmodule','',$node->id))) && !in_array($node->id,$ignore_ids)) {
 				if ($node->active == 1) {
@@ -312,7 +313,7 @@ class navigationmodule {
      * returns all the section's children
      *
      * @static
-     * @param $parent top level parent id
+     * @param int $parent top level parent id
      * @param int $depth variable to hold level of recursion
      * @param array $parents
      *
@@ -388,7 +389,7 @@ class navigationmodule {
      * recursively lists the template hierarchy
      *
      * @static
-     * @param $parent top level parent id
+     * @param int $parent top level parent id
      * @param int $depth variable to hold level of recursion
      *
      * @return array
@@ -397,8 +398,8 @@ class navigationmodule {
 		global $db;
 		
 		$arr = array();
-		$kids = $db->selectObjects('section_template','parent='.$parent);
-		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
+		$kids = $db->selectObjects('section_template','parent='.$parent,'rank');
+//		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
 
 		for ($i = 0; $i < count($kids); $i++) {
 			$page = $kids[$i];
@@ -450,7 +451,7 @@ class navigationmodule {
 	function process_subsections($parent_section,$subtpl) {
 		global $db, $router;
 		
-		$section = null;
+		$section = new stdClass();
 		$section->parent = $parent_section->id;
 		$section->name = $subtpl->name;
 		$section->sef_name = $router->encode($section->name);
@@ -536,7 +537,7 @@ class navigationmodule {
 		global $user;
 		if ($user->isAdmin()) return true;
 		$standalones = navigationmodule::levelTemplate(-1,0);
-		$canmanage = false;
+//		$canmanage = false;
 		foreach ($standalones as $standalone) {
 			$loc = expCore::makeLocation('navigationmodule', '', $standalone->id);
 			if (expPermissions::check('manage', $loc)) return true;
@@ -553,7 +554,7 @@ class navigationmodule {
 		$allusers = array();
 		$allgroups = array();
 		while ($section->parent > 0) {
-			$ploc = expCore::makeLocation('navigationmodule', null, $section);
+//			$ploc = expCore::makeLocation('navigationmodule', null, $section);
 			$allusers = array_merge($allusers, $db->selectColumn('userpermission', 'uid', "permission='manage' AND module='navigationmodule' AND internal=".$section->parent));
 			$allgroups = array_merge($allgroups, $db->selectColumn('grouppermission', 'gid', "permission='manage' AND module='navigationmodule' AND internal=".$section->parent));
 			$section = $db->selectObject('section', 'id='.$section->parent);

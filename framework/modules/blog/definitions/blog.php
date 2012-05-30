@@ -43,22 +43,22 @@ return array(
 	'body'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100000),
-	'poster'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
-	'private'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-	'created_at'=>array(
-		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
-	'edited_at'=>array(
-		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
-	'location_data'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>250,
-		DB_INDEX=>10),
+    'poster'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+   	'created_at'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+   	'editor'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+   	'edited_at'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'publish'=>array(
    		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
-   	'unpublish'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'location_data'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>250,
+   		DB_INDEX=>10),
+	'private'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

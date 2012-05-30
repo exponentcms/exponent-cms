@@ -31,12 +31,11 @@ class checkboxcontrol extends formcontrol {
 
     var $flip = false;
     var $jsHooks = array();
-    var $nowrap = '';
-    
-    function name() { return "Checkbox"; }
-    function isSimpleControl() { return true; }
+
+    static function name() { return "Checkbox"; }
+    static function isSimpleControl() { return true; }
     function useGeneric() { return false; }
-    function getFieldDefinition() { 
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_BOOLEAN);
     }
@@ -46,7 +45,6 @@ class checkboxcontrol extends formcontrol {
         $this->flip = $flip;
         $this->jsHooks = array();
         $this->required = $required;
-        $this->nowrap = false;
     }
     
      function toHTML($label,$name) {
@@ -61,20 +59,21 @@ class checkboxcontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '">';
         $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
         if(!empty($this->flip)){
-            $html .= "<td class=\"input\">";
-            $html .= "<label".$for." class=\"label ".$this->nowrap."\">".$label."</label>";
+            $html .= "<td class=\"input\" nowrap>";
+            $html .= "<label".$for." class=\"label\">".$label."</label>";
             $html .= "</td><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
             $html .= "</td>";           
         }else{
-            $html .= "<td class=\"input\">";
+            $html .= "<td class=\"input\" nowrap>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
             $html .= "</td><td>";
-            $html .= "<label".$for." class=\"label ".$this->nowrap."\">".$label."</label>";
+            $html .= "<label".$for." class=\"label\">".$label."</label>";
             $html .= "</td>";           
         }
         $html .= "</tr></table>";
         $html .= "</div>";
+         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
      }
     
@@ -95,7 +94,7 @@ class checkboxcontrol extends formcontrol {
     }
 */
 
-    function controlToHTML($name) {
+    function controlToHTML($name,$label=null) {
         $this->value = isset($this->value) ? $this->value : 1;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $html = '<input'.$inputID.' class="checkbox" type="checkbox" name="' . $name . '" value="'.$this->value.'"';
@@ -110,6 +109,7 @@ class checkboxcontrol extends formcontrol {
             $html .= 'required="'.rawurlencode($this->default).'" caption="'.rawurlencode($this->caption).'" ';
         }
         $html .= ' />';
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
     
@@ -152,6 +152,7 @@ class checkboxcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
 
         $html .= ' />';
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
 
@@ -168,13 +169,15 @@ class checkboxcontrol extends formcontrol {
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
+            $object->description = "";
             $object->default = false;
             $object->flip = false;
             $object->required = false;
         } 
-        
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
         $form->register("required", gt('Required'), new checkboxcontrol($object->required,false));
@@ -193,6 +196,7 @@ class checkboxcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
+        $object->description = $values['description'];
         $object->default = isset($values['default']);
         $object->flip = isset($values['flip']);
         $object->required = isset($values['required']);

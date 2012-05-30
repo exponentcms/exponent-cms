@@ -49,7 +49,7 @@ function smarty_function_img($params,&$smarty) {
 		$params['q'] = THUMB_QUALITY;
 	}
 
-	$src = URL_FULL.'thumb.php?';
+	$src = PATH_RELATIVE.'thumb.php?';
 	
 	// figure out which file we're showing
 	//if (isset($params['src'])) $src .= '?src='.$params['src'];
@@ -90,7 +90,7 @@ function smarty_function_img($params,&$smarty) {
        										Set to "1" or "C" to zoom-crop towards the center,
       										or set to "T", "B", "L", "R", "TL", "TR", "BL", "BR"
        										to gravitate towards top/left/bottom/right directions
-       										(requies ImageMagick for values other than "C" or "1")
+       										(requires ImageMagick for values other than "C" or "1")
 										*/
 								'bc', 	// border hex color (default = 000000)
 								'bg', 	// background hex color (default = FFFFFF)
@@ -416,7 +416,7 @@ function smarty_function_img($params,&$smarty) {
 	
 	//If we are in the production mode, display default image for the dead link images
 	if(!DEVELOPMENT) {
-		$src .= '&amp;err=' . URL_FULL. 'framework/core/assets/images/default_preview_notfound.gif';
+		$src .= '&amp;err=' . PATH_RELATIVE. 'framework/core/assets/images/default_preview_notfound.gif';
 	}
 	
 	$source = ' src="'.$src.'"';

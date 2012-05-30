@@ -55,6 +55,7 @@ abstract class expNestedNode extends expRecord {
 	
 	public function create($params) {
 		global $db;
+		$this->checkForAttachableItems($params);  
 		$this->build($params);
 		$parent_id = isset($this->parent_id) ? $this->parent_id : 0;
 		if ($parent_id == 0) {
@@ -158,7 +159,7 @@ abstract class expNestedNode extends expRecord {
     //  $this->save();
     // }
     // 
-	public function delete() {
+	public function delete($where = '') {
 		global $db;
 		$db->deleteNestedNode($this->table, $this->lft, $this->rgt);
 	}

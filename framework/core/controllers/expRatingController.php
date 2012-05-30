@@ -28,8 +28,8 @@ class expRatingController extends expController {
 	//public $useractions = array('browse'=>'Browse content by tags');
 	public $useractions = array();
 	
-    function displayname() { return "Ratings Manager"; }
-    function description() { return "This module is for manageing ratings on records"; }
+    function displayname() { return gt("Ratings Manager"); }
+    function description() { return gt("This module is for manageing ratings on records"); }
     function author() { return "OIC Group, Inc"; }
     function hasSources() { return false; }
 	

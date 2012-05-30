@@ -76,7 +76,7 @@ class expTheme {
 
     public static function head($config = array()){
     	echo self::headerInfo($config);
-		echo self::advertiseRSS();
+		self::advertiseRSS();
     }
 
 	///** exdoc
@@ -157,7 +157,7 @@ class expTheme {
 	}
 
 	public static function foot($params = array()) {
-		echo self::footerInfo($params);
+		self::footerInfo($params);
 	}
 
     public static function footerInfo($params = array()) {
@@ -166,7 +166,7 @@ class expTheme {
 
    		$validateTheme['footerinfo'] = true;
 
-   		if (!empty($user->getsToolbar) && PRINTER_FRIENDLY != 1 && !defined('SOURCE_SELECTOR') && empty($params['hide-slingbar'])) {
+   		if (!empty($user->getsToolbar) && PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1 && !defined('SOURCE_SELECTOR') && empty($params['hide-slingbar'])) {
    			self::module(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
    		}
 
@@ -174,7 +174,7 @@ class expTheme {
    			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'togglemobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
    		}
    		//echo expJavascript::parseJSFiles();
-   		echo self::processCSSandJS();
+   		self::processCSSandJS();
    		echo expJavascript::footJavascriptOutput();
 
    		expSession::deleteVar("last_POST");  //ADK - putting this here so one form doesn't unset it before another form needs it.
@@ -276,31 +276,32 @@ class expTheme {
 				}
 			}
 
-			// now for the old school module rss feeds
-			global $db;
-
-			$modules = $db->selectObjects("sectionref", "refcount > 0");  // get all the modules being using
-			$feeds = array();
-			foreach ($modules as $module) {
-				if (isset($feeds[$module->source])) continue;
-				$location->mod = $module->module;
-				$location->src = $module->source;
-				$location->int = $module->internal;
-
-				if (!expModules::controllerExists($module->module)) {
-					//get the module's config data
-					$config = $db->selectObject($module->module."_config", "location_data='".serialize($location)."'");
-					if (!empty($config->enable_rss)) {
-						$title = empty($config->feed_title) ? 'RSS' : htmlspecialchars($config->feed_title, ENT_QUOTES);
-						$params['module'] = $module->module;
-						$params['src'] = $module->source;
-						if (!empty($module->internal)) $params['int'] = $module->internal;
-
-						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
-						$feeds[$module->source] = $title;
-					}
-				}
-			}
+			// now for the old school module rss feeds  which no longer exist
+//			global $db;
+//
+//			$modules = $db->selectObjects("sectionref", "refcount > 0");  // get all the modules being using
+//			$feeds = array();
+//			foreach ($modules as $module) {
+//				if (isset($feeds[$module->source])) continue;
+//                $location = new stdClass();
+//                $location->mod = $module->module;
+//				$location->src = $module->source;
+//				$location->int = $module->internal;
+//
+//				if (!expModules::controllerExists($module->module)) {
+//					//get the module's config data
+//					$config = $db->selectObject($module->module."_config", "location_data='".serialize($location)."'");
+//					if (!empty($config->enable_rss)) {
+//						$title = empty($config->feed_title) ? 'RSS' : htmlspecialchars($config->feed_title, ENT_QUOTES);
+//						$params['module'] = $module->module;
+//						$params['src'] = $module->source;
+//						if (!empty($module->internal)) $params['int'] = $module->internal;
+//
+//						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
+//						$feeds[$module->source] = $title;
+//					}
+//				}
+//			}
 		}
 	}
 
@@ -500,7 +501,7 @@ class expTheme {
 
 				// the only reason we should have a controller down in this section is if we are hitting a common action like
 				// userperms or groupperms...deal wit it.
-				$loc = null;
+				$loc = new stdClass();
 				$loc->mod = $module;
 				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
 				$loc->int = (!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : "");
@@ -527,10 +528,10 @@ class expTheme {
 		}
 	}
 
-    public static function showAction($module, $action, $src="", $params="") {
+    public static function showAction($module, $action, $src="", $params=array()) {
    		global $db, $user;
 
-   		$loc = null;
+   		$loc = new stdClass();;
    		$loc->mod = $module;
    		$loc->src = (isset($src) ? $src : "");
    		$loc->int = (isset($int) ? $int : "");
@@ -650,7 +651,7 @@ class expTheme {
      * @param bool   $pickable Whether or not the module is pickable in the Source Picker.
      * @param bool   $hide_menu
      *
-     * @return
+     * @return void
      * @node Subsystems:Theme
      */
 	public static function showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
@@ -671,6 +672,7 @@ class expTheme {
 			//$section = $db->selectObject("section","id=".$last_section);
 			$src .= $sectionObj->id;
 //		}
+//        $module_scope[$src][$module] = new stdClass();
         $module_scope[$src][$module]->scope = 'sectional';
 
 		self::showModule($module,$view,$title,$src,$pickable,$sectionObj->id,$hide_menu);
@@ -697,6 +699,7 @@ class expTheme {
 //		$last_section = expSession::get("last_section");
 //		$section = $db->selectObject("section","id=".$last_section);
         $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
+//        $module_scope[$prefix.$section->id][$module] = new stdClass();
         $module_scope[$prefix.$section->id][$module]->scope = 'top-sectional';
 		// Loop until we find the top level parent.
 		while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
@@ -723,6 +726,7 @@ class expTheme {
         global $sectionObj, $module_scope;
         $src = "@section" . $sectionObj->id;
         $params['source'] = $src;
+//        $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
         $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = 'sectional';
         self::module($params);
     }
@@ -757,6 +761,7 @@ class expTheme {
 				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
 				$params['source'] .= $section->id;
 			}
+//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
             $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
 			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
         } else {
@@ -801,6 +806,7 @@ class expTheme {
                 while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
                 $params['source'] .= $section->id;
             }
+//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
             $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
             self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
         } elseif (isset($params['module'])) {
@@ -827,6 +833,7 @@ class expTheme {
                 $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
                 // Loop until we find the top level parent.
                 while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
+//                $module_scope[$source.$section->id][$params['module']."module"]= new stdClass();
                 $module_scope[$source.$section->id][$params['module']."module"]->scope = 'top-sectional';
                 self::showModule($params['module']."module",$params['view'],$moduletitle,$source.$section->id,false,$section,$chrome);
             }
@@ -841,6 +848,7 @@ class expTheme {
                 if ($source == null) $source = "@section";
                 $src = $source;
                 $src .= $sectionObj->id;
+//                $module_scope[$src][$params['module']."module"] = new stdClass();
                 $module_scope[$src][$params['module']."module"]->scope = 'sectional';
                 self::showModule($params['module']."module",$params['view'],$moduletitle,$src,false,$sectionObj->id,$chrome);
             }
@@ -886,10 +894,11 @@ class expTheme {
 		$loc = expCore::makeLocation($module,$source."");
 
         if (empty($module_scope[$source][$module]->scope))
+//            $module_scope[$source][$module] = new stdClass();
             $module_scope[$source][$module]->scope = 'global';
         // make sure we've added this module to the sectionref table
 		if ($db->selectObject("sectionref","module='$module' AND source='".$loc->src."'") == null) {
-				$secref = null;
+				$secref = new stdClass();
 				$secref->module = $module;
 				$secref->source = $loc->src;
 				$secref->internal = "";
@@ -985,7 +994,7 @@ class expTheme {
 		$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
 		$mobile_agents = array(
 			'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
-			'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+			'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno','iPad',
 			'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
 			'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
 			'newt','noki',/*'oper',*/'palm','pana','pant','phil','play','port','prox',

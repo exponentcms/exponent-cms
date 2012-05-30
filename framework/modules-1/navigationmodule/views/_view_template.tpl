@@ -17,11 +17,11 @@
 <hr size="1" />
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr>
-        <td><b>&lt;{'Name of Section'|gettext}&gt;</b></td>
+        <td><strong>&lt;{'Name of Section'|gettext}&gt;</strong></td>
         <td>
             [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template parent=$template->id}">{'Add Subpage'|gettext}</a> ]
             [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template id=$template->id}">{'Properties'|gettext}</a> ]
-            [ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.URL_FULL}edit_page.php?sitetemplate_id={$template->id}'); return false">{'Page Content'|gettext}</a> ]
+            [ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.PATH_RELATIVE}edit_page.php?sitetemplate_id={$template->id}'); return false">{'Page Content'|gettext}</a> ]
         </td>
     </tr>
         {foreach from=$subs item=sub}
@@ -29,12 +29,12 @@
             {math equation="x-1" x=$sub->rank assign=prevrank}
             <tr>
                 <td style="padding-left: {math equation="x*20" x=$sub->depth}">
-                    <b>{$sub->name}</b>
+                    <strong>{$sub->name}</strong>
                 </td>
                 <td>
                     [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template parent=$sub->id}">{'Add Subpage'|gettext}</a> ]
                     [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=edit_template id=$sub->id}">{'Properties'|gettext}</a> ]
-                    [ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.URL_FULL}edit_page.php?sitetemplate_id={$sub->id}'); return false">{'Page Content'|gettext}</a> ]
+                    [ <a class="mngmntlink sitetemplate_mngmntlink" href="#" onclick="window.open('{$smarty.const.PATH_RELATIVE}edit_page.php?sitetemplate_id={$sub->id}'); return false">{'Page Content'|gettext}</a> ]
                     [ <a class="mngmntlink sitetemplate_mngmntlink" href="{link action=delete_template id=$sub->id}">{'Delete'|gettext}</a> ]
                     {if $sub->last == 0}
                         <a href="{link action=order_templates parent=$sub->parent a=$sub->rank b=$nextrank}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'down.png'}" title="{'Move Item Down'|gettext}" alt="{'Move Item Down'|gettext}" /></a>

@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) exit('');
 $file = fopen(BASE.$_POST["filename"],"r");
 $post = null;
 $post = $_POST;
-$userinfo = null;
+$userinfo = new stdClass();
 $userinfo->username = "";
 $userinfo->firstname = "";
 $userinfo->lastname = "";
@@ -39,7 +39,7 @@ while ( ($filedata = fgetcsv($file, 2000, $_POST["delimiter"])) != false){
 if ($linenum >= $post["rowstart"]){
 	$i = 0;
 
-	$userinfo = null;
+	$userinfo = new stdClass();
 	$userinfo->changed = "";
 
         foreach ($filedata as $field){
@@ -64,38 +64,38 @@ if ($linenum >= $post["rowstart"]){
 	case "FILNNUM":
 		if ( ($userinfo->firstname != "") && ($userinfo->lastname != "") ) {
 			$userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname{0}.$userinfo->lastname.rand(100,999)));
-                }else{
+        } else {
 			$userinfo->username = "";
 			$userinfo->clearpassword = "";
-                        $userinfo->changed = "skipped";
-                }
-                break;
+            $userinfo->changed = "skipped";
+        }
+        break;
 	case "EMAIL":
 		if ($userinfo->email != "") {
 			$userinfo->username = str_replace(" ", "", strtolower($userinfo->email));
-                }else{
+        } else {
 			$userinfo->username = "";
 			$userinfo->clearpassword = "";
-                        $userinfo->changed = "skipped";
-                }
+            $userinfo->changed = "skipped";
+        }
 		break;
 	case "FNLN":
 		if ( ($userinfo->firstname != "") && ($userinfo->lastname != "") ) {
 			$userinfo->username = str_replace(" ", "",strtolower($userinfo->firstname.$userinfo->lastname));
-                }else{
+        } else {
 			$userinfo->username = "";
 			$userinfo->clearpassword = "";
-                        $userinfo->changed = "skipped";
-                }
+            $userinfo->changed = "skipped";
+        }
 		break;
 	case "INFILE":
 		if ($userinfo->username != "") {
 			$userinfo->username = str_replace(" ", "", $userinfo->username);
-                }else{
+        } else {
 			$userinfo->username = "";
 			$userinfo->clearpassword = "";
-                        $userinfo->changed = "skipped";
-                }
+            $userinfo->changed = "skipped";
+        }
 		break;
 	}
 
@@ -104,11 +104,11 @@ if ($linenum >= $post["rowstart"]){
 
 		case "RAND":
 			$newpass = "";
-                	for ($i = 0; $i < rand(12,20); $i++) {
-                        	$num=rand(48,122);
-                        	if(($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num >48 && $num < 57)) $newpass.=chr($num);
-                        	else $i--;
-                	}
+                for ($i = 0; $i < rand(12,20); $i++) {
+                    $num=rand(48,122);
+                    if(($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num >48 && $num < 57)) $newpass.=chr($num);
+                    else $i--;
+                }
 			$userinfo->clearpassword = $newpass;
 			break;
 		case "DEFPASS":
@@ -131,14 +131,14 @@ if ($linenum >= $post["rowstart"]){
 				}
 			}else{
 				$suffix = rand(100,999);
-                                $userinfo->changed = 1;
+                $userinfo->changed = 1;
 			}
 		}
 
 		$userinfo->username = $userinfo->username.$suffix;	
 		$userarray[] = exponent_users_saveUser($userinfo);  //FIXME function was deprecated
 		$usersdone[] = $userinfo->username;
-	}else{
+	} else {
 		$userinfo->linenum = $linenum;
 		$userarray[] = $userinfo;
 	}	

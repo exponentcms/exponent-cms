@@ -35,11 +35,11 @@ class administrationController extends expController {
 	    'toggle'=>'Toggle Settings',
     );
 
-    function displayname() { return "Administration Controls"; }
-    function description() { return "This is the Administration Module"; }
+    function displayname() { return gt("Administration Controls"); }
+    function description() { return gt("This is the Administration Module"); }
     function author() { return "OIC Group, Inc"; }
 
-	public static function install_dbtables() {
+	public static function install_dbtables($aggressive=false) {
 	    global $db;
 
 		expSession::clearCurrentUserSessionCache();
@@ -60,7 +60,7 @@ class administrationController extends expController {
 							$tables[$key] = $status;
 						}
 					} else {
-						foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+						foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
 //							if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
 							if ($status == TABLE_ALTER_FAILED){
 								$tables[$key] = $status;
@@ -99,7 +99,7 @@ class administrationController extends expController {
 											$tables[$key] = $status;
 										}
 									} else {
-										foreach ($db->alterTable($tablename,$dd,$info) as $key=>$status) {
+										foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
 //											if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
 											if ($status == TABLE_ALTER_FAILED){
 												$tables[$key] = $status;
@@ -125,6 +125,12 @@ class administrationController extends expController {
         assign_to_template(array('status'=>$tables));
 	}
 
+    public function delete_unused_columns() {
+   		$tables = self::install_dbtables(true);
+   		ksort($tables);
+        assign_to_template(array('status'=>$tables));
+   	}
+
     public function manage_unused_tables() {
         global $db;
         
@@ -134,6 +140,7 @@ class administrationController extends expController {
         $tables = $db->getTables();
         //eDebug($tables);
 
+		// first the core and 1.0 definitions
 		$coredefs = BASE.'framework/core/definitions';
 		if (is_readable($coredefs)) {
 			$dh = opendir($coredefs);
@@ -146,8 +153,7 @@ class administrationController extends expController {
 
 	    // then search for module definitions
         $moddefs = array(
-            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',
-//  			BASE.'themes/'.DISPLAY_THEME.'/modules',
+            BASE.'themes/'.DISPLAY_THEME_REAL.'/modules',  // we only want to do this for the set theme, NOT the preview theme
             BASE."framework/modules",
             );
         foreach ($moddefs as $moddef) {
@@ -278,7 +284,7 @@ class administrationController extends expController {
 			$iloc = expUnserialize($container->internal);
 			if ($db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."'") == null) {
 			// There is no sectionref for this container.  Populate sectionref
-				$newSecRef = null;
+				$newSecRef = new stdClass();
 				$newSecRef->module   = $iloc->mod;
 				$newSecRef->source   = $iloc->src;
 				$newSecRef->internal = '';
@@ -614,7 +620,7 @@ class administrationController extends expController {
 
 					PEAR::setErrorHandling(PEAR_ERROR_PRINT);
 					if ($zip->extract(array('add_path'=>dirname($dest))) == 0) {
-						flash('error',gt('Error extracting ZIP archive: ').$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
+						flash('error',gt('Error extracting ZIP archive').': '.$zip->_error_code . ' : ' . $zip->_error_string . '<br />');
 					} else {
 //						header('Location: ' . URL_FULL . 'index.php?module=administrationmodule&action=verify_extension&type=zip');
 //						self::verify_extension('zip');
@@ -630,7 +636,6 @@ class administrationController extends expController {
                                 $parts = explode('/',$key);
                                 $parts[1] = DISPLAY_THEME_REAL;
                                 $file = implode('/',$parts);
-                                $file = $file;
                             } else {
                                 $file = 'themes/'.DISPLAY_THEME_REAL.'/'.str_replace("framework/", "", $key);
                             }
@@ -700,7 +705,7 @@ class administrationController extends expController {
     			if (is_readable(BASE."themes/$file/class.php")) {
     				include_once(BASE."themes/$file/class.php");
     				$theme = new $file();
-    				$t = null;
+    				$t = new stdClass();
 				    $t->user_configured = isset($theme->user_configured) ? $theme->user_configured : '';
     				$t->name = $theme->name();
     				$t->description = $theme->description();
@@ -852,13 +857,13 @@ class administrationController extends expController {
         $time_format = expSettings::dropdownData('time_format');
         
         // Start of Week
-        $start_of_week = expSettings::dropdownData('start_of_week');
+        $start_of_week = glist(expSettings::dropdownData('start_of_week'));
 
         // File Permissions
-        $file_permisions = expSettings::dropdownData('file_permissions');
+        $file_permisions = glist(expSettings::dropdownData('file_permissions'));
         
         // File Permissions
-        $dir_permissions = expSettings::dropdownData('dir_permissions');
+        $dir_permissions = glist(expSettings::dropdownData('dir_permissions'));
 
         // Homepage Dropdown
         $section_dropdown = navigationmodule::levelDropDownControlArray(0);
@@ -992,7 +997,7 @@ class theme {
 		}
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
-		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
+		assign_to_template(array('name'=>self::name(),'form_html'=>$form->toHTML()));
 	}
 
 	/**
@@ -1020,9 +1025,7 @@ class theme {
 		foreach ($params as $key=>$value) {
 			if ($key[0] == '_') {
 				unset ($params[$key]);
-			} else {
-                $params[$key] = $params[$key];
-            }
+			}
 		}
 		if ($sv != '') {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");

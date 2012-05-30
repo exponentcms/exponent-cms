@@ -33,8 +33,8 @@ class taxController extends expController {
 		
     public $useractions = null; // keeps it from showing up in available modules to activate
      
-    function displayname() { return "e-Commerce Tax Class Manager"; }
-    function description() { return "Manage tax classes for your Ecommerce store"; }
+    function displayname() { return gt("e-Commerce Tax Class Manager"); }
+    function description() { return gt("Manage tax classes for your Ecommerce store"); }
     function author() { return "OIC Group, Inc"; }
     function canImportData() { return true; }
     function canExportData() { return true; }
@@ -87,6 +87,7 @@ class taxController extends expController {
 		
 		//Get the tax_zone
 		$records = $db->selectObjects('tax_zone');
+        $zones = array();
 		foreach($records as $item) {
 			$zones[$item->id] = $item->name;
 		}

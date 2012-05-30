@@ -16,11 +16,10 @@
 <h2>{'E-Alerts Subscription Settings'|gettext}</h2>
 <blockquote>
     <p>
-        {'E-Alerts allow your users to sign up to receive email versions of new content you create.'|gettext}&nbsp;&nbsp;
-        {'If you want users to be able to sign up to  E-Alerts.'|gettext}
+        {'E-Alerts allows users to sign up to receive email versions of new or updated content.'|gettext}&nbsp;&nbsp;
     </p>
     <p>
-        {'The title and description you supply below is what will be displayed to your users on the E-Alerts sign-up form.'|gettext}
+        {'The title and description below will be displayed to users on the E-Alerts sign-up form.'|gettext}
     </p>
 </blockquote>
 {control type="checkbox" name="enable_ealerts" label="Enable E-Alerts"|gettext value=1 checked=$config.enable_ealerts}

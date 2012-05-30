@@ -154,7 +154,7 @@ switch ($page) {
 }
 
 ?>
-<!DOCTYPE>
+<!DOCTYPE HTML>
 <html>
 <head>
 	<title><?php echo gt('Exponent Install Wizard'); ?></title>
@@ -193,7 +193,9 @@ switch ($page) {
     		<?php
     		if (file_exists('pages/'.$page.'.php')) {
     			include('pages/'.$page.'.php');
-    		}
+    		} else {
+                echo gt('OOPS! Couldn\'t find the').' <strong>'.$page.'</strong> '.gt('page!');
+            }
     		?>
     		</div>
             <div id="rightcol">

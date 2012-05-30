@@ -26,7 +26,7 @@
 	            {control type="text" name="username" label="API Login ID"|gettext value=$calculator->configdata.username}
 	            {control type="text" name="transaction_key" label="Transaction Key"|gettext value=$calculator->configdata.transaction_key}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
-	            {control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Authorize and Capture, Authorize Only" values="0,1" default=$calculator->configdata.process_mode}
+	            {control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Authorize and Capture, Authorize Only"|gettxtlist values="0,1" default=$calculator->configdata.process_mode}
 	        </div>
 	        <div id="tab2">
 	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard"|gettext checked=$calculator->configdata.accepted_cards}

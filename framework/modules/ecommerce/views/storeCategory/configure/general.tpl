@@ -22,8 +22,8 @@
 {control type="checkbox" name="show_prods" label="Show Products on listing pages"|gettext value=1 checked=$config.show_prods|default:1}
 
 <h2>{'Product Sorting'|gettext}</h2>
-{control type="dropdown" name="orderby" label="Default sort order"|gettext items="Name, Price, Rank" values="title,base_price,rank" value=$config.orderby}
-{control type="dropdown" name="orderby_dir" label="Sort direction"|gettext items="Ascending, Descending" values="ASC, DESC" value=$config.orderby_dir}
+{control type="dropdown" name="orderby" label="Default sort order"|gettext items="Name, Price, Rank"|gettxtlist values="title,base_price,rank" value=$config.orderby}
+{control type="dropdown" name="orderby_dir" label="Sort direction"|gettext items="Ascending, Descending"|gettxtlist values="ASC, DESC" value=$config.orderby_dir}
 
 <h2>{'Pagination'|gettext}</h2>
 {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}

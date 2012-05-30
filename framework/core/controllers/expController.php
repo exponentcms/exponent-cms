@@ -129,19 +129,19 @@ abstract class expController {
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return "Exponent Base Controller"; }
+	function displayname() { return gt("Exponent Base Controller"); }
+
+    /**
+   	 * description of module
+   	 * @return string
+   	 */
+   	function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
 
 	/**
 	 * author of module
 	 * @return string
 	 */
 	function author() { return "Adam Kessler @ OIC Group, Inc"; }
-
-	/**
-	 * description of module
-	 * @return string
-	 */
-	function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
 
 	/**
 	 * does module have sources available?
@@ -190,19 +190,16 @@ abstract class expController {
 	 */
 	function showall() {
         expHistory::set('viewable', $this->params);
-        $modelname = $this->basemodel_name;
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-        $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
-        $order = isset($this->params['order']) ? $this->params['order'] : null;
+
         $page = new expPaginator(array(
-                    'model'=>$modelname,
-                    'where'=>$where, 
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'model'=>$this->basemodel_name,
+                    'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : null,
+                    'order'=>isset($this->params['order']) ? $this->params['order'] : null,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
         assign_to_template(array('page'=>$page, 'items'=>$page->records));
@@ -235,20 +232,19 @@ abstract class expController {
 
         // create a pagination object for the model and render the action
         $order = 'created_at DESC';
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 
         $page = new expPaginator(array(
                     'records'=>$items_by_tags,
-                    'limit'=>$limit,
+                    'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array('Title'=>'title'),
+                    'columns'=>array(gt('Title')=>'title'),
                     ));
 //        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
         $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'created_at', 'order'=>'DESC', 'ignore_case'=>true));
 
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'moduletitle'=>ucfirst($modelname).' items by tag "'.expString::sanitize($this->params['tag']).'"', 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'moduletitle'=>ucfirst($modelname).' '.gt('items tagged with').' "'.expString::sanitize($this->params['tag']).'"', 'rank'=>($order==='rank')?1:0));
     }
 
     public function tags() {
@@ -276,7 +272,9 @@ abstract class expController {
         $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>'count DESC', 'type'=>'a'));
         if (!empty($this->config['limit'])) $used_tags = array_slice($used_tags,0,$this->config['limit']);
         $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
-        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        if ($order != 'hits') {
+            $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        }
 
         assign_to_template(array('tags'=>$used_tags));
     }
@@ -285,6 +283,8 @@ abstract class expController {
 	 * default view for individual item
 	 */
 	function show() {
+        global $db;
+
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
         
@@ -297,7 +297,9 @@ abstract class expController {
         }
         
         $record = new $modelname($id);
-        assign_to_template(array('record'=>$record));
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+
+        assign_to_template(array('record'=>$record,'config'=>$config));
     }
 
 	/**
@@ -437,6 +439,8 @@ abstract class expController {
 	        foreach($tags as $tag) {
                 if (!empty($tag)) {
                     $tag = strtolower(trim($tag));
+                    $tag = str_replace('"', "", $tag); // strip double quotes
+                    $tag = str_replace("'", "", $tag); // strip single quotes
                     $expTag = new expTag($tag);
                     if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
                     $this->params['expTag'][] = $expTag->id;
@@ -452,7 +456,9 @@ abstract class expController {
         }
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
-        $this->addContentToSearch($this->params);
+        if ($this->isSearchable()) {
+            $this->addContentToSearch($this->params);
+        }
 
 	    // check for eAlerts
 	    if (!empty($this->params['send_ealerts'])) {
@@ -500,19 +506,16 @@ abstract class expController {
 	 */
 	function manage() {
         expHistory::set('manageable', $this->params);
-        $modelname = $this->basemodel_name;
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-        $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
-        $order = isset($this->params['order']) ? $this->params['order'] : null;
+
         $page = new expPaginator(array(
-                    'model'=>$modelname,
-                    'where'=>$where, 
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'model'=>$this->basemodel_name,
+                    'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : null,
+                    'order'=>isset($this->params['order']) ? $this->params['order'] : null,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
         assign_to_template(array('page'=>$page, 'items'=>$page->records));
@@ -540,45 +543,19 @@ abstract class expController {
 	 */
 	function configure() {
         expHistory::set('editable', $this->params);
+        $order = isset($this->params['order']) ? $this->params['order'] : 'section';
+        $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         $page = new expPaginator(array(
                     'records'=>$pullable_modules,
                     'limit'=>count($pullable_modules),
-                    'order'=>'section',
-                    'columns'=>array('Title'=>'title', 'Page'=>'section'),
+                    'order'=>$order,
+                    'dir'=>$dir,
+                    'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
                     ));
         assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'page'=>$page, 'views'=>$views));
     }
-
-
-    // had to back out of the architecture a bit here. 
-    // Attachable items are borking RSS feeds.
-
-    // function getRSSContent() {
-    //     global $db;     
-    // 
-    //     // setup the where clause for looking up records.
-    //     $where = $this->aggregateWhereClause();
-    //     
-    //     // get the news items from the database
-    //     $model = new $this->basemodel_name(null,false,false);
-    //     //eDebug($model);
-    //     
-    //     $items = $model->find('all', $where);
-    //     
-    //     //Convert the items to rss items
-    //     $rssitems = array();
-    //     foreach ($items as $key => $item) { 
-    //         $rss_item = new FeedItem();
-    //         $rss_item->title = $item->title;
-    //         $rss_item->description = $item->body;
-    //         $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', time());
-    //         $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'showByTitle', 'title'=>$item->sef_url));
-    //         $rssitems[$key] = $rss_item;
-    //     }
-    //     return $rssitems;
-    // }
 
 	/**
 	 * get the items in an rss feed format
@@ -723,15 +700,21 @@ abstract class expController {
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
-            
+            $sql = "original_id=".$origid." AND ref_module='".$this->classname."'";
+            $oldindex = $db->selectObject('search',$sql);
+            if (!empty($oldindex)) {
+                $search_record = new search($oldindex->id, false, false);
+                $search_record->update($cnt);
+            } else {
+                $search_record = new search($cnt, false, false);
+            }
+
+            //build the search record and save it.
+            $search_record->original_id = $origid;
+            $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
             // get the location data for this content
             if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
             $src = isset($loc->src) ? $loc->src : null;
-            
-            //build the search record and save it.
-            $search_record = new search($cnt, false, false);
-            $search_record->original_id = $origid;
-            $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
             $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'id'=>$origid, 'src'=>$src)));
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
             $search_record->view_link = $link;
@@ -783,8 +766,7 @@ abstract class expController {
         global $router;
         if (empty($router->params['action'])) return false;
         
-        // figure out what metadata to pass back based on the action 
-        // we are in.
+        // figure out what metadata to pass back based on the action we are in.
         $action = $_REQUEST['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'');
         $modelname = $this->basemodel_name;
@@ -810,17 +792,27 @@ abstract class expController {
                 //check for a function in the controller called 'action'_meta and use it if so
                 $functionName = $action."_meta";
                 $mod = new $this->classname;                
-                if(method_exists($mod,$functionName))
-                {
+                if (method_exists($mod,$functionName)) {
                     $metainfo = $mod->$functionName($_REQUEST);
-                }                    
-                else
-                {
+                } else {
                     $metainfo = array('title'=>$this->displayname()." - ".SITE_TITLE, 'keywords'=>SITE_KEYWORDS, 'description'=>SITE_DESCRIPTION);
                 }
         }
         
         return $metainfo;
+    }
+
+    function showall_by_tags_meta($request) {
+        // look up the record.
+        if (isset($request['tag'])) {
+            $object = new expTag(expString::sanitize($request['tag']));
+            // set the meta info
+            if (!empty($object)) {
+                $metainfo['title'] = gt('Showing all Blog Posts tagged with') ." \"" . $object->title . "\"";
+                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+            }
+        }
     }
 
 	/**
@@ -839,7 +831,7 @@ abstract class expController {
         
         if (!empty($this->config['aggregate'])) {
             foreach ($this->config['aggregate'] as $src) {
-                $loc = makeLocation($this->baseclassname, $src);
+                $loc = expCore::makeLocation($this->baseclassname, $src);
                 $sql .= " OR location_data ='".serialize($loc)."'";
             }
             

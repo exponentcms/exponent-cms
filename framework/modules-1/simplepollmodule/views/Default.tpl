@@ -17,7 +17,7 @@
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
 	
 	{if $have_answers != 0}
-		<form method="post" action="{$smarty.const.URL_FULL}index.php">
+		<form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
 			<input type="hidden" name="module" value="simplepollmodule" />
 			<input type="hidden" name="action" value="vote" />
 			<h2>{$question->question}</h2>

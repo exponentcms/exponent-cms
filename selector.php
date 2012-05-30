@@ -20,9 +20,9 @@
 global $db;
 if (!defined('EXPONENT')) exit('');
 function epb($buffer, $mode) {
-    //@ob_gzhandler($buffer, $mode);
+//    @ob_gzhandler($buffer, $mode);
     @ob_gzhandler($buffer);
-    //return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
+//    return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
     return expProcessBuffer($buffer);
 }
 

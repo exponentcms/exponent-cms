@@ -29,13 +29,13 @@ class customcontrol extends formcontrol {
 
 	var $html;
 	
-	function name() { return "Custom Control"; }
+	static function name() { return "Custom Control"; }
 	
 	function __construct($html = "") {
 		$this->html = $html;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		return $this->html;
 	}
 

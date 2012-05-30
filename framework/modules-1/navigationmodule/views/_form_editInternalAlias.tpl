@@ -24,4 +24,14 @@
 		{'Select which internal page you want this section to link to.  If you link to another internal alias, the aliases will all be dereferenced, and the original destination used.  If you link to an external alias, then this section will point to the external aliases external web address.'|gettext}
 	</div>
 	{$form_html}
+{script unique="configure" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
+        tabview.render();
+        Y.one('#configure-tabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}
 </div>

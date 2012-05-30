@@ -17,8 +17,8 @@
 {$post.eventtitle}
 {$post.eventdate}
 
-{'Name:'|gettext}  {$post.name}
+{'Name'|gettext}:  {$post.name}
 {'Email:'|gettext}    {$post.email}
 {'Phone:'|gettext}    {$post.phone}
 {'Attendees:'|gettext} {$post.attendees}
-{'Comments:'|gettext}  {$post.comments}
+{'Comments'|gettext}:  {$post.comments}

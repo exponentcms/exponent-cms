@@ -16,5 +16,5 @@
 {foreach from=$orphan_mods item=modname key=mod}
     <a class="navlink" href="{link module=$mod}">{$modname}</a><br />
 {foreachelse}
-    <i>{'No Archived Modules'|gettext}</i>
+    <em>{'No Archived Modules'|gettext}</em>
 {/foreach}

@@ -42,7 +42,7 @@ if ($answer && $question) {
 	
 		// Time blocking
 		$timeblock = null;
-		if ($user) {
+        if (is_object($user) && $user->id > 0) {
 			$timeblock = $db->selectObject('poll_timeblock','user_id='.$user->id.' AND question_id='.$answer->question_id);
 		} else {
 			$timeblock = $db->selectObject('poll_timeblock',"ip_hash='".md5($_SERVER['REMOTE_ADDR'])."' AND question_id=".$answer->question_id);
@@ -54,7 +54,7 @@ if ($answer && $question) {
 			
 			// Update the timeblock
 			$timeblock->question_id = $answer->question_id;
-			if ($user) {
+            if (is_object($user) && $user->id > 0) {
 				$timeblock->lock_expires = 0;
 				$timeblock->user_id = $user->id;
 				$timeblock->ip_hash = '';

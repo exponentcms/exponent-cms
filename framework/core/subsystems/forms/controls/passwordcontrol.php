@@ -31,7 +31,7 @@ class passwordcontrol extends formcontrol {
 	var $size = 0;
 	var $maxlength = "";
 	
-	function name() { return "Password Field"; }
+	static function name() { return "Password Field"; }
 
 	function __construct($default = "", $size = 0, $disabled = false, $maxlength = 0) {
 		$this->default = $default;
@@ -40,7 +40,7 @@ class passwordcontrol extends formcontrol {
 		$this->maxlength = $maxlength;
 	}
 	
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		$html = "<input type=\"password\" name=\"$name\" value=\"" . $this->default . "\" ";
 		$html .= ($this->size?"size=\"".$this->size."\" ":"");
 		$html .= ($this->disabled?"disabled ":"");

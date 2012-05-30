@@ -67,7 +67,7 @@ class expGeo {
 		global $db;
 		$countries = array();
 		foreach ($db->selectObjects("geo_country") as $c) {
-			$countries[$c->id] = null;
+			$countries[$c->id] = new stdClass();
 			$countries[$c->id]->name = $c->name;
 			$countries[$c->id]->regions = array();
 

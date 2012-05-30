@@ -34,14 +34,11 @@ class portfolioController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Portfolio"; }
-    function description() { return "This module allows you to show off your work portfolio style."; }
+    function displayname() { return gt("Portfolio"); }
+    function description() { return gt("This module allows you to show off your work portfolio style."); }
     function isSearchable() { return true; }
 
     public function showall() {
-        $where = $this->aggregateWhereClause();
-        $where .= (!empty($this->config['only_featured']))?"AND featured=1":"";
-//        $order = 'rank';
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
@@ -49,51 +46,40 @@ class portfolioController extends expController {
         }
 
         $page = new expPaginator(array(
-                    'model'=>'portfolio',
-                    'where'=>$where, 
+                    'model'=>$this->basemodel_name,
+                    'where'=>$this->aggregateWhereClause(),
                     'limit'=>$limit,
                     'order'=>$order,
                     'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
                     'controller'=>$this->baseclassname,
                     'src'=>$this->loc->src,
                     'action'=>$this->params['action'],
-                    'columns'=>array('Title'=>'title'),
+                    'columns'=>array(gt('Title')=>'title'),
                     ));
+
         assign_to_template(array('page'=>$page, 'rank'=>($order==='rank')?1:0));
     }
     
-//	public function tags() {
-//        $ports = $this->portfolio->find('all');
-//        $used_tags = array();
-//        foreach ($ports as $port) {
-//            foreach($port->expTag as $tag) {
-//                if (isset($used_tags[$tag->id])) {
-//                    $used_tags[$tag->id]->count += 1;
-//                } else {
-//                    $exptag = new expTag($tag->id);
-//                    $used_tags[$tag->id] = $exptag;
-//                    $used_tags[$tag->id]->count = 1;
-//                }
-//            }
-//        }
-//
-////        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-////        $used_tags = expSorter::sort(array('array'=>$used_tags,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
-//        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
-//        $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
-//	    assign_to_template(array('tags'=>$used_tags));
-//	}
-//
     public function slideshow() {
         expHistory::set('viewable', $this->params);
-        $where = $this->aggregateWhereClause();
-        $where .= (!empty($this->config['only_featured']))?"AND featured=1":"";
-//        $order = 'rank';
+
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $s = new portfolio();
-        $slides = $s->find('all',$where,$order);
-                    
+        $slides = $s->find('all',$this->aggregateWhereClause(),$order);
+
         assign_to_template(array('slides'=>$slides, 'rank'=>($order==='rank')?1:0));
+    }
+
+    /**
+   	 * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
+   	 *
+   	 * @return string
+   	 */
+   	function aggregateWhereClause() {
+        $sql = parent::aggregateWhereClause();
+        $sql .= (!empty($this->config['only_featured']))?"AND featured=1":"";
+        return $sql;
     }
 
 }

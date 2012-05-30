@@ -21,20 +21,7 @@ if (!defined('EXPONENT')) exit('');
 
 global $router;
 
-//expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 expHistory::set('viewable', $router->params);
-
-$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
-
-$template = new template("calendarmodule","_viewweek",$loc,false);
-
-$time = (isset($_GET['time']) ? $_GET['time'] : time());
-$time = intval($time);
-
-$startweek = expDateTime::startOfWeekTimestamp($time);
-$days = array();
-$counts = array();
-$startinfo = getdate($startweek);
 
 $locsql = "(location_data='".serialize($loc)."'";
 // look for possible aggregate
@@ -42,7 +29,7 @@ $config = $db->selectObject("calendarmodule_config","location_data='".serialize(
 if (!empty($config->aggregate)) {
 	$locations = unserialize($config->aggregate);
 	foreach ($locations as $source) {
-		$tmploc = null;
+		$tmploc = new stdClass();
 		$tmploc->mod = 'calendarmodule';
 		$tmploc->src = $source;
 		$tmploc->int = '';
@@ -50,33 +37,41 @@ if (!empty($config->aggregate)) {
 	}
 }
 $locsql .= ')';
+
+$template = new template("calendarmodule","_viewweek",$loc,false);
+
+$time = intval(isset($_GET['time']) ? $_GET['time'] : time());
+
+$days = array();
+$counts = array();
+$startweek = expDateTime::startOfWeekTimestamp($time);
+$startinfo = getdate($startweek);
+
+//FIXME add external events to $days[$start][] for date $start, one day at a time
+$extitems = calendarmodule::getExternalEvents($loc,$startweek,expDateTime::endOfWeekTimestamp($startweek));
 for ($i = 0; $i < 7; $i++) {
 	$start = mktime(0,0,0,$startinfo['mon'],$startinfo['mday']+$i,$startinfo['year']);
-	$days[$start] = array();
 //	$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = $start");
 	$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");	
+    //FIXME isn't it better to use calendarmodule::_getEventsForDates less permissions
+    $days[$start] = array();
 	for ($j = 0; $j < count($dates); $j++) {
 		$o = $db->selectObject("calendar","id=".$dates[$j]->event_id);
 		if ($o != null) {
 			$o->eventdate = $dates[$j];
 			$o->eventstart += $o->eventdate->date;
 			$o->eventend += $o->eventdate->date;
-			$thisloc = expCore::makeLocation($loc->mod,$loc->src,$o->id);
-			$o->permissions = array(
-				"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
-				"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
-				"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
-			);
-
-			//Get the image file if there is one.
-			if (isset($o->file_id) && $o->file_id > 0) {
-				$file = $db->selectObject('file', 'id='.$o->file_id);
-				$o->image_path = $file->directory.'/'.$file->filename;
-			}
-		
+//			$thisloc = expCore::makeLocation($loc->mod,$loc->src,$o->id);
+//			$o->permissions = array(
+//				"manage"=>(expPermissions::check("manage",$thisloc) || expPermissions::check("manage",$loc)),
+//				"edit"=>(expPermissions::check("edit",$thisloc) || expPermissions::check("edit",$loc)),
+//				"delete"=>(expPermissions::check("delete",$thisloc) || expPermissions::check("delete",$loc))
+//			);
 			$days[$start][] = $o;
 		}
 	}
+    if (!empty($extitems[$start])) $days[$start] = array_merge($extitems[$start],$days[$start]);
+    $days[$start] = expSorter::sort(array('array'=>$days[$start],'sortby'=>'eventstart', 'order'=>'ASC'));
 	$counts[$start] = count($days[$start]);
 }
 
@@ -84,17 +79,10 @@ $template->register_permissions(
 	array("create","edit","delete","manage"),
 	$loc
 );
-
-
-if (!$config) {
-	$config->enable_categories = 0;
-	$config->enable_ical = 1;
-}
-
+$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+$template->assign('moduletitle',$title);
 $template->assign("config",$config);
-if (!isset($config->enable_ical)) {$config->enable_ical = 1;}
-$template->assign("enable_ical", $config->enable_ical);
-		
+
 $template->assign("days",$days);
 $template->assign("counts",$counts);
 $template->assign("startweek",$startweek);
@@ -105,7 +93,6 @@ $template->assign("startnextweek",(strtotime('+1 weeks',$startweek)));
 $template->assign("startnextweek2",(strtotime('+2 weeks',$startweek)));
 $template->assign("startnextweek3",(strtotime('+3 weeks',$startweek)));
 
-$template->assign('moduletitle',$title);
 $template->output();
 
 ?>

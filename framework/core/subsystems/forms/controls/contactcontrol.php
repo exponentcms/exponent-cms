@@ -29,14 +29,14 @@ class contactcontrol extends formcontrol {
 
 	var $type = 0;
 
-	function name() { return "Contact"; }
+	static function name() { return "Contact"; }
 
 	function __construct($default = "",$type = 0) {
 		$this->default = $default;
 		$this->type = $type;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		// First, grab the data for the users
 		$users = array();
 

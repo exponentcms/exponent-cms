@@ -84,6 +84,8 @@ class migrationController extends expController {
         'keywordmodule',
         'sharedcoremodule',
         'svgallerymodule',
+        'uiswitchermodule',
+        'filemanagermodule',
     );
 
     public $needs_written = array(
@@ -101,13 +103,13 @@ class migrationController extends expController {
 	 * name of module
 	 * @return string
 	 */
-    function displayname() { return "Content Migration Controller"; }
+    function displayname() { return gt("Content Migration Controller"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-    function description() { return "Use this module to pull Exponent 1 style content from your old site."; }
+    function description() { return gt("Use this module to pull Exponent 1 style content from your old site."); }
 
 	/**
 	 * if module has associated sources
@@ -123,7 +125,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all pages in old site for user selection
-	 * @global mysqli_database the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function manage_pages() {
@@ -144,7 +146,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected pages over from old site
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_pages() {
@@ -260,7 +262,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected file information (not the files themselves) over from old site
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_files() {
@@ -285,7 +287,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all modules in old site for user selection
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function manage_content() {
@@ -316,7 +318,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected modules and their contents over from old site
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_content() {
@@ -464,13 +466,15 @@ class migrationController extends expController {
 
         // pull the sectionref data for selected modules
         $secref = $old_db->selectObjects('sectionref',$where);
+        if (empty($this->params['migrate'])) $this->params['migrate'] = array();
         foreach ($secref as $sr) {
             // hard coded modules
             if (array_key_exists($sr->module, $this->new_modules) && ($sr->refcount==1000)) {
-	            $iloc = null;
+	            $iloc = new stdClass();
 	            $iloc->mod = $sr->module;
                 $iloc->src = $sr->source;
                 $iloc->int = $sr->internal;
+                $tmp = new stdClass();
 	            $tmp->module = '';
 //                $this->convert($iloc,$iloc->mod,1);
                 $this->convert($iloc,$tmp,1);
@@ -480,7 +484,7 @@ class migrationController extends expController {
             }
 
             if (!in_array($sr->module, $this->deprecated_modules)) {
-                // if the module is not in the depecation list, we're hitting here
+                // if the module is not in the deprecation list, we're hitting here
                 if (!$db->selectObject('sectionref',"source='".$sr->source."'")) {
 					if (array_key_exists($sr->module, $this->new_modules)) {
 						// convert the source to new exp controller
@@ -560,7 +564,7 @@ class migrationController extends expController {
 			$users = $db->selectObjects('user','id > 1');
 			foreach($users as $user) {
 				$containers = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND source != ''");
-				$loc = null;
+				$loc = new stdClass();;
 				foreach($containers as $item) {
 					$loc->mod = $item->module;
 					$loc->src = $item->source;
@@ -582,7 +586,7 @@ class migrationController extends expController {
 			$groups = $db->selectObjects('group','1');
 			foreach($groups as $group) {
 				$containers = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND source != ''");
-				$loc = null;
+				$loc = new stdClass();;
 				foreach($containers as $item) {
 					$loc->mod = $item->module;
 					$loc->src = $item->source;
@@ -602,7 +606,30 @@ class migrationController extends expController {
 				}
 			}
 		}
-		
+
+        // migrate the active controller list (modstate)
+        $activemods = $old_db->selectObjects('modstate',1);
+        foreach($activemods as $mod) {
+            if (array_key_exists($mod->module, $this->new_modules)) {
+                $mod->module = $this->new_modules[$mod->module];
+            }
+            if (array_key_exists($mod->module, $this->new_modules) || !in_array($mod->module, $this->deprecated_modules)) {
+//                $mod->path = '';
+//                $mod->user_runnable = 1;
+//                $mod->controller = 1;
+//                $mod->os_module = 1;
+//                $mod->name = '';
+//                $mod->author = '';
+//                $mod->description = '';
+//                $mod->codequality = '';
+                if ($db->selectObject('modstate',"module='".$mod->module."'")) {
+                    $db->updateObject($mod,'modstate');
+                } else {
+                    $db->insertObject($mod,'modstate');
+                }
+            }
+        }
+
 		searchController::spider();
         expSession::clearCurrentUserSessionCache();
         assign_to_template(array('msg'=>@$this->msg));
@@ -610,7 +637,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all users/groups in old site for user selection
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
 	public function manage_users() {
@@ -640,7 +667,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected users/groups over from old site
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_users() {
@@ -708,8 +735,8 @@ class migrationController extends expController {
 				}				
 			}
 		}
-	    $users = null;
-	    $groups = null;
+	    $users = new stdClass();
+	    $groups = new stdClass();
 		if (!empty($this->params['groups']) && !empty($this->params['rep_groups'])) {
 			$groups = array_merge($this->params['groups'],$this->params['rep_groups']);
 		} elseif (!empty($this->params['groups'])) {
@@ -753,7 +780,7 @@ class migrationController extends expController {
 
 	/**
 	 * main routine to convert old school module data into new controller format
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @param  $iloc
 	 * @param  $module
 	 * @param int $hc
@@ -764,7 +791,7 @@ class migrationController extends expController {
         global $db;
         $old_db = $this->connect();
 		$linked = false;
-	    $loc = null;
+	    $loc = new stdClass();
         $newconfig = new expConfig();
         if ((!empty($module->is_existing) && $module->is_existing)) {
             $linked = true;
@@ -1257,6 +1284,7 @@ class migrationController extends expController {
 							// default is to create with current time						
 							$filedownload->created_at = $ri['posted'];
 							$filedownload->migrated_at = $ri['edited'];
+                            $filedownload->publish = $ri['posted'];
 							$filedownload->update();
                             if (!empty($oldconfig) && $oldconfig->enable_categories == 1 && $ri['category_id']) {
                                 $params = null;
@@ -1410,7 +1438,7 @@ class migrationController extends expController {
                         $headline->title = $hl->headline;
                         $headline->poster = 1;
 //                        $headline->created_at = time();
-//                        $headline->edited_at = time();
+//                        $headline->migrated_at = time();
                         $headline->save();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -1527,7 +1555,8 @@ class migrationController extends expController {
 							unset($comment['id']);
 							$newcomment = new expComment($comment);
 							$newcomment->created_at = $comment['posted'];
-							$newcomment->edited_at = $comment['edited'];
+							$newcomment->migrated_at = $comment['edited'];
+                            $newcomment->publish = $comment['posted'];
 							$newcomment->update();
 							// attach the comment to the blog post it belongs to
 							$obj->content_type = 'blog';
@@ -1668,7 +1697,7 @@ class migrationController extends expController {
                         $listing->save();
 						// default is to create with current time						
 //                        $listing->created_at = time();
-//                        $listing->edited_at = time();
+//                        $listing->migrated_at = time();
 //                        $listing->update();
                         @$this->msg['migrated'][$iloc->mod]['count']++;
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
@@ -1744,13 +1773,13 @@ class migrationController extends expController {
 						$db->insertObject($address, 'formbuilder_address');
 					}
 
-					$report = null;
+					$report = new stdClass();
 					$report->name = $contactform->subject;
 					$report->location_data = $contactform->location_data;
 					$report->form_id = $contactform->id;
 					$db->insertObject($report, 'formbuilder_report');
 					// now add the controls to the form
-					$control = null;
+					$control = new stdClass();
 					$control->name = 'name';
 					$control->caption = 'Your Name';
 					$control->form_id = $contactform->id;
@@ -1978,7 +2007,7 @@ class migrationController extends expController {
 
 	/**
 	 * pull over extra/related data required for old school modules
-	 * @global db the exponent database object
+	 * @global \mysqli_database $db the exponent database object
 	 * @param  $iloc
 	 * @param  $module
 	 * @return bool
@@ -2092,14 +2121,15 @@ class migrationController extends expController {
         return $linked;
     }
 
-	/**
-	 * used to create containers for new modules
-	 * @global db the exponent database object
-	 * @param  $iloc
-	 * @param  $m
-	 * @param bool $linked
-	 * @return void
-	 */
+    /**
+     * used to create containers for new modules
+     * @param $iloc
+     * @param $m
+     * @param bool $linked
+     * @param $newconfig
+     * @global \mysqli_database $db the exponent database object
+     * @return void
+     */
 	private function add_container($iloc,$m,$linked=false,$newconfig) {
         global $db;
 

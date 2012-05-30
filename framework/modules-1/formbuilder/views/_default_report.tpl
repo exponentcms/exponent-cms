@@ -1,5 +1,6 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2011 OIC Group, Inc.
+ * Written and Designed by James Hunt
  *
  * This file is part of Exponent
  *
@@ -16,13 +17,13 @@
 {if $is_email == 1}
 <style type="text/css" media="screen">
     {$css}
-</style>
+</style> 
 {else}
 	{css unique="default-report" corecss="tables,button"}
 
 	{/css}
 {/if}
-
+ 
  <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>
@@ -40,6 +41,7 @@
         {/foreach}
     </tbody>
 </table>
+<p>Referrer: {$referrer}</p>
 
 {if $is_email == 0}
 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>

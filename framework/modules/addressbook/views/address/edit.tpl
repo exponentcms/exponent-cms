@@ -66,7 +66,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         
         {control type=text name=zip label="<span class=\"required\">*</span>"|cat:"Zip/Postal Code"|gettext value=$record->zip}
         {control type="text" name="phone" label="<span class=\"required\">*</span>"|cat:("Phone Number"|gettext)|cat:" <span class=\"example\">ex: 480-555-4200</span>" value=$record->phone}
-        {control type="dropdown" name="address_type" label="Address Type"|gettext items="Business,Military,Residential" values="Business,Military,Residential" default=$record->address_type|default:"Residential"}
+        {control type="dropdown" name="address_type" label="Address Type"|gettext items="Business,Military,Residential"|gettxtlist values="Business,Military,Residential" default=$record->address_type|default:"Residential"}
         {control type="text" name="email" label="<span class=\"required\">*</span>"|cat:"Email Address"|gettext value=$record->email}
         {if !$user->isLoggedIn()}
  

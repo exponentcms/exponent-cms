@@ -56,7 +56,7 @@ function smarty_function_chain($params,&$smarty) {
         if (empty($action)) {
             echo expTheme::showModule($params['module'], $view, $title, $src, false, null, $chrome);
         } else {
-            echo expTheme::showAction($params['module'], $action, $src, $parms);
+            expTheme::showAction($params['module'], $action, $src, $parms);
         }
     } elseif (isset($params['controller'])) {
         $view = isset($params['view']) ? $params['view'] : $params['action'];

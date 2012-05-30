@@ -52,7 +52,8 @@ if (expPermissions::check('manage',$loc)) {
 	
 	$p[gt("Group")] = 'username';
 	foreach ($mod->permissions() as $key => $value) {
-        $p[gt($value)]=$key;
+//        $p[gt($value)]=$key;
+        $p[gt($value)]='no-sort';
 	}
 	
 	if (SEF_URLS == 1) {

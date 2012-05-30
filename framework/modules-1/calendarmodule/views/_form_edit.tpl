@@ -13,10 +13,6 @@
  *
  *}
  
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/calendar.css"}
-
-{/css}
-
 {css unique="calendar-edit2" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/cal-edit.css" corecss="button,tables"}
 
 {/css}
@@ -29,5 +25,15 @@
 		<p>{'Enter the information about the calendar event (the date and times) below.<br /><br />Note: multiple day events are not supported.'|gettext}</p>
 	</div>
 	{$form_html}
+{script unique="configure" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
+        tabview.render();
+        Y.one('#configure-tabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}
 </div>
 

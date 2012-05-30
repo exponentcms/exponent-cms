@@ -26,7 +26,7 @@
 
     <table cellpadding="2" cellspacing="0" border="0">
         <tr>
-            <td width="10" style="width: 10px" valign="top" colspan="2"><b>{'RSVP to This Event'|gettext}</b></td>
+            <td width="10" style="width: 10px" valign="top" colspan="2"><strong>{'RSVP to This Event'|gettext}</strong></td>
         </tr>
         <tr>
             <td valign="top">{'Your Name'|gettext}:</td>

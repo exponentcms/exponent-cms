@@ -37,24 +37,34 @@ function smarty_function_ddrerank($params,&$smarty) {
 	$loc = $smarty->getTemplateVars('__loc');
 	
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
-    $uniqueid = str_replace($badvals, "", $loc->src).$params['id'];
+    $params_id = !empty($params['id']) ? $params['id'] : '';
+    $uniqueid = str_replace($badvals, "", $loc->src).$params_id;
     $controller = !empty($params['controller']) ? $params['controller'] : $loc->mod;
     
-    if ($params['sql']) {
+    if (!empty($params['sql'])) {
         $sql = explode("LIMIT",$params['sql']);
         $params['items'] = $db->selectObjectsBySQL($sql[0]);
+    } elseif (!empty($params['module'])) {
+        $uniqueloc = $smarty->getTemplateVars('container');
+        if (!empty($uniqueloc->internal)) {
+            $uniqueloc2 = expUnserialize($uniqueloc->internal);
+            $uniqueid = str_replace($badvals, "", $uniqueloc2->src).$params['id'];
+        }
+        $where = !empty($params['where']) ? $params['where'] : 1 ;
+        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
+        $params['items'] = $db->selectObjects($params['module'],$where.$only,"rank");
     } else {
-        if ($params['items'][0]->id) {
+        if (!empty($params['items'][0]->id)) {
             $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
 	        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
             $obj = new $model();
             if ($params['model'] == 'expCat') {
-                $loc = '1';
+                $locsql = '1';
             } else {
-                $loc = "location_data='".serialize($loc)."'";
+                $locsql = "location_data='".serialize($loc)."'";
             }
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
-            $params['items'] = $obj->find('all',$loc.$only,"rank");
+            $params['items'] = $obj->find('all',$locsql.$only,"rank");
         } else {
             $params['items'] = array();
         }
@@ -67,7 +77,7 @@ function smarty_function_ddrerank($params,&$smarty) {
 		    )
 		);
         
-        $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; //what was this even for?
+        $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; // this is the field to display in list
    
         // attempt to translate the label
         if (!empty($params['label'])) {
@@ -79,26 +89,40 @@ function smarty_function_ddrerank($params,&$smarty) {
         <div id="panel'.$uniqueid.'" class="exp-skin-panel exp-skin-rerank hide">
             <div class="yui3-widget-hd">Order '.$params['label'].'</div>
             <div class="yui3-widget-bd">
-            <form method="post" action="'.URL_FULL.'">
+            <form method="post" action="'.PATH_RELATIVE.'">
             <input type="hidden" name="model" value="'.$model.'" />
             <input type="hidden" name="controller" value="'.$controller.'" />
             <input type="hidden" name="lastpage" value="'.curPageURL().'" />
             <input type="hidden" name="src" value="'.$loc->src.'" />';
             if (!empty($params['items'])) {
                 // we may need to pass through an ID for some reason, like a category ID for products
-                $html .= ($params['id']) ? '<input type="hidden" name="id" value="'.$params['id'].'" />' : '';
+                $html .= !empty($params['id']) ? '<input type="hidden" name="id" value="'.$params['id'].'" />' : '';
                 $html .= '<input type="hidden" name="action" value="manage_ranks" />
                 <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items']<12))?"":"height:350px").';overflow-y:auto;">
                 ';
                 $odd = "even";
+                $stringlen = 40;
                 foreach ($params['items'] as $item) {
+                    if (!empty($params['module'])) {
+                        if ($params['module'] == 'formbuilder_control') {
+                            $control = expUnserialize($item->data);
+                            $ctrl = new $control();
+                            $name = $ctrl->name();
+                            $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
+                            $stringlen = 65;
+                        } elseif ($params['module'] == 'container') {
+                            $mod = expUnserialize($item->internal);
+                            $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleName($mod->mod)) . ')';
+                            $stringlen = 65;
+                        }
+                    }
                     $html .= '
                     <li class="'.$odd.'">
                     <input type="hidden" name="rerank[]" value="'.$item->id.'" />
                     <div class="fpdrag"></div>';
         			//Do we include the picture? It depends on if there is one set.
-                    $html .= ($item->expFile[0]->id && $item->expFile[0]->is_image) ? '<img class="filepic" src="'.URL_FULL.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
-                    $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, 40) : gt('Untitled')).'</span>
+                    $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="'.PATH_RELATIVE.'thumb.php?id='.$item->expFile[0]->id.'&w=16&h=16&zc=1">' : '';
+                    $html .= '<span class="label">'.(!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')).'</span>
                     </li>';
                     $odd = $odd == "even" ? "odd" : "even";
                 }
@@ -121,15 +145,15 @@ function smarty_function_ddrerank($params,&$smarty) {
         echo $html;
     
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','panel', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','dd-scroll','panel', function(Y) {
             var panel = new Y.Panel({
-                srcNode:'#panel".$uniqueid."',
+                srcNode      : '#panel".$uniqueid."',
                 width        : 500,
                 visible      : false,
                 zIndex       : 50,
                 centered     : false,
                 render       : 'body'
-                // plugins      : [Y.Plugin.Drag]
+//                 plugins      : [Y.Plugin.Drag]
             }).plug(Y.Plugin.Drag);
             
             panel.dd.addHandle('.yui3-widget-hd');
@@ -142,6 +166,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 e.halt();
                 panel.show();
                 panel.set('centered',true);
+                panel.align('#rerank".$uniqueid."',[Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.TL]);
             });
 
             //Static Vars
@@ -185,6 +210,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     stickY:true
                 }).plug(Y.Plugin.DDNodeScroll, {
                     node: ul
+                }).plug(Y.Plugin.DDWinScroll, {
                 }).addHandle('.fpdrag');
 
                 dragItems.on('drop:over', function(e) {

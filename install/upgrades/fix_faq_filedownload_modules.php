@@ -32,7 +32,7 @@ class fix_faq_filedownload_modules extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Update faq and filedownloads modules with correct spelling"; }
+	static function name() { return "Update faq and filedownloads modules with correct spelling"; }
 
 	/**
 	 * generic description of upgrade script
@@ -62,6 +62,9 @@ class fix_faq_filedownload_modules extends upgradescript {
             if (!$db->tableExists('faq')) {
                 $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_faqs TO '.DB_TABLE_PREFIX.'_faq');
             }
+            if ($db->tableExists('faqs') && !$db->countObjects('faqs')) {
+                $db->dropTable('faqs');
+            }
         }
         if ($db->tableExists('filedownloads')) {
             if ($db->tableExists('filedownload') && !$db->countObjects('filedownload')) {
@@ -69,6 +72,9 @@ class fix_faq_filedownload_modules extends upgradescript {
             }
             if (!$db->tableExists('filedownload')) {
                 $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_filedownloads TO '.DB_TABLE_PREFIX.'_filedownload');
+            }
+            if ($db->tableExists('filedownloads') && !$db->countObjects('filedownloads')) {
+                $db->dropTable('filedownloads');
             }
         }
         return gt('faq & filedownload tables are now correctly named.');

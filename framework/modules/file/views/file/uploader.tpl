@@ -13,21 +13,19 @@
  *
  *}
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>{'File Uploader'|gettext}  |  Exponent CMS</title>
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/msgq.css" />
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/button.css" />
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/tables.css" />
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/common.css" />
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/core/assets/css/admin-global.css" />
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_FULL}framework/modules/file/assets/css/filemanager.css" />
+    {css unique="uploader" corecss="msgq,button,tables,common,admin-global" link="`$asset_path`css/filemanager.css"}
 
-    <script type="text/javascript" src="{$smarty.const.URL_FULL}exponent.js.php"></script>
+    {/css}
+    <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
-	<script type="text/javascript" src="{$smarty.const.URL_FULL}framework/core/assets/js/exp-flashdetector.js"></script>
+    {script unique="picker" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-flashdetector.js"}
+
+    {/script}
 </head>
 <body class="exp-skin">
 <div id="exp-uploader">
@@ -60,9 +58,8 @@
 
 </div>
 
-<script type="text/javascript">
+{script unique="uploader"}
 {literal}
-
 YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
     var uploader,
         selectedFiles = {};
@@ -141,7 +138,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
     }
 
     function uploadComplete (event) {
-		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src='"+EXPONENT.URL_FULL+"framework/core/assets/images/accepted.png' style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
+		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src='"+EXPONENT.PATH_RELATIVE+"framework/core/assets/images/accepted.png' style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
             Y.one("#div_" + event.id).setContent(progbar);
     }
 
@@ -149,10 +146,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
 
     	//if (selectedFiles != null) {
     		//uploader.setSimUploadLimit(parseInt(3));
-//    		console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
-//            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1");
-//            console.debug(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
-            uploader.uploadAll(EXPONENT.URL_FULL+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);    	//}
+//    		console.debug(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1");
+//            uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1");
+//            console.debug(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
+            uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);    	//}
         //uploader.uploadAll("http://www.yswfblog.com/upload/upload_simple.php");
     }
 
@@ -168,8 +165,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
 	}
 	
 });
-
 {/literal}
-</script>
+{/script}
 </body>
 </html>

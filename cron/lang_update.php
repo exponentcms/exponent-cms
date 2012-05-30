@@ -24,7 +24,7 @@
 output("Updating the Exponent Language System!\n");
 
 // Update the default phrase library by extracting the English phrases
-output("Now extracting phrases from the root folder!\n");
+output("Extracting phrases from the root folder!\n");
 exec ('php ./lang_extract.php -r ..',$output);
 output($output);
 unset ($output);
@@ -41,6 +41,10 @@ global $default_lang, $cur_lang;
 if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
 $orig_lang = LANG;
 $lang_list = expLang::langList();
+output("Now Translating ".count($default_lang)." Unique Phrases!\n");
+
+//exit();
+
 foreach ($lang_list as $key=>$value) {
     if ($key!="English - US") {
         output("Now attempting to translate new ".$key." phrases\n");

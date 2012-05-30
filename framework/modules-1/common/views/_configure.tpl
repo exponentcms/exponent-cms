@@ -22,6 +22,17 @@
 	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
 </div>
 {$form_html}
+{script unique="configure" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
+        tabview.render();
+        Y.one('#configure-tabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}
+
 {else}
 {'No Configuration Data Found.  This module cannot be configured.'|gettext}
 {/if}

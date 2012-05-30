@@ -274,7 +274,7 @@ abstract class database {
 	   } else
 	       $status["CREATE TABLE"] = true;
 
-	   $o = null;
+	   $o = new stdClass();
 	   $o->name = "Testing Name";
 	   $insert_id = $this->insertObject($o, $tablename);
 	   if ($insert_id == 0) {
@@ -309,7 +309,7 @@ abstract class database {
 	       DB_FIELD_TYPE => DB_DEF_TIMESTAMP);
 
 	   $this->alterTable($tablename, $dd, array());
-	   $o = null;
+	   $o = new stdClass();
 	   $o->name = "Alter Test";
 	   $o->thirdcol = "Third Column";
 	   if (!$this->insertObject($o, $tablename)) {
@@ -666,7 +666,7 @@ abstract class database {
 	 * @param string $attribute The attribute name to find a minimum value for.
 	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null
 	 */
 	abstract function min($table, $attribute, $groupfields = null, $where = null);
@@ -766,7 +766,7 @@ abstract class database {
 	* @return null
 	*/
 	function translateTableStatus($status) {
-	   $data = null;
+	   $data = new stdClass();
 	   $data->rows = $status->Rows;
 	   $data->average_row_lenth = $status->Avg_row_length;
 	   $data->data_overhead = $status->Data_free;

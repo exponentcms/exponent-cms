@@ -23,7 +23,8 @@ global $db;
 $num_version = expVersion::getVersion();
 $db_version = $db->selectObject('version','1');
 if (empty($db_version)) {
-    $db_version->major = 0;
+    $db_version = new stdClass();
+    $db_version->major = 1;
     $db_version->minor = 0;
     $db_version->revision = 0;
     $db_version->type = '';
@@ -97,9 +98,9 @@ if (is_readable($upgrade_dir)) {
     }
     echo '</ol>';
     if (isset($_REQUEST['run']) || $i==0) {
-        echo '<button class="awesome large green" />'; echo gt('Finish Upgrade'); echo '</button>';
+        echo '<button class="awesome large green">'; echo gt('Finish Upgrade'); echo '</button>';
     } else {
-        echo '<button class="awesome large green" />'; echo gt('Run Upgrades'); echo '</button>';
+        echo '<button class="awesome large green">'; echo gt('Run Upgrades'); echo '</button>';
     }
     echo '</form>';
 }

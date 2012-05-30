@@ -25,7 +25,7 @@ class shippingController extends expController {
 	public $useractions = array();
 	public $add_permissions = array('toggle'=>'Enable/Disable Options');
 
-	function displayname() { return "Ecommerce Shipping Controller"; }
+	function displayname() { return gt("Ecommerce Shipping Controller"); }
 	function description() { return ""; }
 	function hasSources() { return false; }
 	function hasContent() { return false; }
@@ -118,7 +118,7 @@ class shippingController extends expController {
                     $classname = substr($file, 0, -4);
                     $id = $db->selectValue('shippingcalculator', 'id', 'calculator_name="'.$classname.'"');                    
                     if (empty($id)) {
-                        $calcobj = new $classname();                        
+                        $calcobj = new $classname($this->params);
                         if ($calcobj->isSelectable() == true) {                            
                             $calcobj->update(array('title'=>$calcobj->name(),'body'=>$calcobj->description(),'calculator_name'=>$classname,'enabled'=>false));
                         }

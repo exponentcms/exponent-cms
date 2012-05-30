@@ -17,6 +17,11 @@
     color:#ff0000;
 }
 
+.control .control-desc {
+    font-size: 85%;
+    font-style: italic;
+}
+
 .control .label .example {
     color:#999;
     font-size:80%;
@@ -59,7 +64,6 @@ button.button,
 input.button { 
     margin-right:5px;
 }
-
 
 /****************  checks and radios  ***********************/
 

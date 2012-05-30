@@ -40,13 +40,13 @@
         <div class="yui-content exp-ecom-table">
             <div id="invoice">
                 <div id="buttons">
-                    {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice"|gettext view="show_printable"}
-                    {if $smarty.const.HTMLTOPDF_PATH && $smarty.const.HTMLTOPDF_PATH_TMP}                                        
+                    {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice"|gettext view="show_printable" show=1}
+                    {if $smarty.const.HTMLTOPDF_PATH && $smarty.const.HTMLTOPDF_PATH_TMP} {* FIXME file_exists($smarty.const.BASE.'external/dompdf/dompdf.php'*}
                         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}">{'Download PDF'|gettext}</a>
                     {/if}
                     {permissions}
                         {if $permissions.manage == 1}
-                            {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip"|gettext view="show_packing"}
+                            {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip"|gettext view="show_packing" show=1}
                             <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
                         {/if}
                     {/permissions} 
@@ -102,7 +102,7 @@
                     </strong>
                     {if $change->comment != ''}                        
                         <div style="border: 1px solid gray; margin-left: 10px; margin-top: 5px;">
-                        <h4>{'Comment:'|gettext}</h4>{$change->comment}
+                        <h4>{'Comment'|gettext}:</h4>{$change->comment}
                         </div>
                     {/if}
                     </td></tr>
@@ -139,7 +139,7 @@
                             {'Tracking #'|gettext}:</td><td>{$order->shipping_tracking_number}{br}
                         </td></tr> 
                         <tr><td> 
-                            {'Date Shipped:'|gettext}</td><td>{if $order->shipped != 0}{$order->shipped|format_date}{else}{'This order has not been shipped yet'|gettext}{/if}
+                            {'Date Shipped'|gettext}:</td><td>{if $order->shipped != 0}{$order->shipped|format_date}{else}{'This order has not been shipped yet'|gettext}{/if}
                         </td></tr>
                     {/if}
                  </table>
@@ -192,7 +192,7 @@
                                     {form action=creditTransaction}
                                         {control type="hidden" name="id" value=$order->id}
                                         {control type="text" name="capture_amt" label="Amount to Refund"|gettext value=$order->grand_total}
-                                        {control type="buttongroup" submit="Credit "|gettext}
+                                        {control type="buttongroup" submit="Credit"|gettext}
                                     {/form}
                                 {/if}
                             {/if}

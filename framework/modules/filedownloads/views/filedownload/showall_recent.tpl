@@ -44,16 +44,16 @@
         {/if}
     {/foreach}
     {if $page->total_records > $config.headcount}
-        {br}{icon action="showall" text="More Items in '`$moduletitle`' ..."|gettext}
+        {br}{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>
 
 {if $config.show_player}
-    {script unique="filedownload" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
+    {script unique="filedownload" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/flowplayer-3.2.10.min.js"}
     {literal}
-    flowplayer("a.filedownload-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
+    flowplayer("a.filedownload-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.11.swf",
         {
-    		wmode: 'opaque',
+    		wmode: 'transparent',
     		clip: {
     			autoPlay: false,
     			},
@@ -62,7 +62,6 @@
                     play: true,
                     scrubber: true,
                     fullscreen: false,
-                    height: 30,
                     autoHide: false
                 }
             }

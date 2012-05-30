@@ -25,7 +25,7 @@ class billingController extends expController {
 	public $useractions = array();
     public $add_permissions = array('activate'=>'Activate Payment Options');
     
-	function displayname() { return "Ecommerce Billing Controller"; }
+	function displayname() { return gt("Ecommerce Billing Controller"); }
 	function description() { return ""; }
 	function hasSources() { return false; }
 	
@@ -61,7 +61,7 @@ class billingController extends expController {
                     $classname = substr($file, 0, -4);
                     $id = $db->selectValue('billingcalculator', 'id', 'calculator_name="'.$classname.'"');
                     if (empty($id)) {
-                        $calobj = null;
+//                        $calobj = null;
                         $calcobj = new $classname();
                         if ($calcobj->isSelectable() == true) {                            
                             $obj = new billingcalculator(array(

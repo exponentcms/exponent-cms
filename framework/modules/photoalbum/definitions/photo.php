@@ -46,23 +46,25 @@ return array(
     'body'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100000),
-    'alt'=>array(
-        DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>120),
     'poster'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
-    'rank'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
-    'featured'=>array(
-        DB_FIELD_TYPE=>DB_DEF_INTEGER),
-    'created_at'=>array(
-        DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
-    'edited_at'=>array(
-        DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+   	'created_at'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+   	'editor'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+   	'edited_at'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
     'location_data'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>250,
-        DB_INDEX=>10)
+        DB_INDEX=>10),
+    'alt'=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>120),
+    'featured'=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'rank'=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );
 
 ?>

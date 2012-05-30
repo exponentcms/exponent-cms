@@ -13,9 +13,15 @@
  *
  *}
 
-{css unique="custom-report-buttons" corecss="button"}
+{if $is_email == 1}
+<style type="text/css" media="screen">
+    {$css}
+</style>
+{else}
+    {css unique="custom-report" corecss="tables,button"}
 
-{/css}
+    {/css}
+{/if}
 
 {eval var=$template}
 

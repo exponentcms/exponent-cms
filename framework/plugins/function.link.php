@@ -35,7 +35,7 @@
 function smarty_function_link($params,&$smarty) {
 	$loc = $smarty->getTemplateVars('__loc');
 
-	if ($params['parse_attrs']) {
+	if (!empty($params['parse_attrs'])) {
 	    $record = $params['record'];
 	   foreach ($params['parse_attrs'] as $key => $value) {
 	       $params[$key] = $value;
@@ -53,7 +53,7 @@ function smarty_function_link($params,&$smarty) {
 	} 
 	
 	// make sure the module isn't really a controller
-	if (expModules::controllerExists($params['module'])) {
+	if (!empty($params['module']) && expModules::controllerExists(!empty($params['module']))) {
 		$params['controller'] = $params['module'];
 		unset ($params['module']);
 	}

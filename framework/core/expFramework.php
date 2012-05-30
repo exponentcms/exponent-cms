@@ -71,7 +71,7 @@ $target_lang_file = '';
  * @global \database $db the exponent database object
  * @name $db
  */
-$db = null;
+$db = new stdClass();
 
 // expHistory
 /**
@@ -79,7 +79,7 @@ $db = null;
  * @global expHistory $history
  * @name $history
  */
-$history = null;
+$history = new stdClass();
 
 // user model
 /**
@@ -87,7 +87,7 @@ $history = null;
  * @global user $user
  * @name $user
  */
-$user = null;
+$user = new stdClass();
 /**
  * This global array belongs exclusively to the user model, and is used to cache
  * users as they are retrieved, to help out with performance when doing a lot of
@@ -103,13 +103,13 @@ $SYS_USERS_CACHE = array();
  * @global expRouter $router
  * @name $router
  */
-$router = null;
+$router = new stdClass();
 /**
  * Stores the routing/link/url object
  * @global section $sectionObj
  * @name $sectionObj
  */
-$sectionObj = null;
+$sectionObj = new stdClass();
 
 // expCore
 /**
@@ -228,6 +228,12 @@ $timer = null;
  */
 $order = null;
 
+/**
+ * Main module display logic/routine
+ *
+ * @param array $parms
+ * @return bool|mixed|string
+ */
 function renderAction(array $parms=array()) {
     global $user, $db;
     
@@ -268,6 +274,7 @@ function renderAction(array $parms=array()) {
     if (isset($parms['moduletitle'])) {
         $template->assign('moduletitle', $parms['moduletitle']);
     } else {
+        $title = new stdClass();
         $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
         $title->src = $controller->loc->src;
         $title->int = '';
@@ -338,10 +345,7 @@ function renderAction(array $parms=array()) {
         }
     } 
     
-    // run the action 
-    $controller->$action();
-    
-    //register this controllers permissions to the view for in view perm checks
+    // register this controllers permissions to the view for in view perm checks
     $template->register_permissions(array_keys($perms), $controller->loc);
     
     // pass this controllers config off to the view
@@ -350,8 +354,11 @@ function renderAction(array $parms=array()) {
     // globalizing $user inside all templates
     $template->assign('user', $user);
     
-    //assign the controllers basemodel to the view
+    // assign the controllers basemodel to the view
     $template->assign('modelname', $controller->basemodel_name);
+
+    // lastly, run the action which can also override the above assignments
+    $controller->$action();
 
     if (empty($parms['no_output'])) {
         $template->output();
@@ -367,7 +374,7 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
-	    //FIXME there is NO 'page' object and section has not _construct method
+	    //FIXME there is NO 'page' object and section has no _construct method
         $page = new section($sectionObj->id);
         $modules = $page->getModulesBySource($source);  //FIXME there is no getModulesBySource method anywhere
         //eDebug($modules);exit();
@@ -402,10 +409,22 @@ function flashAndFlow($name, $msg) {
     expQueue::flashAndFlow($name, $msg);
 }
 
+/**
+ * Display the message queue
+ *
+ * @param null $name
+ * @return bool|mixed|string
+ */
 function show_msg_queue($name=null) {
     return expQueue::show($name);
 }
 
+/**
+ * Assign a variable to the current template
+ *
+ * @param array $vars
+ * @return bool
+ */
 function assign_to_template(array $vars=array()) {
     global $template;
     
@@ -425,6 +444,7 @@ function get_model_for_controller($controller_name) {
 }
 
 function get_common_template($view, $loc, $controllername='') {
+    $controller = new stdClass();
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
     $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;
     $controller->loc = $loc;
@@ -442,6 +462,12 @@ function get_common_template($view, $loc, $controllername='') {
     }
 }
 
+/**
+ * Return entire list of all controller configuration views available
+ * @param $controller
+ * @param $loc
+ * @return array
+ */
 function get_config_templates($controller, $loc) {
     global $db;
     
@@ -460,10 +486,16 @@ function get_config_templates($controller, $loc) {
     
     // get the common configuration files    
     $common_views = find_config_views($commonpaths, $controller->remove_configs);
-    
+    foreach ($common_views as $key=>$value) {
+        $common_views[$key]['name'] = gt($value['name']);
+    }
+
     // get the config views for the module
     $module_views = find_config_views($modpaths);
-    
+    foreach ($module_views as $key=>$value) {
+        $module_views[$key]['name'] = gt($value['name']);
+    }
+
     // look for a config form for this module's current view    
     $controller->loc->mod = expModules::getControllerClassName($controller->loc->mod);
     //check to see if hcview was passed along, indicating a hard-coded module
@@ -495,6 +527,12 @@ function get_config_templates($controller, $loc) {
     return $views;
 }
 
+/**
+ * Return list of controller configuration views
+ * @param array $paths
+ * @param array $excludes
+ * @return array
+ */
 function find_config_views($paths=array(), $excludes=array()) {
     $views = array();
     foreach ($paths as $path) {
@@ -551,6 +589,13 @@ function get_template_for_action($controller, $action, $loc) {
     }
 }
 
+/**
+ * Return list of controller display views available
+ * @param $ctl
+ * @param $action
+ * @param $human_readable
+ * @return array
+ */
 function get_action_views($ctl, $action, $human_readable) {
     // setup the controller
     $controllerName = expModules::getControllerClassName($ctl);
@@ -585,10 +630,19 @@ function get_action_views($ctl, $action, $human_readable) {
             }
         }
     }
-    
+
+    // Language-ize the views names
+    foreach ($views as $key=>$value) {
+        $views[$key] = gt($value);
+    }
+
     return $views;
 }
 
+/**
+ * Return list of attached file display views available
+ * @return array
+ */
 function get_filedisplay_views() {
     $paths = array(
         BASE.'framework/modules/common/views/file/',
@@ -603,21 +657,13 @@ function get_filedisplay_views() {
             while (($file = readdir($dh)) !== false) {
                 if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl') {
                     $filename = substr($file, 0, -4);
-                    $views[$filename] = $filename;
+                    $views[$filename] = gt($filename);
                 }
             }
         }
     }
     
     return $views;
-}
-
-function makeLocation($mod=null,$src=null,$int=null) {
-        $loc = null;
-        $loc->mod = ($mod ? $mod : "");
-        $loc->src = ($src ? $src : "");
-        $loc->int = ($int ? $int : "");
-        return $loc;
 }
 
 function object2Array($object=null) {
@@ -640,8 +686,13 @@ function expUnserialize($serial_str) {
     return $out2;
 }
 
-// callback when the buffer gets flushed. Any processing on the page output
-// just before it gets rendered to the screen should happen here.
+/**
+ *  callback when the buffer gets flushed. Any processing on the page output
+ * just before it gets rendered to the screen should happen here.
+ * @param $buffer
+ * @param null $mode
+ * @return mixed
+ */
 function expProcessBuffer($buffer, $mode=null) {
      global $jsForHead, $cssForHead;
      return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
@@ -654,7 +705,7 @@ function createValidId ($id) {
 
 function curPageURL() {
     $pageURL = 'http';
-    if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+    if (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
     $pageURL .= "://";
     if ($_SERVER["SERVER_PORT"] != "80") {
         $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
@@ -667,7 +718,6 @@ function curPageURL() {
 // this function is called from exponent.php as the ajax error handler
 function handleErrors($errno, $errstr, $errfile, $errline) {
     if (DEVELOPMENT > 0) {
-        $msg = "";
         switch ($errno) {
                 case E_USER_ERROR:
                     $msg = 'PHP Error('.$errno.'): ';
@@ -678,8 +728,9 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
                 case E_USER_NOTICE:
                 case E_NOTICE:
                     $msg = 'PHP Notice('.$errno.'): ';
+                    break;
                 default:
-                $msg = 'PHP Issue('.$errno.'): ';
+                    $msg = 'PHP Issue('.$errno.'): ';
                 break;
             }
         $msg .= $errstr;
@@ -691,6 +742,23 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
 
 function gt($s){
     return expLang::gettext($s);
+}
+
+function glist($s){
+    if (is_array($s)) {
+        $list = array();
+        foreach ($s as $key=>$phrase) {
+            $list[$key] = expLang::gettext(trim($phrase));
+        }
+    } else {
+        $list = '';
+        $phrases = explode(",",$s);
+        foreach ($phrases as $key=>$phrase) {
+            if ($key) $list .= ',';
+            $list .= expLang::gettext(trim($phrase));
+        }
+    }
+    return $list;
 }
 
 ?>

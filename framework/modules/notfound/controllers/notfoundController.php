@@ -26,8 +26,8 @@ class notfoundController extends expController {
     //public $useractions = array('showall'=>'Show all');
     public $add_permissions = array('showall'=>'Showall', 'show'=>'Show');
 
-    function displayname() { return "Not Found Controller"; }
-    function description() { return "This controller handles routing not found pages to the appropriate place."; }
+    function displayname() { return gt("Not Found Controller"); }
+    function description() { return gt("This controller handles routing not found pages to the appropriate place."); }
     function hasSources() { return false; }
     function hasViews() { return false; }
     function hasContent() { return false; }
@@ -49,13 +49,18 @@ class notfoundController extends expController {
 	        "link"=>$this->asset_path."css/results.css",
 	        )
 	    );
+        // If magic quotes is on and the user uses modifiers like " (quotes) they get escaped. We don't want that in this case.
+        if (get_magic_quotes_gpc()) {
+            $terms = stripslashes($terms);
+        }
+        $terms = htmlspecialchars($terms);
 
         $search = new search();
 		$page = new expPaginator(array(
 			'model'=>'search',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
-			'records'=>$search->getSearchResults(implode(' ', $params)),
+//			'controller'=>$this->params['controller'],
+//			'action'=>$this->params['action'],
+			'records'=>$search->getSearchResults($terms),
 			//'sql'=>$sql,
 			'order'=>'score',
 			'dir'=>'DESC',

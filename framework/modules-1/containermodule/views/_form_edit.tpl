@@ -282,7 +282,7 @@
         EXPONENT.recyclebin = function() {
             var mod = EXPONENT.curMod;
             //console.debug(mod);
-            var url = EXPONENT.URL_FULL+"index.php?controller=recyclebin&action=show&ajax_action=1&recymod="+mod;//+"&dest="+escape(dest)+"&vmod="+vmod+"&vview="+vview;
+            var url = EXPONENT.PATH_RELATIVE+"index.php?controller=recyclebin&action=show&ajax_action=1&recymod="+mod;//+"&dest="+escape(dest)+"&vmod="+vmod+"&vview="+vview;
             //console.debug(url);
             window.open(url,'sourcePicker','title=no,resizable=yes,toolbar=no,width=900,height=750,scrollbars=yes');
         }
@@ -305,7 +305,7 @@
             if (EXPONENT.isController()) {
                 actionpicker.set('disabled',1);
                 EXPONENT.resetViews();
-                var uri = EXPONENT.URL_FULL+'index.php';
+                var uri = EXPONENT.PATH_RELATIVE+'index.php';
                 YAHOO.util.Connect.asyncRequest('POST', uri,
                     {success: function(o) {
                         var opts = YAHOO.lang.JSON.parse(o.responseText);
@@ -335,7 +335,7 @@
         EXPONENT.writeViews = function() {
             viewpicker.removeAttribute('disabled');
             if (EXPONENT.isController()) {
-                var uri = EXPONENT.URL_FULL+'index.php'
+                var uri = EXPONENT.PATH_RELATIVE+'index.php'
                 YAHOO.util.Connect.asyncRequest('POST', uri,
                     {success: function(o) {
                         var opts = YAHOO.lang.JSON.parse(o.responseText);

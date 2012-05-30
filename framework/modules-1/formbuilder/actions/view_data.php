@@ -34,15 +34,20 @@ if (isset($_GET['id'])) {
 		$sortfuncts = "";
 		if ($rpt->column_names == '') {
 			//define some default columns...
-			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly = 0 and is_static = 0");
-			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly = 0 and is_static = 0","rank");
+//			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 			foreach (array_slice($controls,0,5) as $control) {
 				if ($rpt->column_names != '') $rpt->column_names .= '|!|';
 				$rpt->column_names .= $control->name;
 			}
 		}
-		
+
+        if (!empty($_GET['limit'])) {
+            $limit = $_GET['limit'];
+        } else {
+            $limit = 10;
+        }
 		foreach (explode("|!|",$rpt->column_names) as $column_name) {
 			if ($column_name == "ip") {
 				$columndef .= 'new cColumn("'.gt('IP Address').'","ip",null,null),';
@@ -111,7 +116,7 @@ if (isset($_GET['id'])) {
 //                    'model'=>$f->table_name,
 					'records'=>$items,
                     'where'=>1, 
-                    'limit'=>10,
+                    'limit'=>$limit,
 //                    'order'=>$order,
                     'action'=>'view_data',
 					'columns'=>$columns

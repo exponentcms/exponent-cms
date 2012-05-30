@@ -35,18 +35,18 @@ class news extends expRecord {
 			'body'=>array('message'=>'Body is a required field.'),
 		));
 		
-	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
-	    parent::__construct($params, $get_assoc, $get_attached);
-	    
-	    if (!empty($this->publish)) {
-	        $this->publish_date = $this->publish;
-	    } elseif (!empty($this->edited_at)) {
-	        $this->publish_date = $this->edited_at;
-	    } elseif (!empty($this->created_at)) {
-	        $this->publish_date = $this->created_at;
-	    }
-	    
-	}
+//	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
+//	    parent::__construct($params, $get_assoc, $get_attached);
+//
+//	    if (!empty($this->publish)) {
+//	        $this->publish_date = $this->publish;
+//	    } elseif (!empty($this->edited_at)) {
+//	        $this->publish_date = $this->edited_at;
+//	    } elseif (!empty($this->created_at)) {
+//	        $this->publish_date = $this->created_at;
+//	    }
+//
+//	}
 	
 	public function beforeCreate() {
 	    if (empty($this->publish) || $this->publish == 'on') {
@@ -54,7 +54,7 @@ class news extends expRecord {
 	    }
 	}
 	
-	public function rerank($direction) {
+	public function rerank($direction, $where='') {
         global $db;
         if (!empty($this->rank)) {
             // since the some news might be hiding due to unpublish date we need to find the next "showable"

@@ -106,7 +106,7 @@ class eventregistration extends product {
         $product->registrants = is_array($registrants)? array_merge($registrants, $order_registrations) : $order_registrations; //: array_merge($registrants, $order_registrations);
 
         // create an object to update the event table.
-        $event = null;
+        $event = new stdClass();
         $event->id = $product->product_type_id;
         $event->number_of_registrants = count($product->registrants);
         $event->registrants = serialize($product->registrants);
@@ -115,7 +115,7 @@ class eventregistration extends product {
         return true;
     }
     
-	function addToCart($params) {
+	function addToCart($params, $orderid = null) {
 	    global $db, $order;	    
 	    if (isset($params['registrants'])) {	        
 	        // save the order item	        

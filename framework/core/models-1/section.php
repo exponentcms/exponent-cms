@@ -28,10 +28,11 @@ class section {
      * @param $object
      *
      * @return \form
-     */function _commonForm(&$object) {
+     */
+    static function _commonForm(&$object) {
 		// Create a new blank form.
 		$form = new form();
-		
+        $form->is_tabbed = true;
 		if (!isset($object->id)) {
 			// This is a new section, so we need to set up some defaults.
 			$object->name = '';
@@ -61,20 +62,20 @@ class section {
 		}
 		
 		// The name of the section, as it will be linked in the section hierarchy.
-		$form->register('name',gt('Name'),new textcontrol($object->name));
-		$form->register('sef_name',gt('SEF Name').'<p class="sefinfo">'.gt('If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.').'</p>',new textcontrol($object->sef_name));
+		$form->register('name',gt('Name'),new textcontrol($object->name),true,gt('Page'));
+		$form->register('sef_name',gt('SEF Name').'<p class="sefinfo">'.gt('If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.').'</p>',new textcontrol($object->sef_name),true,gt('Page'));
 		
 		if (!isset($object->id)) {
 			// This is a new section, so we can add the positional dropdown
 			// Pull the database object in from the global scope.
 			global $db;
 			// Retrieve all of the sections that are siblings of the new section
-			$sections = $db->selectObjects('section','parent='.$object->parent);
+			$sections = $db->selectObjects('section','parent='.$object->parent,'rank');
 			
 			if (count($sections) && $object->parent >= 0) {
 				// Initialize the sorting subsystem so that we can order the sections
 				// by rank, ascending, and get the proper ordering.
-				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
+//				$sections = expSorter::sort(array('array'=>$sections,'sortby'=>'rank', 'order'=>'ASC'));
 
 				// Generate the Position dropdown array.
 				$positions = array(gt('At the Top'));
@@ -93,9 +94,9 @@ class section {
 			$form->meta('parent',$object->parent);
 		} else if ($object->parent >= 0) {
 			// Allow them to change parents, but not if the section is outside of the hierarchy (parent > 0)
-			$form->register('parent',gt('Parent Page'),new dropdowncontrol($object->parent,navigationmodule::levelDropdownControlArray(0,0,array($object->id),true,'manage')));
+			$form->register('parent',gt('Parent Page'),new dropdowncontrol($object->parent,navigationmodule::levelDropdownControlArray(0,0,array($object->id),true,'manage')),true,gt('Page'));
 		}
-		$form->register('new_window',gt('Open in New Window'),new checkboxcontrol($object->new_window,false));
+		$form->register('new_window',gt('Open in New Window'),new checkboxcontrol($object->new_window,false),true,gt('Page'));
 		
 		// Return the form to the calling scope, which should always be a
 		// member method of this class.
@@ -114,9 +115,10 @@ class section {
 		foreach ($db->selectObjects('section','parent = -1') as $s) {
 			$standalones[$s->id] = $s->name;
 		}
+		$form->register('page',gt('Standalone Page'),new dropdowncontrol(0,$standalones),true,gt('Page'));
 
-		$form->register('page',gt('Standalone Page'),new dropdowncontrol(0,$standalones));
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+        $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Page Settings').'</div>'),true,'base');
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')),true,'base');
 		return $form;
 	}
 
@@ -140,26 +142,27 @@ class section {
 		$form = section::_commonForm($object);
 		
 		// Register the 'Active?' and 'Public?' checkboxes.
-		$form->register('active',gt('Active'),new checkboxcontrol($object->active));
-		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
+		$form->register('active',gt('Active'),new checkboxcontrol($object->active),true,gt('Page'));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public),true,gt('Page'));
 
 		// Register the sub themes dropdown.
-		$form->register('subtheme',gt('Theme Variation'),new dropdowncontrol($object->subtheme,expTheme::getSubThemes()));
+		$form->register('subtheme',gt('Theme Variation'),new dropdowncontrol($object->subtheme,expTheme::getSubThemes()),true,gt('Page'));
 
 		// Register the 'Secured?' checkboxes for SSL pages
 		if(ENABLE_SSL) {
-			$form->register('secured',"Secured?",new checkboxcontrol($object->secured));		
+			$form->register('secured',"Secured?",new checkboxcontrol($object->secured),true,gt('Page'));
 		}		
 
-		$form->register(null,'',new htmlcontrol('<h2>SEO Information</h2>'));
+		$form->register(null,'',new htmlcontrol('<h2>SEO Information</h2>'),true,gt('SEO'));
 
 		// Register the Page Meta Data controls.
-		$form->register('page_title',gt('Page Title'),new textcontrol($object->page_title));
-		$form->register('keywords',gt('Keywords'),new texteditorcontrol($object->keywords,5));
-		$form->register('description',gt('Page Description'),new texteditorcontrol($object->description,5));
+		$form->register('page_title',gt('Page Title'),new textcontrol($object->page_title),true,gt('SEO'));
+		$form->register('keywords',gt('Keywords'),new texteditorcontrol($object->keywords,5),true,gt('SEO'));
+		$form->register('description',gt('Page Description'),new texteditorcontrol($object->description,5),true,gt('SEO'));
 		
+        $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Page Settings').'</div>'),true,'base');
 		// Add a Submit / Cancel button.
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')),true,'base');
 		
 		// Return the form to the calling scope (usually an action in the navigation module).
 		return $form;
@@ -189,13 +192,14 @@ class section {
 		
 		if (!isset($object->external_link)) $object->external_link = '';
 		// Add a textbox the user can enter the external website's URL into.
-		$form->register('external_link',gt('Page'),new textcontrol($object->external_link));
+		$form->register('external_link',gt('Page'),new textcontrol($object->external_link),true,gt('Page'));
 		
 		// Add the'Public?' checkbox.  The 'Active?' checkbox is omitted, because it makes no sense.
-		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public),true,gt('Page'));
 		
+        $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Page Settings').'</div>'),true,'base');
 		// Add a Submit / Cancel button.
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')),true,'base');
 		
 		// Return the form to the calling scope (usually an action in the navigation module).
 		return $form;
@@ -229,13 +233,14 @@ class section {
 		$form->unregister('sef_name');
 		
 		// Add a dropdown to allow the user to choose an internal page.
-		$form->register('internal_id',gt('Page'),new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0,array(),false,'manage')));
+		$form->register('internal_id',gt('Page'),new dropdowncontrol($object->internal_id,navigationmodule::levelDropDownControlArray(0,0,array(),false,'manage')),true,gt('Page'));
 		
 		// Add the'Public?' checkbox.  The 'Active?' checkbox is omitted, because it makes no sense.
-		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public),true,gt('Page'));
 		
+        $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Page Settings').'</div>'),true,'base');
 		// Add a Submit / Cancel button.
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')),true,'base');
 		
 		// Return the form to the calling scope (usually an action in the navigation module).
 		return $form;
@@ -269,13 +274,14 @@ class section {
 			// Grab each pageset and store its name and id.  The id will be used when updating.
 			$pagesets[$pageset->id] = $pageset->name;
 		}
-		$form->register('pageset',gt('Pageset'),new dropdowncontrol(0,$pagesets));
+		$form->register('pageset',gt('Pageset'),new dropdowncontrol(0,$pagesets),true,gt('Page'));
 		
 		// Add the'Public?' checkbox.  The 'Active?' checkbox is omitted, because it makes no sense.
-		$form->register('public',gt('Public'),new checkboxcontrol($object->public));
+		$form->register('public',gt('Public'),new checkboxcontrol($object->public),true,gt('Page'));
 		
+        $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Page Settings').'</div>'),true,'base');
 		// Add a Submit / Cancel button.
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')),true,'base');
 		
 		// Return the form to the calling scope (usually an action in the navigation module).
 		return $form;

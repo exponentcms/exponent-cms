@@ -42,7 +42,7 @@ class monthyearcontrol extends formcontrol {
                 return $html;
         }
 	
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		$html = '<select id="' . $name . '_month" name="' . $name . '_month">';
 		for ($i = 1; $i <= 12; $i++) {
 			$s = ((strlen($i) == 1)?"0".$i:$i);

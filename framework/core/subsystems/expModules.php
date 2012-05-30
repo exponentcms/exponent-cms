@@ -26,7 +26,6 @@ class expModules {
 
 	public static function initializeControllers() {
 	    $controllers = array();
-	//    loadModulesDir(BASE.'themes/'.DISPLAY_THEME_REAL.'/modules', $controllers);
 	    self::loadModulesDir(BASE.'themes/'.DISPLAY_THEME.'/modules', $controllers);
 	    self::loadModulesDir(BASE.'framework/modules', $controllers);
 	    return $controllers;
@@ -47,10 +46,18 @@ class expModules {
 	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
 	                            include_once($dirpath.'/'.$ctl_file);
 	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
-	//	                        $module->module = substr($ctl_file,0,-4);
-	//	                        $module->active = 1;
-	//	                        $module->path = $dirpath.'/'.$ctl_file;
-	//	                        if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
+	//	                          $module->module = substr($ctl_file,0,-4);
+//                                $controller = new $module->module();
+//                       	      if (!empty($controller->useractions)) $controllers[] = $module->user_runnable = 1;
+	//	                          $module->active = 1;
+	//	                          $module->controller = 1;
+//                                $module->class = $module->module;  //FIXME, not needed?
+//                                $module->name = $controller->name();
+//                                $module->author = $controller->author();
+//                                $module->description = $controller->description();
+//                                $module->codequality = isset($controller->codequality) ? $controller->codequality : 'alpha';
+	//	                          $module->path = $dirpath.'/'.$ctl_file;
+	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
 	                        }
 	                    }
 	                }
@@ -63,7 +70,6 @@ class expModules {
 	                            include_once($dirpath.'/'.$ctl_file);
 	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
 	//                            $module->module = substr($ctl_file,0,-4);
-	//                            $module->active = 1;
 	//                            $module->path = $dirpath.'/'.$ctl_file;
 	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
 	                        }
@@ -84,7 +90,7 @@ class expModules {
     			$mod = new $module();
     			$modstate = $db->selectObject("modstate","module='$module'");
 
-    			$moduleInfo[$module] = null;
+    			$moduleInfo[$module] = new stdClass();
     			$moduleInfo[$module]->class = $module;
     			$moduleInfo[$module]->name = $mod->name();
     			$moduleInfo[$module]->author = $mod->author();
@@ -122,7 +128,7 @@ class expModules {
 	        foreach ($refs as $ref) {
 	            if ($ref->refcount > 0) {
 	                $instance = $db->selectObject('container', 'internal like "%'.$ref->source.'%"');
-	                $mod = null;
+	                $mod = new stdClass();
 	                $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
 	                $mod->section = $db->selectvalue('section', 'name', 'id='.$ref->section);
                     $mod->src = $ref->source;
@@ -175,6 +181,15 @@ class expModules {
 	    if (empty($controllername)) return null;
         return (substr($controllername, -10) == 'Controller') ? substr($controllername, 0, -10) : $controllername;
 	}
+
+    public static function getModuleName($modulename) {
+   	    if (empty($modulename)) return null;
+        if (self::controllerExists($modulename)) {
+            return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
+        } else {
+            return (substr($modulename, -6) == 'module') ? substr($modulename, 0, -6) : $modulename;
+        }
+   	}
 
 	/** exdoc
 	 * Looks through the database returns a list of all module class
@@ -229,7 +244,7 @@ class expModules {
 				 $modstate = $db->selectObject("modstate","module='$module'");
 
 				 if (!method_exists($mod,"dontShowInModManager")) {
-				     $moduleInfo[$module] = null;
+				     $moduleInfo[$module] = new stdClass();
 				     $moduleInfo[$module]->class = $module;
 				     $moduleInfo[$module]->name = $mod->name();
 				     $moduleInfo[$module]->author = $mod->author();

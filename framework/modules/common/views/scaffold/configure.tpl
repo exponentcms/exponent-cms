@@ -14,6 +14,10 @@
  *}
 
 <div id="config" class="module scaffold configure exp-skin-tabview">
+    <div class="form_header">
+    	<h1>{'Module Configuration'|gettext}</h1>
+    	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
+    </div>
 	{form action=saveconfig}
 		<div id="config-tabs" class="yui-navset hide">
 			<ul class="yui-nav">

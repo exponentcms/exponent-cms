@@ -27,8 +27,8 @@ class expSimpleNoteController extends expController {
     protected $add_permissions = array('approve'=>"Approve Comments");
     protected $remove_permissions = array('edit', 'create');
 
-    function displayname() { return "Simple Notes"; }
-    function description() { return "Use this module to add Simple Notes attached to something (product, order, etc)"; }
+    function displayname() { return gt("Simple Notes"); }
+    function description() { return gt("Use this module to add Simple Notes attached to something (product, order, etc)"); }
     function author() { return "Jonathan Worent @ OIC Group, Inc"; }
     
     function edit() {
@@ -97,7 +97,7 @@ class expSimpleNoteController extends expController {
             'dir'=>'DESC',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('Approved'=>'approved', 'Poster'=>'name', 'Comment'=>'body'),
+            'columns'=>array(gt('Approved')=>'approved',gt('Poster')=>'name',gt('Comment')=>'body'),
         ));
         
         assign_to_template(array(
@@ -134,7 +134,7 @@ class expSimpleNoteController extends expController {
             'dir'=>'DESC',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('Readable Column Name'=>'Column Name'),
+            'columns'=>array(gt('Readable Column Name')=>'Column Name'),
         ));
         
         // count the unapproved comments

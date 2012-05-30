@@ -68,8 +68,8 @@ class storeController extends expController {
 	'edit_model_alias'=>'Delete model aliases'
     );
      
-    function displayname() { return "e-Commerce Store Front"; }
-    function description() { return "Use this module to display products and categories of you Ecommerce store"; }
+    function displayname() { return gt("e-Commerce Store Front"); }
+    function description() { return gt("Use this module to display products and categories of you Ecommerce store"); }
     function author() { return "OIC Group, Inc"; }
     function isSearchable() { return true; }
     function canImportData() { return true; }
@@ -178,7 +178,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'price'),
                 ));
         } else {
             $page = new expPaginator(array(
@@ -189,7 +189,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'price'),
                 ));
         }
 
@@ -208,6 +208,7 @@ class storeController extends expController {
         // grab the configs for the category
         if (is_object($category)) 
         {
+            $ctcfg = new stdClass();
             $ctcfg->mod = "storeCategory";
             $ctcfg->src = "@store-".$category->id;
             $ctcfg->int = "";            
@@ -216,6 +217,7 @@ class storeController extends expController {
       
         // since router maps strip off src and we need that to pull configs, we won't get the configs
         // of the page is router mapped. We'll ensure we do here:
+        $cfg = new stdClass();
         $cfg->mod = "ecomconfig";
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
@@ -246,7 +248,7 @@ class storeController extends expController {
             'dir'=>$dir,
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
         
         assign_to_template(array('page'=>$page));
@@ -409,7 +411,7 @@ class storeController extends expController {
             'sql'=>$sql,
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
             
         assign_to_template(array('page'=>$page, 'moduletitle'=>'Uncategorized Products'));
@@ -421,7 +423,7 @@ class storeController extends expController {
             'model'=>'product',
             'where'=>'parent_id=0',
             'order'=>'title',
-            'columns'=>array('Type'=>'product_type', 'Model #'=>'model', 'Product Name'=>'title','Price'=>'base_price')
+            'columns'=>array(gt('Type')=>'product_type',gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
             ));
         assign_to_template(array('page'=>$page));
     }
@@ -440,7 +442,7 @@ class storeController extends expController {
             'sql'=>$sql,
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
             
         assign_to_template(array('page'=>$page, 'moduletitle'=>'Improperly Categorized Products'));
@@ -461,7 +463,7 @@ class storeController extends expController {
             'model'=>'product',
             'where'=>'companies_id='.$this->params['id'] . ' AND parent_id=0',
             'default'=>'Product Name',
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price')
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
             ));
         
         $company = new company($this->params['id']);
@@ -617,7 +619,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 ));
                 
         assign_to_template(array('page'=>$page));   
@@ -638,7 +640,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 ));
                 
         assign_to_template(array('page'=>$page));   
@@ -679,7 +681,7 @@ class storeController extends expController {
                 'dir'=>$dir,
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 ));
        
         $category = new storeCategory(null,false,false);
@@ -725,7 +727,7 @@ class storeController extends expController {
                 $prod = new product($cnt['id']);
                 unset($cnt['id']);
                 //$cnt['title'] = $cnt['title'].' - SKU# '.$cnt['model'];
-                $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="'.URL_FULL.'thumb.php?id='.$prod->expFile['mainimage'][0]->id.'&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />':'') .$cnt['title']. (!empty($cnt['model']) ? ' - SKU#: '.$cnt['model']:'');
+                $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="'.PATH_RELATIVE.'thumb.php?id='.$prod->expFile['mainimage'][0]->id.'&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />':'') .$cnt['title']. (!empty($cnt['model']) ? ' - SKU#: '.$cnt['model']:'');
                 $search_record = new search($cnt, false, false);
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
                 $search_record->view_link = $router->makeLink(array('controller'=>$this->baseclassname, 'action'=>'showByTitle', 'title'=>$cnt['sef_url']));
@@ -1040,7 +1042,7 @@ class storeController extends expController {
     
     static public function getProductTypes() {        
         $paths = array(
-            BASE.'framework/modules/ecommerce/products/model',
+            BASE.'framework/modules/ecommerce/products/models',
         );
     
         $products = array();
@@ -1130,7 +1132,7 @@ class storeController extends expController {
             'where'=>$sql,
             'order'=>'title',
             'dir'=>'DESC',
-            'columns'=>array('Model #'=>'model','Product Name'=>'title','Price'=>'base_price'),
+            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
         
         assign_to_template(array('page'=>$page, 'terms'=>$terms));
@@ -1376,8 +1378,8 @@ class storeController extends expController {
             $count++;
             $originalOrderId = $data[2];
             $data[2] = intval($data[2]);
-            $order = null;  
-            $bm = null;
+            $order = new stdClass();
+            $bm = new stdClass();
             $transactionState = null;
             
             //check for valid order number - if not present or not order, fail and continue with next record
@@ -1419,7 +1421,7 @@ class storeController extends expController {
             } 
             else 
             {
-                $bm = null;   
+                $bm = null;
                 $transactionState = '';
             }
             

@@ -88,7 +88,7 @@ pixidou = {
 		
 		// AJAX request
 		//var request = YAHOO.util.Connect.asyncRequest('GET', 'crop.php?image=' + pixidou.image + '&cropStartX=' + coordinates.left +'&cropStartY=' + coordinates.top +'&width=' + coordinates.width +'&height=' + coordinates.height + '&zoomLevel=' + pixidou.zoomLevel, {
-		var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=crop&image=' + pixidou.image + '&cropStartX=' + coordinates.left +'&cropStartY=' + coordinates.top +'&width=' + coordinates.width +'&height=' + coordinates.height + '&zoomLevel=' + pixidou.zoomLevel, {
+		var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=crop&image=' + pixidou.image + '&cropStartX=' + coordinates.left +'&cropStartY=' + coordinates.top +'&width=' + coordinates.width +'&height=' + coordinates.height + '&zoomLevel=' + pixidou.zoomLevel, {
 			success: function(o){
 				// update data from response
 				pixidou.updateThruJson(o);
@@ -119,7 +119,7 @@ pixidou = {
 			ui.showLoadingPanel();
 			
 			// AJAX request
-			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=rotate&image=' + pixidou.image + '&direction=' + direction + '&degrees=' + degrees, {
+			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=rotate&image=' + pixidou.image + '&direction=' + direction + '&degrees=' + degrees, {
 				success: function(o){
 					// update data
 					pixidou.updateThruJson(o);
@@ -147,7 +147,7 @@ pixidou = {
 			ui.showLoadingPanel();
 			
 			// AJAX request
-			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=flip&direction=' + direction + '&image=' + pixidou.image + '&direction=' + direction, {
+			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=flip&direction=' + direction + '&image=' + pixidou.image + '&direction=' + direction, {
 				success: function(o){
 					pixidou.updateThruJson(o);
 				},
@@ -229,7 +229,7 @@ pixidou = {
 		ui.showLoadingPanel();
 		
 		// AJAX request
-		var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=resize&image=' + pixidou.image + '&width=' + parseInt(YAHOO.util.Dom.getStyle('yuiImg', 'width'), 10) + '&height=' + parseInt(YAHOO.util.Dom.getStyle('yuiImg', 'height'), 10) + '&zoomLevel=' + pixidou.zoomLevel , {
+		var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=resize&image=' + pixidou.image + '&width=' + parseInt(YAHOO.util.Dom.getStyle('yuiImg', 'width'), 10) + '&height=' + parseInt(YAHOO.util.Dom.getStyle('yuiImg', 'height'), 10) + '&zoomLevel=' + pixidou.zoomLevel , {
 			success: function(o){
 				pixidou.updateThruJson(o);
 				
@@ -257,7 +257,7 @@ pixidou = {
 			ui.showLoadingPanel();
 			
 			// AJAX request
-			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=negative&image=' + pixidou.image , {
+			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=negative&image=' + pixidou.image , {
 				success: function(o){
 					pixidou.updateThruJson(o);
 				},
@@ -283,7 +283,7 @@ pixidou = {
 			ui.showLoadingPanel();
 			
 			// AJAX request
-			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=tint&color=' + color + '&image=' + pixidou.image , {
+			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=tint&color=' + color + '&image=' + pixidou.image , {
 				success: function(o){
 					pixidou.updateThruJson(o);
 				},
@@ -311,7 +311,7 @@ pixidou = {
 			ui.showLoadingPanel();
 			
 			// AJAX request
-			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=contrast&value=' + value + '&image=' + pixidou.image , {
+			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=contrast&value=' + value + '&image=' + pixidou.image , {
 				success: function(o){
 					pixidou.updateThruJson(o);
 				},
@@ -338,7 +338,7 @@ pixidou = {
 			ui.showLoadingPanel();
 			
 			// AJAX request
-			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=brightness&value=' + value + '&image=' + pixidou.image , {
+			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=brightness&value=' + value + '&image=' + pixidou.image , {
 				success: function(o){
 					pixidou.updateThruJson(o);
 				},
@@ -511,8 +511,8 @@ pixidou = {
 		pixidou.imageWidth = width;
 		pixidou.imageHeight = height;
 		
-//		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.URL_FULL+'framework/modules/pixidou/images/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
-		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.URL_FULL+'tmp/pixidou/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
+//		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/images/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
+		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.PATH_RELATIVE+'tmp/pixidou/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
 
 		// add it to our history
 		var imageObject = new Object;
@@ -544,7 +544,7 @@ pixidou = {
 			ui.showLoadingPanel();
 			
 			// AJAX request
-			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.URL_FULL+'framework/modules/pixidou/image.php?action=save&type=' + type + '&image=' + pixidou.image , {
+			var request = YAHOO.util.Connect.asyncRequest('GET', EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/image.php?action=save&type=' + type + '&image=' + pixidou.image , {
 				success: function(o){
 					// parse json data
 					var jsonData = YAHOO.lang.JSON.parse(o.responseText);
@@ -579,7 +579,7 @@ pixidou = {
 			var fromFCK = YAHOO.util.Dom.get('fromFCK').value ? "&fck=1" : "";
 			
 			// Grab some vars and jump back to the editor
-            var surl = EXPONENT.URL_FULL+"index.php?controller=pixidou&action=exitEditor&exitType="+exitType+"&ajax_action=1"+fromFCK+"&update="+YAHOO.util.Dom.get('update').value+"&fid="+YAHOO.util.Dom.get('fid').value+"&cpi="+pixidou.image;
+            var surl = EXPONENT.PATH_RELATIVE+"index.php?controller=pixidou&action=exitEditor&exitType="+exitType+"&ajax_action=1"+fromFCK+"&update="+YAHOO.util.Dom.get('update').value+"&fid="+YAHOO.util.Dom.get('fid').value+"&cpi="+pixidou.image;
             // console.debug(surl);
             // console.debug(fromFCK);
             window.location = surl;

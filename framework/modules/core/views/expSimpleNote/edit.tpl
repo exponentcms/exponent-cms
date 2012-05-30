@@ -26,7 +26,7 @@
 		{if $user->id == 0}
 		    {control type=text name=name label="Name (required)"|gettext value=$simplenote->id}
 		{else}
-		    <strong>{'Name:'|gettext} {$user->firstname} {$user->lastname}</strong>{br}
+		    <strong>{'Name'|gettext}: {$user->firstname} {$user->lastname}</strong>{br}
 		{/if}
 		{if $user->id == 0}
 		    {control type=text name=email label="Email (required)"|gettext value=$simplenote->email}

@@ -17,8 +17,9 @@
 /** @define "BASE" "../../.." */
 
 class simplepollmodule_config {
-	function form($object) {
+	static function form($object) {
 		$form = new form();
+        $form->is_tabbed = true;
 		if (!isset($object->id)) {
 			$object->thank_you_message = gt('Thank you for voting.');
 			$object->already_voted_message = gt('You have already voted in this poll.');
@@ -29,11 +30,12 @@ class simplepollmodule_config {
 			$form->meta('id',$object->id);
 		}
 		
-		$form->register('thank_you_message',gt('\'Thank You\' Message'),new texteditorcontrol($object->thank_you_message,7,40));
-		$form->register('already_voted_message',gt('\'Already Voted\' Message'),new texteditorcontrol($object->already_voted_message,7,40));
-		$form->register('voting_closed_message',gt('\'Voting Closed\' Message'),new texteditorcontrol($object->voting_closed_message,7,40));
-		$form->register('anonymous_timeout',gt('Anonymous Block Timeout (hours)'),new textcontrol($object->anonymous_timeout));
-		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
+        $form->register(null,'',new htmlcontrol('<h2>'.gt('General Configuration').'</h2>'),true,gt('Simple Poll'));
+		$form->register('thank_you_message',gt('\'Thank You\' Message'),new texteditorcontrol($object->thank_you_message,7,40),true,gt('Simple Poll'));
+		$form->register('already_voted_message',gt('\'Already Voted\' Message'),new texteditorcontrol($object->already_voted_message,7,40),true,gt('Simple Poll'));
+		$form->register('voting_closed_message',gt('\'Voting Closed\' Message'),new texteditorcontrol($object->voting_closed_message,7,40),true,gt('Simple Poll'));
+		$form->register('anonymous_timeout',gt('Anonymous Block Timeout (hours)'),new textcontrol($object->anonymous_timeout),true,gt('Simple Poll'));
+		$form->register('submit','',new buttongroupcontrol(gt('Save Config'),'',gt('Cancel')),true,'base');
 		
 		return $form;
 	}

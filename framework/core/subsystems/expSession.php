@@ -314,7 +314,7 @@ class expSession {
 	/** exdoc
 	 * Clears global users session cache
 	 *
-	 * @param Modules $modules If not set, applies to all modules.  If set, will only clear cache for that module
+	 * @param mixed $modules If not set, applies to all modules.  If set, will only clear cache for that module
 	 * @param User $user if not set,applies to all users. If set, will only clear for that user
 	 * @node Subsystems:Sessions
 	 */
@@ -328,6 +328,7 @@ class expSession {
 		//at this point either.  This just updates all sessionticket records to refresh=1
 
 		global $db;
+        $sessionticket = new stdClass();
 		$sessionticket->refresh = 1;
 		$db->updateObject($sessionticket, 'sessionticket', '1');
 
@@ -355,7 +356,7 @@ class expSession {
 	/** exdoc
 	 * Clears current users session cache
 	 *
-	 * @param Modules $modules Array or string. If not set, applies to all modules.  If set, will only clear cache for that module
+	 * @param mixed $modules Array or string. If not set, applies to all modules.  If set, will only clear cache for that module
 	 *
 	 * @internal param \User $user if not set,applies to all users. If set, will only clear for that user
 	 * @node Subsystems:Sessions
@@ -393,7 +394,7 @@ class expSession {
 	 * @node Subsystems:Sessions
 	 */
 	static function createTicket($user = null){
-		$ticket = null;
+		$ticket = new stdClass();
 		if (!isset($user->id)) $user = new user(0);
 		$ticket->uid = $user->id;
 		$ticket->ticket = uniqid("",true);

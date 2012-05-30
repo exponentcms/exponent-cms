@@ -35,8 +35,8 @@ class photosController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Photo Album"; }
-    function description() { return "This module allows you to display and manage images."; }
+    function displayname() { return gt("Photo Album"); }
+    function description() { return gt("This module allows you to display and manage images."); }
     function isSearchable() { return true; }
     
     public function showall() {
@@ -51,10 +51,11 @@ class photosController extends expController {
                     'limit'=>$limit,
                     'order'=>$order,
                     'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
                     'src'=>$this->loc->src,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array('Title'=>'title'),
+                    'columns'=>array(gt('Title')=>'title'),
                     ));
                     
         assign_to_template(array('page'=>$page));
@@ -87,8 +88,9 @@ class photosController extends expController {
             $where = $where." AND rank=".$maxrank;
             $prev = $db->selectValue($this->model_table,'sef_url',$where);
         }
-        
-        assign_to_template(array('record'=>$record,'imgnum'=>$record->rank,'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),"next"=>$next,"previous"=>$prev));
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+
+        assign_to_template(array('record'=>$record,'imgnum'=>$record->rank,'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),"next"=>$next,"previous"=>$prev,'config'=>$config));
     }
     
     public function slideshow() {

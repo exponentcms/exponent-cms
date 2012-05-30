@@ -130,12 +130,12 @@ if ($user->isAdmin()) {
 					array(
 						'text' => gt("Configure Website"),
 						'url' => makeLink(array(
-							'module' => 'administration',
+							'controller' => 'administration',
 							'action' => 'configure_site'
 						))
 					),
                     array(
-                        'text' => gt('Manage Tags'),
+                        'text' => gt('Manage Site Tags'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
                             'controller' => 'expTag',
@@ -143,7 +143,7 @@ if ($user->isAdmin()) {
                         ))
                     ),
                     array(
-                        'text' => gt('Manage Categories'),
+                        'text' => gt('Manage Site Categories'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
                             'controller' => 'expCat',
@@ -154,7 +154,7 @@ if ($user->isAdmin()) {
 						'text' => gt('Regenerate Search Index'),
 						'classname' => 'search',
 						'url' => makeLink(array(
-							'module' => 'search',
+							'controller' => 'search',
 							'action' => 'spider'
 						))
 					),
@@ -171,14 +171,14 @@ if ($user->isAdmin()) {
 					array(
 						'text' => gt("Configure Website"),
 						'url' => makeLink(array(
-							'module' => 'administration',
+							'controller' => 'administration',
 							'action' => 'configure_site'
 						))
 					),
 					array(
 						'text' => gt('Test SMTP Mail Server Settings'),
 						'url' => makeLink(array(
-							'module' => 'administration',
+							'controller' => 'administration',
 							'action' => 'test_smtp'
 						))
 					),
@@ -202,7 +202,7 @@ if ($user->isAdmin()) {
 						'text' => gt('Regenerate Search Index'),
 						'classname' => 'search',
 						'url' => makeLink(array(
-							'module' => 'search',
+							'controller' => 'search',
 							'action' => 'spider'
 						))
 					),
@@ -232,7 +232,7 @@ $expAdminMenu['submenu']['itemdata'][] = array(
             array(
                 'text' => gt('Group Accounts'),
                 'url' => makeLink(array(
-                    'module' => 'users',
+                    'controller' => 'users',
                     'action' => 'manage_groups'
                 )),
                 'classname' => 'egroup',
@@ -240,14 +240,14 @@ $expAdminMenu['submenu']['itemdata'][] = array(
             array(
                 'text' => gt('Profile Definitions'),
                 'url' => makeLink(array(
-                    'module' => 'users',
+                    'controller' => 'users',
                     'action' => 'manage_extensions'
                 )),
             ),
             array(
                 'text' => gt('User Sessions'),
                 'url' => makeLink(array(
-                    'module' => 'users',
+                    'controller' => 'users',
                     'action' => 'manage_sessions'
                 )),
             )
@@ -268,7 +268,7 @@ if ($user->isSuperAdmin()) {
                     'text' => (DEVELOPMENT)?gt('Turn Error Reporting off'):gt('Turn Error Reporting on'),
                     'classname' => (DEVELOPMENT)?'develop_on_red':'develop_off',
                     'url' => makeLink(array(
-                        'module' => 'administration',
+                        'controller' => 'administration',
                         'action' => 'toggle_dev'
                     ))
                 ),
@@ -280,41 +280,49 @@ if ($user->isSuperAdmin()) {
                             array(
                                 'text' => gt('Install Tables'),
                                 'url' => makeLink(array(
-                                    'module' => 'administration',
+                                    'controller' => 'administration',
                                     'action' => 'install_tables'
                                 ))
                             ),
                              array(
                              'text'=>gt('Import Data'),
-                             'url'=>makeLink(array('module'=>'importer','action'=>'list_importers')),
+                             'url'=>makeLink(array('controller'=>'importer','action'=>'list_importers')),
                              ),
                              array(
                              'text'=>gt('Export Data'),
-                             'url'=>makeLink(array('module'=>'exporter','action'=>'list_exporters')),
+                             'url'=>makeLink(array('controller'=>'exporter','action'=>'list_exporters')),
                              ),
 //                             array(
 //                             'text'=>gt('Archived Modules'),
-//                             'url'=>makeLink(array('module'=>'administrationmodule','action'=>'orphanedcontent')),
+//                             'url'=>makeLink(array('controller'=>'administrationmodule','action'=>'orphanedcontent')),
 //                             ),
                             array(
                                 'text' => gt('Optimize Database'),
                                 'url' => makeLink(array(
-                                    'module' => 'administration',
+                                    'controller' => 'administration',
                                     'action' => 'fix_optimize_database'
                                 ))
                             ),
                             array(
                                 'text' => gt('Repair Database'),
                                 'url' => makeLink(array(
-                                    'module' => 'administration',
+                                    'controller' => 'administration',
                                     'action' => 'fix_database'
                                 ))
                             ),
                             array(
                                 'text' => gt('Reset Sessions Table'),
                                 'url' => makeLink(array(
-                                    'module' => 'administration',
+                                    'controller' => 'administration',
                                     'action' => 'fix_sessions'
+                                ))
+                            ),
+                            array(
+                                'text' => gt('Remove Unneeded Columns'),
+                                'classname' => 'remove',
+                                'url' => makeLink(array(
+                                    'controller' => 'administration',
+                                    'action' => 'delete_unused_columns'
                                 ))
                             ),
                             array(
@@ -332,7 +340,7 @@ if ($user->isSuperAdmin()) {
                 array(
                     'text' => gt('Migrate 0.9x Site'),
                     'url' => makeLink(array(
-                        'module' => 'migration',
+                        'controller' => 'migration',
                         'action' => 'configure'
                     ))
                 ),
@@ -345,7 +353,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Install Extension'),
                                 'classname'=>'fileuploader',
                                 'url' => makeLink(array(
-                                    'module' => 'administration',
+                                    'controller' => 'administration',
                                     'action' => 'install_extension'
                                 ))
                             ),
@@ -361,7 +369,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Manage Translations'),
                                 'classname' => 'manage',
                                 'url' => makeLink(array(
-                                    'module' => 'administration',
+                                    'controller' => 'administration',
                                     'action' => 'manage_lang'
                                 )),
                             ),
@@ -369,7 +377,7 @@ if ($user->isSuperAdmin()) {
                                 'text' => gt('Manage Themes'),
                                 'classname' => 'manage',
                                 'url' => makeLink(array(
-                                    'module' => 'administration',
+                                    'controller' => 'administration',
                                     'action' => 'manage_themes'
                                 )),
                             ),
@@ -377,7 +385,7 @@ if ($user->isSuperAdmin()) {
 								'text' => (MOBILE)?gt('Turn Mobile View off'):gt('Turn Mobile View on'),
 								'classname' => (MOBILE)?'develop_on_green':'develop_off',
 								'url' => makeLink(array(
-									'module' => 'administration',
+									'controller' => 'administration',
 									'action' => 'togglemobile'
 								)),
                             ),
@@ -393,7 +401,7 @@ if ($user->isSuperAdmin()) {
 								'text' => (MINIFY)?gt('Turn Minification off'):gt('Turn Minification on'),
 								'classname' => (MINIFY)?'develop_on_green':'develop_off',
 								'url' => makeLink(array(
-									'module' => 'administration',
+									'controller' => 'administration',
 									'action' => 'toggle_minify'
 								))
 							),
@@ -401,7 +409,7 @@ if ($user->isSuperAdmin()) {
 								'text' => gt('Clear Smarty Cache'),
 								'classname' => 'remove',
 								'url' => makeLink(array(
-									'module' => 'administration',
+									'controller' => 'administration',
 									'action' => 'clear_smarty_cache'
 								))
 							),
@@ -409,7 +417,7 @@ if ($user->isSuperAdmin()) {
 								'text' => gt('Clear CSS/Minify Cache'),
 								'classname' => 'remove',
 								'url' => makeLink(array(
-								    'module' => 'administration',
+								    'controller' => 'administration',
 									'action' => 'clear_css_cache'
 								))
 							),
@@ -417,7 +425,7 @@ if ($user->isSuperAdmin()) {
 								'text' => gt('Clear Image Cache'),
 								'classname' => 'remove',
 								'url' => makeLink(array(
-								    'module' => 'administration',
+								    'controller' => 'administration',
 									'action' => 'clear_image_cache'
 								))
 							),
@@ -425,7 +433,7 @@ if ($user->isSuperAdmin()) {
 								'text' => gt('Clear RSS/Podcast Cache'),
 								'classname' => 'remove',
 								'url' => makeLink(array(
-								    'module' => 'administration',
+								    'controller' => 'administration',
 									'action' => 'clear_rss_cache'
 								))
 							),
@@ -433,7 +441,7 @@ if ($user->isSuperAdmin()) {
 								'text' => gt('Clear All Caches'),
 								'classname' => 'remove',
 								'url' => makeLink(array(
-								    'module' => 'administration',
+								    'controller' => 'administration',
 									'action' => 'clear_all_caches'
 								))
 							),
@@ -441,10 +449,18 @@ if ($user->isSuperAdmin()) {
 					)
 				),
                 array(
+                    'text' => gt('View Recycle Bin'),
+                    'classname' => 'manage',
+                    'url' => makeLink(array(
+                        'controller' => 'recyclebin',
+                        'action' => 'showall'
+                    ))
+                ),
+                array(
 	                'text' => (MAINTENANCE_MODE)?gt('Turn Maintenance Mode off'):gt('Turn Maintenance Mode on'),
 	                'classname' => (MAINTENANCE_MODE)?'develop_on_red':'develop_off',
                     'url' => makeLink(array(
-                        'module' => 'administration',
+                        'controller' => 'administration',
                         'action' => 'toggle_maintenance'
                     ))
                 )

@@ -38,7 +38,7 @@ if (!defined('EXPONENT')) exit('');
 
 	$orphans = array();
 	foreach ($db->selectObjects("sectionref","module='".preg_replace('/[^A-Za-z0-9_]/','',expString::sanitize($_GET['module']))."' AND refcount=0") as $orphan) {
-		$obj = null;
+		$obj = new stdClass();
 		$loc = expCore::makeLocation($orphan->module,$orphan->source,$orphan->internal);
 		
 		if (class_exists($orphan->module)) {

@@ -32,11 +32,7 @@
         {/if}
         {if $config.show_info}
             <span class="label dated">{'Dated'|gettext}:</span>
-            {if strstr($config.order,'edited_at')}
-                <span class="value">{$file->edited_at|format_date}</span>
-            {else}
-                <span class="value">{$file->created_at|format_date}</span>
-            {/if}
+            <span class="value">{$file->publish_date|format_date}</span>
             &nbsp;|&nbsp;
             {if $file->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
@@ -99,7 +95,11 @@
         {icon action=downloadfile fileid=$file->id text='Download'|gettext}
     {/if}
     {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownload-media"></a>
+        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
+            {if $file->expFile.preview[0] != ""}
+                {img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}
+            {/if}
+        </a>
     {/if}
     {clear}
     {permissions}

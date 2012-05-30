@@ -424,7 +424,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 									sOut += "<a href='JavaScript:paginate.gotoPage(" + x + ");' class='mngmntlink " + this.modulePrefix + "_mngmntlink'>" + x + "</a> ";
 								}
 								else {
-									sOut += "<b>" + x + "</b> ";
+									sOut += "<strong>" + x + "</strong> ";
 								}
 							}
 							if (iRightEnd < totalPages) {

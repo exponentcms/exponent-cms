@@ -28,8 +28,8 @@ class ecomconfigController extends expController {
 	public $useractions = array();
     public $add_permissions = array('show'=>'View Admin Options');
 	
-    function displayname() { return "Ecommerce Configuration Manager"; }
-    function description() { return "Use this module to configure your Ecommerce store"; }
+    function displayname() { return gt("Ecommerce Configuration Manager"); }
+    function description() { return gt("Use this module to configure your Ecommerce store"); }
     function hasSources() { return false; }
 
     function show() {
@@ -140,7 +140,7 @@ class ecomconfigController extends expController {
 			'limit'=> 10,
 			'order'=>$order,
 			'model'=>'discounts',
-			'columns'=>array('Enabled'=>'enabled','Name'=>'title', 'Coupon Code'=>'coupon_code', 'Valid Until'=>'enddate'),
+			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
 			));
 
 		

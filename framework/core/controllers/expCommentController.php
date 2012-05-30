@@ -27,8 +27,8 @@ class expCommentController extends expController {
     protected $add_permissions = array('approve'=>"Approve Comments");
    	protected $remove_permissions = array('create');
 
-    function displayname() { return "Comments"; }
-    function description() { return "Use this module to add comments to a page."; }
+    function displayname() { return gt("Comments"); }
+    function description() { return gt("Use this module to add comments to a page."); }
     
 	function edit() {
 	    if (empty($this->params['content_id'])) {
@@ -74,7 +74,7 @@ class expCommentController extends expController {
             'dir'=>'DESC',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('Approved'=>'approved', 'Poster'=>'name', 'Comment'=>'body'),
+            'columns'=>array(gt('Approved')=>'approved',gt('Poster')=>'name',gt('Comment')=>'body'),
         ));
         
         assign_to_template(array(
@@ -115,7 +115,7 @@ class expCommentController extends expController {
             'order'=>'created_at',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('Readable Column Name'=>'Column Name'),
+            'columns'=>array(gt('Readable Column Name')=>'Column Name'),
         ));
 
         // add username and avatar

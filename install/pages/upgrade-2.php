@@ -53,11 +53,7 @@ foreach ($tables as $table => $statusnum) {
 		 <?php echo gt($table) ?>
 	</td>
 	<td>
-		 <?php  if ($statusnum == DATABASE_TABLE_EXISTED) { ?>
-		<div style="color: blue; font-weight: bold">
-			<?php echo gt('Table Exists') ?>
-		</div>
-		 <?php } elseif ($statusnum == DATABASE_TABLE_INSTALLED) {  ?>
+		 <?php if ($statusnum == DATABASE_TABLE_INSTALLED) {  ?>
 		<div style="color: green; font-weight: bold">
 			<?php echo gt('Added') ?>
 		</div>

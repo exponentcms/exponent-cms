@@ -30,9 +30,9 @@ class yuieditorcontrol extends formcontrol {
 	var $cols = 60;
 	var $rows = 20;
 	
-	function name() { return "YUI HTML Editor"; }
-	function isSimpleControl() { return false; }
-	function getFieldDefinition() {
+	static function name() { return "YUI HTML Editor"; }
+	static function isSimpleControl() { return false; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>10000);
@@ -46,7 +46,7 @@ class yuieditorcontrol extends formcontrol {
 		$this->maxchars = 0;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 //		$html  = '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/editor/assets/skins/sam/simpleeditor.css" />';
 		$html  = '<link rel="stylesheet" type="text/css" href="'.YUI2_PATH.'assets/skins/sam/simpleeditor.css" />';
 		$html .= '<div class="yui-skin-sam"><textarea name="'.$name.'" id="'.$name.'"';

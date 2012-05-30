@@ -23,14 +23,6 @@
 /** @define "BASE" "../../../.." */
 
 class loginController extends expController {
-//    public $basemodel_name = 'user';
-//    public $add_permissions = array(
-//        'toggle_extension'=>'Activate Extensions',
-//        'edituser'=>'Edit Users',
-//        'kill_session'=>'End Sessions',
-//        'boot_user'=>'Boot Users',
-//    );
-//    public $remove_permissions = array('create', 'edituser');
 	public $remove_configs = array(
         'aggregation',
         'categories',
@@ -45,8 +37,8 @@ class loginController extends expController {
 	    'showlogin'=>'Login',
     );
 
-    function displayname() { return "Login Manager"; }
-    function description() { return "This is the login management module. It allows for logging in, logging out, etc."; }
+    function displayname() { return gt("Login Manager"); }
+    function description() { return gt("This is the login management module. It allows for logging in, logging out, etc."); }
 
 	/**
 	 * Display a login view

@@ -24,8 +24,8 @@
 
 class expModuleController extends expController {
 
-    function displayname() { return "Modules"; }
-    function description() { return "Manages all things about Exponent Modules"; }
+    function displayname() { return gt("Modules"); }
+    function description() { return gt("Manages all things about Exponent Modules"); }
     function author() { return "Phillip Ball"; }
     function hasSources() { return false; }
 	function hasContent() { return false; }

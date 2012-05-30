@@ -19,7 +19,7 @@
 
 <div class="module calendar upcoming-events-headlines">
     <h2>
-        {if $enable_ical == true}
+        {if !empty($config->enable_ical)}
             <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
         {/if}
         {if $moduletitle}{$moduletitle}{/if}
@@ -42,7 +42,7 @@
 		{foreach from=$items item=item}
 			{if (!$__viewconfig.num_events || $item_number < $__viewconfig.num_events) }	
 				<li>
-					<a class="link" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+					<a class="link" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					<em class="date">
 						{if $item->is_allday == 1}
 							{$item->eventstart|format_date}
@@ -51,18 +51,20 @@
 						{/if}
 					</em>
 					{permissions}
-						<div class="item-actions">
-							{if $permissions.edit == 1}
-								{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
-							{/if}
-							{if $permissions.delete == 1}
-								{if $item->is_recurring == 0}
-									{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-								{else}
-									{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-								{/if}
-							{/if}
-						</div>
+                        {if $item->location_data != null}
+                            <div class="item-actions">
+                                {if $permissions.edit == 1}
+                                    {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+                                {/if}
+                                {if $permissions.delete == 1}
+                                    {if $item->is_recurring == 0}
+                                        {icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                    {else}
+                                        {icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                    {/if}
+                                {/if}
+                            </div>
+                        {/if}
 					{/permissions}
 				</li>
 				{assign var=item_number value=$item_number+1}
@@ -70,7 +72,7 @@
 				{assign var=more_events value=1}	
 			{/if}
 		{foreachelse}
-			<li align="center"><i>{'No upcoming events.'|gettext}</i></li>
+			<li align="center"><em>{'No upcoming events.'|gettext}</em></li>
 		{/foreach}
     </ul>
 	<p>

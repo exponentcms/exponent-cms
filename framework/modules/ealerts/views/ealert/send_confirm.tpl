@@ -14,16 +14,16 @@
  *}
 
 <div class="module ealert send-confirmation">
-    <h1>{'Format Email Alert'|gettext}</h1>
+    <h1>{'Confirm Email Alert'|gettext}</h1>
     
     {form action="send_process"}
         <table>
-        <tr>
-            <td>{'From:'|gettext} {$smarty.const.SMTP_FROMADDRESS}</td>
-        </tr>
-        <tr>
-            <td>{'To:'|gettext} {$number_of_subscribers} Subscribers</td>
-        </tr>
+            <tr>
+                <td>{'From'|gettext}: {$smarty.const.SMTP_FROMADDRESS}</td>
+            </tr>
+            <tr>
+                <td>{'To:'|gettext} {$number_of_subscribers} Subscribers</td>
+            </tr>
         </table>
         {control type="hidden" name="id" value=$ealert->id}
         {control type="text" name="subject" label="Subject"|gettext size="50" value=$record->title}

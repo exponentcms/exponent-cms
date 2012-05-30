@@ -13,11 +13,15 @@
  *
  *}
 
-{css unique="manage_groups" corecss="tables"}
-
+{css unique="manage_users" corecss="tables,autocomplete"}
+#user_dt_input {
+    position:relative;
+    width:200px;
+    height:20px;
+}
 {/css}
 
-<div class="module users manage">
+<div class="module users manage yui-skin-sam">
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help"|gettext|cat:" "|cat:("Managing Users"|gettext) module="manage-users"}
@@ -46,7 +50,7 @@
 	
 </div>
 
-<script type="text/javascript">
+{script unique="manage_users"}
 	{literal}
 		YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
 			var YAHOO=Y.YUI2;
@@ -57,7 +61,6 @@
 			 //set up autocomplete
 			var getTerms = function(query) {
 				myDataSource.sendRequest('sort=id&dir=asc&startIndex=0&results=10&query=' + query,myDataTable.onDataReturnInitializeTable, myDataTable);
-		
 			};
 			
 			var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
@@ -81,13 +84,13 @@
             var formatactions = function(elCell, oRecord, oColumn, sData) {
                {/literal}{permissions}{literal}
 
-                     elCell.innerHTML = '<div class="item-actions">';
-                     editstring       = '{/literal}{icon class="edit" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
-                     passwordstring   = '{/literal}{icon class="password" action="change_password" id="passwordstringid" title="Change this users password"|gettext text="Password"|gettext}{literal}';
-                     deletestring     = '{/literal}{icon action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
-                     editstring     = editstring.replace('editstringid',oRecord._oData.id);
-                     passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
-                     deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
+                    elCell.innerHTML = '<div class="item-actions">';
+                    editstring       = '{/literal}{icon img="edit.png" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
+                    passwordstring   = '{/literal}{icon img="password.png" action="change_password" id="passwordstringid" title="Change this users password"|gettext}{literal}';
+                    deletestring     = '{/literal}{icon img="delete.png" action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
+                    editstring     = editstring.replace('editstringid',oRecord._oData.id);
+                    passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);
+                    deletestring   = deletestring.replace('deletestringid',oRecord._oData.id);
 
                     elCell.innerHTML += editstring + passwordstring + deletestring +'</div>';
 
@@ -96,14 +99,17 @@
     
 			// Column definitions
 			var myColumnDefs = [ // sortable:true enables sorting
-			{ key:"id",label:"{/literal}{"Username"|gettext}{literal}",formatter:formatID},
-			{ key:"firstname",label:"{/literal}{"First Name"|gettext}{literal}"},
-			{ key:"lastname",label:"{/literal}{"Last Name"|gettext}{literal}"},
-			{ key:"is_acting_admin",label:"{/literal}{"Is Admin"|gettext}{literal}",formatter:formatActingAdmin},
-			{ label:"Actions",label:"", sortable:false,formatter: formatactions}
+                { key:"id",label:"{/literal}{"Username"|gettext}{literal}",sortable:true,formatter:formatID},
+                { key:"firstname",label:"{/literal}{"First Name"|gettext}{literal}",sortable:true},
+                { key:"lastname",label:"{/literal}{"Last Name"|gettext}{literal}",sortable:true},
+                { key:"is_acting_admin",label:"{/literal}{"Is Admin"|gettext}{literal}",sortable:true,formatter:formatActingAdmin},
+                {/literal}{permissions}{literal}
+                { key:"Actions",label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions}
+                {/literal}{/permissions}{literal}
 			];
+
 			// DataSource instance
-			var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
+			var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=users&action=getUsersByJSON&json=1&ajax_action=1&filter={/literal}{$filter}{literal}&");
 			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 			myDataSource.responseSchema = {
 				resultsList: "records",
@@ -127,7 +133,7 @@
 				set of variable initializers.
 				var sort, dir, startIndex, results; */
 				
-				var startIndex, results;
+				var sort, dir, startIndex, results;
 				
 				oState = oState || {pagination: null, sortedBy: null};
 				
@@ -135,14 +141,14 @@
 				will properly set the current _sortedBy_ column and the _sortDirection_
 				sort = (oState.sortedBy) ? oState.sortedBy.key : oSelf.getColumnSet().keys[0].getKey();
 				dir = (oState.sortedBy && oState.sortedBy.dir === DataTable.CLASS_DESC) ? "desc" : "asc"; */
-				
+                sort = (oState.sortedBy) ? oState.sortedBy.key : "id";
+                dir = (oState.sortedBy && oState.sortedBy.dir === YAHOO.widget.DataTable.CLASS_DESC) ? "desc" : "assc";
 				startIndex = (oState.pagination) ? oState.pagination.recordOffset : 0;
 				results = (oState.pagination) ? oState.pagination.rowsPerPage : null;
 				
-				
-				return  "results=" 	+ results +
-						"&startIndex=" 	+ startIndex +
-						"&sort=id&dir=asc" +
+				return  "results=" + results +
+						"&startIndex=" + startIndex +
+						"&sort=" + sort + "&dir=" + dir +
 						"&query=" + at.value;
 			}
 			
@@ -151,7 +157,7 @@
 				generateRequest: requestBuilder,
 				initialRequest: "sort=id&dir=asc&startIndex=0&results=10", // Initial request for first page of data
 				dynamicData: true, // Enables dynamic server-driven data
-				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
+				sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 				paginator: new YAHOO.widget.Paginator({rowsPerPage:10,containers:"pagelinks"}) // Enables pagination 
 			};
 		
@@ -174,4 +180,4 @@
 				
 		});
 	{/literal}
-</script>
+{/script}

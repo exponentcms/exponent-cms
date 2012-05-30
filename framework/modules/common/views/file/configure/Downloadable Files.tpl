@@ -13,5 +13,5 @@
  *
  *}
 
-<h2>{"Downloadable Files"|gettext}</h2>
+<h2>{"Downloadable Files Configuration"|gettext}</h2>
 {control type=text name="title" label="File list title"|gettext value=$config.title}

@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module migration migrate-files">
-    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><b>{'Next Step -> Migrate Content'|gettext}</b></a>
+    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><strong>{'Next Step -> Migrate Content'|gettext}</strong></a>
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
@@ -60,7 +60,7 @@
 		<tbody>
 			{foreach from=$files item=file name=files}
 				<tr class="{cycle values="even,odd"}">            
-					<td width="5%">{if $file->exists}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{else}<span style="color:red"><b>??</b></span>{/if}</td>
+					<td width="5%">{if $file->exists}{img src=$smarty.const.ICON_RELATIVE|cat:'clean.png'}{else}<span style="color:red"><strong>??</strong></span>{/if}</td>
 					<td width="30%">{$file->filename}</td>
 					<td width="65%">{$file->directory}</td>
 				</tr>

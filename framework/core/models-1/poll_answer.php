@@ -20,6 +20,7 @@ class poll_answer {
 	static function form($object) {
 		$form = new form();
 		if (!isset($object->id)) {
+            $object = new stdClass();
 			$object->answer = '';
 		} else {
 			$form->meta('id',$object->id);

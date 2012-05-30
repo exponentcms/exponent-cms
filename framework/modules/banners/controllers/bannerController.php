@@ -36,8 +36,8 @@ class bannerController extends expController {
         'showall'=>'Display Banner(s)'
     );
 
-    function displayname() { return "Banners"; }
-    function description() { return "Use this to display banners on your website."; }
+    function displayname() { return gt("Banners"); }
+    function description() { return gt("Use this to display banners on your website."); }
     
     public function showall() {
         $banners = array();
@@ -94,10 +94,10 @@ class bannerController extends expController {
 			'sql'=>$sql,
 			'order'=>'title',
 			'columns'=>array(
-				'Title'=>'title',
-				'Company'=>'companyname', 
-				'Impressions'=>'impressions',
-				'Clicks'=>'clicks'
+                gt('Title')=>'title',
+                gt('Company')=>'companyname',
+                gt('Impressions')=>'impressions',
+                gt('Clicks')=>'clicks'
 				)
 			));
 

@@ -28,7 +28,7 @@
 	text-decoration: none;
 }	
 
-.calendar.default caption {
+.calendar.default div.caption {
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -40,6 +40,7 @@
 
 .calendar.default th {
 	font: bold 11px/20px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    text-align: center;
 	color: #616B76;
 	background: #D9E2E1;
 	border-right: 1px solid #A2ADBC;

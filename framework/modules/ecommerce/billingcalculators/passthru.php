@@ -98,7 +98,7 @@ class passthru extends billingcalculator {
         $sr1 = new sales_rep($opts->sales_rep_1_id);
         $sr2 = new sales_rep($opts->sales_rep_2_id);
         $sr3 = new sales_rep($opts->sales_rep_3_id);
-        $msg = 'Order Type: ' . $ot->title;                
+        $msg = gt('Order Type').': ' . $ot->title;
         $msg .= '<br>'.gt('Order Status').': ' . $os->title;
         $msg .= '<br>'.gt('Sales Rep 1').': ' . $sr1->initials;
         $msg .= '<br>'.gt('Sales Rep 2').': ' . $sr2->initials;

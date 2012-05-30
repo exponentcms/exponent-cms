@@ -28,8 +28,8 @@ class donationController extends expController {
     );
     // public $useractions = array();
     
-    function displayname() { return "Online Donations"; }
-    function description() { return "Use this module to accept donations on your website"; }
+    function displayname() { return gt("Online Donations"); }
+    function description() { return gt("Use this module to accept donations on your website"); }
 
     function showall() {
         expHistory::set('viewable', $this->params);

@@ -19,7 +19,7 @@ class remove_exp1_faqmodule extends upgradescript {
 	protected $from_version = '1.99.0';
 	protected $to_version = '1.99.2'; 
 
-	function name() { return "Remove the old FAQ Module"; }
+	static function name() { return "Remove the old FAQ Module"; }
 
 	function upgrade() {
 //	    global $db;

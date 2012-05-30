@@ -49,10 +49,14 @@ class filedownload extends expRecord {
                     $this->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
                 }
             }
-//        } else {
-//            $this->expFile['downloadable'][0]->duration = '';
         }
     }
+
+    public function beforeCreate() {
+   	    if (empty($this->publish) || $this->publish == 'on') {
+   	        $this->publish = time();
+   	    }
+   	}
 
 }
 

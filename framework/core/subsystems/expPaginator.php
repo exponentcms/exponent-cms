@@ -66,6 +66,7 @@ class expPaginator {
 	public $header_columns = '';
 	public $default = '';
 	public $view = null;
+    public $uncat ='';
 //    public $content_type = '';
 //    public $author = '';
 //    public $tag = '';
@@ -116,6 +117,7 @@ class expPaginator {
 		$this->dir = empty($params['dir']) ? 'ASC' : $params['dir'];
 		$this->src = empty($params['src']) ? null : $params['src'];
         $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
+        $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
 
 		// if a view was passed we'll use it.
 		if (isset($params['view'])) $this->view = $params['view'];
@@ -135,9 +137,9 @@ class expPaginator {
 		
 		$this->start = (($this->page * $this->limit) - $this->limit);
 		
-		//setup the columns and default ordering of records
+		//setup the columns
+        $this->columns = array();
 		if (isset($params['columns'])) {
-		    $this->columns = array();
 		    foreach($params['columns'] as $key=>$col){
 		        $colparse[$key] = explode('|',$col);
 		        $column = array($key=>$colparse[$key][0]);
@@ -152,6 +154,7 @@ class expPaginator {
 		    }
 		}
 		
+		//setup the default ordering of records
 		// if we are in an action, see if the action is for this controller/action..if so pull the order
 		// and order direction from the request params...this is how the params are passed via the column
 		// headers.
@@ -159,10 +162,10 @@ class expPaginator {
 		if (expTheme::inAction()) {
 		    //FIXME: module/controller glue code
 		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
-//		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
+		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
 			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
-//			}
+			}
 		}
         // allow passing of a single order/dir as stored
         if (strstr($this->order," ")) {
@@ -171,25 +174,17 @@ class expPaginator {
             $this->order_direction = $orderby[1];
         }
 
-        //FIXME we'll need to:
-        // 1. pull all the records
-        // 2. categorize the entire record set (if needed?)
-        // 3. then reduce it's size
-
 		// figure out how many records we're dealing with & grab the records
 		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 		    $this->total_records = count($this->records);
-//		    $this->records = array_slice($this->records, $this->start, $this->limit);  //FIXME save for later
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
 			$this->total_records = $class->find('count', $this->where);
-//			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);  //FIXME save for later
             $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
 		} elseif (!empty($this->where)) { //from Merge....where clause
 			$this->total_records = $class->find('count', $this->where);
-//			$this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction, $this->limit, $this->start);  //FIXME save for later
             $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
 		} else { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
@@ -214,13 +209,13 @@ class expPaginator {
 			    $this->records = $db->selectObjectsBySql($this->sql);
 			}
 		}	
-        if ($this->start > $this->total_records) {
+        if ($this->start >= $this->total_records) {
             $this->start = $this->total_records - $this->limit;
         }
 
         // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize) {
-            expCatController::addCats($this->records,$this->order.' '.$this->order_direction);
+            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat);
         }
 
         // now we'll trim the records to the number requested
@@ -239,6 +234,7 @@ class expPaginator {
                     $title = '';
                 }
                 if (empty($this->cats[$title])) {
+                    $this->cats[$title] = new stdClass();
                     $this->cats[$title]->count = 1;
                     $this->cats[$title]->name = $title;
                 } else {
@@ -274,7 +270,9 @@ class expPaginator {
 		if (!empty($this->controller)) {
 		    unset($page_params['module']);
 		    $page_params['controller'] = str_replace("Controller","",$this->controller);
-		}
+		} else {
+            $page_params['controller'] = $mod;  // we can't be passing an empty controller or module to the router
+        }
 		
 		if (!empty($this->action)) $page_params['action'] =  $this->action;
 		if (!empty($this->src)) $page_params['src'] =  $this->src;
@@ -459,8 +457,12 @@ class expPaginator {
                      ));
 
                 } else {
-					unset($params['page']);
-                    $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
+					unset($params['page']);  // we want to go back to the first page on a re-sort
+                    if ($col == 'no-sort') {
+                        $this->header_columns .= $colname;
+                    } else {
+                        $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
+                    }
                 }
                 
                 $this->header_columns .= '</th>';

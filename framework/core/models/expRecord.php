@@ -112,8 +112,17 @@ class expRecord {
             $this->build($params);
         }
 
+        // establish a pseudo publish date
+        if (!empty($this->publish)) {
+            $this->publish_date = $this->publish;
+        } elseif (!empty($this->edited_at)) {
+            $this->publish_date = $this->edited_at;
+        } elseif (!empty($this->created_at)) {
+            $this->publish_date = $this->created_at;
+        }
+
         // setup the exception array if it's not there.  This array tells the getAssociatedObjectsForThisModel() function which 
-        // modules NOT to setup.  This stops us from getting infinant loops with many to many relationships.
+        // modules NOT to setup.  This stops us from getting infinite loops with many to many relationships.
         $params['except'] = isset($params['except']) ? $params['except'] : array();
         $params['cascade_except'] = isset($params['cascade_except']) ? $params['cascade_except'] : false;        
         
@@ -241,10 +250,6 @@ class expRecord {
     *
     * @global object $db
     * @param mixed $params array or Object for table selection
-    *
-    * @return none
-    * @throws none
-    *
     */
     public function build($params=array()) {
         global $db;
@@ -257,9 +262,9 @@ class expRecord {
         
         //check for location_data
         if (is_array($params) && (!empty($params['module']) && !empty($params['src']))) {
-            $params['location_data'] = serialize(makeLocation($params['module'], $params['src']));
+            $params['location_data'] = serialize(expCore::makeLocation($params['module'], $params['src']));
         } elseif(is_object($params) && (!empty($params->module) && !empty($params->src))) {
-            $params->location_data = serialize(makeLocation($params->module, $params->src));
+            $params->location_data = serialize(expCore::makeLocation($params->module, $params->src));
         }
     
         // Build Class properties based off table fields
@@ -328,7 +333,7 @@ class expRecord {
         // save the attachable items
         $refname = strtolower($item->classname).'s_id';
         $db->delete($item->attachable_table, 'content_type="'.$this->classname.'" AND content_id='.$this->id.' AND '.$refname.'='.$item->id);
-        $obj = null;
+        $obj = new stdClass();
         $obj->$refname = $item->id;
         $obj->content_id = $this->id;
         $obj->content_type = $this->classname;
@@ -358,14 +363,14 @@ class expRecord {
         //$this->saveAssociatedObjects(); 
         
         //Only grab fields that are valid and save this object
-        $saveObj = null;
+        $saveObj = new stdClass();
         $table = $db->getDataDefinition($this->tablename);
         foreach($table as $col=>$colDef) {
             $saveObj->$col = empty($this->$col) ? null : $this->$col;
         }
         
         $identifier = $this->identifier;
-       if (!empty($saveObj->$identifier)) { 
+        if (!empty($saveObj->$identifier)) {
             $db->updateObject($saveObj, $this->tablename,null,$identifier,$this->supports_revisions);
             $this->afterUpdate();
         } else {
@@ -448,10 +453,20 @@ class expRecord {
                     $db->delete($itemtype->attachable_table, 'content_type="'.$this->classname.'" AND content_id='.$this->id);
                     $refname = strtolower($type).'s_id';  //FIXME: find a better way to pluralize these names!!!
                     foreach($this->attachable_items_to_save[$type] as $subtype=>$item) {
-                        if (is_array($item)) {
+                        if (is_object($item)) {
+                            if (!empty($item->id)) {
+                                $obj = new stdClass();
+                                $obj->$refname = $item->id;
+                                $obj->subtype = $subtype;
+                                $obj->content_id = $this->id;
+                                $obj->content_type = $this->classname;
+                                if ($type == 'expFile') $obj->rank = $item->rank + 1;
+                                $db->insertObject($obj, $itemtype->attachable_table);
+                            }
+                        } elseif (is_array($item)) {
                             foreach($item as $rank=>$value) {
                                 if (is_numeric($value)) {
-                                    $obj = null;
+                                    $obj = new stdClass();
                                     $obj->$refname = $value;
                                     $obj->subtype = $subtype;
                                     $obj->content_id = $this->id;
@@ -461,7 +476,7 @@ class expRecord {
                                 }
                             }
                         } elseif (is_numeric($item)) {
-                            $obj = null;
+                            $obj = new stdClass();
                             $obj->$refname = $item;
                             $obj->content_id = $this->id;
                             $obj->content_type = $this->classname;
@@ -907,7 +922,7 @@ class expRecord {
             $tablename = $this->makeManyToManyTablename($assocObj->tablename);
             $thisid = $this->tablename.'_id';
             $otherid = $assocObj->tablename.'_id';
-            $obj = null;
+            $obj = new stdClass();
             $obj->$thisid = $this->id;
             $obj->$otherid = $id;
             $db->insertObject($obj, $tablename);

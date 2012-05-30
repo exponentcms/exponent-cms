@@ -32,7 +32,7 @@ class convert_permissions extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Change 1.0 module permissions to the 2.0 common naming standard"; }
+	static function name() { return "Change 1.0 module permissions to the 2.0 common naming standard"; }
 
 	/**
 	 * generic description of upgrade script
@@ -56,7 +56,6 @@ class convert_permissions extends upgradescript {
 	function upgrade() {
 	    global $db;
 
-        $fixed = 0;
 		// convert each old school permission name to its 2.0 equivalent
         $perms = array(
             'administrate'=>'manage',

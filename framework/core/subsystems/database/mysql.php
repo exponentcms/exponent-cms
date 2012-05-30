@@ -284,7 +284,7 @@ class mysql_database extends database {
 			return $status;
 		} else $status["CREATE TABLE"] = true;
 
-		$o = null;
+		$o = new stdClass();
 		$o->name = "Testing Name";
 		$insert_id = $this->insertObject($o,$tablename);
 		if ($insert_id == 0) {
@@ -315,7 +315,7 @@ class mysql_database extends database {
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
 
 		$this->alterTable($tablename,$dd,array());
-		$o = null;
+		$o = new stdClass();
 		$o->name = "Alter Test";
 		$o->thirdcol = "Third Column";
 		if (!$this->insertObject($o,$tablename)) {
@@ -792,7 +792,7 @@ class mysql_database extends database {
 	 * @param string $where Optional criteria used to narrow the result set.
 	 * @return bool
 	 */
-	function updateObject($object,$table,$where=null) {
+	function updateObject($object,$table,$where=null, $identifier='id', $is_revisioned=false) {
 		$sql = "UPDATE `" . $this->prefix . "$table` SET ";
 		foreach (get_object_vars($object) as $var=>$val) {
 			//We do not want to save any fields that start with an '_'
@@ -818,9 +818,9 @@ class mysql_database extends database {
 	 *
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a maximum value for.
-	 * @param A comma-separated list of fields (or a single field) name, used
+	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null
 	 */
 	function max($table,$attribute,$groupfields = null,$where = null) {
@@ -842,9 +842,9 @@ class mysql_database extends database {
 	 *
 	 * @param string $table The name of the table to select from.
 	 * @param string $attribute The attribute name to find a minimum value for.
-	 * @param A comma-separated list of fields (or a single field) name, used
+	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null
 	 */
 	function min($table,$attribute,$groupfields = null,$where = null) {
@@ -988,7 +988,7 @@ class mysql_database extends database {
 	 * @return null
 	 */
 	function translateTableStatus($status) {
-		$data = null;
+		$data = new stdClass();
 		$data->rows = $status->Rows;
 		$data->average_row_lenth = $status->Avg_row_length;
 		$data->data_overhead = $status->Data_free;
@@ -1189,7 +1189,7 @@ class mysql_database extends database {
 		return mysql_fetch_assoc($res);
 	}
 	
-	function selectExpObjects($table, $where=null, $classname) {
+	function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
 		if ($where == null) $where = "1";
 
 		$res = @mysql_query("SELECT * FROM `" . $this->prefix . "$table` WHERE $where",$this->connection);

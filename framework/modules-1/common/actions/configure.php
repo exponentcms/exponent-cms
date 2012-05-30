@@ -33,7 +33,10 @@ if (expPermissions::check('configure',$loc)) {
 	
 	if ($db->tableExists($_GET['module'].'_config') && class_exists($_GET['module'].'_config')) {
 		$config = $db->selectObject($_GET['module'].'_config',"location_data='".serialize($loc)."'");	
-		if (empty($config->location_data)) $config->location_data = serialize($loc);
+		if (empty($config->location_data)) {
+            $config = new stdClass();
+            $config->location_data = serialize($loc);
+        }
 		$form = call_user_func(array($_GET['module'].'_config','form'),$config);
 			
 		if (isset($form->controls['submit'])) {
@@ -63,10 +66,11 @@ if (expPermissions::check('configure',$loc)) {
 		$form->meta('_common','1');
 	}
 	
+    $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Module Configuration').'</div>'),true,'base');
 	if ($submit !== null) {
-		$form->register('submit','',$submit);
+		$form->register('submit','',$submit,true,'base');
 	}
-	
+
 	if ($hasConfig) {
 		$template->assign('form_html',$form->toHTML());
 	}

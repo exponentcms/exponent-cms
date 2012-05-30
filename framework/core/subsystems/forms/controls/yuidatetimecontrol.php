@@ -20,8 +20,8 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Popup YUI Date/Time Control
- * uses the yuicalendarcontrol & datetimecontrol
+ * YUI Date/Time Control
+ * uses/combines yuicalendarcontrol & datetimecontrol (w/o date)
  *
  * @package Subsystems-Forms
  * @subpackage Control
@@ -31,9 +31,9 @@ class yuidatetimecontrol extends formcontrol {
     var $showdate = true;
     var $showtime = true;
     
-    function name() { return "YUI Date / Time Field"; }
-    function isSimpleControl() { return false; }
-    function getFieldDefinition() {
+    static function name() { return "YUI Date / Time Field"; }
+    static function isSimpleControl() { return false; }
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
     }
@@ -70,7 +70,7 @@ class yuidatetimecontrol extends formcontrol {
         return $html;
     }
     
-    function controlToHTML($name) {
+    function controlToHTML($name,$label=null) {
         $datectl = new yuicalendarcontrol($this->default,'',false);
         $timectl = new datetimecontrol($this->default,false);
         $datetime = date('l, F d, o g:i a', $this->default);
@@ -91,14 +91,14 @@ class yuidatetimecontrol extends formcontrol {
         
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-            Y.on('click',function(e){
+            Y.one('#pub-".$name."').on('click',function(e){
                 var cal = Y.one('#datetime-".$name."');
                 if (cal.getStyle('display')=='none') {
                     cal.setStyle('display','block');
                 } else {
                     cal.setStyle('display','none');
                 }
-            },'#pub-".$name."');
+            });
         });
         ";
         

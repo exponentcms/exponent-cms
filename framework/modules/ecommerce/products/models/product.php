@@ -698,7 +698,7 @@ class product extends expRecord {
         
         $exists = $db->selectObject('search',"category='Products' AND ref_module='store' AND original_id = " . $this->id);
         
-        $search = null;
+        $search = new stdClass();
         $search->category = 'Products';
         $search->ref_module = 'store';
         $search->ref_type = 'product';

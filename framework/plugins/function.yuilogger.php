@@ -39,7 +39,7 @@ function smarty_function_yuilogger($params,&$smarty) {
 			var loader = new YAHOO.util.YUILoader();
 			loader.insert({
 			    require: ['fonts','dragdrop','logger'],
-			    base: eXp.URL_FULL+'external/yui/build/',
+			    base: eXp.PATH_RELATIVE+'external/yui/build/',
 
 			    onSuccess: function(loader) {
 
@@ -61,7 +61,7 @@ function smarty_function_yuilogger($params,&$smarty) {
 		// var yuiloggerloader = new YAHOO.util.YUILoader();
 		// yuiloggerloader.insert({
 		//     require: ['fonts','dragdrop','logger'],
-		//     base: eXp.URL_FULL+'external/yui/build/',
+		//     base: eXp.PATH_RELATIVE+'external/yui/build/',
 		// 	
 		//     onSuccess: function(yuiloggerloader) {
 		//             // Put a LogReader on your page

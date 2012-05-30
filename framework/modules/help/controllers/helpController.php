@@ -27,8 +27,8 @@ class helpController extends expController {
         'select_version'=>'Select Help Version'
     );
 
-	function displayname() { return "Help"; }
-	function description() { return "Module for managing Exponent CMS help files."; }
+	function displayname() { return gt("Help"); }
+	function description() { return gt("Module for managing Exponent CMS help files."); }
 	function isSearchable() { return true; }
 	
     function __construct($src=null, $params=array()) {
@@ -81,7 +81,7 @@ class helpController extends expController {
 	                'dir'=>$dir,
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
-	                'columns'=>array('Title'=>'title', 'Body'=>'body', 'Version'=>'help_version_id'),
+	                'columns'=>array(gt('Title')=>'title',gt('Body')=>'body',gt('Version')=>'help_version_id'),
 	                ));
 	    
 	    assign_to_template(array('current_version'=>$ref_version, 'page'=>$page, 'rank'=>($order==='rank')?1:0));
@@ -136,8 +136,9 @@ class helpController extends expController {
             }
 	    }
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$doc->location_data."'"));
 
-	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version));
+	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version,'config'=>$config));
 	}
 
     /**
@@ -171,7 +172,7 @@ class helpController extends expController {
 	                'dir'=>'DESC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
-	                'columns'=>array('Title'=>'title', 'Version'=>'help_version_id', 'Section'=>'section'),
+	                'columns'=>array(gt('Title')=>'title',gt('Version')=>'help_version_id',gt('Section')=>'section'),
 	                ));
 
 	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page, 'sections'=>$sections));
@@ -240,7 +241,7 @@ class helpController extends expController {
 	                'dir'=>'DESC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
-	                'columns'=>array('Version'=>'version', 'Title'=>'title', 'Current'=>'is_current', '# of Docs'=>'num_docs'),
+	                'columns'=>array(gt('Version')=>'version',gt('Title')=>'title',gt('Current')=>'is_current',gt('# of Docs')=>'num_docs'),
 	                ));
 	    
 	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page));
@@ -309,7 +310,7 @@ class helpController extends expController {
 	    // save the version
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $version = new help_version();
-	    // if we dont have a current version yet we will force this one to be it
+	    // if we don't have a current version yet so we will force this one to be it
 	    if (empty($current_version->id)) $this->params['is_current'] = 1;
 	    $version->update($this->params);
 	    
@@ -317,6 +318,8 @@ class helpController extends expController {
 	    if (empty($id)) {
 	        self::copydocs($current_version->id, $version->id);	        
 	    }
+        // let's update the search index to reflect the current help version
+        searchController::spider();
 
 	    flash('message', gt('Saved help version').' '.$version->version);
 	    expHistory::back();
@@ -336,6 +339,8 @@ class helpController extends expController {
 	    $version = new help_version($id);
 	    $this->params['is_current'] = 1;
 	    $version->update($this->params);
+        // let's update the search index to reflect the current help version
+        searchController::spider();
 
 	    flash('message', gt('Changed active help version to').' '.$version->version);
 	    expHistory::back();
@@ -411,16 +416,20 @@ class helpController extends expController {
      */
 	public static function getSection($params) {
 	    global $db;
-	    $h = new help();
+
+        $help = new help();
         if (empty($params['version']) || $params['version']=='current') {
-            $hv = $db->selectValue('help_version', 'id', 'is_current=1');
+            $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
         } else {
-            $hv = $db->selectValue('help_version', 'id', 'version='.$params['version']);
+            $version_id = $db->selectValue('help_version', 'id', 'version="'.$params['version'].'"');
+            if (empty($version_id)) {
+                $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
+            }
         }
-	    $help = $h->find('first','help_version_id='.$hv.' and sef_url=\''.$params['title'].'\'');
+        $doc = $help->find('first','help_version_id='.$version_id.' and sef_url="'.$params['title'].'"');
 	    $session_section = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
-        $help_sectionref = $db->selectObject('sectionref','module="helpController" AND source="'. expUnserialize($help->location_data)->src.'"');
-        $sid = !empty($help_sectionref) ? $help_sectionref->section : (($help->section!=0) ? $help->section : $session_section);
+        $help_sectionref = $db->selectObject('sectionref','module="helpController" AND source="'. expUnserialize($doc->location_data)->src.'"');
+        $sid = !empty($help_sectionref) ? $help_sectionref->section : (($doc->section!=0) ? $doc->section : $session_section);
         if (!expSession::get('last_section')) {
             expSession::set('last_section',$sid);
         }

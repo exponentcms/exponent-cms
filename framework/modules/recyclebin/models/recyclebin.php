@@ -26,18 +26,33 @@ class recyclebin extends expRecord {
     //public $validates = '';
     public function moduleOrphans($module) {
         global $db;
-        $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' AND module=\''.$module.'\'');
-        
+        if (empty($module)) {
+            $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' ORDER BY module');
+        } else {
+            $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' AND module=\''.$module.'\'');
+        }
+        $loc =null;
+
         //foreach ($orphans as $orphan) {
         for($i=0; $i<count($orphans); $i++) {
-            if (expModules::controllerExists($module)) {
-                $orphans[$i]->html = renderAction(array('controller'=>$module, 'action'=>'showall','src'=>$orphans[$i]->source,"no_output"=>true));
+            $loc = new stdClass();
+            $loc->mod = $orphans[$i]->module;
+            $loc->src = $orphans[$i]->source;
+            $loc->int = $orphans[$i]->internal;
+            $orphans[$i]->loc = serialize($loc);
+            if ($orphans[$i]->module == 'recyclebinController') {
+                unset($orphans[$i]);
             } else {
-                $mod = new $module();
-                ob_start();
-	                $mod->show("Default",$loc);  //FIXME $loc is not set
-	                $orphans[$i]->html =ob_get_contents();
-	            ob_end_clean();
+                if (expModules::controllerExists($orphans[$i]->module)) {
+                    $orphans[$i]->html = renderAction(array('controller'=>$orphans[$i]->module, 'action'=>'showall','src'=>$orphans[$i]->source,"no_output"=>true));
+                } else {
+                    echo($module).'...';
+                    $mod = new $orphans[$i]->module();
+                    ob_start();
+                    $mod->show("Default",$loc);
+                    $orphans[$i]->html = ob_get_contents();
+                    ob_end_clean();
+                }
             }
         }
         

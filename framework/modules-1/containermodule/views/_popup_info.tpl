@@ -35,11 +35,11 @@
                     </tr>
                     <tr>
                         <td>{'Title'|gettext}:&nbsp;</td>
-                        <td>{if $container->title == ""}<i>&lt;{'none'|gettext}&gt;</i>{else}{$container->title}{/if}</td>
+                        <td>{if $container->title == ""}<em>&lt;{'none'|gettext}&gt;</em>{else}{$container->title}{/if}</td>
                     </tr>
                 {/if}
             </table>
         </div>
-        <div style="border-top: 3px dashed lightgrey; padding: 3px;">{if $name == ''}<i>{'Module Not Found in the System'|gettext}</i>{elseif $info == ''}<i>{'No Description Provided'|gettext}</i>{else}{$info|nl2br}{/if}</div>
+        <div style="border-top: 3px dashed lightgrey; padding: 3px;">{if $name == ''}<em>{'Module Not Found in the System'|gettext}</em>{elseif $info == ''}<em>{'No Description Provided'|gettext}</em>{else}{$info|nl2br}{/if}</div>
     </body>
 </html>

@@ -16,5 +16,5 @@
 {'MESSAGE:'|gettext}
 
 {'Email:'|gettext}    {$post.email}
-{'Subject:'|gettext}  {$post.subject}
-{'Message:'|gettext}  {$post.message}
+{'Subject'|gettext}:  {$post.subject}
+{'Message'|gettext}:  {$post.message}

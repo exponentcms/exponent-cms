@@ -20,12 +20,12 @@
 		{foreach name=loop from=$answers item=answer}
 			{if $smarty.foreach.loop.first}
 				<tr>
-					<td><b>{$answer->answer}</b></td>
-					<td><b>{$answer->vote_count}/{$vote_total}</b></td>
-					<td><b>
+					<td><strong>{$answer->answer}</strong></td>
+					<td><strong>{$answer->vote_count}/{$vote_total}</strong></td>
+					<td><strong>
 						{math assign=percentage equation="x / y * 100" x=$answer->vote_count y=$vote_total}
 						{$percentage|round:2}%
-					</b></td>
+					</strong></td>
 				</tr>
 			{else}
 				<tr>

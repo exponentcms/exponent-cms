@@ -38,10 +38,19 @@
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item">
             <h2>
-                <a href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
+                <a href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
                 </a>
             </h2>
+            <span class="date">{$item->publish_date|date_format}</span>
+            {if $item->expTag|@count>0 && !$config.disabletags}
+                | <span class="tags">
+                    {"Tags"|gettext}:
+                    {foreach from=$item->expTag item=tag name=tags}
+                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                    {/foreach}
+                </span>
+            {/if}
             {if $item->isRss != true}
                 {permissions}
                 <div class="item-actions">
@@ -61,16 +70,6 @@
                 </div>
                 {/permissions}
             {/if}
-            <span class="date">{$item->publish_date|date_format}</span>
-            {if $item->expTag|@count>0 && !$config.disabletags}
-                | <span class="tags">
-                    {"Tags"|gettext}:
-                    {foreach from=$item->expTag item=tag name=tags}
-                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach}
-                </span>
-            {/if}
-
             <div class="bodycopy">
                 {if $config.filedisplay != "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
@@ -84,13 +83,13 @@
                 {if $config.filedisplay == "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
-                <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=showByTitle title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
+                <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
             </div>
             {clear}
         </div>
         {/if}
     {/foreach}
     {if $page->total_records > $config.headcount}
-        {br}{icon action="showall" text="More News in '`$moduletitle`' ..."|gettext}
+        {br}{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>

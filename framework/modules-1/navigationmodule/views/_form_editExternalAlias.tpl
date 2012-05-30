@@ -24,4 +24,14 @@
 		{'Below, enter the web address you want this section to link to.'|gettext}
 	</div>
 	{$form_html}
+{script unique="configure" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
+        tabview.render();
+        Y.one('#configure-tabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}
 </div>

@@ -26,8 +26,8 @@ class reportController extends expController {
 	//public $useractions = array('showall'=>'Show all');
 	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the Ecommerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products', 'show_payment_summary'=>'Show Payment Summary','export_order_items'=>'Export Order Items File');
 	
-	function displayname() { return "Ecom Report Builder"; }
-	function description() { return "Build reports based on store activity"; }
+	function displayname() { return gt("Ecom Report Builder"); }
+	function description() { return gt("Build reports based on store activity"); }
 	function author() { return "Phillip Ball - OIC Group, Inc"; }
 	function hasSources() { return false; }
     
@@ -360,7 +360,7 @@ class reportController extends expController {
             'order_direction'=>'DESC',            
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,'Order #'=>'invoice_id|controller=order,action=show,showby=id','Date'=>'purchased_date','First'=>'bfirst','Last'=>'blast','Total'=>'grand_total','Status'=>'status_title'),
+            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Status')=>'status_title'),
             ));
                     
         $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File');
@@ -751,7 +751,7 @@ class reportController extends expController {
             'dir'=>'DESC',            
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,'Order #'=>'invoice_id|controller=order,action=show,showby=id','Purchased Date'=>'purchased_date','First'=>'bfirst','Last'=>'blast','Total'=>'grand_total','Status Changed Date'=>'status_changed_date','Order Type'=>'order_type','Status'=>'status_title'),
+            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Purchased Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Status Changed Date')=>'status_changed_date',gt('Order Type')=>'order_type',gt('Status')=>'status_title'),
             ));
        
         //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
@@ -1131,7 +1131,7 @@ class reportController extends expController {
             'order'=>$order,
             'controller'=>'store',
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,'ID'=>'id','Product'=>'title|controller=store,action=show,showby=id','SKU'=>'model','Price'=>'base_price'),
+            'columns'=>array('actupon'=>true,gt('ID')=>'id',gt('Product')=>'title|controller=store,action=show,showby=id',gt('SKU')=>'model',gt('Price')=>'base_price'),
             //'columns'=>array('Product'=>'title','SKU'=>'model'),
             ));   
         //eDebug($page,true);

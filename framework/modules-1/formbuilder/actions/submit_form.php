@@ -23,17 +23,17 @@ if (!defined('EXPONENT')) exit('');
 $post = $_POST;
 $post['manual_redirect'] = true;
 if (!expValidator::check_antispam($post)) {
-    flash('error', gt('Security Validation Failed'));
+	flash('error', gt('Security Validation Failed'));
     expHistory::back();
 }
 
 global $db, $user;
 $f = $db->selectObject("formbuilder_form","id=".intval($_POST['id']));
 $rpt = $db->selectObject("formbuilder_report","form_id=".intval($_POST['id']));
-$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0");
-$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_readonly=0","rank");
+//$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
-$db_data = null;
+$db_data = new stdClass();
 $emailFields = array();
 $captions = array();
 foreach ($controls as $c) {
@@ -68,6 +68,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
             $db_data->ip = $olddata->ip;
             $db_data->user_id = $olddata->user_id;
             $db_data->timestamp = $olddata->timestamp;
+			$db_data->referrer = $olddata->referrer;
             $db->delete('formbuilder_'.$f->table_name,'id='.intval($_POST['data_id']));
         } 
         else {
@@ -80,6 +81,8 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
                 $db_data->user_id = 0;
             }
             $db_data->timestamp = time();
+			$referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" .expSession::getTicketString() . "'");
+			$db_data->referrer = $referrer;
         }        
         $db->insertObject($db_data, 'formbuilder_'.$f->table_name);
     }
@@ -111,27 +114,29 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
         $template->assign("captions",$captions);
 		$template->assign('title',$rpt->name);
         $template->assign("is_email",1);
+		$template->assign("referrer", $referrer);
         $emailText = $template->render();
 		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
 		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
 		$emailHtml = $template->render();
+		
 		if (empty($from)) {
 			$from = trim(SMTP_FROMADDRESS);
 		}
 		if (empty($from_name)) {
 			$from_name = trim(ORGANIZATION_NAME);
 		}
-//		$headers = array(
-//			"MIME-Version"=>"1.0",
-//			"Content-type"=>"text/html; charset=".LANG_CHARSET
-//		);
+		// $headers = array(
+			// "MIME-Version"=>"1.0",
+			// "Content-type"=>"text/html; charset=".LANG_CHARSET
+		// );
         if (count($emaillist)) {
             //This is an easy way to remove duplicates
             $emaillist = array_flip(array_flip($emaillist));
             $emaillist = array_map('trim', $emaillist);
 			$mail = new expMail();
 			$mail->quickSend(array(
-//					'headers'=>$headers,
+				//	'headers'=>$headers,
 					'html_message'=>$emailHtml,
 					"text_message"=>$emailText,
 					'to'=>$emaillist,
@@ -140,6 +145,31 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
 			));
         }
     }
+	
+
+	if ($f->is_auto_respond == 1 && !isset($_POST['data_id'])) {
+		if (empty($from)) {
+			$from = trim(SMTP_FROMADDRESS);
+		}
+		if (empty($from_name)) {
+			$from_name = trim(ORGANIZATION_NAME);
+		}
+		$headers = array(
+			"MIME-Version"=>"1.0",
+			"Content-type"=>"text/html; charset=".LANG_CHARSET
+		);
+		
+			
+		$mail = new expMail();
+		$mail->quickSend(array(
+				'headers'=>$headers,
+				'html_message'=>$f->auto_respond_body,
+				'to'=>$db_data->email,
+				'from'=>array(trim($from)=>$from_name),
+				'subject'=>$f->auto_respond_subject,
+		));
+
+	}
 
     // clear the users post data from the session.
     expSession::un_set('formmodule_data_'.$f->id);

@@ -24,13 +24,13 @@ $_GET['id'] = intval($_GET['id']);
 $_GET['form_id'] = intval($_GET['form_id']);
 
 $f = $db->selectObject('formbuilder_form','id='.$_GET['form_id']);
-$controls = $db->selectObjects('formbuilder_control','form_id='.$f->id.' and is_readonly=0 and is_static = 0');
+$controls = $db->selectObjects('formbuilder_control','form_id='.$f->id.' and is_readonly=0 and is_static = 0','rank');
 $data = $db->selectObject('formbuilder_'.$f->table_name,'id='.$_GET['id']);
 $rpt = $db->selectObject('formbuilder_report','form_id='.$_GET['form_id']);
 
 if ($f && $controls && $data && $rpt) {
 	if (expPermissions::check('viewdata',unserialize($f->location_data))) {
-		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+//		$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 		
 		$fields = array();
 		$captions = array();
@@ -62,6 +62,7 @@ if ($f && $controls && $data && $rpt) {
 //		$template->assign('backlink',expHistory::getLastNotEditable());
 		$template->assign('backlink',expHistory::getLast('editable'));
 		$template->assign('is_email',0);
+        $template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
 		$template->output();
 	} else {
 		echo SITE_403_HTML;

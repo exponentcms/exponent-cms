@@ -34,7 +34,7 @@ class clear_cache extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return gt("Clear the Caches"); }
+	static function name() { return gt("Clear the Caches"); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

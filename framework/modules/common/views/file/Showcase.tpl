@@ -28,19 +28,22 @@
 {/if}
 
 {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
+
 <div class="showcase">
     <div class="main-img">
         {if $config.pio && $params.is_listing}
-            {assign var=miw value=$config.listingwidth}
+            {assign var=miw value=$config.listingwidth|default:$config.piwidth}
         {else}
-            {assign var=miw value=$config.piwidth}
+            {assign var=miw value=$config.piwidth|default:$config.listingwidth}
         {/if}
         {img file_id=$files[0]->id w=$miw alt="`$files[0]->alt`" class="mainimg `$config.tclass`"}
     </div>
     {if ($config.pio && !$params.is_listing) || !$config.pio}
-    <div class="thumb-imgs">
-        {foreach from=$files item=img key=key}<a href="{$img->url}" rel="showcase-{$img->id}" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;" />{img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$img->alt`" class="`$config.tclass`"}</a>{/foreach}
-    </div>
+        <div class="thumb-imgs">
+            {foreach from=$files item=img key=key}
+                <a href="{$img->url}" rel="showcase-{$img->id}" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;">{img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$img->alt`" class="`$config.tclass`"}</a>
+            {/foreach}
+        </div>
     {/if}
 </div>
 
@@ -57,7 +60,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
         e.halt();
         var mainimg = e.currentTarget.ancestor('.showcase').one('.main-img img');
         var newid = e.currentTarget.getAttribute('rel').replace('showcase-','');
-        mainimg.setAttribute('src',EXPONENT.URL_FULL+"thumb.php?id="+newid+"&w=500&q=75");
+        mainimg.setAttribute('src',EXPONENT.PATH_RELATIVE+"thumb.php?id="+newid+"&w={/literal}{$miw}{literal}&q={/literal}{$quality|default:75}{literal}");
     });
     //Y.Lightbox.init();    
 });

@@ -33,7 +33,7 @@ class remove_headlinecontroller extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Remove the (deprecated) Headline Controller"; }
+	static function name() { return "Remove the (deprecated) Headline Controller"; }
 
 	/**
 	 * generic description of upgrade script

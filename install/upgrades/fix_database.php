@@ -32,7 +32,7 @@ class fix_database extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return gt("Repair/Replace Missing Database Table Entries"); }
+	static function name() { return gt("Repair/Replace Missing Database Table Entries"); }
 
 	/**
 	 * generic description of upgrade script
@@ -115,7 +115,7 @@ class fix_database extends upgradescript {
 			$iloc = expUnserialize($container->internal);
 			if ($db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."'") == null) {
 			// There is no sectionref for this container.  Populate sectionref
-				$newSecRef = null;
+				$newSecRef = new stdClass();
 				$newSecRef->module   = $iloc->mod;
 				$newSecRef->source   = $iloc->src;
 				$newSecRef->internal = '';

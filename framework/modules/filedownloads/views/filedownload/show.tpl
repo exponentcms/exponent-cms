@@ -20,6 +20,7 @@
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
+        {printer_friendly_link}{export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}{br}
         {assign var=myloc value=serialize($__loc)}
         {permissions}
 			<div class="item-actions">
@@ -44,11 +45,7 @@
         <div class="attribution">
             <p>
             <span class="label dated">{'Dated'|gettext}:</span>
-            {if strstr($config.order,'edited_at')}
-                <span class="value">{$file->edited_at|format_date}</span>
-            {else}
-                <span class="value">{$file->created_at|format_date}</span>
-            {/if}
+            <span class="value">{$file->publish_date|format_date}</span>
             &nbsp;|&nbsp;
             {if $record->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
@@ -82,7 +79,7 @@
         </div>
         {icon action=downloadfile fileid=$record->id text='Download'|gettext}
         {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-            <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:30px;" class="filedownload-media"></a>
+            <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media"></a>
         {/if}
         {clear}
         {if $config.usescomments == true}
@@ -92,11 +89,11 @@
 </div>
 
 {if $config.show_player}
-    {script unique="filedownload" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/example/flowplayer-3.2.6.min.js"}
+    {script unique="filedownload" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/flowplayer-3.2.10.min.js"}
     {literal}
-    flowplayer("a.filedownload-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.7.swf",
+    flowplayer("a.filedownload-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.11.swf",
         {
-    		wmode: 'opaque',
+    		wmode: 'transparent',
     		clip: {
     			autoPlay: false,
     			},
@@ -105,7 +102,6 @@
                     play: true,
                     scrubber: true,
                     fullscreen: false,
-                    height: 30,
                     autoHide: false
                 }
             }

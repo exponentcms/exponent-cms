@@ -38,8 +38,8 @@ class orderController extends expController {
     'createReferenceOrder'=>'Create Reference Order', 'save_reference_order'=>'Save Reference Order'      
     );
 	
-	function displayname() { return "Ecommerce Order Manager"; }
-	function description() { return "Use this module to manage the orders from your ecommerce store."; }
+	function displayname() { return gt("Ecommerce Order Manager"); }
+	function description() { return gt("Use this module to manage the orders from your ecommerce store."); }
 	
 	function showall() {
 	    global $db;
@@ -109,13 +109,13 @@ class orderController extends expController {
 			'dir'=>'DESC',
             'limit'=>$limit,
 			'columns'=>array(
-				'Customer'=>'lastname',
-				'Order #'=>'invoice_id', 
-				'Total'=>'total',
-				'Date Purchased'=>'purchased',
-                'Type'=>'order_type_id',
-				'Status'=>'order_status_id',
-                'Ref'=>'orig_referrer',   
+                gt('Customer')=>'lastname',
+                gt('Order #')=>'invoice_id',
+                gt('Total')=>'total',
+                gt('Date Purchased')=>'purchased',
+                gt('Type')=>'order_type_id',
+                gt('Status')=>'order_status_id',
+                gt('Ref')=>'orig_referrer',
 				)
 			));
         //eDebug($page,true);
@@ -305,7 +305,7 @@ class orderController extends expController {
     function getPDF($orders = null)
     {
         global $user,$timer;
-	    //$invoice = '<HTML><HEAD><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.YUI2_PATH.'reset-fonts-grids/reset-fonts-grids.css" ><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.THEME_RELATIVE.'css/base-styles.css"><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'framework/modules/ecommerce/assets/css/print-invoice.css"><style>html{background:none;} #store-header{text-align:left;}</style></HEAD><BODY>';
+	    //$invoice = '<HTML><HEAD><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.YUI2_PATH.'yui2-reset-fonts-grids/yui2-reset-fonts-grids.css" ><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.THEME_RELATIVE.'css/base-styles.css"><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'framework/modules/ecommerce/assets/css/print-invoice.css"><style>html{background:none;} #store-header{text-align:left;}</style></HEAD><BODY>';
         $invoice = '<!DOCTYPE HTML><HTML><HEAD></HEAD><BODY>';
         if(is_array($orders))
         {
@@ -339,8 +339,36 @@ class orderController extends expController {
 	    $invoice .= "</BODY></HTML>";
 		$invoice = mb_convert_encoding($invoice, 'HTML-ENTITIES', "UTF-8");
         // eDebug($invoice);
-        $org_name = str_ireplace(" ","_",ORGANIZATION_NAME); 
+        $org_name = str_ireplace(" ","_",ORGANIZATION_NAME);
+
         //eDebug("Here",1);
+        // Actually create/output the pdf file
+
+        /**
+         * to do this same thing as below using html2pdf
+         * //FIXME uncomment to implement, comment out above
+             require_once(BASE.'external/html2pdf_v4.03/html2pdf.class.php');
+             $html2pdf = new HTML2PDF('P', 'LETTER', substr(LOCALE,0,2));
+             $html2pdf->writeHTML($invoice);
+             $html2pdf->Output($org_name . "_Invoice" . ".pdf",HTML2PDF_OUTPUT?'D':'');
+         */
+        /**
+         * to do this same thing as below using dompdf
+         * //FIXME uncomment to implement, comment out above
+             require_once(BASE.'external/dompdf/dompdf_config.inc.php');
+             $dompdf = new DOMPDF();
+             $dompdf->load_html($invoice);
+             $dompdf->set_paper('letter','portrait');
+             $dompdf->render();
+             $dompdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
+         */
+        /**
+         * to do this same thing as below using expHtmlToPDF2
+         * //FIXME uncomment to implement, comment out above
+             $dompdf = new DOMPDF('letter','portrait',$invoice);
+             $dompdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$org_name . "_Invoice" . ".pdf");
+         */
+
 		if (stristr(PHP_OS, 'Win')) {
 			if(file_exists(HTMLTOPDF_PATH)) {
 				do{
@@ -356,10 +384,7 @@ class orderController extends expController {
             
             //require_once(BASE.'external/tcpdf/config/lang/eng.php');
             //require_once(BASE.'external/tcpdf/tcpdf.php');
-            
-            
-            
-            
+
             //----
             // create new PDF document
 /*$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -768,8 +793,8 @@ exit();
 			'order'=>'purchased',
 			'dir'=>'DESC',
 			'columns'=>array(
-				'Date Purchased'=>'purchased',
-				'Invoice #'=>'invoice_id', 
+                gt('Date Purchased')=>'purchased',
+                gt('Invoice #')=>'invoice_id',
 				)
 			));
 		assign_to_template(array('page'=>$page));
@@ -1604,7 +1629,7 @@ exit();
             'dir'=>'DESC',            
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,'Order #'=>'invoice_id|controller=order,action=show,showby=id','Purchased Date'=>'purchased_date','First'=>'bfirst','Last'=>'blast','Total'=>'grand_total','Order Type'=>'order_type','Status'=>'status_title'),
+            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Purchased Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Order Type')=>'order_type',gt('Status')=>'status_title'),
         ));
         assign_to_template(array('page'=>$page));   
         

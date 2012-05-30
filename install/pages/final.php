@@ -39,7 +39,7 @@ if (isset($_REQUEST['upgrade'])) {
     }
 ?>
     <p><?php echo gt('Log back in to start using all your fancy new enhancements!') ?></p>
-    <a class="awesome large green" href="<?php echo URL_FULL; ?>login.php"><?php echo gt("Log In Screen"); ?></a>
+    <a class="awesome large green" href="<?php echo PATH_RELATIVE; ?>login.php"><?php echo gt("Log In Screen"); ?></a>
 <?php
 
 } else {
@@ -47,7 +47,8 @@ if (isset($_REQUEST['upgrade'])) {
         user::login($_POST['username'],$_POST['password']);
         $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
         if ($leaveinstaller) { 
-            if ($user->id!=0) {
+//            if ($user->id!=0) {
+            if ($user->is_system_user) {
                 switch ($_POST['next']) {
                     case 'migration':
                         if (SEF_URLS) {

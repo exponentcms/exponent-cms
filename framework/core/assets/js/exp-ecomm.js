@@ -18,7 +18,7 @@ function updateQuantity(id, value) {
     YAHOO.util.Dom.setStyle(udmask, 'opacity', '0.75');
     YAHOO.util.Dom.removeClass(udmask, 'hide');
     
-    var url = eXp.URL_FULL + 'index.php?ajax_action=1&controller=cart&action=updateQuantity&id='+id+'&value='+value;
+    var url = eXp.PATH_RELATIVE + 'index.php?ajax_action=1&controller=cart&action=updateQuantity&id='+id+'&value='+value;
     YAHOO.util.Connect.asyncRequest('GET', url, updateCart);
 }
 

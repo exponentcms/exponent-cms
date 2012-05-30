@@ -21,6 +21,7 @@ if (!defined('EXPONENT')) exit('');
 
 /**
  * Date Time Control
+ * simple text entry date and/or time
  *
  * @package Subsystems-Forms
  * @subpackage Control
@@ -30,9 +31,9 @@ class datetimecontrol extends formcontrol {
 	var $showdate = true;
 	var $showtime = true;
 	
-	function name() { return "Date / Time Field"; }
-	function isSimpleControl() { return true; }
-	function getFieldDefinition() {
+	static function name() { return "Date / Time Field"; }
+	static function isSimpleControl() { return true; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
 	}
@@ -58,10 +59,11 @@ class datetimecontrol extends formcontrol {
 		}
 		//$html .= "</label>";
 		$html .= "</div>";			
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 	
-	function controlToHTML($name) {
+	function controlToHTML($name,$label=null) {
 		if (!$this->showdate && !$this->showtime) return "";
 		if ($this->default == 0) $this->default = time();
 		$default_date = getdate($this->default);
@@ -88,6 +90,7 @@ class datetimecontrol extends formcontrol {
 			$html .= '<option value="pm"' . ($default_date['hours'] < 12 ? "":" selected") . '>pm</option>';
 			$html .= '</select></div>';
 		}
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 	
@@ -133,11 +136,14 @@ class datetimecontrol extends formcontrol {
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
+            $object->description = "";
 			$object->showdate = true;
 			$object->showtime = true;
 		} 
+        if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
 		$form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 		
@@ -158,6 +164,7 @@ class datetimecontrol extends formcontrol {
 		}
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
+        $object->description = $values['description'];
 		$object->showdate = isset($values['showdate']);
 		$object->showtime = isset($values['showtime']);
 		return $object;

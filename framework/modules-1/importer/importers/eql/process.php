@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 $errors = null;
-$continue = URL_FULL.'index.php?section='.SITE_DEFAULT_SECTION;
+$continue = PATH_RELATIVE.'index.php?section='.SITE_DEFAULT_SECTION;
 
 expSession::clearAllUsersSessionCache();
 

@@ -46,7 +46,7 @@ class expeAlerts extends expRecord {
     }
     
     public static function getPendingBySubscriber($id) {
-        expeAlerts::getBySubscriber($id, true);
+        return expeAlerts::getBySubscriber($id, true);
     }
     
     public static function getBySubscriber($id, $pending=false) {

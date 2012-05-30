@@ -45,7 +45,7 @@ $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
 // Initialize the Modules subsystem & Create the list of available/active controllers
 $available_controllers = expModules::initializeControllers();
 //foreach ($db->selectObjects('modstate',1) as $mod) {
-//	if (!empty($mod->path)) $available_controllers[$mod->module] = $mod->path;  //FIXME test location
+//	if (!empty($mod->path)) $available_controllers[$mod->module] = $mod->path;  //FIXME test
 //}
 
 // Initialize the History (Flow) subsystem.
@@ -81,7 +81,7 @@ if ($db->havedb)
 
 /**
  * dumps the passed variable to screen, but only if in development mode
- * @param  $var the variable to dump
+ * @param mixed $var the variable to dump
  * @param bool $halt if set to true will halt execution
  * @return void
  */
@@ -97,7 +97,7 @@ function eDebug($var, $halt=false){
 
 /**
  * dumps the passed variable to a log, but only if in development mode
- * @param  $var the variable to log
+ * @param mixed $var the variable to log
  * @param string $type the type of entry to record
  * @param string $path the pathname for the log file
  * @param string $minlevel

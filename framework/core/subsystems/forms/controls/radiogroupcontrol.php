@@ -35,9 +35,9 @@ class radiogroupcontrol extends formcontrol {
 	var $cols = 1;
 	var $onclick = null;
 	
-	function name() { return "Radio Button Group"; }
-	function isSimpleControl() { return true; }
-	function getFieldDefinition() {
+	static function name() { return "Radio Button Group"; }
+	static function isSimpleControl() { return true; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>512);
@@ -61,6 +61,7 @@ class radiogroupcontrol extends formcontrol {
 		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
 		$html .= "</tr></table>";
 		$html .= "</div>";			
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 	
@@ -92,6 +93,7 @@ class radiogroupcontrol extends formcontrol {
 			$i++; 
 		}	
 		$html .= '</tr></table>';
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 	
@@ -100,14 +102,17 @@ class radiogroupcontrol extends formcontrol {
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
+            $object->description = "";
 			$object->default = "";
 			$object->flip = false;
 			$object->spacing = 100;
 			$object->cols = 1;
 			$object->items = array();
 		} 
+        if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
 		$form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
@@ -129,6 +134,7 @@ class radiogroupcontrol extends formcontrol {
 		}
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
+        $object->description = $values['description'];
 		$object->default = $values['default'];
 		$object->items = listbuildercontrol::parseData($values,'items',true);
 		$object->flip = isset($values['flip']);

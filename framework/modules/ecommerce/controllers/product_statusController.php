@@ -23,8 +23,8 @@
 
 class product_statusController extends expController {
 
-    function displayname() { return "Ecommerce Product Statuses"; }
-    function description() { return "Manage Ecommerce Product Statuses"; }
+    function displayname() { return gt("Ecommerce Product Statuses"); }
+    function description() { return gt("Manage Ecommerce Product Statuses"); }
     function author() { return "OIC Group, Inc"; }
     function hasSources() { return false; }
     function hasContent() { return false; }

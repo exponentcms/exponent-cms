@@ -22,7 +22,7 @@
     <input type="hidden" name="id" value="{$id}" />
     <table cellpadding="2" cellspacing="0" border="0">
         <tr>
-            <td width="10" style="width: 10px" valign="top" colspan="2"><b>{'Submit Feedback'|gettext}</b></td>
+            <td width="10" style="width: 10px" valign="top" colspan="2"><strong>{'Submit Feedback'|gettext}</strong></td>
         </tr>
         <tr>
             <td valign="top">{'Your Email Address'|gettext}:</td>
@@ -31,7 +31,7 @@
             </td>
         </tr>
         <tr>
-            <td valign="top">{'Subject:'|gettext}</td>
+            <td valign="top">{'Subject'|gettext}:</td>
             <td>
                 <input type="text" name="subject" />
             </td>

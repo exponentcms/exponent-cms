@@ -31,10 +31,10 @@ class textcontrol extends formcontrol {
     var $maxlength = "";
     var $caption = "";
 
-    function name() { return "Text Box"; }
-    function isSimpleControl() { return true; }
+    static function name() { return "Text Box"; }
+    static function isSimpleControl() { return true; }
     function useGeneric() { return false; }
-    function getFieldDefinition() {
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_STRING,
             DB_FIELD_LEN=>512);
@@ -69,6 +69,7 @@ class textcontrol extends formcontrol {
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'" ';
         $html .= "/>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
 
@@ -77,13 +78,16 @@ class textcontrol extends formcontrol {
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
+            $object->description = "";
             $object->default = "";
             $object->size = 0;
             $object->maxlength = 0;
             $object->required = false;
         }
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol((($object->size==0)?"":$object->size),4,false,3,"integer"));
         $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
@@ -102,6 +106,7 @@ class textcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
+        $object->description = $values['description'];
         $object->default = $values['default'];
         $object->size = intval($values['size']);
         $object->maxlength = intval($values['maxlength']);

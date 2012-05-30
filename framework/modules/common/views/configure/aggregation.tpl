@@ -19,15 +19,17 @@
 
 <h2>{"Aggregate content from similar modules"|gettext}</h2>
 {control type="checkbox" name="noeditagg" label="Prevent editing aggregate items"|gettext value=1 checked=$config.noeditagg}
- <hr />
+<hr />
 <table class="exp-skin-table">
     <thead>
         <tr>
             {*<th>{""|gettext}</th>*}
-            <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onChange="selectAll(this.checked)"></th>
-            {*{$page->header_columns}*}
-            <th>{"Title"|gettext}</th>
-            <th>{"Page"|gettext}</th>
+            <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onChange="selectAll(this.checked)"></th>            {$tabanchor = '#tab='|cat:$smarty.foreach.body.iteration|cat:'" alt="'}
+            {$tabno = $smarty.foreach.body.iteration-1}
+            {$tabanchor = '#tab='|cat:$tabno|cat:'" alt="'}
+            {$page->header_columns|replace:'" alt="':$tabanchor}
+            {*<th>{"Title"|gettext}</th>*}
+            {*<th>{"Page"|gettext}</th>*}
         </tr>
     </thead>
     <tbody>
@@ -50,11 +52,11 @@
     </tbody>
 </table>
 
-<script type="text/javascript">
+{script unique="aggregation"}
     function selectAll(val) {
         var checks = document.getElementsByName("aggregate[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }
     }
-</script>
+{/script}

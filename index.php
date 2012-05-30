@@ -28,8 +28,8 @@ define('SCRIPT_FILENAME','index.php');
 function epb($buffer, $mode) {
 //    @ob_gzhandler($buffer, $mode);
     @ob_gzhandler($buffer);
-    //return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
-    return expProcessBuffer($buffer);
+//    return $buffer; // uncomment if you're messing with output buffering so errors show. ~pb
+    return expProcessBuffer($buffer);  // add/process css & jscript for page
 }
 
 ob_start('epb');
@@ -53,6 +53,7 @@ if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
     $order = order::getUserCart();      
     // Create a globle store config
     // We're forcing the location. Global store setting will always have this loc
+    $cfg = new stdClass();
     $cfg->mod = "ecomconfig";
     $cfg->src = "@globalstoresettings";
     $cfg->int = "";
@@ -89,7 +90,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 	$page = expTheme::getTheme();
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
-	if (PRINTER_FRIENDLY == 1) {
+	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
 		expSession::set("uilevel",0);
 		$pftheme = expTheme::getPrinterFriendlyTheme();  	// get the printer friendly theme
 		$page = $pftheme == null ? $page : $pftheme;		// if there was no theme found then just use the current subtheme
@@ -106,9 +107,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 		echo sprintf(gt('Page "%s" not readable.'), $page);
 	}
 
-	if (PRINTER_FRIENDLY == 1) {
-		//$levels = expSession::get('uilevels');
-		//if (!empty($levels)) expSession::set('uilevel',max(array_keys($levels)));
+	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
 		expSession::un_set('uilevel');
 	}
 }
@@ -117,6 +116,19 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 //$i_end = $microtime_str[0] + $microtime_str[1];
 //echo "\r\n<!--".sprintf(gt('Execution time : %d seconds'),round($i_end - $i_start,4)).'-->';
 
-ob_end_flush();
+if (EXPORT_AS_PDF == 1) {
+    $content = ob_get_clean();
+
+    // convert to PDF
+    $pdf = new expHtmlToPDF2('A4',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);
+    $pdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
+    echo '<script language="javascript">
+        <!--
+        setTimeout("self.close();",10000)
+        //-->
+        </script>';  //FIXME timeout before closing an empty pdf or html2pdf error window
+} else {
+    ob_end_flush();
+}
 
 ?>

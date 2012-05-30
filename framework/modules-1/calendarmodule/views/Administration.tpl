@@ -19,15 +19,20 @@
 
 <div class="module calendar cal-admin">
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
-		&nbsp;&nbsp;|&nbsp;&nbsp;<span class="adminviewlink">{'Administration View'|gettext}</span>
-		&nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link text='Printer-friendly'|gettext}
+		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
+        {permissions}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span class="adminviewlink">{'Administration View'|gettext}</span>
+        {/permissions}
+		{printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
 		{br}
 		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{'Past Events View'|gettext}</a>{br}
 	</div>
 	<h1>
-		{if $enable_ical == true}
+        {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
 		{if $moduletitle}{$moduletitle} - {'Administration View'}{/if}
@@ -82,7 +87,7 @@
 				</td>
 			</tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><i>{'No Events'|gettext}</a></td></tr>
+			<tr><td colspan="2" align="center"><em>{'No Events'|gettext}</em></td></tr>
 		{/foreach}
 		</tbody>
 	</table>

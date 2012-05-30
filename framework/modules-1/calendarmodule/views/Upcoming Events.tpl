@@ -22,13 +22,15 @@
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
 		{permissions}
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 		{/permissions}
-		&nbsp;&nbsp;|&nbsp;&nbsp;{printer_friendly_link text='Printer-friendly'|gettext}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
 	</div>
 	<h1>
-		{if $enable_ical == true}
+        {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
 		{if $moduletitle}{$moduletitle}{/if}
@@ -43,20 +45,22 @@
 	<dl class="viewweek">
 	{foreach from=$items item=item}
 		<dt>
-			<b><a class="itemtitle" href="{link action=view id=$item->id date_id=$item->eventdate->id}">{$item->title}</a></b>
+			<strong><a class="itemtitle" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if}>{$item->title}</a></strong>
 			{permissions}
-				<div class="item-actions">
-					{if $permissions.edit == 1}
-						{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
-					{/if}
-					{if $permissions.delete == 1}
-						{if $item->is_recurring == 0}
-							{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-						{else}
-							{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-						{/if}
-					{/if}
-				</div>
+                {if $item->location_data != null}
+                    <div class="item-actions">
+                        {if $permissions.edit == 1}
+                            {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+                        {/if}
+                        {if $permissions.delete == 1}
+                            {if $item->is_recurring == 0}
+                                {icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                            {else}
+                                {icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                            {/if}
+                        {/if}
+                    </div>
+                {/if}
 			{/permissions}
 		</dt>
 		<dd>

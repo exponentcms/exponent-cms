@@ -27,9 +27,9 @@ if (!defined('EXPONENT')) exit('');
  */
 class uploadcontrol extends formcontrol {
 
-	function name() { return "File Upload Field"; }
-	function isSimpleControl() { return false; }
-	function getFieldDefinition() {
+	static function name() { return "File Upload Field"; }
+	static function isSimpleControl() { return true; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>250,);
@@ -43,13 +43,14 @@ class uploadcontrol extends formcontrol {
 		$form->enctype = "multipart/form-data";
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		$html = "<input type=\"file\" name=\"$name\" ";
 		if(isset($this->class)) $html .=  'class="' . $this->class . '"';
 		$html .= ($this->disabled?"disabled ":"");
 		$html .= ($this->tabindex>=0?"tabindex=\"".$this->tabindex."\" ":"");
 		$html .= ($this->accesskey != ""?"accesskey=\"".$this->accesskey."\" ":"");
 		$html .= "/>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 
@@ -59,10 +60,13 @@ class uploadcontrol extends formcontrol {
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
+            $object->description = "";
 			$object->default = "";
 		}
+        if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
@@ -78,6 +82,7 @@ class uploadcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
+        $object->description = $values['description'];
         $object->default = $values['default'];
         return $object;
     }
@@ -93,9 +98,14 @@ class uploadcontrol extends formcontrol {
 		return $dest;
 	}
 
+//    static function buildDownloadLink($control_name,$file_name,$mode) {
+//   		$file = $formvalues[$original_name];
+//   		return '<a href="'.PATH_RELATIVE.$file.'">'.basename($file).'</a>';
+//   	}
+
 	static function parseData($original_name,$formvalues) {
 		$file = $formvalues[$original_name];
-		return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';
+		return '<a href="'.PATH_RELATIVE.$file.'">'.basename($file).'</a>';
 	}
 }
 

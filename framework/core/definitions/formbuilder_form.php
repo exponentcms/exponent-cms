@@ -53,7 +53,15 @@ return array(
 		DB_FIELD_LEN=>100),
 	'subject'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>200)
+		DB_FIELD_LEN=>200),
+	'is_auto_respond'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	'auto_respond_subject'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>200),
+	'auto_respond_body'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>4000),
 	);
 
 ?>

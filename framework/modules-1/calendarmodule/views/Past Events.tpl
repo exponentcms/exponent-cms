@@ -19,15 +19,20 @@
 
 <div class="module calendar cal-admin">
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
+		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		{permissions}
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
-			&nbsp;&nbsp;|&nbsp;&nbsp;
-			{printer_friendly_link text='Printer-friendly'|gettext}
-			{br}
-			<span class="listviewlink">{'Past Events View'|gettext}{$config->colorize}</span>
+        {/permissions}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {br}
+        {permissions}
+			<span class="listviewlink">{'Past Events View'|gettext}</span>
 			{if $permissions.manage == 1}
 				&nbsp;&nbsp;|&nbsp;&nbsp;
 				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
@@ -37,7 +42,7 @@
 		{/permissions}
 	</div>
 	<h1>
-		{if $enable_ical == true}
+        {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
 		{if $moduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
@@ -90,7 +95,7 @@
 				</td>
 			</tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><i>{'No past events.'|gettext}</a></td></tr>
+			<tr><td colspan="2" align="center"><em>{'No past events.'|gettext}</em></td></tr>
 		{/foreach}
 		</tbody>
 	</table>

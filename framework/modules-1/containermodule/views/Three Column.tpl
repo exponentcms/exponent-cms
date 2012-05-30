@@ -17,7 +17,7 @@
 
 {/css}
  
-<div class="containermodule three-column">
+<div class="containermodule three-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
     <div class="col1">
     	{assign var=container value=$containers.0}

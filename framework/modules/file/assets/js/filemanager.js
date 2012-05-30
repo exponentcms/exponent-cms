@@ -35,7 +35,7 @@ EXPONENT.filemanager = function(cfg) {
         //     var img = '<a class="thumbnail" href="#" onclick="return openWindow(\'{/literal}{$smarty.const.PATH_RELATIVE}{literal}'+oRecord._oData.directory+'/'+oRecord._oData.filename+'\','+oRecord._oData.image_width+','+oRecord._oData.image_height+');">'
         //     + '<img width=30 height=30 src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}thumb.php?id='+oRecord._oData.id+'&square=30" border="0"/></a>'
         // } else {
-        //     var img = '<img src="{/literal}{$smarty.const.URL_FULL}{literal}/themes/common/skin/attachableitems/generic_22x22.png" class="filepic"/>'
+        //     var img = '<img src="{/literal}{$smarty.const.PATH_RELATIVE}{literal}/themes/common/skin/attachableitems/generic_22x22.png" class="filepic"/>'
         // }
         // elCell.innerHTML = img;
     };
@@ -61,7 +61,7 @@ EXPONENT.filemanager = function(cfg) {
         ];
 
     // DataSource instance
-    var myDataSource = new YAHOO.util.DataSource(EXPONENT.URL_FULL+"index.php?controller=file&action=getFilesByJSON&json=1&ajax_action=1&fck="+fck+"&");
+    var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=getFilesByJSON&json=1&ajax_action=1&fck="+fck+"&");
     myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
     myDataSource.responseSchema = {
         resultsList: "records",

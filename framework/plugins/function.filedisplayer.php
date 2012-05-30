@@ -41,10 +41,11 @@ function smarty_function_filedisplayer($params,&$smarty) {
     
     // get the view, pass params and render & return it.
     $view = isset($params['view']) ? $params['view'] : 'Downloadable Files';
-	$title = isset($params['title']) ? $params['title'] : '';
+//	$title = isset($params['title']) ? $params['title'] : '';
 
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $config['uniqueid'] = str_replace($badvals, "", $smarty->getTemplateVars('__loc')->src).$params['record']->id;
+    // if we only want primary image on listing page and it's a listing set array to first item only
     if ($config['pio'] && $params['is_listing']) {
         $tmp = reset($params['files']);
         unset($params['files']);

@@ -25,8 +25,8 @@ class order_statusController extends expController {
     //public $basemodel_name = '';
     //public $useractions = array('manage'=>'Manage Status Codes');
 
-    function displayname() { return "Ecommerce Status Codes"; }
-    function description() { return "Manage Ecommerce status codes"; }
+    function displayname() { return gt("Ecommerce Status Codes"); }
+    function description() { return gt("Manage Ecommerce status codes"); }
     function hasSources() { return false; }
     function hasContent() { return false; }
     

@@ -26,7 +26,7 @@ global $db;
 // first, find the calendar/event data
 $id = intval($_GET['id']);
 if (!$id) {
-    print_r("<br><b><i>Exponent - No Calendar Selected!</i></b><br>");
+    print_r("<br><strong><em>Exponent - No Calendar Selected!</em></strong><br>");
     exit();
 }
 $config = $db->selectObject("calendarmodule_config","id='".$id."'");
@@ -38,7 +38,7 @@ $config = $db->selectObject("calendarmodule_config","id='".$id."'");
 //	exit();
 //}
 //
-//$loc = null;
+//$loc = new stdClass();;
 //$loc->mod = 'calendarmodule';
 //$loc->src = $src;
 //$loc->int = '';
@@ -53,7 +53,7 @@ $locsql = "(location_data='".serialize($loc)."'";
 if (!empty($config->aggregate)) {
 	$locations = unserialize($config->aggregate);
 	foreach ($locations as $source) {
-		$tmploc = null;
+		$tmploc = new stdClass();
 		$tmploc->mod = 'calendarmodule';
 		$tmploc->src = $source;
 		$tmploc->int = '';
@@ -343,11 +343,11 @@ if ($count == 0) {
 // );
 
 //$cats = $db->selectObjectsIndexedArray("category","location_data='".serialize($loc)."'");
-$cats = $db->selectObjectsIndexedArray("category");
-$cats[0] = null;
-$cats[0]->name = '<i>'.gt('No Category').'</i>';
-$cats[0]->color = "#000000";
-$template->assign("categories",$cats);
+//$cats = $db->selectObjectsIndexedArray("category");
+//$cats[0] = null;
+//$cats[0]->name = '<i>'.gt('No Category').'</i>';
+//$cats[0]->color = "#000000";
+//$template->assign("categories",$cats);
 
 $template->assign("config",$config);
 

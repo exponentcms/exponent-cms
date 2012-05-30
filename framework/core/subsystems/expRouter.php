@@ -190,7 +190,7 @@ class expRouter {
                     }
                 }
             }
-        } elseif ($this->url_style == 'query' && SEF_URLS == 1 && !empty($_REQUEST['section'])  && PRINTER_FRIENDLY != 1) {
+        } elseif ($this->url_style == 'query' && SEF_URLS == 1 && !empty($_REQUEST['section'])  && PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1) {
             // if we hit this it's an old school url coming in and we're trying to use SEF's. 
             // we will send a permanent redirect so the search engines don't freak out about 2 links pointing
             // to the same page.
@@ -260,7 +260,7 @@ class expRouter {
                 // take a peek and see if a page exists with the same name as the first value...if so we probably have a page with
                 // extra perms...like printerfriendly=1 or ajax=1;
                 global $db;
-                if ( ($db->selectObject('section', "sef_name='".$this->url_parts[0]."'") != null) && (in_array('printerfriendly', $this->url_parts))) {
+                if ( ($db->selectObject('section', "sef_name='".$this->url_parts[0]."'") != null) && ((in_array('printerfriendly', $this->url_parts)) || (in_array('exportaspdf', $this->url_parts)))) {
                     $this->url_type = 'page';
                 } else {
                     $this->url_type = 'action';
@@ -279,6 +279,8 @@ class expRouter {
                               
         // Check if this was a printer friendly link request
         define('PRINTER_FRIENDLY', (isset($_REQUEST['printerfriendly']) || isset($this->params['printerfriendly'])) ? 1 : 0);         
+        define('EXPORT_AS_PDF', (isset($_REQUEST['exportaspdf']) || isset($this->params['exportaspdf'])) ? 1 : 0);
+        define('EXPORT_AS_PDF_LANDSCAPE', (isset($_REQUEST['landscapepdf']) || isset($this->params['landscapepdf'])) ? 1 : 0);
     }
 
     public function routePageRequest() {        
@@ -314,33 +316,28 @@ class expRouter {
             //if section is empty, we'll look for the page overrides first and route to 
             //routeActionRequest with some hand wacked variables. If we can't find an override
             //then we'll return false as usual
-            if (empty($section))
-            {
+            if (empty($section)) {
                 $sef_url = $this->url_parts[0];
                 //check for a category
                 $c = new storeCategory();                
                 $cat = $c->findBy('sef_url', $sef_url);
-                if (empty($cat))
-                {
+                if (empty($cat)) {
                     //check for a product
                     $p = new product();
                     $prod = $p->findBy('sef_url', $sef_url);
-                    if(!empty($prod))
-                    {                                                           
+                    if(!empty($prod)) {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
                         $this->url_parts[0] = 'store'; //controller
                         $this->url_parts[1] = 'showByTitle'; //controller
-                        $this->url_parts[2] = 'title'; //controller                    
+                        $this->url_parts[2] = 'title'; //controller
                         $this->url_parts[3] = $sef_url; //controller
                         //eDebug($this->url_parts,true);
                         $this->params = $this->convertPartsToParams();
                         return $this->routeActionRequest();
                     }
                     //else fall through
-                }
-                else
-                {
+                } else {
                     //fake parts and route to action 
                     $this->url_type = 'action';                                      
                     $this->url_parts[0] = 'store'; //controller
@@ -522,7 +519,7 @@ class expRouter {
 
     public function printerFriendlyLink($link_text="Printer Friendly", $class=null, $width=800, $height=600, $view='') {
         $url = '';
-        if (PRINTER_FRIENDLY != 1) {
+        if (PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1) {
             $class = !empty($class) ? $class : 'printer-friendly-link';
             $url =  '<a class="'.$class.'" href="javascript:void(0)" onclick="window.open(\'';
             if ($this->url_style == 'sef') {
@@ -538,6 +535,31 @@ class expRouter {
         }
         
         return $url; 
+    }
+
+    public function exportAsPDFLink($link_text="Export as PDF", $class=null, $width=800, $height=600, $view='', $orientation=false, $limit='') {
+        $url = '';
+        if (EXPORT_AS_PDF != 1 && PRINTER_FRIENDLY != 1) {
+            $class = !empty($class) ? $class : 'export-pdf-link';
+            $url =  '<a class="'.$class.'" href="javascript:void(0)" onclick="window.open(\'';
+            if ($this->url_style == 'sef') {
+                $url .= $this->convertToOldSchoolUrl();
+                $url .= empty($view) ? '' : '&view='.$view;
+                if ($this->url_type=='base') $url .= '/index.php?section='.SITE_DEFAULT_SECTION;
+            } else {
+                $url .= $this->current_url;
+            }
+            if (!empty($orientation)) {
+                $orientation = '&landscapepdf='.$orientation;
+            }
+            if (!empty($limit)) {
+                $limit = '&limit='.$limit;
+            }
+            $url .= '&exportaspdf=1'.$orientation.$limit.'&\' , \'mywindow\',\'menubar=1,resizable=1,scrollbars=1,width='.$width.',height='.$height.'\');"';
+            $url .= '>'.$link_text.'</a>';
+        }
+
+        return $url;
     }
 
     public function convertToOldSchoolUrl() {

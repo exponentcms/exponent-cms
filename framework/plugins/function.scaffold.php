@@ -35,7 +35,12 @@
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {
 		global $db;
-		require_once $smarty->_get_plugin_filepath('function','control');
+        foreach ($smarty->smarty->plugins_dir as $value) {
+            $filepath = $value ."/function.control.php";
+            if (file_exists($filepath)) {
+                require_once $filepath;
+            }
+        }
 
 		$table = $db->getDataDefinition($params['model']);
     	foreach ($table as $key=>$col) {

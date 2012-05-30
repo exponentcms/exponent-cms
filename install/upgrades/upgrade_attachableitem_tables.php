@@ -19,7 +19,7 @@ class upgrade_attachableitem_tables extends upgradescript {
 	protected $from_version = '1.99.0';
 	protected $to_version = '1.99.4'; 
 
-	function name() { return "Upgrade the tables for attachable items."; }
+	static function name() { return "Upgrade the tables for attachable items."; }
 
 	function upgrade() {
 		global $db;

@@ -29,9 +29,9 @@
     $content="<?xml version='1.0' encoding='UTF-8'?>".chr(13).chr(10);
     $content.="<rss version='2.0' xmlns:g='http://base.google.com/ns/1.0'>".chr(13).chr(10);
     $content.='<channel>'.chr(13).chr(10);
-    $content.='<title>Military Uniform Supply</title>'.chr(13).chr(10);
-    $content.='<link>http://www.militaryuniformsupply.com</link>'.chr(13).chr(10);
-    $content.='<description>Military Uniform Supply and Military Clothing Sales, including BDUs, DCUs, ACUs, ABUs Multicam, combat boots, and more.</description>'.chr(13).chr(10);
+    $content.='<title>' . SITE_TITLE . '</title>'.chr(13).chr(10);
+    $content.='<link>' . URL_FULL .'</link>'.chr(13).chr(10);
+    $content.='<description>' . SITE_DESCRIPTION . '</description>'.chr(13).chr(10);
     
     //Check if the file exist
 	if (!$handle = fopen($filename, 'w')) {
@@ -137,7 +137,7 @@
 		$columns.='</title>'.chr(13).chr(10);
 
 		$columns.='<link>';
-		$columns.="http://www.militaryuniformsupply.com/".strip_tags($prod->sef_url);
+		$columns.=URL_FULL.strip_tags($prod->sef_url);
 		$columns.='</link>'.chr(13).chr(10);
 
 		$columns.='<description>';
@@ -145,7 +145,7 @@
 		$columns.='</description>'.chr(13).chr(10);
 		
 		$columns.='<g:image_link>';
-		$columns.= "http://www.militaryuniformsupply.com/".$prod->directory . $prod->filename;
+		$columns.= URL_FULL.$prod->directory . $prod->filename;
 		$columns.='</g:image_link>'.chr(13).chr(10);
 
 		$columns.='<g:price>';
@@ -271,11 +271,11 @@
         
         $columns .= $prod->feed_title . chr(9);
         
-        $columns.="http://www.militaryuniformsupply.com/".strip_tags($prod->sef_url) . chr(9);
+        $columns.=URL_FULL.strip_tags($prod->sef_url) . chr(9);
         
         $columns.= expString::onlyReadables($prod->feed_body) . chr(9);
         
-        $columns.= "http://www.militaryuniformsupply.com/".$prod->directory . $prod->filename . chr(9);
+        $columns.= URL_FULL.$prod->directory . $prod->filename . chr(9);
         
         if(!empty($prod->company)) {           
             $columns.=$prod->company . chr(9);            

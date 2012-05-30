@@ -27,10 +27,10 @@ if (!defined('EXPONENT')) exit('');
  */
 class antispamcontrol extends formcontrol {  //FIXME this is old tech and not-language-ized
 
-	function name() { return "Anti-Spam Control"; }
-	function isSimpleControl() { return false; }
+	static function name() { return "Anti-Spam Control"; }
+	static function isSimpleControl() { return false; }
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		$html = '<div class="antispam">This question is being presented to you to try to differentiate between a human submission and
 			a bot in an effort to reduce spam. Please choose the obvious answer below or your inquiry will not be successfully submitted.<br /><br />';
 		switch ( rand(1,2) ) {

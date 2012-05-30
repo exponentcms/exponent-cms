@@ -22,9 +22,9 @@
     </p>
     
     <ul>
-    {foreach from=$ealerts item=ealert}
-        <li>{$ealert->ealert_title}</li>
-    {/foreach}
+        {foreach from=$ealerts item=ealert}
+            <li>{$ealert->ealert_title}</li>
+        {/foreach}
     </ul>
 </div>
 

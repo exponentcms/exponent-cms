@@ -20,7 +20,7 @@
 <div class="module calendar cal-admin">  
 	<a href="{link _common=1 view=Default action=show_view}">Month View</a>{br}
 	<h1>
-        {if $enable_ical == true}
+        {if !empty($config->enable_ical)}
             <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">&nbsp;</a>
         {/if}
 		{if $moduletitle}{$moduletitle}{/if}
@@ -40,7 +40,7 @@
 						<table width=100% cellpadding="0" cellspacing="0" border="0">
 							<tr>
 								<td>
-									<a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}">{$item->title}</a>
+									<a class="mngmntlink calendar_mngmntlink" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if}>{$item->title}</a>
 								</td>
 							</tr>
 							<tr>
@@ -51,18 +51,20 @@
 							<tr>
 								<td align="right">
 									{permissions}
-										<div class="item-actions">
-											{if $permissions.edit == 1 || $item->permissions.edit == 1}
-												{icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
-											{/if}
-											{if $permissions.delete == 1 || $item->permissions.delete == 1}
-												{if $item->is_recurring == 0}
-													{icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-												{else}
-													{icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
-												{/if}
-											{/if}
-										</div>
+                                        {if $item->location_data != null}
+                                            <div class="item-actions">
+                                                {if $permissions.edit == 1}
+                                                    {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+                                                {/if}
+                                                {if $permissions.delete == 1}
+                                                    {if $item->is_recurring == 0}
+                                                        {icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                    {else}
+                                                        {icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                    {/if}
+                                                {/if}
+                                            </div>
+                                        {/if}
 									{/permissions}
 								</td>
 							</tr>
@@ -72,7 +74,7 @@
 			{/if}
 		{foreachelse}
 			<table cellspacing="0" cellpadding="4" border="1" width="100%">
-				<tr><td align="center"><i>{'No Events'|gettext}</i></td></tr>
+				<tr><td align="center"><em>{'No Events'|gettext}</em></td></tr>
 			</table>
 		{/foreach}
 	</table>

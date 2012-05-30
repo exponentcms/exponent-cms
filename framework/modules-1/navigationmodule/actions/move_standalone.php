@@ -19,7 +19,7 @@
 if (!defined('EXPONENT')) exit('');
 
 if ($user && ($user->is_admin == 1 || $user->is_acting_admin == 1)) {
-	$sect = null;
+	$sect = new stdClass();
 	$sect->parent = intval($_GET['parent']);
 	$form = section::moveStandaloneForm($sect);
 	expSession::clearAllUsersSessionCache('navigationmodule');

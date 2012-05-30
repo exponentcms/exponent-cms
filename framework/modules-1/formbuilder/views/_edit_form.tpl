@@ -18,5 +18,15 @@
 		<h1>{'Edit Form Settings'|gettext}</h1>
 	</div>
 	{$form_html}
+{script unique="configure" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
+        tabview.render();
+        Y.one('#configure-tabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}
 </div>
 

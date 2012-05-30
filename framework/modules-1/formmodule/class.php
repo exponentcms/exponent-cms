@@ -19,8 +19,8 @@
 
 class formmodule {
 	function name() { return 'Form'; }
-    function displayname() { return '(old school) form'; } //for forwards compat with new modules
-	function description() { return 'Allows the creation of forms that can be emailed and/or stored in the database.'; }
+    function displayname() { return gt('(old school) form'); } //for forwards compat with new modules
+	function description() { return gt('Allows the creation of forms that can be emailed and/or stored in the database.'); }
 	function author() { return 'OIC Group, Inc'; }
 	
 	function hasSources() { return true; }
@@ -88,8 +88,8 @@ class formmodule {
 			}
 
 			$floc = unserialize($f->location_data);
-			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id);
-			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
+			$controls = $db->selectObjects("formbuilder_control","form_id=".$f->id,'rank');
+//			$controls = expSorter::sort(array('array'=>$controls,'sortby'=>'rank', 'order'=>'ASC'));
 
 			$form = new form();
 			$data = expSession::get('formmodule_data_'.$f->id);
@@ -145,7 +145,7 @@ class formmodule {
 		$db->delete("formbuilder_form","location_data='".serialize($loc)."'");
 	}
 	
-	function spiderContent($item = null) {
+	static function spiderContent($item = null) {
 		// No content
 		return false;
 	}

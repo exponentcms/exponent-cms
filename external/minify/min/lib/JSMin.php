@@ -1,20 +1,20 @@
 <?php
 /**
- * jsmin.php - extended PHP implementation of Douglas Crockford's JSMin.
+ * JSMin.php - modified PHP implementation of Douglas Crockford's JSMin.
  *
  * <code>
  * $minifiedJs = JSMin::minify($js);
  * </code>
  *
- * This is a direct port of jsmin.c to PHP with a few PHP performance tweaks and
- * modifications to preserve some comments (see below). Also, rather than using
- * stdin/stdout, JSMin::minify() accepts a string as input and returns another
- * string as output.
+ * This is a modified port of jsmin.c. Improvements:
  * 
- * Comments containing IE conditional compilation are preserved, as are multi-line
- * comments that begin with "/*!" (for documentation purposes). In the latter case
- * newlines are inserted around the comment to enhance readability.
+ * Does not choke on some regexp literals containing quote characters. E.g. /'/
+ * 
+ * Spaces are preserved after some add/sub operators, so they are not mistakenly 
+ * converted to post-inc/dec. E.g. a + ++b -> a+ ++b
  *
+ * Preserves multi-line comments that begin with /*!
+ * 
  * PHP 5 or higher is required.
  *
  * Permission is hereby granted to use this version of the library under the
@@ -60,7 +60,7 @@ class JSMin {
     const ACTION_KEEP_A     = 1;
     const ACTION_DELETE_A   = 2;
     const ACTION_DELETE_A_B = 3;
-    
+
     protected $a           = "\n";
     protected $b           = '';
     protected $input       = '';
@@ -68,40 +68,33 @@ class JSMin {
     protected $inputLength = 0;
     protected $lookAhead   = null;
     protected $output      = '';
+    protected $lastByteOut  = '';
 
     /**
-     * Minify Javascript
+     * Minify Javascript.
      *
      * @param string $js Javascript to be minified
+     *
      * @return string
      */
     public static function minify($js)
     {
-        // look out for syntax like "++ +" and "- ++"
-        $p = '\\+';
-        $m = '\\-';
-        if (preg_match("/([$p$m])(?:\\1 [$p$m]| (?:$p$p|$m$m))/", $js)) {
-            // likely pre-minified and would be broken by JSMin
-            return $js;
-        }
         $jsmin = new JSMin($js);
         return $jsmin->min();
     }
 
-    /*
-     * Don't create a JSMin instance, instead use the static function minify,
-     * which checks for mb_string function overloading and avoids errors
-     * trying to re-minify the output of Closure Compiler
-     *
-     * @private
+    /**
+     * @param string $input
      */
     public function __construct($input)
     {
         $this->input = $input;
     }
-    
+
     /**
      * Perform minification, return result
+     *
+     * @return string
      */
     public function min()
     {
@@ -118,12 +111,16 @@ class JSMin {
         $this->inputLength = strlen($this->input);
 
         $this->action(self::ACTION_DELETE_A_B);
-        
+
         while ($this->a !== null) {
             // determine next command
             $command = self::ACTION_KEEP_A; // default
             if ($this->a === ' ') {
-                if (! $this->isAlphaNum($this->b)) {
+                if (($this->lastByteOut === '+' || $this->lastByteOut === '-') 
+                    && ($this->b === $this->lastByteOut)) {
+                    // Don't delete this space. If we do, the addition/subtraction
+                    // could be parsed as a post-increment
+                } elseif (! $this->isAlphaNum($this->b)) {
                     $command = self::ACTION_DELETE_A;
                 }
             } elseif ($this->a === "\n") {
@@ -152,17 +149,32 @@ class JSMin {
         }
         return $this->output;
     }
-    
+
     /**
      * ACTION_KEEP_A = Output A. Copy B to A. Get the next B.
      * ACTION_DELETE_A = Copy B to A. Get the next B.
      * ACTION_DELETE_A_B = Get the next B.
+     *
+     * @param int $command
+     * @throws JSMin_UnterminatedRegExpException|JSMin_UnterminatedStringException
      */
     protected function action($command)
     {
+        if ($command === self::ACTION_DELETE_A_B 
+            && $this->b === ' '
+            && ($this->a === '+' || $this->a === '-')) {
+            // Note: we're at an addition/substraction operator; the inputIndex
+            // will certainly be a valid index
+            if ($this->input[$this->inputIndex] === $this->a) {
+                // This is "+ +" or "- -". Don't delete the space.
+                $command = self::ACTION_KEEP_A;
+            }
+        }
         switch ($command) {
             case self::ACTION_KEEP_A:
                 $this->output .= $this->a;
+                $this->lastByteOut = $this->a;
+                
                 // fallthrough
             case self::ACTION_DELETE_A:
                 $this->a = $this->b;
@@ -170,6 +182,8 @@ class JSMin {
                     $str = $this->a; // in case needed for exception
                     while (true) {
                         $this->output .= $this->a;
+                        $this->lastByteOut = $this->a;
+                        
                         $this->a       = $this->get();
                         if ($this->a === $this->b) { // end quote
                             break;
@@ -182,6 +196,8 @@ class JSMin {
                         $str .= $this->a;
                         if ($this->a === '\\') {
                             $this->output .= $this->a;
+                            $this->lastByteOut = $this->a;
+                            
                             $this->a       = $this->get();
                             $str .= $this->a;
                         }
@@ -208,13 +224,17 @@ class JSMin {
                                 . $this->inputIndex .": {$pattern}");
                         }
                         $this->output .= $this->a;
+                        $this->lastByteOut = $this->a;
                     }
                     $this->b = $this->next();
                 }
             // end case ACTION_DELETE_A_B
         }
     }
-    
+
+    /**
+     * @return bool
+     */
     protected function isRegexpLiteral()
     {
         if (false !== strpos("\n{;(,=:[!&|?", $this->a)) { // we aren't dividing
@@ -239,9 +259,11 @@ class JSMin {
         }
         return false;
     }
-    
+
     /**
      * Get next char. Convert ctrl char to space.
+     *
+     * @return string
      */
     protected function get()
     {
@@ -263,24 +285,33 @@ class JSMin {
         }
         return $c;
     }
-    
+
     /**
      * Get next char. If is ctrl character, translate to a space or newline.
+     *
+     * @return string
      */
     protected function peek()
     {
         $this->lookAhead = $this->get();
         return $this->lookAhead;
     }
-    
+
     /**
      * Is $c a letter, digit, underscore, dollar sign, escape, or non-ASCII?
+     *
+     * @param string $c
+     *
+     * @return bool
      */
     protected function isAlphaNum($c)
     {
         return (preg_match('/^[0-9a-zA-Z_\\$\\\\]$/', $c) || ord($c) > 126);
     }
-    
+
+    /**
+     * @return string
+     */
     protected function singleLineComment()
     {
         $comment = '';
@@ -296,7 +327,11 @@ class JSMin {
             }
         }
     }
-    
+
+    /**
+     * @return string
+     * @throws JSMin_UnterminatedCommentException
+     */
     protected function multipleLineComment()
     {
         $this->get();
@@ -308,7 +343,7 @@ class JSMin {
                     $this->get();
                     // if comment preserved by YUI Compressor
                     if (0 === strpos($comment, '!')) {
-                        return "\n/*" . substr($comment, 1) . "*/\n";
+                        return "\n/*!" . substr($comment, 1) . "*/\n";
                     }
                     // if IE conditional comment
                     if (preg_match('/^@(?:cc_on|if|elif|else|end)\\b/', $comment)) {
@@ -324,10 +359,12 @@ class JSMin {
             $comment .= $get;
         }
     }
-    
+
     /**
      * Get the next character, skipping over comments.
      * Some comments may be preserved.
+     *
+     * @return string
      */
     protected function next()
     {

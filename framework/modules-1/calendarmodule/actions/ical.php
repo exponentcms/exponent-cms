@@ -36,7 +36,7 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			if (!empty($config->aggregate)) {
 				$locations = unserialize($config->aggregate);
 				foreach ($locations as $source) {
-					$tmploc = null;
+					$tmploc = new stdClass();
 					$tmploc->mod = 'calendarmodule';
 					$tmploc->src = $source;
 					$tmploc->int = '';
@@ -53,7 +53,7 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			}
 
 			$cats = $db->selectObjectsIndexedArray("category");
-			$cats[0] = null;
+			$cats[0] = new stdClass();
 			$cats[0]->name = 'None';
 			
 			if (isset($_GET['time'])) {

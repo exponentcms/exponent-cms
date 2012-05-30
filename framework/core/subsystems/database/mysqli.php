@@ -748,12 +748,10 @@ class mysqli_database extends database {
             //We do not want to save any fields that start with an '_'
             //if($is_revisioned && $var=='revision_id') $val++;
             if ($var{0} != '_') {
-                if (is_array($val) || is_object($val)) 
-                {            
+                if (is_array($val) || is_object($val)) {
                     $val = serialize($val);   
                     $sql .= "`$var`='".$val."',";
-                }else
-                {   
+                } else {
                     $sql .= "`$var`='".mysqli_real_escape_string($this->connection,$val)."',";
                 }
             }
@@ -806,7 +804,7 @@ class mysqli_database extends database {
 	 * @param string $attribute The attribute name to find a minimum value for.
 	 * @param string $groupfields A comma-separated list of fields (or a single field) name, used
 	 *    for a GROUP BY clause.  This can also be passed as an array of fields.
-	 * @param $where Optional criteria for narrowing the result set.
+	 * @param string $where Optional criteria for narrowing the result set.
 	 * @return null
 	 */
     function min($table, $attribute, $groupfields = null, $where = null) {
@@ -1125,8 +1123,7 @@ class mysqli_database extends database {
         if ($res == null) return array();
         $arrays = array();
         $numrows = mysqli_num_rows($res);
-        for ($i = 0; $i < $numrows; $i++)
-        {
+        for ($i = 0; $i < $numrows; $i++) {
             $assArr = mysqli_fetch_assoc($res);
             $assArr['except'] = $except;
             if($cascade_except) $assArr['cascade_except'] = $cascade_except;

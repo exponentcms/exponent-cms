@@ -27,7 +27,7 @@
     gt('Note: In all of the solutions').', <span class="var">WEBUSER</span> '.gt('is used for the username of the user running the web server, and').
     ' <span class="var">EXPONENT</span> '.gt('is used as the full path to the Exponent directory.'); ?></p>
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
-<tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo gt('File and Directory Permission Tests'); ?></b></td></tr>
+<tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('File and Directory Permission Tests'); ?></strong></td></tr>
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_conf-configphp" />conf/config.php</td>
 	<td class="bodytext" valign="top">
@@ -36,7 +36,7 @@
 		<?php echo gt('The conf/config.php file stores the active configuration for the site, including database connection settings and choice of theme.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/<br />
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/config.php
@@ -82,7 +82,7 @@
 		<?php echo gt('All uploaded content files (resources, importer data, images, etc.) are stored in the site files/ directory, which the web server needs fill read and write access to.  If this test is failing and you think it shouldn\'t be, remember that you must recursively assign read and write permissions to the web server user.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/files
 		</div>
@@ -96,7 +96,7 @@
 		<?php echo gt('The install directory contains all of the files for the Exponent Install Wizard.  Once you have gone through the wizard once, it disables itself automatically (by removing the install/not_configured file).  To do this, it needs write permission on the install directory.  After installation, this directory isn\'t even needed, so you can remove it or set the permissions such that the web server cannot read it.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/install
 		</div>
@@ -124,7 +124,7 @@
 		<?php echo gt('The tmp directory is used by various parts of Exponent for temporary files.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp
 		</div>
@@ -139,7 +139,7 @@
 		<?php echo gt('When you use the Upload Extension feature of the Administrator Control Panel, the uploaded archive is placed in tmp/extensionuploads directory temporarily.  Therefore, the web server needs full access to this.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/extensionuploads
 		</div>
@@ -153,7 +153,7 @@
 		<?php echo gt('Exponent uses Smarty to separate its data processing logic from its display logic.  Smarty templates are compiled from Smarty syntax into raw PHP for speed, and the compiled templates all go in the tmp/views_c directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/views_c
 		</div>
@@ -167,7 +167,7 @@
 		<?php echo gt('Exponent Smarty templates can be cached for speed, and the cached templates all go in the tmp/cache directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/cache
 		</div>
@@ -181,7 +181,7 @@
 		<?php echo gt('Exponent can use \'Minification\' for speed by compressing and compiling stylesheets in the tmp/minfy directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/minfy<br>
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/css
@@ -196,7 +196,7 @@
 		<?php echo gt('Exponent can pull rss feeds into the news module.  These pulled feeds are cached in the tmp/rsscache directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/rsscache
 		</div>
@@ -210,7 +210,7 @@
 		<?php echo gt('Exponent creates image thumbnails \'on the fly\'.  These thumbnails are cached in the tmp/image_cache directory, which must be writable by the web server.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/image_cache
 		</div>
@@ -224,7 +224,7 @@
 		<?php echo gt('Exponent includes the Pixidou image editor which can be used from the included File Manager.  Pixidou uses the tmp/pixidou directory for editing files, which must be writable by the web server.'); ?>
 		<br />
 		<br />
-		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/pixidou
 		</div>
@@ -235,7 +235,7 @@
 <br /><br />
 
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
-<tr><td colspan="2" style="background-color: lightgrey;"><b><?php echo gt('Other Tests'); ?></b></td></tr>
+<tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Other Tests'); ?></strong></td></tr>
 <tr>
 	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_db" /><?php echo gt('Database Backend'); ?></td>
 	<td class="bodytext" valign="top">

@@ -22,23 +22,23 @@
  */
 
 /**
- * This is the class update_profile_paths
+ * This is the class add_blog_published
  */
 class add_blog_published extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.0.6';  // publish/unpublish dates were added in 2.0.6
+	protected $to_version = '2.0.6';  // publish dates were added in 2.0.6
 
 	/**
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	function name() { return "Update blog posts with valid publish date"; }
+	static function name() { return "Update blog posts with valid publish date"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Prior to v2.0.6, blog post date stamps were the created date, but now have a publish/unpublish date like news.  This script updates existing blog posts."; }
+	function description() { return "Prior to v2.0.6, blog post date stamps were the created date, but now have a publish date like news.  This script updates existing blog posts."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -49,7 +49,7 @@ class add_blog_published extends upgradescript {
 	}
 
 	/**
-	 * coverts all headline modules/items into text modules/items and deletes headline controller files
+	 * coverts all blog items to populate 'publish' field
 	 * @return bool
 	 */
 	function upgrade() {

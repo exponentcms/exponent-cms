@@ -19,13 +19,17 @@
 
 <div class="module calendar view">
 	<div class="module-actions">
-		<a class="dayviewlink" href="{link action=viewday time=$item->eventstart}" title="{'View Entire Day'|gettext}" alt="{'View Entire Day'|gettext}">{'View Day'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a class="weekviewlink" href="{link action=viewweek time=$item->eventstart}" title="{'View Entire Week'|gettext}" alt="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-		{printer_friendly_link text='Printer-friendly'|gettext}{br}
+		<a class="dayviewlink" href="{link action=viewday time=$item->eventstart}" title="{'View Entire Day'|gettext}" alt="{'View Entire Day'|gettext}">{'View Day'|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+		<a class="weekviewlink" href="{link action=viewweek time=$item->eventstart}" title="{'View Entire Week'|gettext}" alt="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+		<a class="monthviewlink" href="{link action=viewmonth time=$item->eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
+		{printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {br}
 	</div>
 	<h2>
-		{if $enable_ical == true}
+		{if !empty($config->enable_ical)}
 			<a class="icallink" href="{link action=ical date_id=$item->eventdate->id}" title="{'Export this Event as iCalendar file'|gettext}" alt="{'Export this Event as iCalendar file'|gettext}"> </a>
 		{/if}
 		{$item->title}

@@ -16,7 +16,7 @@
 ##################################################
 
 class container {
-    function form($object,$modules_list = null) {
+    static function form($object,$modules_list = null) {
     }
     
     static function update($values,$object,$loc) {

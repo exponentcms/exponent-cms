@@ -56,11 +56,17 @@ if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/Engl
 // regex for the gettext smarty modifier
 $regex_gettext_mod='/(?<=["\'])((\\\\.|[^\'"])*)(?=["\']\|gettext)/';
 
+// regex for the gettxtlist smarty modifier
+$regex_gettxtlist_mod='/(?<=["\'])((\\\\.|[^\'"])*)(?=["\']\|gettxtlist)/';
+
 // regex for the gettext smarty function
 $regex_gettext_func='/(?<=gettext str=[\'"])((\\\\.|[^\'"])*)([^}]*)(?=[\'"]\})/';
 
 // regex for the gettext gt shortcut function
 $regex_gt='/(?<=gt\([\'"])((\\\\.|[^\'"])*)(?=[\'"]\))/';
+
+// regex for the gettext glist shortcut function
+$regex_glist='/(?<=glist\([\'"])((\\\\.|[^\'"])*)(?=[\'"]\))/';
 
 // extensions of files, used when going through a directory
 $extensions = array('tpl','php');
@@ -78,7 +84,7 @@ function fs($str) {
 }
 
 // rips gettext strings from $file and prints them in C format
-function do_extract($file, $regex) {
+function do_extract($file, $regex, $isalist=false) {
     global $total_new;
 
     $content = @file_get_contents($file);
@@ -95,8 +101,16 @@ function do_extract($file, $regex) {
     $num_added = 0;
    	for ($i=0; $i < count($matches[0]); $i++) {
         str_replace('"', "\'", $matches[0][$i]);  // remove the killer double-quotes
-        expLang::writeTemplate($matches[0][$i]);
-        $num_added++;
+        if ($isalist) {
+            $phrases = explode(",",$matches[0][$i]);
+            foreach ($phrases as $phrase) {
+                expLang::writeTemplate(trim($phrase));
+                $num_added++;
+            }
+        } else {
+            expLang::writeTemplate($matches[0][$i]);
+            $num_added++;
+        }
    	}
     $total_new += $num_added;
     print $num_added."\n";
@@ -104,12 +118,14 @@ function do_extract($file, $regex) {
 
 // processes file for assoc strings
 function do_file($file, $fileext) {
-	global $regex_gt, $regex_gettext_func, $regex_gettext_mod;
+	global $regex_gt, $regex_gettext_mod, $regex_gettxtlist_mod, $regex_gettext_func, $regex_glist;
     if ($fileext == 'tpl') {
         do_extract($file,$regex_gettext_mod);
+        do_extract($file,$regex_gettxtlist_mod,true);
 //        do_extract($file,$regex_gettext_func);  //FIXME these tend to hold computations and likewise break things?
     } elseif ($fileext == 'php') {
         do_extract($file,$regex_gt);
+        do_extract($file,$regex_glist,true);
     }
 }
 
@@ -150,7 +166,7 @@ for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
         $pi = pathinfo($_SERVER['argv'][$ac]);
 		do_file($_SERVER['argv'][$ac],$pi['extension']);
 	}
-    print "\nCompleted Extracting from ".$total_new." Phrases!\n\n";
+    print "\nCompleted Extracting ".$total_new." Total Phrases!\n\n";
 }
 
 ?>

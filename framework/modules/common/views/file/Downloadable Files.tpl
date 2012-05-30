@@ -15,9 +15,9 @@
 
 {if $config.title}<h3>{$config.title}</h3>{/if}
 <ul class="filelist">
-{foreach from=$files item=file}
-	<li>
-		<a class="downloadfile" href="{link action="downloadfile" id=$file->id}" title="{$file->title}">{if $file->title!=""}{$file->title}{else}{$file->filename}{/if}</a>
-	</li>
-{/foreach}
+    {foreach from=$files item=file}
+        <li>
+            <a class="downloadfile" href="{link action="downloadfile" id=$file->id}" title="{$file->title}">{if $file->title!=""}{$file->title}{else}{$file->filename}{/if}</a>
+        </li>
+    {/foreach}
 </ul>

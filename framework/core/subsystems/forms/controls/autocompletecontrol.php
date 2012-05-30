@@ -31,8 +31,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class autocompletecontrol extends formcontrol {
 
-    function name() { return "YAHOO! UI Autocomplete"; }
-    function isSimpleControl() { return false; }
+    static function name() { return "YAHOO! UI Autocomplete"; }
+    static function isSimpleControl() { return false; }
 
 	function toHTML($label,$name) {
 		$html = $this->controlToHTML($name, $label);
@@ -56,7 +56,7 @@ class autocompletecontrol extends formcontrol {
             // autocomplete
             var autocomplete = function() {
                 // Use an XHRDataSource
-                var oDS = new YAHOO.util.XHRDataSource(EXPONENT.URL_FULL+\"index.php\");
+                var oDS = new YAHOO.util.XHRDataSource(EXPONENT.PATH_RELATIVE+\"index.php\");
                 // Set the responseType
                 oDS.responseType = YAHOO.util.XHRDataSource.TYPE_JSON;
 

@@ -18,12 +18,12 @@
 /** @define "BASE" "../../../.." */
 
 /**
- * Base Template
+ * Base Template class
  *
  * @package Subsystems-Forms
  * @subpackage Template
  */
-class basetemplate {
+abstract class basetemplate {
 	// Smarty template object.
 	var $tpl;
 	
@@ -49,9 +49,9 @@ class basetemplate {
 
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
-		$this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
+		if (!SMARTY_DEVELOPMENT) $this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
         $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
-//		$this->tpl->debugging = DEVELOPMENT;  // Opens up the debug console
+		$this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
 
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
@@ -63,7 +63,7 @@ class basetemplate {
 		$this->tpl->setPluginsDir(array(SMARTY_PATH.'plugins',BASE.'framework/plugins'));
 
 		//autoload filters
-		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
+//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
 		
 		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
 		$this->viewdir = realpath(dirname($this->viewfile));
@@ -72,19 +72,6 @@ class basetemplate {
 
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
-		//fix for the wamp/lamp issue
-		//checks necessary in case a file from /views/ is used
-		//should go away, the stuff should be put into a CoreModule
-		//then this can be simplified
-		//TODO: generate this through $this->viewfile using find BASE/THEME_ABSOLUTE and replace with ""
-//		if($item_type != "") {
-//			$this->langdir .= $item_type . "/";
-//		}
-//		if($item_dir != "") {
-//			$this->langdir .= $item_dir . "/";
-//		}
-//		$this->langdir .= "views/";
-
 		$this->tpl->template_dir = $this->viewdir;
 		
 		$this->tpl->compile_dir = BASE . 'tmp/views_c';

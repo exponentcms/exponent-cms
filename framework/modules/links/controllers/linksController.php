@@ -38,8 +38,8 @@ class linksController extends expController {
        ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     function requiresConfiguration() { return true; }
-    function displayname() { return "Link Manager"; }
-    function description() { return "Add and manage a list of URLs"; }
+    function displayname() { return gt("Link Manager"); }
+    function description() { return gt("Add and manage a list of URLs"); }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
     function isSearchable() { return true; }
 
@@ -52,8 +52,8 @@ class linksController extends expController {
         $links = $this->$modelname->find('all', $where, $order, $limit);
 
         if (empty($this->config['usecategories']) ? false : $this->config['usecategories']) {
-            expCatController::addCats($links,$order);
-            $cats = array();
+            expCatController::addCats($links,$order,!empty($this->config['uncat'])?$this->config['uncat']:gt('Not Categorized'));
+            $cats[] = new stdClass();
             $cats[0]->name = '';
             expCatController::sortedByCats($links,$cats);
             assign_to_template(array('cats'=>$cats));

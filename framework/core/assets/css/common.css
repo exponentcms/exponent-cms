@@ -35,6 +35,11 @@ a.printer-friendly-link {
 	background:url(../images/print.png) no-repeat 0 50%;
 }
 
+a.export-pdf-link {
+    padding:2px 0 2px 25px;
+	background:url(../images/attachableitems/pdf_22x22.png) no-repeat 0 50%;
+}
+
 a.showall {
     padding:3px 3px 3px 22px;
     display:inline-block;

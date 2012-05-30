@@ -78,7 +78,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 		<a class="triggerlogin" href="#">Login</a>
 	{else}
 		<div class="box login-form one">
-			<b>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</b>{br}{br}
+			<strong>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</strong>{br}{br}
 			<a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>{br}
 			{if $is_group_admin}
 				<a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}

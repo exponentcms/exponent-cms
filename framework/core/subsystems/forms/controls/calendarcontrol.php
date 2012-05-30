@@ -20,7 +20,8 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Popup Date/Time Picker Control
+ * Date/Time Control w/ Popup Date Picker and time w/ am/pm combo
+ * text entry date and/or time w/ pop-up date selector
  *
  * @package Subsystems-Forms
  * @subpackage Control
@@ -34,9 +35,9 @@ class calendarcontrol extends formcontrol {
     var $default_min = '';
     var $default_ampm = '';
 
-    function name() { return "YAHOO! UI Calendar"; }
-    function isSimpleControl() { return false; }
-    function getFieldDefinition() {
+    static function name() { return "YAHOO! UI Calendar"; }
+    static function isSimpleControl() { return false; }
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
     }
@@ -83,7 +84,8 @@ class calendarcontrol extends formcontrol {
     function controlToHTML($name,$label) {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/subsystems/forms/controls/assets/';
         $html = "
-        <div id=\"cal-container-".$name."\" class=\"yui-skin-sam control calendar-control\">
+            <div id=\"calendar-container\" class=\"yui3-skin-sam\"> </div>
+            <div id=\"cal-container-".$name."\" class=\"control calendar-control\">
             <label for=\"".$name."\" class=\"label\">".$label."</label><input size=26 type=\"text\" id=\"date-".$name."\" name=\"date-".$name."\" value=\"".$this->default_date."\" class=\"text datebox\" /> 
             @ <input size=3 type=\"text\" id=\"time-h-".$name."\" name=\"time-h-".$name."\" value=\"".$this->default_hour."\" class=\"timebox\" maxlength=2/>
             : <input size=3 type=\"text\" id=\"time-m-".$name."\" name=\"time-m-".$name."\" value=\"".$this->default_min."\" class=\"timebox\" maxlength=2/>
@@ -98,163 +100,115 @@ class calendarcontrol extends formcontrol {
         ";
         
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-button','yui2-calendar','yui2-container','yui2-dragdrop','yui2-slider', function(Y) {
-            var YAHOO=Y.YUI2;
-            var Event = YAHOO.util.Event,
-                Dom = YAHOO.util.Dom,
-                dialog,
-                calendar;
+        YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','cssbutton', function(Y) {
+            // Our calendar bounding div id
+            var boundingBoxId = '#calendar-container',
+            // This flag used to track mouse position
+            isMouseOverCalendar = false,
+            // A text field element that stores the date chosen in calendar
+            currentValueContainer = '',
+            calendar = new Y.Calendar({
+                boundingBox: boundingBoxId,
+                width: '200px',
+                showPrevMonth: true,
+                showNextMonth: true,
+            });
+
+            // These are text fields' ids to store dates in
+            var dateField = '#date-".$name."';
+
+            // To show calendar when user clicks on text fields
+            Y.on('focus', function(event) {
+                showCalendar(event)
+            }, dateField);
+            // To hide calendar when text fields loose focus
+            Y.on('blur', function() {
+                hideCalendar()
+            }, dateField);
+
+            // Tracking mouse position
+            Y.on('mouseover', function () {
+                isMouseOverCalendar = true;
+            }, boundingBoxId);
+            Y.on('mouseout', function () {
+                isMouseOverCalendar = false;
+            }, boundingBoxId);
+
+            // On date selection change we update value of a text field and hide calendar window
+            calendar.on('selectionChange', function (event) {
+                var newDate = event.newSelection[0];
+                Y.one(currentValueContainer).set('value', Y.DataType.Date.format(newDate));
+                isMouseOverCalendar = false;
+                hideCalendar();
+            });
+
+            var showCalendar = function (event) {
+                // It's a text field that a user clicked on
+                currentValueContainer = event.target;
+
+                // Getting current date value in the text field
+                    dateString = Y.one(currentValueContainer).get('value');
+
+                // Clearing previously selected dates if any
+                calendar.deselectDates();
+                // If the text field had some date value before
+                if (dateString) {
+                    // Parsing the date string into JS Date value
+                    var date = Y.DataType.Date.parse(dateString);
+                    if (date) {
+                        // Highlighting the date stored in the text field
+                        calendar.selectDates(date);
+                    } else {
+                        date = new Date();
+                    }
+                    // Setting calendar date to show corresponding month
+                    calendar.set('date', date);
+                } else {
+                    calendar.set('date', new Date());
+                }
+                // Finally render the calendar window
+                calendar.render();
+
+                // Required styles to show calendar in a proper position
+                Y.one(boundingBoxId).setStyles({
+                    display: 'block',
+                    position: 'absolute'
+                });
+            };
+
+            var hideCalendar = function () {
+                if (!isMouseOverCalendar) {
+                    Y.one(boundingBoxId).setStyle('display', 'none');
+                }
+            };
 
             // time input restriction to 12 hour
-            Y.one('#time-h-".$name."').on('keyup',function(e){
+            Y.on('keyup',function(e){
                 if (e.target.get('value')>12) {
                     e.target.set('value',12);
                 }
-                
                 if (e.target.get('value')<0) {
                     e.target.set('value',0);
                 }
-            });
-            
+            }, '#time-h-".$name."');
+
             // time input restriction to 12 hour
-            Y.one('#time-m-".$name."').on('keyup',function(e){
+            Y.on('keyup',function(e){
                 if (e.target.get('value')>59) {
                     e.target.set('value',59);
                 }
-                
                 if (e.target.get('value')<0) {
                     e.target.set('value',0);
                 }
-            });
-            
-
-            Event.on(\"date-".$name."\", \"click\", function() {
-                
-                // Lazy Dialog Creation - Wait to create the Dialog, and setup document click listeners, until the first time the button is clicked.
-                if (!dialog) {
-
-                    // Hide Calendar if we click anywhere in the document other than the calendar
-                    Event.on(document, \"click\", function(e) {
-                        var el = Event.getTarget(e);
-                        var dialogEl = dialog.element;
-                        // if (el != dialogEl && !Dom.isAncestor(dialogEl, el) && el != showBtn && !Dom.isAncestor(showBtn, el)) {
-                        //     dialog.hide();
-                        // }
-                    });
-
-                    function resetHandler() {
-                        // Reset the current calendar page to the select date, or 
-                        // to today if nothing is selected.
-                        var selDates = calendar.getSelectedDates();
-                        var resetDate;
-
-                        if (selDates.length > 0) {
-                            resetDate = selDates[0];
-                        } else {
-                            resetDate = calendar.today;
-                        }
-
-                        calendar.cfg.setProperty(\"pagedate\", resetDate);
-                        calendar.render();
-                    }
-
-                    function closeHandler() {
-                        dialog.hide();
-                    }
-
-                    var dialog = new YAHOO.widget.Dialog(\"container-".$name."\", {
-                        visible:false,
-                        context:[\"date-".$name."\", \"tl\", \"bl\"],
-                        buttons:[ {text:\"Reset\", handler: resetHandler, isDefault:true}, {text:\"Done\", handler: closeHandler}],
-                        draggable:false,
-                        width:310,
-                        close:true
-                    });
-                    dialog.setHeader('Pick A Date');
-                    dialog.setBody('<div id=\"cal-".$name."\" class=\"cal\"></div>');
-                    dialog.render(\"cal-container-".$name."\");
-                    YAHOO.util.Dom.addClass(\"container-".$name."\", 'calpop');
-                    
-                    dialog.showEvent.subscribe(function() {
-                        if (YAHOO.env.ua.ie) {
-                            // Since we're hiding the table using yui-overlay-hidden, we 
-                            // want to let the dialog know that the content size has changed, when
-                            // shown
-                            dialog.fireEvent(\"changeContent\");
-                        }
-                    });
-                }
-
-                // Lazy Calendar Creation - Wait to create the Calendar until the first time the button is clicked.
-                if (!calendar) {
-
-                    var calendar = new YAHOO.widget.Calendar(\"cal-".$name."\", {
-                        iframe:false,          // Turn iframe off, since container has iframe support.
-                        hide_blank_weeks:true  // Enable, to demonstrate how we handle changing height, using changeContent
-                    });
-                    calendar.render();
-                    
-                    calendar.selectEvent.subscribe(function() {
-                        if (calendar.getSelectedDates().length > 0) {
-
-                            var selDate = calendar.getSelectedDates()[0];
-
-                            // Pretty Date Output, using Calendar's Locale values: Friday, 8 February 2008
-                            var wStr = calendar.cfg.getProperty(\"WEEKDAYS_LONG\")[selDate.getDay()];
-                            var dStr = selDate.getDate();
-                            var mStr = calendar.cfg.getProperty(\"MONTHS_LONG\")[selDate.getMonth()];
-                            var yStr = selDate.getFullYear();
-
-                            Dom.get(\"date-".$name."\").value = wStr + \", \" + dStr + \" \" + mStr + \" \" + yStr;
-                        } else {
-                            Dom.get(\"date-".$name."\").value = \"\";
-                        }
-                        //dialog.hide();
-                    });
-
-                    calendar.renderEvent.subscribe(function() {
-                        // Tell Dialog it's contents have changed, which allows 
-                        // container to redraw the underlay (for IE6/Safari2)
-                        dialog.fireEvent(\"changeContent\");
-                    });
-                }
-
-                var seldate = calendar.getSelectedDates();
-
-                if (seldate.length > 0) {
-                    // Set the pagedate to show the selected date if it exists
-                    calendar.cfg.setProperty(\"pagedate\", seldate[0]);
-                    calendar.render();
-                }
-
-                dialog.show();
-            });
+            }, '#time-m-".$name."');
         });
         "; // end JS
-        
-        // css
-        expCSS::pushToHead(array(
-		    "unique"=>"cal0",
-		    "link"=>YUI2_PATH."assets/skins/sam/button.css"
-		    )
-		);
-		
-        expCSS::pushToHead(array(
-		    "unique"=>"cal1",
-		    "link"=>YUI2_PATH."assets/skins/sam/calendar.css"
-		    )
-		);
-		
-        expCSS::pushToHead(array(
-    	    "unique"=>"cal2",
-    	    "link"=>$assets_path."calendar/calendarcontrol.css"
-    	    )
-    	);
-	
+
         expJavascript::pushToFoot(array(
             "unique"=>'calpop'.$name,
             "yui3mods"=>1,
-            "content"=>$script
+            "content"=>$script,
+            "src"=>""
          ));
          return $html;
     }

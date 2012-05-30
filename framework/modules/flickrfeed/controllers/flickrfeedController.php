@@ -26,8 +26,8 @@ class flickrfeedController extends expController {
         'showall'=>'Display Public Photostream',
     );
 
-    function displayname() { return "Flickr Feed"; }
-    function description() { return "Display your Flickr Photostream"; }
+    function displayname() { return gt("Flickr Feed"); }
+    function description() { return gt("Display your Flickr Photostream"); }
     function author() { return "Jonathan Worent - OIC Group, Inc"; }
     function isSearchable() { return true; }
     

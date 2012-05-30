@@ -35,13 +35,13 @@ class help extends expRecord {
     //     //$this->save(true);  
     // }
 	
-	public function save() {
+	public function save($validate=false) {
         global $db;
 
 		if (isset($_POST['help_section'])) {
 			// manipulate section & location_data to correct values
 			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . expString::sanitize($_POST['help_section'] .'"'));
-			$loc = null;
+			$loc = new stdClass();;
 			$loc->mod = 'help';
 			$loc->src = $_POST['help_section'];
 			$loc->int = '';

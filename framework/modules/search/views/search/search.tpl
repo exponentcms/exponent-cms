@@ -24,7 +24,7 @@
 		{foreach from=$page->records item=result}
 			{*if $result->canview == 1*}
 				<div class="item {cycle values="odd,even"}">
-					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title|highlight:$terms}</a>
+					<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}</a>
 					{if $result->body != ""}{br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
 					{clear}
 				</div>
@@ -35,7 +35,7 @@
 			<h2><a name="#{$category}">{$category} {'matching'|gettext} "{$query}":</a></h2>
 			{foreach from=$subresults item=result}
 				<div class="item {cycle values="odd,even"}">
-					<a href="{$smarty.const.URL_FULL}{$result->view_link}">{$result->title}</a>
+					<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title}</a>
 					{if $result->sum != ""}<br /><span class="summary">{$result->sum}</span>{/if}
 					{*<br /><span class="search_result_item_link">{$result->view_link}</span>*}
 				</div>

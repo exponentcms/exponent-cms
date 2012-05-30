@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module migration manage_content">
- 	<div class="admin"><b>{'This is the Final Migration Step'|gettext}</b></div>
+ 	<div class="admin"><strong>{'This is the Final Migration Step'|gettext}</strong></div>
     {br}<hr />
     <div class="info-header">
         <div class="related-actions">
@@ -62,7 +62,7 @@
     {/form}
 </div>
 
-<script type="text/javascript">
+{script unique="managecontent"}
     function selectAllm(val) {
         var checks = document.getElementsByName("migrate[]");
         for (var i = 0; i < checks.length; i++) {
@@ -76,4 +76,4 @@
           checks[i].checked = val;
         }
     }
-</script>
+{/script}

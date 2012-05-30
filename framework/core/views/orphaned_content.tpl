@@ -13,7 +13,7 @@
  *
  *}
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>{$smarty.const.SITE_TITLE} -- {'Archived Content'|gettext}</title>
@@ -27,7 +27,7 @@
 	<table cellspacing="0" cellpadding="5" width="100%" border="0">
 		<tr>
 			<td width="70%">
-				<b>{'Archived Content Selector'|gettext}</b>
+				<strong>{'Archived Content Selector'|gettext}</strong>
 			</td>
 			<td width="30%" align="right">
 				[ <a class="mngmntlink" href="{$smarty.const.PATH_RELATIVE}source_selector.php">{'Live Content'|gettext}</a> ]
@@ -37,7 +37,7 @@
 	<table cellspacing="0" cellpadding="5" width="100%" border="0">
 		<tr>
 			<td colspan="2" style="background-color: #999; color: #fff; border-bottom: 1px solid #000; padding-bottom: .5em;">
-				<i>{'Use this page to choose content from a module that has been removed from the site, but not deleted.'|gettext}</i>
+				<em>{'Use this page to choose content from a module that has been removed from the site, but not deleted.'|gettext}</em>
 			</td>
 		</tr>
 	</table>
@@ -50,7 +50,7 @@
 			<td width="80%" valign="top" style="border-left: 1px dashed #666;">
 			{if $error == ''}{$main_output}
 			{elseif $error == 'needmodule'}{'Please select a module from the left'|gettext}
-			{elseif $error == 'nomodule'}<i>{'No archived modules were found.'|gettext}</i>
+			{elseif $error == 'nomodule'}<em>{'No archived modules were found.'|gettext}</em>
 			{/if}
 			</td>
 		</tr>

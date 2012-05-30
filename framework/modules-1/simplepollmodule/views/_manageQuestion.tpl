@@ -15,6 +15,13 @@
 
 <div class="module simplepoll manage-question">
 	<h1>{$question->question}</h1>
+    {permissions}
+        <div class="module-actions">
+            {if $permissions.manage_answer == 1}
+                {ddrerank module="poll_answer" where="question_id=`$question->id`" sortfield="answer" label="Poll Question Answers"|gettext}
+            {/if}
+        </div>
+    {/permissions}
 	<table cellspacing="0" cellpadding="0" style="border:none;" width="100%">
 		<tr><th class="header">{'Answer'|gettext}</th><th class="header"></th></tr>
 		{foreach name=loop from=$answers item=answer}
@@ -24,7 +31,7 @@
 				{if $permissions.manage_answer == 1}
 					<a href="{link action=edit_answer id=$answer->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{'Edit'|gettext}" alt="{'Edit'|gettext}" /></a>
 					<a href="{link action=delete_answer id=$answer->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete'|gettext}" alt="{'Delete'|gettext}" /></a>
-					{if $smarty.foreach.loop.first}
+{*					{if $smarty.foreach.loop.first}
 						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'up.disabled.png'}" />
 					{else}
 						{math assign=prev equation="x-1" x=$answer->rank}
@@ -36,11 +43,11 @@
 					{else}
 						{math assign=next equation="x+1" x=$answer->rank}
 						<a href="{link action=order_switch a=$answer->rank b=$next qid=$question->id}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'down.png'}" title="{'Move Item Down'|gettext}" alt="{'Move Item Down'|gettext}" /></a>
-					{/if}
+					{/if} *}
 				{/if}
 			</td></tr>
 		{foreachelse}
-			<tr><td colspan="2" align="center"><i>{'No answers found'|gettext}</i></td></tr>
+			<tr><td colspan="2" align="center"><em>{'No answers found'|gettext}</em></td></tr>
 		{/foreach}
 	</table>
 	<br />

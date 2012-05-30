@@ -36,13 +36,13 @@
  */
 function smarty_block_script($params,$content,&$smarty, &$repeat) {
 	if ($content) {
-		global $userjsfiles;
+//		global $userjsfiles;
 		
 		if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {script} plugin.")."</strong>");
-		
+
         if ((isset($params['yui2mods']) || isset($params['yuimodules'])) && !strstr($content,"YUI(")) {
             $params['yui3mods'] = 1;
-            $yui2mods = $params['yui2mods']?$params['yui2mods']:$params['yuimodules'];
+            $yui2mods = !empty($params['yui2mods'])?$params['yui2mods']:$params['yuimodules'];
             $toreplace = array('"',"'"," ");
             $stripmodquotes = str_replace($toreplace, "", $yui2mods);               
             $splitmods = explode(",",$stripmodquotes);
@@ -68,7 +68,7 @@ function smarty_block_script($params,$content,&$smarty, &$repeat) {
             //"yui2mods"=>$params['yui2mods']?$params['yui2mods']:$params['yuimodules'],
             "yui3mods"=>$params['yui3mods'],
             "content"=>$content,
-            "src"=>$params['src']
+            "src"=>!empty($params['src']) ? $params['src'] : ''
          ));
 	}
 }

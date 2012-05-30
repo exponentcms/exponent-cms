@@ -23,7 +23,7 @@ $error = false;
 // We have to force the language name into the config.php file
 expSettings::change('LANGUAGE',LANGUAGE);
 
-$user = $db->selectObject('user','is_admin=1');
+$user = $db->selectObject('user','is_system_user=1');
 
 $user->username = $_POST['username'];
 if ($user->username == '') {
@@ -53,6 +53,7 @@ if ($error) {  //FIXME Shouldn't get this because of check in install-6.php unle
 	$user->lastname = $_POST['lastname'];
 	$user->is_admin = 1;
 	$user->is_acting_admin = 1;
+    $user->is_system_user = 1;
 	$user->email = $_POST['email'];
 	$user->created_on = time();
 	if (isset($user->id)){

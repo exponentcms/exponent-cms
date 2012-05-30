@@ -36,8 +36,8 @@ class flowplayerController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Flowplayer Media Player"; }
-    function description() { return "Flowplayer is a media player for Web sites. Use it to embed video/audio streams into your HTML pages."; }
+    function displayname() { return gt("Flowplayer Media Player"); }
+    function description() { return gt("Flowplayer is a media player for Web sites. Use it to embed video/audio streams into your HTML pages."); }
     function isSearchable() { return true; }
     
     function showall() {
@@ -53,7 +53,7 @@ class flowplayerController extends expController {
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
         assign_to_template(array('page'=>$page, 'items'=>$page->records));

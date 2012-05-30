@@ -34,9 +34,9 @@ class dropdowncontrol extends formcontrol {
     var $type = 'select';
     var $class = '';
     
-    function name() { return "Drop Down List"; }
-    function isSimpleControl() { return true; }
-    function getFieldDefinition() {
+    static function name() { return "Drop Down List"; }
+    static function isSimpleControl() { return true; }
+    static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_STRING,
             DB_FIELD_LEN=>255);
@@ -50,7 +50,7 @@ class dropdowncontrol extends formcontrol {
         $this->multiple = $multiple;
     }
     
-    function controlToHTML($name) {          
+    function controlToHTML($name,$label=null) {
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $disabled = $this->disabled != false ? "disabled" : "";
         $html = '<select'.$inputID.' name="' . $name;
@@ -85,6 +85,7 @@ class dropdowncontrol extends formcontrol {
             $html .= '>' . $caption . '</option>';
         }
         $html .= '</select>';             
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
     
@@ -93,13 +94,16 @@ class dropdowncontrol extends formcontrol {
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
+            $object->description = "";
             $object->default = "";
             $object->size = 1;
             $object->items = array();
             $object->required = false;
         } 
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
@@ -120,6 +124,7 @@ class dropdowncontrol extends formcontrol {
         if ($object == null) $object = new dropdowncontrol();
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
+        $object->description = $values['description'];
         $object->default = $values['default'];
         $object->items = listbuildercontrol::parseData($values,'items',true);
         $object->size = (intval($values['size']) <= 0)?1:intval($values['size']);

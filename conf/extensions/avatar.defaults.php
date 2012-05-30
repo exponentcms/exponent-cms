@@ -16,6 +16,6 @@
 #
 ##################################################
 
-if (!defined('DEFAULT_AVATAR')) define('DEFAULT_AVATAR',URL_FULL."framework/modules/users/assets/images/avatar_not_found.jpg");
+if (!defined('DEFAULT_AVATAR')) define('DEFAULT_AVATAR',PATH_RELATIVE."framework/modules/users/assets/images/avatar_not_found.jpg");
 
 ?>

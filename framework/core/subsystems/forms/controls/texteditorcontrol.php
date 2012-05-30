@@ -30,9 +30,9 @@ class texteditorcontrol extends formcontrol {
 	var $cols = 45;
 	var $rows = 5;
 	
-	function name() { return "Text Area"; }
-	function isSimpleControl() { return true; }
-	function getFieldDefinition() {
+	static function name() { return "Text Area"; }
+	static function isSimpleControl() { return true; }
+	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>10000);
@@ -46,7 +46,7 @@ class texteditorcontrol extends formcontrol {
 		$this->maxchars = 0;
 	}
 
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		$html = "<textarea class=\"textarea\" id=\"$name\" name=\"$name\"";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
 		if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";
@@ -63,6 +63,7 @@ class texteditorcontrol extends formcontrol {
 		$html .= ">";
 		$html .= htmlentities($this->default,ENT_COMPAT,LANG_CHARSET);
 		$html .= "</textarea>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 	
@@ -71,13 +72,16 @@ class texteditorcontrol extends formcontrol {
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
+            $object->description = "";
 			$object->default = "";
 			$object->rows = 20;
 			$object->cols = 60;
 			$object->maxchars = 0;
 		} 
+        if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'),  new texteditorcontrol($object->default));
 		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));
 		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4, false,3,"integer"));
@@ -95,6 +99,7 @@ class texteditorcontrol extends formcontrol {
 		}
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
+        $object->description = $values['description'];
 		$object->default = $values['default'];
 		$object->rows = intval($values['rows']);
 		$object->cols = intval($values['cols']);

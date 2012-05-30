@@ -15,9 +15,6 @@
 
 {css unique="cal" link="`$smarty.const.PATH_RELATIVE`framework/modules-1/calendarmodule/assets/css/calendar.css"}
 {literal}
-	.caption {text-align: center;font-weight: bold;border-top: 1px solid;border-bottom: 1px solid;}
-	.viewweek caption {line-height: 2.5em;text-align: center;font-weight: bold;border-top: 1px solid;}
-	.viewweek td {padding: .1em .1em .1em 0;}
 	.viewweek {border: none;width:100%;list-style: none;margin: 0;padding: 0;}
 	.viewweek dt {line-height: 2em; border-top: 1px solid;}
 {/literal}
@@ -31,7 +28,7 @@
 	{if $totaldays == 1}
 		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext} {$start|format_date:"%B %e, %Y"}</a>
 	{else}
-		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext}{' the next '|gettext}{$totaldays} {'days from'|gettext} {$start|format_date:"%B %e, %Y"}</a>
+		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for the next'|gettext} {$totaldays} {'days from'|gettext} {$start|format_date:"%B %e, %Y"}</a>
 	{/if}
 	</h4>
 	<dl class="viewweek">

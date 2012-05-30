@@ -23,8 +23,7 @@
 return array(
 	'user_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
+		DB_PRIMARY=>true),
 	'address1'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150),

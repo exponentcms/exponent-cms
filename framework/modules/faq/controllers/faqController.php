@@ -33,8 +33,8 @@ class faqController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return "Frequently Asked Questions"; }
-    function description() { return "This module allows you show frequently asked questions.  Users can post questions to you to answer too."; }
+    function displayname() { return gt("Frequently Asked Questions"); }
+    function description() { return gt("This module allows you show frequently asked questions.  Users can post questions to you to answer too."); }
     
     public function showall() {
         expHistory::set('viewable', $this->params);
@@ -42,8 +42,8 @@ class faqController extends expController {
         $questions = $faqs->find('all', $this->aggregateWhereClause().' AND include_in_faq=1', 'rank');
 
         if (empty($this->config['usecategories']) ? false : $this->config['usecategories']) {
-            expCatController::addCats($questions,'rank');
-            $cats = array();
+            expCatController::addCats($questions,'rank',!empty($this->config['uncat'])?$this->config['uncat']:gt('Not Categorized'));
+            $cats[0] = new stdClass();
             $cats[0]->name = '';
             expCatController::sortedByCats($questions,$cats);
             assign_to_template(array('cats'=>$cats));
@@ -100,7 +100,7 @@ class faqController extends expController {
             'order'=>'rank',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('In FAQ'=>'include_in_faq', 'Answered'=>'answer', 'Question'=>'question', 'Submitted'=>'created_at', 'Submitted By'=>'submitter_name'),
+            'columns'=>array(gt('In FAQ')=>'include_in_faq',gt('Answered')=>'answer',gt('Question')=>'question',gt('Submitted')=>'created_at',gt('Submitted By')=>'submitter_name'),
         ));
         
         assign_to_template(array('page'=>$page));
@@ -136,6 +136,8 @@ class faqController extends expController {
 	        foreach($tags as $tag) {
                 if (!empty($tag)) {
                     $tag = strtolower(trim($tag));
+                    $tag = str_replace('"', "", $tag); // strip double quotes
+                    $tag = str_replace("'", "", $tag); // strip single quotes
                     $expTag = new expTag($tag);
                     if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
                     $this->params['expTag'][] = $expTag->id;

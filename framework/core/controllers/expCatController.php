@@ -30,13 +30,19 @@ class expCatController extends expController {
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return "Category Manager"; }
+	function displayname() { return gt("Category Manager"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-	function description() { return "This module is for managing your categories"; }
+	function description() { return gt("This module is for managing your categories"); }
+
+    /**
+   	 * author of module
+   	 * @return string
+   	 */
+   	function author() { return "Dave Leffler"; }
 
 	/**
 	 * does module have sources available?
@@ -62,7 +68,7 @@ class expCatController extends expController {
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array('ID#'=>'id','Title'=>'title', 'Body'=>'body'),
+                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
 
         foreach ($db->selectColumn('content_expCats','content_type',null,null,true) as $contenttype) {
@@ -82,6 +88,7 @@ class expCatController extends expController {
             'page'=>$page
         ));
     }
+
     function edit() {
         $modules = expModules::listControllers();
         $mod = array();
@@ -118,7 +125,7 @@ class expCatController extends expController {
             if (empty($records[$key]->catid)) {
                 $records[$key]->catid = null;
                 $records[$key]->catrank = 9999;
-                $records[$key]->cat = 'Not Categorized';
+                $records[$key]->cat = gt('Not Categorized');
             }
         }
         $orderby = explode(" ",$order);
@@ -128,7 +135,7 @@ class expCatController extends expController {
     }
 
     /**
-     * this method fills an multidimensional array from a sorted records object
+     * this method fills a multidimensional array from a sorted records object
      *  it is assumed the records object came from expCatController::addCats
      *
      * @static
@@ -139,6 +146,7 @@ class expCatController extends expController {
         foreach ($records as $record) {
             if (empty($record->catid)) $record->catid = 0;
             if (empty($cats[$record->catid])) {
+                $cats[$record->catid] = new stdClass();
                 $cats[$record->catid]->count = 1;
                 $cats[$record->catid]->name = $record->cat;
             } else {

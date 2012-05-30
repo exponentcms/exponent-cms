@@ -29,8 +29,8 @@ if (!defined('EXPONENT')) exit('');
 	var $html;
 	var $span;
 	
-	function name() { return "Static Text"; }
-	function isSimpleControl() { return true; }
+	static function name() { return "Static Text"; }
+	static function isSimpleControl() { return true; }
 	
 	function __construct($html = "",$span = true) {
 		$this->span = $span;
@@ -45,7 +45,7 @@ if (!defined('EXPONENT')) exit('');
 		}
 	}
 	
-	function controlToHTML($name) {
+	function controlToHTML($name,$label) {
 		return $this->html;
 	}
 	

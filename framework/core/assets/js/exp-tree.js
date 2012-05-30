@@ -36,17 +36,17 @@ var refreshDD = function () {
 var buildContextMenu = function(div) {
 
     function addSubNode (){
-        window.location = eXp.URL_FULL+"index.php?controller="+applicationModule+"&action=adsubnode&id="+currentMenuNode.data.id;
+        window.location = eXp.PATH_RELATIVE+"index.php?controller="+applicationModule+"&action=adsubnode&id="+currentMenuNode.data.id;
     }
 
     function editNode (){
-        window.location = eXp.URL_FULL+"index.php?controller="+applicationModule+"&action=edit&id="+currentMenuNode.data.id;
+        window.location = eXp.PATH_RELATIVE+"index.php?controller="+applicationModule+"&action=edit&id="+currentMenuNode.data.id;
     }
 
     function deleteNode (){
         var handleYes = function() {
             this.hide();
-            window.location = eXp.URL_FULL+"index.php?controller="+applicationModule+"&action=delete&id="+currentMenuNode.data.id;
+            window.location = eXp.PATH_RELATIVE+"index.php?controller="+applicationModule+"&action=delete&id="+currentMenuNode.data.id;
         };
         var handleNo = function() {
             this.hide();
@@ -79,11 +79,11 @@ var buildContextMenu = function(div) {
     }
 
     // function editUserPerms (){
-    //  window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&_common=1&action=userperms&int="+currentMenuNode.data.id;
+    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigationmodule&_common=1&action=userperms&int="+currentMenuNode.data.id;
     // }
     // 
     // function editGroupPerms (){
-    //  window.location="{/literal}{$smarty.const.URL_FULL}{literal}index.php?module=navigationmodule&_common=1&action=groupperms&int="+currentMenuNode.data.id;
+    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigationmodule&_common=1&action=groupperms&int="+currentMenuNode.data.id;
     // }
 
 
@@ -310,7 +310,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
             }
             tree.getRoot().refresh();
         }
-        var iUrl = EXPONENT.URL_FULL+"index.php?ajax_action=1&controller="+applicationModule+"&action=reorder";
+        var iUrl = EXPONENT.PATH_RELATIVE+"index.php?ajax_action=1&controller="+applicationModule+"&action=reorder";
         YAHOO.util.Connect.asyncRequest('POST', iUrl, 
         {
             success : function (o){

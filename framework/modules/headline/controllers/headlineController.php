@@ -39,8 +39,8 @@ class headlineController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 	   
-    function displayname() { return "Headline"; }
-    function description() { return "Allows Admin's to create headlines for sections, and pulls the Title in for modules actions."; }
+    function displayname() { return gt("Headline"); }
+    function description() { return gt("Allows Admin's to create headlines for sections, and pulls the Title in for modules actions."); }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
     function isSearchable() { return true; }
     

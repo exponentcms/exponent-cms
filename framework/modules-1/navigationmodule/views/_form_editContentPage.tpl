@@ -25,6 +25,15 @@
 		<h1>{if $is_edit == 1}{'Edit Existing Content Page'|gettext}{else}{'Create New Content Page'|gettext}{/if}</h1>
 	</div>
     <p>{if $is_edit == 1}{'Use the form below to change the details of this content page.'|gettext}{else}{'Use the form below to enter the information about your new content page.'|gettext}{/if}</p>
-
     {$form_html}
+{script unique="configure" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
+        tabview.render();
+        Y.one('#configure-tabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}
 </div>

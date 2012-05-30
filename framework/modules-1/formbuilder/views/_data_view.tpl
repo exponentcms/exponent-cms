@@ -20,7 +20,9 @@
 <h2>{$title}</h2>
 {permissions}
 	<div class="module-actions">
-		<a class="addnew mngmntlink" href="{link action=export_csv module=formbuilder id=$f->id}">{"Export as CSV"|gettext}</a>
+		<a class="downloadfile addnew mngmntlink" href="{link action=export_csv module=formbuilder id=$f->id}">{"Export as CSV"|gettext}</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        {export_pdf_link landscapepdf=1 limit=999}
 	</div>
 {/permissions}
 {$page->links}
@@ -29,9 +31,9 @@
     <thead>
         <tr>
             {$page->header_columns}
-			<th>
-				{'Links'|gettext}
-			</th>
+            <div class="item-actions">
+    			<th>{'Actions'|gettext}</th>
+            </div>
         </tr>
     </thead>
     <tbody>
@@ -44,15 +46,17 @@
 				</td>
             {/foreach}
 
-			<td>
-				<a href="{link action=view_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}{$user->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'view.png'}" title="{'View all data fields for this record'|gettext}" alt="{'View all data fields for this record'|gettext}" /></a>
-				{if $permissions.editdata == 1}
-					<a href="{link action=edit_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}{$user->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{'Edit this record'|gettext}" alt="{'Edit this record'|gettext}" /></a>
-				{/if}
-				{if $permissions.deletedata == 1}
-					<a href="{link action=delete_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}{$user->id}" onclick="return confirm('{'Are you sure you want to delete this record?'|gettext}');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete this record'|gettext}" alt="{'Delete this record'|gettext}" /></a>
-				{/if}
-			</td>
+            <div class="item-actions">
+                <td>
+                    <a href="{link action=view_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}{$user->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'view.png'}" title="{'View all data fields for this record'|gettext}" alt="{'View all data fields for this record'|gettext}" /></a>
+                    {if $permissions.editdata == 1}
+                        <a href="{link action=edit_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}{$user->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{'Edit this record'|gettext}" alt="{'Edit this record'|gettext}" /></a>
+                    {/if}
+                    {if $permissions.deletedata == 1}
+                        <a href="{link action=delete_record module=formbuilder form_id=$f->id}{if $smarty.const.SEF_URLS == 1}/{else}&{/if}id{if $smarty.const.SEF_URLS == 1}/{else}={/if}{$user->id}" onclick="return confirm('{'Are you sure you want to delete this record?'|gettext}');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete this record'|gettext}" alt="{'Delete this record'|gettext}" /></a>
+                    {/if}
+                </td>
+            </div>
         </tr>
         {/foreach}
     </tbody>
