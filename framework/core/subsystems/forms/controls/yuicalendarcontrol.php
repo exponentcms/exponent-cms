@@ -72,7 +72,7 @@ class yuicalendarcontrol extends formcontrol {
         ";
         
         $script = "
-            YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date',function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','cssbutton',function(Y) {
 
                 // Create a new instance of calendar, placing it in
                 // #mycalendar container, setting its width to 340px,

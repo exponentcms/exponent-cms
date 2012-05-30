@@ -66,7 +66,9 @@ class fakeform extends form {
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
-			$html .= "<div class=\"label\">".$this->controlLbl[$name];
+			$html .= "<div class=\"label\">";
+            if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
+            $html .= $this->controlLbl[$name];
 //			$html .= "<div class=\"formmoduleeditactions\">";
 //			if ($rank != count($this->controlIdx)-1) {
 //				//$html .= '<a href="?module='.$module.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank+1).'">';
