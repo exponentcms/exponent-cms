@@ -28,6 +28,9 @@
 			{if $permissions.create == true || $permissions.edit}
 				{icon class="add" action=create title="Add a news post"|gettext}</a>
 			{/if}
+            {if ($permissions.manage == 1 && $rank == 1)}
+                {ddrerank items=$page->records model="news" label="News Items"|gettext}
+            {/if}
 			{if $permissions.showUnpublished == 1 }
 				{icon class="view" action=showUnpublished title="View Unpublished"|gettext}</a>
 			{/if}

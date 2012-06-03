@@ -68,7 +68,7 @@ class newsController extends expController {
             'view'=>empty($this->params['view']) ? null : $this->params['view']
             ));
             
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'enable_rss'=>empty($this->config['enable_rss']) ? false : true));
+        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'rank'=>($order==='rank')?1:0));
     }
     
     public function showUnpublished() {
