@@ -136,6 +136,9 @@ class helpController extends expController {
             }
 	    }
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
+        if (empty($doc)) {
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
+        }
         $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$doc->location_data."'"));
 
 	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version,'config'=>$config));
