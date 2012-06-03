@@ -40,7 +40,7 @@
 	</div>
 	<h1>
         {if !empty($config->enable_ical)}
-			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">&nbsp;</a>
+			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"></a>
 		{/if}
 		{if $moduletitle}{$moduletitle}{/if}
 	</h1>
