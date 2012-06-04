@@ -85,24 +85,25 @@
                     {/if}
                 </div>
             {/permissions}
-            <div class="bodycopy">
-                {if $config.filedisplay != "Downloadable Files"}
-                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
-                {/if}
-    			{if $config.usebody==1}
-    				<p>{$item->body|summarize:"html":"paralinks"}</p>
-    			{elseif $config.usebody==2}
-    			{else}
-    				{$item->body}
-    			{/if}			
-                {if $config.filedisplay == "Downloadable Files"}
-                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
-                {/if}
-            </div>
+            {if $config.usebody!=2}
+                <div class="bodycopy">
+                    {if $config.filedisplay != "Downloadable Files"}
+                        {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+                    {/if}
+                    {if $config.usebody==1}
+                        <p>{$item->body|summarize:"html":"paralinks"}</p>
+                    {else}
+                        {$item->body}
+                    {/if}
+                    {if $config.filedisplay == "Downloadable Files"}
+                        {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
+                    {/if}
+                </div>
+            {/if}
         </div>
         {/if}
     {/foreach}    
     {if $page->total_records > $config.headcount}
-        {br}{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
+        {icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>
