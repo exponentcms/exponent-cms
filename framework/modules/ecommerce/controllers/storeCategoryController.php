@@ -99,7 +99,12 @@ class storeCategoryController extends expNestedNodeController {
 		}
 		
 		
-        assign_to_template(array('product_types'=>$product_types, 'site_page_default'=>$site_page_default, 'record'=>$record, 'product_type' => $arr_product_type));
+        assign_to_template(array(
+            'product_types'=>$product_types,
+            'site_page_default'=>$site_page_default,
+            'record'=>$record,
+            'product_type' => $arr_product_type
+        ));
 		
         parent::edit();
     }
@@ -114,7 +119,11 @@ class storeCategoryController extends expNestedNodeController {
         $this->config = $config->config;
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
-        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'views'=>$views));
+        assign_to_template(array(
+            'config'=>$this->config,
+            'pullable_modules'=>$pullable_modules,
+            'views'=>$views
+        ));
     }
     
 

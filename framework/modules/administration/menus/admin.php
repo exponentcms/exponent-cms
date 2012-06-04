@@ -183,7 +183,7 @@ if ($user->isAdmin()) {
 						))
 					),
                     array(
-                        'text' => gt('Manage Tags'),
+                        'text' => gt('Manage Site Tags'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
                             'controller' => 'expTag',
@@ -191,7 +191,7 @@ if ($user->isAdmin()) {
                         ))
                     ),
                     array(
-                        'text' => gt('Manage Categories'),
+                        'text' => gt('Manage Site Categories'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
                             'controller' => 'expCat',

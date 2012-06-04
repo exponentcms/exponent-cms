@@ -73,7 +73,10 @@ class searchController extends expController {
             'dir'=>'DESC',
 			));        
 
-        assign_to_template(array('page'=>$page, 'terms'=>$terms));
+        assign_to_template(array(
+            'page'=>$page,
+            'terms'=>$terms
+        ));
     }
     
     public static function spider() {
@@ -104,7 +107,9 @@ class searchController extends expController {
 	    }
 	
 	    uksort($mods,'strnatcasecmp');
-	    assign_to_template(array('mods'=>$mods));
+	    assign_to_template(array(
+            'mods'=>$mods
+        ));
     }
         
     public function show() {
@@ -266,7 +271,12 @@ class searchController extends expController {
                         )
                     ));
 	
-        assign_to_template(array('page'=>$page, 'users'=>$uname, 'user_default' => $user_default, 'badSearch' => $badSearch)); 
+        assign_to_template(array(
+            'page'=>$page,
+            'users'=>$uname,
+            'user_default' => $user_default,
+            'badSearch' => $badSearch
+        ));
 		
 	}
 	
@@ -291,7 +301,13 @@ class searchController extends expController {
 		$records_key   = implode(",", $records_key_arr);
 		$records_values = implode(",", $records_values_arr);
 		
-		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit, 'records_key' => $records_key, 'records_values' => $records_values));
+		assign_to_template(array(
+            'records'=>$records,
+            'total'=>$count,
+            'limit' => $limit,
+            'records_key' => $records_key,
+            'records_values' => $records_values
+        ));
 	}
 
 }

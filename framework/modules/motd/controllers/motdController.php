@@ -44,7 +44,9 @@ class motdController extends expController {
             $message = $this->motd->find('first', null, 'RAND()');  
         }
         
-        assign_to_template(array('message'=>$message));
+        assign_to_template(array(
+            'message'=>$message
+        ));
     }
     
     function showall() {
@@ -59,7 +61,9 @@ class motdController extends expController {
                     'columns'=>array(gt('Date')=>'month',gt('Message')=>'body'),
                     ));
         
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     function update() {

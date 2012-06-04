@@ -95,7 +95,10 @@ class shippingController extends expController {
         
         $shipping->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));
         
-        assign_to_template(array('shipping'=>$shipping, 'order'=>$order));
+        assign_to_template(array(
+            'shipping'=>$shipping,
+            'order'=>$order
+        ));
 	}
 	
 	function listPrices() {
@@ -130,7 +133,9 @@ class shippingController extends expController {
                 }
             }
         }
-        assign_to_template(array('calculators'=>$calculators));
+        assign_to_template(array(
+            'calculators'=>$calculators
+        ));
 	}
 	
 		
@@ -145,7 +150,9 @@ class shippingController extends expController {
         if (empty($this->params['id'])) return false;
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
         $calc = new $calcname($this->params['id']);
-        assign_to_template(array('calculator'=>$calc));
+        assign_to_template(array(
+            'calculator'=>$calc
+        ));
     }
     
     public function saveconfig() {
@@ -164,7 +171,9 @@ class shippingController extends expController {
         if (empty($this->params['id'])) return false;
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
         $calc = new $calcname($this->params['id']);
-        assign_to_template(array('calculator'=>$calc));
+        assign_to_template(array(
+            'calculator'=>$calc
+        ));
 		
     }
 	

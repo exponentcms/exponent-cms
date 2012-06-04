@@ -22,6 +22,7 @@ if (!defined('EXPONENT')) exit('');
 /**
  * YUI Date Picker Control
  * standard calendar control w/o time
+ * places an update calendar field/button
  *
  * @package Subsystems-Forms
  * @subpackage Control

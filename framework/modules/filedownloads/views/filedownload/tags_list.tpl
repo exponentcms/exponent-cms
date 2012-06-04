@@ -22,6 +22,7 @@
 			{/if}
             {if $permissions.manage == 1}
                 {icon controller=expTag action=manage text="Manage Tags"|gettext}
+                {icon controller=expCat action=manage model='filedownload' text="Manage Categories"|gettext}
             {/if}
         </div>
     {/permissions}

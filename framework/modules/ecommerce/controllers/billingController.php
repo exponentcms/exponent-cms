@@ -79,7 +79,9 @@ class billingController extends expController {
         
         $bcalc = new billingcalculator();
         $calculators = $bcalc->find('all');
-        assign_to_template(array('calculators'=>$calculators));
+        assign_to_template(array(
+            'calculators'=>$calculators
+        ));
 	}
 	
 	public function activate(){	
@@ -98,7 +100,9 @@ class billingController extends expController {
     public function configure() {
         if (empty($this->params['id'])) return false;
         $calc = new billingcalculator($this->params['id']);
-        assign_to_template(array('calculator'=>$calc));
+        assign_to_template(array(
+            'calculator'=>$calc
+        ));
     }
     
     public function saveconfig() {

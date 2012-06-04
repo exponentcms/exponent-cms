@@ -13,72 +13,82 @@
  *
  *}
 
+{uniqueid assign="id"}
+
 <div class="module expcat manage">
-	<h1>{"Manage Site Categories"|gettext}</h1>
+	<h1>{"Manage Categories"|gettext}</h1>
 	{permissions}
     	{if $permissions.create == 1}
-    		<a class="add" href="{link controller=$model_name action=create}">{"Create a new Category"|gettext}</a>
+    		<a class="add" href="{link controller=$model_name action=create rank=1}">{"Create a new Category"|gettext}</a>
     	{/if}
-        {if $permissions.manage == 1}
-            {ddrerank items=$page->records model="expCat" label="Categories"|gettext}
-        {/if}
     {/permissions}
-    {$page->links}
-    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-        <thead>
-            <tr>
-                <th>
-                {"Category Name"|gettext}
-                </th>
-                <th>
-                {"Use Count"|gettext}
-                </th>
-                <th>
-                {"Used in"|gettext}
-                </th>
-                <th>
-                {"Actions"|gettext}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {foreach from=$page->records item=listing}
-                <tr class="{cycle values="odd,even"}">
-                    <td>
-                        <strong>{$listing->title}</strong>
-                    </td>
-                    <td>
-                        {$listing->attachedcount}
-                    </td>
-                    <td>
-                        {foreach from=$listing->attached item="type" key=key name=types}
-                            {*<strong>{$key}</strong><br />*}
-                            {$key}
-                            {*{foreach from=$type item=ai name=ai}*}
-                                {*{if $ai->sef_url != ""}*}
-                                    {*<a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>*}
-                                {*{else}*}
-                                    {*{$ai->title|truncate:50:"..."}*}
-                                {*{/if}*}
-                                {*<br />*}
-                                {*<br />*}
-                            {*{/foreach}*}
-                        {/foreach}
-                    </td>
-                    <td>
-                        {permissions}
-                            {if $permissions.edit == 1}
-                                {icon controller=$controller action=edit record=$listing title="Edit this category"|gettext}
-                            {/if}
-                            {if $permissions.delete == 1}
-                                {icon controller=$controller action=delete record=$listing title="Delete this category"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
-                            {/if}
-                        {/permissions}
-                    </td>
-                </tr>
+
+    <div id="{$id}" class="yui-navset exp-skin-tabview hide">
+        <ul>
+            {foreach name=tabs from=$page->modules key=moduleid item=module}
+                <li><a href="#tab{$smarty.foreach.items.iteration}">{$moduleid|capitalize}</a></li>
             {/foreach}
-        </tbody>
-    </table>
-    {$page->links}
+        </ul>
+        <div>
+            {foreach name=items from=$page->modules key=moduleid item=module}
+                <div id="tab{$smarty.foreach.items.iteration}">
+                    {if $permissions.manage == 1}
+                        {ddrerank id=$moduleid items=$page->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
+                    {/if}
+
+                    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                {"Category Name"|gettext}
+                                </th>
+                                <th>
+                                {"Use Count"|gettext}
+                                </th>
+                                <th>
+                                {"Actions"|gettext}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {*{foreach from=$page->records item=listing}*}
+                            {foreach from=$module item=listing}
+                                <tr class="{cycle values="odd,even"}">
+                                    <td>
+                                        <strong>{$listing->title}</strong>
+                                    </td>
+                                    <td>
+                                        {$listing->attachedcount}
+                                    </td>
+                                    <td>
+                                        {permissions}
+                                            {if $permissions.edit == 1}
+                                                {icon controller=$controller action=edit record=$listing title="Edit this category"|gettext}
+                                            {/if}
+                                            {if $permissions.delete == 1}
+                                                {icon controller=$controller action=delete record=$listing title="Delete this category"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
+                                            {/if}
+                                        {/permissions}
+                                    </td>
+                                </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            {/foreach}
+        </div>
+    </div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 {clear}
+
+{script unique="`$id`" yui3mods="1"}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+        tabview.render();
+        Y.one('#{/literal}{$id}{literal}').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}

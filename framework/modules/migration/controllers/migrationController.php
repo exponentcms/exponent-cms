@@ -141,7 +141,9 @@ class migrationController extends expController {
 				$page->exists = false;
 			}
 		}
-        assign_to_template(array('pages'=>$pages));
+        assign_to_template(array(
+            'pages'=>$pages
+        ));
     }
 
 	/**
@@ -257,7 +259,9 @@ class migrationController extends expController {
         expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $files = $old_db->selectObjects('file');
-        assign_to_template(array('count'=>count($files)));
+        assign_to_template(array(
+            'count'=>count($files)
+        ));
     }
 
 	/**
@@ -282,7 +286,10 @@ class migrationController extends expController {
             $db->insertObject($file,'expFiles');
 			$oldfile->exists = file_exists(BASE.$oldfile->directory."/".$oldfile->filename);
 		}
-        assign_to_template(array('files'=>$oldfiles,'count'=>count($oldfiles)));
+        assign_to_template(array(
+            'files'=>$oldfiles,
+            'count'=>count($oldfiles)
+        ));
     }
 
 	/**
@@ -313,7 +320,9 @@ class migrationController extends expController {
         }
         //eDebug($modules);
 
-        assign_to_template(array('modules'=>$modules));
+        assign_to_template(array(
+            'modules'=>$modules
+        ));
     }
 
 	/**
@@ -632,7 +641,9 @@ class migrationController extends expController {
 
 		searchController::spider();
         expSession::clearCurrentUserSessionCache();
-        assign_to_template(array('msg'=>@$this->msg));
+        assign_to_template(array(
+            'msg'=>@$this->msg
+        ));
     }
 
 	/**
@@ -662,7 +673,10 @@ class migrationController extends expController {
 				$group->exists = false;
 			}
 		}
-		assign_to_template(array('users'=>$users,'groups'=>$groups));
+		assign_to_template(array(
+            'users'=>$users,
+            'groups'=>$groups
+        ));
     }
 
 	/**

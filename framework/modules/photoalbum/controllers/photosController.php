@@ -58,7 +58,9 @@ class photosController extends expController {
                     'columns'=>array(gt('Title')=>'title'),
                     ));
                     
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     function show() {
@@ -90,7 +92,14 @@ class photosController extends expController {
         }
         $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
 
-        assign_to_template(array('record'=>$record,'imgnum'=>$record->rank,'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),"next"=>$next,"previous"=>$prev,'config'=>$config));
+        assign_to_template(array(
+            'record'=>$record,
+            'imgnum'=>$record->rank,
+            'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),
+            "next"=>$next,
+            "previous"=>$prev,
+            'config'=>$config
+        ));
     }
     
     public function slideshow() {
@@ -100,7 +109,9 @@ class photosController extends expController {
         $s = new photo();
         $slides = $s->find('all',$where,$order);
                     
-        assign_to_template(array('slides'=>$slides));
+        assign_to_template(array(
+            'slides'=>$slides
+        ));
     }
     
     public function showall_tags() {
@@ -119,7 +130,9 @@ class photosController extends expController {
             }
         }
         
-        assign_to_template(array('tags'=>$used_tags));
+        assign_to_template(array(
+            'tags'=>$used_tags
+        ));
     }           
     
     public function update() {

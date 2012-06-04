@@ -248,7 +248,9 @@ class expCommentController extends expController {
 	    }
 	    
 	    $comment = new expComment($this->params['id']);
-	    assign_to_template(array('comment'=>$comment));
+	    assign_to_template(array(
+            'comment'=>$comment
+        ));
 	}
 	
 	public function approve_submit() {

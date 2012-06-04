@@ -69,7 +69,11 @@ class filedownloadController extends expController {
             }
         }
 
-		assign_to_template(array('page'=>$page, 'items'=>$page->records, 'rank'=>($order==='rank')?1:0));
+		assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records,
+            'rank'=>($order==='rank')?1:0
+        ));
     }
 
     public function downloadfile() {

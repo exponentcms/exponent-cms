@@ -39,7 +39,9 @@ class product_statusController extends expController {
 			'where'=>1,
 			));
 
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function showall() {

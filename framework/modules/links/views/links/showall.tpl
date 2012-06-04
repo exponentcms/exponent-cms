@@ -31,6 +31,7 @@
 				{icon class=add action=create text="Add a new link"|gettext}
 			{/if}
 			{if $permissions.manage == 1 && $rank == 1}
+                {icon controller=expCat action=manage model='links' text="Manage Categories"|gettext}
 				{ddrerank items=$items model="links" label="Links"|gettext}
 			{/if}
 		</div>

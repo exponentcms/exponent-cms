@@ -119,7 +119,10 @@ class orderController extends expController {
 				)
 			));
         //eDebug($page,true);
-		assign_to_template(array('page'=>$page, 'closed_count'=>$closed_count));
+		assign_to_template(array(
+            'page'=>$page,
+            'closed_count'=>$closed_count
+        ));
 	}
 	
 	function show() {
@@ -163,7 +166,21 @@ class orderController extends expController {
         $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
 	    
         
-        assign_to_template(array('css'=>$css,'printerfriendly'=>$pf,'order'=>$order,'shipping'=>$order->orderitem[0],'billing'=>$billing, 'messages'=>$status_messages, 'order_type'=>$order_type, 'storeConfig'=>$storeConfig->config,'sales_reps'=>$order->getSalesReps(), 'from_addresses'=>$from_addresses, 'from_default'=>ecomconfig::getConfig('from_address'),'email_subject'=>$email_subject,'to_addresses'=>implode(',',$to_addresses)));
+        assign_to_template(array(
+            'css'=>$css,
+            'printerfriendly'=>$pf,
+            'order'=>$order,
+            'shipping'=>$order->orderitem[0],
+            'billing'=>$billing,
+            'messages'=>$status_messages,
+            'order_type'=>$order_type,
+            'storeConfig'=>$storeConfig->config,
+            'sales_reps'=>$order->getSalesReps(),
+            'from_addresses'=>$from_addresses,
+            'from_default'=>ecomconfig::getConfig('from_address'),
+            'email_subject'=>$email_subject,
+            'to_addresses'=>implode(',',$to_addresses)
+        ));
 	}
 	
 	function myOrder() {
@@ -238,7 +255,15 @@ class orderController extends expController {
             }
         }
         if(DEVELOPMENT != 0)$trackMe = false;
-        assign_to_template(array('printerfriendly'=>$pf,'order'=>$order,'shipping'=>$order->orderitem[0],'billing'=>$billing, 'order_type'=>$order_type, 'storeConfig'=>$storeConfig->config, 'tc'=>$trackMe));
+        assign_to_template(array(
+            'printerfriendly'=>$pf,
+            'order'=>$order,
+            'shipping'=>$order->orderitem[0],
+            'billing'=>$billing,
+            'order_type'=>$order_type,
+            'storeConfig'=>$storeConfig->config,
+            'tc'=>$trackMe
+        ));
 	    
 	}
 	
@@ -250,7 +275,11 @@ class orderController extends expController {
 	    $order = new order($this->params['id']);		
 	    $billing = new billing($this->params['id']);
 	    //$css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
-	    assign_to_template(array('order'=>$order,'shipping'=>$order->orderitem[0],'billing'=>$billing));
+	    assign_to_template(array(
+            'order'=>$order,
+            'shipping'=>$order->orderitem[0],
+            'billing'=>$billing
+        ));
 	
 	    // build the html and text versions of the message
 	    $html = $template->render();
@@ -652,17 +681,15 @@ exit();
                 if (!empty($email_addy)) {
                     $from_status = $db->selectValue('order_status', 'title', 'id='.$change->from_status_id);
                     $to_status = $db->selectValue('order_status', 'title', 'id='.$change->to_status_id);
-                    assign_to_template(
-                        array(
-                            'comment'=>$change->comment, 
-                            'to_status'=>$to_status, 
-                            'from_status'=>$from_status, 
-                            'order'=>$order, 
-                            'date'=>date("F j, Y, g:i a"),
-                            'storename'=>ecomconfig::getConfig('storename'),
-                            'include_shipping'=>isset($this->params['include_shipping_info']) ? true : false
-                            )
-                     );
+                    assign_to_template(array(
+                        'comment'=>$change->comment,
+                        'to_status'=>$to_status,
+                        'from_status'=>$from_status,
+                        'order'=>$order,
+                        'date'=>date("F j, Y, g:i a"),
+                        'storename'=>ecomconfig::getConfig('storename'),
+                        'include_shipping'=>isset($this->params['include_shipping_info']) ? true : false
+                    ));
                     
                     $html = $template->render();
                     $html .= ecomconfig::getConfig('footer');
@@ -705,10 +732,9 @@ exit();
         //eDebug($email_addy,true);
         if (!empty($email_addys[0])) 
         {   
-            assign_to_template(
-                    array(
-                        'message'=>$this->params['email_message']
-                        ));
+            assign_to_template(array(
+                'message'=>$this->params['email_message']
+            ));
             $html = $template->render();
             if($this->params['include_invoice'])
             {
@@ -797,7 +823,9 @@ exit();
                 gt('Invoice #')=>'invoice_id',
 				)
 			));
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
 		
 	}
 	
@@ -910,7 +938,10 @@ exit();
         $opts = expUnserialize($billing->billingmethod->billing_options) ;
         //eDebug($billing);
         eDebug($opts);
-        assign_to_template(array('orderid'=>$this->params['id'],'opts'=>$opts->result));         
+        assign_to_template(array(
+            'orderid'=>$this->params['id'],
+            'opts'=>$opts->result
+        ));
     }
     
     function edit_shipping_method ()
@@ -921,7 +952,10 @@ exit();
         $s = array_pop($order->shippingmethods);
         $sm = new shippingmethod($s->id);
         //eDebug($sm);
-        assign_to_template(array('orderid'=>$this->params['id'],'shipping'=>$sm));         
+        assign_to_template(array(
+            'orderid'=>$this->params['id'],
+            'shipping'=>$sm
+        ));
     }
     
     function save_shipping_method()
@@ -1032,14 +1066,18 @@ exit();
             expHistory::back();
         }
         $order = new order($this->params['id']);
-        assign_to_template(array('order'=>$order));
+        assign_to_template(array(
+            'order'=>$order
+        ));
         
     }
     
     function create_new_order()
     {             
         $order = new order();
-        assign_to_template(array('order'=>$order));
+        assign_to_template(array(
+            'order'=>$order
+        ));
         
     }
     
@@ -1244,7 +1282,12 @@ exit();
         //$opts = expUnserialize($billing->billingmethod->billing_options);
         //eDebug($billing);
         //eDebug($opts);
-        assign_to_template(array('orderid'=>$this->params['id'],'record'=>$addy,'same'=>$same, 'type'=>$type));         
+        assign_to_template(array(
+            'orderid'=>$this->params['id'],
+            'record'=>$addy,
+            'same'=>$same,
+            'type'=>$type
+        ));
     }
     
     function save_address ()
@@ -1378,14 +1421,19 @@ exit();
             }
         }
         //eDebug($oi->selectedOpts);
-        assign_to_template(array('oi'=>$oi));            
+        assign_to_template(array(
+            'oi'=>$oi
+        ));
     }
     
     function edit_invoice_id()
     {
         if(!isset($this->params['id'])) flashAndFlow('error','Unable to process request.  Order invalid.');
         $order = new order($this->params['id']);
-        assign_to_template(array('orderid'=>$this->params['id'], 'invoice_id'=>$order->invoice_id));         
+        assign_to_template(array(
+            'orderid'=>$this->params['id'],
+            'invoice_id'=>$order->invoice_id
+        ));
     }
     
     function save_invoice_id()
@@ -1511,7 +1559,10 @@ exit();
         eDebug($this->params);
         $product = new product($this->params['product_id']);
         $paramsArray = array('orderid'=>$this->params['orderid']);        
-        assign_to_template(array('product'=>$product, 'params'=>$paramsArray));            
+        assign_to_template(array(
+            'product'=>$product,
+            'params'=>$paramsArray
+        ));
     }
     
     function save_new_order_item()
@@ -1553,7 +1604,10 @@ exit();
     {
         //eDebug($this->params);
         $order = new order($this->params['orderid']);        
-        assign_to_template(array('orderid'=>$this->params['id'],'order'=>$order));            
+        assign_to_template(array(
+            'orderid'=>$this->params['id'],
+            'order'=>$order
+        ));
     }
     
     function save_totals()
@@ -1631,7 +1685,9 @@ exit();
             'action'=>$this->params['action'],
             'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Purchased Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Order Type')=>'order_type',gt('Status')=>'status_title'),
         ));
-        assign_to_template(array('page'=>$page));   
+        assign_to_template(array(
+            'page'=>$page
+        ));
         
         //eDebug($this->params);
         /*$o = new order();
@@ -1682,7 +1738,9 @@ exit();
         $sessAr = expSession::get('verify_shopper');
         if(isset($sessAr))
         {
-            assign_to_template(array('firstname'=>$sessAr['firstname']));
+            assign_to_template(array(
+                'firstname'=>$sessAr['firstname']
+            ));
             /*eDebug(expSession::get('verify_shopper'));
             eDebug($this->params);
             eDebug("here");

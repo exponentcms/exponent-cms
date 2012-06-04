@@ -56,7 +56,10 @@ class flowplayerController extends expController {
                     'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records));
+        assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records
+        ));
     }
 
 }

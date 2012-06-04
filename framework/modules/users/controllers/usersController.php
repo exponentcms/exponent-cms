@@ -70,7 +70,9 @@ class usersController extends expController {
 //                    ));
 //
 //        assign_to_template(array('page'=>$page));
-        assign_to_template(array('filter'=>$filter));
+        assign_to_template(array(
+            'filter'=>$filter
+        ));
     }
     
     public function create() {
@@ -99,7 +101,11 @@ class usersController extends expController {
 		//If there is no image uploaded, use the default avatar
         if(empty($u->image)) $u->image = DEFAULT_AVATAR;
 
-        assign_to_template(array('edit_user'=>$u, 'extensions'=>$active_extensions,"userkey"=>expSession::get("userkey")));
+        assign_to_template(array(
+            'edit_user'=>$u,
+            'extensions'=>$active_extensions,
+            "userkey"=>expSession::get("userkey")
+        ));
     }
     
     public function update() {
@@ -290,7 +296,10 @@ class usersController extends expController {
 		    $sessions[$i]->duration = expDateTime::duration($sessions[$i]->last_active,$sessions[$i]->start_time);
 	    }
 
-	    assign_to_template(array('sessions'=>$sessions, 'filter'=>$filtered));
+	    assign_to_template(array(
+            'sessions'=>$sessions,
+            'filter'=>$filtered
+        ));
     }
     
     public function kill_session() {
@@ -376,7 +385,9 @@ class usersController extends expController {
 		                ),
 		            ));
 		
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
     }
 
     public function manage_groups() {
@@ -397,7 +408,9 @@ class usersController extends expController {
                         )
                     ));
                     
-        assign_to_template(array('page'=>$page)); 
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function reset_password() {
@@ -503,7 +516,10 @@ class usersController extends expController {
             flash('error', gt('You do not have the proper permissions to do that'));
             expHistory::back();
         }
-        assign_to_template(array('u'=>$u,'isuser'=>$isuser));
+        assign_to_template(array(
+            'u'=>$u,
+            'isuser'=>$isuser
+        ));
     }
     
     public function save_change_password() {
@@ -545,7 +561,9 @@ class usersController extends expController {
         }
         
         $u = new user($this->params['id']);
-        assign_to_template(array('u'=>$u));
+        assign_to_template(array(
+            'u'=>$u
+        ));
     }
     
     public function update_userpassword() {
@@ -586,7 +604,9 @@ class usersController extends expController {
         $id = isset($this->params['id']) ? $this->params['id'] : null;
         $group = new group($id);
         $group->redirect = $db->selectValue('section','id',"sef_name='".$group->redirect."'");
-        assign_to_template(array('record'=>$group));
+        assign_to_template(array(
+            'record'=>$group
+        ));
     }
     
     public function manage_group_memberships() {

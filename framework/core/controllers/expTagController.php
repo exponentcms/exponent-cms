@@ -36,7 +36,7 @@ class expTagController extends expController {
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is for managing your tags"); }
+	function description() { return gt("This module is used to manage tags"); }
 
 	/**
 	 * does module have sources available?
@@ -76,7 +76,10 @@ class expTagController extends expController {
             }
         }
 
-        assign_to_template(array('record'=>$record,'tag'=>$tag));
+        assign_to_template(array(
+            'record'=>$record,
+            'tag'=>$tag
+        ));
     }
 
 	/**
@@ -114,7 +117,9 @@ class expTagController extends expController {
             }
         }
         
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
 
 }

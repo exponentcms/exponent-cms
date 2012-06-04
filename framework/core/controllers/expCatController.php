@@ -36,7 +36,7 @@ class expCatController extends expController {
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is for managing your categories"); }
+	function description() { return gt("This module is used to manage categories"); }
 
     /**
    	 * author of module
@@ -56,20 +56,17 @@ class expCatController extends expController {
 	function manage() {
         global $db;
         expHistory::set('manageable', $this->params);
-        $modelname = $this->basemodel_name;
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-//        $order = "title";
-        $order = "rank";
+        $where = empty($this->params['model']) ? null : "module='".$this->params['model']."'";
         $page = new expPaginator(array(
-                    'model'=>$modelname,
-                    'where'=>$where, 
+                    'model'=>$this->basemodel_name,
+                    'where'=>$where,
                     'limit'=>50,
-                    'order'=>$order,
+                    'order'=>'module,rank',
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
                     'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+                ));
 
         foreach ($db->selectColumn('content_expCats','content_type',null,null,true) as $contenttype) {
             foreach ($page->records as $key => $value) {
@@ -83,6 +80,9 @@ class expCatController extends expController {
                     }
                 }
             }
+        }
+        foreach ($page->records as $record) {
+            $page->modules[$record->module][] = $record;
         }
         assign_to_template(array(
             'page'=>$page

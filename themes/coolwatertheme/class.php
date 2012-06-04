@@ -47,7 +47,10 @@ class coolwatertheme extends theme {
         $form->register('link3_section',gt('Link #3 Page'),new dropdowncontrol($settings['LINK3_SECTION'],navigationmodule::levelDropdownControlArray(0,0,array(),false,'manage',true)));
    		$form->register(null,'',new htmlcontrol('<br>'));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
-   		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
+   		assign_to_template(array(
+            'name'=>self::name(),
+            'form_html'=>$form->tohtml()
+        ));
    	}
 
 }

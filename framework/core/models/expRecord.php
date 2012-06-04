@@ -159,7 +159,7 @@ class expRecord {
         if (strcasecmp($range, 'all') == 0 || strcasecmp($range, 'revisions') == 0) {
             $sql .= empty($limit) ? '' : ' LIMIT '.$limitstart.','.$limit;
             return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
-        } elseif (strcasecmp($range, 'first') == 0) {   
+        } elseif (strcasecmp($range, 'first') == 0) {
             $sql .= ' LIMIT 0,1';
             $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
             return empty($records) ? null : $records[0];  

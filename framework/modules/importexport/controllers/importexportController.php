@@ -67,7 +67,9 @@ class importexportController extends expController {
     }
     
     function import() {
-        assign_to_template(array('type'=>$this->params['import_type']));
+        assign_to_template(array(
+            'type'=>$this->params['import_type']
+        ));
     }
     
     function parseCategory($data)

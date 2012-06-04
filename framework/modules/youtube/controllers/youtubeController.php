@@ -63,7 +63,9 @@ class youtubeController extends expController {
             $val->embed_code = preg_replace("/\" frameborder=\"/", '?wmode=opaque" frameborder="', $val->embed_code);
         }
 
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
 	
 }

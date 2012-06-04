@@ -42,7 +42,10 @@ class ealertController extends expController {
     public function showall() {
         $ealerts = new expeAlerts();
         $subscriptions = array();
-        assign_to_template(array('ealerts'=>$ealerts->find('all'), 'subscriptions'=>$subscriptions));
+        assign_to_template(array(
+            'ealerts'=>$ealerts->find('all'),
+            'subscriptions'=>$subscriptions
+        ));
     }
     
     public function send_confirm() {
@@ -62,7 +65,11 @@ class ealertController extends expController {
         // figure out how many subscribers there are
         $number_of_subscribers = $db->countObjects('expeAlerts_subscribers', 'expeAlerts_id='.$ealert->id);
         
-        assign_to_template(array('record'=>$record, 'number_of_subscribers'=>$number_of_subscribers, 'ealert'=>$ealert));
+        assign_to_template(array(
+            'record'=>$record,
+            'number_of_subscribers'=>$number_of_subscribers,
+            'ealert'=>$ealert
+        ));
     }
     
     public function send_process() {
@@ -135,7 +142,11 @@ class ealertController extends expController {
         
         // get a list of all available E-Alerts
         $ealerts = new expeAlerts();
-        assign_to_template(array('subscriber'=>$sub, 'subscriptions'=>$subscriptions, 'ealerts'=>$ealerts->find('all')));
+        assign_to_template(array(
+            'subscriber'=>$sub,
+            'subscriptions'=>$subscriptions,
+            'ealerts'=>$ealerts->find('all')
+        ));
     }
     
     public function subscription_update() {
@@ -225,7 +236,10 @@ class ealertController extends expController {
         $subscriber = new subscribers($this->params['id']);
         
         // render the template
-        assign_to_template(array('subscriber'=>$subscriber, 'ealerts'=>$ealerts));
+        assign_to_template(array(
+            'subscriber'=>$subscriber,
+            'ealerts'=>$ealerts
+        ));
     }
     
     public function confirm() {
@@ -245,7 +259,9 @@ class ealertController extends expController {
         
         // find the users active subscriptions
         $ealerts = expeAlerts::getBySubscriber($id);
-        assign_to_template(array('ealerts'=>$ealerts));
+        assign_to_template(array(
+            'ealerts'=>$ealerts
+        ));
     }
 }
 

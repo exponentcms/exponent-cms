@@ -52,7 +52,10 @@ class companyController extends expController {
                     'columns'=>array(gt('Title')=>'title',gt('Link')=>'website'),
                     ));
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records));
+        assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records
+        ));
     }
     
     function show()
@@ -99,7 +102,11 @@ class companyController extends expController {
         //$rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
-        assign_to_template(array('record'=>new company($this->params['id']), 'page'=>$page, 'defaultSort'=>$defaultSort));
+        assign_to_template(array(
+            'record'=>new company($this->params['id']),
+            'page'=>$page,
+            'defaultSort'=>$defaultSort
+        ));
     }
     
     function showByTitle()
@@ -145,7 +152,10 @@ class companyController extends expController {
         //$rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
-        assign_to_template(array('record'=>new company($this->params['id']), 'page'=>$page, 'defaultSort'=>$defaultSort));
+        assign_to_template(array(
+            'record'=>new company($this->params['id']),
+            'page'=>$page, 'defaultSort'=>$defaultSort
+        ));
     }
 }
 

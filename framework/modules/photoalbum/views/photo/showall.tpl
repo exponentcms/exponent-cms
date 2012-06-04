@@ -33,6 +33,7 @@
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
 			{/if}
 			{if $permissions.manage == 1}
+                {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
 				{ddrerank items=$page->records model="photo" label="Images"|gettext}
 			{/if}
 		</div>

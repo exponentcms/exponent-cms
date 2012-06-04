@@ -67,7 +67,10 @@ class notfoundController extends expController {
 			'dir'=>'DESC',
 			));
 
-        assign_to_template(array('page'=>$page, 'terms'=>$terms));
+        assign_to_template(array(
+            'page'=>$page,
+            'terms'=>$terms
+        ));
     }
 
 }

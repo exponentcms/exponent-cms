@@ -200,7 +200,14 @@ class storeController extends expController {
         //eDebug($router);
         $defaultSort = $router->current_url;
 		
-        assign_to_template(array('page'=>$page, 'defaultSort'=>$defaultSort, 'ancestors'=>$ancestors, 'categories'=>$categories, 'current_category'=>$this->category,'rerankSQL'=>$rerankSQL));
+        assign_to_template(array(
+            'page'=>$page,
+            'defaultSort'=>$defaultSort,
+            'ancestors'=>$ancestors,
+            'categories'=>$categories,
+            'current_category'=>$this->category,
+            'rerankSQL'=>$rerankSQL
+        ));
     }
     
     function grabConfig($category=null) {
@@ -251,7 +258,9 @@ class storeController extends expController {
             'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
         
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     function events_calendar() {
@@ -260,7 +269,9 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
         
         $time = isset($this->params['time']) ? $this->params['time'] : time();
-        assign_to_template(array('time'=>$time));
+        assign_to_template(array(
+            'time'=>$time
+        ));
         
         $monthly = array();
         $counts = array();
@@ -395,7 +406,9 @@ class storeController extends expController {
         
         $ancestors = $this->category->pathToNode();       
         // eDebug($ancestors);
-        assign_to_template(array('ancestors'=>$ancestors));
+        assign_to_template(array(
+            'ancestors'=>$ancestors
+        ));
     }
 
     function showallUncategorized() {
@@ -414,7 +427,10 @@ class storeController extends expController {
             'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
             
-        assign_to_template(array('page'=>$page, 'moduletitle'=>'Uncategorized Products'));
+        assign_to_template(array(
+            'page'=>$page,
+            'moduletitle'=>'Uncategorized Products'
+        ));
     }
     
     function manage() {
@@ -425,7 +441,9 @@ class storeController extends expController {
             'order'=>'title',
             'columns'=>array(gt('Type')=>'product_type',gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
             ));
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
    
    function showallImpropercategorized() {
@@ -445,7 +463,10 @@ class storeController extends expController {
             'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
             
-        assign_to_template(array('page'=>$page, 'moduletitle'=>'Improperly Categorized Products'));
+        assign_to_template(array(
+            'page'=>$page,
+            'moduletitle'=>'Improperly Categorized Products'
+        ));
     }
     
     function exportMe() {
@@ -468,7 +489,10 @@ class storeController extends expController {
         
         $company = new company($this->params['id']);
         
-        assign_to_template(array('page'=>$page, 'company'=>$company));
+        assign_to_template(array(
+            'page'=>$page,
+            'company'=>$company
+        ));
     }
 
     function showallManufacturers() {
@@ -476,7 +500,9 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
         $sql = 'SELECT comp.* FROM '.DB_TABLE_PREFIX.'_companies as comp JOIN '.DB_TABLE_PREFIX.'_product AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';
         $manufacturers = $db->selectObjectsBySql($sql);
-        assign_to_template(array('manufacturers'=>$manufacturers));
+        assign_to_template(array(
+            'manufacturers'=>$manufacturers
+        ));
     }
 	
 	function showGiftCards() {
@@ -494,7 +520,11 @@ class storeController extends expController {
 		$config['minimum_gift_card_purchase'] = $this->config['minimum_gift_card_purchase'];
 		$records =  expSession::get('params');
 		expSession::un_set('params');
-		assign_to_template(array('giftcards' => $giftcards, 'config' => $config, 'records' => $records));
+		assign_to_template(array(
+            'giftcards' => $giftcards,
+            'config' => $config,
+            'records' => $records
+        ));
 	}
     
     function show() {
@@ -534,7 +564,11 @@ class storeController extends expController {
         if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
         $this->grabConfig();     
 		
-		assign_to_template(array('config'=>$this->config, 'product'=>$product, 'last_category'=>$order->lastcat));
+		assign_to_template(array(
+            'config'=>$this->config,
+            'product'=>$product,
+            'last_category'=>$order->lastcat
+        ));
     }
     
     function showByTitle() {
@@ -576,7 +610,11 @@ class storeController extends expController {
         if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
         $this->grabConfig();     
 		
-		assign_to_template(array('config'=>$this->config, 'product'=>$product_type, 'last_category'=>$order->lastcat));
+		assign_to_template(array(
+            'config'=>$this->config,
+            'product'=>$product_type,
+            'last_category'=>$order->lastcat
+        ));
     }
 
     function showByModel() {
@@ -592,7 +630,11 @@ class storeController extends expController {
         if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
         //eDebug($template);
         $this->grabConfig();     
-        assign_to_template(array('config'=>$this->config, 'product'=>$product_type, 'last_category'=>$order->lastcat));
+        assign_to_template(array(
+            'config'=>$this->config,
+            'product'=>$product_type,
+            'last_category'=>$order->lastcat
+        ));
     }
 
     
@@ -604,7 +646,11 @@ class storeController extends expController {
         $category = new storeCategory($parent);
         $categories = $category->getEcomSubcategories();
         $ancestors = $category->pathToNode();
-        assign_to_template(array('categories'=>$categories, 'ancestors'=>$ancestors, 'category'=>$category));   
+        assign_to_template(array(
+            'categories'=>$categories,
+            'ancestors'=>$ancestors,
+            'category'=>$category
+        ));
     }
 
     function showall_featured_products() {
@@ -622,7 +668,9 @@ class storeController extends expController {
                 'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 ));
                 
-        assign_to_template(array('page'=>$page));   
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
 	
 	 function showall_category_featured_products() {
@@ -643,7 +691,9 @@ class storeController extends expController {
                 'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
                 ));
                 
-        assign_to_template(array('page'=>$page));   
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     function showTopLevel() {
@@ -653,7 +703,11 @@ class storeController extends expController {
         $ancestors = $this->category->pathToNode();   
         $curcat = $this->category;
 
-        assign_to_template(array('categories'=>$categories,'curcat'=>$curcat,'topcat'=>@$ancestors[0]));
+        assign_to_template(array(
+            'categories'=>$categories,
+            'curcat'=>$curcat,
+            'topcat'=>@$ancestors[0]
+        ));
     }
     
     function showTopLevel_images() {
@@ -690,7 +744,10 @@ class storeController extends expController {
         $ancestors = $this->category->pathToNode();   
         $curcat = $this->category;
 
-        assign_to_template(array('page'=>$page,'categories'=>$categories));
+        assign_to_template(array(
+            'page'=>$page,
+            'categories'=>$categories
+        ));
     }
 
 	function showFullTree() {
@@ -700,7 +757,11 @@ class storeController extends expController {
         $ancestors = $this->category->pathToNode();   
         $curcat = $this->category;
 
-        assign_to_template(array('categories'=>$categories,'curcat'=>$curcat,'topcat'=>@$ancestors[0]));
+        assign_to_template(array(
+            'categories'=>$categories,
+            'curcat'=>$curcat,
+            'topcat'=>@$ancestors[0]
+        ));
     }
     
     function ecom_search() {
@@ -968,7 +1029,9 @@ class storeController extends expController {
             $prodObj = new $classname();
             $products[$classname] = $prodObj->product_name;
         }
-        assign_to_template(array('product_types'=>$products));
+        assign_to_template(array(
+            'product_types'=>$products
+        ));
     }
     
     function update() {
@@ -1037,7 +1100,9 @@ class storeController extends expController {
         
         $itemcount = 1;
         //eDebug($itemcount);
-        assign_to_template(array("itemcount"=>$itemcount));
+        assign_to_template(array(
+            "itemcount"=>$itemcount
+        ));
     }
     
     static public function getProductTypes() {        
@@ -1135,7 +1200,10 @@ class storeController extends expController {
             'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
             ));
         
-        assign_to_template(array('page'=>$page, 'terms'=>$terms));
+        assign_to_template(array(
+            'page'=>$page,
+            'terms'=>$terms
+        ));
     }
     
     function search_by_model() {
@@ -1277,7 +1345,9 @@ class storeController extends expController {
         {
             $order_status[$status->id] = $status->title;
         }    
-        assign_to_template(array('order_status'=>$order_status));
+        assign_to_template(array(
+            'order_status'=>$order_status
+        ));
     }
     
     function process_orders() {
@@ -1574,7 +1644,10 @@ class storeController extends expController {
             //eDebug($product);        
         }   
         
-        assign_to_template(array('errorSet'=>$errorSet, 'successSet'=>$successSet));
+        assign_to_template(array(
+            'errorSet'=>$errorSet,
+            'successSet'=>$successSet
+        ));
     }
     
     function manage_sales_reps() {
@@ -1590,7 +1663,9 @@ class storeController extends expController {
     
     function import_external_addresses() {
         $sources = array('mc'=>'MilitaryClothing.com','nt'=>'NameTapes.com','am'=>'Amazon');
-        assign_to_template(array('sources'=>$sources));
+        assign_to_template(array(
+            'sources'=>$sources
+        ));
     }
     
     function process_external_addresses() {
@@ -1860,7 +1935,10 @@ class storeController extends expController {
 			unset($affected_fields);
 		}
 		
-		assign_to_template(array( 'products' => $listedProducts, 'count' => $count ));
+		assign_to_template(array(
+            'products' => $listedProducts,
+            'count' => $count
+        ));
 	}
 	
 	function cleanNonUnicodeProducts() {
@@ -1942,7 +2020,9 @@ class storeController extends expController {
 		//check if there are interrupted model alias in the db
 		$res = $db->selectObjectsBySql("SELECT * FROM exponent_model_aliases_tmp WHERE is_processed = 0");
 		if(!empty($res)) {
-			assign_to_template(array('continue' => '1'));
+			assign_to_template(array(
+                'continue' => '1'
+            ));
 		}
 	}
 	
@@ -2033,7 +2113,14 @@ class storeController extends expController {
 			}
 			$index++;
 		} while(empty($error));
-		assign_to_template(array('count' => $count, 'alias' => $res, 'index' => $index, 'product_id' => $product_id, 'autocomplete' => $autocomplete, 'error' => $error));
+		assign_to_template(array(
+            'count' => $count,
+            'alias' => $res,
+            'index' => $index,
+            'product_id' => $product_id,
+            'autocomplete' => $autocomplete,
+            'error' => $error
+        ));
 	}
 	
 	// This function save the uploaded processed model aliases in the uploadModelAliases page
@@ -2086,9 +2173,13 @@ class storeController extends expController {
 		
 		if(isset($this->params['id'])) {
 			$model_alias = $db->selectObject('model_aliases', 'id =' .$this->params['id']);
-			assign_to_template(array('model_alias'=>$model_alias));
+			assign_to_template(array(
+                'model_alias'=>$model_alias
+            ));
 		} else {
-			assign_to_template(array('product_id'=>$this->params['product_id']));
+			assign_to_template(array(
+                'product_id'=>$this->params['product_id']
+            ));
 		}
     }
 

@@ -42,7 +42,9 @@ class taxController extends expController {
     function manage() {               
         expHistory::set('manageable', $this->params);
         $taxes = taxController::getTaxClasses();
-        assign_to_template(array('taxes'=>$taxes));
+        assign_to_template(array(
+            'taxes'=>$taxes
+        ));
     }
     
     static function getTaxClasses()
@@ -92,7 +94,10 @@ class taxController extends expController {
 			$zones[$item->id] = $item->name;
 		}
 
-		assign_to_template(array('zones'=>$zones, 'record'=>$record));
+		assign_to_template(array(
+            'zones'=>$zones,
+            'record'=>$record
+        ));
 	}
 	
 	function update() {
@@ -168,7 +173,9 @@ class taxController extends expController {
         expHistory::set('manageable', $this->params);
         $zones = $db->selectObjects('tax_zone', null, 'name');
 
-        assign_to_template(array('zones'=>$zones));
+        assign_to_template(array(
+            'zones'=>$zones
+        ));
     }
    
     function edit_zone() {
@@ -176,7 +183,9 @@ class taxController extends expController {
 		
 		if(isset($this->params['id'])) {
 			$zone = $db->selectObject('tax_zone', 'id =' .$this->params['id']);
-			assign_to_template(array('zone'=>$zone));
+			assign_to_template(array(
+                'zone'=>$zone
+            ));
 		}
     }
 

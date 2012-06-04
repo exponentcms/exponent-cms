@@ -21,6 +21,7 @@
 				{icon class=add action=edit text="Add a Slide"|gettext}
 			{/if}
 			{if $permissions.manage == 1 && $slides|@count>1}
+                {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
 				{ddrerank items=$slides model="photo" label="Slides"|gettext}
 			{/if}
 		</div>

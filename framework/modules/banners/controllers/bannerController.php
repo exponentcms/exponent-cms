@@ -58,7 +58,9 @@ class bannerController extends expController {
         }
         
         // assign banner to the template and show it!
-        assign_to_template(array('banners'=>$banners));
+        assign_to_template(array(
+            'banners'=>$banners
+        ));
     }
     
     public function click() {
@@ -101,7 +103,9 @@ class bannerController extends expController {
 				)
 			));
 
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function configure() {
@@ -111,7 +115,9 @@ class bannerController extends expController {
         }  
 	    parent::configure();
 	    $banners = $this->banner->find('all', null, 'companies_id');
-	    assign_to_template(array('banners'=>$banners));
+	    assign_to_template(array(
+            'banners'=>$banners
+        ));
 	}
 	
 	public function saveconfig() {

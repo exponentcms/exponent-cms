@@ -42,7 +42,9 @@ class eventregistrationController extends expController {
             'default'=>'Event Title',
             'columns'=>array(gt('Event Title')=>'title',gt('Event Date')=>'eventdate',gt('Registrants')=>'quantity')
             ));
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
    
     function view_registrants() {
@@ -54,7 +56,10 @@ class eventregistrationController extends expController {
 	if (isset($event->registrants)) $registrants = expUnserialize($event->registrants);
 	else $registrants = null;
 //eDebug($registrants);
-        assign_to_template(array('event'=>$event,'registrants'=>$registrants));
+        assign_to_template(array(
+            'event'=>$event,
+            'registrants'=>$registrants
+        ));
     } 
 //    function view_registrations
     function metainfo() {

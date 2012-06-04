@@ -27,10 +27,10 @@
 			{if $permissions.create == 1}
 				{icon class=add action=create text="Add a New FAQ"|gettext}
 			{/if}
-			{br}
 			{if $permissions.manage == 1}
 				{icon action=manage text="Manage FAQs"|gettext}
-			{/if}
+                {icon controller=expCat action=manage model='faq' text="Manage Categories"|gettext}
+            {/if}
 		</div>
     {/permissions}    
     {if $config.moduledescription != ""}

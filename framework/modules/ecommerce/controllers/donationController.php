@@ -35,7 +35,9 @@ class donationController extends expController {
         expHistory::set('viewable', $this->params);
         $causes = $this->donation->find('all');
         //eDebug($causes);
-        assign_to_template(array('causes'=>$causes));
+        assign_to_template(array(
+            'causes'=>$causes
+        ));
     }
     
     function metainfo() {

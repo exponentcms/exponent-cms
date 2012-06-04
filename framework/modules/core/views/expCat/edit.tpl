@@ -28,7 +28,7 @@
         {control type=hidden name=rank value=$record->rank}
 		{control type=text name=title label="Category Name"|gettext value=$record->title}
         {*{control type=text name=color label="Color"|gettext value=$record->color}*}
-        {control type="dropdown" name=module label="Module Specific?"|gettext items=$mods includeblank="All Modules"|gettext value=$record->module}
+        {control type="dropdown" name=module label="Associated Module"|gettext items=$mods value=$record->module}
 		{control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>

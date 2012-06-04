@@ -37,7 +37,9 @@ class expNestedNodeController extends expController {
 			$node = new $this->basemodel_name($this->params['id']);
 		}	
 
-		assign_to_template(array('node'=>$node));
+		assign_to_template(array(
+            'node'=>$node
+        ));
 	}
 
 	function delete() {
@@ -75,7 +77,9 @@ class expNestedNodeController extends expController {
 			$nodes[$i]->draggable = true; 
 			$nodes[$i]->pickable = true; 
 		}
-		assign_to_template(array('nodes'=>$nodes));	
+		assign_to_template(array(
+            'nodes'=>$nodes
+        ));
 	}
 
 	function create() {

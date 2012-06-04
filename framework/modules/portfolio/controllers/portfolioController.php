@@ -58,7 +58,10 @@ class portfolioController extends expController {
                     'columns'=>array(gt('Title')=>'title'),
                     ));
 
-        assign_to_template(array('page'=>$page, 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array(
+            'page'=>$page,
+            'rank'=>($order==='rank')?1:0
+        ));
     }
     
     public function slideshow() {
@@ -68,7 +71,10 @@ class portfolioController extends expController {
         $s = new portfolio();
         $slides = $s->find('all',$this->aggregateWhereClause(),$order);
 
-        assign_to_template(array('slides'=>$slides, 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array(
+            'slides'=>$slides,
+            'rank'=>($order==='rank')?1:0
+        ));
     }
 
     /**

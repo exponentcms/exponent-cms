@@ -226,6 +226,10 @@ class expPaginator {
             expCatController::sortedByCats($this->records,$this->cats);
         } else {  // categorized is off, so let's categorize by alpha instead
             $order = $this->order;
+            if (strstr($this->order,",")) {
+               $orderby = explode(",",$this->order);
+               $order = $orderby[0];
+           }
             foreach ($this->records as $record) {
                 if (is_string($record->$order) && !is_numeric($record->$order)) {
                     $title = ucfirst($record->$order);
