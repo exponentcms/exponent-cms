@@ -1,3 +1,4 @@
+
 {*
  * Copyright (c) 2004-2012 OIC Group, Inc.
  *
@@ -16,7 +17,7 @@
 <div id="editproduct" class="module store edit">
 
     {if $record->id != ""}
-        <h1>{'Edit Information for'|gettext {$record->product_name}</h1>
+        <h1>{'Edit Information for'|gettext} {$record->product_name}</h1>
     {else}
         <h1>{'New'|gettext} {$record->product_name}</h1>
     {/if}
@@ -32,8 +33,7 @@
 	            <li><a href="#tab2"><em>{'Event Info'|gettext}</em></a></li>
 	            <li><a href="#tab3"><em>{'Pricing'|gettext}</em></a></li>
 	            <li><a href="#tab4"><em>{'Files & Images'|gettext}</em></a></li>
-	            <li><a href="#tab5"><em>{'Categories'|gettext}</em></a></li>
-	            <li><a href="#tab6"><em>{'SEO'|gettext}</em></a></li>
+	            <li><a href="#tab5"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="tab1">
@@ -45,22 +45,19 @@
                     <h2>{'Number of Seats available'|gettext}</h2>
                     {control type="text" name="quantity" label="Number of seats"|gettext filter=integer size=4 value=$record->quantity}
                     <h2>{'Event Date/Time'|gettext}</h2>
-                    {control type="datetimecontrol" name="eventdate" label="Date of Event"|gettext value=$record->eventdate showtime=false}
+					{control type="yuicalendarcontrol" name="eventdate" label="Date of Event"|gettext value=$record->eventdate}
                     {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime showdate=false}
                     {control type="datetimecontrol" name="event_endtime" label="End Time"|gettext value=$record->event_endtime showdate=false}
                     <h2>{'Signup Cutoff'|gettext}</h2>
-                    {control type="datetimecontrol" name="signup_cutoff" label="No registrations after"|gettext value=$record->signup_cutoff showtime=true}
+					{control type="yuicalendarcontrol" name="signup_cutoff" label="No registrations after"|gettext value=$record->signup_cutoff showtime = true}
                 </div>
                 <div id="tab3">
                     {control type="text" name="base_price" label="Event Price"|gettext value=$record->base_price filter=money}
                 </div>
                 <div id="tab4">
-                    {control type=files name=files subtype="images" value=$record->expFile}
+                    {control type=files name=mainimages subtype="mainimage" value=$record->expFile}
                 </div>            
                 <div id="tab5">
-                    {control type="tagtree" id="managecats" name="managecats" model="storeCategory" draggable=false checkable=true values=$record->storeCategory}
-                </div>
-                <div id="tab6">
                     <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
@@ -69,24 +66,18 @@
                 </div>
             </div>
         </div>
-	    <div class="loadingdiv">{'Loading'|gettext}</div>
+	   
         {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
-//        var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('demo');
-//        YAHOO.util.Dom.removeClass("editproduct", 'hide');
-//        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-//        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	 YUI(EXPONENT.YUI3_CONFIG).use("get", "tabview", "node-load","event-simulate", function(Y) {
 		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
 		tabview.render();
 		Y.one('#editproduct-tabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
+
     });
 {/literal}
 {/script}

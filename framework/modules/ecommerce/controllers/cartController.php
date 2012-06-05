@@ -619,7 +619,7 @@ class cartController extends expController {
         {
             flash('message',gt('Development on, skipping email sending.'));
         }
-        
+        expSession::un_set('record');
 		//assign_to_template(array('order'=>$order, 'billing'=>$billing, 'shipping'=>$shipping, 'result'=>$result, 'billinginfo'=>$billinginfo));
 		flash('message', gt('Your order has been submitted.'));
         redirect_to(array('controller'=>'order', 'action'=>'myOrder', 'id'=>$order->id, 'tc'=>1));
