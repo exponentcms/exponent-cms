@@ -12,14 +12,14 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
  <div class="module store show event-registration">
      <h1>{$product->title}</h1>
      <div class="image">
-         {if $product->expFile.images[0]->url == ""}
+         {if $product->expFile.mainimage[0]->url == ""}
              {img src="{$smarty.const.ICON_RELATIVE|cat:'ecom/no-image.jpg'}"}
          {else}
-             {img file=$product->expFile.images[0]->path square=200}
+			 {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
+           
          {/if}
          {clear}
      </div>
@@ -28,10 +28,9 @@
          {permissions}
          <div class="item-actions">
              {if $permissions.configure == 1 or $permissions.manage == 1}
-                 <a href="{link action=edit id=$product->id}" title="{"Edit this entry"|gettext}">
-                     <img src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
-                 </a>
-                 {icon action=delete record=$product title="Delete this product"|gettext}
+			     
+				 {icon action=edit record=$product title="Edit this entry"|gettext}
+                 {icon action=delete record=$product title="Delete this entry"|gettext}
              {/if}
          </div>
          {/permissions}

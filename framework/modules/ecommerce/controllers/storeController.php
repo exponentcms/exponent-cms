@@ -1043,7 +1043,7 @@ class storeController extends expController {
 		$record = new $product_type();
 		
 		$record->update($this->params);
-		
+	
 		if($product_type == "childProduct" || $product_type =="product") {
 			$record->addContentToSearch();
 			//Create a flash message and redirect to the page accordingly
@@ -1061,6 +1061,10 @@ class storeController extends expController {
 		} elseif($product_type == "giftcard") {
 		
 			flash("message",gt("Giftcard saved."));
+			redirect_to(array('controller'=>'store','action'=>'manage'));
+		} elseif($product_type == "eventregistration") {
+		
+			flash("message",gt("Event saved."));
 			redirect_to(array('controller'=>'store','action'=>'manage'));
 		}
     }
