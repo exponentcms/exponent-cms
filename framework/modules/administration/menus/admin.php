@@ -135,6 +135,14 @@ if ($user->isAdmin()) {
 						))
 					),
                     array(
+                        'text' => gt('Manage Site Comments'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expComment',
+                            'action' => 'manage'
+                        ))
+                    ),
+                    array(
                         'text' => gt('Manage Site Tags'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
@@ -182,6 +190,14 @@ if ($user->isAdmin()) {
 							'action' => 'test_smtp'
 						))
 					),
+                    array(
+                        'text' => gt('Manage Site Comments'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expComment',
+                            'action' => 'manage'
+                        ))
+                    ),
                     array(
                         'text' => gt('Manage Site Tags'),
                         'classname' => 'manage',

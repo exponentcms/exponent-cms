@@ -32,17 +32,18 @@
                 <tr class="{cycle values="even, odd"}">
                     <td>
                         {if $comment->approved == 1}
-                            <a href="{link action=approve_toggle id=$comment->id content_type=$content_type content_id=$content_id}" title="Disable this comment"|gettext>
+                            <a href="{link action=approve_toggle id=$comment->id content_type=$comment->content_type content_id=$comment->content_id}" title="Disable this comment"|gettext>
                                 <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}">
                             </a>
                         {else}
-                            <a href="{link action=approve_toggle id=$comment->id content_type=$content_type content_id=$content_id}" title="Approve this comment"|gettext>
+                            <a href="{link action=approve_toggle id=$comment->id content_type=$comment->content_type content_id=$comment->content_id}" title="Approve this comment"|gettext>
                                 <img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}">
                             </a>
                         {/if}
                     </td>
                     <td>{$comment->name}</td>
                     <td>{$comment->body}</td>
+                    <td><a nohref title="{$refs[$comment->content_type][$comment->content_id]}">{$comment->content_type|capitalize}</a></td>
                     <td>
                         <div class="item-actions">
                             {icon action=edit record=$comment content_id=$content_id title="Edit this comment"|gettext}
