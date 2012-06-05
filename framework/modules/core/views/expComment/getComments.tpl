@@ -45,9 +45,9 @@
 				</cite>
 				<div class="comment-text bodycopy">	
 					{if $cmt->avatar->image}
-                        {img src=$cmt->avatar->image h=80}
+                        {img src=$cmt->avatar->image h=40 style="margin:5px; float:left;"}
                     {else}
-                        {img src="`$smarty.const.PATH_RELATIVE`framework/modules/users/assets/images/avatar_not_found.jpg" h=80}
+                        {img src="`$smarty.const.PATH_RELATIVE`framework/modules/users/assets/images/avatar_not_found.jpg" h=40 style="margin:5px; float:left;"}
                     {/if}
 					{permissions}
 					<div class="item-actions">
