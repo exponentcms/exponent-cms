@@ -44,7 +44,11 @@
 					<span class="comment-date">{$cmt->created_at|format_date}</span>
 				</cite>
 				<div class="comment-text bodycopy">	
-					{img src=$cmt->image h=80}   
+					{if $cmt->avatar->image}
+                        {img src=$cmt->avatar->image h=80}
+                    {else}
+                        {img src="`$smarty.const.PATH_RELATIVE`framework/modules/users/assets/images/avatar_not_found.jpg" h=80}
+                    {/if}
 					{permissions}
 					<div class="item-actions">
 						{if $permissions.manage == 1}
