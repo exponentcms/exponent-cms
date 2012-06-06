@@ -36,7 +36,7 @@
                     {/if}
 
                     <li class="{if $section->depth == 0}yuimenubaritem{else}yuimenuitem{/if}{if $section->id==$current->id} current{/if}{if $section->active == 1} {/if}">
-                    <a class="{if $section->depth == 0}yuimenubaritemlabel{else}yuimenuitemlabel{/if}" href="{$section->link}">{$section->name}</a>
+                    <a class="{if $section->depth == 0}yuimenubaritemlabel{else}yuimenuitemlabel{/if}" href="{if $section->active == 1}{$section->link}{else}#{/if}" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>
                     {if $sections[$nextkey]->depth == $section->depth}</li>{/if}
 
 

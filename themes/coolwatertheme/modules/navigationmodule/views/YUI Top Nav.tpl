@@ -30,15 +30,9 @@
 
 		{/if}
 
-		{if $section->active == 1}
-			<li class="{if $section->depth == 0}yuimenubaritem first-of-type{else}yuimenuitem{/if}">
-			<a class="{if $section->depth == 0}yuimenubaritemlabel{else}yuimenuitemlabel{/if}" href="{$section->link}">{$section->name}</a>
-			{if $sections[$nextkey]->depth == $section->depth}</li>{/if}
-		{else }
-			<li class="yuimenuitem">
-				<a class="{if $section->depth == 0}yuimenubaritemlabel{else}yuimenuitemlabel{/if}" href="#">{$section->name}</a>
-			{if $sections[$nextkey]->depth == $section->depth}</li>{/if}
-		{/if}
+        <li class="{if $section->depth == 0}yuimenubaritem first-of-type{else}yuimenuitem{/if}">
+        <a class="{if $section->depth == 0}yuimenubaritemlabel{else}yuimenuitemlabel{/if}" href="{if $section->active == 1}{$section->link}{else}#{/if}" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>
+        {if $sections[$nextkey]->depth == $section->depth}</li>{/if}
 
 		{if $sections[$nextkey]->depth < $section->depth}
 			{if $smarty.foreach.children.last==true}
