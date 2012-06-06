@@ -28,17 +28,17 @@ if (EXPONENT_VERSION_TYPE != '') {
 }
 $my_releasedate = gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE);
 
-$script = "
-// YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-// 
-// });
-
-";
-expJavascript::pushToFoot(array(
-    "unique"=>'admin1',
-    "yui3mods"=>null,
-    "content"=>$script,
- ));
+//$script = "
+//// YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+////
+//// });
+//
+//";
+//expJavascript::pushToFoot(array(
+//    "unique"=>'admin1',
+//    "yui3mods"=>null,
+//    "content"=>$script,
+// ));
 
 if ($user->isAdmin()) {
 	$expAdminMenu = array(

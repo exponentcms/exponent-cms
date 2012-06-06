@@ -40,7 +40,7 @@
 		{/foreach}
 		</table>
 	{if $haveStandalones}
-	<br /><br /><br />
+	{br}{br}
 	<strong>{'Standalone Pages'|gettext}</strong><hr size="1" />
 		<table cellpadding="1" cellspacing="0" border="0" width="100%">
 		{foreach from=$standalones item=section}

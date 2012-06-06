@@ -18,17 +18,17 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$script = "
-// YUI(EXPONENT.YUI3_CONFIG).use('node','event-custom', function(Y) {
-// 
-// });    
-";
-
-expJavascript::pushToFoot(array(
-    "unique"=>'admin2',
-    "yui3mods"=>1,
-    "content"=>$script,
- ));
+//$script = "
+//// YUI(EXPONENT.YUI3_CONFIG).use('node','event-custom', function(Y) {
+////
+//// });
+//";
+//
+//expJavascript::pushToFoot(array(
+//    "unique"=>'admin2',
+//    "yui3mods"=>1,
+//    "content"=>$script,
+// ));
 
 return array(
     'text'=>gt('Files'),
