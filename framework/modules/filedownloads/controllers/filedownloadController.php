@@ -52,6 +52,7 @@ class filedownloadController extends expController {
                     'controller'=>$this->baseclassname,
                     'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+                    'groups'=>empty($this->params['group']) ? array() : array($this->params['group']),
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,
                     'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
