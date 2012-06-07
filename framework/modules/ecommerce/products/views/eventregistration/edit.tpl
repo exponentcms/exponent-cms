@@ -34,6 +34,7 @@
 	            <li><a href="#tab3"><em>{'Pricing'|gettext}</em></a></li>
 	            <li><a href="#tab4"><em>{'Files & Images'|gettext}</em></a></li>
 	            <li><a href="#tab5"><em>{'SEO'|gettext}</em></a></li>
+				<li><a href="#tab6"><em>{'Definable Field'|gettext}</em></a></li>
             </ul>            
             <div class="yui-content">
                 <div id="tab1">
@@ -63,6 +64,13 @@
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
                     {control type="textarea" name="meta_keywords" label="Meta Description"|gettext value=$record->meta_description}
                     {control type="textarea" name="meta_description" label="Meta Keywords"|gettext value=$record->meta_keywords}
+                </div>
+				
+				<div id="tab6">
+                    <h2>{'Definable Fields'|gettext} | {icon class="manage" controller="expDefinableField" action="manage"}</h2>
+					{foreach from=$definablefields item=fields}    
+						{control type="checkbox" name="expDefinableField[]" label="`$fields->name` - `$fields->type`"|gettext value="`$fields->id`" checked="`$record->expDefinableField`" postfalse=1}
+					{/foreach}
                 </div>
             </div>
         </div>

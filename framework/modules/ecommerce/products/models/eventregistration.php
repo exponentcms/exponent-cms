@@ -34,7 +34,8 @@ class eventregistration extends expRecord {
 	
 	
 	 protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile'
+        'content_expFiles'=>'expFile',
+		'content_expDefinableFields'=>'expDefinableField'
     );
     
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
@@ -199,6 +200,18 @@ class eventregistration extends expRecord {
     public function isAvailable(){
 	    return ($this->spacesLeft() !=0 && $this->signup_cutoff > time()) ? true : false;
     }
+	
+	public function getControl($control) {
+		$form = new form();
+		$ctl = unserialize($control);
+		$ctl->_id = $c->id;
+		$ctl->_readonly = $c->is_readonly;
+		if(!empty($data[$c->name])) $ctl->default = $data[$c->name];
+		$form->register($c->name,$c->caption,$ctl);
+		// eDebug($form);
+		return $form->toHTML();
+				
+	}
 	
 	 public function getForm($form) {        
         $dirs = array(

@@ -173,6 +173,8 @@ class form extends baseform {
 	 * @return string The HTML code use to display the form to the browser.
 	 */
 	function toHTML($form_id=null, $module=null) {
+
+	
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
@@ -231,6 +233,7 @@ class form extends baseform {
 
         $oldname = 'oldname';
         $save = '';
+		eDebug($this->controlIdx);
 		foreach ($this->controlIdx as $name) {
             if ($this->is_tabbed && !empty($this->tabs[$name]) && $this->tabs[$name] != $oldname && $this->tabs[$name] != 'base') {
                 if ($oldname != 'oldname') {

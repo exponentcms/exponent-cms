@@ -199,6 +199,14 @@ if ($user->isAdmin()) {
                         ))
                     ),
 					array(
+                        'text' => gt('Manage Definable Fields'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expDefinableField',
+                            'action' => 'manage'
+                        ))
+                    ),
+					array(
 						'text' => gt('Regenerate Search Index'),
 						'classname' => 'search',
 						'url' => makeLink(array(
