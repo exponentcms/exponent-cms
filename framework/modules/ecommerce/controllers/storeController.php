@@ -811,7 +811,10 @@ class storeController extends expController {
     
     function edit() {
         global $db;
+		$expDefinableField = new expDefinableField();
 		
+		$definablefields = $expDefinableField->find();
+	
 		//Make sure that the view is the edit.tpl and not any ajax views
 		if(isset($this->params['view']) && $this->params['view'] == 'edit') {
 			expHistory::set('editable', $this->params);
@@ -922,12 +925,13 @@ class storeController extends expController {
         }else{
             $view = 'edit';
         }
-        
+   
         assign_to_template(array(
             'record'=>$record, 
             'parent'=>$parent,
             'form'=>$record->getForm($view), 
             'optiongroups'=>$editable_options, 
+			'definablefields'=> isset($definablefields) ? $definablefields : '',
             'shipping_services'=> isset($shipping_services) ? $shipping_services : '', // Added implication since the shipping_services default value is a null
             'shipping_methods' => isset($shipping_methods)  ? $shipping_methods  : '',   // Added implication since the shipping_methods default value is a null
 			'product_types' => isset($this->config['product_types']) ? $this->config['product_types'] : ''
@@ -1036,7 +1040,6 @@ class storeController extends expController {
     
     function update() {
         global $db;
-		
 		//Get the product type
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
       

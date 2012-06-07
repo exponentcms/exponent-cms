@@ -40,7 +40,8 @@ class checkboxcontrol extends formcontrol {
             DB_FIELD_TYPE=>DB_DEF_BOOLEAN);
     }
 
-    function __construct($default = 1,$flip = false,$required = false) {
+    function __construct($default = 1,$flip = false,$required = false) {	
+		
         $this->default = $default;
         $this->flip = $flip;
         $this->jsHooks = array();
