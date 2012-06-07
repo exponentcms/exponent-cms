@@ -89,14 +89,11 @@ class expTagController extends expController {
         global $db;
 
         expHistory::set('manageable', $this->params);
-        $modelname = $this->basemodel_name;
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-        $order = "title";
         $page = new expPaginator(array(
-                    'model'=>$modelname,
-                    'where'=>$where, 
+                    'model'=>$this->basemodel_name,
+                    'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
                     'limit'=>50,
-                    'order'=>$order,
+                    'order'=>"title",
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,

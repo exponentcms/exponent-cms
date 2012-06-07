@@ -40,11 +40,10 @@ class youtubeController extends expController {
 	function author() { return "Phillip Ball - OIC Group, Inc"; }
 	
 	function showall() {
-        $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>$this->aggregateWhereClause(),
-                    'limit'=>$limit,
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
                     'order'=>'rank',
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],

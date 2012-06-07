@@ -43,11 +43,6 @@ if (isset($_GET['id'])) {
 			}
 		}
 
-        if (!empty($_GET['limit'])) {
-            $limit = $_GET['limit'];
-        } else {
-            $limit = 10;
-        }
 		foreach (explode("|!|",$rpt->column_names) as $column_name) {
 			if ($column_name == "ip") {
 				$columndef .= 'new cColumn("'.gt('IP Address').'","ip",null,null),';
@@ -116,7 +111,7 @@ if (isset($_GET['id'])) {
 //                    'model'=>$f->table_name,
 					'records'=>$items,
                     'where'=>1, 
-                    'limit'=>$limit,
+                    'limit'=>(isset($_GET['limit']) && $_GET['limit'] != '') ? $_GET['limit'] : 10,
 //                    'order'=>$order,
                     'action'=>'view_data',
 					'columns'=>$columns

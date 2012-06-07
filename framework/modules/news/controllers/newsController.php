@@ -46,12 +46,11 @@ class newsController extends expController {
         if (isset($this->params['limit'])) {
             $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
         } else {
-            $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
+            $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
         }       
-        
         $order = isset($this->config['order']) ? $this->config['order'] : 'publish DESC';
 
-        // pull the news posts from the database 
+        // pull the news posts from the database
         $items = $this->news->find('all', $this->aggregateWhereClause(), $order);
 
         // merge in any RSS news and perform the sort and limit the number of posts we return to the configured amount.

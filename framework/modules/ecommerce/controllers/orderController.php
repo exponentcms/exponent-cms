@@ -816,6 +816,7 @@ exit();
 		$page = new expPaginator(array(
 			'model'=>'order',
 			'where'=>'purchased > 0 AND user_id='.$user->id,
+            'limit'=>10,
 			'order'=>'purchased',
 			'dir'=>'DESC',
 			'columns'=>array(

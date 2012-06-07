@@ -54,7 +54,7 @@ class motdController extends expController {
         $page = new expPaginator(array(
                     'model'=>'motd',
                     'where'=>$this->aggregateWhereClause(), 
-                    'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
                     'order'=>'month,day',
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],

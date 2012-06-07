@@ -140,11 +140,10 @@ class ecomconfigController extends expController {
     public function manage_discounts() {
         expHistory::set('manageable', $this->params);
 		
-        $order = isset($this->params['order']) ? $this->params['order'] : null;
         $page = new expPaginator(array(
 			'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_discounts',
 			'limit'=> 10,
-			'order'=>$order,
+			'order'=>isset($this->params['order']) ? $this->params['order'] : null,
 			'model'=>'discounts',
 			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
 			));

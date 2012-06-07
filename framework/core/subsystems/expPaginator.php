@@ -76,7 +76,8 @@ class expPaginator {
      * @var integer
      */
 	public $page  = 1;
-	public $limit = 10;
+//	public $limit = 10;
+    public $limit = 0;
 	public $start = 0;
 	public $last = 0;
 	public $pages_to_show = 10;
@@ -107,7 +108,8 @@ class expPaginator {
 
 		$this->where = empty($params['where']) ? null : $params['where'];
 		$this->records = empty($params['records']) ? array() : $params['records'];
-		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
+//		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
+        $this->limit = empty($params['limit']) ? 0 : $params['limit'];
 		$this->page = empty($_REQUEST['page']) ? 1 : intval($_REQUEST['page']);
 		$this->action = empty($params['action']) ? '' : $params['action'];
 		$this->controller = empty($params['controller']) ? '' : $params['controller'];
@@ -118,6 +120,7 @@ class expPaginator {
 		$this->src = empty($params['src']) ? null : $params['src'];
         $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
         $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
+        $this->groups = !empty($params['groups']) ? $params['groups'] : array();
 
 		// if a view was passed we'll use it.
 		if (isset($params['view'])) $this->view = $params['view'];
@@ -135,7 +138,7 @@ class expPaginator {
 		    )
 		);
 		
-		$this->start = (($this->page * $this->limit) - $this->limit);
+		if ($this->limit) $this->start = (($this->page * $this->limit) - $this->limit);
 		
 		//setup the columns
         $this->columns = array();
@@ -179,12 +182,12 @@ class expPaginator {
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort, count and slice the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
-		    $this->total_records = count($this->records);
+//		    $this->total_records = count($this->records);
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
-			$this->total_records = $class->find('count', $this->where);
+//			$this->total_records = $class->find('count', $this->where);
             $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
 		} elseif (!empty($this->where)) { //from Merge....where clause
-			$this->total_records = $class->find('count', $this->where);
+//			$this->total_records = $class->find('count', $this->where);
             $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
 		} else { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
@@ -193,7 +196,7 @@ class expPaginator {
             //we'll run the standard sql and do a queryRows with it
 			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From Merge
                         
-			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk            
+//			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk
 
             if (!empty($this->order)) $this->sql .= ' ORDER BY '.$this->order.' '.$this->order_direction;
 			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
@@ -209,22 +212,26 @@ class expPaginator {
 			    $this->records = $db->selectObjectsBySql($this->sql);
 			}
 		}	
-        if ($this->start >= $this->total_records) {
-            $this->start = $this->total_records - $this->limit;
-        }
 
         // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize) {
-            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat);
+            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat,$this->groups);
         }
 
-        // now we'll trim the records to the number requested
-        $this->records = array_slice($this->records, $this->start, $this->limit);
+        // let's see how many total records there are
+        $this->total_records = count($this->records);
+        if ($this->limit && $this->start >= $this->total_records) {
+            $this->start = $this->total_records - $this->limit;
+        }
+
+        // at this point we generally have all our records, now we'll trim the records to the number requested
+        //FIXME we may want some more intelligent selection here based on cats/groups, e.g., don't break groups across pages, number of picture rows, etc...
+        if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
 
         // finally, we'll create another multi-dimensional array of the categories
         if (!empty($this->categorize) && $this->categorize) {
-            expCatController::sortedByCats($this->records,$this->cats);
-        } else {  // categorized is off, so let's categorize by alpha instead
+            expCatController::sortedByCats($this->records,$this->cats,$this->groups);
+        } else {  // categorized is off, so let's categorize by alpha instead for rolodex type use
             $order = $this->order;
             if (strstr($this->order,",")) {
                $orderby = explode(",",$this->order);
@@ -257,7 +264,7 @@ class expPaginator {
 		if ($this->total_records > 0) {
 			$this->firstrecord = $this->start + 1;
 			$this->lastrecord = ($this->total_records < $this->limit) ? ($this->start + $this->total_records) : ($this->start + $this->limit);
-			if ($this->lastrecord > $this->total_records) $this->lastrecord = $this->total_records;
+			if ($this->lastrecord > $this->total_records || $this->lastrecord == 0) $this->lastrecord = $this->total_records;
 		} else {
 			$this->firstrecord = 0;
 			$this->lastrecord = 0;
@@ -363,24 +370,19 @@ class expPaginator {
 	}
 	
 	//From Merge
-    private function cleanParams($params)
-    {  
+    private function cleanParams($params) {
         $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'','_common'=>'');
         $newParams = array();
         $func = new ReflectionClass($this);       
-        foreach ($params as $pKey=>$pVal)
-        {               
+        foreach ($params as $pKey=>$pVal) {
             $propname = $pKey;
-            if (array_key_exists($propname,$defaultParams))
-            {
+            if (array_key_exists($propname,$defaultParams)) {
                 $newParams[$propname] = $params[$propname];                
             }               
         }        
-        foreach ($func->getProperties() as $p)
-        {               
+        foreach ($func->getProperties() as $p) {
             $propname = $p->name;
-            if (array_key_exists($propname,$params))
-            {
+            if (array_key_exists($propname,$params)) {
                 $newParams[$propname] = $params[$propname];                
             }               
         }        
@@ -476,12 +478,9 @@ class expPaginator {
     }
     
     //here if we want to modify the record for some reason. Using in search results w/ products
-    private function runCallback()
-    {
-        foreach ($this->records as &$record)
-        {
-            if (isset($record->ref_type))
-            {
+    private function runCallback() {
+        foreach ($this->records as &$record) {
+            if (isset($record->ref_type)) {
                 $refType = $record->ref_type;
                 $type = new $refType();
                 $classinfo = new ReflectionClass($type); 
@@ -540,13 +539,12 @@ class expPaginator {
 				$params['order'] = $col;      				                        
 				
 				if (!empty($col)) {	
-                    if ($colname == 'Price')
-                    {
+                    if ($colname == 'Price') {
                         $params['dir'] = 'ASC'; 
                         $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - Lowest to Highest";
                         $params['dir'] = 'DESC'; 
                         $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - Highest to Lowest";                          
-                    }else{
+                    } else {
                         $params['dir'] = 'ASC'; 
                         $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - A-Z";
                         $params['dir'] = 'DESC';

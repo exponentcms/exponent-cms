@@ -41,17 +41,15 @@ class photosController extends expController {
     
     public function showall() {
         expHistory::set('viewable', $this->params);
-        $where = $this->aggregateWhereClause();
-        $order = 'rank';
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 
         $page = new expPaginator(array(
                     'model'=>'photo',
-                    'where'=>$where, 
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'where'=>$this->aggregateWhereClause(),
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+                    'order'=>'rank',
                     'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+                    'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
                     'src'=>$this->loc->src,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -104,13 +102,29 @@ class photosController extends expController {
     
     public function slideshow() {
         expHistory::set('viewable', $this->params);
-        $where = $this->aggregateWhereClause();
-        $order = 'rank';
-        $s = new photo();
-        $slides = $s->find('all',$where,$order);
-                    
+//        $where = $this->aggregateWhereClause();
+//        $order = 'rank';
+//        //FIXME we need to change this to expPaginator to get category grouping
+//        $s = new photo();
+//        $slides = $s->find('all',$where,$order);
+
+        $page = new expPaginator(array(
+                    'model'=>'photo',
+                    'where'=>$this->aggregateWhereClause(),
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+                    'order'=>'rank',
+                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+                    'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
+                    'src'=>$this->loc->src,
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'columns'=>array(gt('Title')=>'title'),
+                    ));
+
         assign_to_template(array(
-            'slides'=>$slides
+//            'slides'=>$slides
+            'slides'=>$page->records
         ));
     }
     

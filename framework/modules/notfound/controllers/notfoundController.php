@@ -63,6 +63,7 @@ class notfoundController extends expController {
 //			'action'=>$this->params['action'],
 			'records'=>$search->getSearchResults($terms),
 			//'sql'=>$sql,
+            'limit'=>10,
 			'order'=>'score',
 			'dir'=>'DESC',
 			));

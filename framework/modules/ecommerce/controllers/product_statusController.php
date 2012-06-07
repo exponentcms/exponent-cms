@@ -37,6 +37,7 @@ class product_statusController extends expController {
 			'controller'=>$this->params['controller'],
 			'action'=>$this->params['action'],
 			'where'=>1,
+            'limit'=>10,
 			));
 
 		assign_to_template(array(

@@ -392,13 +392,11 @@ class usersController extends expController {
 
     public function manage_groups() {
         expHistory::set('manageable', $this->params);
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $order = empty($this->config['order']) ? 'name' : $this->config['order'];
         $page = new expPaginator(array(
                     'model'=>'group',
                     'where'=>1, 
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+                    'order'=>empty($this->config['order']) ? 'name' : $this->config['order'],
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(
@@ -646,14 +644,13 @@ class usersController extends expController {
 		}
 
         //$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
         $page = new expPaginator(array(
 //                    'model'=>'user',
 					'records'=>$users,
                     'where'=>1, 
-                    'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to 
+//                    'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to
                                     // add all users to a group, since it's rebuilding the group on save...
-                    'order'=>$order,
+                    'order'=>empty($this->config['order']) ? 'username' : $this->config['order'],
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(
@@ -853,7 +850,7 @@ class usersController extends expController {
 		$sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;     
 		
 		
-		$limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+		$limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 50;
 		//eDebug($sql, true);
 		$orders = new expPaginator(array(
 			//'model'=>'order',

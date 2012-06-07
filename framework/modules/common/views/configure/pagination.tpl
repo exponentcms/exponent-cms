@@ -14,6 +14,6 @@
  *}
 
 <h2>{"Pagination Settings"|gettext}</h2>
-{control type=text name=limit label="Items per page"|gettext value=$config.limit}
+{control type=text name=limit label="Items per page (empty = 10, '0' = all)"|gettext value=$config.limit}
 {control type=dropdown name=pagelinks label="Show page links"|gettext items="Top and Bottom,Top Only,Bottom Only,Disable page links"|gettxtlist values="Top and Bottom,Top Only,Bottom Only,Disable page links" value=$config.pagelinks}
 {control type="checkbox" name="multipageonly" label="Disable page links until page limit is reached"|gettext value=1 checked=$config.multipageonly}

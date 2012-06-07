@@ -121,7 +121,7 @@ class expCommentController extends expController {
         $comments = new expPaginator(array(
             //'model'=>'expComment',
             'sql'=>$sql, 
-            'limit'=>999,
+//            'limit'=>999,
             'order'=>'created_at',
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],

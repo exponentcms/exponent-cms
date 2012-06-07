@@ -352,7 +352,6 @@ class reportController extends expController {
         expSession::set('order_print_query',  $sql . $sqlwhere);
         //$where = 1;//$this->aggregateWhereClause();
         //$order = 'id';
-        $limit = empty($this->config['limit']) ? 25 : $this->config['limit'];
         //$prod = new product();
        // $order = new order();
         //$items = $prod->find('all', 1, 'id DESC',25);  
@@ -366,7 +365,7 @@ class reportController extends expController {
             //'records'=>$items,
             // 'where'=>$where,
             'sql'=>$sql . $sqlwhere, 
-            'limit'=>$limit,
+            'limit'=>empty($this->config['limit']) ? 25 : $this->config['limit'],
             'order'=>'invoice_id',
             'order_direction'=>'DESC',            
             'controller'=>$this->baseclassname,
@@ -751,7 +750,6 @@ class reportController extends expController {
         //eDebug(expSession::get('order_export_values'));
         //$where = 1;//$this->aggregateWhereClause();
         //$order = 'id';
-        $limit = empty($this->config['limit']) ? 350 : $this->config['limit'];
         //$prod = new product();
        // $order = new order();
         //$items = $prod->find('all', 1, 'id DESC',25);  
@@ -766,7 +764,7 @@ class reportController extends expController {
             // 'where'=>$where,
             'count_sql'=>$count_sql,
             'sql'=>$sql . $sqlwhere, 
-            'limit'=>$limit,
+            'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'=>'o.invoice_id',
             'dir'=>'DESC',            
             'controller'=>$this->baseclassname,
@@ -1142,8 +1140,6 @@ class reportController extends expController {
         expSession::set('product_export_query', $exportSQL);
         //expSession::set('product_export_query', "SELECT  DISTINCT(p.id) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
         
-        $order = 'id';
-        $limit = empty($this->config['limit']) ? 350 : $this->config['limit'];
         $product = new product();
         //$items = $product->find('all', '', 'id', 25);     
         //$page = new expPaginator();   
@@ -1156,8 +1152,8 @@ class reportController extends expController {
             //'sql'=>"SELECT  DISTINCT(p.id), p.title, p.model, p.base_price FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
             //'count_sql'=>"SELECT COUNT(DISTINCT(p.id)) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
             'count_sql'=>$sqlcount . $sql . $sqlwhere, 
-            'limit'=>$limit,
-            'order'=>$order,
+            'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
+            'order'=>'id',
             'controller'=>'store',
             'action'=>$this->params['action'],
             'columns'=>array('actupon'=>true,gt('ID')=>'id',gt('Product')=>'title|controller=store,action=show,showby=id',gt('SKU')=>'model',gt('Price')=>'base_price'),

@@ -67,18 +67,16 @@ class helpController extends expController {
         // pagination parameter..hard coded for now.	    
 		$where = $this->aggregateWhereClause();
 	    $where .= 'AND help_version_id='.(empty($ref_version->id)?'0':$ref_version->id);
-	    $limit = 999;
-//	    $order = 'rank';
+//	    $limit = 999;
 	    $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-	    $dir   = 'ASC';
-	    
+
 	    // grab the pagination object
 		$page = new expPaginator(array(
 	                'model'=>'help',
 	                'where'=> $where, 
-	                'limit'=>$limit,
+//	                'limit'=>$limit,
 	                'order'=>$order,
-	                'dir'=>$dir,
+	                'dir'=>'ASC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
 	                'columns'=>array(gt('Title')=>'title',gt('Body')=>'body',gt('Version')=>'help_version_id'),

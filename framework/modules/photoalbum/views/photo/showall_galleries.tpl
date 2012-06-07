@@ -43,7 +43,7 @@
    	{/if}
     {assign var=myloc value=serialize($__loc)}
     {foreach name=items from=$page->cats key=catid item=cat}
-        <h2 class="category">{$cat->name}</h2>
+        <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title='View this gallery'|gettext><h2 class="category">{$cat->name}</h2></a>
         <ul class="image-list">
         {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
         {foreach from=$cat->records item=record name=items}
@@ -85,16 +85,16 @@
 {if $config.lightbox}
 {script unique="shadowbox" yui3mods=1}
 {literal}
-EXPONENT.YUI3_CONFIG.modules = {
-           'gallery-lightbox' : {
-               fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-               requires : ['base','node','anim','selector-css3']
-           }
-     }
+    EXPONENT.YUI3_CONFIG.modules = {
+       'gallery-lightbox' : {
+           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+           requires : ['base','node','anim','selector-css3']
+       }
+    }
 
-YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
-    Y.Lightbox.init();    
-});
+    YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
+        Y.Lightbox.init();
+    });
 {/literal}
 {/script}
 {/if}

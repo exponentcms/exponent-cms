@@ -40,13 +40,11 @@ class companyController extends expController {
 	
 	function showall() {
         expHistory::set('viewable', $this->params);
-        $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
-        $order = isset($this->params['order']) ? $this->params['order'] : 'rank';
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>1, 
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
+                    'order'=>isset($this->params['order']) ? $this->params['order'] : 'rank',
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(gt('Title')=>'title',gt('Link')=>'website'),
@@ -81,7 +79,7 @@ class companyController extends expController {
         
         //eDebug($sql);
         $order = 'p.id'; //$this->config['orderby'];
-        $dir = 'DESC'; $this->config['orderby_dir'];
+        $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
        
         $page = new expPaginator(array(
@@ -131,7 +129,7 @@ class companyController extends expController {
         
         //eDebug($sql);
         $order = 'p.id'; //$this->config['orderby'];
-        $dir = 'DESC'; $this->config['orderby_dir'];
+        $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
        
         $page = new expPaginator(array(

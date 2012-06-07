@@ -39,6 +39,7 @@ class eventregistrationController extends expController {
 	$page = new expPaginator(array(
             'model'=>'eventregistration',
             'where'=>'product_type="eventregistration"',
+            'limit'=>10,
             'default'=>'Event Title',
             'columns'=>array(gt('Event Title')=>'title',gt('Event Date')=>'eventdate',gt('Registrants')=>'quantity')
             ));

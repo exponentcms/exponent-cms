@@ -194,7 +194,7 @@ abstract class expController {
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
-                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : null,
+                    'limit'=>(isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
                     'order'=>isset($this->params['order']) ? $this->params['order'] : null,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -235,10 +235,9 @@ abstract class expController {
 
         // create a pagination object for the model and render the action
         $order = 'created_at DESC';
-
         $page = new expPaginator(array(
                     'records'=>$items_by_tags,
-                    'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -533,7 +532,7 @@ abstract class expController {
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
-                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : null,
+                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : 10,
                     'order'=>isset($this->params['order']) ? $this->params['order'] : null,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -569,15 +568,13 @@ abstract class expController {
 	 */
 	function configure() {
         expHistory::set('editable', $this->params);
-        $order = isset($this->params['order']) ? $this->params['order'] : 'section';
-        $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         $page = new expPaginator(array(
                     'records'=>$pullable_modules,
-                    'limit'=>count($pullable_modules),
-                    'order'=>$order,
-                    'dir'=>$dir,
+//                    'limit'=>count($pullable_modules),
+                    'order'=>isset($this->params['order']) ? $this->params['order'] : 'section',
+                    'dir'=>isset($this->params['dir']) ? $this->params['dir'] : '',
                     'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
                     ));
         assign_to_template(array(

@@ -56,10 +56,9 @@ class expCatController extends expController {
 	function manage() {
         global $db;
         expHistory::set('manageable', $this->params);
-        $where = empty($this->params['model']) ? null : "module='".$this->params['model']."'";
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
-                    'where'=>$where,
+                    'where'=>empty($this->params['model']) ? null : "module='".$this->params['model']."'",
                     'limit'=>50,
                     'order'=>'module,rank',
                     'controller'=>$this->baseclassname,
@@ -109,10 +108,14 @@ class expCatController extends expController {
      *  it is assumed the records have expCats attachments, even if they are empty
      *
      * @static
-     * @param $records
-     * @param $order
+     * @param object $records
+     * @param $order sort order/dir for items
+     * @param string $uncattitle name to use for uncategorized group
+     * @param array $groups limit set to these groups only if set
+     * @return void
      */
-    public static function addCats(&$records,$order) {
+    public static function addCats(&$records,$order,$uncattitle,$groups=array()) {
+        if (empty($uncattitle)) $uncattitle = gt('Not Categorized');
         foreach ($records as $key=>$record) {
             foreach ($record->expCat as $cat) {
                 $records[$key]->catid = $cat->id;
@@ -125,7 +128,10 @@ class expCatController extends expController {
             if (empty($records[$key]->catid)) {
                 $records[$key]->catid = null;
                 $records[$key]->catrank = 9999;
-                $records[$key]->cat = gt('Not Categorized');
+                $records[$key]->cat = $uncattitle;
+            }
+            if (!empty($groups) && !in_array($records[$key]->catid,$groups)) {
+                unset ($records[$key]);
             }
         }
         $orderby = explode(" ",$order);
@@ -139,20 +145,24 @@ class expCatController extends expController {
      *  it is assumed the records object came from expCatController::addCats
      *
      * @static
-     * @param $records
-     * @param $cats
+     * @param object $records
+     * @param array $cats array of site category objects
+     * @param array $groups limit set to these groups only if set
+     * @return void
      */
-    public static function sortedByCats($records,&$cats) {
+    public static function sortedByCats($records,&$cats,$groups=array()) {
         foreach ($records as $record) {
-            if (empty($record->catid)) $record->catid = 0;
-            if (empty($cats[$record->catid])) {
-                $cats[$record->catid] = new stdClass();
-                $cats[$record->catid]->count = 1;
-                $cats[$record->catid]->name = $record->cat;
-            } else {
-                $cats[$record->catid]->count += 1;
+            if (empty($groups) || in_array($record->catid,$groups)) {
+                if (empty($record->catid)) $record->catid = 0;
+                if (empty($cats[$record->catid])) {
+                    $cats[$record->catid] = new stdClass();
+                    $cats[$record->catid]->count = 1;
+                    $cats[$record->catid]->name = $record->cat;
+                } else {
+                    $cats[$record->catid]->count += 1;
+                }
+                $cats[$record->catid]->records[] = $record;
             }
-            $cats[$record->catid]->records[] = $record;
         }
     }
 

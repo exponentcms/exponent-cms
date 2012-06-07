@@ -38,6 +38,7 @@ class order_statusController extends expController {
 			'controller'=>$this->params['controller'],
 			'action'=>$this->params['action'],
 			'where'=>1,
+            'limit'=>10,
 			'order'=>'rank',
 			//'columns'=>array('Name'=>'title')
 			));
@@ -55,6 +56,7 @@ class order_statusController extends expController {
 			'controller'=>$this->params['controller'],
 			'action'=>$this->params['action'],
 			'where'=>1,
+            'limit'=>10,
 			'order'=>'body',
 			//'columns'=>array('Name'=>'title')
 			));

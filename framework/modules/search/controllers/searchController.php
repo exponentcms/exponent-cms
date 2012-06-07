@@ -63,12 +63,14 @@ class searchController extends expController {
         $terms = htmlspecialchars($terms);
         
         $search = new search();
+
         $page = new expPaginator(array(
             //'model'=>'search',
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
             'records'=>$search->getSearchResults($terms),
             //'sql'=>$sql,
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
             'dir'=>'DESC',
 			));        
@@ -129,7 +131,7 @@ class searchController extends expController {
         $page = new expPaginator(array(
                     'model'=>'expTag',
                     'where'=>null,
-                    'limit'=>999,
+//                    'limit'=>999,
                     'order'=>"title",
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -252,15 +254,12 @@ class searchController extends expController {
 			}
 		}
 		
-		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $order = empty($this->config['order']) ? 'timestamp' : $this->config['order'];
-		
         $page = new expPaginator(array(
 					'records' => $records,
                     'where'=>1, 
 					'model'=>'search_queries',
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? 10 : $this->config['limit'],
+                    'order'=>empty($this->config['order']) ? 'timestamp' : $this->config['order'],
                     'controller'=>$this->baseclassname,
 					'action'=>$this->params['action'],
                     'columns'=>array(

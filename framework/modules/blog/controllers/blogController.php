@@ -47,7 +47,7 @@ class blogController extends expController {
 		$page = new expPaginator(array(
 		            'model'=>$this->basemodel_name,
 		            'where'=>$this->aggregateWhereClause(),
-		            'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+		            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
 		            'src'=>$this->loc->src,
 		            'order'=>'publish',
 		            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
@@ -124,7 +124,7 @@ class blogController extends expController {
 		$page = new expPaginator(array(
 		            'model'=>$this->basemodel_name,
 		            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
-		            'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+		            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
 		            'order'=>'publish',
 		            'dir'=>'desc',
 		            'controller'=>$this->baseclassname,
@@ -145,7 +145,7 @@ class blogController extends expController {
 		$page = new expPaginator(array(
 		            'model'=>$this->basemodel_name,
 		            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id,
-		            'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+		            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
 		            'order'=>'publish',
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],

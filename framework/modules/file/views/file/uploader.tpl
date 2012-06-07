@@ -118,20 +118,18 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
                //     progressBar.set("progress", 0);
 
                var progressBar = Y.Node.create("<div style='width:90%;background-color:#CCC;padding:3px;'><div style='height:12px;padding:0px;font-size:10px;color:#fff;background-color:#900;width:0;'>0%</div></div>");
-                   Y.one("#div_" + fileData[key].id).setContent(progressBar);
+               Y.one("#div_" + fileData[key].id).setContent(progressBar);
 
                selectedFiles[fileData[key].id] = true;
 			}
     	}
-
     }
 
     function updateProgress (event) {
-//        console.debug(event);
 		//var rowNum = fileIdHash[event["id"]];
 		var prog = Math.round(100 * (event.bytesLoaded / event.bytesTotal));
 		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:"+((prog>90)?'#fad00e':'#b30c0c')+";width:" + prog + "%;'>" + prog + "%</div></div>";
-            Y.one("#div_" + event.id).setContent(progbar);
+        Y.one("#div_" + event.id).setContent(progbar);
 
         // var pb = Y.Widget.getByNode("#pb_" + event.id);
         // pb.set("progress", Math.round(100 * event.bytesLoaded / event.bytesTotal));
@@ -139,18 +137,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
 
     function uploadComplete (event) {
 		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src='"+EXPONENT.PATH_RELATIVE+"framework/core/assets/images/accepted.png' style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
-            Y.one("#div_" + event.id).setContent(progbar);
+        Y.one("#div_" + event.id).setContent(progbar);
     }
 
     function uploadFiles (event) {
 
-    	//if (selectedFiles != null) {
-    		//uploader.setSimUploadLimit(parseInt(3));
-//    		console.debug(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1");
-//            uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1");
-//            console.debug(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
-            uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);    	//}
-        //uploader.uploadAll("http://www.yswfblog.com/upload/upload_simple.php");
+//    	if (selectedFiles != null) {
+//    		uploader.setSimUploadLimit(parseInt(3));
+//          uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1");
+            uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
+//      }
+//        uploader.uploadAll("http://www.yswfblog.com/upload/upload_simple.php");
     }
 
     Y.one("#uploadLink").on("click", uploadFiles);

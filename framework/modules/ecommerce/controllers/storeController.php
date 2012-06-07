@@ -422,6 +422,7 @@ class storeController extends expController {
         $page = new expPaginator(array(
             'model_field'=>'product_type',
             'sql'=>$sql,
+            'limit'=>$this->config['pagination_default'],
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
             'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
@@ -438,6 +439,7 @@ class storeController extends expController {
         $page = new expPaginator(array(
             'model'=>'product',
             'where'=>'parent_id=0',
+            'limit'=>$this->config['pagination_default'],
             'order'=>'title',
             'columns'=>array(gt('Type')=>'product_type',gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
             ));
@@ -458,6 +460,7 @@ class storeController extends expController {
         $page = new expPaginator(array(
             'model_field'=>'product_type',
             'sql'=>$sql,
+            'limit'=>$this->config['pagination_default'],
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
             'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
@@ -483,6 +486,7 @@ class storeController extends expController {
         $page = new expPaginator(array(
             'model'=>'product',
             'where'=>'companies_id='.$this->params['id'] . ' AND parent_id=0',
+            'limit'=>$this->config['pagination_default'],
             'default'=>'Product Name',
             'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
             ));
@@ -724,7 +728,7 @@ class storeController extends expController {
         $sql = $sql_start . $sql;
         
         $order = 'sc.rank'; //$this->config['orderby'];
-        $dir = 'ASC'; $this->config['orderby_dir'];
+        $dir = 'ASC'; //$this->config['orderby_dir'];
         
         $page = new expPaginator(array(
                 'model_field'=>'product_type',
@@ -1202,6 +1206,7 @@ class storeController extends expController {
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
             'where'=>$sql,
+            'limit'=>$this->config['pagination_default'],
             'order'=>'title',
             'dir'=>'DESC',
             'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
