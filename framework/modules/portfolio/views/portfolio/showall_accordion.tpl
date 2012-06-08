@@ -20,7 +20,7 @@
 
 {/css}
 
-<div class="module portfolio showall-accordion">
+<div class="module portfolio showall showall-accordion">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">

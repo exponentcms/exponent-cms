@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="module filedownload showall-accordion">
+<div class="module filedownload showall showall-accordion">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
     {if $config.enable_rss == true}
         <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>

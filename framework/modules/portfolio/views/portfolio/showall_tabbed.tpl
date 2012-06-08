@@ -19,7 +19,7 @@
 
 {/css}
 
-<div class="module portfolio showall-tabbed">
+<div class="module portfolio showall showall-tabbed">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">

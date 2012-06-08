@@ -21,7 +21,7 @@
 {/css}
 {/if}
 
-<div class="module filedownload showall-tabbed">
+<div class="module filedownload showall showall-tabbed">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
     {if $config.enable_rss == true}
         <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>

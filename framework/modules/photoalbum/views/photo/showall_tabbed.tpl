@@ -24,9 +24,7 @@
 
 {/css}
 {/if}
-
 {$rel}
-
 <div class="module photoalbum showall showall-tabbed">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
     {if $config.enable_rss == true}

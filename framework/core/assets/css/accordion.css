@@ -6,7 +6,7 @@
 .showall-accordion .dashboard .hd {
     margin:0;
     position:relative;
-    background:url(../../../../../framework/modules/ecommerce/assets/images/ecom-sprite.png) repeat-x 0 -44px;
+    background:url(../../../modules/ecommerce/assets/images/ecom-sprite.png) repeat-x 0 -44px;
     border:1px solid #b6cdde;
     -moz-border-radius:2px;
     -webkit-border-radius:2px;
@@ -18,23 +18,16 @@
     padding:5px 0 5px 33px;
     font-size:18px;
     font-weight:bold;
-    background-image:url(../../../../../framework/modules/ecommerce/assets/images/ecom-sprite.png);
-    background-repeat:no-repeat;
+    background : url(../../../modules/ecommerce/assets/images/ecom-sprite.png) no-repeat;
 }
 
 .showall-accordion .dashboard .hd a.expand {
-    /*background:url(../../../../../framework/modules/ecommerce/assets/images/ecom-sprite.png) no-repeat -4px -413px;*/
-    background-image: url('../../../../../framework/core/assets/images/section_collapsed.png');
-    background-repeat:no-repeat;
-    background-position: right;
+    background : url('../images/section_collapsed.png') no-repeat right;
     display:block;
 }
 
 .showall-accordion .dashboard .hd a.collapse {
-    /*background:url(../../../../../framework/modules/ecommerce/assets/images/ecom-sprite.png) no-repeat -4px -386px;*/
-    background-image: url('../../../../../framework/core/assets/images/section_expanded.png');
-    background-repeat:no-repeat;
-    background-position: right;
+    background : url('../images/section_expanded.png') no-repeat right;
     display:block;
 }
 

@@ -8,7 +8,12 @@ Added / Fixed / changed for 2.0.8
   - adds manual sorting to news module
   - adds random sorting to links module
   - enhances category management by removing global categories and grouping categories by module type
-  - enhances comment management by adding a manage site comments command to exponent menu
+  - enhances comment management by adding a 'manage site comments' command to exponent menu
+  - adds additional views to photoalbum
+    -- new tabbed and accordion views
+    -- view category/gallery/group album pulling up individual group/gallery
+  - adds group view to filedownloads
+  - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.7
 -----------------------

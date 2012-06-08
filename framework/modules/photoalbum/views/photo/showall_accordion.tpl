@@ -15,7 +15,7 @@
 
 {uniqueid prepend="gallery" assign="id"}
 
-{css unique="photo-album" link="`$asset_path`css/photoalbum.css"}
+{css unique="photo-album" corecss="accordion" link="`$asset_path`css/photoalbum.css"}
 
 {/css}
 
@@ -24,12 +24,7 @@
 
 {/css}
 {/if}
-{css unique="accordion" corecss="accordion"}
-
-{/css}
-
 {$rel}
-
 <div class="module photoalbum showall showall-accordion">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
