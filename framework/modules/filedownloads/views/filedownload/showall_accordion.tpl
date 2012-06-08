@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="accordion" link="`$asset_path`css/accordion.css"}
+{css unique="accordion" corecss="accordion"}
 
 {/css}
 

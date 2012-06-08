@@ -41,7 +41,7 @@ class filedownloadController extends expController {
     function showall() {
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
-            $limit = '';
+            $limit = '0';
         }
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $page = new expPaginator(array(

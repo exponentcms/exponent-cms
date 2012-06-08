@@ -13,26 +13,36 @@
  *
  *}
 
-{css unique="portfolio" link="`$asset_path`css/portfolio.css"}
+{uniqueid prepend="gallery" assign="id"}
+
+{css unique="photo-album" link="`$asset_path`css/photoalbum.css"}
 
 {/css}
+
+{if $config.lightbox}
+{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}
+
+{/css}
+{/if}
 {css unique="accordion" corecss="accordion"}
 
 {/css}
 
-<div class="module portfolio showall-accordion">
+{$rel}
+
+<div class="module photoalbum showall showall-accordion">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add a Portfolio Piece"|gettext}
+				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
 			{/if}
             {if $permissions.manage == 1}
                 {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
-                {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
+                {icon controller=expCat action=manage model='photoalbum' text="Manage Categories"|gettext}
             {/if}
 			{if $permissions.manage == 1 && $rank == 1}
-				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
+				{ddrerank items=$page->records model="photoalbum" label="Images"|gettext}
 			{/if}
         </div>
     {/permissions}
@@ -45,11 +55,38 @@
             <div id="item{$catid}" class="panel">
                 <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $cat->name ==""}{if $config.uncat == ""}{'The List'|gettext}{else}{$config.uncat}{/if}{else}{$cat->name}{/if}</h2></a></div>
                 <div class="piece bd {if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}expanded{else}collapsed{/if}">
-                    <ul>
+                    <ul class="image-list">
                         {foreach from=$cat->records item=record}
-                            <li>
-                                {include 'portfolioitem.tpl'}
-                            </li>
+                            <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
+                                {if $config.lightbox}
+                                    {if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}
+                                    <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
+                                {else}
+                                    <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
+                                {/if}
+                                    {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
+                                </a>
+                                {permissions}
+                                    <div class="item-actions">
+                                        {if $permissions.edit == 1}
+                                            {if $myloc != $record->location_data}
+                                                {if $permissions.manage == 1}
+                                                    {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                                                {else}
+                                                    {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                                {/if}
+                                            {/if}
+                                            {icon action=edit record=$record title="Edit"|gettext|cat:" `$modelname`"}
+                                        {/if}
+                                        {if $permissions.delete == 1}
+                                            {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
+                                        {/if}
+                                        {if $permissions.create == 1}
+                                            {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
+                                        {/if}
+                                    </div>
+                                {/permissions}
+                    `       </li>
                         {/foreach}
                     </ul>
                 </div>
@@ -60,7 +97,14 @@
 
 {script unique="expand-panels" yui3mods="1"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
+EXPONENT.YUI3_CONFIG.modules = {
+   'gallery-lightbox' : {
+       fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+       requires : ['base','node','anim','selector-css3']
+   }
+}
+
+YUI(EXPONENT.YUI3_CONFIG).use('node','anim','gallery-lightbox', function(Y) {
     var panels = Y.all(".dashboard .panel");
     var expandHeight = [];
     var exclusiveExp = {/literal}{if $config.initial_view==1||$config.initial_view==3}true{else}false{/if}{literal};
@@ -113,6 +157,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
 //            n.one('.bd').addClass('collapsed');
         expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
     });
+    Y.Lightbox.init();
 });
 {/literal}
 {/script}
