@@ -71,8 +71,7 @@
 }
 
 .sliderlist li.on {
-    background-position : 0 0;
-    background-color    : rgb(82, 147, 226);
+    background : rgb(82, 147, 226) 0 0;
 }
 
 .sliderlist li.on div {

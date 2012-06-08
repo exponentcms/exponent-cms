@@ -38,10 +38,10 @@
 			{/if}
             {if $permissions.manage == 1}
                 {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
-                {icon controller=expCat action=manage model='photoalbum' text="Manage Categories"|gettext}
+                {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
             {/if}
 			{if $permissions.manage == 1 && $rank == 1}
-				{ddrerank items=$page->records model="photoalbum" label="Images"|gettext}
+				{ddrerank items=$page->records model="photo" label="Images"|gettext}
 			{/if}
         </div>
     {/permissions}

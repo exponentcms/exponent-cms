@@ -57,7 +57,7 @@
 
 .showall-accordion .dashboard ul li {
     padding:8px 2px;
-    border-bottom:1px dashed #555;
+    /*border-bottom:1px dashed #555;*/
 }
 .showall-accordion .dashboard ul li strong {
     display:block;
