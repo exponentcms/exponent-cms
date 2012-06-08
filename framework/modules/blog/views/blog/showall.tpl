@@ -29,7 +29,9 @@
 				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon controller=expTag action=manage text="Manage Tags"|gettext}
+                {if !$config.disabletags}
+                    {icon controller=expTag action=manage text="Manage Tags"|gettext}
+                {/if}
             {/if}
 		</div>
     {/permissions}

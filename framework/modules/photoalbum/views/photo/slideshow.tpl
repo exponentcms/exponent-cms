@@ -26,9 +26,16 @@
         {if $permissions.create == 1}
             {icon class=add action=edit rank=1 text="Add a Slide"|gettext}
         {/if}
-        {if $permissions.manage == 1 && $slides|@count>1}
-            {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
-            {ddrerank items=$slides model="photo" label="Slides"|gettext}
+        {if $permissions.manage == 1}
+            {if !$config.disabletags}
+                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+            {/if}
+            {if $config.usecategories}
+                {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
+            {/if}
+            {if $slides|@count>1}
+                {ddrerank items=$slides model="photo" label="Slides"|gettext}
+            {/if}
         {/if}
     </div>
     {/permissions}

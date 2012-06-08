@@ -32,11 +32,18 @@
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
 			{/if}
-			{if $permissions.manage == 1}
-                {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
-				{ddrerank items=$page->records model="photo" label="Images"|gettext}
-			{/if}
-		</div>
+            {if $permissions.manage == 1}
+                {if !$config.disabletags}
+                    {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
+                {/if}
+                {if $rank == 1}
+                    {ddrerank items=$page->records model="photo" label="Images"|gettext}
+                {/if}
+            {/if}
+        </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
