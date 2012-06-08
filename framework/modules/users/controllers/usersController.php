@@ -287,7 +287,7 @@ class usersController extends expController {
 			$filtered = 0;
 		}
 		
-	    $sessions = $db->selectObjects('sessionticket');
+//	    $sessions = $db->selectObjects('sessionticket');
 	    for ($i = 0; $i < count($sessions); $i++) {
 		    $sessions[$i]->user = new user($sessions[$i]->uid);
 			if ($sessions[$i]->uid == 0) {
