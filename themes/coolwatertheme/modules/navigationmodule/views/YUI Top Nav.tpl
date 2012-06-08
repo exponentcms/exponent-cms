@@ -67,16 +67,13 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
          instance, used to setup certain style properties before
          the menu is animated.
     */
-
     function onSubmenuBeforeShow(p_sType, p_sArgs) {
-
         var oBody,
             oElement,
             oShadow,
             oUL;
     
         if (this.parent) {
-
             oElement = this.element;
 
             /*
@@ -84,7 +81,6 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                  set its "height" property to "0px" to syncronize 
                  it with the height of the Menu instance.
             */
-
             oShadow = oElement.lastChild;
             oShadow.style.height = "0px";
 
@@ -92,12 +88,9 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                 Stop the Animation instance if it is currently 
                 animating a Menu.
             */ 
-        
             if (oAnim && oAnim.isAnimated()) {
-            
                 oAnim.stop();
                 oAnim = null;
-            
             }
 
             /*
@@ -105,12 +98,10 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                 "hidden" to clip the display of its negatively 
                 positioned <ul> element.
             */ 
-
             oBody = this.body;
 
             //  Check if the menu is a submenu of a submenu.
-
-            if (this.parent && 
+            if (this.parent &&
                 !(this.parent instanceof YAHOO.widget.MenuBarItem)) {
             
                 /*
@@ -123,11 +114,8 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                     this bug by specifying a value for the width 
                     property in addition to overflow.
                 */
-
                 if (ua.gecko) {
-                
                     oBody.style.width = oBody.clientWidth + "px";
-                
                 }
                 
                 /*
@@ -135,13 +123,9 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                     width from growing when the animation 
                     is complete.
                 */
-                
                 if (ua.ie == 7) {
-
                     oElement.style.width = oElement.clientWidth + "px";
-
                 }
-            
             }
 
             oBody.style.overflow = "hidden";
@@ -151,13 +135,10 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                 to a negative value so that the Menu's height
                 collapses.
             */ 
-
             oUL = oBody.getElementsByTagName("ul")[0];
 
             oUL.style.marginTop = ("-" + oUL.offsetHeight + "px");
-        
         }
-
     }
 
     /*
@@ -166,21 +147,14 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
         shadow and iframe shim (if it exists) with its 
         changing height.
     */
-
     function onTween(p_sType, p_aArgs, p_oShadow) {
-
         if (this.cfg.getProperty("iframe")) {
-        
             this.syncIframe();
-    
         }
     
         if (p_oShadow) {
-    
             p_oShadow.style.height = this.element.offsetHeight + "px";
-        
         }
-    
     }
 
     /*
@@ -188,16 +162,12 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
         remove style properties that were animated so that the 
         Menu instance can be displayed at its final height.
     */
-
     function onAnimationComplete(p_sType, p_aArgs, p_oShadow) {
-
         var oBody = this.body,
             oUL = oBody.getElementsByTagName("ul")[0];
 
         if (p_oShadow) {
-        
             p_oShadow.style.height = this.element.offsetHeight + "px";
-        
         }
 
         oUL.style.marginTop = "";
@@ -209,21 +179,14 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
             !(this.parent instanceof YAHOO.widget.MenuBarItem)) {
 
             // Clear widths set by the "beforeshow" event handler
-
             if (ua.gecko) {
-            
                 oBody.style.width = "";
-            
             }
             
             if (ua.ie == 7) {
-
                 this.element.style.width = "";
-
             }
-        
         }
-        
     }
 
     /*
@@ -231,9 +194,7 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
          instance - used to kick off the animation of the 
          <ul> element.
     */
-
     function onSubmenuShow(p_sType, p_sArgs) {
-
         var oElement,
             oShadow,
             oUL;
@@ -248,22 +209,16 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
                  Animate the <ul> element's "marginTop" style 
                  property to a value of 0.
             */
-
-            oAnim = new YAHOO.util.Anim(oUL, 
+            oAnim = new YAHOO.util.Anim(oUL,
                 { marginTop: { to: 0 } },
                 1, YAHOO.util.Easing.elasticOut);
 
-
             oAnim.onStart.subscribe(function () {
-
                 oShadow.style.height = "100%";
-            
             });
 
             oAnim.animate();
-       
         }
-    
     }
 
     /*
@@ -272,21 +227,24 @@ YAHOO.util.Event.onContentReady("yuimenubar", function () {
          representing the MenuBar; the second is an object literal 
          of configuration properties.
     */
-
-    var yuimenubar = new YAHOO.widget.MenuBar("yuimenubar", { 
+    var yuimenubar = new YAHOO.widget.MenuBar("yuimenubar", {
                                                 autosubmenudisplay: true, 
                                                 hidedelay: 750, 
                                                 lazyload: true });
 
+{/literal}
+{if $smarty.const.MENU_BOUNCE_OFF==1}
+{else}
+{literal}
     /*
-         Subscribe to the "beforeShow" and "show" events for 
+         Subscribe to the "beforeShow" and "show" events for
          each submenu of the MenuBar instance.
     */
-    
     yuimenubar.subscribe("beforeShow", onSubmenuBeforeShow);
     yuimenubar.subscribe("show", onSubmenuShow);
-
-
+{/literal}
+{/if}
+{literal}
 	yuimenubar.render(); 
 });
 

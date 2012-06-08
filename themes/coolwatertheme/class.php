@@ -45,6 +45,7 @@ class coolwatertheme extends theme {
         $form->register('link2_section',gt('Link #2 Page'),new dropdowncontrol($settings['LINK2_SECTION'],navigationmodule::levelDropdownControlArray(0,0,array(),false,'manage',true)));
         $form->register('link3_text','Link #3 Text (blank to disable) '.': ',new textcontrol($settings['LINK3_TEXT'],20));
         $form->register('link3_section',gt('Link #3 Page'),new dropdowncontrol($settings['LINK3_SECTION'],navigationmodule::levelDropdownControlArray(0,0,array(),false,'manage',true)));
+        $form->register('menu_bounce_off',gt('Disable Menu Bounce'),new checkboxcontrol((!empty($settings['MENU_BOUNCE_OFF'])?$settings['MENU_BOUNCE_OFF']:0)));
    		$form->register(null,'',new htmlcontrol('<br>'));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
    		assign_to_template(array(
