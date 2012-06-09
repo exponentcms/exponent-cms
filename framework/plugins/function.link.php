@@ -60,7 +60,7 @@ function smarty_function_link($params,&$smarty) {
 	
 	// guess the src if it is not set
 	if (!isset($params['src'])) {
-        if (!empty($params['controller']) || @call_user_func(array($loc->mod,'hasSources'))) {
+        if (!empty($params['controller']) || @call_user_func(array($loc->mod.'Controller','hasSources'))) {
 			$params['src'] = $loc->src;
 		}
 	}
