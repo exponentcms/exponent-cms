@@ -31,6 +31,9 @@
         {br}{br}
         <em>{'Administrator sessions cannot be forcibly ended'|gettext}.</em>
     </p>
+    <p>
+        <strong>{'Total active sessions'|gettext}: {$sessions|count}</strong>
+    </p>
 	<p><a href="{link module='users' action='manage_sessions' id=$filter}">{if $filter != 0}{'Show all Sessions'|gettext}{else}{'Restrict list to Logged-In Users'|gettext}{/if}</a></p>
     <table cellpadding="4" cellspacing="0" border="0" width="100%">
 	    {foreach from=$sessions item=session}
