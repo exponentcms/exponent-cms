@@ -148,6 +148,9 @@ class searchController extends expController {
                 }
             }
         }
+        foreach ($page->records as $key=>$record) {
+            if (empty($record->attachedcount)) unset($page->records[$key]);
+        }
         // trim the tag cloud to our limit.
         $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'attachedcount DESC', 'type'=>'a'));
         if (!empty($this->config['limit'])) $page->records = array_slice($page->records,0,$this->config['limit']);
