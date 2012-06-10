@@ -302,6 +302,44 @@ class expCommentController extends expController {
 	    $comment->save();
 	    expHistory::back();
 	}
+
+    /**
+     * this method bulk processes the selected comments
+     */
+    function bulk_process() {
+        global $db;
+
+        if (!empty($this->params['bulk_select']) && !empty($this->params['command'])) {
+            foreach ($this->params['bulk_select'] as $item) {
+                switch ($this->params['command']) {
+                    case 1:  // approve
+                        $comment = new expComment($item);
+                        if (!$comment->approved) {
+                            $comment->approved = 1;
+                            $attached = $db->selectObject('content_expComments','expcomments_id='.$item);
+                            $params['content_type'] = $attached->content_type;
+                            $params['content_id'] = $attached->content_id;
+                            $this->sendApprovalNotification($comment,$params);
+                            $comment->save();
+                        }
+                        break;
+                    case 2:  // disable
+                        $comment = new expComment($item);
+                  	    $comment->approved = 0;
+                  	    $comment->save();
+                        break;
+                    case 3:  //delete
+                        // delete the comment
+                        $comment = new expComment($item);
+                        $comment->delete();
+                        // delete the association too
+                        $db->delete($comment->attachable_table, 'expcomments_id='.$item);
+                }
+            }
+        }
+        expHistory::returnTo('viewable');
+    }
+
 	public function delete() {
 	    global $db;
         
@@ -321,7 +359,7 @@ class expCommentController extends expController {
         $comment = new expComment($this->params['id']);
         $rows = $comment->delete();
         
-        // delete the assocication too
+        // delete the association too
         $db->delete($comment->attachable_table, 'expcomments_id='.$this->params['id']);        
         
         // send the user back where they came from.

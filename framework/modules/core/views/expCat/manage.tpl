@@ -36,7 +36,6 @@
             {if !empty($page)}
                 <div id="#tab0">
                     <h3>{'Change'|gettext} {$page->model|capitalize} {'Item Categories'|gettext}</h3>
-                    <p>{'Select the item(s) to change, then select the new category below'|gettext}</p>
                     {form action=change_cats}
                         {control type=hidden name=mod value=$page->model}
                         <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
@@ -69,8 +68,9 @@
                                 {/foreach}
                             </tbody>
                         </table>
+                        <p>{'Select the item(s) to change, then select the new category'|gettext}</p>
                         {control type="dropdown" name=newcat label="Module Categories"|gettext items=$catlist}
-                        {control type=buttongroup submit="Change Selected Items to New Category"|gettext cancel="Cancel"|gettext returntype="viewable"}
+                        {control type=buttongroup submit="Change Category on Selected Items"|gettext cancel="Cancel"|gettext returntype="viewable"}
                     {/form}
                 </div>
             {/if}

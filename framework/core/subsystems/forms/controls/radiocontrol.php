@@ -84,8 +84,8 @@ class radiocontrol extends formcontrol {
     function controlToHTML_newschool($name, $label) {
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $this->name = empty($this->name) ? $name : $this->name;
-        $this->id = empty($this->id) ? $name : $this->id;
-        $html = '<input'.$inputID.' type="radio" name="' . $this->name . '" value="'.$this->value.'"';
+        $this->id = empty($this->id) ? $name.$this->value : $this->id;
+        $html = '<input'.$inputID.' type="radio" name="' . $this->name . '" id="' . $this->id . '" value="'.$this->value.'"';
         if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
         if (!empty($this->checked)) $html .= ' checked="checked"';
         $this->class = !empty($this->class) ? $this->class : "";
