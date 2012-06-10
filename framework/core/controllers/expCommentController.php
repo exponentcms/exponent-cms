@@ -37,10 +37,10 @@ class expCommentController extends expController {
 	    } 
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
+//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
@@ -99,10 +99,10 @@ class expCommentController extends expController {
 
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
         $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         
 //        $sql  = 'SELECT c.*, ua.image, u.username FROM '.DB_TABLE_PREFIX.'_expComments c ';
@@ -192,14 +192,13 @@ class expCommentController extends expController {
         
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
         $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
         $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         // check the anti-spam control
-        if (!$user->isLoggedIn())
-        {
+        if (!$user->isLoggedIn()) {
             expValidator::check_antispam($this->params, gt("Your comment could not be posted because anti-spam verification failed.  Please try again."));
         }
         
@@ -247,10 +246,10 @@ class expCommentController extends expController {
         
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
+//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    if (empty($this->params['id'])) {
 	        flash('error', gt('No ID supplied for comment to approve'));
@@ -271,10 +270,10 @@ class expCommentController extends expController {
         
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
+//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    $comment = new expComment($this->params['id']);
 	    $comment->body = $this->params['body'];
@@ -288,12 +287,11 @@ class expCommentController extends expController {
         
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-        
-        
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
+//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+
 	    $comment = new expComment($this->params['id']);
 	    $comment->approved = $comment->approved == 1 ? 0 : 1;
 	    if ($comment->approved) {
@@ -345,10 +343,10 @@ class expCommentController extends expController {
         
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
+//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    if (empty($this->params['id'])) {
 	        flash('error', gt('Missing id for the comment you would like to delete'));
@@ -357,7 +355,7 @@ class expCommentController extends expController {
 	    
 	    // delete the comment
         $comment = new expComment($this->params['id']);
-        $rows = $comment->delete();
+        $comment->delete();
         
         // delete the association too
         $db->delete($comment->attachable_table, 'expcomments_id='.$this->params['id']);        
@@ -373,9 +371,9 @@ class expCommentController extends expController {
         //eDebug($comment,1);
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
+//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    // setup some email variables.
@@ -385,9 +383,10 @@ class expCommentController extends expController {
         if (empty($tos)) return false;
 
         $model = new $params['content_type']($params['content_id']);
-	    $loc = expUnserialize($model->location_data);
+//	    $loc = expUnserialize($model->location_data);
 
-        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'id'=>$params['content_id'],"src"=>$loc->src));
+//        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'id'=>$params['content_id'],"src"=>$loc->src));
+        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'title'=>$model->sef_url));
         $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
         
         // make the email body
@@ -423,9 +422,9 @@ class expCommentController extends expController {
         
         /* The global constants can be overriden by passing appropriate params */ 
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+//        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
+//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    // setup some email variables.
@@ -436,11 +435,11 @@ class expCommentController extends expController {
 		if (empty($tos)) return false;
 
         $model = new $params['content_type']($params['content_id']);
-	    $loc = expUnserialize($model->location_data);
+//	    $loc = expUnserialize($model->location_data);
 
-        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'id'=>$params['content_id'],"src"=>$loc->src));
-        $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
-                
+//        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'id'=>$params['content_id'],"src"=>$loc->src));
+        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'title'=>$model->sef_url));
+
         // make the email body
         $body = '<h1>'.gt('Comment Approved').'</h1>';
         $body .= '<h2>'.gt('Posted By').'</h2>';

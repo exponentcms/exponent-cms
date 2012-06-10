@@ -21,13 +21,16 @@
 	{if !$hidecomments && $comments|@count > 0}
 	    <a id="exp-comments"></a>
 	    {if $title}<h3>{$title}</h3>{/if}
-	    {if $unapproved > 0}
-			<div class="unapproved msg-queue notice">
-			    <div class="msg">
-    				<a class="manage" href="{link action=manage content_id=$content_id content_type=$content_type}">{'Manage Comments'|gettext}</a> | {'There are'|gettext} {$unapproved} {'comments awaiting approval'|gettext}
-			    </div>
-			</div>
-	    {/if}
+            {if $permissions.approve == 1}
+                <div {if $unapproved > 0}class="unapproved msg-queue notice"{/if}>
+                    <div class="msg">
+                        <a class="manage" href="{link action=manage content_id=$content_id content_type=$content_type}">{'Manage Comments'|gettext}</a>
+                        {if $unapproved > 0}
+                        | {'There are'|gettext} {$unapproved} {'comments awaiting approval'|gettext}
+                        {/if}
+                    </div>
+                </div>
+            {/if}
         {if $comments->records|@count!=0}
 	    <ol class="commentlist">		
         {foreach from=$comments->records item=cmt name=comments}
