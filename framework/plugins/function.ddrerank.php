@@ -130,6 +130,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 }
                 $html .='</ul>
                     <div class="yui3-widget-ft">
+                    <a href="#" class="alphasort" id=alpha'.$uniqueid.' style="float:left;">'.gt('Alpha Sort List').'</a>
                     <button type="submit" class="awesome small '.BTN_COLOR.'">'.gt('Save').'</button>
                     </div>
                     </form>
@@ -164,6 +165,30 @@ function smarty_function_ddrerank($params,&$smarty) {
             panelContainer.addClass('exp-panel-container');
             Y.one('#panel".$uniqueid."').removeClass('hide');
                         
+            Y.one('#alpha".$uniqueid."').on('click',function(e){
+                var ul = document.getElementById('listToOrder".$uniqueid."');
+                var new_ul = ul.cloneNode(false);
+                // Get the list items and setup an array for sorting
+                var lis = ul.getElementsByTagName('LI');
+                var vals = [];
+
+                // Populate the array
+                for(var i = 0, l = lis.length; i < l; i++)
+                    vals.push(lis[i]);
+
+                // Sort it
+                vals.sort(function(a, b){
+                    if (a.innerText == b.innerText) return 0;
+                    return a.innerText > b.innerText ? 1 : -1;
+                });
+
+                // Change the list on the page
+                for(var i = 0, l = vals.length; i < l; i++) {
+                    new_ul.appendChild(vals[i]);
+                }
+                ul.parentNode.replaceChild(new_ul, ul);
+            });
+
             Y.one('#rerank".$uniqueid."').on('click',function(e){
                 e.halt();
                 panel.show();

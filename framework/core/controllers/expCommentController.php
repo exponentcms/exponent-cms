@@ -385,7 +385,6 @@ class expCommentController extends expController {
         $model = new $params['content_type']($params['content_id']);
 //	    $loc = expUnserialize($model->location_data);
 
-//        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'id'=>$params['content_id'],"src"=>$loc->src));
         $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'title'=>$model->sef_url));
         $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
         
@@ -408,8 +407,6 @@ class expCommentController extends expController {
         $mail->quickSend(array(
                 'html_message'=>$body,
 			    'to'=>$tos,
-//			    'from'=>trim(SMTP_FROMADDRESS),
-//			    'from_name'=>trim(ORGANIZATION_NAME),
 				'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
 			    'subject'=>$subject,
         ));
@@ -437,7 +434,6 @@ class expCommentController extends expController {
         $model = new $params['content_type']($params['content_id']);
 //	    $loc = expUnserialize($model->location_data);
 
-//        $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'id'=>$params['content_id'],"src"=>$loc->src));
         $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'title'=>$model->sef_url));
 
         // make the email body
@@ -456,8 +452,6 @@ class expCommentController extends expController {
         $mail->quickSend(array(
                 'html_message'=>$body,
 			    'to'=>$tos,
-//			    'from'=>trim(SMTP_FROMADDRESS),
-//			    'from_name'=>trim(ORGANIZATION_NAME),
 			    'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
 			    'subject'=>$subject,
         ));
