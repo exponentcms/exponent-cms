@@ -14,6 +14,7 @@ Added / Fixed / changed for 2.0.8
     -- new tabbed and accordion views just like filedownloads & portfolio
     -- view category/gallery/group album pulling up individual group/gallery
   - adds group (category) viewing to filedownloads
+  - adds ability to quickly sort the re-ranking/order list alphabetically
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.7

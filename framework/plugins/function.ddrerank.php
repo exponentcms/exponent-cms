@@ -130,7 +130,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 }
                 $html .='</ul>
                     <div class="yui3-widget-ft">
-                    <a href="#" class="alphasort" id=alpha'.$uniqueid.' style="float:left;">'.gt('Alpha Sort List').'</a>
+                    <a href="#" class="alphasort" name=alpha'.$uniqueid.' id=alpha'.$uniqueid.' style="float:left;">'.gt('Sort List Alphabetically').'</a>
                     <button type="submit" class="awesome small '.BTN_COLOR.'">'.gt('Save').'</button>
                     </div>
                     </form>
@@ -178,8 +178,8 @@ function smarty_function_ddrerank($params,&$smarty) {
 
                 // Sort it
                 vals.sort(function(a, b){
-                    if (a.innerText == b.innerText) return 0;
-                    return a.innerText > b.innerText ? 1 : -1;
+                    if (a.textContent.toLowerCase() == b.textContent.toLowerCase()) return 0;
+                    return a.textContent.toLowerCase()  > b.textContent.toLowerCase()  ? 1 : -1;
                 });
 
                 // Change the list on the page
