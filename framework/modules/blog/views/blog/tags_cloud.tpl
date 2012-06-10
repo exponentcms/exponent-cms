@@ -22,7 +22,7 @@
     {permissions}
         {if $permissions.manage == 1}
             {if !$config.disabletags}
-                {icon controller=expTag action=manage text="Manage Tags"|gettext}
+                {icon controller=expTag class="manage" action=manage_module model='blog' text="Manage Tags"|gettext}
             {/if}
         {/if}
         {br}

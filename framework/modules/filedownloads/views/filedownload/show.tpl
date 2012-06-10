@@ -37,11 +37,6 @@
 				{if $permissions.delete == 1}
 					{icon action=delete record=$record title="Delete this file"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this file?"|gettext)|cat:"');"}
 				{/if}
-                {if $permissions.manage == 1}
-                    {if !$config.disabletags}
-                        {icon controller=expTag action=manage text="Manage Tags"|gettext}
-                    {/if}
-                {/if}
 			</div>
         {/permissions}
         <div class="attribution">

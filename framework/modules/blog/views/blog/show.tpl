@@ -58,11 +58,6 @@
             {if $permissions.delete == 1}
                 {icon action=delete record=$record}
             {/if}
-            {if $permissions.manage == 1}
-                {if !$config.disabletags}
-                    {icon controller=expTag action=manage text="Manage Tags"|gettext}
-                {/if}
-            {/if}
         </div>
     {/permissions}
     <div class="bodycopy">

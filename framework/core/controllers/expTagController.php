@@ -113,11 +113,116 @@ class expTagController extends expController {
                 }
             }
         }
-        
+
         assign_to_template(array(
             'page'=>$page
         ));
     }
+
+    /**
+   	 * manage tags
+   	 */
+   	function manage_module() {
+        global $db;
+
+        expHistory::set('manageable', $this->params);
+        $page = new expPaginator(array(
+            'model'=>$this->params['model'],
+            'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+            //                        'order'=>'module,rank',
+            'controller'=>$this->params['model'],
+            //                        'action'=>$this->params['action'],
+            //                        'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            //                        'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
+        ));
+        if ($this->params['model'] == 'faq') {
+            foreach ($page->records as $record) {
+                $record->title = $record->question;
+            }
+        }
+
+//        $page = new expPaginator(array(
+//            'model'=>$this->basemodel_name,
+//            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+//            'limit'=>50,
+//            'order'=>"title",
+//            'controller'=>$this->baseclassname,
+//            'action'=>$this->params['action'],
+//            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//            'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
+//        ));
+//
+//        foreach ($db->selectColumn('content_expTags','content_type',"content_type='".$this->params['model']."'",null,true) as $contenttype) {
+//            foreach ($page->records as $key => $value) {
+//                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+//                if (!empty($attatchedat)) {
+//                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
+//                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+//                    //FIXME here is a hack to get the faq to be listed
+//                    if ($contenttype == 'faq' && !empty($page->records[$key]->attached[$contenttype][0]->question)) {
+//                        $page->records[$key]->attached[$contenttype][0]->title = $page->records[$key]->attached[$contenttype][0]->question;
+//                    }
+//                }
+//            }
+//        }
+        $tags = $db->selectObjects('expTags','1','title ASC');
+        $taglist = '';
+        foreach ($tags as $tag) {
+            $taglist .= "'".$tag->title."',";
+        }
+
+        assign_to_template(array(
+            'page'=>$page,
+            'taglist'=>$taglist
+        ));
+    }
+
+    /**
+     * this method changes the tags of the selected items as requested
+     */
+    function change_tags() {
+        global $db;
+
+        if (!empty($this->params['change_tag'])) {
+            $addtags = explode(",", trim($this->params['addTag']));
+   	        foreach($addtags as $key=>$tag) {
+               if (!empty($tag)) {
+                   $tag = strtolower(trim($tag));
+                   $tag = str_replace('"', "", $tag); // strip double quotes
+                   $tag = str_replace("'", "", $tag); // strip single quotes
+                   $addtags[$key] = $tag;
+                   $expTag = new expTag($tag);
+                   if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
+               }
+   	        }
+            $removetags = explode(",", trim($this->params['removeTag']));
+   	        foreach($removetags as $key=>$tag) {
+               if (!empty($tag)) {
+                   $tag = strtolower(trim($tag));
+                   $tag = str_replace('"', "", $tag); // strip double quotes
+                   $tag = str_replace("'", "", $tag); // strip single quotes
+                   $removetags[$key] = $tag;
+               }
+   	        }
+            foreach ($this->params['change_tag'] as $item) {
+                $classname = $this->params['mod'];
+                $object = new $classname($item);
+                $db->delete('content_expTags', 'content_type="'.$this->params['mod'].'" AND content_id='.$object->id);
+                foreach ($object->expTag as $tag) {
+                    if (!in_array($tag->title,$removetags)) {
+                        $params['expTag'][] = $tag->id;
+                    }
+                }
+                foreach ($addtags as $tag) {
+                    $expTag = new expTag($tag);
+                    $params['expTag'][] = $expTag->id;
+                }
+                $object->update($params);
+            }
+        }
+        expHistory::returnTo('viewable');
+    }
+
 
 }
 

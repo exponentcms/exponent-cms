@@ -25,17 +25,60 @@
 
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
-            {foreach name=tabs from=$page->modules key=moduleid item=module}
-                <li><a href="#tab{$smarty.foreach.items.iteration}">{$moduleid|capitalize}</a></li>
+            {if !empty($page)}
+                <li><a href="#tab0">{$page->model|capitalize} {'Items'|gettext}</a></li>
+            {/if}
+            {foreach name=tabs from=$cats->modules key=moduleid item=module}
+                <li><a href="#tab{$smarty.foreach.items.iteration}">{$moduleid|capitalize} {'Categories'|gettext}</a></li>
             {/foreach}
         </ul>
         <div>
-            {foreach name=items from=$page->modules key=moduleid item=module}
+            {if !empty($page)}
+                <div id="#tab0">
+                    <h3>{'Change'|gettext} {$page->model|capitalize} {'Item Categories'|gettext}</h3>
+                    <p>{'Select the item(s) to change, then select the new category below'|gettext}</p>
+                    {form action=change_cats}
+                        {control type=hidden name=mod value=$page->model}
+                        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onChange="selectAllp(this.checked)">
+                                    </th>
+                                    <th>
+                                        {"Item"|gettext}
+                                    </th>
+                                    <th>
+                                        {"Category"|gettext}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$page->records item=record}
+                                    <tr class="{cycle values="odd,even"}">
+                                        <td>
+                                            {control type="checkbox" name="change_cat[]" label=" " value=$record->id}
+                                        </td>
+                                        <td>
+                                            {$record->title|truncate:50:"..."}
+                                        </td>
+                                        <td>
+                                            {$record->expCat[0]->title|truncate:50:"..."}
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                        {control type="dropdown" name=newcat label="Module Categories"|gettext items=$catlist}
+                        {control type=buttongroup submit="Change Selected Items to New Category"|gettext cancel="Cancel"|gettext returntype="viewable"}
+                    {/form}
+                </div>
+            {/if}
+            {foreach name=items from=$cats->modules key=moduleid item=module}
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {if $permissions.manage == 1}
-                        {ddrerank id=$moduleid items=$page->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
+                        {ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
                     {/if}
-
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                         <thead>
                             <tr>
@@ -51,7 +94,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {*{foreach from=$page->records item=listing}*}
+                            {*{foreach from=cats->records item=listing}*}
                             {foreach from=$module item=listing}
                                 <tr class="{cycle values="odd,even"}">
                                     <td>
@@ -91,4 +134,12 @@
         Y.one('.loadingdiv').remove();
     });
 {/literal}
+
+    function selectAllp(val) {
+        var checks = document.getElementsByName("change_cat[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+
 {/script}

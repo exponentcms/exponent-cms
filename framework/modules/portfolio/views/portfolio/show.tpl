@@ -32,11 +32,6 @@
             {if $permissions.delete == 1}
                 {icon action=delete record=$record title="Delete `$record->title`"}
             {/if}
-            {if $permissions.manage == 1}
-                {if !$config.disabletags}
-                    {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
-                {/if}
-            {/if}
 		</div>
 	{/permissions}
 	{if $record->expTag|@count>0 && !$config.disabletags}

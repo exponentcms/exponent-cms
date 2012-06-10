@@ -166,7 +166,9 @@ class searchController extends expController {
     public function autocomplete() {
         return;
         global $db;
-        $mod = new $this->params['model']();
+
+        $model = $this->params['model'];
+        $mod = new $model();
         $srchcol = explode(",",$this->params['searchoncol']);
         /*for ($i=0; $i<count($srchcol); $i++) {
             if ($i>=1) $sql .= " OR ";

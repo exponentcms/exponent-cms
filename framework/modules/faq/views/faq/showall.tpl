@@ -30,7 +30,7 @@
 			{if $permissions.manage == 1}
 				{icon action=manage text="Manage FAQs"|gettext}
                 {if !$config.disabletags}
-                    {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                    {icon controller=expTag class="manage" action=manage_module model='faq' text="Manage Tags"|gettext}
                 {/if}
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='faq' text="Manage Categories"|gettext}

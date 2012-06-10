@@ -55,8 +55,26 @@ class expCatController extends expController {
 	 */
 	function manage() {
         global $db;
+
         expHistory::set('manageable', $this->params);
-        $page = new expPaginator(array(
+        if (!empty($this->params['model'])) {
+            $page = new expPaginator(array(
+                        'model'=>$this->params['model'],
+                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+//                        'order'=>'module,rank',
+                        'categorize'=>true,
+                        'controller'=>$this->params['model'],
+//                        'action'=>$this->params['action'],
+//                        'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//                        'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
+                    ));
+            if ($this->params['model'] == 'faq') {
+                foreach ($page->records as $record) {
+                    $record->title = $record->question;
+                }
+            }
+        } else $page = '';
+        $cats = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>empty($this->params['model']) ? null : "module='".$this->params['model']."'",
                     'limit'=>50,
@@ -68,22 +86,30 @@ class expCatController extends expController {
                 ));
 
         foreach ($db->selectColumn('content_expCats','content_type',null,null,true) as $contenttype) {
-            foreach ($page->records as $key => $value) {
-                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+            foreach ($cats->records as $key => $value) {
+                $attatchedat = $cats->records[$key]->findWhereAttachedTo($contenttype);
                 if (!empty($attatchedat)) {
-                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
-                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+                    $cats->records[$key]->attachedcount = @$cats->records[$key]->attachedcount + count($attatchedat);
+                    $cats->records[$key]->attached[$contenttype] = $attatchedat;
                     //FIXME here is a hack to get the faq to be listed
-                    if ($contenttype == 'faq' && !empty($page->records[$key]->attached[$contenttype][0]->question)) {
-                        $page->records[$key]->attached[$contenttype][0]->title = $page->records[$key]->attached[$contenttype][0]->question;
+                    if ($contenttype == 'faq' && !empty($cats->records[$key]->attached[$contenttype][0]->question)) {
+                        $cats->records[$key]->attached[$contenttype][0]->title = $cats->records[$key]->attached[$contenttype][0]->question;
                     }
                 }
             }
         }
-        foreach ($page->records as $record) {
-            $page->modules[$record->module][] = $record;
+        foreach ($cats->records as $record) {
+            $cats->modules[$record->module][] = $record;
+        }
+        $catlist[0] = 'Uncategorized';
+        foreach ($cats->modules as $module) {
+            foreach ($module as $listing) {
+                $catlist[$listing->id] = $listing->title;
+            }
         }
         assign_to_template(array(
+            'catlist'=>$catlist,
+            'cats'=>$cats,
             'page'=>$page
         ));
     }
@@ -101,6 +127,21 @@ class expCatController extends expController {
             'mods'=>$mod
         ));
         parent::edit();
+    }
+
+    /**
+     * this method changes the category of the selected items to the chosen category
+     */
+    function change_cats() {
+        if (!empty($this->params['change_cat'])) {
+            foreach ($this->params['change_cat'] as $item) {
+                $classname = $this->params['mod'];
+                $object = new $classname($item);
+                $params['expCat'][0] = $this->params['newcat'];
+                $object->update($params);
+            }
+        }
+        expHistory::returnTo('viewable');
     }
 
     /**

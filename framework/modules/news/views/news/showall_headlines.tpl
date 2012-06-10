@@ -26,13 +26,18 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == true || $permissions.edit}
-				{icon class="add" action=create title="Add a news post"|gettext}</a>
+				{icon class="add" action=create title="Add a news post"|gettext}
 			{/if}
-            {if ($permissions.manage == 1 && $rank == 1)}
-                {ddrerank items=$page->records model="news" label="News Items"|gettext}
+            {if $permissions.manage == 1}
+                {if !$config.disabletags}
+                   {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
+                {/if}
+                {if $rank == 1}
+                   {ddrerank items=$page->records model="news" label="News Items"|gettext}
+                {/if}
             {/if}
 			{if $permissions.showUnpublished == 1 }
-				{icon class="view" action=showUnpublished title="View Unpublished"|gettext}</a>
+				{icon class="view" action=showUnpublished title="View Unpublished"|gettext}
 			{/if}
         </div>
     {/permissions}
