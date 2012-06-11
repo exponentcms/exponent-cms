@@ -4,17 +4,17 @@ Copyright (c) 2004-2012 OIC Group, Inc.
 
 Added / Fixed / changed for 2.0.8
 -----------------------
-# This release focuses on fixing bugs and enhanced speed/size
+# This release focuses on fixing bugs and enhancing list management (tags, categories, comments)
   - adds manual sorting to news module
   - adds random sorting to links module
   - enhances category management by removing global categories and grouping categories by module type
-  - enhances comment management by adding a 'manage site comments' command to exponent menu
+  - adds site comment management to exponent menu
   - enhances comment, tag, & category management with bulk module item processing
   - adds additional views to photoalbum
     -- new tabbed and accordion views just like filedownloads & portfolio
-    -- view category/gallery/group album pulling up individual group/gallery
+    -- view category/gallery/group album to pull up individual group/gallery
   - adds group (category) viewing to filedownloads
-  - adds ability to quickly sort the re-ranking/order list alphabetically
+  - adds ability to alphabetically sort re-ranking/order lists
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.7

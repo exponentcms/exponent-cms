@@ -187,6 +187,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                     new_ul.appendChild(vals[i]);
                 }
                 ul.parentNode.replaceChild(new_ul, ul);
+                ddinit();
             });
 
             Y.one('#rerank".$uniqueid."').on('click',function(e){
@@ -201,7 +202,10 @@ function smarty_function_ddrerank($params,&$smarty) {
 
             // the list
             var ul = '#listToOrder".$uniqueid."';
+            ddit();
 
+            // turn this into a function so we can initialize anytime needed
+            function ddinit() {
             //Get the list of li's in the lists and make them draggable
             var lis = Y.Node.all('#listToOrder".$uniqueid." li');
 //            lis.each(function(v, k) {
@@ -312,7 +316,8 @@ function smarty_function_ddrerank($params,&$smarty) {
             //Create simple targets for the 2 lists..
             var tar = new Y.DD.Drop({
                 node: ul
-            });        
+            });
+                 };
         });
         
         ";
