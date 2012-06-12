@@ -202,7 +202,7 @@ function smarty_function_ddrerank($params,&$smarty) {
 
             // the list
             var ul = '#listToOrder".$uniqueid."';
-            ddit();
+            ddinit();
 
             // turn this into a function so we can initialize anytime needed
             function ddinit() {
