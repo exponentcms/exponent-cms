@@ -34,12 +34,12 @@ return array(
 		DB_FIELD_LEN=>50,
 		DB_PRIMARY=>false,
 		DB_INCREMENT=>false),
-	'subtype'=>array(
+	'value'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>50,
+        DB_FIELD_LEN=>10000 ,
         DB_PRIMARY=>false,
         DB_INCREMENT=>false),
-	'rank'=>array(
+	'connector_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );
 

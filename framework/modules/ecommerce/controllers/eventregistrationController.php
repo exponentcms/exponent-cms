@@ -86,8 +86,9 @@ class eventregistrationController extends expController {
     }
 	
 	function eventregistration_form() {
-		// eDebug($this->params, true);
+
 		expHistory::set('viewable', $this->params);
+		expSession::set('expDefinableField', $this->params['definablefields']);
 		$record = expSession::get("record");
 		if(!empty($record['eventregistration']['price'])) {
 			$product_id = $record['eventregistration']['product_id'];

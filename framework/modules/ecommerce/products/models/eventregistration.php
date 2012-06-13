@@ -134,7 +134,7 @@ class eventregistration extends expRecord {
     }
     
     public function process($item) {   
-        global $db;     
+        global $db, $order;     
         // save the names of the registrants to the eventregistration table too
         $product = new eventregistration($item->product_id);
         $registrants = expUnserialize($product->registrants);
@@ -147,7 +147,20 @@ class eventregistration extends expRecord {
         $event->number_of_registrants = count($product->registrants);
         $event->registrants = serialize($product->registrants);
         
+		
 	    $db->updateObject($event, 'eventregistration');
+		// eDebug(expSession::get('expDefinableField'), true);
+		foreach(expSession::get('expDefinableField') as  $key => $value) {
+			$obj = new stdClass();
+			$obj->expDefinableFields_id = $key;
+			$obj->content_id            = $item->product_id;
+			$obj->connector_id          = $order->id;
+			$obj->content_type          = "eventregistration";
+			$obj->value                 = $value;
+			$db->insertObject($obj, 'content_expDefinableFields_value');
+		}
+		//add unset here
+
         return true;
     }
     /*
@@ -201,19 +214,17 @@ class eventregistration extends expRecord {
 	    return ($this->spacesLeft() !=0 && $this->signup_cutoff > time()) ? true : false;
     }
 	
-	public function getControl($control) {
-		$form = new form();
-		$ctl = unserialize($control);
-		$ctl->_id = $c->id;
-		$ctl->_readonly = $c->is_readonly;
-		if(!empty($data[$c->name])) $ctl->default = $data[$c->name];
-		$form->register($c->name,$c->caption,$ctl);
-		// eDebug($form);
-		return $form->toHTML();
-				
+	public function getControl($field) {
+		$id      = $field->id;
+		$control = $field->data;
+		$type    = $field->type;
+		$c       = new $type();
+		$ctl     = unserialize($control);
+		// eDebug($ctl, true);
+		return $ctl->toHTML($ctl->caption, "definablefields[$id]");
 	}
 	
-	 public function getForm($form) {        
+	public function getForm($form) {        
         $dirs = array(
             BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/'.$this->product_type.'/',
             BASE.'framework/modules/ecommerce/products/views/'.$this->product_type.'/',

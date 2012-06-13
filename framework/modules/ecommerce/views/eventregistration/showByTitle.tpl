@@ -50,12 +50,13 @@
 			{form name=eventregistration action="eventregistration_form"}
 			{control type="hidden" name="eventregistration[product_id]" value="`$product->id`"}
 			{control type="hidden" name="eventregistration[price]" value="`$product->base_price`"}
+			
+			{foreach from=$product->expDefinableField item=fields}  
+				{$product->getControl("`$fields`")}
+			{/foreach}
 			<button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">
 				{"Add to Cart"|gettext}
 			</button>
-			{foreach from=$product->expDefinableField item=fields}  
-				{$product->getControl("`$fields->data`")}
-			{/foreach}
 			{/form}
          {else}
             <a href="#" class="addtocart exp-ecom-link">
