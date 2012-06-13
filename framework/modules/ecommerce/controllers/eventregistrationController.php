@@ -23,12 +23,10 @@
 
 class eventregistrationController extends expController {
     public $basemodel_name = 'eventregistration';
-    // public $useractions = array(
-    //     'showall'=>'Show all events',
-    // );
-    public $useractions = array();
-    
-    public $add_permissions = array('showall'=>'View Event Registrations','view_registrants'=>'View Event Registrations','export'=>'Export Event Registrations');
+    public $useractions = array(
+        'showall'=>'Show all events',
+		'showByTitle' => "Show events by title",
+    );
 
     function displayname() { return gt("Online Event Registration"); }
     function description() { return gt("Use this module to manage event registrations on your website"); }
@@ -36,28 +34,20 @@ class eventregistrationController extends expController {
     function showall() {
         expHistory::set('viewable', $this->params);
         $events = $this->eventregistration->find('all', 'product_type="eventregistration"');
-	$page = new expPaginator(array(
-            'model'=>'eventregistration',
-            'where'=>'product_type="eventregistration"',
-            'limit'=>10,
-            'default'=>'Event Title',
-            'columns'=>array(gt('Event Title')=>'title',gt('Event Date')=>'eventdate',gt('Registrants')=>'quantity')
-            ));
-        assign_to_template(array('page'=>$page));
+		// eDebug($events, true);
+        assign_to_template(array('page'=>$events));
     }
    
     function view_registrants() {
-	expHistory::set('viewable', $this->params);
-        $event = new eventregistration($this->params['id']);
-//eDebug($event);
-//eDebug("a:" . isset($event->registrants));
-//eDebug("b:" . is_array($event->registrants));
-	if (isset($event->registrants)) $registrants = expUnserialize($event->registrants);
-	else $registrants = null;
-//eDebug($registrants);
+		expHistory::set('viewable', $this->params);
+			$event = new eventregistration($this->params['id']);
+
+		if (isset($event->registrants)) $registrants = expUnserialize($event->registrants);
+		else $registrants = null;
+
         assign_to_template(array('event'=>$event,'registrants'=>$registrants));
     } 
-//    function view_registrations
+
     function metainfo() {
         global $router;
         if (empty($router->params['action'])) return false;
@@ -82,9 +72,98 @@ class eventregistrationController extends expController {
         redirect_to(array('controller'=>'eventregistrations', 'action'=>'showall'));
     }
     
-    function show() {
-        redirect_to(array('controller'=>'eventregistrations', 'action'=>'showall'));
+    function showByTitle() {
+		global $order, $template, $user;
+        expHistory::set('viewable', $this->params);
+		
+        $product = new eventregistration(addslashes($this->params['title']));
+  
+        if(empty($product->id)) {
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));            
+        }
+
+		assign_to_template(array('product'=>$product));
     }
+	
+	function eventregistration_form() {
+
+		expHistory::set('viewable', $this->params);
+		expSession::set('expDefinableField', $this->params['definablefields']);
+		$record = expSession::get("record");
+		if(!empty($record['eventregistration']['price'])) {
+			$product_id = $record['eventregistration']['product_id'];
+			$base_price = $record['eventregistration']['price'];
+		} else {
+			$product_id = $this->params['eventregistration']['product_id'];
+			$base_price = $this->params['eventregistration']['price'];
+		}
+		
+		expHistory::set('viewable', $this->params);
+		
+		assign_to_template(array('record'=>$record, 'product_id'=>$product_id, 'base_price'=>$base_price));
+	}
+	
+	function eventregistration_process() {
+		global $db, $user, $order;
+		
+		expSession::set('record', $this->params);
+
+		$address = new address();
+		//Address
+		if ($user->isLoggedIn()) {
+			$this->params['address']['is_default'] = 1;
+			$this->params['address']['user_id'] = $user->id;
+			$this->params['address']['is_billing'] = 1;
+			$this->params['address']['is_shipping'] = 1;
+			$addy = $this->params['address'];
+			$address->update($addy);
+		} else {
+		
+			$arr = array();
+			$arr['firstname'] = $this->params['address']['firstname'];
+			$arr['lastname']  = $this->params['address']['lastname'];
+			$arr['email']     = $this->params['address']['email'];
+			$arr['username']  = $this->params['address']['email'] . time();
+			$arr['pass1']     = $this->params['address']['email'];
+			$arr['pass2']     = $this->params['address']['email'];
+	
+			$user = new user($arr);
+			$ret = $user->setPassword($arr['pass1'], $arr['pass2']);
+			$user->save();
+			
+			user::login($arr['username'], $arr['pass1']);
+
+			$this->params['address']['is_default'] = 1;
+			$this->params['address']['user_id'] = $user->id;
+			$this->params['address']['is_billing'] = 1;
+			$this->params['address']['is_shipping'] = 1;
+			$addy2 = $this->params['address'];			
+			$address->update($addy2);
+		}
+		
+		//Billing
+		$billing = new billing();
+		$opts = $billing->calculator->userFormUpdate($this->params['billing']);
+		$opts->recurring = 0;
+		
+		expSession::set('billing_options', $opts);
+		
+		//Add to Cart
+		$product_id = $this->params['eventregistration']['product_id'];
+		$product_type = "eventregistration";
+		$product = new $product_type($product_id, true, true);
+	
+		$product->addToCart($this->params['eventregistration']);
+		
+		$order->setOrderType($this->params);
+        $order->setOrderStatus($this->params);
+          
+        $order->calculateGrandTotal(); 
+   
+        $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
+		
+		redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
+	}
     
     function delete() {
         redirect_to(array('controller'=>'eventregistrations', 'action'=>'showall'));

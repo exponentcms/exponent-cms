@@ -124,7 +124,7 @@ class expDefinableFieldController extends expController {
 			}
 	
 			$control->data = serialize($ctl);
-			$control->type = $_POST['type'];
+			$control->type = $_POST['control_type'];
 			
 			if (isset($control->id)) {
 				$db->updateObject($control,'expDefinableFields');
