@@ -62,7 +62,7 @@
             </div>
         </div>
 	    <div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>
-        {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
+        {control type=buttongroup submit="Save Portfolio Piece"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>
 

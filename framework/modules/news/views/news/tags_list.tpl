@@ -18,7 +18,7 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit text="Add a news post"|gettext}
+				{icon class=add action=edit rank=1 text="Add a news post"|gettext}
 			{/if}
             {if $permissions.manage == 1}
                 {if !$config.disabletags}

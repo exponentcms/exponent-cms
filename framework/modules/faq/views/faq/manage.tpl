@@ -24,7 +24,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=create text="Add a New FAQ"|gettext}
+				{icon class=add action=edit text="Add a New FAQ"|gettext}
 			{/if}
 			{if $permissions.manage == 1}
 				{ddrerank items=$page->records model="faq" sortfield="question" label="FAQs"|gettext}

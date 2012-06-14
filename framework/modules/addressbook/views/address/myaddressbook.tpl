@@ -26,7 +26,7 @@
     {br}{br}
     </div>
     <p>
-        {icon class=add action=create text="Add New Address"|gettext}
+        {icon class=add action=edit text="Add New Address"|gettext}
     </p>
     {br}    
     <table class="exp-skin-table">

@@ -38,7 +38,7 @@
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
                         {/if}
                     {/if}
-					{icon class=add action=create text="Add a tip"|gettext}
+					{icon class=add action=edit text="Add a tip"|gettext}
 			    {/if}
 			 </div>
         {/permissions}    

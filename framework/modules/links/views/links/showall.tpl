@@ -28,7 +28,7 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1 || $permissions.edit == 1}
-				{icon class=add action=create text="Add a new link"|gettext}
+				{icon class=add action=edit text="Add a new link"|gettext}
 			{/if}
 			{if $permissions.manage == 1}
                 {if $config.usecategories}

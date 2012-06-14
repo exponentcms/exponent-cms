@@ -30,6 +30,6 @@
         {if $config.usecategories}
             {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
         {/if}
-        {control type="buttongroup" submit="Save"|gettext cancel="Cancel"|gettext}
+        {control type="buttongroup" submit="Save Link"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

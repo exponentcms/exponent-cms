@@ -19,7 +19,7 @@
 	<h1>{"Manage Categories"|gettext}</h1>
 	{permissions}
     	{if $permissions.create == 1}
-    		<a class="add" href="{link controller=$model_name action=create rank=1}">{"Create a new Category"|gettext}</a>
+    		<a class="add" href="{link controller=$model_name action=edit rank=1}">{"Create a new Category"|gettext}</a>
     	{/if}
     {/permissions}
 
