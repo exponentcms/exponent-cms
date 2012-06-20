@@ -994,7 +994,7 @@ class expTheme {
 		$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
 		$mobile_agents = array(
 			'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
-			'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno','iPad',
+			'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno','ipad',
 			'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
 			'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
 			'newt','noki',/*'oper',*/'palm','pana','pant','phil','play','port','prox',
