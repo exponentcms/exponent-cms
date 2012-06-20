@@ -1,15 +1,15 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 CKEditor,3.6.3,ckeditor.com,3.6.3,
 FlowPlayer,3.2.11,flowplayer.org,3.2.11,
-Swift,4.1.7,swiftmailer.org,4.1.7,
+Swift,4.1.8,swiftmailer.org,4.1.8,
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,9.0.0,,,
 swfobject,2.2,code.google.com/p/swfobject,2.2,
-Smarty,3.1.8,smarty.net,3.1.8,
+Smarty,3.1.10,smarty.net,3.1.10,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.1.5,github.com/mrclay/minify,2.1.5,
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.4.0,developer.yahoo.com/yui/3,3.5.0,
+YUI3,3.4.0,developer.yahoo.com/yui/3,3.5.1,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11,code.google.com/p/recaptcha,1.11,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode/,1 5/10/2005,
