@@ -191,7 +191,7 @@ class expCatController extends expController {
      * @param array $groups limit set to these groups only if set
      * @return void
      */
-    public static function sortedByCats($records,&$cats,$groups=array(),$grouplimit) {
+    public static function sortedByCats($records,&$cats,$groups=array(),$grouplimit=null) {
         foreach ($records as $record) {
             if (empty($groups) || in_array($record->catid,$groups)) {
                 if (empty($record->catid)) $record->catid = 0;
