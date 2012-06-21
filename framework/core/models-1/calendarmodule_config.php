@@ -199,6 +199,9 @@ class calendarmodule_config {
         // $form->register('group_by_tags',gt('Filter events by tags'), new checkboxcontrol($object->group_by_tags));
         // $form->register(null,'',new htmlcontrol(gt('Tags to show')));
         // $form->register('show_tags','',new listbuildercontrol($object->show_tags,$available_tags));
+        $form->register('hidemoduletitle',gt("Hide Module Title?"),new checkboxcontrol(empty($object->hidemoduletitle)?'':$object->hidemoduletitle),true,gt('Module Title'));
+        $form->register('moduledescription',gt("Module Description"),new htmleditorcontrol(empty($object->moduledescription)?'':$object->moduledescription),true,gt('Module Title'));
+
 		$form->register('submit','',new buttongroupcontrol(gt('Save Config'),'',gt('Cancel')),true,'base');
 		return $form;
 	}
@@ -231,6 +234,9 @@ class calendarmodule_config {
 		// $object->collections = serialize(listbuildercontrol::parseData($values,'collections'));
 		// $object->group_by_tags = (isset($values['group_by_tags']) ? 1 : 0);
 		// $object->show_tags = serialize(listbuildercontrol::parseData($values,'show_tags'));
+
+        $object->hidemoduletitle = (isset($values['hidemoduletitle']) ? 1 : 0);
+        $object->moduledescription = $values['moduledescription'];
 
 		//Deal with addresses by first deleting All addresses as we will be rebuilding it.
 		$db->delete('calendar_reminder_address','calendar_id='.$object->id);

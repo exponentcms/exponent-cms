@@ -23,8 +23,11 @@
         {if !empty($config->enable_ical)}
             <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">&nbsp;</a>
         {/if}
-		{if $moduletitle}{$moduletitle}{/if}
+        {if $moduletitle && !$config->hidemoduletitle}{$moduletitle}{/if}
 	</h1>
+    {if $config->moduledescription != ""}
+        {$config->moduledescription}
+    {/if}
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">
 		{foreach from=$items item=item}
 			{if $item->is_featured == 1}

@@ -51,7 +51,10 @@ class simplepollmodule {
 		$template->assign('question',$question);
 		$template->assign('answers',$answers);
 		$template->assign('have_answers',count($answers));
-		
+
+        $config = $db->selectObject('simplepollmodule_config',"location_data='".$question->location_data."'");
+        $template->assign('config',$config);
+
 		$template->register_permissions(
 			array('manage','configure','manage_question','manage_answer'),
 			$loc);
