@@ -54,10 +54,10 @@
                     <td>
                         {permissions}
                             {if $permissions.edit == 1}
-                                {icon action="edit" record="`$listing`" title="Edit this field"|gettext}
+                                {icon action="edit" record=$listing title="Edit this field"|gettext}
                             {/if}
                             {if $permissions.delete == 1}
-                                {icon action="delete" record="`$listing`" title="Delete this field"|gettext onclick="return confirm('Are you sure you want to delete this field?');"}
+                                {icon action="delete" record=$listing title="Delete this field"|gettext onclick="return confirm('Are you sure you want to delete this field?');"}
                             {/if}
                         {/permissions}
                     </td>

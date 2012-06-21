@@ -47,8 +47,6 @@ class expDefinableFieldController extends expController {
    	 * default view for individual field
    	 */
    	function show() {
-      
-
         assign_to_template(array('record'=>$record,'tag'=>$tag));
     }
 
@@ -92,9 +90,7 @@ class expDefinableFieldController extends expController {
 		$form->meta("type", substr($control_type, 0, -7));
 		$types = expTemplate::listControlTypes();
 		
-
-		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));			
-		
+		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));
 	}
 	
 	function save() {	

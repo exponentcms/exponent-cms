@@ -12,14 +12,15 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="definable-field-edit" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/forms.css"}
+
+{css unique="definable-field-edit" corecss="forms"}
 
 {/css}
+
 <div class="module expDefinableField edit">
-	<div class="form_header">
-		<h1>{if $is_edit == 1}{'Edit Definable Field'|gettext}{else}{'Create a New Definable Field'|gettext}{/if} - {$types}</h1>
-      
+    <div class="form_header">
+        <h1>{if $is_edit == 1}{'Edit Definable Field'|gettext}{else}{'Create a New Definable Field'|gettext}{/if} - {$types}</h1>
     </div>
-	  {$form_html}
+    {$form_html}
 </div>
 
