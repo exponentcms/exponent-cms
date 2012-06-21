@@ -19,11 +19,6 @@
 
 {/css}
 
-{if $config.lightbox}
-{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}
-
-{/css}
-{/if}
 {$rel}
 <div class="module photoalbum galleries showall">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
@@ -50,41 +45,42 @@
    	{/if}
     {assign var=myloc value=serialize($__loc)}
     {foreach name=items from=$page->cats key=catid item=cat}
-        <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title='View this gallery'|gettext><h2 class="category">{$cat->name}</h2></a>
+        <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}"><h2 class="category">{$cat->name}</h2></a>
         <ul class="image-list">
         {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
-        {foreach from=$cat->records item=record name=items}
             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
-                {if $config.lightbox}
-                    {if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}
-                    <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
-                {else}
-                    <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
-                {/if}
-                    {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
+                <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}">
+                    {img class="img-small" alt=$cat->records[0]->alt|default:$cat->records[0]->expFile[0]->alt file_id=$cat->records[0]->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
                 </a>
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit == 1}
-                            {if $myloc != $record->location_data}
+                            {if $myloc != $cat->records[0]->location_data}
                                 {if $permissions.manage == 1}
-                                    {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                                    {icon action=merge id=$cat->records[0]->id title="Merge Aggregated Content"|gettext}
                                 {else}
                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                 {/if}
                             {/if}
-                            {icon action=edit record=$record title="Edit"|gettext|cat:" `$modelname`"}
+                            {icon action=edit record=$cat->records[0] title="Edit"|gettext|cat:" `$modelname`"}
                         {/if}
                         {if $permissions.delete == 1}
-                            {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
+                            {icon action=delete record=$cat->records[0] title="Delete"|gettext|cat:" `$modelname`"}
                         {/if}
                         {if $permissions.create == 1}
-                            {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
+                            {icon class=add action=edit rank=$cat->records[0]->rank+1 title="Add another here"|gettext  text="Add After"|gettext}
                         {/if}
                     </div>
                 {/permissions}
             </li>
-        {/foreach}
+            <li>
+                <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}"><h3>{$cat->records[0]->title}</h3></a>
+            </li>
+            <li>
+                <div class="bodycopy">
+                    {$cat->records[0]->body}
+                </div>
+            </li>
         </ul>
     {/foreach}
 </div>

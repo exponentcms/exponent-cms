@@ -121,6 +121,7 @@ class expPaginator {
         $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
         $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
         $this->groups = !empty($params['groups']) ? $params['groups'] : array();
+        $this->grouplimit = !empty($params['grouplimit']) ? $params['grouplimit'] : null;
 
 		// if a view was passed we'll use it.
 		if (isset($params['view'])) $this->view = $params['view'];
@@ -226,11 +227,11 @@ class expPaginator {
 
         // at this point we generally have all our records, now we'll trim the records to the number requested
         //FIXME we may want some more intelligent selection here based on cats/groups, e.g., don't break groups across pages, number of picture rows, etc...
-        if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
+        if (empty($this->grouplimit)) if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
 
         // finally, we'll create another multi-dimensional array of the categories
         if (!empty($this->categorize) && $this->categorize) {
-            expCatController::sortedByCats($this->records,$this->cats,$this->groups);
+            expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
         } else {  // categorized is off, so let's categorize by alpha instead for rolodex type use
             $order = $this->order;
             if (strstr($this->order,",")) {
@@ -254,6 +255,8 @@ class expPaginator {
                 $this->cats[$title]->records[] = $record;
             }
         }
+
+        if (!empty($this->grouplimit)) if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
 
         if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
         //$this->runCallback();

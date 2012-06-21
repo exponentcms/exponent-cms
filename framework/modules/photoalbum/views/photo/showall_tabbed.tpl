@@ -90,7 +90,7 @@
                                             {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
                                         {/if}
                                         {if $permissions.create == 1}
-                                            {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
+                                            {icon class=add action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add After"|gettext}
                                         {/if}
                                     </div>
                                 {/permissions}
