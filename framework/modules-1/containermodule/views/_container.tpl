@@ -13,6 +13,7 @@
  *
  *}
 
+{edebug var=$top}
 {if $container != null}
     <a name="mod_{$container->id}"></a>
 	{permissions}
@@ -33,7 +34,7 @@
 {else}
 	{permissions}
 		{if $permissions.create == 1 && $hidebox == 0}
-			<a class="addmodule" href="{link action=edit rank=$i}"><span class="addtext">{'Add Module'|gettext}</span></a>
+			<a class="addmodule" href="{link action=edit rank=$i src=$src}"><span class="addtext">{'Add Module'|gettext}</span></a>
 		{/if}
 	{/permissions}
 {/if}

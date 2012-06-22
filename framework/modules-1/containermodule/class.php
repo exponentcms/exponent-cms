@@ -104,7 +104,8 @@ class containermodule {
 		$template->assign('singlemodule',$singlemodule);
 		
 		$template->assign('top',$container);
-		
+        $template->assign('src',$loc->src);
+
 		$containers = array();
        
         if(!isset($cache[$container_key])) {

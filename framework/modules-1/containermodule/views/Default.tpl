@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {permissions}
 	{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
       || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
@@ -43,7 +43,7 @@
 		</div>
 	{/if}
 	{if $permissions.create == 1 && empty($hidebox)}
-		<a class="addmodule" href="{link action=edit rerank=1 rank=0}"><span class="addtext">{"Add Module"|gettext}</span></a>
+		<a class="addmodule" href="{link action=edit rerank=1 rank=0 src=$src}"><span class="addtext">{"Add Module"|gettext}</span></a>
 	{/if}
 {/permissions}
 
@@ -91,7 +91,7 @@
 
 		{permissions}
 			{if $permissions.create == 1 && $hidebox == 0}
-				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration}"><span class="addtext">{"Add Module"|gettext}</span></a>
+				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration src=$src}"><span class="addtext">{"Add Module"|gettext}</span></a>
 			{/if}
 		{/permissions}
 	{/if}
