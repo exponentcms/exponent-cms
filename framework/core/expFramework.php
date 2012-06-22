@@ -366,9 +366,6 @@ function renderAction(array $parms=array()) {
         $html = $template->render();
         return $html;
     }
-
-    //$html = $template->output();
-    //return $html;
 }
 
 function hotspot($source = null) {

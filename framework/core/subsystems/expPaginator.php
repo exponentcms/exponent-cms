@@ -256,7 +256,11 @@ class expPaginator {
             }
         }
 
-        if (!empty($this->grouplimit)) if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
+        if (!empty($this->grouplimit)) {
+            if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
+        } else {
+            if ($this->limit) $this->cats = array_slice($this->cats, $this->start, $this->limit);
+        }
 
         if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
         //$this->runCallback();
