@@ -13,7 +13,6 @@
  *
  *}
 
-{edebug var=$top}
 {if $container != null}
     <a name="mod_{$container->id}"></a>
 	{permissions}
