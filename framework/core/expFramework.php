@@ -267,7 +267,7 @@ function renderAction(array $parms=array()) {
     $template = get_template_for_action($controller, $view, $controller->loc);
     
     // have the controller assign knowledge about itself to the template.
-    // this has to be done after the controller get the template for its actions
+    // this has to be done after the controller gets the template for its actions
     $controller->moduleSelfAwareness();
 
     //if this controller is being called by a container then we should have a module title.
@@ -348,7 +348,7 @@ function renderAction(array $parms=array()) {
     // register this controllers permissions to the view for in view perm checks
     $template->register_permissions(array_keys($perms), $controller->loc);
     
-    // pass this controllers config off to the view
+    // pass this controllers config to the view
     $template->assign('config', $controller->config);
     
     // globalizing $user inside all templates

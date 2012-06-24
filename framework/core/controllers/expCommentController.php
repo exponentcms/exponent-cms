@@ -151,7 +151,8 @@ class expCommentController extends expController {
         
         assign_to_template(array(
             'comments'=>$comments,
-            'unapproved'=>$unapproved, 
+            'config'=>$this->params['config'],
+            'unapproved'=>$unapproved,
 			'content_id'=>$this->params['content_id'], 
 			'content_type'=>$this->params['content_type'],
 			'user'=>$user,
