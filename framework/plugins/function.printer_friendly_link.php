@@ -40,7 +40,7 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
         $print = !empty($config->printlink);
     } elseif (is_array($config)) {
         $print = !empty($config['printlink']);
-    } elseif (isset($params['show'])) {
+    } elseif (isset($params['show'])) {  // force display of link
         $print = isset($params['show']) ? $params['show'] : null;
     }
     if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF) {

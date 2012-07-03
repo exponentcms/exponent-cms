@@ -15,10 +15,8 @@
 
 <div class="exp-comment edit bodycopy">
 	{if $formtitle}<h3>{$formtitle}</h3>{/if}
-
     {$config.commentinfo}
-
-    {if ($smarty.const.COMMENTS_REQUIRE_LOGIN == 1 && $user->id != 0) || $smarty.const.COMMENTS_REQUIRE_LOGIN == 0}    
+    {if ($smarty.const.COMMENTS_REQUIRE_LOGIN == 1 && $user->id != 0) || $smarty.const.COMMENTS_REQUIRE_LOGIN == 0}
     	{form action=update}
     		{control type=hidden name=id value=$comment->id}
     		{control type=hidden name=content_id value=$content_id}
