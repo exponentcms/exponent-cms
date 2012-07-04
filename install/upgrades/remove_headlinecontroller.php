@@ -50,7 +50,7 @@ class remove_headlinecontroller extends upgradescript {
    	}
 
 	/**
-	 * coverts all headline modules/items into text modules/items and deletes headline controller files
+	 * converts all headline modules/items into text modules/items and deletes headline controller files
 	 * @return bool
 	 */
 	function upgrade() {
@@ -111,8 +111,7 @@ class remove_headlinecontroller extends upgradescript {
             expFile::removeFilesInDirectory(BASE."framework/modules/headline/");
         }
 
-		return $modules_converted." Headline modules were converted.<br>".$headlines_converted." total Headlines were converted.<br>"."and Headline module files were then deleted.";
-		
+		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Headline modules were converted.")."<br>".($headlines_converted?$headlines_converted:gt('No'))." ".gt("Headlines were converted.")."<br>".gt("and Headline module files were then deleted.");
 	}
 }
 

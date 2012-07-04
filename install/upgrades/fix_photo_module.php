@@ -22,7 +22,7 @@
  */
 
 /**
- * This is the class update_profile_paths
+ * This is the class fix_photo_module
  */
 class fix_photo_module extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
@@ -49,7 +49,7 @@ class fix_photo_module extends upgradescript {
 	}
 
 	/**
-	 * coverts all headline modules/items into text modules/items and deletes headline controller files
+	 * converts the photoController to the new naming scheme
 	 * @return bool
 	 */
 	function upgrade() {
@@ -98,7 +98,7 @@ class fix_photo_module extends upgradescript {
             $db->updateObject($ms,'modstate',"module='photosController'",'module');
             $count++;
         }
-        return $count.' '.gt('old photoalbum references had the spelling corrected.');
+        return ($count?$count:gt('No')).' '.gt('old photoalbum references had the spelling corrected.');
 	}
 }
 

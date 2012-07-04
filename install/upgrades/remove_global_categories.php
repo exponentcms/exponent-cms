@@ -38,7 +38,7 @@ class remove_global_categories extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Prior to v2.0.8 global categories were allowed.  This script creates module specific categories for any global categories used, and deletes global categories."; }
+	function description() { return "Prior to v2.0.8 global categories were allowed.  This script creates module specific categories for any global categories used, and then deletes global categories."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -49,7 +49,7 @@ class remove_global_categories extends upgradescript {
 	}
 
 	/**
-	 * coverts all global categories to a module specific category if used, then delete the global category
+	 * converts all global categories to a module specific category if used, then delete the global category
 	 * @return bool
 	 */
 	function upgrade() {
@@ -75,7 +75,7 @@ class remove_global_categories extends upgradescript {
             $count++;
 	    }
 
-        return $count.' '.gt('global categories converted to').' '.$modcount.' '.gt('module categories, then deleted.');
+        return ($count?$count:gt('No')).' '.gt('global categories converted to').' '.$modcount.' '.gt('module categories, then deleted.');
 	}
 }
 

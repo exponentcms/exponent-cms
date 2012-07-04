@@ -70,7 +70,7 @@ class invert_news_items_rank extends upgradescript {
                 $items_converted++;
             }
 	    }
-		return $items_converted." News items were re-ranked.";
+		return ($items_converted?$items_converted:gt('No'))." ".gt("News items were re-ranked.");
 	}
 }
 

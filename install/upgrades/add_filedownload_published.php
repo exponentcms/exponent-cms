@@ -26,7 +26,7 @@
  */
 class add_filedownload_published extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.0.7';  // publish dates were added in 2.0.6
+	protected $to_version = '2.0.7';  // publish dates were added in 2.0.7
 
 	/**
 	 * name/title of upgrade script
@@ -49,7 +49,7 @@ class add_filedownload_published extends upgradescript {
 	}
 
 	/**
-	 * coverts all filedownloads to populate 'publish' field
+	 * converts all filedownloads to populate 'publish' field
 	 * @return bool
 	 */
 	function upgrade() {
@@ -64,7 +64,7 @@ class add_filedownload_published extends upgradescript {
             }
 	    }
 
-        return $count.' '.gt('old filedownloads had their publish date set to their created date.');
+        return ($count?$count:gt('No')).' '.gt('old filedownloads had their publish date set to their created date.');
 	}
 }
 

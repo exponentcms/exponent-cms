@@ -22,7 +22,7 @@
  */
 
 /**
- * This is the class update_profile_paths
+ * This is the class convert_permissions
  */
 class convert_permissions extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
@@ -50,7 +50,7 @@ class convert_permissions extends upgradescript {
 	}
 
 	/**
-	 * coverts all headline modules/items into text modules/items and deletes headline controller files
+	 * converts all permission names into the new standardized ones
 	 * @return bool
 	 */
 	function upgrade() {

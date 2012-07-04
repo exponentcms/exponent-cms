@@ -49,7 +49,7 @@ class add_blog_published extends upgradescript {
 	}
 
 	/**
-	 * coverts all blog items to populate 'publish' field
+	 * converts all blog items to populate 'publish' field
 	 * @return bool
 	 */
 	function upgrade() {
@@ -64,7 +64,7 @@ class add_blog_published extends upgradescript {
             }
 	    }
 
-        return $count.' '.gt('old blog posts had their publish date set to their created date.');
+        return ($count?$count:gt('No')).' '.gt('old blog posts had their publish date set to their created date.');
 	}
 }
 
