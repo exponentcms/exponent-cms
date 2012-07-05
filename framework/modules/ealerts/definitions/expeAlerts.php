@@ -39,6 +39,10 @@ return array(
 	'ealert_desc'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100000),
+    'autosend_ealerts'=>array(
+        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'ealert_usebody'=>array(
+        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

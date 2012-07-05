@@ -159,11 +159,15 @@ class user extends expRecord {
             foreach ($active_extensions as $ext) {
                 include_once($ext->classfile);
                 $extension = new $ext->classname();
-                $items = $db->selectObject($extension->tablename, 'user_id='.$this->id);
-                if (!empty($items)) {
-                    foreach($items as $key=>$item) {
-                        if ($key != 'user_id') {
-                            $this->$key = preg_match('/^([a-zA-Z]+):([0-9]+):{/', $item) ? unserialize($item) : $item;
+                $data = $db->selectObjects($extension->tablename, 'user_id='.$this->id);
+                if (!empty($data)) {
+                    foreach($data as $items) {
+                        foreach($items as $key=>$item) {
+                            if ($key === 'expeAlerts_id') {
+                                $this->expeAlerts[] = $db->selectObject('expeAlerts','id='.$item);
+                            } elseif ($key != 'user_id') {
+                                $this->$key = preg_match('/^([a-zA-Z]+):([0-9]+):{/', $item) ? unserialize($item) : $item;
+                            }
                         }
                     }
                 }

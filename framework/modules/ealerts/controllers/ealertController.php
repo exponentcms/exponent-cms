@@ -23,7 +23,7 @@
 
 class ealertController extends expController {
     public $basemodel_name = 'expeAlerts';
-    public $useractions = array('showall'=>'Show all modules available for signup');
+//    public $useractions = array('showall'=>'Show all modules available for signup');
 	
 	public $remove_configs = array(
         'aggregation',
@@ -51,19 +51,21 @@ class ealertController extends expController {
     public function send_confirm() {
         global $db;
 
-        // find the content for the E-Alerts
-        $record = new $this->params['model']($this->params['id']);
-        
         // find this E-Alert in the database
         $src = empty($this->params['src']) ? null : $this->params['src'];
         $ealert = $db->selectObject('expeAlerts', 'module="'.$this->params['orig_controller'].'" AND src="'.$src.'"');
-        
+        if (!empty($ealert->autosend_ealerts)) {
+            redirect_to(array('controller'=>'ealert','action'=>'send_auto','model'=>$this->params['model'],'id'=>$this->params['id'], 'src'=>$this->params['src']));
+        }
+
+        // find the content for the E-Alerts
+        $record = new $this->params['model']($this->params['id']);
         // setup the content for the view
         $subject = $record->title;
         $body = $record->body;
         
         // figure out how many subscribers there are
-        $number_of_subscribers = $db->countObjects('expeAlerts_subscribers', 'expeAlerts_id='.$ealert->id);
+        $number_of_subscribers = $db->countObjects('user_subscriptions', 'expeAlerts_id='.$ealert->id);
         
         assign_to_template(array(
             'record'=>$record,
@@ -73,10 +75,12 @@ class ealertController extends expController {
     }
     
     public function send_process() {
-        global $db;
+        global $db, $router;
         
         $obj->subject = $this->params['subject'];
         $obj->body = $this->params['body'];
+        $link = $router->makelink(array('controller'=>$this->params['model'], 'action'=>'show', 'title'=>$this->params['sef_url']));
+        $obj->body .= '<hr><a href="'.$link.'">'.gt('View posting').'.</a>';
         $obj->created_at = time();
         $id = $db->insertObject($obj, 'expeAlerts_temp');
         
@@ -90,6 +94,38 @@ class ealertController extends expController {
         expHistory::back();
     }
     
+    public function send_auto() {
+        global $db, $router;
+
+        // find this E-Alert in the database
+        $src = empty($this->params['src']) ? null : $this->params['src'];
+        $ealert = $db->selectObject('expeAlerts', 'module="'.$this->params['model'].'" AND src="'.$src.'"');
+
+         // find the content for the E-Alerts
+        $record = new $this->params['model']($this->params['id']);
+        $obj->subject = gt('Notification of New Content Posted to').' '.$ealert->ealert_title;
+        $obj->body .= "<h3>".gt('New content was added titled')." '".$record->title."'</h3><hr>";
+        if ($ealert->ealert_usebody == 0) {
+            $obj->body .= $record->body;
+        } elseif ($ealert->ealert_usebody == 1) {
+            include_once(BASE.'framework/plugins/modifier.summarize.php');  // hack to use smarty summarize modifier
+            $obj->body .= smarty_modifier_summarize($record->body,'html','paralinks');
+        }
+        $link = $router->makelink(array('controller'=>$this->params['model'], 'action'=>'show', 'title'=>$record->sef_url));
+        $obj->body .= '<hr><a href="'.$link.'">'.gt('View posting').'.</a>';
+        $obj->created_at = time();
+        $id = $db->insertObject($obj, 'expeAlerts_temp');
+
+        $bot = new expBot(array(
+            'url'=>PATH_RELATIVE."index.php?controller=ealert&action=send&id=".$id.'&ealert_id='.$ealert->id,
+            'method'=>'POST',
+        ));
+
+        $bot->fire();
+        flash('message', gt("E-Alerts are being sent to subscribers."));
+        expHistory::back();
+    }
+
     public function send() {
         global $db, $router;
         
@@ -97,8 +133,8 @@ class ealertController extends expController {
         $message = $db->selectObject('expeAlerts_temp', 'id='.$this->params['id']);
         
         // look up the subscribers
-        $sql  = 'SELECT s.* FROM '.DB_TABLE_PREFIX.'_expeAlerts_subscribers es ';
-        $sql .= 'LEFT JOIN '.DB_TABLE_PREFIX.'_subscribers s ON s.id=es.subscribers_id WHERE es.expeAlerts_id='.$this->params['ealert_id'];
+        $sql  = 'SELECT s.* FROM '.DB_TABLE_PREFIX.'_user_subscriptions es ';
+        $sql .= 'LEFT JOIN '.DB_TABLE_PREFIX.'_user s ON s.id=es.user_id WHERE es.expeAlerts_id='.$this->params['ealert_id'];
         $subscribers = $db->selectObjectsBySql($sql);
         
         $count = 1;
@@ -106,7 +142,7 @@ class ealertController extends expController {
         foreach($subscribers as $subscriber) {
             $link = $router->makelink(array('controller'=>'ealert', 'action'=>'subscriptions', 'id'=>$subscriber->id, 'key'=>$subscriber->hash));
             $body  = $message->body;
-            $body .= '<br><a href="'.$link.'">Click here to change your E-Alert subscription settings.</a>';
+            $body .= '<br><a href="'.$link.'">'.gt('Click here to change your E-Alert subscription settings').'.</a>';
             
             $mail = new expMail();
             $mail->quickSend(array(
@@ -124,18 +160,47 @@ class ealertController extends expController {
         
         $db->delete('expeAlerts_temp', 'id='.$message->id);
     }
-    
+
+    public function subscribe() {
+        global $user,$db;
+
+        // make sure we have what we need.
+        if (empty($this->params['id'])) expQueue::flashAndFlow('error', gt('The id was not supplied.'));
+        if (empty($user->id)) expQueue::flashAndFlow('error', gt('You must be logged on to subscribe.'));
+        if (!$db->selectObject('user_subscriptions','user_id='.$user->id.' AND expeAlerts_id='.$this->params['id'])) {
+            $subscription = new stdClass();
+            $subscription->user_id = $user->id;
+            $subscription->expeAlerts_id = $this->params['id'];
+            $db->insertObject($subscription,'user_subscriptions');
+            $ealert = $db->selectObject('expeAlerts','id='.$this->params['id']);
+            flash('message', gt("You are now subscribed to receive email alerts for updates to"." ".$ealert->ealert_title));
+        }
+        expHistory::back();
+    }
+
+    public function unsubscribe() {
+        global $user,$db;
+
+        // make sure we have what we need.
+        if (empty($this->params['id'])) expQueue::flashAndFlow('error', gt('The id was not supplied.'));
+        if (empty($user->id)) expQueue::flashAndFlow('error', gt('You must be logged on to un-subscribe.'));
+        $db->delete('user_subscriptions','user_id='.$user->id.' AND expeAlerts_id='.$this->params['id']);
+        $ealert = $db->selectObject('expeAlerts','id='.$this->params['id']);
+        flash('message', gt("You are now un-subscribed from email alerts to"." ".$ealert->ealert_title));
+        expHistory::back();
+    }
+
     public function subscriptions() {
         global $db;
         
         expHistory::set('manageable', $this->params);
         // make sure we have what we need.
-        if (empty($this->params['key'])) expQueue::flashAndFlow('error', 'The security key for account was not supplied.');
-        if (empty($this->params['id'])) expQueue::flashAndFlow('error', 'The subscriber id for account was not supplied.');
+        if (empty($this->params['key'])) expQueue::flashAndFlow('error', gt('The security key for account was not supplied.'));
+        if (empty($this->params['id'])) expQueue::flashAndFlow('error', gt('The subscriber id for account was not supplied.'));
         
         // verify the id/key pair    
         $sub = new subscribers($this->params['id']);
-        if (empty($sub->id)) expQueue::flashAndFlow('error', 'We could not find any subscriptions matching the ID and Key you provided.');
+        if (empty($sub->id)) expQueue::flashAndFlow('error', gt('We could not find any subscriptions matching the ID and Key you provided.'));
         
         // get this users subscriptions
         $subscriptions = $db->selectColumn('expeAlerts_subscribers', 'expeAlerts_id', 'subscribers_id='.$sub->id);
@@ -153,13 +218,13 @@ class ealertController extends expController {
         global $db;
         
         // make sure we have what we need.
-        if (empty($this->params['email'])) expQueue::flashAndFlow('error', 'You must supply an email address to sign up for email alerts.');
-        if (empty($this->params['key'])) expQueue::flashAndFlow('error', 'The security key for account was not supplied.');
-        if (empty($this->params['id'])) expQueue::flashAndFlow('error', 'The subscriber id for account was not supplied.');
+        if (empty($this->params['email'])) expQueue::flashAndFlow('error', gt('You must supply an email address to sign up for email alerts.'));
+        if (empty($this->params['key'])) expQueue::flashAndFlow('error', gt('The security key for account was not supplied.'));
+        if (empty($this->params['id'])) expQueue::flashAndFlow('error', gt('The subscriber id for account was not supplied.'));
         
         // find the subscriber and validate the security key
         $subscriber = new subscribers($this->params['id']);
-        if ($subscriber->hash != $this->params['key']) expQueue::flashAndFlow('error', 'The security key you supplied does not match the one we have on file.');
+        if ($subscriber->hash != $this->params['key']) expQueue::flashAndFlow('error', gt('The security key you supplied does not match the one we have on file.'));
         
         // delete any old subscriptions and add the user to new subscriptions
         $db->delete('expeAlerts_subscribers', 'subscribers_id='.$subscriber->id);
@@ -187,8 +252,8 @@ class ealertController extends expController {
         expValidator::check_antispam($this->params, gt("Anti-spam verification failed.  Please try again."));
         
         // make sure we have what we need.
-        if (empty($this->params['email'])) expQueue::flashAndFlow('error', 'You must supply an email address to sign up for email alerts.');
-        if (empty($this->params['ealerts'])) expQueue::flashAndFlow('error', 'You did not select any E-Alert topics to subscribe to.');        
+        if (empty($this->params['email'])) expQueue::flashAndFlow('error', gt('You must supply an email address to sign up for email alerts.'));
+        if (empty($this->params['ealerts'])) expQueue::flashAndFlow('error', gt('You did not select any E-Alert topics to subscribe to.'));
         
         // find or create the subscriber
         $id = $db->selectValue('subscribers', 'id', 'email="'.$this->params['email'].'"');
@@ -219,7 +284,7 @@ class ealertController extends expController {
                 'html_message'=>$body->render(),
 		        'to'=>$subscriber->email,
 		        'from'=>SMTP_FROMADDRESS,
-		        'subject'=>'Please confirm your E-Alert subscriptions',
+		        'subject'=>gt('Please confirm your E-Alert subscriptions'),
         ));
         
         redirect_to(array('controller'=>'ealert', 'action'=>'pending', 'id'=>$subscriber->id));
@@ -229,7 +294,7 @@ class ealertController extends expController {
         global $db;
         
         // make sure we have what we need.
-        if (empty($this->params['id'])) expQueue::flashAndFlow('error', 'Your subscriber ID was not supplied.');
+        if (empty($this->params['id'])) expQueue::flashAndFlow('error', gt('Your subscriber ID was not supplied.'));
 
         // find the subscriber and their pending subscriptions
         $ealerts = expeAlerts::getPendingBySubscriber($this->params['id']);
@@ -246,12 +311,12 @@ class ealertController extends expController {
         global $db;
         
         // make sure we have what we need.
-        if (empty($this->params['key'])) expQueue::flashAndFlow('error', 'The security key for account was not supplied.');
-        if (empty($this->params['id'])) expQueue::flashAndFlow('error', 'The subscriber id for account was not supplied.');
+        if (empty($this->params['key'])) expQueue::flashAndFlow('error', gt('The security key for account was not supplied.'));
+        if (empty($this->params['id'])) expQueue::flashAndFlow('error', gt('The subscriber id for account was not supplied.'));
         
         // verify the id/key pair    
         $id = $db->selectValue('subscribers','id', 'id='.$this->params['id'].' AND hash="'.$this->params['key'].'"');
-        if (empty($id)) expQueue::flashAndFlow('error', 'We could not find any subscriptions matching the ID and Key you provided.');
+        if (empty($id)) expQueue::flashAndFlow('error', gt('We could not find any subscriptions matching the ID and Key you provided.'));
         
         // activate this users pending subscriptions
         $sub->enabled = 1;

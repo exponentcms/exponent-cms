@@ -14,8 +14,7 @@
  *}
 
 <div class="module ealert send-confirmation">
-    <h1>{'Confirm Email Alert'|gettext}</h1>
-    
+    <h1>{'Confirm Email-Alert'|gettext}</h1>
     {form action="send_process"}
         <table>
             <tr>
@@ -26,9 +25,11 @@
             </tr>
         </table>
         {control type="hidden" name="id" value=$ealert->id}
-        {control type="text" name="subject" label="Subject"|gettext size="50" value=$record->title}
-        {control type="html" name="body" label="Message"|gettext value=$record->body}
-        {control type="buttongroup" submit="Send Email"|gettext cancel="Cancel"|gettext}
+        {control type="hidden" name="model" value=$ealert->module}
+        {control type="hidden" name="sef_url" value=$record->sef_url}
+        {control type="text" name="subject" label="Subject"|gettext size="50" value='Notification of New Content Posted to'|gettext|cat:' '|cat:$ealert->ealert_title}
+        {control type="html" name="body" label="Message"|gettext value="<h3>"|cat:"New content was added titled"|gettext|cat:" '"|cat:$record->title|cat:"'"|gettext|cat:".</h3><hr>"|cat:$record->body}
+        {control type="buttongroup" submit="Send E-Alert"|gettext cancel="Cancel"|gettext}
     {/form}
             
 </div>

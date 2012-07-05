@@ -21,16 +21,12 @@
  * @package Modules
  */
 return array(
-	'subscribers_id'=>array(
+	'user_id'=>array(
         DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_PRIMARY=>true,
-        DB_INCREMENT=>false),
+        DB_PRIMARY=>true),
     'expeAlerts_id'=>array(
         DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_PRIMARY=>true,
-        DB_INCREMENT=>false),
-	'enabled'=>array(
-        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+        DB_PRIMARY=>true),
 );
 
 ?>

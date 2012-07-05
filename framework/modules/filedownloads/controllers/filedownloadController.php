@@ -29,9 +29,9 @@ class filedownloadController extends expController {
     );
 	public $remove_configs = array(
         'comments',
-        'ealerts',
+//        'ealerts',
         'files',
-        'rss'
+        'rss', // because we do this as a custom tab within the module
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return gt("File Downloads"); }

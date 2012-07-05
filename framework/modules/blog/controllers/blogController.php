@@ -29,6 +29,7 @@ class blogController extends expController {
         'dates'=>"Dates",
     );
     public $remove_configs = array(
+        'categories',
 //        'ealerts'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $add_permissions = array(

@@ -44,7 +44,7 @@
                         {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
                     {/if}
                 	{if $config.enable_ealerts}
-                	    {control type="checkbox" name="send_ealerts" label="Send E-Alerts?"|gettext value=1}
+                	    {control type="checkbox" name="send_ealerts" label="Send E-Alert?"|gettext value=1}
                 	{/if}
                 </div>
                 <div id="tab2">

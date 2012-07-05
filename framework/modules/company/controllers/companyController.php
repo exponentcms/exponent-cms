@@ -29,6 +29,7 @@ class companyController extends expController {
         'aggregation',
         'categories',
         'comments',
+        'ealerts',
         //'files',
         'rss',
         'tags'

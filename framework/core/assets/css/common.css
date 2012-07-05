@@ -40,6 +40,16 @@ a.export-pdf-link {
 	background:url(../images/attachableitems/pdf_22x22.png) no-repeat 0 50%;
 }
 
+a.subscribe-link {
+    padding:2px 0 2px 20px;
+	background:url(../images/accepted.png) no-repeat 0 50%;
+}
+
+a.unsubscribe-link {
+    padding:2px 0 2px 20px;
+	background:url(../images/deny.png) no-repeat 0 50%;
+}
+
 a.showall {
     padding:3px 3px 3px 22px;
     display:inline-block;

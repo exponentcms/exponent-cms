@@ -476,8 +476,10 @@ abstract class expController {
             unset($this->params['expCat']);
             $this->params['expCat'][] = $catid;
         }
+
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
+        
         if ($this->isSearchable()) {
             $this->addContentToSearch($this->params);
         }
@@ -654,8 +656,8 @@ abstract class expController {
         
         // setup and save the config
         $config = new expConfig($this->loc);
-                
-        $config->update(array('config'=>$this->params));        
+        $config->update(array('config'=>$this->params));
+
         flash('message', gt('Configuration updated'));
         expHistory::back();
     }
