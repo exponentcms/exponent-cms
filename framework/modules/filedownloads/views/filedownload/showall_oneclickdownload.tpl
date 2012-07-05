@@ -99,9 +99,9 @@
 </div>
 
 {if $config.show_player}
-    {script unique="filedownload" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/flowplayer-3.2.10.min.js"}
+    {script unique="filedownload" src="`$smarty.const.FLOWPLAYER_PATH`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
     {literal}
-    flowplayer("a.filedownload-media", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.11.swf",
+    flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_PATH+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
         {
     		wmode: 'transparent',
     		clip: {
