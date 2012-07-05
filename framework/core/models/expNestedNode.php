@@ -42,7 +42,7 @@ abstract class expNestedNode extends expRecord {
         //'content_expSimpleNote'=>'expSimpleNote',
     );
     
-	public function __construct($params=array(), $get_assoc = false, $get_attached = false) {
+	public function __construct($params=null, $get_assoc = false, $get_attached = false) {
 		parent::__construct($params, $get_assoc, $get_attached);
 		
 		// if this object is empty we'll treat it like a top level'

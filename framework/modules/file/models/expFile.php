@@ -403,7 +403,7 @@ class expFile extends expRecord {
 		//if the file exists and we don't want to overwrite it, create a new one			
 		if (file_exists($_destFullPath) && $_force == false) {
 			$_destFile = self::resolveDuplicateFilename($_destFullPath);
-            $_destFullPath = $_destDir . $_destFile;
+            $_destFullPath = BASE.$_destDir . $_destFile;
 		}
         
 		//Check to see if the directory exists.  If not, create the directory structure.
@@ -414,7 +414,7 @@ class expFile extends expRecord {
 		// Move the temporary uploaded file into the destination directory,
         // and change the name.
                
-        move_uploaded_file($_FILES[$_postName]['tmp_name'], $_destFullPath);
+        $tmp=move_uploaded_file($_FILES[$_postName]['tmp_name'], $_destFullPath);
 
         if (file_exists($_destFullPath)) {
             $__oldumask = umask(0);

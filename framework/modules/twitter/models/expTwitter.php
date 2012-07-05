@@ -63,7 +63,7 @@ class expTwitter {
      */
     public $suppress_response_code = false;
     
-    public function __construct ($params) {
+    public function __construct ($params=null) {
     	$this->username = (empty($params['username']) ? '' : $params['username']);
 		$this->password = (empty($params['password']) ? '' : $params['password']);
         $this->user_agent = (empty($params['user_agent']) ? '' : $params['user_agent']);
