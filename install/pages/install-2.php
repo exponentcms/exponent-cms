@@ -125,7 +125,7 @@ $config = array(
 			<span class="label"><?php echo gt('Password'); ?>: </span>
 			<input class="text" type="password" name="sc[db_pass]" value="<?php echo $config['db_pass']; ?>" />
 			<div class="control_help">
-				<?php echo gt('Enter the password for the username you entered above.  The password will').'<b>'.gt('not').'</b>'.gt('be obscured, because it cannot be obscured in the configuration file.  The Exponent developers urge you to use a completely new password, unlike any of your others, for security reasons.'); ?>
+				<?php echo gt('Enter the password for the username you entered above.  The password will').'<strong>'.gt('not').'</strong>'.gt('be obscured, because it cannot be obscured in the configuration file.  The Exponent developers urge you to use a completely new password, unlike any of your others, for security reasons.'); ?>
 			</div>
 		</div>
 		<div class="control">
@@ -134,7 +134,7 @@ $config = array(
 			<div class="control_help">
 				<?php echo gt('A table prefix helps Exponent differentiate tables for this site from other tables that may already exist (or eventually be created by other scripts).  If you are using an existing database, you may want to change this.'); ?>
 				<br /><br />
-				<?php echo '<b>'.gt('Note').':</b>'.gt('A table prefix may only contain numbers and letters.  Spaces and symbols (including \'_\') are not allowed.  An underscore will be added for you, by Exponent.'); ?>
+				<?php echo '<strong>'.gt('Note').':</strong>'.gt('A table prefix may only contain numbers and letters.  Spaces and symbols (including \'_\') are not allowed.  An underscore will be added for you, by Exponent.'); ?>
 			</div>
 		</div>
 	</div>

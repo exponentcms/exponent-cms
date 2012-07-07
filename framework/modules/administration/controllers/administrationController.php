@@ -238,7 +238,7 @@ class administrationController extends expController {
 	    print_r("<h3>".gt("Some Error Conditions can NOT be repaired by this Procedure")."!</h3><br>");
 		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<b>".gt("Searching for sectionrefs that have lost their originals")."</b><br><br>");
+		print_r("<strong>".gt("Searching for sectionrefs that have lost their originals")."</strong><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
 		if (count($sectionrefs)) {
 			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
@@ -257,7 +257,7 @@ class administrationController extends expController {
 
 		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<b>".gt("Searching for sectionrefs pointing to missing sections/pages")." <br>".gt("to fix for the Recycle Bin")."</b><br><br>");
+		print_r("<strong>".gt("Searching for sectionrefs pointing to missing sections/pages")." <br>".gt("to fix for the Recycle Bin")."</strong><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
 		$found = 0;
 		foreach ($sectionrefs as $sectionref) {
@@ -276,7 +276,7 @@ class administrationController extends expController {
 
 		 print_r("<pre>");
 	 // delete sectionref's that have empty sources since they are dead
-		 print_r("<b>".gt("Searching for unassigned modules (no source)")."</b><br><br>");
+		 print_r("<strong>".gt("Searching for unassigned modules (no source)")."</strong><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
 		 if ($sectionrefs != null) {
 			 print_r(gt("Removing").": ".count($sectionrefs)." ".gt("empty sectionrefs (no source)")."<br>");
@@ -287,7 +287,7 @@ class administrationController extends expController {
 
 		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
-		print_r("<b>".gt("Searching for missing sectionrefs based on existing containers")."</b><br><br>");
+		print_r("<strong>".gt("Searching for missing sectionrefs based on existing containers")."</strong><br><br>");
 		$containers = $db->selectObjects('container',1);
 		foreach ($containers as $container) {
 			$iloc = expUnserialize($container->internal);

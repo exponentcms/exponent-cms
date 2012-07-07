@@ -52,7 +52,7 @@
 	</table>
 	{if $haveFiles == 1}
 		{if $failed == 0}
-			{if $warn == 1}{'<b>Note:</b> Continuing with the installation will overwrite existing files.  It is <b>highly recommended</b> that you ensure that you want to do this.'|gettext}<br /><br />{/if}
+			{if $warn == 1}{'<strong>Note:</strong> Continuing with the installation will overwrite existing files.  It is <strong>highly recommended</strong> that you ensure that you want to do this.'|gettext}<br /><br />{/if}
 			<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=page page=finish importer=files}">{'Restore Files'|gettext}</a>
 		{else}
 			{'Permissions on the webserver are preventing the restoration of these files.  Please make the necessary directories and/or files writable, and then reload this page to continue.'|gettext}

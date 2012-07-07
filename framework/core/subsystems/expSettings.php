@@ -337,10 +337,10 @@ class expSettings {
                                 $form->meta("opts[$directive]",1);
                                 $info['control']->default = $options[$directive];
                                 $info['control']->flip = true;
-                                $form->register("o[$directive]",'<b>'.$info['title'].'</b>',$info['control']);
+                                $form->register("o[$directive]",'<strong>'.$info['title'].'</strong>',$info['control']);
                             } else {
                                 if (isset($options[$directive])) $info["control"]->default = $options[$directive];
-                                $form->register("c[$directive]",'<b>'.$info['title'].'</b>',$info['control'],$info['description']);
+                                $form->register("c[$directive]",'<strong>'.$info['title'].'</strong>',$info['control'],$info['description']);
                             }
                         }
                         //$form->register(null,'',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));

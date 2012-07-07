@@ -134,12 +134,12 @@ switch ($page) {
 		break;
 	case 'install-6':
         $masthead = gt("New Installation");
-		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system.').' '.
+		$page_text = gt('The user you\'re about to create will be the').' <strong>'.gt('Super Administrator').'</strong> '.gt('for the entire system.').' '.
 			gt('This level of administration has un-restricted access and abilities throughout the entire website.');
 		break;
 	case 'install-7':
         $masthead = gt("New Installation");
-		$page_text = gt('The user you\'re about to create will be the').' <b>'.gt('Super Administrator').'</b> '.gt('for the entire system.').' '.
+		$page_text = gt('The user you\'re about to create will be the').' <strong>'.gt('Super Administrator').'</strong> '.gt('for the entire system.').' '.
 			gt('This level of administration has un-restricted access and abilities throughout the entire website.');
 		break;
 	case 'final':

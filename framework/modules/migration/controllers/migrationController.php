@@ -2273,7 +2273,7 @@ class migrationController extends expController {
 
 		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<b>".gt('Searching for sectionrefs that have lost their originals')."</b><br><br>");
+		print_r("<strong>".gt('Searching for sectionrefs that have lost their originals')."</strong><br><br>");
 		$sectionrefs = $old_db->selectObjects('sectionref',"is_original=0");
 		print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
 		foreach ($sectionrefs as $sectionref) {
@@ -2288,7 +2288,7 @@ class migrationController extends expController {
 	
 		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<b>".gt('Searching for sectionrefs pointing to missing sections/pages')." <br>".gt('to fix for the Recycle Bin')."</b><br><br>");
+		print_r("<strong>".gt('Searching for sectionrefs pointing to missing sections/pages')." <br>".gt('to fix for the Recycle Bin')."</strong><br><br>");
 		$sectionrefs = $old_db->selectObjects('sectionref',"refcount!=0");
 		foreach ($sectionrefs as $sectionref) {
 			if ($old_db->selectObject('section',"id='".$sectionref->section."'") == null) {

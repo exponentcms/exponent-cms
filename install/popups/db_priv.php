@@ -17,7 +17,7 @@
 ##################################################
 
 ?>
-<b><?php echo gt('Database User Privileges'); ?></b>
+<strong><?php echo gt('Database User Privileges'); ?></strong>
 <div class="bodytext">
 <?php echo gt('When Exponent connects to the database, it needs to be able to run the following types of queries:'); ?>
 <br /><br />
