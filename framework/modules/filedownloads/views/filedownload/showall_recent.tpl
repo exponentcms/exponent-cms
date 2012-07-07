@@ -40,6 +40,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {subscribe_link}
     {assign var=myloc value=serialize($__loc)}
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}

@@ -20,6 +20,7 @@
 <div class="module blog show">
     <h1>{$record->title}</h1>
     {printer_friendly_link}{export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}{br}
+    {subscribe_link}
     {assign var=myloc value=serialize($__loc)}
     <div class="post-info">
         <span class="attribution">

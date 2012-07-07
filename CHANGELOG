@@ -15,6 +15,8 @@ Added / Fixed / changed for 2.0.8
     -- view category/gallery/group album to pull up individual group/gallery
   - adds group (category) viewing to filedownloads
   - adds ability to alphabetically sort re-ranking/order lists
+  - adds quick upload feature to wysiwyg editor (upload in editor without going to file manager/uploader)
+  - finally implements email alerts (ealerts) in a usable form for blog, news, & filedownloads (subscribe to updates)
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.7
