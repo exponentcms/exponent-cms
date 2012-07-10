@@ -694,7 +694,7 @@ abstract class expController {
     }
 
 	/**
-	 * get the models (datatypes) associated with this module
+	 * get the models associated with this module
 	 * @return array
 	 */
 	function getModels() {

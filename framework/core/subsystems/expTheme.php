@@ -69,7 +69,6 @@ class expTheme {
 		if (!defined('BTN_SIZE')) define('BTN_SIZE','medium');
 		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
 		// add our theme folder to autoload and place it first
-		//$auto_dirs2[] = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules';
 		$auto_dirs2[] = BASE.'themes/'.DISPLAY_THEME.'/modules';
 		$auto_dirs2 = array_reverse($auto_dirs2);
 	}
@@ -149,6 +148,9 @@ class expTheme {
 
 		//the last little bit of IE 6 support
 		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
+
+        //html5 support for IE 6-8
+//		$str .= "\t".'<!--[!--[if lt IE 9]]><script src="'.PATH_RELATIVE.'external/htmlshiv/html5.js"></script><![endif]-->'."\n";
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MINIFY REPLACE -->';

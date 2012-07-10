@@ -35,19 +35,17 @@
 function smarty_function_yuimenubar($params,&$smarty) {
 	$menu = '
         function buildmenu () {
-            var oMenuBar = new YAHOO.widget.MenuBar("'.$params['buildon'].'", { 
-													
-														constraintoviewport:false,
-														postion:"dynamic",
-														visible:true,
-														zIndex:250,
- 														autosubmenudisplay: true, 
-														hidedelay: 750, 
-														lazyload: true });
-
+            var oMenuBar = new YAHOO.widget.MenuBar("'.$params['buildon'].'", {
+                constraintoviewport:false,
+                postion:"dynamic",
+                visible:true,
+                zIndex:250,
+                autosubmenudisplay: true,
+                hidedelay: 750,
+                lazyload: true
+            });
             var aSubmenuData = '.navigationmodule::navtojson().';
             oMenuBar.subscribe("beforeRender", function () {
-
                 if (this.getRoot() == this) {
 					for (i=0; i<=this.getItems().length; i++){
 						var j=i;
@@ -55,13 +53,9 @@ function smarty_function_yuimenubar($params,&$smarty) {
 		                    this.getItem(i).cfg.setProperty("submenu", aSubmenuData[j]);
 						}
 					}
-					
                 }
-
             });
-
-            oMenuBar.render();         
-        
+            oMenuBar.render();
         }
 		YAHOO.util.Event.onDOMReady(buildmenu);
     ';
