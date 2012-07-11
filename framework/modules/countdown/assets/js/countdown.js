@@ -22,7 +22,7 @@ name, Web address and this disclaimer is kept intact.
 ********************************************************
 Usage Sample:
 
-<script language="JavaScript">
+<script type="text/javascript">
 TargetDate = "12/31/2020 5:00 AM";
 BackColor = "palegreen";
 ForeColor = "navy";
@@ -32,7 +32,7 @@ LeadingZero = true;
 DisplayFormat = "%%D%% Days, %%H%% Hours, %%M%% Minutes, %%S%% Seconds.";
 FinishMessage = "It is finally here!";
 </script>
-<script language="JavaScript" src="http://scripts.hashemian.com/js/countdown.js"></script>
+<script type="text/javascript" src="http://scripts.hashemian.com/js/countdown.js"></script>
 */
 
 function calcage(secs, num1, num2) {

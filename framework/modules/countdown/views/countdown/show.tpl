@@ -21,7 +21,7 @@
     {else}    
         {if $config.title}<h3>{$config.title}</h3>{/if}
 
-        <script language="JavaScript">
+        <script type="text/javascript">
             TargetDate = "{$config.count}";
             BackColor = "";
             ForeColor = "";
@@ -31,7 +31,7 @@
             DisplayFormat = "D:%%D%% H:%%H%% M:%%M%% S:%%S%%";
             FinishMessage = "{$config.message}";
         </script>
-        <script language="JavaScript" src="{$asset_path}/js/countdown.js"></script>
+        <script type="text/javascript" src="{$asset_path}/js/countdown.js"></script>
 
         <div class="bodycopy">
             {$config.body}

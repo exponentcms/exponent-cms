@@ -37,7 +37,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 	if ($content) {
 ?>
 
-	<script language="JavaScript">
+    <script type="text/javascript">
 
 	//Cookie Stuff
 	function getCookieVal(offset) {

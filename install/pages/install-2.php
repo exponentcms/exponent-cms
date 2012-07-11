@@ -30,7 +30,7 @@ $config = array(
 );
 
 ?>
-<script language="javascript">
+<script type="text/javascript">
 	function hideAllOptions() {
 		var allEngines = new Array("mysql");
 		var optionObj;
