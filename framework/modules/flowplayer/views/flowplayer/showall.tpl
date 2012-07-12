@@ -15,7 +15,7 @@
 
 {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_PATH`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
 {literal}
-flowplayer("playlist-player", EXPONENT.FLOWPLAYER_PATH+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
+flowplayer("a.flowplayer-video", EXPONENT.FLOWPLAYER_PATH+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
     {
 		wmode: 'transparent',
 		clip: {
