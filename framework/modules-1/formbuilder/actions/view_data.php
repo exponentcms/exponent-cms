@@ -112,6 +112,8 @@ if (isset($_GET['id'])) {
 					'records'=>$items,
                     'where'=>1, 
                     'limit'=>(isset($_GET['limit']) && $_GET['limit'] != '') ? $_GET['limit'] : 10,
+                    'order'=>(isset($_GET['order']) && $_GET['order'] != '') ? $_GET['order'] : 'id',
+                    'dir'=>(isset($_GET['dir']) && $_GET['dir'] != '') ? $_GET['dir'] : 'ASC',
 //                    'order'=>$order,
                     'action'=>'view_data',
 					'columns'=>$columns
