@@ -36,6 +36,19 @@ class expCSS {
             }
         }
         
+         // less files to compile to css
+        $less_vars =!empty($params['lessvars']) ? $params['lessvars'] : array();
+        if (isset($params['lesscss'])) {
+            $less_array = $params['lesscss'];
+            foreach ($less_array as $less_path) {
+                $css_path = str_replace("/less/","/css/",$less_path);
+                $css_path = substr($css_path,0,strlen($css_path)-4)."css";
+                self::auto_compile_less($less_path,$css_path,$less_vars);
+                //indexing the array by the filename
+                $css_links[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
+            }
+        }
+
         // files in framework/core/assets/css that is general to many views and the system overall
         if (isset($params['corecss'])){
             $core_array = explode(",",$params['corecss']);
@@ -49,7 +62,7 @@ class expCSS {
         }
         
         // css linked in through the css plugin
-        if (isset($params['link'])){ 
+        if (!empty($params['link'])){
             $css_links[$params['link']] = $params['link'];
         };
         
@@ -73,12 +86,16 @@ class expCSS {
 
     public static function parseCSSFiles() {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $head_config;
+
         $html = "";
         
         // gather up all .css files in themes/mytheme/css/
         self::themeCSS();
         
         unset($head_config['xhtml']);
+        unset($head_config['lesscss']);
+        unset($head_config['lessvars']);
+
         $css_files = array();
         foreach($head_config as $key=>$value) {
             if (!empty($value) && is_array($$key)) {
@@ -140,11 +157,44 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config;
 
+        // compile any theme .less files to css
+        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
+        $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less/';
+        if (THEME_STYLE!="") {
+            $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less_'.THEME_STYLE.'/';
+        }
+        foreach($lessdirs as $lessdir){
+            if (is_dir($lessdir) && is_readable($lessdir)) {
+                if (is_array($head_config['css_theme'])) {
+                    foreach($head_config['css_theme'] as $lessfile){
+                        $filename = $lessdir.$lessfile;
+                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
+                            $css_dir = str_replace("/less/","/css/",$lessdir);
+                            $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
+                            self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
+                        }
+                    }
+                } elseif (empty($head_config['css_theme'])) {
+                    # do nothing. We're not including CSS from the theme
+                } else {
+                    $dh = opendir($lessdir);
+                    while (($lessfile = readdir($dh)) !== false) {
+                        $filename = $lessdir.$lessfile;
+                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
+                            $css_dir = str_replace("/less/","/css/",$lessdir);
+                            $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
+                            self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
+                        }
+                    }
+                }
+            }
+        }
+
+        // collect all the theme css files (less files have been compiled already)
         $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css/';
         if (THEME_STYLE!="") {
             $cssdirs[] = BASE.'themes/'.DISPLAY_THEME.'/css_'.THEME_STYLE.'/';
         }
-
         foreach($cssdirs as $key=>$cssdir){
             $variation = (THEME_STYLE!=''&&$key!=0)?"_".THEME_STYLE:"";
             
@@ -172,6 +222,33 @@ class expCSS {
         }
         // return the theme files in alphabetical order
         if (is_array($css_theme)) ksort($css_theme);
+    }
+
+    /**
+     * Automatically compile .less files into a .css file in the /tmp/css folder
+     *
+     * @static
+     * @param string $less_fname full pathname of the .less file
+     * @param string $css_fname filename of the output css file
+     * @param array $vars array of variables to pass to parse()
+     */
+    public static function auto_compile_less($less_fname, $css_fname, $vars=array()) {
+        include_once(BASE.'external/lessphp/lessc.inc.php');
+        // load the cache
+        $less_cname = str_replace("/","_",$less_fname);
+        $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";
+        $cache = BASE.$less_fname;
+        if (file_exists($cache_fname)) {
+            $cache = unserialize(file_get_contents($cache_fname));
+            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                $cache = BASE.$less_fname;
+            }
+        }
+        $new_cache = lessc::cexecute($cache, false, $vars);
+        if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
+            file_put_contents(BASE.$css_fname, $new_cache['compiled']);
+            file_put_contents($cache_fname, serialize($new_cache));
+        }
     }
 
 }

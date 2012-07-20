@@ -60,7 +60,11 @@ abstract class basetemplate {
 		$this->tpl->caching = false;
 		$this->tpl->cache_dir = BASE.'tmp/cache';
 
-		$this->tpl->setPluginsDir(array(SMARTY_PATH.'plugins',BASE.'framework/plugins'));
+		$this->tpl->setPluginsDir(array(
+            BASE.'themes/'.DISPLAY_THEME.'/plugins',
+            BASE.'framework/plugins',
+            SMARTY_PATH.'plugins',
+        ));
 
 		//autoload filters
 //		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));

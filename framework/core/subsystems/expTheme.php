@@ -26,7 +26,7 @@
 class expTheme {
 
 	public static function initialize() {
-		global $auto_dirs2, $user;
+		global $auto_dirs, $auto_dirs2, $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 		require_once(BASE.'framework/core/compat/theme.php');
 
@@ -68,9 +68,9 @@ class expTheme {
 		}
 		if (!defined('BTN_SIZE')) define('BTN_SIZE','medium');
 		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
-		// add our theme folder to autoload and place it first
-		$auto_dirs2[] = BASE.'themes/'.DISPLAY_THEME.'/modules';
-		$auto_dirs2 = array_reverse($auto_dirs2);
+		// add our theme folder into autoload and place it first
+		array_unshift($auto_dirs2,BASE.'themes/'.DISPLAY_THEME.'/modules');
+        array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 	}
 
     public static function head($config = array()){
@@ -103,11 +103,10 @@ class expTheme {
 		}
 
 		// Load primer CSS files, or default to false if not set.
-		if(!empty($config['css_primer'])){
+		if(!empty($config['css_primer']) || !empty($config['lesscss'])){
 			expCSS::pushToHead($config);
-		} else {
-			$config['css_primer'] = false;
 		};
+        if(empty($config['css_primer'])) $config['css_primer'] = false;
 
 		if(isset($config['css_core'])) {
 			if (is_array($config['css_core'])) {
@@ -150,7 +149,7 @@ class expTheme {
 		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
         //html5 support for IE 6-8
-//		$str .= "\t".'<!--[!--[if lt IE 9]]><script src="'.PATH_RELATIVE.'external/htmlshiv/html5.js"></script><![endif]-->'."\n";
+		$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/htmlshiv/html5.js"></script><![endif]-->'."\n";
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MINIFY REPLACE -->';
