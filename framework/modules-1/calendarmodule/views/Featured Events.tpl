@@ -21,7 +21,7 @@
 	<a href="{link _common=1 view=Default action=show_view}">Month View</a>{br}
 	<h1>
         {if !empty($config->enable_ical)}
-            <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">&nbsp;</a>
+            <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}">&#160;</a>
         {/if}
         {if $moduletitle && !$config->hidemoduletitle}{$moduletitle}{/if}
 	</h1>
@@ -36,7 +36,7 @@
 						{if $item->image_path}
 							<img src="{$item->image_path}" border="0" width="80" height="80"/>
 						{else}
-							&nbsp;
+							&#160;
 						{/if}
 					</td>
 					<td style="padding:3px 10px 3px 10px;">

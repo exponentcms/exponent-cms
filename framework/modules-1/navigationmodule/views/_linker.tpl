@@ -31,8 +31,8 @@
 		{foreach from=$sections item=section}
 		<tr><td style="padding-left: {math equation="x*20" x=$section->depth}px">
 		{if $section->active}
-{*			<a href="{$smarty.get.linkbase}&section={$section->id}&section_name={$section->name|escape:url}" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp; *}
-			<a href="javascript:onPageSelect('{$section->sef_name}')" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp;
+{*			<a href="{$smarty.get.linkbase}&section={$section->id}&section_name={$section->name|escape:url}" class="navlink">{$section->name|escape:"htmlall"}</a>&#160; *}
+			<a href="javascript:onPageSelect('{$section->sef_name}')" class="navlink">{$section->name|escape:"htmlall"}</a>&#160;
 		{else}
 			{$section->name}
 		{/if}
@@ -45,8 +45,8 @@
 		<table cellpadding="1" cellspacing="0" border="0" width="100%">
 		{foreach from=$standalones item=section}
 		<tr><td style="padding-left: 20px">
-{*		<a href="{$smarty.get.linkbase}&section={$section->id}&section_name={$section->name|escape:url}" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp; *}
-		<a href="javascript:onPageSelect('{$section->sef_name}')" class="navlink">{$section->name|escape:"htmlall"}</a>&nbsp;
+{*		<a href="{$smarty.get.linkbase}&section={$section->id}&section_name={$section->name|escape:url}" class="navlink">{$section->name|escape:"htmlall"}</a>&#160; *}
+		<a href="javascript:onPageSelect('{$section->sef_name}')" class="navlink">{$section->name|escape:"htmlall"}</a>&#160;
 		</td></tr>
 		{/foreach}
 		</table>

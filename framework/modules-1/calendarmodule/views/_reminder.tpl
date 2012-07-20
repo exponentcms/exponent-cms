@@ -47,7 +47,7 @@
 							<a class="itemtitle calendar_mngmntlink" href="{link module=calendarmodule action=view id=$event->id date_id=$event->eventdate->id}">{$event->title}</a>
 						</strong>							
 						<div>
-							&nbsp-&nbsp 
+							&#160;-&#160;
 							{if $event->is_allday == 1}
 								{'All Day'|gettext}
 							{else}
@@ -58,7 +58,7 @@
 								{/if}
 							{/if}
 							{if $showdetail == 1}
-								&nbsp-&nbsp{$event->body|summarize:"html":"paralinks"}
+								&#160;-&#160;{$event->body|summarize:"html":"paralinks"}
 							{/if}
 							{br}
 						</div>

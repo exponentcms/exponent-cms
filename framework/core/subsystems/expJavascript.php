@@ -271,7 +271,7 @@ class expJavascript {
         $width  = !empty($params['width']) ? $params['width'] : "300px";
         $type  = !empty($params['type']) ? $params['type'] : "info";
         $dialog  = !empty($params['dialog']) ? explode(":",$params['dialog']) : "";
-        $header  = !empty($params['header']) ? $params['header'] : "&nbsp;";
+        $header  = !empty($params['header']) ? $params['header'] : "&#160;";
         $renderto  = !empty($params['renderto']) ? $params['renderto'] : 'document.body';
         $on  = !empty($params['on']) ? $params['on'] : 'load';
         $onnogo  = !empty($params['onnogo']) ? $params['onnogo'] : '';

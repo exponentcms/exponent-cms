@@ -43,12 +43,12 @@ EXPONENT.filemanager = function(cfg) {
         // var deletestring = '<a href="{/literal}{link action=delete update=$smarty.get.update id="replacewithid" controller=file}{literal}" onclick="return confirm(\'Are you sure you want to delete this file?\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /></a>';
         // deletestring = deletestring.replace('replacewithid',oRecord._oData.id);
         // if (oRecord._oData.is_image==1){
-        //     var editorstring = '<a title="Edit Image" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}actions/edit-image.png" /></a>&nbsp;&nbsp;&nbsp;';
+        //     var editorstring = '<a title="Edit Image" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}actions/edit-image.png" /></a>&#160;&#160;&#160;';
         //     editorstring = editorstring.replace('replacewithid',oRecord._oData.id);
         // } else {
-        //     var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}actions/cant-edit-image.png" />&nbsp;&nbsp;&nbsp;';
+        //     var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}actions/cant-edit-image.png" />&#160;&#160;&#160;';
         // }
-        // var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="Use This Image" onclick="window.opener.{if $smarty.get.fck}SetUrl(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+'/'+oRecord._oData.filename+'\',\''+oRecord._oData.image_width+'\',\''+oRecord._oData.image_height+'\'){else}EXPONENT.passBackFile{$update}(' + oRecord._oData.id + '){/if}; window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'actions/use.png'}" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal}
+        // var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="Use This Image" onclick="window.opener.{if $smarty.get.fck}SetUrl(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+'/'+oRecord._oData.filename+'\',\''+oRecord._oData.image_width+'\',\''+oRecord._oData.image_height+'\'){else}EXPONENT.passBackFile{$update}(' + oRecord._oData.id + '){/if}; window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'actions/use.png'}" /></a>&#160;&#160;&#160;'{else}''{/if}{literal}
         // elCell.innerHTML =  pickerstring
         //                     +editorstring
         //                     +deletestring;

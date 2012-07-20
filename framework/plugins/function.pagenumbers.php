@@ -41,7 +41,7 @@ function smarty_function_pagenumbers($params,&$smarty) {
 	// We always start with page one.
 	if ($page->numberOfPages > 1) {
 		if ($page->page == 1) {	
-			echo '<span class="'.$class.'">1</a>&nbsp;';
+			echo '<span class="'.$class.'">1</a>&#160;';
 		} else {
 			echo '<a class="'.$class.'" href="#" onclick="page(1)">1</a> ... ';
 		}
@@ -75,7 +75,7 @@ function smarty_function_pagenumbers($params,&$smarty) {
 		} else {
 			echo '<span class="'.$class.'">'.$start.'</span>';
 		}
-		echo "&nbsp;";
+		echo "&#160;";
 	}
 
 	//put in the "next steps" if needed

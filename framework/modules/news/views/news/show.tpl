@@ -15,7 +15,7 @@
 
 <div class="module news show">
     <h1>{$record->title}</h1>
-    {printer_friendly_link}{export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}{br}
+    {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
     {subscribe_link}
     {assign var=myloc value=serialize($__loc)}
     <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>

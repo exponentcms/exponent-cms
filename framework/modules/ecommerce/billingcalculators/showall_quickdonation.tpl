@@ -59,7 +59,7 @@
 		</tr>
 		
 		<tr>
-			<td>&nbsp;&nbsp;Middle Name</td>
+			<td>&#160;&#160;Middle Name</td>
 			<td>
 				{control type="text" name="address[middlename]" value=`$record.address.middlename`}
 			</td>
@@ -72,7 +72,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>&nbsp;&nbsp;Company/Organization</td>
+			<td>&#160;&#160;Company/Organization</td>
 			<td>
 				{control type="text" name="address[organization]" value=`$record.address.organization`}
 			</td>
@@ -84,7 +84,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>&nbsp;&nbsp;Address 2</td>
+			<td>&#160;&#160;Address 2</td>
 			<td>
 				{control type="text" name="address[address2]" value=`$record.address.address2`}
 			</td>
@@ -111,7 +111,7 @@
 		</tr>
 		
 		<tr>
-			<td>* Zip&nbsp;Code</td>
+			<td>* Zip&#160;Code</td>
 			<td>
 				{control type="text" name="address[zip]" value=`$record.address.zip` required=1}
 			</td>
@@ -140,7 +140,7 @@
 	<h3>Credit Card Information</h3>
 	<table>
 		<tr>
-			<td>*&nbsp;Card&nbsp;Type</td>
+			<td>*&#160;Card&#160;Type</td>
 			<td class="creditcard-form">
 	
 					{control type="dropdown" name="billing[cc_type]" values="MasterCard,VisaCard" items="MasterCard,Visa"}
@@ -150,7 +150,7 @@
 		</tr>
 
 		<tr>
-			<td>*&nbsp;Card&nbsp;Number</td>
+			<td>*&#160;Card&#160;Number</td>
 			<td class="creditcard-form">
 				<div required"="" class="text-control control " id="cc_numberControl">
 					<input type="text" class="text" name="billing[cc_number]" id="cc_number" size="20" maxlength="20" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" credit_card_number caption="Credit Card Number"/>
@@ -158,7 +158,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>*&nbsp;Expiration</td>
+			<td>*&#160;Expiration</td>
 			<td class="creditcard-form dropdown">
 				{control type="dropdown" name="billing[expiration_month]" items="01,02,03,04,05,06,07,08,09,10,11,12" default="01"}
 				<div>/</div>
@@ -167,7 +167,7 @@
 		</tr>
 
 		<tr>
-			<td>*&nbsp;CVV&nbsp;Number (<a style="font-size:10px;" href="http://en.wikipedia.org/wiki/Card_Verification_Value" target="_blank" class="cvv_ver">What is a CVV Number?</a>)</td>
+			<td>*&#160;CVV&#160;Number (<a style="font-size:10px;" href="http://en.wikipedia.org/wiki/Card_Verification_Value" target="_blank" class="cvv_ver">What is a CVV Number?</a>)</td>
 			<td class="creditcard-form">
 				<div required"="" class="text-control control " id="cvvControl">
 					<input type="text" class="text" id="cvv" name="billing[cvv]" size="4" maxlength="4" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" credit_card_cvv caption="CVV Number"/>

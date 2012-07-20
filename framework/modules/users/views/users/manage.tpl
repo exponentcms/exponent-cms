@@ -29,7 +29,7 @@
         <h1>{$moduletitle|default:"Manage Users"|gettext}</h1>
     </div>
 	<p>
-        {'From here, you can create, modify and remove normal user accounts.'|gettext}&nbsp;&nbsp;
+        {'From here, you can create, modify and remove normal user accounts.'|gettext}&#160;&#160;
         {'You will not be able to create, modify or remove administrator accounts (these options will be disabled).'|gettext}
     </p>
 	<div class="module-actions">
@@ -42,8 +42,8 @@
 	</div>	
 	<div id="dt_ac_container"></div>
 	
-	<div id="pagelinks">&nbsp;</div>
-	<div id="totalResult">&nbsp;</div>
+	<div id="pagelinks">&#160;</div>
+	<div id="totalResult">&#160;</div>
 	<div id="manage_user_dynamicdata">
     
     </div>

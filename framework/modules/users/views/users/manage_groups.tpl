@@ -25,7 +25,7 @@
         <h1>{$moduletitle|default:"Manage User Groups"|gettext}</h1>
     </div>
 	<p>
-        {'Groups are used to treat a set of users as a single entity, mostly for permission management.'|gettext}&nbsp;&nbsp;
+        {'Groups are used to treat a set of users as a single entity, mostly for permission management.'|gettext}&#160;&#160;
         {'This form allows you to determine which users belong to which groups, create new groups, modify existing groups, and remove groups.'|gettext}{br}
         {'When a new user account is created, it will be automatically added to all groups with a Type of \'Default\''|gettext}
     </p>

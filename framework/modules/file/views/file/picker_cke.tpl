@@ -42,7 +42,7 @@
 		<div id="dt_ac_container"></div>	
     </div>
 
-    <div id="pagelinks">&nbsp;</div>
+    <div id="pagelinks">&#160;</div>
     <div id="dynamicdata">
     
     </div>
@@ -55,7 +55,7 @@
         <div class="bd"></div>
     </div>
     {if $permissions.manage == 1}
-        {br}<a id="addlink" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&nbsp;&nbsp;
+        {br}<a id="addlink" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&#160;&#160;
         <a id="deletelink" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
     {/if}
 </div>
@@ -211,12 +211,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             var deletestring = '<a href="{/literal}{link action=delete update=$smarty.get.update id="replacewithid" controller=file}{literal}" onclick="return confirm(\'{/literal}{"Are you sure you want to delete this file?"|gettext}{literal}\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /></a>';
             deletestring = deletestring.replace('replacewithid',oRecord._oData.id);
             if (oRecord._oData.is_image==1){
-                var editorstring = '<a title="{/literal}{"Edit Image"|gettext}{literal}" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}edit-image.png" /></a>&nbsp;&nbsp;&nbsp;';
+                var editorstring = '<a title="{/literal}{"Edit Image"|gettext}{literal}" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}edit-image.png" /></a>&#160;&#160;&#160;';
                 editorstring = editorstring.replace('replacewithid',oRecord._oData.id);
             } else {
-                var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}cant-edit-image.png" />&nbsp;&nbsp;&nbsp;';
+                var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}cant-edit-image.png" />&#160;&#160;&#160;';
             }
-            var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="{"Use This Image"|gettext}" onclick="routBackToSource(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+oRecord._oData.filename+'\','+oRecord._oData.id+'); window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'use.png'}" /></a>&nbsp;&nbsp;&nbsp;'{else}''{/if}{literal};
+            var pickerstring = {/literal}{if $smarty.get.update != "noupdate"}'<a title="{"Use This Image"|gettext}" onclick="routBackToSource(\''+EXPONENT.PATH_RELATIVE+oRecord._oData.directory+oRecord._oData.filename+'\','+oRecord._oData.id+'); window.close(); return false;" href="#"><img width=16 height=16 style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'use.png'}" /></a>&#160;&#160;&#160;'{else}''{/if}{literal};
             elCell.innerHTML =  pickerstring
                                 +editorstring
                                 +deletestring;

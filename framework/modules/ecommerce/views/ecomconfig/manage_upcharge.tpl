@@ -59,7 +59,7 @@
             {foreach from=$regions item=region}
                 {if $region->country_id == $country->id}
 					<tr class="{cycle values='odd,even'}">
-						<td>&nbsp;</td>
+						<td>&#160;</td>
 						<td><strong>{$region->name}</strong></td>
 						<td>
 							{assign var="key" value="region_`$region->id`"}

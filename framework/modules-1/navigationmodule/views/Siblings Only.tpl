@@ -22,7 +22,7 @@
                     {if $section->active == 1}
                         <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>
                     {else}
-                        <span class="navlink">{$section->name}</span>&nbsp;
+                        <span class="navlink">{$section->name}</span>&#160;
                     {/if}
                 </li>
             {/if}

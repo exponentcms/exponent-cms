@@ -27,9 +27,9 @@
             <thead>
             <tr>
                 <th>
-                    {$shippingitem->method->firstname}&nbsp;{$shippingitem->method->middlename}&nbsp;{$shippingitem->method->lastname},&nbsp
-                    {$shippingitem->method->address1},&nbsp;{if $shippingitem->method->address2}{$shippingitem->method->address2},&nbsp;{/if}{$shippingitem->method->city},&nbsp
-                    {$shippingitem->method->state|statename:abbv},&nbsp;{$shippingitem->method->zip}&nbsp
+                    {$shippingitem->method->firstname}&#160;{$shippingitem->method->middlename}&#160;{$shippingitem->method->lastname},&#160;
+                    {$shippingitem->method->address1},&#160;{if $shippingitem->method->address2}{$shippingitem->method->address2},&#160;{/if}{$shippingitem->method->city},&#160;
+                    {$shippingitem->method->state|statename:abbv},&#160;{$shippingitem->method->zip}&#160;
 
                     <ul class="items">
                     {foreach from=$shippingitem->orderitem item=product}

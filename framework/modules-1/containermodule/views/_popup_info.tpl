@@ -30,11 +30,11 @@
                     </tr>
                 {else}
                     <tr>
-                        <td>{'View'|gettext}:&nbsp;</td>
+                        <td>{'View'|gettext}:&#160;</td>
                         <td>{$container->view}</td>
                     </tr>
                     <tr>
-                        <td>{'Title'|gettext}:&nbsp;</td>
+                        <td>{'Title'|gettext}:&#160;</td>
                         <td>{if $container->title == ""}<em>&lt;{'none'|gettext}&gt;</em>{else}{$container->title}{/if}</td>
                     </tr>
                 {/if}

@@ -34,7 +34,7 @@
     <th>{'Use as Billing'|gettext}</th>
     <th>{'Use as Shipping'|gettext}</th>
     <th>{'Address'|gettext}</th>
-    <th>&nbsp;</th>
+    <th>&#160;</th>
     </thead>
     <tbody>
     

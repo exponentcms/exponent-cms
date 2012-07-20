@@ -1668,9 +1668,11 @@ class storeController extends expController {
     
     function showHistory() {
         $h = new expHistory();
-        echo "<xmp>";
+//        echo "<xmp>";
+        echo "<pre>";
         print_r($h);
-        echo "</xmp>";
+//        echo "</xmp>";
+        echo "</pre>";
     }
     
     function import_external_addresses() {

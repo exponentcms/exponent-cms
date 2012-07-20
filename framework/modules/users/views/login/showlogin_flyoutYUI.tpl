@@ -74,7 +74,7 @@
 			<a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
 		</div>
     </div>
-    <a class="triggerlogin" href="#">&nbsp;&nbsp;&nbsp;{$displayname}</a>
+    <a class="triggerlogin" href="#">&#160;&#160;&#160;{$displayname}</a>
 	{/if}
 
 {script unique="flyout" type="text/javascript" yui3mods="1"}

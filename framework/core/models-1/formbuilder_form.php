@@ -45,7 +45,7 @@ class formbuilder_form {
 		$form->register('resetbtn',gt('Reset Button Text'), new textcontrol($object->resetbtn),true,gt('Form'));
         $form->register(null,'', new htmlcontrol('<h3>'.gt('Database Settings').'</h3>'),true,gt('Form'));
         $form->register('is_saved',gt('Save Submissions to the Database'),new checkboxcontrol($object->is_saved,false),true,gt('Form'));
-        $form->register(null,'', new htmlcontrol('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.gt('To help prevent data loss, you cannot remove a form\'s database table once it has been added.').'<br />'),true,gt('Form'));
+        $form->register(null,'', new htmlcontrol('&#160;&#160;&#160;&#160;&#160;'.gt('To help prevent data loss, you cannot remove a form\'s database table once it has been added.').'<br />'),true,gt('Form'));
         if ($object->is_saved == 1) {
             $form->controls['is_saved']->disabled = true;
             $form->meta('is_saved','1');

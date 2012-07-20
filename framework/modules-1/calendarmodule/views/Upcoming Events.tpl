@@ -22,12 +22,12 @@
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
 		{permissions}
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;
+				&#160;&#160;|&#160;&#160;
                 <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 		{/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
-        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
 	</div>
 	<h1>
         {if !empty($config->enable_ical)}

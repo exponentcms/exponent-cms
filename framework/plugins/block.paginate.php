@@ -309,9 +309,9 @@ function smarty_block_paginate($params,$content,&$smarty) {
 				if (this.columns[data].attribute != "" || this.columns[data].sortFunc != null) {
 					cell_content = "<a href='#' onclick='paginate.sort(\""+data+"\"); return false;'>"+this.columns[data].headerText+"</a>";
 					if (this.columns[data].ascending != -1) {
-						cell_content += "&nbsp;<img id='sortCol_"+data+"' src='<?php echo ICON_RELATIVE; ?>sort"+(this.columns[data].ascending ? "de" : "a")+"scending.png' border='0' />";
+						cell_content += "&#160;<img id='sortCol_"+data+"' src='<?php echo ICON_RELATIVE; ?>sort"+(this.columns[data].ascending ? "de" : "a")+"scending.png' border='0' />";
 					} else {
-						cell_content += "&nbsp;<img id='sortCol_"+data+"' src='<?php echo ICON_RELATIVE; ?>blank.gif' border='0' />";
+						cell_content += "&#160;<img id='sortCol_"+data+"' src='<?php echo ICON_RELATIVE; ?>blank.gif' border='0' />";
 					}
 				}
 				cell.innerHTML = cell_content;
@@ -337,7 +337,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 							cell.setAttribute("valign","top");
 							var sText = "";
 							if (this.columns[data].overrideFunc == undefined) {
-								sText = (this.filteredData[dataObject][this.columns[data].attribute] == undefined)?"&nbsp;":this.filteredData[dataObject][this.columns[data].attribute];
+								sText = (this.filteredData[dataObject][this.columns[data].attribute] == undefined)?"&#160;":this.filteredData[dataObject][this.columns[data].attribute];
 
 							}
 							else {

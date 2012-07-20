@@ -18,7 +18,7 @@
     <tr>
         <th>{'Item'|gettext}</th>
         <th>{'Price'|gettext}</th>
-        <th>&nbsp;</th>
+        <th>&#160;</th>
     </tr>
     {foreach from=$items item=item}
     <tr class="{cycle values="odd,even"}">

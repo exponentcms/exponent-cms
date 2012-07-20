@@ -30,7 +30,7 @@
 	        <th>{'Name'|gettext}</th>
 		    <th>{'Promo Code'|gettext}</th>
 		    <th>{'Discount'|gettext}</th>
-		    <th>&nbsp;</th>
+		    <th>&#160;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -53,7 +53,7 @@
 	        <th>{'Name'|gettext}</th>
 		    <th>{'Promo Code'|gettext}</th>
 		    <th>{'Discount'|gettext}</th>
-		    <th>&nbsp;</th>
+		    <th>&#160;</th>
 	    </tr>
 	    </thead>
 	    {foreach from=$promo_codes item=code}

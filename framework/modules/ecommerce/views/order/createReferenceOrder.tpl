@@ -44,7 +44,7 @@
                         {"Price"|gettext}
                     </th>
                     
-                    <th style="text-align:left;" nowrap="">Include&nbsp;Item?</th>
+                    <th style="text-align:left;" nowrap="">Include&#160;Item?</th>
                 </tr>
             </thead>
             <tbody>

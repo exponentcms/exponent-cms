@@ -15,7 +15,7 @@
 
 <h2>{'Configure this Module'|gettext}</h2>
 <p>
-    {'This is where you can configure the settings to be used by this banner module.'|gettext}&nbsp;&nbsp;
+    {'This is where you can configure the settings to be used by this banner module.'|gettext}&#160;&#160;
     {'These settings will only apply to this particular banner module.'|gettext}
 </p>
 <h2>{'Number of Banners to Display'|gettext}</h2>

@@ -52,23 +52,25 @@
                 <span class="attribution">
                     {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
                     {if $item->publish_date > $smarty.now}
-                        <strong>{'Will be'|gettext}&nbsp;
+                        <strong>{'Will be'|gettext}&#160;
                     {/if}
-                    {'Posted by'|gettext} <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a> {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
+                    <span class="label tags">{'Posted by'|gettext}</span>
+                    <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
+                    {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
                     {if $item->publish_date > $smarty.now}
-                        </strong>&nbsp;
+                        </strong>&#160;
                     {/if}
                 </span>
-
-                | <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
-                
+                &#160;|&#160;
+                <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
 				{if $item->expTag|@count>0 && !$config.disabletags}
-				| <span class="tags">
-					{"Tags"|gettext}: 
-					{foreach from=$item->expTag item=tag name=tags}
-					<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-					{/foreach} 
-				</span>
+                    &#160;|&#160;
+                    <span class="label tags">{'Tags'|gettext}:</span>
+                    <span class="value">
+                        {foreach from=$item->expTag item=tag name=tags}
+                            <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
+                        {/foreach}
+                    </span>
 				{/if}
             </div>
             {permissions}

@@ -20,7 +20,7 @@
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
-        {printer_friendly_link}{export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}{br}
+        {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
         {subscribe_link}
         {assign var=myloc value=serialize($__loc)}
         {permissions}
@@ -44,7 +44,7 @@
             <p>
             <span class="label dated">{'Dated'|gettext}:</span>
             <span class="value">{$file->publish_date|format_date}</span>
-            &nbsp;|&nbsp;
+            &#160;|&#160;
             {if $record->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->duration}</span>
@@ -58,13 +58,13 @@
                     <span class="value">{$record->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
                 {/if}
             {/if}
-            &nbsp;|&nbsp;
+            &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$record->downloads}</span>
             {if $record->expTag|@count>0 && !$config.disabletags}
-                &nbsp;|&nbsp;
-                <span class="tags">
-                    {'Tags'|gettext}:
+                &#160;|&#160;
+                <span class="label tags">{'Tags'|gettext}:</span>
+                <span class="value">
                     {foreach from=$record->expTag item=tag name=tags}
                         <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
                     {/foreach}

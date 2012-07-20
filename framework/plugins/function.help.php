@@ -43,7 +43,7 @@ function smarty_function_help($params,&$smarty) {
         }
 
         // figure out the params
-        $text = empty($params['text']) ? '&nbsp' : $params['text'];
+        $text = empty($params['text']) ? '&#160;' : $params['text'];
 
         $title = empty($params['title']) ? gt('Get Help').' for '.$params['module'] : $params['title'];
 

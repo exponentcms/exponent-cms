@@ -120,7 +120,7 @@ class form extends baseform {
 		if (in_array($name,$this->controlIdx)) return false;
 		
 		$this->controls[$name] = $control;
-		$this->controlLbl[$name] = str_replace(" ","&nbsp;",$label);
+		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
         $this->tabs[$name] = $tab;
 		if (!in_array($afterName,$this->controlIdx)) {
 			$this->controlIdx[] = $name;
@@ -151,7 +151,7 @@ class form extends baseform {
 		if (in_array($name,$this->controlIdx)) return false;
 		
 		$this->controls[$name] = $control;
-		$this->controlLbl[$name] = str_replace(" ","&nbsp;",$label);
+		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
         $this->tabs[$name] = $tab;
 
 		if (!in_array($beforeName,$this->controlIdx)) {

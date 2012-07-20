@@ -105,7 +105,7 @@
 						</div>
 						
 						<div class="actions">
-							<a class="accordionToggleItem" href="#">&nbsp;</a>
+							<a class="accordionToggleItem" href="#">&#160;</a>
 						</div>
 					</div>
 				</div>
@@ -170,7 +170,7 @@
 							</table>
 						</div>
 						<div class="actions">
-							<a class="accordionToggleItem" href="#">&nbsp;</a>
+							<a class="accordionToggleItem" href="#">&#160;</a>
 						</div>
 					</div>
 				</div>
@@ -233,7 +233,7 @@
 					</div>
 					
 					<div class="actions">
-						<a class="accordionToggleItem" href="#">&nbsp;</a>
+						<a class="accordionToggleItem" href="#">&#160;</a>
 					</div>
 				</div>
 			</div>

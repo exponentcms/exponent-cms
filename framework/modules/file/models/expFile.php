@@ -1213,10 +1213,12 @@ class expFile extends expRecord {
 				else if ($file != "." && $file != "..") {
 					echo "BAD STUFF HAPPENED<br />";
 					echo "--------Don't know what to do with $dir/$file<br />";
-					echo "<xmp>";
+//					echo "<xmp>";
+                    echo "<pre>";
 					print_r(stat("$dir/$file"));
 					echo filetype("$dir/$file");
-					echo "</xmp>";
+//					echo "</xmp>";
+                    echo "</pre>";
 				}
 			}
 		}

@@ -17,6 +17,8 @@ Added / Fixed / changed for 2.0.8
   - adds ability to alphabetically sort re-ranking/order lists
   - adds quick upload feature to wysiwyg editor (upload in editor without going to file manager/uploader)
   - finally implements email alerts (ealerts) in a usable form for blog, news, & filedownloads (subscribe to updates)
+  - adds support for custom smarty plugins & form controls (in current theme folder)
+  - adds alpha-level implementation of less style sheets (both system and theme)
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.7

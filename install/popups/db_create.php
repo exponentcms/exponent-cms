@@ -49,25 +49,23 @@ function buildHelp(dbname,username,password,target) {
 <?php echo gt('Exponent supports both the MySQL database server and the PostGreSQL database server as backends.'); ?>
 <br /><br />
 <div align="center">
-|&nbsp;<a href="#mysql"><?php echo gt('MySQL'); ?></a>&nbsp;|&nbsp;<a href="#pgsql"><?php echo gt('PostGreSQL'); ?></a>&nbsp;|
+|&#160;<a href="#mysql"><?php echo gt('MySQL'); ?></a>&#160;|&#160;<a href="#pgsql"><?php echo gt('PostGreSQL'); ?></a>&#160;|
 </div>
 <br />
-
-<a name="form"></a>
 <br />
-<div class="important_box">
+<div id="form" class="important_box">
 <?php echo gt('Fill out the form below and click "Go" to generate SQL statements for each supported database server.'); ?>
 <br />
 <form>
 <table>
 <tr>
-	<td><?php echo gt('Database'); ?>:&nbsp;</td>
+	<td><?php echo gt('Database'); ?>:&#160;</td>
 	<td><input class="text" type="text" name="dbname" value="" /></td>
 </tr><tr>
-	<td><?php echo gt('Username'); ?>:&nbsp;</td>
+	<td><?php echo gt('Username'); ?>:&#160;</td>
 	<td><input class="text" type="text" name="username" value="" /></td>
 </tr><tr>
-	<td><?php echo gt('Password'); ?>:&nbsp;</td>
+	<td><?php echo gt('Password'); ?>:&#160;</td>
 	<td><input class="text" type="text" name="password" value="" /></td>
 </tr><tr>
 	<td></td>
@@ -78,9 +76,8 @@ function buildHelp(dbname,username,password,target) {
 <br />
 </div>
 <br /><br />
-<a name="mysql"></a>
 <hr size="1" />
-<img src="images/mysql.png" /><br />
+<img id="mysql" src="images/mysql.png" /><br />
 <strong><?php echo gt('MySQL Database Creation'); ?></strong>
 <br /><br />
 <?php echo gt('If you have access to the database server, and have sufficient privileges to create databases, you can use the following SQL statements to setup the database for Exponent.  Note that you will have to fill in the form above before using these.'); ?>
@@ -98,9 +95,8 @@ tpls.push("GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP to _
 </script>
 
 <br /><br />
-<a name="pgsql"></a>
 <hr size="1" />
-<img src="images/pgsql.gif" /><br />
+<img id="pgsql" src="images/pgsql.gif" /><br />
 <strong><?php echo gt('PostGreSQL Database Creation'); ?></strong>
 <br /><br />
 <?php echo gt('Because PostGreSQL does not maintain its own set of users like MySQL (and instead relies on system users) you will have to refer to the <a href="http://www.postgresql.org/">online documentation</a> for information on creating new databases and assigning user permissions.'); ?>

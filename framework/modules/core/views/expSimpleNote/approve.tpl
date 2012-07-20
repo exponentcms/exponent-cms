@@ -16,7 +16,7 @@
 <div class="module simplenote approve">
 	<h1>{'Edit & Approve a Note'|gettext}</h1>
     <p>
-        {'To approve a note just check the \'Approve Note\' checkbox and click the approve button below.'|gettext}&nbsp;&nbsp;
+        {'To approve a note just check the \'Approve Note\' checkbox and click the approve button below.'|gettext}&#160;&#160;
         {'If you need to edit the note before you approve it and let it go live, you can do that here as well.'|gettext}
     </p>
 	{form action=approve_submit}

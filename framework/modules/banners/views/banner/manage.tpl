@@ -20,7 +20,7 @@
 <div class="module banner manage">
 	<h1>{$moduletitle|default:"Manage Banners"|gettext}</h1>
 	<p>
-        {'You can manage the banners for your site\'s banner modules here.'|gettext}&nbsp;&nbsp;
+        {'You can manage the banners for your site\'s banner modules here.'|gettext}&#160;&#160;
         {'The banners you create and configure here will be available to all the banner modules you have on your site.'|gettext}
     </p>
 	{icon class=add action=create text="Create a new banner"|gettext}{br}
@@ -32,7 +32,7 @@
 	<table class="exp-skin-table">
 	    <thead>
 			<tr>
-				<th>&nbsp;</th>
+				<th>&#160;</th>
 				{$page->header_columns}
                 <th>{'Actions'|gettext}</th>
 			</tr>

@@ -314,7 +314,7 @@ class expSettings {
 
             $form = new form();
 
-            $form->register(null,'',new htmlcontrol('<a name="config_top"></a><h3>'.gt('Configuration Options').'</h3>'));
+            $form->register(null,'',new htmlcontrol('<h3 id="config_top">'.gt('Configuration Options').'</h3>'));
             $form->register('configname',gt('Profile Name'),new textcontrol($configname));
             $form->register('activate',gt('Activate'),new checkboxcontrol((!defined('CURRENTCONFIGNAME') || CURRENTCONFIGNAME==$configname)));
 
@@ -326,7 +326,7 @@ class expSettings {
                     $arr = include(BASE.'conf/extensions/'.$file);
                     // Check to see if the current user is a super admin, and only include database if so
                     if (substr($file,0,-14) != 'database' || $user->is_admin == 1) {
-                        $form->register(null,'',new htmlcontrol('<a name="config_'.count($sections).'"></a><div style="font-weight: bold; margin-top: 1.5em; border-top: 1px solid black; border-bottom: 1px solid black; background-color: #ccc; font-size: 12pt;">' . $arr[0] . '</div><a href="#config_top">Top</a>'));
+                        $form->register(null,'',new htmlcontrol('<div id="config_'.count($sections).'" style="font-weight: bold; margin-top: 1.5em; border-top: 1px solid black; border-bottom: 1px solid black; background-color: #ccc; font-size: 12pt;">' . $arr[0] . '</div><a href="#config_top">Top</a>'));
                         $sections[] = '<a href="#config_'.count($sections).'">'.$arr[0].'</a>';
                         foreach ($arr[1] as $directive=>$info) {
 
@@ -347,7 +347,7 @@ class expSettings {
                     }
                 }
             }
-//            $form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&nbsp;&nbsp;|&nbsp;&nbsp;',$sections)));
+//            $form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&#160;&#160;|&#160;&#160;',$sections)));
             $form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 
             return $form;

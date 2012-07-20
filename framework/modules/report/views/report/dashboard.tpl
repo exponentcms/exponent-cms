@@ -54,7 +54,7 @@
                 {foreach from=$orders item=order key=tkey name=typeloop}
                 <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
                     <td>{$tkey}</td>
-                    <td>&nbsp;</td>
+                    <td>&#160;</td>
                     <td>{$order.num_orders}</td>
                     <td>{$order.num_items}</td>
                     <td style="text-align:right;">${$order.grand_total|number_format:2}</td>
@@ -62,7 +62,7 @@
                     {foreach from=$order item=stat key=skey name=typeloop}
                     {if $skey != 'num_orders' && $skey!= 'num_items' && $skey != 'grand_total'}
                         <tr class="{cycle values="even,odd"}" style="color:grey;">
-                            <td>&nbsp;</td>
+                            <td>&#160;</td>
                             <td>{$skey}</td>
                             <td>{$stat.num_orders}</td>
                             <td>{$stat.num_items}</td>

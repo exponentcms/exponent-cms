@@ -143,7 +143,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
         
         var draglabel = YAHOO.util.Dom.get(real.id.replace("dragtable","ygtvlabelel")).innerHTML;
         this.ddclassindicator = "nodrop"
-        proxy.innerHTML = "<div id=\"dropindicator\" class=\""+this.ddclassindicator+"\">&nbsp;</div><span id=\"draglable\">"+draglabel+"</span>";
+        proxy.innerHTML = "<div id=\"dropindicator\" class=\""+this.ddclassindicator+"\">&#160;</div><span id=\"draglable\">"+draglabel+"</span>";
         this.setDelta(-10,-10);
     
         YAHOO.util.Dom.setStyle(proxy, 'width', 'auto');
@@ -580,7 +580,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
              sb[sb.length] = '<td id="' + this.getToggleElId();
              sb[sb.length] = '" class="ygtvcell ';
              sb[sb.length] = this.getStyle() ;
-             sb[sb.length] = '"><a href="#" class="ygtvspacer" style="display:block;text-decoration:none;">&nbsp;</a></td>';
+             sb[sb.length] = '"><a href="#" class="ygtvspacer" style="display:block;text-decoration:none;">&#160;</a></td>';
          }
 
          sb[sb.length] = '<td id="' + this.contentElId; 
@@ -595,7 +595,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
              sb[sb.length] = ' class="nodeDragHandle"';
              //sb[sb.length] = ' onclick="javascript:' + this.getCheckLink() + '">';
              sb[sb.length] = '">';
-             sb[sb.length] = '<div id="nodeDragHandle' + this.index + '" class="ygtvspacer" style="width:100%;height:100%;">&nbsp;</div></td>';
+             sb[sb.length] = '<div id="nodeDragHandle' + this.index + '" class="ygtvspacer" style="width:100%;height:100%;">&#160;</div></td>';
              //console.debug(this.getElId());
              //YAHOO.util.Dom.setStyle(this.getElId(), 'background', 'red');
          }

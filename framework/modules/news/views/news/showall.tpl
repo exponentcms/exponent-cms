@@ -53,8 +53,9 @@
             </h2>
             <span class="date">{$item->publish_date|date_format}</span>
             {if $item->expTag|@count>0 && !$config.disabletags}
-                | <span class="tags">
-                    {"Tags"|gettext}:
+                &#160;|&#160;
+                <span class="label tags">{'Tags'|gettext}:</span>
+                <span class="value">
                     {foreach from=$item->expTag item=tag name=tags}
                         <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
                     {/foreach}

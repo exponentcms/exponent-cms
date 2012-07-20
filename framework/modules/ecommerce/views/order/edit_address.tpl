@@ -24,8 +24,8 @@
         {control type=hidden name=type value=$type}
         {control type=hidden name=same value=$same}
         {if $same==true}
-            {'This address is the same for both shipping and billing on this order.'|gettext}&nbsp;&nbsp;
-            {'If you update the existing address, it will update both the shipping and billing address for this order.'|gettext}&nbsp;&nbsp;
+            {'This address is the same for both shipping and billing on this order.'|gettext}&#160;&#160;
+            {'If you update the existing address, it will update both the shipping and billing address for this order.'|gettext}&#160;&#160;
             {'If you save this as a new address, it will leave the existing address as is and only update the'|gettext} {$type} {'address'|gettext}.{br}
         {else}
             {'If you update the existing address, it will change this saved address permanently.'|gettext}
@@ -45,8 +45,8 @@
         {control type=text name=address[city] label="*"|cat:"City"|gettext value=$record->city}
         
         {control type=state name=address[state] label="*"|cat:"State" includeblank="-- Choose a State --"|gettext value=$record->state add_other=true all_us_territories=true exclude="6,8,10,17,30,46,50"}
-        {control type=text name=address[non_us_state] label="&nbsp;"|cat:("State/Province if non-US"|gettext) value=$record->non_us_state}
-        {control type=country name=address[country] label="&nbsp;"|cat:("Country"|gettext) value=$record->country|default:223}
+        {control type=text name=address[non_us_state] label="&#160;"|cat:("State/Province if non-US"|gettext) value=$record->non_us_state}
+        {control type=country name=address[country] label="&#160;"|cat:("Country"|gettext) value=$record->country|default:223}
         
         {control type=text name=address[zip] label="*"|cat:"Zip Code"|gettext value=$record->zip}
         {control type="text" name="address[phone]" label="*"|cat:"Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$record->phone}

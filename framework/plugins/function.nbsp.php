@@ -19,21 +19,28 @@
 /**
  * Smarty plugin
  * @package Smarty-Plugins
- * @subpackage Modifier
+ * @subpackage Function
  */
 
 /**
- * Smarty {nobreak} modifier plugin
+ * Smarty {nbsp} function plugin
  *
- * Type:     modifier<br>
- * Name:     nobreak<br>
- * Purpose:  replace spaces with non-breaking spaces
+ * Type:     function<nbsp>
+ * Name:     nbsp
+ * Purpose:  create an appropriate non-breaking space
  *
- * @param array
- * @return array
+ * @param         $params
+ * @param \Smarty $smarty
  */
-function smarty_modifier_nobreak($string) {
-	return str_replace(' ', '&#160;', $string);
+function smarty_function_nbsp($params,&$smarty) {
+    if (empty($params['count'])) {
+        echo "&#160;";
+    } else {
+        for ($i=0; $i++; $i<$params['count']) {
+            echo "&#160;";
+        }
+    }
 }
 
 ?>
+

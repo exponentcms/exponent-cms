@@ -31,7 +31,7 @@
     <p>
         <strong>{'Additional information is required before we can add to your cart'|gettext}</strong>
     {br}{br}
-        {'If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items.'|gettext}&nbsp;&nbsp;
+        {'If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items.'|gettext}&#160;&#160;
         {'If you would like different options or personalized fields for each item, please add them one at a time to your cart.'|gettext}
     </p>
     {clear}

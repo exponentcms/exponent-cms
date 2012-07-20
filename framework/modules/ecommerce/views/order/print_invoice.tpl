@@ -36,7 +36,7 @@
 				        {if $shipping->shippingmethod->company != ""}{$shipping->shippingmethod->company}<br>{/if}
 				        {if $shipping->shippingmethod->address1 != ""}{$shipping->shippingmethod->address1}<br>{/if}
 				        {if $shipping->shippingmethod->address2 != ""}{$shipping->shippingmethod->address2}<br>{/if}
-				        {$shipping->shippingmethod->city},&nbsp;
+				        {$shipping->shippingmethod->city},&#160;
                         {if $shipping->shippingmethod->state == -2}
                              {$shipping->shippingmethod->non_us_state}
                         {elseif $shipping->shippingmethod->state != ""}
@@ -64,7 +64,7 @@
 				{if $order->billingmethod[0]->company != ""}{$order->billingmethod[0]->company}<br>{/if}
 				{if $order->billingmethod[0]->address1 != ""}{$order->billingmethod[0]->address1}{br}{/if}
 				{if $order->billingmethod[0]->address2 != ""}{$order->billingmethod[0]->address2}<br>{/if}
-				{$order->billingmethod[0]->city},&nbsp;
+				{$order->billingmethod[0]->city},&#160;
                         {if $order->billingmethod[0]->state == -2}
                              {$order->billingmethod[0]->non_us_state}
                         {elseif $order->billingmethod[0]->state != ""}
