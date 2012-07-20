@@ -166,7 +166,7 @@ class newsController extends expController {
                     $rssObject->isRss = true;
 					$t = explode(' • ',$rssObject->title);
 					$rssObject->forum = $t[0];
-					$rssObject->topic = $t[1];
+					if (!empty($t[1])) $rssObject->topic = $t[1];
                     $news[] = $rssObject;
                 }
             }
