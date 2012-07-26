@@ -906,7 +906,7 @@ class storeController extends expController {
 #        eDebug($shipping_services);
 #        eDebug($shipping_methods);
 
-		if($this->params['product_type'] == "product" || $this->params['product_type'] == "childProduct") {
+		if(!empty($this->params['product_type']) && ($this->params['product_type'] == "product" || $this->params['product_type'] == "childProduct")) {
 			//if new record and it's a child, then well set the child rank to be at the end
 			if (empty($record->id) && $record->isChild()) 
 			{               

@@ -670,7 +670,7 @@ class expRecord {
 	 */
 	public function makeSefUrl() {
         global $db, $router;        
-        if (isset($this->title)) {
+        if (!empty($this->title)) {
 			$this->sef_url = $router->encode($this->title);
 		} else {
 			$this->sef_url = $router->encode('Untitled');
