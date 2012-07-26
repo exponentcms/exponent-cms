@@ -910,17 +910,17 @@ class administrationController extends expController {
         $data = $offset = $added = array();
         foreach ($list as $abbr => $info) {
             foreach ($info as $zone) {
-                if ( ! empty($zone['timezone_id'])
-                    AND
-                    ! in_array($zone['timezone_id'], $added)
-                    AND
-                      in_array($zone['timezone_id'], $idents)) {
-                    $z = new DateTimeZone($zone['timezone_id']);
-                    $c = new DateTime(null, $z);
-                    $zone['time'] = $c->format('H:i a');
-                    $data[] = $zone;
-                    $offset[] = $z->getOffset($c);
-                    $added[] = $zone['timezone_id'];
+                if (!empty($zone['timezone_id']) AND !in_array($zone['timezone_id'],$added) AND in_array($zone['timezone_id'],$idents)) {
+                    try{
+                        $z = new DateTimeZone($zone['timezone_id']);
+                        $c = new DateTime(null, $z);
+                        $zone['time'] = $c->format('H:i a');
+                        $data[] = $zone;
+                        $offset[] = $z->getOffset($c);
+                        $added[] = $zone['timezone_id'];
+                    } catch(Exception $e) {
+                        flash('error', $e->getMessage());
+                    }
                 }
             }
         }
