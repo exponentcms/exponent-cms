@@ -130,7 +130,6 @@ function smarty_function_ddrerank($params,&$smarty) {
                 }
                 $html .='</ul>
                     <div class="yui3-widget-ft">
-                    <a href="#" class="alphasort" name=alpha'.$uniqueid.' id=alpha'.$uniqueid.' style="float:left;">'.gt('Sort List Alphabetically').'</a>
                     <button type="submit" class="awesome small '.BTN_COLOR.'">'.gt('Save').'</button>
                     </div>
                     </form>
@@ -160,7 +159,6 @@ function smarty_function_ddrerank($params,&$smarty) {
             }).plug(Y.Plugin.Drag);
             
             panel.dd.addHandle('.yui3-widget-hd');
-            
             var panelContainer = Y.one('#panel".$uniqueid."').get('parentNode');
             panelContainer.addClass('exp-panel-container');
             Y.one('#panel".$uniqueid."').removeClass('hide');
