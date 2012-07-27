@@ -40,6 +40,7 @@ class expCSS {
         $less_vars =!empty($params['lessvars']) ? $params['lessvars'] : array();
         if (isset($params['lesscss'])) {
             $less_array = $params['lesscss'];
+            if (!empty($less_array) && !is_array($less_array)) $less_array = array($less_array);
             foreach ($less_array as $less_path) {
                 $css_path = str_replace("/less/","/css/",$less_path);
                 $css_path = substr($css_path,0,strlen($css_path)-4)."css";

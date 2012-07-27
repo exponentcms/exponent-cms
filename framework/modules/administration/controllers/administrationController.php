@@ -786,6 +786,7 @@ class administrationController extends expController {
 		    $message .= ' '.gt('with').' '.$this->params['sv'].' '.gt('style variation');
 	    }
 	    flash('message',$message);
+        expTheme::removeSmartyCache();
     	expHistory::returnTo('manageable');
     }	
     
