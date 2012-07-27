@@ -75,7 +75,9 @@ if (expPermissions::check('configure',$loc)) {
 		$template->assign('form_html',$form->toHTML());
 	}
 	$template->assign('hasConfig',$hasConfig);
-	
+    $mod = new $loc->mod();
+    $template->assign('title',$_GET['module'] != 'navigationmodule'? $mod->name() : '');
+
 	$template->output();
 } else {
 	echo SITE_403_HTML;

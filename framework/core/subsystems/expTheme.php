@@ -380,6 +380,9 @@ class expTheme {
 				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
 			}
 		}
+        if (!is_readable($theme) && is_readable(BASE.'themes/basetheme/index.php')) {
+            $theme =  BASE.'themes/basetheme/index.php';
+        }
 		return $theme;
 	}
 

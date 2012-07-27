@@ -69,7 +69,7 @@
 				<div id="tab6">
                     <h2>{'Definable Fields'|gettext} | {icon class="manage" controller="expDefinableField" action="manage"}</h2>
 					{foreach from=$definablefields item=fields}    
-						{control type="checkbox" name="expDefinableField[]" label="`$fields->name` - `$fields->type`"|gettext value="`$fields->id`" checked="`$record->expDefinableField`" postfalse=1}
+						{control type="checkbox" name="expDefinableField[]" label="`$fields->name` - `$fields->type`" value="`$fields->id`" checked="`$record->expDefinableField`" postfalse=1}
 					{/foreach}
                 </div>
             </div>

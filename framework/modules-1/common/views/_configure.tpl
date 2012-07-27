@@ -18,7 +18,7 @@
 
 {/css}
 <div class="form_header">
-	<h1>{'Module Configuration'|gettext}</h1>
+	<h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
 	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
 </div>
 {$form_html}
