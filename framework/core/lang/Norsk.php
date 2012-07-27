@@ -1,7 +1,6 @@
 <?php
 return array(
 	""=>"",
-	" = all)"=>" = all)",
 	"# of Docs"=>"# av dokumenter",
 	"# of Items"=>"# av elementer",
 	"# of Orders"=>"# av bestillinger",
@@ -579,6 +578,7 @@ return array(
 	"Configure Database"=>"Konfigurere Database",
 	"Configure File Display Settings"=>"Konfigurere innstillinger for visning av fil",
 	"Configure Settings"=>"Konfigurere innstillinger for",
+	"Configure Settings for this"=>"Konfigurere innstillinger for dette",
 	"Configure Shopping Cart"=>"Konfigurere handlekurv",
 	"Configure Store"=>"Konfigurere butikk",
 	"Configure Website"=>"Konfigurere nettsted",
@@ -1485,6 +1485,7 @@ return array(
 	"Item quantity:"=>"Vareantall:",
 	"Items"=>"Elementer",
 	"Items Tagged with"=>"Elementer som er merket med",
+	"Items per page (empty = 10, 0 = all)"=>"Elementer per side (tom = 10, 0 = alle)",
 	"Items per-page"=>"Elementer per side",
 	"January"=>"Januar",
 	"July"=>"Juli",
@@ -3539,7 +3540,6 @@ return array(
 	"\'Session Expired\' Error  Message"=>"Økten utløpt feilmelding",
 	"\'Thank You\' Message"=>"\'Takk\'-melding",
 	"\'Voting Closed\' Message"=>"Stemmeberettigede lukket meldingen",
-	"`` - ``"=>"`` - ``",
 	"add"=>"legge til",
 	"add/remove"=>"Legg til/fjern",
 	"address"=>"adresse",

@@ -1,7 +1,6 @@
 <?php
 return array(
 	""=>"",
-	" = all)"=>" = kaikki)",
 	"# of Docs"=>"Docs #",
 	"# of Items"=>"# Kohteet",
 	"# of Orders"=>"# Tilaukset",
@@ -579,6 +578,7 @@ return array(
 	"Configure Database"=>"Tietokannan asetusten määrittäminen",
 	"Configure File Display Settings"=>"Määritä näyttöasetukset",
 	"Configure Settings"=>"Asetusten määrittäminen",
+	"Configure Settings for this"=>"Tämä asetusten määrittäminen",
 	"Configure Shopping Cart"=>"Määritä Ostoskori",
 	"Configure Store"=>"Määrittää säilön",
 	"Configure Website"=>"Määrittää Web-sivuston",
@@ -1485,6 +1485,7 @@ return array(
 	"Item quantity:"=>"Nimikkeen määrä:",
 	"Items"=>"Kohteet",
 	"Items Tagged with"=>"Items Tagged kanssa",
+	"Items per page (empty = 10, 0 = all)"=>"Kohteita sivua kohden (tyhjä = 10, 0 = kaikki)",
 	"Items per-page"=>"Kohteita sivulla",
 	"January"=>"Tammikuuta",
 	"July"=>"Heinäkuuta",
@@ -3539,7 +3540,6 @@ return array(
 	"\'Session Expired\' Error  Message"=>"\'Istunto on vanhentunut\'-virhesanoma",
 	"\'Thank You\' Message"=>"\'Kiitos\'-sanoma",
 	"\'Voting Closed\' Message"=>"\'Äänestys kiinni\' viesti",
-	"`` - ``"=>"`` - ``",
 	"add"=>"Lisää",
 	"add/remove"=>"Lisää tai poista",
 	"address"=>"osoite",

@@ -1,7 +1,6 @@
 <?php
 return array(
 	""=>"",
-	" = all)"=>" = all)",
 	"# of Docs"=>"# i Docs",
 	"# of Items"=>"# af elementer",
 	"# of Orders"=>"# af ordrer",
@@ -579,6 +578,7 @@ return array(
 	"Configure Database"=>"Konfigurer Database",
 	"Configure File Display Settings"=>"Konfigurere fil skærmindstillinger",
 	"Configure Settings"=>"Konfigurere indstillinger",
+	"Configure Settings for this"=>"Konfigurere indstillinger for dette",
 	"Configure Shopping Cart"=>"Konfigurere indkøbsvogn",
 	"Configure Store"=>"Konfigurere butikken",
 	"Configure Website"=>"Konfigurere Website",
@@ -1485,6 +1485,7 @@ return array(
 	"Item quantity:"=>"Varemængden:",
 	"Items"=>"Elementer",
 	"Items Tagged with"=>"Items Tagged med",
+	"Items per page (empty = 10, 0 = all)"=>"Emner pr. side (tom = 10, 0 = all)",
 	"Items per-page"=>"Emner pr. side",
 	"January"=>"Januar",
 	"July"=>"Juli",
@@ -3539,7 +3540,6 @@ return array(
 	"\'Session Expired\' Error  Message"=>"\'Session udløbet\' fejlmeddelelse",
 	"\'Thank You\' Message"=>"\'Thank You\' meddelelse",
 	"\'Voting Closed\' Message"=>"\'Stemme lukket\' meddelelse",
-	"`` - ``"=>"`` - ``",
 	"add"=>"tilføje",
 	"add/remove"=>"Tilføj/fjern",
 	"address"=>"adresse",

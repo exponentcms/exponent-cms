@@ -1,5 +1,6 @@
 <?php
 return array(
+	""=>"",
 	"# of Docs"=>"# of Docs",
 	"# of Items"=>"# of Items",
 	"# of Orders"=>"# of Orders",
@@ -8,6 +9,7 @@ return array(
 	"(current section)"=>"(current section)",
 	"(empty)"=>"(empty)",
 	"(old school) form"=>"(old school) form",
+	")"=>")",
 	"*First Name"=>"*First Name",
 	"*Last Name"=>"*Last Name",
 	"*Street Address"=>"*Street Address",
@@ -25,6 +27,7 @@ return array(
 	"--Any--"=>"--Any--",
 	"--Disregard this column--"=>"--Disregard this column--",
 	"--Select a Vendor--"=>"--Select a Vendor--",
+	"."=>".",
 	"2 Character Country Code"=>"2 Character Country Code",
 	"2 Character State Code"=>"2 Character State Code",
 	"A Billing or Shipping Name Containing"=>"A Billing or Shipping Name Containing",
@@ -575,6 +578,7 @@ return array(
 	"Configure Database"=>"Configure Database",
 	"Configure File Display Settings"=>"Configure File Display Settings",
 	"Configure Settings"=>"Configure Settings",
+	"Configure Settings for this"=>"Configure Settings for this",
 	"Configure Shopping Cart"=>"Configure Shopping Cart",
 	"Configure Store"=>"Configure Store",
 	"Configure Website"=>"Configure Website",
@@ -1481,6 +1485,7 @@ return array(
 	"Item quantity:"=>"Item quantity:",
 	"Items"=>"Items",
 	"Items Tagged with"=>"Items Tagged with",
+	"Items per page (empty = 10, 0 = all)"=>"Items per page (empty = 10, 0 = all)",
 	"Items per-page"=>"Items per-page",
 	"January"=>"January",
 	"July"=>"July",

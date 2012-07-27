@@ -1,7 +1,6 @@
 <?php
 return array(
 	""=>"",
-	" = all)"=>" = todos)",
 	"# of Docs"=>"# de Docs",
 	"# of Items"=>"# de elementos",
 	"# of Orders"=>"# de pedidos",
@@ -579,6 +578,7 @@ return array(
 	"Configure Database"=>"Configurar la base de datos",
 	"Configure File Display Settings"=>"Configurar las opciones de visualización de archivo",
 	"Configure Settings"=>"Configurar las opciones",
+	"Configure Settings for this"=>"Configurar los ajustes para esto",
 	"Configure Shopping Cart"=>"Configurar el carro de compras",
 	"Configure Store"=>"Configurar almacén",
 	"Configure Website"=>"Configurar el sitio Web",
@@ -1485,6 +1485,7 @@ return array(
 	"Item quantity:"=>"Cantidad de artículos:",
 	"Items"=>"Elementos",
 	"Items Tagged with"=>"Artículos con la etiqueta",
+	"Items per page (empty = 10, 0 = all)"=>"Elementos por página (vacío = 10, 0 = todos)",
 	"Items per-page"=>"Elementos por página",
 	"January"=>"Enero",
 	"July"=>"Julio",
@@ -3539,7 +3540,6 @@ return array(
 	"\'Session Expired\' Error  Message"=>"Mensaje de Error \'Sesión ha caducado\'",
 	"\'Thank You\' Message"=>"Mensaje de \'Gracias\'",
 	"\'Voting Closed\' Message"=>"Mensaje de \'Voto cerrado\'",
-	"`` - ``"=>"`` - ``",
 	"add"=>"Añadir",
 	"add/remove"=>"Agregar o quitar",
 	"address"=>"dirección",

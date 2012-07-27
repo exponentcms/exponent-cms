@@ -1,7 +1,6 @@
 <?php
 return array(
 	""=>"",
-	" = all)"=>" = vše)",
 	"# of Docs"=>"počet dokumentů",
 	"# of Items"=>"počet položek",
 	"# of Orders"=>"počet objednávek",
@@ -579,6 +578,7 @@ return array(
 	"Configure Database"=>"Konfigurace databáze",
 	"Configure File Display Settings"=>"Konfigurovat nastavení zobrazení souboru",
 	"Configure Settings"=>"Konfigurovat nastavení",
+	"Configure Settings for this"=>"Konfigurovat nastavení pro tento",
 	"Configure Shopping Cart"=>"Konfigurace nákupní košík",
 	"Configure Store"=>"Konfigurace úložiště",
 	"Configure Website"=>"Konfigurovat webové stránky",
@@ -1485,6 +1485,7 @@ return array(
 	"Item quantity:"=>"Množství položky:",
 	"Items"=>"Položky",
 	"Items Tagged with"=>"Položky se značkou s",
+	"Items per page (empty = 10, 0 = all)"=>"Položky na stránce (prázdné = 10, 0 = all)",
 	"Items per-page"=>"Položek na stránku",
 	"January"=>"Leden",
 	"July"=>"Červenec",
@@ -3539,7 +3540,6 @@ return array(
 	"\'Session Expired\' Error  Message"=>"Chybová zpráva \'Session vypršela\'",
 	"\'Thank You\' Message"=>"\'Děkuji\' Message",
 	"\'Voting Closed\' Message"=>"Hlasování uzavřen zprávy",
-	"`` - ``"=>"`` - ``",
 	"add"=>"Přidat",
 	"add/remove"=>"Přidat/odstranit",
 	"address"=>"adresa",
