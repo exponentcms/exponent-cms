@@ -36,9 +36,12 @@ class sales_repController extends expController {
 			'controller'=>$this->params['controller'],
 			'action'=>$this->params['action'],
 			'where'=>1,
+            'limit'=>10,
 			));
 
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function showall() {

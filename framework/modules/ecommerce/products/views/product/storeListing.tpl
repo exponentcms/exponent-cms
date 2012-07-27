@@ -42,7 +42,7 @@
         {else}                   
             {if $listing->use_special_price}
                 <span class="regular-price on-sale">{currency_symbol}{$listing->base_price|number_format:2}</span>
-                <span class="sale-price">{currency_symbol}{$listing->special_price|number_format:2}&nbsp;<sup>{"SALE!"|gettext}</sup></span>
+                <span class="sale-price">{currency_symbol}{$listing->special_price|number_format:2}&#160;<sup>{"SALE!"|gettext}</sup></span>
             {else}
                 <span class="regular-price">{currency_symbol}{$listing->base_price|number_format:2}</span>
             {/if}

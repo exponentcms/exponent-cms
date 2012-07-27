@@ -141,7 +141,9 @@ class migrationController extends expController {
 				$page->exists = false;
 			}
 		}
-        assign_to_template(array('pages'=>$pages));
+        assign_to_template(array(
+            'pages'=>$pages
+        ));
     }
 
 	/**
@@ -257,7 +259,9 @@ class migrationController extends expController {
         expHistory::set('manageable', $this->params);
         $old_db = $this->connect();
         $files = $old_db->selectObjects('file');
-        assign_to_template(array('count'=>count($files)));
+        assign_to_template(array(
+            'count'=>count($files)
+        ));
     }
 
 	/**
@@ -282,7 +286,10 @@ class migrationController extends expController {
             $db->insertObject($file,'expFiles');
 			$oldfile->exists = file_exists(BASE.$oldfile->directory."/".$oldfile->filename);
 		}
-        assign_to_template(array('files'=>$oldfiles,'count'=>count($oldfiles)));
+        assign_to_template(array(
+            'files'=>$oldfiles,
+            'count'=>count($oldfiles)
+        ));
     }
 
 	/**
@@ -313,7 +320,9 @@ class migrationController extends expController {
         }
         //eDebug($modules);
 
-        assign_to_template(array('modules'=>$modules));
+        assign_to_template(array(
+            'modules'=>$modules
+        ));
     }
 
 	/**
@@ -632,7 +641,9 @@ class migrationController extends expController {
 
 		searchController::spider();
         expSession::clearCurrentUserSessionCache();
-        assign_to_template(array('msg'=>@$this->msg));
+        assign_to_template(array(
+            'msg'=>@$this->msg
+        ));
     }
 
 	/**
@@ -662,7 +673,10 @@ class migrationController extends expController {
 				$group->exists = false;
 			}
 		}
-		assign_to_template(array('users'=>$users,'groups'=>$groups));
+		assign_to_template(array(
+            'users'=>$users,
+            'groups'=>$groups
+        ));
     }
 
 	/**
@@ -2259,7 +2273,7 @@ class migrationController extends expController {
 
 		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<b>".gt('Searching for sectionrefs that have lost their originals')."</b><br><br>");
+		print_r("<strong>".gt('Searching for sectionrefs that have lost their originals')."</strong><br><br>");
 		$sectionrefs = $old_db->selectObjects('sectionref',"is_original=0");
 		print_r("Found: ".count($sectionrefs)." copies (not originals)<br>");
 		foreach ($sectionrefs as $sectionref) {
@@ -2274,7 +2288,7 @@ class migrationController extends expController {
 	
 		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<b>".gt('Searching for sectionrefs pointing to missing sections/pages')." <br>".gt('to fix for the Recycle Bin')."</b><br><br>");
+		print_r("<strong>".gt('Searching for sectionrefs pointing to missing sections/pages')." <br>".gt('to fix for the Recycle Bin')."</strong><br><br>");
 		$sectionrefs = $old_db->selectObjects('sectionref',"refcount!=0");
 		foreach ($sectionrefs as $sectionref) {
 			if ($old_db->selectObject('section',"id='".$sectionref->section."'") == null) {

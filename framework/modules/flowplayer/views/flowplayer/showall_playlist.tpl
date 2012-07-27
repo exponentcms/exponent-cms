@@ -13,9 +13,9 @@
  *
  *}
 
-{script unique="flowplayer" src="`$smarty.const.PATH_RELATIVE`external/flowplayer3/flowplayer-3.2.10.min.js"}
+{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_PATH`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
 {literal}
-flowplayer("playlist-player", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowplayer-3.2.11.swf",
+flowplayer("playlist-player", EXPONENT.FLOWPLAYER_PATH+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
     {
 		wmode: 'transparent',
 		clip: {
@@ -25,7 +25,7 @@ flowplayer("playlist-player", EXPONENT.PATH_RELATIVE+"external/flowplayer3/flowp
 			},
         plugins:  {
             controls: {
-                url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-3.2.11.swf{elseif $config.video_style == 2}flowplayer.controls-tube-3.2.11.swf{else}flowplayer.controls-3.2.11.swf{/if}{literal}',
+                url: '{/literal}{if $config.video_style == 1}flowplayer.controls-air-{$smarty.const.FLOWPLAYER_CONTROLS_VERSION}.swf{elseif $config.video_style == 2}flowplayer.controls-tube-{$smarty.const.FLOWPLAYER_CONTROLS_VERSION}.swf{else}flowplayer.controls-{$smarty.const.FLOWPLAYER_CONTROLS_VERSION}.swf{/if}{literal}',
                 play: {/literal}{if !$config.control_play}false{else}true{/if}{literal},
                 stop: {/literal}{if $config.control_stop}true{else}false{/if}{literal},
                 scrubber: {/literal}{if $config.control_scrubber}true{else}false{/if}{literal},

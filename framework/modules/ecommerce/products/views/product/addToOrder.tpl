@@ -29,7 +29,7 @@
     <p>
         <strong>{"Additional information is required before we can add to your cart"|gettext}</strong>
     {br}{br}
-        {"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&nbsp;&nbsp;
+        {"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&#160;&#160;
         {"If you would like different options or personalized fields for each item, please add them one at a time to your cart."|gettext}
     </p>
     {clear}
@@ -77,14 +77,14 @@
        <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
-                    <th>&nbsp;</th>
+                    <th>&#160;</th>
                     <th><strong>{"QTY"|gettext}</strong></th>
                     <th><strong>{"SKU"|gettext}</strong></th>
                     {foreach from=$product->extra_fields item=chiprodname}                        
                         <th><span>{$chiprodname.name}</span></th>                            
                     {/foreach}
                     <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
-                    <th>&nbsp;</th>
+                    <th>&#160;</th>
                 </tr>
             </thead>
             <tbody>

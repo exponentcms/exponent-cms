@@ -91,7 +91,6 @@
 
        var cTabs = cdiv.all('.exp-ajax-tab');
        
-       
        var loadTab = function (e){
            e.halt();
            var tab = e.currentTarget;
@@ -133,7 +132,7 @@
 
        tabs.item(lastTab).simulate('click');
        
-       Y.one('#editproduct').removeClass('hide').next().remove();
+       Y.one('.loadingdiv').remove();
        
     });
 {/literal}

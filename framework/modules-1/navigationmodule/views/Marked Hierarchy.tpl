@@ -20,9 +20,9 @@
                 <img src="{$smarty.const.ICON_RELATIVE|cat:'mark.gif'}" title="{'Mark'|gettext}" alt="{'Mark'|gettext}" />
             {/if}
             {if $section->active == 1}
-                <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&nbsp;
+                <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
             {else}
-                <span class="navlink">{$section->name}</span>&nbsp;
+                <span class="navlink">{$section->name}</span>&#160;
             {/if}
         </td></tr>
     {/foreach}

@@ -87,10 +87,12 @@ if ($db->havedb)
  */
 function eDebug($var, $halt=false){
 	if (DEVELOPMENT) {
-		echo "<xmp>";
+//		echo "<xmp>";
+        echo "<pre>";
 		print_r($var);
-		echo "</xmp>";
-		
+//		echo "</xmp>";
+        echo "</pre>";
+
 		if ($halt) die();
 	}
 }

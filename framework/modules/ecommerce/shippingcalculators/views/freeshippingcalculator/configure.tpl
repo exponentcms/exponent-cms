@@ -30,10 +30,6 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-//        var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('freeship');
-//        Y.one('#freeshippingcfg').removeClass('hide').next().remove();
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
 	    var tabview = new Y.TabView({srcNode:'#freeship-tabs'});
 	    tabview.render();

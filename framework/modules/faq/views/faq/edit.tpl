@@ -35,7 +35,7 @@
             {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
         {/if}
         {if $config.usecategories}
-            {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+            {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
         {/if}
         {control type="checkbox" name="include_in_faq" label="Post to FAQs"|gettext|cat:"?" value=1 checked=$record->include_in_faq}
         {control type="buttongroup" submit="Save FAQ"|gettext cancel="Cancel"|gettext}

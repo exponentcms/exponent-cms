@@ -194,7 +194,7 @@ abstract class expController {
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
-                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : null,
+                    'limit'=>(isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
                     'order'=>isset($this->params['order']) ? $this->params['order'] : null,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -202,7 +202,10 @@ abstract class expController {
                     'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records));
+        assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records
+        ));
     }
 
     /**
@@ -232,10 +235,9 @@ abstract class expController {
 
         // create a pagination object for the model and render the action
         $order = 'created_at DESC';
-
         $page = new expPaginator(array(
                     'records'=>$items_by_tags,
-                    'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
                     'order'=>$order,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -244,7 +246,12 @@ abstract class expController {
 //        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
         $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'created_at', 'order'=>'DESC', 'ignore_case'=>true));
 
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'moduletitle'=>ucfirst($modelname).' '.gt('items tagged with').' "'.expString::sanitize($this->params['tag']).'"', 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records,
+            'moduletitle'=>ucfirst($modelname).' '.gt('items tagged with').' "'.expString::sanitize($this->params['tag']).'"',
+            'rank'=>($order==='rank')?1:0
+        ));
     }
 
     public function tags() {
@@ -276,7 +283,9 @@ abstract class expController {
             $used_tags = expSorter::sort(array('array'=>$used_tags, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
         }
 
-        assign_to_template(array('tags'=>$used_tags));
+        assign_to_template(array(
+            'tags'=>$used_tags
+        ));
     }
 
 	/**
@@ -299,7 +308,10 @@ abstract class expController {
         $record = new $modelname($id);
         $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
 
-        assign_to_template(array('record'=>$record,'config'=>$config));
+        assign_to_template(array(
+            'record'=>$record,
+            'config'=>$config
+        ));
     }
 
 	/**
@@ -318,7 +330,10 @@ abstract class expController {
         
         // adding src to template's __loc var so that our links get build correct when linking to controller actions.
         global $template;
-        assign_to_template(array('record'=>$record,"__loc"=>$this->loc));
+        assign_to_template(array(
+            'record'=>$record,
+            "__loc"=>$this->loc
+        ));
     }
 
 	/**
@@ -328,7 +343,9 @@ abstract class expController {
 		$where = $this->hasSources() ? $this->aggregateWhereClause() : null;
 		$limit = isset($this->params['limit']) ? $this->params['limit'] : 1;
 		$order = 'RAND()';
-		assign_to_template(array('items'=>$this->text->find('all', $where, $order, $limit)));
+		assign_to_template(array(
+            'items'=>$this->text->find('all', $where, $order, $limit)
+        ));
 	}
 
 	/**
@@ -372,7 +389,9 @@ abstract class expController {
             $records[] = new $modelname($assoc->id);
         }
 
-        assign_to_template(array('items'=>$records));
+        assign_to_template(array(
+            'items'=>$records
+        ));
     }
 
 	/**
@@ -397,11 +416,14 @@ abstract class expController {
         foreach ($tags as $tag) {
             $taglist .= "'".$tag->title."',";
         }
-		assign_to_template(array('taglist'=>$taglist));
         $modelname = $this->basemodel_name;
-        assign_to_template(array('controller'=>$this->params['controller']));
         $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
-        assign_to_template(array('record'=>$record, 'table'=>$this->$modelname->tablename));
+        assign_to_template(array(
+            'record'=>$record,
+            'table'=>$this->$modelname->tablename,
+            'controller'=>$this->params['controller'],
+            'taglist'=>$taglist
+        ));
     }
 
     /**
@@ -429,7 +451,7 @@ abstract class expController {
         global $db;
                 
         //check for and handle tags
-        if (array_key_exists('expTag',$this->params)&&!empty($this->params['expTag'])) {
+        if (array_key_exists('expTag',$this->params)) {
 	        if (isset($this->params['id'])) {
     	        $db->delete('content_expTags', 'content_type="'.(!empty($this->params['content_type'])?$this->params['content_type']:$this->basemodel_name).'" AND content_id='.$this->params['id']);
     	    }
@@ -454,8 +476,10 @@ abstract class expController {
             unset($this->params['expCat']);
             $this->params['expCat'][] = $catid;
         }
+
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
+        
         if ($this->isSearchable()) {
             $this->addContentToSearch($this->params);
         }
@@ -510,7 +534,7 @@ abstract class expController {
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
-                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : null,
+                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : 10,
                     'order'=>isset($this->params['order']) ? $this->params['order'] : null,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -518,7 +542,10 @@ abstract class expController {
                     'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
                     ));
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records));
+        assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records
+        ));
     }
 
 	/**
@@ -543,18 +570,22 @@ abstract class expController {
 	 */
 	function configure() {
         expHistory::set('editable', $this->params);
-        $order = isset($this->params['order']) ? $this->params['order'] : 'section';
-        $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         $page = new expPaginator(array(
                     'records'=>$pullable_modules,
-                    'limit'=>count($pullable_modules),
-                    'order'=>$order,
-                    'dir'=>$dir,
+//                    'limit'=>count($pullable_modules),
+                    'order'=>isset($this->params['order']) ? $this->params['order'] : 'section',
+                    'dir'=>isset($this->params['dir']) ? $this->params['dir'] : '',
                     'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
                     ));
-        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'page'=>$page, 'views'=>$views));
+        assign_to_template(array(
+            'config'=>$this->config,
+            'pullable_modules'=>$pullable_modules,
+            'page'=>$page,
+            'views'=>$views,
+            'title'=>$this->displayname()
+        ));
     }
 
 	/**
@@ -626,8 +657,8 @@ abstract class expController {
         
         // setup and save the config
         $config = new expConfig($this->loc);
-                
-        $config->update(array('config'=>$this->params));        
+        $config->update(array('config'=>$this->params));
+
         flash('message', gt('Configuration updated'));
         expHistory::back();
     }
@@ -664,7 +695,7 @@ abstract class expController {
     }
 
 	/**
-	 * get the models (datatypes) associated with this module
+	 * get the models associated with this module
 	 * @return array
 	 */
 	function getModels() {

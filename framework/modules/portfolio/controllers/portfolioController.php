@@ -39,12 +39,11 @@ class portfolioController extends expController {
     function isSearchable() { return true; }
 
     public function showall() {
-        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+        $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
-            $limit = 999;
+            $limit = '0';
         }
-
+        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>$this->aggregateWhereClause(),
@@ -58,17 +57,24 @@ class portfolioController extends expController {
                     'columns'=>array(gt('Title')=>'title'),
                     ));
 
-        assign_to_template(array('page'=>$page, 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array(
+            'page'=>$page,
+            'rank'=>($order==='rank')?1:0
+        ));
     }
     
     public function slideshow() {
         expHistory::set('viewable', $this->params);
 
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
+        //FIXME we need to change this to expPaginator to get category grouping
         $s = new portfolio();
         $slides = $s->find('all',$this->aggregateWhereClause(),$order);
 
-        assign_to_template(array('slides'=>$slides, 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array(
+            'slides'=>$slides,
+            'rank'=>($order==='rank')?1:0
+        ));
     }
 
     /**

@@ -44,7 +44,9 @@ class textController extends expController {
 		$where = $this->aggregateWhereClause();
 		$order = 'rank ASC';
 		$items = $this->text->find('all', $where, $order);
-		assign_to_template(array('items'=>$items));
+		assign_to_template(array(
+            'items'=>$items
+        ));
 	}
 	
 	public function showRandom() {
@@ -53,7 +55,9 @@ class textController extends expController {
 		$where = $this->aggregateWhereClause();
 		$limit = isset($this->params['limit']) ? $this->params['limit'] : 1;
 		$order = 'RAND()';
-		assign_to_template(array('items'=>$this->text->find('all', $where, $order, $limit)));
+		assign_to_template(array(
+            'items'=>$this->text->find('all', $where, $order, $limit)
+        ));
 	}
     
     public function update() {

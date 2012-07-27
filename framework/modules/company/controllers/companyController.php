@@ -29,6 +29,7 @@ class companyController extends expController {
         'aggregation',
         'categories',
         'comments',
+        'ealerts',
         //'files',
         'rss',
         'tags'
@@ -40,19 +41,20 @@ class companyController extends expController {
 	
 	function showall() {
         expHistory::set('viewable', $this->params);
-        $limit = isset($this->params['limit']) ? $this->params['limit'] : null;
-        $order = isset($this->params['order']) ? $this->params['order'] : 'rank';
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>1, 
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
+                    'order'=>isset($this->params['order']) ? $this->params['order'] : 'rank',
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(gt('Title')=>'title',gt('Link')=>'website'),
                     ));
         
-        assign_to_template(array('page'=>$page, 'items'=>$page->records));
+        assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records
+        ));
     }
     
     function show()
@@ -78,7 +80,7 @@ class companyController extends expController {
         
         //eDebug($sql);
         $order = 'p.id'; //$this->config['orderby'];
-        $dir = 'DESC'; $this->config['orderby_dir'];
+        $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
        
         $page = new expPaginator(array(
@@ -99,7 +101,11 @@ class companyController extends expController {
         //$rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
-        assign_to_template(array('record'=>new company($this->params['id']), 'page'=>$page, 'defaultSort'=>$defaultSort));
+        assign_to_template(array(
+            'record'=>new company($this->params['id']),
+            'page'=>$page,
+            'defaultSort'=>$defaultSort
+        ));
     }
     
     function showByTitle()
@@ -124,7 +130,7 @@ class companyController extends expController {
         
         //eDebug($sql);
         $order = 'p.id'; //$this->config['orderby'];
-        $dir = 'DESC'; $this->config['orderby_dir'];
+        $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
        
         $page = new expPaginator(array(
@@ -145,7 +151,10 @@ class companyController extends expController {
         //$rerankSQL = "SELECT DISTINCT p.* FROM ".DB_TABLE_PREFIX."_product p JOIN ".DB_TABLE_PREFIX."_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=".$this->category->id." ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
-        assign_to_template(array('record'=>new company($this->params['id']), 'page'=>$page, 'defaultSort'=>$defaultSort));
+        assign_to_template(array(
+            'record'=>new company($this->params['id']),
+            'page'=>$page, 'defaultSort'=>$defaultSort
+        ));
     }
 }
 

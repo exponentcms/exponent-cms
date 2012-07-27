@@ -134,18 +134,17 @@
 
 	<body onload="__dlg_translate(eXp._TR);">
 		<div class="title"><?PHP echo gt('Insert/Modify Link'); ?></div>
-        <a href="#" onclick="openFileManager(); return false;"><?PHP echo gt('Switch to File Manager'); ?></a>
 		<table border="0" style="width: 100%;">
 			<tbody>
-				<tr>
-					<td colspan="2"><hr size="1" />
-						<a class="header"><?PHP echo gt('Select a Page, or Content'); ?></a>
+				<tr valign="top">
+					<td>
+						<a class="header"><?PHP echo gt('Select a Page below'); ?></a>
 					</td>
-				</tr>
-				<tr>
-					<td class="label"><br /><?PHP echo gt('Select a Page below'); ?></td>
-					<td align="right">
-						<a href="#" onclick="openContentLinker(); return false;"><?PHP echo gt('Link to Content'); ?></a>
+                    <td>
+                        or
+                    </td>
+					<td align="center">
+						<a href="#" onclick="openContentLinker(); return false;"><?PHP echo gt('Click Here to Link to Content'); ?></a>
 						<input id="f_href" type="hidden"/>
 						<input id="f_extern" checked="checked" type="hidden"/>
 						<input id="f_title" type="hidden"/>
@@ -154,6 +153,12 @@
 							<button type="button" name="cancel" onclick="return onCancel();"><?PHP echo gt('Cancel'); ?></button>
 						</div>
 					</td>
+                    <td align="center">
+                        or
+                    </td>
+                    <td align="right">
+                        <a href="#" style="text-align:center;" onclick="openFileManager(); return false;"><?PHP echo gt('Switch to File Manager'); ?></a>
+                    </td>
 				</tr>
 			</tbody>
 		</table>

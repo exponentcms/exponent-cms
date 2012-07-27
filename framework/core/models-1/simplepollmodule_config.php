@@ -35,6 +35,8 @@ class simplepollmodule_config {
 		$form->register('already_voted_message',gt('\'Already Voted\' Message'),new texteditorcontrol($object->already_voted_message,7,40),true,gt('Simple Poll'));
 		$form->register('voting_closed_message',gt('\'Voting Closed\' Message'),new texteditorcontrol($object->voting_closed_message,7,40),true,gt('Simple Poll'));
 		$form->register('anonymous_timeout',gt('Anonymous Block Timeout (hours)'),new textcontrol($object->anonymous_timeout),true,gt('Simple Poll'));
+        $form->register('hidemoduletitle',gt("Hide Module Title?"),new checkboxcontrol(empty($object->hidemoduletitle)?'':$object->hidemoduletitle),true,gt('Module Title'));
+        $form->register('moduledescription',gt("Module Description"),new htmleditorcontrol(empty($object->moduledescription)?'':$object->moduledescription),true,gt('Module Title'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save Config'),'',gt('Cancel')),true,'base');
 		
 		return $form;
@@ -48,6 +50,8 @@ class simplepollmodule_config {
 		if ($object->anonymous_timeout <= 0) {
 			$object->anonymous_timeout = 5*3600;
 		}
+        $object->hidemoduletitle = (isset($values['hidemoduletitle']) ? 1 : 0);
+        $object->moduledescription = $values['moduledescription'];
 		return $object;
 	}
 }

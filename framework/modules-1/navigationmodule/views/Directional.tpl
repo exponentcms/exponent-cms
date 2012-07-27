@@ -25,17 +25,17 @@
     	{/foreach}
     {/if}
 
-    &nbsp;|&nbsp;
+    &#160;|&#160;
 
     {*if $current->parent == 0}
     	{'Up'|gettext}
     {else}
     	<a href="?section={$current->parent}">{'Up'|gettext}</a>
-    	&nbsp;|&nbsp;
+    	&#160;|&#160;
     	<a href="?section={$current->parents[0]}">{'Top'|gettext}</a>
     {/if*}
 
-    &nbsp;|&nbsp;
+    &#160;|&#160;
 
     {math equation="x+1" x=$current->rank assign="nextrank"}
     {assign var=gotlink value=0}

@@ -32,7 +32,7 @@
 			<tr class="row {cycle values='even_row,odd_row'}">
 				<td style="background-color:inherit;">
 					{if $user->changed == 1}<span style="color:green;">{'Changed'|gettext}</span>
-					{elseif $user->changed == "skipped"}<span style="color:red;">{'Ignored&nbsp;(Line&nbsp;%s)'|gettext|sprintf:$user->linenum})</span>
+					{elseif $user->changed == "skipped"}<span style="color:red;">{'Ignored&#160;(Line&#160;%s)'|gettext|sprintf:$user->linenum})</span>
 					{else}<span style="color:black;">{'Success'|gettext}</span>
 					{/if}
 				</td>

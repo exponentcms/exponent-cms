@@ -104,14 +104,26 @@ class reportController extends expController {
         
         $quickrange = array(0=>'Last 24 Hours',1=>'Last 7 Days',2=>'Last 30 Days');
         $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
-        assign_to_template(array('orders'=>$oar,'quickrange'=>$quickrange,'quickrange_default'=>$quickrange_default));
-        assign_to_template(array('prev_month'=>$this->prev_month, 'now_date'=>$this->now_date, 'now_hour'=>$this->now_hour, 'now_min'=>$this->now_min, 'now_ampm'=>$this->now_ampm, 'prev_hour'=>$this->prev_hour, 'prev_min'=>$this->prev_min, 'prev_ampm'=>$this->prev_ampm));  
+        assign_to_template(array(
+            'orders'=>$oar,
+            'quickrange'=>$quickrange,
+            'quickrange_default'=>$quickrange_default,
+            'prev_month'=>$this->prev_month,
+            'now_date'=>$this->now_date,
+            'now_hour'=>$this->now_hour,
+            'now_min'=>$this->now_min,
+            'now_ampm'=>$this->now_ampm,
+            'prev_hour'=>$this->prev_hour,
+            'prev_min'=>$this->prev_min,
+            'prev_ampm'=>$this->prev_ampm
+        ));
         
     }
     
     function cart_summary (){
         global $db;
         
+        $p = $this->params;
         $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, o.grand_total, os.title as status_title from ";
         $sql .= $db->prefix . "orders as o ";
         $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
@@ -213,7 +225,7 @@ class reportController extends expController {
         }
         
         $inc = 0;  $sqltmp = '';  
-        foreach ($p['discounts'] as $d)
+        if (!empty($p['discounts'])) foreach ($p['discounts'] as $d)
         {
             if ($d == -1) continue;
             else if ($inc == 0)
@@ -341,7 +353,6 @@ class reportController extends expController {
         expSession::set('order_print_query',  $sql . $sqlwhere);
         //$where = 1;//$this->aggregateWhereClause();
         //$order = 'id';
-        $limit = empty($this->config['limit']) ? 25 : $this->config['limit'];
         //$prod = new product();
        // $order = new order();
         //$items = $prod->find('all', 1, 'id DESC',25);  
@@ -355,7 +366,7 @@ class reportController extends expController {
             //'records'=>$items,
             // 'where'=>$where,
             'sql'=>$sql . $sqlwhere, 
-            'limit'=>$limit,
+            'limit'=>empty($this->config['limit']) ? 25 : $this->config['limit'],
             'order'=>'invoice_id',
             'order_direction'=>'DESC',            
             'controller'=>$this->baseclassname,
@@ -364,7 +375,10 @@ class reportController extends expController {
             ));
                     
         $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File');
-        assign_to_template(array('page'=>$page, 'action_items'=>$action_items)); 
+        assign_to_template(array(
+            'page'=>$page,
+            'action_items'=>$action_items
+        ));
     }
     
 	function order_report (){
@@ -418,12 +432,18 @@ class reportController extends expController {
         $now_min = strftime("%M");
         $now_ampm = strftime("%p");
         
-        assign_to_template(array('prev_month'=>$prev_month, 'now_date'=>$now_date, 'now_hour'=>$now_hour, 'now_min'=>$now_min, 'now_ampm'=>$now_ampm, ));  
-        assign_to_template(array('order_status'=>$order_status));  
-        assign_to_template(array('discounts'=>$discounts)); 
-        //assign_to_template(array('states'=>$states));   
-        assign_to_template(array('order_type'=>$order_type));
-        assign_to_template(array('payment_methods'=>$payment_methods));    
+        assign_to_template(array(
+            'prev_month'=>$prev_month,
+            'now_date'=>$now_date,
+            'now_hour'=>$now_hour,
+            'now_min'=>$now_min,
+            'now_ampm'=>$now_ampm,
+            'order_status'=>$order_status,
+            'discounts'=>$discounts,
+//            'states'=>$states,
+            'order_type'=>$order_type,
+            'payment_methods'=>$payment_methods
+        ));
     }
     
 	function generateOrderReport (){
@@ -731,7 +751,6 @@ class reportController extends expController {
         //eDebug(expSession::get('order_export_values'));
         //$where = 1;//$this->aggregateWhereClause();
         //$order = 'id';
-        $limit = empty($this->config['limit']) ? 350 : $this->config['limit'];
         //$prod = new product();
        // $order = new order();
         //$items = $prod->find('all', 1, 'id DESC',25);  
@@ -746,7 +765,7 @@ class reportController extends expController {
             // 'where'=>$where,
             'count_sql'=>$count_sql,
             'sql'=>$sql . $sqlwhere, 
-            'limit'=>$limit,
+            'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'=>'o.invoice_id',
             'dir'=>'DESC',            
             'controller'=>$this->baseclassname,
@@ -758,7 +777,10 @@ class reportController extends expController {
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         
         $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File','export_status_report'=>'Export Status Report','export_inventory'=>'Export Inventory File','export_user_input_report'=>'Export User Input File','export_order_items'=>'Export Order Items File', 'show_payment_summary'=>'Show Payment & Tax Summary');
-        assign_to_template(array('page'=>$page, 'action_items'=>$action_items)); 
+        assign_to_template(array(
+            'page'=>$page,
+            'action_items'=>$action_items
+        ));
     }
 	
 	function show_payment_summary() {
@@ -819,7 +841,13 @@ class reportController extends expController {
         $tax_types = taxController::getTaxClasses();       
         $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
         
-		assign_to_template(array('payment_summary'=>$payment_summary, 'payments_key' => $payments_key, 'payment_values' => $payment_values, 'tax_total'=>$tax_res->tax_total, 'tax_type'=>$tax_type_formatted));
+		assign_to_template(array(
+            'payment_summary'=>$payment_summary,
+            'payments_key' => $payments_key,
+            'payment_values' => $payment_values,
+            'tax_total'=>$tax_res->tax_total,
+            'tax_type'=>$tax_type_formatted
+        ));
 	}
    
     function export_user_input_report()
@@ -1113,8 +1141,6 @@ class reportController extends expController {
         expSession::set('product_export_query', $exportSQL);
         //expSession::set('product_export_query', "SELECT  DISTINCT(p.id) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
         
-        $order = 'id';
-        $limit = empty($this->config['limit']) ? 350 : $this->config['limit'];
         $product = new product();
         //$items = $product->find('all', '', 'id', 25);     
         //$page = new expPaginator();   
@@ -1127,8 +1153,8 @@ class reportController extends expController {
             //'sql'=>"SELECT  DISTINCT(p.id), p.title, p.model, p.base_price FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
             //'count_sql'=>"SELECT COUNT(DISTINCT(p.id)) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
             'count_sql'=>$sqlcount . $sql . $sqlwhere, 
-            'limit'=>$limit,
-            'order'=>$order,
+            'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
+            'order'=>'id',
             'controller'=>'store',
             'action'=>$this->params['action'],
             'columns'=>array('actupon'=>true,gt('ID')=>'id',gt('Product')=>'title|controller=store,action=show,showby=id',gt('SKU')=>'model',gt('Price')=>'base_price'),
@@ -1151,7 +1177,10 @@ class reportController extends expController {
                 )
             ));            */
         $action_items = array('batch_export'=>'Export Products to CSV','status_export'=>'Export Status Report to CSV');
-        assign_to_template(array('page'=>$page, 'action_items'=>$action_items));
+        assign_to_template(array(
+            'page'=>$page,
+            'action_items'=>$action_items
+        ));
         // 
         //     
         // assign_to_template(array('page'=>$page)); 
@@ -1589,7 +1618,14 @@ class reportController extends expController {
 		
 		$quickrange = array(0=>'Last 24 Hours',1=>'Last 7 Days',2=>'Last 30 Days');
         $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
-        assign_to_template(array('quickrange'=>$quickrange,'quickrange_default'=>$quickrange_default, 'summary'=>$summary, 'cartsWithoutItems'=>$cartsWithoutItems, 'cartsWithItems' => $cartsWithItems, 'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo));
+        assign_to_template(array(
+            'quickrange'=>$quickrange,
+            'quickrange_default'=>$quickrange_default,
+            'summary'=>$summary,
+            'cartsWithoutItems'=>$cartsWithoutItems,
+            'cartsWithItems' => $cartsWithItems,
+            'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo
+        ));
 	}
      
     function current_carts() {
@@ -1657,12 +1693,17 @@ class reportController extends expController {
 		
 		$summary['totalcarts']    = $allCarts['count'];
 		$summary['valueproducts'] = $valueproducts;
-		$summary['cartsWithoutItems']       = round(($cartsWithoutItems['count']     / $allCarts['count']) * 100, 2) . '%';
-		$summary['cartsWithItems']          = round(($cartsWithItems['count']        / $allCarts['count']) * 100, 2) . '%';
-		$summary['cartsWithItemsAndInfo']   = round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithoutItems']       = round(($allCarts['count'] ? $cartsWithoutItems['count']     / $allCarts['count'] : 0) * 100, 2) . '%';
+		$summary['cartsWithItems']          = round(($allCarts['count'] ? $cartsWithItems['count']        / $allCarts['count'] : 0) * 100, 2) . '%';
+		$summary['cartsWithItemsAndInfo']   = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
 		
 		// eDebug($summary, true);
-		assign_to_template(array('summary'=>$summary, 'cartsWithoutItems'=>$cartsWithoutItems, 'cartsWithItems' => $cartsWithItems, 'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo));
+		assign_to_template(array(
+            'summary'=>$summary,
+            'cartsWithoutItems'=>$cartsWithoutItems,
+            'cartsWithItems' => $cartsWithItems,
+            'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo
+        ));
 		/*
         $this->setDateParams($this->params);
         $except = array('order_discounts', 'billingmethod', 'order_status_changes', 'billingmethod','order_discounts');
@@ -1992,7 +2033,9 @@ class reportController extends expController {
         {
             $newPts[$pt] = $pt;
         }        
-        assign_to_template(array('product_types'=>$newPts));
+        assign_to_template(array(
+            'product_types'=>$newPts
+        ));
     }
     
 }

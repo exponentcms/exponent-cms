@@ -21,7 +21,7 @@
 {/css}
 {/if}
 
-<div class="module filedownload showall-tabbed">
+<div class="module filedownload showall showall-tabbed">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
     {if $config.enable_rss == true}
         <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
@@ -33,16 +33,22 @@
 				{icon class=add action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
-            {/if}
-			{if $permissions.manage == 1 && $rank == 1}
-				{ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
-			{/if}
+                {if !$config.disabletags}
+                    {icon controller=expTag class="manage" action=manage_module model='filedownload' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='filedownload' text="Manage Categories"|gettext}
+                {/if}
+                {if $rank == 1}
+                    {ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
+                {/if}
+           {/if}
         </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {subscribe_link}
     {assign var=myloc value=serialize($__loc)}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>

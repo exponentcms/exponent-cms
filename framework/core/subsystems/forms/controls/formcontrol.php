@@ -43,12 +43,20 @@ class formcontrol {
 	/**
 	 * Is this a Simple Control?
 	 * Used to determine if control is available for the Form (Builder) module
+     *
 	 * @return bool
 	 */
 	static function isSimpleControl() { return false; }
 	static function getFieldDefinition() { return array(); }
 
-	function toHTML($label,$name) {
+    /**
+     * Place the control in the form
+     *
+     * @param $label
+     * @param $name
+     * @return string
+     */
+    function toHTML($label,$name) {
 		if (!empty($this->id)) {
 		    $divID  = ' id="'.$this->id.'Control"';
 		    $for = ' for="'.$this->id.'"';
@@ -75,12 +83,27 @@ class formcontrol {
 		$html .= "</div>";			
 		return $html;
 	}
-	
-	function controlToHTML($name,$label) {
+
+    /**
+     * Place the editable control on the edit form
+     *
+     * @param $name
+     * @param $label
+     * @return string
+     */
+    function controlToHTML($name,$label) {
 		return "";
 	}
-	
-	static function parseData($original_name,$formvalues) {
+
+    /**
+     * Parse the control value
+     *
+     * @static
+     * @param $original_name
+     * @param $formvalues
+     * @return string
+     */
+    static function parseData($original_name,$formvalues) {
 		return (isset($formvalues[$original_name])?$formvalues[$original_name]:"");
 	}
 	

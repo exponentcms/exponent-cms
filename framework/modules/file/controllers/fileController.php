@@ -57,7 +57,9 @@ class fileController extends expController {
     
     public function picker() {
         global $user;
-        assign_to_template(array('update'=>$_GET['update']));
+        assign_to_template(array(
+            'update'=>$_GET['update']
+        ));
     }
     
     public function uploader() {
@@ -68,13 +70,12 @@ class fileController extends expController {
             flash('error',gt('In order for the uploader to work correctly, \'"post_max_size\' and \'upload_max_filesize\' within your php.ini file must match one another'));
         }
 
-        assign_to_template(
-            array('update'=>$_GET['update'],
+        assign_to_template(array(
+            'update'=>$_GET['update'],
             "upload_size"=>ini_get('upload_max_filesize'),
             "post_size"=>ini_get('post_max_size'),
             "bmax"=>intval(ini_get('upload_max_filesize')/1024*1000000000)
-            )
-        );
+        ));
     }
     
     public function get_view_config() {
@@ -226,7 +227,9 @@ class fileController extends expController {
                 $notafile[$file->id] = $file;
             }
         }
-        assign_to_template(array('files'=>$notafile));
+        assign_to_template(array(
+            'files'=>$notafile
+        ));
     }
 
     public function deleteit() {
@@ -260,7 +263,9 @@ class fileController extends expController {
                 }
             }
         }
-        assign_to_template(array('files'=>$notindb));
+        assign_to_template(array(
+            'files'=>$notindb
+        ));
     }
 
     public function addit() {

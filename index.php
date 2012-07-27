@@ -63,8 +63,10 @@ if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
 }
 
 if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
-$section = $router->getSection();
-if ($db->havedb) $sectionObj = $router->getSectionObj($section);
+if ($db->havedb) {
+    $section = $router->getSection();
+    $sectionObj = $router->getSectionObj($section);
+}
 if (ENABLE_TRACKING) $router->updateHistory($section);
 
 // set the output header
@@ -122,7 +124,7 @@ if (EXPORT_AS_PDF == 1) {
     // convert to PDF
     $pdf = new expHtmlToPDF2('A4',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);
     $pdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
-    echo '<script language="javascript">
+    echo '<script type="text/javascript">
         <!--
         setTimeout("self.close();",10000)
         //-->

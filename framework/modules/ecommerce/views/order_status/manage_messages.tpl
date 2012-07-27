@@ -27,7 +27,7 @@
 			<thead>
 				<tr>
 				    <th>{'Body'|gettext}</th>
-					<th>&nbsp;</th>
+					<th>&#160;</th>
 				</tr>
 			</thead>
 			<tbody>

@@ -49,12 +49,18 @@ class purchaseOrderController extends expController {
 			$purchase_orders = $this->purchase_order->find('all');
 		}
 		
-		assign_to_template(array('purchase_orders'=>$purchase_orders, 'vendors' => $vendors, 'vendor_id' => @$this->params['vendor']));
+		assign_to_template(array(
+            'purchase_orders'=>$purchase_orders,
+            'vendors' => $vendors,
+            'vendor_id' => @$this->params['vendor']
+        ));
 	}
 	
 	function edit () {
 	    global $db;
-	    assign_to_template(array('record'=>$this->params));
+	    assign_to_template(array(
+            'record'=>$this->params
+        ));
 	}
     
 	function manage_vendors () {
@@ -62,7 +68,9 @@ class purchaseOrderController extends expController {
 		$vendor = new vendor();
 		
 		$vendors = $vendor->find('all');
-		assign_to_template(array('vendors'=>$vendors));
+		assign_to_template(array(
+            'vendors'=>$vendors
+        ));
 	}
 	
 	function show_vendor () {
@@ -80,7 +88,10 @@ class purchaseOrderController extends expController {
 			unset($vendor->classname);
 			unset($vendor->identifier);
 		
-			assign_to_template(array('vendor_title' => $vendor_title, 'vendor'=>$vendor));
+			assign_to_template(array(
+                'vendor_title' => $vendor_title,
+                'vendor'=>$vendor
+            ));
 		}
 	}
 	
@@ -89,7 +100,9 @@ class purchaseOrderController extends expController {
 		
 		if(isset($this->params['id'])) {
 			$vendor = $vendor->find('first', 'id =' .$this->params['id']);
-			assign_to_template(array('vendor'=>$vendor));
+			assign_to_template(array(
+                'vendor'=>$vendor
+            ));
 		}
 	}
 	

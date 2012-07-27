@@ -11,7 +11,7 @@
 
 #pagelinks {
     margin: 0;
-    padding: 15px 0px;
+    /*padding: 15px 0px;*/
 }
 #pagelinks .yui-pg-first, #pagelinks .yui-pg-previous, #pagelinks .yui-pg-next, #pagelinks .yui-pg-last, #pagelinks .yui-pg-current, #pagelinks .yui-pg-pages, #pagelinks .yui-pg-page {
     display: inline-block;

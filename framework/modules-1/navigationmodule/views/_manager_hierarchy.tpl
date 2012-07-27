@@ -81,7 +81,7 @@ var YAHOO = Y.YUI2;
 		var nodebeingdragged = tree.getNodeByElement(YAHOO.util.Dom.get(real.id));
 		nodebeingdragged.collapse();
 		////console.debug(Dom.get(real.id.replace("section","sectionlabel")).innerHTML);
-		proxy.innerHTML = "<div class='shrinkwrap'><div id='dropindicator' class='nodrop'>&nbsp;</div><span>"+Dom.get(real.id.replace("section","sectionlabel")).innerHTML+"</span><span class='pshadow'></span></div>";
+		proxy.innerHTML = "<div class='shrinkwrap'><div id='dropindicator' class='nodrop'>&#160;</div><span>"+Dom.get(real.id.replace("section","sectionlabel")).innerHTML+"</span><span class='pshadow'></span></div>";
 		YAHOO.util.Dom.addClass(real,"ghost");
 		YAHOO.util.Dom.addClass(proxy,"ddnavproxiebeingdragged");
 		//YAHOO.util.Dom.setStyle(proxy,"width",YAHOO.util.Dom.getStyle(proxy,"width")+"px");
@@ -412,7 +412,7 @@ var YAHOO = Y.YUI2;
         if (section.parent==0 && usr.is_acting_admin!=1 && usr.is_admin!=1) dragafters = 'cannotaddafter' ;
 		//var dragbefores = (section.manage!=false)? 'addbefore' : 'cannotaddbefore' ;
 		//var first = (section.rank==0)?'<div class="'+dragbefores+'" id="addbefore'+section.id+'"></div>':'';
-		var drag = (section.manage!=false)?'<div class="draghandle" id="draghandle'+section.id+'">&nbsp;</div>':'';
+		var drag = (section.manage!=false)?'<div class="draghandle" id="draghandle'+section.id+'">&#160;</div>':'';
 		var html = '<div class="'+draggable+'" id="section'+section.id+'">'+drag+'<a href="'+section.link+'"><span class="sectionlabel" id="sectionlabel'+section.id+'">'+section.name+'</span></a></div><div class="'+dragafters+' '+last+'" id="addafter'+section.id+'"></div>';
 		return html;
 	}

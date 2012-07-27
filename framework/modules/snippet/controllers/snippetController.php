@@ -47,7 +47,9 @@ class snippetController extends expController {
 		$order = 'rank ASC';
 //		$items = $this->text->find('all', $where, $order);
 		$items = $this->snippet->find('all', $where, $order);
-		assign_to_template(array('items'=>$items));
+		assign_to_template(array(
+            'items'=>$items
+        ));
 	}	
 
 	public function showall_highlight() {
@@ -59,7 +61,9 @@ class snippetController extends expController {
 		foreach ($items as $item) {
 			$item->body = highlight_string($item->body, true); 
 		}
-		assign_to_template(array('items'=>$items));
+		assign_to_template(array(
+            'items'=>$items
+        ));
 	}
 
     public function update() {

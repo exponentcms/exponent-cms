@@ -294,7 +294,9 @@ class cartController extends expController {
             $discountsEnabled = $discountCheck->find('all','enabled=1');
             if (empty($discountsEnabled)) {
                 // flag to hide the discount box
-                assign_to_template(array('noactivediscounts'=>'1'));
+                assign_to_template(array(
+                    'noactivediscounts'=>'1'
+                ));
                 $discounts = null;
             } else {
                 // get all current discount codes that are valid and applied                
@@ -308,7 +310,12 @@ class cartController extends expController {
             $discounts = null;
             $estimated_shipping = null;    
         }         
-		@assign_to_template(array('items'=>$order->orderitem, 'order'=>$order, 'discounts'=>$discounts, /*'estimated_shipping'=>$estimated_shipping*/));
+		@assign_to_template(array(
+            'items'=>$order->orderitem,
+            'order'=>$order,
+            'discounts'=>$discounts,
+             /*'estimated_shipping'=>$estimated_shipping*/
+        ));
         
 	}
 	
@@ -355,7 +362,9 @@ class cartController extends expController {
         $discountsEnabled = $discountCheck->find('all','enabled=1');
         if (empty($discountsEnabled)) {
             // flag to hide the discount box
-            assign_to_template(array('noactivediscounts'=>'1'));
+            assign_to_template(array(
+                'noactivediscounts'=>'1'
+            ));
             $discounts = null;
         } else {
             // get all current discount codes that are valid and applied
@@ -399,20 +408,20 @@ class cartController extends expController {
         //$shipping->getRates();
                  
 		assign_to_template(array(
-                    'cartConfig'=>$config->config,
-        			//'addresses_dd'=>$addresses_dd,
-					//'addresses'=>$addresses,
-					'shipping'=>$shipping,
-					'user'=>$user,
-					'billing'=>$billing,
-					'discounts'=>$discounts,
-					'order'=>$order,
-                    'order_types'=>$order->getOrderTypes(),
-                    'default_order_type'=>$order->getDefaultOrderType(),
-                    'order_statuses'=>$order->getOrderStatuses(),
-                    'default_order_status'=>$order->getDefaultOrderStatus(),
-                    'sales_reps'=>$order->getSalesReps()
-					//'needs_address'=>$needs_address,
+            'cartConfig'=>$config->config,
+            //'addresses_dd'=>$addresses_dd,
+            //'addresses'=>$addresses,
+            'shipping'=>$shipping,
+            'user'=>$user,
+            'billing'=>$billing,
+            'discounts'=>$discounts,
+            'order'=>$order,
+            'order_types'=>$order->getOrderTypes(),
+            'default_order_type'=>$order->getDefaultOrderType(),
+            'order_statuses'=>$order->getOrderStatuses(),
+            'default_order_status'=>$order->getDefaultOrderStatus(),
+            'sales_reps'=>$order->getSalesReps()
+            //'needs_address'=>$needs_address,
 		));
 	}
     
@@ -619,7 +628,7 @@ class cartController extends expController {
         {
             flash('message',gt('Development on, skipping email sending.'));
         }
-        
+        expSession::un_set('record');
 		//assign_to_template(array('order'=>$order, 'billing'=>$billing, 'shipping'=>$shipping, 'result'=>$result, 'billinginfo'=>$billinginfo));
 		flash('message', gt('Your order has been submitted.'));
         redirect_to(array('controller'=>'order', 'action'=>'myOrder', 'id'=>$order->id, 'tc'=>1));
@@ -643,16 +652,24 @@ class cartController extends expController {
 		// setup the billing & shipping calculators info
 		if ($product->requiresBilling) {
     		$billing = new billing();
-    		assign_to_template(array('billing'=>$billing));
+    		assign_to_template(array(
+                'billing'=>$billing
+            ));
         }
 		
 		if ($product->requiresShipping) {		    
 		    $shipping = new shipping();		
 		    $shipping->pricelist = $shipping->listPrices();
-		    assign_to_template(array('shipping'=>$shipping));
+		    assign_to_template(array(
+                'shipping'=>$shipping
+            ));
 		}
 		
-		assign_to_template(array('product'=>$product, 'user'=>$user, 'order'=>$order));
+		assign_to_template(array(
+            'product'=>$product,
+            'user'=>$user,
+            'order'=>$order
+        ));
 	}
 	
 	function processQuickPay() {
@@ -670,7 +687,9 @@ class cartController extends expController {
 		    die('NEED TO IMPLEMENT THE SHIPPING PIECE!!'); //TODO
 		    $shipping = new shipping();
     		$shipping->shippingingmethod->setAddress($this->params['shipping']);
-    		assign_to_template(array('shipping'=>$shipping));
+    		assign_to_template(array(
+                'shipping'=>$shipping
+            ));
 		}
 		
 		$opts = $billing->calculator->userFormUpdate($this->params);
@@ -715,7 +734,11 @@ class cartController extends expController {
         }
         
         expHistory::set('viewable', $this->params);        
-		assign_to_template(array('addresses_dd'=>$addresses_dd,'orderitems'=>$orderitems, 'order'=>$order));    
+		assign_to_template(array(
+            'addresses_dd'=>$addresses_dd,
+            'orderitems'=>$orderitems,
+            'order'=>$order
+        ));
     }
     
     public function saveSplitShipping() {
@@ -782,7 +805,10 @@ class cartController extends expController {
             }
         }
         
-        assign_to_template(array('shipping_items'=>$shipping_items, 'shipping'=>$shipping));
+        assign_to_template(array(
+            'shipping_items'=>$shipping_items,
+            'shipping'=>$shipping
+        ));
     }
     
     public function customerSignup()
@@ -959,7 +985,10 @@ class cartController extends expController {
         $this->loc->src = "@globalcartsettings";                        
         $config = new expConfig($this->loc);   
         $this->config = $config->config;             
-        assign_to_template(array('config'=>$this->config));
+        assign_to_template(array(
+            'config'=>$this->config,
+            'title'=>$this->displayname()
+        ));
     }    
     
 	//this is ran after we alter the quantity of the cart, including

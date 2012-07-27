@@ -122,13 +122,17 @@ class administrationController extends expController {
 	public function install_tables() {
 		$tables = self::install_dbtables();
 		ksort($tables);
-        assign_to_template(array('status'=>$tables));
+        assign_to_template(array(
+            'status'=>$tables
+        ));
 	}
 
     public function delete_unused_columns() {
    		$tables = self::install_dbtables(true);
    		ksort($tables);
-        assign_to_template(array('status'=>$tables));
+        assign_to_template(array(
+            'status'=>$tables
+        ));
    	}
 
     public function manage_unused_tables() {
@@ -185,7 +189,9 @@ class administrationController extends expController {
             }
         }
         
-        assign_to_template(array('unused_tables'=>$unused_tables));
+        assign_to_template(array(
+            'unused_tables'=>$unused_tables
+        ));
     }
     
     public function delete_unused_tables() {
@@ -209,7 +215,10 @@ class administrationController extends expController {
 			$db->optimize($table);
 		}
 		$after = $db->databaseInfo();
-	    assign_to_template(array('before'=>$before,'after'=>$after));
+	    assign_to_template(array(
+            'before'=>$before,
+            'after'=>$after
+        ));
 	}
 
 	public function fix_sessions() {
@@ -229,7 +238,7 @@ class administrationController extends expController {
 	    print_r("<h3>".gt("Some Error Conditions can NOT be repaired by this Procedure")."!</h3><br>");
 		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<b>".gt("Searching for sectionrefs that have lost their originals")."</b><br><br>");
+		print_r("<strong>".gt("Searching for sectionrefs that have lost their originals")."</strong><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
 		if (count($sectionrefs)) {
 			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
@@ -248,7 +257,7 @@ class administrationController extends expController {
 
 		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<b>".gt("Searching for sectionrefs pointing to missing sections/pages")." <br>".gt("to fix for the Recycle Bin")."</b><br><br>");
+		print_r("<strong>".gt("Searching for sectionrefs pointing to missing sections/pages")." <br>".gt("to fix for the Recycle Bin")."</strong><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
 		$found = 0;
 		foreach ($sectionrefs as $sectionref) {
@@ -267,7 +276,7 @@ class administrationController extends expController {
 
 		 print_r("<pre>");
 	 // delete sectionref's that have empty sources since they are dead
-		 print_r("<b>".gt("Searching for unassigned modules (no source)")."</b><br><br>");
+		 print_r("<strong>".gt("Searching for unassigned modules (no source)")."</strong><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
 		 if ($sectionrefs != null) {
 			 print_r(gt("Removing").": ".count($sectionrefs)." ".gt("empty sectionrefs (no source)")."<br>");
@@ -278,7 +287,7 @@ class administrationController extends expController {
 
 		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
-		print_r("<b>".gt("Searching for missing sectionrefs based on existing containers")."</b><br><br>");
+		print_r("<strong>".gt("Searching for missing sectionrefs based on existing containers")."</strong><br><br>");
 		$containers = $db->selectObjects('container',1);
 		foreach ($containers as $container) {
 			$iloc = expUnserialize($container->internal);
@@ -336,7 +345,10 @@ class administrationController extends expController {
             $top = SLINGBAR_TOP;
         }
         
-		assign_to_template(array('menu'=>json_encode($sorted),"top"=>$top));
+		assign_to_template(array(
+            'menu'=>json_encode($sorted),
+            "top"=>$top
+        ));
     }
     
     public function index() {
@@ -361,7 +373,12 @@ class administrationController extends expController {
         foreach ($cur_lang as $key => $value) {
             if ($key == $value) $num_untrans++;
         }
-        assign_to_template(array('langs'=>$langs,'missing'=>$num_missing,"count"=>count($cur_lang),'untrans'=>$num_untrans));
+        assign_to_template(array(
+            'langs'=>$langs,
+            'missing'=>$num_missing,
+            "count"=>count($cur_lang),
+            'untrans'=>$num_untrans
+        ));
    	}
 
     public function update_language() {
@@ -379,7 +396,9 @@ class administrationController extends expController {
                 $awaiting_trans[$key] = stripslashes($value);
             }
         }
-        assign_to_template(array('await'=>$awaiting_trans));
+        assign_to_template(array(
+            'await'=>$awaiting_trans
+        ));
    	}
 
     public function save_newlangfile() {
@@ -517,7 +536,12 @@ class administrationController extends expController {
 		$form->meta('module','administration');
 		$form->meta('action','install_extension_confirm');
 
-		assign_to_template(array('themes'=>$items['themes'],'fixes'=>$items['fixes'],'mods'=>$items['mods'],'form_html'=>$form->toHTML()));
+		assign_to_template(array(
+            'themes'=>$items['themes'],
+            'fixes'=>$items['fixes'],
+            'mods'=>$items['mods'],
+            'form_html'=>$form->toHTML()
+        ));
 	}
 
 	public function install_extension_confirm() {
@@ -651,7 +675,11 @@ class administrationController extends expController {
 						);
 					}
 				}
-				assign_to_template(array('relative'=>'tmp/extensionuploads/'.$sessid,'files'=>$files,'patch'=>empty($_POST['patch'])?0:$_POST['patch']));
+				assign_to_template(array(
+                    'relative'=>'tmp/extensionuploads/'.$sessid,
+                    'files'=>$files,
+                    'patch'=>empty($_POST['patch'])?0:$_POST['patch']
+                ));
 			}
 		}
 	}
@@ -689,11 +717,17 @@ class administrationController extends expController {
 //			echo $del_return;
             $tables = self::install_dbtables();
             ksort($tables);
-            assign_to_template(array('tables'=>$tables));
+            assign_to_template(array(
+                'tables'=>$tables
+            ));
 			$nofiles = 0;
 		}
 
-		assign_to_template(array('nofiles'=>$nofiles,'success'=>$success,'redirect'=>expHistory::getLastNotEditable()));
+		assign_to_template(array(
+            'nofiles'=>$nofiles,
+            'success'=>$success,
+            'redirect'=>expHistory::getLastNotEditable()
+        ));
 	}
 
     public function manage_themes() {
@@ -729,7 +763,9 @@ class administrationController extends expController {
     		}
     	}
 
-        assign_to_template(array('themes'=>$themes));
+        assign_to_template(array(
+            'themes'=>$themes
+        ));
     }
     
     public function theme_switch() {
@@ -750,6 +786,7 @@ class administrationController extends expController {
 		    $message .= ' '.gt('with').' '.$this->params['sv'].' '.gt('style variation');
 	    }
 	    flash('message',$message);
+        expTheme::removeSmartyCache();
     	expHistory::returnTo('manageable');
     }	
     
@@ -874,17 +911,17 @@ class administrationController extends expController {
         $data = $offset = $added = array();
         foreach ($list as $abbr => $info) {
             foreach ($info as $zone) {
-                if ( ! empty($zone['timezone_id'])
-                    AND
-                    ! in_array($zone['timezone_id'], $added)
-                    AND
-                      in_array($zone['timezone_id'], $idents)) {
-                    $z = new DateTimeZone($zone['timezone_id']);
-                    $c = new DateTime(null, $z);
-                    $zone['time'] = $c->format('H:i a');
-                    $data[] = $zone;
-                    $offset[] = $z->getOffset($c);
-                    $added[] = $zone['timezone_id'];
+                if (!empty($zone['timezone_id']) AND !in_array($zone['timezone_id'],$added) AND in_array($zone['timezone_id'],$idents)) {
+                    try{
+                        $z = new DateTimeZone($zone['timezone_id']);
+                        $c = new DateTime(null, $z);
+                        $zone['time'] = $c->format('H:i a');
+                        $data[] = $zone;
+                        $offset[] = $z->getOffset($c);
+                        $added[] = $zone['timezone_id'];
+                    } catch(Exception $e) {
+                        flash('error', $e->getMessage());
+                    }
                 }
             }
         }
@@ -896,21 +933,22 @@ class administrationController extends expController {
                                             . ' ' . $row['timezone_id'];
         }
 
-        assign_to_template(array('as_types'=>$as_types,
-                                'as_themes'=>$as_themes,
-                                'themes'=>$themes,
-                                'langs'=>$langs,
-                                'protocol'=>$protocol,
-                                'attribution'=>$attribution,
-                                'datetime_format'=>$datetime_format,
-                                'date_format'=>$date_format,
-                                'time_format'=>$time_format,
-                                'start_of_week'=>$start_of_week,
-                                'timezones'=>$tzoptions,
-                                'file_permisions'=>$file_permisions,
-                                'dir_permissions'=>$dir_permissions,
-                                'section_dropdown'=>$section_dropdown
-                                ));
+        assign_to_template(array(
+            'as_types'=>$as_types,
+            'as_themes'=>$as_themes,
+            'themes'=>$themes,
+            'langs'=>$langs,
+            'protocol'=>$protocol,
+            'attribution'=>$attribution,
+            'datetime_format'=>$datetime_format,
+            'date_format'=>$date_format,
+            'time_format'=>$time_format,
+            'start_of_week'=>$start_of_week,
+            'timezones'=>$tzoptions,
+            'file_permisions'=>$file_permisions,
+            'dir_permissions'=>$dir_permissions,
+            'section_dropdown'=>$section_dropdown
+        ));
     }
 
 	// now you can use $options;
@@ -997,7 +1035,10 @@ class theme {
 		}
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
-		assign_to_template(array('name'=>self::name(),'form_html'=>$form->toHTML()));
+		assign_to_template(array(
+            'name'=>self::name(),
+            'form_html'=>$form->toHTML()
+        ));
 	}
 
 	/**

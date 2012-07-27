@@ -50,7 +50,7 @@ class update_profile_paths extends upgradescript {
 	}
 
 	/**
-	 * coverts all headline modules/items into text modules/items and deletes headline controller files
+	 * converts avatar paths that were stored incorrectly
 	 * @return bool
 	 */
 	function upgrade() {
@@ -87,7 +87,7 @@ class update_profile_paths extends upgradescript {
             }
         }
 
-        return ($fixed)?$fixed:gt('No').' '.gt('User Profile Extension Paths Corrected');
+        return ($fixed?$fixed:gt('No')).' '.gt('User Profile Extension Paths Corrected');
 	}
 }
 

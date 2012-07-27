@@ -28,17 +28,17 @@ if (EXPONENT_VERSION_TYPE != '') {
 }
 $my_releasedate = gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE);
 
-$script = "
-// YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-// 
-// });
-
-";
-expJavascript::pushToFoot(array(
-    "unique"=>'admin1',
-    "yui3mods"=>null,
-    "content"=>$script,
- ));
+//$script = "
+//// YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+////
+//// });
+//
+//";
+//expJavascript::pushToFoot(array(
+//    "unique"=>'admin1',
+//    "yui3mods"=>null,
+//    "content"=>$script,
+// ));
 
 if ($user->isAdmin()) {
 	$expAdminMenu = array(
@@ -135,6 +135,14 @@ if ($user->isAdmin()) {
 						))
 					),
                     array(
+                        'text' => gt('Manage Site Comments'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expComment',
+                            'action' => 'manage'
+                        ))
+                    ),
+                    array(
                         'text' => gt('Manage Site Tags'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
@@ -183,7 +191,15 @@ if ($user->isAdmin()) {
 						))
 					),
                     array(
-                        'text' => gt('Manage Tags'),
+                        'text' => gt('Manage Site Comments'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expComment',
+                            'action' => 'manage'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('Manage Site Tags'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
                             'controller' => 'expTag',
@@ -191,10 +207,18 @@ if ($user->isAdmin()) {
                         ))
                     ),
                     array(
-                        'text' => gt('Manage Categories'),
+                        'text' => gt('Manage Site Categories'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
                             'controller' => 'expCat',
+                            'action' => 'manage'
+                        ))
+                    ),
+					array(
+                        'text' => gt('Manage Definable Fields'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expDefinableField',
                             'action' => 'manage'
                         ))
                     ),

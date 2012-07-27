@@ -22,19 +22,22 @@
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
 		{permissions}
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;
+				&#160;&#160;|&#160;&#160;
                 <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
 		{/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
-        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
 	</div>
 	<h1>
         {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle}{$moduletitle}{/if}
+        {if $moduletitle && !$config->hidemoduletitle}{$moduletitle}{/if}
 	</h1>
+    {if $config->moduledescription != ""}
+        {$config->moduledescription}
+    {/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}

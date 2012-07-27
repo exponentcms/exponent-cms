@@ -38,7 +38,12 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),
 	'anonymous_timeout'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER)
+		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'hidemoduletitle'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'moduledescription'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>10000),
 );
 
 ?>

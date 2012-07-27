@@ -21,7 +21,12 @@
 				{icon class=add action=edit title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon controller=expTag action=manage text="Manage Tags"|gettext}
+                {if !$config.disabletags}
+                    {icon controller=expTag class="manage" action=manage_module model='filedownload' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='filedownload' text="Manage Categories"|gettext}
+                {/if}
             {/if}
         </div>
     {/permissions}

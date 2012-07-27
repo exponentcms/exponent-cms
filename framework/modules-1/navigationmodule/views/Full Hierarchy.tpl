@@ -17,9 +17,9 @@
     {foreach from=$sections item=section}
         <tr><td style="padding-left: {math equation="x*20" x=$section->depth}px">
         {if $section->active == 1}
-            <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&nbsp;
+            <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
         {else}
-            <span class="navlink">{$section->name}</span>&nbsp;
+            <span class="navlink">{$section->name}</span>&#160;
         {/if}
         </td></tr>
     {/foreach}

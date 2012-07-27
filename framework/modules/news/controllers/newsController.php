@@ -27,8 +27,9 @@ class newsController extends expController {
         'tags'=>"Tags",
     );
     public $remove_configs = array(
+        'categories',
         'comments',
-        'ealerts',
+//        'ealerts',
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $add_permissions = array(
         'showUnpublished'=>'View Unpublished News'
@@ -46,12 +47,11 @@ class newsController extends expController {
         if (isset($this->params['limit'])) {
             $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
         } else {
-            $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
+            $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
         }       
-        
         $order = isset($this->config['order']) ? $this->config['order'] : 'publish DESC';
 
-        // pull the news posts from the database 
+        // pull the news posts from the database
         $items = $this->news->find('all', $this->aggregateWhereClause(), $order);
 
         // merge in any RSS news and perform the sort and limit the number of posts we return to the configured amount.
@@ -68,7 +68,11 @@ class newsController extends expController {
             'view'=>empty($this->params['view']) ? null : $this->params['view']
             ));
             
-        assign_to_template(array('page'=>$page, 'items'=>$page->records, 'enable_rss'=>empty($this->config['enable_rss']) ? false : true));
+        assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records,
+            'rank'=>($order==='rank')?1:0
+        ));
     }
     
     public function showUnpublished() {
@@ -89,7 +93,9 @@ class newsController extends expController {
             'columns'=>array(gt('Title')=>'title',gt('Published On')=>'publish',gt('Status')=>'unpublish'),
             ));
             
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function showExpired() {
@@ -160,7 +166,7 @@ class newsController extends expController {
                     $rssObject->isRss = true;
 					$t = explode(' • ',$rssObject->title);
 					$rssObject->forum = $t[0];
-					$rssObject->topic = $t[1];
+					if (!empty($t[1])) $rssObject->topic = $t[1];
                     $news[] = $rssObject;
                 }
             }

@@ -20,21 +20,21 @@
 <div class="module calendar cal-admin">
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
+        &#160;&#160;|&#160;&#160;
         <a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
 		{permissions}
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;
+				&#160;&#160;|&#160;&#160;
                 <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
         {/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
-        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {br}
         {permissions}
 			<span class="listviewlink">{'Past Events View'|gettext}</span>
 			{if $permissions.manage == 1}
-				&nbsp;&nbsp;|&nbsp;&nbsp;
+				&#160;&#160;|&#160;&#160;
 				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
 				<a class="mngmntlink" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
 				{br}
@@ -45,8 +45,12 @@
         {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
+        {if $moduletitle && !$config->hidemoduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
+
 	</h1>
+    {if $config->moduledescription != ""}
+        {$config->moduledescription}
+    {/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
@@ -59,7 +63,7 @@
 			<tr>
 				<th class="header calendarcontentheader">{'Event Title'|gettext}</th>
 				<th class="header calendarcontentheader">{'When'|gettext}</th>
-				<th class="header calendarcontentheader">&nbsp;</th>
+				<th class="header calendarcontentheader">&#160;</th>
 			</tr>
 		</thead>
 		<tbody>

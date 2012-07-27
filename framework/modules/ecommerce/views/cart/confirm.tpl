@@ -145,7 +145,7 @@
                 {if $method->state == -2}
                     {br}{$method->country|countryname}
                 {/if}
-                &nbsp;-&nbsp;{$method->option_title} - ${$method->shipping_cost}
+                &#160;-&#160;{$method->option_title} - ${$method->shipping_cost}
             </h4>
             {include file="../order/partial_summary.tpl" items=$method->orderitem}
         {/foreach}

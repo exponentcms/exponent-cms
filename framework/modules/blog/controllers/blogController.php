@@ -29,6 +29,7 @@ class blogController extends expController {
         'dates'=>"Dates",
     );
     public $remove_configs = array(
+        'categories',
 //        'ealerts'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $add_permissions = array(
@@ -47,7 +48,7 @@ class blogController extends expController {
 		$page = new expPaginator(array(
 		            'model'=>$this->basemodel_name,
 		            'where'=>$this->aggregateWhereClause(),
-		            'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+		            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
 		            'src'=>$this->loc->src,
 		            'order'=>'publish',
 		            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
@@ -56,7 +57,9 @@ class blogController extends expController {
 		            'columns'=>array(gt('Title')=>'title'),
 		            ));
 		            
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
 	}
 
 	public function authors() {
@@ -71,7 +74,9 @@ class blogController extends expController {
             }
         }
         
-	    assign_to_template(array('authors'=>$users));
+	    assign_to_template(array(
+            'authors'=>$users
+        ));
 	}
 	
 	public function dates() {
@@ -106,7 +111,9 @@ class blogController extends expController {
             $blog_date = array();
         }
 	    //eDebug($blog_date);
-	    assign_to_template(array('dates'=>$blog_date));
+	    assign_to_template(array(
+            'dates'=>$blog_date
+        ));
 	}
 	
 	public function showall_by_date() {
@@ -118,7 +125,7 @@ class blogController extends expController {
 		$page = new expPaginator(array(
 		            'model'=>$this->basemodel_name,
 		            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
-		            'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+		            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
 		            'order'=>'publish',
 		            'dir'=>'desc',
 		            'controller'=>$this->baseclassname,
@@ -126,7 +133,10 @@ class blogController extends expController {
 		            'columns'=>array(gt('Title')=>'title'),
 		            ));
 		            
-		assign_to_template(array('page'=>$page,'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date).'"'));
+		assign_to_template(array(
+            'page'=>$page,
+            'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date).'"')
+        );
 	}
 	
 	public function showall_by_author() {
@@ -136,14 +146,17 @@ class blogController extends expController {
 		$page = new expPaginator(array(
 		            'model'=>$this->basemodel_name,
 		            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id,
-		            'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+		            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
 		            'order'=>'publish',
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],
 		            'columns'=>array(gt('Title')=>'title'),
 		            ));
             	    
-		assign_to_template(array('page'=>$page,'moduletitle'=>gt('Blogs by author').' "'.$this->params['author'].'"'));
+		assign_to_template(array(
+            'page'=>$page,
+            'moduletitle'=>gt('Blogs by author').' "'.$this->params['author'].'"'
+        ));
 	}
 	
 	public function show() {
@@ -159,7 +172,10 @@ class blogController extends expController {
 	    $loc = expUnserialize($blog->location_data);
         $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$blog->location_data."'"));
 
-	    assign_to_template(array('record'=>$blog,'__loc'=>$loc,'config'=>$config));
+	    assign_to_template(array(
+            'record'=>$blog,
+            '__loc'=>$loc,
+            'config'=>$config));
 	}
 
     /**
@@ -206,7 +222,9 @@ class blogController extends expController {
             $records[] = new $modelname($assoc->id);
         }
 
-        assign_to_template(array('items'=>$records));
+        assign_to_template(array(
+            'items'=>$records
+        ));
     }
 
     /**

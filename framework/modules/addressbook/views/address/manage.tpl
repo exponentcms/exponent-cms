@@ -55,7 +55,7 @@
                 {if $region->country_id == $country->id}
                 
                         <tr class="{cycle values="odd,even"}">
-                            <td>&nbsp;</td>
+                            <td>&#160;</td>
                             <td>{control type="checkbox" name="region[`$region->id`]" label=$region->name value=1 checked=$region->active}</td>
                             <td>{control type="text" name="region_rank[`$region->id`]" label="Rank"|gettext|cat:":" size="5" value=$region->rank}</td>
                         </tr>                                

@@ -26,7 +26,7 @@
     <thead>
         <tr>
             <th style="width:50px">
-                &nbsp;
+                &#160;
             </th>
             <th>
                 {'Name'|gettext}

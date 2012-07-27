@@ -28,12 +28,12 @@ class expBot {
     
     public function __construct($params) {
         $this->url = isset($params['url']) ? $params['url'] : '';
-        //$this->method = isset($params['method']) ? $params['method'] : '';
+        $this->method = isset($params['method']) ? $params['method'] : '';
     }
     
     public function fire() {
         $convo  = $this->method." ".$this->url."&ajax_action=1 HTTP/1.1\r\n";
-        if ($this->method == 'POST') $convo .= "Content-Type: multipart/form-data";
+        if ($this->method == 'POST') $convo .= "Content-Type: multipart/form-data\r\n";
         $convo .= "Host: " . HOSTNAME . "\r\n";
         $convo .= "User-Agent:  ExponentCMS/".EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR.".".EXPONENT_VERSION_REVISION."  Build/".EXPONENT_VERSION_ITERATION." PHP/".phpversion()."\r\n";
         $convo .= "Connection: Close\r\n\r\n";
@@ -42,7 +42,10 @@ class expBot {
             $theSpawn = fsockopen(HOSTNAME, 80);
             try {
             	fwrite ($theSpawn, $convo);
-                sleep(1);
+//                sleep(1);
+                while (!feof($theSpawn)) {  //FIXME is this better than sleep(1)? seems to make it work, but delays?
+                    echo fgets($theSpawn, 128);
+                }
                 fclose($theSpawn);
             } catch (Exception $error) {
                 eLog("Error writing to socket: <br />",'','',1);

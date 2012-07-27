@@ -80,7 +80,7 @@
 			</tbody>
 			<tbody>
 				<tr><td colspan=5>{control type="checkbox" name="wipe_users" label="Erase all current users"|gettext|cat:"?" value=1 checked=false}</td></tr>
-				<tr><td>&nbsp;</td></tr>
+				<tr><td>&#160;</td></tr>
 			</tbody>
 			<thead>
 				<tr>

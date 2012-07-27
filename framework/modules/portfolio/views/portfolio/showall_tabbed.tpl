@@ -19,7 +19,7 @@
 
 {/css}
 
-<div class="module portfolio showall-tabbed">
+<div class="module portfolio showall showall-tabbed">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
@@ -27,7 +27,12 @@
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add a Portfolio Piece"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon class="manage" controller=expTag action=manage text="Manage Tags"|gettext}
+                {if !$config.disabletags}
+                    {icon controller=expTag class="manage" action=manage_module model='portfolio' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
+                {/if}
             {/if}
 			{if $permissions.manage == 1 && $rank == 1}
 				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}

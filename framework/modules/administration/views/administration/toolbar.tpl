@@ -14,7 +14,7 @@
  *}
 
 {css unique="slingbar" link="`$asset_path`css/slingbar.css" corecss="admin-global"}
-    
+
 {/css}
 
 <div id="admintoolbar">

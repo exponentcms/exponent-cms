@@ -75,7 +75,10 @@ class multioptionstheme extends theme {
 		$form->register('btn_size',gt('Button Size').': ',new dropdowncontrol($settings['BTN_SIZE'],$button_sizes));
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
-		assign_to_template(array('name'=>self::name(),'form_html'=>$form->tohtml()));
+		assign_to_template(array(
+            'name'=>self::name(),
+            'form_html'=>$form->tohtml()
+        ));
 	}
 
 }

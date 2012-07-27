@@ -44,7 +44,7 @@
                         {control type="text" id="expTag" name="expTag" label="Tags (comma separated)"|gettext value=$tags size=45}
                     {/if}
                     {if $config.usecategories}
-                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='' OR module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
                     {/if}
                 </div>
                 {if $config.filedisplay}
@@ -62,7 +62,7 @@
             </div>
         </div>
 	    <div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>
-        {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
+        {control type=buttongroup submit="Save Portfolio Piece"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>
 

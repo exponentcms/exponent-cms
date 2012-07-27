@@ -75,11 +75,25 @@ class loginController extends expController {
 			} else {
 				$is_group_admin = 0;
 			}
-			assign_to_template(array('oicount'=>$oicount,'previewtext'=>$previewtext,'previewclass'=>$previewclass,'loggedin'=>$loggedin,'user'=>$user,'displayname'=>$display_name,'is_group_admin'=>$is_group_admin));
+			assign_to_template(array(
+                'oicount'=>$oicount,
+                'previewtext'=>$previewtext,
+                'previewclass'=>$previewclass,
+                'loggedin'=>$loggedin,
+                'user'=>$user,
+                'displayname'=>$display_name,
+                'is_group_admin'=>$is_group_admin
+            ));
 		} else {
 			//$template->assign('isecom',in_array('storeController',listActiveControllers()));
 			$loggedin = 0;
-			assign_to_template(array('oicount'=>$oicount,'previewtext'=>$previewtext,'previewclass'=>$previewclass,'loggedin'=>$loggedin,'user'=>$user));
+			assign_to_template(array(
+                'oicount'=>$oicount,
+                'previewtext'=>$previewtext,
+                'previewclass'=>$previewclass,
+                'loggedin'=>$loggedin,
+                'user'=>$user
+            ));
 		}
 	}
 

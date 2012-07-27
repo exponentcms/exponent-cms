@@ -44,6 +44,21 @@ function smarty_function_ddrerank($params,&$smarty) {
     if (!empty($params['sql'])) {
         $sql = explode("LIMIT",$params['sql']);
         $params['items'] = $db->selectObjectsBySQL($sql[0]);
+    } elseif (!empty($params['items'][0]->id)) {
+            $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
+	        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
+            $obj = new $model();
+            if ($params['model'] == 'expCat') {
+                if (empty($params['module'])) {
+                    $locsql = '1';
+                } else {
+                    $locsql = "module='".$params['module']."'";
+                }
+            } else {
+                $locsql = "location_data='".serialize($loc)."'";
+            }
+//            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
+            $params['items'] = $obj->find('all',$locsql.$only,"rank");
     } elseif (!empty($params['module'])) {
         $uniqueloc = $smarty->getTemplateVars('container');
         if (!empty($uniqueloc->internal)) {
@@ -54,22 +69,9 @@ function smarty_function_ddrerank($params,&$smarty) {
         $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
         $params['items'] = $db->selectObjects($params['module'],$where.$only,"rank");
     } else {
-        if (!empty($params['items'][0]->id)) {
-            $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
-	        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
-            $obj = new $model();
-            if ($params['model'] == 'expCat') {
-                $locsql = '1';
-            } else {
-                $locsql = "location_data='".serialize($loc)."'";
-            }
-//            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
-            $params['items'] = $obj->find('all',$locsql.$only,"rank");
-        } else {
-            $params['items'] = array();
-        }
+        $params['items'] = array();
     }
-    
+
     if (count($params['items'])>=2) {
         expCSS::pushToHead(array(
 		    //"corecss"=>"rerankpanel,panels",
@@ -157,7 +159,6 @@ function smarty_function_ddrerank($params,&$smarty) {
             }).plug(Y.Plugin.Drag);
             
             panel.dd.addHandle('.yui3-widget-hd');
-            
             var panelContainer = Y.one('#panel".$uniqueid."').get('parentNode');
             panelContainer.addClass('exp-panel-container');
             Y.one('#panel".$uniqueid."').removeClass('hide');
@@ -174,7 +175,10 @@ function smarty_function_ddrerank($params,&$smarty) {
 
             // the list
             var ul = '#listToOrder".$uniqueid."';
+            ddinit();
 
+            // turn this into a function so we can initialize anytime needed
+            function ddinit() {
             //Get the list of li's in the lists and make them draggable
             var lis = Y.Node.all('#listToOrder".$uniqueid." li');
 //            lis.each(function(v, k) {
@@ -285,7 +289,8 @@ function smarty_function_ddrerank($params,&$smarty) {
             //Create simple targets for the 2 lists..
             var tar = new Y.DD.Drop({
                 node: ul
-            });        
+            });
+                 };
         });
         
         ";

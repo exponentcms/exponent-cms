@@ -57,11 +57,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         
         {if ($user->is_admin || $user->is_acting_admin) && $admin_config == true}
             {control type=state name=state label="<span class=\"required\">*</span>"|cat:"State/Province"|gettext includeblank="-- Choose a State --"|gettext value=$record->state add_other=true}
-            {control type=text name=non_us_state label="&nbsp;"|cat:"Non U.S. State/Province"|gettext value=$record->non_us_state}
-            {control type=country name=country label="&nbsp;"|cat:"Country"|gettext show_all=true value=$record->country|default:223}
+            {control type=text name=non_us_state label="&#160;"|cat:"Non U.S. State/Province"|gettext value=$record->non_us_state}
+            {control type=country name=country label="&#160;"|cat:"Country"|gettext show_all=true value=$record->country|default:223}
         {else}
             {control type=state name=state label="<span class=\"required\">*</span>"|cat:"State/Province"|gettext includeblank="-- Choose a State --"|gettext value=$record->state}
-            {control type=country name=country label="&nbsp;"|cat:"Country"|gettext value=$record->country}
+            {control type=country name=country label="&#160;"|cat:"Country"|gettext value=$record->country}
         {/if}
         
         {control type=text name=zip label="<span class=\"required\">*</span>"|cat:"Zip/Postal Code"|gettext value=$record->zip}
@@ -73,7 +73,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             <div id="passwordDiv">
                 {control type="checkbox" flip=1 id="remember_me" name="remember_me" label="Remember Me"|gettext|cat:"?" value=1 checked=true}
                 <p>
-                    {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."|gettext}&nbsp;&nbsp;
+                    {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."|gettext}&#160;&#160;
                     {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
                 </p>
                 <div class="passwords">

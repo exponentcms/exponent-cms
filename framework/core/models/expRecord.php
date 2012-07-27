@@ -159,7 +159,7 @@ class expRecord {
         if (strcasecmp($range, 'all') == 0 || strcasecmp($range, 'revisions') == 0) {
             $sql .= empty($limit) ? '' : ' LIMIT '.$limitstart.','.$limit;
             return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
-        } elseif (strcasecmp($range, 'first') == 0) {   
+        } elseif (strcasecmp($range, 'first') == 0) {
             $sql .= ' LIMIT 0,1';
             $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
             return empty($records) ? null : $records[0];  
@@ -404,7 +404,7 @@ class expRecord {
             if (!empty($loc)) $this->location_data = $loc;
         }
         
-        // run the validation as defined in the datatypes
+        // run the validation as defined in the models
         if (!isset($this->validates)) return true;
         $messages = array();
         $post = empty($_POST) ? array() : $_POST;
@@ -670,7 +670,7 @@ class expRecord {
 	 */
 	public function makeSefUrl() {
         global $db, $router;        
-        if (isset($this->title)) {
+        if (!empty($this->title)) {
 			$this->sef_url = $router->encode($this->title);
 		} else {
 			$this->sef_url = $router->encode('Untitled');

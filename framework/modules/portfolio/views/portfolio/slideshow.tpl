@@ -24,11 +24,19 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit rank=1 text="Add a Slide"|gettext}
+				{icon class=add action=edit rank=1 text="Add a Portfolio Piece"|gettext}
 			{/if}
-			{if $permissions.manage == 1 && $slides|@count>1 && $rank == 1}
-				{ddrerank items=$slides model="photo" label="Slides"|gettext}
-			{/if}
+			{if $permissions.manage == 1}
+                {if !$config.disabletags}
+                    {icon controller=expTag class="manage" action=manage_module model='portfolio' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
+                {/if}
+                {if $slides|@count>1 && $rank == 1}
+                    {ddrerank items=$slides model="portfolio" label="Portfolio Pieces"|gettext}
+                {/if}
+            {/if}
 		</div>
     {/permissions}
     {if $config.moduledescription != ""}

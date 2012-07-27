@@ -33,7 +33,7 @@
         {if $config.show_info}
             <span class="label dated">{'Dated'|gettext}:</span>
             <span class="value">{$file->publish_date|format_date}</span>
-            &nbsp;|&nbsp;
+            &#160;|&#160;
             {if $file->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$file->expFile.downloadable[0]->duration}</span>
@@ -47,13 +47,13 @@
                     <span class="value">{$file->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
                 {/if}
             {/if}
-            &nbsp;|&nbsp;
+            &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$file->downloads}</span>
             {if $file->expTag|@count>0 && !$config.disabletags}
-                &nbsp;|&nbsp;
-                <span class="tags">
-                    {'Tags'|gettext}:
+                &#160;|&#160;
+                <span class="label tags">{'Tags'|gettext}:</span>
+                <span class="value">
                     {foreach from=$file->expTag item=tag name=tags}
                         <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
                     {/foreach}
@@ -89,7 +89,7 @@
     {/if}
     {if $config.usebody==1 || $config.usebody==2}
         <a class="readmore" href="{link action=show title=$file->sef_url}">{'Read more'|gettext}</a>
-        &nbsp;&nbsp;
+        &#160;&#160;
     {/if}
     {if !$config.quick_download}
         {icon action=downloadfile fileid=$file->id text='Download'|gettext}

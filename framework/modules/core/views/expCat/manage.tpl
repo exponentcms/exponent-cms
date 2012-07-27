@@ -13,72 +13,133 @@
  *
  *}
 
+{uniqueid assign="id"}
+
 <div class="module expcat manage">
-	<h1>{"Manage Site Categories"|gettext}</h1>
+	<h1>{"Manage Categories"|gettext}</h1>
 	{permissions}
     	{if $permissions.create == 1}
-    		<a class="add" href="{link controller=$model_name action=create}">{"Create a new Category"|gettext}</a>
+    		<a class="add" href="{link controller=$model_name action=edit rank=1}">{"Create a new Category"|gettext}</a>
     	{/if}
-        {if $permissions.manage == 1}
-            {ddrerank items=$page->records model="expCat" label="Categories"|gettext}
-        {/if}
     {/permissions}
-    {$page->links}
-    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-        <thead>
-            <tr>
-                <th>
-                {"Category Name"|gettext}
-                </th>
-                <th>
-                {"Use Count"|gettext}
-                </th>
-                <th>
-                {"Used in"|gettext}
-                </th>
-                <th>
-                {"Actions"|gettext}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {foreach from=$page->records item=listing}
-                <tr class="{cycle values="odd,even"}">
-                    <td>
-                        <strong>{$listing->title}</strong>
-                    </td>
-                    <td>
-                        {$listing->attachedcount}
-                    </td>
-                    <td>
-                        {foreach from=$listing->attached item="type" key=key name=types}
-                            {*<strong>{$key}</strong><br />*}
-                            {$key}
-                            {*{foreach from=$type item=ai name=ai}*}
-                                {*{if $ai->sef_url != ""}*}
-                                    {*<a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>*}
-                                {*{else}*}
-                                    {*{$ai->title|truncate:50:"..."}*}
-                                {*{/if}*}
-                                {*<br />*}
-                                {*<br />*}
-                            {*{/foreach}*}
-                        {/foreach}
-                    </td>
-                    <td>
-                        {permissions}
-                            {if $permissions.edit == 1}
-                                {icon controller=$controller action=edit record=$listing title="Edit this category"|gettext}
-                            {/if}
-                            {if $permissions.delete == 1}
-                                {icon controller=$controller action=delete record=$listing title="Delete this category"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
-                            {/if}
-                        {/permissions}
-                    </td>
-                </tr>
+
+    <div id="{$id}" class="yui-navset exp-skin-tabview hide">
+        <ul>
+            {if !empty($page)}
+                <li><a href="#tab0">{$page->model|capitalize} {'Items'|gettext}</a></li>
+            {/if}
+            {foreach name=tabs from=$cats->modules key=moduleid item=module}
+                <li><a href="#tab{$smarty.foreach.items.iteration}">{$moduleid|capitalize} {'Categories'|gettext}</a></li>
             {/foreach}
-        </tbody>
-    </table>
-    {$page->links}
+        </ul>
+        <div>
+            {if !empty($page)}
+                <div id="#tab0">
+                    <h3>{'Change'|gettext} {$page->model|capitalize} {'Item Categories'|gettext}</h3>
+                    {form action=change_cats}
+                        {control type=hidden name=mod value=$page->model}
+                        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onChange="selectAllp(this.checked)">
+                                    </th>
+                                    <th>
+                                        {"Item"|gettext}
+                                    </th>
+                                    <th>
+                                        {"Category"|gettext}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$page->records item=record}
+                                    <tr class="{cycle values="odd,even"}">
+                                        <td>
+                                            {control type="checkbox" name="change_cat[]" label=" " value=$record->id}
+                                        </td>
+                                        <td>
+                                            {$record->title|truncate:50:"..."}
+                                        </td>
+                                        <td>
+                                            {$record->expCat[0]->title|truncate:50:"..."}
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                        <p>{'Select the item(s) to change, then select the new category'|gettext}</p>
+                        {control type="dropdown" name=newcat label="Module Categories"|gettext items=$catlist}
+                        {control type=buttongroup submit="Change Category on Selected Items"|gettext cancel="Cancel"|gettext returntype="viewable"}
+                    {/form}
+                </div>
+            {/if}
+            {foreach name=items from=$cats->modules key=moduleid item=module}
+                <div id="tab{$smarty.foreach.items.iteration}">
+                    {if $permissions.manage == 1}
+                        {ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
+                    {/if}
+                    <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                {"Category Name"|gettext}
+                                </th>
+                                <th>
+                                {"Use Count"|gettext}
+                                </th>
+                                <th>
+                                {"Actions"|gettext}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {*{foreach from=cats->records item=listing}*}
+                            {foreach from=$module item=listing}
+                                <tr class="{cycle values="odd,even"}">
+                                    <td>
+                                        <strong>{$listing->title}</strong>
+                                    </td>
+                                    <td>
+                                        {$listing->attachedcount}
+                                    </td>
+                                    <td>
+                                        {permissions}
+                                            {if $permissions.edit == 1}
+                                                {icon controller=$controller action=edit record=$listing title="Edit this category"|gettext}
+                                            {/if}
+                                            {if $permissions.delete == 1}
+                                                {icon controller=$controller action=delete record=$listing title="Delete this category"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
+                                            {/if}
+                                        {/permissions}
+                                    </td>
+                                </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            {/foreach}
+        </div>
+    </div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 {clear}
+
+{script unique="`$id`" yui3mods="1"}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+        var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+        tabview.render();
+        Y.one('#{/literal}{$id}{literal}').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
+{/literal}
+
+    function selectAllp(val) {
+        var checks = document.getElementsByName("change_cat[]");
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
+
+{/script}

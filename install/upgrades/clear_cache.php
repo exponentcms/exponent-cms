@@ -71,7 +71,7 @@ class clear_cache extends upgradescript {
 				$errors += count($files['not_removed']);
 			}
 		}
-		return gt("All Caches were cleared.")."<br>".$errors." ".gt("files could not be removed.");
+		return gt("All Caches were cleared.")."<br>".($errors?$errors:gt('No'))." ".gt("files could not be removed.");
 	}
 
 	/**

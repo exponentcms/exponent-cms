@@ -45,7 +45,9 @@ class expHTMLEditorController extends expController {
         // otherwise, on to cke
         $configs = $db->selectObjects('htmleditor_ckeditor',1);
         
-        assign_to_template(array('configs'=>$configs));
+        assign_to_template(array(
+            'configs'=>$configs
+        ));
     }
 
     function update () {
@@ -87,7 +89,10 @@ class expHTMLEditorController extends expController {
             if ($skin != '.' && $skin != '..')
                 $skins[] = $skin;
         }
-        assign_to_template(array('record'=>$tool, 'skins'=>$skins));
+        assign_to_template(array(
+            'record'=>$tool,
+            'skins'=>$skins
+        ));
     }
     
 	function delete() {
@@ -120,7 +125,9 @@ class expHTMLEditorController extends expController {
         } else {
             $demo = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
         }
-        assign_to_template(array('demo'=>$demo));
+        assign_to_template(array(
+            'demo'=>$demo
+        ));
     }
 
 }

@@ -38,7 +38,7 @@ class keywords {
 	}													
 
 	public static function getExcludedWords() {
-		$puncs = array('&nbsp;', '.', ',', "'", '"', ':', '!', "\r", "\n", "\t");
+		$puncs = array('&#160;', '.', ',', "'", '"', ':', '!', "\r", "\n", "\t");
 		$common = array(' and ', ' to ', ' the ', ' a ', ' at ', ' or ', ' it ', ' in ', ' our ', ' no ', ' yes ', ' where ', ' us', 'you', 'for');
 		return array_merge($puncs, $common);
 	}

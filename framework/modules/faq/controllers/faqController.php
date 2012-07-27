@@ -46,10 +46,14 @@ class faqController extends expController {
             $cats[0] = new stdClass();
             $cats[0]->name = '';
             expCatController::sortedByCats($questions,$cats);
-            assign_to_template(array('cats'=>$cats));
+            assign_to_template(array(
+                'cats'=>$cats
+            ));
         }
 
-        assign_to_template(array('items'=>$questions));
+        assign_to_template(array(
+            'items'=>$questions
+        ));
     }
 
 //    public function showall_by_tags() {
@@ -103,7 +107,9 @@ class faqController extends expController {
             'columns'=>array(gt('In FAQ')=>'include_in_faq',gt('Answered')=>'answer',gt('Question')=>'question',gt('Submitted')=>'created_at',gt('Submitted By')=>'submitter_name'),
         ));
         
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function ask_question() {
@@ -189,7 +195,11 @@ class faqController extends expController {
         $reply .= '<strong>Thank you for submitting your question!</strong>';
         
         $from = empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address'];
-        assign_to_template(array('faq'=>$faq, 'reply'=>$reply, 'from'=>$from));
+        assign_to_template(array(
+            'faq'=>$faq,
+            'reply'=>$reply,
+            'from'=>$from
+        ));
     }
     
     public function update_answer() {

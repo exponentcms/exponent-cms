@@ -67,24 +67,26 @@ class helpController extends expController {
         // pagination parameter..hard coded for now.	    
 		$where = $this->aggregateWhereClause();
 	    $where .= 'AND help_version_id='.(empty($ref_version->id)?'0':$ref_version->id);
-	    $limit = 999;
-//	    $order = 'rank';
+//	    $limit = 999;
 	    $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-	    $dir   = 'ASC';
-	    
+
 	    // grab the pagination object
 		$page = new expPaginator(array(
 	                'model'=>'help',
 	                'where'=> $where, 
-	                'limit'=>$limit,
+//	                'limit'=>$limit,
 	                'order'=>$order,
-	                'dir'=>$dir,
+	                'dir'=>'ASC',
 	                'controller'=>$this->baseclassname,
 	                'action'=>$this->params['action'],
 	                'columns'=>array(gt('Title')=>'title',gt('Body')=>'body',gt('Version')=>'help_version_id'),
 	                ));
 	    
-	    assign_to_template(array('current_version'=>$ref_version, 'page'=>$page, 'rank'=>($order==='rank')?1:0));
+	    assign_to_template(array(
+            'current_version'=>$ref_version,
+            'page'=>$page,
+            'rank'=>($order==='rank')?1:0
+        ));
 	}
 
     /**
@@ -116,7 +118,11 @@ class helpController extends expController {
 		}
         $sectionlist[$this->loc->src] .= ' '.gt("(current section)");
 
-	    assign_to_template(array('record'=>$help,"current_section"=>$this->loc->src,"sections"=>$sectionlist));
+	    assign_to_template(array(
+            'record'=>$help,
+            "current_section"=>$this->loc->src,
+            "sections"=>$sectionlist
+        ));
 	}
 
     /**
@@ -136,9 +142,16 @@ class helpController extends expController {
             }
 	    }
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
+        if (empty($doc)) {
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
+        }
         $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$doc->location_data."'"));
 
-	    assign_to_template(array('doc'=>$doc,"hv"=>$this->help_version,'config'=>$config));
+	    assign_to_template(array(
+            'doc'=>$doc,
+            "hv"=>$this->help_version,
+            'config'=>$config
+        ));
 	}
 
     /**
@@ -175,7 +188,11 @@ class helpController extends expController {
 	                'columns'=>array(gt('Title')=>'title',gt('Version')=>'help_version_id',gt('Section')=>'section'),
 	                ));
 
-	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page, 'sections'=>$sections));
+	    assign_to_template(array(
+            'current_version'=>$current_version,
+            'page'=>$page,
+            'sections'=>$sections
+        ));
 	}
 
     /**
@@ -244,7 +261,10 @@ class helpController extends expController {
 	                'columns'=>array(gt('Version')=>'version',gt('Title')=>'title',gt('Current')=>'is_current',gt('# of Docs')=>'num_docs'),
 	                ));
 	    
-	    assign_to_template(array('current_version'=>$current_version, 'page'=>$page));
+	    assign_to_template(array(
+            'current_version'=>$current_version,
+            'page'=>$page
+        ));
 	}
 
     /**
@@ -254,7 +274,9 @@ class helpController extends expController {
 	    expHistory::set('editable', $this->params);
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $version = new help_version($id);
-	    assign_to_template(array('record'=>$version));
+	    assign_to_template(array(
+            'record'=>$version
+        ));
 	}
 
     /**
@@ -355,7 +377,11 @@ class helpController extends expController {
   	    $hv = expSession::get('help-version');
         $selected = $db->selectValue('help_version', 'id', 'version="'.$hv.'"');
    	    $versions = $db->selectDropdown('help_version','version',1,'version');
-   	    assign_to_template(array('current_version'=>$hv, 'selected'=>$selected, 'versions'=>$versions));
+   	    assign_to_template(array(
+               'current_version'=>$hv,
+               'selected'=>$selected,
+               'versions'=>$versions
+           ));
 	}
 
     /**

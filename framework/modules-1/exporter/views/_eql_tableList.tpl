@@ -57,7 +57,7 @@
 
 					<td>{$tables[tid]}</td>
 
-					<td width="12">&nbsp;</td>
+					<td width="12">&#160;</td>
 
 					{math equation="x+1" x=$smarty.section.tid.index assign=nextid}
 					<td>
@@ -101,7 +101,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">&nbsp;</td>
+				<td colspan="2">&#160;</td>
 				<td colspan="3">
 					<input class="downloadfile awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />
 				</td>

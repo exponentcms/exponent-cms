@@ -16,7 +16,7 @@
 <div class="module users reset-password">
     <h1>{'Reset Your Password'|gettext}</h1>
     <p>
-        {'To reset your password, enter your username/email address below.'|gettext}&nbsp;&nbsp;
+        {'To reset your password, enter your username/email address below.'|gettext}&#160;&#160;
         {'An email will be sent to the email address you provided along with instructions to reset your password.'|gettext}
     </p>
     

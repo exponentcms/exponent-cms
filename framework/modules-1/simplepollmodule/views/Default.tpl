@@ -14,8 +14,10 @@
  *}
 
 <div class="module simplepoll default">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-	
+    {if $moduletitle && !$config->hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config->moduledescription != ""}
+   		{$config->moduledescription}
+   	{/if}
 	{if $have_answers != 0}
 		<form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
 			<input type="hidden" name="module" value="simplepollmodule" />

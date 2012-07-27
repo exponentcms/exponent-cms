@@ -20,14 +20,14 @@
 <div class="module calendar cal-admin">
 	<div class="module-actions">
 		<a class="monthviewlink" href="{link action=viewmonth time=$time}">{'Calendar View'|gettext}</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
+        &#160;&#160;|&#160;&#160;
         <a class="listviewlink" href="{link _common=1 view='Monthly List' action='show_view' time=$time}">{'List View'|gettext}</a>
         {permissions}
-            &nbsp;&nbsp;|&nbsp;&nbsp;
+            &#160;&#160;|&#160;&#160;
             <span class="adminviewlink">{'Administration View'|gettext}</span>
         {/permissions}
-		{printer_friendly_link text='Printer-friendly'|gettext prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
-        {export_pdf_link prepend='&nbsp;&nbsp;|&nbsp;&nbsp;'}
+		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
 		{br}
 		<a class="listviewlink" href="{link _common=1 view='Past Events' action='show_view' time=$time}">{'Past Events View'|gettext}</a>{br}
 	</div>
@@ -35,8 +35,12 @@
         {if !empty($config->enable_ical)}
 			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
 		{/if}
-		{if $moduletitle}{$moduletitle} - {'Administration View'}{/if}
+        {if $moduletitle && !$config->hidemoduletitle}{$moduletitle} - {'Administration View'|gettext}{/if}
+
 	</h1>
+    {if $config->moduledescription != ""}
+        {$config->moduledescription}
+    {/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
@@ -50,7 +54,7 @@
 				<strong><em>
 				<th class="header calendarcontentheader">{'Event Title'|gettext}</th>
 				<th class="header calendarcontentheader">{'When'|gettext}</th>
-				<th class="header calendarcontentheader">&nbsp;</th>
+				<th class="header calendarcontentheader">&#160;</th>
 				</em></strong>
 			 </tr>
 		</thead>

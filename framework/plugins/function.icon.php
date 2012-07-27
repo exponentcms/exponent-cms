@@ -57,7 +57,7 @@ function smarty_function_icon($params,&$smarty) {
 	    if (!empty($record)) {
 	        $modloc = expUnserialize($record->location_data);
 			$params['src'] = $modloc->src;
-	    } else if (!empty($params['controller']) || @call_user_func(array($loc->mod,'hasSources'))) {
+	    } else if (!empty($params['controller']) || @call_user_func(array($loc->mod.'Controller','hasSources'))) {
 			$params['src'] = $loc->src;
 		}
 	}

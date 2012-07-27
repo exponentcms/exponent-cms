@@ -44,7 +44,9 @@ class ecomconfigController extends expController {
         
         $id = isset($this->params['id']) ? $this->params['id'] : null;
         $record = new optiongroup_master($id);       
-        assign_to_template(array('record'=>$record));
+        assign_to_template(array(
+            'record'=>$record
+        ));
     }
     
     function update_optiongroup_master() {
@@ -96,7 +98,9 @@ class ecomconfigController extends expController {
         
         $params = isset($this->params['id']) ? $this->params['id'] : $this->params;
         $record = new option_master($params);      
-        assign_to_template(array('record'=>$record));
+        assign_to_template(array(
+            'record'=>$record
+        ));
     }
     
     function update_option_master() {        
@@ -119,7 +123,9 @@ class ecomconfigController extends expController {
         expHistory::set('viewable', $this->params);
         $optiongroup = new optiongroup_master();
         $optiongroups = $optiongroup->find('all');
-        assign_to_template(array('optiongroups'=>$optiongroups));
+        assign_to_template(array(
+            'optiongroups'=>$optiongroups
+        ));
     }
     
     function rerank_optionmaster() {
@@ -134,17 +140,19 @@ class ecomconfigController extends expController {
     public function manage_discounts() {
         expHistory::set('manageable', $this->params);
 		
-        $order = isset($this->params['order']) ? $this->params['order'] : null;
         $page = new expPaginator(array(
 			'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_discounts',
 			'limit'=> 10,
-			'order'=>$order,
+			'order'=>isset($this->params['order']) ? $this->params['order'] : null,
 			'model'=>'discounts',
 			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
 			));
 
 		
-        assign_to_template(array(/*'apply_rules'=>$discountObj->apply_rules, 'discount_types'=>$discountObj->discount_types,*/'page'=>$page));
+        assign_to_template(array(
+        /*'apply_rules'=>$discountObj->apply_rules, 'discount_types'=>$discountObj->discount_types,*/
+            'page'=>$page
+        ));
     }
     
       public function edit_discount() {
@@ -190,7 +198,13 @@ class ecomconfigController extends expController {
             $shipping_methods[$calcid] = $calc->availableMethods();
         }
         
-       assign_to_template(array('discount'=>$discount, 'groups'=>$groups, 'selected_groups'=>$selected_groups, 'shipping_services'=>$shipping_services,'shipping_methods'=>$shipping_methods));
+       assign_to_template(array(
+           'discount'=>$discount,
+           'groups'=>$groups,
+           'selected_groups'=>$selected_groups,
+           'shipping_services'=>$shipping_services,
+           'shipping_methods'=>$shipping_methods
+       ));
     }
     
     public function update_discount() {
@@ -229,7 +243,10 @@ class ecomconfigController extends expController {
         $do = new discounts();
         $promo_codes = $pc->find('all');
         $discounts = $do->find('all');
-		assign_to_template(array('promo_codes'=>$promo_codes, 'discounts'=>$discounts));
+		assign_to_template(array(
+            'promo_codes'=>$promo_codes,
+            'discounts'=>$discounts
+        ));
 	}
 
 	public function update_promocode() {
@@ -249,7 +266,11 @@ class ecomconfigController extends expController {
 		$groups = group::getAllGroups();
 		$discounts = $db->selectObjects('discounts');
 		$group_discounts = $db->selectObjects('groupdiscounts', null, 'rank');
-		assign_to_template(array('groups'=>$groups,'discounts'=>$discounts,'group_discounts'=>$group_discounts));
+		assign_to_template(array(
+            'groups'=>$groups,
+            'discounts'=>$discounts,
+            'group_discounts'=>$group_discounts
+        ));
 	}
 
 	public function update_groupdiscounts() {
@@ -291,7 +312,14 @@ class ecomconfigController extends expController {
         $gr = new geoRegion();             
         $regions = $gr->find('all');
         
-        assign_to_template(array('config'=>$this->config, 'pullable_modules'=>$pullable_modules, 'views'=>$views,'countries'=>$countries, 'regions'=>$regions));
+        assign_to_template(array(
+            'config'=>$this->config,
+            'pullable_modules'=>$pullable_modules,
+            'views'=>$views,
+            'countries'=>$countries,
+            'regions'=>$regions,
+            'title'=>$this->displayname()
+        ));
     }   
 
 
@@ -309,7 +337,11 @@ class ecomconfigController extends expController {
         
         $gr = new geoRegion();             
         $regions = $gr->find('all',null,'rank asc,name asc');
-        assign_to_template(array('countries'=>$countries, 'regions'=>$regions, 'upcharge'=>$this->config['upcharge']));
+        assign_to_template(array(
+            'countries'=>$countries,
+            'regions'=>$regions,
+            'upcharge'=>$this->config['upcharge']
+        ));
 	 }
 	 
 	 function update_upcharge() {

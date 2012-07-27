@@ -28,7 +28,7 @@
     </div>
 
     <p> 
-		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&nbsp;&nbsp;
+		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
 		{'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
     </p>
         <ul>
@@ -46,13 +46,13 @@
 			</li>
         </ul>
     <p> 
-		{'The following is a list of all file records migrated into the database.'|gettext}&nbsp;&nbsp;
+		{'The following is a list of all file records migrated into the database.'|gettext}&#160;&#160;
 		{'A checkmark indicates the file already resides in the destination \'files\' folder.'|gettext}
     </p>		
 	<table class="exp-skin-table">
 		<thead>
 			<tr>
-				<th width="5%">&nbsp;</th>
+				<th width="5%">&#160;</th>
 				<th width="30%">{"File Name"|gettext}</th>
 				<th width="65%">{"Directory"|gettext}</th>
 			</tr>

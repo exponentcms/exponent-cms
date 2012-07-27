@@ -20,7 +20,7 @@
 <div class="company showall">
 	<h1>{$moduletitle|default:'Company Listings'|gettext}</h1>
 
-	{icon class=add controller=$controller action=create text="Add a new"|gettext|cat:" `$modelname`"}
+	{icon class=add controller=$controller action=edit text="Add a new"|gettext|cat:" `$modelname`"}
     <table class="exp-skin-table">
     <thead>
         {$page->header_columns}

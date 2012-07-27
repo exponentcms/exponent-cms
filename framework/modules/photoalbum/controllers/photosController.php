@@ -32,6 +32,7 @@ class photosController extends expController {
         'comments',
         'ealerts',
         'files',
+        'pagination',  // we need to customize it in this module?
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
@@ -41,24 +42,28 @@ class photosController extends expController {
     
     public function showall() {
         expHistory::set('viewable', $this->params);
-        $where = $this->aggregateWhereClause();
-        $order = 'rank';
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-
+        $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
+        if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
+            $limit = '0';
+        }
         $page = new expPaginator(array(
                     'model'=>'photo',
-                    'where'=>$where, 
+                    'where'=>$this->aggregateWhereClause(),
                     'limit'=>$limit,
-                    'order'=>$order,
+                    'order'=>'rank',
                     'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+                    'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
+                    'grouplimit'=>!empty($this->params['view']) && $this->params['view'] == 'showall_galleries' ? 1 : null,
                     'src'=>$this->loc->src,
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(gt('Title')=>'title'),
                     ));
                     
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     function show() {
@@ -90,17 +95,42 @@ class photosController extends expController {
         }
         $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
 
-        assign_to_template(array('record'=>$record,'imgnum'=>$record->rank,'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),"next"=>$next,"previous"=>$prev,'config'=>$config));
+        assign_to_template(array(
+            'record'=>$record,
+            'imgnum'=>$record->rank,
+            'imgtot'=>count($record->find('all',$this->aggregateWhereClause())),
+            "next"=>$next,
+            "previous"=>$prev,
+            'config'=>$config
+        ));
     }
     
     public function slideshow() {
         expHistory::set('viewable', $this->params);
-        $where = $this->aggregateWhereClause();
-        $order = 'rank';
-        $s = new photo();
-        $slides = $s->find('all',$where,$order);
-                    
-        assign_to_template(array('slides'=>$slides));
+//        $where = $this->aggregateWhereClause();
+//        $order = 'rank';
+//        //FIXME we need to change this to expPaginator to get category grouping
+//        $s = new photo();
+//        $slides = $s->find('all',$where,$order);
+
+        $page = new expPaginator(array(
+                    'model'=>'photo',
+                    'where'=>$this->aggregateWhereClause(),
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+                    'order'=>'rank',
+                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+                    'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
+                    'src'=>$this->loc->src,
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'columns'=>array(gt('Title')=>'title'),
+                    ));
+
+        assign_to_template(array(
+//            'slides'=>$slides
+            'slides'=>$page->records
+        ));
     }
     
     public function showall_tags() {
@@ -119,7 +149,9 @@ class photosController extends expController {
             }
         }
         
-        assign_to_template(array('tags'=>$used_tags));
+        assign_to_template(array(
+            'tags'=>$used_tags
+        ));
     }           
     
     public function update() {

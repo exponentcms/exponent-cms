@@ -29,7 +29,7 @@
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
 <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('File and Directory Permission Tests'); ?></strong></td></tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_conf-configphp" />conf/config.php</td>
+	<td id="fdp_conf-configphp" class="bodytext" style="font-weight: bold;" valign="top">conf/config.php</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -45,7 +45,7 @@
 </tr>
 
 <!--<tr>-->
-<!--	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_conf-profiles" />conf/profiles</td>-->
+<!--	<td id="fdp_conf-profiles" class="bodytext" style="font-weight: bold;" valign="top">conf/profiles</td>-->
 <!--	<td class="bodytext" valign="top">-->
 <!--		<div class="sanity_req">--><?php //echo gt('Must be readable and writable by web server'); ?><!--</div>-->
 <!--		<br />-->
@@ -59,7 +59,7 @@
 <!--	</td>-->
 <!--</tr>-->
 <!--<tr>-->
-<!--	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_overridesphp" />overrides.php</td>-->
+<!--	<td id="fdp_overridesphp" class="bodytext" style="font-weight: bold;" valign="top">overrides.php</td>-->
 <!--	<td class="bodytext" valign="top">-->
 <!--		<div class="sanity_req">--><?php //echo gt('Must be readable and writable by web server'); ?><!--</div>-->
 <!--		<br />-->
@@ -75,7 +75,7 @@
 <!--	-->
 
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_files" />files/</td>
+	<td id="fdp_files" class="bodytext" style="font-weight: bold;" valign="top">files/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -89,7 +89,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_install" />install/</td>
+	<td id="fdp_install" class="bodytext" style="font-weight: bold;" valign="top">install/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -104,20 +104,20 @@
 </tr>
 
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules" />framework/modules/</td>
+	<td id="fdp_modules" class="bodytext" style="font-weight: bold;" valign="top">framework/modules/</td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('Exponent runs a few checks against the installed modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the').' <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">'.gt('Exponent Lighthouse page').'</a>.'; ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_modules1" />framework/modules-1/</td>
+	<td id="fdp_modules1" class="bodytext" style="font-weight: bold;" valign="top">framework/modules-1/</td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('Exponent runs a few checks against the installed (old-school) modules to make sure that nothing strange is encountered.  If this test fails, please Create a Ticket on the').' <a href="http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new" target="_blank">'.gt('Exponent Lighthouse page').'</a>.'; ?>
 	</td>
 </tr>
 
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_tmp" />tmp/</td>
+	<td id="fdp_tmp" class="bodytext" style="font-weight: bold;" valign="top">tmp/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -132,7 +132,7 @@
 </tr>
 
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_extensionuploads" />tmp/extensionuploads/</td>
+	<td id="fdp_extensionuploads" class="bodytext" style="font-weight: bold;" valign="top">tmp/extensionuploads/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -146,7 +146,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_views_c" />tmp/views_c/</td>
+	<td id="fdp_views_c" class="bodytext" style="font-weight: bold;" valign="top">tmp/views_c/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -160,7 +160,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_cache" />tmp/cache/</td>
+	<td id="fdp_cache" class="bodytext" style="font-weight: bold;" valign="top">tmp/cache/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -174,7 +174,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_minify" />tmp/minify/ <br /> tmp/css/</td>
+	<td id="fdp_minify" class="bodytext" style="font-weight: bold;" valign="top">tmp/minify/ <br /> tmp/css/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -189,7 +189,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_rss" />tmp/rsscache/</td>
+	<td id="fdp_rss" class="bodytext" style="font-weight: bold;" valign="top">tmp/rsscache/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -203,7 +203,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_image_cache" />tmp/image_cache/</td>
+	<td id="fdp_image_cache" class="bodytext" style="font-weight: bold;" valign="top">tmp/image_cache/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -217,7 +217,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="fdp_pixidou" />tmp/pixidou/</td>
+	<td id="fdp_pixidou" class="bodytext" style="font-weight: bold;" valign="top">tmp/pixidou/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -237,43 +237,43 @@
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
 <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Other Tests'); ?></strong></td></tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_db" /><?php echo gt('Database Backend'); ?></td>
+	<td id="o_db" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('Database Backend'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('Exponent stores all the content for your website in a relational database.  For portability reasons, a custom database abstraction layer is used.  Currently, this abstraction layer only supports MySQL.  If this test fails, then PHP support for these database engines was not detected.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_gd" /><?php echo gt('GD Graphics Library'); ?></td>
+	<td id="o_gd" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('GD Graphics Library'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('Various parts of Exponent utilize the GD Graphics library for imaging functions.  Exponent can operate without GD, but you will lose such features as Captcha tests and automatic thumbnails.  A version of GD that is 2.0.x compatible will give you sharper and crisper thumbnails.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_php" />PHP 5.2.1+</td>
+	<td id="o_php" class="bodytext" style="font-weight: bold;" valign="top">PHP 5.2.1+</td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('Because of some of the functions that Exponent uses, versions of PHP prior to 5.2.1 are not suitable.  Most functions that are supported in later versions have workarounds, but there are a few major bugs, and functions that can\'t be re-implemented in PHP prior to 5.2.1.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_zlib" /><?php echo gt('ZLib Support'); ?></td>
+	<td id="o_zlib" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('ZLib Support'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('ZLib is used for archive support, which Exponent uses for uncompressing Tar and Zip archives.'); ?>
 	</td>
 </tr>
 <tr>
-    <td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_curl" /><?php echo gt('cURL Library Support'); ?></td>
+    <td id="o_curl" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('cURL Library Support'); ?></td>
     <td class="bodytext" valign="top">
         <?php echo gt('The cURL Library is required for several features which pull data from external sources.'); ?>
     </td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_xml" /><?php echo gt('XML (Expat) Library Support'); ?></td>
+	<td id="o_xml" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('XML (Expat) Library Support'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('The web services extensions for Exponent require the Expat Library.  If you are not using web services or module that are dependent on web services, this is a safe warning to ignore.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_safemode" /><?php echo gt('Safe Mode Not Enabled'); ?></td>
+	<td id="o_safemode" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('Safe Mode Not Enabled'); ?></td>
 	<td class="bodytext" valign="top">
         <div class="sanity_req"><?php echo gt('Exponent works best when Safe Mode is disabled'); ?></div>
         <br />
@@ -283,7 +283,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_openbasedir" /><?php echo gt('Open BaseDir Not Enabled'); ?></td>
+	<td id="o_openbasedir" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('Open BaseDir Not Enabled'); ?></td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Exponent works best when Open BaseDir is disabled'); ?></div>
 		<br />
@@ -291,13 +291,13 @@
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_upload" /><?php echo gt('File Uploads Enabled'); ?></td>
+	<td id="o_upload" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('File Uploads Enabled'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('Server administrators have the option of disabling PHP uploads.  Additionally, misconfigured servers may have problems processing uploaded files.  Without the ability to upload files, your experience with Exponent will be severely limited, since you will be unable to upload new code, patches, or images and resources.'); ?>
 	</td>
 </tr>
 <tr>
-	<td class="bodytext" style="font-weight: bold;" valign="top"><a name="o_tmpfile" /><?php echo gt('Temporary File Creation'); ?></td>
+	<td id="o_tmpfile" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('Temporary File Creation'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('Various parts of Exponent have to create temporary files to accomplish a given task.  Usually, this error is related to the \'tmp/\' file and directory permission test, above.'); ?>
 	</td>

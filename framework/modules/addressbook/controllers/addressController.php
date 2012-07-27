@@ -53,7 +53,10 @@ class addressController extends expController {
         if((isset($this->params['id']))) $record = new address(intval($this->params['id']));
         else $record = null;
         $config = ecomconfig::getConfig('address_allow_admins_all');
-        assign_to_template(array('record'=>$record,'admin_config'=>$config));
+        assign_to_template(array(
+            'record'=>$record,
+            'admin_config'=>$config
+        ));
     }
     
 	public function myaddressbook() {
@@ -62,12 +65,16 @@ class addressController extends expController {
 		expQueue::flashIfNotLoggedIn('message', 'You must be logged in to manage your address book.');
 		expHistory::set('viewable', $this->params);
 		$userid = (empty($this->params['user_id'])) ? $user->id : $this->params['user_id'];
-		assign_to_template(array('addresses'=>$this->address->find('all', 'user_id='.$userid)));
+		assign_to_template(array(
+            'addresses'=>$this->address->find('all', 'user_id='.$userid)
+        ));
 	}
 	
 	function show() {
 	    expHistory::set('viewable', $this->params);
-		assign_to_template(array('address'=>new address($this->params['id'])));
+		assign_to_template(array(
+            'address'=>new address($this->params['id'])
+        ));
 	}
 
 	public function update() {
@@ -144,7 +151,10 @@ class addressController extends expController {
         $gr = new geoRegion();             
         $regions = $gr->find('all',null,'rank asc,name asc');
         
-        assign_to_template(array('countries'=>$countries, 'regions'=>$regions));
+        assign_to_template(array(
+            'countries'=>$countries,
+            'regions'=>$regions
+        ));
     }
     
     public function manage_update()

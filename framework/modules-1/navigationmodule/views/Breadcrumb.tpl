@@ -29,9 +29,9 @@
   			{else} 
 				<a class="trail"
   			{/if}
-  				href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{makecase type=ucwords value=$section->name}</a>&nbsp;
+  				href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
 		{else}
-			<span>{makecase type=ucwords value=$section->name}</span>&nbsp;
+			<span>{$section->name}</span>&#160;
 		{/if}
 		{if $section->id != $current->id}&gt;{/if}
 	{/if}

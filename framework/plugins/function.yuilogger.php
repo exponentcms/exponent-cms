@@ -35,14 +35,11 @@
 function smarty_function_yuilogger($params,&$smarty) {
 	global $userjsfiles;
 		$logger =  "
-		
 			var loader = new YAHOO.util.YUILoader();
 			loader.insert({
 			    require: ['fonts','dragdrop','logger'],
 			    base: eXp.PATH_RELATIVE+'external/yui/build/',
-
 			    onSuccess: function(loader) {
-
 					var skinContainer = document.body.appendChild(document.createElement(\"div\"));
 					var myContainer = skinContainer.appendChild(document.createElement(\"div\"));
 					YAHOO.util.Dom.addClass(skinContainer,'yui-skin-sam')
@@ -55,14 +52,10 @@ function smarty_function_yuilogger($params,&$smarty) {
 			    }
 			});
 
-		// 
-		// 
-		// 
 		// var yuiloggerloader = new YAHOO.util.YUILoader();
 		// yuiloggerloader.insert({
 		//     require: ['fonts','dragdrop','logger'],
 		//     base: eXp.PATH_RELATIVE+'external/yui/build/',
-		// 	
 		//     onSuccess: function(yuiloggerloader) {
 		//             // Put a LogReader on your page
 		// 			var myContainer = document.body.appendChild(document.createElement('div'));

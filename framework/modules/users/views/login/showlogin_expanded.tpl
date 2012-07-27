@@ -23,11 +23,11 @@
 	{/if}
 	{if $loggedin == true || $smarty.const.PREVIEW_READONLY == 1}
 		{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}<br />
-		<a href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>&nbsp;|&nbsp;
+		<a href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>&#160;|&#160;
 		{if $is_group_admin}
-			<a href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>&nbsp;|&nbsp;
+			<a href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>&#160;|&#160;
 		{/if}
-		<a href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>&nbsp;|&nbsp;
+		<a href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>&#160;|&#160;
 		<a href="{link action=logout}">{'Logout'|gettext}</a><br />
 	{/if}
 	{if $smarty.const.PREVIEW_READONLY == 1}
@@ -42,7 +42,7 @@
 			<input type="password" class="text" name="password" id="login_password" size="15" />
 			<button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}">{'Login'|gettext}</button><br />
 			{if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
-				<a href="{link controller=users action=create}">{'Create Account'|gettext}</a>&nbsp;|&nbsp;
+				<a href="{link controller=users action=create}">{'Create Account'|gettext}</a>&#160;|&#160;
 				<a href="{link controller=users action=reset_password}">{'Retrieve Password'|gettext}</a>
 			{/if}
 		</form>

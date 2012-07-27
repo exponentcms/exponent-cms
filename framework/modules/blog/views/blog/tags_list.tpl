@@ -17,7 +17,9 @@
     {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
         {if $permissions.manage == 1}
-            {icon controller=expTag action=manage text="Manage Tags"|gettext}
+            {if !$config.disabletags}
+                {icon controller=expTag class="manage" action=manage_module model='blog' text="Manage Tags"|gettext}
+            {/if}
         {/if}
     {/permissions}
     {if $config.moduledescription != ""}

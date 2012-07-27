@@ -96,7 +96,7 @@
                             {foreach from=$discounts item=discount}
                             <li>
                                 <strong>{$discount->coupon_code}</strong>
-                                &nbsp;&nbsp;{icon class=delete action=removeDiscountFromCart record=$discount alt="Remove discount from cart."|gettext}
+                                &#160;&#160;{icon class=delete action=removeDiscountFromCart record=$discount alt="Remove discount from cart."|gettext}
                                 {br}
                                 <em>{$discount->title}</em>
                             </li>

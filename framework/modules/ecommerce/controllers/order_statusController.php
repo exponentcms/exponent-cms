@@ -38,11 +38,14 @@ class order_statusController extends expController {
 			'controller'=>$this->params['controller'],
 			'action'=>$this->params['action'],
 			'where'=>1,
+            'limit'=>10,
 			'order'=>'rank',
 			//'columns'=>array('Name'=>'title')
 			));
 
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function manage_messages() {
@@ -53,18 +56,23 @@ class order_statusController extends expController {
 			'controller'=>$this->params['controller'],
 			'action'=>$this->params['action'],
 			'where'=>1,
+            'limit'=>10,
 			'order'=>'body',
 			//'columns'=>array('Name'=>'title')
 			));
 
         //eDebug($page);
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function edit_message() {
         $id = isset($this->params['id']) ? $this->params['id'] : null;
         $msg = new order_status_messages($id);
-        assign_to_template(array('record'=>$msg));
+        assign_to_template(array(
+            'record'=>$msg
+        ));
         //$msg->update($this->params);
     }
     

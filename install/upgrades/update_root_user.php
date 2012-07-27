@@ -22,7 +22,7 @@
  */
 
 /**
- * This is the class update_profile_paths
+ * This is the class update_root_user
  */
 class update_root_user extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
@@ -49,7 +49,7 @@ class update_root_user extends upgradescript {
 	}
 
 	/**
-	 * coverts all headline modules/items into text modules/items and deletes headline controller files
+	 * converts the main/root super-admin to be marked as such
 	 * @return bool
 	 */
 	function upgrade() {

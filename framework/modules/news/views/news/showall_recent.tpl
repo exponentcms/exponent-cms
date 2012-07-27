@@ -23,16 +23,25 @@
     {permissions}
     <div class="module-actions">
         {if $permissions.create == true || $permissions.edit == true}
-            {icon class="add" action=create text="Add a news post"|gettext}</a>
+            {icon class="add" action=edit rank=1 text="Add a news post"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+            {if !$config.disabletags}
+            |  {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
+            {/if}
+            {if $rank == 1}
+            |  {ddrerank items=$page->records model="news" label="News Items"|gettext}
+            {/if}
         {/if}
         {if $permissions.showUnpublished == 1 }
-             |  {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}</a>
+            |  {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}
         {/if}
     </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
+    {subscribe_link}
     {assign var=myloc value=serialize($__loc)}
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
@@ -44,8 +53,9 @@
             </h2>
             <span class="date">{$item->publish_date|date_format}</span>
             {if $item->expTag|@count>0 && !$config.disabletags}
-                | <span class="tags">
-                    {"Tags"|gettext}:
+                &#160;|&#160;
+                <span class="label tags">{'Tags'|gettext}:</span>
+                <span class="value">
                     {foreach from=$item->expTag item=tag name=tags}
                         <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
                     {/foreach}
@@ -90,6 +100,6 @@
         {/if}
     {/foreach}
     {if $page->total_records > $config.headcount}
-        {br}{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
+        {icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>

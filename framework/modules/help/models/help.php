@@ -96,7 +96,7 @@ class help extends expRecord {
             if (!empty($loc)) $this->location_data = $loc;
         }
 
-        // run the validation as defined in the datatypes
+        // run the validation as defined in the model
         if (!isset($this->validates)) return true;
         $messages = array();
         $post = empty($_POST) ? array() : $_POST;

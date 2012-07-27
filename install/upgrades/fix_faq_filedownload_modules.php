@@ -22,7 +22,7 @@
  */
 
 /**
- * This is the class update_profile_paths
+ * This is the class fix_faq_filedownload_modules
  */
 class fix_faq_filedownload_modules extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
@@ -45,11 +45,13 @@ class fix_faq_filedownload_modules extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-		return true;  // we'll just do it ine very instance instead of testing if user profile extensions are active
+        global $db;
+
+		return ($db->tableExists('faqs') || $db->tableExists('filedownloads'));  // we'll just do it if the old tables exist
 	}
 
 	/**
-	 * coverts all headline modules/items into text modules/items and deletes headline controller files
+	 * converts the faq & filedownload tables to the new naming scheme
 	 * @return bool
 	 */
 	function upgrade() {

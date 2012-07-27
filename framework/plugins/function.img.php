@@ -27,27 +27,23 @@
  *
  * Type:     function<br>
  * Name:     img<br>
- * Purpose:  display an image
+ * Purpose:  display an image using phpthumb-nailer
  *
  * @param         $params
  * @param \Smarty $smarty
  * @return string
  */
 function smarty_function_img($params,&$smarty) {
-	//$alt = isset($params['alt']) ? $params['alt'] : 'Image';
 	$closing = (XHTML==1) ? ' />' : '>';
-
-	if (isset($params['id'])) $id = ' id="'.$params['id'].'"';
-	if (isset($params['alt'])) $alt = ' alt="'.$params['alt'].'"';
-	if (isset($params['title'])) $title = ' title="'.$params['title'].'"';
-	if (isset($params['class'])) $class = ' class="'.$params['class'].'"';
-	if (isset($params['style'])) $style = ' style="'.$params['style'].'"';
-	if (isset($params['rel'])) $rel = ' rel="'.$params['rel'].'"';
-	if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
+    $id = (isset($params['id'])) ? ' id="'.$params['id'].'"' : '';
+    $alt = (isset($params['alt'])) ? ' alt="'.$params['alt'].'"' : '';
+    $title = (isset($params['title'])) ? ' title="'.$params['title'].'"' : '';
+    $class = (isset($params['class'])) ? ' class="'.$params['class'].'"' : '';
+    $style = (isset($params['style'])) ? ' style="'.$params['style'].'"' : '';
+    $rel = (isset($params['rel'])) ? ' rel="'.$params['rel'].'"' : '';
+    $dims = (isset($params['w']) && isset($params['h']) && isset($params['zc'])) ? ' height="'.$params['h'].'" width="'.$params['w'].'"' : '';
         
-	if (!isset($params['q']) && defined('THUMB_QUALITY')) {
-		$params['q'] = THUMB_QUALITY;
-	}
+	if (!isset($params['q']) && defined('THUMB_QUALITY')) $params['q'] = THUMB_QUALITY;
 
 	$src = PATH_RELATIVE.'thumb.php?';
 	
@@ -67,15 +63,15 @@ function smarty_function_img($params,&$smarty) {
 		    	
 	} else { */
 	    //  phpthumb get angry unless you pass it certain values:
-	    $allowedGETparameters = array(  //full explanation available here:  http://phpthumb.sourceforge.net/demo/docs/phpthumb.readme.txt
+	    $allowedGETparameters = array(  //full explanation available here: http://phpthumb.sourceforge.net/demo/docs/phpthumb.readme.txt
 								'src', 	// source
 		 						'new',  // create new image, not thumb of existing
 		 						'w',	// width
 		 						'h', 	// height
-		  						'wp',	// max width for portrait
-		   						'hp',	// max height for portrait
-		   						'wl', 	// max with for landscape
-								'hl', 	// max height for landscape
+		  						'wp',	// max width for portrait images
+		   						'hp',	// max height for portrait images
+		   						'wl', 	// max width for landscape images
+								'hl', 	// max height for landscape images
 								'ws', 	// max width for square images
 								'hs', 	// max height for square images
 								'f', 	// output image format (jpeg, gif, png)
@@ -99,11 +95,11 @@ function smarty_function_img($params,&$smarty) {
 										   - "brit" (Brightness) [ex: &fltr[]=brit|<value>]
 											 where <value> is the amount +/- to adjust brightness
 											 (range -255 to 255)
-											 Availble in PHP5 with bundled GD only.
-										   - "cont" (Constrast) [ex: &fltr[]=cont|<value>]
+											 Available in PHP5 with bundled GD only.
+										   - "cont" (Contrast) [ex: &fltr[]=cont|<value>]
 											 where <value> is the amount +/- to adjust contrast
 											 (range -255 to 255)
-											 Availble in PHP5 with bundled GD only.
+											 Available in PHP5 with bundled GD only.
 										   - "gam" (Gamma Correction) [ex: &fltr[]=gam|<value>]
 											 where <value> can be a number >0 to 10+ (default 1.0)
 											 Must be >0 (zero gives no effect). There is no max,
@@ -127,7 +123,7 @@ function smarty_function_img($params,&$smarty) {
 										   - "rcd" (Reduce Color Depth) [ex: &fltr[]=rcd|<c>|<d>]
 											 where <c> is the number of colors (2-256) you want
 											 in the output image, and <d> is "1" for dithering
-											 (deault) or "0" for no dithering
+											 (default) or "0" for no dithering
 										   - "clr" (Colorize) [ex: &fltr[]=clr|<value>|<color>]
 											 where <value> is a number between 0 and 100 for the
 											 amount of colorization, and <color> is the hex color
@@ -147,13 +143,13 @@ function smarty_function_img($params,&$smarty) {
 										   - "blur" (Blur) [ex: &fltr[]=blur|<radius>]
 											 where (0 < <radius> < 25) (default = 1)
 										   - "gblr" (Gaussian Blur) [ex: &fltr[]=gblr]
-											 Availble in PHP5 with bundled GD only.
+											 Available in PHP5 with bundled GD only.
 										   - "sblr" (Selective Blur) [ex: &fltr[]=gblr]
-											 Availble in PHP5 with bundled GD only.
+											 Available in PHP5 with bundled GD only.
 										   - "smth" (Smooth) [ex: &fltr[]=smth|<value>]
 											 where <value> is the weighting value for the matrix
 											 (range -10 to 10, default 6)
-											 Availble in PHP5 with bundled GD only.
+											 Available in PHP5 with bundled GD only.
 										   - "lvl" (Levels)
 											 [ex: &fltr[]=lvl|<channel>|<method>|<threshold>
 											 where <channel> can be one of 'r', 'g', 'b', 'a' (for
@@ -331,7 +327,7 @@ function smarty_function_img($params,&$smarty) {
 											 to stretch (if 1) or resize proportionately (0, default)
 											 <x> and <y> will be interpreted as percentage of current
 											 output image size if values are (0 < X < 1)
-											 NOTE: do NOT use this filter unless absolutely neccesary.
+											 NOTE: do NOT use this filter unless absolutely necessary.
 											 It is only provided for cases where other filters need to
 											 have absolute positioning based on source image and the
 											 resultant image should be resized after other filters are
@@ -346,10 +342,7 @@ function smarty_function_img($params,&$smarty) {
 											 in percent (all pixels more than <x>% from the target
 											 color will be 100% opaque, default <x>=10); pixels between
 											 the two thresholds will be partially transparent.
-								
-								
-								
-								*/
+								        */
 								'xto', 	// EXIF Thumbnail Only - set to only extract EXIF thumbnail and not do any additional processing
 								'ra', 	// Rotate by Angle: angle of rotation in degrees positive = counterclockwise, negative = clockwise
 								'ar', 	/* Auto Rotate: set to "x" to use EXIF orientation
@@ -383,10 +376,10 @@ function smarty_function_img($params,&$smarty) {
 										   than display the image
 										*/
 								'phpThumbDebug', //  
-								'hash', //  depracated I think...
+								'hash', //  deprecated I think...
 								'md5s', /*  MD5 hash of the source image -- if this parameter is
 										   passed with the hash of the source image then the
-										   source image is not checked for existance or
+										   source image is not checked for existence or
 										   modification and the cached file is used (if
 										   available). If 'md5s' is passed an empty string then
 										   phpThumb.php dies and outputs the correct MD5 hash
@@ -429,4 +422,3 @@ function smarty_function_img($params,&$smarty) {
 }
 
 ?>
-

@@ -147,7 +147,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
     }
 	
 
-	if ($f->is_auto_respond == 1 && !isset($_POST['data_id'])) {
+	if ($f->is_auto_respond == 1 && !isset($_POST['data_id']) && !empty($db_data->email)) {
 		if (empty($from)) {
 			$from = trim(SMTP_FROMADDRESS);
 		}
@@ -159,7 +159,6 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
 			"Content-type"=>"text/html; charset=".LANG_CHARSET
 		);
 		
-			
 		$mail = new expMail();
 		$mail->quickSend(array(
 				'headers'=>$headers,

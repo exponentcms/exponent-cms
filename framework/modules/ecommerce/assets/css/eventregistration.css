@@ -1,0 +1,29 @@
+
+table ,td, tr{border: none !important;}
+.required .label {display: none; }
+.state_field .label {
+	display: none;
+}
+
+.creditcard-form.dropdown {
+	overflow: hidden;
+}
+
+.creditcard-form.dropdown div {
+	float: left;
+	margin-right: 10px;
+}
+
+.cvv_ver:hover {
+	color: #6B6B6B;
+	text-decoration: none;
+
+}
+
+.creditcard-form {
+      padding-left: 10px;
+}
+
+.top-nav #yuimenubar ul li a:hover {
+      cursor: pointer;
+}

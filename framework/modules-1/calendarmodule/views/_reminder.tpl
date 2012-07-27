@@ -21,9 +21,10 @@
 {/css}
  
 <div class="calendarmodule cal-default"> 
-	<h1>
-	{if $moduletitle}{/if}
-	</h1>
+    {if $moduletitle && !$config->hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config->moduledescription != ""}
+        {$config->moduledescription}
+    {/if}
 	<h4 align="center">
 	{if $totaldays == 1}
 		<a href="{link module=calendarmodule action=viewmonth time=$start}">{'Events for'|gettext} {$start|format_date:"%B %e, %Y"}</a>
@@ -46,7 +47,7 @@
 							<a class="itemtitle calendar_mngmntlink" href="{link module=calendarmodule action=view id=$event->id date_id=$event->eventdate->id}">{$event->title}</a>
 						</strong>							
 						<div>
-							&nbsp-&nbsp 
+							&#160;-&#160;
 							{if $event->is_allday == 1}
 								{'All Day'|gettext}
 							{else}
@@ -57,7 +58,7 @@
 								{/if}
 							{/if}
 							{if $showdetail == 1}
-								&nbsp-&nbsp{$event->body|summarize:"html":"paralinks"}
+								&#160;-&#160;{$event->body|summarize:"html":"paralinks"}
 							{/if}
 							{br}
 						</div>

@@ -127,10 +127,10 @@ class navigationmodule {
 				
 				//echo "i=".$i."<br>";
 				if (navigationmodule::hasChildren($i)) {
-					$obj->submenu = null;
+					$obj->submenu = new stdClass();
 					$obj->submenu->id = $sections[$i]->name.$sections[$i]->id;
 					//echo "getting children of ".$sections[$i]->name;
-					$obj->submenu->itemdata = $this->getChildren($i);
+					$obj->submenu->itemdata = navigationmodule::getChildren($i);
 					$ret_array[] = $obj;
 				} else {
 					$ret_array[] = $obj;	
@@ -157,7 +157,15 @@ class navigationmodule {
 			if ($sections[$i]->depth == 0) {
 				$obj = new stdClass();
 				$obj->id = $sections[$i]->name.$sections[$i]->id;
-				
+
+                $obj->text = $sections[$i]->name;
+                if ($sections[$i]->active == 1) {
+                    $obj->url = $sections[$i]->link;
+                } else {
+                    $obj->url = "#";
+                    $obj->onclick = "onclick: { fn: return false }";
+                }
+
 				/*if ($sections[$i]->active == 1) { 
 					$obj->disabled = false;
 				} else { 
@@ -350,7 +358,7 @@ class navigationmodule {
 				if ($child->alias_type == 1) {
 					// External link.  Set the link to the configured website URL.
 					// This is guaranteed to be a full URL because of the
-					// section::updateExternalAlias() method in datatypes/section.php
+					// section::updateExternalAlias() method in models-1/section.php
 					$child->link = $child->external_link;
 				} else if ($child->alias_type == 2) {
 					// Internal link.
@@ -366,7 +374,7 @@ class navigationmodule {
 						// a regular section because aliases cannot be turned into sections,
 						// (and vice-versa) and because the section::updateInternalLink
 						// does 'alias to alias' dereferencing before the section is saved
-						// (see datatypes/section.php)
+						// (see models-1/section.php)
 						
 						//added by Tyler to pull the descriptions through for the children view
 						$child->description = !empty($dest->description) ? $dest->description : '';

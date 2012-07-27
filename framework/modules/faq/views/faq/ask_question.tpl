@@ -18,7 +18,7 @@
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=create text="Add a New FAQ"|gettext}
+				{icon class=add action=edit text="Add a New FAQ"|gettext}
 			{/if}
 			{br}
 			{if $permissions.manage == 1}

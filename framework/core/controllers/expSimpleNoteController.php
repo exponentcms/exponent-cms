@@ -343,8 +343,8 @@ class expSimpleNoteController extends expController {
         $editlink = makelink(array('controller'=>'expSimpleNote', 'action'=>'edit', 'id'=>$simplenote->id));
         
         // make the email body
-        $body  = gt('Posted By').':&nbsp;'.$simplenote->name."<br>";
-        $body .= gt('Posters Email').':&nbsp;'.$simplenote->email."<br><br>";
+        $body  = gt('Posted By').':&#160;'.$simplenote->name."<br>";
+        $body .= gt('Posters Email').':&#160;'.$simplenote->email."<br><br>";
         $body .= $simplenote->body."<br><br>";
         $body .= gt('You can view, edit and optionally approved this comment by going to').' ';
         $body .= '<a href="'.$editlink.'">'.$editlink.'</a>';

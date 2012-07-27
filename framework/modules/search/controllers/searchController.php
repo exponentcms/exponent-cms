@@ -63,17 +63,22 @@ class searchController extends expController {
         $terms = htmlspecialchars($terms);
         
         $search = new search();
+
         $page = new expPaginator(array(
             //'model'=>'search',
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
             'records'=>$search->getSearchResults($terms),
             //'sql'=>$sql,
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
             'dir'=>'DESC',
 			));        
 
-        assign_to_template(array('page'=>$page, 'terms'=>$terms));
+        assign_to_template(array(
+            'page'=>$page,
+            'terms'=>$terms
+        ));
     }
     
     public static function spider() {
@@ -104,7 +109,9 @@ class searchController extends expController {
 	    }
 	
 	    uksort($mods,'strnatcasecmp');
-	    assign_to_template(array('mods'=>$mods));
+	    assign_to_template(array(
+            'mods'=>$mods
+        ));
     }
         
     public function show() {
@@ -124,7 +131,7 @@ class searchController extends expController {
         $page = new expPaginator(array(
                     'model'=>'expTag',
                     'where'=>null,
-                    'limit'=>999,
+//                    'limit'=>999,
                     'order'=>"title",
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
@@ -141,6 +148,9 @@ class searchController extends expController {
                 }
             }
         }
+        foreach ($page->records as $key=>$record) {
+            if (empty($record->attachedcount)) unset($page->records[$key]);
+        }
         // trim the tag cloud to our limit.
         $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'attachedcount DESC', 'type'=>'a'));
         if (!empty($this->config['limit'])) $page->records = array_slice($page->records,0,$this->config['limit']);
@@ -156,7 +166,9 @@ class searchController extends expController {
     public function autocomplete() {
         return;
         global $db;
-        $mod = new $this->params['model']();
+
+        $model = $this->params['model'];
+        $mod = new $model();
         $srchcol = explode(",",$this->params['searchoncol']);
         /*for ($i=0; $i<count($srchcol); $i++) {
             if ($i>=1) $sql .= " OR ";
@@ -247,15 +259,12 @@ class searchController extends expController {
 			}
 		}
 		
-		$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $order = empty($this->config['order']) ? 'timestamp' : $this->config['order'];
-		
         $page = new expPaginator(array(
 					'records' => $records,
                     'where'=>1, 
 					'model'=>'search_queries',
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? 10 : $this->config['limit'],
+                    'order'=>empty($this->config['order']) ? 'timestamp' : $this->config['order'],
                     'controller'=>$this->baseclassname,
 					'action'=>$this->params['action'],
                     'columns'=>array(
@@ -266,7 +275,12 @@ class searchController extends expController {
                         )
                     ));
 	
-        assign_to_template(array('page'=>$page, 'users'=>$uname, 'user_default' => $user_default, 'badSearch' => $badSearch)); 
+        assign_to_template(array(
+            'page'=>$page,
+            'users'=>$uname,
+            'user_default' => $user_default,
+            'badSearch' => $badSearch
+        ));
 		
 	}
 	
@@ -291,7 +305,13 @@ class searchController extends expController {
 		$records_key   = implode(",", $records_key_arr);
 		$records_values = implode(",", $records_values_arr);
 		
-		assign_to_template(array('records'=>$records, 'total'=>$count, 'limit' => $limit, 'records_key' => $records_key, 'records_values' => $records_values));
+		assign_to_template(array(
+            'records'=>$records,
+            'total'=>$count,
+            'limit' => $limit,
+            'records_key' => $records_key,
+            'records_values' => $records_values
+        ));
 	}
 
 }

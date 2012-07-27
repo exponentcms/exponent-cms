@@ -118,8 +118,9 @@ class ckeditorcontrol extends formcontrol {
     					".$paste_word."
                         scayt_autoStartup : ".$scayt_on.",
                         filebrowserBrowseUrl : '".makelink(array("controller"=>"file", "action"=>"picker", "ajax_action"=>1, "ck"=>1, "update"=>"fck"))."',
-                        filebrowserWindowWidth : '800',
-                        filebrowserWindowHeight : '600',
+                        filebrowserUploadUrl : '".PATH_RELATIVE."external/editors/connector/uploader.php',
+                        filebrowserWindowWidth : '".FM_WIDTH."',
+                        filebrowserWindowHeight : '".FM_HEIGHT."',
     					filebrowserLinkBrowseUrl : '".PATH_RELATIVE."external/editors/connector/CKeditor_link.php',
                         filebrowserLinkWindowWidth : '320',
                         filebrowserLinkWindowHeight : '600',

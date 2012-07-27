@@ -95,7 +95,7 @@ class mysqlid_database extends mysqli_database {
         }*/
         /*if ($displ == FALSE)
             return $qt;
-        else echo "$qn Queries&nbsp;in&nbsp;".$qt."&nbsp;sec.";
+        else echo "$qn Queries&#160;in&#160;".$qt."&#160;sec.";
         return ;*/
         $this->writeLog("------------------------------------------"); 
         $this->writeLog("Func: " . $func);
@@ -1337,7 +1337,7 @@ class mysqlid_database extends mysqli_database {
 	}
 	
 	function selectFormattedNestedTree($table) {
-		$sql = "SELECT CONCAT( REPEAT( '&nbsp;&nbsp;&nbsp;', (COUNT(parent.title) -1) ), node.title) AS title, node.id 
+		$sql = "SELECT CONCAT( REPEAT( '&#160;&#160;&#160;', (COUNT(parent.title) -1) ), node.title) AS title, node.id
 				FROM " .$this->prefix . $table. " as node, " .$this->prefix . $table. " as parent 
 				WHERE node.lft BETWEEN parent.lft and parent.rgt 
 				GROUP BY node.title, node.id 

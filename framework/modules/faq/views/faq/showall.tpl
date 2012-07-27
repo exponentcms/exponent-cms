@@ -25,12 +25,17 @@
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=create text="Add a New FAQ"|gettext}
+				{icon class=add action=edit text="Add a New FAQ"|gettext}
 			{/if}
-			{br}
 			{if $permissions.manage == 1}
 				{icon action=manage text="Manage FAQs"|gettext}
-			{/if}
+                {if !$config.disabletags}
+                    {icon controller=expTag class="manage" action=manage_module model='faq' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='faq' text="Manage Categories"|gettext}
+                {/if}
+            {/if}
 		</div>
     {/permissions}    
     {if $config.moduledescription != ""}
@@ -84,8 +89,8 @@
                             </div>
                         {/permissions}
                     {if $qna->expTag|@count>0 && !$config.disabletags}
-                        <span class="tags">
-                            {'Tags'|gettext}:
+                        <span class="label tags">{'Tags'|gettext}:</span>
+                        <span class="value">
                             {foreach from=$qna->expTag item=tag name=tags}
                                 <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
                             {/foreach}
@@ -111,8 +116,8 @@
                 <a name="faq_{$question->id}"></a>
                 <h3>{$question->question}</h3>
                 {if $question->expTag|@count>0 && !$config.disabletags}
-                    <span class="tags">
-                        {'Tags'|gettext}:
+                    <span class="label tags">{'Tags'|gettext}:</span>
+                    <span class="value">
                         {foreach from=$question->expTag item=tag name=tags}
                             <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
                         {/foreach}

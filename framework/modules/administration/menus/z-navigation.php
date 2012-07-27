@@ -20,7 +20,22 @@ if (!defined('EXPONENT')) exit('');
 
 global $user, $router, $db, $section;
 
-if (!$db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal!=\'\'') && !$user->isAdmin()) return false;
+// determine if the Pages menu should NOT be displayed
+//if (!$db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal!=\'\'') && !$user->isAdmin()) return false;
+if (!$user->isAdmin()) {
+    $pageperms = !$db->selectValue('userpermission','uid',"uid='".$user->id."' AND source=='' AND internal!=''");
+    if (!$pageperms) {
+        $groups = $user->getGroupMemberships;
+        foreach ($groups as $group) {
+            if (!$pageperms) {
+                $pageperms = !$db->selectValue('grouppermission','gid',"gid='".$group->id."' AND source=='' AND internal!=''");
+            } else {
+                break;
+            }
+        }
+    }
+    if (!$pageperms) return false;
+}
 
 $type = "Page";
 $page = $db->selectObject('section', 'id='.$section);

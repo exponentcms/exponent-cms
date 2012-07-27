@@ -70,7 +70,9 @@ class usersController extends expController {
 //                    ));
 //
 //        assign_to_template(array('page'=>$page));
-        assign_to_template(array('filter'=>$filter));
+        assign_to_template(array(
+            'filter'=>$filter
+        ));
     }
     
     public function create() {
@@ -99,7 +101,11 @@ class usersController extends expController {
 		//If there is no image uploaded, use the default avatar
         if(empty($u->image)) $u->image = DEFAULT_AVATAR;
 
-        assign_to_template(array('edit_user'=>$u, 'extensions'=>$active_extensions,"userkey"=>expSession::get("userkey")));
+        assign_to_template(array(
+            'edit_user'=>$u,
+            'extensions'=>$active_extensions,
+            "userkey"=>expSession::get("userkey")
+        ));
     }
     
     public function update() {
@@ -281,7 +287,7 @@ class usersController extends expController {
 			$filtered = 0;
 		}
 		
-	    $sessions = $db->selectObjects('sessionticket');
+//	    $sessions = $db->selectObjects('sessionticket');
 	    for ($i = 0; $i < count($sessions); $i++) {
 		    $sessions[$i]->user = new user($sessions[$i]->uid);
 			if ($sessions[$i]->uid == 0) {
@@ -290,7 +296,10 @@ class usersController extends expController {
 		    $sessions[$i]->duration = expDateTime::duration($sessions[$i]->last_active,$sessions[$i]->start_time);
 	    }
 
-	    assign_to_template(array('sessions'=>$sessions, 'filter'=>$filtered));
+	    assign_to_template(array(
+            'sessions'=>$sessions,
+            'filter'=>$filtered
+        ));
     }
     
     public function kill_session() {
@@ -376,18 +385,18 @@ class usersController extends expController {
 		                ),
 		            ));
 		
-		assign_to_template(array('page'=>$page));
+		assign_to_template(array(
+            'page'=>$page
+        ));
     }
 
     public function manage_groups() {
         expHistory::set('manageable', $this->params);
-        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $order = empty($this->config['order']) ? 'name' : $this->config['order'];
         $page = new expPaginator(array(
                     'model'=>'group',
                     'where'=>1, 
-                    'limit'=>$limit,
-                    'order'=>$order,
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+                    'order'=>empty($this->config['order']) ? 'name' : $this->config['order'],
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(
@@ -397,7 +406,9 @@ class usersController extends expController {
                         )
                     ));
                     
-        assign_to_template(array('page'=>$page)); 
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     public function reset_password() {
@@ -503,7 +514,10 @@ class usersController extends expController {
             flash('error', gt('You do not have the proper permissions to do that'));
             expHistory::back();
         }
-        assign_to_template(array('u'=>$u,'isuser'=>$isuser));
+        assign_to_template(array(
+            'u'=>$u,
+            'isuser'=>$isuser
+        ));
     }
     
     public function save_change_password() {
@@ -545,7 +559,9 @@ class usersController extends expController {
         }
         
         $u = new user($this->params['id']);
-        assign_to_template(array('u'=>$u));
+        assign_to_template(array(
+            'u'=>$u
+        ));
     }
     
     public function update_userpassword() {
@@ -586,7 +602,9 @@ class usersController extends expController {
         $id = isset($this->params['id']) ? $this->params['id'] : null;
         $group = new group($id);
         $group->redirect = $db->selectValue('section','id',"sef_name='".$group->redirect."'");
-        assign_to_template(array('record'=>$group));
+        assign_to_template(array(
+            'record'=>$group
+        ));
     }
     
     public function manage_group_memberships() {
@@ -626,14 +644,13 @@ class usersController extends expController {
 		}
 
         //$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
-        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
         $page = new expPaginator(array(
 //                    'model'=>'user',
 					'records'=>$users,
                     'where'=>1, 
-                    'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to 
+//                    'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to
                                     // add all users to a group, since it's rebuilding the group on save...
-                    'order'=>$order,
+                    'order'=>empty($this->config['order']) ? 'username' : $this->config['order'],
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(
@@ -846,7 +863,7 @@ class usersController extends expController {
 		$sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;     
 		
 		
-		$limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+		$limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 50;
 		//eDebug($sql, true);
 		$orders = new expPaginator(array(
 			//'model'=>'order',

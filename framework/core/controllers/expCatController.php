@@ -36,7 +36,7 @@ class expCatController extends expController {
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is for managing your categories"); }
+	function description() { return gt("This module is used to manage categories"); }
 
     /**
    	 * author of module
@@ -55,36 +55,61 @@ class expCatController extends expController {
 	 */
 	function manage() {
         global $db;
+
         expHistory::set('manageable', $this->params);
-        $modelname = $this->basemodel_name;
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
-//        $order = "title";
-        $order = "rank";
-        $page = new expPaginator(array(
-                    'model'=>$modelname,
-                    'where'=>$where, 
+        if (!empty($this->params['model'])) {
+            $page = new expPaginator(array(
+                        'model'=>$this->params['model'],
+                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+//                        'order'=>'module,rank',
+                        'categorize'=>true,
+                        'controller'=>$this->params['model'],
+//                        'action'=>$this->params['action'],
+//                        'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//                        'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
+                    ));
+            if ($this->params['model'] == 'faq') {
+                foreach ($page->records as $record) {
+                    $record->title = $record->question;
+                }
+            }
+        } else $page = '';
+        $cats = new expPaginator(array(
+                    'model'=>$this->basemodel_name,
+                    'where'=>empty($this->params['model']) ? null : "module='".$this->params['model']."'",
                     'limit'=>50,
-                    'order'=>$order,
+                    'order'=>'module,rank',
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'src'=>$this->hasSources() == true ? $this->loc->src : null,
                     'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+                ));
 
         foreach ($db->selectColumn('content_expCats','content_type',null,null,true) as $contenttype) {
-            foreach ($page->records as $key => $value) {
-                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+            foreach ($cats->records as $key => $value) {
+                $attatchedat = $cats->records[$key]->findWhereAttachedTo($contenttype);
                 if (!empty($attatchedat)) {
-                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
-                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+                    $cats->records[$key]->attachedcount = @$cats->records[$key]->attachedcount + count($attatchedat);
+                    $cats->records[$key]->attached[$contenttype] = $attatchedat;
                     //FIXME here is a hack to get the faq to be listed
-                    if ($contenttype == 'faq' && !empty($page->records[$key]->attached[$contenttype][0]->question)) {
-                        $page->records[$key]->attached[$contenttype][0]->title = $page->records[$key]->attached[$contenttype][0]->question;
+                    if ($contenttype == 'faq' && !empty($cats->records[$key]->attached[$contenttype][0]->question)) {
+                        $cats->records[$key]->attached[$contenttype][0]->title = $cats->records[$key]->attached[$contenttype][0]->question;
                     }
                 }
             }
         }
+        foreach ($cats->records as $record) {
+            $cats->modules[$record->module][] = $record;
+        }
+        $catlist[0] = 'Uncategorized';
+        foreach ($cats->modules as $module) {
+            foreach ($module as $listing) {
+                $catlist[$listing->id] = $listing->title;
+            }
+        }
         assign_to_template(array(
+            'catlist'=>$catlist,
+            'cats'=>$cats,
             'page'=>$page
         ));
     }
@@ -105,14 +130,33 @@ class expCatController extends expController {
     }
 
     /**
+     * this method changes the category of the selected items to the chosen category
+     */
+    function change_cats() {
+        if (!empty($this->params['change_cat'])) {
+            foreach ($this->params['change_cat'] as $item) {
+                $classname = $this->params['mod'];
+                $object = new $classname($item);
+                $params['expCat'][0] = $this->params['newcat'];
+                $object->update($params);
+            }
+        }
+        expHistory::returnTo('viewable');
+    }
+
+    /**
      * this method adds cats properties to object and then sorts by category
      *  it is assumed the records have expCats attachments, even if they are empty
      *
      * @static
-     * @param $records
-     * @param $order
+     * @param object $records
+     * @param $order sort order/dir for items
+     * @param string $uncattitle name to use for uncategorized group
+     * @param array $groups limit set to these groups only if set
+     * @return void
      */
-    public static function addCats(&$records,$order) {
+    public static function addCats(&$records,$order,$uncattitle,$groups=array()) {
+        if (empty($uncattitle)) $uncattitle = gt('Not Categorized');
         foreach ($records as $key=>$record) {
             foreach ($record->expCat as $cat) {
                 $records[$key]->catid = $cat->id;
@@ -125,7 +169,10 @@ class expCatController extends expController {
             if (empty($records[$key]->catid)) {
                 $records[$key]->catid = null;
                 $records[$key]->catrank = 9999;
-                $records[$key]->cat = gt('Not Categorized');
+                $records[$key]->cat = $uncattitle;
+            }
+            if (!empty($groups) && !in_array($records[$key]->catid,$groups)) {
+                unset ($records[$key]);
             }
         }
         $orderby = explode(" ",$order);
@@ -139,20 +186,28 @@ class expCatController extends expController {
      *  it is assumed the records object came from expCatController::addCats
      *
      * @static
-     * @param $records
-     * @param $cats
+     * @param object $records
+     * @param array $cats array of site category objects
+     * @param array $groups limit set to these groups only if set
+     * @return void
      */
-    public static function sortedByCats($records,&$cats) {
+    public static function sortedByCats($records,&$cats,$groups=array(),$grouplimit=null) {
         foreach ($records as $record) {
-            if (empty($record->catid)) $record->catid = 0;
-            if (empty($cats[$record->catid])) {
-                $cats[$record->catid] = new stdClass();
-                $cats[$record->catid]->count = 1;
-                $cats[$record->catid]->name = $record->cat;
-            } else {
-                $cats[$record->catid]->count += 1;
+            if (empty($groups) || in_array($record->catid,$groups)) {
+                if (empty($record->catid)) $record->catid = 0;
+                if (empty($cats[$record->catid])) {
+                    $cats[$record->catid] = new stdClass();
+                    $cats[$record->catid]->count = 1;
+                    $cats[$record->catid]->name = $record->cat;
+                } else {
+                    $cats[$record->catid]->count += 1;
+                }
+                if (empty($grouplimit)) {
+                    $cats[$record->catid]->records[] = $record;
+                } else {
+                    if (empty($cats[$record->catid]->records[0])) $cats[$record->catid]->records[0] = $record;
+                }
             }
-            $cats[$record->catid]->records[] = $record;
         }
     }
 

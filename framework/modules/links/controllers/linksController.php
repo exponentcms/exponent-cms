@@ -56,9 +56,14 @@ class linksController extends expController {
             $cats[] = new stdClass();
             $cats[0]->name = '';
             expCatController::sortedByCats($links,$cats);
-            assign_to_template(array('cats'=>$cats));
+            assign_to_template(array(
+                'cats'=>$cats
+            ));
         }
-        assign_to_template(array('items'=>$links, 'rank'=>($order==='rank')?1:0));
+        assign_to_template(array(
+            'items'=>$links,
+            'rank'=>($order==='rank')?1:0
+        ));
     }
     
     public function show() {

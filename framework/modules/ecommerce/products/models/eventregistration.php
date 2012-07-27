@@ -21,7 +21,7 @@
  * @package Modules
  */
 
-class eventregistration extends product {
+class eventregistration extends expRecord {
 	public $table = 'product';
 	public $has_one = array();
 	public $has_and_belongs_to_many = array('storeCategory');
@@ -31,6 +31,12 @@ class eventregistration extends product {
     public $requiresShipping = false; 
 	public $requiresBilling  = true; 
     public $isQuantityAdjustable = false;
+	
+	
+	 protected $attachable_item_types = array(
+        'content_expFiles'=>'expFile',
+		'content_expDefinableFields'=>'expDefinableField'
+    );
     
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 		parent::__construct($params, $get_assoc, $get_attached);		
@@ -48,18 +54,18 @@ class eventregistration extends product {
 	
 	public function update($params=array()) {	    
 	    global $db;
-	    
+	  
 	    if (isset($params['id'])) {
 	        $product = new product($params['id']);
 	    }
-	    
+	    // eDebug($params, true);
 	    // Save the event info to the eventregistration table	 
 #	    $event = new expRecord();
 #	    $event->tablename = 'eventregistration';
-	    $event->eventdate = datetimecontrol::parseData('eventdate', $params);
+	    $event->eventdate = strtotime($params['eventdate']);
 	    $event->event_starttime = datetimecontrol::parseData('event_starttime', $params) + $event->eventdate;
 	    $event->event_endtime = datetimecontrol::parseData('event_endtime', $params) + $event->eventdate;
-	    $event->signup_cutoff = datetimecontrol::parseData('signup_cutoff', $params);
+	    $event->signup_cutoff = strtotime($params['signup_cutoff']);
 	    $event->id = empty($product->product_type_id) ? null : $product->product_type_id;
 	    if (!empty($event->id)) { 
             $db->updateObject($event, 'eventregistration');
@@ -68,7 +74,8 @@ class eventregistration extends product {
         }
 	    
 	    $params['product_type_id'] = $event->id;
-	    
+		// eDebug($params, true);
+	// $product->expFile= $params['expFile'];
 	    parent::update($params);
 	}
 
@@ -96,9 +103,38 @@ class eventregistration extends product {
 	    $view->assign('people', $people);
         return $view->render('cartSummary');
     }
+	
+	function getBasePrice($orderitem=null) {
+        if ($this->use_special_price) {
+            return $this->special_price;
+        } else {
+            return $this->base_price;
+        }
+    }
+	
+	function getDefaultQuantity() {
+		//TMP: Make this actually do something.
+		return 1;
+	}
+	
+	function getSurcharge() {        
+        $sc = 0;
+        //take parent level surcharge, but override surcharge child product is set            
+        if($this->surcharge == 0 && $this->parent_id != 0)
+        {            
+            $parentProd = new product($this->parent_id);
+            $sc = $parentProd->surcharge;            
+        }
+        else
+        {            
+            $sc = $this->surcharge;
+        }
+        //eDebug($sc);
+        return $sc;
+    }
     
     public function process($item) {   
-        global $db;     
+        global $db, $order;     
         // save the names of the registrants to the eventregistration table too
         $product = new eventregistration($item->product_id);
         $registrants = expUnserialize($product->registrants);
@@ -111,10 +147,23 @@ class eventregistration extends product {
         $event->number_of_registrants = count($product->registrants);
         $event->registrants = serialize($product->registrants);
         
+		
 	    $db->updateObject($event, 'eventregistration');
+		// eDebug(expSession::get('expDefinableField'), true);
+		foreach(expSession::get('expDefinableField') as  $key => $value) {
+			$obj = new stdClass();
+			$obj->expDefinableFields_id = $key;
+			$obj->content_id            = $item->product_id;
+			$obj->connector_id          = $order->id;
+			$obj->content_type          = "eventregistration";
+			$obj->value                 = $value;
+			$db->insertObject($obj, 'content_expDefinableFields_value');
+		}
+		//add unset here
+
         return true;
     }
-    
+    /*
 	function addToCart($params, $orderid = null) {
 	    global $db, $order;	    
 	    if (isset($params['registrants'])) {	        
@@ -141,9 +190,53 @@ class eventregistration extends product {
 	        return false;
 	    } 
 	}
+	*/
+	function addToCart($params, $orderid = null) {
+	    if (empty($params['base_price'])) {
+	        return false;
+	    } else {
+	        $item = new orderitem($params);	        
+	        $item->products_price = preg_replace("/[^0-9.]/","",$params['base_price']);
+	        
+	        $product = new product($params['product_id']);
+	        $item->products_name = $product->title;
+
+	        // we need to unset the orderitem's ID to force a new entry..other wise we will overwrite any
+	        // other giftcards in the cart already
+	        $item->id = null;
+	        $item->quantity = $this->getDefaultQuantity();
+		    $item->save();
+		    return true;
+	    }
+	}
 	
     public function isAvailable(){
 	    return ($this->spacesLeft() !=0 && $this->signup_cutoff > time()) ? true : false;
+    }
+	
+	public function getControl($field) {
+		$id      = $field->id;
+		$control = $field->data;
+		$type    = $field->type;
+		$c       = new $type();
+		$ctl     = unserialize($control);
+		// eDebug($ctl, true);
+		return $ctl->toHTML($ctl->caption, "definablefields[$id]");
+	}
+	
+	public function getForm($form) {        
+        $dirs = array(
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/'.$this->product_type.'/',
+            BASE.'framework/modules/ecommerce/products/views/'.$this->product_type.'/',
+            BASE.'themes/'.DISPLAY_THEME.'/modules/ecommerce/products/views/product/',
+            BASE.'framework/modules/ecommerce/products/views/product/',
+        );
+        
+        foreach ($dirs as $dir) {
+            if (file_exists($dir.$form.'.tpl')) return $dir.$form.'.tpl';    
+        }
+        
+        return false;
     }
 	
 }

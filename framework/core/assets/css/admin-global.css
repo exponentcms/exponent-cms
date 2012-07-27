@@ -82,6 +82,7 @@ span.active {
 /****************  administrative action links  ***********************/
 
 a.add,
+a.alphasort,
 a.edit,
 a.configure,
 a.delete,
@@ -100,6 +101,10 @@ a.view {
 
 a.add {
     background: url(../images/add.png) no-repeat 0 50%;
+}
+
+a.alphasort {
+    background: url(../images/sort_ascending.png) no-repeat 0 50%;
 }
 
 a.edit {

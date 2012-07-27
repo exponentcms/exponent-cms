@@ -44,7 +44,9 @@ class motdController extends expController {
             $message = $this->motd->find('first', null, 'RAND()');  
         }
         
-        assign_to_template(array('message'=>$message));
+        assign_to_template(array(
+            'message'=>$message
+        ));
     }
     
     function showall() {
@@ -52,14 +54,16 @@ class motdController extends expController {
         $page = new expPaginator(array(
                     'model'=>'motd',
                     'where'=>$this->aggregateWhereClause(), 
-                    'limit'=>empty($this->config['limit']) ? 10 : $this->config['limit'],
+                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
                     'order'=>'month,day',
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
                     'columns'=>array(gt('Date')=>'month',gt('Message')=>'body'),
                     ));
         
-        assign_to_template(array('page'=>$page));
+        assign_to_template(array(
+            'page'=>$page
+        ));
     }
     
     function update() {

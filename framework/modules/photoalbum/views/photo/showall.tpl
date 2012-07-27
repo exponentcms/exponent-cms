@@ -32,10 +32,17 @@
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
 			{/if}
-			{if $permissions.manage == 1}
-				{ddrerank items=$page->records model="photo" label="Images"|gettext}
-			{/if}
-		</div>
+            {if $permissions.manage == 1}
+                {if !$config.disabletags}
+                    {icon controller=expTag class="manage" action=manage_module model='photo' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
+                {/if}
+                {if $rank == 1}
+                    {ddrerank items=$page->records model="photo" label="Images"|gettext}
+                {/if}
+            {/if}		</div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
@@ -47,7 +54,7 @@
     {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}	
     {foreach from=$page->records item=record name=items}
         {if $cat != $record->expCat[0]->id && $config.usecategories}
-            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
+            <a href="{link action=$config.landing|default:showall src=$page->src gallery=$record->expCat[0]->id}" title='View this gallery'|gettext><h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2></a>
         {/if}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
             {if $config.lightbox}
@@ -74,7 +81,7 @@
                         {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
                     {/if}
                     {if $permissions.create == 1}
-                        {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
+                        {icon class=add action=edit rank=$slide->rank+1 title="Add another here"|gettext  text="Add After"|gettext}
                     {/if}
                 </div>
             {/permissions}
@@ -88,16 +95,16 @@
 {if $config.lightbox}
 {script unique="shadowbox" yui3mods=1}
 {literal}
-EXPONENT.YUI3_CONFIG.modules = {
-           'gallery-lightbox' : {
-               fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-               requires : ['base','node','anim','selector-css3']
-           }
-     }
+    EXPONENT.YUI3_CONFIG.modules = {
+       'gallery-lightbox' : {
+           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+           requires : ['base','node','anim','selector-css3']
+       }
+    }
 
-YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
-    Y.Lightbox.init();    
-});
+    YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
+        Y.Lightbox.init();
+    });
 {/literal}
 {/script}
 {/if}

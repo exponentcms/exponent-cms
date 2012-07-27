@@ -100,7 +100,7 @@ class tagtreecontrol extends formcontrol {
             YUI(EXPONENT.YUI3_CONFIG).use('node','exp-tree', function(Y) {
     			var obj2json = ".$obj.";
 				EXPONENT.DragDropTree.init('".$this->id."',obj2json,'".$this->modelname."','".$this->menu."','".$this->expandonstart."');
-				Y.one('.nodetree').next().remove();
+				Y.one('.loadingdiv').remove();
 			});
 		";
 //		exponent_javascript_toFoot('expddtree', 'treeview,menu,animation,dragdrop,json,container,connection', null, $script, PATH_RELATIVE.'framework/core/assets/js/exp-tree.js');

@@ -33,7 +33,7 @@
  * @return array
  */
 function smarty_modifier_nobreak($string) {
-	return str_replace(' ', '&nbsp;', $string);
+	return str_replace(' ', '&#160;', $string);
 }
 
 ?>

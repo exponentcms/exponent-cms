@@ -33,7 +33,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_userlistcontrol($params,&$smarty) {
-	echo '<script src="'.PATH_RELATIVE.'framework/core/subsystems/forms/controls/listbuildercontrol.js" language="javascript"></script>';
+	echo '<script src="'.PATH_RELATIVE.'framework/core/subsystems/forms/controls/listbuildercontrol.js" type="text/javascript"></script>';
 
 	global $db;
 	$users = $db->selectObjects("user",null,"username");

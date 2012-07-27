@@ -26,6 +26,6 @@
 		{br}
 		<div style="font-size: 2em">{'No Content Selected'|gettext}</div>
 		<hr size="1"/>{'To use the content from an existing module, click the "Use Existing Content" link to the left to enter the Site Content Selector.  Then, find your module and click "Use This Module\'s Content."'|gettext}<br />
-		<em>{'<b>Note:</b> you will only be able to re-use content from modules of the same type'|gettext}</em>
+		<em>{'<strong>Note:</strong> you will only be able to re-use content from modules of the same type'|gettext}</em>
 	</body>
 </html>

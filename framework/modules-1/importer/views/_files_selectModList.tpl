@@ -54,7 +54,7 @@
 					{/foreach}
 				{/foreach}
 			<tr><td colspan="2">
-				<a href="#" onclick="mods_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>&nbsp;|&nbsp;<a href="#" onclick="mods_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
+				<a href="#" onclick="mods_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>&#160;|&#160;<a href="#" onclick="mods_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
 			</td></tr>
 				<tr>
 					<td colspan="2"><input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Process'|gettext}" /></td>

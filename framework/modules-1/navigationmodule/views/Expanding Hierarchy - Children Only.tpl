@@ -41,11 +41,11 @@
                     {/if}
 
                         {if $section->active == 1 && $section->id == $current->id}
-                            <a href="{$section->link}" class="active" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>&nbsp;
+                            <a href="{$section->link}" class="active" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
                         {elseif $section->active == 1}
-                            <a href="{$section->link}" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>&nbsp;
+                            <a href="{$section->link}" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
                         {else}
-                            <span class="side_link">{$section->name}</span>&nbsp;
+                            <span class="side_link">{$section->name}</span>&#160;
                         {/if}
                     </li>
                 {/if}

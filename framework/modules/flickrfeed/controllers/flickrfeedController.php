@@ -104,7 +104,9 @@ class flickrfeedController extends expController {
             }
 		}
 		//eDebug($photos);
-        assign_to_template(array('items'=>$photos));
+        assign_to_template(array(
+            'items'=>$photos
+        ));
     }
 }
 

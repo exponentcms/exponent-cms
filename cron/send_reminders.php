@@ -44,7 +44,7 @@ $config = $db->selectObject("calendarmodule_config","id='".$id."'");
 //$loc->int = '';
 //$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
 if (!$config) {
-	print_r("<br><b><i>Exponent - ".gt('Calendar Not Found!')."</i></b><br>");
+	print_r("<br><strong><em>Exponent - ".gt('Calendar Not Found!')."</em></strong><br>");
 	exit();
 }
 
@@ -331,7 +331,7 @@ $template->assign("totaldays",$totaldays);
 
 
 if ($count == 0) {
-	print_r("<br><b><i>Exponent - ".gt('No Events to Send!')."</i></b><br>");
+	print_r("<br><strong><em>Exponent - ".gt('No Events to Send!')."</em></strong><br>");
 	exit();
 }
 
@@ -413,7 +413,7 @@ foreach ($db->selectObjects('calendar_reminder_address',"calendar_id='".$config-
 	}
 }
 if (empty($emails)) {
-	print_r("<br><b><i>Exponent - ".gt('No One to Send Reminders to!')."</i></b><br>");
+	print_r("<br><strong><em>Exponent - ".gt('No One to Send Reminders to!')."</em></strong><br>");
 	exit();
 }
 

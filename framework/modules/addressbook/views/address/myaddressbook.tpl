@@ -26,7 +26,7 @@
     {br}{br}
     </div>
     <p>
-        {icon class=add action=create text="Add New Address"|gettext}
+        {icon class=add action=edit text="Add New Address"|gettext}
     </p>
     {br}    
     <table class="exp-skin-table">
@@ -34,7 +34,7 @@
     <th>{'Use as Billing'|gettext}</th>
     <th>{'Use as Shipping'|gettext}</th>
     <th>{'Address'|gettext}</th>
-    <th>&nbsp;</th>
+    <th>&#160;</th>
     </thead>
     <tbody>
     

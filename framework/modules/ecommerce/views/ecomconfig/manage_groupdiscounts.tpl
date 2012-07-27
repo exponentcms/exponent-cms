@@ -34,7 +34,7 @@
 	        <th>{'Group'|gettext}</th>
 		    <th>{'Discount'|gettext}</th>
 		    <th>{'Don\'t allow'|gettext}{br}{'other'|gettext}{br}{'group discounts'|gettext}</th>
-		    <th>&nbsp;</th>
+		    <th>&#160;</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -58,7 +58,7 @@
 		    <th>{'Discount'|gettext}</th>
 		    <th>{'Don\'t allow{br}other{br}group discounts'|gettext}</th>
 		    <th>{'Order'|gettext}</th>
-		    <th>&nbsp;</th>
+		    <th>&#160;</th>
 	    </tr>
 	    </thead>
 	    {foreach from=$group_discounts item=discount name=items}

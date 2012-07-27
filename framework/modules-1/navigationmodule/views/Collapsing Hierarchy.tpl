@@ -29,9 +29,9 @@
             {if $section->numParents == 0 || $inPath || $section->id == $current->id ||  $section->parent == $current->id}
                 <li class="depth{$section->depth} {if $section->id == $current->id}current{/if}">
                     {if $section->active == 1}
-                        <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&nbsp;
+                        <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
                     {else}
-                        <span class="navlink">{$section->name}</span>&nbsp;
+                        <span class="navlink">{$section->name}</span>&#160;
                     {/if}
                 </li>
             {/if}

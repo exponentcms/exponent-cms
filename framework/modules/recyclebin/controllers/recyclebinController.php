@@ -44,7 +44,9 @@ class recyclebinController extends expController {
         $orphans = $bin->moduleOrphans(null);
 
         $template = $orig_template;
-        assign_to_template(array('items'=>$orphans));
+        assign_to_template(array(
+            'items'=>$orphans
+        ));
     }
     
     public function show() {
@@ -62,7 +64,10 @@ class recyclebinController extends expController {
         $orphans = $bin->moduleOrphans($this->params['recymod']);
 
         $template = $orig_template;
-        assign_to_template(array('items'=>$orphans,'module'=>$this->params['recymod']));
+        assign_to_template(array(
+            'items'=>$orphans,
+            'module'=>$this->params['recymod']
+        ));
     }
     
 }

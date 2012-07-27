@@ -71,7 +71,7 @@
                 </td>
             </tr>
             <tr class="odd">
-                <td>&nbsp;</td>
+                <td>&#160;</td>
             </tr>
             <tr class="even">
                 <td>

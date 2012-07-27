@@ -18,10 +18,12 @@
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
-				{icon class=add action=edit text="Add a news post"|gettext}
+				{icon class=add action=edit rank=1 text="Add a news post"|gettext}
 			{/if}
             {if $permissions.manage == 1}
-                {icon controller=expTag action=manage text="Manage Tags"|gettext}
+                {if !$config.disabletags}
+                    {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
+                {/if}
             {/if}
         </div>
     {/permissions}

@@ -14,7 +14,7 @@
  *}
 
 {if $container != null}
-    <a name="mod_{$container->id}"></a>
+    <div name="mod_{$container->id}"></div>
 	{permissions}
 		{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $container->permissions.manage == 1)}
 			<div id="module{$container->id}" class="exp-container-module-wrapper">
@@ -33,7 +33,7 @@
 {else}
 	{permissions}
 		{if $permissions.create == 1 && $hidebox == 0}
-			<a class="addmodule" href="{link action=edit rank=$i}"><span class="addtext">{'Add Module'|gettext}</span></a>
+			<a class="addmodule" href="{link action=edit rank=$i src=$src}"><span class="addtext">{'Add Module'|gettext}</span></a>
 		{/if}
 	{/permissions}
 {/if}

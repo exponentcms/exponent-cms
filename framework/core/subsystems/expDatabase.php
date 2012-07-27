@@ -962,7 +962,7 @@ abstract class database {
 	}
 
 	function selectFormattedNestedTree($table) {
-		$sql = "SELECT CONCAT( REPEAT( '&nbsp;&nbsp;&nbsp;', (COUNT(parent.title) -1) ), node.title) AS title, node.id
+		$sql = "SELECT CONCAT( REPEAT( '&#160;&#160;&#160;', (COUNT(parent.title) -1) ), node.title) AS title, node.id
 				FROM " .$this->prefix . $table. " as node, " .$this->prefix . $table. " as parent
 				WHERE node.lft BETWEEN parent.lft and parent.rgt
 				GROUP BY node.title, node.id

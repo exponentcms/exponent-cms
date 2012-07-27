@@ -106,7 +106,7 @@ class calendarmodule_config {
 		$form->register('enable_feedback',gt('Enable Feedback'),new checkboxcontrol($object->enable_feedback),true,gt('Calendar'));
 
 		$form->register(null,'',new htmlcontrol('<h2>'.gt('Events Reminder Email').'</h2>'),true,gt('Reminders'));
-        if ($object->id) {
+        if (!empty($object->id)) {
             $form->register(null,'',new htmlcontrol('<h4>'.gt('sendreminders.php Calendar ID:').' '.$object->id.'</h4>'),true,gt('Reminders'));
         }
 
@@ -128,7 +128,7 @@ class calendarmodule_config {
 		$defaults = array();
 		$userlist = array();
 		$users = user::getAllUsers();
-		foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id.' and user_id != 0') as $address) {
+        if (!empty($object->id)) foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id.' and user_id != 0') as $address) {
 			$locuser =  user::getUserById($address->user_id);
 			$defaults[$locuser->id] = $locuser->firstname . ' ' . $locuser->lastname . ' (' . $locuser->username . ')';
 		} 
@@ -144,7 +144,7 @@ class calendarmodule_config {
 		$grouplist = array();
 		$groups = group::getAllGroups();
 		if ($groups != null) {
-			foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id.' and group_id != 0') as $address) {
+            if (!empty($object->id)) foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id.' and group_id != 0') as $address) {
 				$group =  group::getGroupById($address->group_id);
 				$defaults[$group->id] = $group->name;
 			}
@@ -158,7 +158,7 @@ class calendarmodule_config {
 
 		// Get Freeform list		
 		$defaults = array();
-		foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id." and email != ''") as $address) {
+        if (!empty($object->id)) foreach ($db->selectObjects('calendar_reminder_address','calendar_id='.$object->id." and email != ''") as $address) {
 			$defaults[$address->email] = $address->email;
 		}
 		$form->register('addresses',gt('Other Addresses'),new listbuildercontrol($defaults,null),true,gt('Reminders'));
@@ -174,13 +174,13 @@ class calendarmodule_config {
 		$form->register('aggregate',gt('Aggregate events from similar modules'),new listbuildercontrol($selected_calendars,$all_calendars),true,gt('Aggregation'));
 		// Get iCal list
 		$defaults = array();
-		foreach ($db->selectObjects('calendar_external','calendar_id='.$object->id.' and type='.ICAL_TYPE) as $icaladdress) {
+        if (!empty($object->id)) foreach ($db->selectObjects('calendar_external','calendar_id='.$object->id.' and type='.ICAL_TYPE) as $icaladdress) {
 			$defaults[$icaladdress->url] = $icaladdress->url;
 		}
 		$form->register('ical_address',gt('Aggregate events from iCalendars').' (.ics)',new listbuildercontrol($defaults,null),true,gt('Aggregation'));
 		// Get Google Calendar list
 		$defaults = array();
-		foreach ($db->selectObjects('calendar_external','calendar_id='.$object->id.' and type='.GOOGLE_TYPE) as $googleaddress) {
+        if (!empty($object->id)) foreach ($db->selectObjects('calendar_external','calendar_id='.$object->id.' and type='.GOOGLE_TYPE) as $googleaddress) {
 			$defaults[$googleaddress->url] = $googleaddress->url;
 		}
 		$form->register('google_address',gt('Aggregate events from Google Calendars').' (.xml)',new listbuildercontrol($defaults,null),true,gt('Aggregation'));
@@ -199,6 +199,9 @@ class calendarmodule_config {
         // $form->register('group_by_tags',gt('Filter events by tags'), new checkboxcontrol($object->group_by_tags));
         // $form->register(null,'',new htmlcontrol(gt('Tags to show')));
         // $form->register('show_tags','',new listbuildercontrol($object->show_tags,$available_tags));
+        $form->register('hidemoduletitle',gt("Hide Module Title?"),new checkboxcontrol(empty($object->hidemoduletitle)?'':$object->hidemoduletitle),true,gt('Module Title'));
+        $form->register('moduledescription',gt("Module Description"),new htmleditorcontrol(empty($object->moduledescription)?'':$object->moduledescription),true,gt('Module Title'));
+
 		$form->register('submit','',new buttongroupcontrol(gt('Save Config'),'',gt('Cancel')),true,'base');
 		return $form;
 	}
@@ -232,8 +235,12 @@ class calendarmodule_config {
 		// $object->group_by_tags = (isset($values['group_by_tags']) ? 1 : 0);
 		// $object->show_tags = serialize(listbuildercontrol::parseData($values,'show_tags'));
 
+        $object->hidemoduletitle = (isset($values['hidemoduletitle']) ? 1 : 0);
+        $object->moduledescription = $values['moduledescription'];
+
 		//Deal with addresses by first deleting All addresses as we will be rebuilding it.
 		$db->delete('calendar_reminder_address','calendar_id='.$object->id);
+        $data = new stdClass();
 		$data->group_id = 0;
 		$data->user_id = 0;
 		$data->email='';

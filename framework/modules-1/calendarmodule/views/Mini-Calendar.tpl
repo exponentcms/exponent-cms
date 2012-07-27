@@ -46,7 +46,7 @@
 								<a class="mngmntlink calendar_mngmntlink" href="{link action=viewday time=$dayinfo.ts}" title="{$dayinfo.ts|format_date:'%A, %B %e, %Y'}"><em>{$day}</em></a>
 							{/if}
 						{else}
-							&nbsp;
+							&#160;
 						{/if}
 					</td>
 				{/foreach}

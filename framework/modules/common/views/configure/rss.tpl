@@ -15,7 +15,7 @@
 
 <h2>{'RSS Feed Settings'|gettext}</h2>
 <blockquote>
-    {'These setting allow you make syndicate your content via RSS.'|gettext}&nbsp;&nbsp;
+    {'These setting allow you make syndicate your content via RSS.'|gettext}&#160;&#160;
     {'To start syndicating all you have to do is enable RSS and give this module\'s content a title and description!'|gettext}
 </blockquote>
 {control type="checkbox" name="enable_rss" label="Enable RSS"|gettext value=1 checked=$config.enable_rss}

@@ -754,7 +754,7 @@ class product extends expRecord {
 		$product->expFile =  $this->getProductFiles($params['id']);
 		// eDebug($product, true);
 		
-		$tab_loaded = $params['tab_loaded'];
+		$tab_loaded = !empty($params['tab_loaded']) ? $params['tab_loaded'] : array();
 		//check if we're saving a newly copied product and if we create children also
 		$originalId = isset($params['original_id']) && isset($params['copy_children']) ? $params['original_id'] : 0;
 		$originalModel = isset($params['original_model']) && isset($params['copy_children']) ? $params['original_model'] : 0;
@@ -784,7 +784,7 @@ class product extends expRecord {
 			$product->expFile= $params['expFile'];
 		}
 		
-		if ($params['shipping']['required_shipping_calculator_id'] > 0) {
+		if (!empty($params['shipping']['required_shipping_calculator_id']) && $params['shipping']['required_shipping_calculator_id'] > 0) {
 			$product->required_shipping_method = $params['required_shipping_methods'][$params['shipping']['required_shipping_calculator_id']];
 		}
 		

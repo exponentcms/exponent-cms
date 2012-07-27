@@ -314,7 +314,7 @@
                     {permissions}
                         <div class="item-permissions">
                             {if $permissions.edit_order_item == 1 && !$pf}                                                                                                             
-                                <td style="text-align:right;"><a href="{link action=edit_order_item id=$oi->id orderid=$order->id}">[-edit-]</a>&nbsp;<a href="{link action=delete_order_item id=$oi->id orderid=$order->id}" onclick="return confirm('Are you sure you want to delete this item from this order?')">[X]</a></td>     
+                                <td style="text-align:right;"><a href="{link action=edit_order_item id=$oi->id orderid=$order->id}">[-edit-]</a>&#160;<a href="{link action=delete_order_item id=$oi->id orderid=$order->id}" onclick="return confirm('Are you sure you want to delete this item from this order?')">[X]</a></td>
                             {/if}
                         </div>
                     {/permissions}

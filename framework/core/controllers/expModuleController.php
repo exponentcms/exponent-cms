@@ -33,7 +33,10 @@ class expModuleController extends expController {
     function manage () {
         $controllers = expModules::listActiveControllers();
         $old_school_mods = expModules::listActiveOSMods();
-        assign_to_template(array('controllers'=>$controllers,'old_school_mods'=>$old_school_mods));
+        assign_to_template(array(
+            'controllers'=>$controllers,
+            'old_school_mods'=>$old_school_mods
+        ));
     }
 
     function update () {

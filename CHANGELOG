@@ -2,6 +2,24 @@ Exponent Content Management System
 Copyright (c) 2004-2012 OIC Group, Inc.
 ===============================================
 
+Added / Fixed / changed for 2.0.8
+-----------------------
+# This release focuses on fixing bugs and enhancing list management (tags, categories, comments)
+  - adds manual sorting to news module
+  - adds random sorting to links module
+  - enhances category management by removing global categories and grouping categories by module type
+  - adds site-wide comment management to exponent menu
+  - enhances comment, tag, & category management with bulk module item processing
+  - adds additional views to photoalbum
+    -- new tabbed and accordion views just like filedownloads & portfolio
+    -- view category/gallery/group album to pull up individual group/gallery
+  - adds group (category) viewing to filedownloads
+  - adds quick upload feature to wysiwyg editor (upload in editor without going to file manager/uploader)
+  - finally implements email alerts (ealerts) in a usable form for blog, news, & filedownloads (subscribe to updates)
+  - adds support for custom smarty plugins & form controls (in current theme folder)
+  - adds alpha-level implementation of less style sheets (both system and theme)
+  - plus many other tweaks, fixes, and features
+
 Added / Fixed / changed for 2.0.7
 -----------------------
 # This release focuses on fixing bugs and enhanced speed/size

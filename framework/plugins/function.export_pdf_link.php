@@ -40,7 +40,7 @@ function smarty_function_export_pdf_link($params,&$smarty) {
         $print = !empty($config->printlink);
     } elseif (is_array($config)) {
         $print = !empty($config['printlink']);
-    } elseif (isset($params['show'])) {
+    } elseif (isset($params['show'])) {  // force display of link
         $print = isset($params['show']) ? $params['show'] : null;
     }
     if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF && file_exists(BASE.'external/dompdf/dompdf.php')) {

@@ -29,9 +29,9 @@ class filedownloadController extends expController {
     );
 	public $remove_configs = array(
         'comments',
-        'ealerts',
+//        'ealerts',
         'files',
-        'rss'
+        'rss', // because we do this as a custom tab within the module
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return gt("File Downloads"); }
@@ -39,12 +39,11 @@ class filedownloadController extends expController {
 	function isSearchable() { return true; }
 	
     function showall() {
-        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
-        $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
+        $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
-            $limit = 999;
+            $limit = '0';
         }
-
+        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>$this->aggregateWhereClause(),
@@ -53,6 +52,7 @@ class filedownloadController extends expController {
                     'controller'=>$this->baseclassname,
                     'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
                     'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+                    'groups'=>empty($this->params['group']) ? array() : array($this->params['group']),
                     'action'=>$this->params['action'],
                     'src'=>$this->loc->src,
                     'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
@@ -69,7 +69,11 @@ class filedownloadController extends expController {
             }
         }
 
-		assign_to_template(array('page'=>$page, 'items'=>$page->records, 'rank'=>($order==='rank')?1:0));
+		assign_to_template(array(
+            'page'=>$page,
+            'items'=>$page->records,
+            'rank'=>($order==='rank')?1:0
+        ));
     }
 
     public function downloadfile() {

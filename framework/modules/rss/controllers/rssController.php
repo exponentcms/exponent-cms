@@ -41,7 +41,9 @@ class rssController extends expController {
     
     function showall() {
         $rss = new expRss();
-        assign_to_template(array('feeds'=>$rss->getFeeds()));
+        assign_to_template(array(
+            'feeds'=>$rss->getFeeds()
+        ));
     }
     
     function show() {
