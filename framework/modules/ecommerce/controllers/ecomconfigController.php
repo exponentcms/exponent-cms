@@ -317,7 +317,8 @@ class ecomconfigController extends expController {
             'pullable_modules'=>$pullable_modules,
             'views'=>$views,
             'countries'=>$countries,
-            'regions'=>$regions
+            'regions'=>$regions,
+            'title'=>$this->displayname()
         ));
     }   
 

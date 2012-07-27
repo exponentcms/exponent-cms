@@ -583,7 +583,8 @@ abstract class expController {
             'config'=>$this->config,
             'pullable_modules'=>$pullable_modules,
             'page'=>$page,
-            'views'=>$views
+            'views'=>$views,
+            'title'=>$this->displayname()
         ));
     }
 

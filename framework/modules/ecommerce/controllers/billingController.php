@@ -101,7 +101,8 @@ class billingController extends expController {
         if (empty($this->params['id'])) return false;
         $calc = new billingcalculator($this->params['id']);
         assign_to_template(array(
-            'calculator'=>$calc
+            'calculator'=>$calc,
+            'title'=>$this->displayname()
         ));
     }
     

@@ -986,7 +986,8 @@ class cartController extends expController {
         $config = new expConfig($this->loc);   
         $this->config = $config->config;             
         assign_to_template(array(
-            'config'=>$this->config
+            'config'=>$this->config,
+            'title'=>$this->displayname()
         ));
     }    
     

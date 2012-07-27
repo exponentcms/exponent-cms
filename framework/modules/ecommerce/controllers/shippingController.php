@@ -151,7 +151,8 @@ class shippingController extends expController {
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
         $calc = new $calcname($this->params['id']);
         assign_to_template(array(
-            'calculator'=>$calc
+            'calculator'=>$calc,
+            'title'=>$this->displayname()
         ));
     }
     

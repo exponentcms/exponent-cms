@@ -123,6 +123,7 @@ class reportController extends expController {
     function cart_summary (){
         global $db;
         
+        $p = $this->params;
         $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, o.grand_total, os.title as status_title from ";
         $sql .= $db->prefix . "orders as o ";
         $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
@@ -224,7 +225,7 @@ class reportController extends expController {
         }
         
         $inc = 0;  $sqltmp = '';  
-        foreach ($p['discounts'] as $d)
+        if (!empty($p['discounts'])) foreach ($p['discounts'] as $d)
         {
             if ($d == -1) continue;
             else if ($inc == 0)
@@ -1692,9 +1693,9 @@ class reportController extends expController {
 		
 		$summary['totalcarts']    = $allCarts['count'];
 		$summary['valueproducts'] = $valueproducts;
-		$summary['cartsWithoutItems']       = round(($cartsWithoutItems['count']     / $allCarts['count']) * 100, 2) . '%';
-		$summary['cartsWithItems']          = round(($cartsWithItems['count']        / $allCarts['count']) * 100, 2) . '%';
-		$summary['cartsWithItemsAndInfo']   = round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%';
+		$summary['cartsWithoutItems']       = round(($allCarts['count'] ? $cartsWithoutItems['count']     / $allCarts['count'] : 0) * 100, 2) . '%';
+		$summary['cartsWithItems']          = round(($allCarts['count'] ? $cartsWithItems['count']        / $allCarts['count'] : 0) * 100, 2) . '%';
+		$summary['cartsWithItemsAndInfo']   = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
 		
 		// eDebug($summary, true);
 		assign_to_template(array(

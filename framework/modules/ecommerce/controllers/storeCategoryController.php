@@ -122,7 +122,8 @@ class storeCategoryController extends expNestedNodeController {
         assign_to_template(array(
             'config'=>$this->config,
             'pullable_modules'=>$pullable_modules,
-            'views'=>$views
+            'views'=>$views,
+            'title'=>$this->displayname()
         ));
     }
     
