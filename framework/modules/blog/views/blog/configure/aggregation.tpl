@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{"Aggregate content from similar modules"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("aggregating content"|gettext) module="aggregation"}
+		</div>
+        <h2>{"Aggregate content from similar modules"|gettext}</h2>
+	</div>
+</div>
 {control type="checkbox" name="add_source" label='Separate this blog\'s content'|gettext|cat:"?" checked=$config.add_source value=1}
 <hr />
 {control type="checkbox" name="noeditagg" label="Prevent editing aggregate items"|gettext value=1 checked=$config.noeditagg}

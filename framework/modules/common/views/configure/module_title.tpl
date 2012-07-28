@@ -13,6 +13,13 @@
  *
  *}
 
-<h2>{"Module Title"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("module title settings"|gettext) module="module-title"}
+		</div>
+        <h2>{"Module Title Settings"|gettext}</h2>
+	</div>
+</div>
 {control type="checkbox" name="hidemoduletitle" label="Hide Module Title?"|gettext value=1 checked=$config.hidemoduletitle}
 {control type="html" name="moduledescription" label="Module Description"|gettext value=$config.moduledescription}

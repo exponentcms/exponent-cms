@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{"Configure File Display Settings"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("file display settings"|gettext) module="file"}
+		</div>
+        <h2>{"File Display Settings"|gettext}</h2>
+	</div>
+</div>
     {control id="filedisplay" type='filedisplay-types' name=filedisplay label="Display Files as"|gettext value=$config.filedisplay}
 <div id="ff-options" style="display:none">
     {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.ffloat}

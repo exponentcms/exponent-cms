@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{'Configure this Module'|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("file download settings"|gettext) module="filedownload"}
+		</div>
+        <h2>{"File Download Settings"|gettext}</h2>
+	</div>
+</div>
 <p>
     {'This is where you can configure the settings to be used by this File Download module.'|gettext}&#160;&#160;
     {'These settings will only apply to this particular module.'|gettext}

@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{'Configure this Module'|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("news settings"|gettext) module="news"}
+		</div>
+        <h2>{"News Settings"|gettext}</h2>
+	</div>
+</div>
 {*control type=dropdown name=order label="Sort Order"|gettext items="$sortopts" value=$config.order*}
 {control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Rank"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,rank" value=$config.order|default:'publish DESC'}
 {control type="checkbox" name="only_featured" label="Only show Featured News Items"|gettext value=1 checked=$config.only_featured}

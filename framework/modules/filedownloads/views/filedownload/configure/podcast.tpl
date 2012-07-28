@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{'Podcast (RSS Feed) Settings'|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("podcast feed settings"|gettext) module="rss"}
+		</div>
+        <h2>{'Podcast Feed Settings'|gettext}</h2>
+	</div>
+</div>
 {control type="checkbox" name="enable_rss" label="Enable Podcasting"|gettext value=1 checked=$config.enable_rss}
 {control type="text" name="feed_title" label="Podcast Title"|gettext value=$config.feed_title}
 {control type="textarea" name="feed_desc" label="Podcast Summary"|gettext value=$config.feed_desc}

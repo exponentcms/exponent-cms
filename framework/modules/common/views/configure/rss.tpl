@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{'RSS Feed Settings'|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("rss feed settings"|gettext) module="rss"}
+		</div>
+        <h2>{'RSS Feed Settings'|gettext}</h2>
+	</div>
+</div>
 <blockquote>
     {'These setting allow you make syndicate your content via RSS.'|gettext}&#160;&#160;
     {'To start syndicating all you have to do is enable RSS and give this module\'s content a title and description!'|gettext}

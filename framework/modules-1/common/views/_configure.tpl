@@ -18,7 +18,12 @@
 
 {/css}
 <div class="form_header">
-	<h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
+    <div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("module configuration"|gettext) page="module-configuration"}
+		</div>
+        <h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
+	</div>
 	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
 </div>
 {$form_html}

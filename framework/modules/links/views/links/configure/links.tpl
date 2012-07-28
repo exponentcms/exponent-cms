@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{'Configure this Module'|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("links settings"|gettext) module="links"}
+		</div>
+        <h2>{"Links Settings"|gettext}</h2>
+	</div>
+</div>
 <p>
     {'This is where you can configure the settings to be used by this Link Manager module.'|gettext}&#160;&#160;
     {'These settings will only apply to this particular module.'|gettext}

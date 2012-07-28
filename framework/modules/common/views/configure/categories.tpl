@@ -13,6 +13,14 @@
  *
  *}
 
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("category settings"|gettext) module="categories"}
+		</div>
+        <h2>{"Category Settings"|gettext}</h2>
+	</div>
+</div>
 <h2>{"Allow item grouping by category"|gettext}</h2>
 {control type="checkbox" name="usecategories" label="Use Categories for this module?"|gettext value=1 checked=$config.usecategories}
 {control type=text name=uncat label="Label for Un-Categoried items"|gettext value=$config.uncat|default:"Uncategorized"|gettext}

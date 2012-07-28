@@ -17,7 +17,14 @@
 
 {/css}
 
-<h2>{"Aggregate content from similar modules"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("aggregating content"|gettext) module="aggregation"}
+		</div>
+        <h2>{"Aggregate content from similar modules"|gettext}</h2>
+	</div>
+</div>
 {control type="checkbox" name="noeditagg" label="Prevent editing aggregate items"|gettext value=1 checked=$config.noeditagg}
 <hr />
 <table class="exp-skin-table">
