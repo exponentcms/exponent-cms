@@ -16,7 +16,16 @@
 {uniqueid assign="id"}
 
 <div class="module expcat manage">
-	<h1>{"Manage Categories"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+            {if !empty($page)}
+                {help text="Get Help"|gettext|cat:" "|cat:("Managing Categories"|gettext) module="manage-categories"}
+            {else}
+                {help text="Get Help"|gettext|cat:" "|cat:("Managing Categories"|gettext) module="manage-site-categories"}
+            {/if}
+        </div>
+        <h1>{"Manage Categories"|gettext}</h1>
+    </div>
 	{permissions}
     	{if $permissions.create == 1}
     		<a class="add" href="{link controller=$model_name action=edit rank=1}">{"Create a new Category"|gettext}</a>
