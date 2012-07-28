@@ -23,7 +23,7 @@
 			<a class="add" href="{link module="expHTMLEditor" action="edit"}">{"Create New Configuration"|gettext}</a>
             {help text="Get Help"|gettext|cat:" "|cat:("Managing CKEditor Toolbars"|gettext) module="ckeditor-toolbar-configuration"}
         </div>
-        <h1>{"CKEditor Toolbar Manager"|gettext}</h1>
+        <h2>{"CKEditor Toolbar Manager"|gettext}</h2>
     </div>
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>

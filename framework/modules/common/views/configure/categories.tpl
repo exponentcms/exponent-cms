@@ -16,9 +16,9 @@
 <div class="form_header">
 	<div class="info-header">
 		<div class="related-actions">
-		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("category settings"|gettext) module="categories"}
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Categories Settings"|gettext) module="categories"}
 		</div>
-        <h2>{"Category Settings"|gettext}</h2>
+        <h2>{"Categories Settings"|gettext}</h2>
 	</div>
 </div>
 <h2>{"Allow item grouping by category"|gettext}</h2>

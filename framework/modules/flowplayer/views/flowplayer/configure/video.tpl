@@ -16,7 +16,7 @@
 <div class="form_header">
 	<div class="info-header">
 		<div class="related-actions">
-		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("flowplayer settings"|gettext) module="flowplayer"}
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Flowplayer Settings"|gettext) module="flowplayer"}
 		</div>
         <h2>{"Flowplayer Settings"|gettext}</h2>
 	</div>

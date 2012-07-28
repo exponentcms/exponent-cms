@@ -20,7 +20,7 @@
 <div class="form_header">
 	<div class="info-header">
 		<div class="related-actions">
-		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("aggregating content"|gettext) module="aggregation"}
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Aggregating Content"|gettext) module="aggregation"}
 		</div>
         <h2>{"Aggregate content from similar modules"|gettext}</h2>
 	</div>

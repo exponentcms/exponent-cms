@@ -16,11 +16,15 @@
 <div class="form_header">
 	<div class="info-header">
 		<div class="related-actions">
-		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("podcast feed settings"|gettext) module="rss"}
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Podcast Feed Settings"|gettext) module="rss-podcast"}
 		</div>
         <h2>{'Podcast Feed Settings'|gettext}</h2>
 	</div>
 </div>
+<blockquote>
+    {'These setting allow you make syndicate your content via a Podcast.'|gettext}&#160;&#160;
+    {'To start syndicating all you have to do is enable Podcasting and give this module\'s content a title and description!'|gettext}
+</blockquote>
 {control type="checkbox" name="enable_rss" label="Enable Podcasting"|gettext value=1 checked=$config.enable_rss}
 {control type="text" name="feed_title" label="Podcast Title"|gettext value=$config.feed_title}
 {control type="textarea" name="feed_desc" label="Podcast Summary"|gettext value=$config.feed_desc}

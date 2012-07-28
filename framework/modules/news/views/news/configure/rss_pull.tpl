@@ -17,7 +17,7 @@
     <div class="form_header">
     	<div class="info-header">
     		<div class="related-actions">
-    		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("rss pull settings"|gettext) module="news"}
+    		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("RSS Pull Settings"|gettext) module="news"}
     		</div>
             <h2>{"RSS Pull Settings"|gettext}</h2>
     	</div>
