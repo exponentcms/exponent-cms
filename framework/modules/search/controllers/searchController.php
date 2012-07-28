@@ -119,7 +119,8 @@ class searchController extends expController {
     }
     
     public function showall() {
-        redirect_to(array("controller"=>'search',"action"=>'show'));
+//        redirect_to(array("controller"=>'search',"action"=>'show'));
+        $this->show();
     }
 
     /**

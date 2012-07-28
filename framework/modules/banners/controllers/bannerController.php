@@ -76,7 +76,8 @@ class bannerController extends expController {
         $count = $db->countObjects('companies');
         if ($count < 1) {
             flash('message', gt('There are no companies created yet.  You need to create at least one company first.'));
-            redirect_to(array('controller'=>'company', 'action'=>'edit'));
+//            redirect_to(array('controller'=>'company', 'action'=>'edit'));
+            $this->edit();
         } else {
             parent::create();
         }

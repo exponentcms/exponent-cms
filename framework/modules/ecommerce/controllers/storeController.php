@@ -1068,11 +1068,13 @@ class storeController extends expController {
 		} elseif($product_type == "giftcard") {
 		
 			flash("message",gt("Giftcard saved."));
-			redirect_to(array('controller'=>'store','action'=>'manage'));
+//			redirect_to(array('controller'=>'store','action'=>'manage'));
+            $this->manage();
 		} elseif($product_type == "eventregistration") {
 		
 			flash("message",gt("Event saved."));
-			redirect_to(array('controller'=>'store','action'=>'manage'));
+//			redirect_to(array('controller'=>'store','action'=>'manage'));
+            $this->manage();
 		}
     }
     
@@ -1408,7 +1410,8 @@ class storeController extends expController {
         if(!empty($_FILES['batch_upload_file']['error']))
         {
             flash('error',gt('There was an error uploading your file.  Please try again.'));
-            redirect_to(array('controller'=>'store','action'=>'batch_process'));        
+//            redirect_to(array('controller'=>'store','action'=>'batch_process'));
+            $this->batch_process();
         }
         
         $file->path = $_FILES['batch_upload_file']['tmp_name'];
@@ -1691,7 +1694,8 @@ class storeController extends expController {
         if(!empty($_FILES['address_csv']['error']))
         {
             flash('error',gt('There was an error uploading your file.  Please try again.'));
-            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));        
+//            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));
+            $this->import_external_addresses();
         }
         
         $file->path = $_FILES['address_csv']['tmp_name'];
@@ -1979,7 +1983,8 @@ class storeController extends expController {
 			$db->updateObject($item, 'product');
 		}
 		
-		redirect_to(array('controller'=>'store', 'action'=>'nonUnicodeProducts'));
+//		redirect_to(array('controller'=>'store', 'action'=>'nonUnicodeProducts'));
+        $this->nonUnicodeProducts();
 	}
 	
 	//This function is being used in the uploadModelaliases page for showing the form upload
@@ -1991,7 +1996,8 @@ class storeController extends expController {
 			if(!empty($_FILES['modelaliases']['error']))
 			{
 				flash('error',gt('There was an error uploading your file.  Please try again.'));
-				redirect_to(array('controller'=>'store','action'=>'uploadModelAliases'));        
+//				redirect_to(array('controller'=>'store','action'=>'uploadModelAliases'));
+                $this->uploadModelAliases();
 			}
 			
 			$file->path = $_FILES['modelaliases']['tmp_name'];

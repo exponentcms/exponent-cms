@@ -45,7 +45,8 @@ class addressController extends expController {
     function isSearchable() { return true; }
 
     function showall() {
-        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
+//        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
+        $this->myaddressbook();
 	}
     
     public function edit()
@@ -187,7 +188,8 @@ class addressController extends expController {
             $gr->save();            
         }
         flash('message',gt('Address configurations successfully updated.'));
-        redirect_to(array('controller'=>'address','action'=>'manage'));        
+//        redirect_to(array('controller'=>'address','action'=>'manage'));
+        $this->manage();
     }
 }
 

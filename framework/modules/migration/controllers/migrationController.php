@@ -2247,14 +2247,16 @@ class migrationController extends expController {
             empty($this->config['port'])
         ) {
             flash('error', gt('You are missing some required database connection information.  Please enter DB information.'));
-            redirect_to (array('controller'=>'migration', 'action'=>'configure'));
+//            redirect_to (array('controller'=>'migration', 'action'=>'configure'));
+            $this->configure();
         }
 
        $database = expDatabase::connect($this->config['username'],$this->config['password'],$this->config['server'].':'.$this->config['port'],$this->config['database']);
 
        if (empty($database->havedb)) {
-            flash('error', gt('An error was encountered trying to connect to the database you specified. Please check your DB config.'));
-            redirect_to (array('controller'=>'migration', 'action'=>'configure'));
+           flash('error', gt('An error was encountered trying to connect to the database you specified. Please check your DB config.'));
+//           redirect_to (array('controller'=>'migration', 'action'=>'configure'));
+           $this->configure();
        }
 
        $database->prefix = $this->config['prefix']. '_';;

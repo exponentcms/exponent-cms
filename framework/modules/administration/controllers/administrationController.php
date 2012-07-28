@@ -352,7 +352,8 @@ class administrationController extends expController {
     }
     
     public function index() {
-        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
+//        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
+        $this->toolbar();
     }
     
     public function update_SetSlingbarPosition() {
@@ -384,7 +385,8 @@ class administrationController extends expController {
     public function update_language() {
         expSettings::change('LANGUAGE', $_POST['newlang']);
         flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
-        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+//        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+        $this->manage_lang();
    	}
 
     public function manage_lang_await() {
@@ -409,7 +411,8 @@ class administrationController extends expController {
             expLang::createNewLangInfoFile($_POST['newlang'],$_POST['newauthor'],$_POST['newcharset'],$_POST['newlocale']);
             flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
         }
-        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+//        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+        $this->manage_lang();
    	}
 
 	public function test_smtp() {

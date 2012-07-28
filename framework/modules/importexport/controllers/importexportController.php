@@ -114,8 +114,8 @@ class importexportController extends expController {
         //$file = new expFile($this->params['expFile']['import_file'][0]);
         if(!empty($_FILES['import_file']['error']))
         {
-             flash('error',gt('There was an error uploading your file.  Please try again.'));
-            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));        
+            flash('error',gt('There was an error uploading your file.  Please try again.'));
+            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));
         }
         
         $file->path = $_FILES['import_file']['tmp_name'];

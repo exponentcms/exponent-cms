@@ -69,7 +69,8 @@ class eventregistrationController extends expController {
     }
     
     function index() {
-        redirect_to(array('controller'=>'eventregistrations', 'action'=>'showall'));
+//        redirect_to(array('controller'=>'eventregistrations', 'action'=>'showall'));
+        $this->showall();
     }
     
     function showByTitle() {
@@ -166,7 +167,8 @@ class eventregistrationController extends expController {
 	}
     
     function delete() {
-        redirect_to(array('controller'=>'eventregistrations', 'action'=>'showall'));
+//        redirect_to(array('controller'=>'eventregistrations', 'action'=>'showall'));
+        $this->showall();
     } 
 
      public function export() {

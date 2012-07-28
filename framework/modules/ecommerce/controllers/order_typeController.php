@@ -45,11 +45,13 @@ class order_typeController extends expController {
     }
     
     public function showall() {
-        redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
+//        redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
+        $this->manage();
     }
     
     public function show() {
-        redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
+//        redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
+        $this->manage();
     }
     
     public function update() {

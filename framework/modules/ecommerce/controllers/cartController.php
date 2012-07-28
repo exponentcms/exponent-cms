@@ -119,10 +119,12 @@ class cartController extends expController {
                 flash('message', gt("Added")." ".$product->title." ".gt("to your cart.")." <a href='" . $router->makeLink(array('controller'=>'cart', 'action'=>'checkout'), false, true) ."'>".gt("Click here to checkout now.")."</a>");
                 //expHistory::back();
                 //eDebug(show_msg_queue(false),true);
-                redirect_to(array('controller'=>'cart', 'action'=>'show'));
+//                redirect_to(array('controller'=>'cart', 'action'=>'show'));
+                $this->show();
                 //expHistory::lastNotEditable();
             } else {
-                redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
+//                redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
+                $this->quickPay();
             } 
         } 
         else
@@ -488,7 +490,8 @@ class cartController extends expController {
         // if we encounterd any errors we will return to the checkout page and show the errors
         if (!expQueue::isQueueEmpty('error'))
         {
-            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+            $this->checkout();
         }
              
         // get the billing options..this is usually the credit card info entered by the user
@@ -521,7 +524,8 @@ class cartController extends expController {
 		if (empty($result->errorCode)) 
 		//if ($result->errorCode === "0" || $result->errorCode === 0) 
 		{
-			redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
+//			redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
+            $this->confirm();
 		} 
 		else 
 		{
@@ -774,7 +778,8 @@ class cartController extends expController {
         }
         
         $db->delete('orderitems', 'id IN ('.$orderitems_to_delete.')');
-        redirect_to(array('controller'=>'cart', 'action'=>'selectShippingMethods'));
+//        redirect_to(array('controller'=>'cart', 'action'=>'selectShippingMethods'));
+        $this->selectShippingMethods();
     }
     
     public function selectShippingMethods() {
@@ -814,7 +819,8 @@ class cartController extends expController {
     public function customerSignup()
     {
         expSession::set('customer-signup', true);        
-        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+        $this->checkout();
     }
     
     public function saveShippingMethods() {
@@ -847,7 +853,8 @@ class cartController extends expController {
             $order->shippingmethods[] = $shippingmethod->id;
         }
          
-        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+        $this->checkout();
     }
     
 	function createaddress() {
@@ -873,7 +880,8 @@ class cartController extends expController {
 			
 		}
 
-		redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//		redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+        $this->checkout();
 	}
 
 	function getSpecials() {

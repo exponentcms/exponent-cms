@@ -157,7 +157,8 @@ class loginController extends expController {
 //			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 			expHistory::set('viewable', $router->params);
 		}
-		redirect_to(array('controller'=>'login', 'action'=>'showlogin'));
+//		redirect_to(array('controller'=>'login', 'action'=>'showlogin'));
+        $this->showlogin();
 	}
 }
 

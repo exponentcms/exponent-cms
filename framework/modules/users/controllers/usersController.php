@@ -76,7 +76,8 @@ class usersController extends expController {
     }
     
     public function create() {
-        redirect_to(array('controller'=>'users', 'action'=>'edituser'));
+//        redirect_to(array('controller'=>'users', 'action'=>'edituser'));
+        $this->edituser();
     }
 
     public function edituser() {

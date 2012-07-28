@@ -166,7 +166,8 @@ class helpController extends expController {
 	    
 	    if (empty($current_version)) {
 	        flash('error', gt("You don't have any software versions created yet.  Please do so now."));
-	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
+//	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
+            $this->edit_version();
 	    }
 
         $sections = array();
