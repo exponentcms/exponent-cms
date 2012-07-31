@@ -24,7 +24,8 @@
 class simplePollController extends expController {
 	public $basemodel_name = 'simplepoll_question';
 	public $useractions = array(
-        'showall'=>'Show poll question',
+        'showall'=>'Show Poll Question',
+        'showRandom'=>'Show Random Question',
 	);
 	public $remove_configs = array(
         'aggregation',
@@ -38,7 +39,7 @@ class simplePollController extends expController {
 	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $codequality = 'alpha';
 
-	function displayname() { return gt("Simple Poll 2"); }
+	function displayname() { return gt("Simple Poll"); }
 	function description() { return gt("A simple poll that asks a visitor one question with mutiple answers.  Can manage multiple questions, though it only displays one."); }
 //	function isSearchable() { return true; }  // this content is pulled by the navigation module since we don't display individual text items
 	
@@ -52,6 +53,14 @@ class simplePollController extends expController {
             'question'=>$question,
         ));
 	}
+
+    public function showRandom() {
+   	    expHistory::set('viewable', $this->params);
+   		$where = $this->aggregateWhereClause();
+   		assign_to_template(array(
+           'question'=>$this->simplepoll_question->find('first', $where, 'RAND()'),
+       ));
+   	}
 
     public function manage_questions() {
         global $router;
