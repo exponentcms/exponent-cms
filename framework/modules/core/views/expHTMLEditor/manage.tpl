@@ -85,7 +85,7 @@
                     {if $cfg->active}
                         <span class="active">{'Active'|gettext}</span>
                     {else}
-                        <a class="inactive" href="{link module="expHTMLEditor" action=activate id=$cfg->id}" title="Activate this Toolbar"|gettext>Activate</a>
+                        <a class="inactive" href="{link module="expHTMLEditor" action=activate id=$cfg->id}" title="Activate this Toolbar"|gettext>{'Activate'|gettext}</a>
                     {/if}
                 </td>
                 <td>

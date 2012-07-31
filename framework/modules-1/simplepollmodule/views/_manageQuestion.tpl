@@ -55,5 +55,5 @@
 		{icon class=add action=edit_answer question_id=$question->id text="New Answer"}
 	{/if}
 	<br />
-	<a href="{link action=manage_questions}">Back to Manager</a>
+	<a href="{link action=manage_questions}">{'Back to Manager'|gettext}</a>
 </div>

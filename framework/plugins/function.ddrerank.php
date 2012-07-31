@@ -60,6 +60,7 @@ function smarty_function_ddrerank($params,&$smarty) {
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
             $params['items'] = $obj->find('all',$locsql.$only,"rank");
     } elseif (!empty($params['module'])) {
+        $model = empty($params['model']) ? '' : $params['model'] ;
         $uniqueloc = $smarty->getTemplateVars('container');
         if (!empty($uniqueloc->internal)) {
             $uniqueloc2 = expUnserialize($uniqueloc->internal);
