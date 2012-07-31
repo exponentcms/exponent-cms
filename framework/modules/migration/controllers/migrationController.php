@@ -52,6 +52,7 @@ class migrationController extends expController {
         'mediaplayermodule'=>'flowplayerController',
         'bannermodule'=>'bannerController',
         'feedlistmodule'=>'rssController',
+        'simplepollmodule'=>'simplePollController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -64,7 +65,7 @@ class migrationController extends expController {
         'searchmodule',  
         'imagemanagermodule',
         'imageworkshopmodule',
-        'inboxmodule',
+         'inboxmodule',
         'rssmodule',
 // the following 0.97/98 modules were added to this list
 //   based on lack of info showing they will exist in 2.0
@@ -96,7 +97,6 @@ class migrationController extends expController {
         // 'calendarmodule',
         // 'formmodule',
         // 'navigationmodule',
-        // 'simplepollmodule',
     // );
 
 	/**
@@ -375,6 +375,9 @@ class migrationController extends expController {
             $db->delete('poll_answer');
             $db->delete('poll_timeblock');
             $db->delete('simplepollmodule_config');
+            $db->delete('simplepoll_question');
+            $db->delete('simplepoll_answer');
+            $db->delete('simplepoll_timeblock');
             $db->delete('formbuilder_address');
             $db->delete('formbuilder_control');
             $db->delete('formbuilder_form');
@@ -438,6 +441,9 @@ class migrationController extends expController {
 						$db->delete('poll_answer');
 						$db->delete('poll_timeblock');
 						$db->delete('simplepollmodule_config');
+                        $db->delete('simplepoll_question');
+                        $db->delete('simplepoll_answer');
+                        $db->delete('simplepoll_timeblock');
 						break;
 					case 'formmodule':
 						$db->delete('formbuilder_address');
@@ -632,7 +638,7 @@ class migrationController extends expController {
 //                $mod->description = '';
 //                $mod->codequality = '';
                 if ($db->selectObject('modstate',"module='".$mod->module."'")) {
-                    $db->updateObject($mod,'modstate');
+                    $db->updateObject($mod,'modstate',null,'module');
                 } else {
                     $db->insertObject($mod,'modstate');
                 }
@@ -2008,6 +2014,64 @@ class migrationController extends expController {
 					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 }
 				break;
+            case 'simplepollmodule':  // added v2.0.9
+                $oldconfig = $old_db->selectObject('simplepollmodule_config', "location_data='".serialize($iloc)."'");
+                if (!empty($oldconfig)) {
+                    if (!empty($oldconfig->thank_you_message)) {
+                        $newconfig->config['thank_you_message'] = 'Thank you for voting.';
+                    }
+                    if (!empty($oldconfig->already_voted_message)) {
+                        $newconfig->config['already_voted_message'] = 'You have already voted in this poll.';
+                    }
+                    if (!empty($oldconfig->voting_closed_message)) {
+                        $newconfig->config['voting_closed_message'] = 'Voting has been closed for this poll.';
+                    }
+                    if (!empty($oldconfig->anonymous_timeout)) {
+                        $newconfig->config['anonymous_timeout'] = '5';
+                    }
+                }
+
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "simplePoll";
+				if ($db->countObjects('simplepoll_question', "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'simplepollmodule';
+//					$linked = true;
+					break;
+				}
+
+				$iloc->mod = 'simplepollmodule';
+                $oldquestions = $old_db->selectArrays('poll_question', "location_data='".serialize($iloc)."'");
+				if ($oldquestions) {
+					foreach ($oldquestions as $qi) {
+						$oldanswers = $old_db->selectArrays('poll_answer', "question_id='".$qi['id']."'");
+						$oldblocks = $old_db->selectArrays('poll_timeblock', "question_id='".$qi['id']."'");
+						unset ($qi['id']);
+                        $active = $qi['is_active'];
+                        unset ($qi['is_active']);
+						$question = new simplepoll_question($qi);
+						$loc = expUnserialize($qi['location_data']);
+						$loc->mod = "simplePoll";
+                        $question->active = $active;
+						if (empty($question->question)) { $question->question = 'Untitled'; }
+                        $question->location_data = serialize($loc);
+                        $question->save();
+
+                        foreach ($oldanswers as $oi) {
+                            unset ($oi['id']);
+                            unset ($oi['question_id']);
+                            $newanswer = new simplepoll_answer($oi);
+                            $newanswer->simplepoll_question_id = $question->id;
+//                            $question->simplepoll_answer[] = $newanswer;
+                            $newanswer->update();
+                        }
+//                        $question->update();
+
+						@$this->msg['migrated'][$iloc->mod]['count']++;
+						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+					}
+				}
+				break;
 			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
 				break;
@@ -2069,29 +2133,29 @@ class migrationController extends expController {
                 }
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
-            case 'simplepollmodule':
-				if ($db->countObjects('poll_question', "location_data='".serialize($iloc)."'")) {
-					break;
-				}
-                $questions = $old_db->selectObjects('poll_question', "location_data='".serialize($iloc)."'");
-                foreach($questions as $question) {
-                    $db->insertObject($question, 'poll_question');
-					$answers = $old_db->selectObjects('poll_answer', "question_id='".$question->id."'");
-					foreach($answers as $answer) {
-						$db->insertObject($answer, 'poll_answer');
-					}
-					$timeblocks = $old_db->selectObjects('poll_timeblock', "question_id='".$question->id."'");
-					foreach($timeblocks as $timeblock) {
-						$db->insertObject($timeblock, 'poll_timeblock');
-					}
-					@$this->msg['migrated'][$iloc->mod]['count']++;
-                }
-                $configs = $old_db->selectObjects('simplepollmodule_config', "location_data='".serialize($iloc)."'");
-                foreach ($configs as $config) {
-                    $db->insertObject($config, 'simplepollmodule_config');
-                }
-				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
-				break;
+//            case 'simplepollmodule':
+//				if ($db->countObjects('poll_question', "location_data='".serialize($iloc)."'")) {
+//					break;
+//				}
+//                $questions = $old_db->selectObjects('poll_question', "location_data='".serialize($iloc)."'");
+//                foreach($questions as $question) {
+//                    $db->insertObject($question, 'poll_question');
+//					$answers = $old_db->selectObjects('poll_answer', "question_id='".$question->id."'");
+//					foreach($answers as $answer) {
+//						$db->insertObject($answer, 'poll_answer');
+//					}
+//					$timeblocks = $old_db->selectObjects('poll_timeblock', "question_id='".$question->id."'");
+//					foreach($timeblocks as $timeblock) {
+//						$db->insertObject($timeblock, 'poll_timeblock');
+//					}
+//					@$this->msg['migrated'][$iloc->mod]['count']++;
+//                }
+//                $configs = $old_db->selectObjects('simplepollmodule_config', "location_data='".serialize($iloc)."'");
+//                foreach ($configs as $config) {
+//                    $db->insertObject($config, 'simplepollmodule_config');
+//                }
+//				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+//				break;
             case 'formmodule':
 				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'")) {
 					break;

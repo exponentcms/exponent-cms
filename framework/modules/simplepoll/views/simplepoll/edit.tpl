@@ -21,10 +21,10 @@
     {/if}
     {form action=update}
         {control type=hidden name=id value=$record->id}
-        {control type=hidden name=is_active value=$record->is_active}
+        {control type=hidden name=is_active value=$record->is_active|default:1}
         {control type=html name=question label="Question"|gettext value=$record->question|escape:"html"}
-        {control type="checkbox" name="open_results" label="Results are Publically Viewable"|gettext|cat:"?" checked=$record->open_results value=1}
-        {control type="checkbox" name="open_voting" label="Open Voting"|gettext|cat:"?" checked=$record->open_voting value=1}
+        {control type="checkbox" name="open_results" label="Results are Publically Viewable"|gettext|cat:"?" checked=$record->open_results|default:1 value=1}
+        {control type="checkbox" name="open_voting" label="Open Voting"|gettext|cat:"?" checked=$record->open_voting|default:1 value=1}
         {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
