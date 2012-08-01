@@ -37,7 +37,7 @@ class simplePollController extends expController {
 		'rss',
 		'tags'
 	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
-    public $codequality = 'alpha';
+    public $codequality = 'beta';
 
 	function displayname() { return gt("Simple Poll"); }
 	function description() { return gt("A simple poll that asks a visitor one question with mutiple answers.  Can manage multiple questions, though it only displays one."); }
@@ -48,6 +48,7 @@ class simplePollController extends expController {
         $where = $this->aggregateWhereClause();
         $where .= " AND active = 1";
         $question = $this->simplepoll_question->find('first', $where);
+        if (empty($question)) $question = $this->simplepoll_question->find('first', $this->aggregateWhereClause());
         $question->simplepoll_answer = expSorter::sort(array('array'=>$question->simplepoll_answer,'sortby'=>'rank', 'order'=>'ASC', 'type'=>'a'));
         assign_to_template(array(
             'question'=>$question,
@@ -56,9 +57,9 @@ class simplePollController extends expController {
 
     public function showRandom() {
    	    expHistory::set('viewable', $this->params);
-   		$where = $this->aggregateWhereClause();
+        $question = $this->simplepoll_question->find('first', $this->aggregateWhereClause(), 'RAND()');
    		assign_to_template(array(
-           'question'=>$this->simplepoll_question->find('first', $where, 'RAND()'),
+           'question'=>$question,
        ));
    	}
 
