@@ -47,7 +47,7 @@ class containermodule {
 			$containers = $db->selectObjects('container',"external='" . serialize($loc) . "'");
 			
 			foreach ($containers as $container) {
-				container::delete($container);
+				self::delete($container);
 				$db->delete('container','id='.$container->id);
 			}
 		}
