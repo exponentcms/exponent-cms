@@ -18,8 +18,8 @@
 
 ob_start();
 
-define('SCRIPT_EXP_RELATIVE','install/');
-define('SCRIPT_FILENAME','index.php');
+//define('SCRIPT_EXP_RELATIVE','install/');
+//define('SCRIPT_FILENAME','index.php');
 
 // Jumpstart to Initialize the installer language before it's set to default
 if (isset($_REQUEST['lang'])) {
