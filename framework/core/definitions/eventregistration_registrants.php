@@ -21,30 +21,25 @@
  * @package Core
  */
 return array(
-	'id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
+    'id'=>array(
+        DB_FIELD_TYPE=>DB_DEF_ID,
         DB_PRIMARY=>true,
         DB_INCREMENT=>true),
-	'expdefinablefields_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_PRIMARY=>false,
-        DB_INCREMENT=>false),
-	'content_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_PRIMARY=>false,
-        DB_INCREMENT=>false),
-	'content_type'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>50,
-		DB_PRIMARY=>false,
-		DB_INCREMENT=>false),
-	'subtype'=>array(
+    'event_id'=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'control_name'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>50,
-        DB_PRIMARY=>false,
-        DB_INCREMENT=>false),
-	'rank'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_LEN=>250,
+        DB_INDEX=>10),
+	"value"=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>10000,
+        DB_INDEX=>10), 
+     'connector_id'=>array(
+         DB_FIELD_TYPE=>DB_DEF_STRING,
+         DB_FIELD_LEN=>255),
+	 'registered_date'=>array(
+		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 );
 
 ?>

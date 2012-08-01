@@ -76,7 +76,7 @@
 				{permissions}
 					{if $permissions.create == 1 && $hidebox == 0}
 						<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
-							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank src=$src}"><span class="addtext">{'Add Module'|gettext}</span></a>
+							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank}"><span class="addtext">{'Add Module'|gettext}</span></a>
 						</div>
 					{/if}
 				{/permissions}	

@@ -28,12 +28,14 @@ return array(
     'name'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100),
-	'type'=>array(
+    'type'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100),
     'data'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>10000)
+        DB_FIELD_LEN=>10000),
+'rank'=>array(
+		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );
 
 ?>
