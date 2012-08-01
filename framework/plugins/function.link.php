@@ -62,10 +62,12 @@ function smarty_function_link($params,&$smarty) {
 	if (!isset($params['src'])) {
         if (!empty($params['controller']) || @call_user_func(array($loc->mod.'Controller','hasSources'))) {
 			$params['src'] = $loc->src;
-		}
+		} elseif (!empty($params['module']) || @call_user_func(array($loc->mod.'module','hasSources'))) {
+            $params['src'] = $loc->src;
+        }
 	}
 	
-	// greb the int value
+	// grab the int value
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 
 	echo expCore::makeLink($params);

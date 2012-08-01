@@ -151,7 +151,7 @@ for ($i = 0; $i < $totaldays; $i++) {
 		// $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
 	// }
 	//$edates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
-	$edates = $db->selectObjects("eventdate",$locsql." AND date = $start");	
+	$edates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfDayTimestamp($start)." AND date <= ".expDateTime::endOfDayTimestamp($start).")");
 	$days[$start] = array();			
 	$days[$start] = calendarmodule::_getEventsForDates($edates);
 	for ($j = 0; $j < count($days[$start]); $j++) {

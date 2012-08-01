@@ -58,7 +58,7 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 			
 			if (isset($_GET['time'])) {
 				$time = $_GET['time'];  // get current month's events
-				$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfMonthTimestamp($time)." AND date <= ".expDateTime::endOfMonthTimestamp($time));
+				$dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfMonthTimestamp($time)." AND date <= ".expDateTime::endOfMonthTimestamp($time).")");
 			} else {
 				$time = date('U',strtotime("midnight -1 month",time()));  // previous month also
 				$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp($time).$rsslimit);
