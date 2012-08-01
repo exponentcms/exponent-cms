@@ -126,17 +126,21 @@ class loginController extends expController {
 		} else {
 			global $user;
 			if (!empty($_POST['username'])) flash('message', gt('Welcome back').' '.$_POST['username']);
-			foreach ($user->groups as $g) {
-				if (!empty($g->redirect)) {
-					$url = URL_FULL.$g->redirect;
-					break;
-				}
-			}
-			if (isset($url)) {
-				header("Location: ".$url);
-			} else {
-				expHistory::back();
-			}
+            if ($user->isAdmin()) {
+                expHistory::back();
+            } else {
+                foreach ($user->groups as $g) {
+                    if (!empty($g->redirect)) {
+                        $url = URL_FULL.$g->redirect;
+                        break;
+                    }
+                }
+                if (isset($url)) {
+                    header("Location: ".$url);
+                } else {
+                    expHistory::back();
+                }
+            }
 		}
 	}
 
