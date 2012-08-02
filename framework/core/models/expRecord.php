@@ -767,7 +767,7 @@ class expRecord {
             if (!isset($this->id)) {
                 $this->$type = array();
             } else {
-                $order = ($type == 'expFile') ? ' ORDER BY rank ASC' : null;
+                 $order = ($type == 'expFile' || $type == 'expDefinableField') ? ' ORDER BY rank ASC' : null;
                 
                 $sql  = 'SELECT ef.*, cef.subtype AS subtype FROM ';
                 $sql .= DB_TABLE_PREFIX.'_'.$tablename.' ef JOIN '.DB_TABLE_PREFIX.'_'.$content_table.' cef ';

@@ -25,6 +25,8 @@ class eventregistration extends expRecord {
 	public $table = 'product';
 	public $has_one = array();
 	public $has_and_belongs_to_many = array('storeCategory');
+	public $has_many = array('optiongroup');
+    public $get_assoc_for = array('optiongroup'); 
 
     public $product_name = 'Event Registration';
     public $product_type = 'eventregistration';
@@ -32,7 +34,9 @@ class eventregistration extends expRecord {
 	public $requiresBilling  = true; 
     public $isQuantityAdjustable = false;
 	
-	
+	public $default_sort_field = 'rank';
+public $rank_by_field= 'rank';
+public $default_sort_direction = "asc";
 	 protected $attachable_item_types = array(
         'content_expFiles'=>'expFile',
 		'content_expDefinableFields'=>'expDefinableField'
@@ -63,10 +67,46 @@ class eventregistration extends expRecord {
 #	    $event = new expRecord();
 #	    $event->tablename = 'eventregistration';
 	    $event->eventdate = strtotime($params['eventdate']);
+		$event->eventenddate = strtotime($params['eventenddate']);
 	    $event->event_starttime = datetimecontrol::parseData('event_starttime', $params) + $event->eventdate;
 	    $event->event_endtime = datetimecontrol::parseData('event_endtime', $params) + $event->eventdate;
 	    $event->signup_cutoff = strtotime($params['signup_cutoff']);
+		$event->location = $params['location'];
+		$event->terms_and_condition = $params['terms_and_condition'];
+		$event->require_terms_and_condition = $params['require_terms_and_condition'];
+		$event->terms_and_condition_toggle = $params['terms_and_condition_toggle'];
+		$event->num_guest_allowed = $params['num_guest_allowed'];
 	    $event->id = empty($product->product_type_id) ? null : $product->product_type_id;
+		
+		//Option Group Tab 
+			if (!empty($params['optiongroups'])) {
+	  
+				foreach ($params['optiongroups'] as $title=>$group) {
+					if (isset($this->params['original_id']) && $params['original_id'] != 0) $group['id'] = '';  //for copying products  
+				 
+					$optiongroup = new  optiongroup($group);
+					$optiongroup->product_id = $product->id;                                
+					$optiongroup->save();
+					
+					foreach ($params['optiongroups'][$title]['options'] as $opt_title=>$opt) {
+						if (isset($params['original_id']) && $params['original_id'] != 0) $opt['id'] = ''; //for copying products
+					   
+						$opt['product_id'] = $product->id;
+						$opt['is_default'] = false;
+						$opt['title'] = $opt_title;
+						$opt['optiongroup_id'] = $optiongroup->id;
+						if (isset($params['defaults'][$title]) && $params['defaults'][$title] == $opt['title']) {
+							$opt['is_default'] = true;
+						}
+						
+						$option = new option($opt);                    
+						$option->save();
+					}
+				}
+			}
+		
+		
+		
 	    if (!empty($event->id)) { 
             $db->updateObject($event, 'eventregistration');
         } else {
@@ -78,6 +118,93 @@ class eventregistration extends expRecord {
 	// $product->expFile= $params['expFile'];
 	    parent::update($params);
 	}
+	
+	 function displayForm($form, $params) {
+		// eDebug($params, true);
+        //$product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
+        //$product = new $product_type($this->params['product_id'],true,true);     
+        //eDebug($product);   
+        //if (!empty($product->user_input_fields)) $product->user_input_fields = expUnserialize($product->user_input_fields);
+        //eDebug($product);
+        $form = new controllertemplate(new storeController(), $this->getForm($form));
+        $form->assign('params', $params);
+        $form->assign('product', $this);
+        if (!empty($params['children']))
+        {
+            $form->assign('children', $params['children']);       
+        }
+        
+        
+        /*if (!empty($this->params['children'])) 
+        {
+            $form->assign('children', expUnserialize($this->params['children']));   
+        }*/
+        echo $form->render();
+    }
+	
+	 public function hasOptions()
+    {           
+		// eDebug($this, true);
+        foreach ($this->optiongroup as $og)   
+        {
+            if (count($og->option)>0){
+                foreach($og->option as $option) {
+                    if ($option->enable == true) return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public function hasRequiredOptions()
+    {
+        foreach ($this->optiongroup as $og)   
+        {
+            if ($og->required) return true;
+        }
+        return false;
+    }
+	
+	 public function optionDropdown($key, $display_price_as) {
+	    $items = array();	    
+	    
+	    foreach ($this->optiongroup as $index=>$group) {
+	        if ($group->title == $key) {	            
+                foreach($group->option as $option) {
+                    if ($option->enable == true) {
+                        $text = $option->title;
+                        
+                        $price = '';
+                        if (isset($option->amount)) {
+                            if ($option->modtype == '%') {
+                                $diff = ($this->getBasePrice() * ($option->amount * .01)) + $this->getBasePrice();
+                            } else {
+                                $diff = $option->amount;
+                            }
+                            
+                            if ($display_price_as == 'total') {
+                                $newprice = ($option->updown == '+') ? ($this->getBasePrice() + $diff) : ($this->getBasePrice() - $diff);
+                                $price = ' ($'.number_format($newprice, 2).')';                         
+                            } else {
+                                if($diff > 0 )
+                                {
+                                    $diff = '$'.number_format($diff, 2);
+                                    $price = ' ('.$option->updown.$diff.')';
+                                }else
+                                {
+                                    $price = '';
+                                }
+                            }
+                            
+                        }                        
+                        
+                        $items[$option->id] = $text.$price;
+                    }
+                }
+            }
+        }
+        return $items;
+    }
 
     public function spacesLeft() {
         return $this->quantity - $this->number_of_registrants;
@@ -192,37 +319,134 @@ class eventregistration extends expRecord {
 	}
 	*/
 	function addToCart($params, $orderid = null) {
-	    if (empty($params['base_price'])) {
-	        return false;
-	    } else {
-	        $item = new orderitem($params);	        
-	        $item->products_price = preg_replace("/[^0-9.]/","",$params['base_price']);
+	// eDebug($params, true);
+			global $db;
+	
+			if(!empty($params['event'])) {
+				$sess_id = session_id(); 
+				$data = $db->selectObjects("eventregistration_registrants", "connector_id ='{$sess_id}' AND event_id =" . $params['product_id']);
+				if(!empty($data)) {
+					foreach($data as $item) {
+						$item->value = $params['event'][$item->control_name];
+						$db->updateObject($item, "eventregistration_registrants");
+					}
+					
+				} else {
+					foreach($params['event'] as $key => $value) {
+						$obj = "";
+						$obj->event_id = $params['product_id'];
+						$obj->control_name = $key;
+						$obj->value = $value;
+						$obj->connector_id = $sess_id;
+						$obj->registered_date = time();
+						$db->insertObject($obj, "eventregistration_registrants");
+						
+					}
+				}
+				expSession::set('session_id', $sess_id);
+			}
+	
+	   
+	        $item = new orderitem($params);	    
+			
+	       
 	        
-	        $product = new product($params['product_id']);
-	        $item->products_name = $product->title;
-
+	        $product = new eventregistration($params['product_id']);
+			$item->products_name = $product->title . " - " . date("F d, Y", $product->eventdate);
+			
+			foreach ($this->optiongroup as $og) {
+            $isOptionEmpty = true;
+            if (!empty($params['options'][$og->id]))
+            {
+                foreach ($params['options'][$og->id] as $opt)
+                {  
+                     if (!empty($opt)) $isOptionEmpty = false;
+                }
+            }
+            if (!$isOptionEmpty) {
+                foreach ($params['options'][$og->id] as $opt_id) {
+                    $selected_option = new option($opt_id);
+                    $cost = $selected_option->modtype == '$' ? $selected_option->amount :  $this->getBasePrice() * ($selected_option->amount * .01);
+                    $cost = $selected_option->updown == '+' ? $cost : $cost * -1;   
+					if(@$params['options_quantity'][$opt_id] > 0) {
+						$price = $price + $cost * $params['options_quantity'][$opt_id];
+						
+					} else {
+						$params['options_quantity'][$opt_id] = 1;
+						$price = $price + $cost * $params['options_quantity'][$opt_id];
+					}
+                    // eDebug($price);
+					$options[] = array($selected_option->id,$selected_option->title,$selected_option->modtype,$selected_option->updown,$selected_option->amount,$params['options_quantity'][$opt_id]);
+                }
+            }
+        }
+		// eDebug($price);
+		// eDebug($options, true);
 	        // we need to unset the orderitem's ID to force a new entry..other wise we will overwrite any
 	        // other giftcards in the cart already
 	        $item->id = null;
-	        $item->quantity = $this->getDefaultQuantity();
+			if(!empty($params['options_quantity'])) {
+				 $quantity = 1;
+				 $item->quantity = $quantity;
+				 $item->products_price = $price;
+			} else {
+				if($params['qtyr'] == 0) {
+					$params['qtyr'] = 1;
+				}
+				 $item->products_price = preg_replace("/[^0-9.]/","",$params['base_price']);
+				 $item->quantity = $params['qtyr'];
+			}
+	       
+			$item->options =  serialize($options);
 		    $item->save();
 		    return true;
-	    }
+	   
 	}
 	
     public function isAvailable(){
-	    return ($this->spacesLeft() !=0 && $this->signup_cutoff > time()) ? true : false;
+	    return (($this->spacesLeft() !=0 || $this->quantity ==0) && $this->signup_cutoff > time()) ? true : false;
     }
 	
-	public function getControl($field) {
+	public function getControl($field, $name, $escape = '', $value ='', $adminedit = false) {
+		
 		$id      = $field->id;
 		$control = $field->data;
 		$type    = $field->type;
-		$c       = new $type();
 		$ctl     = unserialize($control);
-		// eDebug($ctl, true);
-		return $ctl->toHTML($ctl->caption, "definablefields[$id]");
+		if(empty($name)) {
+			$name = $ctl->name;
+		}
+		
+		if(!empty($_GET['token'])) {
+			$record = expSession::get("last_POST_Paypal");
+		} else {
+			$record = expSession::get("last_POST");
+		}
+		
+		if(!empty($value)) {
+			$ctl->default = $value;
+		} else {
+			$ctl->default = $record['event'][$name];
+		}
+		if($escape) {
+			return addslashes($ctl->toHTML($ctl->caption, "event[$name]")); 
+		} else {
+			if($name == "email" && $adminedit == true) {
+				return $ctl->toHTML($ctl->caption, "event[$name]", true);
+			} else {
+				return $ctl->toHTML($ctl->caption, "event[$name]");
+			}
+		}
+		
+		
 	}
+	function checkout() {
+		// nothing to do for this callback.
+	}
+	
+	 public function removeItem($item) {
+        return true;
+    }
 	
 	public function getForm($form) {        
         $dirs = array(
