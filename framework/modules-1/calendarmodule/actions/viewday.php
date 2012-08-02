@@ -44,7 +44,7 @@ $info = getdate(intval($time));
 $start = mktime(0,0,0,$info['mon'],$info['mday'],$info['year']);
 
 //$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = '" . $start . "'");
-$dates = $db->selectObjects("eventdate",$locsql." AND date = '" . $start . "'");
+$dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfDayTimestamp($start)." AND date <= ".expDateTime::endOfDayTimestamp($start).")");
 $events = array();
 //FIXME add external events to $events for date $start, one day
 $extitems = calendarmodule::getExternalEvents($loc,$start,expDateTime::endOfDayTimestamp($start)+1);

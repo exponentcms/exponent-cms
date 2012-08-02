@@ -52,7 +52,7 @@ $extitems = calendarmodule::getExternalEvents($loc,$startweek,expDateTime::endOf
 for ($i = 0; $i < 7; $i++) {
 	$start = mktime(0,0,0,$startinfo['mon'],$startinfo['mday']+$i,$startinfo['year']);
 //	$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = $start");
-	$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");	
+	$dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfDayTimestamp($start)." AND date <= ".expDateTime::endOfDayTimestamp($start).")");
     //FIXME isn't it better to use calendarmodule::_getEventsForDates less permissions
     $days[$start] = array();
 	for ($j = 0; $j < count($dates); $j++) {
