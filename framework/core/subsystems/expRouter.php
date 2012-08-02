@@ -73,7 +73,7 @@ class expRouter {
         }
 
         // Check to see if SEF_URLS have been turned on in the site config
-        if (SEF_URLS == 1 && ($_SERVER["PHP_SELF"] == PATH_RELATIVE.'index.php') && $force_old_school == false) {
+        if (SEF_URLS == 1 && ($_SERVER["PHP_SELF"] == PATH_RELATIVE.'index.php' || $_SERVER["PHP_SELF"] == PATH_RELATIVE.'install/index.php') && $force_old_school == false) {
             
             if (isset($params['section']) && !isset($params['action'])) {                
                 if (empty($params['sef_name'])) {                    
