@@ -47,6 +47,8 @@ class expDefinableFieldController extends expController {
    	 * default view for individual field
    	 */
    	function show() {
+      
+
         assign_to_template(array('record'=>$record,'tag'=>$tag));
     }
 
@@ -87,10 +89,12 @@ class expDefinableFieldController extends expController {
 		$form->meta("action","save");
 		$form->meta('module',"expDefinableField");
 		$form->meta('control_type',$control_type);
-		$form->meta("type", substr($control_type, 0, -7));
+		$form->meta("type", $control_type);
 		$types = expTemplate::listControlTypes();
 		
-		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));
+
+		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));			
+		
 	}
 	
 	function save() {	
@@ -100,9 +104,10 @@ class expDefinableFieldController extends expController {
 		if (isset($_POST['id'])) {
 			$control = $db->selectObject('expDefinableFields','id='.intval($_POST['id']));
 			if ($control) {
+				
 				$ctl = unserialize($control->data);
-				$ctl->identifier = $control->name;
-				$ctl->caption = $control->caption;
+				$ctl->name = $ctl->identifier;
+			
 			}
 		}
 
@@ -120,7 +125,7 @@ class expDefinableFieldController extends expController {
 			}
 	
 			$control->data = serialize($ctl);
-			$control->type = $_POST['control_type'];
+			$control->type = $_POST['type'];
 			
 			if (isset($control->id)) {
 				$db->updateObject($control,'expDefinableFields');
