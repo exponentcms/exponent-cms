@@ -64,7 +64,7 @@ class calendarmodule {
 //		$dates = null;
 //		$sort_asc = true; // For the getEventsForDates call
 //		$dates = $db->selectObjects("eventdate", $locsql." AND date >= ".$day.$rsslimit." ORDER BY date ASC ");
-//		$items = calendarmodule::_getEventsForDates($dates, $sort_asc);
+//		$items = self::_getEventsForDates($dates, $sort_asc);
 //
 //		//Convert the events to rss items
 //		$rssitems = array();
@@ -155,7 +155,7 @@ class calendarmodule {
                             $currentweek = $weekNum;
                         }
                         if ($dayNum <= $endofmonth) {
-                            $monthly[$weekNum][$dayNum]['number'] = ($monthly[$weekNum][$dayNum]['ts'] != -1) ? $db->countObjects("eventdate",$locsql." AND date = ".$day['ts']) : -1;
+                            $monthly[$weekNum][$dayNum]['number'] = ($monthly[$weekNum][$dayNum]['ts'] != -1) ? $db->countObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp($day['ts'])." AND date <= ".expDateTime::endOfDayTimestamp($day['ts'])) : -1;
                         }
                     }
                 }
@@ -213,7 +213,7 @@ class calendarmodule {
                 // added per Ignacio
     //			$endofmonth = date('t', $time);
                 //FIXME add external events to $days[$start] for date $start, one day at a time
-                $extitems = calendarmodule::getExternalEvents($loc,$startperiod,$next);
+                $extitems = self::getExternalEvents($loc,$startperiod,$next);
                 for ($i = 1; $i <= $totaldays; $i++) {
 //                    $info = getdate($time);
 //                    switch ($viewparams['range']) {
@@ -228,8 +228,8 @@ class calendarmodule {
 //                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
 //                    }
                     $start = $startperiod + ($i*86400);
-                    $edates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
-                    $days[$start] = calendarmodule::_getEventsForDates($edates,true,isset($template->viewconfig['featured_only']) ? true : false);
+                    $edates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp($start)." AND date <= ".expDateTime::endOfDayTimestamp($start));
+                    $days[$start] = self::_getEventsForDates($edates,true,isset($template->viewconfig['featured_only']) ? true : false);
 //                    for ($j = 0; $j < count($days[$start]); $j++) {
 //                        $thisloc = expCore::makeLocation($loc->mod,$loc->src,$days[$start][$j]->id);
 //                        $days[$start][$j]->permissions = array(
@@ -273,14 +273,14 @@ class calendarmodule {
                 // $endofmonth = expDateTime::endOfMonthDay($time);
                 $endofmonth = date('t', $time);
                 //FIXME add external events to $monthly[$week][$i] for date $start, one day at a time
-                $extitems = calendarmodule::getExternalEvents($loc,$timefirst,expDateTime::endOfMonthTimestamp($timefirst));
+                $extitems = self::getExternalEvents($loc,$timefirst,expDateTime::endOfMonthTimestamp($timefirst));
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
                     #$monthly[$week][$i] = $db->selectObjects("calendar","location_data='".serialize($loc)."' AND (eventstart >= $start AND eventend <= " . ($start+86399) . ") AND approved!=0");
                     //$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");
-                    $dates = $db->selectObjects("eventdate",$locsql." AND date = '".$start."'");
-                    $monthly[$week][$i] = calendarmodule::_getEventsForDates($dates,true,isset($template->viewconfig['featured_only']) ? true : false);
+                    $dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfDayTimestamp($start)." AND date <= ".expDateTime::endOfDayTimestamp($start).")");
+                    $monthly[$week][$i] = self::_getEventsForDates($dates,true,isset($template->viewconfig['featured_only']) ? true : false);
                     if (!empty($extitems[$start])) $monthly[$week][$i] = array_merge($extitems[$start],$monthly[$week][$i]);
                     $monthly[$week][$i] = expSorter::sort(array('array'=>$monthly[$week][$i],'sortby'=>'eventstart', 'order'=>'ASC'));
                     $counts[$week][$i] = count($monthly[$week][$i]);
@@ -316,8 +316,8 @@ class calendarmodule {
                             expPermissions::check("edit",$loc) ||
                             expPermissions::check("delete",$loc)
                     ) ? 1 : 0;
-                $dates = $db->selectObjects("eventdate",$locsql." AND date >= '".expDateTime::startOfDayTimestamp(time())."'");
-                $items = calendarmodule::_getEventsForDates($dates);
+                $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp(time()));
+                $items = self::_getEventsForDates($dates);
 //                if (!$continue) {
 //                    foreach ($items as $i) {
 //                        $iloc = expCore::makeLocation($loc->mod,$loc->src,$i->id);
@@ -369,7 +369,7 @@ class calendarmodule {
                         $end = $day;
                         break;
                     case "today":
-                        $dates = $db->selectObjects("eventdate",$locsql." AND date = $day");
+                        $dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfDayTimestamp($day)." AND date <= ".expDateTime::endOfDayTimestamp($day).")");
                         $begin = $day;
                         $end = expDateTime::endOfDayTimestamp($day);
                         break;
@@ -377,7 +377,7 @@ class calendarmodule {
                         $dates = array($db->selectObject("eventdate",$locsql." AND date >= $day"));
                         break;
                     case "month":
-                        $dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()));
+                        $dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()).")");
                         $begin = expDateTime::startOfMonthTimestamp($day);
                         $end = expDateTime::endOfMonthTimestamp($day);
                         break;
@@ -387,9 +387,9 @@ class calendarmodule {
                         $begin = null;
                         $end = null;
                 }
-                $items = calendarmodule::_getEventsForDates($dates,$sort_asc,isset($template->viewconfig['featured_only']) ? true : false);
+                $items = self::_getEventsForDates($dates,$sort_asc,isset($template->viewconfig['featured_only']) ? true : false);
                 //FIXME add external events to $items for date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time())
-                $extitems = calendarmodule::getExternalEvents($loc,$begin,$end);
+                $extitems = self::getExternalEvents($loc,$begin,$end);
                 // we need to crunch these down
                 $extitem = array();
                 foreach ($extitems as $key=>$value) {
