@@ -50,13 +50,7 @@
                 <span class="value">{$record->expFile.downloadable[0]->duration}</span>
             {else}
                 <span class="label size">{'File Size'}:</span>
-                {if $record->expFile.downloadable[0]->filesize >= 1048576}
-                    <span class="value">{$record->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
-                {elseif $record->expFile.downloadable[0]->filesize >= 1024}
-                    <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
-                {else}
-                    <span class="value">{$record->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
-                {/if}
+                <span class="value">{$record->expFile.downloadable[0]->filesize|bytes}</span>
             {/if}
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
