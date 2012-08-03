@@ -59,6 +59,8 @@ function smarty_function_icon($params,&$smarty) {
 			$params['src'] = $modloc->src;
 	    } else if (!empty($params['controller']) || @call_user_func(array($loc->mod.'Controller','hasSources'))) {
 			$params['src'] = $loc->src;
+        } elseif (!empty($params['module']) || @call_user_func(array($loc->mod.'module','hasSources'))) {
+            $params['src'] = $loc->src;
 		}
 	}
     $config = $smarty->getTemplateVars('config');
