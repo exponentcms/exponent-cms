@@ -66,9 +66,31 @@ class fakeform extends form {
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
-			$html .= "<div class=\"label\">";
+            $html .= "<div class=\"item-actions\">";
+			if (!$this->controls[$name]->_readonly) {
+				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
+				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'form_id'=>$form_id)).'" title="'.gt('Edit this Control').'" >';
+				$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
+				$html .= '</a>';
+			} else {
+				$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
+			}
+
+			$html .= '&#160;';
+			if (!$this->controls[$name]->_readonly && $this->controls[$name]->_controltype != 'htmlcontrol' ) {
+				//$html .= '<a href="?module='.$module.'&action=delete_control&id='.$this->controls[$name]->_id.'" onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
+				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
+			}
+			else {
+				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
+			}
+			$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
+			$html .= '</a>';
+            $html .= "</div>";
+            $html .= "<div class=\"label\">";
             if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
             $html .= $this->controlLbl[$name];
+            $html .= "</div>";
 //			$html .= "<div class=\"formmoduleeditactions\">";
 //			if ($rank != count($this->controlIdx)-1) {
 //				//$html .= '<a href="?module='.$module.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank+1).'">';
@@ -92,29 +114,10 @@ class fakeform extends form {
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
                 $html .= "<span style=\"display:inline-block\">".$this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "</span>\r\n";
             }
-			if (!$this->controls[$name]->_readonly) {
-				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
-				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'form_id'=>$form_id)).'" title="'.gt('Edit this Control').'" >';
-				$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
-				$html .= '</a>';
-			} else {
-				$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
-			}
-
-			$html .= '&#160;';
-			if (!$this->controls[$name]->_readonly && $this->controls[$name]->_controltype != 'htmlcontrol' ) {
-				//$html .= '<a href="?module='.$module.'&action=delete_control&id='.$this->controls[$name]->_id.'" onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
-				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
-			}
-			else {
-				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
-			}
-			$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
-			$html .= '</a>';
-			$html .= "</div>";
-			if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol') || $this->controls[$name]->_controltype == 'radiogroupcontrol') {
+            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol') || $this->controls[$name]->_controltype == 'radiogroupcontrol') {
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
+
 			$html .= "</div>";
 			
 			$rank++;

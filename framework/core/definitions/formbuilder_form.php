@@ -51,6 +51,8 @@ return array(
 	'resetbtn'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
+    'style'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'subject'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>200),

@@ -121,6 +121,11 @@ input.radio {
     display:inline;
     white-space:normal;
 }
+
+.control .datetime.date {
+    padding-left: 5px;
+}
+
 /****************  quick style helpers  ***********************/
 .control.thirds {
     float:left;

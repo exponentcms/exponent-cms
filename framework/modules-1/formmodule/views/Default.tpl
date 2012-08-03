@@ -17,7 +17,13 @@
 
 {/css}
 
-<div class="formmodule default"> 
+{if $form->style}
+{css unique="formmod2" corecss="forms2col"}
+
+{/css}
+{/if}
+
+<div class="formmodule default">
     {messagequeue name='notice'}
 	{permissions}
 		<div class="module-actions">

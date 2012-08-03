@@ -22,10 +22,6 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Auto-complete Control
  *
- * @author Phillip Ball
- * @copyright 2004-2010 OIC Group, Inc.
- * @version 2.0.0
- *
  * @package Subsystems-Forms
  * @subpackage Control
  */

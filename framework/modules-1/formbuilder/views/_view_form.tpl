@@ -17,6 +17,12 @@
 
 {/css}
 
+{if $form->style}
+{css unique="formmod2" corecss="forms2col"}
+
+{/css}
+{/if}
+
 <div class="formmodule view-form">
 	<div class="form_title">
 		<h1>{'Form Editor'|gettext}</h1>

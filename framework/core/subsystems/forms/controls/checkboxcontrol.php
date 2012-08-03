@@ -58,18 +58,18 @@ class checkboxcontrol extends formcontrol {
 	    }
         $html = "<div".$divID." class=\"control checkbox";
         $html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
-        if(!empty($this->flip)){
-            $html .= "<td class=\"input\" nowrap>";
+        if (!empty($this->flip)){
             $html .= "<label".$for." class=\"label\">".$label."</label>";
-            $html .= "</td><td>";
+            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
             $html .= "</td>";           
-        }else{
+        } else {
+            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
             $html .= "<td class=\"input\" nowrap>";
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
+            $html .= "<label class=\"label\"></label>";
             $html .= "</td><td>";
-            $html .= "<label".$for." class=\"label\">".$label."</label>";
+            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
+            $html .= "<label".$for." class=\"label\" style=\"text-align:left; white-space:nowrap;\">".$label."</label>";
             $html .= "</td>";           
         }
         $html .= "</tr></table>";
@@ -160,7 +160,7 @@ class checkboxcontrol extends formcontrol {
     static function parseData($name, $values, $for_db = false) {
         return isset($values[$name])?1:0;
     }
-    
+
     function templateFormat($db_data, $ctl) {
         return ($db_data==1)?gt("Yes"):gt("No");
     }

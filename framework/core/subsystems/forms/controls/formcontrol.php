@@ -21,10 +21,6 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Base Form Control Class
  *
- * @author Phillip Ball
- * @copyright 2007-2009 OIC Group, Inc.
- * @version 2
- *
  * @package Subsystems-Forms
  * @subpackage Control
  */
@@ -47,7 +43,14 @@ class formcontrol {
 	 * @return bool
 	 */
 	static function isSimpleControl() { return false; }
-	static function getFieldDefinition() { return array(); }
+
+    /**
+     * returns the table field definition for this control
+     *
+     * @static
+     * @return array
+     */
+    static function getFieldDefinition() { return array(); }
 
     /**
      * Place the control in the form
@@ -106,18 +109,57 @@ class formcontrol {
     static function parseData($original_name,$formvalues) {
 		return (isset($formvalues[$original_name])?$formvalues[$original_name]:"");
 	}
-	
-	function onUnRegister(&$form) { // Do we need the explicit ref op??
+
+    /**
+     * Event hook for when control is un-registered (removed) on a form
+     *
+     * @param $form
+     * @return bool
+     */
+    function onUnRegister(&$form) { // Do we need the explicit ref op??
 		return true;
 	}
-	
-	function onRegister(&$form) { // Do we need the explicit ref op??
+
+    /**
+     * Event hook for when control is registered on a form
+     *
+     * @param $form
+     * @return bool
+     */
+    function onRegister(&$form) { // Do we need the explicit ref op??
 		return true;
 	}
-	
-	function templateFormat($db_data, $ctl) {
+
+    /**
+     * Format the control's data for user display
+     *
+     * @param $db_data
+     * @param $ctl
+     * @return string
+     */
+    function templateFormat($db_data, $ctl) {
 		return isset($db_data)?$db_data:"";
 	}
+
+    /**
+     * Create the Form to edit the control settings
+     *
+     * @param $object
+     */
+    function form($object) {
+        return;
+    }
+
+    /**
+     * update the control settings
+     *
+     * @param $values
+     * @param $object
+     */
+    function update($values, $object) {
+        return;
+    }
+
 }
 
 ?>
