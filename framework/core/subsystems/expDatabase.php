@@ -591,7 +591,7 @@ abstract class database {
 	*
 	* @param string $table The name of the table/object to look at
 	* @param string $where Criteria used to narrow the result set.
-	* @return null|void
+	* @return object|null|void
 	*/
 	abstract function selectObject($table, $where);
 
@@ -1013,7 +1013,7 @@ abstract class database {
 	       return array();
 
 	   $where = is_numeric($node) ? 'id=' . $node : 'title="' . $node . '"';
-	   global $db;
+//	   global $db;
 	   $sql = 'SELECT node.*,
 	           (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth
 	           FROM `' . $this->prefix . $table . '` AS node,

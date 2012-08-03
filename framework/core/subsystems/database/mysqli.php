@@ -47,7 +47,9 @@ class mysqli_database extends database {
 	function __construct($username, $password, $hostname, $database, $new=false) {
 		if (strstr($hostname,':')) {
 			list ( $host, $port ) = @explode (":", $hostname);
-		}
+		} else {
+            $host = $hostname;
+        }
 		if ($this->connection = @mysqli_connect($host, $username, $password, $database, $port)) {
 			$this->havedb = true;
 		}
