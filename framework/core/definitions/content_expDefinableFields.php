@@ -24,7 +24,7 @@ return array(
 	'id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
         DB_PRIMARY=>true,
-        DB_INCREMENT=>true),
+        DB_INCREMENT=>false),
 	'expdefinablefields_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
         DB_PRIMARY=>false,
