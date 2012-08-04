@@ -49,7 +49,7 @@ class simplePollController extends expController {
         $where .= " AND active = 1";
         $question = $this->simplepoll_question->find('first', $where);
         if (empty($question)) $question = $this->simplepoll_question->find('first', $this->aggregateWhereClause());
-        $question->simplepoll_answer = expSorter::sort(array('array'=>$question->simplepoll_answer,'sortby'=>'rank', 'order'=>'ASC', 'type'=>'a'));
+        if (!empty($question->simplepoll_answer)) $question->simplepoll_answer = expSorter::sort(array('array'=>$question->simplepoll_answer,'sortby'=>'rank', 'order'=>'ASC', 'type'=>'a'));
         assign_to_template(array(
             'question'=>$question,
         ));

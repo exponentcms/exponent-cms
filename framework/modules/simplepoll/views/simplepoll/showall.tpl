@@ -22,9 +22,11 @@
 		{form action="vote"}
 			<h2>{$question->question}</h2>
             {permissions}
-                <div class="item-actions">
-                    {icon action=edit record=$question title='Edit this question'|gettext}
-                </div>
+                {if $permissions.edit == 1}
+                    <div class="item-actions">
+                        {icon action=edit record=$question title='Edit this question'|gettext}
+                    </div>
+                {/if}
             {/permissions}
 			<ol>
 				{foreach from=$question->simplepoll_answer item=answer}
@@ -46,7 +48,7 @@
 		{/form}
 	{/if}
 	{permissions}
-		{if $permissions.create == 1}
+		{if $permissions.manage == 1}
 			<div class="module-actions">
 				{icon class=manage action=manage_questions text="Manage Questions"|gettext}
 			</div>
