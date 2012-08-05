@@ -47,7 +47,7 @@ class formbuilder_form {
         $form->register('style',gt('Display Style'), new radiogroupcontrol($object->style,array('0'=>gt('Single Column'),'1'=>gt('Two Column')),false,100,2),true,gt('Form'));
         $form->register(null,'', new htmlcontrol('<h3>'.gt('Database Settings').'</h3>'),true,gt('Database'));
         $form->register('is_saved',gt('Save Submissions to the Database'),new checkboxcontrol($object->is_saved,false),true,gt('Database'));
-        $form->register(null,'', new htmlcontrol('&#160;&#160;&#160;&#160;&#160;'.gt('To help prevent data loss, you cannot remove a form\'s database table once it has been added.').'<br />'),true,gt('Form'));
+        $form->register(null,'', new htmlcontrol('&#160;&#160;&#160;&#160;&#160;'.gt('To help prevent data loss, you cannot remove a form\'s database table once it has been added.').'<br />'),true,gt('Database'));
         if ($object->is_saved == 1) {
             $form->controls['is_saved']->disabled = true;
             $form->meta('is_saved','1');
