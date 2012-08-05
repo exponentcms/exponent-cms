@@ -31,3 +31,6 @@
     font-style: italic;
 }
 
+.address span {
+    display: inline;
+}
