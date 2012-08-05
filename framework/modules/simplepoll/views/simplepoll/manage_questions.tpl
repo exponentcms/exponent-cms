@@ -32,9 +32,11 @@
         <tbody>
             {foreach from=$questions item=question}
                 <tr class="row {cycle values='odd_row,even_row'}"><td>
-                    <a href="{link action=manage_question id=$question->id}">{$question->question}</a>
+                    {$question->question}
                     {*({$question->answer_count} {plural plural=answers singular=answer count=$question->answer_count})*}
-                    ({$question->simplepoll_answer|@count} {plural plural=answers singular=answer count=$question->simplepoll_answer|@count})
+                    <a href="{link action=manage_question id=$question->id}" title="{'Manage Answers'|gettext}">
+                        ({$question->simplepoll_answer|@count} {plural plural=answers singular=answer count=$question->simplepoll_answer|@count})
+                    </a>
                     </td><td>
                         {if $question->active}
                             <span class="active">{'Active'|gettext}</span>
