@@ -19,6 +19,7 @@
 if (!defined('EXPONENT')) exit('');
 
 global $router;
+
 $container = $db->selectObject('container', 'id='.intval($_REQUEST['id']));
 //eDebug($container);
 $module_loc = unserialize($container->internal);

@@ -94,6 +94,7 @@ class expPaginator {
 	public $pages = array();
 	public $records = array();
     public $cats = array();
+    public $sort_dropdown = array();
 
 	/**
 	 * expPaginator Constructor
@@ -298,8 +299,8 @@ class expPaginator {
 		if (isset($page_params['section'])) unset($page_params['section']);
 		if (!empty($this->view)) $page_params['view'] = $this->view;
 		
-		//build out a couple links we can use in the views.		
-		$this->pagelink = $router->makeLink($page_params, null, null, true);
+		//build out a couple links we can use in the views.
+		$this->pagelink = $router->makeLink($page_params, false, false, true);
 		
 		// if don't have enough records for more than one page then we're done.
 		//if ($this->total_records <= $this->limit) return true;
@@ -324,35 +325,35 @@ class expPaginator {
 		// setup the previous link
 		if ($this->page > 1) {
 			$page_params['page'] = $this->page - 1;
-			$this->previous_page = $router->makeLink($page_params, null, null, true);
+			$this->previous_page = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the next link
 		if ($this->page < $this->total_pages) {
 			$page_params['page'] = $this->page + 1;
-			$this->next_page = $router->makeLink($page_params, null, null, true);
+			$this->next_page = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the previous 10 link
 		if ($this->page > $this->pages_to_show) {
 			$page_params['page'] = $this->first_pagelink - 1;
-        	$this->previous_shift = $router->makeLink($page_params, null, null, true);
+        	$this->previous_shift = $router->makeLink($page_params, false, false, true);
 			$page_params['page'] = 1;
-			$this->firstpage = $router->makeLink($page_params, null, null, true);
+			$this->firstpage = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the next 10 link
 		if ($this->page < ($this->total_pages - $this->pages_to_show)) {
             $page_params['page'] = $this->last_pagelink + 1;
-            $this->next_shift = $router->makeLink($page_params, null, null, true);
+            $this->next_shift = $router->makeLink($page_params, false, false, true);
 			$page_params['page'] = $this->total_pages;
-			$this->lastpage = $router->makeLink($page_params, null, null, true);
+			$this->lastpage = $router->makeLink($page_params, false, false, true);
         }
 
 		// setup the links to the pages being displayed.
 		for($i=$this->first_pagelink; $i<=$this->last_pagelink; $i++) { 
 			$page_params['page'] = $i;
-			$this->pages[$i] = $router->makeLink($page_params, null, null, true); 
+			$this->pages[$i] = $router->makeLink($page_params, false, false, true);
 		} 	
 
 		$links_template = get_common_template('pagination_links', null, 'common');
@@ -409,7 +410,7 @@ class expPaginator {
                 if (empty($params['action'])) $params['action'] = $this->action;
             }
             
-            $current = '';
+//            $current = '';
             if (isset($params['order'])) {
                 $current = $params['order'];
                 unset($params['order']);
@@ -474,7 +475,7 @@ class expPaginator {
                     if ($col == 'no-sort') {
                         $this->header_columns .= $colname;
                     } else {
-                        $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
+                        $this->header_columns .= '<a href="'.$router->makeLink($params, false, false, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
                     }
                 }
                 
@@ -527,7 +528,7 @@ class expPaginator {
             if (isset($params['title'])) $defaultParams['title'] = $params['title'];
             if (isset($params['page'])) $defaultParams['page'] = $params['page'];
             
-            $this->sort_dropdown[$router->makeLink($defaultParams, null, null, true)] = "Default";
+            $this->sort_dropdown[$router->makeLink($defaultParams, false, false, true)] = "Default";
 			foreach ($this->columns as $colname=>$col) {
 				// if this is the column we are sorting on right now we need to setup some class info
 				/*$class = isset($this->class) ? $this->class : 'page';
@@ -548,14 +549,14 @@ class expPaginator {
 				if (!empty($col)) {	
                     if ($colname == 'Price') {
                         $params['dir'] = 'ASC'; 
-                        $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - Lowest to Highest";
+                        $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Lowest to Highest";
                         $params['dir'] = 'DESC'; 
-                        $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - Highest to Lowest";                          
+                        $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Highest to Lowest";
                     } else {
                         $params['dir'] = 'ASC'; 
-                        $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - A-Z";
+                        $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - A-Z";
                         $params['dir'] = 'DESC';
-                        $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - Z-A";
+                        $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Z-A";
                     }	
 				}                  								
 			}

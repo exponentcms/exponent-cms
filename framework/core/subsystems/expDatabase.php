@@ -614,7 +614,7 @@ abstract class database {
 	* object attributes starting with an underscore ('_') will be ignored and NOT inserted
 	* into the table as a field value.
 	*
-	* @param Object $object The object to insert.
+	* @param object $object The object to insert.
 	* @param string $table The logical table name to insert into.  This does not include the table prefix, which
 	*    is automagically prepended for you.
 	* @return int|void
@@ -820,7 +820,9 @@ abstract class database {
 	   // Strings
 	   elseif ($type == "text" || $type == "mediumtext" || $type == "longtext" || strpos($type, "varchar(") !== false) {
 	       return DB_DEF_STRING;
-	   }
+	   } else {
+           return DB_DEF_INTEGER;
+       }
 	}
 
 	/**
@@ -839,7 +841,9 @@ abstract class database {
 	       return 16777216;
 	   else if (strpos($type, "varchar(") !== false) {
 	       return str_replace(array("varchar(", ")"), "", $type) + 0;
-	   }
+	   } else {
+           return 256;
+       }
 	}
 
 	/**

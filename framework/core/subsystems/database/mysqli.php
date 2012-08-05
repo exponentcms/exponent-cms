@@ -638,7 +638,7 @@ class mysqli_database extends database {
      *
      * @param string $table The name of the table/object to look at
      * @param string $where Criteria used to narrow the result set.
-     * @return null|void
+     * @return object/null|void
      */
     function selectObject($table, $where) {
         $res = mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1");
@@ -676,7 +676,7 @@ class mysqli_database extends database {
      * object attributes starting with an underscore ('_') will be ignored and NOT inserted
      * into the table as a field value.
      *
-     * @param Object $object The object to insert.
+     * @param object $object The object to insert.
      * @param string $table The logical table name to insert into.  This does not include the table prefix, which
      *    is automagically prepended for you.
      * @return int|void

@@ -54,6 +54,7 @@ class expQueue {
 	}
 
     public static function show($name=null) {
+        $html = '';
         $queues = expSession::get('flash');
         if (empty($name)) {
             $template = new template('common','_msg_queue');

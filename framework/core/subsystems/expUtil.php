@@ -136,6 +136,7 @@ class expUtil {
 			// see http://php.net/is_writable
 			return is_writable($file);
 		}
+        return false;
 	}
 
 	public static function getOrigReferrer($ticket=null) {

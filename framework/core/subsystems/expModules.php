@@ -33,7 +33,7 @@ class expModules {
 
 	// recursive function used for (auto?)loading 2.0 modules controllers & models
 	public static function loadModulesDir($dir, &$controllers) {
-		global $db;
+//		global $db;
 	    if (is_readable($dir)) {
 	        $dh = opendir($dir);
 	        while (($file = readdir($dh)) !== false) {

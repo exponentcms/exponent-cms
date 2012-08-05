@@ -35,7 +35,6 @@ if (expPermissions::check('manage',$loc)) {
 	echo SITE_403_HTML;
 }
 
-
 exit;
 
 ?>

@@ -149,8 +149,8 @@ class expCatController extends expController {
      *  it is assumed the records have expCats attachments, even if they are empty
      *
      * @static
-     * @param object $records
-     * @param $order sort order/dir for items
+     * @param array $records
+     * @param string $order sort order/dir for items
      * @param string $uncattitle name to use for uncategorized group
      * @param array $groups limit set to these groups only if set
      * @return void
@@ -186,9 +186,10 @@ class expCatController extends expController {
      *  it is assumed the records object came from expCatController::addCats
      *
      * @static
-     * @param object $records
+     * @param array $records
      * @param array $cats array of site category objects
      * @param array $groups limit set to these groups only if set
+     * @param null $grouplimit
      * @return void
      */
     public static function sortedByCats($records,&$cats,$groups=array(),$grouplimit=null) {

@@ -28,7 +28,7 @@ class expPermissions {
 	/** exdoc
 	 * Loads permission data from the database for the specified user.
 	 *
-	 * @param User $user the user to load permissions for.
+	 * @param user/object $user the user to load permissions for.
      *
 	 * @node Subsystems:expPermissions
 	 */
@@ -74,7 +74,7 @@ class expPermissions {
 	 * Returns true if the permission is granted, false if it is not.
 	 *
 	 * @param string $permission The name of the permission to check
-	 * @param Object $location The location to check on.  This will be passed
+	 * @param object $location The location to check on.  This will be passed
 	 *	to getLocationHierarchy (defined by the module) for a full hierarchy
 	 *	of permissions.
      *
@@ -188,9 +188,9 @@ class expPermissions {
      * Handles explicit checks (actually assigned to the user)  implicit  and inherited checks
 	 * (assigned to a group the user belongs to).  Returns true if the permission is granted, false if it is not.
 	 *
-	 * @param User $user The user to check permission on
+	 * @param user/object $user The user to check permission on
 	 * @param string $permission The name of the permission to check
-	 * @param Object $location The location to check on.
+	 * @param object $location The location to check on.
 	 * @param boolean $explicitOnly Whether to check for explicit/implicit assignment or inherited.
 	 *
 	 * @return bool
@@ -314,9 +314,9 @@ class expPermissions {
 	/** exdoc
 	 * Grants the specified permission to the specified user, on the given location
 	 *
-	 * @param User $user The user to grant the permission to
+	 * @param user/object $user The user to grant the permission to
 	 * @param string $permission The name of the permission to grant
-	 * @param Object $location The location to grant the permission on
+	 * @param object $location The location to grant the permission on
      *
 	 * @node Subsystems:expPermissions
 	 */
@@ -341,9 +341,9 @@ class expPermissions {
 	 * Checks to see if the given group has been given a specific permission on a location.
 	 * Returns true if the permission is granted, false if it is not.
 	 *
-	 * @param Group $group The group to check
+	 * @param group/object $group The group to check
 	 * @param string $permission The name of the permission to check
-	 * @param Object $location The location to check on.
+	 * @param object $location The location to check on.
 	 * @param bool $explicitOnly
      *
 	 * @return bool
@@ -446,9 +446,9 @@ class expPermissions {
 	/** exdoc
 	 * Grants the specified permission to the specified user group, on the given location
 	 *
-	 * @param Group $group The group to grant the permission to
+	 * @param group/object $group The group to grant the permission to
 	 * @param string $permission The name of the permission to grant
-	 * @param Object $location The location to grant the permission on
+	 * @param object $location The location to grant the permission on
      *
 	 * @node Subsystems:expPermissions
 	 */
@@ -473,8 +473,8 @@ class expPermissions {
 	/** exdoc
 	 * Removes all permissions from a user, on a specific location.
 	 *
-	 * @param User $user The user to remove all permissions from
-	 * @param Object $location The location to remove all permission on
+	 * @param user/object $user The user to remove all permissions from
+	 * @param object $location The location to remove all permission on
      *
 	 * @return mixed
      *
@@ -488,8 +488,8 @@ class expPermissions {
 	/** exdoc
 	 * Removes all permissions from a group, on a specific location.
 	 *
-	 * @param Group $group The group to remove all permissions from
-	 * @param Object $location The location to remove all permission on
+	 * @param group/object $group The group to remove all permissions from
+	 * @param object $location The location to remove all permission on
      *
 	 * @return mixed
      *
@@ -503,7 +503,7 @@ class expPermissions {
     /** exdoc
      * Removes all user and group permissions, on a specific location.
      *
-     * @param Object $location
+     * @param object $location
      *
      * @return bool
      *
@@ -535,7 +535,7 @@ class expPermissions {
 	 * reload their permission data.  This is useful if permissions
 	 * are assigned or revoked, and is required to see these changes.
      *
-     * @param User $user
+     * @param user/object $user
      *
 	 * @node Subsystems:expPermissions
 	 */

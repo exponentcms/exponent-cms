@@ -23,7 +23,7 @@ class container {
         global $db;
         
         // check if this is a controller or module
-        $iscontroller = expModules::controllerExists($values['i_mod']);
+        $iscontroller = expModules::controllerExists($values['modcntrol']);
         if (!isset($values['id'])) {
             // Only deal with the inc/dec stuff if adding a module.
             $src = "";

@@ -42,14 +42,14 @@ function smarty_function_securelink($params,&$smarty) {
 	*/
         $loc = $smarty->getTemplateVars('__loc');
         if (!isset($params['module'])) {
-                $params['module'] = empty($params['controller']) ? $loc->mod : $params['controller'];
+            $params['module'] = empty($params['controller']) ? $loc->mod : $params['controller'];
         }
         if (!isset($params['src'])) {
-                 if (expModules::controllerExists($params['module'])) {
-                        $params['src'] = $loc->src;
-                } elseif (@call_user_func(array($loc->mod,'hasSources'))) {
-                        $params['src'] = $loc->src;
-                }
+             if (expModules::controllerExists($params['module'])) {
+                $params['src'] = $loc->src;
+            } elseif (@call_user_func(array($loc->mod,'hasSources'))) {
+                $params['src'] = $loc->src;
+            }
         }
         if (!isset($params['int'])) $params['int'] = $loc->int;
 	echo expCore::makeSecureLink($params);

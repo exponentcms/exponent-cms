@@ -352,6 +352,7 @@ class expSettings {
 
             return $form;
         }
+        return null;
     }
 
 	/** exdoc

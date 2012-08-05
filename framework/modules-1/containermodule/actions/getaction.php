@@ -17,12 +17,14 @@
 ##################################################
 
 if (!defined('EXPONENT')) exit('');
-	$classname = $_POST['mod'];
-	$controller = new $classname();
-    $actions = $controller->useractions;
-    // Language-ize the action names
-    foreach ($actions as $key=>$value) {
-        $actions[$key] = gt($value);
-    }
-	echo json_encode($actions);
+
+$classname = $_POST['mod'];
+$controller = new $classname();
+$actions = $controller->useractions;
+// Language-ize the action names
+foreach ($actions as $key=>$value) {
+    $actions[$key] = gt($value);
+}
+echo json_encode($actions);
+
 ?>

@@ -25,7 +25,7 @@
 class expAjaxReply {
 	public $packet = array('replyCode'=>'','replyText'=>'','data'=>'');
 	public $template;
-	public $redirecturl;
+	public $redirecturl = null;
 
 	public function __construct($replyCode=200, $replyText='Ok', $data=null, $redirecturl=null) {
 		$this->packet = $this->makePacket($replyCode, $replyText, $data);

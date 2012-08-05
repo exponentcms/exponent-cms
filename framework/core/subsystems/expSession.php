@@ -203,7 +203,7 @@ class expSession {
 	 * Creates user ticket in sessionticket table and session
 	 *
 	 * @param $ticket
-	 * @param User $user The user object of the newly logged-in user. Uses id of 0 if not supplied.
+	 * @param user/object $user The user object of the newly logged-in user. Uses id of 0 if not supplied.
 	 * @return
 	 * @node Subsystems:Sessions
 	 */
@@ -245,8 +245,9 @@ class expSession {
 		if (isset($_SESSION[SYS_SESSION_KEY]['ticket'])) {
 			if($db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'") != null ) {
 				return $_SESSION[SYS_SESSION_KEY]['ticket'];
-			} else return null;
+			}
 		}
+        return null;
 	}
 
 	/** exdoc
@@ -389,7 +390,7 @@ class expSession {
 	/** exdoc
 	 * Creates user ticket in sessionticket table and session
 	 *
-	 * @param User $user The user object of the newly logged-in user. Uses id of 0 if not supplied.
+	 * @param user/object $user The user object of the newly logged-in user. Uses id of 0 if not supplied.
 	 * @return null
 	 * @node Subsystems:Sessions
 	 */

@@ -310,7 +310,7 @@ class expJavascript {
         } else {
             $script .= "var ".$id." = new YAHOO.widget.Panel('".$id."', { ";
         }
-
+//FIXME $hide & $footer are not defined below
         $script .= "fixedcenter:".$fixedcenter.",
                 draggable:".$draggable.",
                 modal:".$modal.",

@@ -19,22 +19,22 @@
 if (!defined('EXPONENT')) exit('');
 
 // PERM CHECK
-   	expSession::clearAllUsersSessionCache('containermodule');
+expSession::clearAllUsersSessionCache('containermodule');
 
-	$orphan_mods = array();
-	$orph = $db->selectObjects('sectionref','refcount = 0 AND module='.expString::sanitize($_GET['module']));
-	foreach ($orph as $orphan) {
-		if (!isset($orphan_mods[$orphan->module]) && class_exists($orphan->module)) {
-			$modclass = $orphan->module;
-			$mod = new $modclass();
-			$orphan_mods[$modclass] = $mod->name();
-		}
-	}
-	uasort($orphan_mods,'strnatcmp');
-	
-	$template = new template('containermodule','_orphans_modules');
-	$template->assign('orphan_mods',$orphan_mods);
-	$template->output();
+$orphan_mods = array();
+$orph = $db->selectObjects('sectionref','refcount = 0 AND module='.expString::sanitize($_GET['module']));
+foreach ($orph as $orphan) {
+    if (!isset($orphan_mods[$orphan->module]) && class_exists($orphan->module)) {
+        $modclass = $orphan->module;
+        $mod = new $modclass();
+        $orphan_mods[$modclass] = $mod->name();
+    }
+}
+uasort($orphan_mods,'strnatcmp');
+
+$template = new template('containermodule','_orphans_modules');
+$template->assign('orphan_mods',$orphan_mods);
+$template->output();
 // END PERM CHECK
 
 ?>

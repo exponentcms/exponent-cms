@@ -26,7 +26,8 @@
 class expTheme {
 
 	public static function initialize() {
-		global $auto_dirs, $auto_dirs2, $user;
+		global $auto_dirs, $auto_dirs2;
+//        global $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 		require_once(BASE.'framework/core/compat/theme.php');
 
@@ -87,7 +88,8 @@ class expTheme {
 	//	echo self::advertiseRSS();
 	//}
 	public static function headerInfo($config) {
-		global $sectionObj, $validateTheme, $head_config, $cur_lang;
+		global $sectionObj, $validateTheme, $head_config;
+//        global $cur_lang;
 
 		$validateTheme['headerinfo'] = true;
 		// end checking for headerInfo
@@ -183,7 +185,8 @@ class expTheme {
    	}
 
     public static function pageMetaInfo() {
-        global $sectionObj, $db, $router;
+        global $sectionObj, $router;
+//        global $db;
 
         $metainfo = array();
         if (self::inAction() && (!empty($router->url_parts[0]) && expModules::controllerExists($router->url_parts[0]))) {
@@ -220,6 +223,7 @@ class expTheme {
             BASE.'themes/'.DISPLAY_THEME.'/'.$path,
         );
 
+        $files = array();
         foreach ($dirs as $dir) {
             if (is_dir($dir) && is_readable($dir) ) {
                 $dh = opendir($dir);
@@ -267,13 +271,16 @@ class expTheme {
 		if (defined('ADVERTISE_RSS') && ADVERTISE_RSS == 1) {
 			echo "\n\t<!-- RSS Feeds -->\n";
 			$rss = new expRss();
-			$feeds = $rss->getFeeds();
+			$feeds = $rss->getFeeds('advertise=1');
 			foreach ($feeds as $feed) {
 				if ($feed->enable_rss) {
-					$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
+//					$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
+                    $title = empty($feed->title) ? 'RSS' : htmlspecialchars($feed->title, ENT_QUOTES);
 					$params['module'] = $feed->module;
 					$params['src'] = $feed->src;
-					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
+//					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
+                       //FIXME need to use $feed instead of $params
+                    echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeLink(array('controller'=>'rss', 'action'=>'feed', 'title'=>$feed->sef_url)) . "\" />\n";
 				}
 			}
 
@@ -318,14 +325,14 @@ class expTheme {
 		global $validateTheme;
 		if ($validateTheme['headerinfo']==false) {
 			echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>expTheme::head() is a required function in your theme.  Please refer to the Exponent documentation for details:<br />
-			<a href=\"http://docs.exponentcms.org/New_Themes_Guide\" target=\"_blank\">http://docs.exponentcms.org/</a>
+			<a href=\"http://docs.exponentcms.org/docs/current/header-info\" target=\"_blank\">http://docs.exponentcms.org/</a>
 			</h1>";
 			die();
 		}
 
 		if ($validateTheme['footerinfo']==false) {
 			echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>expTheme::foot() is a required function in your theme.  Please refer to the Exponent documentation for details:<br />
-			<a href=\"http://docs.exponentcms.org/New_Themes_Guide\" target=\"_blank\">http://docs.exponentcms.org/</a>
+			<a href=\"http://docs.exponentcms.org/docs/current/footer-info\" target=\"_blank\">http://docs.exponentcms.org/</a>
 			</h1>";
 			die();
 		}
@@ -464,6 +471,7 @@ class expTheme {
             include_once(BASE."themes/".DISPLAY_THEME."/".$theme);
             exit;
         }
+        return false;
     }
 
 	/** exdoc
@@ -501,7 +509,7 @@ class expTheme {
 					return true;
 				}
 
-				global $db, $user;
+				global $db, $user;  // these globals are needed for the old school actions which are loaded
 
 				// the only reason we should have a controller down in this section is if we are hitting a common action like
 				// userperms or groupperms...deal wit it.
@@ -530,10 +538,11 @@ class expTheme {
 				}
 			}
 		}
+        return false;
 	}
 
     public static function showAction($module, $action, $src="", $params=array()) {
-   		global $db, $user;
+//   		global $db, $user;
 
    		$loc = new stdClass();;
    		$loc->mod = $module;
@@ -588,7 +597,8 @@ class expTheme {
     * @node Subsystems:Theme
     */
     public static function main() {
-        global $db, $user;
+        global $db;
+//        global $user;
 
         echo show_msg_queue();
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
@@ -611,13 +621,13 @@ class expTheme {
         }
     }
 
-   /** exdoc
-    * Useful only if theme does not use self::main
-    *
-    * @return
-    * @internal param bool $public Whether or not the page is public.
-    * @node     Subsystems:Theme
-    */
+    /** exdoc
+     * Useful only if theme does not use self::main
+     *
+     * @return void
+     * @internal param bool $public Whether or not the page is public.
+     * @node     Subsystems:Theme
+     */
    	public static function mainContainer() {
    		global $router;
 
@@ -659,7 +669,8 @@ class expTheme {
      * @node Subsystems:Theme
      */
 	public static function showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-		global $db, $module_scope;
+//		global $db;
+        global $module_scope;
 
 		if ($prefix == null) $prefix = "@section";
 
@@ -768,9 +779,8 @@ class expTheme {
 //            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
             $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
 			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
-        } else {
-	        return false;
         }
+        return false;
     }
 
     /**
@@ -856,25 +866,24 @@ class expTheme {
                 $module_scope[$src][$params['module']."module"]->scope = 'sectional';
                 self::showModule($params['module']."module",$params['view'],$moduletitle,$src,false,$sectionObj->id,$chrome);
             }
-        } else {
-		    return false;
-	    }
+        }
+        return false;
     }
 
-	/** exdoc
-	 * Calls the necessary methods to show a specific module
-	 *
-	 * @param string $module The classname of the module to display
-	 * @param string $view The name of the view to display the module with
-	 * @param string $title The title of the module (support is view-dependent)
-	 * @param string $source The source of the module.
-	 * @param bool $pickable Whether or not the module is pickable in the Source Picker.
-	 * @param null $section
-	 * @param bool $hide_menu
-	 * @param array $params
-	 * @return
-	 * @node Subsystems:Theme
-	 */
+    /** exdoc
+     * Calls the necessary methods to show a specific module
+     *
+     * @param string $module The classname of the module to display
+     * @param string $view The name of the view to display the module with
+     * @param string $title The title of the module (support is view-dependent)
+     * @param string $source The source of the module.
+     * @param bool $pickable Whether or not the module is pickable in the Source Picker.
+     * @param null $section
+     * @param bool $hide_menu
+     * @param array $params
+     * @return void
+     * @node Subsystems:Theme
+     */
 	public static function showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
 		if (!AUTHORIZED_SECTION && $module != 'navigationmodule' && $module != 'loginController') return;
 
@@ -924,6 +933,7 @@ class expTheme {
 				// in the if blocks below...oh well, that's life.
 				if (!$iscontroller) {
 					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
+                        $container = new stdClass();  //php 5.4
 						$container->permissions = array(
 							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
@@ -946,6 +956,7 @@ class expTheme {
 					// if we hit here we're dealing with a controller...not a module
 					if (!$hide_menu ) {
 						$controller = expModules::getController($module);
+                        $container = new stdClass();  //php 5.4
 						$container->permissions = array(
 							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
