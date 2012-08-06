@@ -539,10 +539,11 @@ class expFile extends expRecord {
 
 		header('Content-Type: ' . $mimetype);		
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-		//header("Content-length: ".filesize($file->path));  // for some reason the webserver cant run stat on the files and this breaks.
 		header('Content-Transfer-Encoding: binary');
-		header('Content-Encoding:');
+//		header('Content-Encoding:');
 		header('Content-Disposition: attachment; filename="' . $file->filename . '";');
+        $filesize = filesize($file->path);
+		if ($filesize) header("Content-length: ".$filesize);  // for some reason the webserver cant run stat on the files and this breaks.
 		// IE need specific headers
 		if (EXPONENT_USER_BROWSER == 'IE') {
 			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
