@@ -18,7 +18,12 @@
 {/css}
 
 <div class="module simplenote manage">
-    <h1>{'Manage Notes'|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help"|gettext|cat:" "|cat:("Managing Notes"|gettext) module="manage-simple-notes"}
+        </div>
+        <h1>{'Manage Notes'|gettext}</h1>
+    </div>
     <p>{'The table below shows notes have not yet been approved'|gettext}.</p>
     
     <table class="exp-skin-table">
