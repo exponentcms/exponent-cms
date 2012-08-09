@@ -610,7 +610,7 @@ class usersController extends expController {
     
     public function manage_group_memberships() {
         global $db, $user;
-        expHistory::set('manageable', $this->params);
+//        expHistory::set('manageable', $this->params);
 
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
 
