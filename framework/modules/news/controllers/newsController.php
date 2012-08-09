@@ -120,9 +120,8 @@ class newsController extends expController {
     public function getRSSContent() {
         global $db;     
     
-        $order = isset($this->config['order']) ? $this->config['order'] : 'publish';
-
         // pull the news posts from the database
+        $order = isset($this->config['order']) ? $this->config['order'] : 'publish';
         $items = $this->news->find('all', $this->aggregateWhereClause(), $order);
 
         //Convert the newsitems to rss items
@@ -138,7 +137,13 @@ class newsController extends expController {
         }
         return $rssitems;
     }
-    
+
+    /**
+     * Pull RSS Feed and display as news items
+     *
+     * @param $items
+     * @return array
+     */
     private function mergeRssData($items) {
         if (!empty($this->config['pull_rss'])) {    
             $RSS = new SimplePie();

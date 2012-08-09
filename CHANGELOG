@@ -9,6 +9,7 @@ Added / Fixed / changed for 2.0.9
   - adds help links to most admin displays
   - calendar is more forgiving of timzone changes (events won't disappear)
   - adds new 2 column style option to forms module
+  - updates rss feeds to use sef urls, adds individual feed 'advertise' option
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.8

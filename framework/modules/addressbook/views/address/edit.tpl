@@ -37,11 +37,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     {else}
         <h1>{'New'|gettext} {$modelname}</h1>
     {/if}
-
     <p>
         <em>{'Fields marked with an * are required'|gettext}.</em>
     </p>
-    
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=is_default value=$record->is_default}

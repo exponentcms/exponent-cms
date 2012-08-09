@@ -958,6 +958,7 @@ class migrationController extends expController {
                 if (!empty($oldconfig)) {
                     if ($oldconfig->enable_rss == 1) {
                         $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['advertise'] = true;
                         $newconfig->config['feed_title'] = $oldconfig->feed_title;
                         $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                         $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -1098,6 +1099,7 @@ class migrationController extends expController {
                 if (!empty($oldconfig)) {
                     if ($oldconfig->enable_rss == 1) {
                         $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['advertise'] = true;
                         $newconfig->config['feed_title'] = $oldconfig->feed_title;
                         $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                         $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -1229,6 +1231,7 @@ class migrationController extends expController {
                     }
                     if ($dorss) {
                         $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['advertise'] = true;
                         $newconfig->config['feed_title'] = $oldconfig->feed_title;
                         $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                         $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -1499,6 +1502,7 @@ class migrationController extends expController {
                 if (!empty($oldconfig)) {
                     if ($oldconfig->enable_rss == 1) {
                         $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['advertise'] = true;
                         $newconfig->config['feed_title'] = $oldconfig->feed_title;
                         $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                         $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -2004,6 +2008,7 @@ class migrationController extends expController {
 					$loc = expUnserialize($feedlist->location_data);
 					$loc->mod = "rssController";
 					$newconfig->config['enable_rss'] = true;
+                    $newconfig->config['advertise'] = true;
 					$newconfig->config['feed_title'] = $feedlist->feed_title;
 					$newconfig->config['feed_desc'] = $feedlist->feed_desc;
 					$newconfig->config['rss_limit'] = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
@@ -2243,6 +2248,7 @@ class migrationController extends expController {
         if (!empty($newconfig->config['enable_rss']) && $newconfig->config['enable_rss'] == true) {
             $newrss = new expRss();
             $newrss->enable_rss = $newconfig->config['enable_rss'];
+            $newrss->advertise = $newconfig->config['enable_rss'];
             $newrss->feed_title = $newconfig->config['feed_title'];
             $newrss->feed_desc = $newconfig->config['feed_desc'];
             $newrss->rss_limit = $newconfig->config['rss_limit'];

@@ -612,15 +612,15 @@ abstract class expController {
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
             $rss_item->title = expString::convertSmartQuotes($item->title);
-            $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            $rss_item->link = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
             $comment_count = expCommentController::findComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
             if ($comment_count) {
-                $rss_item->comments = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
-//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+                $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
                 $rss_item->commentsCount = $comment_count;
             }
             $rssitems[$key] = $rss_item;
@@ -628,15 +628,136 @@ abstract class expController {
         return $rssitems;
     }
 
-	/**
+    /**
+     *
+     */
+    function rss() {
+        require_once(BASE.'external/feedcreator.class.php');
+
+        $id = isset($this->params['title']) ? $this->params['title'] : (isset($this->params['id']) ? $this->params['id'] : null);
+        if (empty($id)) {
+            $module = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
+            $id = array('module'=>$module,'src'=>$this->params['src']);
+        }
+        $site_rss = new expRss($id);
+        $site_rss->title = empty($site_rss->title) ? gt('RSS for').' '.URL_FULL : $site_rss->title;
+        $site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is an RSS syndication from').' '.HOSTNAME : $site_rss->feed_desc;
+        if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
+        if ($site_rss->rss_cachetime == 0) { $site_rss->rss_cachetime = 1440; }
+
+        if (!empty($site_rss->itunes_cats)) {
+            $ic = explode(";", $site_rss->itunes_cats);
+            $x = 0;
+            $itunes_cats = array();
+            foreach($ic as $cat){
+                $cat_sub = explode(":", $cat);
+                $itunes_cats[$x]->category = $cat_sub[0];
+                if(isset($cat_sub[1])) {
+                    $itunes_cats[$x]->subcategory = $cat_sub[1];
+                }
+                $x++;
+            }
+        }
+
+        if ($site_rss->enable_rss == true) {
+
+            // NO buffering from here on out or things break unexpectedly. - RAM
+            ob_end_clean();
+
+            header('Content-Type: ' . 'application/rss+xml');
+//            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+//            header('Content-Transfer-Encoding: binary');
+//            header('Content-Encoding:');
+            // IE need specific headers
+            if (EXPONENT_USER_BROWSER == 'IE') {
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                header('Vary: User-Agent');
+            } else {
+                header('Pragma: no-cache');
+            }
+
+        	$rss = new UniversalFeedCreator();
+        	$rss->cssStyleSheet = "";
+        //	$rss->useCached("PODCAST");
+        	$rss->useCached();
+            $rss->title = $site_rss->title;
+        	$rss->description = $site_rss->feed_desc;
+            $rss->image->url = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
+            $rss->image->title = $site_rss->title;
+            $rss->image->link = URL_FULL;
+        //    $rss->image->width = 64;
+        //    $rss->image->height = 64;
+        	$rss->ttl = $site_rss->rss_cachetime;
+        	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
+        	$rss->syndicationURL = "http://".HOSTNAME.$_SERVER['PHP_SELF'].'?module='.$site_rss->module.'&src='.$site_rss->src;
+        	if ($site_rss->module == "filedownload") {
+        //		$rss->itunes->summary = $site_rss->feed_desc;
+        		$rss->itunes->author = ORGANIZATION_NAME;
+                if (!empty($itunes_cats)) {
+                    $rss->itunes->category = $itunes_cats[0]->category;
+                    $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
+                }
+        		$rss->itunes->image = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
+        //		$rss->itunes->explicit = 0;
+                $rss->itunes->subtitle = $site_rss->title;
+        //		$rss->itunes->keywords = 0;
+        		$rss->itunes->owner_email = SMTP_FROMADDRESS;
+                $rss->itunes->owner_name = ORGANIZATION_NAME;
+        	}
+
+        	$pubDate = '';
+        	foreach ($site_rss->getFeedItems() as $item) {
+        		if ($item->date > $pubDate) { $pubDate = $item->date; }
+        		$rss->addItem($item);
+        	}
+        	if (isset($site_rss->rss_limit) && $site_rss->rss_limit > 0) {
+        		$rss->items = array_slice($rss->items, 0, $site_rss->rss_limit);
+        	}
+        	$rss->pubDate = $pubDate;
+
+        	header("Content-type: text/xml");
+        	if ($site_rss->module == "filedownload") {
+        		echo $rss->createFeed("PODCAST");
+        	} else {
+        		echo $rss->createFeed("RSS2.0");
+        	}
+        } else {
+        	echo gt("This RSS feed is not available.");
+        }
+
+		//Read the file out directly
+		exit();
+    }
+
+    /**
 	 * save module configuration
 	 */
 	function saveconfig() {
         
         // create a new RSS object if enable is checked.
         if (!empty($this->params['enable_rss'])) {
+            $params = $this->params;
+            $params['title'] = $params['feed_title'];
+            unset($params['feed_title']);
+            $params['sef_url'] = $params['feed_sef_url'];
+            unset($params['feed_sef_url']);
+            $rssfeed = new expRss($params);
+            $rssfeed->update($params);
+            $this->params['feed_sef_url'] = $rssfeed->sef_url;
+        } else {
             $rssfeed = new expRss($this->params);
-            $rssfeed->update($this->params);
+            $params = $this->params;
+            $params['enable_rss'] = false;
+            if (empty($params['advertise'])) $params['advertise'] = false;
+            $params['title'] = $params['feed_title'];
+            unset($params['feed_title']);
+            $params['sef_url'] = $params['feed_sef_url'];
+            unset($params['feed_sef_url']);
+            if (!empty($rssfeed->id)) {  // do NOT create a new record, only update existing ones
+                $rssfeed->update($params);
+                $this->params['feed_sef_url'] = $rssfeed->sef_url;
+            }
         }
         
         // create a new eAlerts object if enable is checked.
@@ -839,7 +960,7 @@ abstract class expController {
             $object = new expTag(expString::sanitize($request['tag']));
             // set the meta info
             if (!empty($object)) {
-                $metainfo['title'] = gt('Showing all Blog Posts tagged with') ." \"" . $object->title . "\"";
+                $metainfo['title'] = gt('Showing all Items tagged with') ." \"" . $object->title . "\"";
                 $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
             }

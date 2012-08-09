@@ -390,7 +390,6 @@ function makeLink($params=array(), $secure=false) {
 }
 
 function redirect_to($params=array(), $secure=false) {
-//  global $flow;
     global $router;
     $secure = empty($secure) ? false : true;
     $link = (!is_array($params)) ? $params : $router->makeLink($params, false, $secure);

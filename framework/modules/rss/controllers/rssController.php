@@ -42,7 +42,7 @@ class rssController extends expController {
     function showall() {
         $rss = new expRss();
         assign_to_template(array(
-            'feeds'=>$rss->getFeeds()
+            'feeds'=>$rss->getFeeds('enable_rss=1')
         ));
     }
     
@@ -50,6 +50,15 @@ class rssController extends expController {
 //        redirect_to(array('controller'=>'rss', 'action'=>'showall'));
         $this->showall();
     }
+
+    /**
+     * Alternate universal method to call rss feed without using module name/type
+     *  e.g., www.site.org/rss/feed/sef_url
+     */
+    function feed() {
+        $this->rss();
+    }
+
 }
 
 ?>

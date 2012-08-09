@@ -23,10 +23,12 @@
 </div>
 <blockquote>
     {'These setting allow you make syndicate your content via a Podcast.'|gettext}&#160;&#160;
-    {'To start syndicating all you have to do is enable Podcasting and give this module\'s content a title and description!'|gettext}
+    {'To start syndicating, all you have to do is enable Podcasting and give this module\'s content a title and description!'|gettext}
 </blockquote>
 {control type="checkbox" name="enable_rss" label="Enable Podcasting"|gettext value=1 checked=$config.enable_rss}
+{control type="checkbox" name="advertise" label="Advertise RSS"|gettext value=1 checked=$config.advertise}
 {control type="text" name="feed_title" label="Podcast Title"|gettext value=$config.feed_title}
+{control type="text" name="feed_sef_url" label="SEF URL"|gettext value=$config.feed_sef_url}
 {control type="textarea" name="feed_desc" label="Podcast Summary"|gettext value=$config.feed_desc}
 <p><strong>{'iTunes categories are semi-colon separated, with sub-categories colon separated.'|gettext}</strong>
 {br}{'Only the first category and first subcategory are used.'|gettext} e.g., Category1:sub1Cat1:sub2Cat1;Category2:sub1Cat2

@@ -20,7 +20,9 @@
     {/if}
     {foreach from=$feeds item=feed}
 		<div class="item">
-			<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">{'Subscribe to'|gettext} {$feed->feed_title}</a>
+			{*<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">{'Subscribe to'|gettext} {$feed->feed_title}</a>*}
+            {*<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">{'Subscribe to'|gettext} {$feed->title}</a>*}
+            {rss_link feed=$feed text=$feed->title}
 		</div>
     {/foreach}    
 </div>

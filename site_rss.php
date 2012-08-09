@@ -17,10 +17,15 @@
 /** @define "BASE" "." */
 
 require_once('exponent.php');
+
+redirect_to(array('controller'=>'rss','action'=>'feed','module'=>$_REQUEST['module'],'src'=>$_REQUEST['src'])); // use new method
+
+//FIXME old method
 require_once(BASE.'external/feedcreator.class.php');
 
 $site_rss = new expRss($_REQUEST);
-$site_rss->feed_title = empty($site_rss->feed_title) ? gt('RSS for').' '.URL_FULL : $site_rss->feed_title;
+//$site_rss->feed_title = empty($site_rss->feed_title) ? gt('RSS for').' '.URL_FULL : $site_rss->feed_title;
+$site_rss->title = empty($site_rss->title) ? gt('RSS for').' '.URL_FULL : $site_rss->title;
 $site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is the site wide RSS syndication for').' '.HOSTNAME : $site_rss->feed_desc;
 if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
 if ($site_rss->rss_cachetime == 0) { $site_rss->rss_cachetime = 1440; }
@@ -44,10 +49,12 @@ if ($site_rss->enable_rss == true) {
 	$rss->cssStyleSheet = "";
 //	$rss->useCached("PODCAST");
 	$rss->useCached();
-	$rss->title = $site_rss->feed_title;
+//	$rss->title = $site_rss->feed_title;
+    $rss->title = $site_rss->title;
 	$rss->description = $site_rss->feed_desc;
     $rss->image->url = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
-    $rss->image->title = $site_rss->feed_title;
+//    $rss->image->title = $site_rss->feed_title;
+    $rss->image->title = $site_rss->title;
     $rss->image->link = URL_FULL;
 //    $rss->image->width = 64;
 //    $rss->image->height = 64;
@@ -63,7 +70,8 @@ if ($site_rss->enable_rss == true) {
         }
 		$rss->itunes->image = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
 //		$rss->itunes->explicit = 0;
-		$rss->itunes->subtitle = $site_rss->feed_title;
+//		$rss->itunes->subtitle = $site_rss->feed_title;
+        $rss->itunes->subtitle = $site_rss->title;
 //		$rss->itunes->keywords = 0;
 		$rss->itunes->owner_email = SMTP_FROMADDRESS;
         $rss->itunes->owner_name = ORGANIZATION_NAME;
@@ -86,7 +94,7 @@ if ($site_rss->enable_rss == true) {
 		echo $rss->createFeed("RSS2.0");
 	}
 } else {
-	echo gt("This RSS feed has been disabled.");
+	echo gt("This RSS feed is not available.");
 }
 
 ?>
