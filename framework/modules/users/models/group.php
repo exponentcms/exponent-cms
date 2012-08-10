@@ -21,7 +21,7 @@
  * @package Modules
  */
 class group extends expRecord {
-    public $table = 'group';
+//    public $table = 'group';
     public $validates = array(
         'presence_of'=>array(
             'name'=>array('message'=>'Name is a required field.'),

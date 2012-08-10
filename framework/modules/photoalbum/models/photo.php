@@ -22,7 +22,7 @@
  */
 
 class photo extends expRecord {
-    //public $table = 'portfolio';
+    //public $table = 'photo';
     public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'Title is a required field.'),

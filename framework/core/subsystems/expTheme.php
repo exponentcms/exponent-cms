@@ -542,7 +542,7 @@ class expTheme {
 	}
 
     public static function showAction($module, $action, $src="", $params=array()) {
-//   		global $db, $user;
+   		global $db, $user;
 
    		$loc = new stdClass();;
    		$loc->mod = $module;

@@ -35,9 +35,9 @@ class eventregistration extends expRecord {
     public $isQuantityAdjustable = false;
 	
 	public $default_sort_field = 'rank';
-public $rank_by_field= 'rank';
-public $default_sort_direction = "asc";
-	 protected $attachable_item_types = array(
+    public $rank_by_field= 'rank';
+    public $default_sort_direction = "asc";
+	protected $attachable_item_types = array(
         'content_expFiles'=>'expFile',
 		'content_expDefinableFields'=>'expDefinableField'
     );
@@ -53,7 +53,7 @@ public $default_sort_direction = "asc";
     	parent::__construct($this->product_type_id, false, false);
     	$this->id = $origid; // put the product table id back.
     	$this->table = 'product';
-    	$this->tablename = 'product';    	
+    	$this->tablename = 'product';
 	}
 	
 	public function update($params=array()) {	    

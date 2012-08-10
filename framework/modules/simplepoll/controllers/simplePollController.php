@@ -105,6 +105,7 @@ class simplePollController extends expController {
     public function delete() {
         global $db;
 
+        // if no active question, set first question as active
         $question = $this->simplepoll_question->find('first', 'id='.$this->params['id']);
         parent::delete();
         $question = $this->simplepoll_question->find('first', "location_data='".$question->location_data."' AND active = 1");
@@ -122,7 +123,6 @@ class simplePollController extends expController {
         $answer = null;
         if (isset($this->params['id'])) {
         	$answer = $db->selectObject('simplepoll_answer','id='.$this->params['id']);
-//            $answer = $this->simplepoll_answer->find('first','id='.$this->params['id']);
         	if ($answer) {
                 $question = $this->simplepoll_question->find('first','id='.$answer->simplepoll_question_id);
         	}

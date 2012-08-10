@@ -22,7 +22,7 @@
  */
 
 class profileextension extends expRecord {
-	protected $table = 'profileextension';
+	public $table = 'profileextension';
 
 	/** exdoc
 	 * This method queries the ork/modules/users/extensions/ directory for

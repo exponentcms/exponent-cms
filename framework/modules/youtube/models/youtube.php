@@ -22,7 +22,7 @@
  */
 
 class youtube extends expRecord {
-#	public $table = 'text';
+#	public $table = 'youtube';
 #	public $validates = array(
 #		'presence_of'=>array(
 #			'body'=>array('message'=>'Body is a required field.'),

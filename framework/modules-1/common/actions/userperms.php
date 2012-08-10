@@ -67,7 +67,8 @@ if ($user->isAdmin()) {
 		$page = new expPaginator(array(
 		//'model'=>'user',
 		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
-		'controller'=>$router->params['controller'],
+//		'controller'=>$router->params['controller'],
+        'controller'=>$modulename,
 		'action'=>$router->params['action'],
 		'records'=>$users,
 		//'sql'=>$sql,

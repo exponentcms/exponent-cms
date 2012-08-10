@@ -166,8 +166,8 @@ class helpController extends expController {
 	    
 	    if (empty($current_version)) {
 	        flash('error', gt("You don't have any software versions created yet.  Please do so now."));
-//	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
-            $this->edit_version();
+	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
+//            $this->edit_version();
 	    }
 
         $sections = array();
@@ -409,7 +409,9 @@ class helpController extends expController {
 
        $count = 0;
        $model = new $this->basemodel_name(null, false, false);
-       $content = $db->selectArrays($model->tablename,'help_version_id="'.$db->selectValue('help_version','id','is_current=1').'"');
+       $where = 'help_version_id="'.$db->selectValue('help_version','id','is_current=1').'"';
+       $where .= (!empty($this->params['id'])) ? ' AND id='.$this->params['id'] : null;
+       $content = $db->selectArrays($model->tablename,$where);
        foreach ($content as $cnt) {
            $origid = $cnt['id'];
            unset($cnt['id']);
@@ -422,6 +424,7 @@ class helpController extends expController {
            $search_record = new search($cnt, false, false);
            $search_record->original_id = $origid;
            $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
+//           $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
            $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
            $search_record->view_link = $link;

@@ -25,23 +25,6 @@
 
 class expCore {
 
-	/** exdoc
-	 * Creates a location object, based off of the three arguments passed, and returns it.
-	 *
-	 * @internal param \The $mo module component of the location.
-	 *
-	 * @internal param \The $src source component of the location.
-	 *
-	 * @internal param \The $int internal component of the location.
-	 * @return array
-	 * @node Subsystems:expCore
-	 */
-	public static function initializeNavigation () {
-//		$sections = array();
-		$sections = navigationmodule::levelTemplate(0,0);
-		return $sections;
-	}
-
 	/**
 	 * Return an exponent location object
 	 *
@@ -49,7 +32,7 @@ class expCore {
 	 * @param null $mod
 	 * @param null $src
 	 * @param null $int
-	 * @return null
+	 * @return object
 	 */
 	public static function makeLocation($mod=null,$src=null,$int=null) {
 		$loc = new stdClass();
@@ -88,8 +71,9 @@ class expCore {
 	}
 
 	/**
-	 * Return an rss link
-	 *
+	 * Return an old style rss link
+	 * COMPATIBILITY - we now use the {rss_link} smarty function to build rss links
+     *
 	 * @static
 	 * @param $params
 	 * @return string
@@ -100,8 +84,6 @@ class expCore {
 		//FIXME: Hardcoded controller stuff!!
 		if (expModules::controllerExists($params['module'])) {
 			$link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
-		} else {
-			$link .= SCRIPT_RELATIVE . "rss.php" . "?";
 		}
 
 		foreach ($params as $key=>$value) {
@@ -115,26 +97,14 @@ class expCore {
 
 	/**
 	 * Return a podcast link
+     * COMPATIBILITY - we now use the {rss_link} smarty function to build rss & podcast links
 	 *
 	 * @static
 	 * @param $params
 	 * @return string
 	 */
 	public static function makePodcastLink($params) {
-		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
-		//FIXME: Hardcoded controller stuff!!
-		if (expModules::controllerExists($params['module'])) {
-			$link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
-		} else {
-			$link .= SCRIPT_RELATIVE . "rss.php" . "?";
-		}
-		foreach ($params as $key=>$value) {
-			$value = chop($value);
-			$key = chop($key);
-			if ($value != "") $link .= urlencode($key)."=".urlencode($value)."&";
-		}
-		$link = substr($link,0,-1);
-		return htmlspecialchars($link,ENT_QUOTES);
+        self::makeRSSLink($params);  // all rss links are now alike
 	}
 
 	/** exdoc
@@ -153,7 +123,7 @@ class expCore {
 
 			// this is here for compatibility with the navigation module and the old way make link used prior
 			// to having the router class
-			$params['sef_name'] = $sef_name;  //FIXME $sef_name isn't set??
+//			$params['sef_name'] = $sef_name;  //FIXME $sef_name isn't set??
 
 			// now that we have the router class we'll use it to build the link and then return it.
 			return $router->makeLink($params, false, true);
@@ -269,7 +239,7 @@ class expCore {
 	 */
 	public static function maxUploadSizeMessage() {
 		$size = ini_get("upload_max_filesize");
-		$size_msg = "";
+//		$size_msg = "";
 		$type = substr($size,-1,1);
 		$shorthand_size = substr($size,0,-1);
 		switch ($type) {

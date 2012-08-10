@@ -22,7 +22,7 @@
  */
 
 class help extends expRecord {
-	public $table = 'help';
+//	public $table = 'help';
 	public $has_one = array('help_version');
 
 	public function __construct($params=array()) {

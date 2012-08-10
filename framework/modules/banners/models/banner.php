@@ -22,7 +22,7 @@
  */
 
 class banner extends expRecord {
-    public $table = 'banner';
+//    public $table = 'banner';
     public $has_one = array('company');
 	protected $attachable_item_types = array(
 		'content_expFiles'=>'expFile',
