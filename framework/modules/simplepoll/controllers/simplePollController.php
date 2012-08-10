@@ -91,16 +91,16 @@ class simplePollController extends expController {
         }
     }
 
-    public function edit() {
-
-        $question = null;
-            if (isset($this->params['id'])) {
-            $question = $this->simplepoll_question->find('first', 'id='.$this->params['id']);
-        }
-        assign_to_template(array(
-            'record'=>$question,
-        ));
-    }
+//    public function edit() {
+//
+//        $question = null;
+//        if (isset($this->params['id'])) {
+//            $question = $this->simplepoll_question->find('first', 'id='.$this->params['id']);
+//        }
+//        assign_to_template(array(
+//            'record'=>$question,
+//        ));
+//    }
 
     public function delete() {
         global $db;
@@ -111,7 +111,6 @@ class simplePollController extends expController {
         if (empty($question)) {
             $question = $this->simplepoll_question->find('first', "location_data='".$question->location_data."'");
             $question->active = 1;
-//            $db->updateObject($question,'simplepoll_question');
             $question->update();
         }
     }
@@ -122,7 +121,8 @@ class simplePollController extends expController {
         $question = null;
         $answer = null;
         if (isset($this->params['id'])) {
-        	$answer = $db->selectObject('simplepoll_answer','id='.intval($_GET['id']));
+        	$answer = $db->selectObject('simplepoll_answer','id='.$this->params['id']);
+//            $answer = $this->simplepoll_answer->find('first','id='.$this->params['id']);
         	if ($answer) {
                 $question = $this->simplepoll_question->find('first','id='.$answer->simplepoll_question_id);
         	}

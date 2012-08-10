@@ -23,15 +23,17 @@
 
 class simplepoll_answer extends expRecord {
 //	public $table = 'simplepoll_answer';
+    public $has_one = array('simplepoll_question');
+
 //
 //    protected $attachable_item_types = array(
 //        'content_expFiles'=>'expFile'
 //    );
 
-#	public $validates = array(
-#		'presence_of'=>array(
-#			'body'=>array('message'=>'Body is a required field.'),
-#		));
+//	public $validates = array(
+//		'presence_of'=>array(
+//			'body'=>array('message'=>'Body is a required field.'),
+//		));
 		
 }
 

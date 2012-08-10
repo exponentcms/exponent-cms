@@ -19,6 +19,7 @@
 
 <div class="module simplepoll manage-questions">
     <h1>{'Manage Polling Questions'|gettext}</h1>
+    {icon class=add action=edit text="New Question"|gettext}
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
             <tr>
@@ -58,5 +59,4 @@
             {/foreach}
         </tbody>
 	</table>
-	{icon class=add action=edit text="New Question"|gettext}
 </div>
