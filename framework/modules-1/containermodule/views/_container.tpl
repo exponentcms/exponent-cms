@@ -14,7 +14,7 @@
  *}
 
 {if $container != null}
-    <div name="mod_{$container->id}"></div>
+    <div name="mod_{$container->id}" id="mod_{$container->id}"></div>
 	{permissions}
 		{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $container->permissions.manage == 1)}
 			<div id="module{$container->id}" class="exp-container-module-wrapper">
