@@ -46,6 +46,11 @@ class Image_Cache {
     $parsed_url = explode_url($url);
     $message = null;
 
+    if (strpos($parsed_url['path'],'thumb.php?') !== 0) {
+        $proto = 'http://';
+        $host = HOSTNAME;
+        $url = URL_BASE.$url;
+    }
     $remote = ($proto && $proto !== "file://") || ($parsed_url['protocol'] != "");
     
     $datauri = strpos($parsed_url['protocol'], "data:") === 0;
@@ -61,7 +66,7 @@ class Image_Cache {
       else if ( DOMPDF_ENABLE_REMOTE && $remote || $datauri ) {
         // Download remote files to a temporary directory
         $full_url = build_url($proto, $host, $base_path, $url);
-  
+
         // From cache
         if ( isset(self::$_cache[$full_url]) ) {
           $resolved_url = self::$_cache[$full_url];
