@@ -65,12 +65,12 @@ class remove_headlinecontroller extends upgradescript {
 	    $gps = $db->selectObjects('grouppermission',"module = 'headlineController'");
         foreach ($gps as $gp) {
 	        $gp->module = 'textController';
-	        $db->updateObject($gp,'grouppermission');
+	        $db->updateObject($gp,'grouppermission',null,'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'headlineController'");
         foreach ($ups as $up) {
             $up->module = 'textController';
-            $db->updateObject($up,'userpermission');
+            $db->updateObject($up,'userpermission',null,'uid');
         }
 
 		// convert each headline module to a text module

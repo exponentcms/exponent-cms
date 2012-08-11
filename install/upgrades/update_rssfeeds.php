@@ -59,7 +59,7 @@ class update_rssfeeds extends upgradescript {
 		// update each rss feed
 	    $rssfeeds = $db->selectObjects('expRss',1);
 	    foreach ($rssfeeds as $rssfeed) {
-            $rssfeed->title = $rssfeed->feed_title;
+            $rssfeed->title = !empty($rssfeed->feed_title) ? $rssfeed->feed_title : '';
             $rssfeed->sef_url = self::makeSefUrl($rssfeed->title);
 		    $db->updateObject($rssfeed,'expRss');
             $fixed =+1 ;

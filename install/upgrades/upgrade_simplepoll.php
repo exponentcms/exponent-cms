@@ -65,12 +65,12 @@ class upgrade_simplepoll extends upgradescript {
 	    $gps = $db->selectObjects('grouppermission',"module = 'simplepollmodule'");
         foreach ($gps as $gp) {
 	        $gp->module = 'simplePollController';
-	        $db->updateObject($gp,'grouppermission');
+	        $db->updateObject($gp,'grouppermission',null,'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'simplepollmodule'");
         foreach ($ups as $up) {
             $up->module = 'simplePollController';
-            $db->updateObject($up,'userpermission');
+            $db->updateObject($up,'userpermission',null,'uid');
         }
 
 		// convert each simplepollmodule to a simplePoll Controller
@@ -174,7 +174,7 @@ class upgrade_simplepoll extends upgradescript {
             expFile::removeFilesInDirectory(BASE."framework/modules-1/simplepollmodule/");
         }
 
-		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Simple Poll modules were upgrade.")."<br>".($questions_converted?$questions_converted:gt('No'))." ".gt("Poll Questions were converted.")."<br>".gt("and Simple Poll module files were then deleted.");
+		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Simple Poll modules were upgraded.")."<br>".($questions_converted?$questions_converted:gt('No'))." ".gt("Poll Questions were converted.")."<br>".gt("and Simple Poll module files were then deleted.");
 	}
 }
 
