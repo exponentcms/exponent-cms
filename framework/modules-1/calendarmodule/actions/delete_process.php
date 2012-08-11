@@ -20,20 +20,23 @@ if (!defined('EXPONENT')) exit('');
 
 $item = $db->selectObject('calendar','id='.intval($_POST['id']));
 if ($item && $item->is_recurring == 1) {
-	$eventdates = $db->selectObjectsIndexedArray('eventdate','event_id='.$item->id);
-	foreach (array_keys($_POST['dates']) as $d) {
-		if (isset($eventdates[$d])) {
-			$db->delete('eventdate','id='.$d);
-			unset($eventdates[$d]);
-		}
-	}
-	
-	if (!count($eventdates)) {
-		$db->delete('calendar','id='.$item->id);
-		//Delete search entries
-		$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=".$item->id);
-	}
-	expHistory::back();
+    if (expPermissions::check('delete',$loc)) {
+        $eventdates = $db->selectObjectsIndexedArray('eventdate','event_id='.$item->id);
+        foreach (array_keys($_POST['dates']) as $d) {
+            if (isset($eventdates[$d])) {
+                $db->delete('eventdate','id='.$d);
+                unset($eventdates[$d]);
+            }
+        }
+        if (!count($eventdates)) {
+            $db->delete('calendar','id='.$item->id);
+            //Delete search entries
+            $db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=".$item->id);
+        }
+        expHistory::back();
+    } else {
+   		echo SITE_403_HTML;
+   	}
 } else {
 	echo SITE_404_HTML;
 }

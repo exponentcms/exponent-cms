@@ -20,13 +20,9 @@
 if (!defined('EXPONENT')) exit('');
 
 $errors = array();
-//FIXME need to make a better link and use it in template
-
 expSession::clearAllUsersSessionCache();
 
 $template = new template('importer','_eql_results',$loc);
-//GREP:UPLOADCHECK
-//FIXME need to determine db version after restore and report it in relation to software version
 expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
 $template->assign('success',!count($errors));
 $template->assign('errors',$errors);

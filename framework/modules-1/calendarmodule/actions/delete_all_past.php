@@ -19,28 +19,37 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//$item = $db->selectObject('calendar','id='.intval($_POST['id']));
+$locsql = "(location_data='".serialize($loc)."'";
+// look for possible aggregate
+$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
+if (!empty($config->aggregate)) {
+	$locations = unserialize($config->aggregate);
+	foreach ($locations as $source) {
+		$tmploc = new stdClass();
+		$tmploc->mod = 'calendarmodule';
+		$tmploc->src = $source;
+		$tmploc->int = '';
+		$locsql .= " OR location_data='".serialize($tmploc)."'";
+	}
+}
+$locsql .= ')';
 
 $dates = $db->selectObjects("eventdate",$locsql." AND date < ".strtotime('-1 months',time()));
-$all_events = calendarmodule::_getEventsForDates($dates);
-
-
-if ($item && $item->is_recurring == 1) {
-	$eventdates = $db->selectObjectsIndexedArray('eventdate','event_id='.$item->id);
-	foreach (array_keys($_POST['dates']) as $d) {
-		if (isset($eventdates[$d])) {
-			$db->delete('eventdate','id='.$d);
-			unset($eventdates[$d]);
-		}
-	}
-	
-	if (!count($eventdates)) {
-		$db->delete('calendar','id='.$item->id);
-		//Delete search entries
-		$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=".$item->id);
-	}
-
-	expHistory::back();
+if ($dates) {
+    if (expPermissions::check('delete',$loc)) {
+        $db->delete('eventdate',$locsql." AND date < ".strtotime('-1 months',time()));
+        foreach ($dates as $date) {
+            $remaining = $db->countObjects("eventdate",'event_id='.$date->event_id);
+            if (!$remaining) {
+                $db->delete('calendar','id='.$date->event_id);
+                //Delete search entries
+                $db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=".$date->event_id);
+            }
+        }
+        expHistory::back();
+    } else {
+   		echo SITE_403_HTML;
+   	}
 } else {
 	echo SITE_404_HTML;
 }
