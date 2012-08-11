@@ -39,7 +39,7 @@ class upgrade_simplepoll extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "The Simple Poll module was upgraded to a Controller in v2.0.9.  This Script converts Simple Poll modules to the new format and then deletes old Simple Poll module files"; }
+	function description() { return "The Simple Poll module was upgraded to a Controller in v2.0.9.  This Script converts Simple Poll modules to the new format and then deletes old simplepollmodule files"; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
@@ -174,7 +174,7 @@ class upgrade_simplepoll extends upgradescript {
             expFile::removeFilesInDirectory(BASE."framework/modules-1/simplepollmodule/");
         }
 
-		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Simple Poll modules were upgraded.")."<br>".($questions_converted?$questions_converted:gt('No'))." ".gt("Poll Questions were converted.")."<br>".gt("and Simple Poll module files were then deleted.");
+		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Simple Poll modules were upgraded.")."<br>".($questions_converted?$questions_converted:gt('No'))." ".gt("Poll Questions were converted.")."<br>".gt("and simplepoll files were then deleted.");
 	}
 }
 

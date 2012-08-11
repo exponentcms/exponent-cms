@@ -83,7 +83,7 @@ class fix_table_names extends upgradescript {
                 $renamed++;
             }
         }
-        return $renamed.' '.gt('tables were correctly renamed.');
+        return ($renamed?$renamed:gt('No')).' '.gt('tables were correctly renamed.');
 	}
 }
 
