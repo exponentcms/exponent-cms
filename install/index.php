@@ -60,27 +60,27 @@ if (isset($_POST['sc'])) {
 }
 
 if (isset($_POST['install_sample'])) {
-	$eql = BASE . $_POST['install_sample'] . ".eql";
+    // we still use $_POST['install_sample'] from install-5.php, even though the system samples are in a static location
+    $eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
+    if (!file_exists($eql)) $eql = BASE . $_POST['install_sample'] . ".eql";
 	if (file_exists($eql)) {
 		$errors = array();
-		expFile::restoreDatabase($db,$eql,$errors,0);
-		$files = BASE . $_POST['install_sample'] . ".tar.gz";  // only install if there was an eql file
-		if (file_exists($files)) {
+		expFile::restoreDatabase($db,$eql,$errors);
+        $files = BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz";
+        if (!file_exists($files)) $files = BASE . $_POST['install_sample'] . ".tar.gz";
+		if (file_exists($files)) {  // only install if there was an eql file
 			include_once(BASE.'external/Tar.php');
 			$tar = new Archive_Tar($files);
-            // $dest_dir = BASE.'files/';
-            // @mkdir($dest_dir);
-            // if (file_exists($dest_dir)) {
 			$return = $tar->extract(BASE);
-            // }
 		}
 	}
-//		if (count($errors)) {
-//			echo gt('Errors were encountered populating the site database.').'<br /><br />';
-//			foreach ($errors as $e) echo $e . '<br />';
-//		} else {
-//			echo gt('Sample content has been inserted into your database.  This content structure should help you to learn how Exponent works, and how to use it for your website.');
-//		}
+    if (DEVELOPMENT && count($errors)) {
+        echo '<h2>'.gt('Errors were encountered populating the site database.').'</h2><ul>';
+        foreach ($errors as $e) echo '<li>'.$e.'</li>';
+        echo '</ul>';
+    } else {
+//        echo gt('Sample content was added to your database.  This content should help you learn how Exponent works, and how to use it for your website.');
+    }
 }
 
 if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {

@@ -19,20 +19,17 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$errors = null;
-$continue = PATH_RELATIVE.'index.php?section='.SITE_DEFAULT_SECTION;
+$errors = array();
+//FIXME need to make a better link and use it in template
 
 expSession::clearAllUsersSessionCache();
 
 $template = new template('importer','_eql_results',$loc);
 //GREP:UPLOADCHECK
-if (!expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors)) {
-	$template->assign('success',0);
-	$template->assign('errors',$errors);
-} else {
-	$template->assign('success',1);
-	$template->assign('continue',$continue);
-}
+//FIXME need to determine db version after restore and report it in relation to software version
+expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
+$template->assign('success',!count($errors));
+$template->assign('errors',$errors);
 $template->output();
 
 ?>

@@ -16,7 +16,7 @@
 <div class="exporter eql-tablelist">
 	<div class="form_header">
 		<h2>{'Backup Current Database'|gettext}</h2>
-		<p>{'Listed below are all of the tables in your site\'s database.  Select which tables you wish to backup, and then click the \'Export Data\' button.  Doing so will generate an EQL file (which you must save) that contains the data in the selected tables.  This file can be used later to restore the database to the current state.'|gettext}</p>
+		<p>{'Listed below are all of the tables in your site\'s database.  Select which tables you wish to backup, and then click the \'Export Data\' button.  Doing so will generate an EQL file (which you must save) that contains the data in the selected tables.  This file can be used later to restore the database to this saved state.'|gettext}</p>
 	</div>
     {script unique="tablelist"}
 	{literal}

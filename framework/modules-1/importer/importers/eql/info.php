@@ -20,7 +20,7 @@ if (!defined('EXPONENT')) exit('');
 
 return array(
 	'name'=>gt('EQL File Importer'),
-	'description'=>gt('Restore tables in the site database which were exported as an EQL (Exponent Query Language) file.'),
+	'description'=>gt('Restore the site database which was exported and saved as an EQL (Exponent Query Language) file.'),
 	'author'=>'James Hunt'
 );
 

@@ -1485,7 +1485,7 @@ class expFile extends expRecord {
 							}
 						} else {
 	//						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
-								$errors[] = sprintf(gt('Table "%s" not found in the system (line %d)'),$table,$line_number);
+								$errors[] = sprintf(gt('Table "%s" not found in the database (line %d)'),$table,$line_number);
 	//						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
 	//							$errors[] = sprintf(gt('Data definition file for %s (%s) is not readable (line %d)'),$table,'framework/core/definitions/'.$table.'.php',$line_number);
 	//						} else {
