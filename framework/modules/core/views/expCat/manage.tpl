@@ -47,6 +47,7 @@
                     <h3>{'Change'|gettext} {$page->model|capitalize} {'Item Categories'|gettext}</h3>
                     {form action=change_cats}
                         {control type=hidden name=mod value=$page->model}
+                        {$page->links}
                         <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                             <thead>
                                 <tr>
@@ -77,6 +78,7 @@
                                 {/foreach}
                             </tbody>
                         </table>
+                        {$page->links}
                         <p>{'Select the item(s) to change, then select the new category'|gettext}</p>
                         {control type="dropdown" name=newcat label="Module Categories"|gettext items=$catlist}
                         {control type=buttongroup submit="Change Category on Selected Items"|gettext cancel="Cancel"|gettext returntype="viewable"}
@@ -88,6 +90,7 @@
                     {if $permissions.manage == 1}
                         {ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
                     {/if}
+                    {$page->links}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                         <thead>
                             <tr>
@@ -126,6 +129,7 @@
                             {/foreach}
                         </tbody>
                     </table>
+                    {$page->links}
                 </div>
             {/foreach}
         </div>
@@ -143,12 +147,10 @@
         Y.one('.loadingdiv').remove();
     });
 {/literal}
-
     function selectAllp(val) {
         var checks = document.getElementsByName("change_cat[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }
     }
-
 {/script}

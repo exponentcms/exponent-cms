@@ -17,6 +17,8 @@
     <h3>{'You are subscribed to receive email alerts for the following topics'|gettext}</h3>
     {foreach from=$edit_user->expeAlerts item=ealert}
         {control type=checkbox name="expeAlert[]" value=$ealert->id label=$ealert->module|capitalize|cat:' - '|cat:$ealert->ealert_title checked=true}
+    {foreachelse}
+        <p><em>{'There were no email alert subscriptions found'|gettext}</em></p>
     {/foreach}
 </div>
 

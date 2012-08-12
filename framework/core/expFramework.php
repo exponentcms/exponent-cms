@@ -556,7 +556,7 @@ function get_template_for_action($controller, $action, $loc) {
 //    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
 
-    // the root action will be used if we don't find a view for this action and it is a derivitative of
+    // the root action will be used if we don't find a view for this action and it is a derivative of
     // action.  i.e. showall_by_tags would use the showall.tpl view if we do not have a view named
     // showall_by_tags.tpl
     $root_action = explode('_', $action);

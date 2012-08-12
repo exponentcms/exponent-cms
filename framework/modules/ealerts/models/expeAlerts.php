@@ -21,7 +21,7 @@
  */
  
 class expeAlerts extends expRecord {
-//    public $table = 'expeAlerts';
+    public $table = 'expeAlerts';
     
     public function __construct($params=array()) {
         global $db;

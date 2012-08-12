@@ -26,6 +26,7 @@
     </div>
     <p>{'The table below shows notes have not yet been approved'|gettext}.</p>
     
+    {$page->links}
     <table class="exp-skin-table">
     <thead>
         <tr>
@@ -61,4 +62,5 @@
         {/foreach}
     </tbody>
     </table>        
+    {$page->links}
 </div>

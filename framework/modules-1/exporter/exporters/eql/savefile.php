@@ -64,7 +64,7 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 			header('Pragma: no-cache');
 		}
 		echo expFile::dumpDatabase($db,array_keys($_POST['tables']));
-		exit(''); // Exit, since we are exporting
+		exit; // Exit, since we are exporting
 	}
 }
 
