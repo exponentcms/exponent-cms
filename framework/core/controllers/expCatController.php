@@ -58,9 +58,13 @@ class expCatController extends expController {
 
         expHistory::set('manageable', $this->params);
         if (!empty($this->params['model'])) {
+            $modulename = expModules::getControllerClassName($this->params['model']);
+            $module = new $modulename($this->params['src']);
+            $where = $module->aggregateWhereClause();
             $page = new expPaginator(array(
                         'model'=>$this->params['model'],
-                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+//                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+                        'where'=>$where,
 //                        'order'=>'module,rank',
                         'categorize'=>true,
                         'controller'=>$this->params['model'],
