@@ -1461,7 +1461,7 @@ class expFile extends expRecord {
 			}
 
 			// make sure the database tables are up to date
-		    administrationController::install_dbtables();
+		    expDatabase::install_dbtables();
 
 			$table = '';
 			$table_function = '';
@@ -1508,6 +1508,8 @@ class expFile extends expRecord {
 					}
 				}
 			}
+            // rename mixed case tables if necessary
+            expDatabase::fix_table_names();
 			if ($eql_version != $current_version) {
 				$errors[] = gt('EQL file was Not a valid EQL version');
 				return false;

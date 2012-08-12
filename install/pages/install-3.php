@@ -211,7 +211,7 @@ if ($passed) {
 if ($passed) {
 	echoStart(gt('Installing Tables').':');
 
-	$tables = administrationController::install_dbtables();
+	$tables = expDatabase::install_dbtables();
 
 	if ($db->tableIsEmpty('user')) {
 		$user = new stdClass();

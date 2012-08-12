@@ -19,6 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
+expDatabase::fix_table_names();
 $tables = $db->getTables();
 if (!function_exists('tmp_removePrefix')) {
 	function tmp_removePrefix($tbl) {

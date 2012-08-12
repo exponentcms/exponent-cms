@@ -83,7 +83,124 @@ class expDatabase {
 		return $options;
 	}
 
+    public static function fix_table_names() {
+        global $db;
+
+        // fix table names
+        $tablenames = array (
+            'content_expcats'=>'content_expCats',
+            'content_expcomments'=>'content_expComments',
+            'content_expdefinablefields'=>'content_expDefinableFields',
+            'content_expdefinablefields_value'=>'content_expDefinableFields_value',
+            'content_expfiles'=>'content_expFiles',
+            'content_expratings'=>'content_expRatings',
+            'content_expsimplenote'=>'content_expSimpleNote',
+            'content_exptags'=>'content_expTags',
+            'expcats'=>'expCats',
+            'expcomments'=>'expComments',
+            'expdefinablefields'=>'expDefinableFields',
+            'expealerts'=>'expeAlerts',
+            'expealerts_temp'=>'expeAlerts_temp',
+            'expfiles'=>'expFiles',
+            'expratings'=>'expRatings',
+            'exprss'=>'expRss',
+            'expsimplenote'=>'expSimpleNote',
+            'exptags'=>'expTags',
+        );
+
+        $renamed = array();
+        foreach ($tablenames as $oldtablename=>$newtablename) {
+            if (!$db->tableExists($oldtablename)) {
+                $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.$oldtablename.' TO '.DB_TABLE_PREFIX.$newtablename);
+                $renamed[] = $newtablename;
+            }
+        }
+        return $renamed;
+    }
+
+    public static function install_dbtables($aggressive=false) {
+   	    global $db;
+
+   		expSession::clearCurrentUserSessionCache();
+   		$tables = array();
+
+   		// first the core and 1.0 definitions
+   		$coredefs = BASE.'framework/core/definitions';
+   		if (is_readable($coredefs)) {
+   			$dh = opendir($coredefs);
+   			while (($file = readdir($dh)) !== false) {
+   				if (is_readable("$coredefs/$file") && is_file("$coredefs/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
+   					$tablename = substr($file,0,-4);
+   					$dd = include("$coredefs/$file");
+   					$info = null;
+   					if (is_readable("$coredefs/$tablename.info.php")) $info = include("$coredefs/$tablename.info.php");
+   					if (!$db->tableExists($tablename)) {
+   						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+   							$tables[$key] = $status;
+   						}
+   					} else {
+   						foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
+   //							if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
+   							if ($status == TABLE_ALTER_FAILED){
+   								$tables[$key] = $status;
+   							}else{
+   								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+   							}
+
+   						}
+   					}
+   				}
+   			}
+   		}
+
+   		// then search for module definitions
+   		$moddefs = array(
+   			BASE.'themes/'.DISPLAY_THEME.'/modules',
+   			BASE."framework/modules",
+   			);
+   		foreach ($moddefs as $moddef) {
+   			if (is_readable($moddef)) {
+   				$dh = opendir($moddef);
+   				while (($file = readdir($dh)) !== false) {
+   					if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
+   						$dirpath = $moddef.'/'.$file.'/definitions';
+   						if (file_exists($dirpath)) {
+   							$def_dir = opendir($dirpath);
+   							while (($def = readdir($def_dir)) !== false) {
+   	//							eDebug("$dirpath/$def");
+   								if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
+   									$tablename = substr($def,0,-4);
+   									$dd = include("$dirpath/$def");
+   									$info = null;
+   									if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
+   									if (!$db->tableExists($tablename)) {
+   										foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+   											$tables[$key] = $status;
+   										}
+   									} else {
+   										foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
+   //											if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
+   											if ($status == TABLE_ALTER_FAILED){
+   												$tables[$key] = $status;
+   											}else{
+   												$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
+   											}
+
+   										}
+   									}
+   								}
+   							}
+   						}
+   					}
+   				}
+   			}
+   		}
+   		return $tables;
+   	}
+
 }
+
+
 
 /**
 * This is the class database
