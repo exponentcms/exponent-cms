@@ -59,10 +59,12 @@ class update_rssfeeds extends upgradescript {
 		// update each rss feed
 	    $rssfeeds = $db->selectObjects('expRss',1);
 	    foreach ($rssfeeds as $rssfeed) {
-            $rssfeed->title = !empty($rssfeed->feed_title) ? $rssfeed->feed_title : '';
-            $rssfeed->sef_url = self::makeSefUrl($rssfeed->title);
-		    $db->updateObject($rssfeed,'expRss');
-            $fixed =+1 ;
+            if (empty($rssfeed->title) || empty($rssfeed->sef_url)) {
+                if (empty($rssfeed->title)) $rssfeed->title = !empty($rssfeed->feed_title) ? $rssfeed->feed_title : '';
+                if (empty($rssfeed->sef_url)) $rssfeed->sef_url = self::makeSefUrl($rssfeed->title);
+   		        $db->updateObject($rssfeed,'expRss');
+                $fixed =+1 ;
+            }
 	    }
         return ($fixed?$fixed:gt('No')).' '.gt('RSS Feeds were updated');
 	}
