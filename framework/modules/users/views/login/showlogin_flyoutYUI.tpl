@@ -35,9 +35,7 @@
 				{control type="password" name="password" label="Password"|gettext|cat:":" size=25}
 				{control type="buttongroup" submit="Log In"|gettext}
 			{/form}
-			{if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
-				{br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password'|gettext}?</a><br />
-			{/if}
+            {br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
 			{br}
 		</div>
 
@@ -61,7 +59,7 @@
 			</div>
 		{/if}
     </div>
-    <a class="triggerlogin" href="#">Login</a>
+    <a class="triggerlogin" href="#">{'Login'|gettext}</a>
 	{else}
 		<div class="box login-form one">
 			<strong>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</strong>{br}{br}
@@ -69,7 +67,7 @@
 			{if $is_group_admin}
 				<a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}
 			{/if}
-			<a class="password" href="{link controller=users action=change_password ud=$user->id}">{'Change Password'|gettext}</a>{br}
+			<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
 			<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
 			<a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
 		</div>

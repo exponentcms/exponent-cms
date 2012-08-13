@@ -43,7 +43,7 @@ class loginController extends expController {
 	/**
 	 * Display a login view
 	 */
-	function showlogin() {
+	public static function showlogin() {
 		global $db, $user, $order, $router;
 
 		$oicount = $order?$order->item_count:0;
@@ -162,7 +162,7 @@ class loginController extends expController {
 			expHistory::set('viewable', $router->params);
 		}
 //		redirect_to(array('controller'=>'login', 'action'=>'showlogin'));
-        $this->showlogin();
+        renderAction(array('controller'=>'login','action'=>'showlogin','no_output'=>true));
 	}
 }
 

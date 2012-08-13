@@ -13,11 +13,14 @@
  *
  *}
 
-<p>{'Your password has been reset.  Your new password is'|gettext} {$newpass}.</p>
 <p>
-{'To use the new password just return to'|gettext} <a href="http://{$smarty.const.HOSTNAME}">{$smarty.const.HOSTNAME}</a> {'and log in using your username and this password.'|gettext}&#160;&#160;
-{'After you log in you can use the \'Change Password\' feature to set the password to one of your choosing.'|gettext}
+    {'The password for username'|gettext} '{$username}' {'has been reset'|gettext}.  {'Your new password is'|gettext}{br}{br}
+    {$newpass}
+</p>
+<p>
+    {'To use the new password, return to'|gettext} <a href="http://{$smarty.const.URL_FULL}/login.php">{$smarty.const.HOSTNAME}</a> {'and log in using your username and this password.'|gettext}&#160;&#160;
+    {'After you log in you can use the \'Change Password\' feature to set the password to one of your choosing.'|gettext}
 </p>
 
-Thanks!
+{'Thanks!'|gettext}
 

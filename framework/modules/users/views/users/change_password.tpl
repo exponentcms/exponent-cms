@@ -14,18 +14,19 @@
  *}
 
 <div class="module users change-password">
-		<div class="info-header">
-			<div class="related-actions">
-				{help text="Get Help"|gettext|cat:" "|cat:("Changing User Passwords"|gettext) module="change-my-password"}
-			</div>
-			<h1>{'Change'|gettext} {if $isuser}{'your'|gettext}{else}{$u->username}'s{/if} {'password'|gettext}</h1>
-		</div>
-    <p>{'To change your password enter your current password and then enter what you would like your new password to be'|gettext}.</p>
-    
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help"|gettext|cat:" "|cat:("Changing User Passwords"|gettext) module="change-my-password"}
+        </div>
+        <h1>{'Change'|gettext} {if $isuser}{'your'|gettext}{else}{$u->username}'s{/if} {'password'|gettext}</h1>
+    </div>
+    {if $isuser}
+        <p>{'To change your password enter your current password and then enter what you would like your new password to be'|gettext}.</p>
+    {/if}
     {form action=save_change_password}
         {control type="hidden" name="uid" value=$u->id}
         {if $isuser}
-        {control type="password" name="password" label="Current Password"|gettext}
+            {control type="password" name="password" label="Current Password"|gettext}
         {/if}
         {control type="password" name="new_password1" label="Enter your new password"|gettext}
         {control type="password" name="new_password2" label="Confirm your new password"|gettext}

@@ -43,8 +43,8 @@
 			<button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}">{'Login'|gettext}</button><br />
 			{if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
 				<a href="{link controller=users action=create}">{'Create Account'|gettext}</a>&#160;|&#160;
-				<a href="{link controller=users action=reset_password}">{'Retrieve Password'|gettext}</a>
 			{/if}
+            <a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
 		</form>
 	{/if}
 </div>

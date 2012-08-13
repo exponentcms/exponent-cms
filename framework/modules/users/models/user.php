@@ -46,18 +46,19 @@ class user extends expRecord {
 		$this->getsToolbar = $this->getsToolbar();
 	}	
 
-	 public function save($overrideUsername = false) {
-        global $db;
+	public function save($overrideUsername = false) {
+        global $user;
 
-         if (empty($_POST['is_admin'])) $this->is_admin = 0;
-         if (empty($_POST['is_acting_admin'])) $this->is_acting_admin = 0;
+        if (isset($this->params['is_admin'])) $this->is_admin = $this->params['is_admin'];
+        if (isset($this->params['is_acting_admin'])) $this->is_acting_admin = $this->params['is_acting_admin'];
         // if someone is trying to make this user an admin, lets make sure they have permission to do so.
-        $this->checkAdminFlags();
-        
-        // if the site is configured to use the email addy as the username we need to force the 
+        if (!empty($this->is_admin) && !$user->isAdmin()) $this->is_admin = 0;
+        if (!empty($this->is_acting_admin) && !$user->isAdmin()) $this->is_acting_admin = 0;
+
+        // if the site is configured to use the email addy as the username we need to force the
         // the email address into the username field.
         if (USER_REGISTRATION_USE_EMAIL == 1 && !empty($this->email) && $overrideUsername == false) $this->username = $this->email;
-        parent::save();        
+        parent::save();
     }
 	
 	public static function login($username, $password) {
@@ -99,7 +100,7 @@ class user extends expRecord {
     }
     
     public function authenticate($password) {
-	    if (MAINTENANCE_MODE && $this->is_acting_admin == 0 ) return false;  // if MAINTENANCE_MODE only allow admins
+	    if (MAINTENANCE_MODE && !$this->isAdmin()) return false;  // if MAINTENANCE_MODE only allow admins
 	    if (empty($this->id)) return false;  // if the user object is null then fail the login
 	    // check password, if account is locked, or is admin(account locking doesn't to administrators)
 	    return (($this->is_admin == 1 || $this->is_locked == 0) && $this->password == md5($password)) ? true : false;
@@ -123,6 +124,15 @@ class user extends expRecord {
 	public function isAdmin() {
 		return (!empty($this->is_acting_admin) || !empty($this->is_admin)) ? true : false;
 	}
+
+    /**
+   	 * Is the user the system (root) admin?
+   	 *
+   	 * @return bool
+   	 */
+   	public function isSystemAdmin() {
+   		return $this->is_system_admin;
+   	}
 
 	/**
 	 * Is the user a super admin?
@@ -175,30 +185,20 @@ class user extends expRecord {
         }
     }
 
-	/**
-	 * Set user object admin flags
-	 */
-	private function checkAdminFlags() {
-		global $user;
-
-		if (!empty($this->is_admin) && !$user->isAdmin()) $this->is_admin = 0;
-        if (!empty($this->is_acting_admin) && !$user->isAdmin()) $this->is_acting_admin = 0;
-	}
-
     public function setPassword($pass1, $pass2) {
         // make sure the password is good to go
         if (empty($pass1) || empty($pass2)) {
-           return 'You must fill out both password fields.';
+           return gt('You must fill out both password fields.');
         } elseif ($pass1 != $pass2) {
            return 'Your passwords do not match';
         }
         
         if (strcasecmp($this->username,$pass1) == 0) {
-		    return 'Your password cannot be the same as your username';
+		    return gt('Your password cannot be the same as your username');
 	    }
 	    # For example purposes, the next line forces passwords to be over 8 characters long.
 	    if (strlen($pass1) < 8) {
-		    return 'Passwords must be at least 8 characters longs';
+		    return gt('Passwords must be at least 8 characters longs');
 	    }
 	    
 	    // if we get here the password must be good
@@ -248,12 +248,6 @@ class user extends expRecord {
         return is_numeric(expUtil::right($this->username,10)) ? true : false;
     }
 
-	public static function getEmailById($id) {
-		global $db;
-
-		return $db->selectValue('user','email','id='.$id);
-	}
-
 	/** exdoc
 	 * Gets a list of all user accounts in the system.  By giving different
 	 * combinations of the two boolean arguments. three different lists
@@ -292,11 +286,51 @@ class user extends expRecord {
 		$tmpu = $db->selectObject('user',"username='$name'");
 		if ($tmpu && $tmpu->is_admin == 1) {
 			// User is an admin.  Update is_acting_admin, just in case.
-			// This can be removed as soon as 0.95 is deprecated.
 			$tmpu->is_acting_admin = 1;
 		}
 		return $tmpu;
 	}
+
+    /** exdoc
+   	 * This function pulls a user object from the subsystems storage mechanism,
+   	 * according to the email.  For the default implementation, this is equivalent
+   	 * to a $db->selectObject() call, but it may not be the same for other implementations.
+   	 * Returns a basic user object, and null if no user was found.
+   	 *
+   	 * This function does NOT perform user caching like the getUserById
+   	 * function does.  Multiple calls to retrieve the same user result in multiple calls
+   	 * to the database.
+   	 *
+   	 * @param string $name The username of the user account to retrieve.
+   	 * @return user
+   	 * @node Model:User
+   	 */
+   	public static function getUserByEmail($name) {
+   		global $db;
+
+   		$tmpu = $db->selectObject('user',"email='$name'");
+   		if ($tmpu) {
+            $tmpu->count = $db->countObjects('user',"email='$name'");
+            if ($tmpu->is_admin == 1) {
+                // User is an admin.  Update is_acting_admin, just in case.
+                $tmpu->is_acting_admin = 1;
+            }
+   		}
+   		return $tmpu;
+   	}
+
+    /**
+     * simple function to return the user's email
+     *
+     * @static
+     * @param integer $id
+     * @return string
+     */
+    public static function getEmailById($id) {
+   		global $db;
+
+   		return $db->selectValue('user','email','id='.$id);
+   	}
 
 	/** exdoc
 	 * This function pulls a user object from the subsystems storage mechanism

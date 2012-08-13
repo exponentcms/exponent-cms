@@ -13,7 +13,14 @@
  *
  *}
 
-{'You requested that your password be reset at'|gettext} {$smarty.const.URL_FULL}.
-\r\n\r\n
-{'Please follow this link to confirm that you do want it reset'|gettext}:
-{link controller=users action=confirm_password_reset token=$token->token uid=$token->uid}
+<p>
+    {'We received a request to reset the account password at'|gettext} {$smarty.const.URL_FULL} {'for username'|gettext} '{$username}'.
+</p>
+<p>
+    {'Please follow this link to confirm that you want to reset the password'|gettext}:
+    {link controller=users action=confirm_password_reset token=$token->token uid=$token->uid}
+</p>
+<p>
+    {'If you did not request a password reset, please disregard and delete this email.'|gettext}
+    {'The password reset request expires after 2 hours.'|gettext}
+<p>
