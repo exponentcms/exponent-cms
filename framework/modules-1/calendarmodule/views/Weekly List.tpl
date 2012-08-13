@@ -25,7 +25,7 @@
 
 <div class="module calendar viewweek"> 
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=viewmonth time=$startweek}" title="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
+		<a class="monthviewlink" href="{link action=viewmonth time=$time}" title="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
         {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
 	</div>
@@ -117,7 +117,7 @@ EXPONENT.YUI3_CONFIG.modules = {
 }
 
 YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
-    var today = new Date({/literal}{$startweek}{literal}*1000);
+    var today = new Date({/literal}{$time}{literal}*1000);
 
 	//Popup
 	new Y.Calendar('J_popup_closeable',{
