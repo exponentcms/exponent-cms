@@ -185,6 +185,8 @@ class calendarmodule {
                         $template->assign("next_timestamp",$next);
                         $template->assign("next_timestamp2",strtotime('+14 days',$startperiod));
                         $template->assign("next_timestamp3",strtotime('+21 days',$startperiod));
+                        if (!empty($template->viewconfig['starttype'])) $startperiod = $time;
+                        $template->assign("time",$startperiod);
                         break;
                     case "twoweek":
                         $startperiod = expDateTime::startOfWeekTimestamp($time);
@@ -196,6 +198,8 @@ class calendarmodule {
                         $template->assign("next_timestamp",$next);
                         $template->assign("next_timestamp2",strtotime('+28 days',$startperiod));
                         $template->assign("next_timestamp3",strtotime('+42 days',$startperiod));
+                        if (!empty($template->viewconfig['starttype'])) $startperiod = $time;
+                        $template->assign("time",$startperiod);
                         break;
                     default:  // range = month
                         $startperiod = expDateTime::startOfMonthTimestamp($time);
@@ -227,7 +231,7 @@ class calendarmodule {
 //                        default:  // range = month
 //                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
 //                    }
-                    $start = $startperiod + ($i*86400);
+                    $start = $startperiod + ($i*86400) - 86400;
                     $edates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp($start)." AND date <= ".expDateTime::endOfDayTimestamp($start));
                     $days[$start] = self::_getEventsForDates($edates,true,isset($template->viewconfig['featured_only']) ? true : false);
 //                    for ($j = 0; $j < count($days[$start]); $j++) {
@@ -442,14 +446,18 @@ class calendarmodule {
 	}
 
 	function searchName() {
-		return "Calendar Events";
+		return gt("Calendar Event");
 	}
+
+    function searchCategory() {
+  		return gt('Event');
+  	}
 
 	static function spiderContent($item = null) {
 		global $db;
 
 		$search = new stdClass();
-		$search->category = gt('Events');
+		$search->category = self::searchCategory();
 		$search->ref_module = 'calendarmodule';
 		$search->ref_type = 'calendar';
 
@@ -461,9 +469,12 @@ class calendarmodule {
 			$search->view_link = str_replace(URL_FULL,'', makeLink(array('module'=>'calendarmodule','action'=>'view','id'=>$item->id)));
 			$search->location_data = $item->location_data;
 			$db->insertObject($search,'search');
+            $items = array($item);
 		} else {
 			$db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar'");
-			foreach ($db->selectObjects('calendar') as $item) {
+            $items = $db->selectObjects('calendar');
+			foreach ($items as $item) {
+                $db->delete('search',"ref_module='calendarmodule' AND ref_type='calendar' AND original_id=" . $item->id);
 				$search->original_id = $item->id;
 				$search->body = ' ' . search::removeHTML($item->body) . ' ';
 				$search->title = ' ' . $item->title . ' ';
@@ -472,7 +483,7 @@ class calendarmodule {
 				$db->insertObject($search,'search');
 			}
 		}
-		return true;
+		return count($items);
 	}
 
 	// The following functions are internal helper functions
