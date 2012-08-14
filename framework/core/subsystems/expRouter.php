@@ -222,6 +222,7 @@ class expRouter {
                 $tmpParams[$key] = $value;
             }
         }
+        $trackingObject = new stdClass();  //FIXME php 5.4
         $trackingObject->params = serialize($tmpParams);
         if ($this->url_type == 'page' || $this->url_type == 'base') {
             $trackingObject->section = $section;
@@ -284,7 +285,7 @@ class expRouter {
     }
 
     public function routePageRequest() {        
-        global $db;
+//        global $db;
 
         if ($this->url_type == 'base') {
             // if we made it in here this is a request for http://www.baseurl.com
@@ -492,7 +493,7 @@ class expRouter {
         return str_replace('+', '-', $url);
     }
 
-    public function getSefUrlByPageId($id=null) {
+    public function getSefUrlByPageId($id=null) {  //FIXME this method is never called and doesn't do anything as written
         if (!empty($id)) {
             global $db;
             $section = $db->selectObject('section', 'id='.intval($id));
@@ -502,18 +503,20 @@ class expRouter {
     }
 
     public function buildUrlByPageId($id=null) {
+        global $db;
+
+        //$url = URL_FULL;
+        $url = '';
         if (!empty($id)) {
-            global $db;
-            //$url = URL_FULL;
-            $url = '';
             if (SEF_URLS == 1) {
                 $section = $db->selectObject('section', 'id='.intval($id));
-                $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
+                if ($section->id != SITE_DEFAULT_SECTION) {
+                    $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
+                }
             } else {
                 $url .= 'index.php?section='.$id;
             }
         }
-        
         return $url;
     }
 
@@ -692,12 +695,12 @@ class expRouter {
             $sectionObj = $db->selectObject('section','id='. intval($section));
         }
 //        $sectionObj = $db->selectObject('section','id='. intval($section));
-        if (!navigationmodule::canView($sectionObj)) {
+        if (!navigationController::canView($sectionObj)) {
             define('AUTHORIZED_SECTION',0);
         } else {
             define('AUTHORIZED_SECTION',1);
         }
-        if (!navigationmodule::isPublic($sectionObj)) {
+        if (!navigationController::isPublic($sectionObj)) {
             define('PUBLIC_SECTION',0);
         } else {
             define('PUBLIC_SECTION',1);
@@ -713,14 +716,12 @@ class expRouter {
     
     public function getRouterMaps() {
         $mapfile = BASE.'framework/core/router_maps.php';
-//        if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php')) {
-//            $mapfile = BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php';
 		if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/router_maps.php')) {
 			$mapfile = BASE.'themes/'.DISPLAY_THEME.'/router_maps.php';
         }
 
         include_once($mapfile);
-        $this->maps = $maps;
+        $this->maps = $maps;  // $maps is set in $mapfile
     }
     
     public function getTrackingId()

@@ -36,9 +36,8 @@ class textController extends expController {
 	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
 	function displayname() { return gt("Text"); }
-	function description() { return gt("Puts text on your webpages"); }
-//	function isSearchable() { return true; }  // this content is pulled by the navigation module since we don't display individual text items
-	
+	function description() { return gt("Puts text on your web pages"); }
+
 	public function showall() {
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
@@ -64,17 +63,14 @@ class textController extends expController {
         // update the record.
         $record = $this->text->update($this->params);
         
-        // update the search table.
-        navigationmodule::spiderContent();
+        // update the search index since text is relegated to page content.
+        //FIXME need to come up with a better method
+        navigationController::addContentToSearch();
         
         // go back to where we came from.
         expHistory::back();
     }
     
-//	public function addContentToSearch() {
-//	    // do nothing...this is handled by the section for now.
-//	    return false;
-//	}
 }
 
 ?>

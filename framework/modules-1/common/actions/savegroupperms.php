@@ -24,11 +24,11 @@ if (expPermissions::check('manage',$loc)) {
  	//$groups = explode(';',$_POST['permdata']);
 
 	$locarray = array();
-//	if ($loc->mod == 'navigationmodule' && (isset($_POST['permdata'][1]['manage']) && $_POST['permdata'][1]['manage'] || isset($_POST['permdata'][1]['manage']) && $_POST['permdata'][1]['manage'])) {
-//		$sections = navigationmodule::levelTemplate($loc->int);
+//	if ($loc->mod == 'navigationController' && (isset($_POST['permdata'][1]['manage']) && $_POST['permdata'][1]['manage'] || isset($_POST['permdata'][1]['manage']) && $_POST['permdata'][1]['manage'])) {
+//		$sections = navigationController::levelTemplate($loc->int);
 //		$locarray[] = $loc;
 //		foreach ($sections as $section) {
-//			$locarray[] = expCore::makeLocation('navigationmodule', null, $section->id);
+//			$locarray[] = expCore::makeLocation('navigationController', null, $section->id);
 //		}
 //	} else {
 		$locarray[] = $loc;

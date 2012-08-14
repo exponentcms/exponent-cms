@@ -40,7 +40,7 @@ function smarty_function_yuimenu($params,&$smarty) {
                 hidedelay:	100,
                 lazyload: true
             });
-            var aSubmenuData = '.navigationmodule::navtojson().';
+            var aSubmenuData = '.navigationController::navtojson().';
             oMenuSidenavJs.subscribe("beforeRender", function () {
                 if (this.getRoot() == this) {
 					for (i=0; i<=this.getItems().length; i++){

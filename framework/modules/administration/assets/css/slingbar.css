@@ -133,11 +133,11 @@
 #admintoolbar li.remove a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/delete.png) no-repeat 5px 50%;
 }
-#admintoolbar li.search a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/view.png) no-repeat 5px 50%;
-}
 #admintoolbar li.manage a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/manage.png) no-repeat 5px 50%;
+}
+#admintoolbar li.search a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/view.png) no-repeat 5px 50%;
 }
 #admintoolbar li.users a.yuimenuitemlabel {
     background:url(../images/admintoolbar/manage-users.png) no-repeat 5px 50%;

@@ -79,11 +79,11 @@ var buildContextMenu = function(div) {
     }
 
     // function editUserPerms (){
-    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigationmodule&_common=1&action=userperms&int="+currentMenuNode.data.id;
+    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigation&_common=1&action=userperms&int="+currentMenuNode.data.id;
     // }
     // 
     // function editGroupPerms (){
-    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigationmodule&_common=1&action=groupperms&int="+currentMenuNode.data.id;
+    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigation&_common=1&action=groupperms&int="+currentMenuNode.data.id;
     // }
 
 

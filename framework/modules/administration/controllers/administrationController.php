@@ -39,88 +39,8 @@ class administrationController extends expController {
     function description() { return gt("This is the Administration Module"); }
     function author() { return "OIC Group, Inc"; }
 
-	public static function install_dbtables($aggressive=false) {
-	    global $db;
-
-		expSession::clearCurrentUserSessionCache();
-		$tables = array();
-
-		// first the core and 1.0 definitions
-		$coredefs = BASE.'framework/core/definitions';
-		if (is_readable($coredefs)) {
-			$dh = opendir($coredefs);
-			while (($file = readdir($dh)) !== false) {
-				if (is_readable("$coredefs/$file") && is_file("$coredefs/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-					$tablename = substr($file,0,-4);
-					$dd = include("$coredefs/$file");
-					$info = null;
-					if (is_readable("$coredefs/$tablename.info.php")) $info = include("$coredefs/$tablename.info.php");
-					if (!$db->tableExists($tablename)) {
-						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-							$tables[$key] = $status;
-						}
-					} else {
-						foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
-//							if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
-							if ($status == TABLE_ALTER_FAILED){
-								$tables[$key] = $status;
-							}else{
-								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-							}
-
-						}
-					}
-				}
-			}
-		}
-
-		// then search for module definitions
-		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME.'/modules',
-			BASE."framework/modules",
-			);
-		foreach ($moddefs as $moddef) {
-			if (is_readable($moddef)) {
-				$dh = opendir($moddef);
-				while (($file = readdir($dh)) !== false) {
-					if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
-						$dirpath = $moddef.'/'.$file.'/definitions';
-						if (file_exists($dirpath)) {
-							$def_dir = opendir($dirpath);
-							while (($def = readdir($def_dir)) !== false) {
-	//							eDebug("$dirpath/$def");
-								if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
-									$tablename = substr($def,0,-4);
-									$dd = include("$dirpath/$def");
-									$info = null;
-									if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
-									if (!$db->tableExists($tablename)) {
-										foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-											$tables[$key] = $status;
-										}
-									} else {
-										foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
-//											if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
-											if ($status == TABLE_ALTER_FAILED){
-												$tables[$key] = $status;
-											}else{
-												$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-											}
-
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return $tables;
-	}
-
 	public function install_tables() {
-		$tables = self::install_dbtables();
+		$tables = expDatabase::install_dbtables();
 		ksort($tables);
         assign_to_template(array(
             'status'=>$tables
@@ -128,7 +48,7 @@ class administrationController extends expController {
 	}
 
     public function delete_unused_columns() {
-   		$tables = self::install_dbtables(true);
+   		$tables = expDatabase::install_dbtables(true);
    		ksort($tables);
         assign_to_template(array(
             'status'=>$tables
@@ -230,7 +150,6 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
-
 	public function fix_database() {
 	    global $db;
 
@@ -315,6 +234,13 @@ class administrationController extends expController {
 		print_r("</pre>");
 	}
 
+    public function fix_tables() {
+   		$renamed = expDatabase::fix_table_names();
+           assign_to_template(array(
+               'tables'=>$renamed,
+           ));
+   	}
+
     public function toolbar() {
         global $user;
         $menu = array();
@@ -352,8 +278,8 @@ class administrationController extends expController {
     }
     
     public function index() {
-//        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
-        $this->toolbar();
+        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
+//        $this->toolbar();
     }
     
     public function update_SetSlingbarPosition() {
@@ -385,8 +311,8 @@ class administrationController extends expController {
     public function update_language() {
         expSettings::change('LANGUAGE', $_POST['newlang']);
         flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
-//        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
-        $this->manage_lang();
+        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+//        $this->manage_lang();
    	}
 
     public function manage_lang_await() {
@@ -411,8 +337,8 @@ class administrationController extends expController {
             expLang::createNewLangInfoFile($_POST['newlang'],$_POST['newauthor'],$_POST['newcharset'],$_POST['newlocale']);
             flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
         }
-//        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
-        $this->manage_lang();
+        redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+//        $this->manage_lang();
    	}
 
 	public function test_smtp() {
@@ -534,7 +460,7 @@ class administrationController extends expController {
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
-        $form->register('patch',gt('Patch Exponent CMS?'),new checkboxcontrol(null,false));
+        $form->register('patch',gt('Patch Exponent CMS?'),new checkboxcontrol(false,false));
         $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
 		$form->meta('action','install_extension_confirm');
@@ -718,7 +644,7 @@ class administrationController extends expController {
 
 			$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");  //FIXME shouldn't use echo
 //			echo $del_return;
-            $tables = self::install_dbtables();
+            $tables = expDatabase::install_dbtables();
             ksort($tables);
             assign_to_template(array(
                 'tables'=>$tables
@@ -780,7 +706,7 @@ class administrationController extends expController {
 	    }
 	    expSettings::change('THEME_STYLE_REAL',$sv);
 	    expSession::set('theme_style',$sv);
-	    self::install_dbtables();  // update tables to include any custom definitions in the new theme
+	    expDatabase::install_dbtables();  // update tables to include any custom definitions in the new theme
 
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
@@ -906,7 +832,7 @@ class administrationController extends expController {
         $dir_permissions = glist(expSettings::dropdownData('dir_permissions'));
 
         // Homepage Dropdown
-        $section_dropdown = navigationmodule::levelDropDownControlArray(0);
+        $section_dropdown = navigationController::levelDropDownControlArray(0);
 
         // Timezone Dropdown
         $list = DateTimeZone::listAbbreviations();
@@ -985,16 +911,15 @@ class administrationController extends expController {
    	 * Routine to force launching exponent installer
    	 */
    	public static function install_exponent() {
-           //FIXME in 2.0.4 we'll add a routine to simply display a flash message with a link to this method
    		// we'll need the not_configured file to exist for install routine to work
    		if (!@file_exists(BASE.'install/not_configured')) {
    			$nc_file = fopen(BASE.'install/not_configured', "w");
    			fclose($nc_file);
    		}
-           $page = "";
-           if (@file_exists(BASE.'conf/config.php')) {
-               $page = "?page=upgrade-1";
-           }
+        $page = "";
+        if (@file_exists(BASE.'conf/config.php')) {
+            $page = "?page=upgrade-1";
+        }
    		header('Location: '.URL_FULL.'install/index.php'.$page);
    		exit('Redirecting to the Exponent Install Wizard');
    	}

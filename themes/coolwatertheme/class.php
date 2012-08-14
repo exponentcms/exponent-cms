@@ -40,11 +40,11 @@ class coolwatertheme extends theme {
         $form->register('logo_text_main','Main Site Title'.': ',new textcontrol($settings['LOGO_TEXT_MAIN'],20));
         $form->register('logo_text_superscript','Site Sub Title'.': ',new textcontrol($settings['LOGO_TEXT_SUPERSCRIPT'],20));
         $form->register('link1_text','Link #1 Text (blank to disable) '.': ',new textcontrol($settings['LINK1_TEXT'],20));
-        $form->register('link1_section',gt('Link #1 Page'),new dropdowncontrol($settings['LINK1_SECTION'],navigationmodule::levelDropdownControlArray(0,0,array(),false,'manage',true)));
+        $form->register('link1_section',gt('Link #1 Page'),new dropdowncontrol($settings['LINK1_SECTION'],navigationController::levelDropdownControlArray(0,0,array(),false,'manage',true)));
         $form->register('link2_text','Link #2 Text (blank to disable) '.': ',new textcontrol($settings['LINK2_TEXT'],20));
-        $form->register('link2_section',gt('Link #2 Page'),new dropdowncontrol($settings['LINK2_SECTION'],navigationmodule::levelDropdownControlArray(0,0,array(),false,'manage',true)));
+        $form->register('link2_section',gt('Link #2 Page'),new dropdowncontrol($settings['LINK2_SECTION'],navigationController::levelDropdownControlArray(0,0,array(),false,'manage',true)));
         $form->register('link3_text','Link #3 Text (blank to disable) '.': ',new textcontrol($settings['LINK3_TEXT'],20));
-        $form->register('link3_section',gt('Link #3 Page'),new dropdowncontrol($settings['LINK3_SECTION'],navigationmodule::levelDropdownControlArray(0,0,array(),false,'manage',true)));
+        $form->register('link3_section',gt('Link #3 Page'),new dropdowncontrol($settings['LINK3_SECTION'],navigationController::levelDropdownControlArray(0,0,array(),false,'manage',true)));
         $form->register('menu_bounce_off',gt('Disable Menu Bounce'),new checkboxcontrol((!empty($settings['MENU_BOUNCE_OFF'])?$settings['MENU_BOUNCE_OFF']:0)));
    		$form->register(null,'',new htmlcontrol('<br>'));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));

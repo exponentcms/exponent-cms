@@ -53,6 +53,7 @@ class migrationController extends expController {
         'bannermodule'=>'bannerController',
         'feedlistmodule'=>'rssController',
         'simplepollmodule'=>'simplePollController',
+        'navigationmodule'=>'navigationController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -215,8 +216,8 @@ class migrationController extends expController {
 		}
 
 		if (isset($this->params['copy_permissions'])) {
-			$db->delete('userpermission',"module = 'navigationmodule' AND source = ''");
-			$db->delete('grouppermission',"module = 'navigationmodule' AND source = ''");
+			$db->delete('userpermission',"module = 'navigationController' AND source = ''");
+			$db->delete('grouppermission',"module = 'navigationController' AND source = ''");
 			
 			$users = $db->selectObjects('user','id > 1');
 			foreach($users as $user) {
@@ -224,6 +225,7 @@ class migrationController extends expController {
 				foreach($pages as $page) {
 					if ($db->selectObject('section','id = '.$page->internal)) {
 						 if ($page->permission != 'administrate') {
+                             $page->module = 'navigationController';
 							 $db->insertObject($page,'userpermission');
 						 }
 					}
@@ -235,6 +237,7 @@ class migrationController extends expController {
 				foreach($pages as $page) {
 					if ($db->selectObject('section','id = '.$page->internal)) {
 						 if ($page->permission != 'administrate') {
+                             $page->module = 'navigationController';
 							 $db->insertObject($page,'grouppermission');
 						 }
 					}
@@ -573,8 +576,8 @@ class migrationController extends expController {
         }
 
 		if (isset($this->params['copy_permissions'])) {
-			$db->delete('userpermission',"module != 'navigationmodule'");
-			$db->delete('grouppermission',"module != 'navigationmodule'");
+			$db->delete('userpermission',"module != 'navigationController'");
+			$db->delete('grouppermission',"module != 'navigationController'");
 
 			$users = $db->selectObjects('user','id > 1');
 			foreach($users as $user) {

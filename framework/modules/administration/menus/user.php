@@ -52,7 +52,7 @@ return array(
             ),
             array(
                 'text'=>gt("Change My Password"),
-                'url'=>makeLink(array('controller'=>'users','action'=>'change_password','ud'=>$user->id)),
+                'url'=>makeLink(array('controller'=>'users','action'=>'change_password')),
                 'classname'=>'password',
             ),
             array(

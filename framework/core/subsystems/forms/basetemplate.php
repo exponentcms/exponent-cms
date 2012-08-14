@@ -110,7 +110,12 @@ abstract class basetemplate {
 		if (!is_array($locs)) $locs = array($locs);
 		foreach ($perms as $perm) {
 			foreach ($locs as $loc) {
-				$permissions_register[$perm] = (expPermissions::check($perm, $loc) ? 1 : 0);
+                $ploc = new stdClass();
+                $ploc->mod   = $loc->mod;
+                $ploc->src   = $loc->src;
+                $ploc->int   = $loc->int;
+                $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;
+				$permissions_register[$perm] = (expPermissions::check($perm, $ploc) ? 1 : 0);
 			}
 		}
 		$this->tpl->assign('permissions', $permissions_register);

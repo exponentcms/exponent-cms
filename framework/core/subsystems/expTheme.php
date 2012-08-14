@@ -275,7 +275,7 @@ class expTheme {
 			foreach ($feeds as $feed) {
 				if ($feed->enable_rss) {
 //					$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
-                    $title = empty($feed->title) ? 'RSS' : htmlspecialchars($feed->title, ENT_QUOTES);
+                    $title = empty($feed->title) ? 'RSS - '.ORGANIZATION_NAME : htmlspecialchars($feed->title, ENT_QUOTES);
 					$params['module'] = $feed->module;
 					$params['src'] = $feed->src;
 //					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
@@ -494,7 +494,7 @@ class expTheme {
 			$isController = expModules::controllerExists($module);
 
 			if ($isController && !isset($_REQUEST['_common'])) {
-				// this is being set just incase the url said module=modname instead of controller=modname
+				// this is being set just in case the url said module=modname instead of controller=modname
 				// with SEF URls turned on its not really an issue, but with them off some of the links
 				// aren't being made correctly...depending on how the {link} plugin was used in the view.
 				$_REQUEST['controller'] = $module;
@@ -690,7 +690,7 @@ class expTheme {
 //        $module_scope[$src][$module] = new stdClass();
         $module_scope[$src][$module]->scope = 'sectional';
 
-		self::showModule($module,$view,$title,$src,$pickable,$sectionObj->id,$hide_menu);
+		self::showModule($module,$view,$title,$src,false,null,$hide_menu);
 	}
 
     /** exdoc
@@ -719,7 +719,7 @@ class expTheme {
 		// Loop until we find the top level parent.
 		while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
 
-		self::showModule($module,$view,$title,$prefix.$section->id,$pickable,$section,$hide_menu);
+		self::showModule($module,$view,$title,$prefix.$section->id,false,null,$hide_menu);
 	}
 
     /** exdoc
@@ -747,40 +747,41 @@ class expTheme {
     }
 
     public static function showController($params=array()) {
-        global $sectionObj, $db, $module_scope;
-        if (empty($params)) {
-	        return false;
-        } elseif (isset($params['module'])) {
-            self::module($params);
-        } else if (isset($params['controller'])) {
-			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
-			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
-			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
-			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
-
-			// set the controller and action to the one called via the function params
-			$requestvars = isset($params['params']) ? $params['params'] : array();
-			$requestvars['controller'] = $params['controller'];
-			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
-			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
-
-			// figure out the scope of the module and set the source accordingly
-			if ($params['scope'] == 'global') {
-				$params['source'] = isset($params['source']) ? $params['source'] : null;
-			} elseif ($params['scope'] == 'sectional') {
-				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
-				$params['source'] .= $sectionObj->id;
-			} elseif ($params['scope'] == 'top-sectional') {
-				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
-				$section = $sectionObj;
-				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
-				$params['source'] .= $section->id;
-			}
-//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
-            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
-			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
-        }
-        return false;
+        self::module($params);
+//        global $sectionObj, $db, $module_scope;
+//        if (empty($params)) {
+//	        return false;
+//        } elseif (isset($params['module'])) {
+//            self::module($params);
+//        } else if (isset($params['controller'])) {
+//			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
+//			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
+//			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
+//			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
+//
+//			// set the controller and action to the one called via the function params
+//			$requestvars = isset($params['params']) ? $params['params'] : array();
+//			$requestvars['controller'] = $params['controller'];
+//			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+//			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+//
+//			// figure out the scope of the module and set the source accordingly
+//			if ($params['scope'] == 'global') {
+//				$params['source'] = isset($params['source']) ? $params['source'] : null;
+//			} elseif ($params['scope'] == 'sectional') {
+//				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+//				$params['source'] .= $sectionObj->id;
+//			} elseif ($params['scope'] == 'top-sectional') {
+//				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+//				$section = $sectionObj;
+//				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
+//				$params['source'] .= $section->id;
+//			}
+////            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
+//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
+//			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+//        }
+//        return false;
     }
 
     /**
@@ -796,7 +797,19 @@ class expTheme {
 
 	    if (empty($params)) {
 		    return false;
-	    } elseif (isset($params['controller'])) {
+        } elseif (isset($params['module']) && expModules::controllerExists($params['module'])) {
+            // hack to add compatibility for modules converted to controllers, but still hard-coded the old way
+            $params['controller'] = $params['module'];
+            unset($params['module']);
+            if (!isset($params['action'])) $params['action'] = 'showall';
+            if (isset($params['view'])) {
+                $params['view'] = 'showall_'.$params['view'];
+            } else {
+                $params['view'] = 'showall';
+            }
+        }
+	    if (isset($params['controller'])) {
+            $controller = expModules::getControllerClassName($params['controller']);
             $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
             $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
             $params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
@@ -804,7 +817,7 @@ class expTheme {
 
             // set the controller and action to the one called via the function params
             $requestvars = isset($params['params']) ? $params['params'] : array();
-            $requestvars['controller'] = $params['controller'];
+            $requestvars['controller'] = $controller;
             $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
             $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
 
@@ -821,16 +834,18 @@ class expTheme {
                 $params['source'] .= $section->id;
             }
 //            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
-            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
-            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+            $module_scope[$params['source']][$controller]->scope = $params['scope'];
+//            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+            self::showModule($controller,$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
         } elseif (isset($params['module'])) {
+            $module = expModules::getModuleName($params['module']).'module';
             $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
             $source = (isset($params['source'])) ? $params['source'] : "";
             $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
             $scope = (isset($params['scope'])) ? $params['scope'] : "global";
 
             if ($scope=="global") {
-                self::showModule($params['module']."module",$params['view'],$moduletitle,$source,false,null,$chrome);
+                self::showModule($module,$params['view'],$moduletitle,$source,false,null,$chrome);
             }
             if ($scope=="top-sectional") {
 //                self::showTopSectionalModule($params['module']."module", //module
@@ -848,8 +863,8 @@ class expTheme {
                 // Loop until we find the top level parent.
                 while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
 //                $module_scope[$source.$section->id][$params['module']."module"]= new stdClass();
-                $module_scope[$source.$section->id][$params['module']."module"]->scope = 'top-sectional';
-                self::showModule($params['module']."module",$params['view'],$moduletitle,$source.$section->id,false,$section,$chrome);
+                $module_scope[$source.$section->id][$module]->scope = 'top-sectional';
+                self::showModule($module,$params['view'],$moduletitle,$source.$section->id,false,null,$chrome);
             }
             if ($scope=="sectional") {
 //                self::showSectionalModule($params['module']."module", //module
@@ -863,8 +878,8 @@ class expTheme {
                 $src = $source;
                 $src .= $sectionObj->id;
 //                $module_scope[$src][$params['module']."module"] = new stdClass();
-                $module_scope[$src][$params['module']."module"]->scope = 'sectional';
-                self::showModule($params['module']."module",$params['view'],$moduletitle,$src,false,$sectionObj->id,$chrome);
+                $module_scope[$src][$module]->scope = 'sectional';
+                self::showModule($module,$params['view'],$moduletitle,$src,false,null,$chrome);
             }
         }
         return false;
@@ -885,7 +900,7 @@ class expTheme {
      * @node Subsystems:Theme
      */
 	public static function showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
-		if (!AUTHORIZED_SECTION && $module != 'navigationmodule' && $module != 'loginController') return;
+		if (!AUTHORIZED_SECTION && $module != 'navigationController' && $module != 'loginController') return;
 
 		global $db, $sectionObj, $module_scope;
 		// Ensure that we have a section

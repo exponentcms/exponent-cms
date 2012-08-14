@@ -77,7 +77,7 @@ $router = new expRouter();
 
 // Initialize the navigation hierarchy
 if ($db->havedb)
-	$sections = expCore::initializeNavigation();
+	$sections = navigationController::initializeNavigation();
 
 /**
  * dumps the passed variable to screen, but only if in development mode

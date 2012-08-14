@@ -22,10 +22,12 @@ if (!defined('EXPONENT')) exit('');
 if (expPermissions::check('manage',$loc)) {
 	global $router;
 	if (expTemplate::getModuleViewFile($loc->mod,'_grouppermissions',false) == TEMPLATE_FALLBACK_VIEW) {
-		$template = new template('common','_grouppermissions',$loc);
+//		$template = new template('common','_grouppermissions',$loc,false,'globalviews');
+        $template = new template('common','_grouppermissions',$loc);
 	} else {
-		$template = new template('common','_grouppermissions',$loc);
 		//$template = new template($loc->mod,'_grouppermissions',$loc);
+//		$template = new template('common','_grouppermissions',$loc,false,'globalviews');
+        $template = new template('common','_grouppermissions',$loc);
 	}
 	$template->assign('user_form',0);
 
@@ -87,7 +89,7 @@ if (expPermissions::check('manage',$loc)) {
 	$template->assign('users',$users);
 	$template->assign('page',$page);
 	$template->assign('perms',$perms);
-    $template->assign('title',$modulename != 'navigationmodule'?$mod->name().' '.($modulename != 'containermodule'?gt('module'):'').' ':gt('Page'));
+    $template->assign('title',($modulename != 'navigationController' || ($modulename == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modulename != 'containermodule' ? gt('module') : '').' ' : gt('Page'));
 
 	$template->output();
 } else {

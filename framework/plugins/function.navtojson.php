@@ -33,6 +33,6 @@
  * @param \Smarty $smarty
  */
 function smarty_function_navtojson($params,&$smarty) {
-    echo navigationmodule::navtojson();
+    echo navigationController::navtojson();
 }
 ?>
