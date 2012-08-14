@@ -11,16 +11,16 @@
 		<title><?PHP echo gt('Insert/Modify Link'); ?></title>
 
 		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js2.php"></script>
-		<script type="text/javascript" src="popup.js"></script>
+<!--		<script type="text/javascript" src="popup.js"></script>-->
 <!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'external/editors/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?><!--"></script>-->
-		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE . 'external/editors/connector/lang/en.js'?>"></script>
+<!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'external/editors/connector/lang/en.js'?><!--"></script>-->
   		<script type="text/javascript">
 		/* <![CDATA[ */
-			I18N = eXp.I18N;
-			
-			function i18n(str) {
-  				return (I18N[str] || str);
-			};
+//			I18N = eXp.I18N;
+//
+//			function i18n(str) {
+//  				return (I18N[str] || str);
+//			};
 			
 			function getUrlParam(paramName) {
 				var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
@@ -63,10 +63,6 @@
             function openFileManager() {
                 window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&ck=1&update=fck&CKEditor=body&CKEditorFuncNum=2&langCode=en';
             }
-
-			function openSectionLinker() {
-				window.open("../../../modules/navigationmodule/nav.php?linkbase="+escape("../../external/editors/connector/section_linked.php?dummy"),"sectionlinker","toolbar=no,title=no,width=250,height=480,scrollbars=yes");
-			}
 
 			function openContentLinker() {
 				window.open("../../../source_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
@@ -132,7 +128,8 @@
 
 	</head>
 
-	<body onload="__dlg_translate(eXp._TR);">
+<!--	<body onload="__dlg_translate(eXp._TR);">-->
+    <body>
 		<div class="title"><?PHP echo gt('Insert/Modify Link'); ?></div>
 		<table border="0" style="width: 100%;">
 			<tbody>
@@ -141,20 +138,21 @@
 						<a class="header"><?PHP echo gt('Select a Page below'); ?></a>
 					</td>
                     <td>
-                        or
+                        <?PHP echo gt('or'); ?>
                     </td>
 					<td align="center">
 						<a href="#" onclick="openContentLinker(); return false;"><?PHP echo gt('Click Here to Link to Content'); ?></a>
 						<input id="f_href" type="hidden"/>
 						<input id="f_extern" checked="checked" type="hidden"/>
 						<input id="f_title" type="hidden"/>
+                        <div id="f_text" style="color:red"><?PHP echo gt('nothing selected'); ?></div>
 						<div id="buttons">
 							<button type="button" name="ok" onclick="return onOK();"><?PHP echo gt('OK'); ?></button>
 							<button type="button" name="cancel" onclick="return onCancel();"><?PHP echo gt('Cancel'); ?></button>
 						</div>
 					</td>
                     <td align="center">
-                        or
+                        <?PHP echo gt('or'); ?>
                     </td>
                     <td align="right">
                         <a href="#" style="text-align:center;" onclick="openFileManager(); return false;"><?PHP echo gt('Switch to File Manager'); ?></a>
@@ -163,7 +161,51 @@
 			</tbody>
 		</table>
 <?PHP
-include(BASE.'framework/modules-1/navigationmodule/nav.php');
-?>		
+if ($user) {
+    $sections = navigationController::levelTemplate(0,0);
+    $standalones = $db->selectObjects('section','parent = -1');
+?>
+<strong><?PHP echo gt('Site Hierarchy'); ?></strong><hr size="1" />
+	<table cellpadding="1" cellspacing="0" border="0" width="100%">
+<?PHP
+           foreach ($sections as $section) {
+?>
+               <tr><td style="padding-left: <?PHP echo ($section->depth*20); ?>px">
+               <?PHP
+                   if ($section->active) {
+               ?>
+                       <a href="javascript:onPageSelect(<?PHP echo "'".$section->sef_name."'"; ?>)" class="navlink"><?PHP echo htmlentities($section->name); ?></a>&#160;
+               <?PHP
+                   } else {
+                       echo $section->name;
+                   }
+               ?>
+               </td></tr>
+<?PHP
+           }
+?>
+	</table>
+<?PHP
+    if (count($standalones)) {
+?>
+<BR /> <BR />
+<strong><?PHP echo gt('Standalone Pages'); ?></strong><hr size="1" />
+	<table cellpadding="1" cellspacing="0" border="0" width="100%">
+    <?PHP
+           foreach ($standalones as $section) {
+    ?>
+               <tr><td style="padding-left: 20px">
+                   <a href="javascript:onPageSelect(<?PHP echo "'".$section->sef_name."'"; ?>)" class="navlink"><?PHP echo htmlentities($section->name); ?></a>&#160;
+               </td></tr>
+    <?PHP
+           }
+        ?>
+	</table>
+<?PHP
+    }
+?>
+<?PHP
+}
+?>
 	</body>
 </html>
