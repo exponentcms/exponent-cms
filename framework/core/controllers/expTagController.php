@@ -92,7 +92,7 @@ class expTagController extends expController {
         $page = new expPaginator(array(
                     'model'=>$this->basemodel_name,
                     'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
-                    'limit'=>50,
+                    'limit'=>10,
                     'order'=>"title",
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
