@@ -16,8 +16,8 @@
 #
 ##################################################
 
-if (!defined('SAVE_SEARCH_QUERIES')) define('SAVE_SEARCH_QUERIES','0');
-if (!defined('TOP_SEARCH')) define('TOP_SEARCH','0');
+if (!defined('SAVE_SEARCH_QUERIES')) define('SAVE_SEARCH_QUERIES','1');
+if (!defined('TOP_SEARCH')) define('TOP_SEARCH','10');
 if (!defined('INCLUDE_AJAX_SEARCH')) define('INCLUDE_AJAX_SEARCH','0');
 if (!defined('INCLUDE_ANONYMOUS_SEARCH')) define('INCLUDE_ANONYMOUS_SEARCH','0');
 

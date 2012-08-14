@@ -845,10 +845,11 @@ abstract class expController {
 	 */
 	function addContentToSearch() {
         global $db, $router;
-        
+
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);
-        $content = $db->selectArrays($model->tablename);
+        $where = (!empty($this->params['id'])) ? 'id='.$this->params['id'] : null;
+        $content = $db->selectArrays($model->tablename,$where);
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
@@ -867,7 +868,11 @@ abstract class expController {
             // get the location data for this content
             if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
             $src = isset($loc->src) ? $loc->src : null;
-            $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'id'=>$origid, 'src'=>$src)));
+            if (!empty($cnt['sef_url'])) {
+                $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
+            } else {
+                $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'id'=>$origid, 'src'=>$src)));
+            }
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
             $search_record->view_link = $link;
             $search_record->ref_module = $this->classname;
@@ -888,7 +893,7 @@ abstract class expController {
         // remove this modules entries from the search table.
         if ($this->isSearchable()) {
             $where = "ref_module='".$this->classname."' AND location_data='".serialize($this->loc)."'";            
-            $test = $db->selectObjects('search', $where);
+//            $test = $db->selectObjects('search', $where);
             $db->delete('search', $where);
         }
     }

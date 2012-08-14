@@ -145,10 +145,10 @@ class formmodule {
 		$db->delete("formbuilder_form","location_data='".serialize($loc)."'");
 	}
 	
-	static function spiderContent($item = null) {
-		// No content
-		return false;
-	}
+//	static function spiderContent($item = null) {
+//		// No content
+//		return false;
+//	}
 }
 
 ?>

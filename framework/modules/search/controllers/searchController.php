@@ -83,28 +83,25 @@ class searchController extends expController {
     
     public static function spider() {
         global $db;
-	    $db->delete('search');
-	    
-	    $searchable_mods = array();
-	    $unsearchable_mod = array();
 
+        // reinitialize search index
+	    $db->delete('search');
+
+        // old school modules
 	    foreach (expModules::modules_list() as $mod) {
-		    $name = @call_user_func(array($mod,'name'));
+//		    $name = @call_user_func(array($mod,'name'));
+            $name = @call_user_func(array($mod,'searchName'));
 		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
-			    if (call_user_func(array($mod,'spiderContent'))) {
-				    $mods[$name] = 1;
-			    }
-		    } else {
-			    //$mods[$name] = 0;
+                $mods[$name] = call_user_func(array($mod,'spiderContent'));
 		    }
 	    }
 
+        // 2.0 modules
 	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
 		    $controller = new $ctlname();		    
 		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
-			    $mods[$controller->name()] = $controller->addContentToSearch();
-		    } else {
-		        //$mods[$controller->name()] = 0;
+//			    $mods[$controller->name()] = $controller->addContentToSearch();
+                $mods[$controller->searchName()] = $controller->addContentToSearch();
 		    }
 	    }
 	
@@ -116,11 +113,12 @@ class searchController extends expController {
         
     public function show() {
         //no need to do anything..we're just showing the form... so far! MUAHAHAHAHAHAAA!   what?
+//        redirect_to(array("controller"=>'search',"action"=>'showall'));
     }
     
     public function showall() {
 //        redirect_to(array("controller"=>'search',"action"=>'show'));
-        $this->show();
+//        $this->show();
     }
 
     /**
@@ -275,7 +273,9 @@ class searchController extends expController {
                         gt('User')=>'user_id',
                         )
                     ));
-	
+
+        $uname['id'] = implode($uname['id'],',');
+        $uname['name'] = implode($uname['name'],',');
         assign_to_template(array(
             'page'=>$page,
             'users'=>$uname,
@@ -287,7 +287,7 @@ class searchController extends expController {
 	
 	public function topSearchReport() {
 		global $db;
-		$limit = TOP_SEARCH;
+		$limit = intval(TOP_SEARCH);
 		
 		if(empty($limit)) {
 			$limit = 10;

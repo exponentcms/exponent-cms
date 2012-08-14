@@ -47,8 +47,8 @@ class rssController extends expController {
     }
     
     function show() {
-//        redirect_to(array('controller'=>'rss', 'action'=>'showall'));
-        $this->showall();
+        redirect_to(array('controller'=>'rss', 'action'=>'showall'));
+//        $this->showall();
     }
 
     /**

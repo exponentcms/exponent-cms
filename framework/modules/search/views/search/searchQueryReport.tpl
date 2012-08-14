@@ -95,21 +95,17 @@
 {script unique="searchQueryReport"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
-    
-		var YAHOO=Y.YUI2;
-		var tabView = new YAHOO.widget.TabView('searchqueryreport');
-  
-        var userdropdown = Y.one('.userdropdown');
-    
-        userdropdown.on("change",function(e){
-			if(e.target.get('value') == -1) {
-				window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";
-			} else {
-				window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/user_id/"+e.target.get('value');
-			}
-        });
-            
- 
+    var YAHOO=Y.YUI2;
+    var tabView = new YAHOO.widget.TabView('searchqueryreport');
+    var userdropdown = Y.one('.userdropdown');
+
+    userdropdown.on("change",function(e){
+        if(e.target.get('value') == -1) {
+            window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";
+        } else {
+            window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/user_id/"+e.target.get('value');
+        }
+    });
 });
 {/literal}
 {/script}

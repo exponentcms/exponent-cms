@@ -134,7 +134,8 @@ class containermodule {
 				ob_start();
                 $mod->_hasParent = 1;
                 if ($iscontroller) {
-                    renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
+//                    renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
+                    renderAction(array('controller'=>expModules::getControllerName($location->mod), 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
                 } else {
                     $mod->show($containers[$i]->view,$location,$containers[$i]->title);
                 }
@@ -222,10 +223,10 @@ class containermodule {
 		}
 	}
 	
-	static function spiderContent($item = null) {
-		// Do nothing, no content
-		return false;
-	}
+//	static function spiderContent($item = null) {
+//		// Do nothing, no content
+//		return false;
+//	}
 	
 	static function wrapOutput($modclass,$view,$loc = null,$title = '') {
 	    global $db;

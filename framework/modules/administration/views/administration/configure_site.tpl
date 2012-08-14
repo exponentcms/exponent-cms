@@ -255,7 +255,8 @@
                         </div>
                         <h2>{"Search Report Configuration"|gettext}</h2>
                     </div>
-					{control type="text" name="sc[TOP_SEARCH]" label="Number of Top Search Queries"|gettext value=$smarty.const.TOP_SEARCH}
+                    {control type="checkbox" postfalse=1 name="sc[SAVE_SEARCH_QUERIES]" label="Save Search Queries?"|gettext checked=$smarty.const.SAVE_SEARCH_QUERIES value=1}
+					{control type="text" name="sc[TOP_SEARCH]" label="Number of Top Search Queries to Return"|gettext value=$smarty.const.TOP_SEARCH}
 					{control type="checkbox" postfalse=1 name="sc[INCLUDE_AJAX_SEARCH]" label="Include ajax search in reports?"|gettext checked=$smarty.const.INCLUDE_AJAX_SEARCH value=1}
 					{control type="checkbox" postfalse=1 name="sc[INCLUDE_ANONYMOUS_SEARCH]" label="Include unregistered users search?"|gettext checked=$smarty.const.INCLUDE_ANONYMOUS_SEARCH value=1}
 				</div>

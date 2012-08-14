@@ -80,7 +80,6 @@
 YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
 	var YAHOO=Y.YUI2;
 	var tabView = new YAHOO.widget.TabView('topsearch');
-	
 });
 
 (function() {
@@ -107,9 +106,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
             }
         };
         
-    
 		var columnchart   = new Y.Chart({dataProvider:myDataValues, render:"#columnchart", type:"column", tooltip: "myTooltip"});
-		
     });
 })();
 

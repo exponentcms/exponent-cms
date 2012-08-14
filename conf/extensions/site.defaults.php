@@ -29,7 +29,6 @@ if (!defined('SITE_403_REAL_HTML')) define('SITE_403_REAL_HTML',exponent_unhtmle
 
 if (!defined('ADVERTISE_RSS')) define('ADVERTISE_RSS','0');
 
-if (!defined('SAVE_SEARCH_QUERIES')) define('SAVE_SEARCH_QUERIES','1');
 if (!defined('SITE_WYSIWYG_EDITOR')) define('SITE_WYSIWYG_EDITOR','ckeditor');
 
 if (!defined('SESSION_TIMEOUT_ENABLE')) define('SESSION_TIMEOUT_ENABLE','1');

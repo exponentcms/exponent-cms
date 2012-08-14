@@ -42,7 +42,6 @@ class addressController extends expController {
     function displayname() { return gt("Addresses"); }
     function description() { return gt("Use this module to display and manage addresses of users on your site."); }
     function canImportData() { return true;}
-    function isSearchable() { return true; }
 
     function showall() {
 //        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
@@ -188,9 +187,10 @@ class addressController extends expController {
             $gr->save();            
         }
         flash('message',gt('Address configurations successfully updated.'));
-//        redirect_to(array('controller'=>'address','action'=>'manage'));
-        $this->manage();
+        redirect_to(array('controller'=>'address','action'=>'manage'));
+//        $this->manage();
     }
+
 }
 
 ?>
