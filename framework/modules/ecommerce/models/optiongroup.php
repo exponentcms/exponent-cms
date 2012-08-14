@@ -50,7 +50,7 @@ class optiongroup extends expRecord {
         }
     }
     
-    public function save()
+    public function save($validate=false)
     {
         global $db;
         $obj->id = $this->id;

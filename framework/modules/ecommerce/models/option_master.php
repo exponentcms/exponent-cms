@@ -35,7 +35,7 @@ class option_master extends expRecord {
 	    $this->timesImplemented = $db->countObjects('option', 'enable=1 AND option_master_id='.$this->id);
 	}
     
-    public function update($params)
+    public function update($params=array())
     {
         global $db;
         //need to accomodate rank so can't call parent

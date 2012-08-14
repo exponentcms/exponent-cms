@@ -25,6 +25,23 @@
 
 class expCore {
 
+    /** exdoc
+   	 * Creates a location object, based off of the three arguments passed, and returns it.
+   	 *
+   	 * @internal param \The $mo module component of the location.
+   	 *
+   	 * @internal param \The $src source component of the location.
+   	 *
+   	 * @internal param \The $int internal component of the location.
+   	 * @return array
+   	 * @node Subsystems:expCore
+   	 */
+   	public static function initializeNavigation () {
+     //		$sections = array();
+   		$sections = navigationmodule::levelTemplate(0,0);
+   		return $sections;
+   	}
+
 	/**
 	 * Return an exponent location object
 	 *
@@ -181,7 +198,7 @@ class expCore {
 	//		 $db->insertObject($newLocRef,"locationref");
 	//
 	//		 // Go ahead and assign permissions on contained module.
-	//		 if ($loc->mod != 'navigationmodule' && $loc->mod != 'administrationmodule') {
+	//		 if ($loc->mod != 'navigationController' && $loc->mod != 'administrationmodule') {
 	//			 //$perms = call_user_func(array($loc->mod,"permissions"));
 	//			 $mod = new $loc->mod();
 	//			 $perms = $mod->permissions();
