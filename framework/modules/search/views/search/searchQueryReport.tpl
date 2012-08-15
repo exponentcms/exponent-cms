@@ -19,8 +19,7 @@
 
 <div class="module searchquery report exp-skin-tabview">
 
-	<div id="searchqueryreport" class="yui-navset">
-		
+	<div id="searchqueryreport" class="yui-navset exp-skin-tabview hide">
 
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>{"All Search Queries"|gettext}</em></a></li>
@@ -29,13 +28,11 @@
 
 		<div class="yui-content">
 			<div id="tab1">
-
 				<div class="info-header">
 					<h1>{$moduletitle|default:"Search Queries Report"|gettext}</h1>
 				</div>
-				
 				{pagelinks paginate=$page top=1}
-				{control type="dropdown" name="user_id" label="Filter by User"|gettext items="{$users.name}" values="{$users.id}" value=$user_default class="userdropdown"}
+				{control type="dropdown" name="user_id" label="Filter by User"|gettext items="{$users.name}" values="{$users.id}" value=$user_default id="userdropdown"}
 				<table class="exp-skin-table">
 					<thead>
 						<tr>
@@ -67,7 +64,6 @@
 			<div id="tab2">
                 <div class="info-header">
 					<h1>{$moduletitle|default:"Bad Queries Report"|gettext}</h1>
-					
 					<table class="exp-skin-table">
 						<thead>
 							<tr>
@@ -92,20 +88,21 @@
 	</div>
 </div>
 
-{script unique="searchQueryReport"}
+{script unique="searchQueryReport" yui3mods="1"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
-    var YAHOO=Y.YUI2;
-    var tabView = new YAHOO.widget.TabView('searchqueryreport');
-    var userdropdown = Y.one('.userdropdown');
+    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+	    var tabview = new Y.TabView({srcNode:'#searchqueryreport'});
+	    tabview.render();
 
-    userdropdown.on("change",function(e){
-        if(e.target.get('value') == -1) {
-            window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";
-        } else {
-            window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/user_id/"+e.target.get('value');
-        }
-    });
-});
+        var userdropdown = Y.one('#userdropdown');
+		Y.one('#searchqueryreport').removeClass('hide');
+        userdropdown.on("change",function(e){
+            if(e.target.get('value') == -1) {
+                window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";
+            } else {
+                window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/user_id/"+e.target.get('value');
+            }
+        });
+	});
 {/literal}
 {/script}

@@ -4,8 +4,9 @@ Copyright (c) 2004-2012 OIC Group, Inc.
 
 Added / Fixed / changed for 2.0.9
 -----------------------
-# This release focuses on greater HTML5 compliance and additional embedded help/documentation links
+# This release focuses on greater HTML5 compliance, ,, additional embedded help/documentation links, & module upgrades
   - upgrades old school simple poll and navigation modules into 2.0 style controllers
+    -- page type indicators now displayed in Manage Pages view
   - adds help links to most admin displays
   - calendar is more forgiving of timezone changes (events won't disappear)
     -- adds selectable weekly view to calendar
