@@ -36,8 +36,8 @@
         <table class="exp-skin-table">
 			<thead>
 				<tr>
-					<th><input type='checkbox' name='checkallmu' title="{'Select All/None'|gettext}" onChange="selectAllmu(this.checked)" checked=1> {"Migrate"|gettext}</th>
-					<th><input type='checkbox' name='checkallru' title="{'Select All/None'|gettext}" onChange="selectAllru(this.checked)"> {"Replace"|gettext}</th>
+					<th><input type='checkbox' name='checkallmu' title="{'Select All/None'|gettext}" onchange="selectAllmu(this.checked)" checked=1> {"Migrate"|gettext}</th>
+					<th><input type='checkbox' name='checkallru' title="{'Select All/None'|gettext}" onchange="selectAllru(this.checked)"> {"Replace"|gettext}</th>
 					<th>{"Username"|gettext}</th>
 					<th>{"Name"|gettext}</th>
 					<th>{"E-Mail"|gettext}</th>
@@ -84,8 +84,8 @@
 			</tbody>
 			<thead>
 				<tr>
-					<th><input type='checkbox' name='checkallmg' title="{'Select All/None'|gettext}" onChange="selectAllmg(this.checked)" checked=1> {"Migrate"|gettext}</th>
-					<th><input type='checkbox' name='checkallrg' title="{'Select All/None'|gettext}" onChange="selectAllrg(this.checked)"> {"Replace"|gettext}</th>
+					<th><input type='checkbox' name='checkallmg' title="{'Select All/None'|gettext}" onchange="selectAllmg(this.checked)" checked=1> {"Migrate"|gettext}</th>
+					<th><input type='checkbox' name='checkallrg' title="{'Select All/None'|gettext}" onchange="selectAllrg(this.checked)"> {"Replace"|gettext}</th>
 					<th>{"Group Name"|gettext}</th>
 					<th>{"Description"|gettext}</th>
 					<th>{"Type"|gettext}</th>

@@ -31,7 +31,7 @@
         <thead>
             <tr>
                 <th>
-                    <input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onChange="selectAllp(this.checked)">
+                    <input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onchange="selectAllp(this.checked)">
                 </th>
                 {$page->header_columns}
                 <th>{'Actions'|gettext}</th>

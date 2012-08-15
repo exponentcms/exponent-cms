@@ -43,7 +43,7 @@ if (!defined('LANGUAGE')) {
 <!--	 send us to the next page -->
 	<input type="hidden" name="page" value="install-1" />
 	<div class="control">
-		<select name="lang" onChange="Refresh(this.value)">
+		<select name="lang" onchange="Refresh(this.value)">
 			<?PHP foreach(expLang::langList() as $currid=>$currlang) {?>
 				<option value="<?PHP echo $currid?>"<?php if ($currid == LANGUAGE) echo " selected"; ?>><?PHP echo $currlang?></option>
 			<?PHP }?>

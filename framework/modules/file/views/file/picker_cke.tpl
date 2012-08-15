@@ -133,11 +133,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 var oFile = '<img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/general.png">' ;
             };
         
-            infopanel.setBody('<table class="wrapper" border="0" cellspacing="0" cellpadding="5" width=100%>'+
+            infopanel.setBody('<table class="wrapper" border="0" cellspacing="0" cellpadding="5" style="100%;">'+
                 '<tr><td class="file"><div>'+
                         oFile +
                 '</div></td><td class="info">'+
-                '<table border="0" cellspacing="0" cellpadding="2" width=100%>'+
+                '<table border="0" cellspacing="0" cellpadding="2" style="width:100%;">'+
                         '<tr class="odd"><td><span>{/literal}{"Title"|gettext}{literal}</span>'+oRecordData.title+
                         '</td></tr><tr class="even"><td><span>{/literal}{"Alt"|gettext}{literal}</span>'+oRecordData.alt+
                         '</td></tr><tr class="odd"><td><span>{/literal}{"File Type"|gettext}{literal}</span>'+oRecordData.mimetype+

@@ -687,7 +687,7 @@ class expTheme {
 			//$section = $db->selectObject("section","id=".$last_section);
 			$src .= $sectionObj->id;
 //		}
-//        $module_scope[$src][$module] = new stdClass();
+        $module_scope[$src][$module] = new stdClass();
         $module_scope[$src][$module]->scope = 'sectional';
 
 		self::showModule($module,$view,$title,$src,false,null,$hide_menu);
@@ -833,7 +833,7 @@ class expTheme {
                 while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
                 $params['source'] .= $section->id;
             }
-//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
+            $module_scope[$params['source']][$controller] = new stdClass();
             $module_scope[$params['source']][$controller]->scope = $params['scope'];
 //            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
             self::showModule($controller,$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
@@ -862,7 +862,7 @@ class expTheme {
                 $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
                 // Loop until we find the top level parent.
                 while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
-//                $module_scope[$source.$section->id][$params['module']."module"]= new stdClass();
+                $module_scope[$source.$section->id][$module]= new stdClass();
                 $module_scope[$source.$section->id][$module]->scope = 'top-sectional';
                 self::showModule($module,$params['view'],$moduletitle,$source.$section->id,false,null,$chrome);
             }
@@ -921,9 +921,10 @@ class expTheme {
 //		}
 		$loc = expCore::makeLocation($module,$source."");
 
-        if (empty($module_scope[$source][$module]->scope))
-//            $module_scope[$source][$module] = new stdClass();
+        if (empty($module_scope[$source][$module]->scope)) {
+            $module_scope[$source][$module] = new stdClass();
             $module_scope[$source][$module]->scope = 'global';
+        }
         // make sure we've added this module to the sectionref table
 		if ($db->selectObject("sectionref","module='$module' AND source='".$loc->src."'") == null) {
 				$secref = new stdClass();

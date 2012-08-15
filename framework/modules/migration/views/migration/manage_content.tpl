@@ -33,8 +33,8 @@
         <table class="exp-skin-table">
 			<thead>
 				<tr>
-					<th><input type='checkbox' name='checkallm' title="{'Select All/None'|gettext}" onChange="selectAllm(this.checked)" checked=1> {'Migrate'|gettext}</th>
-					<th><input type='checkbox' name='checkallr' title="{'Select All/None'|gettext}" onChange="selectAllr(this.checked)"> {'Replace'|gettext}</th>
+					<th><input type='checkbox' name='checkallm' title="{'Select All/None'|gettext}" onchange="selectAllm(this.checked)" checked=1> {'Migrate'|gettext}</th>
+					<th><input type='checkbox' name='checkallr' title="{'Select All/None'|gettext}" onchange="selectAllr(this.checked)"> {'Replace'|gettext}</th>
 					<th>{'Module'|gettext}</th>
 					<th>{'Count'|gettext}</th>
 					<th>{'Action'|gettext}</th>

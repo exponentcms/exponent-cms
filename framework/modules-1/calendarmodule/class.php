@@ -565,9 +565,9 @@ class calendarmodule {
                     $extevents[$eventdate][$dy]->eventdate = $eventdate;
                     $dtend = $times->item(0)->getAttributeNode("endTime")->value;
                     if (strlen($dtstart) > 10) {
-                        $extevents[$eventdate][$dy]->eventstart = (substr($dtstart,11,2)*3600)+(substr($dtstart,14,2)*60);
+                        $extevents[$eventdate][$dy]->eventstart = (intval(substr($dtstart,11,2))*3600)+(intval(substr($dtstart,14,2))*60);
                         if (date("I",$eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600;
-                        $extevents[$eventdate][$dy]->eventend = (substr($dtend,11,2)*3600)+(substr($dtend,14,2)*60);
+                        $extevents[$eventdate][$dy]->eventend = (intval(substr($dtend,11,2))*3600)+(intval(substr($dtend,14,2))*60);
                         if (date("I",$eventdate)) $extevents[$eventdate][$dy]->eventend += 3600;
                     } else {
                         $extevents[$eventdate][$dy]->eventstart = null;

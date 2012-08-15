@@ -165,13 +165,13 @@
     margin-bottom:1px;
     background-image:url(../../../../core/assets/images/exp1icons.png);
     _background-image:url(../../skin/exp1icons.gif);  
-    background-color:none;  
+    /*background-color:none;  */
     background-position:100% -220px; 
 }
 .navigationmodule.manager-hierarchy .addafter-h {
     background-image:url(../../../../core/assets/images/exp1icons.png);
     _background-image:url(../../skin/exp1icons.gif);  
-    background-color:none;  
+    /*background-color:none;  */
     background-position:100% -215px; 
 }
 

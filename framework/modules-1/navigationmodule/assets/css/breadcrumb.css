@@ -3,11 +3,11 @@ a.side_link {
 }
 
 a.side_link_active {
-        font-style: bold;
+        font-weight: bold;
 }
 
 a.activecrumb {
-	font-style: bold;
+	font-weight: bold;
 }
 
 a.breadcrumb {

@@ -28,7 +28,8 @@
  */
 class fakeform extends form {
 
-	function toHTML($form_id, $module="formbuilder") {
+	function toHTML($form_id=null, $module=null) {
+        if (empty($module)) $module="formbuilder";
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;

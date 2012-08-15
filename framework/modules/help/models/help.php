@@ -41,7 +41,7 @@ class help extends expRecord {
 		if (isset($_POST['help_section'])) {
 			// manipulate section & location_data to correct values
 			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . expString::sanitize($_POST['help_section'] .'"'));
-			$loc = new stdClass();;
+			$loc = new stdClass();
 			$loc->mod = 'help';
 			$loc->src = $_POST['help_section'];
 			$loc->int = '';

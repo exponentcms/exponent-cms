@@ -36,6 +36,22 @@ abstract class expController {
     protected $remove_permissions = array();    
     protected $add_permissions = array();
 
+    public $requires_login = array();
+    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    public $config = array();
+    public $params = array();
+    public $baseclassname = '';
+    public $basemodel_name = '';
+    public $model_table = '';
+    public $classinfo = null;
+    public $loc = null;
+    public $module_name = '';
+    public $filepath = '';
+    public $viewpath = '';
+    public $relative_viewpath = '';
+    public $asset_path = '';
+	public $codequality = 'stable';
+
 	/**
 	 * can this module import data?
 	 * @return bool
@@ -54,19 +70,6 @@ abstract class expController {
 	 */
 	function requiresConfiguration() { return false; }
     
-    public $requires_login = array();
-    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
-    public $config = array();
-    public $basemodel_name = '';
-    public $model_table = '';
-    public $classinfo = null;
-    public $loc = null;
-    public $module_name = '';
-    public $filepath = '';
-    public $viewpath = '';
-    public $relative_viewpath = '';
-	public $codequality = 'stable';
-
 	/**
 	 * @param null $src
 	 * @param array $params

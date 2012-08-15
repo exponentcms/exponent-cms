@@ -144,7 +144,7 @@ class navigationController extends expController {
         return json_encode(self::navhierarchy());
     }
 
-    function getChildren(&$i) {
+    public static function getChildren(&$i) {
         global $sections;
 
         //		echo "i=".$i."<br>";
@@ -185,7 +185,7 @@ class navigationController extends expController {
         }
     }
 
-    function hasChildren($i) {
+    public static function hasChildren($i) {
         global $sections;
 
         if (($i + 1) >= count($sections)) return false;

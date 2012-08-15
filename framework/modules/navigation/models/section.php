@@ -44,7 +44,7 @@ class section extends expRecord {
 //        expHistory::back();
     }
 
-    function delete() {
+    function delete($where = '') {
         parent::delete();
         navigationController::deleteLevel($this->params['id']);
         expSession::clearAllUsersSessionCache('navigation');

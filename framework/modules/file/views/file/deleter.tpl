@@ -54,7 +54,7 @@
                     <tbody>
                         {foreach from=$files item=file key=src}
                             <tr class="{cycle values="even,odd"}">
-                                <td width="20">
+                                <td style="width:20;">
                                     {control type="checkbox" name="deleteit[]" value=$src}
                                 </td>
                                 <td>

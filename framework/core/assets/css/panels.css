@@ -550,7 +550,7 @@
 }
 
 .exp-dropmenu .bd {
-    margin:none;
+    /*margin:none;*/
     background:#ffffff;
     color:#444;
     padding-top:0;

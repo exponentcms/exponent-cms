@@ -50,7 +50,7 @@ class listcontrol extends formcontrol {
                 $html .= $value.'<a class="remove-from-list" href="#">remove?</a></li>';
             }
         } else {
-            '<h2 id="empty-list-'.$name.'">'.gt('There are no items yet.').'</h2>';
+            $html .= '<h2 id="empty-list-'.$name.'">'.gt('There are no items yet.').'</h2>';
         }
         
         $html .= '</ul>';

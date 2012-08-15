@@ -167,11 +167,14 @@ class form extends baseform {
 		}
 	}
 
-	/**
-	 * Convert the form to HTML output.
-	 *
-	 * @return string The HTML code use to display the form to the browser.
-	 */
+    /**
+     * Convert the form to HTML output.
+     *
+     * @param null $form_id
+     * @param null $module
+     *
+     * @return string The HTML code use to display the form to the browser.
+     */
 	function toHTML($form_id=null, $module=null) {
 		// Form validation script
 		if ($this->validationScript != "") {

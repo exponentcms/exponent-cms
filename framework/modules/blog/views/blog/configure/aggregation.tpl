@@ -29,7 +29,7 @@
     <thead>
         <tr>
             {*<th>{""|gettext}</th>*}
-            <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onChange="selectAll(this.checked)"></th>
+            <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onchange="selectAll(this.checked)"></th>
             {$tabno = $smarty.foreach.body.iteration-1}
             {$tabanchor = '#tab='|cat:$tabno|cat:'" alt="'}
             {$page->header_columns|replace:'" alt="':$tabanchor}
