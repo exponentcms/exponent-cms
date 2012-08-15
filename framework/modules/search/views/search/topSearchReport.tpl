@@ -99,14 +99,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
             },
             markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex)
             {
-                var msg = "<span style=\"text-decoration:underline\">{/literal}{"Total"|gettext}{literal} " +
+                var msg = "{/literal}{"Term"|gettext}{literal}: <span style=\"text-decoration:underline;font-weight:bold\">" +
                 categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")]) + 
-                " {/literal}{"Payment"|gettext}{literal}</span><br/><div style=\"margin-top:5px;font-weight:bold\">" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"%", decimalPlaces:2}]) + "</div>";
+                "</span><div>" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"%", decimalPlaces:2}]) + "</div>";
                 return msg; 
             }
         };
         
-		var columnchart   = new Y.Chart({dataProvider:myDataValues, render:"#columnchart", type:"column", tooltip: "myTooltip"});
+		var columnchart   = new Y.Chart({dataProvider:myDataValues, render:"#columnchart", type:"column", tooltip: myTooltip});
     });
 })();
 
