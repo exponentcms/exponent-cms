@@ -183,7 +183,7 @@ class mysqli_database extends database {
         }
 
         //Add any new columns to the table
-        $diff = array_diff_assoc($newdatadef, $dd);
+        $diff = @array_diff_assoc($newdatadef, $dd);
         if (count($diff)) {
             $modified = true;
             $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
