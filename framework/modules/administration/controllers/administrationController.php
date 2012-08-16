@@ -153,85 +153,80 @@ class administrationController extends expController {
 	public function fix_database() {
 	    global $db;
 
-	    print_r("<h1>".gt("Attempting to Fix the Exponent Database")."</h1>");
-	    print_r("<h3>".gt("Some Error Conditions can NOT be repaired by this Procedure")."!</h3><br>");
-		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<strong>".gt("Searching for sectionrefs that have lost their originals")."</strong><br><br>");
+        $no_origs = array();
 		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
 		if (count($sectionrefs)) {
 			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
-		} else {
-			print_r(gt("None Found: Good")."!<br>");
+            foreach ($sectionrefs as $sectionref) {
+                if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
+                // There is no original for this sectionref so change it to the original
+                    $sectionref->is_original = 1;
+                    $db->updateObject($sectionref,"sectionref");
+                    $no_origs[] = gt("Fixed").": ".$sectionref->module." - ".$sectionref->source;
+                }
+            }
 		}
-		foreach ($sectionrefs as $sectionref) {
-			if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
-			// There is no original for this sectionref so change it to the original
-				$sectionref->is_original = 1;
-				$db->updateObject($sectionref,"sectionref");
-				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
-			}
-		}
-		print_r("</pre>");
+        assign_to_template(array(
+            'no_origs'=>$no_origs,
+        ));
 
-		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<strong>".gt("Searching for sectionrefs pointing to missing sections/pages")." <br>".gt("to fix for the Recycle Bin")."</strong><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
-		$found = 0;
+		$no_sections = array();
 		foreach ($sectionrefs as $sectionref) {
 			if ($db->selectObject('section',"id='".$sectionref->section."'") == null) {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
-				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
-				$found += 1;
+                $no_sections[] = gt("Fixed").": ".$sectionref->module." - ".$sectionref->source;
 			}
 		}
-		if (!$found) {
-			print_r(gt("None Found: Good")."!<br>");
-		}
-		print_r("</pre>");
+        assign_to_template(array(
+            'no_sections'=>$no_sections,
+        ));
 
-		 print_r("<pre>");
 	 // delete sectionref's that have empty sources since they are dead
-		 print_r("<strong>".gt("Searching for unassigned modules (no source)")."</strong><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
+         $no_assigns = array();
 		 if ($sectionrefs != null) {
-			 print_r(gt("Removing").": ".count($sectionrefs)." ".gt("empty sectionrefs (no source)")."<br>");
+             $no_assigns[] = gt("Removing").": ".count($sectionrefs)." ".gt("empty sectionrefs (no source)");
 			 $db->delete('sectionref','source=""');
-		 } else {
-			 print_r(gt("No Empties Found: Good")."!<br>");
 		 }
+        assign_to_template(array(
+            'no_assigns'=>$no_assigns,
+        ));
 
-		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
-		print_r("<strong>".gt("Searching for missing sectionrefs based on existing containers")."</strong><br><br>");
 		$containers = $db->selectObjects('container',1);
+        $missing_sectionrefs = array();
 		foreach ($containers as $container) {
 			$iloc = expUnserialize($container->internal);
 			if ($db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."'") == null) {
 			// There is no sectionref for this container.  Populate sectionref
-				$newSecRef = new stdClass();
-				$newSecRef->module   = $iloc->mod;
-				$newSecRef->source   = $iloc->src;
-				$newSecRef->internal = '';
-				$newSecRef->refcount = 1;
-				$newSecRef->is_original = 1;
-				if ($container->external != "N;") {
+                if ($container->external != "N;") {
+                    $newSecRef = new stdClass();
+                    $newSecRef->module   = $iloc->mod;
+                    $newSecRef->source   = $iloc->src;
+                    $newSecRef->internal = '';
+                    $newSecRef->refcount = 1;
+                    $newSecRef->is_original = 1;
 					$eloc = expUnserialize($container->external);
 					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
 						$db->insertObject($newSecRef,"sectionref");
-						print_r(gt("Missing sectionref for container replaced").": ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id."<br>");
+						$missing_sectionrefs[] = gt("Missing sectionref for container replaced").": ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id;
 					} else {
-						print_r(gt("Cant' find the container page for container").": ".$iloc->mod." - ".$iloc->src."<br>");
+                        $db->delete('container','id="'.$container->id.'"');
+                        $missing_sectionrefs[] = gt("Cant' find the container page for container").": ".$iloc->mod." - ".$iloc->src.' - '.gt('deleted');
 					}
 				}
 			}
 		}
-		print_r("</pre>");
+        assign_to_template(array(
+            'missing_sectionrefs'=>$missing_sectionrefs,
+        ));
 	}
 
     public function fix_tables() {

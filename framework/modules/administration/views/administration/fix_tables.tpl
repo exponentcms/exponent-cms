@@ -19,21 +19,21 @@
 
 <h1>{'Fix Mixed Case Database Table Names'|gettext}</h1>
 {if $tables}
-<p>{'The following tables were renamed to mixed case'|gettext}</p>
-<table  class="exp-skin-table" cellspacing="0" cellpadding="0" border="0" width="100%">
-	<thead>
-		<tr>
-			<th>{'Table Name'|gettext}</th>
-		</tr>
-	</thead>
-	<tbody>
-		{foreach from=$tables item=table}
-			<tr class="{cycle values="even, odd"}">
-				<td>{$table}</td>
-			</tr>
-		{/foreach}
-	</tbody>
-</table>
+    <p>{'The following tables were renamed to mixed case'|gettext}</p>
+    <table  class="exp-skin-table" cellspacing="0" cellpadding="0" border="0" width="100%">
+        <thead>
+            <tr>
+                <th>{'Table Name'|gettext}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$tables item=table}
+                <tr class="{cycle values="even, odd"}">
+                    <td>{$table}</td>
+                </tr>
+            {/foreach}
+        </tbody>
+    </table>
 {else}
-<p>{'There were no mis-named tables found'|gettext}</p>
+    <h4>{'There were no mis-named tables found'|gettext}</h4>
 {/if}
