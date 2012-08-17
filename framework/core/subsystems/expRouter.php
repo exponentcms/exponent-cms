@@ -87,7 +87,7 @@ class expRouter {
         
                 // we need to add the change the module parameter to controller if it exists
                 // we can remove this snippit once the old modules are gone.
-                if (!empty($params['module']) || empty($params['controller'])) $params['controller'] = $params['module'];
+                if (!empty($params['module']) && empty($params['controller'])) $params['controller'] = $params['module'];
             
                 // check to see if we have a router mapping for this controller/action
                 if (empty($no_map)){
@@ -115,8 +115,8 @@ class expRouter {
                 //if ($link != '') return expRouter::encode($linkbase.$link);
                 if ($link != '') return self::cleanLink($linkbase.$link);
                 
-                $link .= $params['controller'].'/';
-                $link .= $params['action'].'/';
+                if (!empty($params['controller'])) $link .= $params['controller'].'/';
+                if (!empty($params['action'])) $link .= $params['action'].'/';
                 foreach ($params as $key=>$value) {
                     if(!is_array($value))
                     {

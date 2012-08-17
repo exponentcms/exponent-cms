@@ -38,7 +38,7 @@ class fix_table_names extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "On some server filesystems (Windows), the table names may lose their mixed case.  This script attempts to rename those tables."; }
+	function description() { return "On some server filesystems (Windows), some tables may lose their mixed case names.  This script attempts to rename those tables."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

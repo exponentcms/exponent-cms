@@ -39,7 +39,8 @@ class upgrade_navigation extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "The Navigation module was upgraded to a Controller in v2.0.9.  This Script converts Navigation modules to the new format and then deletes old navigationmodule files"; }
+	function description() { return "The Navigation module was upgraded to a Controller in v2.0.9.".
+        "This Script converts Navigation modules to the new format and then deletes most old navigationmodule files except those used for backward compatibility."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)

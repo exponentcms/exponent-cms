@@ -131,6 +131,7 @@ class filedownloadController extends expController {
             if ($rss_item->enclosure->type == 'audio/mpeg') $rss_item->enclosure->type = 'audio/mpg';
 
             // Add iTunes info
+            $rss_item->itunes = new iTunes();
             $rss_item->itunes->subtitle = expString::convertSmartQuotes($item->title);
             $rss_item->itunes->summary = expString::convertSmartQuotes($item->body);
             $rss_item->itunes->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;

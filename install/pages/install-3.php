@@ -224,7 +224,7 @@ if ($passed) {
 	}
 
 	if ($db->tableIsEmpty('modstate')) {
-		$modstate = array();
+		$modstate = new stdClass();
 		$modstate[0]->module = 'textController';
 		$modstate[0]->active = 1;
 		foreach($modstate as $key=>$val){

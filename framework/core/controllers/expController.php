@@ -643,26 +643,25 @@ abstract class expController {
             $id = array('module'=>$module,'src'=>$this->params['src']);
         }
         $site_rss = new expRss($id);
-        $site_rss->title = empty($site_rss->title) ? gt('RSS for').' '.URL_FULL : $site_rss->title;
-        $site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is an RSS syndication from').' '.HOSTNAME : $site_rss->feed_desc;
-        if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
-        if ($site_rss->rss_cachetime == 0) { $site_rss->rss_cachetime = 1440; }
+        if (!empty($site_rss->id) && $site_rss->enable_rss == true) {
+            $site_rss->title = empty($site_rss->title) ? gt('RSS for').' '.URL_FULL : $site_rss->title;
+            $site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is an RSS syndication from').' '.HOSTNAME : $site_rss->feed_desc;
+            if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
+            if ($site_rss->rss_cachetime == 0) { $site_rss->rss_cachetime = 1440; }
 
-        if (!empty($site_rss->itunes_cats)) {
-            $ic = explode(";", $site_rss->itunes_cats);
-            $x = 0;
-            $itunes_cats = array();
-            foreach($ic as $cat){
-                $cat_sub = explode(":", $cat);
-                $itunes_cats[$x]->category = $cat_sub[0];
-                if(isset($cat_sub[1])) {
-                    $itunes_cats[$x]->subcategory = $cat_sub[1];
+            if (!empty($site_rss->itunes_cats)) {
+                $ic = explode(";", $site_rss->itunes_cats);
+                $x = 0;
+                $itunes_cats = array();
+                foreach($ic as $cat){
+                    $cat_sub = explode(":", $cat);
+                    $itunes_cats[$x]->category = $cat_sub[0];
+                    if(isset($cat_sub[1])) {
+                        $itunes_cats[$x]->subcategory = $cat_sub[1];
+                    }
+                    $x++;
                 }
-                $x++;
             }
-        }
-
-        if ($site_rss->enable_rss == true) {
 
             // NO buffering from here on out or things break unexpectedly. - RAM
             ob_end_clean();
@@ -670,7 +669,7 @@ abstract class expController {
             header('Content-Type: ' . 'application/rss+xml');
 //            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 //            header('Content-Transfer-Encoding: binary');
-//            header('Content-Encoding:');
+            header('Content-Encoding:');
             // IE need specific headers
             if (EXPONENT_USER_BROWSER == 'IE') {
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -686,6 +685,7 @@ abstract class expController {
         	$rss->useCached();
             $rss->title = $site_rss->title;
         	$rss->description = $site_rss->feed_desc;
+            $rss->image = new FeedImage();
             $rss->image->url = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
             $rss->image->title = $site_rss->title;
             $rss->image->link = URL_FULL;
@@ -695,6 +695,7 @@ abstract class expController {
         	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
         	$rss->syndicationURL = "http://".HOSTNAME.$_SERVER['PHP_SELF'].'?module='.$site_rss->module.'&src='.$site_rss->src;
         	if ($site_rss->module == "filedownload") {
+                $rss->itunes = new iTunes();
         //		$rss->itunes->summary = $site_rss->feed_desc;
         		$rss->itunes->author = ORGANIZATION_NAME;
                 if (!empty($itunes_cats)) {
@@ -719,7 +720,7 @@ abstract class expController {
         	}
         	$rss->pubDate = $pubDate;
 
-        	header("Content-type: text/xml");
+//        	header("Content-type: text/xml");
         	if ($site_rss->module == "filedownload") {
         		echo $rss->createFeed("PODCAST");
         	} else {

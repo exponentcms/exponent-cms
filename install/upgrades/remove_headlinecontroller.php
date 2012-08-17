@@ -39,7 +39,7 @@ class remove_headlinecontroller extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "The Headline Controller was replaced by the Text Controller.  This Script converts Headline modules to Text modules and then deletes the Headline module files"; }
+	function description() { return "The Headline Controller has been replaced by the Text Controller.  This Script converts Headline modules to Text modules and then deletes the Headline module files"; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)

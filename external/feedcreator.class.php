@@ -504,7 +504,7 @@ class FeedCreator extends HtmlDescribable {
 	 * @internal param \length $int the maximum length the string should be truncated to
 	 * @return string    the truncated string
 	 */
-	function iTrunc($string, $length) {
+	public static function  iTrunc($string, $length) {
 		if (strlen($string)<=$length) {
 			return $string;
 		}

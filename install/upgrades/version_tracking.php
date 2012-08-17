@@ -38,7 +38,7 @@ class version_tracking extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return gt("The system keeps track of its version for upgrades"); }
+	function description() { return gt("The system keeps track of its version"); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

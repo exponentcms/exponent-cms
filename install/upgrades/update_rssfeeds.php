@@ -38,7 +38,7 @@ class update_rssfeeds extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.0.9, the RSS Feed feature was revised and required additional entries in the database.  This Script updates those entries"; }
+	function description() { return "In v2.0.9, the RSS Feed feature was revised which requires additional entries in the database.  This Script updates those entries"; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -66,6 +66,27 @@ class update_rssfeeds extends upgradescript {
                 $fixed =+1 ;
             }
 	    }
+        // search for and create expRss items based on module configurations
+        $feedconfigs = $db->selectObjects('expConfigs',"config LIKE '%s:10:\"enable_rss\";s:1:\"1\";%'");
+        foreach ($feedconfigs as $feedconfig) {
+            // create a new RSS object if enable is checked.
+            $loc = expUnserialize($feedconfig->location_data);
+            $config = expUnserialize($feedconfig->config);
+        	$params['module'] = $loc->mod;
+        	$params['src'] = $loc->src;
+            $params['title'] = $config['feed_title'];
+            $params['sef_url'] = $config['feed_sef_url'];
+            $params['feed_desc'] = $config['feed_desc'];
+        	$params['enable_rss'] = $config['enable_rss'];
+            $params['advertise'] = $config['advertise'];
+        	$params['rss_limit'] = $config['rss_limit'];
+        	$params['rss_cachetime'] = $config['rss_cachetime'];
+            if (!empty($config['itunes_cats'])) $params['itunes_cats'] = $config['itunes_cats'];
+            $rssfeed = new expRss($params);
+            $rssfeed->update($params);
+            $fixed =+1 ;
+        }
+
         return ($fixed?$fixed:gt('No')).' '.gt('RSS Feeds were updated');
 	}
 
