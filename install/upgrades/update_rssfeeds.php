@@ -63,7 +63,7 @@ class update_rssfeeds extends upgradescript {
                 if (empty($rssfeed->title)) $rssfeed->title = !empty($rssfeed->feed_title) ? $rssfeed->feed_title : '';
                 if (empty($rssfeed->sef_url)) $rssfeed->sef_url = self::makeSefUrl($rssfeed->title);
    		        $db->updateObject($rssfeed,'expRss');
-                $fixed =+1 ;
+                $fixed++;
             }
 	    }
         // search for and create expRss items based on module configurations
@@ -75,16 +75,16 @@ class update_rssfeeds extends upgradescript {
         	$params['module'] = $loc->mod;
         	$params['src'] = $loc->src;
             $params['title'] = $config['feed_title'];
-            $params['sef_url'] = $config['feed_sef_url'];
+            if (!empty($config['feed_sef_url'])) $params['sef_url'] = $config['feed_sef_url'];
             $params['feed_desc'] = $config['feed_desc'];
         	$params['enable_rss'] = $config['enable_rss'];
-            $params['advertise'] = $config['advertise'];
+            if (!empty($config['advertise'])) $params['advertise'] = $config['advertise'];
         	$params['rss_limit'] = $config['rss_limit'];
         	$params['rss_cachetime'] = $config['rss_cachetime'];
             if (!empty($config['itunes_cats'])) $params['itunes_cats'] = $config['itunes_cats'];
             $rssfeed = new expRss($params);
             $rssfeed->update($params);
-            $fixed =+1 ;
+            $fixed++;
         }
 
         return ($fixed?$fixed:gt('No')).' '.gt('RSS Feeds were updated');

@@ -1497,11 +1497,17 @@ class expFile extends expRecord {
 					} else if ($pair[0] == 'RECORD') {
 						// Here we need to check the conversion scripts.
 						$pair[1] = str_replace('\r\n',"\r\n",$pair[1]);
-						$object = unserialize($pair[1]);
+//						$object = expUnserialize($pair[1]);
+                        $object = @unserialize($pair[1]);
+                        if (!$object)  $object = unserialize(stripslashes($pair[1]));
 						if (function_exists($table_function)) {
 							$table_function($db,$object);
 						} else {
-							$db->insertObject($object,$table);
+							if (is_object($object)) {
+                                $db->insertObject($object,$table);
+                            } else {
+                                $errors[] = sprintf(gt('Unable to decipher "%s" record (line %d)'),$pair[0],$line_number);
+                            }
 						}
 					} else {
 						$errors[] = sprintf(gt('Invalid specifier type "%s" (line %d)'),$pair[0],$line_number);

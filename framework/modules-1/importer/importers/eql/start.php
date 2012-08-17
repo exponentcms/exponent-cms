@@ -26,6 +26,7 @@ $form->meta('importer','eql');
 $form->meta('page','process');
 
 $form->register('file',gt('EQL File'),new uploadcontrol());
+//$form->register('select_tables',gt('Select Specific Tables?'), new checkboxcontrol(false));
 $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
 
 $template = new template('importer','_eql_restoreForm',$loc);

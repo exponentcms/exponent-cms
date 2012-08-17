@@ -239,6 +239,14 @@ div.bodycopy ul, ol {
     background-repeat:no-repeat;
 }
 
+#main ul li {
+	list-style:disc;
+}
+
+#main ol li {
+	list-style:decimal;
+}
+
 /* Sidebar */
 #sidebar {
 	float: right;

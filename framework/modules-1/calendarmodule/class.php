@@ -449,7 +449,7 @@ class calendarmodule {
 		return gt("Calendar Event");
 	}
 
-    function searchCategory() {
+    static function searchCategory() {
   		return gt('Event');
   	}
 

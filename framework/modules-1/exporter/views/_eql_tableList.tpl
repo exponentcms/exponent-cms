@@ -57,7 +57,7 @@
 
 					<td>{$tables[tid]}</td>
 
-					<td width="12">&#160;</td>
+					<td style="width:12px">&#160;</td>
 
 					{math equation="x+1" x=$smarty.section.tid.index assign=nextid}
 					<td>
