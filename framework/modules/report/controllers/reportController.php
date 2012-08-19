@@ -88,7 +88,7 @@ class reportController extends expController {
         $this->setDateParams($this->params);                
        
         $except = array('order_discounts', 'billingmethod', 'order_status_changes','billingmethod','order_discounts');
-        $orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);                
+        $orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,0,true,false,$except,true);
         $oar = array();         
         foreach ($orders as $order)
         {                         
@@ -1780,7 +1780,7 @@ class reportController extends expController {
         foreach ($prods as $pid)
         {   
             $except = array('company','crosssellItem','optiongroup');                       
-            $p = $baseProd->find('first','id='.$pid['id'],null,null,null,true,false,$except,true);
+            $p = $baseProd->find('first','id='.$pid['id'],null,null,0,true,false,$except,true);
             
             //eDebug($p,true);
             $out.= $this->outputField($p->id);
@@ -1947,7 +1947,7 @@ class reportController extends expController {
         foreach ($prods as $pid)
         {   
             $except = array('crosssellItem','optiongroup','childProduct');                       
-            $p = $baseProd->find('first','id='.$pid['id'],null,null,null,true,true,$except,true);
+            $p = $baseProd->find('first','id='.$pid['id'],null,null,0,true,true,$except,true);
             
             /*if(count($p->expSimpleNote))
             {
@@ -1973,7 +1973,7 @@ class reportController extends expController {
             }
             $out.= $this->outputField($noteString,'') . chr(13) . chr(10); 
                     
-            $cps = $baseProd->find('all','parent_id='.$p->id,null,null,null,true,true,$except,true);
+            $cps = $baseProd->find('all','parent_id='.$p->id,null,null,0,true,true,$except,true);
             foreach ($cps as $cp)
             {                            
                 $out.= $this->outputField($cp->id);

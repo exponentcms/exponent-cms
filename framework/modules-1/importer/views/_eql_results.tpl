@@ -19,14 +19,14 @@
     <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$smarty.const.URL_FULL}">{'Take me to my home page'|gettext}</a>
 {else}
 	<h2>{'Some Errors were encountered trying to restore the database from the EQL file'|gettext}</h2>
-    <ul>
+    <ul style="list-style:disc;">
         {foreach from=$errors item=error}
             <li>{$error}</li>
         {/foreach}
     </ul>
     <h3>{'Most likely those tables were deprecated and no longer exist'|gettext}</h3>
     <p>{'Here\'s what we recommend'|gettext}:</p>
-    <ol>
+    <ol style="list-style:decimal;">
         <li>
             {'Download and extract the Exponent package corresponding to the \'from\' version in the upgrade notice above'|gettext}
             {br}

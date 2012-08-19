@@ -52,7 +52,7 @@ class twitterController extends expController {
 
 	        switch ($this->config['typestatus']) {
 		        case 1:  // get users timeline including retweets
-			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,$this->config['twlimit'],null,null,true);
+			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,$this->config['twlimit'],null,false,true);
 			        break;
 		        case 2:  // get friends timeline
 					$tweets = $twitter->statusesFriendsTimeline(null,null,$this->config['twlimit']);

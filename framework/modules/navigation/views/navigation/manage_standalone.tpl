@@ -27,7 +27,7 @@
         <table cellpadding="2" cellspacing="0" border="0" width="100%" class="exp-skin-table">
             <thead>
                 <tr>
-                    <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" oncChange="selectAll(this.checked)"></th>
+                    <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onchange="selectAll(this.checked)"></th>
                     <th><strong>{'Page Title'|gettext}</strong></th>
                     <th><strong>{'Actions'|gettext}</strong></th>
                     <th><strong>{'Permissions'|gettext}</strong></th>

@@ -86,7 +86,7 @@ function smarty_function_prod_images($params,&$smarty) {
                 $imgparams['src'] = 'framework/modules/ecommerce/assets/images/no-image.jpg';
                 $imgparams['alt'] = gt('No image found for').' '.$rec->title;
             }
-            $img = smarty_function_img($imgparams,&$smarty);
+            $img = smarty_function_img($imgparams,$smarty);
             
             $html .= $img;
             $html .= '</a>';
@@ -101,7 +101,7 @@ function smarty_function_prod_images($params,&$smarty) {
                 $adi .= '<ul class="thumbnails">';
                 for ($i=0; $i<count($addImgs); $i++) {
                     $thumbparams = array("h"=>$config['addthmbw'],"w"=>$config['addthmbh'],"zc"=>1,"file_id"=>$addImgs[$i]->id,"return"=>1,"class"=>"thumnail");
-                    $thmb .= '<li>'.smarty_function_img($thumbparams,&$smarty).'</li>';
+                    $thmb .= '<li>'.smarty_function_img($thumbparams,$smarty).'</li>';
                 }
                 $adi .= $thmb;
                 $adi .= '</ul>';
@@ -120,7 +120,7 @@ function smarty_function_prod_images($params,&$smarty) {
 
             for ($i=0; $i<count($mainImages); $i++) {
                 $imgparams = array("w"=>$config['displaywidth'],"file_id"=>$mainImages[$i]->id,"return"=>1,"class"=>"large-img");
-                $img .= '<li>'.smarty_function_img($imgparams,&$smarty).'</li>';
+                $img .= '<li>'.smarty_function_img($imgparams,$smarty).'</li>';
             }
             $html .= $img;
             $html .= '</ul>';
@@ -202,8 +202,8 @@ function smarty_function_prod_images($params,&$smarty) {
             for ($i=0; $i<count($swatches); $i++) {
                 $small = array("h"=>$config['swatchsmh'],"w"=>$config['swatchsmw'],"zc"=>1,"file_id"=>$swatches[$i]->id,"return"=>1,"class"=>'swatch');
                 $med = array("h"=>$config['swatchpoph'],"w"=>$config['swatchpopw'],"zc"=>1,"file_id"=>$swatches[$i]->id,"return"=>1);
-                $swtch .= '<li>'.smarty_function_img($small,&$smarty);
-                $swtch .= '<div>'.smarty_function_img($med,&$smarty).'<strong>'.$swatches[$i]->title.'</strong></div>';
+                $swtch .= '<li>'.smarty_function_img($small,$smarty);
+                $swtch .= '<div>'.smarty_function_img($med,$smarty).'<strong>'.$swatches[$i]->title.'</strong></div>';
                 $swtch .= '</li>';
             }
             $html .= $swtch;

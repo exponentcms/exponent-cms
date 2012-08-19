@@ -101,7 +101,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 // we may need to pass through an ID for some reason, like a category ID for products
                 $html .= !empty($params['id']) ? '<input type="hidden" name="id" value="'.$params['id'].'" />' : '';
                 $html .= '<input type="hidden" name="action" value="manage_ranks" />
-                <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items']<12))?"":"height:350px").';overflow-y:auto;">
+                <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items'])<12)?"":"height:350px").';overflow-y:auto;">
                 ';
                 $odd = "even";
                 $stringlen = 40;
