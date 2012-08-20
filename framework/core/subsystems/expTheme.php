@@ -387,8 +387,13 @@ class expTheme {
 				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
 			}
 		}
-        if (!is_readable($theme) && is_readable(BASE.'themes/basetheme/index.php')) {
-            $theme =  BASE.'themes/basetheme/index.php';
+        //FIXME change this to a generic system theme
+        if (!is_readable($theme)) {
+            if (is_readable(BASE.'themes/basetheme/index.php')) {
+               $theme =  BASE.'themes/basetheme/index.php';
+            } else {
+                $theme = BASE.'framework/index.php';
+            }
         }
 		return $theme;
 	}
