@@ -75,15 +75,20 @@ class update_rssfeeds extends upgradescript {
         	$params['module'] = $loc->mod;
         	$params['src'] = $loc->src;
             $params['title'] = $config['feed_title'];
-            if (!empty($config['feed_sef_url'])) $params['sef_url'] = $config['feed_sef_url'];
+            $params['sef_url'] = (!empty($config['feed_sef_url'])) ? $config['feed_sef_url'] : null;
             $params['feed_desc'] = $config['feed_desc'];
         	$params['enable_rss'] = $config['enable_rss'];
-            if (!empty($config['advertise'])) $params['advertise'] = $config['advertise'];
+            $params['advertise'] = (!empty($config['advertise'])) ? $config['advertise'] : false;
         	$params['rss_limit'] = $config['rss_limit'];
         	$params['rss_cachetime'] = $config['rss_cachetime'];
             if (!empty($config['itunes_cats'])) $params['itunes_cats'] = $config['itunes_cats'];
             $rssfeed = new expRss($params);
             $rssfeed->update($params);
+            if (empty($params['sef_url'])) {
+                $newconfig = new expConfig($loc);
+                $config['feed_sef_url'] = $rssfeed->sef_url;
+                $newconfig->update(array('config'=>$config));
+            }
             $fixed++;
         }
 
