@@ -32,7 +32,6 @@
 		        {assign var=type value="content"}
     		{/if}
     		
-
     		{if $sections[$previouskey]->depth < $section->depth && $smarty.foreach.children.first!=true}
 
     		<div id="{$id}-{$sections[$previouskey]->id}" class="yui3-menu">
@@ -88,4 +87,3 @@
     });
 {/literal}
 {/script}
-

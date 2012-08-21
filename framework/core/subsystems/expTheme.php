@@ -392,7 +392,7 @@ class expTheme {
             if (is_readable(BASE.'themes/basetheme/index.php')) {
                $theme =  BASE.'themes/basetheme/index.php';
             } else {
-                $theme = BASE.'framework/index.php';
+                $theme = BASE.'framework/core/index.php';
             }
         }
 		return $theme;

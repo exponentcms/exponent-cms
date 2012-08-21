@@ -50,7 +50,9 @@
 	            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer","chrome"=>1)) ?>
 			</div>
 		</div>
-        <?php echo gt('This is the system fallback theme, there is a problem using the current theme!'); ?>
+        <div style="font-weight:bold;color:red;text-align:center;background-color:black;">
+        <?php echo gt('There is a problem using the current theme, this is the system fallback theme!'); ?>
+        </div>
 	    <?php expTheme::foot(); ?>
 	</body>
 </html>
