@@ -111,6 +111,13 @@ class upgrade_simplepoll extends upgradescript {
 	        $modules_converted += 1;
 	    }
 
+        // need to replace old module modstate with new SimplePoll module
+        $ms = $db->selectObject('modstate',"module='simplepollmodule'");
+        if (!empty($ms)) {
+            $ms->module = 'simplePollController';
+            $db->updateObject($ms,'modstate',"module='simplePollController'",'module');
+        }
+
 		// convert questions, answers, & time-blocks
         $questions_converted = 0;
 		$questions = $db->selectArrays('poll_question',"1");

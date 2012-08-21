@@ -99,6 +99,13 @@ class upgrade_navigation extends upgradescript {
 		// delete section_template table
 		$db->dropTable('section_template');
 
+        // need to activate new Navigation module modstate if old one was active, leave old one intact
+        $ms = $db->selectObject('modstate',"module='navigationmodule'");
+        if (!empty($ms) && !$db->selectObject('modstate',"module='navigationController'")) {
+            $ms->module = 'navigationController';
+            $db->insertObject($ms,'modstate');
+        }
+
         // delete old files (moved or deleted)
         $oldfiles = array (
             'external/editors/connector/popup.js',
