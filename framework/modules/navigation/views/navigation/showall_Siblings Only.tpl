@@ -13,7 +13,11 @@
  *
  *}
 
-<div class="navigation siblings-only">
+<div class="module navigation siblings-only">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
 	<h2>{$current->name}</h2>
     <ul>
         {foreach from=$sections item=section}

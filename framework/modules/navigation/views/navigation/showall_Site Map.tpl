@@ -13,15 +13,18 @@
  *
  *}
 
-<div class="navigation site-map">
-    {assign var=in_action value=0}
-    {if $smarty.request.module == 'navigation' && $smarty.request.action == 'manage'}
-        {assign var=in_action value=1}
-    {/if}
+<div class="module navigation site-map">
     {assign var=titlepresent value=0}
     {if $moduletitle && !$config.hidemoduletitle}
         <h1>{$moduletitle}</h1>
         {assign var=titlepresent value=1}
+    {/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
+    {assign var=in_action value=0}
+    {if $smarty.request.module == 'navigation' && $smarty.request.action == 'manage'}
+        {assign var=in_action value=1}
     {/if}
     {assign var=sectiondepth value=-1}
     {foreach from=$sections item=section}
@@ -36,7 +39,7 @@
         {elseif $section->depth == $sectiondepth}
             </li>
         {else}
-            {math equation="x-y" x=$sectiondepth y=$section->depth assign=j}
+            {$j=$sectiondepth-$section->depth}
             {section name=closelist loop=$j}
                 </li></ul>
             {/section}
@@ -75,4 +78,9 @@
             <h{$headerlevel}><span class="inactive">{$section->name}</span></h{$headerlevel}>
         {/if}
     {/foreach}
+    {permissions}
+        {if $canManage == 1}
+            {icon action=manage}
+        {/if}
+    {/permissions}
 </div>

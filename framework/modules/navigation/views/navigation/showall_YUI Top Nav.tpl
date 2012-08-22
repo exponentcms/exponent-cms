@@ -46,7 +46,7 @@
                             {assign var=nextdepth value=$sections[$nextkey]->depth}
                         {/if}
 
-                        {math equation="x-y" x=$section->depth y=$nextdepth assign=looper}
+                        {$looper=$section->depth-$nextdepth}
 
                         {section name="close" loop=$looper}
                                     </li>

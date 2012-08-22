@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="navigation add-section">
+<div class="module navigation add-section">
     <div class="form_header">
         <h1>{'Add New Page to Site Navigation'|gettext}</h1>
         <div class="desc">

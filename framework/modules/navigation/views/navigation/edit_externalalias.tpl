@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="navigation edit_externalalias">
+<div class="module navigation edit_externalalias">
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Editing External Alias Pages"|gettext) module="edit-external-page"}

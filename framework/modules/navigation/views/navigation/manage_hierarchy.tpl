@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="navigation manager-hierarchy">
+<div class="module navigation manager-hierarchy">
 	<div class="form_header">
 		<p>
             <strong>{'Drag and drop'|gettext}</strong> {'tree items using the 4-way arrows icon to re-order the site hierarchy (main menu).'|gettext}

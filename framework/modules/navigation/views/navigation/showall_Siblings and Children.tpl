@@ -13,7 +13,11 @@
  *
  *}
  
-<div class="navigation siblings-and-children">
+<div class="module navigation siblings-and-children">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <h2>{$current->name}</h2>
         <ul>
         {foreach from=$sections item=section}
@@ -25,7 +29,7 @@
                         <span class="navlink">{$section->name}</span>&#160;
                     {/if}
                     {if $section->id==$current->id}
-                        {getnav of=$section->id type="children" assign=kids}
+                        {getnav type="children" of=$section->id assign=kids}
                         {if $kids}
                             <ul>
                                 {foreach from=$kids item=child}

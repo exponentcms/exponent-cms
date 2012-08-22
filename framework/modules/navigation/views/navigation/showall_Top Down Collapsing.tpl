@@ -17,7 +17,11 @@
     
 {/css}
 
-<div class="module navigation top-down-collapsing">
+<div class="module navigation collapsing top-down-collapsing">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {if $current->parent!="-1"}
         {capture assign=list}
             <ul>

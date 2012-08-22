@@ -13,7 +13,7 @@
  *
  *}
 
-<div id="navmanager" class="navigation manager">
+<div id="navmanager" class="module navigation manager">
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">

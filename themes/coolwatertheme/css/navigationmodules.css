@@ -6,7 +6,6 @@
 	margin: 0 2px;	
 	color: #777;	
 }
-
 #sidebar .navigation.children-only ul {
 	list-style: none;
 	text-align: left;
@@ -31,13 +30,19 @@
 #sidebar .navigation.children-only ul li a:hover {	
 	color: #333;
 }
-#sidebar .navigation.children-only ul ul { margin: 0 0 0 5px; padding: 0; }
-#sidebar .navigation.children-only ul ul li { border: none; }
-
+#sidebar .navigation.children-only ul ul {
+    margin: 0 0 0 5px;
+    padding: 0;
+}
+#sidebar .navigation.children-only ul ul li {
+    border: none;
+}
 .navigation.site-map ul {
     margin-left: 25px;
 }
-
 .navigation ul li {
     list-style: disc;
+}
+.navigation.flydown ul li {
+    list-style: none;
 }

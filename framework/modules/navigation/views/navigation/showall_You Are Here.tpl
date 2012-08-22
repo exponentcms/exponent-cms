@@ -13,4 +13,10 @@
  *
  *}
 
-<div class="navigation you-are-here"><h1>{$current->name}</h1></div>
+<div class="module navigation you-are-here">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
+    <h2>{$current->name}</h2>
+</div>

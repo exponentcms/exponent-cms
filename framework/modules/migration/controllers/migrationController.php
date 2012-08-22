@@ -2080,6 +2080,11 @@ class migrationController extends expController {
 					}
 				}
 				break;
+            case 'navigationmodule':
+				@$module->view = 'showall_'.$module->view;
+                @$this->msg['migrated'][$iloc->mod]['count']++;
+                @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+				break;
 			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
 				break;

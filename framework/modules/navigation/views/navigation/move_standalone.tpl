@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="navigation move_standalonepage">
+<div class="module navigation move_standalonepage">
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Moving Standalone Pages"|gettext) module="move-standalone-page"}

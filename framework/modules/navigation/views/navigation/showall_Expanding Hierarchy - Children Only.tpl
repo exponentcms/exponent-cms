@@ -17,7 +17,11 @@
 
 {/css}
 
-<div class="navigation expanding">
+<div class="module navigation expanding expanding-hierarchy-children-only">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <ul>
         {foreach from=$sections item=section}
             {if $section->numParents != 0}
@@ -45,7 +49,7 @@
                         {elseif $section->active == 1}
                             <a href="{$section->link}" {if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
                         {else}
-                            <span class="side_link">{$section->name}</span>&#160;
+                            <span class="navlink">{$section->name}</span>&#160;
                         {/if}
                     </li>
                 {/if}

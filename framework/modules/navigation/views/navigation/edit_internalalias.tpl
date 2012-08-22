@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="navigation edit_internalalias">
+<div class="module navigation edit_internalalias">
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Editing Internal Alias Pages"|gettext) module="edit-internal-page"}

@@ -13,8 +13,12 @@
  *
  *}
 
- <div class="navigation directional">
-    {math equation="x-1" x=$current->rank assign="prevrank"}
+ <div class="module navigation directional">
+     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
+    {$prevrank=$current->rank-1}
     {if $prevrank < 0}
     	&lt; {'Prev Page'|gettext}
     {else}
@@ -37,7 +41,7 @@
 
     &#160;|&#160;
 
-    {math equation="x+1" x=$current->rank assign="nextrank"}
+    {$nextrank=$current->rank+1}
     {assign var=gotlink value=0}
     {foreach from=$sections item=section }
         {if $section->parent == $current->parent && $section->rank == $nextrank}

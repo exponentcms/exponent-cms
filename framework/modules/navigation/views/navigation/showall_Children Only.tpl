@@ -14,36 +14,36 @@
  *}
 
 <div class="module navigation children-only">
-    <h2>{$current->name}</h2>         
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
+    <h2>{$current->name}</h2>
     <ul>
         {assign var=islastdepth value="false"}
         {foreach from=$sections item=section}
             {if $section->parent == $current->id}
                 {assign var=islastdepth value="true"}
-                {if $section->public == 1}
-                 	<li{if $section->id==$current->id || $isparent==1} class="current"{/if}>
-                    	{if $section->active == 1}
-                           <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>
-                    	{else}
-                           <span class="navlink">{$section->name}</span>&#160;
-        			    {/if}
-                   </li>
-                {/if}
+                <li{if $section->id==$current->id || $isparent==1} class="current"{/if}>
+                    {if $section->active == 1}
+                       <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>
+                    {else}
+                       <span class="navlink">{$section->name}</span>&#160;
+                    {/if}
+               </li>
             {/if}
         {/foreach}
         
         {if $islastdepth=="false"}
             {foreach from=$sections item=section}
                 {if $section->parent == $current->parent}
-                    {if $section->public == 1}
-                        <li{if $section->id==$current->id || $isparent==1} class="current"{/if}>
-                            {if $section->active == 1}
-                                 <a href="{$section->link}" class="navlink {if $section->id==$current->id || $isparent==1}current{/if}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>
-                            {else}
-                                  <span class="navlink">{$section->name}</span>&#160;
-                            {/if}
-                        </li>
-                    {/if}
+                    <li{if $section->id==$current->id || $isparent==1} class="current"{/if}>
+                        {if $section->active == 1}
+                            <a href="{$section->link}" class="navlink {if $section->id==$current->id || $isparent==1}current{/if}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>
+                        {else}
+                            <span class="navlink">{$section->name}</span>&#160;
+                        {/if}
+                    </li>
                 {/if}
             {/foreach}
         {/if}

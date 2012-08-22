@@ -17,7 +17,11 @@
 
 {/css}
 
-<div class="navigation top-nav">
+<div class="module navigation top-nav">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
 	<ul>
         {assign var=isparent value=0}
         {foreach from=$sections item=section}

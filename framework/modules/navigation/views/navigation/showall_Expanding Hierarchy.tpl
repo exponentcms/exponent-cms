@@ -17,7 +17,11 @@
 
 {/css}
 
-<div class="navigation expanding">
+<div class="module navigation expanding expanding-hierarchy">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <ul>
     {foreach from=$sections item=section}
         {assign var=commonParent value=0}
@@ -26,8 +30,7 @@
                 {assign var=commonParent value=1}
             {/if}
         {/foreach}
-
-        {if $section->numParents == 0 || $commonParent || $section->id == $current->id ||  $section->parent == $current->id}
+        {if $section->numParents == 0 || $commonParent || $section->id == $current->id || $section->parent == $current->id}
             <li class="depth{$section->depth} {if $section->id == $current->id}current{/if}">
                 {if $section->active == 1}
                     <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;

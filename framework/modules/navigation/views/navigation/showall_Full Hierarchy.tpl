@@ -13,19 +13,25 @@
  *
  *}
 
- <table cellpadding="1" cellspacing="0" border="0" width="100%">
-    {foreach from=$sections item=section}
-        <tr><td style="padding-left: {math equation="x*20" x=$section->depth}px">
-        {if $section->active == 1}
-            <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
-        {else}
-            <span class="navlink">{$section->name}</span>&#160;
-        {/if}
-        </td></tr>
-    {/foreach}
-</table>
-{permissions}
-    {if $canManage == 1}
-        [ <a class="navlink" href="{link action=manage}">{'Manage'|gettext}</a> ]
+<div class="module navigation full-hierarchy">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
     {/if}
-{/permissions}
+    <ul>
+        {foreach from=$sections item=section}
+            <li style="margin-left: {$section->depth*20}px">
+                {if $section->active == 1}
+                    <a href="{$section->link}" class="navlink"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
+                {else}
+                    <span class="navlink">{$section->name}</span>&#160;
+                {/if}
+            </li>
+        {/foreach}
+    </ul>
+    {permissions}
+        {if $canManage == 1}
+            {icon action=manage}
+        {/if}
+    {/permissions}
+</div>

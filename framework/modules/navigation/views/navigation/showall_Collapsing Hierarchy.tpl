@@ -17,7 +17,11 @@
 
 {/css}
 
-<div class="navigation collapsing">
+<div class="module navigation collapsing collapsing-hierarchy">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     <ul>
         {foreach from=$sections item=section}
             {assign var=inPath value=0}
