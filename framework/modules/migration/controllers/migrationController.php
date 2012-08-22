@@ -2081,7 +2081,12 @@ class migrationController extends expController {
 				}
 				break;
             case 'navigationmodule':
-				@$module->view = 'showall_'.$module->view;
+                if ($module->view = 'Breadcrumb') {
+                    @$module->view = 'breadcumb';
+                    @$module->action = 'breadcumb';
+                } else {
+                    @$module->view = 'showall_'.$module->view;
+                }
                 @$this->msg['migrated'][$iloc->mod]['count']++;
                 @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 				break;

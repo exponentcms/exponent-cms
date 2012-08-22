@@ -22,7 +22,8 @@
 class navigationController extends expController {
     public $basemodel_name = 'section';
     public $useractions = array(
-        'showall' => 'Show all',
+        'showall' => 'Show Menu',
+        'breadcrumb' => 'Breadcrumb',
     );
     public $remove_configs = array(
         'aggregation',
@@ -68,49 +69,58 @@ class navigationController extends expController {
         expHistory::set('viewable', $this->params);
         $id      = $sectionObj->id;
         $current = null;
-        switch ($this->params['view']) {
-            case "showall_Breadcrumb":
-                // Show not only the location of a page in the hierarchy but also the location of a standalone page
-                $current = $db->selectObject('section', ' id= ' . $id);
-                if ($current->parent == -1) {  // standalone page
-                    $navsections = self::levelTemplate(-1, 0);
-                    foreach ($navsections as $section) {
-                        if ($section->id == $id) {
-                            $current = $section;
-                            break;
-                        }
-                    }
-                } else {
-                    $navsections = self::levelTemplate(0, 0);
-                    foreach ($navsections as $section) {
-                        if ($section->id == $id) {
-                            $current = $section;
-                            break;
-                        }
-                    }
+        // all we need to do is determine the current section
+        $navsections = $sections;
+        if ($sectionObj->parent == -1) {
+            $current = $sectionObj;
+        } else {
+            foreach ($navsections as $section) {
+                if ($section->id == $id) {
+                    $current = $section;
+                    break;
                 }
-                break;
-            default:
-                // all we need to do is determine the current section
-                $navsections = $sections;
-                if ($sectionObj->parent == -1) {
-                    $current = $sectionObj;
-                } else {
-                    foreach ($navsections as $section) {
-                        if ($section->id == $id) {
-                            $current = $section;
-                            break;
-                        }
-                    }
-                }
-                break;
+            }
         }
         assign_to_template(array(
             'sections'     => $navsections,
-            'hierarchy'    => self::navhierarchy(),
+//            'hierarchy'    => self::navhierarchy(),
             'current'      => $current,
 //            'num_sections' => count($sections),
             'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
+        ));
+    }
+
+    public function breadcrumb() {
+        global $db, $user, $sectionObj, $sections;
+
+        expHistory::set('viewable', $this->params);
+        $id      = $sectionObj->id;
+        $current = null;
+        // Show not only the location of a page in the hierarchy but also the location of a standalone page
+        $current = $db->selectObject('section', ' id= ' . $id);
+        if ($current->parent == -1) {  // standalone page
+            $navsections = self::levelTemplate(-1, 0);
+            foreach ($navsections as $section) {
+                if ($section->id == $id) {
+                    $current = $section;
+                    break;
+                }
+            }
+        } else {
+            $navsections = self::levelTemplate(0, 0);
+            foreach ($navsections as $section) {
+                if ($section->id == $id) {
+                    $current = $section;
+                    break;
+                }
+            }
+        }
+        assign_to_template(array(
+            'sections'     => $navsections,
+//            'hierarchy'    => self::navhierarchy(),
+            'current'      => $current,
+//            'num_sections' => count($sections),
+//            'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
         ));
     }
 

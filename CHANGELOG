@@ -4,9 +4,10 @@ Copyright (c) 2004-2012 OIC Group, Inc.
 
 Added / Fixed / changed for 2.0.9
 -----------------------
-# This release focuses on greater HTML5 compliance, ,, additional embedded help/documentation links, & module upgrades
+# This release focuses on greater HTML5 & PHP v5.4 compliance, additional embedded help/documentation links, & module upgrades
   - upgrades old school simple poll and navigation modules into 2.0 style controllers
     -- page type indicators now displayed in Manage Pages view
+    -- new universal navigation view to emulate most old navigation views through user settings
   - adds help links to most admin displays
   - calendar is more forgiving of timezone changes (events won't disappear)
     -- adds selectable weekly view to calendar
@@ -17,6 +18,7 @@ Added / Fixed / changed for 2.0.9
   - adds some new upgrade scripts to attempt to clean up the system from previous updates
     -- deletes moved file where old file in old location may still linger
     -- fixes some database issues such as mixed case naming or controller name quirks.
+  - new system fallback theme so pages will display even if the entire themes folder is missing
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.8

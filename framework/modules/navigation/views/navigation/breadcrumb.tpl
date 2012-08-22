@@ -37,7 +37,7 @@
             {else}
                 <span>{$section->name}</span>&#160;
             {/if}
-            {if $section->id != $current->id}&gt;{/if}
+            {if $section->id != $current->id}&raquo;&#160;{/if}
         {/if}
     {/foreach}
 </div>

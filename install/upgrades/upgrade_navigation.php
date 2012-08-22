@@ -81,8 +81,13 @@ class upgrade_navigation extends upgradescript {
 		    $cloc = expUnserialize($cn->internal);
 	        $cloc->mod = 'navigationController';
 		    $cn->internal = serialize($cloc);
-		    $cn->view = 'showall_'.$cn->view;
-		    $cn->action = 'showall';
+            if ($cn->view = 'Breadcrumb') {
+                $cn->view = 'breadcumb';
+                $cn->action = 'breadcumb';
+            } else {
+		        $cn->view = 'showall_'.$cn->view;
+                $cn->action = 'showall';
+            }
 	        $db->updateObject($cn,'container');
 	        $modules_converted += 1;
 	    }
