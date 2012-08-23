@@ -53,4 +53,28 @@
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
         {/if}
     </div>
+    {if $record->prev || $record->next}
+        {clear}
+        <hr>
+        <div class="paging">
+            <span style="float:left">
+                {if $record->prev}
+                    <a href="{link action=show title=$record->prev->sef_url}" title="{$record->prev->body|summarize:"html":"para"}">
+                        {icon img='page_prev.png' title='Previous Item'|gettext}
+                        {$record->prev->title}
+                    </a>
+                {/if}
+            </span>
+            <span style="float:right">
+                {if $record->next}
+                    <a href="{link action=show title=$record->next->sef_url}" title="{$record->next->body|summarize:"html":"para"}">
+                        {$record->next->title}
+                        {icon img='page_next.png' title='Next Item'|gettext}
+                    </a>
+                {/if}
+            </span>
+        </div>
+        {clear}
+        <hr>
+    {/if}
 </div>

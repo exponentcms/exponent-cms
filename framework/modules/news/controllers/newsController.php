@@ -74,7 +74,47 @@ class newsController extends expController {
             'rank'=>($order==='rank')?1:0
         ));
     }
-    
+
+    public function show() {
+        global $db;
+
+        expHistory::set('viewable', $this->params);
+
+        // figure out if we're looking this up by id or title
+        $id = null;
+        if (isset($this->params['id'])) {
+            $id = $this->params['id'];
+        } elseif (isset($this->params['title'])) {
+            $id = $this->params['title'];
+        }
+
+        $record = new news($id);
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+
+        $order = $config['order'];
+        if (strstr($order," ")) {
+            $orderby = explode(" ",$order);
+            $order = $orderby[0];
+            $order_direction = $orderby[1];
+        } else {
+            $order_direction = '';
+        }
+        if ($order_direction == 'DESC') {
+            $order_direction_next = '';
+        } else {
+            $order_direction_next = 'DESC';
+        }
+        $nextwhere = $this->aggregateWhereClause().' AND '.$order.' > '.$record->$order.' ORDER BY '.$order.' '.$order_direction_next;
+        $record->next = $record->find('first',$nextwhere);
+        $prevwhere = $this->aggregateWhereClause().' AND '.$order.' < '.$record->$order.' ORDER BY '.$order.' '.$order_direction;
+        $record->prev = $record->find('first',$prevwhere);
+
+        assign_to_template(array(
+            'record'=>$record,
+            'config'=>$config
+        ));
+    }
+
     public function showUnpublished() {
         expHistory::set('viewable', $this->params);
         

@@ -164,17 +164,20 @@ class blogController extends expController {
 
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
-	    $blog = new blog($id);
+        $record = new blog($id);
 	    
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
 	    // populate the location data in the template now.
-	    $loc = expUnserialize($blog->location_data);
-        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$blog->location_data."'"));
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+
+        $nextwhere = $this->aggregateWhereClause().' AND publish > '.$record->publish.' ORDER BY publish';
+        $record->next = $record->find('first',$nextwhere);
+        $prevwhere = $this->aggregateWhereClause().' AND publish < '.$record->publish.' ORDER BY publish DESC';
+        $record->prev = $record->find('first',$prevwhere);
 
 	    assign_to_template(array(
-            'record'=>$blog,
-            '__loc'=>$loc,
+            'record'=>$record,
             'config'=>$config));
 	}
 

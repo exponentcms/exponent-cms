@@ -332,10 +332,10 @@ abstract class expController {
         $this->loc = unserialize($record->location_data);
         
         // adding src to template's __loc var so that our links get build correct when linking to controller actions.
-        global $template;
+//        global $template;
         assign_to_template(array(
             'record'=>$record,
-            "__loc"=>$this->loc
+//            "__loc"=>$this->loc
         ));
     }
 
