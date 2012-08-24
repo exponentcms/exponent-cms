@@ -204,7 +204,6 @@ class expTheme {
 
     public static function grabView($path,$filename) {  //FIXME Not used
         $dirs = array(
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
             BASE.'themes/'.DISPLAY_THEME.'/'.$path,
             BASE.'framework/'.$path,
         );
@@ -219,7 +218,6 @@ class expTheme {
     public static function grabViews($path,$filter='') {  //FIXME Not used
         $dirs = array(
             BASE.'framework/'.$path,
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
             BASE.'themes/'.DISPLAY_THEME.'/'.$path,
         );
 
@@ -472,7 +470,6 @@ class expTheme {
             return false;
         }
         if (self::inAction()) {
-//            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
             include_once(BASE."themes/".DISPLAY_THEME."/".$theme);
             exit;
         }
@@ -530,8 +527,6 @@ class expTheme {
 					$actfile = "/" . $module . "/actions/" . $_REQUEST['action'] . ".php";
 				}
 
-//				if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-//					include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
 				if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
                     include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
 				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
@@ -562,8 +557,6 @@ class expTheme {
    		}
    		//if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 
-   //		if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-   //			include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
    		if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
    				include(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
    		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
@@ -882,7 +875,7 @@ class expTheme {
                 if ($source == null) $source = "@section";
                 $src = $source;
                 $src .= $sectionObj->id;
-//                $module_scope[$src][$params['module']."module"] = new stdClass();
+                $module_scope[$src][$module] = new stdClass();
                 $module_scope[$src][$module]->scope = 'sectional';
                 self::showModule($module,$params['view'],$moduletitle,$src,false,null,$chrome);
             }

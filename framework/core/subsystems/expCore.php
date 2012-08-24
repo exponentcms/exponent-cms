@@ -415,7 +415,6 @@ class expCore {
 		$checkpaths = array();
 		foreach($locations as $location) {
 			$checkpaths[] = $location . $typepath . $relpath2;
-	//		if (strstr($location,DISPLAY_THEME_REAL) && strstr($relpath,"framework/modules-1")) {
 			if (strstr($location,THEME_ABSOLUTE) && strstr($relpath,"framework/modules-1")) {
 				$checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
 			} else {

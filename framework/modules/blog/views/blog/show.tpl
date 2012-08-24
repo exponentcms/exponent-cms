@@ -74,9 +74,9 @@
         {/if}
     </div>
     {if $record->prev || $record->next}
-        {clear}
-        <hr>
-        <div class="paging">
+        <div class="module-actions">
+            {clear}
+            <hr>
             <span style="float:left">
                 {if $record->prev}
                     <a href="{link action=show title=$record->prev->sef_url}" title="{$record->prev->body|summarize:"html":"para"}">
@@ -93,9 +93,9 @@
                     </a>
                 {/if}
             </span>
+            {clear}
+            <hr>
         </div>
-        {clear}
-        <hr>
     {/if}
     {comments content_type="blog" content_id=$record->id title="Comments"|gettext}
 </div>

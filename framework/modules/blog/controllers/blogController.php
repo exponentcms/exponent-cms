@@ -49,11 +49,11 @@ class blogController extends expController {
 		            'model'=>$this->basemodel_name,
 		            'where'=>$this->aggregateWhereClause(),
 		            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
-		            'src'=>$this->loc->src,
 		            'order'=>'publish',
 		            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
 		            'controller'=>$this->baseclassname,
 		            'action'=>$this->params['action'],
+                    'src'=>$this->loc->src,
 		            'columns'=>array(gt('Title')=>'title'),
 		            ));
 		            

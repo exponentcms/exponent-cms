@@ -446,7 +446,6 @@ function get_common_template($view, $loc, $controllername='') {
     $controller->loc = $loc;
     
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
-//    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
 
     if (file_exists($themepath)) {
@@ -470,13 +469,11 @@ function get_config_templates($controller, $loc) {
     // set paths we will search in for the view
     $commonpaths = array(
         BASE.'framework/modules/common/views/configure',
-//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/configure',
         BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/configure',
     );
     
     $modpaths = array(
         $controller->viewpath.'/configure',
-//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/configure'
 	    BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/configure'
     );
     
@@ -553,7 +550,6 @@ function find_config_views($paths=array(), $excludes=array()) {
 function get_template_for_action($controller, $action, $loc) {
     // set paths we will search in for the view
     $basepath = $controller->viewpath.'/'.$action.'.tpl';
-//    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
 
     // the root action will be used if we don't find a view for this action and it is a derivative of
@@ -561,7 +557,6 @@ function get_template_for_action($controller, $action, $loc) {
     // showall_by_tags.tpl
     $root_action = explode('_', $action);
     $rootbasepath = $controller->viewpath.'/'.$root_action[0].'.tpl';
-//    $rootthemepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
     $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
 
     if (file_exists($themepath)) {
@@ -598,11 +593,8 @@ function get_action_views($ctl, $action, $human_readable) {
     $controller = new $controllerName();
     
     // set path information 
-    //$basepath = $controller->viewpath;
-    //$themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath;
     $paths = array(
         $controller->viewpath,
-//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath,
         BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath,
     );
     
@@ -642,7 +634,6 @@ function get_action_views($ctl, $action, $human_readable) {
 function get_filedisplay_views() {
     $paths = array(
         BASE.'framework/modules/common/views/file/',
-//        BASE.'themes/'.DISPLAY_THEME_REAL.'modules/common/views/file/',
         BASE.'themes/'.DISPLAY_THEME.'modules/common/views/file/',
     );
     

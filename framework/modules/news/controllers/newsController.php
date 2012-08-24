@@ -66,7 +66,7 @@ class newsController extends expController {
             'action'=>$this->params['action'],
             'src'=>$this->loc->src,
             'view'=>empty($this->params['view']) ? null : $this->params['view']
-            ));
+        ));
             
         assign_to_template(array(
             'page'=>$page,

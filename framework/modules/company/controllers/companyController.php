@@ -153,7 +153,8 @@ class companyController extends expController {
         $defaultSort = $router->current_url;
         assign_to_template(array(
             'record'=>new company($this->params['id']),
-            'page'=>$page, 'defaultSort'=>$defaultSort
+            'page'=>$page,
+            'defaultSort'=>$defaultSort
         ));
     }
 }
