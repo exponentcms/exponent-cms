@@ -141,7 +141,8 @@ class expPaginator {
 		);
 		
 		if ($this->limit) $this->start = (($this->page * $this->limit) - $this->limit);
-		
+        if ($this->start<0) $this->start = 0;
+
 		//setup the columns
         $this->columns = array();
 		if (isset($params['columns'])) {
