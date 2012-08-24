@@ -24,6 +24,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
+	<div class="crumbs">
     {foreach from=$sections item=section}
         {if $current->numParents >= $i && ($current->id == $section->id || $current->parents[$i] == $section->id)}
             {$i=$i+1}
@@ -40,4 +41,5 @@
             {if $section->id != $current->id}&raquo;&#160;{/if}
         {/if}
     {/foreach}
+	</div>
 </div>
