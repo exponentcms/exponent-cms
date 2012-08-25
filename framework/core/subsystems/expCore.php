@@ -140,6 +140,30 @@ class expCore {
 	*/
 	}
 
+    /**
+     * make an sef_url for specific model
+     *
+     * @param string $title
+     * @param string $model
+     *
+     * @return mixed|string
+     */
+    public static function makeSefUrl($title,$model) {
+        global $db, $router;
+
+        if (!empty($title)) {
+            $sef_url = $router->encode($title);
+        } else {
+            $sef_url = $router->encode('Untitled');
+        }
+        $dupe = $db->selectValue($model, 'sef_url', 'sef_url="'.$sef_url.'"');
+        if (!empty($dupe)) {
+            list($u, $s) = explode(' ',microtime());
+            $sef_url .= '-'.$s.'-'.$u;
+        }
+        return $sef_url;
+    }
+
 	/** exdoc
 	 * Decrement the reference counts for a given location.  This is used by the Container Module,
 	 * and probably won't be needed by 95% of the code in Exponent.

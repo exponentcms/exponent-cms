@@ -30,19 +30,21 @@ class calendarmodule_config {
         $form->is_tabbed = true;
 		if (!isset($object->id)) {
 			// $object->enable_categories = 0;
-			$object->enable_feedback = 0;
+			$object->sef_url = "";
+			$object->enable_feedback = false;
+            $object->printlink = false;
 			$object->reminder_notify = serialize(array());
 			$object->email_title_reminder = "Calendar Reminder";
 			$object->email_from_reminder = "Calendar Manager";
 			$object->email_address_reminder = "calendar@".HOSTNAME;
 			$object->email_reply_reminder = "calendar@".HOSTNAME;
-			$object->email_showdetail = 0;
+			$object->email_showdetail = false;
 			$object->email_signature = "--\nThanks, Webmaster";			
 			$object->aggregate = array();
 //			$object->enable_rss = false;
 			$object->enable_ical = true;
 			$object->feed_title = "";
-			$object->feed_desc = "";
+//			$object->feed_desc = "";
 			$object->rss_limit = 365;
 			$object->rss_cachetime = 60;
 			// $object->enable_tags = false;
@@ -101,14 +103,16 @@ class calendarmodule_config {
         }
 		// setup the config form
 		$form->register(null,'',new htmlcontrol('<h2>'.gt('General Configuration').'</h2>'),true,gt('Calendar'));
-		// $form->register('enable_categories',gt('Enable Categories'),new checkboxcontrol($object->enable_categories,true));
+		// $form->register('enable_categories',gt('Enable Categories'),new checkboxcontrol($object->enable_categories,true),true,gt('Calendar'));
+        $form->register('feed_title',gt('Calendar Feed Title'),new textcontrol($object->feed_title,35,false,75),true,gt('Calendar'));
+        $form->register('sef_url',gt('Calendar Feed SEF URL'),new textcontrol($object->sef_url,35,false,75),true,gt('Calendar'));
         $form->register('printlink',gt('Display Printer-Friendly and Export-to-PDF Links'),new checkboxcontrol($object->printlink),true,gt('Calendar'));
 		$form->register('enable_feedback',gt('Enable Feedback'),new checkboxcontrol($object->enable_feedback),true,gt('Calendar'));
 
 		$form->register(null,'',new htmlcontrol('<h2>'.gt('Events Reminder Email').'</h2>'),true,gt('Reminders'));
-        if (!empty($object->id)) {
-            $form->register(null,'',new htmlcontrol('<h4>'.gt('sendreminders.php Calendar ID:').' '.$object->id.'</h4>'),true,gt('Reminders'));
-        }
+//        if (!empty($object->id)) {
+//            $form->register(null,'',new htmlcontrol('<h4>'.gt('sendreminders.php Calendar ID:').' '.$object->id.'</h4>'),true,gt('Reminders'));
+//        }
 
 		// Get original style user lists
 		// $selected_users = array();
@@ -186,12 +190,12 @@ class calendarmodule_config {
 		$form->register('google_address',gt('Aggregate events from Google Calendars').' (.xml)',new listbuildercontrol($defaults,null),true,gt('Aggregation'));
 
 		$form->register(null,'',new htmlcontrol('<h2>'.gt('iCalendar Configuration').'</h2>'),true,gt('iCalendar'));
-//		$form->register('enable_rss',gt('Enable RSS'), new checkboxcontrol($object->enable_rss));
-		$form->register('enable_ical',gt('Enable iCalendar'), new checkboxcontrol($object->enable_ical),true,gt('iCalendar'));
-//   		$form->register('feed_title',gt('Title for this iCal feed'),new textcontrol($object->feed_title,35,false,75));
-//   		$form->register('feed_desc',gt('Description for this iCal feed'),new texteditorcontrol($object->feed_desc));
+//		$form->register('enable_rss',gt('Enable RSS'), new checkboxcontrol($object->enable_rss),true,gt('iCalendar'));
+		$form->register('enable_ical',gt('Enable iCalendar Feed'), new checkboxcontrol($object->enable_ical),true,gt('iCalendar'));
+//   		$form->register('feed_title',gt('iCal Feed title'),new textcontrol($object->feed_title,35,false,75),true,gt('iCalendar'));
+//   		$form->register('feed_desc',gt('Description for this iCal feed'),new texteditorcontrol($object->feed_desc),true,gt('iCalendar'));
+        $form->register('rss_limit', gt('Maximum days of iCal items to publish (0 = all)'), new textcontrol($object->rss_limit),true,gt('iCalendar'));
 		$form->register('rss_cachetime', gt('Recommended iCal feed update interval in minutes (1440 = 1 day)'), new textcontrol($object->rss_cachetime),true,gt('iCalendar'));
-		$form->register('rss_limit', gt('Maximum days of iCal items to publish (0 = all)'), new textcontrol($object->rss_limit),true,gt('iCalendar'));
 
 		// $form->register(null,'',new htmlcontrol('<h2>'.gt('Tagging').'</h2><hr size="1" />'));
 		// $form->register('enable_tags',gt('Enable Tags'), new checkboxcontrol($object->enable_tags));
@@ -209,8 +213,15 @@ class calendarmodule_config {
 	function update($values,$object) {
 		global $db;
 		// $object->enable_categories = (isset($values['enable_categories']) ? 1 : 0);
+        $object->feed_title = $values['feed_title'];
+        if (empty($object->sef_url)) $object->sef_url = expCore::makeSefUrl($values['feed_title'],'calendarmodule_config');
+        else $object->sef_url = $values['sef_url'];
+        if (!expValidator::is_valid_sef_name('sef_url', $object, array()) || !expValidator::uniqueness_of('sef_url', $object, array())) {
+            $object->feed_sef_url = expCore::makeSefUrl($values['sef_url'],'calendarmodule_config');
+        }
+        $object->printlink = $values['printlink'];
 		$object->enable_feedback = (isset($values['enable_feedback']) ? 1 : 0);
-		
+
 //		$object->reminder_notify = serialize(listbuildercontrol::parseData($values,'reminder_notify'));
 		$object->email_title_reminder = $values['email_title_reminder'];
 		$object->email_from_reminder = $values['email_from_reminder'];
@@ -227,8 +238,6 @@ class calendarmodule_config {
 //		$object->feed_desc = $values['feed_desc'];
 		$object->rss_cachetime = $values['rss_cachetime'];
 		$object->rss_limit = $values['rss_limit'];
-
-        $object->printlink = $values['printlink'];
 
 		// $object->enable_tags = (isset($values['enable_tags']) ? 1 : 0);
 		// $object->collections = serialize(listbuildercontrol::parseData($values,'collections'));
@@ -265,6 +274,7 @@ class calendarmodule_config {
 				$db->insertObject($data,'calendar_reminder_address');
 			}
 		}
+        $caldata = new stdClass();
         $caldata->calendar_id = $object->id;
         if(isset($values['ical_address'])){
             $caldata->type = ICAL_TYPE;

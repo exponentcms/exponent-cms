@@ -12,9 +12,10 @@ Added / Fixed / changed for 2.0.9
   - adds next/prev item in blog and news single item display
   - calendar is more forgiving of timezone changes (events won't disappear)
     -- adds selectable weekly view to calendar
+    -- updates ical feeds and send reminders cron task to use sef urls
   - adds new 2-column style display option in forms module
   - updates rss feeds to use sef urls, adds individual feed 'advertise' option
-  - more efficient searches...bugs fixed and new reports available
+  - more efficient searches...several anomalies fixed and search activity reports available
   - importing EQL database backup files now more descriptive if errors are encountered (detailed solution provided)
   - adds some new upgrade scripts to attempt to clean up the system from previous updates
     -- deletes moved file where old file in old location may still linger

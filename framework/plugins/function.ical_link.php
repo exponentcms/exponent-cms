@@ -23,48 +23,47 @@
  */
 
 /**
- * Smarty {rss_link} function plugin
+ * Smarty {ical_link} function plugin
  *
  * Type:     function<br>
- * Name:     rss_link<br>
- * Purpose:  format a link for an rss feed of the module
+ * Name:     ical_link<br>
+ * Purpose:  format a link for an iCalendar feed of the module
  *
  * @param         $params
  * @param \Smarty $smarty
  */
-function smarty_function_rss_link($params,&$smarty) {
+function smarty_function_ical_link($params,&$smarty) {
     $config = $smarty->getTemplateVars('config');
-    $rss_on = false;
+    $ical_on = false;
     if (isset($params['show'])) {  // force display of link
-        $rss_on = !empty($params['show']);
-    } elseif (is_array($config)) {
-        $rss_on = !empty($config['enable_rss']);
-        $title = $config['feed_title'];
-        $sef = $config['feed_sef_url'];
+        $ical_on = !empty($params['show']);
+    } elseif (is_object($config)) {
+        $ical_on = !empty($config->enable_ical);
+        $title = $config->feed_title;
+        $sef = $config->sef_url;
     }
     if (isset($params['feed'])) {  // passing a feed
-        $rss_on = true;
+        $ical_on = true;
         $title = $params['feed']->title;
         $sef = $params['feed']->sef_url;
     }
 
-    if ($rss_on) {
+    if ($ical_on) {
         // initialize a couple of variables
         $text = isset($params['text']) ? $params['text'] : '';
-        $title = isset($params['title']) ? $params['title'] : gt('Subscribe to') . ' ' . $title;
+        $title = isset($params['title']) ? $params['title'] : gt('iCalendar Feed') . ' ' . $title;
         $sef = isset($params['url']) ? $params['url'] : $sef;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
-        $class = isset($params['class']) ? $params['class'] : 'rsslink module-actions';
+        $class = isset($params['class']) ? $params['class'] : 'icallink module-actions';
         $loc = $smarty->getTemplateVars('__loc');
        	if (!isset($params['module'])) $params['module'] = $loc->mod;
         if (!isset($params['src'])) $params['src'] = $loc->src;
        	if (!isset($params['int'])) $params['int'] = $loc->int;
 
-//       	$link =  expCore::makeLink(array('controller'=>$params['module'], 'action'=>'rss', 'title'=>$sef));
         if (!empty($sef)) {
-            $link = expCore::makeLink(array('controller'=>'rss', 'action'=>'feed', 'title'=>$sef));
+            $link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'ical', 'title'=>$sef));
         } else {
-            $link = expCore::makeLink(array('controller'=>$params['module'], 'action'=>'rss', 'src'=>$params['src']));
+            $link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'ical', 'src'=>$params['src']));
         }
         // spit out the link
         echo $prepend.'<a class="'.$class.'" href="'.$link.'" title="'.$title.'">'.$text.'</a>';

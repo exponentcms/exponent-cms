@@ -21,10 +21,21 @@ if (!defined('EXPONENT')) exit('');
 
 // id & date_id set if single event, else
 //   src & time (opt?) set for longer list/month, etc...
-if (isset($_GET['date_id']) || isset($_GET['src'])) {
-	$loc = expCore::makeLocation('calendarmodule',$_GET['src'],'');
-	$locsql = "(location_data='".serialize($loc)."'";
-	$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
+if (isset($_GET['date_id']) || isset($_GET['title']) || isset($_GET['src'])) {
+    if (!empty($_GET['title'])) {
+        $config = $db->selectObject("calendarmodule_config","sef_url='".expString::sanitize($_GET['title'])."'");
+        if (!empty($config)) {
+//            $loc = expUnserialize($config->location_data);
+         	$locsql = "(location_data='".$config->location_data."'";
+        } else {
+       		echo SITE_404_HTML;
+            exit();
+        }
+    } else {
+        $loc = expCore::makeLocation('calendarmodule',expString::sanitize($_GET['src']),'');
+       	$locsql = "(location_data='".serialize($loc)."'";
+       	$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
+    }
 	if (!$config) {
 		$config->enable_ical = 1;
 	}
@@ -63,7 +74,8 @@ if (isset($_GET['date_id']) || isset($_GET['src'])) {
 				$time = date('U',strtotime("midnight -1 month",time()));  // previous month also
 				$dates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp($time).$rsslimit);
 			}
-			$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+//			$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+            $title = $config->feed_title;
 			$Filename = preg_replace('/\s+/','',$title);  // without whitespace
 		}	
 

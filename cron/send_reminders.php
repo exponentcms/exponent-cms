@@ -24,25 +24,16 @@ global $user;
 global $db;
 
 // first, find the calendar/event data
-$id = intval($_GET['id']);
-if (!$id) {
-    print_r("<br><strong><em>Exponent - No Calendar Selected!</em></strong><br>");
+if (isset($_GET['id'])) {
+    $config = $db->selectObject("calendarmodule_config","id='".intval($_GET['id'])."'");
+} elseif (isset($_GET['title'])) {
+    $config = $db->selectObject("calendarmodule_config","sef_url='".expString::sanitize($_GET['title'])."'");
+} elseif (isset($_GET['src'])) {
+    $config = $db->selectObject("calendarmodule_config","location_data='".serialize(expCore::makeLocation('calendarmodule',expString::sanitize($_GET['src']),''))."'");
+} else {
+    print_r("<br><strong><em>Exponent - ".gt('No Calendar Selected!')."</em></strong><br>");
     exit();
 }
-$config = $db->selectObject("calendarmodule_config","id='".$id."'");
-
-// let's select a calendar by its source to make it easier to find and harder to spoof
-//$src = $_GET['src'];
-//if (!$src) {
-//	print_r("<br><b><i>Exponent - ".gt('No Calendar Selected!')."</i></b><br>");
-//	exit();
-//}
-//
-//$loc = new stdClass();;
-//$loc->mod = 'calendarmodule';
-//$loc->src = $src;
-//$loc->int = '';
-//$config = $db->selectObject("calendarmodule_config","location_data='".serialize($loc)."'");
 if (!$config) {
 	print_r("<br><strong><em>Exponent - ".gt('Calendar Not Found!')."</em></strong><br>");
 	exit();
@@ -69,7 +60,8 @@ if ($view == "") {
 
 $template = new template('calendarmodule',$view,$loc);
 //if ($title == '') {
-$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+//$title = $db->selectValue('container', 'title', "internal='".serialize($loc)."'");
+$title = $config->feed_title;
 //}
 $template->assign('moduletitle',$title);
 

@@ -183,6 +183,17 @@ class expRecord {
                 $records[] = new $this->classname($assoc->id);
             }
             return $records;
+        } elseif (strcasecmp($range, 'bycat') == 0) {
+            $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$this->table.' m ';
+            $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expCats ct ';
+            $sql .= 'ON m.id = ct.content_id WHERE ct.expcats_id='.$where." AND ct.content_type='".$this->classname."'";
+            if ($this->supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix .$this->tablename."` WHERE ct.expcats_id=".$where." AND ct.content_type='".$this->classname."'";
+            $cat_assocs = $db->selectObjectsBySql($sql);
+            $records = array();
+            foreach ($cat_assocs as $assoc) {
+                $records[] = new $this->classname($assoc->id);
+            }
+            return $records;
         }
     }
 
@@ -669,17 +680,18 @@ class expRecord {
 	 * make an sef_url for item
 	 */
 	public function makeSefUrl() {
-        global $db, $router;        
-        if (!empty($this->title)) {
-			$this->sef_url = $router->encode($this->title);
-		} else {
-			$this->sef_url = $router->encode('Untitled');
-		}
-        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"');
-		if (!empty($dupe)) { 
-			list($u, $s) = explode(' ',microtime()); 
-			$this->sef_url .= '-'.$s.'-'.$u; 
-		}
+//        global $db, $router;
+//        if (!empty($this->title)) {
+//			$this->sef_url = $router->encode($this->title);
+//		} else {
+//			$this->sef_url = $router->encode('Untitled');
+//		}
+//        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"');
+//		if (!empty($dupe)) {
+//			list($u, $s) = explode(' ',microtime());
+//			$this->sef_url .= '-'.$s.'-'.$u;
+//		}
+        $this->sef_url = expCore::makeSefUrl($this->title,$this->tablename);
         $this->runCallback('makeSefUrl');
     }
 

@@ -42,9 +42,7 @@
 		{/permissions}
 	</div>
 	<h1>
-        {if !empty($config->enable_ical)}
-			<a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
-		{/if}
+        {ical_link}
         {if $moduletitle && !$config->hidemoduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
 
 	</h1>

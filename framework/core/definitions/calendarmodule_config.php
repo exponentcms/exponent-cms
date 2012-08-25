@@ -89,6 +89,9 @@ return array(
     'moduledescription'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
    		DB_FIELD_LEN=>10000),
+    'sef_url'=>array(
+      	DB_FIELD_TYPE=>DB_DEF_STRING,
+  	    DB_FIELD_LEN=>75),
 );
 
 ?>
