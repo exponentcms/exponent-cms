@@ -102,12 +102,13 @@ class orderController extends expController {
 		//eDebug($sql, true);
 		$page = new expPaginator(array(
 			//'model'=>'order',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
-			'sql'=>$sql,            
+			'sql'=>$sql,
 			'order'=>'purchased',
 			'dir'=>'DESC',
             'limit'=>$limit,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
 			'columns'=>array(
                 gt('Customer')=>'lastname',
                 gt('Order #')=>'invoice_id',
@@ -116,8 +117,8 @@ class orderController extends expController {
                 gt('Type')=>'order_type_id',
                 gt('Status')=>'order_status_id',
                 gt('Ref')=>'orig_referrer',
-				)
-			));
+            )
+        ));
         //eDebug($page,true);
 		assign_to_template(array(
             'page'=>$page,
@@ -819,11 +820,14 @@ exit();
             'limit'=>10,
 			'order'=>'purchased',
 			'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
 			'columns'=>array(
                 gt('Date Purchased')=>'purchased',
                 gt('Invoice #')=>'invoice_id',
 				)
-			));
+        ));
 		assign_to_template(array(
             'page'=>$page
         ));
@@ -1682,9 +1686,19 @@ exit();
             'limit'=>$limit,
             'order'=>'o.invoice_id',
             'dir'=>'DESC',            
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Purchased Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Order Type')=>'order_type',gt('Status')=>'status_title'),
+            'columns'=>array(
+                'actupon'=>true,
+                gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',
+                gt('Purchased Date')=>'purchased_date',
+                gt('First')=>'bfirst',
+                gt('Last')=>'blast',
+                gt('Total')=>'grand_total',
+                gt('Order Type')=>'order_type',
+                gt('Status')=>'status_title'
+            ),
         ));
         assign_to_template(array(
             'page'=>$page

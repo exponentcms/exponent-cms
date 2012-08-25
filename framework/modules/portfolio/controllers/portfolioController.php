@@ -45,17 +45,20 @@ class portfolioController extends expController {
         }
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>$limit,
-                    'order'=>$order,
-                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
-                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
-                    'controller'=>$this->baseclassname,
-                    'src'=>$this->loc->src,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(gt('Title')=>'title'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>$limit,
+            'order'=>$order,
+            'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+            'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
 
         assign_to_template(array(
             'page'=>$page,

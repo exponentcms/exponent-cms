@@ -93,17 +93,18 @@ class bannerController extends expController {
 		
 		$page = new expPaginator(array(
 			'model'=>'banner',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
 			'sql'=>$sql,
 			'order'=>'title',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+        			'action'=>$this->params['action'],
 			'columns'=>array(
                 gt('Title')=>'title',
                 gt('Company')=>'companyname',
                 gt('Impressions')=>'impressions',
                 gt('Clicks')=>'clicks'
-				)
-			));
+            )
+        ));
 
 		assign_to_template(array(
             'page'=>$page

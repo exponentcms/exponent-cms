@@ -98,7 +98,7 @@ class eventregistrationController extends expController {
     function showByTitle() {
 		global $order, $template, $user;
         expHistory::set('viewable', $this->params);
-		if(!empty($_GET['token'])) {
+		if(!empty($this->params['token'])) {
 			$record = expSession::get("last_POST_Paypal");
 		} else {
 			$record = expSession::get("last_POST");

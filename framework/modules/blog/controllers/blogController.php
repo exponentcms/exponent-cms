@@ -46,16 +46,19 @@ class blogController extends expController {
 	    expHistory::set('viewable', $this->params);
 
 		$page = new expPaginator(array(
-		            'model'=>$this->basemodel_name,
-		            'where'=>$this->aggregateWhereClause(),
-		            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
-		            'order'=>'publish',
-		            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-                    'src'=>$this->loc->src,
-		            'columns'=>array(gt('Title')=>'title'),
-		            ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
+            'order'=>'publish',
+            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
 		            
 		assign_to_template(array(
             'page'=>$page
@@ -123,15 +126,18 @@ class blogController extends expController {
 	    $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
 
 		$page = new expPaginator(array(
-		            'model'=>$this->basemodel_name,
-		            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
-		            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
-		            'order'=>'publish',
-		            'dir'=>'desc',
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-		            'columns'=>array(gt('Title')=>'title'),
-		            ));
+            'model'=>$this->basemodel_name,
+            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
+            'order'=>'publish',
+            'dir'=>'desc',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
 		            
 		assign_to_template(array(
             'page'=>$page,
@@ -144,14 +150,17 @@ class blogController extends expController {
 	    
         $user = user::getUserByName($this->params['author']);
 		$page = new expPaginator(array(
-		            'model'=>$this->basemodel_name,
-		            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id,
-		            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
-		            'order'=>'publish',
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-		            'columns'=>array(gt('Title')=>'title'),
-		            ));
+            'model'=>$this->basemodel_name,
+            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id,
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
+            'order'=>'publish',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
             	    
 		assign_to_template(array(
             'page'=>$page,

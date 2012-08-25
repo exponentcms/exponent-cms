@@ -66,14 +66,15 @@ class searchController extends expController {
 
         $page = new expPaginator(array(
             //'model'=>'search',
-            'controller'=>$this->params['controller'],
-            'action'=>$this->params['action'],
             'records'=>$search->getSearchResults($terms),
             //'sql'=>$sql,
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
             'dir'=>'DESC',
-			));        
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+        ));
 
         assign_to_template(array(
             'page'=>$page,
@@ -128,15 +129,15 @@ class searchController extends expController {
         global $db;
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
-                    'model'=>'expTag',
-                    'where'=>null,
-//                    'limit'=>999,
-                    'order'=>"title",
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            'model'=>'expTag',
+            'where'=>null,
+//          'limit'=>999,
+            'order'=>"title",
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
+        ));
 
         foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
             foreach ($page->records as $key => $value) {
@@ -259,20 +260,21 @@ class searchController extends expController {
 		}
 		
         $page = new expPaginator(array(
-					'records' => $records,
-                    'where'=>1, 
-					'model'=>'search_queries',
-                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? 10 : $this->config['limit'],
-                    'order'=>empty($this->config['order']) ? 'timestamp' : $this->config['order'],
-                    'controller'=>$this->baseclassname,
-					'action'=>$this->params['action'],
-                    'columns'=>array(
-						gt('ID')=>'id',
-                        gt('Query')=>'query',
-                        gt('Timestamp')=>'timestamp',
-                        gt('User')=>'user_id',
-                        )
-                    ));
+            'records' => $records,
+            'where'=>1,
+            'model'=>'search_queries',
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? 10 : $this->config['limit'],
+            'order'=>empty($this->config['order']) ? 'timestamp' : $this->config['order'],
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('ID')=>'id',
+                gt('Query')=>'query',
+                gt('Timestamp')=>'timestamp',
+                gt('User')=>'user_id',
+            ),
+        ));
 
         $uname['id'] = implode($uname['id'],',');
         $uname['name'] = implode($uname['name'],',');

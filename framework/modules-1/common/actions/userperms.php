@@ -70,24 +70,26 @@ if ($user->isAdmin()) {
 		//'model'=>'user',
 		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
 //		'controller'=>$router->params['controller'],
-        'controller'=>$modulename,
-		'action'=>$router->params['action'],
 		'records'=>$users,
 		//'sql'=>$sql,
 		'order'=>'username',
 		'dir'=>'ASC',
+        'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+        'controller'=>$modulename,
+		'action'=>$router->params['action'],
 		'columns'=>$p,
 		));
 	} else {
 		$page = new expPaginator(array(
 		//'model'=>'user',
 		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
-		'controller'=>expString::sanitize($_GET['module']),
-		'action'=>$_GET['action'],
 		'records'=>$users,
 		//'sql'=>$sql,
 		'order'=>'username',
 		'dir'=>'ASC',
+        'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+        'controller'=>expString::sanitize($_GET['module']),
+        'action'=>$_GET['action'],
 		'columns'=>$p,
 		));
 	}

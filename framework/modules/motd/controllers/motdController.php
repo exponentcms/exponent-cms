@@ -56,10 +56,14 @@ class motdController extends expController {
                     'where'=>$this->aggregateWhereClause(), 
                     'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
                     'order'=>'month,day',
+                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array(gt('Date')=>'month',gt('Message')=>'body'),
-                    ));
+                    'columns'=>array(
+                        gt('Date')=>'month',
+                        gt('Message')=>'body'
+                    ),
+                ));
         
         assign_to_template(array(
             'page'=>$page

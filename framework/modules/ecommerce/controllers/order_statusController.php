@@ -35,13 +35,14 @@ class order_statusController extends expController {
         
         $page = new expPaginator(array(
 			'model'=>'order_status',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
 			'where'=>1,
             'limit'=>10,
 			'order'=>'rank',
-			//'columns'=>array('Name'=>'title')
-			));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            //'columns'=>array('Name'=>'title')
+        ));
 
 		assign_to_template(array(
             'page'=>$page
@@ -53,13 +54,14 @@ class order_statusController extends expController {
         
         $page = new expPaginator(array(
 			'model'=>'order_status_messages',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
 			'where'=>1,
             'limit'=>10,
 			'order'=>'body',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
 			//'columns'=>array('Name'=>'title')
-			));
+        ));
 
         //eDebug($page);
 		assign_to_template(array(

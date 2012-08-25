@@ -70,8 +70,8 @@ class expDefinableFieldController extends expController {
 		 
 		$control_type = "";
 		$ctl = null;
-		if (isset($_GET['id'])) {
-			$control = $db->selectObject("expDefinableFields","id=".intval($_GET['id']));
+		if (isset($this->params['id'])) {
+			$control = $db->selectObject("expDefinableFields","id=".$this->params['id']);
 			if ($control) {
 				$ctl = unserialize($control->data);
 				$ctl->identifier = $control->name;
@@ -79,7 +79,7 @@ class expDefinableFieldController extends expController {
 				$control_type = get_class($ctl);
 			}
 		}
-		if ($control_type == "") $control_type = $_POST['control_type'];
+		if ($control_type == "") $control_type = $this->params['control_type'];
 		$form = call_user_func(array($control_type,"form"),$ctl);
 		if ($ctl) { 
 			$form->controls['identifier']->disabled = true;
@@ -101,8 +101,8 @@ class expDefinableFieldController extends expController {
 		global $db;
 		$ctl = null;
 		$control = null;
-		if (isset($_POST['id'])) {
-			$control = $db->selectObject('expDefinableFields','id='.intval($_POST['id']));
+		if (isset($this->params['id'])) {
+			$control = $db->selectObject('expDefinableFields','id='.$this->params['id']);
 			if ($control) {
 				
 				$ctl = unserialize($control->data);
@@ -120,12 +120,12 @@ class expDefinableFieldController extends expController {
 		if ($ctl != null) {
 			$name = substr(preg_replace('/[^A-Za-z0-9]/','_',$ctl->identifier),0,20);
 	
-			if (!isset($_POST['id'])) {
+			if (!isset($this->params['id'])) {
 				$control->name =  $name;
 			}
 	
 			$control->data = serialize($ctl);
-			$control->type = $_POST['type'];
+			$control->type = $this->params['type'];
 			
 			if (isset($control->id)) {
 				$db->updateObject($control,'expDefinableFields');

@@ -62,7 +62,8 @@ class newsController extends expController {
             'records'=>$items,
             'limit'=>$limit,
             'order'=>$order,
-            'controller'=>$this->baseclassname,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
             'src'=>$this->loc->src,
             'view'=>empty($this->params['view']) ? null : $this->params['view']
@@ -128,10 +129,15 @@ class newsController extends expController {
             'where'=>$where,
             'limit'=>25,
             'order'=>'unpublish',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Title')=>'title',gt('Published On')=>'publish',gt('Status')=>'unpublish'),
-            ));
+            'columns'=>array(
+                gt('Title')=>'title',
+                gt('Published On')=>'publish',
+                gt('Status')=>'unpublish'
+            ),
+        ));
             
         assign_to_template(array(
             'page'=>$page

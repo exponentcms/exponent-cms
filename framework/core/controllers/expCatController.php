@@ -62,16 +62,17 @@ class expCatController extends expController {
             $module = new $modulename($this->params['src']);
             $where = $module->aggregateWhereClause();
             $page = new expPaginator(array(
-                        'model'=>$this->params['model'],
+                'model'=>$this->params['model'],
 //                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
-                        'where'=>$where,
+                'where'=>$where,
 //                        'order'=>'module,rank',
-                        'categorize'=>true,
-                        'controller'=>$this->params['model'],
+                'categorize'=>true,
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller'=>$this->params['model'],
 //                        'action'=>$this->params['action'],
 //                        'src'=>$this->hasSources() == true ? $this->loc->src : null,
 //                        'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            ));
             if ($this->params['model'] == 'faq') {
                 foreach ($page->records as $record) {
                     $record->title = $record->question;
@@ -79,15 +80,20 @@ class expCatController extends expController {
             }
         } else $page = '';
         $cats = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>empty($this->params['model']) ? null : "module='".$this->params['model']."'",
-                    'limit'=>50,
-                    'order'=>'module,rank',
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                ));
+            'model'=>$this->basemodel_name,
+            'where'=>empty($this->params['model']) ? null : "module='".$this->params['model']."'",
+            'limit'=>50,
+            'order'=>'module,rank',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'columns'=>array(
+                gt('ID#')=>'id',
+                gt('Title')=>'title',
+                gt('Body')=>'body'
+            ),
+        ));
 
         foreach ($db->selectColumn('content_expCats','content_type',null,null,true) as $contenttype) {
             foreach ($cats->records as $key => $value) {

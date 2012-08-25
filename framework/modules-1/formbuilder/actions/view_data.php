@@ -109,15 +109,16 @@ if (isset($_GET['id'])) {
 //		$template->assign('sortfuncs',$sortfuncts);
         $page = new expPaginator(array(
 //                    'model'=>$f->table_name,
-					'records'=>$items,
-                    'where'=>1, 
-                    'limit'=>(isset($_GET['limit']) && $_GET['limit'] != '') ? $_GET['limit'] : 10,
-                    'order'=>(isset($_GET['order']) && $_GET['order'] != '') ? $_GET['order'] : 'id',
-                    'dir'=>(isset($_GET['dir']) && $_GET['dir'] != '') ? $_GET['dir'] : 'ASC',
+            'records'=>$items,
+            'where'=>1,
+            'limit'=>(isset($_GET['limit']) && $_GET['limit'] != '') ? $_GET['limit'] : 10,
+            'order'=>(isset($_GET['order']) && $_GET['order'] != '') ? $_GET['order'] : 'id',
+            'dir'=>(isset($_GET['dir']) && $_GET['dir'] != '') ? $_GET['dir'] : 'ASC',
 //                    'order'=>$order,
-                    'action'=>'view_data',
-					'columns'=>$columns
-                    ));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'action'=>'view_data',
+            'columns'=>$columns
+        ));
 		$template->assign('page',$page);			
 		$template->assign('title',$rpt->name);
 		$template->output();

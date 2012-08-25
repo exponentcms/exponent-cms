@@ -369,10 +369,19 @@ class reportController extends expController {
             'limit'=>empty($this->config['limit']) ? 25 : $this->config['limit'],
             'order'=>'invoice_id',
             'order_direction'=>'DESC',            
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Status')=>'status_title'),
-            ));
+            'columns'=>array(
+                'actupon'=>true,
+                gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',
+                gt('Date')=>'purchased_date',
+                gt('First')=>'bfirst',
+                gt('Last')=>'blast',
+                gt('Total')=>'grand_total',
+                gt('Status')=>'status_title'
+            ),
+        ));
                     
         $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File');
         assign_to_template(array(
@@ -768,10 +777,21 @@ class reportController extends expController {
             'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'=>'o.invoice_id',
             'dir'=>'DESC',            
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Purchased Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Status Changed Date')=>'status_changed_date',gt('Order Type')=>'order_type',gt('Status')=>'status_title'),
-            ));
+            'columns'=>array(
+                'actupon'=>true,
+                gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',
+                gt('Purchased Date')=>'purchased_date',
+                gt('First')=>'bfirst',
+                gt('Last')=>'blast',
+                gt('Total')=>'grand_total',
+                gt('Status Changed Date')=>'status_changed_date',
+                gt('Order Type')=>'order_type',
+                gt('Status')=>'status_title'
+            ),
+        ));
        
         //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
@@ -1155,11 +1175,12 @@ class reportController extends expController {
             'count_sql'=>$sqlcount . $sql . $sqlwhere, 
             'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'=>'id',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>'store',
             'action'=>$this->params['action'],
             'columns'=>array('actupon'=>true,gt('ID')=>'id',gt('Product')=>'title|controller=store,action=show,showby=id',gt('SKU')=>'model',gt('Price')=>'base_price'),
             //'columns'=>array('Product'=>'title','SKU'=>'model'),
-            ));   
+        ));
         //eDebug($page,true);
         /*$page = new expPaginator(array(
             'model'=>'order',
@@ -1168,14 +1189,15 @@ class reportController extends expController {
             'sql'=>$sql,
             'order'=>'purchased',
             'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'columns'=>array(
                 'Customer'=>'lastname',
                 'Invoice #'=>'invoice_id', 
                 'Total'=>'total',
                 'Date Purchased'=>'purchased',
                 'Status'=>'order_status_id',
-                )
-            ));            */
+            )
+        ));            */
         $action_items = array('batch_export'=>'Export Products to CSV','status_export'=>'Export Status Report to CSV');
         assign_to_template(array(
             'page'=>$page,

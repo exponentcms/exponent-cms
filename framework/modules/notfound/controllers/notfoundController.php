@@ -66,7 +66,8 @@ class notfoundController extends expController {
             'limit'=>10,
 			'order'=>'score',
 			'dir'=>'DESC',
-			));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+        ));
 
         assign_to_template(array(
             'page'=>$page,

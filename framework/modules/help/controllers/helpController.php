@@ -72,15 +72,20 @@ class helpController extends expController {
 
 	    // grab the pagination object
 		$page = new expPaginator(array(
-	                'model'=>'help',
-	                'where'=> $where, 
+            'model'=>'help',
+            'where'=> $where,
 //	                'limit'=>$limit,
-	                'order'=>$order,
-	                'dir'=>'ASC',
-	                'controller'=>$this->baseclassname,
-	                'action'=>$this->params['action'],
-	                'columns'=>array(gt('Title')=>'title',gt('Body')=>'body',gt('Version')=>'help_version_id'),
-	                ));
+            'order'=>$order,
+            'dir'=>'ASC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title',
+                gt('Body')=>'body',
+                gt('Version')=>'help_version_id'
+            ),
+        ));
 	    
 	    assign_to_template(array(
             'current_version'=>$ref_version,
@@ -179,15 +184,20 @@ class helpController extends expController {
 
 	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.$this->params['version'];
 	    $page = new expPaginator(array(
-	                'model'=>'help',
-	                'where'=>$where, 
-	                'limit'=>30,
-	                'order'=>'help_version_id',
-	                'dir'=>'DESC',
-	                'controller'=>$this->baseclassname,
-	                'action'=>$this->params['action'],
-	                'columns'=>array(gt('Title')=>'title',gt('Version')=>'help_version_id',gt('Section')=>'section'),
-	                ));
+            'model'=>'help',
+            'where'=>$where,
+            'limit'=>30,
+            'order'=>'help_version_id',
+            'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title',
+                gt('Version')=>'help_version_id',
+                gt('Section')=>'section'
+            ),
+        ));
 
 	    assign_to_template(array(
             'current_version'=>$current_version,
@@ -253,14 +263,20 @@ class helpController extends expController {
 	    $sql .= 'RIGHT JOIN '.DB_TABLE_PREFIX.'_help_version hv ON h.help_version_id=hv.id GROUP BY hv.version';
 	    
 	    $page = new expPaginator(array(
-	                'sql'=>$sql, 
-	                'limit'=>30,
-	                'order'=>'version',
-	                'dir'=>'DESC',
-	                'controller'=>$this->baseclassname,
-	                'action'=>$this->params['action'],
-	                'columns'=>array(gt('Version')=>'version',gt('Title')=>'title',gt('Current')=>'is_current',gt('# of Docs')=>'num_docs'),
-	                ));
+            'sql'=>$sql,
+            'limit'=>30,
+            'order'=>'version',
+            'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Version')=>'version',
+                gt('Title')=>'title',
+                gt('Current')=>'is_current',
+                gt('# of Docs')=>'num_docs'
+            ),
+        ));
 	    
 	    assign_to_template(array(
             'current_version'=>$current_version,

@@ -176,10 +176,15 @@ class storeController extends expController {
                 'limit'=>$this->config['pagination_default'],
                 'order'=>$order,
                 'dir'=>$dir,
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'price'),
-                ));
+                'columns'=>array(
+                    gt('Model #')=>'model',
+                    gt('Product Name')=>'title',
+                    gt('Price')=>'price'
+                ),
+            ));
         } else {
             $page = new expPaginator(array(
                 'model_field'=>'product_type',
@@ -187,10 +192,15 @@ class storeController extends expController {
                 'limit'=>$this->config['pagination_default'],
                 'order'=>$order,
                 'dir'=>$dir,
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
                 'controller'=>$this->params['controller'],
                 'action'=>$this->params['action'],
-                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'price'),
-                ));
+                'columns'=>array(
+                    gt('Model #')=>'model',
+                    gt('Product Name')=>'title',
+                    gt('Price')=>'price'
+                ),
+            ));
         }
 
         $ancestors = $this->category->pathToNode();   
@@ -253,10 +263,15 @@ class storeController extends expController {
             'limit'=>$limit,
             'order'=>$order,
             'dir'=>$dir,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-            ));
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
         
         assign_to_template(array(
             'page'=>$page
@@ -423,10 +438,15 @@ class storeController extends expController {
             'model_field'=>'product_type',
             'sql'=>$sql,
             'limit'=>$this->config['pagination_default'],
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-            ));
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
             
         assign_to_template(array(
             'page'=>$page,
@@ -441,8 +461,16 @@ class storeController extends expController {
             'where'=>'parent_id=0',
             'limit'=>$this->config['pagination_default'],
             'order'=>'title',
-            'columns'=>array(gt('Type')=>'product_type',gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
-            ));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Type')=>'product_type',
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            )
+        ));
         assign_to_template(array(
             'page'=>$page
         ));
@@ -461,10 +489,15 @@ class storeController extends expController {
             'model_field'=>'product_type',
             'sql'=>$sql,
             'limit'=>$this->config['pagination_default'],
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-            ));
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
             
         assign_to_template(array(
             'page'=>$page,
@@ -488,8 +521,15 @@ class storeController extends expController {
             'where'=>'companies_id='.$this->params['id'] . ' AND parent_id=0',
             'limit'=>$this->config['pagination_default'],
             'default'=>'Product Name',
-            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price')
-            ));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            )
+        ));
         
         $company = new company($this->params['id']);
         
@@ -662,15 +702,20 @@ class storeController extends expController {
         $dir = 'ASC';
         
         $page = new expPaginator(array(
-                'model_field'=>'product_type',
-                'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_product WHERE is_featured=1',
-                'limit'=>ecomconfig::getConfig('pagination_default'),
-                'order'=>$order,
-                'dir'=>$dir,
-                'controller'=>$this->params['controller'],
-                'action'=>$this->params['action'],
-                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-                ));
+            'model_field'=>'product_type',
+            'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_product WHERE is_featured=1',
+            'limit'=>ecomconfig::getConfig('pagination_default'),
+            'order'=>$order,
+            'dir'=>$dir,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
                 
         assign_to_template(array(
             'page'=>$page
@@ -685,15 +730,20 @@ class storeController extends expController {
         $dir = 'ASC';
         
         $page = new expPaginator(array(
-                'model_field'=>'product_type',
-                'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_product,'.DB_TABLE_PREFIX.'_product_storeCategories WHERE product_id = id and is_featured=1 and storecategories_id =' . $curcat->id,
-                'limit'=>ecomconfig::getConfig('pagination_default'),
-                'order'=>$order,
-                'dir'=>$dir,
-                'controller'=>$this->params['controller'],
-                'action'=>$this->params['action'],
-                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-                ));
+            'model_field'=>'product_type',
+            'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_product,'.DB_TABLE_PREFIX.'_product_storeCategories WHERE product_id = id and is_featured=1 and storecategories_id =' . $curcat->id,
+            'limit'=>ecomconfig::getConfig('pagination_default'),
+            'order'=>$order,
+            'dir'=>$dir,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
                 
         assign_to_template(array(
             'page'=>$page
@@ -731,16 +781,21 @@ class storeController extends expController {
         $dir = 'ASC'; //$this->config['orderby_dir'];
         
         $page = new expPaginator(array(
-                'model_field'=>'product_type',
-                'sql'=>$sql,
-                'count_sql'=>$count_sql,
-                'limit'=>$this->config['pagination_default'],
-                'order'=>$order,
-                'dir'=>$dir,
-                'controller'=>$this->params['controller'],
-                'action'=>$this->params['action'],
-                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-                ));
+            'model_field'=>'product_type',
+            'sql'=>$sql,
+            'count_sql'=>$count_sql,
+            'limit'=>$this->config['pagination_default'],
+            'order'=>$order,
+            'dir'=>$dir,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
        
         $category = new storeCategory(null,false,false);
         //$categories = $category->getEcomSubcategories();
@@ -1205,14 +1260,19 @@ class storeController extends expController {
 
         $page = new expPaginator(array(
             'model'=>'product',
-            'controller'=>$this->params['controller'],
-            'action'=>$this->params['action'],
             'where'=>$sql,
             'limit'=>$this->config['pagination_default'],
             'order'=>'title',
             'dir'=>'DESC',
-            'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-            ));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
         
         assign_to_template(array(
             'page'=>$page,

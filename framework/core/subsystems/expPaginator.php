@@ -20,8 +20,9 @@
  * Exponent Pagination Subsystem
  *
  * The expPaginator class is used to retrieve objects from the database
- * and paginate them.  It automagically handles the calls to other pages
- * and had built-in sorting using the defined column headers.
+ * and paginate them and optionally group the by category.
+ * It automagically handles the calls to other pages
+ * and has built-in sorting using the defined column headers.
  * 
  * Usage Example:
  *  
@@ -111,7 +112,7 @@ class expPaginator {
 		$this->records = empty($params['records']) ? array() : $params['records'];
 //		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
         $this->limit = empty($params['limit']) ? 0 : $params['limit'];
-		$this->page = empty($_REQUEST['page']) ? 1 : intval($_REQUEST['page']);
+        $this->page = empty($params['page']) ? 1 : intval($params['page']);
 		$this->action = empty($params['action']) ? '' : $params['action'];
 		$this->controller = empty($params['controller']) ? '' : $params['controller'];
 		$this->sql = empty($params['sql']) ? '' : $params['sql'];
@@ -173,7 +174,7 @@ class expPaginator {
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
 			}
 		}
-        // allow passing of a single order/dir as stored
+        // allow passing of a single order/dir as stored in config
         if (strstr($this->order," ")) {
             $orderby = explode(" ",$this->order);
             $this->order = $orderby[0];
@@ -183,7 +184,7 @@ class expPaginator {
 		// figure out how many records we're dealing with & grab the records
 		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
-		    // sort, count and slice the records that were passed in to us
+		    // sort the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 //		    $this->total_records = count($this->records);
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
@@ -239,7 +240,7 @@ class expPaginator {
             if (strstr($this->order,",")) {
                $orderby = explode(",",$this->order);
                $order = $orderby[0];
-           }
+            }
             foreach ($this->records as $record) {
                 if (is_string($record->$order) && !is_numeric($record->$order)) {
                     $title = ucfirst($record->$order);
@@ -426,10 +427,9 @@ class expPaginator {
                 $params['dir'] = 'ASC';
                 
                 if ($col == $current) {
-                    $class  = 'current';
-                    $class .= ' '.strtolower($this->order_direction);
-                    if (isset($_REQUEST['dir'])) {
-                        $params['dir'] = $_REQUEST['dir'] == 'ASC' ? 'DESC' : 'ASC';
+                    $class  = 'current '.strtolower($this->order_direction);
+                    if (isset($params['dir'])) {
+                        $params['dir'] = $params['dir'] == 'ASC' ? 'DESC' : 'ASC';
                     } else {
                         $params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
                     }
@@ -538,8 +538,8 @@ class expPaginator {
 				/*if ($col == $current) {
 					$class  = 'current';
 					$class .= ' '.$this->order_direction;
-					if (isset($_REQUEST['dir'])) {
-						$params['dir'] = $_REQUEST['dir'] == 'ASC' ? 'DESC' : 'ASC';
+					if (isset($params['dir'])) {
+						$params['dir'] = $params['dir'] == 'ASC' ? 'DESC' : 'ASC';
 					} else {
 						$params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
 					}

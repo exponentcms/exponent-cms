@@ -33,11 +33,12 @@ class sales_repController extends expController {
         
         $page = new expPaginator(array(
 			'model'=>'sales_rep',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
 			'where'=>1,
             'limit'=>10,
-			));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+        ));
 
 		assign_to_template(array(
             'page'=>$page

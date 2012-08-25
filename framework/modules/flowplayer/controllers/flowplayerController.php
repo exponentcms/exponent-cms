@@ -43,14 +43,19 @@ class flowplayerController extends expController {
     function showall() {
         expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
-                    'order'=>"rank",
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
+            'order'=>"rank",
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('ID#')=>'id',
+                gt('Title')=>'title',
+                gt('Body')=>'body'
+            ),
+        ));
         
         assign_to_template(array(
             'page'=>$page,

@@ -41,14 +41,15 @@ class youtubeController extends expController {
 	
 	function showall() {
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
-                    'order'=>'rank',
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->loc->src,
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+            'order'=>'rank',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+        ));
 
         if (!empty($this->config['width'])&&!empty($this->config['height'])) {
             // adjust the height/width to our settings

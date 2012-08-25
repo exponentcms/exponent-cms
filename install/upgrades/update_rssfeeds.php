@@ -61,7 +61,7 @@ class update_rssfeeds extends upgradescript {
 	    foreach ($rssfeeds as $rssfeed) {
             if (empty($rssfeed->title) || empty($rssfeed->sef_url)) {
                 if (empty($rssfeed->title)) $rssfeed->title = !empty($rssfeed->feed_title) ? $rssfeed->feed_title : '';
-                if (empty($rssfeed->sef_url)) $rssfeed->sef_url = self::makeSefUrl($rssfeed->title);
+                if (empty($rssfeed->sef_url)) $rssfeed->sef_url = expCore::makeSefUrl($rssfeed->title,'expRss');
    		        $db->updateObject($rssfeed,'expRss');
                 $fixed++;
             }
@@ -94,25 +94,6 @@ class update_rssfeeds extends upgradescript {
 
         return ($fixed?$fixed:gt('No')).' '.gt('RSS Feeds were updated');
 	}
-
-    /**
-   	 * make an sef_url for expRss
-   	 */
-    function makeSefUrl($title) {
-        global $db, $router;
-
-        if (!empty($title)) {
-            $sef_url = $router->encode($title);
-        } else {
-            $sef_url = $router->encode('Untitled');
-        }
-        $dupe = $db->selectValue('expRss', 'sef_url', 'sef_url="'.$sef_url.'"');
-        if (!empty($dupe)) {
-            list($u, $s) = explode(' ',microtime());
-            $sef_url .= '-'.$s.'-'.$u;
-        }
-        return $sef_url;
-    }
 
 }
 

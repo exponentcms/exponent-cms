@@ -43,7 +43,7 @@ class pixidouController extends expController {
 			$file->copyToDirectory(BASE.$this->cacheDir);
 			assign_to_template(array(
                 'image'=>$file,
-                'update'=>$_GET['update'],
+                'update'=>$this->params['update'],
                 'saveog'=>$canSaveOg
             ));
 	    } else {

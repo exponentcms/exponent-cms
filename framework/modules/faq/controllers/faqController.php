@@ -84,6 +84,7 @@ class faqController extends expController {
 //                    'records'=>$items_by_tags,
 //                    'limit'=>$limit,
 //                    'order'=>$order,
+//                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 //                    'controller'=>$this->baseclassname,
 //                    'action'=>$this->params['action'],
 //                    'columns'=>array('Title'=>'title'),
@@ -103,9 +104,16 @@ class faqController extends expController {
             'where' => "location_data='".serialize($this->loc)."'",
 		    'limit'=>25,
             'order'=>'rank',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('In FAQ')=>'include_in_faq',gt('Answered')=>'answer',gt('Question')=>'question',gt('Submitted')=>'created_at',gt('Submitted By')=>'submitter_name'),
+            'columns'=>array(
+                gt('In FAQ')=>'include_in_faq',
+                gt('Answered')=>'answer',
+                gt('Question')=>'question',
+                gt('Submitted')=>'created_at',
+                gt('Submitted By')=>'submitter_name'
+            ),
         ));
         
         assign_to_template(array(

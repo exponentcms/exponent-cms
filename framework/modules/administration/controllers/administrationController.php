@@ -304,8 +304,8 @@ class administrationController extends expController {
    	}
 
     public function update_language() {
-        expSettings::change('LANGUAGE', $_POST['newlang']);
-        flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
+        expSettings::change('LANGUAGE', $this->params['newlang']);
+        flash('message',gt('Display Language changed to').": ".$this->params['newlang']);
         redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
 //        $this->manage_lang();
    	}
@@ -325,12 +325,12 @@ class administrationController extends expController {
    	}
 
     public function save_newlangfile() {
-		$result = expLang::createNewLangFile($_POST['newlang']);
+		$result = expLang::createNewLangFile($this->params['newlang']);
         flash($result['type'],$result['message']);
         if ($result['type'] != 'error') {
-            expSettings::change('LANGUAGE', $_POST['newlang']);
-            expLang::createNewLangInfoFile($_POST['newlang'],$_POST['newauthor'],$_POST['newcharset'],$_POST['newlocale']);
-            flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
+            expSettings::change('LANGUAGE', $this->params['newlang']);
+            expLang::createNewLangInfoFile($this->params['newlang'],$this->params['newauthor'],$this->params['newcharset'],$this->params['newlocale']);
+            flash('message',gt('Display Language changed to').": ".$this->params['newlang']);
         }
         redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
 //        $this->manage_lang();
@@ -469,8 +469,8 @@ class administrationController extends expController {
 	}
 
 	public function install_extension_confirm() {
-        if (!empty($_POST['files'])) {
-            foreach ($_POST['files'] as $title=>$url) {
+        if (!empty($this->params['files'])) {
+            foreach ($this->params['files'] as $title=>$url) {
                 $filename = tempnam("tmp/extensionuploads/",'tmp');
                 expCore::saveData($url,$filename);
                 $_FILES['mod_archive']['name'] = end(explode("/", $url));
@@ -578,7 +578,7 @@ class administrationController extends expController {
 				$files = array();
 				foreach (expFile::listFlat(BASE.'tmp/extensionuploads/'.$sessid,true,null,array(),BASE.'tmp/extensionuploads/'.$sessid) as $key=>$f) {
 					if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
-                        if (empty($_POST['patch']) || !$_POST['patch']) {
+                        if (empty($this->params['patch']) || !$this->params['patch']) {
                             $key = substr($key,1);
                             if (substr($key,0,7)=='themes/') {
                                 $parts = explode('/',$key);
@@ -602,14 +602,14 @@ class administrationController extends expController {
 				assign_to_template(array(
                     'relative'=>'tmp/extensionuploads/'.$sessid,
                     'files'=>$files,
-                    'patch'=>empty($_POST['patch'])?0:$_POST['patch']
+                    'patch'=>empty($this->params['patch'])?0:$this->params['patch']
                 ));
 			}
 		}
 	}
 
 	public function install_extension_finish() {
-        $patch =$_GET['patch']==1;
+        $patch =$this->params['patch']==1;
 		$sessid = session_id();
 		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
 			$nofiles = 1;
@@ -940,19 +940,19 @@ class theme {
 	 * and presents the values as text boxes.
 	 */
 	function configureTheme () {
-		if (isset($_GET['sv']) && $_GET['sv'] != '') {
-			if (strtolower($_GET['sv'])=='default') {
-			   $_GET['sv']='';
+		if (isset($this->params['sv']) && $this->params['sv'] != '') {
+			if (strtolower($this->params['sv'])=='default') {
+                $this->params['sv']='';
 			}
-			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
+			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config_".$this->params['sv'].".php");
 		} else {
-			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
 		}
 		$form = new form();
 		$form->meta('controller','administration');
 		$form->meta('action','update_theme');
-		$form->meta('theme',$_GET['theme']);
-		$form->meta('sv',isset($_GET['sv'])?$_GET['sv']:'');
+		$form->meta('theme',$this->params['theme']);
+		$form->meta('sv',isset($this->params['sv'])?$this->params['sv']:'');
 		foreach ($settings as $setting=>$key) {
 			$form->register($setting,$setting.': ',new textcontrol($key,20));
 		}

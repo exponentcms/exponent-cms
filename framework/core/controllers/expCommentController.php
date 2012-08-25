@@ -78,9 +78,15 @@ class expCommentController extends expController {
             'limit'=>10,
             'order'=>$order,
             'dir'=>$dir,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Approved')=>'approved',gt('Poster')=>'name',gt('Comment')=>'body',gt('Type')=>'content_type'),
+            'columns'=>array(
+                gt('Approved')=>'approved',
+                gt('Poster')=>'name',
+                gt('Comment')=>'body',
+                gt('Type')=>'content_type'
+            ),
         ));
 
         $refs[][] = array();
@@ -123,9 +129,12 @@ class expCommentController extends expController {
             'sql'=>$sql, 
 //            'limit'=>999,
             'order'=>'created_at',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Readable Column Name')=>'Column Name'),
+            'columns'=>array(
+                gt('Readable Column Name')=>'Column Name'
+            ),
         ));
 
         // add username and avatar

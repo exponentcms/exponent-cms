@@ -47,19 +47,22 @@ class photosController extends expController {
             $limit = '0';
         }
         $page = new expPaginator(array(
-                    'model'=>'photo',
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>$limit,
-                    'order'=>'rank',
-                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
-                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
-                    'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
-                    'grouplimit'=>!empty($this->params['view']) && $this->params['view'] == 'showall_galleries' ? 1 : null,
-                    'src'=>$this->loc->src,
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(gt('Title')=>'title'),
-                    ));
+            'model'=>'photo',
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>$limit,
+            'order'=>'rank',
+            'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+            'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+            'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
+            'grouplimit'=>!empty($this->params['view']) && $this->params['view'] == 'showall_galleries' ? 1 : null,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
                     
         assign_to_template(array(
             'page'=>$page
@@ -114,18 +117,21 @@ class photosController extends expController {
 //        $slides = $s->find('all',$where,$order);
 
         $page = new expPaginator(array(
-                    'model'=>'photo',
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
-                    'order'=>'rank',
-                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
-                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
-                    'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
-                    'src'=>$this->loc->src,
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(gt('Title')=>'title'),
-                    ));
+            'model'=>'photo',
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+            'order'=>'rank',
+            'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+            'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+            'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
 
         assign_to_template(array(
 //            'slides'=>$slides

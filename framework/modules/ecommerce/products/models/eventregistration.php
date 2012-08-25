@@ -417,7 +417,7 @@ class eventregistration extends expRecord {
 			$name = $ctl->name;
 		}
 		
-		if(!empty($_GET['token'])) {
+		if(!empty($this->params['token'])) {
 			$record = expSession::get("last_POST_Paypal");
 		} else {
 			$record = expSession::get("last_POST");

@@ -38,12 +38,12 @@ class help extends expRecord {
 	public function save($validate=false) {
         global $db;
 
-		if (isset($_POST['help_section'])) {
+		if (isset($this->params['help_section'])) {
 			// manipulate section & location_data to correct values
-			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . expString::sanitize($_POST['help_section'] .'"'));
+			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $this->params['help_section'] .'"');
 			$loc = new stdClass();
 			$loc->mod = 'help';
-			$loc->src = $_POST['help_section'];
+			$loc->src = $this->params['help_section'];
 			$loc->int = '';
 			$this->location_data = serialize($loc);
 		}
@@ -57,7 +57,7 @@ class help extends expRecord {
    }
 
 	/**
-	 * Make a unique help item sef-url within the version_version
+	 * Make a unique help item sef-url within the help_version
 	 */
 	public function makeSefUrl() {
 		global $router, $db;
