@@ -246,7 +246,9 @@ class expCSS {
                 $cache = BASE.$less_fname;
             }
         }
-        $new_cache = lessc::cexecute($cache, false, $vars);
+//        $new_cache = lessc::cexecute($cache, false, $vars);
+        $less = new lessc;
+        $new_cache = $less->cachedCompile($cache, false, $vars);
         if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
             file_put_contents(BASE.$css_fname, $new_cache['compiled']);
             file_put_contents($cache_fname, serialize($new_cache));

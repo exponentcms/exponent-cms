@@ -120,6 +120,9 @@ function smarty_function_getnav($params,&$smarty) {
                 $nav = 0;
             }
             break;
+        case "hierarchy" :
+            $nav = navigationController::navhierarchy();
+            break;
         default :
             $nav = $sections;
     }
