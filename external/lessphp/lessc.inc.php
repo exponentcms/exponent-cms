@@ -1646,10 +1646,9 @@ class lessc {
 	 *
 	 * @param mixed $in Input
 	 * @param bool $force Force rebuild?
-     * @param array $vars array of variables to set
 	 * @return array lessphp cache structure
 	 */
-	public function cachedCompile($in, $force = false, $vars=array()) {
+	public function cachedCompile($in, $force = false) {
 		// assume no root
 		$root = null;
 
@@ -1681,8 +1680,6 @@ class lessc {
 			// If we have a root value which means we should rebuild.
 			$out = array();
 			$out['root'] = $root;
-            $out['vars'] = !empty($vars)?$vars:null;
-			$this->setVariables($vars);
 			$out['compiled'] = $this->compileFile($root);
 			$out['files'] = $this->allParsedFiles();
 			$out['updated'] = time();
