@@ -78,7 +78,11 @@ class fileController extends expController {
         ));
     }
     
-    public function get_view_config() {
+    /**
+     * Locates appropriate attached file view template
+     *
+     */
+     public function get_view_config() {
         global $template;
         
         // set paths we will search in for the view

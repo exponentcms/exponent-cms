@@ -459,6 +459,7 @@ function get_common_template($view, $loc, $controllername='') {
 
 /**
  * Return entire list of all controller configuration views available
+ *
  * @param $controller
  * @param $loc
  * @return array

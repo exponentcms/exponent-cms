@@ -514,7 +514,7 @@ class expTheme {
 				global $db, $user;  // these globals are needed for the old school actions which are loaded
 
 				// the only reason we should have a controller down in this section is if we are hitting a common action like
-				// userperms or groupperms...deal wit it.
+				// userperms or groupperms...deal with it.
 				$loc = new stdClass();
 				$loc->mod = $module;
 				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
@@ -541,7 +541,7 @@ class expTheme {
         return false;
 	}
 
-    public static function showAction($module, $action, $src="", $params=array()) {
+    public static function showAction($module, $action, $src="", $params=array()) {  //FIXME doesn't seem to be used except by smarty functions, old school?
    		global $db, $user;
 
    		$loc = new stdClass();;
