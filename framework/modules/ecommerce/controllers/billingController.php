@@ -27,7 +27,7 @@ class billingController extends expController {
     
 	function displayname() { return gt("Ecommerce Billing Controller"); }
 	function description() { return ""; }
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 	
 	function selectBillingCalculator() {
 		$billing = new billing();

@@ -41,7 +41,7 @@ class expDefinableFieldController extends expController {
 	 * does module have sources available?
 	 * @return bool
 	 */
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 
     /**
    	 * default view for individual field

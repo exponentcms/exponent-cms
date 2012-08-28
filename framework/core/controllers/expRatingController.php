@@ -31,7 +31,7 @@ class expRatingController extends expController {
     function displayname() { return gt("Ratings Manager"); }
     function description() { return gt("This module is for manageing ratings on records"); }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
 	
 	function __construct($src=null, $params=array()) {
         global $user;

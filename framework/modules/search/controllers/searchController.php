@@ -42,7 +42,7 @@ class searchController extends expController {
 
     function displayname() { return gt("Search Form"); }
     function description() { return gt("Add a form to allow users to search for content on your website."); }
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
     function hasContent() { return false; }
 
     public function search() {

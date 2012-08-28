@@ -116,7 +116,7 @@ class migrationController extends expController {
 	 * if module has associated sources
 	 * @return bool
 	 */
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
 
 	/**
 	 * if module has associated content

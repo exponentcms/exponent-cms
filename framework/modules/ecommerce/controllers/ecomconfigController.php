@@ -30,7 +30,7 @@ class ecomconfigController extends expController {
 	
     function displayname() { return gt("Ecommerce Configuration Manager"); }
     function description() { return gt("Use this module to configure your Ecommerce store"); }
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
 
     function show() {
         expHistory::set('manageable', $this->params);

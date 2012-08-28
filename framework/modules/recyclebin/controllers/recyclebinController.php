@@ -30,7 +30,7 @@ class recyclebinController extends expController {
     function displayname() { return gt("Recycle Bin Manager"); }
     function description() { return gt("Manage modules that have been deleted from your web pages"); }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
     function hasContent() { return false; }
 
     function showall() {

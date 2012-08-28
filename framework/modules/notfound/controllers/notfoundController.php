@@ -28,7 +28,7 @@ class notfoundController extends expController {
 
     function displayname() { return gt("Not Found Controller"); }
     function description() { return gt("This controller handles routing not found pages to the appropriate place."); }
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
     function hasViews() { return false; }
     function hasContent() { return false; }
     

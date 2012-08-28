@@ -48,7 +48,7 @@ class expCatController extends expController {
 	 * does module have sources available?
 	 * @return bool
 	 */
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 
 	/**
 	 * manage categories

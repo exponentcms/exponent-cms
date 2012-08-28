@@ -23,7 +23,7 @@ class formmodule {
 	function description() { return gt('Allows the creation of forms that can be emailed and/or stored in the database.'); }
 	function author() { return 'OIC Group, Inc'; }
 	
-	function hasSources() { return true; }
+	static function hasSources() { return true; }
 	function hasContent() { return true; }
 	function hasViews() { return true; }
 	

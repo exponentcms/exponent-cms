@@ -53,7 +53,7 @@ class importexportController extends expController {
     function displayname() { return gt("Data Import / Export Module"); }
     function description() { return gt("Use this module to import and export data from your Exponent website."); }
     function author() { return "OIC Group, Inc"; }
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
     function hasViews() { return true; }
     function hasContent() { return false; }
     function supportsWorkflow() { return false; }

@@ -27,7 +27,7 @@ class shippingController extends expController {
 
 	function displayname() { return gt("Ecommerce Shipping Controller"); }
 	function description() { return ""; }
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 	function hasContent() { return false; }
 	
 	function selectShippingCalculator() {

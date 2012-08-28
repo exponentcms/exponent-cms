@@ -22,7 +22,7 @@ class calendarmodule {
 	function description() { return 'Allows posting of content to a calendar.'; }
 
 	function hasContent() { return true; }
-	function hasSources() { return true; }
+	static function hasSources() { return true; }
 	function hasViews()   { return true; }
 
 	function supportsWorkflow() { return false; }

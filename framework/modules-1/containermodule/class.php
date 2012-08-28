@@ -23,7 +23,7 @@ class containermodule {
 	function description() { return 'Contains other modules'; }
 	
 	function hasContent() { return true; }
-	function hasSources() { return true; }
+	static function hasSources() { return true; }
 	function hasViews()   { return true; }
 	
 	function supportsWorkflow() { return false; }

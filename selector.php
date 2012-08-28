@@ -81,6 +81,9 @@ if (is_readable(BASE.$page)) {
 	}
 	
 	expSession::set('source_select',$source_select);
+    if (!defined('PRINTER_FRIENDLY')) define('PRINTER_FRIENDLY','0');
+    if (!defined('EXPORT_AS_PDF')) define('EXPORT_AS_PDF','0');
+
 	// Include the rendering page.
 	include_once(BASE.$page);
 	expTheme::satisfyThemeRequirements();

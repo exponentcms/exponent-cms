@@ -38,7 +38,7 @@ class usersController extends expController {
 
     function displayname() { return gt("User Manager"); }
     function description() { return gt("This is the user management module. It allows for creating user, editing user, etc."); }
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
     function hasContent() { return false; }
     
     public function manage() {

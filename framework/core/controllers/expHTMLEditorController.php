@@ -27,7 +27,7 @@ class expHTMLEditorController extends expController {
     function displayname() { return gt("Editors"); }
     function description() { return gt("Mostly for CKEditor"); }
     function author() { return "Phillip Ball"; }
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
 	function hasContent() { return false; }
 	protected $add_permissions = array(
         'activate'=>"Activate",

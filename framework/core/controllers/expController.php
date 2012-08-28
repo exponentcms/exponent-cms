@@ -150,7 +150,7 @@ abstract class expController {
 	 * does module have sources available?
 	 * @return bool
 	 */
-	function hasSources() { return true; }
+	static function hasSources() { return true; }
 
 	/**
 	 * does module have views available?

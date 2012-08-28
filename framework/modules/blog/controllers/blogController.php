@@ -39,7 +39,7 @@ class blogController extends expController {
     function displayname() { return gt("Blog"); }
     function description() { return gt("This module allows you to run a blog on your site."); }
     function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
+    static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
     function isSearchable() { return true; }
 
     public function showall() {

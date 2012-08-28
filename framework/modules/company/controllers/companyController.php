@@ -37,7 +37,7 @@ class companyController extends expController {
 
 	function displayname() { return gt("Company Listings"); }
 	function description() { return gt("This module shows company listings"); }
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 	
 	function showall() {
         expHistory::set('viewable', $this->params);

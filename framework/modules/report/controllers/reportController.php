@@ -29,7 +29,7 @@ class reportController extends expController {
 	function displayname() { return gt("Ecom Report Builder"); }
 	function description() { return gt("Build reports based on store activity"); }
 	function author() { return "Phillip Ball - OIC Group, Inc"; }
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
     
     protected $o;
     protected $oneday = 86400;           
