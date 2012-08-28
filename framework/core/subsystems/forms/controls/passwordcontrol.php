@@ -51,7 +51,7 @@ class passwordcontrol extends formcontrol {
 		return $html;
 	}
 	
-	function form($object) {
+	static function form($object) {
 
 	}
 	

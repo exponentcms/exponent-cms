@@ -158,7 +158,7 @@ class quantitycontrol extends formcontrol {
         return $html;
     }
     
-    function form($object) {
+    static function form($object) {
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";

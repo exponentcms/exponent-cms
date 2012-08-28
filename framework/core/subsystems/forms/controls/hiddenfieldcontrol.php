@@ -58,7 +58,7 @@ class hiddenfieldcontrol extends formcontrol {
 		return ($db_data==1)?gt("Yes"):gt("No");
 	}
 	
-	function form($object) {
+	static function form($object) {
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";

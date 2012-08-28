@@ -146,7 +146,7 @@ class formcontrol {
      *
      * @param $object
      */
-    function form($object) {
+    static function form($object) {
         return;
     }
 

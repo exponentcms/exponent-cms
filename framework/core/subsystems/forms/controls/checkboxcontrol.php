@@ -65,10 +65,10 @@ class checkboxcontrol extends formcontrol {
             $html .= "</td>";           
         } else {
             $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
-//            $html .= "<td class=\"input\" nowrap>";
-//            $html .= "<label class=\"label\"></label>";
-//            $html .= "</td><td>";
-            $html .= "<td>";
+            $html .= "<td class=\"input\" nowrap>";
+            $html .= "<label class=\"label\" style=\"background: transparent;\";></label>";
+            $html .= "</td><td>";
+//            $html .= "<td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
             $html .= "<label".$for." class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">".$label."</label>";
             $html .= "</td>";           
@@ -100,6 +100,7 @@ class checkboxcontrol extends formcontrol {
         $this->value = isset($this->value) ? $this->value : 1;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $html = '<input'.$inputID.' class="checkbox" type="checkbox" name="' . $name . '" value="'.$this->value.'"';
+        if (!$this->flip) $html .= ' style="float:left;"';
         if ($this->default) $html .= ' checked="checked"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
@@ -166,7 +167,7 @@ class checkboxcontrol extends formcontrol {
         return ($db_data==1)?gt("Yes"):gt("No");
     }
     
-    function form($object) {
+    static function form($object) {
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";

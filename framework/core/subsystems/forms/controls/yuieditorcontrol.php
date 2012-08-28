@@ -89,7 +89,7 @@ class yuieditorcontrol extends formcontrol {
 		return $html;
 	}
 	
-	function form($object) {
+	static function form($object) {
 
 		$form = new form();
 		

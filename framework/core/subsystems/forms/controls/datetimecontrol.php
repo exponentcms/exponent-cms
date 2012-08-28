@@ -131,7 +131,7 @@ class datetimecontrol extends formcontrol {
 		}
 	}
 	
-	function form($object) {
+	static function form($object) {
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";

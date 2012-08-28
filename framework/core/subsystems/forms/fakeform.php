@@ -65,7 +65,14 @@ class fakeform extends form {
 			$even = ($even=="odd") ? "even" : "odd";
 			$html .= "<div class=\"formmoduleedit ".$even." control\" style=\"border: 1px dashed lightgrey; padding: 1em;\" >";
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
+                $html .= "<label class=\"label\" style=\"background: transparent;\";></label>";
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
+            }
+            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
+                $html .= "<div class=\"label\" style=\"width:auto;\">bb";
+                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
+                $html .= $this->controlLbl[$name];
+                $html .= "</div>";
             }
             $html .= "<div class=\"item-actions\">";
 			if (!$this->controls[$name]->_readonly) {
@@ -88,10 +95,13 @@ class fakeform extends form {
 			$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
 			$html .= '</a>';
             $html .= "</div>";
-            $html .= "<div class=\"label\">";
-            if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
-            $html .= $this->controlLbl[$name];
-            $html .= "</div>";
+            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
+            } elseif (!empty($this->controlLbl[$name])) {
+                $html .= "<div class=\"label\">";
+                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
+                $html .= $this->controlLbl[$name];
+                $html .= "</div>";
+            }
 //			$html .= "<div class=\"formmoduleeditactions\">";
 //			if ($rank != count($this->controlIdx)-1) {
 //				//$html .= '<a href="?module='.$module.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank+1).'">';
@@ -118,7 +128,6 @@ class fakeform extends form {
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol') || $this->controls[$name]->_controltype == 'radiogroupcontrol') {
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
-
 			$html .= "</div>";
 			
 			$rank++;

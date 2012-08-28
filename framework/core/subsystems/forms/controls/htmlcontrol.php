@@ -49,7 +49,7 @@ if (!defined('EXPONENT')) exit('');
 		return $this->html;
 	}
 	
-	function form($object) {
+	static function form($object) {
 		$form = new form();
 		if (!isset($object->html)) {
 			$object->html = "";
