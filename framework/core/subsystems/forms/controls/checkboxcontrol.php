@@ -65,11 +65,12 @@ class checkboxcontrol extends formcontrol {
             $html .= "</td>";           
         } else {
             $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
-            $html .= "<td class=\"input\" nowrap>";
-            $html .= "<label class=\"label\"></label>";
-            $html .= "</td><td>";
+//            $html .= "<td class=\"input\" nowrap>";
+//            $html .= "<label class=\"label\"></label>";
+//            $html .= "</td><td>";
+            $html .= "<td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
-            $html .= "<label".$for." class=\"label\" style=\"text-align:left; white-space:nowrap;\">".$label."</label>";
+            $html .= "<label".$for." class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">".$label."</label>";
             $html .= "</td>";           
         }
         $html .= "</tr></table>";
