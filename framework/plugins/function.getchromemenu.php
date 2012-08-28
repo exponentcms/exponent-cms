@@ -61,6 +61,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
             $filepath = $value ."/function.ddrerank.php";
             if (file_exists($filepath)) {
                 require_once $filepath;
+                break;
             }
         }
         $reorder = array();
