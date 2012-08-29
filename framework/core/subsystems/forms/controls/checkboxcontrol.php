@@ -68,9 +68,10 @@ class checkboxcontrol extends formcontrol {
             $html .= "<td class=\"input\" nowrap>";
             $html .= "<label class=\"label\" style=\"background: transparent;\";></label>";
             $html .= "</td><td>";
-//            $html .= "<td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) :$this->controlToHTML($name);
-            $html .= "<label".$for." class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">".$label."</label>";
+            if (!empty($label) && $label != ' ') {
+                $html .= "<label".$for." class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">".$label."</label>";
+            }
             $html .= "</td>";           
         }
         $html .= "</tr></table>";
