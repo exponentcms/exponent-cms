@@ -59,10 +59,11 @@ class radiogroupcontrol extends formcontrol {
 //		$html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
 //		$html .= (!empty($label))?"<td><span class=\"label\">".$label."</span></td></tr><tr>":"";
         $html .= (!empty($label))?"<span class=\"label\">".$label."</span>":"";
-        $html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
-		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
-		$html .= "</tr></table>";
-		$html .= "</div>";			
+//        $html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
+//		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
+//		$html .= "</tr></table>";
+		$html .= $this->controlToHTML($name, $label);
+        $html .= "</div>";
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
@@ -91,7 +92,7 @@ class radiogroupcontrol extends formcontrol {
     			$html .= '</tr><tr>';
     			$i = 0;
             }
-			$html .= '<td style="border:none; padding:3px 3px 3px 5px">'.$radio->toHTML($rname, $name).'</td>';
+			$html .= '<td style="border:none; padding-left:5px">'.$radio->toHTML($rname, $name).'</td>';
 			$i++; 
 		}	
 		$html .= '</tr></table>';

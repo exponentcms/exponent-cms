@@ -33,9 +33,9 @@
                 </div>
 			</div>
 			<!-- navigation -->
-			<div  id="menu">
+			<div id="menu">
 <!--                --><?php //expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav")); ?>
-                <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_YUI Top Nav","source"=>"@top")); ?>
+                <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_YUI Top Nav")); ?>
 			</div>
 			<!-- content-wrap starts here -->
 			<div id="content-wrap">

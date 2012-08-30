@@ -57,7 +57,6 @@ never have more than one menubar on a single page */
     background-image:url(../images/menubaritem_submenuindicator_selected.png);
 }
 
-
 /* the hover state of the menu bar's <li>'s <a>*/
 #hd .yui-top-nav .yuimenubar .yuimenubaritemlabel-selected {
     color:#302f30;

@@ -1,0 +1,23 @@
+/* announcement view for news module */
+.news .announcement h2 {
+    text-align: center;
+}
+
+.news.announcement .item.announcement {
+    background-color: #ffed9f;
+    color: black;
+    padding: 20px;
+    margin : 0 10px 20px;
+    border:4px;
+    border-style: solid;
+    border-color: #000000;
+    border-radius: 10px;
+    display: block;
+    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+       -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+}
+
+.news.announcement .item-actions a {
+    color : #60a165 !important;
+}
