@@ -23,6 +23,7 @@
  */
 
 class expRouter {
+
     private $maps = array();
     public  $url_parts = '';
     public  $current_url = '';
@@ -112,7 +113,7 @@ class expRouter {
                 }
 
                 // if we found a mapping for this link then we can return it now.
-                //if ($link != '') return expRouter::encode($linkbase.$link);
+                //if ($link != '') return self::encode($linkbase.$link);
                 if ($link != '') return self::cleanLink($linkbase.$link);
                 
                 if (!empty($params['controller'])) $link .= $params['controller'].'/';

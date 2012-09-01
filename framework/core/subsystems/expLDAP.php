@@ -23,6 +23,7 @@
  */
 
 class expLDAP {
+
 	public $connection = false;
 
 	function __construct($server='') {

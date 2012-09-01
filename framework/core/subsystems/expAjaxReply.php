@@ -23,6 +23,7 @@
  */
 
 class expAjaxReply {
+
 	public $packet = array('replyCode'=>'','replyText'=>'','data'=>'');
 	public $template;
 	public $redirecturl = null;

@@ -23,6 +23,7 @@
  */
 
 class expBot {
+
     public $url = '';
     public $method = 'GET';
     

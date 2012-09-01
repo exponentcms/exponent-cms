@@ -83,7 +83,7 @@ class expModules {
     public static function listActiveControllers() {
         global $db;
         
-        $controllers = expModules::listUserRunnableControllers();
+        $controllers = self::listUserRunnableControllers();
         
         foreach ($controllers as $module) {
     		if (class_exists($module)) {
@@ -145,8 +145,8 @@ class expModules {
 	}
 
 	public static function getController($controllername='') {
-	    $fullname = expModules::getControllerClassName($controllername);
-	    if (expModules::controllerExists($controllername))  {
+	    $fullname = self::getControllerClassName($controllername);
+	    if (self::controllerExists($controllername))  {
 	        $controller = new $fullname();
 	        return $controller;
 	    } else {
@@ -158,30 +158,52 @@ class expModules {
 	    global $available_controllers;
 
 	    // make sure the name is in the right format
-	    $controllername = expModules::getControllerClassName($controllername);
+	    $controllername = self::getControllerClassName($controllername);
 
 	    // check for module based controllers
 	    if (array_key_exists($controllername, $available_controllers)) {
 	        if (is_readable($available_controllers[$controllername])) return true;
 	    } else {
 	        // check for core controllers
-	        if (is_readable(BASE.'framework/core/controllers/'.expModules::getControllerClassName($controllername).'.php')) return true;
+	        if (is_readable(BASE.'framework/core/controllers/'.self::getControllerClassName($controllername).'.php')) return true;
 	    }
 
 	    // if we got here we didn't find any controllers matching the name
 	    return false;
 	}
 
-	public static function getControllerClassName($controllername) {
+    /**
+     * Returns the full controller classname with the 'Controller' suffix
+     *
+     * @param $controllername
+     *
+     * @return null|string
+     */
+    public static function getControllerClassName($controllername) {
 	    if (empty($controllername)) return null;
 	    return (substr($controllername, -10) == 'Controller') ? $controllername : $controllername.'Controller';
 	}
 
-	public static function getControllerName($controllername) {
+    /**
+     * Returns the base controller name sans the 'Controller' suffix
+     * in most cases this is also the module name
+     *
+     * @param $controllername
+     *
+     * @return null|string
+     */
+    public static function getControllerName($controllername) {
 	    if (empty($controllername)) return null;
         return (substr($controllername, -10) == 'Controller') ? substr($controllername, 0, -10) : $controllername;
 	}
 
+    /**
+     * Returns the base controller or module name sans the 'Controller' or 'module' suffix
+     *
+     * @param $modulename
+     *
+     * @return null|string
+     */
     public static function getModuleName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
@@ -189,6 +211,20 @@ class expModules {
         } else {
             return (substr($modulename, -6) == 'module') ? substr($modulename, 0, -6) : $modulename;
         }
+   	}
+
+    /**
+     * Returns the base controller or module name sans the 'Controller' or 'module' suffix
+     *
+     * @param $modulename
+     *
+     * @return null|string
+     */
+    public static function getControllerDisplayName($controllername) {
+   	    if (empty($controllername) || !self::controllerExists($controllername)) return null;
+        $fullname = self::getControllerClassName($controllername);
+        $controller = new $fullname();
+        return $controller->displayname();
    	}
 
 	/** exdoc
@@ -211,7 +247,7 @@ class expModules {
 
 	    $ctls = array();  // 2.0 modules
 	    foreach($modulestates as $state) {
-	        if (expModules::controllerExists($state->module)) {
+	        if (self::controllerExists($state->module)) {
 	            $controller = new $state->module();
 	            if (!empty($controller->useractions)) {
 		            $ctls[] = $state->module;

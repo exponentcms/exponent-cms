@@ -24,6 +24,7 @@
 /** @define "BASE" "../../.." */
 
 class expJavascript {
+
 	public static function inAjaxAction() {
 		return empty($_REQUEST['ajax_action']) ? false : true;
 	}
@@ -347,7 +348,7 @@ class expJavascript {
             break;
         }
 
-        expJavascript::pushToFoot(array(
+        self::pushToFoot(array(
             "unique"=>'pop-'.$params['name'],
             "yui2mods"=>'animation,container',
             "yui3mods"=>null,
