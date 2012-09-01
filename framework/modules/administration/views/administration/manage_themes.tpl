@@ -41,7 +41,7 @@
         </thead>
         <tbody>
         	{foreach name=t from=$themes key=class item=theme}
-				<tr class="{cycle values='odd,even'}">
+				<tr class="{cycle values='odd,even'}{if $smarty.const.DISPLAY_THEME_REAL == $class} current{/if}">
 					<td>
 						{img class="themepreview" src=$theme->preview w=100}
 					</td>

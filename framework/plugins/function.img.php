@@ -56,7 +56,7 @@ function smarty_function_img($params,&$smarty) {
 	    $src .= '&amp;lgcy=1';
 	    
 		// get the image dimensions
-		if (isset($params['constrain'])) $src .= '&amp;constraint=1'; 
+		if (isset($params['constrain'])) $src .= '&amp;constraint=1';
 		if (isset($params['square'])) $src .= '&amp;square='.$params['square'];
 		if (isset($params['width'])) $src .= '&amp;width='.$params['width'];
 		if (isset($params['height'])) $src .= '&amp;height='.$params['height'];
