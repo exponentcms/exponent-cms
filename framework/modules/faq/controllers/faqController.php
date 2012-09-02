@@ -33,9 +33,9 @@ class faqController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Frequently Asked Questions"); }
-    function description() { return gt("This module allows you show frequently asked questions.  Users can post questions to you to answer too."); }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Frequently Asked Questions"); }
+    static function description() { return gt("This module allows you show frequently asked questions.  Users can post questions to you to answer too."); }
+    static function isSearchable() { return true; }
 
     public function showall() {
         expHistory::set('viewable', $this->params);

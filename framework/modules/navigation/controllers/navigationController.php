@@ -47,21 +47,13 @@ class navigationController extends expController {
     );
     public $codequality = 'alpha';
 
-    function displayname() {
-        return gt("Navigation");
-    }
+    static function displayname() { return gt("Navigation"); }
 
-    function description() {
-        return gt("Places navigation links/menus on the page.");
-    }
+    static function description() { return gt("Places navigation links/menus on the page."); }
 
-    function isSearchable() {
-        return true;
-    }
+    static function isSearchable() { return true; }
 
-    function searchName() {
-        return gt('Webpage');
-    }
+    function searchName() { return gt('Webpage'); }
 
     public function showall() {
         global $db, $user, $sectionObj, $sections;

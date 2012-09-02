@@ -22,15 +22,14 @@
  */
 
 class notfoundController extends expController {
-    //public $basemodel_name = '';
     //public $useractions = array('showall'=>'Show all');
     public $add_permissions = array('showall'=>'Showall', 'show'=>'Show');
 
-    function displayname() { return gt("Not Found Controller"); }
-    function description() { return gt("This controller handles routing not found pages to the appropriate place."); }
+    static function displayname() { return gt("Not Found Controller"); }
+    static function description() { return gt("This controller handles routing not found pages to the appropriate place."); }
     static function hasSources() { return false; }
-    function hasViews() { return false; }
-    function hasContent() { return false; }
+    static function hasViews() { return false; }
+    static function hasContent() { return false; }
     
     public function handle() {
         global $router, $db;

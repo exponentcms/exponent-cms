@@ -21,6 +21,7 @@
  */
 
 class creditcard extends billingcalculator {
+
 	function name() { return 'Credit Card'; }
 	function hasConfig() { return false;}
 	function hasUserForm() { return false;}

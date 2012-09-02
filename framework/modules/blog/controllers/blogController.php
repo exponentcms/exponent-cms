@@ -21,7 +21,6 @@
  */
 
 class blogController extends expController {
-    //public $basemodel_name = '';
     public $useractions = array(
         'showall'=>'Show all', 
         'tags'=>"Tags",
@@ -36,11 +35,11 @@ class blogController extends expController {
         'approve'=>"Approve Comments"
     );
 
-    function displayname() { return gt("Blog"); }
-    function description() { return gt("This module allows you to run a blog on your site."); }
-    function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function displayname() { return gt("Blog"); }
+    static function description() { return gt("This module allows you to run a blog on your site."); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
     static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
-    function isSearchable() { return true; }
+    static function isSearchable() { return true; }
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);

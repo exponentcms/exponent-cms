@@ -22,24 +22,25 @@
  */
 
 class orderController extends expController {
-	//protected $basemodel_name = '';
 	//public $useractions = array('showall'=>'Show all');
-	public $useractions = array();
-	protected $add_permissions = array('showall'=>'Manage', 'show'=>'View Orders', 'setStatus'=>'Change Status', 
-    'edit_payment_info'=>'Edit Payment Info','save_payment_info'=>'Save Payment Info',
-    'edit_address'=>'Edit Address','save_address'=>'Save Address',
-    'edit_order_item'=>'Edit Order Item','save_order_item'=>'Save Order Item',
-    'add_order_item'=>'Add Order Item','save_new_order_item'=>'Save New Order Item',
-    'edit_totals'=>'Edit Totals','save_totals'=>'Save Totals',
-    'edit_invoice_id'=>'Edit Invoice Id','save_invoice_id'=>'Save Invoice Id', 
-    'update_sales_reps'=>'Manage Sales Reps', 'quickfinder'=>'Do a quick order lookup', 
-    'edit_shipping_method'=>'Edit Shipping Method', 'save_shipping_method'=>'Save Shipping Method',    
-    'create_new_order'=>'Create A New Order', 'save_new_order'=>'Save a new order', 
-    'createReferenceOrder'=>'Create Reference Order', 'save_reference_order'=>'Save Reference Order'      
+	protected $add_permissions = array(
+        'showall'=>'Manage',
+        'show'=>'View Orders',
+        'setStatus'=>'Change Status',
+        'edit_payment_info'=>'Edit Payment Info','save_payment_info'=>'Save Payment Info',
+        'edit_address'=>'Edit Address','save_address'=>'Save Address',
+        'edit_order_item'=>'Edit Order Item','save_order_item'=>'Save Order Item',
+        'add_order_item'=>'Add Order Item','save_new_order_item'=>'Save New Order Item',
+        'edit_totals'=>'Edit Totals','save_totals'=>'Save Totals',
+        'edit_invoice_id'=>'Edit Invoice Id','save_invoice_id'=>'Save Invoice Id',
+        'update_sales_reps'=>'Manage Sales Reps', 'quickfinder'=>'Do a quick order lookup',
+        'edit_shipping_method'=>'Edit Shipping Method', 'save_shipping_method'=>'Save Shipping Method',
+        'create_new_order'=>'Create A New Order', 'save_new_order'=>'Save a new order',
+        'createReferenceOrder'=>'Create Reference Order', 'save_reference_order'=>'Save Reference Order'
     );
 	
-	function displayname() { return gt("Ecommerce Order Manager"); }
-	function description() { return gt("Use this module to manage the orders from your ecommerce store."); }
+    static function displayname() { return gt("Ecommerce Order Manager"); }
+    static function description() { return gt("Use this module to manage the orders from your ecommerce store."); }
 	
 	function showall() {
 	    global $db;

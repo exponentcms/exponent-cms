@@ -27,6 +27,7 @@ class photoController extends photosController {
         'slideshow'=>'Slideshow', 
         //'showall_tags'=>"Tag Categories"
     );
+
 }
 
 ?>

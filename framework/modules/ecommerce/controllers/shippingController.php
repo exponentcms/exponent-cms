@@ -22,13 +22,14 @@
  */
 
 class shippingController extends expController {
-	public $useractions = array();
-	public $add_permissions = array('toggle'=>'Enable/Disable Options');
+	public $add_permissions = array(
+        'toggle'=>'Enable/Disable Options'
+    );
 
-	function displayname() { return gt("Ecommerce Shipping Controller"); }
-	function description() { return ""; }
+    static function displayname() { return gt("Ecommerce Shipping Controller"); }
+    static function description() { return ""; }
 	static function hasSources() { return false; }
-	function hasContent() { return false; }
+    static function hasContent() { return false; }
 	
 	function selectShippingCalculator() {
 	    global $db;

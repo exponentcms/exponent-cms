@@ -22,7 +22,6 @@
  */
 
 class youtubeController extends expController {
-	//protected $basemodel_name = '';
 	public $useractions = array(
         'showall'=>'Display a YouTube Video'
     );
@@ -35,9 +34,9 @@ class youtubeController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return gt("YouTube"); }
-	function description() { return gt("Display youtube videos on your page."); }
-	function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function displayname() { return gt("YouTube"); }
+    static function description() { return gt("Display youtube videos on your page."); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
 	
 	function showall() {
         $page = new expPaginator(array(

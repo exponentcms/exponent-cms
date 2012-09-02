@@ -22,12 +22,12 @@
  */
 
 class storeCategoryController extends expNestedNodeController {
-	
-	function displayname() { return gt("Store Category Manager"); }
-	function description() { return gt("This module is for manageing categories in your store."); }
-	function author() { return "OIC Group, Inc"; }
+    static function displayname() { return gt("Store Category Manager"); }
+    static function description() { return gt("This module is for manageing categories in your store."); }
 
-	protected $add_permissions = array('fix_categories'=>'to run this action.');
+	protected $add_permissions = array(
+        'fix_categories'=>'to run this action.'
+    );
 
     // hide the configs we don't need
     public $remove_configs = array(

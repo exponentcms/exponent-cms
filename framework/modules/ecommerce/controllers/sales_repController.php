@@ -22,11 +22,11 @@
  */
 
 class sales_repController extends expController {
-    function displayname() { return gt("Ecommerce Sales Reps"); }
-    function description() { return gt("Manage Ecommerce Sales Reps"); }
-    function author() { return "Fred Dirkse - OIC Group, Inc"; }
+    static function displayname() { return gt("Ecommerce Sales Reps"); }
+    static function description() { return gt("Manage Ecommerce Sales Reps"); }
+    static function author() { return "Fred Dirkse - OIC Group, Inc"; }
     static function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);

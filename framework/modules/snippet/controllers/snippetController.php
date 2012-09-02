@@ -22,8 +22,6 @@
  */
 
 class snippetController extends expController {
-	//protected $basemodel_name = '';
-//    public $basemodel_name = 'text';
     public $basemodel_name = 'snippet';
 	public $useractions = array(
 		'showall'=>'Copy and Display Snippet',
@@ -38,8 +36,8 @@ class snippetController extends expController {
    		'tags'
    	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return gt("Code Snippets"); }
-	function description() { return gt("Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."); }
+    static function displayname() { return gt("Code Snippets"); }
+    static function description() { return gt("Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."); }
 	
 	public function showall() {
 	    expHistory::set('viewable', $this->params);

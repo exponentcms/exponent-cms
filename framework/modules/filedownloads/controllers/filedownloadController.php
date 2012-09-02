@@ -22,7 +22,6 @@
  */
 
 class filedownloadController extends expController {
-	//protected $basemodel_name = '';
 	public $useractions = array(
         'showall'=>'Show all',
         'tags'=>"Tags",
@@ -34,9 +33,9 @@ class filedownloadController extends expController {
         'rss', // because we do this as a custom tab within the module
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return gt("File Downloads"); }
-	function description() { return gt("This module lets you put files on your website for users to download."); }
-	function isSearchable() { return true; }
+    static function displayname() { return gt("File Downloads"); }
+    static function description() { return gt("This module lets you put files on your website for users to download."); }
+    static function isSearchable() { return true; }
 	
     function showall() {
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;

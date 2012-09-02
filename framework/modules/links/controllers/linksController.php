@@ -22,7 +22,6 @@
  */
 
 class linksController extends expController {
-    //public $basemodel_name = '';
     public $useractions = array(
         'showall'=>'Show all'
     );
@@ -37,11 +36,11 @@ class linksController extends expController {
            'tags'
        ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function requiresConfiguration() { return true; }
-    function displayname() { return gt("Link Manager"); }
-    function description() { return gt("Add and manage a list of URLs"); }
-    function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function isSearchable() { return true; }
+    static function requiresConfiguration() { return true; }
+    static function displayname() { return gt("Link Manager"); }
+    static function description() { return gt("Add and manage a list of URLs"); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function isSearchable() { return true; }
 
     function showall() {
         expHistory::set('viewable', $this->params);

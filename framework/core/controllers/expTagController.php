@@ -30,13 +30,13 @@ class expTagController extends expController {
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return gt("Tag Manager"); }
+    static function displayname() { return gt("Tag Manager"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is used to manage tags"); }
+    static function description() { return gt("This module is used to manage tags"); }
 
 	/**
 	 * does module have sources available?

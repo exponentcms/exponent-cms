@@ -36,12 +36,12 @@ class eventregistrationController extends expController {
         'showall'=>'Show all events',
 		'showByTitle' => "Show events by title",
     );
-
-    function displayname() { return gt("Online Event Registration"); }
-    function description() { return gt("Use this module to manage event registrations on your website"); }
-	 public $add_permissions = array(
-	    'view_registrants'=>'View Registrants',
+    public $add_permissions = array(
+  	    'view_registrants'=>'View Registrants',
     );
+
+    static function displayname() { return gt("Online Event Registration"); }
+    static function description() { return gt("Use this module to manage event registrations on your website"); }
 
     function showall() {
 		global $user;

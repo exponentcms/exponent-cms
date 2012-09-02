@@ -33,9 +33,9 @@ class fileController extends expController {
         'edit_alt'=>'must be logged in'
     );
 
-    function displayname() { return gt("File Manager"); }
-    function description() { return gt("Add and manage Exponent Files"); }
-    function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function displayname() { return gt("File Manager"); }
+    static function description() { return gt("Add and manage Exponent Files"); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
 
     public function manage_fixPaths() {
         // fixes file directory issues when the old file class was used to save record

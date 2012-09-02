@@ -23,10 +23,8 @@
  */
 
 class expNestedNodeController extends expController {
-	
-	function displayname() { return gt("Nested Node Manager"); }
-	function description() { return gt("This module is for manageing your Nested Nodes"); }
-	function author() { return "OIC Group, Inc"; }
+    static function displayname() { return gt("Nested Node Manager"); }
+    static function description() { return gt("This module is for manageing your Nested Nodes"); }
 
 	function edit() {
 		global $db;

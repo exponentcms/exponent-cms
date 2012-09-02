@@ -23,11 +23,10 @@
 
 class product_statusController extends expController {
 
-    function displayname() { return gt("Ecommerce Product Statuses"); }
-    function description() { return gt("Manage Ecommerce Product Statuses"); }
-    function author() { return "OIC Group, Inc"; }
+    static function displayname() { return gt("Ecommerce Product Statuses"); }
+    static function description() { return gt("Manage Ecommerce Product Statuses"); }
     static function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);

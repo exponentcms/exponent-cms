@@ -27,9 +27,9 @@ class helpController extends expController {
         'select_version'=>'Select Help Version'
     );
 
-	function displayname() { return gt("Help"); }
-	function description() { return gt("Module for managing Exponent CMS help files."); }
-	function isSearchable() { return true; }
+    static function displayname() { return gt("Help"); }
+    static function description() { return gt("Module for managing Exponent CMS help files."); }
+    static function isSearchable() { return true; }
 	
     function __construct($src=null, $params=array()) {
         global $db;

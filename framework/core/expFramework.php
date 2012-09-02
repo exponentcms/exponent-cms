@@ -611,7 +611,7 @@ function get_action_views($ctl, $action, $human_readable) {
                         if (count($fileparts) == 1) {
                             $views[$filename] = 'Default';
                         } else {
-                            $diplayname = array_shift($fileparts); //shift the action name off the array of words
+                            array_shift($fileparts); //shift the action name off the array of words
                             $views[$filename] = ucwords(implode(' ', $fileparts));
                         }
                     }

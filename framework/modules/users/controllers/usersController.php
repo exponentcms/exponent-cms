@@ -36,10 +36,10 @@ class usersController extends expController {
 
     //public $useractions = array('showall'=>'Show all');
 
-    function displayname() { return gt("User Manager"); }
-    function description() { return gt("This is the user management module. It allows for creating user, editing user, etc."); }
+    static function displayname() { return gt("User Manager"); }
+    static function description() { return gt("This is the user management module. It allows for creating user, editing user, etc."); }
     static function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         global $user;

@@ -23,8 +23,16 @@
  */
 
 abstract class expController {
-    protected $basemodel = null;
-    protected $classname = '';
+    protected $classname = '';      // full controller name w/ 'Controller' suffix
+    public $baseclassname = '';     // root controller name w/o 'Controller' suffix
+    public $classinfo = null;       // holds reflection class of class
+//    public $module_name = '';       //FIXME not used and not actually set right index needed of -3 instead of -2 below
+//    protected $basemodel = null;    //FIXME never used, $basemodel_name replaced?
+    public $basemodel_name = '';    // holds classname of base module associated w/ this controller
+    public $model_table = '';       // holds table name for base model
+
+    public $useractions = array();  // available user actions (methods) for this controller
+    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     protected $permissions = array(
         'manage'=>'Manage',
         'configure'=>'Configure',
@@ -36,40 +44,18 @@ abstract class expController {
     protected $remove_permissions = array();    
     protected $add_permissions = array();
 
-    public $requires_login = array();
-    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
-    public $config = array();
-    public $params = array();
-    public $baseclassname = '';
-    public $basemodel_name = '';
-    public $model_table = '';
-    public $classinfo = null;
-    public $loc = null;
-    public $module_name = '';
-    public $filepath = '';
-    public $viewpath = '';
-    public $relative_viewpath = '';
-    public $asset_path = '';
-	public $codequality = 'stable';
+    public $filepath = '';          // location of this controller's files
+    public $viewpath = '';          // location of this controllers views
+    public $relative_viewpath = ''; // relative location of controller's views
+    public $asset_path = '';        // location of this controller's assets
 
-	/**
-	 * can this module import data?
-	 * @return bool
-	 */
-	function canImportData() { return false; }
+    public $requires_login = array();   // actions (methods) which require used be logged in to access
+    public $config = array();       // holds module configuration settings
+    public $params = array();       // holds parameters passed to module
+    public $loc = null;             // module location
 
-	/**
-	 * can this module export data?
-	 * @return bool
-	 */
-	function canExportData() { return false; }
+	public $codequality = 'stable'; // code's level of stability
 
-	/**
-	 * does this module require configuration?
-	 * @return bool
-	 */
-	function requiresConfiguration() { return false; }
-    
 	/**
 	 * @param null $src
 	 * @param array $params
@@ -85,19 +71,23 @@ abstract class expController {
 
         // figure out which "module" we belong to and setup view path information
         $controllerpath = explode('/', $this->filepath);
-        $this->module_name = $controllerpath[(count($controllerpath)-2)];
+//        $this->module_name = $controllerpath[(count($controllerpath)-3)];
        
         // set up the path to this module view files
-        array_pop($controllerpath);
+        array_pop($controllerpath);  // remove 'controllers' from array
         $controllerpath[count($controllerpath)-1] = 'views';
         array_push($controllerpath, $this->baseclassname);
         $this->relative_viewpath = implode('/', array_slice($controllerpath, -3, 3));
-        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
-        
+//        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
+        $this->viewpath = implode('/',$controllerpath);
+
         //grab the path to the module's assets
         array_pop($controllerpath);
         $controllerpath[count($controllerpath)-1] = 'assets';
-        $this->asset_path = PATH_RELATIVE.'framework/'.implode('/', array_slice($controllerpath, -3, 3))."/";
+//        $this->asset_path = PATH_RELATIVE.'framework/'.implode('/', array_slice($controllerpath, -3, 3))."/";
+        $depth = array_search('framework',$controllerpath);
+        if (!$depth) $depth = array_search('themes',$controllerpath);
+        $this->asset_path = PATH_RELATIVE.implode('/', array_slice($controllerpath, $depth))."/";
 
         // figure out which model we're using and setup some info about it
         if (empty($this->basemodel_name)) $this->basemodel_name = get_model_for_controller($this->classname);
@@ -126,25 +116,25 @@ abstract class expController {
 	 * name of module for backwards compat with old modules
 	 * @return string
 	 */
-	function name() { return $this->displayname(); }
+    function name() { return $this->displayname(); }
 	
 	/**
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return gt("Exponent Base Controller"); }
+    static function displayname() { return gt("Exponent Base Controller"); }
 
     /**
    	 * description of module
    	 * @return string
    	 */
-   	function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
+    static function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
 
 	/**
 	 * author of module
 	 * @return string
 	 */
-	function author() { return "Adam Kessler @ OIC Group, Inc"; }
+    static function author() { return "OIC Group, Inc"; }
 
 	/**
 	 * does module have sources available?
@@ -156,25 +146,43 @@ abstract class expController {
 	 * does module have views available?
 	 * @return bool
 	 */
-	function hasViews() { return true; }
+    static function hasViews() { return true; }
 
 	/**
 	 * does module have content available?
 	 * @return bool
 	 */
-	function hasContent() { return true; }
+    static function hasContent() { return true; }
 
 	/**
 	 * does module support workflow?
 	 * @return bool
 	 */
-	function supportsWorkflow() { return false; }
+    static function supportsWorkflow() { return false; }
 
 	/**
 	 * is module content searchable?
 	 * @return bool
 	 */
-	function isSearchable() { return false; }
+    static function isSearchable() { return false; }
+
+    /**
+   	 * can this module import data?
+   	 * @return bool
+   	 */
+    static function canImportData() { return false; }
+
+   	/**
+   	 * can this module export data?
+   	 * @return bool
+   	 */
+    static function canExportData() { return false; }
+
+   	/**
+   	 * does this module require configuration?
+   	 * @return bool
+   	 */
+    static function requiresConfiguration() { return false; }
 
 	/**
 	 * glue to make module aware of itself

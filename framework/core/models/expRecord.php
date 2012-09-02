@@ -63,7 +63,7 @@ class expRecord {
 	 * is model content searchable?
 	 * @return bool
 	 */
-	function isSearchable() { return false; }
+    static function isSearchable() { return false; }
 
 	/**
 	 * @param null $params

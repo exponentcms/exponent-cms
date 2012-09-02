@@ -25,11 +25,12 @@
 class ecomconfigController extends expController {
 	//public $basemodel_name = 'expRecord';
 	//public $useractions = array('show'=>'Configuration Panel');
-	public $useractions = array();
-    public $add_permissions = array('show'=>'View Admin Options');
+    public $add_permissions = array(
+        'show'=>'View Admin Options'
+    );
 	
-    function displayname() { return gt("Ecommerce Configuration Manager"); }
-    function description() { return gt("Use this module to configure your Ecommerce store"); }
+    static function displayname() { return gt("Ecommerce Configuration Manager"); }
+    static function description() { return gt("Use this module to configure your Ecommerce store"); }
     static function hasSources() { return false; }
 
     function show() {

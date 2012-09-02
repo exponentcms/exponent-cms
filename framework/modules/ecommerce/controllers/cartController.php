@@ -25,10 +25,9 @@ class cartController extends expController {
 	public $basemodel_name = 'order';
 	private $checkout_steps = array('productinfo', 'specials', 'form', 'wizards', 'newsletter', 'confirmation', 'postprocess');
 	//public $useractions = array('show'=>'Display Cart');
-	public $useractions = array();
 
-	function displayname() { return gt("Ecommerce Shopping Cart"); }
-	function description() { return gt("This is the cart users will add products from your store to."); }
+    static function displayname() { return gt("Ecommerce Shopping Cart"); }
+    static function description() { return gt("This is the cart users will add products from your store to."); }
 
 	function addItem() {
         global $router;

@@ -33,7 +33,7 @@ class storeController extends expController {
         'showFullTree'=>'Categories - Show Full Tree',
         'showallSubcategories'=>'Categories - Subcategories of current category',
         'upcoming_events'=>'Event Registration - Upcomming Events',
-		 'events_calendar'=>'Event Registration - Calendar View',
+		'events_calendar'=>'Event Registration - Calendar View',
         'ecom_search'=>'Search - Autocomplete',
         'search_by_model_form'=>'Search - By Model',
         'quicklinks'=>'Links - Users Links',
@@ -54,26 +54,36 @@ class storeController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
-    protected $add_permissions = array('copyProduct'=>"Copy Product",'delete_children'=>"Delete Children", 'import'=>'Import Products', 'reimport'=>'ReImport Products', 'export'=>'Export Products','findDupes'=>'Fix Duplicate SEF Names','manage_sales_reps'=>'Manage Sales Reps', 'batch_process'=>'Batch capture order transactions','process_orders'=>'Batch capture order transactions','import_external_addresses'=>'Import addressess from other sources',
-    'showallImpropercategorized'=>'View products in top level categories that should not be',
-    'showallUncategorized'=>'View all uncategorized products',
-    'nonUnicodeProducts'=>'View all non-unicode charset products',
-    'cleanNonUnicodeProducts'=>'Clean all non-unicode charset products',
-	'uploadModelAliases'=>'Upload model aliases',
-	'processModelAliases'=>'Process uploaded model aliases',
-	'saveModelAliases'=>'Save uploaded model aliases',
-	'deleteProcessedModelAliases'=>'Delete processed uploaded model aliases',
-	'delete_model_alias'=>'Process model aliases',
-	'update_model_alias'=>'Save model aliases',
-	'edit_model_alias'=>'Delete model aliases'
+    protected $add_permissions = array(
+        'copyProduct'=>"Copy Product",
+        'delete_children'=>"Delete Children",
+        'import'=>'Import Products',
+        'reimport'=>'ReImport Products',
+        'export'=>'Export Products',
+        'findDupes'=>'Fix Duplicate SEF Names',
+        'manage_sales_reps'=>'Manage Sales Reps',
+        'batch_process'=>'Batch capture order transactions',
+        'process_orders'=>'Batch capture order transactions',
+        'import_external_addresses'=>'Import addressess from other sources',
+        'showallImpropercategorized'=>'View products in top level categories that should not be',
+        'showallUncategorized'=>'View all uncategorized products',
+        'nonUnicodeProducts'=>'View all non-unicode charset products',
+        'cleanNonUnicodeProducts'=>'Clean all non-unicode charset products',
+        'uploadModelAliases'=>'Upload model aliases',
+        'processModelAliases'=>'Process uploaded model aliases',
+        'saveModelAliases'=>'Save uploaded model aliases',
+        'deleteProcessedModelAliases'=>'Delete processed uploaded model aliases',
+        'delete_model_alias'=>'Process model aliases',
+        'update_model_alias'=>'Save model aliases',
+        'edit_model_alias'=>'Delete model aliases'
     );
      
-    function displayname() { return gt("e-Commerce Store Front"); }
-    function description() { return gt("Use this module to display products and categories of you Ecommerce store"); }
-    function author() { return "OIC Group, Inc"; }
-    function isSearchable() { return true; }
-    function canImportData() { return true; }
-    function canExportData() { return true; }
+    static function displayname() { return gt("e-Commerce Store Front"); }
+    static function description() { return gt("Use this module to display products and categories of you Ecommerce store"); }
+    static function author() { return "OIC Group, Inc"; }
+    static function isSearchable() { return true; }
+    static function canImportData() { return true; }
+    static function canExportData() { return true; }
 
     function __construct($src=null,$params=array()) {
         global $db, $router, $section, $user;

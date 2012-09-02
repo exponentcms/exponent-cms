@@ -23,14 +23,12 @@
  */
 
 class expRatingController extends expController {
-
     public $base_class = 'expRating';
 	//public $useractions = array('browse'=>'Browse content by tags');
 	public $useractions = array();
 	
-    function displayname() { return gt("Ratings Manager"); }
-    function description() { return gt("This module is for manageing ratings on records"); }
-    function author() { return "OIC Group, Inc"; }
+    static function displayname() { return gt("Ratings Manager"); }
+    static function description() { return gt("This module is for manageing ratings on records"); }
     static function hasSources() { return false; }
 	
 	function __construct($src=null, $params=array()) {

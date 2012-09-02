@@ -23,19 +23,18 @@
  */
 
 class expDefinableFieldController extends expController {
-	public $useractions = array();
 	public $basemodel_name = 'expDefinableField';
 	/**
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return gt("Definable Field"); }
+    static function displayname() { return gt("Definable Field"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is for managing definable fields"); }
+    static function description() { return gt("This module is for managing definable fields"); }
 
 	/**
 	 * does module have sources available?
@@ -47,9 +46,7 @@ class expDefinableFieldController extends expController {
    	 * default view for individual field
    	 */
    	function show() {
-      
-
-        assign_to_template(array('record'=>$record,'tag'=>$tag));
+        assign_to_template(array('record'=>$record,'tag'=>$tag));  //FIXME $record & $tag are undefined
     }
 
 	/**

@@ -22,7 +22,6 @@
  */
 
 class portfolioController extends expController {
-    //public $basemodel_name = '';
     public $useractions = array(
         'showall'=>'Show all', 
         'tags'=>"Tags",
@@ -34,9 +33,9 @@ class portfolioController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Portfolio"); }
-    function description() { return gt("This module allows you to show off your work portfolio style."); }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Portfolio"); }
+    static function description() { return gt("This module allows you to show off your work portfolio style."); }
+    static function isSearchable() { return true; }
 
     public function showall() {
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;

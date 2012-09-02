@@ -30,19 +30,19 @@ class expCatController extends expController {
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return gt("Category Manager"); }
+    static function displayname() { return gt("Category Manager"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is used to manage categories"); }
+    static function description() { return gt("This module is used to manage categories"); }
 
     /**
    	 * author of module
    	 * @return string
    	 */
-   	function author() { return "Dave Leffler"; }
+    static function author() { return "Dave Leffler"; }
 
 	/**
 	 * does module have sources available?

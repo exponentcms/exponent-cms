@@ -39,8 +39,8 @@ class simplePollController extends expController {
 	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $codequality = 'beta';
 
-	function displayname() { return gt("Simple Poll"); }
-	function description() { return gt("A simple poll that asks a visitor one question with mutiple answers.  Can manage multiple questions, though it only displays one."); }
+    static function displayname() { return gt("Simple Poll"); }
+    static function description() { return gt("A simple poll that asks a visitor one question with mutiple answers.  Can manage multiple questions, though it only displays one."); }
 //	function isSearchable() { return true; }  // this content is pulled by the navigation module since we don't display individual text items
 	
 	public function showall() {

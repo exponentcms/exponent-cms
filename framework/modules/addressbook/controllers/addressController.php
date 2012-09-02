@@ -22,7 +22,9 @@
  */
 
 class addressController extends expController {
-	public $useractions = array('myaddressbook'=>'Show my addressbook');
+	public $useractions = array(
+        'myaddressbook'=>'Show my addressbook'
+    );
     public $remove_permissions = array(
         'create',
         'edit',
@@ -39,9 +41,9 @@ class addressController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Addresses"); }
-    function description() { return gt("Use this module to display and manage addresses of users on your site."); }
-    function canImportData() { return true;}
+    static function displayname() { return gt("Addresses"); }
+    static function description() { return gt("Use this module to display and manage addresses of users on your site."); }
+    static function canImportData() { return true;}
 
     function showall() {
 //        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));

@@ -22,16 +22,15 @@
  */
 
 class recyclebinController extends expController {
-    //public $basemodel_name = '';
 //    public $useractions = array('showall'=>'Show all');
     public $add_permissions = array('show'=>'View Recycle Bin');
     //public $remove_permissions = array('edit');
 
-    function displayname() { return gt("Recycle Bin Manager"); }
-    function description() { return gt("Manage modules that have been deleted from your web pages"); }
-    function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function displayname() { return gt("Recycle Bin Manager"); }
+    static function description() { return gt("Manage modules that have been deleted from your web pages"); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
     static function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function hasContent() { return false; }
 
     function showall() {
         global $db, $template;

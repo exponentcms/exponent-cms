@@ -35,10 +35,9 @@ class newsController extends expController {
         'showUnpublished'=>'View Unpublished News'
     );
 
-    function displayname() { return gt("News"); }
-    function description() { return gt("Use this to display & manage news type content on your site."); }
-    function author() { return "OIC Group, Inc"; }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("News"); }
+    static function description() { return gt("Use this to display & manage news type content on your site."); }
+    static function isSearchable() { return true; }
     
     public function showall() { 
         expHistory::set('viewable', $this->params);

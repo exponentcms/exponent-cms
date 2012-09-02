@@ -22,11 +22,10 @@
  */
 
 class order_typeController extends expController {
-
-    function displayname() { return gt("Ecommerce Order Types"); }
-    function description() { return gt("Manage Ecommerce Order Types"); }
+    static function displayname() { return gt("Ecommerce Order Types"); }
+    static function description() { return gt("Manage Ecommerce Order Types"); }
     static function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);

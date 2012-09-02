@@ -22,13 +22,12 @@
  */
 
 class order_statusController extends expController {
-    //public $basemodel_name = '';
     //public $useractions = array('manage'=>'Manage Status Codes');
 
-    function displayname() { return gt("Ecommerce Status Codes"); }
-    function description() { return gt("Manage Ecommerce status codes"); }
+    static function displayname() { return gt("Ecommerce Status Codes"); }
+    static function description() { return gt("Manage Ecommerce status codes"); }
     static function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);

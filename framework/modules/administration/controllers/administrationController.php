@@ -24,7 +24,6 @@
 
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
-    public $useractions = array();
     public $add_permissions = array(
 //	    'administrate'=>'Manage Administration', //FIXME is this used? old 1.0 permission
 	    'clear'=>'Clear Caches',
@@ -35,9 +34,8 @@ class administrationController extends expController {
 	    'toggle'=>'Toggle Settings',
     );
 
-    function displayname() { return gt("Administration Controls"); }
-    function description() { return gt("This is the Administration Module"); }
-    function author() { return "OIC Group, Inc"; }
+    static function displayname() { return gt("Administration Controls"); }
+    static function description() { return gt("This is the Administration Module"); }
 
 	public function install_tables() {
 		$tables = expDatabase::install_dbtables();

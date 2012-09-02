@@ -22,7 +22,6 @@
  */
 
 class textController extends expController {
-	//protected $basemodel_name = '';
 	public $useractions = array(
         'showall'=>'Show all',
         'showRandom'=>'Show Random Text',
@@ -35,8 +34,8 @@ class textController extends expController {
 		'tags'
 	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return gt("Text"); }
-	function description() { return gt("Puts text on your web pages"); }
+    static function displayname() { return gt("Text"); }
+    static function description() { return gt("Puts text on your web pages"); }
 
 	public function showall() {
 	    expHistory::set('viewable', $this->params);

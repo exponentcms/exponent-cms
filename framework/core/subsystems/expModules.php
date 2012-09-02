@@ -214,9 +214,9 @@ class expModules {
    	}
 
     /**
-     * Returns the base controller or module name sans the 'Controller' or 'module' suffix
+     * Returns the controller display (formal) name
      *
-     * @param $modulename
+     * @param $controllername
      *
      * @return null|string
      */

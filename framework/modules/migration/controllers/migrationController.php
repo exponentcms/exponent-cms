@@ -21,7 +21,6 @@
  */
 
 class migrationController extends expController {
-    //public $basemodel_name = '';
     protected $add_permissions = array(
         'analyze'=>'Analyze Data',
         'migrate'=>'Migrate Data'
@@ -104,13 +103,13 @@ class migrationController extends expController {
 	 * name of module
 	 * @return string
 	 */
-    function displayname() { return gt("Content Migration Controller"); }
+    static function displayname() { return gt("Content Migration Controller"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-    function description() { return gt("Use this module to pull Exponent 1 style content from your old site."); }
+    static function description() { return gt("Use this module to pull Exponent 1 style content from your old site."); }
 
 	/**
 	 * if module has associated sources
@@ -122,7 +121,7 @@ class migrationController extends expController {
 	 * if module has associated content
 	 * @return bool
 	 */
-    function hasContent() { return false; }
+    static function hasContent() { return false; }
 
 	/**
 	 * gather info about all pages in old site for user selection

@@ -37,8 +37,8 @@ class loginController extends expController {
 	    'showlogin'=>'Login',
     );
 
-    function displayname() { return gt("Login Manager"); }
-    function description() { return gt("This is the login management module. It allows for logging in, logging out, etc."); }
+    static function displayname() { return gt("Login Manager"); }
+    static function description() { return gt("This is the login management module. It allows for logging in, logging out, etc."); }
 
 	/**
 	 * Display a login view

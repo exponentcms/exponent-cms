@@ -26,10 +26,9 @@ class donationController extends expController {
     public $useractions = array(
         'showall'=>'Show all Donation Causes',
     );
-    // public $useractions = array();
-    
-    function displayname() { return gt("Online Donations"); }
-    function description() { return gt("Use this module to accept donations on your website"); }
+
+    static function displayname() { return gt("Online Donations"); }
+    static function description() { return gt("Use this module to accept donations on your website"); }
 
     function showall() {
         expHistory::set('viewable', $this->params);

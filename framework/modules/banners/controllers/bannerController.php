@@ -22,7 +22,6 @@
  */
 
 class bannerController extends expController {
-    //public $basemodel_name = '';
     public $remove_configs = array(
         'aggregation',
         'categories',
@@ -37,8 +36,8 @@ class bannerController extends expController {
         'showall'=>'Display Banner(s)'
     );
 
-    function displayname() { return gt("Banners"); }
-    function description() { return gt("Use this to display banners on your website."); }
+    static function displayname() { return gt("Banners"); }
+    static function description() { return gt("Use this to display banners on your website."); }
     
     public function showall() {
         $banners = array();

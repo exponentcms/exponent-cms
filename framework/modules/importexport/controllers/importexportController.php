@@ -22,7 +22,6 @@
  */
 
 class importexportController extends expController {
-    
     public $useractions = array(
         /*'showall'=>'Show all products & categories',
         'showall_featured_products'=>'Show all featured products',
@@ -49,17 +48,10 @@ class importexportController extends expController {
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array('import'=>'Import Data', 'export'=>'Export Data');
      
-    function name() { return $this->displayname(); } //for backwards compat with old modules
-    function displayname() { return gt("Data Import / Export Module"); }
-    function description() { return gt("Use this module to import and export data from your Exponent website."); }
-    function author() { return "OIC Group, Inc"; }
+    static function displayname() { return gt("Data Import / Export Module"); }
+    static function description() { return gt("Use this module to import and export data from your Exponent website."); }
     static function hasSources() { return false; }
-    function hasViews() { return true; }
-    function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
-    
-    
+    static function hasContent() { return false; }
 
     function __construct($src=null,$params=array()) {
          parent::__construct($src=null,$params);

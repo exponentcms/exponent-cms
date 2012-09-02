@@ -25,8 +25,6 @@
 class expComment extends expRecord {
 	public $table = 'expComments';
     public $attachable_table = 'content_expComments';
-
-
 }
 
 ?>

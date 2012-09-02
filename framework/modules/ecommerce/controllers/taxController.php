@@ -31,13 +31,10 @@ class taxController extends expController {
 			'delete_zone'   =>'Delete Zone'
 		);
 		
-    public $useractions = null; // keeps it from showing up in available modules to activate
-     
-    function displayname() { return gt("e-Commerce Tax Class Manager"); }
-    function description() { return gt("Manage tax classes for your Ecommerce store"); }
-    function author() { return "OIC Group, Inc"; }
-    function canImportData() { return true; }
-    function canExportData() { return true; }
+    static function displayname() { return gt("e-Commerce Tax Class Manager"); }
+    static function description() { return gt("Manage tax classes for your Ecommerce store"); }
+    static function canImportData() { return true; }
+    static function canExportData() { return true; }
 
     function manage() {               
         expHistory::set('manageable', $this->params);

@@ -23,14 +23,13 @@
 /** @define "BASE" "../../../.." */
 
 class motdController extends expController {
-    //public $basemodel_name = '';
     public $useractions = array(
         'show'=>'Show Todays Message'
     );
 
-    function displayname() { return gt("Message of the Day"); }
-    function description() { return gt("Display a message for a given day of the year."); }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Message of the Day"); }
+    static function description() { return gt("Display a message for a given day of the year."); }
+    static function isSearchable() { return true; }
     
     function show() {
         global $db;
