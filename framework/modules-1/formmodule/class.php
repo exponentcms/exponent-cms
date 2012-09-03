@@ -18,8 +18,8 @@
 /** @define "BASE" "../../.." */
 
 class formmodule {
-	static function name() { return 'Form'; }
-    static function displayname() { return gt('(old school) form'); } //for forwards compat with new modules
+	function name() { return $this->displayname(); }
+    static function displayname() { return gt('Form'); } //for forwards compat with new modules
     static function description() { return gt('Allows the creation of forms that can be emailed and/or stored in the database.'); }
     static function author() { return 'OIC Group, Inc'; }
 	static function hasSources() { return true; }
@@ -51,7 +51,7 @@ class formmodule {
 		}
 	}
 	
-	function show($view,$loc = null) {
+	static function show($view,$loc = null) {
 		global $db;
         // require_once(BASE."framework/core/subsystems/forms/baseform.php");
         // require_once(BASE."framework/core/subsystems/forms/form.php");

@@ -55,7 +55,7 @@ class passwordcontrol extends formcontrol {
 
 	}
 	
-	function update($values, $object) {
+    static function update($values, $object) {
 
 	}
 

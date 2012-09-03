@@ -18,7 +18,8 @@
 /** @define "BASE" "../../.." */
 
 class containermodule {
-    static function name() { return 'Container'; }
+    function name() { return $this->displayname(); }
+    static function displayname() { return 'Container'; }
     static function author() { return 'James Hunt'; }
     static function description() { return 'Contains other modules'; }
     static function hasContent() { return true; }
@@ -196,7 +197,7 @@ class containermodule {
 		$template->output();
 	}
 	
-	function copyContent($oloc,$nloc, $section=0) {
+	static function copyContent($oloc,$nloc, $section=0) {
 		global $db;
 		foreach ($db->selectObjects('container',"external='".serialize($oloc)."'") as $c) {
 			unset($c->id);

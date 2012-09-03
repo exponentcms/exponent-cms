@@ -17,7 +17,8 @@
 /** @define "BASE" "../../.." */
 
 class calendarmodule {
-    static function name() { return 'Calendar'; }
+    function name() { return $this->displayname(); }
+    static function displayname() { return 'Calendar'; }
     static function author() { return 'OIC Group, Inc'; }
     static function description() { return 'Allows posting of content to a calendar.'; }
     static function hasContent() { return true; }
@@ -82,7 +83,7 @@ class calendarmodule {
 //		return $rssitems;
 //	}
 
-	function copyContent($oloc,$nloc) {
+	static function copyContent($oloc,$nloc) {
 
 	}
 
@@ -104,7 +105,7 @@ class calendarmodule {
 		}
 	}
 
-	function getLocationHierarchy($loc) {
+	static function getLocationHierarchy($loc) {
 		if ($loc->int == '') return array($loc);
 		else return array($loc,expCore::makeLocation($loc->mod,$loc->src));  // array of
 	}
@@ -443,7 +444,7 @@ class calendarmodule {
 		}
 	}
 
-	function searchName() {
+	static function searchName() {
 		return gt("Calendar Event");
 	}
 

@@ -137,7 +137,7 @@ class formcontrol {
      * @param $ctl
      * @return string
      */
-    function templateFormat($db_data, $ctl) {
+    static function templateFormat($db_data, $ctl) {
 		return isset($db_data)?$db_data:"";
 	}
 
@@ -156,7 +156,7 @@ class formcontrol {
      * @param $values
      * @param $object
      */
-    function update($values, $object) {
+    static function update($values, $object) {
         return;
     }
 

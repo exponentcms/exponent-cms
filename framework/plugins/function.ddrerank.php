@@ -109,8 +109,9 @@ function smarty_function_ddrerank($params,&$smarty) {
                     if (!empty($params['module'])) {
                         if ($params['module'] == 'formbuilder_control') {
                             $control = expUnserialize($item->data);
-                            $ctrl = new $control();
-                            $name = $ctrl->name();
+//                            $ctrl = new $control();
+//                            $name = $ctrl->name();
+                            $name = $control::name();
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
                             $stringlen = 65;
                         } elseif ($params['module'] == 'container') {

@@ -33,7 +33,7 @@ class textcontrol extends formcontrol {
 
     static function name() { return "Text Box"; }
     static function isSimpleControl() { return true; }
-    function useGeneric() { return false; }
+    static function useGeneric() { return false; }
     static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_STRING,
@@ -96,7 +96,7 @@ class textcontrol extends formcontrol {
         return $form;
     }
 
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($object == null) $object = new textcontrol();
         if ($values['identifier'] == "") {
             $post = $_POST;

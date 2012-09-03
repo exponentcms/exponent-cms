@@ -66,7 +66,7 @@ class antispamcontrol extends formcontrol {  //FIXME this is old tech and not-la
 		return $form;
 	}
 
-	function update($values, $object) {
+    static function update($values, $object) {
 		if ($object == null) $object = new antispamcontrol();
 		if ($values['identifier'] == "") {
 			$post = $_POST;

@@ -733,7 +733,8 @@ class administrationController extends expController {
 	public function configure_theme() {
 		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
 			include_once(BASE."themes/".$this->params['theme']."/class.php");
-			$theme = new $this->params['theme']();
+            $themeclass = $this->params['theme'];
+			$theme = new $themeclass();
 			$theme->configureTheme();
 		}
 	}
@@ -741,7 +742,8 @@ class administrationController extends expController {
 	public function update_theme() {
 		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
 			include_once(BASE."themes/".$this->params['theme']."/class.php");
-			$theme = new $this->params['theme']();
+            $themeclass = $this->params['theme'];
+			$theme = new $themeclass();
 			$theme->saveThemeConfig($this->params);
 		}
 	}

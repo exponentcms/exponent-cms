@@ -53,7 +53,7 @@ class navigationController extends expController {
 
     static function isSearchable() { return true; }
 
-    function searchName() { return gt('Webpage'); }
+    static function searchName() { return gt('Webpage'); }
 
     public function showall() {
         global $db, $user, $sectionObj, $sections;

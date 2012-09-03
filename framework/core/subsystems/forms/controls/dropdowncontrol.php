@@ -114,7 +114,7 @@ class dropdowncontrol extends formcontrol {
         return $form;
     }
     
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($values['identifier'] == "") {
             $post = $_POST;
             $post['_formError'] = gt('Identifier is required.');

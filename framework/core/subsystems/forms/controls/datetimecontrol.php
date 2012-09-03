@@ -116,7 +116,7 @@ class datetimecontrol extends formcontrol {
 		return $time;
 	}
 	
-	function templateFormat($db_data, $ctl) {
+    static function templateFormat($db_data, $ctl) {
 		if ($ctl->showdate && $ctl->showtime) {
 			return gmstrftime(DISPLAY_DATETIME_FORMAT,$db_data);
 		} 
@@ -151,7 +151,7 @@ class datetimecontrol extends formcontrol {
 		return $form;
 	}
 	
-	function update($values, $object) {
+    static function update($values, $object) {
 		if ($object == null) { 
 			$object = new datetimecontrol();
 			$object->default = 0; //This will force the control to always show the current time as default

@@ -149,7 +149,7 @@ class yuicalendarcontrol extends formcontrol {
          } else return 0;
     }
 
-    function templateFormat($db_data, $ctl) {
+    static function templateFormat($db_data, $ctl) {
         // if ($ctl->showtime) {
         //  return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
         // }
@@ -174,7 +174,7 @@ class yuicalendarcontrol extends formcontrol {
     //  return $form;
     // }
 
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($object == null) {
             $object = new popupdatetimecontrol();
             $object->default = 0;

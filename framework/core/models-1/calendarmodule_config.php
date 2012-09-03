@@ -210,7 +210,7 @@ class calendarmodule_config {
 		return $form;
 	}
 	
-	function update($values,$object) {
+	static function update($values,$object) {
 		global $db;
 		// $object->enable_categories = (isset($values['enable_categories']) ? 1 : 0);
         $object->feed_title = $values['feed_title'];

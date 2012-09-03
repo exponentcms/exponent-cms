@@ -54,7 +54,7 @@ class hiddenfieldcontrol extends formcontrol {
 		return isset($values[$name])?1:0;
 	}
 	
-	function templateFormat($db_data, $ctl) {
+    static function templateFormat($db_data, $ctl) {
 		return ($db_data==1)?gt("Yes"):gt("No");
 	}
 	
@@ -80,7 +80,7 @@ class hiddenfieldcontrol extends formcontrol {
 		return $form;
 	}
 	
-	function update($values, $object) {
+    static function update($values, $object) {
 		if ($object == null) $object = new checkboxcontrol();
 		if ($values['identifier'] == "") {
 			$post = $_POST;

@@ -125,7 +125,7 @@ class yuidatetimecontrol extends formcontrol {
         //return $time;
     }
     
-    function templateFormat($db_data, $ctl) {
+    static function templateFormat($db_data, $ctl) {
         /*
         if ($ctl->showdate && $ctl->showtime) {
             return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
@@ -161,7 +161,7 @@ class yuidatetimecontrol extends formcontrol {
         */
     }
     
-    function update($values, $object) {
+    static function update($values, $object) {
         /*
         if ($object == null) { 
             $object = new datetimecontrol();

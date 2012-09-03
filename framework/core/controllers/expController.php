@@ -122,7 +122,7 @@ abstract class expController {
 	 * name of module for backwards compat with old modules
 	 * @return string
 	 */
-    static function name() { return self::displayname(); }
+    function name() { return $this->displayname(); }
 	
 	/**
 	 * name of module
@@ -862,8 +862,8 @@ abstract class expController {
 	 * type of items searched in the module
 	 * @return string
 	 */
-	function searchName() {
-        return $this->name();
+	static function searchName() {
+        return self::displayname();
     }
 
 	/**

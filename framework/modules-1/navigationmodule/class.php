@@ -18,7 +18,8 @@
 /** @define "BASE" "../../.." */
 
 class navigationmodule {
-	static function name() { return 'Old School Navigator (Deprecated)'; }
+    function name() { return $this->displayname(); }
+	static function displayname() { return 'Old School Navigator (Deprecated)'; }
     static function author() { return 'OIC Group, Inc'; }
     static function description() { return 'Allows users to navigate through pages on the site, and allows Administrators to manage the site page structure / hierarchy.'; }
     static function hasContent() { return false; }
@@ -98,7 +99,7 @@ class navigationmodule {
 		// Do nothing, no content
 	}
 	
-	function copyContent($fromloc,$toloc) {
+	static function copyContent($fromloc,$toloc) {
 		// Do nothing, no content
 	}
 	
