@@ -302,7 +302,7 @@ class searchController extends expController {
         $records_key_arr = array();
         $records_values_arr = array();
 		foreach($records as $item) {
-			$records_key_arr[] = '"' . $item->query . '"';
+			$records_key_arr[] = '"' . addslashes($item->query) . '"';
 			$records_values_arr[] = number_format((($item->cnt / $count)*100), 2);
 		}
 		$records_key   = implode(",", $records_key_arr);

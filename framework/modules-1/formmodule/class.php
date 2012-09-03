@@ -18,16 +18,14 @@
 /** @define "BASE" "../../.." */
 
 class formmodule {
-	function name() { return 'Form'; }
-    function displayname() { return gt('(old school) form'); } //for forwards compat with new modules
-	function description() { return gt('Allows the creation of forms that can be emailed and/or stored in the database.'); }
-	function author() { return 'OIC Group, Inc'; }
-	
+	static function name() { return 'Form'; }
+    static function displayname() { return gt('(old school) form'); } //for forwards compat with new modules
+    static function description() { return gt('Allows the creation of forms that can be emailed and/or stored in the database.'); }
+    static function author() { return 'OIC Group, Inc'; }
 	static function hasSources() { return true; }
-	function hasContent() { return true; }
-	function hasViews() { return true; }
-	
-	function supportsWorkflow() { return false; }
+    static function hasContent() { return true; }
+    static function hasViews() { return true; }
+    static function supportsWorkflow() { return false; }
 	
 	function permissions($internal = "") {
 		if ($internal == "") {

@@ -222,9 +222,10 @@ class expModules {
      */
     public static function getControllerDisplayName($controllername) {
    	    if (empty($controllername) || !self::controllerExists($controllername)) return null;
-        $fullname = self::getControllerClassName($controllername);
-        $controller = new $fullname();
-        return $controller->displayname();
+        $controllerclassname = self::getControllerClassName($controllername);
+//        $controller = new $controllerclassname();
+//        return $controller->displayname();
+        return $controllerclassname::displayname();
    	}
 
 	/** exdoc

@@ -17,15 +17,13 @@
 /** @define "BASE" "../../.." */
 
 class calendarmodule {
-	function name() { return 'Calendar'; }
-	function author() { return 'OIC Group, Inc'; }
-	function description() { return 'Allows posting of content to a calendar.'; }
-
-	function hasContent() { return true; }
+    static function name() { return 'Calendar'; }
+    static function author() { return 'OIC Group, Inc'; }
+    static function description() { return 'Allows posting of content to a calendar.'; }
+    static function hasContent() { return true; }
 	static function hasSources() { return true; }
-	function hasViews()   { return true; }
-
-	function supportsWorkflow() { return false; }
+    static function hasViews()   { return true; }
+    static function supportsWorkflow() { return false; }
 
 //	function getRSSContent($loc) {
 //		global $db;

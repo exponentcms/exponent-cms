@@ -79,7 +79,13 @@ abstract class expController {
         array_push($controllerpath, $this->baseclassname);
         $this->relative_viewpath = implode('/', array_slice($controllerpath, -3, 3));
 //        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
-        $this->viewpath = implode('/',$controllerpath);
+        //FIXME this requires we move the 'core' controllers into the modules folder or use this hack
+        $depth = array_search('core',$controllerpath);
+        if ($depth) {
+            $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
+        } else {
+            $this->viewpath = implode('/',$controllerpath);
+        }
 
         //grab the path to the module's assets
         array_pop($controllerpath);
@@ -116,7 +122,7 @@ abstract class expController {
 	 * name of module for backwards compat with old modules
 	 * @return string
 	 */
-    function name() { return $this->displayname(); }
+    static function name() { return self::displayname(); }
 	
 	/**
 	 * name of module

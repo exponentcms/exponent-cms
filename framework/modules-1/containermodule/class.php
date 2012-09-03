@@ -18,15 +18,13 @@
 /** @define "BASE" "../../.." */
 
 class containermodule {
-	function name() { return 'Container'; }
-	function author() { return 'James Hunt'; }
-	function description() { return 'Contains other modules'; }
-	
-	function hasContent() { return true; }
+    static function name() { return 'Container'; }
+    static function author() { return 'James Hunt'; }
+    static function description() { return 'Contains other modules'; }
+    static function hasContent() { return true; }
 	static function hasSources() { return true; }
-	function hasViews()   { return true; }
-	
-	function supportsWorkflow() { return false; }
+    static function hasViews()   { return true; }
+    static function supportsWorkflow() { return false; }
 	
 	function permissions($internal = '') {
 		return array(

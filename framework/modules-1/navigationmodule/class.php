@@ -18,15 +18,13 @@
 /** @define "BASE" "../../.." */
 
 class navigationmodule {
-	function name() { return 'Old School Navigator (Deprecated)'; }
-	function author() { return 'OIC Group, Inc'; }
-	function description() { return 'Allows users to navigate through pages on the site, and allows Administrators to manage the site page structure / hierarchy.'; }
-	
-	function hasContent() { return false; }
+	static function name() { return 'Old School Navigator (Deprecated)'; }
+    static function author() { return 'OIC Group, Inc'; }
+    static function description() { return 'Allows users to navigate through pages on the site, and allows Administrators to manage the site page structure / hierarchy.'; }
+    static function hasContent() { return false; }
 	static function hasSources() { return false; }
-	function hasViews()   { return true; }  //FIXME we should turn this OFF, but may need it for old sites?
-	
-	function supportsWorkflow() { return false; }
+    static function hasViews()   { return true; }  //FIXME we should turn this OFF, but may need it for old sites?
+    static function supportsWorkflow() { return false; }
 	
 	function permissions($internal = '') {
 		return array(
