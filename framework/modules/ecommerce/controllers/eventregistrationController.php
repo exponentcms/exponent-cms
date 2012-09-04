@@ -105,6 +105,7 @@ class eventregistrationController extends expController {
 		}
 		$product = new eventregistration(addslashes($this->params['title']));
 
+        $product_type = new stdClass();
 		if ($product->active_type == 1)
         {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";   
@@ -135,7 +136,7 @@ eDebug($order, true);
 		
 		expHistory::set('viewable', $this->params);
 		expSession::set('last_POST_Paypal', $this->params);
-		expSession::set('terms_and_conditions', $product->terms_and_condition);
+		expSession::set('terms_and_conditions', $product->terms_and_condition);  //FIXME $product doesn't exist
 		expSession::set('paypal_link', makeLink(array('controller'=>'eventregistration','action'=>'showByTitle', 'title'=> $product->sef_url)));
 		
 		//Validation for customValidation
@@ -218,7 +219,7 @@ eDebug($order, true);
         $order->calculateGrandTotal(); 
 		
 		$billing = new billing();
-        $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
+        $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);  //FIXME $opts doesn't exist
 		redirect_to(array('controller'=>'cart', 'action'=>'preprocess'));
 	}
     

@@ -174,10 +174,10 @@ class paypalExpressCheckout extends billingcalculator {
             
             $nvpResArray = $this->paypalApiCall($data);    
 
-            if (!empty($nvpResArray['curl_error'])) 
+            $object = new stdClass();
+            if (!empty($nvpResArray['curl_error']))
             { 
                 //curl error
-                
                 $object->errorCode = curl_errno($ch); //Response reason code
                 $object->message = curl_error($ch);
                 

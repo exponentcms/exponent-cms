@@ -66,6 +66,7 @@ class eventregistration extends expRecord {
 	    // Save the event info to the eventregistration table	 
 #	    $event = new expRecord();
 #	    $event->tablename = 'eventregistration';
+        $event = new stdClass();
 	    $event->eventdate = strtotime($params['eventdate']);
 		$event->eventenddate = strtotime($params['eventenddate']);
 	    $event->event_starttime = datetimecontrol::parseData('event_starttime', $params) + $event->eventdate;
@@ -223,8 +224,9 @@ class eventregistration extends expRecord {
 	    $view->assign('number', $number);
 	    
 	    // assign the list of names to the view.
-	    foreach ($registrants as $reg){
-		$people .= $reg['name'] . ',';
+        $people = '';
+	    foreach ($registrants as $reg) {
+		    $people .= $reg['name'] . ',';
 	    }
 	    $people = substr($people, 0, -1);
 	    $view->assign('people', $people);

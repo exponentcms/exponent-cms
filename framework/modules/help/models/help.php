@@ -153,7 +153,7 @@ class help extends expRecord {
            if (property_exists($this, 'rank')) {
                if (empty($this->rank)) {
 //                   $where = "1 ";
-                   $where .= empty($this->location_data) ? "1 " : "location_data='".$this->location_data."' ";
+                   $where = empty($this->location_data) ? "1 " : "location_data='".$this->location_data."' ";
                    $where .= " AND help_version_id='".$this->help_version_id."'";
                    //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";
                    $groupby = empty($this->location_data) ? null : 'location_data';

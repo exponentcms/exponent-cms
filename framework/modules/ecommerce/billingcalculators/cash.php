@@ -41,7 +41,8 @@ class cash extends billingcalculator{
 	
 	function process($method, $opts, $params, $invoice_number) {
 		global $order, $db, $user;
-		$object->errorCode = 0;
+		$object = new stdClass();
+        $object->errorCode = 0;
 		
 		$opts->result = $object;  
 		$opts->result->payment_status = "Pending";

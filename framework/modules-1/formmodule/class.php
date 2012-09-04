@@ -75,6 +75,7 @@ class formmodule {
 				$f->subject = gt('Submitted form from site');
 				$frmid = $db->insertObject($f,"formbuilder_form");
 				//Create Default Report;
+                $rpt = new stdClass();
 				$rpt->name = gt('Default Report');
 				$rpt->description = "";
 				$rpt->location_data = $f->location_data;

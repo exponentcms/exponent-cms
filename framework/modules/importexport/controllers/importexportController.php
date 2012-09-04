@@ -109,7 +109,8 @@ class importexportController extends expController {
             flash('error',gt('There was an error uploading your file.  Please try again.'));
             redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));
         }
-        
+
+        $file = new stdClass();
         $file->path = $_FILES['import_file']['tmp_name'];
         echo "Attempting import...<br/>";
         

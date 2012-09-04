@@ -65,6 +65,7 @@ foreach ($db->selectObjects("sectionref","module='".preg_replace('/[^A-Za-z0-9_]
             "clickable"=>(($clickable_mods == null || in_array($modclass,$clickable_mods))?1:0)
         );
     } else {
+        //FIXME this is broken as most of the varibles are non-existent
         $obj->output = sprintf(gt('The module "%s" was not found in the system'),$orphan->module);
         $containers[$i]->info = array(
                 "module"=>"Unknown:".$location->mod,

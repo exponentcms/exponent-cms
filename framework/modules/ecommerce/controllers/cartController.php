@@ -137,6 +137,7 @@ class cartController extends expController {
 		if (expJavascript::inAjaxAction()) {
 			$id = str_replace('quantity-', '', $this->params['id']);
             $item = new orderitem($id);
+            $updates = new stdClass();
             if (!empty($item->id)) {
                 //$newqty = $item->product->updateQuantity($this->params['value']);                  
                 $newqty = $item->product->updateQuantity($this->params['value']);                  
@@ -601,7 +602,7 @@ class cartController extends expController {
 		    //if ($invoice_num < ecomconfig::getConfig('starting_invoice_number')) $invoice_num += ecomconfig::getConfig('starting_invoice_number');
 		    
 		    // get the first order status and set it for this order
-		    $order->update(array('invoice_id'=>$invNum, 'purchased'=>time(), 'updated'=>time(), 'comment'=>serialize($comment)));		    
+		    $order->update(array('invoice_id'=>$invNum, 'purchased'=>time(), 'updated'=>time(), 'comment'=>serialize($comment)));	//FIXME $comment doesn't exist
 		    //$order->setDefaultStatus(); --FJD?
             //$order->setDefaultOrderType(); --FJD?
 		    $order->refresh();

@@ -507,7 +507,7 @@ class expCore {
 	 * @param $currency_type
 	 * @return string
 	 */
-	public static function getCurrencySymbol($currency_type) {
+	public static function getCurrencySymbol($currency_type='USD') {
 		switch ($currency_type) {
 			case "USD":
 				return "$";

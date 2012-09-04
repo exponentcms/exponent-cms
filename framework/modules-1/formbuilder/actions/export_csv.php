@@ -98,7 +98,7 @@ if (isset($_GET['id'])) {
 		*/
 				
 		if (LANG_CHARSET == 'UTF-8') {
-			$file = chr(0xEF).chr(0xBB).chr(0xBF).$file;  // add utf-8 signature to file to open appropriately in Excel, etc...
+			$file = chr(0xEF).chr(0xBB).chr(0xBF);  // add utf-8 signature to file to open appropriately in Excel, etc...
 		} else {
 			$file = "";
 		}

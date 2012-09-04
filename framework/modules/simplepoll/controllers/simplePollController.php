@@ -256,7 +256,7 @@ class simplePollController extends expController {
         if (isset($this->params['id'])) {
             $question = $this->simplepoll_question->find('first', 'id='.$this->params['id']);
         }
-        if ($question && $question->open_results) {
+        if (!empty($question) && $question->open_results) {
             $total = 0;
             $question->simplepoll_answer = expSorter::sort(array('array'=>$question->simplepoll_answer,'sortby'=>'vote_count', 'order'=>'DESC', 'type'=>'a'));
             foreach ($question->simplepoll_answer as $answer) {

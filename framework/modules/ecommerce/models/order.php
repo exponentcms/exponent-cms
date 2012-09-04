@@ -815,6 +815,7 @@ class order extends expRecord {
         $invoice_num = $db->max('orders_next_invoice_id', 'next_invoice_id');        
         
         //if it's not set or botched, then reset to the starting invoice number
+        $obj = new stdClass();
 	    if (empty($invoice_num) || $invoice_num < $sin) 
         {            
             $invoice_num = $sin;           

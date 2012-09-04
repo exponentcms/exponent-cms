@@ -31,6 +31,7 @@ class ecomconfig extends expConfig {
          * @author Phillip Ball
          */
         
+        $cfg = new stdClass();
         $cfg->mod = "ecomconfig";
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";

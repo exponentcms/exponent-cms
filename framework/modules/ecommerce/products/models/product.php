@@ -420,6 +420,7 @@ class product extends expRecord {
         global $db;
         $this->quantity = $this->quantity - $item->quantity;
         //$this->save();
+        $pobj = new stdClass();
         $pobj->id = $this->id;
         $pobj->quantity = $this->quantity;
         $db->updateObject($pobj, 'product', 'id='.$this->id);
@@ -630,6 +631,7 @@ class product extends expRecord {
         {
             $db->delete('product_storeCategories', 'product_id='.$id);
             $catArray = array(0);
+            $assoc = new stdClass();
             $assoc->storecategories_id = 0;
             $assoc->product_id = $id;
             $assoc->product_type = $product_type;
@@ -650,6 +652,7 @@ class product extends expRecord {
                 if (!in_array($cat,$curCats))
                 {
                     //create new
+                    $assoc = new stdClass();
                     $assoc->storecategories_id = $cat;
                     $assoc->product_id = $id;
                     $assoc->product_type = $product_type;
@@ -828,6 +831,7 @@ class product extends expRecord {
 				$db->delete('crosssellItem_product','product_id='.$product->id);
 				foreach ($params['relatedProducts'] as $key=>$prodid) {
 					$ptype = new product($prodid);
+                    $tmp = new stdClass();
 					$tmp->product_id = $product->id;
 					$tmp->crosssellItem_id = $prodid;
 					$tmp->product_type = $ptype->product_type;
@@ -871,7 +875,7 @@ class product extends expRecord {
 		
 		//Adjusting Children Products
 		if (!empty($originalId) && !empty($this->params['copy_children'])) {
-			$origProd = new $product_type($originalId);
+			$origProd = new $product_type($originalId);  //FIXME $product_type is not set
 			$children = $origProd->find('all', 'parent_id=' . $originalId);
 			foreach ($children as $child) {
 			

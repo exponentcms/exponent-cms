@@ -1587,6 +1587,7 @@ class migrationController extends expController {
                             $newcomment->publish = $comment['posted'];
 							$newcomment->update();
 							// attach the comment to the blog post it belongs to
+                            $obj = new stdClass();
 							$obj->content_type = 'blog';
 							$obj->content_id = $post->id;
 							$obj->expcomments_id = $newcomment->id;

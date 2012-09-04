@@ -47,7 +47,8 @@ class creditcard extends billingcalculator {
 		//$opts->first_name = isset($this->opts->first_name) ? $this->opts->first_name : null;
 		//$opts->last_name = isset($this->opts->last_name) ? $this->opts->last_name : null;
 		$this->opts = expSession::get('billing_options');
-		$opts->cc_type = isset($this->opts->cc_type) ? $this->opts->cc_type : null;
+		$opts = new stdClass();
+        $opts->cc_type = isset($this->opts->cc_type) ? $this->opts->cc_type : null;
 		$opts->cc_number = isset($this->opts->cc_number) ? $this->opts->cc_number : null;
 		$opts->exp_month = isset($this->opts->exp_month) ? $this->opts->exp_month : null;
 		$opts->exp_year = isset($this->opts->exp_year) ? $this->opts->exp_year : null;

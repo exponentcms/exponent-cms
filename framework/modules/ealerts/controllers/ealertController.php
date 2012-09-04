@@ -76,7 +76,8 @@ class ealertController extends expController {
     
     public function send_process() {
         global $db, $router;
-        
+
+        $obj = new stdClass();
         $obj->subject = $this->params['subject'];
         $obj->body = $this->params['body'];
         $link = $router->makelink(array('controller'=>$this->params['model'], 'action'=>'show', 'title'=>$this->params['sef_url']));
@@ -103,6 +104,7 @@ class ealertController extends expController {
 
          // find the content for the E-Alerts
         $record = new $this->params['model']($this->params['id']);
+        $obj = new stdClass();
         $obj->subject = gt('Notification of New Content Posted to').' '.$ealert->ealert_title;
         $obj->body .= "<h3>".gt('New content was added titled')." '".$record->title."'</h3><hr>";
         if ($ealert->ealert_usebody == 0) {
@@ -319,6 +321,7 @@ class ealertController extends expController {
         if (empty($id)) expQueue::flashAndFlow('error', gt('We could not find any subscriptions matching the ID and Key you provided.'));
         
         // activate this users pending subscriptions
+        $sub = new stdClass();
         $sub->enabled = 1;
         $db->updateObject($sub, 'expeAlerts_subscribers', 'subscribers_id='.$id);
         

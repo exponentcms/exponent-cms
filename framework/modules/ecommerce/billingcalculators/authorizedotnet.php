@@ -130,7 +130,8 @@ class authorizedotnet extends creditcard {
 		curl_close($ch);
 		
 		$response = explode("|", $authorize);
-        
+
+        $object = new stdClass();
 		if ($response[0] == 1) { //Approved !!!
 			$object->errorCode = 0;
 			$object->message = $response[3] . " Approval Code: ".$response[4];
@@ -157,6 +158,7 @@ class authorizedotnet extends creditcard {
 	}
 	
 	function credit_transaction($method, $amount) {
+        global $user;
 
 		$config = unserialize($this->config);
 		$billing_options = unserialize($method->billing_options);

@@ -103,7 +103,7 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 					$dates = expDateTime::recurringDailyDates($start_recur,$stop_recur,$freq);
 					break;
 				case "recur_weekly":
-					$dates = expDateTime::recurringWeeklyDates($start_recur,$stop_recur,$freq,(isset($_POST['day']) ? array_keys($_POST['day']) : array($dateinfo['wday'])));
+					$dates = expDateTime::recurringWeeklyDates($start_recur,$stop_recur,$freq,(isset($_POST['day']) ? array_keys($_POST['day']) : array($dateinfo['wday'])));  //FIXM $dateinfo doesn't exist
 					break;
 				case "recur_monthly":
 					$dates = expDateTime::recurringMonthlyDates($start_recur,$stop_recur,$freq,$_POST['month_type']);

@@ -181,6 +181,7 @@ class shippingController extends expController {
 	
 	public function saveEditSpeed() {
 		global $db;
+        $obj = new stdClass();
 		$obj->speed = $this->params['speed'];
 		$obj->shippingcalculator_id = $this->params['shippingcalculator_id'];
 		$db->insertObject($obj, $this->params['table']);

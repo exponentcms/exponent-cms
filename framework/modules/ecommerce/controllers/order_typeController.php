@@ -58,6 +58,7 @@ class order_typeController extends expController {
         global $db;
         //reset others
         if ($this->params['is_default']){
+            $o = new stdClass();
             $o->is_default = false;
             $db->updateObject($o, 'order_type', 'is_default=1'); 
         }

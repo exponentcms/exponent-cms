@@ -24,6 +24,7 @@ include('./exponent_version.php');
 //$swversion->type = '';
 //$swversion->iteration = '';
 //$swversion->builddate = '1324662757';
+$swversion = new stdClass();
 $swversion->major = EXPONENT_VERSION_MAJOR;
 $swversion->minor = EXPONENT_VERSION_MINOR;
 $swversion->revision = EXPONENT_VERSION_REVISION;

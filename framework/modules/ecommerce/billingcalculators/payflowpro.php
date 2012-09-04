@@ -183,6 +183,7 @@ class payflowpro extends creditcard {
         $response = $this->parseResponse($result); //result arrray
         
         $trax_state = '';
+        $object = new stdClass();
         $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!
@@ -340,6 +341,7 @@ class payflowpro extends creditcard {
         
         //eDebug($response,true);
         $trax_state = '';
+        $object = new stdClass();
         $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!

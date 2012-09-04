@@ -146,8 +146,7 @@ class storeController extends expController {
         if (empty($this->category->is_events)) {
             $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p ';
             
-            
-            $sql_start  = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM '.DB_TABLE_PREFIX.'_product p ';            
+            $sql_start  = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM '.DB_TABLE_PREFIX.'_product p ';
             $sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'WHERE ';
             if ( !($user->is_admin || $user->is_acting_admin) ) $sql .= '(p.active_type=0 OR p.active_type=1) AND ' ;
@@ -163,7 +162,7 @@ class storeController extends expController {
         } else {
             $sql_start  = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
             $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c, er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';
-            $sql .= 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
+            $sql = 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'JOIN '.DB_TABLE_PREFIX.'_eventregistration er ON p.product_type_id = er.id ';
             $sql .= 'WHERE sc.storecategories_id IN (';
             $sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')'; 
@@ -586,7 +585,8 @@ class storeController extends expController {
         
         $classname = $db->selectValue('product', 'product_type', 'id='.$this->params['id']);
         $product = new $classname($this->params['id'], true, true);
-        
+
+        $product_type = new stdClass();
         if ($product->active_type == 1)
         {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";   
@@ -1484,6 +1484,7 @@ class storeController extends expController {
             $this->batch_process();
         }
         
+        $file = new stdClass();
         $file->path = $_FILES['batch_upload_file']['tmp_name'];
         echo "Validating file...<br/>";
         
@@ -1768,6 +1769,7 @@ class storeController extends expController {
             $this->import_external_addresses();
         }
         
+        $file = new stdClass();
         $file->path = $_FILES['address_csv']['tmp_name'];
         echo "Validating file...<br/>";
         
@@ -2070,7 +2072,8 @@ class storeController extends expController {
                 $this->uploadModelAliases();
 			}
 			
-			$file->path = $_FILES['modelaliases']['tmp_name'];
+			$file = new stdClass();
+            $file->path = $_FILES['modelaliases']['tmp_name'];
 			echo "Validating file...<br/>";
 			
 			$checkhandle = fopen($file->path, "r");
@@ -2099,7 +2102,8 @@ class storeController extends expController {
 			$db->delete('model_aliases_tmp');
 			while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
 				
-				$tmp->field1 = expString::onlyReadables($data[0]);
+				$tmp = new stdClass();
+                $tmp->field1 = expString::onlyReadables($data[0]);
 				$tmp->field2 = expString::onlyReadables($data[1]);
 				$db->insertObject($tmp,'model_aliases_tmp');
 			}
@@ -2155,6 +2159,7 @@ class storeController extends expController {
 					$model_alias = $db->selectObject("model_aliases", "model='{$res->field2}'");
 					if(empty($model_alias) && @$model_alias->product_id != $product_field1->id) {
 						//Add the first field
+                        $tmp = new  stdClass();
 						$tmp->model = $res->field1;
 						$tmp->product_id = $product_field1->id;
 						$db->insertObject($tmp,'model_aliases');
@@ -2175,6 +2180,7 @@ class storeController extends expController {
 				$model_alias = $db->selectObject("model_aliases", "model='{$res->field1}'");
 				if(empty($model_alias) && @$model_alias->product_id != $product_field2->id) {
 					//Add the first field
+                    $tmp = new stdClass();
 					$tmp->model = $res->field1;
 					$tmp->product_id = $product_field2->id;
 					$db->insertObject($tmp,'model_aliases');
@@ -2224,6 +2230,7 @@ class storeController extends expController {
 		if(!empty($product->id)) {
 			$res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT "  . ($index - 1)  . ", 1");
 			//Add the first field
+            $tmp = new stdClass();
 			$tmp->model = $res->field1;
 			$tmp->product_id = $product->id;
 			$db->insertObject($tmp,'model_aliases');
@@ -2278,6 +2285,7 @@ class storeController extends expController {
         global $db;
 			
 		if(empty($this->params['id'])) {
+            $obj = new stdClass();
 			$obj->model = $this->params['model'];
 			$obj->product_id = $this->params['product_id'];
 			$db->insertObject($obj,'model_aliases');

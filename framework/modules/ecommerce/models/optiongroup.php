@@ -53,6 +53,7 @@ class optiongroup extends expRecord {
     public function save($validate=false)
     {
         global $db;
+        $obj = new stdClass();
         $obj->id = $this->id;
         $obj->optiongroup_master_id = $this->optiongroup_master_id;
         $obj->product_id = $this->product_id;

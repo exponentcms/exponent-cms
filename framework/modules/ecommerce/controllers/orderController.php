@@ -137,6 +137,7 @@ class orderController extends expController {
 		$order = new order($this->params['id']);
         
         // We're forcing the location. Global store setting will always have this loc
+        $cfg = new stdClass();
         $cfg->mod = "ecomconfig";
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
@@ -193,6 +194,7 @@ class orderController extends expController {
         $this->loc->src = "@globalstoresettings";
 
         // We're forcing the location. Global store setting will always have this loc
+        $cfg = new stdClass();
         $cfg->mod = "ecomconfig";
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
@@ -673,6 +675,7 @@ exit();
             
             // Save the message for future use if that is what the user wanted.
             if (!empty($this->params['save_message'])) {
+                $message = new stdClass();
                 $message->body = $this->params['comment'];
                 $db->insertObject($message, 'order_status_messages');
             }
@@ -726,6 +729,7 @@ exit();
         
         // Save the message for future use if that is what the user wanted.
         if (!empty($this->params['save_message'])) {
+            $message = new stdClass();
             $message->body = $this->params['email_message'];
             $db->insertObject($message, 'order_status_messages');
         }      
@@ -793,6 +797,7 @@ exit();
             
             $note->save();
             $note->refresh();  
+            $noteObj = new stdClass();
             $noteObj->expsimplenote_id = $note->id;
             $noteObj->content_id = $order->id;
             $noteObj->content_type = 'order';
@@ -850,8 +855,8 @@ exit();
             case 'show':
             case 'showByTitle':                
                 $metainfo['title'] = 'Viewing Invoice';
-                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
-                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;            
+                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object doesn't exist
+                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;    //FIXME $object doesn't exist
             break;
             default:
                 $metainfo = array('title'=>"Order Management - ".SITE_TITLE, 'keywords'=>SITE_KEYWORDS, 'description'=>SITE_DESCRIPTION);
@@ -1007,7 +1012,8 @@ exit();
         }        
         $newOrder->save();
         $newOrder->refresh();
-        
+
+        $tObj = new stdClass();
         $tObj->result->errorCode = 0;
         $tObj->result->message = "Reference Order Pending";
         $tObj->result->PNREF = "Pending";
@@ -1149,6 +1155,7 @@ exit();
         $newOrder->save();
         $newOrder->refresh();
         
+        $tObj = new stdClass();
         $tObj->result->errorCode = 0;
         $tObj->result->message = "Reference Order Pending";
         $tObj->result->PNREF = "Pending";
@@ -1589,8 +1596,9 @@ exit();
                 if (isset($child)) $this->params['product_id'] = $child->parent_id;                                                       
             }
         }         
-        
-        $product = new $this->params['product_type']($this->params['product_id'], true, true);  //need true here?
+
+        $pt = $this->params['product_type'];
+        $product = new $pt($this->params['product_id'], true, true);  //need true here?
                
         if ($product->addToCart($this->params,$this->params['orderid']))
         {               

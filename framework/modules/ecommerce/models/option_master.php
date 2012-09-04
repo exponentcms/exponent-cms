@@ -41,6 +41,7 @@ class option_master extends expRecord {
         //need to accomodate rank so can't call parent
         //eDebug($params, true);
         //$this->beforeSave();        
+        $obj = new stdClass();
         $obj->optiongroup_master_id = $params['optiongroup_master_id'];
         $obj->title = $params['title'];
         

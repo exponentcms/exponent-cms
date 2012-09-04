@@ -111,6 +111,7 @@ class passthru extends billingcalculator {
     {  
         //eDebug($params,true);
         //eturn array('order_type'=>$params['order_type'],'order_status'=>$params['order_status'],'sales_rep_1_id'=>$params['sales_rep_1_id'],'sales_rep_2_id'=>$params['sales_rep_2_id'],'sales_rep_3_id'=>$params['sales_rep_3_id']);        
+        $obj = new stdClass();
         $obj->order_type = $params['order_type'];
         $obj->order_status = $params['order_status'];
         $obj->sales_rep_1_id = $params['sales_rep_1_id'];
@@ -135,6 +136,7 @@ class passthru extends billingcalculator {
     function process($method, $opts, $params, $invoice_number)
     {
         global $order;
+        $object = new stdClass();
         $object->errorCode = 0;
         $object->message = 'Authorization pending.';
         $object->PNREF = 'Pending';
@@ -146,6 +148,7 @@ class passthru extends billingcalculator {
         $trax_state = "authorization pending"; 
         
         //$opts2->billing_info = $opts;
+        $opts2 = new stdClass();
         $opts2->result = $object;
         //eDebug($opts,true);
         /*$opts->result = $object;        
@@ -189,6 +192,7 @@ class passthru extends billingcalculator {
             
             //make sure current user is good to go
             $defAddy = $addy->find('first','user_id='.$user->id);
+            $obj = new stdClass();
             $obj->id = $defAddy->id;
             $db->setUniqueFlag($obj, 'addresses', 'is_default', 'user_id='.$user->id);
             $db->setUniqueFlag($obj, 'addresses', 'is_shipping', 'user_id='.$user->id);

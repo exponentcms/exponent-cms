@@ -102,16 +102,19 @@ class taxController extends expController {
 			
 		if(empty($this->params['id'])) {
 			//Add data in tax class
+            $tax_class = new stdClass();
 			$tax_class->name = $this->params['name'];
 			$class_id        = $db->insertObject($tax_class,'tax_class');
 			
 			//Add data in the tax geo
+            $tax_geo = new stdClass();
 			$tax_geo->zone_id    = $this->params['zone'];
 			$tax_geo->country_id = $this->params['country'];
 			$tax_geo->region_id  = $this->params['state'];
 			$db->insertObject($tax_geo,'tax_geo');
 			
 			//Add data in the tax rate
+            $tax_rate = new stdClass();
 			$tax_rate->zone_id  = $this->params['zone'];
 			$tax_rate->class_id = $class_id;
 			$tax_rate->rate     = $this->params['rate'];
@@ -190,6 +193,7 @@ class taxController extends expController {
         global $db;
 			
 		if(empty($this->params['id'])) {
+            $obj = new stdClass();
 			$obj->name = $this->params['name'];
 			$db->insertObject($obj,'tax_zone');
 		} else {
