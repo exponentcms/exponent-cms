@@ -85,7 +85,6 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 			$eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
 			$db->updateObject($eventdate,'eventdate');
 		}
-		calendarmodule::spiderContent($item);
 	} else {
 		//$start_recur = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
 		$start_recur = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
@@ -134,8 +133,8 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 			$db->insertObject($edate,"eventdate");
 		}
 		$db->insertObject($item,"calendar");
-		calendarmodule::spiderContent($item);
 	}
+    calendarmodule::spiderContent($item);
 
 	expHistory::back();
 } else {

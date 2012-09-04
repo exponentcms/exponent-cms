@@ -179,7 +179,7 @@ class form extends baseform {
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
-            $this->controls["submit"] = new stdClass();
+//            $this->controls["submit"] = new stdClass();
 			$this->controls["submit"]->validateJS = "validate(this.form)";
 		}
 	
@@ -246,6 +246,7 @@ class form extends baseform {
     			$html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
                 $oldname = $this->tabs[$name];
             } else {
+                echo $name;
                 $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
             }
 		}
