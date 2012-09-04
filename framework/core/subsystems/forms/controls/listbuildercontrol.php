@@ -52,6 +52,7 @@ class listbuildercontrol extends formcontrol {
 		$this->process = $process;
 		$this->_normalize();
 		// eDebug($this->source, true);
+
 		$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
 		$html .= '<table cellpadding="9" border="0" width="30"><tr><td width="10" style="border:none;">';
 		if (!$this->newList) {
@@ -84,10 +85,16 @@ class listbuildercontrol extends formcontrol {
 		}
 		$html .= "</select>";
 		$html .= "</td><td width='100%' style='border:none;'></td></tr></table>";
-		$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
+//		$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		return $html;
 	}
-	
+
+    function toHTML($label,$name) {
+        $html = parent::toHTML($label,$name);
+        $html = '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>'.$html;
+        return $html;
+    }
+
 	// Normalizes the $this->source and $this->defaults array
 	// This allows us to gracefully recover from _formErrors and programmer error
 	function _normalize() {

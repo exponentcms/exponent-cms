@@ -233,6 +233,8 @@ class expRecord {
     }
 
 	/**
+     * re-construct the item
+     *
 	 * @return bool
 	 */
 	public function refresh() {
@@ -697,6 +699,12 @@ class expRecord {
 
 	/**
 	 * get item's associated objects
+     *
+     * Type of associations
+     *   has_one
+     *   has_many
+     *   has_and_belongs_to_many
+     *
 	 * @param null $obj
 	 * @return null
 	 */
@@ -812,17 +820,28 @@ class expRecord {
 
 	/**
 	 * list associated objects for this model
+     *
+     * Type of associations
+     *   has_extended_fields
+     *   has_one
+     *   has_many
+     *   has_many_self
+     *   has_and_belongs_to_many
+     *   has_and_belongs_to_self
+     *
 	 * @param array $except
 	 * @param bool $cascade_except
 	 *
 	 */
 	private function getAssociatedObjectsForThisModel($except=array(), $cascade_except = false) {
         global $db;
+
         foreach ($this->has_extended_fields as $assoc_object) {
             // figure out the name of the model based off the models tablename
             $obj = new $assoc_object(null, false, false);
             $this->$assoc_object = $obj->find('first', $this->tablename.'_id = ' . $this->id);
         }
+
         //this requires a field in the table only with the ID of the associated object we're looking for in its table
         foreach ($this->has_one as $assoc_object) {
             // figure out the name of the model based off the models tablename
@@ -838,6 +857,7 @@ class expRecord {
                 $this->$assoc_object = array();
             }
         }
+
         //TODO: perhaps add a 'in' option to the find so we can pass an array of ids and make ONE db call instead of looping
         foreach($this->has_many as $assoc_object) {                     
             if (!in_array($assoc_object, $except)) { 
@@ -922,6 +942,10 @@ class expRecord {
 
 	/**
 	 * get objects this item belongs to
+     *
+     * Type of associations
+     *   has_and_belongs_to_many
+     *
 	 * @param $datatype
 	 * @param $id
 	 */
@@ -943,6 +967,10 @@ class expRecord {
 
 	/**
 	 * save associated objects
+     *
+     * Type of associations
+     *   has_one
+     *
 	 */
 	public function saveAssociatedObjects() {
         global $db;

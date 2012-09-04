@@ -862,8 +862,8 @@ abstract class expController {
 	 * type of items searched in the module
 	 * @return string
 	 */
-	static function searchName() {
-        return self::displayname();
+	function searchName() {
+        return $this->displayname();
     }
 
 	/**

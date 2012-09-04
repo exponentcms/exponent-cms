@@ -69,10 +69,11 @@ class fakeform extends form {
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
-                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">bb";
+                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</div>";
+                if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"display:inline;\">" . $this->controls[$name]->description . "</div>";
             }
             $html .= "<div class=\"item-actions\">";
 			if (!$this->controls[$name]->_readonly) {
@@ -123,7 +124,8 @@ class fakeform extends form {
 //
             $html .= "&#160;&#160;";
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
-                $html .= "<span style=\"display:inline-block\">".$this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "</span>\r\n";
+                $html .= "<span style=\"display:inline-block\">".$this->controls[$name]->controlToHTML_newschool($name, $this->controlLbl[$name]) . "</span>\r\n";
+                if (!empty($this->controls[$name]->description)) $html .= "<div class=\"control-desc\">" . $this->controls[$name]->description . "</div>";
             }
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol') || $this->controls[$name]->_controltype == 'radiogroupcontrol') {
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";

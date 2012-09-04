@@ -799,7 +799,7 @@ class usersController extends expController {
         
         if (!empty($this->params['query'])) {
 
-            $this->params['query'] = $this->params['query'];
+//            $this->params['query'] = $this->params['query'];
             $totalrecords = $this->$modelname->find('count',(empty($filter)?'':$filter." AND ")."(username LIKE '%".$this->params['query']."%' OR firstname LIKE '%".$this->params['query']."%' OR lastname LIKE '%".$this->params['query']."%' OR email LIKE '%".$this->params['query']."%')");
             
             $users = $this->$modelname->find('all',(empty($filter)?'':$filter." AND ")."(username LIKE '%".$this->params['query']."%' OR firstname LIKE '%".$this->params['query']."%' OR lastname LIKE '%".$this->params['query']."%' OR email LIKE '%".$this->params['query']."%')" ,$sort.' '.$dir, $results, $startIndex);

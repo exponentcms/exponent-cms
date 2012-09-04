@@ -24,35 +24,30 @@
  */
 
 /**
- * Smarty {userlistcontrol} function plugin
+ * Smarty {grouplistcontrol} function plugin
  *
  * Type:     function<br>
- * Name:     userlistcontrol<br>
- * Purpose:  display a list control of users
+ * Name:     grouplistcontrol<br>
+ * Purpose:  display a list control of user groups
  *
  * @param         $params
  * @param \Smarty $smarty
  */
-function smarty_function_userlistcontrol($params, &$smarty) {
+function smarty_function_grouplistcontrol($params, &$smarty) {
     echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>';
 
     global $db;
-    $users = $db->selectObjects("user", null, "username");
+    $groups = $db->selectObjects("group", null, "name");
 
     $selected = isset($params['items']) ? $params['items'] : null;
-    foreach ($users as $user) {
-        if (!array_key_exists($user->id, $selected)) {
-            //TODO should we display username w/ first/last name is parens or first/last name?
-            if (empty($user->lastname) && empty($user->firstname)) {
-                $allusers[$user->id] = "($user->username)";
-            } else {
-                $allusers[$user->id] = "$user->lastname, $user->firstname ($user->username)";
-            }
+    foreach ($groups as $group) {
+        if (!array_key_exists($group->id, $selected)) {
+            $allgroups[$group->id] = "$group->name";
         }
     }
 
-    $control = new listbuildercontrol($selected, $allusers, 5);
-    $name    = isset($params['name']) ? $params['name'] : "userlist";
+    $control = new listbuildercontrol($selected, $allgroups, 5);
+    $name    = isset($params['name']) ? $params['name'] : "grouplist";
     $label   = isset($params['label']) ? $params['label'] : "";
 //    echo $control->controlToHTML($name);
     echo $control->ToHTML($label,$name);

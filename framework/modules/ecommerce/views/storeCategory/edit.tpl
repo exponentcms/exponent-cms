@@ -60,7 +60,7 @@
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}
 					<div id="{$item}">	
-						<h1>{$key} Product Types</h1>
+						<h1>{$key} {'Product Types'|gettext}</h1>
 						{$product_type.$item}
 					</div>
 					{/foreach}

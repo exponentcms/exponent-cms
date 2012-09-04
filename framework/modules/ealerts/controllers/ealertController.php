@@ -59,7 +59,8 @@ class ealertController extends expController {
         }
 
         // find the content for the E-Alerts
-        $record = new $this->params['model']($this->params['id']);
+        $model = $this->params['model'];
+        $record = new $model($this->params['id']);
         // setup the content for the view
         $subject = $record->title;
         $body = $record->body;
@@ -103,7 +104,8 @@ class ealertController extends expController {
         $ealert = $db->selectObject('expeAlerts', 'module="'.$this->params['model'].'" AND src="'.$src.'"');
 
          // find the content for the E-Alerts
-        $record = new $this->params['model']($this->params['id']);
+        $model = $this->params['model'];
+        $record = new $model($this->params['id']);
         $obj = new stdClass();
         $obj->subject = gt('Notification of New Content Posted to').' '.$ealert->ealert_title;
         $obj->body .= "<h3>".gt('New content was added titled')." '".$record->title."'</h3><hr>";

@@ -59,7 +59,7 @@ class datetimecontrol extends formcontrol {
 		}
 		//$html .= "</label>";
 		$html .= "</div>";			
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        $html = '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/datetimecontrol.js"></script>'.$html;
 		return $html;
 	}
 	
