@@ -1105,12 +1105,12 @@ class mysqli_database extends database {
     }
 
 	/**
-	 * Select a records from the database
+	 * Select records from the database
 	 * @param string $table The name of the table/object to look at
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
-	 * @param  $classname
+	 * @param string $classname
 	 * @param bool $get_assoc
 	 * @param bool $get_attached
 	 * @param array $except

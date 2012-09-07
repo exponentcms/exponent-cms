@@ -21,11 +21,8 @@
  * @package Modules
  */
 
-class simplepoll_question extends expRecord {
-    public $has_many = array(
-        'simplepoll_answer',
-        'simplepoll_timeblock'
-    );
+class simplepoll_timeblock extends expRecord {
+    public $has_one = array('simplepoll_question');
 }
 
 ?>

@@ -295,8 +295,8 @@ abstract class database {
 	               $sql .= " MEDIUMTEXT";
 	           else
 	               $sql .= "LONGTEXT";
-	       } else {
-	           return false; // must specify a field length as integer.  //FIXME need to have a default
+	       } else {  // default size of 'TEXT'instead of error
+               $sql .= " TEXT";
 	       }
 	   } else if ($type == DB_DEF_DECIMAL) {
 	       $sql .= " DOUBLE";

@@ -204,7 +204,7 @@ class blogController extends expController {
         $model = new $modelname();
 
         // start building the sql query
-        $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$model->table.' m ';
+        $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$model->tablename.' m ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_'.$tagobj->attachable_table.' ct ';
         $sql .= 'ON m.id = ct.content_id WHERE (';
         $first = true;
@@ -218,7 +218,7 @@ class blogController extends expController {
         }
 
         foreach ($tags as $tagid) {
-            $sql .= ($first) ? 'exptag_id='.intval($tagid) : ' OR exptag_id='.intval($tagid);
+            $sql .= ($first) ? 'exptags_id='.intval($tagid) : ' OR exptags_id='.intval($tagid);
             $first = false;
         }
         $sql .= ") AND content_type='".$model->classname."'";

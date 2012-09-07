@@ -42,7 +42,12 @@ class simplePollController extends expController {
     static function displayname() { return gt("Simple Poll"); }
     static function description() { return gt("A simple poll that asks a visitor one question with mutiple answers.  Can manage multiple questions, though it only displays one."); }
 //	function isSearchable() { return true; }
-	
+
+    public function __construct($src=null, $params=array()) {
+        parent::__construct($src, $params);
+        $this->simplepoll_timeblock = new simplepoll_timeblock();
+    }
+
 	public function showall() {
         expHistory::set('viewable', $this->params);
         $where = $this->aggregateWhereClause();
@@ -150,11 +155,13 @@ class simplePollController extends expController {
             // Check to see if voting is even allowed:
             if ($answer->simplepoll_question->open_voting) {
                 // Time blocking
-                $timeblock = null;
+//                $timeblock = null;
                 if (is_object($user) && $user->id > 0) {
-                    $timeblock = $db->selectObject('simplepoll_timeblock','user_id='.$user->id.' AND simplepoll_question_id='.$answer->simplepoll_question_id);
+                    $timeblock = $this->simplepoll_timeblock->find('first','user_id='.$user->id.' AND simplepoll_question_id='.$answer->simplepoll_question_id);
+//                    $timeblock = $db->selectObject('simplepoll_timeblock','user_id='.$user->id.' AND simplepoll_question_id='.$answer->simplepoll_question_id);
                 } else {
-                    $timeblock = $db->selectObject('simplepoll_timeblock',"ip_hash='".md5($_SERVER['REMOTE_ADDR'])."' AND simplepoll_question_id=".$answer->simplepoll_question_id);
+                    $timeblock = $this->simplepoll_timeblock->find('first',"ip_hash='".md5($_SERVER['REMOTE_ADDR'])."' AND simplepoll_question_id=".$answer->simplepoll_question_id);
+//                    $timeblock = $db->selectObject('simplepoll_timeblock',"ip_hash='".md5($_SERVER['REMOTE_ADDR'])."' AND simplepoll_question_id=".$answer->simplepoll_question_id);
                 }
 
                 if ($timeblock == null || $timeblock->lock_expires < time() && $timeblock->lock_expires != 0) {
@@ -173,13 +180,14 @@ class simplePollController extends expController {
                         $timeblock->ip_hash = md5($_SERVER['REMOTE_ADDR']);
                     }
 
-                    if (isset($timeblock->id)) {
-                        $db->updateObject($timeblock,'simplepoll_timeblock');
-                    } else {
-                        $db->insertObject($timeblock,'simplepoll_timeblock');
-                    }
+//                    if (isset($timeblock->id)) {
+//                        $db->updateObject($timeblock,'simplepoll_timeblock');
+//                    } else {
+//                        $db->insertObject($timeblock,'simplepoll_timeblock');
+//                    }
+                    $timeblock->update();
 
-                    flash('error', $this->config['thank_you_message']);
+                    flash('message', $this->config['thank_you_message']);
                     if ($answer->simplepoll_question->open_results) {
                         redirect_to(array('controller'=>'simplePoll', 'action'=>'results','id'=>$answer->simplepoll_question_id));
                     } else {

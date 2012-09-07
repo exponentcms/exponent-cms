@@ -72,7 +72,6 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 				}
 			}
 			$eventdate = $db->selectObject('eventdate','id='.intval($_POST['date_id']));
-			//$eventdate->date = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
 			$eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
 			$db->updateObject($eventdate,'eventdate');
 		} else {
@@ -81,28 +80,23 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 			// There should be only one eventdate
 			$eventdate = $db->selectObject('eventdate','event_id = '.$item->id);
 
-			//$eventdate->date = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
 			$eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
 			$db->updateObject($eventdate,'eventdate');
 		}
 	} else {
-		//$start_recur = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("eventdate",$_POST));
 		$start_recur = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$_POST));
-		//$stop_recur  = expDateTime::startOfDayTimestamp(popupdatetimecontrol::parseData("untildate",$_POST));
 		$stop_recur  = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("untildate",$_POST));
 
 		if (($_POST['recur'] != "recur_none") && isset($_POST['recur'])) {
 			// Do recurrence
 			$freq = $_POST['recur_freq_'.$_POST['recur']];
-
-			###echo $_POST['recur'] . "<br />";
-
 			switch ($_POST['recur']) {
 				case "recur_daily":
 					$dates = expDateTime::recurringDailyDates($start_recur,$stop_recur,$freq);
 					break;
 				case "recur_weekly":
-					$dates = expDateTime::recurringWeeklyDates($start_recur,$stop_recur,$freq,(isset($_POST['day']) ? array_keys($_POST['day']) : array($dateinfo['wday'])));  //FIXM $dateinfo doesn't exist
+                    $dateinfo = getdate($start_recur);  //FIXME hack in case the day of week wasn't checked off
+					$dates = expDateTime::recurringWeeklyDates($start_recur,$stop_recur,$freq,(isset($_POST['day']) ? array_keys($_POST['day']) : array($dateinfo['wday'])));
 					break;
 				case "recur_monthly":
 					$dates = expDateTime::recurringMonthlyDates($start_recur,$stop_recur,$freq,$_POST['month_type']);
