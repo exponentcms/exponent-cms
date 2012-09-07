@@ -54,7 +54,7 @@
         </tbody>
 	</table>
 	{if $permissions.create == 1}
-		{icon class=add action=edit_answer question_id=$question->id text="New Answer"}
+		{icon class=add action=edit_answer rank=$answer->rank+1 question_id=$question->id text="New Answer"}
 	{/if}
 	<br />
 	<a href="{link action=manage_questions}">{'Back to Manager'|gettext}</a>

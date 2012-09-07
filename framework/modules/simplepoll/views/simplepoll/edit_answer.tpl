@@ -19,10 +19,10 @@
     {else}
         <h1>{'New Poll Answer'|gettext}</h1>
     {/if}
-    <h2>{'for Question'|gettext}: {$question->question}</h2>
+    <h2>{'for Question'|gettext}: {$answer->simplepoll_question->question}</h2>
     {form action=update_answer}
         {control type=hidden name=id value=$answer->id}
-        {control type=hidden name=simplepoll_question_id value=$question->id}
+        {control type=hidden name=simplepoll_question_id value=$answer->simplepoll_question->id}
         {control type=hidden name=rank value=$answer->rank}
         {control type=hidden name=vote_count value=$answer->vote_count}
         {control type=html name=answer label="Answer"|gettext value=$answer->answer}

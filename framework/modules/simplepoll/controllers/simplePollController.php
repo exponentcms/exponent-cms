@@ -41,7 +41,7 @@ class simplePollController extends expController {
 
     static function displayname() { return gt("Simple Poll"); }
     static function description() { return gt("A simple poll that asks a visitor one question with mutiple answers.  Can manage multiple questions, though it only displays one."); }
-//	function isSearchable() { return true; }  // this content is pulled by the navigation module since we don't display individual text items
+//	function isSearchable() { return true; }
 	
 	public function showall() {
         expHistory::set('viewable', $this->params);
@@ -89,20 +89,7 @@ class simplePollController extends expController {
         }
     }
 
-//    public function edit() {
-//
-//        $question = null;
-//        if (isset($this->params['id'])) {
-//            $question = $this->simplepoll_question->find('first', 'id='.$this->params['id']);
-//        }
-//        assign_to_template(array(
-//            'record'=>$question,
-//        ));
-//    }
-
     public function delete() {
-        global $db;
-
         // if no active question, set first question as active
         $question = $this->simplepoll_question->find('first', 'id='.$this->params['id']);
         parent::delete();
@@ -115,58 +102,28 @@ class simplePollController extends expController {
     }
 
     public function edit_answer() {
-        global $db;
-
-        $question = null;
-        $answer = null;
-        if (isset($this->params['id'])) {
-        	$answer = $db->selectObject('simplepoll_answer','id='.$this->params['id']);
-        	if ($answer) {
-                $question = $this->simplepoll_question->find('first','id='.$answer->simplepoll_question_id);
-        	}
-        } else if (isset($this->params['question_id'])) {
-            $question = $this->simplepoll_question->find('first', 'id='.$this->params['question_id']);
+        $id = !empty($this->params['id']) ? $this->params['id'] : null;
+        $answer = new simplepoll_answer($id);
+        if (empty($answer->simplepoll_question->id) && !empty($this->params['question_id'])) {
+            $answer->simplepoll_question = $this->simplepoll_question->find('first', 'id='.$this->params['question_id']);
         }
-
-        if ($question) {
-            assign_to_template(array(
-                'answer'=>$answer,
-                'question'=>$question,
-           ));
-        }
+        assign_to_template(array(
+            'answer'=>$answer,
+       ));
     }
 
     public function update_answer() {
-        global $db;
-
-        $answer = new stdClass();
-        if (!empty($this->params['id'])) $answer->id = $this->params['id'];
-        $answer->simplepoll_question_id = $this->params['simplepoll_question_id'];
-        $answer->answer = $this->params['answer'];
-        !empty($this->params['rank']) ? $answer->rank = $this->params['rank'] : $answer->rank = $db->max('simplepoll_answer','rank',null,"simplepoll_question_id=".$this->params['simplepoll_question_id'])+1;
-        !empty($this->params['vote_count']) ? $answer->vote_count = $this->params['vote_count'] : $answer->vote_count = 0;
-        if (isset($answer->id)) {
-            $db->updateObject($answer,'simplepoll_answer');
-        } else {
-            $db->insertObject($answer,'simplepoll_answer');
-        }
+        $answer = new simplepoll_answer($this->params);
+        $answer->update();
 	    expHistory::returnTo('manageable');
     }
 
     public function delete_answer() {
-        global $db;
-
         if (isset($this->params['id'])) {
-        	$answer = $db->selectObject('simplepoll_answer','id='.$this->params['id']);
-        	if ($answer) {
-        		$question = $this->simplepoll_question->find('first','id='.$answer->simplepoll_question_id);
-                if ($question) {
-             		$db->delete('simplepoll_answer','id='.$answer->id);
-             		$db->decrement('simplepoll_answer','rank',1,'simplepoll_question_id='.$question->id.' AND rank > '.$answer->rank);
-             		expHistory::back();
-               }
-        	}
+            $answer = new simplepoll_answer($this->params['id']);
+            $answer->delete();
         }
+        expHistory::back();
     }
 
     public function activate() {
@@ -174,8 +131,7 @@ class simplePollController extends expController {
 
         $db->toggle('simplepoll_question',"active",'active=1');
         $active = $this->simplepoll_question->find('first',"id=".$this->params['id']);
-        $active->active = 1;
-        $active->update();
+        $active->update(array('active'=>1));
 	    expHistory::returnTo('manageable');
     }
 
@@ -183,66 +139,59 @@ class simplePollController extends expController {
         global $db, $user;
 
         if (isset($this->params['choice'])) {
-        	$answer = $db->selectObject('simplepoll_answer','id='.$this->params['choice']);
-            $question = null;
-        	if ($answer) {
-        		$question = $db->selectObject('simplepoll_question','id='.$answer->simplepoll_question_id);
-        	}
-            if ($answer && $question) {
-            	if (empty($this->config)) {
-            		$this->config['anonymous_timeout'] = 5*3600;
-            		$this->config['thank_you_message'] = 'Thank you for voting.';
-            		$this->config['already_voted_message'] = 'You have already voted in this poll.';
-            		$this->config['voting_closed_message'] = 'Voting has been closed for this poll.';
-            	}
+            $answer = new simplepoll_answer($this->params['choice']);
+            if (empty($this->config)) {
+                $this->config['anonymous_timeout'] = 5*3600;
+                $this->config['thank_you_message'] = 'Thank you for voting.';
+                $this->config['already_voted_message'] = 'You have already voted in this poll.';
+                $this->config['voting_closed_message'] = 'Voting has been closed for this poll.';
+            }
 
-            	// Check to see if voting is even allowed:
-            	if ($question->open_voting) {
+            // Check to see if voting is even allowed:
+            if ($answer->simplepoll_question->open_voting) {
+                // Time blocking
+                $timeblock = null;
+                if (is_object($user) && $user->id > 0) {
+                    $timeblock = $db->selectObject('simplepoll_timeblock','user_id='.$user->id.' AND simplepoll_question_id='.$answer->simplepoll_question_id);
+                } else {
+                    $timeblock = $db->selectObject('simplepoll_timeblock',"ip_hash='".md5($_SERVER['REMOTE_ADDR'])."' AND simplepoll_question_id=".$answer->simplepoll_question_id);
+                }
 
-            		// Time blocking
-            		$timeblock = null;
+                if ($timeblock == null || $timeblock->lock_expires < time() && $timeblock->lock_expires != 0) {
+                    $answer->vote_count++;
+                    $answer->update();
+
+                    // Update the timeblock
+                    $timeblock->simplepoll_question_id = $answer->simplepoll_question_id;
                     if (is_object($user) && $user->id > 0) {
-            			$timeblock = $db->selectObject('simplepoll_timeblock','user_id='.$user->id.' AND simplepoll_question_id='.$answer->simplepoll_question_id);
-            		} else {
-            			$timeblock = $db->selectObject('simplepoll_timeblock',"ip_hash='".md5($_SERVER['REMOTE_ADDR'])."' AND simplepoll_question_id=".$answer->simplepoll_question_id);
-            		}
+                        $timeblock->lock_expires = 0;
+                        $timeblock->user_id = $user->id;
+                        $timeblock->ip_hash = '';
+                    } else {
+                        $timeblock->lock_expires = time()+($this->config['anonymous_timeout']*3600);
+                        $timeblock->user_id = 0;
+                        $timeblock->ip_hash = md5($_SERVER['REMOTE_ADDR']);
+                    }
 
-            		if ($timeblock == null || $timeblock->lock_expires < time() && $timeblock->lock_expires != 0) {
-            			$answer->vote_count++;
-            			$db->updateObject($answer,'simplepoll_answer');
+                    if (isset($timeblock->id)) {
+                        $db->updateObject($timeblock,'simplepoll_timeblock');
+                    } else {
+                        $db->insertObject($timeblock,'simplepoll_timeblock');
+                    }
 
-            			// Update the timeblock
-            			$timeblock->simplepoll_question_id = $answer->simplepoll_question_id;
-                        if (is_object($user) && $user->id > 0) {
-            				$timeblock->lock_expires = 0;
-            				$timeblock->user_id = $user->id;
-            				$timeblock->ip_hash = '';
-            			} else {
-            				$timeblock->lock_expires = time()+($this->config['anonymous_timeout']*3600);
-            				$timeblock->user_id = 0;
-            				$timeblock->ip_hash = md5($_SERVER['REMOTE_ADDR']);
-            			}
-
-            			if (isset($timeblock->id)) {
-            				$db->updateObject($timeblock,'simplepoll_timeblock');
-            			} else {
-            				$db->insertObject($timeblock,'simplepoll_timeblock');
-            			}
-
-                        flash('error', $this->config['thank_you_message']);
-            			if ($question->open_results) {
-                            redirect_to(array('controller'=>'simplePoll', 'action'=>'results','id'=>$question->id));
-            			} else {
-                            expHistory::back();
-                        }
-            		} else {
-                        flash('error', $this->config['already_voted_message']);
-        	            expHistory::back();
-            		}
-            	} else {
-                    flash('error', $this->config['voting_closed_message']);
-           	        expHistory::back();
-            	}
+                    flash('error', $this->config['thank_you_message']);
+                    if ($answer->simplepoll_question->open_results) {
+                        redirect_to(array('controller'=>'simplePoll', 'action'=>'results','id'=>$answer->simplepoll_question_id));
+                    } else {
+                        expHistory::back();
+                    }
+                } else {
+                    flash('error', $this->config['already_voted_message']);
+                    expHistory::back();
+                }
+            } else {
+                flash('error', $this->config['voting_closed_message']);
+                expHistory::back();
             }
         } else {
             flash('error', gt('You must select an answer to vote'));
