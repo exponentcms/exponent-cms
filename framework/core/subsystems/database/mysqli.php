@@ -169,30 +169,34 @@ class mysqli_database extends database {
 
         //Drop any old columns from the table if aggressive mode is set.
         if ($aggressive) {
-            $oldcols = array_diff_assoc($dd, $newdatadef);
-            if (count($oldcols)) {
-                $modified = true;
-                $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
-                foreach ($oldcols as $name => $def) {
-                    $sql .= " DROP COLUMN " . $name . ",";
-                }
-                $sql = substr($sql, 0, -1);
+            if (is_array($newdatadef) && is_array($dd)) {
+                $oldcols = @array_diff_assoc($dd, $newdatadef);
+                if (count($oldcols)) {
+                    $modified = true;
+                    $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+                    foreach ($oldcols as $name => $def) {
+                        $sql .= " DROP COLUMN " . $name . ",";
+                    }
+                    $sql = substr($sql, 0, -1);
 
-                @mysqli_query($this->connection, $sql);
+                    @mysqli_query($this->connection, $sql);
+                }
             }
         }
 
         //Add any new columns to the table
-        $diff = @array_diff_assoc($newdatadef, $dd);
-        if (count($diff)) {
-            $modified = true;
-            $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
-            foreach ($diff as $name => $def) {
-                $sql .= " ADD COLUMN (" . $this->fieldSQL($name, $def) . "),";
-            }
+        if (is_array($newdatadef) && is_array($dd)) {
+            $diff = @array_diff_assoc($newdatadef, $dd);
+            if (count($diff)) {
+                $modified = true;
+                $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+                foreach ($diff as $name => $def) {
+                    $sql .= " ADD COLUMN (" . $this->fieldSQL($name, $def) . "),";
+                }
 
-            $sql = substr($sql, 0, -1);
-            @mysqli_query($this->connection, $sql);
+                $sql = substr($sql, 0, -1);
+                @mysqli_query($this->connection, $sql);
+            }
         }
 
         //Add any new indexes & keys to the table.

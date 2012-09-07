@@ -99,13 +99,13 @@ if (($item == null && expPermissions::check("create",$loc)) ||
 					$dates = expDateTime::recurringWeeklyDates($start_recur,$stop_recur,$freq,(isset($_POST['day']) ? array_keys($_POST['day']) : array($dateinfo['wday'])));
 					break;
 				case "recur_monthly":
-					$dates = expDateTime::recurringMonthlyDates($start_recur,$stop_recur,$freq,$_POST['month_type']);
+					$dates = expDateTime::recurringMonthlyDates($start_recur,$stop_recur,$freq,(!empty($_POST['month_type'])?$_POST['month_type']:true));
 					break;
 				case "recur_yearly":
 					$dates = expDateTime::recurringYearlyDates($start_recur,$stop_recur,$freq);
 					break;
 				default:
-					$dates = array();
+//					$dates = array();
 					echo "Bad type: " . $_POST['recur'] . "<br />";
 					return;
 					break;

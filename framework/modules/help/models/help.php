@@ -23,6 +23,7 @@
 
 class help extends expRecord {
 //	public $table = 'help';
+    public $default_sort_field = 'rank';
 	public $has_one = array('help_version');
 
 	public function __construct($params=array()) {

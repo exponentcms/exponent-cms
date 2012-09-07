@@ -102,6 +102,7 @@ class administrationController extends expController {
         foreach($tables as $table) {
             $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
             if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {
+                $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
             }
