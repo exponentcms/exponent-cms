@@ -24,6 +24,7 @@
 class simplepoll_answer extends expRecord {
 //	public $table = 'simplepoll_answer';
     public $has_one = array('simplepoll_question');
+    public $default_sort_field = 'rank';
 
 //
 //    protected $attachable_item_types = array(

@@ -49,7 +49,6 @@ class simplePollController extends expController {
         $where .= " AND active = 1";
         $question = $this->simplepoll_question->find('first', $where);
         if (empty($question)) $question = $this->simplepoll_question->find('first', $this->aggregateWhereClause());
-        if (!empty($question->simplepoll_answer)) $question->simplepoll_answer = expSorter::sort(array('array'=>$question->simplepoll_answer,'sortby'=>'rank', 'order'=>'ASC', 'type'=>'a'));
         assign_to_template(array(
             'question'=>$question,
         ));
@@ -84,7 +83,6 @@ class simplePollController extends expController {
 
         if ($question) {
             expHistory::set('manageable', $router->params);
-    		$question->simplepoll_answer = expSorter::sort(array('array'=>$question->simplepoll_answer,'sortby'=>'rank', 'order'=>'ASC', 'type'=>'a'));
             assign_to_template(array(
                 'question'=>$question,
             ));
@@ -258,7 +256,6 @@ class simplePollController extends expController {
         }
         if (!empty($question) && $question->open_results) {
             $total = 0;
-            $question->simplepoll_answer = expSorter::sort(array('array'=>$question->simplepoll_answer,'sortby'=>'vote_count', 'order'=>'DESC', 'type'=>'a'));
             foreach ($question->simplepoll_answer as $answer) {
                 $total += $answer->vote_count;
             }
