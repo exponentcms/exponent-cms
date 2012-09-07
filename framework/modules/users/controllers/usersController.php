@@ -447,7 +447,7 @@ class usersController extends expController {
         $tok->expires = time() + 2*3600;
         $tok->token = md5(time()).uniqid('');
 	
-        $email = $template = get_template_for_action($this, 'password_reset_email', $this->loc);
+        $email = $template = get_template_for_action($this, 'email/password_reset_email', $this->loc);
         $email->assign('token',$tok);
         $email->assign('username',$u->username);
         $msg = $email->render();
@@ -489,7 +489,7 @@ class usersController extends expController {
         $u = new user($tok->uid);
 
         // get the email message body and render it
-        $email = $template = get_template_for_action($this, 'confirm_password_email', $this->loc);
+        $email = $template = get_template_for_action($this, 'email/confirm_password_email', $this->loc);
         $email->assign('newpass',$newpass);
         $email->assign('username',$u->username);
         $msg = $email->render();

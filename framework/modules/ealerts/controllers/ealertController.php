@@ -279,7 +279,7 @@ class ealertController extends expController {
   
         // send a confirmation email to the user.    
         $ealerts = $db->selectObjects('expeAlerts', 'id IN ('.implode(',', $this->params['ealerts']).')');
-        $body = get_template_for_action($this, 'confirmation_email', $this->loc);
+        $body = get_template_for_action($this, 'email/confirmation_email', $this->loc);
         $body->assign('ealerts', $ealerts);
         $body->assign('subscriber', $subscriber);
         
