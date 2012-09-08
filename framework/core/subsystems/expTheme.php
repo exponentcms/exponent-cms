@@ -969,8 +969,8 @@ class expTheme {
 				} else {
 					// if we hit here we're dealing with a controller...not a module
 					if (!$hide_menu ) {
-//						$controller = expModules::getController($module);
-                        $controller = expModules::getControllerClassName($module);
+						$controller = expModules::getController($module);
+//                        $controller = expModules::getControllerClassName($module);
                         $container = new stdClass();  //php 5.4
 						$container->permissions = array(
 							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
@@ -982,8 +982,8 @@ class expTheme {
 							$container->view = $view;
 							$container->action = $params['action'];
 							$container->info['class'] = $loc->mod;
-//							$container->info['module'] = $controller->displayname();
-                            $container->info['module'] = $controller::displayname();
+							$container->info['module'] = $controller->displayname();
+//                            $container->info['module'] = $controller::displayname();
 							$container->info['source'] = $loc->src;
                             $container->info['scope'] = $module_scope[$source][$module]->scope;
 							$container->info['hasConfig'] = true;
