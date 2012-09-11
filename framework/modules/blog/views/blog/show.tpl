@@ -18,9 +18,16 @@
 {/css}
 
 <div class="module blog show">
+    {if $config.datetag}
+        <p class="post-date">
+            <span class="month">{$record->publish_date|format_date:"%b"}</span>
+            <span class="day">{$record->publish_date|format_date:"%e"}</span>
+            <span class="year">{$record->publish_date|format_date:"%Y"}</span>
+        </p>
+    {/if}
     <h1>{$record->title}</h1>
-    {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
-    {subscribe_link}
+    {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+    {subscribe_link prepend='<br/>'}
     {assign var=myloc value=serialize($__loc)}
     <div class="post-info">
         <span class="attribution">
@@ -30,7 +37,9 @@
             {/if}
             <span class="label posted">{'Posted by'|gettext}</span>
             <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
-            {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>
+            {if !$config.datetag}
+                {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>
+            {/if}
             {if $record->publish_date > $smarty.now}
                 </strong>&#160;
             {/if}
