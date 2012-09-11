@@ -10,6 +10,7 @@ Added / Fixed / changed for 2.0.9
     -- new universal navigation view to emulate most old navigation views through user settings
   - adds help links to most admin displays
   - adds next/prev item in blog and news single item view
+    -- also adds optional 'date badge' to news and blog views
   - calendar is more forgiving of timezone changes (events won't disappear)
     -- adds selectable weekly view to calendar
     -- updates ical feeds and send reminders cron task to use sef urls

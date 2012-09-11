@@ -115,7 +115,7 @@ img.border {
 }
 
 /* item date badge */
-.show .post-date {
+.show .post-date, .showall .post-date {
 	float: left;
 	width: 52px;
 	text-align: center;
@@ -133,7 +133,7 @@ img.border {
 	-moz-box-shadow: 0 1px 1px rgba(0,0,0,.15);
 	box-shadow: 0 1px 1px rgba(0,0,0,.15);
 }
-.show .post-date .month {
+.show .post-date .month, .showall .post-date .month {
 	color: #fff;
 	font: 11px/100% Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
@@ -160,13 +160,13 @@ img.border {
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
 }
-.show .post-date .day {
+.show .post-date .day, .showall .post-date .day {
 	color: #666;
 	padding: 2px 0 1px;
 	font: bold 18px/100% Arial, Helvetica, sans-serif;
 	display: block;
 }
-.show .post-date .year {
+.show .post-date .year, .showall .post-date .year {
 	color: #999;
 	padding: 0 0 4px;
 	font: 10px/100% Arial, Helvetica, sans-serif;
