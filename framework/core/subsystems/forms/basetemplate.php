@@ -57,8 +57,12 @@ abstract class basetemplate {
 		//FJD - this might break some editors...we'll see.
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
-		$this->tpl->caching = false;
-		$this->tpl->cache_dir = BASE.'tmp/cache';
+//		$this->tpl->caching = false;
+        $this->tpl->setCaching(Smarty::CACHING_OFF);
+//        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
+//		$this->tpl->cache_dir = BASE.'tmp/cache';
+        $this->tpl->setCacheDir(BASE.'tmp/cache');
+        $this->tpl->cache_id = md5($this->viewfile);
 
 		$this->tpl->setPluginsDir(array(
             BASE.'themes/'.DISPLAY_THEME.'/plugins',
@@ -76,9 +80,11 @@ abstract class basetemplate {
 
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
-		$this->tpl->template_dir = $this->viewdir;
+//		$this->tpl->template_dir = $this->viewdir;
+        $this->tpl->setTemplateDir($this->viewdir);
 		
-		$this->tpl->compile_dir = BASE . 'tmp/views_c';
+//		$this->tpl->compile_dir = BASE . 'tmp/views_c';
+        $this->tpl->setCompileDir(BASE . 'tmp/views_c');
 		$this->tpl->compile_id = md5($this->viewfile);
 		
 		$this->tpl->assign("__view", $this->view);

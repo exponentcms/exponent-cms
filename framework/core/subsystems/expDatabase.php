@@ -106,11 +106,20 @@ class expDatabase {
             'exprss'=>'expRss',
             'expsimplenote'=>'expSimpleNote',
             'exptags'=>'expTags',
+			'bing_product_types_storecategories'=>'bing_product_types_storeCategories',
+			'google_product_types_storecategories'=>'google_product_types_storeCategories',
+			'nextag_product_types_storecategories'=>'nextag_product_types_storeCategories',
+			'pricegrabber_product_types_storecategories'=>'pricegrabber_product_types_storeCategories',
+			'shopping_product_types_storecategories'=>'shopping_product_types_storeCategories',
+			'shopzilla_product_types_storecategories'=>'shopzilla_product_types_storeCategories',
+			'crosssellitem_product'=>'crosssellItem_product',
+			'product_storecategories'=>'product_storeCategories',
+			'storecategories'=>'storeCategories',
         );
 
         $renamed = array();
         foreach ($tablenames as $oldtablename=>$newtablename) {
-            if (!$db->tableExists($oldtablename)) {
+            if (!$db->tableExists($newtablename)) {
                 $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.$oldtablename.' TO '.DB_TABLE_PREFIX.$newtablename);
                 $renamed[] = $newtablename;
             }

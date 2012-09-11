@@ -13,11 +13,11 @@
  *
  *}
 
+{nocache}
 {css unique="yui-top-nav" link="`$smarty.const.YUI2_PATH`assets/skins/sam/menu.css"}
 
 {/css}
 {uniqueid assign=id prepend="sub`$parent`"}
-
 <div class="module navigation yui-top-nav yui-skin-sam">
     <div id="{$id}" class="yuimenubar yuimenubarnav">
     	<div class="bd">
@@ -80,3 +80,4 @@
     });
 {/literal}
 {/script}
+{/nocache}

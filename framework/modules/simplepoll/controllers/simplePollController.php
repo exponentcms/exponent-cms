@@ -101,8 +101,7 @@ class simplePollController extends expController {
         $question = $this->simplepoll_question->find('first', "location_data='".$question->location_data."' AND active = 1");
         if (empty($question)) {
             $question = $this->simplepoll_question->find('first', "location_data='".$question->location_data."'");
-            $question->active = 1;
-            $question->update();
+            $question->update(array('active'=>1));
         }
     }
 

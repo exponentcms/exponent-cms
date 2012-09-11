@@ -20,7 +20,7 @@
 			<div id="module{$container->id}" class="exp-container-module-wrapper">
 				<div class="container-chrome module-chrome">
 					<a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext}</a>
-					{getchromemenu module=$container rank=$i rerank=$rerank last=$last}
+                {nocache}{getchromemenu module=$container rank=$i rerank=$rerank last=$last}{/nocache}
 				</div>
 		{/if}
 	{/permissions}

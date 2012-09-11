@@ -38,10 +38,11 @@
            {$navtype='siblingsandchildren'}
         {elseif $config.showgrandchildren}
             {$navtype='allsubchildren'}
-        {elseif $config.showchildren}
-            {$navtype='children'}
         {elseif $config.showsiblings}
             {$navtype='siblings'}
+        {*{elseif $config.showchildren}*}
+        {else}
+            {$navtype='children'}
         {/if}
         {getnav type=$navtype of=$current->id top=$config.showtop parents=$config.showparents assign=children}
         {foreach key=skey name=children from=$children item=child}
@@ -50,15 +51,15 @@
                     {if $config.styledepth}
                         <h{$child->depth-$startdepth+2}>
                     {/if}
-                    {if $config.markcurrent && $child->id == $current->id}
+                    {if $child->id == $current->id && $config.markcurrent}
                         <strong><img src="{$smarty.const.ICON_RELATIVE|cat:'mark.gif'}" title="{'You are here'|gettext}" alt="{'Mark'|gettext}" />
                     {/if}
-                    {if $child->active == 1 && $child->id != $current->id}
+                    {if $child->id != $current->id && $child->active == 1}
                         <a href="{$child->link}" class="navlink"{if $child->new_window} target="_blank"{/if} title="{$child->name}">{$child->name}</a>
                     {else}
                         <span class="navlink">{$child->name}</span>
                     {/if}
-                    {if $config.markcurrent && $child->id == $current->id}
+                    {if $child->id == $current->id && $config.markcurrent}
                         </strong>
                     {/if}
                     {if $config.styledepth}

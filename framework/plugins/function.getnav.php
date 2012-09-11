@@ -47,7 +47,9 @@ function smarty_function_getnav($params,&$smarty) {
             foreach ($sections as $key=>$value) {
                 if ($value->parent == $linkInQuestion->parent) {
                     $nav[] = $value;
-                } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) || (!empty($params['top']) && $value->depth == 0) || (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                    (!empty($params['top']) && $value->depth == 0) ||
+                    (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
                     $nav[] = $value;
                 }
             }
@@ -56,7 +58,9 @@ function smarty_function_getnav($params,&$smarty) {
             foreach ($sections as $key=>$value) {
                 if ($value->parent == $linkInQuestion->id) {
                     $nav[] = $value;
-                } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) || (!empty($params['top']) && $value->depth == 0) || (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                    (!empty($params['top']) && $value->depth == 0) ||
+                    (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
                     $nav[] = $value;
                 }
             }
@@ -71,7 +75,9 @@ function smarty_function_getnav($params,&$smarty) {
                             if ($parent == $linkInQuestion->id || $parent == $linkInQuestion->parent) {
                                 $nav[] = $value ;
                                 break;
-                            } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) || (!empty($params['top']) && $value->depth == 0) || (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                            } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                                (!empty($params['top']) && $value->depth == 0) ||
+                                (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
                                 $nav[] = $value;
                             }
                         }
@@ -89,7 +95,9 @@ function smarty_function_getnav($params,&$smarty) {
                             if ($parent == $linkInQuestion->id || $parent == $linkInQuestion->parent) {
                                 $nav[] = $value ;
                                 break;
-                            } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) || (!empty($params['top']) && $value->depth == 0) || (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                            } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                                (!empty($params['top']) && $value->depth == 0) ||
+                                (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
                                 $nav[] = $value;
                             }
                         }
@@ -102,7 +110,9 @@ function smarty_function_getnav($params,&$smarty) {
                 foreach ($value->parents as $pkey=>$parent) {
                     if ($parent == $linkInQuestion->id) {
                         $nav[] = $value ;
-                    } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) || (!empty($params['top']) && $value->depth == 0) || (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                    } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                        (!empty($params['top']) && $value->depth == 0) ||
+                        (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
                         $nav[] = $value;
                     }
                 }

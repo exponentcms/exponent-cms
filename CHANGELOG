@@ -9,7 +9,7 @@ Added / Fixed / changed for 2.0.9
     -- page type indicators now displayed in Manage Pages view
     -- new universal navigation view to emulate most old navigation views through user settings
   - adds help links to most admin displays
-  - adds next/prev item in blog and news single item display
+  - adds next/prev item in blog and news single item view
   - calendar is more forgiving of timezone changes (events won't disappear)
     -- adds selectable weekly view to calendar
     -- updates ical feeds and send reminders cron task to use sef urls
