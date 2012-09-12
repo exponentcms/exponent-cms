@@ -33,7 +33,7 @@ class recyclebinController extends expController {
     static function hasContent() { return false; }
 
     function showall() {
-        global $db, $template;
+        global $template;
 
         expHistory::set('manageable', $this->params);
         $orig_template = $template;
@@ -49,7 +49,7 @@ class recyclebinController extends expController {
     }
     
     public function show() {
-        global $db, $template;
+        global $template;
         
         $orig_template = $template;
         

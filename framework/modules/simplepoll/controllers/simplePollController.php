@@ -98,6 +98,7 @@ class simplePollController extends expController {
         // if no active question, set first question as active
         $question = $this->simplepoll_question->find('first', 'id='.$this->params['id']);
         parent::delete();
+        //FIXME we also need to delete the answers
         $question = $this->simplepoll_question->find('first', "location_data='".$question->location_data."' AND active = 1");
         if (empty($question)) {
             $question = $this->simplepoll_question->find('first', "location_data='".$question->location_data."'");
@@ -130,7 +131,7 @@ class simplePollController extends expController {
         expHistory::back();
     }
 
-    public function activate() {
+    public function activate() {  //FIXME move data work to simplepoll_question model
         global $db;
 
         $db->toggle('simplepoll_question',"active",'active=1');
@@ -140,7 +141,7 @@ class simplePollController extends expController {
     }
 
     public function vote() {
-        global $db, $user;
+        global $user;
 
         if (isset($this->params['choice'])) {
             $answer = new simplepoll_answer($this->params['choice']);

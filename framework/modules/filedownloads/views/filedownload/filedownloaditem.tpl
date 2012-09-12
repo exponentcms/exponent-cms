@@ -18,6 +18,13 @@
     {if $file->expFile.preview[0] != "" && $config.show_icon}
         {img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
     {/if}
+    {if $config.datetag}
+        <p class="post-date">
+            <span class="month">{$record->publish_date|format_date:"%b"}</span>
+            <span class="day">{$record->publish_date|format_date:"%e"}</span>
+            <span class="year">{$record->publish_date|format_date:"%Y"}</span>
+        </p>
+    {/if}
     {if $config.quick_download}
         <h3>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
     {else}
@@ -31,9 +38,11 @@
             </div>
         {/if}
         {if $config.show_info}
-            <span class="label dated">{'Dated'|gettext}:</span>
-            <span class="value">{$file->publish_date|format_date}</span>
-            &#160;|&#160;
+            {if !$config.datetag}
+                <span class="label dated">{'Dated'|gettext}:</span>
+                <span class="value">{$file->publish_date|format_date}</span>
+                &#160;|&#160;
+            {/if}
             {if $file->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$file->expFile.downloadable[0]->duration}</span>

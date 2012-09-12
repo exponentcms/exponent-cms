@@ -19,6 +19,13 @@
         {if $record->expFile.preview[0] != ""}
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
+        {if $config.datetag}
+            <p class="post-date">
+                <span class="month">{$record->publish_date|format_date:"%b"}</span>
+                <span class="day">{$record->publish_date|format_date:"%e"}</span>
+                <span class="year">{$record->publish_date|format_date:"%Y"}</span>
+            </p>
+        {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
         {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
         {subscribe_link}
@@ -42,9 +49,11 @@
         {/permissions}
         <div class="attribution">
             <p>
-            <span class="label dated">{'Dated'|gettext}:</span>
-            <span class="value">{$file->publish_date|format_date}</span>
-            &#160;|&#160;
+            {if !$config.datetag}
+                <span class="label dated">{'Dated'|gettext}:</span>
+                <span class="value">{$file->publish_date|format_date}</span>
+                &#160;|&#160;
+            {/if}
             {if $record->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->duration}</span>

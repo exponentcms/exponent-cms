@@ -694,7 +694,7 @@ class expRecord {
         if (empty($this->id)) return false;
         $this->beforeDelete();
         $db->delete($this->tablename, 'id=' . $this->id);
-        if (!empty($where)) $where .= ' AND ';
+        if (!empty($where)) $where .= ' AND ';  // for help in reranking, NOT deleting object
         if (property_exists($this, 'rank')) $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank);
 
         // delete attached items

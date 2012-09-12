@@ -32,7 +32,7 @@ class notfoundController extends expController {
     static function hasContent() { return false; }
     
     public function handle() {
-        global $router, $db;
+        global $router;
         $args = array_merge(array('controller'=>'notfound', 'action'=>'page_not_found'), $router->url_parts);   
         header("Refresh: 0; url=".$router->makeLink($args), false, 404);
     }
