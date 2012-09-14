@@ -132,6 +132,7 @@
 
        tabs.item(lastTab).simulate('click');
        
+       Y.one('#editproduct').removeClass('hide');
        Y.one('.loadingdiv').remove();
        
     });
