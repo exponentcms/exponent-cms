@@ -89,7 +89,7 @@ class storeController extends expController {
         global $db, $router, $section, $user;
         parent::__construct($src=null,$params);
         
-        // we're setting the config here globably
+        // we're setting the config here globally
         $this->grabConfig();          
 
         if (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0]=="store"&&$router->url_parts[1]=="showall")) {
@@ -157,7 +157,7 @@ class storeController extends expController {
             $sql = $sql_start . $sql;
             
             $order = 'sc.rank'; //$this->config['orderby'];
-            $dir = 'ASC'; $this->config['orderby_dir'];
+            $dir = 'ASC'; //$this->config['orderby_dir'];
             //eDebug($this->config);
         } else {
             $sql_start  = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM '.DB_TABLE_PREFIX.'_product p ';

@@ -26,6 +26,5 @@
         <ignore>tmp/*</ignore>
         <ignore>framework/modules/pixidou/*</ignore>
         <ignore>framework/modules/news/models/SimplePie.php</ignore>
-        <ignore>framework/modules/expEvent/*</ignore>
     </files>
 </phpdoc>

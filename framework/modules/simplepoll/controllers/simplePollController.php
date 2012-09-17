@@ -98,7 +98,7 @@ class simplePollController extends expController {
         // if no active question, set first question as active
         $question = $this->simplepoll_question->find('first', 'id='.$this->params['id']);
         parent::delete();
-        //FIXME we also need to delete the answers
+        //FIXME we also need to delete any assoc answers
         $question = $this->simplepoll_question->find('first', "location_data='".$question->location_data."' AND active = 1");
         if (empty($question)) {
             $question = $this->simplepoll_question->find('first', "location_data='".$question->location_data."'");

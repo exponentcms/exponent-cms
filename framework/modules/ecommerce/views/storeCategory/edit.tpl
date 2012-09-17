@@ -55,7 +55,7 @@
                 </div>        
                  <div id="events">   
                     {control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}
-                    {control type="checkbox" name="hide_closed_events" label="Don\'t Show Closed Events"|gettext value=1 checked=$node->hide_closed_events}
+                    {control type="checkbox" name="hide_closed_events" label='Don\'t Show Closed Events'|gettext value=1 checked=$node->hide_closed_events}
                 </div>  
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}

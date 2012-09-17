@@ -27,8 +27,13 @@ class expConfig extends expRecord {
 
 	function __construct($params=null) {
 		global $db;
-        $this->location_data = serialize($params);
-		parent::__construct($db->selectValue($this->table, 'id', "location_data='".$this->location_data."'"));		
+
+        if (!is_array($params)) {
+            $this->location_data = serialize($params);
+            parent::__construct($db->selectValue($this->table, 'id', "location_data='".$this->location_data."'"));
+        } else {
+            parent::__construct($params);
+        }
 				
 		// treat the loc data like an id - if the location data come thru as an object we need to look up the record
             //         if (!empty($params->src)) {
