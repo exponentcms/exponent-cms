@@ -495,10 +495,10 @@ if (!defined('FLOWPLAYER_PATH')) {
 	 * Flowplayer Version(s) Constant - Flowplayer doesn't always use same version across all its components
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('FLOWPLAYER_VERSION', '3.2.14');
+	define('FLOWPLAYER_VERSION', '3.2.15');
 	define('FLOWPLAYER_PATH', PATH_RELATIVE.'external/flowplayer-'.FLOWPLAYER_VERSION.'/flowplayer/');
     define('FLOWPLAYER_MIN_VERSION', '3.2.11');
-    define('FLOWPLAYER_CONTROLS_VERSION', '3.2.13');
+    define('FLOWPLAYER_CONTROLS_VERSION', '3.2.14');
 }
 
 ?>
