@@ -496,10 +496,12 @@ class expDateTime {
 	 *
 	 * @return array
 	 */
-	public static function monthlyDaysTimestamp() {
+	public static function monthlyDaysTimestamp($time=null) {
 //		global $db;
 		$monthly = array();
-		$info = getdate(time());
+//		$info = getdate(time());
+        if (empty($time)) $time = time();
+        $info = getdate($time);
 		// Grab non-day numbers only (before end of month)
 		$week = 0;
 
