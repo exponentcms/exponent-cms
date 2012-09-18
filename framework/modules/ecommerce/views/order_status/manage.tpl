@@ -20,7 +20,7 @@
 <div class="modules order_status showall">
 	<h1>{$moduletitle|default:"Manage Status Codes"|gettext}</h1>
 	
-	<a href="{link action=create}">{'Create a new status code'|gettext}</a>{br}{br}
+	<a class="add" href="{link action=create}">{'Create a new status code'|gettext}</a>{br}{br}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">

@@ -146,7 +146,8 @@ $ecom = array(
                         ),
                         array(
                             'text'=>gt("Manage Manufacturers"),
-                            'url'=>makeLink(array('controller'=>'companyController','action'=>'manage')),
+//                            'url'=>makeLink(array('controller'=>'companyController','action'=>'manage')),
+                            'url'=>makeLink(array('controller'=>'companyController','action'=>'showall')),
                         ),
                         
                     ),                        

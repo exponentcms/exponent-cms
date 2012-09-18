@@ -1702,7 +1702,7 @@ class storeController extends expController {
                          );
                         
                         $html = $template->render();
-                        $html .= ecomconfig::getConfig('footer');
+                        $html .= ecomconfig::getConfig('ecomfooter');
                         
                         try{
                             $mail = new expMail();

@@ -29,7 +29,7 @@
             <div class="bd {if $smarty.cookies.quickstats=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">{'View recent orders'|gettext}</a></strong>
+                        <strong><a href="{link action=dashboard}">{'View recent orders'|gettext}</a></strong>
                         {'View and manage all new and existing orders.'|gettext}
                     </li>
                 </ul>
@@ -63,11 +63,11 @@
             <div class="bd {if $smarty.cookies.orders=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">{'View recent orders'|gettext}</a></strong>
+                        <strong><a href="{link action=dashboard}">{'View recent orders'|gettext}</a></strong>
                         {'View and manage all new and existing orders.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">{'Create a Report'|gettext}</a></strong>
+                        <strong><a href="{link action=order_report}">{'Create a Report'|gettext}</a></strong>
                         {'Create reports based on orders, products, and other information user information on your site.'|gettext}
                     </li>
                 </ul>
@@ -79,15 +79,15 @@
             <div class="bd {if $smarty.cookies.configuration=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">{'Configure General Store Settings'|gettext}</a></strong>
+                        <strong><a href="{link controller=ecomconfig action=configure}">{'Configure General Store Settings'|gettext}</a></strong>
                         {'Set up how your site will look and act, and notify you.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">{'Manage Status Codes'|gettext}</a></strong>
+                        <strong><a href="{link controller=order_status action=manage}">{'Manage Status Codes'|gettext}</a></strong>
                         {'Manage the labeling of each phase a completed order goes through.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">{'Manage Status Messages'|gettext}</a></strong>
+                        <strong><a href="{link controller=order_status action=manage_messages}">{'Manage Status Messages'|gettext}</a></strong>
                         {'Create, edit, and delete Status Messages.'|gettext}
                     </li>
                 </ul>
@@ -99,19 +99,19 @@
             <div class="bd {if $smarty.cookies.products=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">{'Add a Product'|gettext}</a></strong>
-                        Add a <a href="#">{'Product'|gettext}</a>, <a href="#">{'Donation'|gettext}</a>, <a href="#">{'Gift Card'|gettext}</a>, {'or'|gettext} <a href="#">{'Event Registration'|gettext}</a> {'to your store.'|gettext}
+                        <strong><a href="{link controller=store action=picktype}">{'Add a Product'|gettext}</a></strong>
+                        Add a <a href="{link controller=store action=edit product_type=product}">{'Product'|gettext}</a>, <a href="{link controller=store action=edit product_type=donation}">{'Donation'|gettext}</a>, <a href="{link controller=store action=edit product_type=giftcard}">{'Gift Card'|gettext}</a>, {'or'|gettext} <a href="{link controller=store action=edit product_type=eventregistration}">{'Event Registration'|gettext}</a> {'to your store.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">{'Manage Products'|gettext}</a></strong>
+                        <strong><a href="{link controller=store action=manage}">{'Manage Products'|gettext}</a></strong>
                         {'List all products in your store and make it easy to manage them.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">{'Manage Product Options'|gettext}</a></strong>
+                        <strong><a href="{link controller=ecomconfig action=options}">{'Manage Product Options'|gettext}</a></strong>
                         {'Create options for your products, like \'large\', \'small\', \'red\', \'green\', \'blue\', etc.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">{'Manage Store Categories'|gettext}</a></strong>
+                        <strong><a href="{link controller=storeCategory action=manage}">{'Manage Store Categories'|gettext}</a></strong>
                         {'Create and manage Categories in a hierarchical fashion.'|gettext}
                     </li>
                 </ul>
@@ -123,11 +123,11 @@
             <div class="bd {if $smarty.cookies.shipping=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="#">{'Configure Billing Settings'|gettext}</a></strong>
+                        <strong><a href="{link controller=billing action=manage}">{'Configure Billing Settings'|gettext}</a></strong>
                         {'Set up your store to use PayPal, Authorize.net, and other billing methods.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="#">{'Configure Shipping Information'|gettext}</a></strong>
+                        <strong><a href="{link controller=shipping action=manage}">{'Configure Shipping Information'|gettext}</a></strong>
                         {'Set up your site to use UPS, FedEx, in-store pickup and other shipping methods.'|gettext}
                     </li>
                 </ul>

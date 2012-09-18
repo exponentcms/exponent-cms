@@ -54,10 +54,10 @@ class passthru extends billingcalculator {
 	}
 	
 	//process config form
-	function update($values, $config_object) {
-		$config_object->give_change = $values['give_change'];
-		return $config_object;
-	}
+//	function update($values, $config_object) {  //FIXME doesn't match parent declaration update($params = array())
+//		$config_object->give_change = $values['give_change'];
+//		return $config_object;
+//	}
 	
 	//Form for user input
 	function userForm($config_object=null, $user_data=null) {
@@ -78,7 +78,7 @@ class passthru extends billingcalculator {
 	
 	//This is called when a billing method is deleted. It can be used to clean up if you
 	//have any custom user_data storage.
-	function delete($config_object) {
+	function delete($where = '') {
 		return;
 	}
 	

@@ -48,8 +48,10 @@ class reportController extends expController {
         $this->o = new order();        
         $this->tstart = time() - $this->oneday;                                                       
         $this->tend = time();     
-        $this->prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));        
-        $this->now_date = strftime("%A, %d %B %Y");
+//        $this->prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
+//        $this->now_date = strftime("%A, %d %B %Y");
+        $this->prev_month = strftime(DISPLAY_DATE_FORMAT, mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
+        $this->now_date = strftime(DISPLAY_DATE_FORMAT);
         $this->now_hour = strftime("%I");
         $this->now_min = strftime("%M");
         $this->now_ampm = strftime("%p");
@@ -127,12 +129,12 @@ class reportController extends expController {
         $sql .= $db->prefix . "orders as o ";
         $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
         $sql .= "INNER JOIN " . $db->prefix . "product as p ON oi.product_id = p.id ";
-        if ($p['order_status'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON o.order_type_id = ot.id ";
+        if (!empty($p['order_status'][0]) && $p['order_status'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON o.order_type_id = ot.id ";
         $sql .= "INNER JOIN " . $db->prefix . "order_status as os ON os.id = o.order_status_id ";
         $sql .= "INNER JOIN " . $db->prefix . "billingmethods as b ON b.orders_id = o.id ";
         $sql .= "INNER JOIN " . $db->prefix . "shippingmethods as s ON s.id = oi.shippingmethods_id ";
         $sql .= "INNER JOIN " . $db->prefix . "geo_region as gr ON (gr.id = b.state OR gr.id = s.state) ";
-        if ($p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->prefix . "order_discounts as od ON od.orders_id = o.id ";
+        if (!empty($p['discounts'][0]) && $p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->prefix . "order_discounts as od ON od.orders_id = o.id ";
         
         $sqlwhere = "WHERE o.purchased != 0";
         
@@ -148,7 +150,7 @@ class reportController extends expController {
         if ($p->['ampm-enddate'] == )*/
         
         $inc = 0; $sqltmp = '';
-        foreach ($p['order_status'] as $os)
+        if (!empty($p['order_status'])) foreach ($p['order_status'] as $os)
         {
             if ($os == -1) continue;
             else if ($inc == 0)
@@ -163,7 +165,7 @@ class reportController extends expController {
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
         
         $inc = 0; $sqltmp = '';  
-        foreach ($p['order_type'] as $ot)
+        if (!empty($p['order_type'])) foreach ($p['order_type'] as $ot)
         {
             if ($ot == -1) continue;
             else if ($inc == 0)
@@ -433,9 +435,11 @@ class reportController extends expController {
         //array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
         
         //eDebug(mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
-        $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))); 
+//        $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         //eDebug(strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))));  
-        $now_date = strftime("%A, %d %B %Y");
+//        $now_date = strftime("%A, %d %B %Y");
+        $prev_month = strftime(DISPLAY_DATE_FORMAT, mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
+        $now_date = strftime(DISPLAY_DATE_FORMAT);
         $now_hour = strftime("%I");
         $now_min = strftime("%M");
         $now_ampm = strftime("%p");
@@ -1713,7 +1717,7 @@ class reportController extends expController {
 		// eDebug($cartsWithItemsAndInfo);
 		
 		$summary['totalcarts']    = $allCarts['count'];
-		$summary['valueproducts'] = $valueproducts;
+		$summary['valueproducts'] = intval($valueproducts);
 		$summary['cartsWithoutItems']       = round(($allCarts['count'] ? $cartsWithoutItems['count']     / $allCarts['count'] : 0) * 100, 2) . '%';
 		$summary['cartsWithItems']          = round(($allCarts['count'] ? $cartsWithItems['count']        / $allCarts['count'] : 0) * 100, 2) . '%';
 		$summary['cartsWithItemsAndInfo']   = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';

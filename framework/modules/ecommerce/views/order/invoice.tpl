@@ -27,7 +27,7 @@
 <div id="invoice">
     <div id="store-header">
         <h1>{$storeConfig.storename}</h1>
-        {$storeConfig.header}
+        {$storeConfig.ecomheader}
     </div>
     {if $pf && $storeConfig.enable_barcode}
     <div id="barcode">
@@ -523,7 +523,7 @@
         </table>
     </div>
     <div id="store-footer">
-        {$storeConfig.footer}
+        {$storeConfig.ecomfooter}
     </div>    
     
 </div>

@@ -310,7 +310,7 @@ class orderController extends expController {
         if (ecomconfig::getConfig('email_invoice_to_user') == true && !empty($user->email)) {
             $usermsg  = "<p>".ecomconfig::getConfig('invoice_msg')."<p>";
             $usermsg .= $html;
-            $usermsg .= ecomconfig::getConfig('footer');
+            $usermsg .= ecomconfig::getConfig('ecomfooter');
             
             $mail = new expMail();
             $mail->quickSend(array(
@@ -697,7 +697,7 @@ exit();
                     ));
                     
                     $html = $template->render();
-                    $html .= ecomconfig::getConfig('footer');
+                    $html .= ecomconfig::getConfig('ecomfooter');
                     
                     $mail = new expMail();
                     $mail->quickSend(array(
@@ -748,7 +748,7 @@ exit();
                 $html .= renderAction(array('controller'=>'order', 'action'=>'show', 'view'=>'email_invoice', 'id'=>$this->params['id'], 'printerfriendly'=>'1','no_output'=>'true'));                        
             }else
             {
-                $html .= ecomconfig::getConfig('footer');
+                $html .= ecomconfig::getConfig('ecomfooter');
             }
             
             //eDebug($html,true);

@@ -84,7 +84,7 @@ class calendarcontrol extends formcontrol {
     function controlToHTML($name,$label) {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/subsystems/forms/controls/assets/';
         $html = "
-            <div id=\"calendar-container\" class=\"yui3-skin-sam\"> </div>
+            <div id=\"calendar-container-".$name."\" class=\"yui3-skin-sam\"> </div>
             <div id=\"cal-container-".$name."\" class=\"control calendar-control\">
             <label for=\"".$name."\" class=\"label\">".$label."</label><input size=26 type=\"text\" id=\"date-".$name."\" name=\"date-".$name."\" value=\"".$this->default_date."\" class=\"text datebox\" /> 
             @ <input size=3 type=\"text\" id=\"time-h-".$name."\" name=\"time-h-".$name."\" value=\"".$this->default_hour."\" class=\"timebox\" maxlength=2/>
@@ -102,7 +102,7 @@ class calendarcontrol extends formcontrol {
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','cssbutton', function(Y) {
             // Our calendar bounding div id
-            var boundingBoxId = '#calendar-container',
+            var boundingBoxId = '#calendar-container-".$name."',
             // This flag used to track mouse position
             isMouseOverCalendar = false,
             // A text field element that stores the date chosen in calendar
@@ -134,10 +134,10 @@ class calendarcontrol extends formcontrol {
                 isMouseOverCalendar = false;
             }, boundingBoxId);
 
-            // On date selection change we update value of a text field and hide calendar window
+            // On date selection change, we update value of a text field and hide calendar window
             calendar.on('selectionChange', function (event) {
                 var newDate = event.newSelection[0];
-                Y.one(currentValueContainer).set('value', Y.DataType.Date.format(newDate));
+                Y.one(currentValueContainer).set('value', Y.DataType.Date.format(newDate,{format:'".DISPLAY_DATE_FORMAT."'}));
                 isMouseOverCalendar = false;
                 hideCalendar();
             });

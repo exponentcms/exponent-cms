@@ -38,10 +38,10 @@
 				    {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number}
 				    <h2>{'Header'|gettext}</h2>
 				    <p>{'This will be displayed on the top of your emails and invoices.'|gettext}</p>
-				    {control type="html" name="header" label=" " rows=6 cols=60 value=$config.header}
+				    {control type="html" name="ecomheader" label=" " rows=6 cols=60 value=$config.ecomheader}
 				    <h2>{'Footer'|gettext}</h2>
 				    <p>{'This will be displayed on the bottom of your emails and invoices.'|gettext}</p>
-				    {control type="html" name="footer" label=" " rows=6 cols=60 value=$config.footer}
+				    {control type="html" name="ecomfooter" label=" " rows=6 cols=60 value=$config.ecomfooter}
                     
 				</div>
                 <div id="tab2">

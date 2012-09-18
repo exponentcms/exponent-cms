@@ -278,7 +278,7 @@ class authorizedotnet extends creditcard {
 	
 	//This is called when a billing method is deleted. It can be used to clean up if you
 	//have any custom user_data storage.
-	function delete($config_object) {
+	function delete($where = '') {
 		return;
 	}
 	

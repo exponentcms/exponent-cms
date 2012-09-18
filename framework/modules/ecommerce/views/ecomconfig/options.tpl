@@ -19,7 +19,7 @@
 <div class="module storeadmin options">
 	<h1>{$moduletitle|default:"Manage Product Options"|gettext}</h1>
 	
-	<a href="{link action=edit_optiongroup_master}">{'Create new option group'|gettext}</a>
+	<a class="add" href="{link action=edit_optiongroup_master}">{'Create new option group'|gettext}</a>
 	{foreach from=$optiongroups item=group}
     <table class="" style="border:1px solid red;">
     <thead><th>
