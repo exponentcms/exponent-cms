@@ -8,9 +8,10 @@ Added / Fixed / changed for 2.0.9
   - upgrades old school simple poll and navigation modules into 2.0 style controllers
     -- page type indicators now displayed in Manage Pages view
     -- new universal navigation view to emulate most old navigation views through user settings
+    -- initial implementation of menu item icons
   - adds help links to most admin displays
   - adds next/prev item in blog and news single item view
-    -- also adds optional 'date badge' to news and blog views
+  - adds optional 'date badge' to news, blog, & filedownload views
   - calendar is more forgiving of timezone changes (events won't disappear)
     -- adds selectable weekly view to calendar
     -- updates ical feeds and send reminders cron task to use sef urls
@@ -19,8 +20,8 @@ Added / Fixed / changed for 2.0.9
   - more efficient searches...several anomalies fixed and search activity reports available
   - importing EQL database backup files now more descriptive if errors are encountered (detailed solution provided)
   - adds some new upgrade scripts to attempt to clean up the system from previous updates
-    -- deletes moved file where old file in old location may still linger
-    -- fixes some database issues such as mixed case naming or controller name quirks.
+    -- deletes moved files where old file in old location may still linger
+    -- attempts to fix some database issues such as mixed case naming or controller name quirks.
   - new system fallback theme so pages will display even if the entire themes folder is missing
   - plus many other tweaks, fixes, and features
 
