@@ -20,9 +20,9 @@
     {foreach from=$page->records item=listing name=listings}
     <div class="featured-product">
             {if $listing->expFile.featured_image[0]->id != ""}
-                {img file_id=$listing->expFile.featured_image[0]->id constraint=1 width=165 alt=$listing->title}
+                {img file_id=$listing->expFile.featured_image[0]->id constraint=1 w=165 alt=$listing->title}
             {elseif $listing->expFile.images[0]->id != ""}
-                {img file_id=$listing->expFile.images[0]->id constraint=1 width=165 alt=$listing->title}
+                {img file_id=$listing->expFile.images[0]->id constraint=1 w=165 alt=$listing->title}
             {else}
                 {'No Image'|gettext}
             {/if}
