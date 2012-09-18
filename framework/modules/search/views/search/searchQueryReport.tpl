@@ -17,20 +17,17 @@
 
 {/css}
 
-<div class="module searchquery report exp-skin-tabview">
-
+<div class="module searchquery report">
+    <div class="info-header">
+        <h1>{$moduletitle|default:"Search Queries Report"|gettext}</h1>
+    </div>
 	<div id="searchqueryreport" class="yui-navset exp-skin-tabview hide">
-
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>{"All Search Queries"|gettext}</em></a></li>
 			<li><a href="#tab2"><em>{"Bad Search Queries"|gettext}</em></a></li>
 		</ul>
-
 		<div class="yui-content">
 			<div id="tab1">
-				<div class="info-header">
-					<h1>{$moduletitle|default:"Search Queries Report"|gettext}</h1>
-				</div>
 				{pagelinks paginate=$page top=1}
 				{control type="dropdown" name="user_id" label="Filter by User"|gettext items="{$users.name}" values="{$users.id}" value=$user_default id="userdropdown"}
 				<table class="exp-skin-table">
@@ -60,32 +57,29 @@
 				</table>
 				{pagelinks paginate=$page bottom=1}
 			</div>
-			
 			<div id="tab2">
-                <div class="info-header">
-					<h1>{$moduletitle|default:"Bad Queries Report"|gettext}</h1>
-					<table class="exp-skin-table">
-						<thead>
-							<tr>
-								<th>Term</th>
-								<th>Count</th>
-							</tr>
-						</thead>
-						<tbody>
-							{foreach from=$badSearch item=item name=listings}
-							<tr class="{cycle values='odd,even'}">
-								<td>{$item.query}</td>
-								<td>{$item.count}</td>
-							</tr>
-							{foreachelse}
-								<td colspan="2">{"No Bad Search Query Data"|gettext}</td>
-							{/foreach}
-						</tbody>
-					</table>
-				</div>
+                <table class="exp-skin-table">
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$badSearch item=item name=listings}
+                        <tr class="{cycle values='odd,even'}">
+                            <td>{$item.query}</td>
+                            <td>{$item.count}</td>
+                        </tr>
+                        {foreachelse}
+                            <td colspan="2">{"No Bad Search Query Data"|gettext}</td>
+                        {/foreach}
+                    </tbody>
+                </table>
             </div>
 		</div>
 	</div>
+    <div class="loadingdiv">{"Loading"|gettext}</div>
 </div>
 
 {script unique="searchQueryReport" yui3mods="1"}
@@ -96,6 +90,7 @@
 
         var userdropdown = Y.one('#userdropdown');
 		Y.one('#searchqueryreport').removeClass('hide');
+        Y.one('.loadingdiv').remove();
         userdropdown.on("change",function(e){
             if(e.target.get('value') == -1) {
                 window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";

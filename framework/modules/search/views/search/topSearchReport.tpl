@@ -38,14 +38,14 @@
 
 <div class="module topsearchquery report exp-skin-tabview">
     <div class="info-header">
-        <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:("Search Queries Report"|gettext)}</h1>
+        <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:"Search Queries Report"|gettext}</h1>
     </div>
 	<div id="topsearch" class="yui-navset">
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>{"Top Search"|gettext}</em></a></li>
 			<li><a href="#tab2"><em>{"Chart View"|gettext}</em></a></li>
 		</ul>    
-		<div class="yui-content">
+		<div id="pane" class="yui-content">
 			<div id="tab1">
 				<table class="exp-skin-table">
 					<thead>

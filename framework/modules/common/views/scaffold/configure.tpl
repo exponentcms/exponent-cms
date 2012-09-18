@@ -13,7 +13,7 @@
  *
  *}
 
-<div id="config" class="module scaffold configure exp-skin-tabview">
+<div id="config" class="module scaffold configure">
     <div class="form_header">
         <div class="info-header">
     		<div class="related-actions">
@@ -24,7 +24,7 @@
     	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
     </div>
 	{form action=saveconfig}
-		<div id="config-tabs" class="yui-navset hide">
+		<div id="config-tabs" class="yui-navset exp-skin-tabview hide">
 			<ul class="yui-nav">
 			    {foreach from=$views item=tab name=tabs}
 			        <li{if $smarty.foreach.tabs.first} class="selected"{/if}>

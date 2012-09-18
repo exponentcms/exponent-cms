@@ -179,7 +179,7 @@
                 <div id="aboutPanel">
                     <div class="hd">{'About'|gettext} Pixidou</div>
                     <div class="bd">
-                        <div id="aboutTab" class="yui-navset">
+                        <div id="aboutTab" class="yui-navset exp-skin-tabview">
                             <ul class="yui-nav">
                                 <li class="selected"><a href="#aboutAbout"><em>{'About'|gettext}</em></a></li>
                                 <li><a href="#aboutJoin"><em>Join Pixidou</em></a></li>

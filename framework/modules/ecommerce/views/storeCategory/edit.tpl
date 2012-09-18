@@ -13,17 +13,17 @@
  *
  *}
 
-<div id="editcategory" class="storecategory edit hide exp-skin-tabview">
+<div id="editcategory" class="storecategory edit">
 	<div class="form_header">
         	<h1>{'Edit Store Category'|gettext}</h1>
         	<p>{'Complete and save the form below to configure this store category'|gettext}</p>
 	</div>
-        
 	{if $node->id == ""}
 		{assign var=action value=create}
 	{else}
 		{assign var=action value=update}
 	{/if}
+    <div id="mainform" class="hide exp-skin-tabview">
 	{form controller=storeCategory action=$action}
         {control type=hidden name=id value=$node->id}
         {control type=hidden name=parent_id value=$node->parent_id}
@@ -32,7 +32,7 @@
         <div id="demo" class="yui-navset">
             <ul class="yui-nav">
 				<li class="selected"><a href="#general"><em>{'General'|gettext}</em></a></li>
-				<li><a href="#seo"><em>{'Meta Info'|gettext}</em></a></li>
+				<li><a href="#seo"><em>{'SEO'|gettext}</em></a></li>
 				<li><a href="#events"><em>{'Events'|gettext}</em></a></li>
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}
@@ -68,9 +68,10 @@
             </div>    
         </div>
         {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
-        {/form}                      
+        {/form}
+    </div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
 {script unique="cattabs" src="`$smarty.const.PATH_RELATIVE`framework/core/subsystems/forms/controls/listbuildercontrol.js"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
@@ -91,7 +92,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', func
     }
     
     
-    YAHOO.util.Dom.removeClass("editcategory", 'hide');
+    YAHOO.util.Dom.removeClass("mainform", 'hide');
     var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
     YAHOO.util.Dom.setStyle(loading, 'display', 'none');
 });    

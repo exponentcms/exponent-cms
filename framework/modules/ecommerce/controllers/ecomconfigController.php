@@ -194,6 +194,8 @@ class ecomconfigController extends expController {
        
         // get the shipping options and their methods
         $shipping = new shipping();
+        $shipping_services = array();
+        $shipping_methods = array();
         foreach ($shipping->available_calculators as $calcid=>$name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
