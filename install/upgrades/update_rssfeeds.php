@@ -55,7 +55,7 @@ class update_rssfeeds extends upgradescript {
 	function upgrade() {
 	    global $db;
 
-        $fixed = 0;
+        $titlefixed = 0;
 		// update each rss feed
 	    $rssfeeds = $db->selectObjects('expRss',1);
 	    foreach ($rssfeeds as $rssfeed) {
@@ -63,19 +63,20 @@ class update_rssfeeds extends upgradescript {
                 if (empty($rssfeed->title)) $rssfeed->title = !empty($rssfeed->feed_title) ? $rssfeed->feed_title : '';
                 if (empty($rssfeed->sef_url)) $rssfeed->sef_url = expCore::makeSefUrl($rssfeed->title,'expRss');
    		        $db->updateObject($rssfeed,'expRss');
-                $fixed++;
+                $titlefixed++;
             }
 	    }
         // search for and create expRss items based on module configurations
         $feedconfigs = $db->selectObjects('expConfigs',"config LIKE '%s:10:\"enable_rss\";s:1:\"1\";%'");
+        $fixed = 0;
         foreach ($feedconfigs as $feedconfig) {
             // create a new RSS object if enable is checked.
             $loc = expUnserialize($feedconfig->location_data);
             $config = expUnserialize($feedconfig->config);
         	$params['module'] = $loc->mod;
         	$params['src'] = $loc->src;
-            $params['title'] = $config['feed_title'];
-            $params['sef_url'] = (!empty($config['feed_sef_url'])) ? $config['feed_sef_url'] : null;
+            $params['title'] = !empty($config['feed_title']) ? $config['feed_title'] : '';
+            $params['sef_url'] = (!empty($config['feed_sef_url'])) ? $config['feed_sef_url'] : expCore::makeSefUrl($params['title'],'expRss');
             $params['feed_desc'] = $config['feed_desc'];
         	$params['enable_rss'] = $config['enable_rss'];
             $params['advertise'] = (!empty($config['advertise'])) ? $config['advertise'] : false;
@@ -84,15 +85,16 @@ class update_rssfeeds extends upgradescript {
             if (!empty($config['itunes_cats'])) $params['itunes_cats'] = $config['itunes_cats'];
             $rssfeed = new expRss($params);
             $rssfeed->update($params);
-            if (empty($params['sef_url'])) {
+            // backfill the rss sef_url into the module config
+            if (empty($config['feed_sef_url'])) {
                 $newconfig = new expConfig($loc);
-                $config['feed_sef_url'] = $rssfeed->sef_url;
-                $newconfig->update(array('config'=>$config));
+                $newconfig['feed_sef_url'] = $rssfeed->sef_url;
+                $newconfig->update();
             }
             $fixed++;
         }
 
-        return ($fixed?$fixed:gt('No')).' '.gt('RSS Feeds were updated');
+        return ($titlefixed?$titlefixed:gt('No')).' '.gt('RSS Feed Titles were corrected and').' '.($fixed?$fixed:gt('No')).' '.gt('RSS Feeds were updated');
 	}
 
 }

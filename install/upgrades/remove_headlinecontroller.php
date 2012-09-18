@@ -108,7 +108,7 @@ class remove_headlinecontroller extends upgradescript {
 
 		// check if the headline controller files are there and remove them
         if (expUtil::isReallyWritable(BASE."framework/modules/headline/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules/headline/");
+            expFile::removeDirectory(BASE."framework/modules/headline/");
         }
 
 		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Headline modules were converted.")."<br>".($headlines_converted?$headlines_converted:gt('No'))." ".gt("Headlines were converted.")."<br>".gt("and Headline module files were then deleted.");

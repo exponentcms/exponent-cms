@@ -138,13 +138,13 @@ class upgrade_navigation extends upgradescript {
         }
 		// delete old navigationmodule, common, & editor connect files
         if (expUtil::isReallyWritable(BASE."framework/modules-1/navigationmodule/actions/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/navigationmodule/actions/");
+            expFile::removeDirectory(BASE."framework/modules-1/navigationmodule/actions/");
         }
         if (expUtil::isReallyWritable(BASE."framework/modules-1/navigationmodule/views/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/navigationmodule/views/");
+            expFile::removeDirectory(BASE."framework/modules-1/navigationmodule/views/");
         }
         if (expUtil::isReallyWritable(BASE."external/editors/connector/lang/")) {
-            expFile::removeFilesInDirectory(BASE."external/editors/connector/lang/");
+            expFile::removeDirectory(BASE."external/editors/connector/lang/");
         }
 //        if (expUtil::isReallyWritable(BASE."framework/modules-1/common/views/")) {
 //            expFile::removeFilesInDirectory(BASE."framework/modules-1/common/views/");

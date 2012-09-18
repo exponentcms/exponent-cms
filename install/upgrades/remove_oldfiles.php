@@ -177,22 +177,26 @@ class remove_oldfiles extends upgradescript {
         }
         // while we're at it, check if the old subsystems-1 folder still exists
         if (expUtil::isReallyWritable(BASE."framework/core/subsystems-1/")) {
-            expFile::removeFilesInDirectory(BASE."framework/core/subsystems-1/");
+            expFile::removeDirectory(BASE."framework/core/subsystems-1/");
+            $files_removed++;
         }
         // while we're at it, check if the old administrationmodule folder still exists
         if (expUtil::isReallyWritable(BASE."framework/modules-1/administrationmodule/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/administrationmodule/");
+            expFile::removeDirectory(BASE."framework/modules-1/administrationmodule/");
+            $files_removed++;
         }
         // while we're at it, check if the old bots folder still exists
         if (expUtil::isReallyWritable(BASE."framework/modules-1/bots/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/bots/");
+            expFile::removeDirectory(BASE."framework/modules-1/bots/");
+            $files_removed++;
         }
         // while we're at it, check if the old loginmodule folder still exists
         if (expUtil::isReallyWritable(BASE."framework/modules-1/loginmodule/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/loginmodule/");
+            expFile::removeDirectory(BASE."framework/modules-1/loginmodule/");
+            $files_removed++;
         }
 
-		return ($files_removed?$files_removed:gt('No'))." ".gt("obsolete files were removed.");
+		return ($files_removed?$files_removed:gt('No'))." ".gt("obsolete files and folders were removed.");
 		
 	}
 }

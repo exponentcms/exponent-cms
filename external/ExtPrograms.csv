@@ -1,6 +1,6 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 CKEditor,3.6.4,ckeditor.com,3.6.4,
-FlowPlayer,3.2.14,flowplayer.org,3.2.14,
+FlowPlayer,3.2.15,flowplayer.org,3.2.15,
 Swift,4.2.1,swiftmailer.org,4.2.1,
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,9.0.0,,,
@@ -20,4 +20,4 @@ pixidou,0.1,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily mod
 class.upload,0.31,www.verot.net/php_class_upload.htm,0.31,"placed in Pixidou module, editted _destruct"
 dompdf,6.0b3,code.google.com/p/dompdf/,6.0b3,
 iCalCreator,2.14,kigkonsult.se/iCalcreator,2.14,comment out timezone in config
-lessphp,0.35,http://leafo.net/lessphp/,0.38,hack to allow passing variables to cexecute()
+lessphp,0.38,http://leafo.net/lessphp/,0.38,hack to allow passing variables to cexecute()

@@ -178,7 +178,7 @@ class upgrade_simplepoll extends upgradescript {
         }
 		// delete simplepollmodule files
         if (expUtil::isReallyWritable(BASE."framework/modules-1/simplepollmodule/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/simplepollmodule/");
+            expFile::removeDirectory(BASE."framework/modules-1/simplepollmodule/");
         }
 
 		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Simple Poll modules were upgraded.")."<br>".($questions_converted?$questions_converted:gt('No'))." ".gt("Poll Questions were converted.")."<br>".gt("and simplepoll files were then deleted.");

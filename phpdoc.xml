@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Exponent 2.0.9 API Documentation</title>
+    <title>Exponent 2.0.9</title>
     <parser>
-        <default-category-name>Documentation</default-category-name>
+        <default-category-name>API Documentation</default-category-name>
         <default-package-name>Framework</default-package-name>
         <target>../exponent-api</target>
         <markers>
