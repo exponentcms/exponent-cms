@@ -45,6 +45,7 @@
                     {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
                     {control type=text name=external_link label="Page URL"|gettext value=$section->external_link}
                     {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1}
+                    {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1}
                 </div>
             </div>
         </div>

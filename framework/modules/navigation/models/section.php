@@ -24,9 +24,9 @@
 class section extends expRecord {
 //	public $table = 'section';
 
-//    protected $attachable_item_types = array(
-//        'content_expFiles'=>'expFile'
-//    );
+    protected $attachable_item_types = array(
+        'content_expFiles'=>'expFile'
+    );
 
 #	public $validates = array(
 #		'presence_of'=>array(

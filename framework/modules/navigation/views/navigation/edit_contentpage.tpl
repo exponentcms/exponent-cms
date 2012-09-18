@@ -51,6 +51,7 @@
                     {if $smarty.const.ENABLE_SSL}
                         {control type="checkbox" name="secured" label="Secured"|gettext|cat:"?" checked=$section->secured value=1}
                     {/if}
+                    {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1}
                 </div>
                 <div id="tab2">
                     <h2>SEO Information</h2>

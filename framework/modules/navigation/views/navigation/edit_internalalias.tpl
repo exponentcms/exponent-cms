@@ -45,6 +45,7 @@
                     {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
                     {control type="dropdown" name="internal_id" label="Page"|gettext items=navigationController::levelDropDownControlArray(0,0,array(),false,'manage') value=$section->internal_id default=$smarty.const.SITE_DEFAULT_SECTION}
                     {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1}
+                    {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1}
                 </div>
             </div>
         </div>

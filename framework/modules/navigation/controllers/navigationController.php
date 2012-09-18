@@ -230,8 +230,10 @@ class navigationController extends expController {
         if ($parent != 0) $parents[] = $parent;
         $nodes = array();
         $cache = expSession::getCacheValue('navigation');
+        $sect = new section();
         if (!isset($cache['kids'][$parent])) {
-            $kids                   = $db->selectObjects('section', 'parent=' . $parent);
+//            $kids                   = $db->selectObjects('section', 'parent=' . $parent);
+            $kids = $sect->find('all','parent=' . $parent);
             $cache['kids'][$parent] = $kids;
             expSession::setCacheValue('navigation', $cache);
         } else {
@@ -261,7 +263,8 @@ class navigationController extends expController {
                 } else if ($child->alias_type == 2) {
                     // Internal link.
                     // Need to check and see if the internal_id is pointing at an external link.
-                    $dest = $db->selectObject('section', 'id=' . $child->internal_id);
+//                    $dest = $db->selectObject('section', 'id=' . $child->internal_id);
+                    $dest = $sect->find('first','id=' . $child->internal_id);
                     if (!empty($dest->alias_type) && $dest->alias_type == 1) {
                         // This internal alias is pointing at an external alias.
                         // Use the external_link of the destination section for the link
