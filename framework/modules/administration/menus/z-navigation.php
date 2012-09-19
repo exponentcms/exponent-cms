@@ -50,7 +50,7 @@ $info = array(
             "submenu"=>array(
                 'id'=>'pginfo',
                 'itemdata'=>array(
-                    array('classname'=>'moreinfo','text'=>gt("Name")." : ".$page->name."<br />ID : ".$page->id."<br />".gt("SEF Name")." : ".$page->sef_name."<br />".gt("Subtheme")." : ".$subtheme,"disabled"=>true)
+                    array('classname'=>'moreinfo','text'=>gt("Name")." : ".$page->name."<br />ID : ".$page->id."<br />".gt("SEF Name")." : ".$page->sef_url."<br />".gt("Subtheme")." : ".$subtheme,"disabled"=>true)
                 )
             )
         )
