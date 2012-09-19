@@ -101,6 +101,7 @@ class radiogroupcontrol extends formcontrol {
 	
 	static function form($object) {
 		$form = new form();
+        if (empty($object)) $object = new stdClass();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";

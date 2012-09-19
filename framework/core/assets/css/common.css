@@ -50,6 +50,16 @@ a.unsubscribe-link {
 	background:url(../images/deny.png) no-repeat 0 50%;
 }
 
+a.cart {
+    padding:2px 0 2px 20px;
+	background:url(../../../modules/ecommerce/assets/images/view_cart.png) no-repeat 0 50%;
+}
+
+a.logout {
+    padding:2px 0 2px 25px;
+    background   : url(../../../modules/administration/assets/images/admintoolbar/logout.png) no-repeat 3px 50%;
+}
+
 a.showall {
     padding:3px 3px 3px 22px;
     display:inline-block;

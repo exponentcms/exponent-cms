@@ -67,14 +67,14 @@ class tagtreecontrol extends formcontrol {
 		$link = expCore::makeLink(array("module"=>$this->controller->baseclassname,"action"=>"edit","parent"=>0));
 		$html = "";
         if ($this->menu == "true") {
-            if ($this->addable) $html = '<a class="add" href="' . $link . '">Add a Category</a> | ';        
-		    $html .= '<a href="#" id="expandall">Expand All</a> | ';
-            $html .= '<a href="#" id="collapseall">Collapse All</a>';
+            if ($this->addable) $html = '<a class="add" href="' . $link . '">'.gt('Add a Category').'</a> | ';
+		    $html .= '<a href="#" id="expandall">'.gt('Expand All').'</a> | ';
+            $html .= '<a href="#" id="collapseall">'.gt('Collapse All').'</a>';
 		}
         
 		$html .= '
 		<div id="'.$this->id.'" class="nodetree"></div>
-		<div class="loadingdiv">Loading Categories</div>';
+		<div class="loadingdiv">'.gt('Loading Categories').'</div>';
 		
 		foreach($this->tags as $i=>$val){
 			if (!empty($this->values) && in_array($val->id,$this->values)) {

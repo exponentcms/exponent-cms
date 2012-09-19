@@ -51,7 +51,7 @@
                 {if $address->is_shipping}
                     <span style="text-align: center;"><img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}" /></span>
                 {else}
-                    <a href="{link action=activate_address is_what="is_shipping" id=$address->id enabled=1}"><img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}" /></a>
+                <span style="text-align: center;"><a href="{link action=activate_address is_what="is_shipping" id=$address->id enabled=1}"><img src="{$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}" /></a></span>
                 {/if}   
             </td>
             <td>

@@ -58,18 +58,24 @@ class genericcontrol extends formcontrol {
             $divID  = '';
             $for = '';
         }
-        if ($this->required) $label = "*" . $label;
-        $dissabled = $this->disabled == true ? "disabled" : ""; 
+//        if ($this->required) $label = "*" . $label;
+        $dissabled = $this->disabled == true ? "disabled" : "";
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
             $html = '<div'.$divID.' class="'.$this->type.'-control control'." ".$class." ".$dissabled;
             $html .= (!empty($this->required)) ? ' required">' : '">';
+      		//$html .= "<label>";
+            if($this->required) {
+                $labeltag = '<span class="required" title="'.gt('This entry is required').'">*</span>' . $label;
+            } else {
+                $labeltag = $label;
+            }
             if(empty($this->flip)){
-                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $label."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $labeltag."</label>";
                     $html .= $this->controlToHTML($name, $label);
             } else {
                     $html .= $this->controlToHTML($name, $label);
-                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $label."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $labeltag."</label>";
             }
             $html .= "</div>";
         } else {

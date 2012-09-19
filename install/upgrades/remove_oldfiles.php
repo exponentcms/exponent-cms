@@ -81,6 +81,7 @@ class remove_oldfiles extends upgradescript {
             'framework/core/definitions/crosssellItem_product.php',
             'framework/core/definitions/discounts.php',
             'framework/core/definitions/eventregistration.php',
+            'framework/core/definitions/eventregistration_registrants.php',
             'framework/core/definitions/external_addresses.php',
             'framework/core/definitions/google_product_types.php',
             'framework/core/definitions/google_product_types_storeCategories.php',

@@ -366,10 +366,12 @@ class expCore {
         } elseif($type == "controllers") {
             $relpath .= "framework/views/";
         } elseif($type == "forms") {
-            if ($name != "forms/calendar") {
-                $relpath .= "framework/core/subsystems/forms/";
-            } else {  //TODO  forms/calendar only used by calendarmodule
+            if ($name == "event/email") {
+                $relpath .= "framework/modules/events/views/";
+            } elseif ($name == "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
                 $relpath .= "framework/modules-1/calendarmodule/";
+            } else {
+                $relpath .= "framework/core/subsystems/forms/";
             }
         } elseif($type == "themes") {
             $relpath .= "themes/";
@@ -392,7 +394,8 @@ class expCore {
 
 		// for later use for searching in lib/common
 		$typepath = $relpath;
-		if ($name != "" && $name != "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
+//		if ($name != "" && $name != "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
+        if ($name != "" && $name != "event/email" && $name != "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
 			$relpath .= $name . "/";
 		}
 
@@ -406,8 +409,10 @@ class expCore {
             if ($type == 'controllers' || $type == 'Controller') {
                 //do nothing
             } elseif ($name == "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
-//				$relpath2 .= "/";
                 $relpath2 .= "forms/calendar/";
+            } elseif ($name == "event/email") {
+//				$relpath2 .= "/";
+                $relpath2 .= "event/email/";
             } elseif ($type == 'controls' || $type == 'Control') {
                 $relpath2 .= 'editors/';
             } elseif ($type == 'profileextension') {

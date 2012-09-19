@@ -91,13 +91,24 @@ class reportController extends expController {
         $except = array('order_discounts', 'billingmethod', 'order_status_changes','billingmethod','order_discounts');
         $orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,0,true,false,$except,true);
         $oar = array();         
-        foreach ($orders as $order)
-        {                         
+        foreach ($orders as $order) {
             //eDebug($order,true);
-            $oar[$order->order_type->title]['grand_total']+= $order->grand_total;
-            $oar[$order->order_type->title]['num_orders']+= 1;
-            $oar[$order->order_type->title]['num_items']+= count($order->orderitem);
+            if (empty($oar[$order->order_type->title])) {
+                $oar[$order->order_type->title] = array();
+                $oar[$order->order_type->title]['grand_total'] = null;
+                $oar[$order->order_type->title]['num_orders'] = null;
+                $oar[$order->order_type->title]['num_items'] = null;
+            }
+            $oar[$order->order_type->title]['grand_total'] += $order->grand_total;
+            $oar[$order->order_type->title]['num_orders'] += 1;
+            $oar[$order->order_type->title]['num_items'] += count($order->orderitem);
             
+            if (empty($oar[$order->order_type->title][$order->order_status->title])) {
+                $oar[$order->order_type->title][$order->order_status->title] = array();
+                $oar[$order->order_type->title][$order->order_status->title]['grand_total'] = null;
+                $oar[$order->order_type->title][$order->order_status->title]['num_orders'] = null;
+                $oar[$order->order_type->title][$order->order_status->title]['num_items'] = null;
+            }
             $oar[$order->order_type->title][$order->order_status->title]['grand_total'] += $order->grand_total;
             $oar[$order->order_type->title][$order->order_status->title]['num_orders'] += 1;
             $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);

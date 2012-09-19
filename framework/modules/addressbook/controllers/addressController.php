@@ -64,7 +64,7 @@ class addressController extends expController {
 	public function myaddressbook() {
 		global $user;
 		// check if the user is logged in.
-		expQueue::flashIfNotLoggedIn('message', 'You must be logged in to manage your address book.');
+		expQueue::flashIfNotLoggedIn('message',gt('You must be logged in to manage your address book.'));
 		expHistory::set('viewable', $this->params);
 		$userid = (empty($this->params['user_id'])) ? $user->id : $this->params['user_id'];
 		assign_to_template(array(

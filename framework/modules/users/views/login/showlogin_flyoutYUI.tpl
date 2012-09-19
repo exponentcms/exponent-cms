@@ -69,6 +69,9 @@
 			{/if}
 			<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
 			<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
+            {if $smarty.const.ECOM && $oicount}
+                {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext}{br}
+            {/if}
 			<a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
 		</div>
     </div>

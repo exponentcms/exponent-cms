@@ -74,13 +74,17 @@ class formcontrol {
 		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
-        if($this->required) $label = '<span class="required" title="'.gt('This entry is required').'">*</span>' . $label;
+        if($this->required) {
+            $labeltag = '<span class="required" title="'.gt('This entry is required').'">*</span>' . $label;
+        } else {
+            $labeltag = $label;
+        }
 		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$label."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
 			$html .= $this->controlToHTML($name, $label);
 		} else {
 			$html .= $this->controlToHTML($name, $label);
-			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$label."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
 		}
 		//$html .= "</label>";
 		$html .= "</div>";			

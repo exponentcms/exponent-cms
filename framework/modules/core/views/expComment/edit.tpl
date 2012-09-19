@@ -23,8 +23,8 @@
     		{control type=hidden name=content_type value=$content_type}
 
     		{if $user->id == 0 || $comment->id }
-    	        {control type=text name=name label="Name"|gettext|cat:" <span class=\"required\">*</span>" value=$comment->name required=1}
-    		    {control type=text name=email label="Email"|gettext|cat:" <span class=\"required\">*</span>" value=$comment->email required=1}
+    	        {control type=text name=name label="Name"|gettext required=true value=$comment->name required=1}
+    		    {control type=text name=email label="Email"|gettext required=true value=$comment->email required=1}
     		{else}
                 {control type=text name=name disabled=1 label="Name"|gettext value="`$user->firstname` `$user->lastname`"}
         	    {control type=text name=email disabled=1 label="Email"|gettext value=$user->email}

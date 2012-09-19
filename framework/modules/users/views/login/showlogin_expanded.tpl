@@ -23,13 +23,17 @@
 	{/if}
 	{if $loggedin == true || $smarty.const.PREVIEW_READONLY == 1}
 		{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}<br />
-		<a href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>&#160;|&#160;
+		<a class="edit" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>&#160;|&#160;
 		{if $is_group_admin}
-			<a href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>&#160;|&#160;
+			<a class="manage" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>&#160;|&#160;
 		{/if}
-		<a href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>&#160;|&#160;
-		<a href="{link action=logout}">{'Logout'|gettext}</a><br />
-	{/if}
+		<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>&#160;|&#160;
+		<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>
+        {if $smarty.const.ECOM && $oicount}
+            &#160;|&#160;{icon class=cart controller=cart action=show text="Shopping Cart"|gettext}
+        {/if}
+        {br}
+    {/if}
 	{if $smarty.const.PREVIEW_READONLY == 1}
 		<hr size="1" />
 		<em>{'Anonymous visitors see this'|gettext}:</em><br />

@@ -45,27 +45,27 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         {control type=hidden name=is_default value=$record->is_default}
         {control type=hidden name=is_shipping value=$record->is_shipping}
         {control type=hidden name=is_billing value=$record->is_billing}
-        {control type=text name=firstname label="<span class=\"required\">*</span>"|cat:"First Name"|gettext value=$record->firstname}
+        {control type=text name=firstname label="First Name"|gettext required=true value=$record->firstname}
         {control type=text name=middlename label="Middle Name"|gettext value=$record->middlename}
-        {control type=text name=lastname label="<span class=\"required\">*</span>"|cat:"Last Name"|gettext value=$record->lastname}
+        {control type=text name=lastname label="Last Name"|gettext required=true value=$record->lastname}
         {control type=text name=organization label="Company/Organization"|gettext value=$record->organization}
-        {control type=text name=address1 label="<span class=\"required\">*</span>"|cat:"Street Address"|gettext value=$record->address1}
+        {control type=text name=address1 label="Street Address"|gettext required=true value=$record->address1}
         {control type=text name=address2 label="Apt/Suite #"|gettext value=$record->address2}
-        {control type=text name=city label="<span class=\"required\">*</span>"|cat:"City"|gettext value=$record->city}
+        {control type=text name=city label="City"|gettext required=true value=$record->city}
         
         {if ($user->is_admin || $user->is_acting_admin) && $admin_config == true}
-            {control type=state name=state label="<span class=\"required\">*</span>"|cat:"State/Province"|gettext includeblank="-- Choose a State --"|gettext value=$record->state add_other=true}
+            {control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext value=$record->state add_other=true}
             {control type=text name=non_us_state label="&#160;"|cat:"Non U.S. State/Province"|gettext value=$record->non_us_state}
             {control type=country name=country label="&#160;"|cat:"Country"|gettext show_all=true value=$record->country|default:223}
         {else}
-            {control type=state name=state label="<span class=\"required\">*</span>"|cat:"State/Province"|gettext includeblank="-- Choose a State --"|gettext value=$record->state}
+            {control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext value=$record->state}
             {control type=country name=country label="&#160;"|cat:"Country"|gettext value=$record->country}
         {/if}
         
-        {control type=text name=zip label="<span class=\"required\">*</span>"|cat:"Zip/Postal Code"|gettext value=$record->zip}
-        {control type="text" name="phone" label="<span class=\"required\">*</span>"|cat:("Phone Number"|gettext)|cat:" <span class=\"example\">ex: 480-555-4200</span>" value=$record->phone}
+        {control type=text name=zip label="Zip/Postal Code"|gettext required=true value=$record->zip}
+        {control type="text" name="phone" label="Phone Number"|gettext|cat:" <span class=\"example\">ex: 480-555-4200</span>" required=true value=$record->phone}
         {control type="dropdown" name="address_type" label="Address Type"|gettext items="Business,Military,Residential"|gettxtlist values="Business,Military,Residential" default=$record->address_type|default:"Residential"}
-        {control type="text" name="email" label="<span class=\"required\">*</span>"|cat:"Email Address"|gettext value=$record->email}
+        {control type="text" name="email" label="Email Address"|gettext required=true value=$record->email}
         {if !$user->isLoggedIn()}
  
             <div id="passwordDiv">
@@ -75,8 +75,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                     {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
                 </p>
                 <div class="passwords">
-                    {control type="password" name="password" label="<span class=\"required\">*</span>"|cat:"Password"|gettext}
-                    {control type="password" name="password2" label="<span class=\"required\">*</span>"|cat:"Confirm Password"|gettext}
+                    {control type="password" name="password" label="Password"|gettext required=true}
+                    {control type="password" name="password2" label="Confirm Password"|gettext required=true}
                 </div>
             </div>
             
