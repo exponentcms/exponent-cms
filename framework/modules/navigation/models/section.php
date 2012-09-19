@@ -39,6 +39,7 @@ class section extends expRecord {
     }
 
     function update($params=array()) {
+        if (empty($params['sef_name'])) $params['sef_name'] = expCore::makeSefUrl($params['name'],'section');
         parent::update($params);
         expSession::clearAllUsersSessionCache('navigation');
 //        expHistory::back();

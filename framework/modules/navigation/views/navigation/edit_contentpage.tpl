@@ -29,6 +29,7 @@
         {control type=hidden name=id value=$section->id}
         {control type=hidden name=rank value=$section->rank}
         {control type=hidden name=alias_type value=0}
+        {control type=hidden name=_validate value=1}
         <div id="configure-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'Page'|gettext}</em></a></li>
