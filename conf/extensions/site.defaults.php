@@ -45,4 +45,6 @@ if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');
 if (!defined('HELP_ACTIVE')) define('HELP_ACTIVE','1');
 if (!defined('HELP_URL')) define('HELP_URL','http://docs.exponentcms.org/');
 
+if (!defined('FORCE_ECOM')) define('FORCE_ECOM','0');
+
 ?>

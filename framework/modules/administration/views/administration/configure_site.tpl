@@ -43,6 +43,7 @@
 		            <li><a href="#tab13"><em>{"PDF Generation"|gettext}</em></a></li>
 					<li><a href="#tab14"><em>{"Minify"|gettext}</em></a></li>
 					<li><a href="#tab15"><em>{"Search Report"|gettext}</em></a></li>
+                    <li><a href="#tab16"><em>{"e-Commerce"|gettext}</em></a></li>
 	            {/if}
             </ul>            
             <div class="yui-content">
@@ -260,6 +261,15 @@
 					{control type="checkbox" postfalse=1 name="sc[INCLUDE_AJAX_SEARCH]" label="Include ajax search in reports?"|gettext checked=$smarty.const.INCLUDE_AJAX_SEARCH value=1}
 					{control type="checkbox" postfalse=1 name="sc[INCLUDE_ANONYMOUS_SEARCH]" label="Include unregistered users search?"|gettext checked=$smarty.const.INCLUDE_ANONYMOUS_SEARCH value=1}
 				</div>
+                <div id="tab16">
+                <div class="info-header">
+                    <div class="related-actions">
+                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-settings"}
+                    </div>
+                    <h2>{"e-Commerce Configuration"|gettext}</h2>
+                </div>
+                {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
+            </div>
                 {/if}
             </div>
         </div>
