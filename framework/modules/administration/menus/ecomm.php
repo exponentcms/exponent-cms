@@ -22,7 +22,8 @@ if (!$user->isAdmin()) return false;
 
 global $db;
 // hide the menu if the store controller isn't activated
-$active = $db->selectValue('modstate', 'active', 'module="storeController"');
+//$active = $db->selectValue('modstate', 'active', 'module="storeController"');
+$active = ECOM;
 if (empty($active)) return false;
 
 $new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = 1');

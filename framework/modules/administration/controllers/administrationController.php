@@ -235,6 +235,25 @@ class administrationController extends expController {
            ));
    	}
 
+    public function install_ecommerce_tables() {
+        global $db;
+
+        $eql = BASE . "install/samples/ecommerce.eql";
+        if (file_exists($eql)) {
+            $errors = array();
+            expFile::restoreDatabase($db,$eql,$errors);
+        }
+        if (DEVELOPMENT && count($errors)) {
+            $msg = gt('Errors were encountered importing the e-Commerce data.').'<ul>';
+            foreach ($errors as $e) $msg .= '<li>'.$e.'</li>';
+            $msg .= '</ul>';
+            flash('error',$msg);
+        } else {
+            flash('message',gt('e-Commerce data was added to your database.'));
+        }
+        expHistory::back();
+   	}
+
     public function toolbar() {
         global $user;
         $menu = array();

@@ -494,10 +494,11 @@ class storeController extends expController {
 
     function manage() {
         expHistory::set('manageable', $this->params);
+        $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
             'model'     => 'product',
             'where'     => 'parent_id=0',
-            'limit'     => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $this->config['limit'],
+            'limit'     => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
             'order'     => 'title',
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=> $this->params['controller'],

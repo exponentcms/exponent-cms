@@ -97,6 +97,7 @@
 				</div>
 				<div id="tab10">
 					<h2>{'Add options to your product.'|gettext}</h2>
+                    {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
                     {'By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
                     {'By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group.'|gettext} {br}
                     {'Select Single presents the option group as a dropdown field where they may select one and only option.'|gettext}{br}

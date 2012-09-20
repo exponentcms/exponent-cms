@@ -86,9 +86,9 @@
     {permissions}
         {if $permissions.configure == 1 or $permissions.manage == 1}
         <div id="prod-admin">
-                <a href="{link controller=store action=create}">{'Add a new Product'|gettext}</a>
-                {br}<a href="{link controller=storeCategory action=manage}">{'Manage Categories'|gettext}</a>
-                {br}<a href="{link controller=store action=config}">{'Configure Store'|gettext}</a>
+                <a class="add" href="{link controller=store action=create}">{'Add a new Product'|gettext}</a>
+                {br}<a class="manage" href="{link controller=storeCategory action=manage}">{'Manage Categories'|gettext}</a>
+                {br}<a class="configure" href="{link controller=store action=config}">{'Configure Store'|gettext}</a>
 				{br}<a href="{link controller=store action=nonUnicodeProducts}">{'Show Non-Unicode Products'|gettext}</a>
 				{br}<a href="{link controller=store action=uploadModelAliases}">{'Upload Model Aliases'|gettext}</a>
         </div>

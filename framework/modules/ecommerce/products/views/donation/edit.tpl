@@ -63,6 +63,7 @@
 	                {control type="text" name="weight" label="Item Weight"|gettext value=$record->weight}
 	            </div-->
 	            <div id="tab6">
+                    {icon class="manage" controller="storeCategory" action="manage" text="Manage Store Categories"|gettext}
 	                {control type="tagtree" id="managecats" name="managecats" model="storeCategory" draggable=false checkable=true values=$record->storeCategory}
 	            </div>
             </div>

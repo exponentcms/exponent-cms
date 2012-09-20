@@ -115,7 +115,7 @@
                     </div>
                     {control type="dropdown" name="sc[LANGUAGE]" label="Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
-	                <h3><a href="manage_themes">Display Theme Options</a></h3>
+	                <h3><a href="manage_themes">{'Display Theme Options'|gettext}</a></h3>
 	                {control type="checkbox" postfalse=1 name="sc[FORCE_MOBILE]" label="Force Display of the Mobile Theme Variation (if available)?"|gettext checked=$smarty.const.FORCE_MOBILE value=1}
                     {control type="dropdown" name="sc[DISPLAY_ATTRIBUTION]" label="Attribution Display"|gettext items=$attribution default=$smarty.const.DISPLAY_ATTRIBUTION}
 	                {control type="dropdown" name="sc[DISPLAY_DATETIME_FORMAT]" label="Date/Time Format"|gettext items=$datetime_format default=$smarty.const.DISPLAY_DATETIME_FORMAT}
@@ -227,8 +227,14 @@
                     <h2>{"WKHTMLtoPDF - Store Orders"|gettext}</h2>
                     {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
                     {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
+                    <p>{'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate application from'|gettext} <a href="http://code.google.com/p/wkhtmltopdf/downloads/list" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
+                        {"and then install it on your server."|gettext}
+                    </p>
                     <h2>{"DOMPDF - Export as PDF"|gettext}</h2>
                     {control type="checkbox" postfalse=1 name="sc[HTML2PDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTML2PDF_OUTPUT value=1}
+                    <p>{'DOMPDF is an optional package.  To obtain it, you\'ll need to first download'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">{"dompdf.zip"|gettext}</a>.
+                        {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {' on your server with \'Patch Exponent CMS\' checked.'|gettext}
+                    </p>
                 </div>
 				<div id="tab14">
 					<div class="info-header">
@@ -264,11 +270,51 @@
                 <div id="tab16">
                 <div class="info-header">
                     <div class="related-actions">
-                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-settings"}
+                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
                     </div>
                     <h2>{"e-Commerce Configuration"|gettext}</h2>
                 </div>
                 {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
+                <hr>
+                <h4>{'Getting e-Commerce up and running'|gettext}</h4>
+                <ol>
+                    <li>{'Import default ecommerce information into the database'|gettext} <a href="{link action=install_ecommerce_tables}" title={'Install Default e-Commerce data'|gettext} onclick="return confirm('{'Are you sure you want to re-initialize e-Commerce data to default values?'|gettext}');">{'here'|gettext}</a></li>
+                    <ul>
+                        <li>geo_regions</li>
+                        <li>geo_countries</li>
+                        <li>order_status</li>
+                        <li>bing_product_types</li>
+                        <li>google_product_types</li>
+                        <li>nextag_product_types</li>
+                        <li>pricegrabber_product_types</li>
+                        <li>shopping_product_types</li>
+                        <li>shopzilla_product_types</li>
+                    </ul>
+                    <li>{'Activate e-Commerce using the above setting, or activate an e-Commerce module such as'|gettext}:</li>
+                    <ul>
+                        <li>{'e-Commerce Store Front'|gettext}</li>
+                        <li>{'Online Donations'|gettext}</li>
+                        <li>{'Online Event Registration'|gettext}</li>
+                    </ul>
+                    <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a> (<em>{'Cash/Check'|gettext}</em>)</li>
+                    <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a> (<em>{'In Store Pickup'|gettext}</em>)</li>
+                    <li>{'Optionally'|gettext}:</li>
+                    <ul>
+                        <li>{'Enter some \'General Store Settings\''|gettext} <a href="{link controller=ecomconfig action=configure}" title={'Configure Store Settings'|gettext}>{'here'|gettext}</a></li>
+                        <li>{'Create a Product (with optional sub-steps)'|gettext}</li>
+                        <ul>
+                            <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
+                            <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>
+                            <li>{'Create a Tax Class/Zone'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Tax Classes'|gettext}>{'here'|gettext}</a></li>
+                            <li>{'Create the Product (product, donation, event, or gift card)'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
+                        </ul>
+                    </ul>
+                    <li>{'Add an e-Commerce module to a page to allow user access to the \'store\'.'|gettext}</li>
+                    <ul>
+                        <li>{'Also add an \'e-Commerce Store Front\' module with \'Links - Users Links\' action for easier user access to store account and shopping cart'|gettext}</li>
+                    </ul>
+                    <li>{'e-Commerce Store Management is best handled through the e-Commerce menu or Dashboard'|gettext}</li>
+                </ol>
             </div>
                 {/if}
             </div>
