@@ -46,7 +46,6 @@
 				<th>{'Last Login'|gettext}:</th>
 				<td>{$u->last_login|format_date}</td>
 			</tr>
-		
 		</table>
 	</div>
 	
@@ -64,7 +63,7 @@
 					<td>
 						{if $billings[0]->id == ''}
 							{'You have not selected an address yet'|gettext}.
-						{else}
+                        {else}
 							{foreach from=$billings item=billing}
 								{$billing|address}
 								{br}
@@ -82,6 +81,11 @@
 						{/if}
 					</td>
 				</tr>
+                {if $billings[0]->id == '' || $shippings[0]->id == ''}
+                <tr><td colspan=2>
+                    <a class="manage" href="{link module=address action=myaddressbook}">{'Manage My Addresses'|gettext}</a>
+                </td></tr>
+                {/if}
 			</tbody>
 		</table>
 	</div>

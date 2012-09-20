@@ -49,7 +49,8 @@
 							</div>
                         {foreachelse}
                             {'There are no gift cards available!'|gettext}
-						{/foreach}
+                            {icon class="add" controller=store action=edit product_type=giftcard text="Add a Gift Card"|gettext}
+                        {/foreach}
 					</fieldset>
 				</td>
 			</tr>

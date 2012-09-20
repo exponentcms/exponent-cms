@@ -746,7 +746,6 @@ class usersController extends expController {
 		}
 		expPermissions::triggerRefresh();
         expHistory::back();
-        
     }
 	
 	public function getUsersByJSON() {
@@ -851,8 +850,16 @@ class usersController extends expController {
 	}
 	
 	public function viewuser() {
-		
-		$u = new user($this->params['id']);
+        global $user;
+
+        if (!empty($this->params['id'])) {
+            $u = new user($this->params['id']);
+        } elseif (!empty($user->id)) {
+            $u = $user;
+        } else {
+            flash('error', gt('You may not view this user'));
+            expHistory::back();
+        }
 		$address = new address();
 	
 		$billings = $address->find('all', 'user_id='.$u->id.' AND is_billing = 1');
@@ -864,7 +871,6 @@ class usersController extends expController {
 		$sql .= DB_TABLE_PREFIX.'_order_status os, ';                                          
 		$sql .= DB_TABLE_PREFIX.'_order_type ot ';                                          
 		$sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;     
-		
 		
 		$limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 50;
 		//eDebug($sql, true);
@@ -887,7 +893,6 @@ class usersController extends expController {
    			'action'=>$this->params['action'],
         ));
 		
-		 
 		assign_to_template(array(
 			'u'=>$u,
             'billings'=>$billings,
