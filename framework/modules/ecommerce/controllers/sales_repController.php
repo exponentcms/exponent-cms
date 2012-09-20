@@ -46,13 +46,13 @@ class sales_repController extends expController {
     }
     
     public function showall() {
-//        redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
-        $this->manage();
+        redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
+//        $this->manage();
     }
     
     public function show() {
-//        redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
-        $this->manage();
+        redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
+//        $this->manage();
     }
     
     /*public function update() {

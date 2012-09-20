@@ -46,13 +46,13 @@ class product_statusController extends expController {
     }
     
     public function showall() {
-//        redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
-        $this->manage();
+        redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
+//        $this->manage();
     }
     
     public function show() {
-//        redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
-        $this->manage();
+        redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
+//        $this->manage();
     }
     
 }

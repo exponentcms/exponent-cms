@@ -1156,13 +1156,13 @@ class storeController extends expController {
         } elseif ($product_type == "giftcard") {
 
             flash("message", gt("Giftcard saved."));
-//			redirect_to(array('controller'=>'store','action'=>'manage'));
-            $this->manage();
+			redirect_to(array('controller'=>'store','action'=>'manage'));
+//            $this->manage();
         } elseif ($product_type == "eventregistration") {
 
             flash("message", gt("Event saved."));
-//			redirect_to(array('controller'=>'store','action'=>'manage'));
-            $this->manage();
+			redirect_to(array('controller'=>'store','action'=>'manage'));
+//            $this->manage();
         }
     }
 
@@ -1490,8 +1490,8 @@ class storeController extends expController {
         //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
         if (!empty($_FILES['batch_upload_file']['error'])) {
             flash('error', gt('There was an error uploading your file.  Please try again.'));
-//            redirect_to(array('controller'=>'store','action'=>'batch_process'));
-            $this->batch_process();
+            redirect_to(array('controller'=>'store','action'=>'batch_process'));
+//            $this->batch_process();
         }
 
         $file       = new stdClass();
@@ -1751,8 +1751,8 @@ class storeController extends expController {
 //        eDebug($_FILES,true);
         if (!empty($_FILES['address_csv']['error'])) {
             flash('error', gt('There was an error uploading your file.  Please try again.'));
-//            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));
-            $this->import_external_addresses();
+            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));
+//            $this->import_external_addresses();
         }
 
         $file       = new stdClass();
@@ -2007,8 +2007,8 @@ class storeController extends expController {
             $db->updateObject($item, 'product');
         }
 
-//		redirect_to(array('controller'=>'store', 'action'=>'nonUnicodeProducts'));
-        $this->nonUnicodeProducts();
+		redirect_to(array('controller'=>'store', 'action'=>'nonUnicodeProducts'));
+//        $this->nonUnicodeProducts();
     }
 
     //This function is being used in the uploadModelaliases page for showing the form upload
