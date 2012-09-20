@@ -33,22 +33,22 @@
         {/if}
         {control type=radiogroup label='' items='Update existing address, Save as new address'|gettxtlist values='0,1' name=save_option default='0'}
             
-        {control type=checkbox label='Default address for this customer?'|gettext flip=true name=address[is_default] value=1 checked=$record->is_default}
-        {control type=hidden name=address[is_shipping] value=$record->is_shipping}
-        {control type=hidden name=address[is_billing] value=$record->is_billing}
-        {control type=text name=address[firstname] label="*First Name"|gettext value=$record->firstname}
-        {control type=text name=address[middlename] label="Middle Name"|gettext value=$record->middlename}
-        {control type=text name=address[lastname] label="*Last Name"|gettext value=$record->lastname}
-        {control type=text name=address[organization] label="Company/Organization"|gettext value=$record->organization}
-        {control type=text name=address[address1] label="*Street Address"|gettext value=$record->address1}
-        {control type=text name=address[address2] label="Apt/Suite #"|gettext value=$record->address2}
-        {control type=text name=address[city] label="*"|cat:"City"|gettext value=$record->city}
+        {control type=checkbox label='Default address for this customer?'|gettext flip=true name='address[is_default]' value=1 checked=$record->is_default}
+        {control type=hidden name='address[is_shipping]' value=$record->is_shipping}
+        {control type=hidden name='address[is_billing]' value=$record->is_billing}
+        {control type=text name='address[firstname]' label="*First Name"|gettext value=$record->firstname}
+        {control type=text name='address[middlename]' label="Middle Name"|gettext value=$record->middlename}
+        {control type=text name='address[lastname]' label="*Last Name"|gettext value=$record->lastname}
+        {control type=text name='address[organization]' label="Company/Organization"|gettext value=$record->organization}
+        {control type=text name='address[address1]' label="*Street Address"|gettext value=$record->address1}
+        {control type=text name='address[address2]' label="Apt/Suite #"|gettext value=$record->address2}
+        {control type=text name='address[city]' label="*"|cat:"City"|gettext value=$record->city}
         
-        {control type=state name=address[state] label="*"|cat:"State" includeblank="-- Choose a State --"|gettext value=$record->state add_other=true all_us_territories=true exclude="6,8,10,17,30,46,50"}
-        {control type=text name=address[non_us_state] label="&#160;"|cat:("State/Province if non-US"|gettext) value=$record->non_us_state}
-        {control type=country name=address[country] label="&#160;"|cat:("Country"|gettext) value=$record->country|default:223}
+        {control type=state name='address[state]' label="*"|cat:"State" includeblank="-- Choose a State --"|gettext value=$record->state add_other=true all_us_territories=true exclude="6,8,10,17,30,46,50"}
+        {control type=text name='address[non_us_state]' label="&#160;"|cat:("State/Province if non-US"|gettext) value=$record->non_us_state}
+        {control type=country name='address[country]' label="&#160;"|cat:("Country"|gettext) value=$record->country|default:223}
         
-        {control type=text name=address[zip] label="*"|cat:"Zip Code"|gettext value=$record->zip}
+        {control type=text name='address[zip]' label="*"|cat:"Zip Code"|gettext value=$record->zip}
         {control type="text" name="address[phone]" label="*"|cat:"Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$record->phone}
         {control type="text" name="address[email]" label="*"|cat:"Email Address"|gettext value=$record->email}
        

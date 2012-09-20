@@ -47,7 +47,7 @@
     {permissions}
         {if $permissions.edit == 1 or $permissions.manage == 1}
         <div id="prod-admin">
-            <a href="{link controller=store action=edit id=0 product_type=donation}">{"Add a new donation cause"|gettext}</a>
+            <a class="add" href="{link controller=store action=edit id=0 product_type=donation}">{"Add a new donation cause"|gettext}</a>
         </div>
     {/if}
     {/permissions}

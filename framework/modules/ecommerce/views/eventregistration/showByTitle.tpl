@@ -68,10 +68,7 @@
 
 
  <div class="module store show event-registration">
-    
-		<h1>{$product->title}</h1>
-	
-
+    <h1>{$product->title}</h1>
 	<div class="image" style="padding:0px 10px 10px;float:left;">
 		 {if $product->expFile.mainimage[0]->url == ""}
 			 {img src="{$smarty.const.ICON_RELATIVE|cat:'ecom/no-image.jpg'}"}
@@ -82,7 +79,6 @@
 		 {clear}
 	</div>
 	
-
      <div class="bd">
          {permissions}
          <div class="item-actions">
@@ -93,47 +89,42 @@
          </div>
          {/permissions}
 
-
- <div class="bodycopy">
-	{if $product->summary}
-	{$product->summary}
-	{/if}
- </div>
+         <div class="bodycopy">
+            {if $product->summary}
+            {$product->summary}
+            {/if}
+         </div>
      
 		<div id="eventregform">		 
 			
 				{form id="addtocart`$product->id`" controller=cart action=addItem} 
-					
-					
-						{control type="hidden" name="product_id" value="`$product->id`"}
-						{control type="hidden" name="base_price" value="`$product->base_price`"}
-						{control type="hidden" name="product_type" value="`$product->product_type`"}
-						
-											
+
+                    {control type="hidden" name="product_id" value="`$product->id`"}
+                    {control type="hidden" name="base_price" value="`$product->base_price`"}
+                    {control type="hidden" name="product_type" value="`$product->product_type`"}
+
 					{if $product->hasOptions()}
-					<div class="product-options">
-						{control type="hidden" name="ticket_types" value="1"}
-						{foreach from=$product->optiongroup item=og}
-							{if $og->hasEnabledOptions()}
-								<div class="option {cycle values="odd,even"}">
-								{if $og->allow_multiple}
-									{optiondisplayer product=$product options=$og->title view=checkboxes_with_quantity display_price_as=total selected=$params.options}           
-								
-								{else}
-									{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options} 
-								{/if}
-								</div> 
-							{/if}
-						{/foreach}
-					</div>
+                        <div class="product-options">
+                            {control type="hidden" name="ticket_types" value="1"}
+                            {foreach from=$product->optiongroup item=og}
+                                {if $og->hasEnabledOptions()}
+                                    <div class="option {cycle values="odd,even"}">
+                                    {if $og->allow_multiple}
+                                        {optiondisplayer product=$product options=$og->title view=checkboxes_with_quantity display_price_as=total selected=$params.options}
+
+                                    {else}
+                                        {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}
+                                    {/if}
+                                    </div>
+                                {/if}
+                            {/foreach}
+                        </div>
 					{/if}			
 									
 					{foreach from=$product->expDefinableField.registrant item=fields}  
 						{$product->getControl($fields)}
 					{/foreach}					
-					
-					
-						
+
 					{if $product->require_terms_and_condition}
 						<div class="terms_and_conditions">
 							{if $product->terms_and_condition_toggle}
@@ -167,9 +158,6 @@
 {script unique="expanding-text" yui3mods="yui"}
 {literal}
 YUI().use("anim-easing","node","anim","io", function(Y) {
-
-	
-		
 	// This is for the terms and condition toogle
 	var content = Y.one('.more-text').plug(Y.Plugin.NodeFX, {
 		to: { height: 0 },
@@ -197,12 +185,6 @@ YUI().use("anim-easing","node","anim","io", function(Y) {
 		control.on('click', onClick);
 	}
 	// End of script for terms and condition toogle
-	
-	
-	
-	
-		
-
 });
 {/literal}
 {/script}

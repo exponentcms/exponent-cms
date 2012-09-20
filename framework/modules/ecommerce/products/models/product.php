@@ -246,8 +246,7 @@ class product extends expRecord {
         //check user input fields
         //$this->user_input_fields = expUnserialize($this->user_input_fields);
         //eDebug($this,true);
-        foreach ($this->user_input_fields as $uifkey=>$uif)
-        {   
+        if (!empty($this->user_input_fields)) foreach ($this->user_input_fields as $uifkey=>$uif) {
             if ($uif['is_required'] || (!$uif['is_required'] && strlen($params['user_input_fields'][$uifkey]) > 0)) 
             {
                 if (strlen($params['user_input_fields'][$uifkey]) < $uif['min_length'])
@@ -754,6 +753,7 @@ class product extends expRecord {
 		//Get the product
 		$product = $db->selectObject('product', 'id =' . $params['id']);
 		//Get product files
+        if (empty($product)) $product = new stdClass();
 		$product->expFile =  $this->getProductFiles($params['id']);
 		// eDebug($product, true);
 		

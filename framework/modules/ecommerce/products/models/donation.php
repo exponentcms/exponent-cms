@@ -33,7 +33,8 @@ class donation extends product {
     
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 		parent::__construct($params, $get_assoc, $get_attached);
-		$this->price = '';
+//		$this->price = '';
+        $this->price = $this->base_price;
 	}
 
     public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {
@@ -94,10 +95,11 @@ class donation extends product {
 	}
 	
 	function addToCart($params, $orderid = null) {
-	    if (empty($params['dollar_amount'])) {
-	        return false;
-	    } else {
-	        $item = new orderitem($params);	        
+//	    if (empty($params['dollar_amount'])) {  //FIXME we don't ever pass this param
+//	        return false;
+//	    } else {
+	        $item = new orderitem($params);
+            if (empty($params['dollar_amount'])) $params['dollar_amount'] = $this->price;
 	        $item->products_price = preg_replace("/[^0-9.]/","",$params['dollar_amount']);
 	        
 	        $product = new product($params['product_id']);
@@ -109,7 +111,7 @@ class donation extends product {
 	        $item->quantity = $this->getDefaultQuantity();
 		    $item->save();
 		    return true;
-	    }
+//	    }
 	}
 }
 

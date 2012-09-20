@@ -13,6 +13,7 @@
  *
  *}
 
+<p>{'To setup a PayPal Express Checkout account, visit'|gettext} <a href="https://www.paypal.com/webapps/mpp/merchant" target="_blank">https://www.paypal.com/webapps/mpp/merchant</a></p>
 <div id="authcfg">
     <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">

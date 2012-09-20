@@ -76,6 +76,7 @@ class taxController extends expController {
 			$tax_rate  = $db->selectObject('tax_rate', 'class_id =' .$this->params['id']);
 			$tax_geo   = $db->selectObject('tax_geo', 'zone_id =' . $tax_rate->zone_id);
 			//Store it in a single object all the data needed
+            $record = new stdClass();
 			$record->id        = $tax_class->id;
 			$record->classname = $tax_class->name;
 			$record->rate      = $tax_rate->rate;

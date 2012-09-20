@@ -13,6 +13,7 @@
  *
  *}
 
+<p>{'To setup a Worldpay account, visit'|gettext} <a href="http://www.worldpay.com/products/index.php?c=WW" target="_blank">http://www.worldpay.com/products/index.php?c=WW</a></p>
 <div id="authcfg">
     <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">

@@ -39,7 +39,7 @@
    	{/if}
     {assign var=myloc value=serialize($__loc)}
     <ul>
-    {foreach name=items from=$page item=item}
+    {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
 
         <li>

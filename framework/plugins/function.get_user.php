@@ -33,11 +33,18 @@
  * @param \Smarty $smarty
  */
 function smarty_function_get_user($params,&$smarty) {
-	if (expSession::loggedIn()) {
+    if (isset($params['user'])) {
+        global $db;
+        $thisuser = $db->selectObject('user', 'id='.intval($params['user']));
+    } elseif (expSession::loggedIn()) {
 		global $user;
-		if (isset($params['assign'])) $smarty->assign($params['assign'],$user);
-		else echo $user->username;
+        $thisuser = $user;
 	}
+    if (isset($params['assign'])) {
+        $smarty->assign($params['assign'],$thisuser);
+    } else {
+        echo $thisuser->username;
+    }
 }
 
 ?>

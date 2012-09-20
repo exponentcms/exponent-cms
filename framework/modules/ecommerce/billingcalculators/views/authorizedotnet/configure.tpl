@@ -13,6 +13,7 @@
  *
  *}
 
+<p>{'To setup a Authorize.Net account, visit'|gettext} <a href="http://www.authorize.net/" target="_blank">http://www.authorize.net/</a></p>
 <div id="authcfg">
     <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">

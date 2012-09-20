@@ -209,7 +209,7 @@
                     </div>    
                     
                     <div class="bracket{if !$shipping->address->id} hide{/if}">
-                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=address action=myaddressbook}">{"Change or Add Address"|gettext}</a>
+                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>
                     </div>
                     
                 </div>

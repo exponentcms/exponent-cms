@@ -44,7 +44,7 @@
             <table class="quantity-controller" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td><input type="text" size="2" name="quantity" value="{$item->quantity}"></td>
-                    <td><input class="refresh-quantity" type="image" name="id" value="{$item->id}" src="{$smarty.const.PATH_RELATIVE|cat:'framework/modules/ecommerce/assets/images/update.png'}" alt="Update quantity of this item."></td>
+                    <td><input class="refresh-quantity" type="image" name="id" value="{$item->id}" src="{$smarty.const.PATH_RELATIVE|cat:'framework/modules/ecommerce/assets/images/update.png'}" title="{'Update quantities'|gettext}" alt="{'Update quantities'|gettext}"></td>
                 </tr>
             </table>
              
@@ -54,7 +54,7 @@
             {/if}
         </td>
         <td class="prodrow">
-            <a href="{link action=removeItem id=$item->id}" title="remove `$item->title` from cart">
+            <a href="{link action=removeItem id=$item->id}" title="{'Remove'|gettext} {$item->product->title} {'from cart'|gettext}">
                 <img src='{$asset_path}images/remove.png' alt=" " />
             </a>
         </td>

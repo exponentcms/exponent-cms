@@ -283,7 +283,7 @@ class ecomconfigController extends expController {
 	    if (empty($this->params['id'])) {
 	        // look for existing discounts for the same group
 	        $existing_id = $db->selectValue('groupdiscounts', 'id', 'group_id='.$this->params['group_id']);
-	        if (!empty($existing_id)) flashAndFlow('error', 'There is already a discount for that group.');	        
+	        if (!empty($existing_id)) flashAndFlow('error',gt('There is already a discount for that group.'));
 	    }
 
         $gd = new groupdiscounts();

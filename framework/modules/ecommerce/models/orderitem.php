@@ -36,9 +36,13 @@ class orderitem extends expRecord {
 			// see if this is an existing item in the cart
 			if(isset($params['orderid'])) $order = new order($params['orderid']);
             else $order = order::getUserCart();
-			
-            //adding lookup on price to acocomdate quantity discounts
-			$where = 'orders_id='.$order->id.' AND product_id='.$params['product_id'].' AND products_price='.$params['products_price']." AND product_type='".$params['product_type']."'";
+
+            if (empty($params['products_price'])) {
+                $where = 'orders_id='.$order->id.' AND product_id='.$params['product_id']." AND product_type='".$params['product_type']."'";
+            } else {
+                //adding lookup on price to accomodate quantity discounts
+                $where = 'orders_id='.$order->id.' AND product_id='.$params['product_id'].' AND products_price='.$params['products_price']." AND product_type='".$params['product_type']."'";
+            }
 			$where .= empty($params['options']) ? '' : " AND options='".$params['options']."'";
 			$where .= empty($params['user_input_fields']) ? '' : " AND user_input_fields='".$params['user_input_fields']."'";
             

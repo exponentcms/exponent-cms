@@ -15,14 +15,12 @@
 
 
 <div id="editevent" class="module event edit">
-
     {if $record->id != ""}
         <h1>{'Edit Information for'|gettext} {$record->product_name}</h1>
     {else}
         <h1>{'New'|gettext} {$record->product_name}</h1>
     {/if}
-     {ddrerank model="expDefinableField" items=$definablefields label="Definable Fields"|gettext id="definable_field_registrant" sortfield="name"}
-        
+    {ddrerank model="expDefinableField" items=$definablefields label="Definable Fields"|gettext id="definable_field_registrant" sortfield="name"}
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="product_type" value=$record->product_type}
@@ -63,10 +61,8 @@
                 </div>
                 <div id="tab4">
                     {control type=files name=mainimages subtype="mainimage" value=$record->expFile}
-					
-					 <h4>{"Additional Images"|gettext}</h4>
+					<h4>{"Additional Images"|gettext}</h4>
 					<p>{"Have additional images to show for your event?"|gettext}</p>
-					
 					<div class="additional-images">
 						{control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile}
 					</div>
@@ -74,8 +70,7 @@
 					<h4>{"Additional File Attachments"|gettext}</h4>
 					<p>{"Attach Product Brochures, Docs, Manuals, etc."|gettext}</p>
 					{control type=files name=brochures label="Additional Files"|gettext subtype="brochures" value=$record->expFile}
-					
-                </div>            
+                </div>
                 <div id="tab5">
                     <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
@@ -83,12 +78,9 @@
                     {control type="textarea" name="meta_keywords" label="Meta Description"|gettext value=$record->meta_description}
                     {control type="textarea" name="meta_description" label="Meta Keywords"|gettext value=$record->meta_keywords}
                 </div>
-				
 				<div id="tab6">
-			
 				     <h2>{'Configure Fields'|gettext} | {icon class="manage" controller="expDefinableField" action="manage"}</h2>
-				
-					{foreach from=$definablefields item=fields}    
+					{foreach from=$definablefields item=fields}
 						{control type="checkbox" name="expDefinableField[registrant][]" label="`$fields->name` - `$fields->type`"|gettext value="`$fields->id`" checked="`$record->expDefinableField.registrant`"}
 					{/foreach}
                 </div>
@@ -96,29 +88,24 @@
 					{control type="checkbox" name="require_terms_and_condition" label="Require Waiver"|gettext value=1 checked=$record->require_terms_and_condition}
 					{control type="editor" name="terms_and_condition" label="Waiver"|gettext rows=8 cols=55 value=$record->terms_and_condition}
 					{control type="radiogroup" name="terms_and_condition_toggle" label=" " items="Always Show,Toggle" values="0,1" default=$record->terms_and_condition_toggle|default:0}
-					
 				</div>
 				<div id="tab9">
 					<h2>{'Active/Inactive'|gettext}</h2>
 					{control type="radiogroup" name="active_type" label=" " items="Active,Inactive" values="0,2" default=$record->active_type|default:0}
 					<h2>{'Status'|gettext}</h2>
 					{control type="checkbox" name="product_status_id" label="Open for Registration"|gettext value=1 checked=$record->product_status_id}
-					
 				</div>
-				
 				<div id="tab10">
 					<h2>{'Add options to your product.'|gettext}</h2>
-				{'By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
-				{'By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group.'|gettext} {br}
-				{'Select Single presents the option group as a dropdown field where they may select one and only option.'|gettext}{br}
-				{'Select Multiple presents the options as a checkbox group where the user may select multiple options'|gettext}.{br}
-				{'Selecting the Default radio button for an option will cause that option to be selected by default.'|gettext} {br}{br}
-				{include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
-					
+                    {'By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
+                    {'By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group.'|gettext} {br}
+                    {'Select Single presents the option group as a dropdown field where they may select one and only option.'|gettext}{br}
+                    {'Select Multiple presents the options as a checkbox group where the user may select multiple options'|gettext}.{br}
+                    {'Selecting the Default radio button for an option will cause that option to be selected by default.'|gettext} {br}{br}
+                    {include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
 				</div>
             </div>
         </div>
-	   
         {control type="buttongroup" submit="Save Event"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

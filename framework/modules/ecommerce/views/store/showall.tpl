@@ -18,20 +18,19 @@
 {/css}
  
 <div class="module store showall">
-    
-    {if $moduletitle}
-        <h1>{$moduletitle}</h1>
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>
     {else}
         <h1>{$current_category->title}</h1>
     {/if}
-    
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {* current category image *}
     {if $current_category->expFile[0]->id && $config.banner_width}
-    <div class="category-banner">
-        {img file_id=$current_category->expFile[0]->id w=522 h=100}
-    </div>
+        <div class="category-banner">
+            {img file_id=$current_category->expFile[0]->id w=522 h=100}
+        </div>
     {/if}
-
     {* current category permissions *}
     {if $current_category->id}
         {permissions}
@@ -54,14 +53,12 @@
             </div>
         {/permissions}
     {/if}
-    
     {* current category description *}
     {if $current_category->body}
         <div class="bodycopy">
             {$current_category->body}
         </div>
     {/if}
-    
     {* current category's sub-categories *}
     {if $categories|@count > 0}
         <div class="cats">
@@ -70,118 +67,109 @@
             {counter assign="ipcr" name="ipcr" start=1}
             {assign var=open_c_row value=1}
             {foreach name="cats" from=$categories item="cat"}
-            {if $cat->is_active==1 || $user->isAdmin()}
-            
-                {if $smarty.foreach.cats.first || $open_c_row}
-                    <div class="category-row">
-                    {assign var=open_c_row value=0}
-                {/if}
-                        
-                <div class="cat{if $cat->is_active!=1} inactive{/if} clearfix">
-                
-                    {permissions}
-                    <div class="item-actions">
-                        {if $permissions.edit == 1}
-                            {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
-                        {/if}
-                        {if $permissions.delete == 1}
-                            {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
-                        {/if}
-                    </div>
-                    {/permissions}
-            
-                    <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
-                        {if $cat->expFile[0]->id}
-                            {img file_id=$cat->expFile[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
-                        {else}
-                            {img file_id=$page->records[0]->expFile.mainimage[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
-                        {/if}
-                    </a>
-                
-                    <h3>
-                        <a href="{link controller=store action=showall title=$cat->sef_url}">
-                            {$cat->title}
+                {if $cat->is_active==1 || $user->isAdmin()}
+
+                    {if $smarty.foreach.cats.first || $open_c_row}
+                        <div class="category-row">
+                        {assign var=open_c_row value=0}
+                    {/if}
+
+                    <div class="cat{if $cat->is_active!=1} inactive{/if} clearfix">
+
+                        {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit == 1}
+                                {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
+                            {/if}
+                            {if $permissions.delete == 1}
+                                {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
+                            {/if}
+                        </div>
+                        {/permissions}
+
+                        <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
+                            {if $cat->expFile[0]->id}
+                                {img file_id=$cat->expFile[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
+                            {else}
+                                {img file_id=$page->records[0]->expFile.mainimage[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
+                            {/if}
                         </a>
-                    </h3>
 
-                </div>
+                        <h3>
+                            <a href="{link controller=store action=showall title=$cat->sef_url}">
+                                {$cat->title}
+                            </a>
+                        </h3>
 
-                {if $smarty.foreach.cats.last || $ipcr%2==0}
                     </div>
-                    {assign var=open_c_row value=1}
+
+                    {if $smarty.foreach.cats.last || $ipcr%2==0}
+                        </div>
+                        {assign var=open_c_row value=1}
+                    {/if}
+                    {counter name="ipcr"}
+
                 {/if}
-                {counter name="ipcr"}
+            {/foreach}
 
-            {/if}
-        {/foreach}
-
-        {* close the row if left open. might happen for non-admins *}
-        {if $open_c_row==0}
-            </div>
-            {assign var=open_c_row value=1}
-        {/if}
-
-    </div>
-    {else}
-
-    <h2>{"All Products Under"|gettext} {$current_category->title}</h2>
-    {pagelinks paginate=$page top=1}
-    {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
-    
-    {*script unique="sort-submit"}
-    {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-        Y.all('select[name="sortme"]').on('change',function(e){
-            window.location = e.target.get('value');
-        });
-
-    });
-    {/literal}
-    {/script*}
-    <div class="products ipr{$config.images_per_row|default:3} listing-row">
-        {counter assign="ipr" name="ipr" start=1}
-        
-        {foreach from=$page->records item=listing name=listings}
-        
-        {if $smarty.foreach.listings.first || $open_row}
-            <div class="product-row">
-            {assign var=open_row value=0}
-        {/if}
-        
-        {include file=$listing->getForm('storeListing')}
-        
-
-        {if $smarty.foreach.listings.last || $ipr%$config.images_per_row==0}
-            </div>
-            {assign var=open_row value=1}
-        {/if}
-        {counter name="ipr"}
-        {*if !$listing->active_type==2}
-
-            {$ipr}
-            {if $smarty.foreach.listings.first || $ipr%0}
-            {counter name="ipr" start=0}
-            <div class="product-row">
-            {/if}
-
-            {include file=$listing->getForm('storeListing')}
-
-            {if $smarty.foreach.listings.last || $ipr%0}
+            {* close the row if left open. might happen for non-admins *}
+            {if $open_c_row==0}
                 </div>
+                {assign var=open_c_row value=1}
             {/if}
-        {counter name="ipr" start=$ipr+1}
-        {/if*}
-        {/foreach}
-    </div>
-    {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
-    {pagelinks paginate=$page bottom=1}
+        </div>
+    {else}
+        <h2>{"All Products Under"|gettext} {$current_category->title}</h2>
+        {pagelinks paginate=$page top=1}
+        {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
+
+        {*script unique="sort-submit"}
+        {literal}
+        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+            Y.all('select[name="sortme"]').on('change',function(e){
+                window.location = e.target.get('value');
+            });
+
+        });
+        {/literal}
+        {/script*}
+        <div class="products ipr{$config.images_per_row|default:3} listing-row">
+            {counter assign="ipr" name="ipr" start=1}
+            {foreach from=$page->records item=listing name=listings}
+                {if $smarty.foreach.listings.first || $open_row}
+                    <div class="product-row">
+                    {assign var=open_row value=0}
+                {/if}
+                {include file=$listing->getForm('storeListing')}
+                {if $smarty.foreach.listings.last || $ipr%$config.images_per_row==0}
+                    </div>
+                    {assign var=open_row value=1}
+                {/if}
+                {counter name="ipr"}
+                {*if !$listing->active_type==2}
+
+                    {$ipr}
+                    {if $smarty.foreach.listings.first || $ipr%0}
+                    {counter name="ipr" start=0}
+                    <div class="product-row">
+                    {/if}
+
+                    {include file=$listing->getForm('storeListing')}
+
+                    {if $smarty.foreach.listings.last || $ipr%0}
+                        </div>
+                    {/if}
+                {counter name="ipr" start=$ipr+1}
+                {/if*}
+            {/foreach}
+        </div>
+        {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
+        {pagelinks paginate=$page bottom=1}
     {/if}
 </div>
 
-
 {script unique="expanding-text" yui3mods="yui"}
 {literal}
-
 YUI(EXPONENT.YUI3_CONFIG).use("anim-easing","node","anim", function(Y) {
     
     var modules = Y.all('.showall.store .bodycopy');

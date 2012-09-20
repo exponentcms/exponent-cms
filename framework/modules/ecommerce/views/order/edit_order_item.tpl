@@ -73,9 +73,9 @@
                 <div class="user-input {cycle values="odd,even"}">
                 {if $uif.use}                   
                          {if $uif.is_required}
-                             {control type=text name=user_input_fields[$uifkey] size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
+                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
                          {else}
-                             {control type=text name=user_input_fields[$uifkey] size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
+                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
                          {/if}
                          {if $uif.description != ''}{$uif.description}{/if}
                     {/if}
