@@ -179,7 +179,7 @@ class migrationController extends expController {
 					list($u, $s) = explode(' ',microtime());
 					$this->sef_name .= '-'.$s.'-'.$u;
 				}
-                $page->sef_url = $page->sef_name;
+                $page->sef_name = $page->sef_name;
                 unset($page->sef_name);
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
@@ -207,7 +207,7 @@ class migrationController extends expController {
 					list($u, $s) = explode(' ',microtime());
 					$this->sef_name .= '-'.$s.'-'.$u;
 				}
-                $page->sef_url = $page->sef_name;
+                $page->sef_name = $page->sef_name;
                 unset($page->sef_name);
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {

@@ -49,11 +49,11 @@ class expCore {
 	 *
 	 * @param Array $params An associative array of the desired querystring parameters.
 	 * @param string $type
-	 * @param string $sef_url
+	 * @param string $sef_name
 	 * @return string
 	 * @node Subsystems:expCore
 	 */
-	public static function makeLink($params,$type='',$sef_url='') {
+	public static function makeLink($params,$type='',$sef_name='') {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		//   Now that we have the router class, this function is here for compatibility reasons only.
@@ -64,7 +64,7 @@ class expCore {
 
 		// this is here for compatibility with the navigation module and the old way make link used prior
 		// to having the router class
-		$params['sef_url'] = $sef_url;
+		$params['sef_name'] = $sef_name;
 
 		// now that we have the router class we'll use it to build the link and then return it.
 		return $router->makeLink($params);
@@ -123,7 +123,7 @@ class expCore {
 
 			// this is here for compatibility with the navigation module and the old way make link used prior
 			// to having the router class
-//			$params['sef_url'] = sef_url;  //FIXME $sef_name isn't set??
+//			$params['sef_name'] = sef_name;  //FIXME $sef_name isn't set??
 
 			// now that we have the router class we'll use it to build the link and then return it.
 			return $router->makeLink($params, false, true);
@@ -141,7 +141,7 @@ class expCore {
 	}
 
     /**
-     * make an sef_url for specific model
+     * make an sef_name for specific model
      *
      * @param string $title
      * @param string $model
@@ -152,16 +152,16 @@ class expCore {
         global $db, $router;
 
         if (!empty($title)) {
-            $sef_url = $router->encode($title);
+            $sef_name = $router->encode($title);
         } else {
-            $sef_url = $router->encode('Untitled');
+            $sef_name = $router->encode('Untitled');
         }
-        $dupe = $db->selectValue($model, 'sef_url', 'sef_url="'.$sef_url.'"');
+        $dupe = $db->selectValue($model, 'sef_name', 'sef_name="'.$sef_name.'"');
         if (!empty($dupe)) {
             list($u, $s) = explode(' ',microtime());
-            $sef_url .= '-'.$s.'-'.$u;
+            $sef_name .= '-'.$s.'-'.$u;
         }
-        return $sef_url;
+        return $sef_name;
     }
 
 	/** exdoc

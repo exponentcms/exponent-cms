@@ -44,7 +44,7 @@ class expRouter {
 	 * @internal param array $params The params that are passed will determine what link is make
 	 *               section
 	 *               action
-	 *               sef_url
+	 *               sef_name
 	 *               module
 	 *               controller
 	 *               action
@@ -77,11 +77,11 @@ class expRouter {
         if (SEF_URLS == 1 && ($_SERVER["PHP_SELF"] == PATH_RELATIVE.'index.php' || $_SERVER["PHP_SELF"] == PATH_RELATIVE.'install/index.php') && $force_old_school == false) {
             
             if (isset($params['section']) && !isset($params['action'])) {                
-                if (empty($params['sef_url'])) {
+                if (empty($params['sef_name'])) {
                     global $db;
-                    $params['sef_url'] = $db->selectValue('section', 'sef_url', 'id='.intval($params['section']));
+                    $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
                 }                               
-                return self::cleanLink($linkbase.$params['sef_url']);
+                return self::cleanLink($linkbase.$params['sef_name']);
             } else {                
                 // initialize the link
                 $link = '';               
@@ -139,7 +139,7 @@ class expRouter {
             }
         } else {
             // if the users don't have SEF URL's turned on then we make the link the old school way.
-            if (!empty($params['sef_url'])) unset($params['sef_url']);
+            if (!empty($params['sef_name'])) unset($params['sef_name']);
             $link = $linkbase . SCRIPT_FILENAME . "?";
             foreach ($params as $key=>$value) {
                 if (!is_array($value)){
@@ -262,7 +262,7 @@ class expRouter {
                 // take a peek and see if a page exists with the same name as the first value...if so we probably have a page with
                 // extra perms...like printerfriendly=1 or ajax=1;
                 global $db;
-                if ( ($db->selectObject('section', "sef_url='".$this->url_parts[0]."'") != null) && ((in_array('printerfriendly', $this->url_parts)) || (in_array('exportaspdf', $this->url_parts)))) {
+                if ( ($db->selectObject('section', "sef_name='".$this->url_parts[0]."'") != null) && ((in_array('printerfriendly', $this->url_parts)) || (in_array('exportaspdf', $this->url_parts)))) {
                     $this->url_type = 'page';
                 } else {
                     $this->url_type = 'action';
@@ -296,7 +296,7 @@ class expRouter {
                 $_REQUEST['section'] = SITE_DEFAULT_SECTION;  
             }
         } else {
-            // Try to look up the page by sef_url first.  If that doesn't exist, strip out the dashes and
+            // Try to look up the page by sef_name first.  If that doesn't exist, strip out the dashes and
             // check the regular page names.  If that still doesn't work then we'll redirect them to the 
             // search module using the page name as the search string.
             $section = $this->getPageByName($this->url_parts[0]);
@@ -319,21 +319,21 @@ class expRouter {
             //routeActionRequest with some hand wacked variables. If we can't find an override
             //then we'll return false as usual
             if (empty($section)) {
-                $sef_url = $this->url_parts[0];
+                $sef_name = $this->url_parts[0];
                 //check for a category
                 $c = new storeCategory();                
-                $cat = $c->findBy('sef_url', $sef_url);
+                $cat = $c->findBy('sef_name', $sef_name);
                 if (empty($cat)) {
                     //check for a product
                     $p = new product();
-                    $prod = $p->findBy('sef_url', $sef_url);
+                    $prod = $p->findBy('sef_name', $sef_name);
                     if(!empty($prod)) {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
                         $this->url_parts[0] = 'store'; //controller
                         $this->url_parts[1] = 'showByTitle'; //controller
                         $this->url_parts[2] = 'title'; //controller
-                        $this->url_parts[3] = $sef_url; //controller
+                        $this->url_parts[3] = $sef_name; //controller
                         //eDebug($this->url_parts,true);
                         $this->params = $this->convertPartsToParams();
                         return $this->routeActionRequest();
@@ -345,7 +345,7 @@ class expRouter {
                     $this->url_parts[0] = 'store'; //controller
                     $this->url_parts[1] = 'showall'; //controller
                     $this->url_parts[2] = 'title'; //controller                    
-                    $this->url_parts[3] = $sef_url; //controller
+                    $this->url_parts[3] = $sef_name; //controller
                     //eDebug($this->url_parts,true);
                     $this->params = $this->convertPartsToParams();
                     return $this->routeActionRequest();
@@ -499,7 +499,7 @@ class expRouter {
             global $db;
             $section = $db->selectObject('section', 'id='.intval($id));
             $url = URL_FULL;
-            $url .= !empty($section->sef_url) ? $section->sef_url : $section->name;
+            $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
         }
     }
 
@@ -512,7 +512,7 @@ class expRouter {
             if (SEF_URLS == 1) {
                 $section = $db->selectObject('section', 'id='.intval($id));
                 if ($section->id != SITE_DEFAULT_SECTION) {
-                    $url .= !empty($section->sef_url) ? $section->sef_url : $section->name;
+                    $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
                 }
             } else {
                 $url .= 'index.php?section='.$id;
@@ -605,7 +605,7 @@ class expRouter {
             // if we made it in here this is a request for http://www.baseurl.com
             $section = $db->selectObject('section', 'id='.SITE_DEFAULT_SECTION);
         } else {
-            $section = $db->selectObject('section', "sef_url='".$url_name."'");
+            $section = $db->selectObject('section', "sef_name='".$url_name."'");
         }
         // if section is still empty then we should route the user to the search (cool new feature :-) )
         // at some point we need to write a special action/view for the search module that lets the user

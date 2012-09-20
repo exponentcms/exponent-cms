@@ -76,15 +76,15 @@ class upgrade_navigation extends upgradescript {
             $db->updateObject($up,'userpermission',null,'uid');
         }
 
-        // rename section table sef_name field to 2.0 standard of sef_url
-        $sects = $db->selectObjects('section',1);
-        foreach ($sects as $sect) {
-            if (empty($sect->sef_url) && !empty($sect->sef_name)) {
-                $sect->sef_url = $sect->sef_name;
-                $db->updateObject($sect,'section');
-            }
-        }
-        $db->sql('ALTER TABLE '.DB_TABLE_PREFIX.'_section DROP sef_name');
+//        // rename section table sef_name field to 2.0 standard of sef_url
+//        $sects = $db->selectObjects('section',1);
+//        foreach ($sects as $sect) {
+//            if (empty($sect->sef_url) && !empty($sect->sef_name)) {
+//                $sect->sef_url = $sect->sef_name;
+//                $db->updateObject($sect,'section');
+//            }
+//        }
+//        $db->sql('ALTER TABLE '.DB_TABLE_PREFIX.'_section DROP sef_name');
 
 		// convert each navigationmodule to a navigation Controller
 	    $modules_converted = 0;
