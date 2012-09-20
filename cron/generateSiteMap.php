@@ -40,14 +40,14 @@
     $columns = '';
     
 	//Get all the sections
-    $sections = $db->selectObjectsBySql('SELECT sef_name FROM exponent_section WHERE public = 1 and active = 1');
+    $sections = $db->selectObjectsBySql('SELECT sef_url FROM exponent_section WHERE public = 1 and active = 1');
 	
 	foreach ($sections as $item) {            
 		
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.=URL_FULL.$item->sef_name;
+		$columns.=URL_FULL.$item->sef_url;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';

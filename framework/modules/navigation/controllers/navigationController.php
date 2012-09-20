@@ -251,8 +251,8 @@ class navigationController extends expController {
                 $child->parents       = $parents;
                 $child->canManage     = (isset($user->is_acting_admin) && $user->is_acting_admin == 1 ? 1 : 0);
                 $child->canManageRank = $child->canManage;
-                if (!isset($child->sef_name)) {
-                    $child->sef_name = '';
+                if (!isset($child->sef_url)) {
+                    $child->sef_url = '';
                 }
                 // Generate the link attribute base on alias type.
                 if ($child->alias_type == 1) {
@@ -281,7 +281,7 @@ class navigationController extends expController {
                     }
                 } else {
                     // Normal link.  Just create the URL from the section's id.
-                    $child->link = expCore::makeLink(array('section' => $child->id), '', $child->sef_name);
+                    $child->link = expCore::makeLink(array('section' => $child->id), '', $child->sef_url);
                 }
                 //$child->numChildren = $db->countObjects('section','parent='.$child->id);
                 $nodes[] = $child;
@@ -529,7 +529,7 @@ class navigationController extends expController {
         $section              = new stdClass();
         $section->parent      = $parent_section->id;
         $section->name        = $subtpl->name;
-        $section->sef_name    = $router->encode($section->name);
+        $section->sef_url     = $router->encode($section->name);
         $section->subtheme    = $subtpl->subtheme;
         $section->active      = $subtpl->active;
         $section->public      = $subtpl->public;
@@ -692,7 +692,7 @@ class navigationController extends expController {
             } else {
                 $nav[$i]->manage = 0;
             }
-            $nav[$i]->link = expCore::makeLink(array('section' => $nav[$i]->id), '', $nav[$i]->sef_name);
+            $nav[$i]->link = expCore::makeLink(array('section' => $nav[$i]->id), '', $nav[$i]->sef_url);
         }
         $nav[$navcount - 1]->last = true;
         echo expJavascript::ajaxReply(201, '', $nav);

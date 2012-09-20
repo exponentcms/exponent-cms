@@ -49,11 +49,11 @@ class expCore {
 	 *
 	 * @param Array $params An associative array of the desired querystring parameters.
 	 * @param string $type
-	 * @param string $sef_name
+	 * @param string $sef_url
 	 * @return string
 	 * @node Subsystems:expCore
 	 */
-	public static function makeLink($params,$type='',$sef_name='') {
+	public static function makeLink($params,$type='',$sef_url='') {
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		//   Now that we have the router class, this function is here for compatibility reasons only.
@@ -64,7 +64,7 @@ class expCore {
 
 		// this is here for compatibility with the navigation module and the old way make link used prior
 		// to having the router class
-		$params['sef_name'] = $sef_name;
+		$params['sef_url'] = $sef_url;
 
 		// now that we have the router class we'll use it to build the link and then return it.
 		return $router->makeLink($params);
@@ -123,7 +123,7 @@ class expCore {
 
 			// this is here for compatibility with the navigation module and the old way make link used prior
 			// to having the router class
-//			$params['sef_name'] = $sef_name;  //FIXME $sef_name isn't set??
+//			$params['sef_url'] = sef_url;  //FIXME $sef_name isn't set??
 
 			// now that we have the router class we'll use it to build the link and then return it.
 			return $router->makeLink($params, false, true);

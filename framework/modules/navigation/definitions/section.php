@@ -28,7 +28,7 @@ return array(
 	'name'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>200),
-	'sef_name'=>array(
+	'sef_url'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>200),
 	'subtheme'=>array(
