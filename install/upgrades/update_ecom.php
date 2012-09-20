@@ -59,17 +59,17 @@ class update_ecom extends upgradescript {
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
         $config = new expConfig($cfg);
-        if (!empty($config['header'])) {
-            $config['ecomheader'] = $config['header'];
-            unset ($config['header']);
+        if (!empty($config->config['header'])) {
+            $config->config['ecomheader'] = $config->config['header'];
+            unset ($config->config['header']);
             $fixed++;
         }
-        if (!empty($config['footer'])) {
-            $config['ecomfooter'] = $config['footer'];
-            unset ($config['footer']);
+        if (!empty($config->config['footer'])) {
+            $config->config['ecomfooter'] = $config->config['footer'];
+            unset ($config->config['footer']);
             $fixed++;
         }
-        $config->update();
+        $config->update(array('config'=>$config->config));
         return ($fixed?$fixed:gt('No')).' '.gt('eCommerce settings were corrected');
 	}
 
