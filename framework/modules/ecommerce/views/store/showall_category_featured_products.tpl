@@ -31,6 +31,6 @@
             </div>
         {/if}
     {foreachelse}
-       {'No Products were found!'|gettext}
+        {'No Products were found!'|gettext}
     {/foreach}
 </div>

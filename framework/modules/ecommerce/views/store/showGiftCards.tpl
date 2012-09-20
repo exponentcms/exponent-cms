@@ -47,21 +47,20 @@
 									{control type="radio" name="product_id" label="`$giftcard->title`" value="`$giftcard->id`"}
 								{/if}
 							</div>
+                        {foreachelse}
+                            {'There are no gift cards available!'|gettext}
 						{/foreach}
 					</fieldset>
 				</td>
 			</tr>
-	
 			<tr>
 				<td>
 					<h2>{'Select the amount of the gift card'|gettext}</h2>
 				</td>
 			</tr>
-			
 			<tr>
 				<td>
 					<fieldset id="card-amount">
-						
 						<div class="radio control" id="25dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="25" name="card_amount" id="25d" {if $records.card_amount == "25"}checked="checked"{/if}></td><td><label class="label " for="25d">$25</label></td></tr></tbody></table></div>
 						<div class="radio control" id="50dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="50" name="card_amount" id="50d" {if $records.card_amount == "50"}checked="checked"{/if}></td><td><label class="label " for="50d">$50</label></td></tr></tbody></table></div>
 						<div class="radio control" id="75dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="75" name="card_amount" id="75d" {if $records.card_amount == "75"}checked="checked"{/if}></td><td><label class="label " for="75d">$75</label></td></tr></tbody></table></div>
@@ -73,13 +72,11 @@
 					</fieldset>
 				</td>
 			</tr>
-			
 			<tr>
 				<td>
 					<h2>{'Personalize your gift card'|gettext}</h2>
 				</td>
 			</tr>
-			
 			<tr>
 				<td>
 					<fieldset>
@@ -96,8 +93,7 @@
 
 	<a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} exp-ecom-link" rel="nofollow"><strong><em>{'Add selected items to cart'|gettext}</em></strong></a>
 	{/form}
-	
-</div>		
+</div>
 
 {script unique="giftcard-submit"}
 	{literal}

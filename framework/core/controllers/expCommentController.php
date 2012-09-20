@@ -229,6 +229,7 @@ class expCommentController extends expController {
         $this->expComment->update($this->params);
         
         // attach the comment to the datatype it belongs to (blog, news, etc..);
+        $obj = new stdClass();
 		$obj->content_type = $this->params['content_type'];
 		$obj->content_id = $this->params['content_id'];
 		$obj->expcomments_id = $this->expComment->id;

@@ -50,7 +50,8 @@
                     {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1}
                     {control type="dropdown" name="subtheme" label="Theme Variation"|gettext items=expTheme::getSubThemes() value=$section->subtheme}
                     {if $smarty.const.ENABLE_SSL}
-                        {control type="checkbox" name="secured" label="Secured"|gettext|cat:"?" checked=$section->secured value=1}
+                        {*TODO we don't secure individual pages at this time*}
+                        {*{control type="checkbox" name="secured" label="Secured"|gettext|cat:"?" checked=$section->secured value=1}*}
                     {/if}
                     {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1}
                 </div>

@@ -30,7 +30,6 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
     
     var formatResults = function (query, results) {
 
-
         return Y.Array.map(results, function (result) {
             var result = result.raw;
 
@@ -68,4 +67,3 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
 
 {/literal}
 {/script}
-

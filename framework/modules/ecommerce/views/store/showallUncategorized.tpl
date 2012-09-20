@@ -22,35 +22,35 @@
     <div id="products">
 		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table" style="width:95%">
-        <thead>
-            <tr>
-            <th></th>
-            {$page->header_columns}
-            <th>{'Edit/Delete'|gettext}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {foreach from=$page->records item=listing name=listings}
-            <tr class="{cycle values="odd,even"}">
-                <td><a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a></td>
-                <td>{$listing->model|default:"N/A"}</td>
-                <td>{$listing->title}</td>
-                <td>${$listing->base_price|number_format:2}</td>
-                <td>
-                    {permissions}
-						<div class="item-actions">
-							{if $permissions.edit == 1}
-								{icon action=edit record=$listing title="Edit `$listing->title`"}
-							{/if}
-							{if $permissions.delete == 1}
-								{icon action=delete record=$listing title="Delete `$listing->title`"}
-							{/if}
-						</div>
-                    {/permissions}  
-                </td>                   
-            </tr>
-            {/foreach}
-        </tbody>
+            <thead>
+                <tr>
+                <th></th>
+                {$page->header_columns}
+                <th>{'Edit/Delete'|gettext}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$page->records item=listing name=listings}
+                    <tr class="{cycle values="odd,even"}">
+                        <td><a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a></td>
+                        <td>{$listing->model|default:"N/A"}</td>
+                        <td>{$listing->title}</td>
+                        <td>${$listing->base_price|number_format:2}</td>
+                        <td>
+                            {permissions}
+                                <div class="item-actions">
+                                    {if $permissions.edit == 1}
+                                        {icon action=edit record=$listing title="Edit `$listing->title`"}
+                                    {/if}
+                                    {if $permissions.delete == 1}
+                                        {icon action=delete record=$listing title="Delete `$listing->title`"}
+                                    {/if}
+                                </div>
+                            {/permissions}
+                        </td>
+                    </tr>
+                {/foreach}
+            </tbody>
         </table>
 		{pagelinks paginate=$page bottom=1}
     </div>

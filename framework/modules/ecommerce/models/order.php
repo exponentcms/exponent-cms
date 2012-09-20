@@ -394,7 +394,7 @@ class order extends expRecord {
                 $shippingmethod = new shippingmethod($orderitem->shippingmethods_id);
                 $shippingmethod->delete();
                 $orderitem->shippingmethods_id = 0;
-                $orderiten->products_tax = 0;
+                $orderitem->products_tax = 0;
                 $orderitem->save();
             }
         }

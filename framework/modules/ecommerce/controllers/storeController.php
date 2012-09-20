@@ -34,7 +34,7 @@ class storeController extends expController {
         'showallSubcategories'               => 'Categories - Subcategories of current category',
         'upcoming_events'                    => 'Event Registration - Upcomming Events',
         'events_calendar'                    => 'Event Registration - Calendar View',
-        'ecom_search'                        => 'Search - Autocomplete',
+        'ecomSearch'                        => 'Search - Autocomplete',
         'search_by_model_form'               => 'Search - By Model',
         'quicklinks'                         => 'Links - Users Links',
         'showall_category_featured_products' => 'Show Featured Products under the current category',
@@ -185,7 +185,7 @@ class storeController extends expController {
             $count_sql = $count_sql_start . $sql;
             $sql       = $sql_start . $sql;
 
-            $order = 'sc.rank'; //$this->config['orderby'];
+            $order = 'title';  // $order = 'sc.rank'; //$this->config['orderby'];
             $dir   = 'ASC'; //$this->config['orderby_dir'];
             //eDebug($this->config);
         } else {
@@ -860,7 +860,7 @@ class storeController extends expController {
         ));
     }
 
-    function ecom_search() {
+    function ecomSearch() {
 
     }
 
@@ -901,7 +901,7 @@ class storeController extends expController {
         return $count;
     }
 
-    function search_by_model_form() {
+    function searchByModel() {
         //do nothing...just show the view.
     }
 

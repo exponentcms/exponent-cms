@@ -278,6 +278,10 @@
                 <hr>
                 <h4>{'Getting e-Commerce up and running'|gettext}</h4>
                 <ol>
+                    <li><strong>{'Set up your site on a secure (SSL) server!'|gettext}</strong></li>
+                    <ul>
+                        <li>{'Enter appropriate settings under the Security tab above.'|gettext}</li>
+                    </ul>
                     <li>{'Import default ecommerce information into the database'|gettext} <a href="{link action=install_ecommerce_tables}" title={'Install Default e-Commerce data'|gettext} onclick="return confirm('{'Are you sure you want to re-initialize e-Commerce data to default values?'|gettext}');">{'here'|gettext}</a></li>
                     <ul>
                         <li>geo_regions</li>
@@ -311,10 +315,10 @@
                         <li>{'Enter some \'General Store Settings\''|gettext} <a href="{link controller=ecomconfig action=configure}" title={'Configure Store Settings'|gettext}>{'here'|gettext}</a></li>
                         <li>{'Create a Product (with optional sub-steps)'|gettext}</li>
                         <ul>
-                            <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
                             <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>
+                            <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
                             <li>{'Create a Tax Class/Zone'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Tax Classes'|gettext}>{'here'|gettext}</a></li>
-                            <li>{'Create the Product (product, donation, event, or gift card)'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
+                            <li>{'Create the Product (product, donation, event, or gift card) and assign a category'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
                         </ul>
                     </ul>
                     <li>{'Add an e-Commerce module to a page to allow user access to the \'store\'.'|gettext}</li>

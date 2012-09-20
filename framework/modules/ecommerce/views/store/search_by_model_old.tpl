@@ -12,11 +12,14 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
-<div class="module store show">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-    {form action=search_by_model}
-        {control type="text" name="search_string" label=" "}
-        {control type="buttongroup" submit="Search"|gettext}
-    {/form}
+
+<div class="store showall">
+    <h2>{'Product Model Search results for'|gettext} '{$terms}'</h2>
+    {pagelinks paginate=$page top=1}
+    <div class="products">
+        {foreach from=$page->records item=listing name=listings}
+            {include file=$listing->getForm('storeListing')}
+        {/foreach}
+    </div>
+    {pagelinks paginate=$page bottom=1}
 </div>

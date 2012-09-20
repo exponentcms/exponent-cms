@@ -20,12 +20,11 @@
 			<li><a href="{link action=showallByManufacturer id=$manufacturer->id}">{$manufacturer->title}</a></li>
 		{/foreach}
 	</ul>	
-	
 	{permissions}
         {if $permissions.create == 1 or $permissions.edit == 1}
-        <div id="prod-admin">
-            <a href="{link controller=company action=create}">{'Add a new company'|gettext}</a>
-        </div>
-    {/if}
+            <div id="prod-admin">
+                {icon class=add controller=company action=create text="Add a New Company"|gettext}
+            </div>
+        {/if}
     {/permissions}
 </div>

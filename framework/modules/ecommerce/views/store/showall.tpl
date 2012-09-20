@@ -62,8 +62,8 @@
     {* current category's sub-categories *}
     {if $categories|@count > 0}
         <div class="cats">
-            <h2>{'Categories Under'|gettext} {$current_category->title}</h2>
-            
+            <h2>{'Categories'|gettext}{if $current_category->id} {'Under'|gettext} {$current_category->title}{/if}</h2>
+
             {counter assign="ipcr" name="ipcr" start=1}
             {assign var=open_c_row value=1}
             {foreach name="cats" from=$categories item="cat"}
@@ -119,7 +119,7 @@
             {/if}
         </div>
     {else}
-        <h2>{"All Products Under"|gettext} {$current_category->title}</h2>
+        <h2>{"All Products"|gettext} {if $current_category->id}{"Under"|gettext} {$current_category->title}{/if}</h2>
         {pagelinks paginate=$page top=1}
         {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
 
