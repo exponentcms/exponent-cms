@@ -26,7 +26,7 @@
  */
 class fix_photo_module extends upgradescript {
 	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.0.6';  // photoController name was changed in 2.0.5
+	protected $to_version = '2.0.6';  // photoController name was changed in 2.0.6
 
 	/**
 	 * name/title of upgrade script
@@ -45,7 +45,9 @@ class fix_photo_module extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-		return true;  // we'll just do it ine very instance instead of testing if user profile extensions are active
+        if (expUtil::isReallyWritable(BASE."framework/modules/photoalbum/views/photos/")) {
+    		return true;  // the old views folder still exists
+        } else return false;
 	}
 
 	/**

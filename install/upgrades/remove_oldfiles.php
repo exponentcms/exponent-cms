@@ -26,7 +26,7 @@
  */
 class remove_oldfiles extends upgradescript {
 	protected $from_version = '1.99.0';
-	protected $to_version = '2.0.8';
+	protected $to_version = '2.0.9';
 
 	/**
 	 * name/title of upgrade script
@@ -194,6 +194,11 @@ class remove_oldfiles extends upgradescript {
         // while we're at it, check if the old loginmodule folder still exists
         if (expUtil::isReallyWritable(BASE."framework/modules-1/loginmodule/")) {
             expFile::removeDirectory(BASE."framework/modules-1/loginmodule/");
+            $files_removed++;
+        }
+        // while we're at it, check if the old photos folder still exists
+        if (expUtil::isReallyWritable(BASE."framework/modules/photoalbum/views/photos/")) {
+            expFile::removeDirectory(BASE."framework/modules/photoalbum/views/photos/");
             $files_removed++;
         }
 

@@ -38,14 +38,21 @@ class update_ecom extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.0.9, the eCommerce header/footer setting was revised.  This Script updates those entries"; }
+	function description() { return "In v2.0.9, the eCommerce header/footer configuration was revised.  This Script updates those entries"; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
 	 * @return bool
 	 */
 	function needed() {
-		return true;  // we'll just do it ine very instance instead of testing if user profile extensions are active
+        $cfg = new stdClass();
+        $cfg->mod = "ecomconfig";
+        $cfg->src = "@globalstoresettings";
+        $cfg->int = "";
+        $config = new expConfig($cfg);
+        if (!empty($config->config['header']) || !empty($config->config['footer'])) {
+            return true;
+        } else return false;
 	}
 
 	/**

@@ -74,27 +74,6 @@ class clear_cache extends upgradescript {
 		return gt("All Caches were cleared.")."<br>".($errors?$errors:gt('No'))." ".gt("files could not be removed.");
 	}
 
-	/**
-	 * recursively clear a directories contents, but leave the directory
-	 * @param $dir
-	 */
-	function cleardir_recursive($dir) {  //FIXME No longer used
-		$files = scandir($dir);
-		array_shift($files);    // remove '.' from array
-		array_shift($files);    // remove '..' from array
-		foreach ($files as $file) {
-			if (substr($file, 0, 1) != '.') {  // don't remove dot files
-				$file = $dir . '/' . $file;
-				if (is_dir($file)) {
-					$this->cleardir_recursive($file);
-					rmdir($file);
-				} else {
-					unlink($file);
-				}
-			}
-		}
-		// rmdir($dir);
-	}
 }
 
 ?>

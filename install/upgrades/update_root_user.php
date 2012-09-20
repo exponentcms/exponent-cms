@@ -45,7 +45,9 @@ class update_root_user extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-		return true;  // we'll just do it ine very instance instead of testing if user profile extensions are active
+        global $db;
+
+        return $db->selectObject('user',"is_system_user = '1'") == null ? true : false;
 	}
 
 	/**

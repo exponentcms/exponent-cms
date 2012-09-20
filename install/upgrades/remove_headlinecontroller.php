@@ -46,7 +46,9 @@ class remove_headlinecontroller extends upgradescript {
    	 * @return bool
    	 */
    	function needed() {
-   		return true;  // subclasses MUST return true to be run
+        if (expUtil::isReallyWritable(BASE."framework/modules/headline/")) {
+       		return true;  // old files still exist
+        } else return false;
    	}
 
 	/**
