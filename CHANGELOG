@@ -21,8 +21,9 @@ Added / Fixed / changed for 2.0.9
   - importing EQL database backup files now more descriptive if errors are encountered (detailed solution provided)
   - adds some new upgrade scripts to attempt to clean up the system from previous updates
     -- deletes moved files where old file in old location may still linger
-    -- attempts to fix some database issues such as mixed case naming or controller name quirks.
+    -- attempts to fix some database issues such as mixed case naming or controller name quirks
   - new system fallback theme so pages will display even if the entire themes folder is missing
+  - adds site configuration setting to turn on e-commerce w/o activating an ecom module also actived by any active ecom module
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.8
