@@ -123,10 +123,8 @@ class upgrade_navigation extends upgradescript {
             $db->insertObject($ms,'modstate');
         }
 
-        // delete old files (moved or deleted)
+        // delete old navigationmodule assoc files (moved or deleted)
         $oldfiles = array (
-            'external/editors/connector/popup.js',
-            'external/editors/connector/section_linked.php',
             'framework/core/definitions/section.php',
             'framework/core/definitions/sectionref.php',
             'framework/core/definitions/section_template.php',
@@ -134,13 +132,6 @@ class upgrade_navigation extends upgradescript {
             'framework/core/models-1/section.php',
             'framework/core/models-1/section_template.php',
             'framework/modules-1/navigationmodule/nav.php',
-            'framework/modules-1/containermodule/actions/copy_to_clipboard.php',
-            'framework/modules-1/containermodule/actions/orphans_modules.php',
-            'framework/modules-1/containermodule/actions/view_clipboard.php',
-            'framework/modules-1/containermodule/actions/view-recycle-bin.php',
-            'framework/modules-1/containermodule/views/_orphans_modules.tpl',
-            'framework/modules-1/containermodule/views/_view_clipboard.tpl',
-            'framework/modules-1/common//views/_msg_queue.tpl',
         );
 		// check if the old file exists and remove it
         foreach ($oldfiles as $file) {
@@ -149,14 +140,14 @@ class upgrade_navigation extends upgradescript {
             }
         }
 		// delete old navigationmodule, common, & editor connect files
-        if (expUtil::isReallyWritable(BASE."framework/modules-1/navigationmodule/actions/")) {
-            expFile::removeDirectory(BASE."framework/modules-1/navigationmodule/actions/");
-        }
-        if (expUtil::isReallyWritable(BASE."framework/modules-1/navigationmodule/views/")) {
-            expFile::removeDirectory(BASE."framework/modules-1/navigationmodule/views/");
-        }
-        if (expUtil::isReallyWritable(BASE."external/editors/connector/lang/")) {
-            expFile::removeDirectory(BASE."external/editors/connector/lang/");
+        $olddirs = array(
+            "framework/modules-1/navigationmodule/actions/",
+            "framework/modules-1/navigationmodule/views/",
+        );
+        foreach ($olddirs as $dir) {
+            if (expUtil::isReallyWritable(BASE.$dir)) {
+                expFile::removeDirectory(BASE.$dir);
+            }
         }
 //        if (expUtil::isReallyWritable(BASE."framework/modules-1/common/views/")) {
 //            expFile::removeFilesInDirectory(BASE."framework/modules-1/common/views/");
