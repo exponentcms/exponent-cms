@@ -167,7 +167,7 @@ class user extends expRecord {
         if (!empty($this->id)) {
             $active_extensions = $db->selectObjects('profileextension', 'active=1');
             foreach ($active_extensions as $ext) {
-                include_once($ext->classfile);
+                include_once(BASE.$ext->classfile);
                 $extension = new $ext->classname();
                 $data = $db->selectObjects($extension->tablename, 'user_id='.$this->id);
                 if (!empty($data)) {

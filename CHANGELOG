@@ -8,7 +8,7 @@ Added / Fixed / changed for 2.0.9
   - upgrades old school simple poll and navigation modules into 2.0 style controllers
     -- page type indicators now displayed in Manage Pages view
     -- new universal navigation view to emulate most old navigation views through user settings
-    -- initial implementation of menu item icons
+    -- initial implementation of optional menu item icons
   - adds help links to most admin displays
   - adds next/prev item in blog and news single item view
   - adds optional 'date badge' to news, blog, & filedownload views
@@ -23,7 +23,7 @@ Added / Fixed / changed for 2.0.9
     -- deletes moved files where old file in old location may still linger
     -- attempts to fix some database issues such as mixed case naming or controller name quirks
   - new system fallback theme so pages will display even if the entire themes folder is missing
-  - adds site configuration setting to turn on e-commerce w/o activating an ecom module also actived by any active ecom module
+  - adds site configuration setting to turn on e-commerce w/o activating an ecom module, also now activated by any active ecom module
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.8
