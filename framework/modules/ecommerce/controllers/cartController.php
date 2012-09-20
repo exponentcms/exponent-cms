@@ -293,12 +293,13 @@ class cartController extends expController {
                 $discounts = $order->validateDiscounts();
             }
         } else {
-            $order              = null;
+            $order              = new stdClass();
+            $order->orderitem   = new stdClass();
             $items              = null;
             $discounts          = null;
             $estimated_shipping = null;
         }
-        @assign_to_template(array(
+        assign_to_template(array(
             'items'    => $order->orderitem,
             'order'    => $order,
             'discounts'=> $discounts,
@@ -309,6 +310,11 @@ class cartController extends expController {
 
     function checkout() {
         global $user, $order;
+
+        if (empty($order)) {
+            flash('error', gt('There is an error with your shopping card.'));
+            expHistory::back();
+        }
 
         $cfg      = new stdClass();
         $cfg->mod = "cart";

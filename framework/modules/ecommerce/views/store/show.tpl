@@ -294,8 +294,7 @@
         </ul>
     </div>
     {/if*}
-    
-    {if $config.enable_ratings_and_reviews} 
+    {if $config.enable_ratings_and_reviews}
         {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product}
     {/if}
     

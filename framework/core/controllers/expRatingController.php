@@ -41,11 +41,13 @@ class expRatingController extends expController {
         global $db, $user;
         	
         $this->params['id'] = $db->selectValue('content_expRatings','expratings_id',"content_type='".$this->params['content_type']."' AND subtype='".$this->params['subtype']."' AND poster='".$user->id."'");
+        $msg = gt('Thank you for your rating');
         $rating = new expRating($this->params);
-
-        // save the comment
+        if (!empty($rating->id)) $msg = gt('Your rating has been adjusted');
+        // save the rating
         $rating->update($this->params);
-        // attach the comment to the datatype it belongs to (blog, news, etc..);
+        // attach the rating to the datatype it belongs to (blog, news, etc..);
+        $obj = new stdClass();
 		$obj->content_type = $this->params['content_type'];
 		$obj->content_id = $this->params['content_id'];
 		$obj->expratings_id = $rating->id;
@@ -53,7 +55,7 @@ class expRatingController extends expController {
 		if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
 		$db->insertObject($obj, $rating->attachable_table);
 
-        $ar = new expAjaxReply(200, gt('Thank you for your rating'));
+        $ar = new expAjaxReply(200,$msg);
         $ar->send();
 		
         // flash('message', $msg);

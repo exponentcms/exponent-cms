@@ -52,12 +52,14 @@ class expRecord {
     public $attachable_items_to_save;
 
     /* protected $attachable_item_types = array(
-             'content_expFiles'=>'expFile',
-             'content_expTags'=>'expTag',
-             'content_expComments'=>'expComment',
-             'content_expSimpleNote'=>'expSimpleNote',
-             //'content_expEventdate'=>'expEventdate',
-         );*/
+        'content_expCats'=>'expCat'
+        'content_expComments'=>'expComment',
+        'content_expDefinableFields'=> 'expDefinableField'
+        'content_expFiles'=>'expFile',
+        'content_expRatings'=>'expRating',
+        'content_expSimpleNote'=>'expSimpleNote',
+        'content_expTags'=>'expTag',
+    );*/
 
     /**
      * is model content searchable?

@@ -206,12 +206,13 @@ class storeController extends expController {
             $dir   = 'ASC';
         }
 
+        $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         if ($this->category->find('count') > 0) {
             $page = new expPaginator(array(
                 'model_field'=> 'product_type',
                 'sql'        => $sql,
                 'count_sql'  => $count_sql,
-                'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $this->config['limit'],
+                'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
                 'order'      => $order,
                 'dir'        => $dir,
                 'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
@@ -227,7 +228,7 @@ class storeController extends expController {
             $page = new expPaginator(array(
                 'model_field'=> 'product_type',
                 'sql'        => 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product WHERE 1',
-                'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $this->config['limit'],
+                'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
                 'order'      => $order,
                 'dir'        => $dir,
                 'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
@@ -472,10 +473,11 @@ class storeController extends expController {
 
         expSession::set('product_export_query', $sql);
 
+        $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
             'model_field'=> 'product_type',
             'sql'        => $sql,
-            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $this->config['limit'],
+            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->params['controller'],
             'action'     => $this->params['action'],
@@ -524,10 +526,11 @@ class storeController extends expController {
 
         expSession::set('product_export_query', $sql);
 
+        $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
             'model_field'=> 'product_type',
             'sql'        => $sql,
-            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $this->config['limit'],
+            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->params['controller'],
             'action'     => $this->params['action'],
@@ -555,10 +558,11 @@ class storeController extends expController {
 
         expHistory::set('viewable', $this->params);
 
+        $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
             'model'     => 'product',
             'where'     => 'companies_id=' . $this->params['id'] . ' AND parent_id=0',
-            'limit'     => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $this->config['limit'],
+            'limit'     => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
             'default'   => 'Product Name',
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=> $this->params['controller'],
@@ -812,11 +816,12 @@ class storeController extends expController {
         $order = 'sc.rank'; //$this->config['orderby'];
         $dir   = 'ASC'; //$this->config['orderby_dir'];
 
+        $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
             'model_field'=> 'product_type',
             'sql'        => $sql,
             'count_sql'  => $count_sql,
-            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $this->config['limit'],
+            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
             'order'      => $order,
             'dir'        => $dir,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
@@ -1284,10 +1289,11 @@ class storeController extends expController {
 
         $sql = "model like '%" . $terms . "%'";
 
+        $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
         $page = new expPaginator(array(
             'model'     => 'product',
             'where'     => $sql,
-            'limit'     => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $this->config['limit'],
+            'limit'     => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
             'order'     => 'title',
             'dir'       => 'DESC',
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),

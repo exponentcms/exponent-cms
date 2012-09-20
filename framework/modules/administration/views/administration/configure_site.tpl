@@ -290,14 +290,22 @@
                         <li>shopping_product_types</li>
                         <li>shopzilla_product_types</li>
                     </ul>
-                    <li>{'Activate e-Commerce using the above setting, or activate an e-Commerce module such as'|gettext}:</li>
+                    <li>{'Activate e-Commerce using the above setting, or activate an e-Commerce module'|gettext}:</li>
                     <ul>
                         <li>{'e-Commerce Store Front'|gettext}</li>
                         <li>{'Online Donations'|gettext}</li>
                         <li>{'Online Event Registration'|gettext}</li>
                     </ul>
-                    <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a> (<em>{'Cash/Check'|gettext}</em>)</li>
-                    <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a> (<em>{'In Store Pickup'|gettext}</em>)</li>
+                    <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a></li>
+                    <ul>
+                        <li>{'Most Payment Options need configuration which requires establishing an account with a payment service'|gettext}</li>
+                        <li>{'\'Cash/Check\' is the easiest to set up'|gettext}</li>
+                    </ul>
+                    <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a></li>
+                    <ul>
+                        <li>{'Most Shipping Options need configuration which requires establishing an account with a shipping service'|gettext}</li>
+                        <li>{'\'In Store Pickup\' is the easiest to set up'|gettext}</li>
+                    </ul>
                     <li>{'Optionally'|gettext}:</li>
                     <ul>
                         <li>{'Enter some \'General Store Settings\''|gettext} <a href="{link controller=ecomconfig action=configure}" title={'Configure Store Settings'|gettext}>{'here'|gettext}</a></li>
@@ -311,7 +319,7 @@
                     </ul>
                     <li>{'Add an e-Commerce module to a page to allow user access to the \'store\'.'|gettext}</li>
                     <ul>
-                        <li>{'Also add an \'e-Commerce Store Front\' module with \'Links - Users Links\' action for easier user access to store account and shopping cart'|gettext}</li>
+                        <li>{'Also add an \'e-Commerce Store Front\' module with the \'Links - Users Links\' action for easier user access to their store account and shopping cart'|gettext}</li>
                     </ul>
                     <li>{'e-Commerce Store Management is best handled through the e-Commerce menu or Dashboard'|gettext}</li>
                 </ol>

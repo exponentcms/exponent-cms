@@ -59,6 +59,7 @@ class product extends expRecord {
         //'content_expTags'=>'expTag', 
         //'content_expComments'=>'expComment',
         'content_expSimpleNote'=>'expSimpleNote',
+        'content_expRatings'=>'expRating',
     );
     
     

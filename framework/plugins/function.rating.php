@@ -67,11 +67,11 @@ function smarty_function_rating($params,&$smarty) {
                 <div id="star-average-'.$params['subtype'].'" class="star-average" style="width:'.$avg_percent.'%"></div>';
             if ($user->isLoggedIn()) {
         $html.='<div id="my-ratings-'.$params['subtype'].'" class="my-ratings">
-                    <span rel="1" class="u-star st1'.($myrate>=1?" selected":"").'">
-                        <span rel="2" class="u-star st2'.($myrate>=2?" selected":"").'">
-                            <span rel="3" class="u-star st3'.($myrate>=3?" selected":"").'">
-                                <span rel="4" class="u-star st4'.($myrate>=4?" selected":"").'">
-                                    <span rel="5" class="u-star st5'.($myrate>=5?" selected":"").'">
+                    <span rel="1" id="u-star1" class="u-star st1'.($myrate>=1?" selected":"").'">
+                        <span rel="2" id="u-star2" class="u-star st2'.($myrate>=2?" selected":"").'">
+                            <span rel="3" id="u-star3" class="u-star st3'.($myrate>=3?" selected":"").'">
+                                <span rel="4" id="u-star4" class="u-star st4'.($myrate>=4?" selected":"").'">
+                                    <span rel="5" id="u-star5" class="u-star st5'.($myrate>=5?" selected":"").'">
                                     </span>
                                 </span>
                             </span>
@@ -108,9 +108,10 @@ function smarty_function_rating($params,&$smarty) {
         </div>
     </div>
     ';
-    
+
+    if (empty($myrate)) $myrate = 0;
     $content = "
-    YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', 'json-parse', function(Y) {
         var myrating = '".$myrate."';
         var ratingcount = '".$rating_count."';
         var total_rating = '".$total_rating."';
@@ -126,7 +127,7 @@ function smarty_function_rating($params,&$smarty) {
             total_rating = (total_rating==0) ? parseInt(mynewrating) : total_rating-myrating+parseInt(mynewrating);
             total_average = total_rating/ratingcount;
             avg_percent = total_average*100/5;
-            Y.one('#rating-total-".$params['subtype']." .avg').setContent(total_average.toFixed(1));
+//            Y.one('#rating-total-".$params['subtype']." .avg').setContent(total_average.toFixed(1));
             Y.one('#star-average-".$params['subtype']."').setStyle('width',Math.round(avg_percent)+1+'%');
             myrating = mynewrating;
         }
@@ -146,7 +147,8 @@ function smarty_function_rating($params,&$smarty) {
             Y.on('io:failure', onFailure, this);
         };
         function onSuccess(id,response,args) {
-
+            messages = Y.JSON.parse(response.responseText);
+            alert(messages.replyText);
         };
         function onFailure(id,response,args) {
             alert('woops, something is broke...');
@@ -163,7 +165,8 @@ function smarty_function_rating($params,&$smarty) {
                 update_totals(e.target.getAttribute('rel'))
                 e.target.addClass('selected').ancestors('.u-star').addClass('selected');
                 var form = Y.one('#ratingform-".$params['subtype']."');
-                form.one('[value='+myrating+']').set('checked','checked');
+//                form.one('[value='+myrating+']').set('checked','checked');
+                form.one('#rating'+myrating).set('checked','checked');
                 save_rating();
                 //form.submit();
             }
@@ -177,7 +180,8 @@ function smarty_function_rating($params,&$smarty) {
                 },
                 'mouseleave' : function(e) {
                     if (myrating!='') {
-                        myratings.one('.u-star[rel='+myrating+']').addClass('selected').ancestors('.u-star').addClass('selected');
+//                        myratings.one('.u-star[rel='+myrating+']').addClass('selected').ancestors('.u-star').addClass('selected');
+                        myratings.one('#u-star'+myrating).addClass('selected').ancestors('.u-star').addClass('selected');
                     }
                 }
             });
