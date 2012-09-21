@@ -56,8 +56,8 @@ function buildHelp(dbname,username,password,target) {
 <div id="form" class="important_box">
 <?php echo gt('Fill out the form below and click "Go" to generate SQL statements for each supported database server.'); ?>
 <br />
-<form>
 <table>
+<form>
 <tr>
 	<td><?php echo gt('Database'); ?>:&#160;</td>
 	<td><input class="text" type="text" name="dbname" value="" /></td>

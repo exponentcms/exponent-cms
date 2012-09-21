@@ -128,7 +128,7 @@ if (EXPORT_AS_PDF == 1) {
     $pdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
     echo '<script type="text/javascript">
         <!--
-        setTimeout("self.close();",10000)
+        setTimeout("self.close();",10000);
         //-->
         </script>';  //FIXME timeout before closing an empty pdf or html2pdf error window
 } else {

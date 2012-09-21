@@ -50,7 +50,8 @@ class form extends baseform {
 	}
 	
 	function secure() {
-		$this->action = (ENABLE_SSL ? SSL_URL : '') . SCRIPT_RELATIVE . SCRIPT_FILENAME;
+//		$this->action = (ENABLE_SSL ? SSL_URL : '') . SCRIPT_RELATIVE . SCRIPT_FILENAME;
+        $this->action = SCRIPT_RELATIVE . SCRIPT_FILENAME;
 		$this->meta("expid",session_id());
 	}
 

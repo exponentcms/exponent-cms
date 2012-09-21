@@ -79,7 +79,8 @@ class expCore {
 	 * @return string
 	 */
 	public static function makeRSSLink($params) {
-		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
+//		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
+        $link = URL_BASE;
 
 		//FIXME: Hardcoded controller stuff!!
 		if (expModules::controllerExists($params['module'])) {

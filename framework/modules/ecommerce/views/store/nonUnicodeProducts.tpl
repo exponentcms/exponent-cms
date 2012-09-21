@@ -23,7 +23,7 @@
 			<th>{'Model'|gettext}</th>
 			<th>{'Title'|gettext}</th>
 			<th>{'Non-Unicode Field(s)'|gettext}</th>
-			<th>{'Actions'|gettext}"}</th>
+			<th>{'Actions'|gettext}</th>
 		</tr>
 	</thead>
 	<tbody>

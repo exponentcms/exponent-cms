@@ -789,7 +789,7 @@ class reportController extends expController {
             'count_sql'=>$count_sql,
             'sql'=>$sql . $sqlwhere, 
             'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
-            'order'=>'o.invoice_id',
+            'order'=>'invoice_id',
             'dir'=>'DESC',            
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
@@ -1065,7 +1065,7 @@ class reportController extends expController {
         }
                 
         $inc = 0; $sqltmp = '';
-        foreach ($p['product_type'] as $ot)
+        if (!empty($p['product_type'])) foreach ($p['product_type'] as $ot)
         {
             if ($ot == '') continue;
             else if ($inc == 0)
@@ -1082,7 +1082,7 @@ class reportController extends expController {
         
         if (!isset($p['uncategorized'])){
             $inc = 0; $sqltmp = '';
-            foreach ($p['storeCategory'] as $ot)
+            if (!empty($p['storeCategory'])) foreach ($p['storeCategory'] as $ot)
             {
                 if ($ot == '') continue;
                 else if ($inc == 0)
