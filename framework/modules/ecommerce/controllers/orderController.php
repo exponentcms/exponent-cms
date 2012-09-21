@@ -712,7 +712,7 @@ exit();
                 'message'=> $this->params['email_message']
             ));
             $html = $template->render();
-            if ($this->params['include_invoice']) {
+            if (!empty($this->params['include_invoice'])) {
                 $html .= '<br><hr><br>';
                 $html .= renderAction(array('controller'=> 'order', 'action'=> 'show', 'view'=> 'email_invoice', 'id'=> $this->params['id'], 'printerfriendly'=> '1', 'no_output'=> 'true'));
             } else {
@@ -729,6 +729,7 @@ exit();
             } else {
                 $from = ecomconfig::getConfig('from_address');
             }
+            if (empty($from)) $from = SMTP_FROMADDRESS;
 
             if (isset($this->params['email_subject'])) {
                 $email_subject = $this->params['email_subject'];

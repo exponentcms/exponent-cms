@@ -287,6 +287,8 @@
                         <li>geo_regions</li>
                         <li>geo_countries</li>
                         <li>order_status</li>
+                        <li>order_type</li>
+                        <li>product_status</li>
                         <li>bing_product_types</li>
                         <li>google_product_types</li>
                         <li>nextag_product_types</li>

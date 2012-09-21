@@ -28,7 +28,7 @@
         {*icon class=edit action=edit_optiongroup_master record=$group}
         {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"*}
        
-        {icon class=add controller="ecomconfig" action="edit_discount" title="Create a New Store Discount"|gettext alt="Create a New Store Discount"|gettext}
+        {icon class=add controller="ecomconfig" action="edit_discount" text="Create a New Store Discount"|gettext}
             
         {if $page|@count > 0}
             <h2>{"Modify existing group discount"|gettext}</h2>

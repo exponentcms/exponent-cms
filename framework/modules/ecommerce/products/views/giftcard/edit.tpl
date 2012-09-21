@@ -14,7 +14,6 @@
  *}
 
 <div id="editproduct" class="module store edit">
-
     {if $record->id != ""}
         <h1>{'Edit Information for'|gettext} {$record->product_name}</h1>
     {else}
@@ -50,12 +49,6 @@
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
-//        var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('demo');
-//        YAHOO.util.Dom.removeClass("editproduct", 'hide');
-//        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-//        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
 	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
 		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
 		tabview.render();

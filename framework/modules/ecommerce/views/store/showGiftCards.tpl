@@ -49,7 +49,11 @@
 							</div>
                         {foreachelse}
                             {'There are no gift cards available!'|gettext}
-                            {icon class="add" controller=store action=edit product_type=giftcard text="Add a Gift Card"|gettext}
+                            {permissions}
+                                {if $permissions.create == 1 or $permissions.edit == 1}
+                                    {icon class="add" controller=store action=edit product_type=giftcard text="Add a Gift Card"|gettext}
+                                {/if}
+                            {/permissions}
                         {/foreach}
 					</fieldset>
 				</td>

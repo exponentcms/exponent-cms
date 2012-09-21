@@ -21,9 +21,8 @@
 
 {/css}
 
-<div id="order" class="module order show hide exp-skin-tabview">
-    
-    <div id="ordertabs" class="yui-navset">
+<div id="order" class="module order show">
+    <div id="ordertabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
             <li class="selected"><a href="#invoice"><em>{'Receipt'|gettext}</em></a></li>
             <li><a href="#ordhistory"><em>{'Order History'|gettext}</em></a></li>
@@ -93,25 +92,25 @@
                             <th>{'Status Change History'|gettext}</th>
                         </tr> 
                     </thead>
-                    <tbody>     
+                    <tbody>
                     {foreach from=$order->order_status_changes item=change}
-                    <tr style="border-bottom: 1px solid gray;"><td>
-                    <strong>
-                    {'Status was changed from'|gettext} {selectvalue table='order_status' field="title" where="id=$change->from_status_id"}
-                    {'to'|gettext} {selectvalue table='order_status' field="title" where="id=$change->to_status_id"} {'on'|gettext} {$change->getTimestamp()} {'by'|gettext} {$change->getPoster()}
-                    </strong>
-                    {if $change->comment != ''}                        
-                        <div style="border: 1px solid gray; margin-left: 10px; margin-top: 5px;">
-                        <h4>{'Comment'|gettext}:</h4>{$change->comment}
-                        </div>
-                    {/if}
-                    </td></tr>
-                {foreachelse}
-                    <tr>
-                        <td>{'There is no change history for this order yet.'|gettext}
-                        </td>
-                    </tr> 
-                {/foreach}                                                
+                        <tr style="border-bottom: 1px solid gray;"><td>
+                        <strong>
+                        {'Status was changed from'|gettext} {selectvalue table='order_status' field="title" where="id=`$change->from_status_id`"}
+                        {'to'|gettext} {selectvalue table='order_status' field="title" where="id=`$change->to_status_id`"} {'on'|gettext} {$change->getTimestamp()} {'by'|gettext} {$change->getPoster()}
+                        </strong>
+                        {if $change->comment != ''}
+                            <div style="border: 1px solid gray; margin-left: 10px; margin-top: 5px;">
+                            <h4>{'Comment'|gettext}:</h4>{$change->comment}
+                            </div>
+                        {/if}
+                        </td></tr>
+                    {foreachelse}
+                        <tr>
+                            <td>{'There is no change history for this order yet.'|gettext}
+                            </td>
+                        </tr>
+                    {/foreach}
                 </table>
             </div>
             <div id="shipinfo">
@@ -307,39 +306,51 @@
     {/permissions}
         </div>
     </div>
+    <div class="loadingdiv">{'Loading Order'|gettext}</div>
 </div>
-<div class="loadingdiv">{'Loading Order'|gettext}</div>
 
 {script unique="msgbox"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
-    var YAHOO=Y.YUI2;
+    YUI(EXPONENT.YUI3_CONFIG).use('history','tabview', function(Y) {
+        var history = new Y.HistoryHash(),
+            tabview = new Y.TabView({srcNode:'#ordertabs'});
+        tabview.render();
+        Y.one('#ordertabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
 
-    var selects = Y.all('#order_status_messages option');
-    selects.on('click',function(e){
-        EXPONENT.editoremail_message.setData(e.target.get('value'));
-    });
+        // Set the selected tab to the bookmarked history state, or to
+        // the first tab if there's no bookmarked state.
+        tabview.selectChild(history.get('tab') || 0);
 
-    var tabView = new YAHOO.widget.TabView('auth');
+        // Store a new history state when the user selects a tab.
+        tabview.after('selectionChange', function (e) {
+          // If the new tab index is greater than 0, set the "tab"
+          // state value to the index. Otherwise, remove the "tab"
+          // state value by setting it to null (this reverts to the
+          // default state of selecting the first tab).
+          history.addValue('tab', e.newVal.get('index') || null);
+        });
 
-    var tabView2 = new YAHOO.widget.TabView('ordertabs');
+        // Listen for history changes from back/forward navigation or
+        // URL changes, and update the tab selection when necessary.
+        Y.on('history:change', function (e) {
+          // Ignore changes we make ourselves, since we don't need
+          // to update the selection state for those. We're only
+          // interested in outside changes, such as the ones generated
+          // when the user clicks the browser's back or forward buttons.
+          if (e.src === Y.HistoryHash.SRC_HASH) {
 
-    var url = location.href.split('#');
-    if (url[1]) {
-        //We have a hash
-        var tabHash = url[1];
-        var tabs = tabView.get('tabs');
-        for (var i = 0; i < tabs.length; i++) {
-            if (tabs[i].get('href') == '#' + tabHash) {
-                tabView.set('activeIndex', i);
-                break;
+            if (e.changed.tab) {
+              // The new state contains a different tab selection, so
+              // change the selected tab.
+              tabview.selectChild(e.changed.tab.newVal);
+            } else if (e.removed.tab) {
+              // The tab selection was removed in the new state, so
+              // select the first tab by default.
+              tabview.selectChild(0);
             }
-        }
-    }
-
-    YAHOO.util.Dom.removeClass("order", 'hide');
-    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-});
+          }
+        });
+    });
 {/literal}
 {/script}

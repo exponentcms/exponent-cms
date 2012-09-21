@@ -15,10 +15,10 @@
 
  <div id="discountconfig" class="module discountconfig configure">
     <h1>{'Manage Discounts'|gettext}</h1>
-    <div id="mainform" class="hide exp-skin-tabview">
+    <div id="mainform">
         {form action=update_discount}
             {control type="hidden" name="id" value=$discount->id}
-            <div id="discounttabs" class="yui-navset">
+            <div id="discounttabs" class="yui-navset exp-skin-tabview hide">
                 <ul class="yui-nav">
                     <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
                     <li><a href="#tab2"><em>{"Usage"|gettext}</em></a></li>
@@ -69,19 +69,20 @@
                     </div>
                 </div>
             </div>
+            <div class="loadingdiv">{'Loading'|gettext}</div>
             {control type=buttongroup submit="Save Discount"|gettext cancel="Cancel"|gettext}
         {/form}
     </div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
+
 {script unique="discountedit" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element', function(Y) {
     var YAHOO=Y.YUI2;
+
     function switchMethods() {
         var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
         var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
-
         var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
         
         for(i=0; i<otherdds.length; i++) {
@@ -90,19 +91,23 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) 
             } else {
                 YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
             }
-            
         }
         YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
         //console.debug(methdd);
         //console.debug(dd.value);
     }
     YAHOO.util.Event.onDOMReady(switchMethods);
-
-    var tabView = new YAHOO.widget.TabView('discounttabs');     
-    YAHOO.util.Dom.removeClass("mainform", 'hide');
-    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
 });
 {/literal}
 {/script}
 
+{script unique="discounttabs" yui3mods=1}
+{literal}
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+		var tabview = new Y.TabView({srcNode:'#discounttabs'});
+		tabview.render();
+		Y.one('#discounttabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
+    });
+{/literal}
+{/script}

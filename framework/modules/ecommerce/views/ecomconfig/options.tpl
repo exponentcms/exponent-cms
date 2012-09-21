@@ -21,7 +21,7 @@
 	
 	<a class="add" href="{link action=edit_optiongroup_master}">{'Create new option group'|gettext}</a>
 	{foreach from=$optiongroups item=group}
-    <table class="" style="border:1px solid red;">
+    <table style="border:1px solid red;">
     <thead><th>
 	    <h2>
 	        {$group->title} 

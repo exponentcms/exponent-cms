@@ -15,9 +15,9 @@
 
 <div id="storeconfig" class="module ecomconfig configure">
     <h1>{'Store Configuration'|gettext}</h1>
-    <div id="mainform" class="hide exp-skin-tabview">
+    <div id="mainform">
         {form action=saveconfig}
-            <div id="storetabs" class="yui-navset">
+            <div id="storetabs" class="yui-navset exp-skin-tabview hide">
                 <ul class="yui-nav">
                     <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
                     <li><a href="#tab2"><em>{'Cart Messages'|gettext}</em></a></li>
@@ -130,35 +130,54 @@
                     </div>
                 </div>
             </div>
+            <div class="loadingdiv">{'Loading Settings'|gettext}</div>
             {control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
         {/form}
     </div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
+    YUI(EXPONENT.YUI3_CONFIG).use('history','tabview', function(Y) {
+        var history = new Y.HistoryHash(),
+            tabview = new Y.TabView({srcNode:'#storetabs'});
+        tabview.render();
+        Y.one('#storetabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
 
-        var tabView = new YAHOO.widget.TabView('storetabs');     
+        // Set the selected tab to the bookmarked history state, or to
+        // the first tab if there's no bookmarked state.
+        tabview.selectChild(history.get('tab') || 0);
 
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
+        // Store a new history state when the user selects a tab.
+        tabview.after('selectionChange', function (e) {
+          // If the new tab index is greater than 0, set the "tab"
+          // state value to the index. Otherwise, remove the "tab"
+          // state value by setting it to null (this reverts to the
+          // default state of selecting the first tab).
+          history.addValue('tab', e.newVal.get('index') || null);
+        });
+
+        // Listen for history changes from back/forward navigation or
+        // URL changes, and update the tab selection when necessary.
+        Y.on('history:change', function (e) {
+          // Ignore changes we make ourselves, since we don't need
+          // to update the selection state for those. We're only
+          // interested in outside changes, such as the ones generated
+          // when the user clicks the browser's back or forward buttons.
+          if (e.src === Y.HistoryHash.SRC_HASH) {
+
+            if (e.changed.tab) {
+              // The new state contains a different tab selection, so
+              // change the selected tab.
+              tabview.selectChild(e.changed.tab.newVal);
+            } else if (e.removed.tab) {
+              // The tab selection was removed in the new state, so
+              // select the first tab by default.
+              tabview.selectChild(0);
             }
-        }
-
-        YAHOO.util.Dom.removeClass("mainform", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
+          }
+        });
     });
 {/literal}
 {/script}

@@ -19,10 +19,10 @@
     {else}
         <h1>{"New"|gettext} {$modelname}</h1>
     {/if}
-    <div id="mainform" class="hide exp-skin-tabview">
+    <div id="mainform">
         {form action=update}
             {control type="hidden" name="id" value=$record->id}
-            <div id="demo" class="yui-navset">
+            <div id="childtabs" class="yui-navset exp-skin-tabview hide">
                 <ul class="yui-nav">
                 <li class="selected"><a href="#general"><em>{"General"|gettext}</em></a></li>
                 <li><a href="#pricing"><em>{"Pricing, Tax & Discounts"|gettext}</em></a></li>
@@ -45,10 +45,10 @@
                         {control type="hidden" name="product_type" value='childProduct'}
                         {control type="text" name="model" label="Model # / SKU"|gettext value=$record->model}
                         {control type="text" class="title" name="title" label="Product Name"|gettext value=$record->title}
-                        {control type="dropdown" name="companies_id" label="Manufacturer"|gettext includeblank=true frommodel=company value=$record->companies_id}<a href='{link controller="company" action="manage"}'>Manage Manufacturers</a>{br}
+                        {control type="dropdown" name="companies_id" label="Manufacturer"|gettext includeblank=true frommodel=company value=$record->companies_id}
+                        {icon class="manage" controller="company" action="showall" text="Manage Manufacturers"|gettext}
                         {control type="textarea" name="summary" label="Product Summary"|gettext rows=3 cols=45 value=$record->summary}
                         {control type="editor" name="body" label="Product Description"|gettext height=250 value=$record->body}
-
                     </div>
                     <div id="pricing">
                         <fieldset>
@@ -85,6 +85,7 @@
                         </fieldset>
                         <h2>{"Tax Class"|gettext}</h2>
                         {control type="dropdown" name="tax_class_id" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id}
+                        {icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
                     </div>
                     <div id="images">
                         <div id="imagefunctionality">
@@ -166,6 +167,7 @@
                             {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods"|gettext items=$methods value=$record->required_shippng_method}
                             </div>
                         {/foreach}
+                        {icon controller="shipping" action="manage" text="Manage Shipping Options"|gettext}
                         {control type="text" name="weight" label="Item Weight"|gettext size=4 filter=decimal value=$record->weight}
                         {control type="text" name="width" label="Width (in inches)"|gettext size=4 filter=decimal value=$record->width}
                         {control type="text" name="height" label="Height (in inches)"|gettext size=4 filter=decimal value=$record->height}
@@ -173,20 +175,20 @@
                         {control type="text" name="surcharge" label="Surcharge"|gettext size=4 filter=money value=$record->surcharge}
                     </div>
                     <div id="categories">
-                        <a href='{link controller="storeCategory" action="manage"}'>{"Manage Categories"|gettext}</a>{br}{br}
-                        <h2>{"Category is inherited from this product\'s parent."|gettext}</h2>
+                        <h2>{'Category is inherited from this product\'s parent.'|gettext}</h2>
                     </div>
                     <div id="options">
                           <h2>{"Options are inherited from this product\'s parent."|gettext}</h2>
                     </div>
                     <div id="uifld">
-                        <h2>{"User Input Fields are inherited from this item\'s parent."|gettext}</h2>
+                        <h2>{'User Input Fields are inherited from this item\'s parent.'|gettext}</h2>
                     </div>
                     <div id="active">
                         <h2>{"Active/Inactive"|gettext}</h2>
                         {control type="radiogroup" name="active_type" label=" " items=$record->active_display default=$record->active_type|default:0}
                         <h2>{"Status"|gettext}</h2>
                        {control type="dropdown" name="product_status_id" label=" " frommodel=product_status items=$status_display value=$record->product_status_id}
+                        {icon controller="product_status" action="manage" text="Manage Product Statuses"|gettext}
                     </div>
                     <div id="notes">
                         <h2>{"Notes"|gettext}</h2>
@@ -194,7 +196,7 @@
                     </div>
                      <div id="xtrafields">
                         <h2>{"Extra Fields"|gettext}</h2>
-                        {"Extra field names are defined in this product\'s parent.  You may enter the field values for this product here."|gettext}
+                        {'Extra field names are defined in this product\'s parent.  You may enter the field values for this product here.'|gettext}
                         <table>
                             {if $parent->extra_fields.0.name != '' }
                                 <tr>
@@ -237,37 +239,17 @@
             {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
         {/form}
     </div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-tabview','yui2-element', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element', function(Y) {
         var YAHOO=Y.YUI2;
-
-        var tabView = new YAHOO.widget.TabView('demo');
-
-        var url = location.href.split('#');
-        if (url[1]) {
-            //We have a hash
-            var tabHash = url[1];
-            var tabs = tabView.get('tabs');
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].get('href') == '#' + tabHash) {
-                    tabView.set('activeIndex', i);
-                    break;
-                }
-            }
-        }
-
-        YAHOO.util.Dom.removeClass("mainform", 'hide');
-        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
 
         function switchMethods() {
             var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
             var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
-
             var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
 
             for(i=0; i<otherdds.length; i++) {
@@ -276,13 +258,23 @@
                 } else {
                     YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
                 }
-
             }
             YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
             //console.debug(methdd);
             //console.debug(dd.value);
         }
         YAHOO.util.Event.onDOMReady(switchMethods);
+    });
+{/literal}
+{/script}
+
+{script unique="childtabs" yui3mods=1}
+{literal}
+	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
+		var tabview = new Y.TabView({srcNode:'#childtabs'});
+		tabview.render();
+		Y.one('#childtabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}
