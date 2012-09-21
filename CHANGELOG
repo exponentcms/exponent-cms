@@ -26,6 +26,7 @@ Added / Fixed / changed for 2.0.9
   - adds instructions to get e-commerce up and running
     -- closer to an 'out of the box' solution
     -- can now activate e-commerce w/o activating an ecom module
+    -- PayPal Express checkout updated to use new api to give more into on the PayPal screen
     -- e-commerce use a little more intuitive/more features now functional
   - plus many other tweaks, fixes, and features
 

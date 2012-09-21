@@ -177,18 +177,18 @@ class paypalExpressCheckout extends billingcalculator {
 //                'ReturnUrl' => $returnURL,
                 'RETURNURL'         => $returnURL,
                 'CANCELURL'         => $cancelURL,
-                'ALLOWNOTE' => 0,  // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
+                'ALLOWNOTE' => 1,  // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
                 // TODO: build data from odrer
-//                'AMT'               => number_format($order->grand_total, 2, '.', ''), //FIXME deprecated sin 63.0
+//                'AMT'               => number_format($order->grand_total, 2, '.', ''), //FIXME deprecated in 63.0
 //                'CURRENCYCODE'      => 'USD',
 //                'ITEMAMT'           => number_format($order->total, 2, '.', ''),
 //                'SHIPPINGAMT'       => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
 //                'TAXAMT'            => number_format($order->tax, 2, '.', ''),
-                'PAYMENTREQUEST_0_AMT' => number_format($order->grand_total, 2, '.', ''),  // total amount
                 'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',  // currency code
                 'PAYMENTREQUEST_0_ITEMAMT' => number_format($order->total, 2, '.', ''),  // total item cost
                 'PAYMENTREQUEST_0_SHIPPINGAMT' => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),  // total shipping cost
                 'PAYMENTREQUEST_0_TAXAMT' => number_format($order->tax, 2, '.', ''),  // total tax cost
+                'PAYMENTREQUEST_0_AMT' => number_format($order->grand_total, 2, '.', ''),  // total amount
                 'ADDROVERRIDE'      => '1',
 //                'SHIPTONAME'        => $shipname,
 //                'SHIPTOSTREET'      => $shipstreet,
@@ -241,10 +241,10 @@ class paypalExpressCheckout extends billingcalculator {
                 // its possible there are more than one error. 
                 foreach ($nvpResArray as $k=> $v) {
                     if (is_array($v)) {
-//                        $object->errorCode .= $v['ERRORCODE'] . ", ";
-//                        $object->message .= $v['LONGMESSAGE'] . ", ";
-                        $object->errorCode .= $v['L_ERRORCODE0'].", ";
-                        $object->message .= $v['L_LONGMESSAGE0'].", ";
+                        $object->errorCode .= $v['ERRORCODE'] . ", ";
+                        $object->message .= $v['LONGMESSAGE'] . ", ";
+//                        $object->errorCode .= $v['L_ERRORCODE0'].", ";
+//                        $object->message .= $v['L_LONGMESSAGE0'].", ";
                     }
                 }
                 // remove the trailing ", " (comma space)
@@ -314,13 +314,13 @@ class paypalExpressCheckout extends billingcalculator {
 //            'ITEMAMT'       => number_format($order->total, 2, '.', ''),
 //            'SHIPPINGAMT'   => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
 //            'TAXAMT'        => number_format($order->tax, 2, '.', ''),
-            'PAYMENTREQUEST_0_AMT'       => number_format($order->grand_total, 2, '.', ''),
             'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',
             'PAYMENTREQUEST_0_INVNUM' => $invoice_number,
             'PAYMENTREQUEST_0_CUSTOM' => 'Invoice #' . $invoice_number,
             'PAYMENTREQUEST_0_ITEMAMT' => number_format($order->total, 2, '.', ''),
-            'PAYMENTREQUEST__SHIPPINGAMT' => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
+            'PAYMENTREQUEST_0_SHIPPINGAMT' => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
             'PAYMENTREQUEST_0_TAXAMT' => number_format($order->tax, 2, '.', ''),
+            'PAYMENTREQUEST_0_AMT'       => number_format($order->grand_total, 2, '.', ''),
         );
 
         $it = 0;
@@ -370,14 +370,14 @@ class paypalExpressCheckout extends billingcalculator {
             $billing_options->result->status    = $nvpResArray['ACK'];
             $billing_options->result->errorCode = 0;
             if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
-//                $billing_options->result->message = $nvpResArray['ACK'] . ":" . $nvpResArray[0]['SHORTMESSAGE'] . ":" . $nvpResArray[0]['LONGMESSAGE'];
-                $billing_options->result->message = $nvpResArray['ACK'] . ":" . $nvpResArray[0]['L_SHORTMESSAGE0'] . ":" . $nvpResArray[0]['L_LONGMESSAGE0']; ;
+                $billing_options->result->message = $nvpResArray['ACK'] . ":" . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+//                $billing_options->result->message = $nvpResArray['ACK'] . ":" . $nvpResArray[0]['L_SHORTMESSAGE0'] . ": " . $nvpResArray[0]['L_LONGMESSAGE0']; ;
             } else {
                 $billing_options->result->message = $nvpResArray['ACK'];
             }
             $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
             $billing_options->result->timestamp     = $nvpResArray['TIMESTAMP'];
-//            $note     = $nvpResArray['NOTE'];  //FIXME, what can we do with the note returned?
+            $billing_options->result->note          = $nvpResArray['NOTE'];  //FIXME, what can we do with the note returned?
 //            $billing_options->result->paymenttype   = $nvpResArray['PAYMENTTYPE'];
 //            $billing_options->result->fee_amt = $nvpResArray['FEEAMT'];
 //            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];
@@ -389,17 +389,17 @@ class paypalExpressCheckout extends billingcalculator {
             $billing_options->result->fee_amt = $nvpResArray['PAYMENTINFO_0_FEEAMT'];
             $billing_options->result->payment_status = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
             $billing_options->result->pending_reason = $nvpResArray['PAYMENTINFO_0_PENDINGREASON'];
-            $billing_options->result->reason_code = $nvpResArray['PAYMENTINFO__REASONCODE'];
+            $billing_options->result->reason_code = $nvpResArray['PAYMENTINFO_0_REASONCODE'];
             $billing_options->result->transactionID = $nvpResArray['PAYMENTINFO_0_TRANSACTIONID'];
             $transaction_state = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
             $trax_state = "complete";
         } else {
             $billing_options->result->status    = $nvpResArray['ACK'];
-//            $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
-            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
+            $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
+//            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
             if (!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
-//            $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ":" . $nvpResArray[0]['LONGMESSAGE'];
-            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ":" . $nvpResArray[0]['L_LONGMESSAGE0']; ;
+            $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ":" . $nvpResArray[0]['LONGMESSAGE'];
+//            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ":" . $nvpResArray[0]['L_LONGMESSAGE0']; ;
             $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
             $transaction_state                      = "Failure";
             $trax_state                             = "error";
@@ -448,7 +448,7 @@ class paypalExpressCheckout extends billingcalculator {
     /**
      * This is called when a billing method is deleted. It can be used to clean up if you have any custom user_data storage.
      *
-     * @param mixed $config_object
+     * @param string $where
      *
      * @return bool
      */
