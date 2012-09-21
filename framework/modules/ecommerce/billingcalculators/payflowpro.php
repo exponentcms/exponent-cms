@@ -69,9 +69,7 @@ class payflowpro extends creditcard {
         return $result;
         
 	}
-    
-    
-    
+
     // sale
     function sale_transaction($method, $opts) 
     {
@@ -133,7 +131,6 @@ class payflowpro extends creditcard {
             $apiParams['CVV'] = $opts->cvv;
         }
         
-        
         // convert the api params to a name value pair string
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
@@ -144,7 +141,6 @@ class payflowpro extends creditcard {
             
         // take the last & out for the string
         $nvpstr = substr($nvpstr, 0, -1);        
-        
         
         // build hash
         $request_id = md5($opts->cc_number . $order->grand_total . time() . "1");
@@ -223,7 +219,6 @@ class payflowpro extends creditcard {
         $this->createBillingTransaction($method,number_format($order->grand_total, 2, '.', ''),$object,$trax_state);
         return $object;
     }
-    
     
     // Authorization
     function authorization($method, $opts) 
@@ -511,7 +506,6 @@ class payflowpro extends creditcard {
         return $object;
     }
     
-    
     // void_transaction
     function void_transaction($method) 
     {
@@ -547,7 +541,6 @@ class payflowpro extends creditcard {
             //'COMMENT2'  =>  '',
         );  
         
-        
         // convert the api params to a name value pair string
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
@@ -558,7 +551,6 @@ class payflowpro extends creditcard {
             
         // take the last & out for the string
         $nvpstr = substr($nvpstr, 0, -1);        
-        
         
         // build hash
         $request_id = md5($opts->cc_number . $order->grand_total . time() . "1");
@@ -637,7 +629,6 @@ class payflowpro extends creditcard {
         return $object;
     }
     
-    
     // credit transaction
     function credit_transaction($method, $amount) 
     {
@@ -673,7 +664,6 @@ class payflowpro extends creditcard {
             'COMMENT1'  =>  'Credit',
             //'COMMENT2'  =>  '',
         );  
-        
         
         // convert the api params to a name value pair string
         $nvpstr = "";
@@ -817,10 +807,7 @@ class payflowpro extends creditcard {
         $this->opts = null;
         return true;
     }
-    
-    
-    
-    
+
     // parse result and return an array
     function parseResponse($response) 
     {
@@ -839,10 +826,7 @@ class payflowpro extends creditcard {
         }
         return $respArr;
     }
-    
 
-    
-    
     function getRealIP()
     {
         if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet

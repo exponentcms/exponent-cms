@@ -17,7 +17,7 @@
 <div id="authcfg">
     <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>{'Payflow Pro'|gettext}<br>{'Settings'|gettext}</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'Payflow'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
 	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
 	        <li><a href="#tab4"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
