@@ -53,7 +53,6 @@
 					</a>
 				</div>
 			
-			
 				<div class="event-info">
 					<em class="date">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
 					   <p>{$item->body|truncate:175:"..."}</p>

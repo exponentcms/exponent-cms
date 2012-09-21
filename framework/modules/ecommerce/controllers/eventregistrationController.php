@@ -478,7 +478,7 @@ class eventregistrationController extends expController {
         }
 
         //Check if there are guest
-        if ($event->num_guest_allowed > 0) {
+        if (!empty($event->num_guest_allowed)) {
             for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
                 if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
                     $data = expUnserialize($field->data);

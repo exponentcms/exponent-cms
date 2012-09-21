@@ -24,6 +24,7 @@ Added / Fixed / changed for 2.0.9
     -- attempts to fix some database issues such as mixed case naming or controller name quirks
   - new system fallback theme so pages will display even if the entire themes folder is missing
   - adds instructions to get e-commerce up and running
+    -- closer to an 'out of the box' solution
     -- can now activate e-commerce w/o activating an ecom module
     -- e-commerce use a little more intuitive/more features now functional
   - plus many other tweaks, fixes, and features

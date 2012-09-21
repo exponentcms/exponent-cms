@@ -46,7 +46,7 @@ class loginController extends expController {
 	public static function showlogin() {
 		global $db, $user, $order, $router;
 
-		$oicount = $order?$order->item_count:0;
+		$oicount = !empty($order->item_count) ? $order->item_count : 0;
 		// FIGURE OUT IF WE"RE IN PREVIEW MODE OR NOT
 		$level = 99;
 		if (expSession::is_set('uilevel')) {

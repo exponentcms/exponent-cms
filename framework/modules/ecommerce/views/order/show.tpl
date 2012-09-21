@@ -13,10 +13,6 @@
  *
  *}
 
-{* css unique="showorder" link="`$asset_path`css/ecom.css" corecss="tables"}
-
- {/css*}
-
 {css unique="showorder" link="`$asset_path`css/ecom.css" corecss="tables"}
 
 {/css}

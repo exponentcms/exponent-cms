@@ -165,15 +165,18 @@ class orderController extends expController {
         $from_addresses[ecomconfig::getConfig('from_address')] = ecomconfig::getConfig('from_address');
         $from_addresses[$user->email]                          = $user->email;
         $from_addresses['other']                               = 'Other (enter below)';
+        $from_addresses = array_filter($from_addresses);
+        $from_default = ecomconfig::getConfig('from_address');
+        $from_default = !empty($from_default) ? $from_default : SMTP_FROMADDRESS;
 
         $email_subject = 'Message from ' . ecomconfig::getConfig('storename') . ' about your order (#' . $order->invoice_id . ')';
 
         $order->setReferencingIds();
 
-        $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
+//        $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
 
         assign_to_template(array(
-            'css'            => $css,
+//            'css'            => $css,
             'printerfriendly'=> $pf,
             'order'          => $order,
             'shipping'       => $order->orderitem[0],
@@ -183,7 +186,7 @@ class orderController extends expController {
             'storeConfig'    => $storeConfig->config,
             'sales_reps'     => $order->getSalesReps(),
             'from_addresses' => $from_addresses,
-            'from_default'   => ecomconfig::getConfig('from_address'),
+            'from_default'   => $from_default,
             'email_subject'  => $email_subject,
             'to_addresses'   => implode(',', $to_addresses)
         ));
@@ -705,9 +708,9 @@ exit();
             $db->insertObject($message, 'order_status_messages');
         }
 
-        $email_addys[] = explode(',', $this->params['to_addresses']); //$order->billingmethod[0]->email;
+        $email_addys = explode(',', $this->params['to_addresses']); //$order->billingmethod[0]->email;
         //eDebug($email_addy,true);
-        if (!empty($email_addys[0])) {
+        if (!empty($email_addys)) {
             assign_to_template(array(
                 'message'=> $this->params['email_message']
             ));

@@ -20,9 +20,9 @@
  * @package Modules
  */
 class payflowpro extends creditcard {
-	function name() { return "Payflow Pro Payment Gateway"; }
+	function name() { return "PayPal Payflow Payment Gateway"; }
 	function description() {
-	    return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a Payflo Pro Merchant Account before you can use it to process credit cards.";
+	    return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a PayPal Payflow Merchant Account before you can use it to process credit cards.";
 	}
 	function hasConfig() { return true;}
 	function hasUserForm() { return true;}
