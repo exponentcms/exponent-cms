@@ -52,7 +52,9 @@ function smarty_function_securelink($params,&$smarty) {
             }
         }
         if (!isset($params['int'])) $params['int'] = $loc->int;
-	echo expCore::makeSecureLink($params);
+//	echo expCore::makeSecureLink($params);
+    global $router;
+    echo $router->makeLink($params, false, true);
 }
 
 ?>
