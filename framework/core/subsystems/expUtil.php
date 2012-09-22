@@ -24,57 +24,122 @@
 /** @define "BASE" "../../.." */
 
 class expUtil {
-          
+
+    /**
+     * function to return the right side of a string
+     *
+     * @param $string
+     * @param $chars
+     *
+     * @return string
+     */
     static function right($string,$chars)
     {
         $vright = substr($string, strlen($string)-$chars,$chars);
         return $vright;
     }
-    
+
+    /**
+     * function to compare float numbers for equality
+     *
+     * @param     $firstnumber
+     * @param     $secondnumber
+     * @param int $precision
+     *
+     * @return bool
+     */
     static function isNumberEqualTo($firstnumber,$secondnumber,$precision = 10) // are 2 floats equal
     {
         $e = pow(10,$precision);
         $i1 = intval($firstnumber * $e);
         $i2 = intval($secondnumber * $e);
+        $i1 = (float)(string)$firstnumber;
+        $i2 = (float)(string)$secondnumber;
         return ($i1 == $i2);
     }
 
+    /**
+     * function to compare float numbers for greater than
+     *
+     * @param     $firstnumber
+     * @param     $secondnumber
+     * @param int $precision
+     *
+     * @return bool
+     */
     static function isNumberGreaterThan($firstnumber,$secondnumber,$precision = 10) // is one float bigger than another
     {
         $e = pow(10,$precision);
         $ibig = intval($firstnumber * $e);
         $ismall = intval($secondnumber * $e);
+        $ibig = (float)(string)$firstnumber;
+        $ismall = (float)(string)$secondnumber;
         return ($ibig > $ismall);
     }
 
+    /**
+     * function to compare float numbers for greater than or equality
+     *
+     * @param     $firstnumber
+     * @param     $secondnumber
+     * @param int $precision
+     *
+     * @return bool
+     */
     static function isNumberGreaterThanOrEqualTo($firstnumber,$secondnumber,$precision = 10) // is on float bigger or equal to another
     {
         $e = pow(10,$precision);
         $ibig = intval($firstnumber * $e);
         $ismall = intval($secondnumber * $e);
+        $ibig = (float)(string)$firstnumber;
+        $ismall = (float)(string)$secondnumber;
         return ($ibig >= $ismall);
     }
-    
+
+    /**
+     * function to compare float numbers for less than
+     *
+     * @param     $firstnumber
+     * @param     $secondnumber
+     * @param int $precision
+     *
+     * @return bool
+     */
     static function isNumberLessThan($firstnumber,$secondnumber,$precision = 10) // is one float bigger than another
     {
         $e = pow(10,$precision);
         $ibig = intval($firstnumber * $e);
         $ismall = intval($secondnumber * $e);
+        $ibig = (float)(string)$firstnumber;
+        $ismall = (float)(string)$secondnumber;
         return ($ibig < $ismall);
     }
 
+    /**
+     * function to compare float numbers for less than or equality
+     *
+     * @param     $firstnumber
+     * @param     $secondnumber
+     * @param int $precision
+     *
+     * @return bool
+     */
     static function isNumberLessThanOrEqualTo($firstnumber,$secondnumber,$precision = 10) // is on float bigger or equal to another
     {
         $e = pow(10,$precision);
         $ibig = intval($firstnumber * $e);
         $ismall = intval($secondnumber * $e);
+        $ibig = (float)(string)$firstnumber;
+        $ismall = (float)(string)$secondnumber;
         return ($ibig <= $ismall);
 	}
 
 	/**
 	 * isReallyWritable is an alternate implementation of is_writable that should work on
 	 * a windows platform as well as Linux.
+     *
 	 * @param $file
+     *
 	 * @return bool
 	 */
 	static function isReallyWritable($file) {
@@ -139,7 +204,14 @@ class expUtil {
         return false;
 	}
 
-	public static function getOrigReferrer($ticket=null) {
+    /**
+     * returns original referrer url from ticket
+     *
+     * @param null $ticket
+     *
+     * @return null
+     */
+    public static function getOrigReferrer($ticket=null) {
 		global $db;
 
 		// if they didn't pass in a specific ticket
