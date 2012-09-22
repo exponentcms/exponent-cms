@@ -312,9 +312,12 @@
                         <li>{'Most Shipping Options need configuration which requires establishing an account with a shipping service'|gettext}</li>
                         <li>{'\'In Store Pickup\' is the easiest to set up'|gettext}</li>
                     </ul>
-                    <li>{'Optionally'|gettext}:</li>
+                    <li>{'Optionally (to get better results)'|gettext}:</li>
                     <ul>
                         <li>{'Enter some \'General Store Settings\''|gettext} <a href="{link controller=ecomconfig action=configure}" title={'Configure Store Settings'|gettext}>{'here'|gettext}</a></li>
+                        <ul>
+                            <li>{'You should at least enter a Store Name and Starting Invoice Number'|gettext}</li>
+                        </ul>
                         <li>{'Create a Product (with optional sub-steps)'|gettext}</li>
                         <ul>
                             <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>

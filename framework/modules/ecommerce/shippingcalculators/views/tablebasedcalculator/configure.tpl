@@ -26,9 +26,9 @@
     <ul id="shippingspeeds">
 		{foreach from=$calculator->shippingspeeds item=calc}
 			<li>
-			{$calc->speed}{br}
+			{$calc->speed}
 			{* icon controller=shipping action=editspeed id=$calc->id title="Edit `$calc->speed`" *}
-            {icon controller=shipping img='delete.png' text="delete" action=deleteSpeed id=$calc->id title="Delete `$calc->speed`" onclick="return confirm('"|cat:("Are you sure you want to delete this speed?"|gettext)|cat:"');"}
+            {icon class=delete controller=shipping action=deleteSpeed id=$calc->id}
 			</li>
 		{/foreach}
     </ul>
@@ -38,7 +38,6 @@
     <hr>
     {br}
 	
-		
     <div>
     <a href="#" id="newrange">{"Add Range Set"|gettext}</a>
     </div>
@@ -63,7 +62,7 @@
 		{if !($smarty.section.i.last)}
         <tr class="row row-{math equation='x + y' x=$smarty.section.i.index y=1} {cycle values='odd,even'}">
         	<td class="from">
-        		<a href="#" class="delete">)'remove'|gettext}</a>
+        		<a href="#" class="delete">{'Remove'|gettext}</a>
         	</td>
         	<td class="from">
         		<label for="from-{$smarty.section.i.index}">$</label><input type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">

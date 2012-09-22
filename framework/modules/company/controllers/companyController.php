@@ -83,7 +83,7 @@ class companyController extends expController {
         $sql = $sql_start . $sql;
         
         //eDebug($sql);
-        $order = 'p.id'; //$this->config['orderby'];
+        $order = 'id'; //$this->config['orderby'];
         $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
        
@@ -138,7 +138,7 @@ class companyController extends expController {
         $sql = $sql_start . $sql;
         
         //eDebug($sql);
-        $order = 'p.id'; //$this->config['orderby'];
+        $order = 'id'; //$this->config['orderby'];
         $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
        

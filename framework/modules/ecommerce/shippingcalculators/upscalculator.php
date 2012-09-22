@@ -93,7 +93,8 @@ class upscalculator extends shippingcalculator {
                         $width = empty($item->product->width) ? $this->configdata['default_width'] : $item->product->width;
                         $height = empty($item->product->height) ? $this->configdata['default_height'] : $item->product->height;
                         $length = empty($item->product->length) ? $this->configdata['default_length'] : $item->product->length;
-                        
+
+                        $package_items[$count] = new stdClass();
                         $package_items[$count]->volume = ($width * $length * $height);
                         $package_items[$count]->weight = $lbs;
                         $package_items[$count]->w = $width;
@@ -174,7 +175,9 @@ class upscalculator extends shippingcalculator {
 	    $rateFromUPS = $upsRate->sendRateRequest();
 	    
 	    $handling = empty($has_giftcard) ? 0 : 5;
-	    if ($rateFromUPS['RatingServiceSelectionResponse']['Response']['ResponseStatusCode']['VALUE'] == 1) {
+        if (empty($rateFromUPS)) {
+            return 0;
+        } elseif ($rateFromUPS['RatingServiceSelectionResponse']['Response']['ResponseStatusCode']['VALUE'] == 1) {
 	        $rates = array();
 	        $available_methods = $this->availableMethods();
 	        foreach ($rateFromUPS['RatingServiceSelectionResponse']['RatedShipment'] as $rate) {

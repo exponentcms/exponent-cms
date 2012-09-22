@@ -116,7 +116,8 @@ class fedexcalculator extends shippingcalculator {
                     $height = empty($item->product->height) ? $this->configdata['default_height'] : $item->product->height;
                     $length = empty($item->product->length) ? $item->product->width : $item->product->length;
                     $length = empty($length) ? $this->configdata['default_length'] : $length;
-                    
+
+                    $package_items[$count] = new stdClass();
                     $package_items[$count]->volume = ($width * $length * $height);
                     $package_items[$count]->weight = $lbs;
                     $package_items[$count]->w = $width;
@@ -159,7 +160,7 @@ class fedexcalculator extends shippingcalculator {
                 if ($pi->volume >= $space_left)
                 {
                     $no_more_room = true;
-                    break;
+//                    break;
                 }                
                 $space_left = $space_left - $pi->volume;
                 $total_weight += $pi->weight;
@@ -175,8 +176,8 @@ class fedexcalculator extends shippingcalculator {
             }            
             
             // if there is no more room left on the current package or we are out of items then
-            // add the package to the shippment.
-            if ($no_more_room || (empty($package_items) && $total_weight > 0)) {
+            // add the package to the shipment.
+//            if ($no_more_room || (empty($package_items) && $total_weight > 0)) {
                 $box_count++;
                 $total_weight = $total_weight > 1 ? $total_weight : 1;
 #                eDebug('created standard sized package with weight of '.$total_weight);
@@ -194,8 +195,8 @@ class fedexcalculator extends shippingcalculator {
                                         'Height' => $box_height,
                                         'Units' => 'IN'));
                 $space_left = $box_volume;
-                $total_weight = 0;
-            }
+//                $total_weight = 0;
+//            }
         }
         
         //eDebug($fedexItemArray,true);
@@ -242,9 +243,9 @@ class fedexcalculator extends shippingcalculator {
                 $newLocation = $client->__setLocation(setEndpoint('endpoint'));
             }
             
-            $response = $client ->getRates($request);
+            $response = $client->getRates($request);
             //eDebug($response,true);    
-            if ($response -> HighestSeverity != 'FAILURE' && $response -> HighestSeverity != 'ERROR')
+            if ($response->HighestSeverity != 'FAILURE' && $response -> HighestSeverity != 'ERROR')
             {
                 //echo 'Rates for following service type(s) were returned.'. Newline. Newline;
                 //echo '<table border="1">';
@@ -256,9 +257,9 @@ class fedexcalculator extends shippingcalculator {
                 //"02"=>array("id"=>"02", "title"=>"UPS Second Day Air", "cost"=>10.00),
                 //"01"=>array("id"=>"01", "title"=>"UPS Next Day Air", "cost"=>20.00) 
              //);
-             /*eDebug($this->configdata['shipping_methods'],true);
-             eDebug($response -> RateReplyDetails,true);*/
-                foreach ($response -> RateReplyDetails as $rateReply)
+//             eDebug($this->configdata['shipping_methods']);
+//             eDebug($response->RateReplyDetails);
+                foreach ($response->RateReplyDetails as $rateReply)
                 {   
                     if(in_array($rateReply -> ServiceType,$this->configdata['shipping_methods']))                                   {
                         $rates[$rateReply -> ServiceType] = array("id"=>$rateReply -> ServiceType,

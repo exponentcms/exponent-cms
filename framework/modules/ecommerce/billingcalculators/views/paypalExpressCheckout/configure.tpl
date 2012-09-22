@@ -25,9 +25,17 @@
 	        <div id="tab1">
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
 	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
-	            {control type="text" name="signature" label="API Signature"|gettext value=$calculator->configdata.signature}
-	            {control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Sale, Authorization, Order"|gettxtlist values="Sale,Authorization,Order" default=$calculator->configdata.process_mode}
-	            {control type="checkbox" name="testmode" label="Enable Test Mode? You must be logged in to"|gettext|cat:" <a href='https://developer.paypal.com/'>"|cat:("PayPal Developer Central"|gettext)|cat:"</a>" value=1 checked=$calculator->configdata.testmode}
+	            {control type="text" name="signature" label="Signature"|gettext value=$calculator->configdata.signature}
+	            {*{control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Sale, Authorization, Order"|gettxtlist values="Sale,Authorization,Order" default=$calculator->configdata.process_mode}*}
+                <hr>
+	            {control type="checkbox" name="testmode" label="Enable Sandbox (Test) Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
+                <p>{"To test, you must create a developer account and be logged in to"|gettext} <a href="https://developer.paypal.com/" target="_blank">{"PayPal Developer Central"|gettext}</a>,
+                {"then enter the Sandbox API and Payment Card Credentials blelow."|gettext}
+                {"Create both a Buyer In-Store and a Seller Test Accounts."|gettext}
+                {control type="text" name="testusername" label="Sandbox API Username"|gettext value=$calculator->configdata.testusername}
+ 	            {control type="text" name="testpassword" label="Sandbox API Password"|gettext value=$calculator->configdata.testpassword}
+ 	            {control type="text" name="testsignature" label="Sandbox Signature"|gettext value=$calculator->configdata.testsignature}
+                </p>
 	        </div>
 	        <div id="tab2">
 	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?"|gettext value=1 checked=$calculator->configdata.email_customer}

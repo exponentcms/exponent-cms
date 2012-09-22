@@ -908,7 +908,7 @@ exit();
 //        eDebug($opts);
         assign_to_template(array(
             'orderid'=> $this->params['id'],
-            'opts'   => $opts->result
+            'opts'   => $opts->result  //FIXME credit card doesn't have a result
         ));
     }
 

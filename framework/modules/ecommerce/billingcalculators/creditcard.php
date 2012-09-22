@@ -127,7 +127,7 @@ class creditcard extends billingcalculator {
         //so calling twice instead....needs to be  fixed though TODO:
 		//expValidator::validate(array('presence_of'=>'cc_number'), $params);
         //expValidator::validate(array('presence_of'=>'cvv'), $params); 
-		$this->opts = null;
+		$this->opts = new stdClass();
         //$this->opts->first_name = $params["first_name"];
         //$this->opts->last_name = $params["last_name"];
         $this->opts->cc_type = $params["cc_type"];

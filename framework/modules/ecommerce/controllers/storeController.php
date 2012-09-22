@@ -672,7 +672,10 @@ class storeController extends expController {
         if (empty($product->id)) {
             redirect_to(array('controller'=> 'notfound', 'action'=> 'page_not_found', 'title'=> $this->params['title']));
         }
-        if (!empty($product->parent_id)) redirect_to(array('controller'=> 'store', 'action'=> 'showByTitle', 'title'=> $product->sef_url));
+        if (!empty($product->parent_id))  {
+            $product = new product($product->parent_id);
+            redirect_to(array('controller'=> 'store', 'action'=> 'showByTitle', 'title'=> $product->sef_url));
+        }
         if ($product->active_type == 1) {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";
         } elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin)) {
@@ -694,7 +697,7 @@ class storeController extends expController {
         assign_to_template(array(
             'config'       => $this->config,
             'product'      => $product_type,
-            'last_category'=> $order->lastcat
+            'last_category'=> !empty($order->lastcat) ? $order->lastcat : null,
         ));
     }
 

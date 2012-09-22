@@ -161,6 +161,15 @@ class paypalExpressCheckout extends billingcalculator {
             $shipstreet = $shippingaddress->address1;
             $shipstreet .= empty($shippingaddress->address2) ? '' : ', ' . $shippingaddress->address2;
 
+            if ($config['testmode']) {
+                $uname = $config['testusername'];
+                $pwd  = $config['testpassword'];
+                $sig  = $config['testsignature'];
+            } else {
+                $uname = $config['username'];
+                $pwd  = $config['password'];
+                $sig  = $config['signature'];
+            }
             /**
              * An array of the data sent to PayPal. It will be transformend into Name=Value pairs later.
              *
@@ -169,9 +178,9 @@ class paypalExpressCheckout extends billingcalculator {
             $data = array(
                 // required parameters
                 'METHOD'            => 'SetExpressCheckout',
-                'USER'              => $config['username'],
-                'PWD'               => $config['password'],
-                'SIGNATURE'         => $config['signature'],
+                'USER'              => $uname,
+                'PWD'               => $pwd,
+                'SIGNATURE'         => $sig,
 //                'VERSION'           => '59.0',
                 'VERSION'           => '93.0',
 //                'ReturnUrl' => $returnURL,
@@ -293,15 +302,24 @@ class paypalExpressCheckout extends billingcalculator {
         $billing_options = expUnserialize($method->billing_options);
         $config          = expUnserialize($this->config);
 
+        if ($config['testmode']) {
+            $uname = $config['testusername'];
+            $pwd  = $config['testpassword'];
+            $sig  = $config['testsignature'];
+        } else {
+            $uname = $config['username'];
+            $pwd  = $config['password'];
+            $sig  = $config['signature'];
+        }
         //eDebug($order);
         $data = array(
             // required parameters
-            'USER'          => $config['username'],
-            'PWD'           => $config['password'],
-            'SIGNATURE'     => $config['signature'],
+            'METHOD'        => 'DoExpressCheckoutPayment',
+            'USER'          => $uname,
+            'PWD'           => $pwd,
+            'SIGNATURE'     => $sig,
 //            'VERSION'       => '59.0',
             'VERSION'       => '93.0',
-            'METHOD'        => 'DoExpressCheckoutPayment',
             'SOLUTIONTYPE'  => 'Sole', //added per post
             'LANDINGPAGE'   => 'Billing', //added per post
             'TOKEN'         => $billing_options->result->token,
@@ -437,7 +455,7 @@ class paypalExpressCheckout extends billingcalculator {
      * @return array
      */
     function parseConfig($values) {
-        $config_vars = array('username', 'password', 'signature', 'testmode', 'process_mode', 'email_customer', 'email_admin', 'notification_addy');
+        $config_vars = array('username', 'password', 'signature', 'testmode', 'testusername', 'testpassword', 'testsignature', 'process_mode', 'email_customer', 'email_admin', 'notification_addy');
         foreach ($config_vars as $varname) {
             $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
         }

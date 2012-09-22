@@ -3,7 +3,7 @@ CKEditor,3.6.4,ckeditor.com,3.6.4,
 FlowPlayer,3.2.15,flowplayer.org,3.2.15,
 Swift,4.2.1,swiftmailer.org,4.2.1,
 ups-php,0.2,code.google.com/p/ups-php,0.2,
-fedex-php,9.0.0,,,
+fedex-php,9.0.0,,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html
 swfobject,2.2,code.google.com/p/swfobject,2.2,
 Smarty,3.1.11,smarty.net,3.1.11,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
