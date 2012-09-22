@@ -17,9 +17,7 @@
 
 {/css}
 
-
 <div class="billing-method splitcreditcard creditcard-form">
-    <h4>{'Pay By Credit Card'|gettext}</h4>
     {form name="ccinfoform" id="ccinfoform" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         {$billing->form.$calcid}

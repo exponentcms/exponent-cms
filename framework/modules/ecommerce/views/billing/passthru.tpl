@@ -18,7 +18,6 @@
 {/css}
 
 <div class="billing-method">
-    <h4>{'Passthru Billing'|gettext}</h4>
     {* edebug var=$default_order_type}
     {edebug var=$order_types *}
     {form name="passthruform" controller=cart action=preprocess}

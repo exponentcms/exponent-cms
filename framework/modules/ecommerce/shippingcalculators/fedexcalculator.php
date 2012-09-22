@@ -63,7 +63,7 @@ class fedexcalculator extends shippingcalculator {
 
     public function getRates($items) {
         global $order;
-        require_once(BASE . 'external/fedex-php/fedex-common.php');
+//        require_once(BASE . 'external/fedex-php/fedex-common.php');
         //require_once('fedex-common.php');
 
         //The WSDL is not included with the sample code.
@@ -161,27 +161,38 @@ class fedexcalculator extends shippingcalculator {
         while (!empty($package_items)) {
             $no_more_room = false;
             $used         = array();
-            foreach ($package_items as $idx=> $pi) {
-                /*if ($pi->volume > $box_volume) {
+            foreach ($package_items as $idx=>$pi) {
+                if ($pi->volume > $box_volume) {
 #                    echo $pi->name."is too big for standard box <br>";
 #                    eDebug('created OVERSIZED package with weight of '.$pi->weight);
 #                    eDebug('dimensions: height: '.$pi->h." width: ".$pi->w." length: ".$pi->l);
 #                    echo "<hr>";
+                    $box_count++;
                     $weight = $pi->weight > 1 ? $pi->weight : 1;
-                    $upsRate->package(array('description'=>'shipment','weight'=>$weight,'code'=>'02','length'=>$pi->l,'width'=>$pi->w,'height'=>$pi->h));
+                    $fedexItemArray[] = array(
+                       'SequenceNumber'    => $box_count,
+                       'GroupPackageCount' => 1,
+                       'Weight'            => array(
+                           'Value' => $weight,
+                           'Units' => 'LB'
+                       ),
+                       'Dimensions'        => array(
+                           'Length' => $pi->l,
+                           'Width'  => $pi->w,
+                           'Height' => $pi->h,
+                           'Units'  => 'IN'
+                       )
+                    );
                     $used[] = $idx;
                     $no_more_room = false;
-                } elseif($pi->volume <= $space_left) {*/
-                if ($pi->volume >= $space_left) {
-                    $no_more_room = true;
-//                    break;
-                }
-                $space_left = $space_left - $pi->volume;
-                $total_weight += $pi->weight;
+                } elseif($pi->volume <= $space_left) {
+                    $space_left = $space_left - $pi->volume;
+                    $total_weight += $pi->weight;
 #                    echo "Adding ".$pi->name."<br>";
 #                    echo "Space left in current box: ".$space_left."<br>";                
-                $used[] = $idx;
-                //}                
+                    $used[] = $idx;
+                    $no_more_room = true;
+                }
             }
 
             // remove the used items from the array so they wont be there on the next go around.
@@ -191,72 +202,43 @@ class fedexcalculator extends shippingcalculator {
 
             // if there is no more room left on the current package or we are out of items then
             // add the package to the shipment.
-//            if ($no_more_room || (empty($package_items) && $total_weight > 0)) {
-            $box_count++;
-            $total_weight = $total_weight > 1 ? $total_weight : 1;
+            if ($no_more_room || (empty($package_items) && $total_weight > 0)) {
+                $box_count++;
+                $total_weight = $total_weight > 1 ? $total_weight : 1;
 #                eDebug('created standard sized package with weight of '.$total_weight);
 #                echo "<hr>";
-            //$upsRate->package(array('description'=>'shipment','weight'=>$total_weight,'code'=>'02','length'=>$box_length,'width'=>$box_width,'height'=>$box_height));
-            $fedexItemArray[] = array(
-                'SequenceNumber'    => $box_count,
-                'GroupPackageCount' => 1,
-                'Weight'            => array(
-                    'Value' => $total_weight,
-                    'Units' => 'LB'
-                ),
-                'Dimensions'        => array(
-                    'Length' => $box_length,
-                    'Width'  => $box_width,
-                    'Height' => $box_height,
-                    'Units'  => 'IN'
-                )
-            );
-            $space_left       = $box_volume;
-//                $total_weight = 0;
-//            }
+                $fedexItemArray[] = array(
+                    'SequenceNumber'    => $box_count,
+                    'GroupPackageCount' => 1,
+                    'Weight'            => array(
+                        'Value' => $total_weight,
+                        'Units' => 'LB'
+                    ),
+                    'Dimensions'        => array(
+                        'Length' => $box_length,
+                        'Width'  => $box_width,
+                        'Height' => $box_height,
+                        'Units'  => 'IN'
+                    )
+                );
+                $space_left       = $box_volume;
+                $total_weight = 0;
+            }
         }
 
         //eDebug($fedexItemArray,true);
         //eDebug($box_count . " boxes in this shipment.");
 
-        $request['RequestedShipment']['PackageCount']              = "$box_count";
+        $request['RequestedShipment']['PackageCount']              = $box_count;
         $request['RequestedShipment']['RequestedPackageLineItems'] = $fedexItemArray;
 
         //eDebug($request['RequestedShipment']['PackageCount']);
         //eDebug($request['RequestedShipment']['RequestedPackageLineItems'],true);
 
-        /*array(
-'0' => array(
-'Weight' =>
-array(
-'Value' => 2.0,
-'Units' => 'LB'),
-'Dimensions' =>
-array(
-'Length' => 10,
-'Width' => 10,
-'Height' => 3,
-'Units' => 'IN')),
-'1' => array(
-'Weight' =>
-array(
-'Value' => 5.0,
-'Units' => 'LB'),
-'Dimensions' =>
-array(
-'Length' => 20,
-'Width' => 20,
-'Height' => 10,
-'Units' => 'IN')
-)
-);
-
-        */
-
         try {
-            if (setEndpoint('changeEndpoint')) {
-                $newLocation = $client->__setLocation(setEndpoint('endpoint'));
-            }
+//            if (setEndpoint('changeEndpoint')) {
+//                $newLocation = $client->__setLocation(setEndpoint('endpoint'));
+//            }
 
             $response = $client->getRates($request);
             //eDebug($response,true);    
@@ -275,9 +257,10 @@ array(
 //             eDebug($response->RateReplyDetails);
                 foreach ($response->RateReplyDetails as $rateReply) {
                     if (in_array($rateReply->ServiceType, $this->configdata['shipping_methods'])) {
-                        $rates[$rateReply->ServiceType] = array("id"   => $rateReply->ServiceType,
-                                                                "title"=> $this->shippingmethods[$rateReply->ServiceType],
-                                                                "cost" => number_format($rateReply->RatedShipmentDetails[0]->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", ",")
+                        $rates[$rateReply->ServiceType] = array(
+                            "id"   => $rateReply->ServiceType,
+                            "title"=> $this->shippingmethods[$rateReply->ServiceType],
+                            "cost" => number_format($rateReply->RatedShipmentDetails[0]->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", ",")
                         );
                     }
 
@@ -293,13 +276,11 @@ array(
                 //eDebug($rates,true);
                 return array_reverse($rates);
             } else {
-                printError($client, $response);
+                flash('error','FedEx: '.$response->Notifications->Message);
+                return $response->Notifications->Message;
             }
-
-            writeToLog($client); // Write to log file
-
         } catch (SoapFault $exception) {
-            printFault($exception, $client);
+            flash('error','FedEx: '.$exception->getMessage());
         }
     }
 

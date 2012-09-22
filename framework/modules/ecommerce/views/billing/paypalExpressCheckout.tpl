@@ -17,7 +17,6 @@
 
 {/css}
 <div class="billing-method">
-    <h4>{'Pay with Paypal'|gettext}</h4>
     {form controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         <input id="continue-checkout" type="image" name="submit" value="1" src="https://cms.paypal.com/cms_content/US/en_US/images/developer/US_AU_btn.gif">

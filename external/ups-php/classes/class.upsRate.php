@@ -45,7 +45,7 @@ class upsRate {
 
 	// Build Request XML
 	function request($params) {
-		if ($params['Shop']) {
+		if (!empty($params['Shop'])) {
 			$request = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Request.xml', array('{RATE_OPTION}'), array('Shop')); 
 		} else {
 			$request = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Request.xml', array('{RATE_OPTION}'), array('Rate')); 

@@ -18,7 +18,6 @@
 {/css}
 
 <div class="billing-method payflowpro creditcard-form">
-    <h4>{"Pay By Cash"|gettext}</h4>
     {form name="ccinfoform`$key`" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         {$billing->form.$calcid}

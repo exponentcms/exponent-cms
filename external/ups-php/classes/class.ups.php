@@ -58,9 +58,13 @@ class ups {
 			curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $output);
+            curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$curlReturned = curl_exec($ch);
 			curl_close($ch);
+
+
 
 			// Find out if the UPS service is down
 			preg_match_all('/HTTP\/1\.\d\s(\d+)/',$curlReturned,$matches);
