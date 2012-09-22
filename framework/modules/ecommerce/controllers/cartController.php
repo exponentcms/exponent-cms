@@ -250,11 +250,10 @@ class cartController extends expController {
         expHistory::set('viewable', $this->params);
         //eDebug($order,true);
         if (isset($order)) {
-            /*
-        $shipping->getRates();    */
             //this triggers creation/updating of the shippingmethod and setting
-            //default rate if user has not yet choosen one.
-            $shipping = new shipping();
+            //default rate if user has not yet chosen one.
+//            $shipping = new shipping();
+//            $shipping->getRates();
             $order->calculateGrandTotal();
 
             //eDebug($order,true);
@@ -297,7 +296,7 @@ class cartController extends expController {
             $order->orderitem   = new stdClass();
             $items              = null;
             $discounts          = null;
-            $estimated_shipping = null;
+//            $estimated_shipping = null;
         }
         assign_to_template(array(
             'items'    => $order->orderitem,
@@ -400,8 +399,8 @@ class cartController extends expController {
             flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Activate a Shipping Option').' <a href="'.expCore::makeLink(array('controller'=>'shipping','action'=>'manage')).'">'.gt('Here').'</a>');
         }
 
-        //FJD?
-        //$shipping->getRates();
+        // we need to get the current shipping method rates
+        $shipping->getRates();
 
         assign_to_template(array(
             'cartConfig'          => $config->config,

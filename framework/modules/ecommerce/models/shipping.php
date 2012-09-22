@@ -75,7 +75,7 @@ class shipping extends expRecord {
                 else
                 {
                     //recently reconfigured/disabled shipping calc that was already set in the object, so default to the first one available
-                    $key = array_shift(array_keys($this->available_calculators));                         
+                    $key = @array_shift(array_keys($this->available_calculators));
                     $calcname = $this->available_calculators[$key];      
                     $this->shippingmethod->shippingcalculator_id = $key;                             
                 }                              
@@ -83,8 +83,7 @@ class shipping extends expRecord {
             } else {
                 $this->calculator = null;                
             }                                
-            $this->getRates();
-            
+//            $this->getRates();  //FIXME,  we don't really need to call it each time the shipping model is created! slows entire system down!
         } else {
             eDebug($this);
             eDebug($order);
@@ -158,14 +157,21 @@ class shipping extends expRecord {
     }
     
     static function estimateShipping($order)
-    {        
+    {
         $c = new shippingcalculator();
         $calc = $c->find('first',"enabled=1 AND is_default=1");
         $calcName = $calc->calculator_name;
         $calculator = new $calcName();
         if($calculator->addressRequired())
         {
-            return 0;
+            global $user;
+            //FIXME we need to get current address here
+            if (!empty($order->shippingmethod->addresses_id)) {
+                $rates = $calculator->getRates($order);
+                return $rates['01']['cost'];
+            }
+//            return 0;
+            return '-';
         }
         else
         {

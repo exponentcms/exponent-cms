@@ -112,10 +112,15 @@
                         {* /if *}
                         </td>
                         <td>
-                        {currency_symbol}
+                            {currency_symbol}
                         </td>
-                        <td style="text-align:right;">                    
-                           {$order->shipping_total|number_format:2}                    
+                        {if is_string($order->shipping_total)}
+                        <td style="text-align:center;">
+                            {$order->shipping_total}
+                        {else}
+                        <td style="text-align:right;">
+                            {$order->shipping_total|number_format:2}
+                        {/if}
                         </td>
                     </tr>
                     {if $order->surcharge_total != 0}

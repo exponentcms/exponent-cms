@@ -114,6 +114,8 @@ class shippingController extends expController {
 	    expHistory::set('manageable', $this->params);
 	    $calculators = array();
         $dir = BASE."framework/modules/ecommerce/shippingcalculators";
+        $default = false;
+        $on = false;
         if (is_readable($dir)) {
             $dh = opendir($dir);
             while (($file = readdir($dh)) !== false) {
@@ -129,8 +131,15 @@ class shippingController extends expController {
                     } else {
                         $calcobj = new $classname($id);
                     }
-                    
                     $calculators[] = $calcobj;
+                    if (!$default) $default = $calcobj->is_default;
+                    if (!$on && $calcobj->enabled) $on = $calcobj->id;
+                }
+            }
+            if (!$default && $on) {
+                $db->toggle('shippingcalculator', 'is_default', 'id='.$on);
+                foreach ($calculators as $idx=>$calc) {
+                    if ($calc->id == $on) $calculators[$idx]->is_default = 1;
                 }
             }
         }
@@ -143,8 +152,25 @@ class shippingController extends expController {
 	public function toggle() {
 	    global $db;
 	    if (isset($this->params['id'])) $db->toggle('shippingcalculator', 'enabled', 'id='.$this->params['id']);
+        if ($db->selectValue('shippingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('shippingcalculator', 'enabled', 'id='.$this->params['id'])) {
+            $db->toggle('shippingcalculator', 'is_default', 'id='.$this->params['id']);
+        }
 	    expHistory::back();
 	}
+
+    public function toggle_default() {
+  	    global $db;
+        $db->toggle('shippingcalculator',"is_default",'is_default=1');
+  	    if (isset($this->params['id'])) {
+            $active = $db->selectObject('shippingcalculator',"id=".$this->params['id']);
+            $active->is_default = 1;
+            $db->updateObject($active,'shippingcalculator',null,'id');
+        }
+        if ($db->selectValue('shippingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('shippingcalculator', 'enabled', 'id='.$this->params['id'])) {
+            $db->toggle('shippingcalculator', 'enabled', 'id='.$this->params['id']);
+        }
+  	    expHistory::back();
+  	}
 
     public function configure() {
         global $db;

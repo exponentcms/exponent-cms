@@ -693,7 +693,8 @@ class order extends expRecord {
         if ($this->total_discounts > $orderTotalPreDiscounts) $this->total_discounts = $orderTotalPreDiscounts;
         $this->total = $this->subtotal - $this->total_discounts;
 
-        if ($estimate_shipping) $this->shipping_total = shipping::estimateShipping($this);
+        $estimate_shipping = true;
+        if ($estimate_shipping && !$this->shipping_total) $this->shipping_total = shipping::estimateShipping($this);
         // figure out which tax zones apply to this order.
         $this->taxzones = taxclass::getCartTaxZones($this);
 
