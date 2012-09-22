@@ -55,7 +55,7 @@ class ups {
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $this->upsUrl.'/ups.app/xml/'.$type);
 			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch,CURLOPT_TIMEOUT, 60);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $output);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -127,7 +127,8 @@ class ups {
 			$this->upsUrl = 'https://wwwcie.ups.com'; // Don't put a trailing slash here or world will collide.
 		}else{
 			$this->debugMode = false;
-			$this->upsUrl = 'https://www.ups.com';
+//			$this->upsUrl = 'https://www.ups.com';
+            $this->upsUrl = 'https://onlinetools.ups.com';
 		}
 		return true;
 	}

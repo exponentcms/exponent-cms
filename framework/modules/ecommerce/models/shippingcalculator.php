@@ -18,33 +18,36 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package    Core
  */
 class shippingcalculator extends expRecord {
     public $table = 'shippingcalculator';
     public $icon = '';
     public $configdata = array();
-    public function addressRequired() { return true; }
-    
-    public function __construct($params=null, $get_assoc=true, $get_attached=true) {        
+
+    public function addressRequired() {
+        return true;
+    }
+
+    public function __construct($params = null, $get_assoc = true, $get_attached = true) {
         parent::__construct($params, $get_assoc, $get_attached);
-        
+
         // grab the config data for this calculator
         $this->configdata = empty($this->config) ? array() : unserialize($this->config);
-        
-        if (file_exists(BASE.'framework/modules/ecommerce/shippingcalculators/icons/'.$this->classname.'.gif')) {
-            $this->icon = PATH_RELATIVE.'framework/modules/ecommerce/shippingcalculators/icons/'.$this->classname.'.gif';
+
+        if (file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/icons/' . $this->classname . '.gif')) {
+            $this->icon = PATH_RELATIVE . 'framework/modules/ecommerce/shippingcalculators/icons/' . $this->classname . '.gif';
         } else {
-            $this->icon = PATH_RELATIVE.'framework/modules/ecommerce/shippingcalculators/icons/default.png';
+            $this->icon = PATH_RELATIVE . 'framework/modules/ecommerce/shippingcalculators/icons/default.png';
         }
-        
+
     }
 
     public function meetsCriteria() {
         return true;
     }
-    
-    public function getHandling(){
+
+    public function getHandling() {
         return 0;
     }
 }
