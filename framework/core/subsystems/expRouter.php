@@ -119,8 +119,7 @@ class expRouter {
                 if (!empty($params['controller'])) $link .= $params['controller'].'/';
                 if (!empty($params['action'])) $link .= $params['action'].'/';
                 foreach ($params as $key=>$value) {
-                    if(!is_array($value))
-                    {
+                    if(!is_array($value)) {
                         $value = chop($value);
                         $key = chop($key);
                         if ($value != "") {

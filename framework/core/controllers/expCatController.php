@@ -177,7 +177,9 @@ class expCatController extends expController {
                 break;
             }
             if (empty($records[$key]->catid)) {
-                $records[$key]->catid = null;
+                $records[$key]->catid = 0;
+                $records[$key]->expCat[0] = new stdClass();
+                $records[$key]->expCat[0]->id = 0;
                 $records[$key]->catrank = 9999;
                 $records[$key]->cat = $uncattitle;
             }

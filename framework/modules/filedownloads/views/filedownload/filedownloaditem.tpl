@@ -20,9 +20,9 @@
     {/if}
     {if $config.datetag}
         <p class="post-date">
-            <span class="month">{$record->publish_date|format_date:"%b"}</span>
-            <span class="day">{$record->publish_date|format_date:"%e"}</span>
-            <span class="year">{$record->publish_date|format_date:"%Y"}</span>
+            <span class="month">{$file->publish_date|format_date:"%b"}</span>
+            <span class="day">{$file->publish_date|format_date:"%e"}</span>
+            <span class="year">{$file->publish_date|format_date:"%Y"}</span>
         </p>
     {/if}
     {if $config.quick_download}
