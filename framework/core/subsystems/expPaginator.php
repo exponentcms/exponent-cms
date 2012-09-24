@@ -124,6 +124,7 @@ class expPaginator {
         $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
         $this->groups = !empty($params['groups']) ? $params['groups'] : array();
         $this->grouplimit = !empty($params['grouplimit']) ? $params['grouplimit'] : null;
+        $this->dontsort = !empty($params['dontsort']) ? $params['dontsort'] : null;
 
 		// if a view was passed we'll use it.
 		if (isset($params['view'])) $this->view = $params['view'];
@@ -219,7 +220,7 @@ class expPaginator {
 
         // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize) {
-            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat,$this->groups);
+            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat,$this->groups,$this->dontsort);
         }
 
         // let's see how many total records there are

@@ -165,7 +165,7 @@ class expCatController extends expController {
      * @param array $groups limit set to these groups only if set
      * @return void
      */
-    public static function addCats(&$records,$order,$uncattitle,$groups=array()) {
+    public static function addCats(&$records,$order,$uncattitle,$groups=array(),$dontsort=false) {
         if (empty($uncattitle)) $uncattitle = gt('Not Categorized');
         foreach ($records as $key=>$record) {
             foreach ($record->expCat as $cat) {
@@ -187,15 +187,18 @@ class expCatController extends expController {
                 unset ($records[$key]);
             }
         }
-        $orderby = explode(" ",$order);
-        $order = $orderby[0];
-        $order_direction = !empty($orderby[1]) && $orderby[1] == 'DESC' ? SORT_DESC : SORT_ASC;
-        expSorter::osort($records, array('catrank',$order => $order_direction));
+        //FIXME we don't always want to sort  by cat first
+        if (!$dontsort) {
+            $orderby = explode(" ",$order);
+            $order = $orderby[0];
+            $order_direction = !empty($orderby[1]) && $orderby[1] == 'DESC' ? SORT_DESC : SORT_ASC;
+            expSorter::osort($records, array('catrank',$order => $order_direction));
+        }
     }
 
     /**
      * this method fills a multidimensional array from a sorted records object
-     *  it is assumed the records object came from expCatController::addCats
+     *  it is assumed the records object is already processed by expCatController::addCats
      *
      * @static
      * @param array $records
