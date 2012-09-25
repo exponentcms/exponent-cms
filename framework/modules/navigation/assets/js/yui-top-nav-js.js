@@ -34,13 +34,13 @@ var buildmenu = function (elem,cfg) {
                 if (aSubmenuData[j].itemdata.length>0){
                     this.getItem(i).cfg.setProperty("submenu", aSubmenuData[j]);
                     var test = this.getItemGroups();
-                    //console.debug(test);
+                    //Y.log(test);
                     //this.setItemGroupTitle("Yahoo! PIM", aSubmenuData[j].itemdata);
                 }
             }
         }
     });
-    //  console.debug(oMenuBar.getItems());
+    //  Y.log(oMenuBar.getItems());
     
     oMenuBar.render();         
 

@@ -232,11 +232,10 @@ class expPaginator {
         // at this point we generally have all our records, now we'll trim the records to the number requested
         //FIXME we may want some more intelligent selection here based on cats/groups, e.g., don't break groups across pages, number of picture rows, etc...
         if (empty($this->grouplimit)) if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
-
-        // finally, we'll create another multi-dimensional array of the categories
+        // finally, we'll create another multi-dimensional array of categories populated with assoc items
         if (!empty($this->categorize) && $this->categorize) {
             expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
-        } else {  // categorized is off, so let's categorize by alpha instead for rolodex type use
+        } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
             $order = $this->order;
             if (strstr($this->order,",")) {
                $orderby = explode(",",$this->order);
@@ -259,7 +258,6 @@ class expPaginator {
                 $this->cats[$title]->records[] = $record;
             }
         }
-
         if (!empty($this->grouplimit)) {
             if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
         } else {
@@ -267,8 +265,7 @@ class expPaginator {
         }
 
         if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
-        //$this->runCallback();
-      
+
         //eDebug($this->records);
 		// get the number of the last record we are showing...this is used in the page links.
 		// i.e.  "showing 10-19 of 57"...$this->last would be the 19 in that string
@@ -363,7 +360,7 @@ class expPaginator {
 		$links_template->assign('page', $this);
 		$this->links = $links_template->render();
 		
-		$this->makeHeaderCols($page_params);
+		$this->makeHeaderCols($page_params);  // headers for table view
          
         $sortparams = array_merge($page_params, $router->params);
 		
@@ -372,11 +369,11 @@ class expPaginator {
         else unset($sortparams['page']);
         //End From Merge ****
 
-		$this->makeSortDropdown($sortparams);
+		$this->makeSortDropdown($sortparams);  // used on non-table views
        
         $table_template = get_common_template('pagination_table', null, 'common');
         $table_template->assign('page', $this);
-        $this->table = $table_template->render();
+        $this->table = $table_template->render();  // table view
         
 	}
 	

@@ -376,6 +376,15 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
+    public function toggle_log() {
+  	    $value = (LOGGER == 1) ? 0 : 1;
+  	    expSettings::change('LOGGER', $value);
+//  	    expTheme::removeCss();
+//  		$message = (LOGGER != 1) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
+//  		flash('message',$message);
+  		expHistory::back();
+  	}
+
 	public function toggle_maintenance() {
 		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
 		expSettings::change('MAINTENANCE_MODE', $value);

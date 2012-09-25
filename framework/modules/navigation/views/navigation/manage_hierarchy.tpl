@@ -55,7 +55,7 @@ var YAHOO = Y.YUI2;
 	var DDM = YAHOO.util.DragDropMgr;
 
 	var DDSend = function(id, sGroup, config) {
-		//////console.debug(id)
+		//Y.log(id)
 		if (id) {
 			new YAHOO.util.DDTarget("addafter"+id,sGroup);
 			new YAHOO.util.DDTarget("addbefore"+id,sGroup);
@@ -74,12 +74,12 @@ var YAHOO = Y.YUI2;
 		var real = this.getEl();
 		var nodebeingdragged = tree.getNodeByElement(YAHOO.util.Dom.get(real.id));
 		nodebeingdragged.collapse();
-		////console.debug(Dom.get(real.id.replace("section","sectionlabel")).innerHTML);
+		//Y.log(Dom.get(real.id.replace("section","sectionlabel")).innerHTML);
 		proxy.innerHTML = "<div class='shrinkwrap'><div id='dropindicator' class='nodrop'>&#160;</div><span>"+Dom.get(real.id.replace("section","sectionlabel")).innerHTML+"</span><span class='pshadow'></span></div>";
 		YAHOO.util.Dom.addClass(real,"ghost");
 		YAHOO.util.Dom.addClass(proxy,"ddnavproxiebeingdragged");
 		//YAHOO.util.Dom.setStyle(proxy,"width",YAHOO.util.Dom.getStyle(proxy,"width")+"px");
-		////console.debug(YAHOO.util.Dom.getStyle(proxy,"width"));
+		//Y.log(YAHOO.util.Dom.getStyle(proxy,"width"));
 		YAHOO.util.Dom.setStyle(proxy,"border","0");
 		DDM.refreshCache();
 
@@ -92,7 +92,7 @@ var YAHOO = Y.YUI2;
 		var hoveredSecId = id.replace("addafter","");
 		hoveredSecId = hoveredSecId.replace("addbefore",""); 
 		
-		////console.debug('hover - '+dragSecId+' over - '+hoveredSecId);
+		//Y.log('hover - '+dragSecId+' over - '+hoveredSecId);
 		
 		if (YAHOO.util.Dom.hasClass(destEl,"addbefore") && dragSecId!=hoveredSecId){
 			YAHOO.util.Dom.addClass(destEl,"addbefore-h");
@@ -177,9 +177,9 @@ var YAHOO = Y.YUI2;
 	
 	refreshDD = function () {
 		dds = YAHOO.util.Dom.getElementsByClassName("draggables");
-		//console.debug(dds);
+		//Y.log(dds);
 		for (dd in dds){
-			//console.debug(dd.getAttribute("id"));
+			//Y.log(dd.getAttribute("id"));
 			new DDSend(dds[dd].getAttribute("id").replace("section",""));
 		}
 	}
@@ -208,7 +208,7 @@ var YAHOO = Y.YUI2;
 			saveToDB(moveMe.data.id,moveMeAfter.data.id,"after");
 			tree.getRoot().refresh();
 			var lotl = Dom.getElementsByClassName("lastonthelist");
-			////console.debug(lotl);
+			//Y.log(lotl);
 		}
 	}
 	

@@ -119,7 +119,7 @@
                };
            });
            // css
-           //console.debug(tab.all('.io-execute-response link'));
+           //Y.log(tab.all('.io-execute-response link'));
            this.all('link').each(function(n){
                var url = n.get('href');
                Y.Get.css(url);

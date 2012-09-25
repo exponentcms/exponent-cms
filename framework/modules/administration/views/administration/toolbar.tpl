@@ -23,10 +23,8 @@
 
 {script unique="admin99" yui3mods="yui"}
 {literal}
-
         YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-yahoo-dom-event','yui2-menu','yui2-connection','yui2-container', function(Y) {
-            var YAHOO=Y.YUI2;
-            
+             var YAHOO=Y.YUI2;
              var aItemData = [
                 {/literal}{$menu}{literal},
              ];
@@ -164,3 +162,26 @@
          
 {/literal}
 {/script}
+
+{if $smarty.const.LOGGER}
+<div id="yuilogger" class="yui3-skin-sam">
+
+</div>
+{script unique="ylogger99" yui3mods="yui"}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('console','console-filters','dd-plugin', function(Y) {
+        var yconsole = new Y.Console({
+            /* any other configuration */
+            logSource: Y.Global,
+            newestOnTop : false,
+            style: 'separate',
+            plugins: [
+                Y.Plugin.ConsoleFilters,
+                Y.Plugin.Drag, { handles: ['.yui3-console-hd'] }
+            ]
+        }).render("#yuilogger");
+        yconsole.collapse();
+    });
+{/literal}
+{/script}
+{/if}

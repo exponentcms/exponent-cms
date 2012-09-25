@@ -44,11 +44,11 @@
              <span class="label">{'Seats Available:'|gettext} </span><span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
              <span class="label">{'Registration Closes:'|gettext} </span><span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
          </span>
-         <div class="price">{currency_symbol}{$product->price|number_format:2}</div>
+         <div class="price">{currency_symbol}{$product->base_price|number_format:2}</div>
         
          {if $product->isAvailable()}
             <a href="{link controller=cart action=addItem product_id=$product->id product_type=$product->product_type}" class="addtocart exp-ecom-link" rel="nofollow">
-                Add to cart<span></span>
+                {'Add to cart'|gettext}<span></span>
             </a>
          {else}
             <a href="#" class="addtocart exp-ecom-link">

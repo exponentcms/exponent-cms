@@ -79,49 +79,4 @@ $router = new expRouter();
 if ($db->havedb)
 	$sections = navigationController::initializeNavigation();
 
-/**
- * dumps the passed variable to screen, but only if in development mode
- * @param mixed $var the variable to dump
- * @param bool $halt if set to true will halt execution
- * @return void
- */
-function eDebug($var, $halt=false){
-	if (DEVELOPMENT) {
-//		echo "<xmp>";
-        echo "<pre>";
-		print_r($var);
-//		echo "</xmp>";
-        echo "</pre>";
-
-		if ($halt) die();
-	}
-}
-
-/**
- * dumps the passed variable to a log, but only if in development mode
- * @param mixed $var the variable to log
- * @param string $type the type of entry to record
- * @param string $path the pathname for the log file
- * @param string $minlevel
- * @return void
- */
-function eLog($var, $type='', $path='', $minlevel='0') {
-	if($type == '') { $type = "INFO"; }
-	if($path == '') { $path = BASE . 'tmp/exponent.log'; }
-	if (DEVELOPMENT >= $minlevel) {
-		if (is_writable ($path) || !file_exists($path)) {
-			if (!$log = fopen ($path, "ab")) {
-				eDebug(gt("Error opening log file for writing."));
-			} else {
-				if (fwrite ($log, $type . ": " . $var . "\r\n") === FALSE) {
-					eDebug(gt("Error writing to log file")." (".$path.").");
-				}
-				fclose ($log);
-			}
-		} else {
-			eDebug(gt("Log file"." (".$path)." ".gt("not writable."));
-		}
-	}
-}
-
 ?>

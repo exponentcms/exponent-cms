@@ -394,30 +394,30 @@ class storeController extends expController {
         global $db;
         $events = array();
         foreach ($edates as $edate) {
-            if (!isset($this->params['cat'])) {
-                if (isset($this->params['title']) && is_string($this->params['title'])) {
-                    $default_id = $db->selectValue('storeCategories', 'id', "sef_url='" . $this->params['title'] . "'");
-                } elseif (!empty($this->config['category'])) {
-                    $default_id = $this->config['category'];
-                } elseif (ecomconfig::getConfig('show_first_category')) {
-                    $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
-                } else {
-                    $default_id = 0;
-                }
-            }
-
-            $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
-
-            $category = new storeCategory($parent);
+//            if (!isset($this->params['cat'])) {
+//                if (isset($this->params['title']) && is_string($this->params['title'])) {
+//                    $default_id = $db->selectValue('storeCategories', 'id', "sef_url='" . $this->params['title'] . "'");
+//                } elseif (!empty($this->config['category'])) {
+//                    $default_id = $this->config['category'];
+//                } elseif (ecomconfig::getConfig('show_first_category')) {
+//                    $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+//                } else {
+//                    $default_id = 0;
+//                }
+//            }
+//
+//            $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
+//
+//            $category = new storeCategory($parent);
 
             $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
-            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
+//            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
-            $sql .= 'WHERE sc.storecategories_id IN (';
-            $sql .= 'SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
-            if ($category->hide_closed_events) {
-                $sql .= ' AND er.signup_cutoff > ' . time();
-            }
+            $sql .= 'WHERE 1 ';
+//            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
+//            if ($category->hide_closed_events) {
+//                $sql .= ' AND er.signup_cutoff > ' . time();
+//            }
             $sql .= ' AND er.id = ' . $edate->id;
 
             $order = 'event_starttime';
@@ -684,7 +684,7 @@ class storeController extends expController {
         } elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin)) {
             $product_type->user_message = $product->title . " is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
-        foreach ($product_type->crosssellItem as &$csi) {
+        if (!empty($product_type->crosssellItem)) foreach ($product_type->crosssellItem as &$csi) {
             $csi->getAttachableItems();
         }
         //eDebug($product->crosssellItem);

@@ -58,10 +58,10 @@ EXPONENT.filepicker = function(id) {
 		getfiles.subscribe(function (o) {
 			var images = "";
 			for (var i=0;i<o.data.length;i++){
-				////console.debug(o.data[i]);
+				////Y.log(o.data[i]);
 				images += '<img src="'+EXPONENT.PATH_RELATIVE+'thumb.php?constraint=1&id='+o.data[i].id+'&width=100&height=200">';
 			}
-			//console.debug(images);
+			//Y.log(images);
 			this.setBody(images);
 		},this);
 			

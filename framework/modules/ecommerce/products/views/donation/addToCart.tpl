@@ -47,7 +47,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
         var bp = {/literal}{$product->base_price};{literal}
         var da = YAHOO.util.Dom.get('dollar_amount');
         YAHOO.util.Event.on(da, 'blur', function(e,o){
-            ////console.debug(this.value);
+            //Y.log(this.value);
             var newint = parseInt(this.value.replace('$',"").replace(',',""));
             if (newint < bp) {
                 this.value = "$"+bp+".00";

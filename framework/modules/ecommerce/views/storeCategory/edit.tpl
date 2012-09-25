@@ -33,7 +33,7 @@
             <ul class="yui-nav">
 				<li class="selected"><a href="#general"><em>{'General'|gettext}</em></a></li>
 				<li><a href="#seo"><em>{'SEO'|gettext}</em></a></li>
-				<li><a href="#events"><em>{'Events'|gettext}</em></a></li>
+				<li><a href="#events1"><em>{'Events'|gettext}</em></a></li>
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}
 						<li><a href="#{$item}"><em>{$key} {'Product Types'|gettext}</em></a></li>
@@ -53,7 +53,7 @@
                     {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords}
                     {control type=text name=meta_description label="Meta Description"|gettext value=$node->meta_description}
                 </div>        
-                 <div id="events">   
+                 <div id="events1">
                     {control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}
                     {control type="checkbox" name="hide_closed_events" label='Don\'t Show Closed Events'|gettext value=1 checked=$node->hide_closed_events}
                 </div>  
@@ -72,7 +72,7 @@
         {/form}
     </div>
 </div>
-{script unique="cattabs" src="`$smarty.const.PATH_RELATIVE`framework/core/subsystems/forms/controls/listbuildercontrol.js" yui3mods=1}
+{script unique="cat-tabs" src="`$smarty.const.PATH_RELATIVE`framework/core/subsystems/forms/controls/listbuildercontrol.js" yui3mods=1}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('history','tabview', function(Y) {
         var history = new Y.HistoryHash(),

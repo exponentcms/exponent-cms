@@ -13,7 +13,8 @@
  *
  */
 
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
+    var YAHOO = Y.YUI2;
 
     var toggleCart = {
             cartWrap: YAHOO.util.Dom.get('shoppingcartwrapper'),
@@ -73,7 +74,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         serviceForm : YAHOO.util.Dom.get('SelShpCal'),
         udID : YAHOO.util.Dom.get('shprceup'),
         ssDisplay : YAHOO.util.Dom.get('cur-calc'),
-        ajx : new EXPONENT.AjaxEvent(),
+//        ajx : new EXPONENT.AjaxEvent(),
         init : function(){
             
             //listen carefully...

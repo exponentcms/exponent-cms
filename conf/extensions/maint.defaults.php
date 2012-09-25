@@ -19,5 +19,6 @@
 if (!defined('MAINTENANCE_MODE')) define('MAINTENANCE_MODE','0');
 if (!defined('MAINTENANCE_MSG_HTML')) define('MAINTENANCE_MSG_HTML',exponent_unhtmlentities('This site is currently down for maintenance.'));
 if (!defined('DEVELOPMENT')) define('DEVELOPMENT','0');
+if (!defined('LOGGER')) define('LOGGER','0');
 
 ?>

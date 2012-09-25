@@ -580,8 +580,8 @@ pixidou = {
 			
 			// Grab some vars and jump back to the editor
             var surl = EXPONENT.PATH_RELATIVE+"index.php?controller=pixidou&action=exitEditor&exitType="+exitType+"&ajax_action=1"+fromFCK+"&update="+YAHOO.util.Dom.get('update').value+"&fid="+YAHOO.util.Dom.get('fid').value+"&cpi="+pixidou.image;
-            // console.debug(surl);
-            // console.debug(fromFCK);
+            // Y.log(surl);
+            // Y.log(fromFCK);
             window.location = surl;
 		}
 	}

@@ -85,7 +85,8 @@ class yuicalendarcontrol extends formcontrol {
                   width:'200px',
                   showPrevMonth: true,
                   showNextMonth: true,
-                }).render();
+                });
+                calendar.render();
 
                 // Parsing the date string into JS Date value
                 var date = Y.DataType.Date.parse('".date('m/d/Y',$this->default)."');

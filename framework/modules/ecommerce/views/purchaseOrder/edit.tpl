@@ -173,7 +173,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', function(Y) {
 
         var request = Y.io(uri, cfg);
         
-        //console.debug(Y.one('#controlRowValues'));
+        //Y.log(Y.one('#controlRowValues'));
         //ctrlRow.get('parentNode').insert('<tr><td colspan="9">testing</td></tr>',ctrlRow);
     };
 

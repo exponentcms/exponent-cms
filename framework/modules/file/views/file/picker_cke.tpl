@@ -434,7 +434,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 	                    this.json = false;
 	                }
 	                var sUri = gatherURLInfo(obj);
-	                //console.debug(sUri);
+	                //Y.log(sUri);
 	                YAHOO.util.Connect.asyncRequest("POST", sUri, {
 	                success: function (o) {
 	                    //if we're just sending a request and not needing to do

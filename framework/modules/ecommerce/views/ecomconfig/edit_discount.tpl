@@ -93,8 +93,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element', function(Y) {
             }
         }
         YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
-        //console.debug(methdd);
-        //console.debug(dd.value);
+        //Y.log(methdd);
+        //Y.log(dd.value);
     }
     YAHOO.util.Event.onDOMReady(switchMethods);
 });

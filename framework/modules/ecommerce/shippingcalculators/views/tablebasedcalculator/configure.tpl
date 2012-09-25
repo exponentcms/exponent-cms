@@ -150,7 +150,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var updateUpRange = function (rc){
         // stb.one('#to-'+rc).on({
         //     'key':function(e){
-        //         console.debug(e.keyCode);
+        //         Y.log(e.keyCode);
         //     }
         // });
     }

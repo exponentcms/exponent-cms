@@ -111,7 +111,7 @@ class cartController extends expController {
         if ($product->addToCart($this->params)) {
 
             if (empty($this->params['quick'])) {
-
+                //FIXME, why do we give them a link to the cart and also display it?
                 flash('message', gt("Added") . " " . $product->title . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
                 //expHistory::back();
                 //eDebug(show_msg_queue(false),true);

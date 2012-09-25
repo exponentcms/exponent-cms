@@ -69,15 +69,16 @@ class eventregistration extends expRecord {
     #	    $event->tablename = 'eventregistration';
             $event                              = new stdClass();
             $event->eventdate                   = strtotime($params['eventdate']);
-            $event->eventenddate                = strtotime($params['eventenddate']);
+//            $event->eventenddate                = strtotime($params['eventenddate']);
             $event->event_starttime             = datetimecontrol::parseData('event_starttime', $params) + $event->eventdate;
             $event->event_endtime               = datetimecontrol::parseData('event_endtime', $params) + $event->eventdate;
             $event->signup_cutoff               = strtotime($params['signup_cutoff']);
-            $event->location                    = $params['location'];
-            $event->terms_and_condition         = $params['terms_and_condition'];
-            $event->require_terms_and_condition = !empty($params['require_terms_and_condition']) ? $params['require_terms_and_condition'] : false;
-            $event->terms_and_condition_toggle  = $params['terms_and_condition_toggle'];
-            $event->num_guest_allowed           = !empty($params['quantity']) ? $params['quantity'] : 0;
+//            $event->location                    = $params['location'];
+//            $event->terms_and_condition         = $params['terms_and_condition'];
+//            $event->require_terms_and_condition = !empty($params['require_terms_and_condition']) ? $params['require_terms_and_condition'] : false;
+//            $event->terms_and_condition_toggle  = $params['terms_and_condition_toggle'];
+//            $event->num_guest_allowed           = !empty($params['quantity']) ? $params['quantity'] : 0;
+//            $event->number_of_registrants           = !empty($params['quantity']) ? $params['quantity'] : 0;
             $event->id                          = empty($product->product_type_id) ? null : $product->product_type_id;
 
             //Option Group Tab
@@ -397,10 +398,13 @@ class eventregistration extends expRecord {
             if (empty($params['qtyr'])) {
                 $params['qtyr'] = 1;
             }
-            $item->products_price = preg_replace("/[^0-9.]/", "", $params['base_price']);
+            if (!empty($params['base_price'])) $item->products_price = preg_replace("/[^0-9.]/", "", $params['base_price']);
+            else $item->products_price = $product->base_price;
             $item->quantity       = $params['qtyr'];
         }
 
+//        $this->displayForm('addToCart',$params);
+//        return false;
         $item->options = serialize($options);
         $item->save();
         return true;
