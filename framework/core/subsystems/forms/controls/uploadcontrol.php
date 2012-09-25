@@ -88,7 +88,7 @@ class uploadcontrol extends formcontrol {
         return $object;
     }
 
-	function moveFile($original_name,$formvalues) {
+	static function moveFile($original_name,$formvalues) {
 		$dir = 'files/uploads';
 		$filename = expFile::fixName(time().'_'.$formvalues[$original_name]['name']);
 		$dest = $dir.'/'.$filename;
@@ -105,8 +105,13 @@ class uploadcontrol extends formcontrol {
 //   	}
 
 	static function parseData($original_name,$formvalues) {
-		$file = $formvalues[$original_name];
-		return '<a href="'.PATH_RELATIVE.$file.'">'.basename($file).'</a>';
+        if (is_array($formvalues[$original_name])) {
+            $file = $formvalues[$original_name]['name'];
+            return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';
+        } else {
+            $file = $formvalues[$original_name];
+            return '<a href="'.URL_BASE.$file.'">'.basename($file).'</a>';
+        }
 	}
 }
 

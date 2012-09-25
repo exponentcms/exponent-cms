@@ -114,7 +114,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
         $template->assign("captions",$captions);
 		$template->assign('title',$rpt->name);
         $template->assign("is_email",1);
-		$template->assign("referrer", $referrer);
+		if (!empty($referrer)) $template->assign("referrer", $referrer);
         $emailText = $template->render();
 		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
 		$template->assign("css",file_get_contents(BASE."framework/core/assets/css/tables.css"));
