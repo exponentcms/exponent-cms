@@ -42,7 +42,6 @@
     </tbody>
 </table>
 <p>Referrer: {$referrer}</p>
-
 {if $is_email == 0}
 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>
 {/if}
