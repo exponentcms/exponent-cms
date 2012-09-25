@@ -160,23 +160,24 @@ class shipping extends expRecord {
     {
         $c = new shippingcalculator();
         $calc = $c->find('first',"enabled=1 AND is_default=1");
-        $calcName = $calc->calculator_name;
-        $calculator = new $calcName();
-        if($calculator->addressRequired())
-        {
-            global $user;
-            //FIXME we need to get current address here
-            if (!empty($order->shippingmethod->addresses_id)) {
+        if (!empty($calculator)) {
+            $calcName = $calc->calculator_name;
+            $calculator = new $calcName();
+            if($calculator->addressRequired()) {
+                global $user;
+                //FIXME we need to get current address here
+                if (!empty($order->shippingmethod->addresses_id)) {
+                    $rates = $calculator->getRates($order);
+                    return $rates['01']['cost'];
+                }
+    //            return 0;
+                return '-';
+            } else {
                 $rates = $calculator->getRates($order);
                 return $rates['01']['cost'];
             }
-//            return 0;
+        } else {
             return '-';
-        }
-        else
-        {
-            $rates = $calculator->getRates($order);
-            return $rates['01']['cost'];
         }
     }
 }

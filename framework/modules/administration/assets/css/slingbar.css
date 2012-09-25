@@ -521,5 +521,6 @@
     margin: 0;
 }
 #yuilogger .yui3-console-separate {
-    top: 35px;
+    top: 32px;
+    z-index:10;
 }
