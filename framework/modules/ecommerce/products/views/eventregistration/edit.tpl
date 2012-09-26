@@ -107,6 +107,7 @@
 				</div>
             </div>
         </div>
+        <div class="loadingdiv">{'Loading'|gettext}</div>
         {control type="buttongroup" submit="Save Event"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
@@ -117,7 +118,7 @@
 		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
 		tabview.render();
 		Y.one('#editproduct-tabs').removeClass('hide');
-
+        Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}

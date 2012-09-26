@@ -21,7 +21,7 @@
 
 {/script}
 
-<div id="editproduct" class="module store edit hide exp-skin-tabview yui-skin-sam exp-skin exp-admin-skin">
+<div id="editproduct" class="module store edit yui-skin-sam exp-skin exp-admin-skin">
     {if $record->id != ""}
         <h1>{'Edit Information for'|gettext} {$modelname}</h1>
     {else}
@@ -35,31 +35,34 @@
 		{control type="hidden" name="original_id" value=$record->original_id}
 		{/if}
 		{control type="hidden" name="id" value=$record->id}
-        <ul id="dynamicload" class="exp-ajax-tabs">
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_general"}">{'General'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_pricing"}">{'Pricing, Tax'|gettext} &amp; {'Discounts'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_images"}">{'Images'|gettext} &amp; {'Files'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_quantity"}">{'Quantity'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_shipping"}">{'Shipping'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_categories"}">{'Categories'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_options"}">{'Options'|gettext}</a></li>
-			{if $record->parent_id == 0}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_featured"}">{'Featured'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_related"}">{'Related Products'|gettext}</a></li>
-			{/if}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_userinput"}">{'User Input Fields'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_status"}">{'Active'|gettext} &amp; {'Status Settings'|gettext}</a></li>
-			{if $record->parent_id == 0}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_meta"}">{'SEO'|gettext}</a></li>
-			{/if}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_notes"}">{'Notes'|gettext}</a></li>
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_extrafields"}">{'Extra Fields'|gettext}</a></li>
-			{if $record->parent_id == 0}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_model"}">{'SKUS/Model'|gettext}</a></li>
-			{/if}
-        	<li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_misc"}">{'Misc'|gettext}</a></li>
-        </ul>
-        <div id="loadcontent" class="exp-ajax-tabs-content"></div>
+        <div id="editproduct-tabs" class="yui-navset exp-skin-tabview hide">
+            <ul id="dynamicload" class="exp-ajax-tabs">
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_general"}">{'General'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_pricing"}">{'Pricing, Tax'|gettext} &amp; {'Discounts'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_images"}">{'Images'|gettext} &amp; {'Files'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_quantity"}">{'Quantity'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_shipping"}">{'Shipping'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_categories"}">{'Categories'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_options"}">{'Options'|gettext}</a></li>
+                {if $record->parent_id == 0}
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_featured"}">{'Featured'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_related"}">{'Related Products'|gettext}</a></li>
+                {/if}
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_userinput"}">{'User Input Fields'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_status"}">{'Active'|gettext} &amp; {'Status Settings'|gettext}</a></li>
+                {if $record->parent_id == 0}
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_meta"}">{'SEO'|gettext}</a></li>
+                {/if}
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_notes"}">{'Notes'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_extrafields"}">{'Extra Fields'|gettext}</a></li>
+                {if $record->parent_id == 0}
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_model"}">{'SKUS/Model'|gettext}</a></li>
+                {/if}
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_misc"}">{'Misc'|gettext}</a></li>
+            </ul>
+            <div id="loadcontent" class="exp-ajax-tabs-content"></div>
+        </div>
+        <div id="loading" class="loadingdiv">{"Loading"|gettext} {"Product Edit Form"|gettext}</div>
         {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
         {if isset($record->original_id)}
             {control type="hidden" name="original_id" value=$record->original_id}
@@ -72,7 +75,6 @@
         {/if}
     {/form}
 </div>
-<div id="loading" class="loadingdiv">{"Loading"|gettext} {"Product Edit Form"|gettext}</div>
 
 {script unique="prodtabs" yui3mods="1"}
 {literal}
@@ -130,9 +132,8 @@
 
        tabs.item(lastTab).simulate('click');
        
-       Y.one('#editproduct').removeClass('hide');
+       Y.one('#editproduct-tabs').removeClass('hide');
        Y.one('.loadingdiv').remove();
-       
     });
 {/literal}
 {/script}

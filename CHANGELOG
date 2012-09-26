@@ -4,7 +4,7 @@ Copyright (c) 2004-2012 OIC Group, Inc.
 
 Added / Fixed / changed for 2.0.9
 -----------------------
-# This release focuses on greater HTML5 & PHP v5.4 compliance, additional embedded help/documentation links, & module upgrades
+# This release focuses on greater HTML5 & PHP v5.4 compliance, & module upgrades
   - upgrades old school simple poll and navigation modules into 2.0 style controllers
     -- page type indicators now displayed in Manage Pages view
     -- new universal navigation view to emulate most old navigation views through user settings
@@ -27,7 +27,9 @@ Added / Fixed / changed for 2.0.9
     -- closer to an 'out of the box' solution
     -- can now activate e-commerce w/o activating an ecom module
     -- PayPal Express checkout updated to use new api to give more into on the PayPal screen
+    -- FedEx & UPS shipping calculators working
     -- e-commerce use a little more intuitive/more features now functional
+  - adds a working 'upload' control to forms which emails submitted file as an attachment
   - plus many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.8

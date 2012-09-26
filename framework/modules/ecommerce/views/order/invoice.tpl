@@ -525,5 +525,4 @@
     <div id="store-footer">
         {$storeConfig.ecomfooter}
     </div>    
-    
 </div>

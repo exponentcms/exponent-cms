@@ -19,20 +19,20 @@
 	{'You may add up to four extra fields to your product here.  These field names are also picked up by your child products where you can assign values to them.'|gettext}
 	<table> 
 		<tr>
-			<td>{control type="text" name="extra_fields_name[0]" label="Extra Field Name #1:" value=$record->extra_fields.0.name}</td>
-			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[0]" label="Extra Field Value #1:"|gettext value=$record->extra_fields.0.value}</td>{/if}
+			<td>{control type="text" name="extra_fields_name[0]" label="Extra Field Name #1:" size=30 value=$record->extra_fields.0.name}</td>
+			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[0]" label="Extra Field Value #1:"|gettext size=30 value=$record->extra_fields.0.value}</td>{/if}
 		</tr>
 		<tr>
-			<td>{control type="text" name="extra_fields_name[1]" label="Extra Field Name #2:" value=$record->extra_fields.1.name}</td>
-			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[1]" label="Extra Field Value #2:"|gettext value=$record->extra_fields.1.value}</td>{/if}
+			<td>{control type="text" name="extra_fields_name[1]" label="Extra Field Name #2:" size=30 value=$record->extra_fields.1.name}</td>
+			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[1]" label="Extra Field Value #2:"|gettext size=30 value=$record->extra_fields.1.value}</td>{/if}
 		</tr>
 		<tr>
-			<td>{control type="text" name="extra_fields_name[2]" label="Extra Field Name #3:" value=$record->extra_fields.2.name}</td>
-			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[2]" label="Extra Field Value #3:"|gettext value=$record->extra_fields.2.value}</td>{/if}
+			<td>{control type="text" name="extra_fields_name[2]" label="Extra Field Name #3:" size=30 value=$record->extra_fields.2.name}</td>
+			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[2]" label="Extra Field Value #3:"|gettext size=30 value=$record->extra_fields.2.value}</td>{/if}
 		</tr>
 		<tr>
-			<td>{control type="text" name="extra_fields_name[3]" label="Extra Field Name #4:" value=$record->extra_fields.3.name}</td>
-			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[3]" label="Extra Field Value #4:"|gettext value=$record->extra_fields.3.value}</td>{/if}
+			<td>{control type="text" name="extra_fields_name[3]" label="Extra Field Name #4:" size=30 value=$record->extra_fields.3.name}</td>
+			{if $record->childProduct|@count == 0}<td>{control type="text" name="extra_fields_value[3]" label="Extra Field Value #4:"|gettext size=30 value=$record->extra_fields.3.value}</td>{/if}
 		</tr>
 	</table>
 {else}
@@ -42,28 +42,28 @@
 		{if $parent->extra_fields.0.name != '' }
 			<tr>
 				<td>
-				{control type="hidden" name="extra_fields_name[0]" value=$parent->extra_fields.0.name}
-				{control type="text" name="extra_fields_value[0]" label="Value for extra field - '`$parent->extra_fields.0.name`':" value=$record->extra_fields.0.value}</td>
+				{control type="hidden" name="extra_fields_name[0]" size=30 value=$parent->extra_fields.0.name}
+				{control type="text" name="extra_fields_value[0]" label="Value for extra field - '`$parent->extra_fields.0.name`':" size=30 value=$record->extra_fields.0.value}</td>
 			</tr>
 			{if $parent->extra_fields.1.name != '' } 
 				<tr>
 				<td>
-				{control type="hidden" name="extra_fields_name[1]" value=$parent->extra_fields.1.name}
-				{control type="text" name="extra_fields_value[1]" label="Value for extra field - '`$parent->extra_fields.1.name`':" value=$record->extra_fields.1.value}</td>
+				{control type="hidden" name="extra_fields_name[1]" size=30 value=$parent->extra_fields.1.name}
+				{control type="text" name="extra_fields_value[1]" label="Value for extra field - '`$parent->extra_fields.1.name`':" size=30 value=$record->extra_fields.1.value}</td>
 			</tr>
 			{/if}
 			{if $parent->extra_fields.2.name != '' } 
 				<tr>
 					<td>
-					{control type="hidden" name="extra_fields_name[2]" value=$parent->extra_fields.2.name}
-					{control type="text" name="extra_fields_value[2]" label="Value for extra field - '`$parent->extra_fields.2.name`':" value=$record->extra_fields.2.value}</td>
+					{control type="hidden" name="extra_fields_name[2]" size=30 value=$parent->extra_fields.2.name}
+					{control type="text" name="extra_fields_value[2]" label="Value for extra field - '`$parent->extra_fields.2.name`':" size=30 value=$record->extra_fields.2.value}</td>
 				</tr>
 			 {/if}
 			{if $parent->extra_fields.3.name != '' } 
 				 <tr>
 					<td>
-					{control type="hidden" name="extra_fields_name[3]" value=$parent->extra_fields.3.name}
-					{control type="text" name="extra_fields_value[3]" label="Value for extra field - '`$parent->extra_fields.3.name`':" value=$record->extra_fields.3.value}</td>
+					{control type="hidden" name="extra_fields_name[3]" size=30 value=$parent->extra_fields.3.name}
+					{control type="text" name="extra_fields_value[3]" label="Value for extra field - '`$parent->extra_fields.3.name`':" size=30 value=$record->extra_fields.3.value}</td>
 				</tr>
 			{/if}
 		{else}

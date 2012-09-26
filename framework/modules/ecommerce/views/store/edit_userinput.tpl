@@ -30,10 +30,10 @@
 			</tr>
 			<tr>
 				<td>
-					{control type="text" name="user_input_min_length[0]" label="Minimum Length"|gettext value=$record->user_input_fields.0.min_length}
+					{control type="text" name="user_input_min_length[0]" label="Minimum Length"|gettext size=5 value=$record->user_input_fields.0.min_length}
 				</td>
 				<td>
-					{control type="text" name="user_input_max_length[0]" label="Maximum Length"|gettext value=$record->user_input_fields.0.max_length}
+					{control type="text" name="user_input_max_length[0]" label="Maximum Length"|gettext size=5 value=$record->user_input_fields.0.max_length}
 				</td>
 			</tr>
 			<tr>
@@ -57,10 +57,10 @@
 			</tr>
 			<tr>
 				<td>
-					{control type="text" name="user_input_min_length[1]" label="Minimum Length"|gettext value=$record->user_input_fields.1.min_length}
+                    {control type="text" name="user_input_min_length[1]" label="Minimum Length"|gettext size=5 value=$record->user_input_fields.1.min_length}
 				</td>
 				<td>
-					{control type="text" name="user_input_max_length[1]" label="Maximum Length"|gettext value=$record->user_input_fields.1.max_length}
+					{control type="text" name="user_input_max_length[1]" label="Maximum Length"|gettext size=5 value=$record->user_input_fields.1.max_length}
 				</td>
 			</tr>
 			<tr>
@@ -84,10 +84,10 @@
 			</tr>
 			<tr>
 				<td>
-					{control type="text" name="user_input_min_length[2]" label="Minimum Length"|gettext value=$record->user_input_fields.2.min_length}
+					{control type="text" name="user_input_min_length[2]" label="Minimum Length"|gettext size=5 value=$record->user_input_fields.2.min_length}
 				</td>
 				<td>
-					{control type="text" name="user_input_max_length[2]" label="Maximum Length"|gettext value=$record->user_input_fields.2.max_length}
+					{control type="text" name="user_input_max_length[2]" label="Maximum Length"|gettext size=5 value=$record->user_input_fields.2.max_length}
 				</td>
 			</tr>
 			<tr>
@@ -111,10 +111,10 @@
 			</tr>
 			<tr>
 				<td>
-					{control type="text" name="user_input_min_length[3]" label="Minimum Length"|gettext value=$record->user_input_fields.3.min_length}
+					{control type="text" name="user_input_min_length[3]" label="Minimum Length"|gettext size=5 value=$record->user_input_fields.3.min_length}
 				</td>
 				<td>
-					{control type="text" name="user_input_max_length[3]" label="Maximum Length"|gettext value=$record->user_input_fields.3.max_length}
+					{control type="text" name="user_input_max_length[3]" label="Maximum Length"|gettext size=5 value=$record->user_input_fields.3.max_length}
 				</td>
 			</tr>
 			<tr>
@@ -138,10 +138,10 @@
 			</tr>
 			<tr>
 				<td>
-					{control type="text" name="user_input_min_length[4]" label="Minimum Length"|gettext value=$record->user_input_fields.4.min_length}
+					{control type="text" name="user_input_min_length[4]" label="Minimum Length"|gettext size=5 value=$record->user_input_fields.4.min_length}
 				</td>
 				<td>
-					{control type="text" name="user_input_max_length[4]" label="Maximum Length"|gettext value=$record->user_input_fields.4.max_length}
+					{control type="text" name="user_input_max_length[4]" label="Maximum Length"|gettext size=5 value=$record->user_input_fields.4.max_length}
 				</td>
 			</tr>
 			<tr>
@@ -165,10 +165,10 @@
 			</tr>
 			<tr>
 				<td>
-					{control type="text" name="user_input_min_length[5]" label="Minimum Length"|gettext value=$record->user_input_fields.5.min_length}
+					{control type="text" name="user_input_min_length[5]" label="Minimum Length"|gettext size=5 value=$record->user_input_fields.5.min_length}
 				</td>
 				<td>
-					{control type="text" name="user_input_max_length[5]" label="Maximum Length"|gettext value=$record->user_input_fields.5.max_length}
+					{control type="text" name="user_input_max_length[5]" label="Maximum Length"|gettext size=5 value=$record->user_input_fields.5.max_length}
 				</td>
 			</tr>
 			<tr>

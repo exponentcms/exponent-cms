@@ -21,6 +21,10 @@
 
 {/css}
 
+{css unique="cart" link="`$asset_path`css/cart.css"}
+
+{/css}
+
 <div class="module cart confirm exp-ecom-table">
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
 
@@ -126,7 +130,7 @@
         {/if}
     {/if}
 
-        <!--div {if $shipping->splitshipping == true}class="hide"{/if}>
+    <!--div {if $shipping->splitshipping == true}class="hide"{/if}>
     <h2>Are you sending this order as gift?:</h2>
     <p>If you are send this order as a gift to someone you can put a note to the recipeint</p>
     </div-->
@@ -153,7 +157,7 @@
         {include file="../order/partial_summary.tpl" items=$method->orderitem}
         {/foreach}
         {else}
-        <h2>{"You\'re purchasing"|gettext}</h2>
+        <h2>{'You\'re purchasing'|gettext}</h2>
     {include file="../order/partial_summary.tpl" items=$order->orderitem}
         <div class=" order-total">
             <table class="nowrap">
@@ -210,16 +214,14 @@
                     <td class="right">{'Final Total'|gettext}:</td>
                     <td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td>
                 </tr>
-                </tr>
+                {*</tr>*}
                 </tbody>
             </table>
 
         </div>
     {/if}
     </div>
-
-{clear}
-
+{clear}{br}
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
            class="awesome {$smarty.const.BTN_SIZE} green next">
@@ -230,10 +232,9 @@
         </a>
     </div>
     <p align="center">
-
-    <div style="width:100%; margin: auto;">
-    {ecomconfig var='ssl_seal' default="" unescape="true"}
-    </div>
+        <div style="width:100%; margin: auto;">
+            {ecomconfig var='ssl_seal' default="" unescape="true"}
+        </div>
     </p>
 
 {ecomconfig var='checkout_message_bottom' default=""}

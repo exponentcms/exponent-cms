@@ -210,16 +210,13 @@
                     <td class="right">{'Final Total'|gettext}:</td>
                     <td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td>
                 </tr>
-                </tr>
+                {*</tr>*}
                 </tbody>
             </table>
-
         </div>
     {/if}
     </div>
-
 {clear}
-
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
            class="awesome {$smarty.const.BTN_SIZE} green next">
@@ -230,10 +227,9 @@
         </a>
     </div>
     <p align="center">
-
-    <div style="width:100%; margin: auto;">
-    {ecomconfig var='ssl_seal' default="" unescape="true"}
-    </div>
+        <div style="width:100%; margin: auto;">
+            {ecomconfig var='ssl_seal' default="" unescape="true"}
+        </div>
     </p>
 
 {ecomconfig var='checkout_message_bottom' default=""}

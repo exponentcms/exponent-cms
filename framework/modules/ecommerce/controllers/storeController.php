@@ -640,7 +640,7 @@ class storeController extends expController {
         //if we're trying to view a child product directly, then we redirect to it's parent show view
         if (!empty($product->parent_id)) redirect_to(array('controller'=> 'store', 'action'=> 'showByTitle', 'title'=> $product->sef_url));
 
-        foreach ($product->crosssellItem as &$csi) {
+        if (!empty($product->crosssellItem)) foreach ($product->crosssellItem as &$csi) {
             $csi->getAttachableItems();
         }
 
