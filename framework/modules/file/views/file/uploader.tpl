@@ -23,7 +23,7 @@
     {/css}
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
     <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
-    {script unique="picker" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-flashdetector.js"}
+    {script unique="picker" src="`$smarty.const.JS_PATH`exp-flashdetector.js"}
 
     {/script}
 </head>

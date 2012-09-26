@@ -174,9 +174,9 @@
                     <p>{"Your order requires"|gettext} <strong>{$shipping->shippingmethod->option_title}</strong></p>
                 {else}
                 {*
-                <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}No service selected{/if}</strong>  -  <a href="#" id="servicepicker">Select a Service</a></p>
+                <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}{'No service selected'|gettext}{/if}</strong>  -  <a href="#" id="servicepicker">{'Select a Service'|gettext}</a></p>
                 <div id="calculators" class="exp-dropmenu">
-                    <div class="hd"><span class="type-icon"></span>Select a Shipping Service</div>
+                    <div class="hd"><span class="type-icon"></span>{'Select a Shipping Service'|gettext}</div>
                     <div class="bd">
                         <div>
                             <ul>
@@ -300,7 +300,7 @@
 
 {* edebug var=$order *}
 {*  Kludged out while testing paypal *}
-{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src=$smarty.const.JS_FULL|cat:'exp-ecomcheckout.js'}
+{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_PATH`exp-ecomcheckout.js"}
 //
 {/script*}
 

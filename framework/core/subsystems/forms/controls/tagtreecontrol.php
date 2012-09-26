@@ -90,7 +90,7 @@ class tagtreecontrol extends formcontrol {
 		$script = "
 		EXPONENT.YUI3_CONFIG.modules = {
                'exp-tree' : {
-                   fullpath: EXPONENT.PATH_RELATIVE+'framework/core/assets/js/exp-tree.js',
+                   fullpath: EXPONENT.JS_PATH+'exp-tree.js',
                    requires : ['node','yui2-container','yui2-menu','yui2-treeview','yui2-animation','yui2-dragdrop','yui2-json','yui2-connection']
                }
          }
@@ -103,12 +103,12 @@ class tagtreecontrol extends formcontrol {
 				Y.one('.loadingdiv').remove();
 			});
 		";
-//		exponent_javascript_toFoot('expddtree', 'treeview,menu,animation,dragdrop,json,container,connection', null, $script, PATH_RELATIVE.'framework/core/assets/js/exp-tree.js');
+//		exponent_javascript_toFoot('expddtree', 'treeview,menu,animation,dragdrop,json,container,connection', null, $script, JS_PATH.'exp-tree.js');
 		expJavascript::pushToFoot(array(
 		    "unique"=>'expddtree',
 		    "yui3mods"=>1,
 		    "content"=>$script,
-		    //"src"=>PATH_RELATIVE.'framework/core/assets/js/exp-tree.js'
+		    //"src"=>JS_PATH.'exp-tree.js'
 		 ));
 		return $html;
 	}

@@ -21,7 +21,7 @@
         {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
 
         {/css}
-    	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-container.js"}
+    	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_PATH`exp-container.js"}
 
     	{/script}
 		<div id="cont{$top->id}" class="exp-container-module-wrapper"{if $hasParent != 0} style="border: 1px dashed darkgray; padding: 1em;"{/if}>
@@ -63,7 +63,7 @@
                 {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
 
                 {/css}
-            	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-container.js"}
+            	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_PATH`exp-container.js"}
 
             	{/script}
 

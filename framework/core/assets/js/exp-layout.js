@@ -105,4 +105,3 @@ configPanel.prototype = {
 	    }, this, true);
 	}
 }
-

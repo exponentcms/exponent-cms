@@ -396,7 +396,6 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
  		this.tree.subscribe('clickEvent',this.checkClick);
          this.subscribe("parentChange", this.taskNodeParentChange);
 
-
      },
 
      /**

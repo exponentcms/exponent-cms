@@ -29,6 +29,7 @@ EXPONENT.BASE = "<?php echo BASE; ?>";
 EXPONENT.THEME_RELATIVE = "<?php echo THEME_RELATIVE; ?>";
 EXPONENT.ICON_RELATIVE = "<?php echo ICON_RELATIVE; ?>";
 EXPONENT.JS_FULL = '<?php echo JS_FULL; ?>';
+EXPONENT.JS_PATH = '<?php echo JS_PATH; ?>';
 EXPONENT.YUI3_VERSION = '<?php echo YUI3_VERSION; ?>';
 EXPONENT.YUI3_PATH = '<?php echo YUI3_PATH; ?>';
 EXPONENT.YUI3_URL = '<?php echo YUI3_URL; ?>';

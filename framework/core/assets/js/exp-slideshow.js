@@ -67,9 +67,6 @@ YAHOO.myowndb.slideshow = function (container, o) {
     else
         this.interval = 5000
 
-
-
-
     this.init();
 
 }

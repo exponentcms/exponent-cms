@@ -23,8 +23,7 @@ EXPONENT.filepicker = function(id) {
 	// 	} 
 	// }();
 
-				
-	EXPONENT.filepicker.superclass.constructor.call(this, 
+	EXPONENT.filepicker.superclass.constructor.call(this,
 		id || YAHOO.util.Dom.generateId() , 
 		{
 			width: "600px", 

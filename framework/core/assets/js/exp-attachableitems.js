@@ -13,7 +13,7 @@
  *
  */
 
-var EXPONENT.attFiles =  function(name) {
+EXPONENT.attFiles = function(name) {
     //Y.log(name);
     YAHOO.util.Event.on('addfiles-'+o.name, 'click', function (e){
         YAHOO.util.Event.stopEvent(e);
@@ -33,9 +33,6 @@ var EXPONENT.attFiles =  function(name) {
                 //Y.log(0);
             },this);
             ej.fetch({action:'getFile',controller:'expFileController',json:1,params:'&id='+id});
-
-
-
 
             var df = YAHOO.util.Dom.get('filelist".$name."');
 
