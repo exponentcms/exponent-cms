@@ -25,7 +25,7 @@
  * This is the class remove_oldfiles
  */
 class remove_oldfiles extends upgradescript {
-	protected $from_version = '1.99.0';
+	protected $from_version = '0.0.0';
 	protected $to_version = '2.0.9';
 
 	/**
@@ -80,7 +80,7 @@ class remove_oldfiles extends upgradescript {
             'external/editors/_header.tpl',
             'external/editors/Default.tpl',
             'external/editors/FCKeditor.tpl',
-            'external/editors/fcktoolbarconfig.js',
+            'external/editors/fcktoolbarconfig.js.php',
             'external/editors/fcktemplates.xml',
             'external/editors/fckstyles.xml',
             'external/editors/wysiwyg-styles.css',
@@ -106,6 +106,15 @@ class remove_oldfiles extends upgradescript {
             'themes/retrotheme/sample.tar.gz',
             'themes/simpletheme/sample.eql',
             'themes/simpletheme/sample.tar.gz',
+            'install/pages/admin_user.php',
+            'install/pages/dbcheck.php',
+            'install/pages/dbconfig.php',
+            'install/pages/sanity.php',
+            'install/pages/save_admin.php',
+            'install/pages/setlang.php',
+            'install/pages/upgrade.php',
+            'install/pages/upgrade_version.php',
+            'install/upgrades/install_tables.php',
             // obsolete definitions/models
             'framework/core/definitions/bots.php',
             'framework/core/definitions/locationref.php',
@@ -241,6 +250,7 @@ class remove_oldfiles extends upgradescript {
             "framework/modules-1/bots/",
             "framework/modules-1/loginmodule/",
             "framework/modules/photoalbum/views/photos/",
+            "framework/datatypes/",
             "framework/views/",
             "plugins/",
             "modules/",
@@ -249,6 +259,8 @@ class remove_oldfiles extends upgradescript {
             "extensionuploads/",
             "datatypes/",
             "compat/",
+            "views/",
+            "subsystems/",
             "conf/profiles/",
             "install/sitetypes/",
             "themes/common/",
@@ -259,6 +271,7 @@ class remove_oldfiles extends upgradescript {
             "external/editors/FCKeditor/",
             "external/editors/images/",
             "external/ckeditor/",
+            "external/fedex-php/",
             "external/flowplayer3/",
             "external/flowplayer-3.2.12/",
             "external/magpierss/",

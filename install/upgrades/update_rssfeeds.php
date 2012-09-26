@@ -25,7 +25,7 @@
  * This is the class update_rssfeeds
  */
 class update_rssfeeds extends upgradescript {
-	protected $from_version = '1.99.0';  // version number lower than first released version, 2.0.0
+	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 	protected $to_version = '2.0.9';  // code was changed in 2.0.9
 
 	/**
@@ -76,20 +76,20 @@ class update_rssfeeds extends upgradescript {
         	$params['module'] = $loc->mod;
         	$params['src'] = $loc->src;
             $params['title'] = !empty($config['feed_title']) ? $config['feed_title'] : '';
-            $params['sef_url'] = (!empty($config['feed_sef_url'])) ? $config['feed_sef_url'] : expCore::makeSefUrl($params['title'],'expRss');
+            $params['sef_url'] = !empty($config['feed_sef_url']) ? $config['feed_sef_url'] : expCore::makeSefUrl($params['title'],'expRss');
             $params['feed_desc'] = $config['feed_desc'];
         	$params['enable_rss'] = $config['enable_rss'];
-            $params['advertise'] = (!empty($config['advertise'])) ? $config['advertise'] : false;
-        	$params['rss_limit'] = $config['rss_limit'];
-        	$params['rss_cachetime'] = $config['rss_cachetime'];
+            $params['advertise'] = !empty($config['advertise']) ? $config['advertise'] : false;
+        	$params['rss_limit'] = !empty($config['rss_limit']) ? $config['rss_limit'] : 24;
+        	$params['rss_cachetime'] = !empty($config['rss_cachetime']) ? $config['rss_cachetime'] : 1440;
             if (!empty($config['itunes_cats'])) $params['itunes_cats'] = $config['itunes_cats'];
             $rssfeed = new expRss($params);
             $rssfeed->update($params);
             // backfill the rss sef_url into the module config
             if (empty($config['feed_sef_url'])) {
                 $newconfig = new expConfig($loc);
-                $newconfig['feed_sef_url'] = $rssfeed->sef_url;
-                $newconfig->update();
+                $newconfig->config['feed_sef_url'] = !empty($rssfeed->sef_url) ? $rssfeed->sef_url : $params['sef_url'];
+                $newconfig->save();
             }
             $fixed++;
         }

@@ -25,7 +25,7 @@
  * This is the class version_tracking
  */
 class version_tracking extends upgradescript {
-	protected $from_version = '1.99.0';
+	protected $from_version = '0.0.0';
 //	protected $to_version = '99';
 
 	/**

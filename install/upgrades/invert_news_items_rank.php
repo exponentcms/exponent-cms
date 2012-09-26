@@ -25,7 +25,7 @@
  * This is the class invert_news_items_rank
  */
 class invert_news_items_rank extends upgradescript {
-	protected $from_version = '1.99.0';
+	protected $from_version = '0.0.0';
 	protected $to_version = '2.0.8';
     public $optional = true;
 

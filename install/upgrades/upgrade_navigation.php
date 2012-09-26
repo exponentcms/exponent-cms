@@ -25,7 +25,7 @@
  * This is the class upgrade_navigation
  */
 class upgrade_navigation extends upgradescript {
-	protected $from_version = '1.99.0';
+	protected $from_version = '0.0.0';
 	protected $to_version = '2.0.9';
 //    public $optional = true;
 
@@ -93,12 +93,12 @@ class upgrade_navigation extends upgradescript {
 		    $cloc = expUnserialize($cn->internal);
 	        $cloc->mod = 'navigationController';
 		    $cn->internal = serialize($cloc);
-            if ($cn->view = 'Breadcrumb') {
-                $cn->view = 'breadcumb';
-                $cn->action = 'breadcumb';
+            if ($cn->view == 'Breadcrumb') {
+                $cn->action = 'breadcrumb';
+                $cn->view = 'breadcrumb';
             } else {
-		        $cn->view = 'showall_'.$cn->view;
                 $cn->action = 'showall';
+		        $cn->view = 'showall_'.$cn->view;
             }
 	        $db->updateObject($cn,'container');
 	        $modules_converted += 1;

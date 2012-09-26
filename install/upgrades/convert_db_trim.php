@@ -17,7 +17,7 @@
 ##################################################
 
 class convert_db_trim extends upgradescript {
-	protected $from_version = '1.99.0';
+	protected $from_version = '0.0.0';
 	protected $to_version = '1.99.0'; 
 
 	static function name() { return "Upgrade Database Table Removal Code"; }
