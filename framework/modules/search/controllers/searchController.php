@@ -317,6 +317,15 @@ class searchController extends expController {
         ));
 	}
 
+    function delete_search_queries() {
+        $sq = new search_queries();
+        $sqall = $sq->find('all');
+        if (!empty($sqall)) foreach ($sqall as $sqd) {
+            $sqd->delete();
+        }
+        flash('message', gt("Search Queries successfully deleted."));
+        expHistory::back();
+    }
 }
 
 ?>

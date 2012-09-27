@@ -40,6 +40,13 @@
     <div class="info-header">
         <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:"Search Queries Report"|gettext}</h1>
     </div>
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.manage == 1}
+            {icon class=delete action=delete_search_queries text="Delete Past Queries"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete all past search queries?"|gettext)|cat:"');"}
+        {/if}
+    </div>
+    {/permissions}
 	<div id="topsearch" class="yui-navset">
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>{"Top Search"|gettext}</em></a></li>
