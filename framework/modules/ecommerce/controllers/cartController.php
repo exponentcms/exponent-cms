@@ -28,7 +28,7 @@ class cartController extends expController {
     //public $useractions = array('show'=>'Display Cart');
 
     static function displayname() {
-        return gt("Ecommerce Shopping Cart");
+        return gt("e-Commerce Shopping Cart");
     }
 
     static function description() {

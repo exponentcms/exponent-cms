@@ -40,7 +40,7 @@ class orderController extends expController {
     );
 
     static function displayname() {
-        return gt("Ecommerce Order Manager");
+        return gt("e-Commerce Order Manager");
     }
 
     static function description() {

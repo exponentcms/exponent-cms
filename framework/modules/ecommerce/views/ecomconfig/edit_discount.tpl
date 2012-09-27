@@ -60,7 +60,7 @@
                     <div id="tab4">
                         <h2>{"Actions and Amounts"|gettext}</h2>
                         {control type="dropdown" name="action_type" label="Discount Action"|gettext items=$discount->actions default=$discount->action_type}
-                        {'If you selected \'Precentage off entire cart\', enter the precentage discount you would like applied with this coupon code here.'|gettext}
+                        {'If you selected \'Percentage off entire cart\', enter the percentage discount you would like applied with this coupon code here.'|gettext}
                         {control type="text" name="discount_percent" label="Discount Percent"|gettext filter=percent value=$discount->discount_percent}
                         {'If you selected \'Fixed amount off entire cart\', enter dollar amount discount you would like applied with this coupon code here.'|gettext}
                         {control type="text" name="discount_amount" label="Discount Amount"|gettext filter=money value=$discount->discount_amount}

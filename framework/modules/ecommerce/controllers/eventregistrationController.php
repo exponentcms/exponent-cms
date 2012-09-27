@@ -609,7 +609,7 @@ class eventregistrationController extends expController {
     function emailRegistrants() {
 
         if (empty($this->params['email_addresses'])) {
-            flash('error', gt('Please add atleast one email.'));
+            flash('error', gt('Please add at least one email.'));
             expHistory::back();
         }
 
@@ -641,7 +641,7 @@ class eventregistrationController extends expController {
             ));
         }
 
-        flash('message', gt("You're email has been succesfully sent."));
+        flash('message', gt("You're email has been successfully sent."));
         expHistory::back();
     }
 

@@ -153,7 +153,7 @@ class upgrade_navigation extends upgradescript {
 //            expFile::removeFilesInDirectory(BASE."framework/modules-1/common/views/");
 //        }
 
-		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Navigation modules were upgraded.")."<br>".gt("and mavigationmodule files were then deleted.");
+		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Navigation modules were upgraded.")."<br>".gt("and navigationmodule files were then deleted.");
 	}
 }
 

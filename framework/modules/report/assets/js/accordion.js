@@ -227,7 +227,7 @@ version: 2.1
 				     } else {
 				       _closeItem (list.items[i], list, params.grouping);
 				       if (params.mirror) {
-				          // hack for get the mirror element in persistent and !mutiples accordions
+				          // hack for get the mirror element in persistent and !multiples accordions
 				          params.mirror.push(list.items[i]);
 				       }
 				     }

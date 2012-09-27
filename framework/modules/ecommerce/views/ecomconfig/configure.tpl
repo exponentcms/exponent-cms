@@ -125,7 +125,7 @@
 
                     <div id="tab10">
                         <h2>{"Gift Card Settings"|gettext}</h2>
-                        {control type="text" name="minimum_gift_card_purchase" label="Minimum Gift Card Puchase"|gettext value=$config.minimum_gift_card_purchase filter=money}
+                        {control type="text" name="minimum_gift_card_purchase" label="Minimum Gift Card Purchase"|gettext value=$config.minimum_gift_card_purchase filter=money}
                         {control type="text" name="custom_message_product" label="Custom Message Price"|gettext value=$config.custom_message_product filter=money}
                     </div>
                 </div>

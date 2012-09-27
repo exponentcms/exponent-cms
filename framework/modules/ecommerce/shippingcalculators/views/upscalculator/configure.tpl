@@ -56,7 +56,7 @@
 	        <div id="tab4">
 	            {control type="text" name="default_width" label="Standard Box Width (inches)"|gettext size=5 value=$calculator->configdata.default_width}
 	            {control type="text" name="default_length" label="Standard Box Length (inches)"|gettext size=5 value=$calculator->configdata.default_length}
-	            {control type="text" name="default_height" label="Standard Box Heigth (inches)"|gettext size=5 value=$calculator->configdata.default_height}
+	            {control type="text" name="default_height" label="Standard Box Height (inches)"|gettext size=5 value=$calculator->configdata.default_height}
 	            {control type="text" name="default_max_weight" label="Default Weight for Box (lbs)"|gettext size=5 value=$calculator->configdata.default_max_weight}
 	        </div>
         </div>

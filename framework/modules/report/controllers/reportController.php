@@ -23,7 +23,7 @@
 
 class reportController extends expController {
 	//public $useractions = array('showall'=>'Show all');
-	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the Ecommerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products', 'show_payment_summary'=>'Show Payment Summary','export_order_items'=>'Export Order Items File');
+	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the e-Commerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products', 'show_payment_summary'=>'Show Payment Summary','export_order_items'=>'Export Order Items File');
 	
     static function displayname() { return gt("Ecom Report Builder"); }
     static function description() { return gt("Build reports based on store activity"); }

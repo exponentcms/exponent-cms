@@ -26,7 +26,7 @@ class shippingController extends expController {
         'toggle'=>'Enable/Disable Options'
     );
 
-    static function displayname() { return gt("Ecommerce Shipping Controller"); }
+    static function displayname() { return gt("e-Commerce Shipping Controller"); }
     static function description() { return ""; }
 	static function hasSources() { return false; }
     static function hasContent() { return false; }

@@ -23,7 +23,7 @@
 
 class storeCategoryController extends expNestedNodeController {
     static function displayname() { return gt("Store Category Manager"); }
-    static function description() { return gt("This module is for manageing categories in your store."); }
+    static function description() { return gt("This module is for managing categories in your store."); }
 
 	protected $add_permissions = array(
         'fix_categories'=>'to run this action.'

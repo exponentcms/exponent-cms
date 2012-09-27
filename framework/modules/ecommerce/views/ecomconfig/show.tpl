@@ -16,7 +16,7 @@
 {*permissions}
     {if $permissions.show == 1*}
         <div class="module storeadmin show">
-	        <h1>{$moduletitle|default:"Ecommerce Administration"|gettext}</h1>
+	        <h1>{$moduletitle|default:"e-Commerce Administration"|gettext}</h1>
 	        <ul>
 	            <li><a href="{link action=options}">{'Manage Product Options'|gettext}</a></li>
 	            <li><a href="{link action=groupdiscounts}">{'Group Discounts'|gettext}</a></li>

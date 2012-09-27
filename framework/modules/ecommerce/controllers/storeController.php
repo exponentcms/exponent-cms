@@ -64,7 +64,7 @@ class storeController extends expController {
         'manage_sales_reps'          => 'Manage Sales Reps',
         'batch_process'              => 'Batch capture order transactions',
         'process_orders'             => 'Batch capture order transactions',
-        'import_external_addresses'  => 'Import addressess from other sources',
+        'import_external_addresses'  => 'Import addresses from other sources',
         'showallImpropercategorized' => 'View products in top level categories that should not be',
         'showallUncategorized'       => 'View all uncategorized products',
         'nonUnicodeProducts'         => 'View all non-unicode charset products',
@@ -83,7 +83,7 @@ class storeController extends expController {
     }
 
     static function description() {
-        return gt("Use this module to display products and categories of you Ecommerce store");
+        return gt("Use this module to display products and categories of you e-Commerce store");
     }
 
     static function author() {
@@ -140,9 +140,8 @@ class storeController extends expController {
             } else {
                 $default_id = 0;
             }
-            expSession::set('catid', $default_id);
         } elseif (!isset($this->config['show_first_category']) && !expTheme::inAction()) {
-            expSession::set('catid', 0);
+            $default_id = 0;
         } else {
             $default_id = 0;
         }
@@ -2199,7 +2198,7 @@ class storeController extends expController {
             //Update the record in the tmp table to mark it as process
             $res->is_processed = 1;
             $db->updateObject($res, 'model_aliases_tmp');
-            flash("message", gt("Product succesfully Saved."));
+            flash("message", gt("Product successfully Saved."));
             redirect_to(array('controller'=> 'store', 'action'=> 'processModelAliases', 'index' => $index));
         } else {
             flash("error", gt("Product title is invalid."));

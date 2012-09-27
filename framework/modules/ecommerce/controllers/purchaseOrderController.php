@@ -35,7 +35,7 @@ class purchaseOrderController extends expController {
         'delete_vendor'=>'Delete vendors',
     );
 	
-    static function displayname() { return gt("Ecommerce Purchase Order Manager"); }
+    static function displayname() { return gt("e-Commerce Purchase Order Manager"); }
     static function description() { return gt("Use this module to create and manage purchase orders for your ecommerce store."); }
 	
 	function manage () {

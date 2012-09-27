@@ -22,8 +22,8 @@
  */
 
 class sales_repController extends expController {
-    static function displayname() { return gt("Ecommerce Sales Reps"); }
-    static function description() { return gt("Manage Ecommerce Sales Reps"); }
+    static function displayname() { return gt("e-Commerce Sales Reps"); }
+    static function description() { return gt("Manage e-Commerce Sales Reps"); }
     static function author() { return "Fred Dirkse - OIC Group, Inc"; }
     static function hasSources() { return false; }
     static function hasContent() { return false; }

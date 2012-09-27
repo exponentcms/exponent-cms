@@ -29,8 +29,8 @@ class ecomconfigController extends expController {
         'show'=>'View Admin Options'
     );
 	
-    static function displayname() { return gt("Ecommerce Configuration Manager"); }
-    static function description() { return gt("Use this module to configure your Ecommerce store"); }
+    static function displayname() { return gt("e-Commerce Configuration Manager"); }
+    static function description() { return gt("Use this module to configure your e-Commerce store"); }
     static function hasSources() { return false; }
 
     function show() {

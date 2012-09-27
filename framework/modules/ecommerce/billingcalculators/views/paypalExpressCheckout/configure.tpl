@@ -35,7 +35,7 @@
                 <hr>
 	            {control type="checkbox" name="testmode" label="Enable Sandbox (Test) Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
                 <p>{"To test, you must create a developer account and be logged in to"|gettext} <a href="https://developer.paypal.com/" target="_blank">{"PayPal Developer Central"|gettext}</a>,
-                {"then enter the Sandbox API and Payment Card Credentials blelow."|gettext}
+                {"then enter the Sandbox API and Payment Card Credentials below."|gettext}
                 {"Create both a Buyer In-Store and a Seller Test Accounts."|gettext}
                 {control type="text" name="testusername" label="Sandbox API Username"|gettext value=$calculator->configdata.testusername}
  	            {control type="text" name="testpassword" label="Sandbox API Password"|gettext value=$calculator->configdata.testpassword}
@@ -46,7 +46,7 @@
 	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?"|gettext value=1 checked=$calculator->configdata.email_customer}
 	        </div>
 	        <div id="tab3">
-	            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
+	            {control type="checkbox" name="email_admin" label="Send a notification that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
 	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>
         </div>

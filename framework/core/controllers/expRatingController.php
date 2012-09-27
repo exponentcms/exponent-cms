@@ -28,7 +28,7 @@ class expRatingController extends expController {
 	public $useractions = array();
 	
     static function displayname() { return gt("Ratings Manager"); }
-    static function description() { return gt("This module is for manageing ratings on records"); }
+    static function description() { return gt("This module is for managing ratings on records"); }
     static function hasSources() { return false; }
 	
 	function __construct($src=null, $params=array()) {

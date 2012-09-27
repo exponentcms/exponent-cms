@@ -23,8 +23,8 @@
 
 class product_statusController extends expController {
 
-    static function displayname() { return gt("Ecommerce Product Statuses"); }
-    static function description() { return gt("Manage Ecommerce Product Statuses"); }
+    static function displayname() { return gt("e-Commerce Product Statuses"); }
+    static function description() { return gt("Manage e-Commerce Product Statuses"); }
     static function hasSources() { return false; }
     static function hasContent() { return false; }
     

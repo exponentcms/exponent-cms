@@ -33,7 +33,7 @@
     <div class="head">
         <a class="mngmntlink navigation_mngmntlink externalpage" href="{link action=edit_externalalias parent=$parent->id}">{'External Website Link'|gettext}</a>
     </div>
-    <div class="desc">{'If you need or want a link in your site hiearchy to link to some off-site webpage, create an External Link.'|gettext}</div>
+    <div class="desc">{'If you need or want a link in your site hierarchy to link to some off-site webpage, create an External Link.'|gettext}</div>
 
     <div class="head">
         <a class="mngmntlink navigation_mngmntlink internalpage" href="{link action=edit_internalalias parent=$parent->id}">{'Internal Page Alias'|gettext}</a>

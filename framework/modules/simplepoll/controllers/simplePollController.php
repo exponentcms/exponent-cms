@@ -40,7 +40,7 @@ class simplePollController extends expController {
     public $codequality = 'beta';
 
     static function displayname() { return gt("Simple Poll"); }
-    static function description() { return gt("A simple poll that asks a visitor one question with mutiple answers.  Can manage multiple questions, though it only displays one."); }
+    static function description() { return gt("A simple poll that asks a visitor one question with multiple answers.  Can manage multiple questions, though it only displays one."); }
 //	function isSearchable() { return true; }
 
     public function __construct($src=null, $params=array()) {

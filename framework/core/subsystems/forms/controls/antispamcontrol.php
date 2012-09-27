@@ -58,7 +58,7 @@ class antispamcontrol extends formcontrol {  //FIXME this is old tech and not-la
 			$object->maxlength = 0;
 			$object->required = false;
 		}
-		$form->register("identifier",gt('Iidentifier'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register(null, null, new htmlcontrol('<br />'));
 		$form->register(null, null, new htmlcontrol('<br />'));

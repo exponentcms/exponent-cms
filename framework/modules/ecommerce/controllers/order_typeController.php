@@ -22,8 +22,8 @@
  */
 
 class order_typeController extends expController {
-    static function displayname() { return gt("Ecommerce Order Types"); }
-    static function description() { return gt("Manage Ecommerce Order Types"); }
+    static function displayname() { return gt("e-Commerce Order Types"); }
+    static function description() { return gt("Manage e-Commerce Order Types"); }
     static function hasSources() { return false; }
     static function hasContent() { return false; }
     

@@ -280,7 +280,7 @@
                                             <option value="{$msg->body|escape:"all"}">{$msg->body|truncate:80}</option>
                                         {/foreach}
                                     </select>
-                                    {control type=text name="to_addresses" size="100" label="To (comma seperate multiple):"|gettext value="`$to_addresses`"}
+                                    {control type=text name="to_addresses" size="100" label="To (comma separate multiple):"|gettext value="`$to_addresses`"}
                                     {control type=text name="email_subject" size="100" label="Email Subject:"|gettext value="`$email_subject`"}
                                     {control id=email_message type="editor" name="email_message" height=250}
                                     {control type="checkbox" name="save_message" label="Save this message to use in the future?"|gettext value=1}

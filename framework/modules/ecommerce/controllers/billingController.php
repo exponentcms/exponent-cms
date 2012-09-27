@@ -26,7 +26,7 @@ class billingController extends expController {
         'activate'=>'Activate Payment Options'
     );
     
-    static function displayname() { return gt("Ecommerce Billing Controller"); }
+    static function displayname() { return gt("e-Commerce Billing Controller"); }
     static function description() { return ""; }
 	static function hasSources() { return false; }
 	

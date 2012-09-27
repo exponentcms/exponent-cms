@@ -233,7 +233,7 @@
                     <h2>{"DOMPDF - Export as PDF"|gettext}</h2>
                     {control type="checkbox" postfalse=1 name="sc[HTML2PDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTML2PDF_OUTPUT value=1}
                     <p>{'DOMPDF is an optional package.  To obtain it, you\'ll need to first download'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">{"dompdf.zip"|gettext}</a>.
-                        {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {' on your server with \'Patch Exponent CMS\' checked.'|gettext}
+                        {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                     </p>
                 </div>
 				<div id="tab14">

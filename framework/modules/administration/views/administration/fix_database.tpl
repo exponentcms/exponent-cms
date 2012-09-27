@@ -44,7 +44,7 @@
         {foreach from=$no_assigns item=no_assign}
             <li>{$no_assign}</li>
         {/foreach}
-        {br}<li><strong>{"NOTE: some hard-coded modules produce 'no source' sectionrefs automatically"|gettext}</strong></li>
+        {br}<li><strong>{'NOTE: some hard-coded modules produce \'no source\' sectionrefs automatically'|gettext}</strong></li>
     {else}
         <li>{"No Empties Found: Good!"|gettext}</li>
     {/if}

@@ -124,17 +124,15 @@
                 {if $product->require_terms_and_condition}
                     <div class="terms_and_conditions">
                         {if $product->terms_and_condition_toggle}
-                        {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following <a class='toggle' href='javascript:;'>Waiver</a>"|gettext required=1}
-
-                        <div class="more-text" style="height: 0px;">
-                            {$product->terms_and_condition}
-                        </div>
+                            {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following <a class='toggle' href='javascript:;'>Waiver</a>" required=1}
+                            <div class="more-text" style="height: 0px;">
+                                {$product->terms_and_condition}
+                            </div>
                         {else}
-                        {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following Waiver"|gettext required=1}
-
-                        <div class="more-text" style="height: auto;">
-                            {$product->terms_and_condition}
-                        </div>
+                            {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following Waiver"|gettext required=1}
+                            <div class="more-text" style="height: auto;">
+                                {$product->terms_and_condition}
+                            </div>
                         {/if}
                     </div>
                 {else}

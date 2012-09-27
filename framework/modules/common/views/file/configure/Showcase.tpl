@@ -30,5 +30,5 @@
 {control type="radiogroup" name="hoverorclick" columns=2 label="Replace main image on click or hover?"|gettext items="Click,Hover"|gettxtlist values="1,2" default=$config.hoverorclick|default:"1"}
 {control type="text" name="thumb" label="Thumbnail box size"|gettext value=$config.thumb|default:100 size=5}
 {control type="text" name="spacing" label="Thumbnail spacing"|gettext value=$config.spacing|default:10 size=5}
-{control type=text name="quality" label="Thumbnail JPEG 1uality"|gettext|cat:" (0 - 95)" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
+{control type=text name="quality" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
 {control type="text" name="tclass" label="Stylesheet class to apply to images"|gettext value=$config.tclass}

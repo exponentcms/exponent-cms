@@ -413,7 +413,7 @@ class administrationController extends expController {
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
-		flash('message',gt("CSS/Minfy Cache has been cleared"));
+		flash('message',gt("CSS/Minify Cache has been cleared"));
 		expHistory::back();
 	}
 

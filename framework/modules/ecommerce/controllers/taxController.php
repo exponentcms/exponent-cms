@@ -32,7 +32,7 @@ class taxController extends expController {
 		);
 		
     static function displayname() { return gt("e-Commerce Tax Class Manager"); }
-    static function description() { return gt("Manage tax classes for your Ecommerce store"); }
+    static function description() { return gt("Manage tax classes for your e-Commerce store"); }
     static function canImportData() { return true; }
     static function canExportData() { return true; }
 

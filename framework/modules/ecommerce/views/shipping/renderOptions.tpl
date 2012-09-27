@@ -20,7 +20,7 @@
         <strong class="selected-info">{$shipping->shippingmethod->option_title}
             <em>{currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}</em></strong>
         {if $shipping->pricelist|@count >1}
-        <h4>{"Avalable Options"|gettext}</h4>
+        <h4>{"Available Options"|gettext}</h4>
         <div class="bd">
             {form name="shpmthdopts" controller=shipping action=selectShippingOption}
             {foreach from=$shipping->pricelist item=option}
