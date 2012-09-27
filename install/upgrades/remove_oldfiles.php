@@ -26,7 +26,7 @@
  */
 class remove_oldfiles extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.0.9';
+//	protected $to_version = '2.0.9';
 
 	/**
 	 * name/title of upgrade script
