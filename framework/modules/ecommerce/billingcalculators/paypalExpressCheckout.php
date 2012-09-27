@@ -335,6 +335,7 @@ class paypalExpressCheckout extends billingcalculator {
             'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',
             'PAYMENTREQUEST_0_INVNUM' => $invoice_number,
             'PAYMENTREQUEST_0_CUSTOM' => 'Invoice #' . $invoice_number,
+            'PAYMENTREQUEST_0_PAYMENTACTION' => $config['process_mode'],
             'PAYMENTREQUEST_0_ITEMAMT' => number_format($order->total, 2, '.', ''),
             'PAYMENTREQUEST_0_SHIPPINGAMT' => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
             'PAYMENTREQUEST_0_TAXAMT' => number_format($order->tax, 2, '.', ''),

@@ -26,7 +26,12 @@
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
 	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
 	            {control type="text" name="signature" label="Signature"|gettext value=$calculator->configdata.signature}
-	            {*{control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Sale, Authorization, Order"|gettxtlist values="Sale,Authorization,Order" default=$calculator->configdata.process_mode}*}
+	            {control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Sale, Authorization, Order"|gettxtlist values="Sale,Authorization,Order" default=$calculator->configdata.process_mode|default:'Sale'}
+                <ul>
+                    <li><strong>{'Sale'|gettext}</strong> – {'the funds are credited to the merchants account immediately at the end of the checkout flow.'|gettext}</li>
+                    <li><strong>{'Authorization'|gettext}</strong> – {'the merchant obtains an authorization (a hold) for the transaction amount and the merchant then captures the funds against this authorization at a later date. Authorizations are valid for up to 3 days. The fund capture can then be done from the PayPal account.'|gettext}</li>
+                    <li><strong>{'Order'|gettext}</strong> – {'the merchant does not have a hold on the funds. The merchant has to authorize against the order and then capture the funds.'|gettext}</li>
+                </ul>
                 <hr>
 	            {control type="checkbox" name="testmode" label="Enable Sandbox (Test) Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
                 <p>{"To test, you must create a developer account and be logged in to"|gettext} <a href="https://developer.paypal.com/" target="_blank">{"PayPal Developer Central"|gettext}</a>,
