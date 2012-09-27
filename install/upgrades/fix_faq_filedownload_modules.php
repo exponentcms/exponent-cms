@@ -67,6 +67,10 @@ class fix_faq_filedownload_modules extends upgradescript {
             if ($db->tableExists('faqs') && !$db->countObjects('faqs')) {
                 $db->dropTable('faqs');
             }
+            // delete old faqs definition
+            if (file_exists(BASE.'framework/modules/faq/definitions/faqs.php')) {
+                unlink(BASE.'framework/modules/faq/definitions/faqs.php');
+            }
         }
         if ($db->tableExists('filedownloads')) {
             if ($db->tableExists('filedownload') && !$db->countObjects('filedownload')) {
@@ -77,6 +81,10 @@ class fix_faq_filedownload_modules extends upgradescript {
             }
             if ($db->tableExists('filedownloads') && !$db->countObjects('filedownloads')) {
                 $db->dropTable('filedownloads');
+            }
+             // delete old filedownloads definition
+            if (file_exists(BASE.'framework/modules/filedownloads/definitions/filedownloads.php')) {
+                unlink(BASE.'framework/modules/filedownloads/definitions/filedownloads.php');
             }
         }
         return gt('faq & filedownload tables are now correctly named.');

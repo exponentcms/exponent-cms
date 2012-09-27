@@ -250,6 +250,7 @@ class remove_oldfiles extends upgradescript {
             "framework/modules-1/bots/",
             "framework/modules-1/loginmodule/",
             "framework/modules/photoalbum/views/photos/",
+            "framework/modules/expEvent",
             "framework/datatypes/",
             "framework/views/",
             "plugins/",
