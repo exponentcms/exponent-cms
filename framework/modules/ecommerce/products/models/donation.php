@@ -31,6 +31,16 @@ class donation extends product {
 	public $requiresBilling  = true; 
     public $isQuantityAdjustable = false;
     
+    protected $attachable_item_types = array(
+//        'content_expCats'=>'expCat',
+//        'content_expComments'=>'expComment',
+//        'content_expDefinableFields'=> 'expDefinableField',
+        'content_expFiles'=>'expFile',
+//        'content_expRatings'=>'expRating',
+//        'content_expSimpleNote'=>'expSimpleNote',
+//        'content_expTags'=>'expTag',
+    );
+
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 		parent::__construct($params, $get_assoc, $get_attached);
 //		$this->price = '';

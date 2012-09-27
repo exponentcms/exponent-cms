@@ -32,9 +32,9 @@ class storeController extends expController {
         'showTopLevel'                       => 'Categories - Show Top Level',
         'showFullTree'                       => 'Categories - Show Full Tree',
         'showallSubcategories'               => 'Categories - Subcategories of current category',
-        'upcoming_events'                    => 'Event Registration - Upcomming Events',
+        'upcoming_events'                    => 'Event Registration - Upcoming Events',
         'events_calendar'                    => 'Event Registration - Calendar View',
-        'ecomSearch'                        => 'Search - Autocomplete',
+        'ecomSearch'                         => 'Search - Autocomplete',
         'search_by_model_form'               => 'Search - By Model',
         'quicklinks'                         => 'Links - Users Links',
         'showall_category_featured_products' => 'Show Featured Products under the current category',
@@ -118,11 +118,10 @@ class storeController extends expController {
                 $default_id = $db->selectValue('storeCategories', 'id', "sef_url='" . $params['title'] . "'");
                 $active     = $db->selectValue('storeCategories', 'is_active', "sef_url='" . $params['title'] . "'");
                 if (empty($active) && !$user->isAdmin()) {
-                    redirect_to(array("section"=> SITE_DEFAULT_SECTION));
+                    redirect_to(array("section"=> SITE_DEFAULT_SECTION));  // selected category is NOT active
                 }
-                expSession::set('catid', $default_id);
-            } elseif (isset($this->config['category'])) {
-                expSession::set('catid', $this->config['category']);
+            } elseif (isset($this->config['category'])) {  // the module category to display
+                $default_id =  $this->config['category'];
             }
 //        } elseif (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0] == "store" && ($router->url_parts[1] == "show" || $router->url_parts[1] == "showByTitle"))) {
         } elseif (!empty($params['action']) && ($params['controller'] == "store" && ($params['action'] == "show" || $params['action'] == "showByTitle"))) {
@@ -130,14 +129,12 @@ class storeController extends expController {
             if (!empty($params['id'])) {
 //                $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='" . $router->url_parts[array_search('id', $router->url_parts) + 1] . "'");
                 $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='" . $params['id'] . "'");
-                expSession::set('catid', $default_id);
             } elseif (!empty($params['title'])) {
 //                $prod_id    = $db->selectValue('product', 'id', "sef_url='" . $router->url_parts[array_search('title', $router->url_parts) + 1] . "'");
                 $prod_id    = $db->selectValue('product', 'id', "sef_url='" . $params['title'] . "'");
                 $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='" . $prod_id . "'");
-                expSession::set('catid', $default_id);
             }
-        } elseif (isset($this->config['show_first_category']) || (!expTheme::inAction() && $section == SITE_DEFAULT_SECTION)) {  //FIXME only default section??
+        } elseif (isset($this->config['show_first_category']) || (!expTheme::inAction() && $section == SITE_DEFAULT_SECTION)) {
             if (!empty($this->config['show_first_category'])) {
                 $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
             } else {
@@ -149,6 +146,7 @@ class storeController extends expController {
         } else {
             $default_id = 0;
         }
+        expSession::set('catid', $default_id);
 
         // figure out if we need to show all categories and products or default to showing the first category.
         // elseif (!empty($this->config['category'])) {
@@ -161,9 +159,8 @@ class storeController extends expController {
 
         $this->parent   = expSession::get('catid');
         $this->category = new storeCategory($this->parent);
-        if ($this->parent) {
-           // we're setting the config here for the category
-           $this->grabConfig($this->category);
+        if ($this->parent) {  // we're setting the config here for the category
+           $this->grabConfig($this->category);  //FIXME we don't currently create category configuration since we can display them as modules?
         }
     }
 
@@ -188,7 +185,7 @@ class storeController extends expController {
             $order = 'title';  // $order = 'sc.rank'; //$this->config['orderby'];
             $dir   = 'ASC'; //$this->config['orderby_dir'];
             //eDebug($this->config);
-        } else {
+        } else {  // this is an event category
             $sql_start       = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
             $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
             $sql             = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
@@ -206,13 +203,13 @@ class storeController extends expController {
             $dir   = 'ASC';
         }
 
-        $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
-        if ($this->category->find('count') > 0) {
+        $limit = !empty($this->config['limit']) ? $this->config['limit'] : (!empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10);
+        if ($this->category->find('count') > 0) {  // there are categories
             $page = new expPaginator(array(
                 'model_field'=> 'product_type',
                 'sql'        => $sql,
                 'count_sql'  => $count_sql,
-                'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
+                'limit'      => $limit,
                 'order'      => $order,
                 'dir'        => $dir,
                 'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
@@ -224,11 +221,11 @@ class storeController extends expController {
                     gt('Price')       => 'price'
                 ),
             ));
-        } else {
+        } else {  // there are no categories
             $page = new expPaginator(array(
                 'model_field'=> 'product_type',
                 'sql'        => 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product WHERE 1',
-                'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : $limit,
+                'limit'      => $limit,
                 'order'      => $order,
                 'dir'        => $dir,
                 'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
@@ -278,7 +275,6 @@ class storeController extends expController {
         $cfg->int     = "";
         $config       = new expConfig($cfg);
 
-        //FIXME this'll cause a warning after install due to no config...
         $this->config = @array_merge((empty($catConfig->config) || @$catConfig->config['use_global'] == 1) ? $config->config : $catConfig->config,$this->config);
 
         //This is needed since in the first installation of ecom the value for this will be empty and we are doing % operation for this value
@@ -599,7 +595,7 @@ class storeController extends expController {
         $giftcard     = new $product_type();
         $giftcards    = $giftcard->find("all", "product_type = 'giftcard'");
 
-        //Grab the config
+        //Grab the global config
         $this->grabConfig();
 
         //Set the needed config for the view
@@ -647,7 +643,7 @@ class storeController extends expController {
         $tpl = $product_type->getForm('show');
 
         if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
-        $this->grabConfig();
+        $this->grabConfig();  // grab the global config
 
         assign_to_template(array(
             'config'       => $this->config,
@@ -692,7 +688,7 @@ class storeController extends expController {
         $tpl = $product_type->getForm('show');
         //eDebug($product);
         if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
-        $this->grabConfig();
+        $this->grabConfig();  // grab the global config
 
         assign_to_template(array(
             'config'       => $this->config,
@@ -713,7 +709,7 @@ class storeController extends expController {
         $tpl = $product_type->getForm('show');
         if (!empty($tpl)) $template = new controllertemplate($this, $tpl);
         //eDebug($template);
-        $this->grabConfig();
+        $this->grabConfig();  // grab the global config
         assign_to_template(array(
             'config'       => $this->config,
             'product'      => $product_type,
@@ -1157,15 +1153,14 @@ class storeController extends expController {
                 redirect_to(array('controller'=> 'store', 'action'=> 'showByTitle', 'title'=> $record->sef_url));
             }
         } elseif ($product_type == "giftcard") {
-
             flash("message", gt("Giftcard saved."));
 			redirect_to(array('controller'=>'store','action'=>'manage'));
-//            $this->manage();
         } elseif ($product_type == "eventregistration") {
-
             flash("message", gt("Event saved."));
 			redirect_to(array('controller'=>'store','action'=>'manage'));
-//            $this->manage();
+        } elseif ($product_type == "donation") {
+            flash("message", gt("Donation saved."));
+			redirect_to(array('controller'=>'store','action'=>'manage'));
         }
     }
 

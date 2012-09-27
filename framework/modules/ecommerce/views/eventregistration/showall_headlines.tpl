@@ -49,7 +49,7 @@
             <div class="events">
 				<div class="event-image">
 					 <a href="{link action=showByTitle title=$item->sef_url}">
-					{img file_id=$item->expFile.images[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+					{img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
 					</a>
 				</div>
 			

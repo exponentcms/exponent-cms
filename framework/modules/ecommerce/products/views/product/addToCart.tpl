@@ -26,7 +26,7 @@
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
     {if $product->expFile.mainimage.0->id}
-    {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
+        {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
     {/if}
     <p>
         <strong>{'Additional information is required before we can add to your cart'|gettext}</strong>

@@ -150,7 +150,6 @@ class ecomconfigController extends expController {
 			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
         ));
 
-		
         assign_to_template(array(
         /*'apply_rules'=>$discountObj->apply_rules, 'discount_types'=>$discountObj->discount_types,*/
             'page'=>$page
@@ -325,7 +324,6 @@ class ecomconfigController extends expController {
             'title'=>$this->displayname()
         ));
     }   
-
 
 	/*****************************************************************/
     /***************  Upcharge Rate   *******************************/

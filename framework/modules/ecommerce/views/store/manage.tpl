@@ -38,46 +38,45 @@
         </thead>
         <tbody>
             {foreach from=$page->records item=listing name=listings}
-			
-            <tr class="{cycle values="odd,even"}">
-                <!--td>{img file_id=$listing->expFile.images[0]->id square=60}</td-->
-                <td>
-					{if $listing->product_type == "product"}
-						<a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a>
-					{else}
-						{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}
-					{/if}
-				</td>
-                <td>{$listing->product_type}</td> 
-                <td>{$listing->model|default:"N/A"}</td>                
-                <td>
-					{if $listing->product_type == "product"}
-						<a href={link controller=store action=showByTitle title=$listing->sef_url}>{$listing->title}</a>
-					{else}
-						{$listing->title}
-					{/if}
-				</td>
-                <td>
-					{if $listing->product_type == "product"}
-						${$listing->base_price|number_format:2}
-					{/if}
-				</td>
-                <td>
-                    {permissions}
-						<div class="item-actions">
-							{if $permissions.edit == 1}
-								{icon action=edit record=$listing title="Edit `$listing->title`"}
-							{/if}
-							{if $permissions.delete == 1}
-								{icon action=delete record=$listing title="Delete `$listing->title`"}
-							{/if}
-							{if $permissions.edit == 1 && $listing->product_type == "product"}
-								{icon action=copyProduct img="copy.png" title="Copy `$listing->title` " record=$listing}
-							{/if}
-						</div>
-                    {/permissions}  
-                </td>                   
-            </tr>
+                <tr class="{cycle values="odd,even"}">
+                    <!--td>{img file_id=$listing->expFile.images[0]->id square=60}</td-->
+                    <td>
+                        {if $listing->product_type == "product"}
+                            <a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a>
+                        {else}
+                            {img file_id=$listing->expFile.mainimage[0]->id square=true h=50}
+                        {/if}
+                    </td>
+                    <td>{$listing->product_type}</td>
+                    <td>{$listing->model|default:"N/A"}</td>
+                    <td>
+                        {if $listing->product_type == "product"}
+                            <a href={link controller=store action=showByTitle title=$listing->sef_url}>{$listing->title}</a>
+                        {else}
+                            {$listing->title}
+                        {/if}
+                    </td>
+                    <td>
+                        {if $listing->product_type == "product"}
+                            ${$listing->base_price|number_format:2}
+                        {/if}
+                    </td>
+                    <td>
+                        {permissions}
+                            <div class="item-actions">
+                                {if $permissions.edit == 1}
+                                    {icon action=edit record=$listing title="Edit `$listing->title`"}
+                                {/if}
+                                {if $permissions.delete == 1}
+                                    {icon action=delete record=$listing title="Delete `$listing->title`"}
+                                {/if}
+                                {if $permissions.edit == 1 && $listing->product_type == "product"}
+                                    {icon action=copyProduct img="copy.png" title="Copy `$listing->title` " record=$listing}
+                                {/if}
+                            </div>
+                        {/permissions}
+                    </td>
+                </tr>
             {/foreach}
         </tbody>
         </table>

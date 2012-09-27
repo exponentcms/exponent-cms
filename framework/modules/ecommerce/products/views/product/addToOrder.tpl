@@ -18,11 +18,11 @@
 {/css}
 {* edebug var=$product *}
 {if isset($params.error)}
-      <div id="msg-queue" class="common msg-queue">
-    <ul class="queue error"><li>{$params.error}</li></ul>
+    <div id="msg-queue" class="common msg-queue">
+        <ul class="queue error"><li>{$params.error}</li></ul>
     </div>
     {br}
-    {/if}
+{/if}
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
     {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}

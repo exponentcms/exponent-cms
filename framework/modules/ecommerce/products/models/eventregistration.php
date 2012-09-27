@@ -37,10 +37,17 @@ class eventregistration extends expRecord {
     public $default_sort_field = 'rank';
     public $rank_by_field = 'rank';
     public $default_sort_direction = "asc";
+
     protected $attachable_item_types = array(
-        'content_expFiles'          => 'expFile',
-        'content_expDefinableFields'=> 'expDefinableField'
+//        'content_expCats'=>'expCat',
+//        'content_expComments'=>'expComment',
+        'content_expDefinableFields'=> 'expDefinableField',
+        'content_expFiles'=>'expFile',
+//        'content_expRatings'=>'expRating',
+//        'content_expSimpleNote'=>'expSimpleNote',
+//        'content_expTags'=>'expTag',
     );
+
 
     public function __construct($params = array(), $get_assoc = true, $get_attached = true) {
         parent::__construct($params, $get_assoc, $get_attached);

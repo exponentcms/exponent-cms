@@ -55,14 +55,15 @@ class product extends expRecord {
     public $quantity_discount_amount_modifiers = array('$'=>'$', '%'=>'%');
     
     protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile', 
-        //'content_expTags'=>'expTag', 
-        //'content_expComments'=>'expComment',
-        'content_expSimpleNote'=>'expSimpleNote',
+//        'content_expCats'=>'expCat',
+//        'content_expComments'=>'expComment',
+//        'content_expDefinableFields'=> 'expDefinableField',
+        'content_expFiles'=>'expFile',
         'content_expRatings'=>'expRating',
+        'content_expSimpleNote'=>'expSimpleNote',
+//        'content_expTags'=>'expTag',
     );
-    
-    
+
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 	    global $db;
 		parent::__construct($params, $get_assoc, $get_attached);
@@ -414,8 +415,6 @@ class product extends expRecord {
         return true;
     }
     
-    
-    
     public function process($item) {
         global $db;
         $this->quantity = $this->quantity - $item->quantity;
@@ -751,10 +750,15 @@ class product extends expRecord {
 	public function update($params=array()) {
 		global $db;
 
+        if ($this->product_type != 'product') {
+            parent::update($params);
+            return;
+        }
 		//Get the product
 		$product = $db->selectObject('product', 'id =' . $params['id']);
 		//Get product files
         if (empty($product)) $product = new stdClass();
+
 		$product->expFile =  $this->getProductFiles($params['id']);
 		// eDebug($product, true);
 		

@@ -23,9 +23,22 @@
 
 class donationController extends expController {
     public $basemodel_name = 'donation';
+
     public $useractions = array(
         'showall'=>'Show all Donation Causes',
     );
+
+    // hide the configs we don't need
+    public $remove_configs = array(
+        'aggregation',
+        'categories',
+        'comments',
+        'ealerts',
+        'files',
+        'module_title',
+        'rss',
+        'tags'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     static function displayname() { return gt("Online Donations"); }
     static function description() { return gt("Use this module to accept donations on your website"); }

@@ -63,7 +63,7 @@
             <div class="bd {if $smarty.cookies.orders=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="{link action=dashboard}">{'View recent orders'|gettext}</a></strong>
+                        <strong><a href="{link controller=order action=showall}">{'View recent orders'|gettext}</a></strong>
                         {'View and manage all new and existing orders.'|gettext}
                     </li>
                     <li>

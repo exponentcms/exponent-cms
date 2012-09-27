@@ -27,7 +27,7 @@
         <thead>
             <tr>
                 <th>
-                    <h1>{"Build a Report"|gettext}</h1>
+                    <h1>{"Build an Order Report"|gettext}</h1>
                 </th>
             </tr>
         </thead>

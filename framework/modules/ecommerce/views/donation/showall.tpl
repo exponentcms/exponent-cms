@@ -19,7 +19,7 @@
     <table>
     {foreach from=$causes item=cause}
         <tr>
-            <td>{img file_id=$cause->expFile.images[0]->id square=120}</td>
+            <td>{img file_id=$cause->expFile.mainimage[0]->id square=120}</td>
             <td>
                 <h3>{$cause->title}</h3>
                 {$cause->body}

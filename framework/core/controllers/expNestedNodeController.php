@@ -24,7 +24,7 @@
 
 class expNestedNodeController extends expController {
     static function displayname() { return gt("Nested Node Manager"); }
-    static function description() { return gt("This module is for manageing your Nested Nodes"); }
+    static function description() { return gt("This module is for managing your Nested Nodes"); }
 
 	function edit() {
 		global $db;

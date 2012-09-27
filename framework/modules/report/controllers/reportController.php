@@ -1928,7 +1928,7 @@ class reportController extends expController {
             }
             //eDebug($prods);
         }else{
-            foreach ($this->params['act-upon'] as $order)
+            if (!empty($this->params['act-upon'])) foreach ($this->params['act-upon'] as $order)
             {
                 $oids .= $order->id . ",";
             }

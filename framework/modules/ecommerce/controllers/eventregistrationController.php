@@ -31,10 +31,24 @@ function compare($x, $y) {
 
 class eventregistrationController extends expController {
     public $basemodel_name = 'eventregistration';
+
     public $useractions = array(
         'showall'     => 'Show all events',
 //        'showByTitle' => "Show events by title",
     );
+
+    // hide the configs we don't need
+    public $remove_configs = array(
+        'aggregation',
+        'categories',
+        'comments',
+        'ealerts',
+        'files',
+        'module_title',
+        'rss',
+        'tags'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+
     public $add_permissions = array(
         'view_registrants'=> 'View Registrants',
     );
