@@ -2,6 +2,8 @@ Exponent Content Management System
 Copyright (c) 2004-2012 OIC Group, Inc.
 ===============================================
 
+For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
+
 Added / Fixed / changed for 2.0.9
 -----------------------
 # This release focuses on greater HTML5 & PHP v5.4 compliance, & module upgrades
@@ -29,8 +31,8 @@ Added / Fixed / changed for 2.0.9
     -- PayPal Express checkout updated to use new api to give more into on the PayPal screen
     -- FedEx & UPS shipping calculators working
     -- e-commerce use a little more intuitive/more features now functional
-  - adds a working 'upload' control to forms which emails submitted file as an attachment
-  - plus many other tweaks, fixes, and features
+  - adds a working 'upload' control to forms which will email submitted file as an attachment
+  - plus many, many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.8
 -----------------------

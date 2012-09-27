@@ -135,9 +135,15 @@
 
 {script unique="filetabs" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#mod-manager-tabs'});
-	    tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#mod-manager-tabs'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#mod-manager-tabs'});
 		Y.one('#mod-manager-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 

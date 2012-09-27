@@ -8,7 +8,6 @@ YUI.add('exptabs', function(Y) {
                 });
             tabview.render();
 
-
             var lazyLoadCKE = function () {
                 if(tabview.get('selection').get('content').indexOf('<!-- cke lazy -->')) {
                     Y.Global.fire("lazyload:cke");

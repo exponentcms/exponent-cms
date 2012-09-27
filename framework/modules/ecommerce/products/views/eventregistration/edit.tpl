@@ -114,9 +114,15 @@
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-	 YUI(EXPONENT.YUI3_CONFIG).use("get", "tabview", "node-load","event-simulate", function(Y) {
-		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
-		tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	 YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs", "node-load","event-simulate", function(Y) {
+//		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#editproduct-tabs'});
 		Y.one('#editproduct-tabs').removeClass('hide');
         Y.one('.loadingdiv').remove();
     });

@@ -69,9 +69,15 @@
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-	    tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
 		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 	});

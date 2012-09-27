@@ -13,8 +13,8 @@
  *
  *}
 
-<div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
+<div id="instore">
+    <div id="instore-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
         </ul>            
@@ -29,10 +29,16 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
-	    tabview.render();
-		Y.one('#authcfg-tabs').removeClass('hide');
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#instore-tabs'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#instore-tabs'});
+		Y.one('#instore-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

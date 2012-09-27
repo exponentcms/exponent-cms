@@ -244,8 +244,19 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element', function(Y) {
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element','exptabs', function(Y) {
         var YAHOO=Y.YUI2;
+
+//		var tabview = new Y.TabView({srcNode:'#childtabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#childtabs-tabs'});
+		Y.one('#childtabs').removeClass('hide');
+		Y.one('.loadingdiv').remove();
 
         function switchMethods() {
             var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
@@ -264,17 +275,6 @@
             //Y.log(dd.value);
         }
         YAHOO.util.Event.onDOMReady(switchMethods);
-    });
-{/literal}
-{/script}
-
-{script unique="childtabs" yui3mods=1}
-{literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#childtabs'});
-		tabview.render();
-		Y.one('#childtabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}

@@ -65,14 +65,13 @@ if (!defined('URL_BASE')) {
 }
 
 if (!defined('URL_BASE_SECURE')) {
-        /*
-         * URL_BASE_SECURE Constant
-         *
-         * The URL_BASE constant is the base URL of the domain hosting the Exponent site.
-         * It does not include the PATH_RELATIVE information.  The automatic
-         * detection code can figure out if the server is running in SSL mode or not
-         */
-        define('URL_BASE_SECURE','https://'.HOSTNAME);
+    /*
+     * URL_BASE_SECURE Constant
+     *
+     * The URL_BASE_SECURE constant is the secure base URL of the domain hosting the Exponent site.
+     * It does not include the PATH_RELATIVE information.
+     */
+    define('URL_BASE_SECURE','https://'.HOSTNAME);
 }
 
 if (!defined('URL_FULL')) {
@@ -436,16 +435,19 @@ if (!defined('EXPONENT_USER_OS')) {
     }
 }
 
-/** exdoc
- * The absolute path to Exponent's core javascript.
- */
-define('JS_FULL',URL_FULL.'framework/assets/core/js/');
+if (!defined('JS_FULL')) {
+	/** exdoc
+	 * The absolute url to Exponent's core javascript.
+	 */
+	define('JS_FULL',URL_FULL.'framework/core/assets/js/');
+}
 
-/** exdoc
- * The relative path to Exponent's core javascript.
- */
-
-define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');
+if (!defined('JS_PATH')) {
+	/** exdoc
+     * The relative path to Exponent's core javascript.
+	 */
+    define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');
+}
 
 // iconset base
 if (!defined('ICON_RELATIVE')) {

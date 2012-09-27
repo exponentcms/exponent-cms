@@ -36,7 +36,7 @@
 		{/if}
 		{control type="hidden" name="id" value=$record->id}
         <div id="editproduct-tabs" class="yui-navset exp-skin-tabview hide">
-            <ul id="dynamicload" class="exp-ajax-tabs">
+            <ul id="dynamicload" class="exp-ajax-tabs yui-nav">
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_general"}">{'General'|gettext}</a></li>
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_pricing"}">{'Pricing, Tax'|gettext} &amp; {'Discounts'|gettext}</a></li>
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_images"}">{'Images'|gettext} &amp; {'Files'|gettext}</a></li>
@@ -60,7 +60,7 @@
                 {/if}
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_misc"}">{'Misc'|gettext}</a></li>
             </ul>
-            <div id="loadcontent" class="exp-ajax-tabs-content"></div>
+            <div id="loadcontent" class="exp-ajax-tabs-content yui-content yui3-skin-sam"></div>
         </div>
         <div id="loading" class="loadingdiv">{"Loading"|gettext} {"Product Edit Form"|gettext}</div>
         {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
@@ -78,8 +78,12 @@
 
 {script unique="prodtabs" yui3mods="1"}
 {literal}
-    	
-    YUI(EXPONENT.YUI3_CONFIG).use("get", "tabview", "node-load","event-simulate",'cookie', function(Y) {
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+    YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs",'tabview',"node-load","event-simulate",'cookie', function(Y) {
        
        var lastTab = !Y.Lang.isNull(Y.Cookie.get("edit-tab")) ? Y.Cookie.get("edit-tab") : 0;
        var tabs = Y.all('#dynamicload li a');

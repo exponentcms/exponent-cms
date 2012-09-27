@@ -13,8 +13,8 @@
  *
  *}
 
-<div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
+<div id="splitcredit">
+    <div id="splitcredit-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'Split Credit Card'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
@@ -37,10 +37,16 @@
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
-		tabview.render();
-		Y.one('#authcfg-tabs').removeClass('hide');
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//		var tabview = new Y.TabView({srcNode:'#splitcredit-tabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#splitcredit-tabs'});
+		Y.one('#splitcredit-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

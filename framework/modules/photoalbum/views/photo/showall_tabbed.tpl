@@ -101,6 +101,11 @@
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
     EXPONENT.YUI3_CONFIG.modules = {
        'gallery-lightbox' : {
            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
@@ -108,9 +113,10 @@
        }
     }
 
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview','gallery-lightbox', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-	    tabview.render();
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs','gallery-lightbox', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
 		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
 		Y.one('.loadingdiv').remove();
         Y.Lightbox.init();

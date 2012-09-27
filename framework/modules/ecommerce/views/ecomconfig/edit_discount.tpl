@@ -77,37 +77,36 @@
 
 {script unique="discountedit" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element', function(Y) {
-    var YAHOO=Y.YUI2;
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
 
-    function switchMethods() {
-        var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
-        var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
-        var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
-        
-        for(i=0; i<otherdds.length; i++) {
-            if (otherdds[i].id == 'dd-'+dd.value) {
-                YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
-            } else {
-                YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
-            }
-        }
-        YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
-        //Y.log(methdd);
-        //Y.log(dd.value);
-    }
-    YAHOO.util.Event.onDOMReady(switchMethods);
-});
-{/literal}
-{/script}
-
-{script unique="discounttabs" yui3mods=1}
-{literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#discounttabs'});
-		tabview.render();
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element','exptabs', function(Y) {
+        var YAHOO=Y.YUI2;
+//		var tabview = new Y.TabView({srcNode:'#discounttabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#discounttabs'});
 		Y.one('#discounttabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
+
+        function switchMethods() {
+            var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
+            var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
+            var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
+
+            for(i=0; i<otherdds.length; i++) {
+                if (otherdds[i].id == 'dd-'+dd.value) {
+                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
+                } else {
+                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
+                }
+            }
+            YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
+            //Y.log(methdd);
+            //Y.log(dd.value);
+        }
+        YAHOO.util.Event.onDOMReady(switchMethods);
     });
 {/literal}
 {/script}

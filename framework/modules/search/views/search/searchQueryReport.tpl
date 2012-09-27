@@ -91,13 +91,19 @@
 
 {script unique="searchQueryReport" yui3mods="1"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#searchqueryreport'});
-	    tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+    YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#searchqueryreport'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#searchqueryreport'});
+        Y.one('#searchqueryreport').removeClass('hide');
+        Y.one('.loadingdiv').remove();
 
         var userdropdown = Y.one('#userdropdown');
-		Y.one('#searchqueryreport').removeClass('hide');
-        Y.one('.loadingdiv').remove();
         userdropdown.on("change",function(e){
             if(e.target.get('value') == -1) {
                 window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";

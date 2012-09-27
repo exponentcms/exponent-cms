@@ -71,9 +71,15 @@
 
 {script unique="blogtabs" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#editblog-tabs'});
-	    tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#editblog-tabs'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#editblog-tabs'});
 		Y.one('#editblog-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 

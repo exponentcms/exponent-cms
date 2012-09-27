@@ -14,8 +14,8 @@
  *}
 
 <p>{'To setup a Worldpay account, visit'|gettext} <a href="http://www.worldpay.com/products/index.php?c=WW" target="_blank">http://www.worldpay.com/products/index.php?c=WW</a></p>
-<div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
+<div id="worldpay">
+    <div id="worldpay-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'Wordpay Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
@@ -43,10 +43,16 @@
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
-		tabview.render();
-		Y.one('#authcfg-tabs').removeClass('hide');
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//		var tabview = new Y.TabView({srcNode:'#worldpay-tabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#worldpay-tabs'});
+		Y.one('#worldpay-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

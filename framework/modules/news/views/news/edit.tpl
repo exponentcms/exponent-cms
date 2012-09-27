@@ -72,9 +72,31 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#editnews-tabs'});
-	    tabview.render();
+/**
+ * add exp-tabs module and file to the YUI configuration object.
+ * Including the dependencies (requires) here saves
+ * YUI and extra http call after loading exp-tabs,
+ * which also contains the dependencies
+ */
+
+   EXPONENT.YUI3_CONFIG.modules.exptabs = {
+       fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+       requires: ['history','tabview','event-custom']
+   };
+
+   /**
+    * Now, we just have to specify exptabs as the module.
+    * Looking in exp-tabs.js, you can see that on line 1, that's the module name.
+    */
+
+	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#editnews-tabs'});
+//	    tabview.render();
+// Y.expTabs is the function defined in the exptabs script
+// we're passing it a static js object, with nothing but a
+// selector we want the tabs to work with
+
+        Y.expTabs({srcNode: '#editnews-tabs'});
 		Y.one('#editnews-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 
