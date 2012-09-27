@@ -24,6 +24,12 @@
 			{if $permissions.edit == 1}
 				{icon class=add action=edit title="Create a new product"|gettext text="Add a product"|gettext}
 			{/if}
+            {if $permissions.manage == 1}
+                {icon controller=storeCategory action=manage text="Manage Categories"|gettext}
+                {icon class=configure controller=store action=config text="Configure Store"|gettext}
+                {icon class=report controller=store action=nonUnicodeProducts text="Show Non-Unicode Products"|gettext}
+                {icon class=import controller=store action=uploadModelAliases text="Upload Model Aliases"|gettext}
+            {/if}
 		</div>
     {/permissions}
     <div id="products">
@@ -33,7 +39,7 @@
             <tr>
             <th></th>
             {$page->header_columns}
-            <th>{'Actions'|gettext}</th>
+            <th>{'Action'|gettext}</th>
             </tr>
         </thead>
         <tbody>
@@ -82,15 +88,4 @@
         </table>
 		{pagelinks paginate=$page bottom=1}
     </div>
-    {permissions}
-        {if $permissions.configure == 1 or $permissions.manage == 1}
-        <div id="prod-admin">
-                <a class="add" href="{link controller=store action=create}">{'Add a new Product'|gettext}</a>
-                {br}<a class="manage" href="{link controller=storeCategory action=manage}">{'Manage Categories'|gettext}</a>
-                {br}<a class="configure" href="{link controller=store action=config}">{'Configure Store'|gettext}</a>
-				{br}<a href="{link controller=store action=nonUnicodeProducts}">{'Show Non-Unicode Products'|gettext}</a>
-				{br}<a href="{link controller=store action=uploadModelAliases}">{'Upload Model Aliases'|gettext}</a>
-        </div>
-    {/if}
-    {/permissions}
 </div>

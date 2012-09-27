@@ -20,14 +20,30 @@
 {css unique="home" link="`$asset_path`css/ecom.css"}
 
 {/css}
-<div class="module store showall">
+<div class="module store show-top-level">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" action=create text="Add a Product"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+            {icon action=manage text="Manage Products"|gettext}
+            {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
+        {/if}
+    </div>
+    {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
+    {assign var=myloc value=serialize($__loc)}
+
     {if $current_category->title}<h1>{$current_category->title}</h1>{/if}
 
     {if $current_category->id}
         {permissions}
             {if $permissions.edit == 1}
-                {icon class="edit" action=edit module=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
+                {icon class="edit" action=edit controller=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
             {/if}
             {*if $permissions.manage == 1}
                 {icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
@@ -40,7 +56,7 @@
             {/if}
         {/permissions}
     {/if}
-    
+
     <div class="bodycopy">{$current_category->body}</div>
 
     {if $categories|@count > 0}
@@ -91,7 +107,7 @@
     </div>
     {else}
     <!--hr/-->
-    <h2>All Products Under {$current_category->title}</h2>
+    <h2>{'All Products Under'|gettext} {$current_category->title}</h2>
 
     {$page->links}
     {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}

@@ -18,7 +18,10 @@
 {/css}
 
 <div class="module store quick-links">
-    <h2>{$moduletitle|default:"Store Links"|gettext}</h2>
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {if $user->id != '' && $user->id != 0}
         <strong class="attribution">Welcome {attribution user=$user display=firstlast}</strong>
     {/if}

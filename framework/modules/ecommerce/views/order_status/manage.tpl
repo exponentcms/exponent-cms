@@ -29,7 +29,7 @@
 				    <th>{'Default'|gettext}</th>
 				    <th>{'Treat as Closed'|gettext}</th>
 					<th>{'Name'|gettext}</th>
-					<th>{'Admin'|gettext}</th>
+					<th>{'Action'|gettext}</th>
 					<th>{'Order'|gettext}</th>
 				</tr>
 			</thead>

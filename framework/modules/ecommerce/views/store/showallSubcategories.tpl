@@ -15,7 +15,23 @@
 
 <div class="module store showall-subcategories">
     {assign var=depth value=0}
-    <h1>{$moduletitle|default:""}</h1>
+        {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+        {permissions}
+        <div class="module-actions">
+            {if $permissions.create == true || $permissions.edit == true}
+                {icon class="add" action=create text="Add a Product"|gettext}
+            {/if}
+            {if $permissions.manage == 1}
+                {icon action=manage text="Manage Products"|gettext}
+                {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
+            {/if}
+        </div>
+        {/permissions}
+        {if $config.moduledescription != ""}
+            {$config.moduledescription}
+        {/if}
+        {assign var=myloc value=serialize($__loc)}
+
     <div id="catnav">
         <ul>
             <li><a href="{link controller=store action=showall}">{'Browse all Products'|gettext}</a></li>

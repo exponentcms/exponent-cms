@@ -93,7 +93,7 @@
 					<h2>{'Active/Inactive'|gettext}</h2>
 					{control type="radiogroup" name="active_type" label=" " items="Active,Inactive" values="0,2" default=$record->active_type|default:0}
 					<h2>{'Status'|gettext}</h2>
-					{control type="checkbox" name="product_status_id" label="Open for Registration"|gettext value=1 checked=$record->product_status_id}
+					{control type="checkbox" name="product_status_id" label="Open for Registration"|gettext value=1 checked=$record->product_status_id|default:1}
 				</div>
 				<div id="tab10">
 					<h2>{'Add options to your product.'|gettext}</h2>

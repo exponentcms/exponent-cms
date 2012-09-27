@@ -36,8 +36,8 @@
 			<table id="discounts" class="exp-skin-table">
 				<thead>
 					<tr>
-					{$page->header_columns}
-					<th></th>
+                        {$page->header_columns}
+                        <th>{'Action'|gettext}</th>
 					</tr>
 				</thead>
 				<tbody>

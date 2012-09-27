@@ -25,7 +25,7 @@
         <th>{'Price'|gettext}</th>
         <th>{'Amount'|gettext}</th>
         <th>{'Quantity'|gettext}</th>
-        <th>&#160;</th>
+        <th>{'Action'|gettext}</th>
     </tr>
     </thead>
     <tbody>

@@ -100,7 +100,11 @@
                 <ul>
                     <li>
                         <strong><a href="{link controller=store action=picktype}">{'Add a Product'|gettext}</a></strong>
-                        {'Add a'|gettext} <a href="{link controller=store action=edit product_type=product}">{'Product'|gettext}</a>, <a href="{link controller=store action=edit product_type=donation}">{'Donation'|gettext}</a>, <a href="{link controller=store action=edit product_type=giftcard}">{'Gift Card'|gettext}</a>, {'or'|gettext} <a href="{link controller=store action=edit product_type=eventregistration}">{'Event Registration'|gettext}</a> {'to your store.'|gettext}
+                        {'Add a'|gettext} <a href="{link controller=store action=edit product_type=product}">{'Product'|gettext}</a>,
+                        <a href="{link controller=store action=edit product_type=donation}">{'Donation'|gettext}</a>,
+                        <a href="{link controller=store action=edit product_type=giftcard}">{'Gift Card'|gettext}</a>,
+                        {'or'|gettext} <a href="{link controller=store action=edit product_type=eventregistration}">{'Event Registration'|gettext}</a>
+                        {'to your store.'|gettext}
                     </li>
                     <li>
                         <strong><a href="{link controller=store action=manage}">{'Manage Products'|gettext}</a></strong>

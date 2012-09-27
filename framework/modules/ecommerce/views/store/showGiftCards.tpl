@@ -25,7 +25,22 @@
 
 {/css}
 <div class="module store show giftcards">
-	{form id="addtocart" controller=cart action=addItem} 
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" action=create product_type=giftcard text="Add a Gift Card"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+             {icon action=manage text="Manage Products"|gettext}
+        {/if}
+    </div>
+    {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
+    {assign var=myloc value=serialize($__loc)}
+	{form id="addtocart" controller=cart action=addItem}
 	{control type="hidden" name="product_type" value="giftcard"}
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">
 		<tbody>

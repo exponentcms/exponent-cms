@@ -34,7 +34,7 @@
                 {"Vendor"|gettext}
                 </th>
                 <th>
-                {"Actions"|gettext}
+                {"Action"|gettext}
                 </th>
             </tr>
         </thead>

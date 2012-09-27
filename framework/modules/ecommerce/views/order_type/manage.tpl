@@ -31,7 +31,7 @@
                     <th>{'Emails Customer'|gettext}</th>
                     <th>{'Affects Inventory'|gettext}</th>
 					<th>{'Name'|gettext}</th>
-					<th>{'Admin'|gettext}</th>
+					<th>{'Action'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>

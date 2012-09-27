@@ -84,7 +84,7 @@
                         <th><span>{$chiprodname.name}</span></th>                            
                     {/foreach}
                     <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
-                    <th>&#160;</th>
+                    <th>{'Action'|gettext}</th>
                 </tr>
             </thead>
             <tbody>

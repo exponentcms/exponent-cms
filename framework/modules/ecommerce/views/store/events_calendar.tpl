@@ -16,6 +16,20 @@
 <div class="store showallCalendar">
 	
 <h1>{if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}</h1>
+{permissions}
+<div class="module-actions">
+    {if $permissions.create == true || $permissions.edit == true}
+        {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+    {/if}
+    {if $permissions.manage == 1}
+         {icon controller=eventregistration action=manage text="Manage Events"|gettext}
+    {/if}
+</div>
+{/permissions}
+{if $config.moduledescription != ""}
+	{$config.moduledescription}
+{/if}
+{assign var=myloc value=serialize($__loc)}
 
 <table id="calendar" cellspacing="0" cellpadding="0" summary="{$moduletitle|default:'Subscribe to this Event RSS Feed'|gettext}">
 <caption><a href="{link action=events_calendar time=$prevmonth}" title="{'Previous Month'|gettext}" class="nav">&laquo;</a> {$now|format_date:"%B %Y"} <a href="{link action=events_calendar time=$nextmonth}" title="{'Next Month'|gettext}" class="nav">&raquo;</a></caption>

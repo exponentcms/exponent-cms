@@ -22,9 +22,22 @@
     {else}
         <h1>{$current_category->title}</h1>
     {/if}
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" action=create text="Add a Product"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+            {icon action=manage text="Manage Products"|gettext}
+            {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
+        {/if}
+    </div>
+    {/permissions}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
+    {assign var=myloc value=serialize($__loc)}
+
     {* current category image *}
     {if $current_category->expFile[0]->id && $config.banner_width}
         <div class="category-banner">

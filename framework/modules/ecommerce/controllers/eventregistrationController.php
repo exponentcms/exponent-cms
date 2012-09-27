@@ -106,6 +106,51 @@ class eventregistrationController extends expController {
         ));
     }
 
+    function manage() {
+        global $user;
+
+        expHistory::set('viewable', $this->params);
+        $limit = (!empty($this->config['limit'])) ? $this->config['limit'] : 10;
+
+        if ($user->isAdmin()) {
+            $pass_events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+        } else {
+            $events      = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
+            $pass_events = array();
+
+            foreach ($events as $event) {
+                // $this->signup_cutoff > time()
+                if ($event->signup_cutoff > time()) {
+                    $pass_events[] = $event;
+                }
+                // eDebug($event->signup_cutoff, true);
+            }
+        }
+        // echo "<pre>";
+        // print_r($pass_events);
+        // exit();
+        // uasort($pass_events,'compare');
+        //eDebug($this->config['limit'], true);
+        $page = new expPaginator(array(
+            'records'=>$pass_events,
+            'limit'=>$limit,
+            'order'=>"title ASC",
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'view'=>empty($this->params['view']) ? null : $this->params['view'],
+            'columns'=>array(
+                gt('Event')=>'title',
+                gt('Date')=>'eventdate',
+                gt('Seats')=>'quantity'
+            ),
+        ));
+        assign_to_template(array(
+            'page'=> $page
+        ));
+    }
+
     function metainfo() {
         global $router;
         if (empty($router->params['action'])) return false;
@@ -271,7 +316,7 @@ class eventregistrationController extends expController {
         $connector_id = $this->params['connector_id'];
 
         $db->delete("eventregistration_registrants", "connector_id='{$connector_id}'");
-        flash('message', gt("Registrant succesfully deleted."));
+        flash('message', gt("Registrant successfully deleted."));
         expHistory::back();
     }
 

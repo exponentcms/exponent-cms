@@ -25,7 +25,7 @@
 				    <th>{'First Name'|gettext}</th>
 					<th>{'Last Name'|gettext}</th>
 					<th>{'Initials'|gettext}</th>
-                    <th>{'Admin'|gettext}</th>
+                    <th>{'Action'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>

@@ -27,7 +27,7 @@
 			<thead>
 				<tr>				   
 					<th>{'Name'|gettext}</th>
-					<th>{'Admin'|gettext}</th>
+					<th>{'Action'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>

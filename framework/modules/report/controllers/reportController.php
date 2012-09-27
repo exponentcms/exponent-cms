@@ -1937,8 +1937,7 @@ class reportController extends expController {
         $oids .= ")";
         eDebug($oids);
         //eDebug($orders,true);
-          
-        
+
     }
     
     function status_export()

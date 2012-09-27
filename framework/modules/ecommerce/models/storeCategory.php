@@ -32,7 +32,7 @@ class storeCategory extends expNestedNode {
 		global $db;
 		parent::__construct($params, $get_assoc, $get_attached);
 
-		// if this is an empty category object we'll set the lft & rgt to the max
+		// if this is an empty category object we'll set the lft to min & rgt to the max
 		// so they encompass the all of the categories, in essence creating an
 		// unnamed  parent category to everything.
 		if (empty($this->id)) {

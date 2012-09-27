@@ -464,8 +464,10 @@ class storeController extends expController {
     function showallUncategorized() {
         expHistory::set('viewable', $this->params);
 
-        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
-        $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
+//        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
+//        $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
+        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p LEFT OUTER JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
+        $sql .= 'sc ON p.id = sc.product_id WHERE sc.product_id is null';
 
         expSession::set('product_export_query', $sql);
 
@@ -516,6 +518,7 @@ class storeController extends expController {
     function showallImpropercategorized() {
         expHistory::set('viewable', $this->params);
 
+        //FIXME not sure this is the correct sql, not sure what we are trying to pull out
         $sql = 'SELECT DISTINCT(p.id),p.product_type FROM ' . DB_TABLE_PREFIX . '_product p JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories psc ON p.id = psc.product_id ';
         $sql .= 'JOIN exponent_storeCategories sc ON psc.storecategories_id = sc.parent_id WHERE ';
         $sql .= 'p.parent_id=0 AND sc.parent_id != 0';
@@ -763,10 +766,11 @@ class storeController extends expController {
 
         $order = 'title';
         $dir   = 'ASC';
-
+        //FIXME bad sql statement needs to be a JOIN
+        $sql   = 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product,' . DB_TABLE_PREFIX . '_product_storeCategories WHERE product_id = id and is_featured=1 and storecategories_id =' . $curcat->id;
         $page = new expPaginator(array(
             'model_field'=> 'product_type',
-            'sql'        => 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product,' . DB_TABLE_PREFIX . '_product_storeCategories WHERE product_id = id and is_featured=1 and storecategories_id =' . $curcat->id,
+            'sql'        => $sql,
             'limit'      => ecomconfig::getConfig('pagination_default'),
             'order'      => $order,
             'dir'        => $dir,

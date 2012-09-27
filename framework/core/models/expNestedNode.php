@@ -132,8 +132,6 @@ abstract class expNestedNode extends expRecord {
         // $this->parent_id = $parent->id;
         $this->save();
 	}
-	
-
     // public function move($insertpoint) {
     //  global $db;
     //  $width = ($this->rgt - $this->lft) + 1;

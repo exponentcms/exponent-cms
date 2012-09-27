@@ -15,6 +15,23 @@
 
 <div class="module store showall showall-by-manufacturer">
     <h1>{'All Products for'|gettext} {$company->title}</h1>
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" action=create text="Add a Product"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+            {icon action=manage text="Manage Products"|gettext}
+            {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
+            {icon class="manage" controller="company" action="showall" text="Manage Manufacturers"|gettext}
+        {/if}
+    </div>
+    {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
+    {assign var=myloc value=serialize($__loc)}
+
     {pagelinks paginate=$page top=1}
     <div class="products">
         {foreach from=$page->records item=listing name=listings}

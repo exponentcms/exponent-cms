@@ -13,7 +13,7 @@
  *
  *}
 
-{br}
+<h1>{'Products with Data Issues'|gettext}</h1>
 <p>{'There are'|gettext} {$count} {'products that have non-unicode characters in it.'|gettext}</p>
 
  <div id="products">
@@ -23,7 +23,7 @@
 			<th>{'Model'|gettext}</th>
 			<th>{'Title'|gettext}</th>
 			<th>{'Non-Unicode Field(s)'|gettext}</th>
-			<th>{'Actions'|gettext}</th>
+			<th>{'Action'|gettext}</th>
 		</tr>
 	</thead>
 	<tbody>

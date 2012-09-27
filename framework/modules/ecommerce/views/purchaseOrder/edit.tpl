@@ -55,7 +55,7 @@
                 {"ETA"|gettext}
                 </th>
                 <th>
-                {"add/remove"|gettext}
+                {"Action"|gettext}
                 </th>
             </tr>
         </thead>
