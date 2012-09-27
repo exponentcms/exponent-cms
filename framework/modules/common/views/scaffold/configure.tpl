@@ -49,7 +49,7 @@
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
-        requires: ['history','tabview']
+        requires: ['history','tabview','event-custom']
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
