@@ -100,7 +100,7 @@ class calendarcontrol extends formcontrol {
         ";
         
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','cssbutton', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date', function(Y) {
             // Our calendar bounding div id
             var boundingBoxId = '#calendar-container-".$name."',
             // This flag used to track mouse position

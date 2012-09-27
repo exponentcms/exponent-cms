@@ -19,6 +19,13 @@
 
 <div class="store events manage">
     <h1>{'Manage Event Registrations'|gettext}</h1>
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+        {/if}
+    </div>
+    {/permissions}
     <div id="products">
     {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
