@@ -40,3 +40,9 @@
 	{control type="textarea" name="general[summary]" label="Product Summary"|gettext rows=3 cols=45 value=$record->summary}
 	{control type="editor" name="general[body]" label="Product Description"|gettext height=250 value=$record->body}
 {/if}
+
+{script unique="general" yui3mods=1}
+{literal}
+    Y.Global.fire('lazyload:cke');
+{/literal}
+{/script}
