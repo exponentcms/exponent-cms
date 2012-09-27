@@ -168,6 +168,8 @@ function smarty_function_control($params, &$smarty) {
             if (SITE_WYSIWYG_EDITOR == "ckeditor") {
                 $control          = new ckeditorcontrol();
                 $control->toolbar = empty($params['toolbar']) ? '' : $params['toolbar'];
+                $control->lazyload = empty($params['lazyload']) ? 0 : 1;
+
             } else {
                 $control = new htmleditorcontrol();
                 if (isset($params['module'])) $control->module = $params['module'];

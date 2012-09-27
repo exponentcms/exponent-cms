@@ -49,10 +49,11 @@ EXPONENT.YUI3_CONFIG = {
         'replaceStr': ",$1"
     },
     //combine: false,
-    //filter:   "debug",
+    // filter:   "debug",
     // onFailure: function (error) {
     //   console.debug(error);  
     // },
+    modules: {},
     groups: {
         yui2: {
             combine:<?php echo (MINIFY==1&&MINIFY_YUI2==1)?1:0; ?>,

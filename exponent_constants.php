@@ -436,12 +436,16 @@ if (!defined('EXPONENT_USER_OS')) {
     }
 }
 
-if (!defined('JS_FULL')) {
-	/** exdoc
-	 * The absolute path to Exponent's core javascript.
-	 */
-	define('JS_FULL',URL_FULL.'framework/core/js/');
-}
+/** exdoc
+ * The absolute path to Exponent's core javascript.
+ */
+define('JS_FULL',URL_FULL.'framework/assets/core/js/');
+
+/** exdoc
+ * The relative path to Exponent's core javascript.
+ */
+
+define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');
 
 // iconset base
 if (!defined('ICON_RELATIVE')) {
@@ -456,7 +460,7 @@ if (!defined('YUI3_PATH')) {
 	 * YUI 3 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('YUI3_VERSION', '3.4.0');
+	define('YUI3_VERSION', '3.7.2');
 	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
 }
