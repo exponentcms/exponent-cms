@@ -115,7 +115,7 @@ if (isset($_GET['id'])) {
             'order'=>(isset($_GET['order']) && $_GET['order'] != '') ? $_GET['order'] : 'id',
             'dir'=>(isset($_GET['dir']) && $_GET['dir'] != '') ? $_GET['dir'] : 'ASC',
 //                    'order'=>$order,
-            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'page'=>(isset($_GET['page']) ? $_GET['page'] : 1),
             'action'=>'view_data',
             'columns'=>$columns
         ));

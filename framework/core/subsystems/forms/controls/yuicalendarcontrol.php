@@ -101,25 +101,12 @@ class yuicalendarcontrol extends formcontrol {
                 } else {
                     date = new Date();
                 }
+
                 // Setting calendar date to show corresponding month
                 calendar.set('date', date);
 
                 // Get a reference to Y.DataType.Date
                 var dtdate = Y.DataType.Date;
-
-//                // Listen to calendar's selectionChange event.
-//                calendar.on('selectionChange', function (ev) {
-//
-//                  // Get the date from the list of selected
-//                  // dates returned with the event (since only
-//                  // single selection is enabled by default,
-//                  // we expect there to be only one date)
-//                  var newDate = ev.newSelection[0];
-//
-//                  // Format the date and output it to a DOM
-//                  // element.
-//                  Y.one('#" . $name . "').set('value',dtdate.format(newDate,{format:'%m/%d/%Y'}));
-//                });
 
                 // Listen to calendar's dateClick event.
                 calendar.on('dateClick', function (ev) {

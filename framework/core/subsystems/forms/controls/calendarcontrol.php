@@ -140,14 +140,6 @@ class calendarcontrol extends formcontrol {
                 isMouseOverCalendar = false;
             }, boundingBoxId);
 
-            // On date selection change, we update value of a text field and hide calendar window
-//            calendar.on('selectionChange', function (event) {
-//                var newDate = event.newSelection[0];
-//                Y.one(currentValueContainer).set('value', Y.DataType.Date.format(newDate,{format:'" . DISPLAY_DATE_FORMAT . "'}));
-//                isMouseOverCalendar = false;
-//                hideCalendar();
-//            });
-
             // On date selection, we update value of a text field and hide calendar window
             calendar.on('dateClick', function (event) {
                 Y.one(currentValueContainer).set('value', Y.DataType.Date.format(event.date,{format:'" . DISPLAY_DATE_FORMAT . "'}));
