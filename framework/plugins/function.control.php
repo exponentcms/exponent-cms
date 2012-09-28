@@ -94,8 +94,10 @@ function smarty_function_control($params, &$smarty) {
                 $returntype = isset($params['returntype']) ? $params['returntype'] : null;
                 $control    = new buttongroupcontrol($submit, $reset, $cancel, null, $returntype);
                 break;
-            case "files":
             case "uploader":
+                $control = new uploadcontrol();
+                break;
+            case "files":
                 if (!empty($params['olduploader'])) {
                     $control = new uploadcontrol();
                 } else {
