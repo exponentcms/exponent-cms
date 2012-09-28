@@ -155,7 +155,6 @@ class ckeditorcontrol extends formcontrol {
                     });
 
            });
-            
             if (!Y.one('#".createValidId($name)."').ancestor('.exp-skin-tabview')) {
                 Y.Global.fire('lazyload:cke');
             }
@@ -164,7 +163,7 @@ class ckeditorcontrol extends formcontrol {
         ";
         
         expJavascript::pushToFoot(array(
-            "unique"=>"zzz-cke".$name,
+            "unique"=>"000-cke".$name,
             "yui3mods"=>"1",
             "content"=>$content,
             //"src"=>PATH_RELATIVE."external/ckeditor/ckeditor.js"

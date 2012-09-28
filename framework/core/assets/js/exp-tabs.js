@@ -9,21 +9,26 @@ YUI.add('exptabs', function(Y) {
             tabview.render();
 
             var lazyLoadCKE = function () {
+                // console.log(tabview.get('selection').get('content'));
                 if(tabview.get('selection').get('content').indexOf('<!-- cke lazy -->')) {
                     Y.Global.fire("lazyload:cke");
                 }
             };
 
-            lazyLoadCKE();
 
             // Set the selected tab to the bookmarked history state, or to
             // the first tab if there's no bookmarked state.
             tabview.selectChild(history.get('tab') || 0);
 
             // Store a new history state when the user selects a tab.
-            tabview.after('selectionChange', function(e) {
-                lazyLoadCKE();
-                history.addValue('tab', e.newVal.get('index') || null);
+            tabview.after({
+                'selectionChange': function(e) {
+                    lazyLoadCKE();
+                    history.addValue('tab', e.newVal.get('index') || null);
+                },
+                'render': function (){
+                    lazyLoadCKE();
+                }
             });
 
             // Listen for history changes from back/forward navigation or
@@ -46,6 +51,7 @@ YUI.add('exptabs', function(Y) {
                     }
                 }
             });
+
         };
 
 
