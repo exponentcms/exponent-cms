@@ -21,73 +21,79 @@ if (!defined('EXPONENT')) exit('');
 /**
  * Tag Tree Control
  *
- * @package Subsystems-Forms
+ * @package    Subsystems-Forms
  * @subpackage Control
  */
 class tagtreecontrol extends formcontrol {
 
-	var $jsHooks = array();
-	
-	static function name() { return "Nested Node Checkbox Dragdrop Tree"; }
-	static function isSimpleControl() { return false; }
-	static function getFieldDefinition() {
-		return array();
-	}
+    var $jsHooks = array();
 
-	function __construct($params) {
-		global $db;
-		
-		if (!empty($params['values'])) {
-    		foreach ($params['values'] as $key=>$var) {
-    			$this->values[$key] = $var->id;
-    		}
-		}
-		
-		$this->menu = !empty($params['menu']) ? "true" : "false";
-		$this->object = $params['nodes'];
-		$this->addable = (bool)$params['addable'];
-		$this->draggable = $params['draggable'];
-		$this->checkable = $params['checkable'];
-		$this->expandonstart = empty($params['expandonstart']) ? "false" : "true";
-		
-		// setup the controller for this..if it wasn't passed in we'll default to expTag
-		$this->controller_classname = expModules::getControllerClassName(isset($params['controller']) ? $params['controller'] : 'expTag');
-		$this->controller = new $this->controller_classname();
-		
-		// check if a model name was passed in..if not we'll guess it from the controller
-		$this->modelname = isset($params['model']) ? $params['model'] : $this->controller->basemodel_name;
-		$this->model = new $this->modelname();
-		
-		// get all the tags.
-		$this->tags = $this->model->getFullTree();
-		// eDebug($this->controller_classname);	
-	}
-	
-	function toHTML($label,$name) {
-		$link = expCore::makeLink(array("module"=>$this->controller->baseclassname,"action"=>"edit","parent"=>0));
-		$html = "";
+    static function name() {
+        return "Nested Node Checkbox Dragdrop Tree";
+    }
+
+    static function isSimpleControl() {
+        return false;
+    }
+
+    static function getFieldDefinition() {
+        return array();
+    }
+
+    function __construct($params) {
+        global $db;
+
+        if (!empty($params['values'])) {
+            foreach ($params['values'] as $key=> $var) {
+                $this->values[$key] = $var->id;
+            }
+        }
+
+        $this->menu          = !empty($params['menu']) ? "true" : "false";
+        $this->object        = $params['nodes'];
+        $this->addable       = (bool)$params['addable'];
+        $this->draggable     = $params['draggable'];
+        $this->checkable     = $params['checkable'];
+        $this->expandonstart = empty($params['expandonstart']) ? "false" : "true";
+
+        // setup the controller for this..if it wasn't passed in we'll default to expTag
+        $this->controller_classname = expModules::getControllerClassName(isset($params['controller']) ? $params['controller'] : 'expTag');
+        $this->controller           = new $this->controller_classname();
+
+        // check if a model name was passed in..if not we'll guess it from the controller
+        $this->modelname = isset($params['model']) ? $params['model'] : $this->controller->basemodel_name;
+        $this->model     = new $this->modelname();
+
+        // get all the tags.
+        $this->tags = $this->model->getFullTree();
+        // eDebug($this->controller_classname);
+    }
+
+    function toHTML($label, $name) {
+        $link = expCore::makeLink(array("module"=> $this->controller->baseclassname, "action"=> "edit", "parent"=> 0));
+        $html = "";
         if ($this->menu == "true") {
-            if ($this->addable) $html = '<a class="add" href="' . $link . '">'.gt('Add a Category').'</a> | ';
-		    $html .= '<a href="#" id="expandall">'.gt('Expand All').'</a> | ';
-            $html .= '<a href="#" id="collapseall">'.gt('Collapse All').'</a>';
-		}
-        
-		$html .= '
-		<div id="'.$this->id.'" class="nodetree"></div>
-		<div class="loadingdiv">'.gt('Loading Categories').'</div>';
-		
-		foreach($this->tags as $i=>$val){
-			if (!empty($this->values) && in_array($val->id,$this->values)) {
-				$this->tags[$i]->value = true;
-			} else {
-				$this->tags[$i]->value = false;
-			}
-			$this->tags[$i]->draggable = $this->draggable; 
-			$this->tags[$i]->checkable = $this->checkable; 
-		}
-        
-		$obj = json_encode($this->tags);
-		$script = "
+            if ($this->addable) $html = '<a class="add" href="' . $link . '">' . gt('Add a Category') . '</a> | ';
+            $html .= '<a href="#" id="expandall">' . gt('Expand All') . '</a> | ';
+            $html .= '<a href="#" id="collapseall">' . gt('Collapse All') . '</a>';
+        }
+
+        $html .= '
+		<div id="' . $this->id . '" class="nodetree"></div>
+		<div class="loadingdiv">' . gt('Loading Categories') . '</div>';
+
+        foreach ($this->tags as $i=> $val) {
+            if (!empty($this->values) && in_array($val->id, $this->values)) {
+                $this->tags[$i]->value = true;
+            } else {
+                $this->tags[$i]->value = false;
+            }
+            $this->tags[$i]->draggable = $this->draggable;
+            $this->tags[$i]->checkable = $this->checkable;
+        }
+
+        $obj    = json_encode($this->tags);
+        $script = "
 		EXPONENT.YUI3_CONFIG.modules = {
                'exp-tree' : {
                    fullpath: EXPONENT.JS_PATH+'exp-tree.js',
@@ -98,23 +104,23 @@ class tagtreecontrol extends formcontrol {
   		//EXPONENT.YUI3_CONFIG.filter = \".js\";
 
             YUI(EXPONENT.YUI3_CONFIG).use('node','exp-tree', function(Y) {
-    			var obj2json = ".$obj.";
-				EXPONENT.DragDropTree.init('".$this->id."',obj2json,'".$this->modelname."','".$this->menu."','".$this->expandonstart."');
+    			var obj2json = " . $obj . ";
+				EXPONENT.DragDropTree.init('" . $this->id . "',obj2json,'" . $this->modelname . "','" . $this->menu . "','" . $this->expandonstart . "');
 				Y.one('.loadingdiv').remove();
 			});
 		";
 //		exponent_javascript_toFoot('expddtree', 'treeview,menu,animation,dragdrop,json,container,connection', null, $script, JS_PATH.'exp-tree.js');
-		expJavascript::pushToFoot(array(
-		    "unique"=>'expddtree',
-		    "yui3mods"=>1,
-		    "content"=>$script,
-		    //"src"=>JS_PATH.'exp-tree.js'
-		 ));
-		return $html;
-	}
-	
-	function controlToHTML($name, $label) {
-	}
+        expJavascript::pushToFoot(array(
+            "unique"  => 'expddtree',
+            "yui3mods"=> 1,
+            "content" => $script,
+            //"src"=>JS_PATH.'exp-tree.js'
+        ));
+        return $html;
+    }
+
+    function controlToHTML($name, $label) {
+    }
 }
 
 ?>

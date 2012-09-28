@@ -54,7 +54,6 @@ YUI.add('exptabs', function(Y) {
 
         };
 
-
 }, '0.0.1', {
     requires: ['history', 'tabview','event-custom']
 });

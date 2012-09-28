@@ -32,6 +32,7 @@ Added / Fixed / changed for 2.0.9
     -- FedEx & UPS shipping calculators working
     -- e-commerce use a little more intuitive/more features now functional
   - adds a working 'upload' control to forms which will email submitted file as an attachment
+  - (finally) upgrades the YUI framework to v3.7.2 (after being stuck at v3.4.0 due to issue)
   - plus many, many other tweaks, fixes, and features
 
 Added / Fixed / changed for 2.0.8
