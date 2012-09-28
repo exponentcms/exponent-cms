@@ -114,6 +114,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
 
         $html .= ' />';
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
     
