@@ -81,7 +81,7 @@ class yuidatetimecontrol extends formcontrol {
             $html .= '<input id="pub-'.$name.'" type="checkbox" name="'.$name.'"';
             $html .= $this->checked ? ' checked>'.$this->edit_text : '>'.$this->edit_text;
             $html .= '<div ';
-            $html .= $this->checked ? 'style="display:none"': '';
+            $html .= $this->checked ? 'style="display:none"': 'style="display:block"';
             $html .= ' id="datetime-'.$name.'">';
             $html .= ($this->showdate) ? $datectl->controlToHTML($name."date") : "";
             $html .= '<div class="yuitime">';
@@ -104,7 +104,7 @@ class yuidatetimecontrol extends formcontrol {
         ";
         
         expJavascript::pushToFoot(array(
-            "unique"=>"newsmod-".$name,
+            "unique"=>"zzdatetime-".$name,
             "yui3mods"=>"1",
             "content"=>$script,
          ));

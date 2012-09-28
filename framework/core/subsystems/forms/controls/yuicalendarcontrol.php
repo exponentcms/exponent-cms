@@ -103,7 +103,7 @@ class yuicalendarcontrol extends formcontrol {
                 var dtdate = Y.DataType.Date;
 
                 // Listen to calendar's selectionChange event.
-                calendar.on(\"selectionChange\", function (ev) {
+                calendar.on('selectionChange', function (ev) {
 
                   // Get the date from the list of selected
                   // dates returned with the event (since only
@@ -113,12 +113,12 @@ class yuicalendarcontrol extends formcontrol {
 
                   // Format the date and output it to a DOM
                   // element.
-                  Y.one('#".$name."').set('value',dtdate.format(newDate,{format:\"%m/%d/%Y\"}));
+                  Y.one('#".$name."').set('value',dtdate.format(newDate,{format:'%m/%d/%Y'}));
                 });
 
                 function updateCal() {
-                    var txtDate1 = document.getElementById(\"".$name."\");
-                    if (txtDate1.value != \"\") {
+                    var txtDate1 = document.getElementById('".$name."');
+                    if (txtDate1.value != '') {
                         var date = Y.DataType.Date.parse(txtDate1.value);
                         calendar.deselectDates();
                         if (date) {
@@ -131,15 +131,15 @@ class yuicalendarcontrol extends formcontrol {
                         calendar.set('date',date);
                     }
                 }
-                Y.on('click',updateCal,\"#update-".$name."\");
+                Y.on('click',updateCal,'#update-".$name."');
             });
-            ";
+        ";
 
         expJavascript::pushToFoot(array(
-            "unique"=>'calpop-'.$name,
+            "unique"=>'zzyuical-'.$name,
             "yui3mods"=>1,
             "content"=>$script,
-            "src"=>""
+//            "src"=>""
          ));
         return $html;
     }

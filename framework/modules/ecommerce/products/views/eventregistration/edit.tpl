@@ -120,8 +120,6 @@
     };
 
 	 YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs", "node-load","event-simulate", function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#editproduct-tabs'});
 		Y.one('#editproduct-tabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

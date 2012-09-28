@@ -19,7 +19,27 @@
 
 <div class="store showall">
     <div class="form_header">
+        {permissions}
+        <div class="module-actions">
+            {if $permissions.create == true || $permissions.edit == true}
+                {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+            {/if}
+            {if $permissions.manage == 1}
+                 {icon action=manage text="Manage Events"|gettext}
+            {/if}
+        </div>
+        {/permissions}
         <h1>{'Event Info'|gettext}</h1>
+        {permissions}
+        <div class="item-actions">
+            {if $permissions.edit == true}
+                {icon controller="store" action=edit record=$event}
+            {/if}
+            {if $permissions.delete == true}
+                {icon controller="store" action=delete record=$event}
+            {/if}
+        </div>
+        {/permissions}
 
         <p><span class="label">{'Event Date'|gettext}: </span>
             <span class="value">{$event->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}

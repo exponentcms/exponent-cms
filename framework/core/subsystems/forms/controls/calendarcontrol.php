@@ -100,7 +100,7 @@ class calendarcontrol extends formcontrol {
         ";
         
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','calendar','datatype-date', function(Y) {
             // Our calendar bounding div id
             var boundingBoxId = '#calendar-container-".$name."',
             // This flag used to track mouse position
@@ -205,10 +205,10 @@ class calendarcontrol extends formcontrol {
         "; // end JS
 
         expJavascript::pushToFoot(array(
-            "unique"=>'calpop'.$name,
+            "unique"=>'zzcal'.$name,
             "yui3mods"=>1,
             "content"=>$script,
-            "src"=>""
+//            "src"=>""
          ));
          return $html;
     }

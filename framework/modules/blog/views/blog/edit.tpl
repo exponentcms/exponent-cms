@@ -76,9 +76,7 @@
         requires: ['history','tabview','event-custom']
     };
 
-	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','exptabs', function(Y) {
-//	    var tabview = new Y.TabView({srcNode:'#editblog-tabs'});
-//	    tabview.render();
+	YUI(EXPONENT.YUI3_CONFIG).use("get","exptabs","node-load","event-simulate",'autocomplete','autocomplete-filters','autocomplete-highlighters', function(Y) {
         Y.expTabs({srcNode: '#editblog-tabs'});
 		Y.one('#editblog-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
@@ -93,7 +91,6 @@
 		  queryDelay: 0,
 		  queryDelimiter: ',',
 		  source: tags,
-          resultFilters    : 'phraseMatch',
           resultHighlighter: 'phraseMatch',
 
 		  // Chain together a phraseMatch filter followed by a custom result filter
@@ -128,7 +125,6 @@
 			inputNode.ac.sendRequest('');
 			inputNode.ac.show();
 		});
-
     });
 {/literal}
 {/script}
