@@ -666,6 +666,7 @@ function object2Array($object=null) {
 }
 
 function expUnserialize($serial_str) {
+    if ($serial_str === 'Array') return null;  // empty array string??
     $out = preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
     $out2 = unserialize($out);
     if (is_array($out2) && !empty($out2['moduledescription'])) {  // work-around for links in module descriptions
