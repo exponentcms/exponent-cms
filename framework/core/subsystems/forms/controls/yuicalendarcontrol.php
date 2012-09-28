@@ -82,7 +82,7 @@ class yuicalendarcontrol extends formcontrol {
                 // the date to today's date.
                 var calendar = new Y.Calendar({
                   contentBox: '#cal".$name."Container',
-                  width:'200px',
+                  width:'340px',
                   showPrevMonth: true,
                   showNextMonth: true,
                 });
