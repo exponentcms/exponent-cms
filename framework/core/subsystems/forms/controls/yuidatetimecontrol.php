@@ -78,7 +78,7 @@ class yuidatetimecontrol extends formcontrol {
         
         $html  = '<span id="dtdisplay-'.$name.'">'.$datetime.'</span>';
         if (!$this->display_only) {
-            $html .= '<input id="pub-'.$name.'" type="checkbox" name="'.$name.'"';
+            $html .= ' <input id="pub-'.$name.'" type="checkbox" name="'.$name.'"';
             $html .= $this->checked ? ' checked>'.$this->edit_text : '>'.$this->edit_text;
             $html .= '<div ';
 //            $html .= $this->checked ? 'style="display:none"': 'style="display:block"';
@@ -95,16 +95,16 @@ class yuidatetimecontrol extends formcontrol {
             Y.one('#pub-".$name."').on('click',function(e){
                 var cal = Y.one('#datetime-".$name."');
                 if (cal.getStyle('display')=='none') {
-                    cal.setStyle('display','block');
+//                    cal.setStyle('display','block');
                 } else {
-                    cal.setStyle('display','none');
+//                    cal.setStyle('display','none');
                 }
             });
         });
         ";
         
         expJavascript::pushToFoot(array(
-            "unique"=>"zdatetime-".$name,
+            "unique"=>"zzzdatetime-".$name,
             "yui3mods"=>"1",
             "content"=>$script,
          ));
