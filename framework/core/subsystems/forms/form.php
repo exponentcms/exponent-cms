@@ -180,6 +180,7 @@ class form extends baseform {
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
+            if (empty($this->controls["submit"])) $this->controls["submit"] = new stdClass();
 			$this->controls["submit"]->validateJS = "validate(this.form)";
 		}
 	

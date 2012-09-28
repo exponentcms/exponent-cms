@@ -48,7 +48,8 @@ a.view {
 
 a.rsslink {
     background:url(../images/feed-icon.png) no-repeat 3px 50%;
-    padding-left:22px;
+    display:inline;
+    /*padding-left:22px;*/
 }
 
 a.printer-friendly-link {
