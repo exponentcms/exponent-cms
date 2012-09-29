@@ -245,7 +245,7 @@
 {script unique="editform" yui3mods=1}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 

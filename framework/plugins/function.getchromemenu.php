@@ -120,7 +120,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
     expJavascript::pushToFoot(array(
         "unique"=>'container-chrome',
         "yui3mods"=>'node',
-        "src"=>JS_PATH."exp-container.js"
+        "src"=>JS_RELATIVE."exp-container.js"
      ));
 	
 	echo $list;

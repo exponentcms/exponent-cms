@@ -62,7 +62,7 @@ class configcontrol extends formcontrol {
 		    "yui2mods"=>'dragdrop,element,animation,resize,layout',
 		    "yui3mods"=>null,
 		    "content"=>'//comment',
-		    "src"=>JS_PATH.'exp-layout.js'
+		    "src"=>JS_RELATIVE.'exp-layout.js'
 		 ));
         return $html;
 	}

@@ -48,8 +48,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
         <title>Pixidou - {'Open Source AJAX Image Editor'|gettext}</title>
-	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_PATH}yui2-reset-fonts/yui2-reset-fonts.css" >
-	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_PATH}assets/skins/sam/skin.css" >
+	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_RELATIVE}yui2-reset-fonts/yui2-reset-fonts.css" >
+	    <link rel="stylesheet" type="text/css" href="{$smarty.const.YUI2_RELATIVE}assets/skins/sam/skin.css" >
         <link rel="stylesheet" type="text/css" href="{$smarty.const.PATH_RELATIVE}framework/modules/pixidou/assets/css/pixidou.css" >
     </head>
     <body class="yui-skin-sam">
@@ -232,19 +232,19 @@
         <!-- Combo-handled YUI JS files: -->
         <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.9.0/build/utilities/utilities.js&2.9.0/build/container/container-min.js&2.9.0/build/menu/menu-min.js&2.9.0/build/button/button-min.js&2.9.0/build/slider/slider-min.js&2.9.0/build/colorpicker/colorpicker-min.js&2.9.0/build/resize/resize-min.js&2.9.0/build/imagecropper/imagecropper-min.js&2.9.0/build/json/json-min.js&2.9.0/build/selector/selector-min.js&2.9.0/build/layout/layout-min.js&2.9.0/build/tabview/tabview-min.js"></script>
         <!-- Using Local YUI JS files: -->
-{*        <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
-		<script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-utilities/yui2-utilities-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-container/yui2-container-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-menu/yui2-menu-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-button/yui2-button-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-slider/yui2-slider-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-colorpicker/yui2-colorpicker-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-resize/yui2-resize-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-imagecropper/yui2-imagecropper-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-json/yui2-json-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-selector/yui2-selector-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-layout/yui2-layout-min.js"></script>
-        <script type="text/javascript" src="{$smarty.const.YUI2_PATH}yui2-tabview/yui2-tabview-min.js"></script> *}
+{*        <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
+		<script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-utilities/yui2-utilities-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-container/yui2-container-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-menu/yui2-menu-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-button/yui2-button-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-slider/yui2-slider-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-colorpicker/yui2-colorpicker-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-resize/yui2-resize-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-imagecropper/yui2-imagecropper-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-json/yui2-json-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-selector/yui2-selector-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-layout/yui2-layout-min.js"></script>
+        <script type="text/javascript" src="{$smarty.const.YUI2_RELATIVE}yui2-tabview/yui2-tabview-min.js"></script> *}
 
         <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
 

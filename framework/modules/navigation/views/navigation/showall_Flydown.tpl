@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="yui-top-nav" link="`$smarty.const.YUI3_PATH`assets/skins/sam/node-menunav.css"}
+{css unique="yui-top-nav" link="`$smarty.const.YUI3_RELATIVE`assets/skins/sam/node-menunav.css"}
 
 {/css}
 {uniqueid assign=id prepend="sub`$parent`"}

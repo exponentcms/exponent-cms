@@ -21,7 +21,7 @@
     {css unique="deleter" corecss="msgq,button,tables,common,admin-global" link="`$asset_path`css/filemanager.css"}
 
     {/css}
-    <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
+    <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
 </head>
 <body class="exp-skin">

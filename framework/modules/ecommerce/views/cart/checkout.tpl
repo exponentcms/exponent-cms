@@ -300,14 +300,14 @@
 
 {* edebug var=$order *}
 {*  Kludged out while testing paypal *}
-{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_PATH`exp-ecomcheckout.js"}
+{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_RELATIVE`exp-ecomcheckout.js"}
 //
 {/script*}
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_PATH+'exp-tabs.js',
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 

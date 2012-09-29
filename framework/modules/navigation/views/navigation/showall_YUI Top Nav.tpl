@@ -14,7 +14,7 @@
  *}
 
 {nocache}
-{css unique="yui-top-nav" link="`$smarty.const.YUI2_PATH`assets/skins/sam/menu.css"}
+{css unique="yui-top-nav" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/menu.css"}
 
 {/css}
 {uniqueid assign=id prepend="sub`$parent`"}

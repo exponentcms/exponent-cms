@@ -160,15 +160,15 @@ switch ($page) {
 	<title><?php echo gt('Exponent Install Wizard'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
     <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true); ?>" />
-	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssreset/reset.css" />
-	<link rel="stylesheet" href="<?php echo YUI3_PATH; ?>cssfonts/fonts.css" />
+	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssreset/reset.css" />
+	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssfonts/fonts.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/button.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/common.css" />
 	<link rel="stylesheet" href="style.css" />
 
-	<script type="text/javascript" src="<?php echo YUI3_PATH; ?>/yui/yui-min.js"></script>
+	<script type="text/javascript" src="<?php echo YUI3_RELATIVE; ?>/yui/yui-min.js"></script>
     
 	<script type="text/javascript">	
 	function pop(page) {

@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="yui-side-nav" link="`$smarty.const.YUI2_PATH`assets/skins/sam/menu.css"}
+{css unique="yui-side-nav" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/menu.css"}
 
 {/css}
 

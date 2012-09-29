@@ -20,13 +20,13 @@
 {css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/calendar.css"}
+{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/calendar.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/container.css"}
+{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/container.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/button.css"}
+{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/button.css"}
 
 {/css}
     <div class="rightcol exp-ecom-table">

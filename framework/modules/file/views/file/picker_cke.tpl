@@ -21,9 +21,9 @@
     {css unique="picker" corecss="msgq,button,admin-global" link="`$asset_path`css/filemanager.css"}
 
     {/css}
-    <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
+    <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    {script unique="picker" src="`$smarty.const.FLOWPLAYER_PATH`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+    {script unique="picker" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
 
     {/script}
 </head>
@@ -109,7 +109,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         );
         infopanel.render();
         infopanel.subscribe('hide',function(event){
-            flowplayer("a.player", EXPONENT.FLOWPLAYER_PATH+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
+            flowplayer("a.player", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
          				{
          					wmode: 'opaque',
          					clip: {
@@ -150,7 +150,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 '</td></tr></table>'
             );
             infopanel.show();
-			flowplayer("a.player", EXPONENT.FLOWPLAYER_PATH+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
+			flowplayer("a.player", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
 				{
 					wmode: 'opaque',
 					clip: {

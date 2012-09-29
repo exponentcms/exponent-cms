@@ -28,21 +28,25 @@ EXPONENT.URL_FULL = "<?php echo URL_FULL; ?>";
 EXPONENT.BASE = "<?php echo BASE; ?>";
 EXPONENT.THEME_RELATIVE = "<?php echo THEME_RELATIVE; ?>";
 EXPONENT.ICON_RELATIVE = "<?php echo ICON_RELATIVE; ?>";
-EXPONENT.JS_FULL = '<?php echo JS_FULL; ?>';
-EXPONENT.JS_PATH = '<?php echo JS_PATH; ?>';
+EXPONENT.JS_FULL = '<?php echo JS_URL; ?>';  //TODO deprecated
+EXPONENT.JS_URL = '<?php echo JS_URL; ?>';
+EXPONENT.JS_PATH = '<?php echo JS_RELATIVE; ?>';  //TODO deprecated
+EXPONENT.JS_RELATIVE = '<?php echo JS_RELATIVE; ?>';
 EXPONENT.YUI3_VERSION = '<?php echo YUI3_VERSION; ?>';
-EXPONENT.YUI3_PATH = '<?php echo YUI3_PATH; ?>';
+EXPONENT.YUI3_PATH = '<?php echo YUI3_RELATIVE; ?>';  //TODO deprecated
+EXPONENT.YUI3_RELATIVE = '<?php echo YUI3_RELATIVE; ?>';
 EXPONENT.YUI3_URL = '<?php echo YUI3_URL; ?>';
 EXPONENT.YUI2_VERSION = '<?php echo YUI2_VERSION; ?>';
-EXPONENT.YUI2_PATH = '<?php echo YUI2_PATH; ?>';
+EXPONENT.YUI2_PATH = '<?php echo YUI2_RELATIVE; ?>';  //TODO deprecated
+EXPONENT.YUI2_RELATIVE = '<?php echo YUI2_RELATIVE; ?>';
 EXPONENT.YUI2_URL = '<?php echo YUI2_URL; ?>';
 EXPONENT.FLOWPLAYER_VERSION = '<?php echo FLOWPLAYER_VERSION; ?>';
-EXPONENT.FLOWPLAYER_PATH = '<?php echo FLOWPLAYER_PATH; ?>';
+EXPONENT.FLOWPLAYER_RELATIVE = '<?php echo FLOWPLAYER_RELATIVE; ?>';
 
 EXPONENT.YUI3_CONFIG = {
     combine:<?php echo (MINIFY==1&&MINIFY_YUI3==1)?1:0; ?>,
-    // base:         EXPONENT.YUI3_PATH,
-    // root:         EXPONENT.YUI3_PATH.substr(1),
+    // base:         EXPONENT.YUI3_RELATIVE,
+    // root:         EXPONENT.YUI3_RELATIVE.substr(1),
     comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
     filter: {
         'searchExp': "&([2-3])",
@@ -57,7 +61,7 @@ EXPONENT.YUI3_CONFIG = {
     groups: {
         yui2: {
             combine:<?php echo (MINIFY==1&&MINIFY_YUI2==1)?1:0; ?>,
-            base: EXPONENT.YUI2_PATH,
+            base: EXPONENT.YUI2_RELATIVE,
             root: EXPONENT.YUI2_VERSION+'/build/',
             comboBase:EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui/2in3/dist&f=',
             patterns:  {
