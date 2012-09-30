@@ -25,7 +25,7 @@ YUI.add('exptabs', function(Y) {
                 lazyLoad();
                 history.addValue('tab', e.newVal.get('index') || null);
             },
-            'render': function (){
+            'render': function (){  //FIXME fwiw, this will never occur since we've already rendered the tab above!
                 lazyLoad();
             }
         });
@@ -50,7 +50,7 @@ YUI.add('exptabs', function(Y) {
                 }
             }
         });
-        return (tabview);
+        return (tabview);  // let's return the tabview object so we can manipulate it in the calling function
     };
 
 }, '0.0.1', {

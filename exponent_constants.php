@@ -435,18 +435,17 @@ if (!defined('EXPONENT_USER_OS')) {
     }
 }
 
-if (!defined('JS_FULL')) {
-	/** exdoc
-	 * The absolute url to Exponent's core javascript.
-	 */
-	define('JS_FULL',URL_FULL.'framework/core/assets/js/');
-}
-
-if (!defined('JS_PATH')) {
+if (!defined('JS_RELATIVE')) {
 	/** exdoc
      * The relative path to Exponent's core javascript.
 	 */
-    define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');
+    define('JS_RELATIVE',PATH_RELATIVE.'framework/core/assets/js/');
+    define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');  //TODO deprecated
+    /** exdoc
+   	 * The absolute url to Exponent's core javascript.
+   	 */
+    define('JS_URL',URL_FULL.'framework/core/assets/js/');
+   	define('JS_FULL',URL_FULL.'framework/core/assets/js/');  //TODO deprecated
 }
 
 // iconset base
@@ -457,24 +456,36 @@ if (!defined('MIMEICON_RELATIVE')) {
 	define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
 }
 
-if (!defined('YUI3_PATH')) {
+if (!defined('YUI3_RELATIVE')) {
     /*
 	 * YUI 3 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('YUI3_VERSION', '3.7.2');
-	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
+    define('YUI3_RELATIVE', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
+	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
 }
 
-if (!defined('YUI2_PATH')) {
+if (!defined('YUI2_RELATIVE')) {
     /*
 	 * YUI 2 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('YUI2_VERSION', '2.9.0');
-	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
+    define('YUI2_RELATIVE', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
+	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');  //TODO deprecated
 	define('YUI2_URL', URL_FULL.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
+}
+
+if (!defined('JQUERY_RELATIVE')) {
+    /*
+	 * YUI 2 Version Constant
+	 * Changing the version here lets Exponent adjust where to look
+	 */
+	define('JQUERY_VERSION', '1.8.2');
+	define('JQUERY_RELATIVE', PATH_RELATIVE.'external/jquery/');
+	define('JQUERY_URL', URL_FULL.'external/jquery/');
 }
 
 if (!defined('SMARTY_PATH')) {
@@ -482,10 +493,10 @@ if (!defined('SMARTY_PATH')) {
 	 * Smarty Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SMARTY_VERSION', '3.1.11');
+	define('SMARTY_VERSION', '3.1.12');
 	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
-}
     define('SMARTY_DEVELOPMENT', false);
+}
 
 if (!defined('SWIFT_PATH')) {
     /*
@@ -496,13 +507,13 @@ if (!defined('SWIFT_PATH')) {
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 
-if (!defined('FLOWPLAYER_PATH')) {
+if (!defined('FLOWPLAYER_RELATIVE')) {
     /*
 	 * Flowplayer Version(s) Constant - Flowplayer doesn't always use same version across all its components
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('FLOWPLAYER_VERSION', '3.2.15');
-	define('FLOWPLAYER_PATH', PATH_RELATIVE.'external/flowplayer-'.FLOWPLAYER_VERSION.'/flowplayer/');
+	define('FLOWPLAYER_RELATIVE', PATH_RELATIVE.'external/flowplayer-'.FLOWPLAYER_VERSION.'/flowplayer/');
     define('FLOWPLAYER_MIN_VERSION', '3.2.11');
     define('FLOWPLAYER_CONTROLS_VERSION', '3.2.14');
 }
