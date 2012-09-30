@@ -76,7 +76,7 @@
 				</table>
 			</div>
 			<div id="tab2">
-                <div id="columnchart"><!-- charts lazy --></div>
+                <div id="columnchart"></div>
             </div>
 		</div>
 	</div>
