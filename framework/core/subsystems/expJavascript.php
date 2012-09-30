@@ -34,7 +34,7 @@ class expJavascript {
 	}
 	
 	public static function parseJSFiles() {
-        global $userjsfiles,$expJS,$yui2js,$yui3js;
+        global $userjsfiles,$expJS,$yui2js,$yui3js,$jqueryjs;
         
         ob_start();
   		include(BASE.'exponent.js.php');
@@ -106,7 +106,7 @@ class expJavascript {
 	}
 	
     public static function pushToFoot($params) {
-    	global $js2foot,$yui2js,$yui3js,$expJS;
+    	global $js2foot,$yui2js,$yui3js,$jqueryjs,$expJS;
 
     	if (self::inAjaxAction()) {
 		    echo "<div class=\"io-execute-response\">";

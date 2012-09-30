@@ -149,6 +149,12 @@ $js2foot = array();
 $yui3js = array();
 /**
  * Stores the user's javascript files
+ * @global array $jqueryjs
+ * @name $jqueryjs
+ */
+$jqueryjs = array();
+/**
+ * Stores the user's javascript files
  * @global array $expJS
  * @name $expJS
  */

@@ -833,7 +833,7 @@ class reportController extends expController {
         }
         else
         {
-            foreach ($this->params['act-upon'] as $order_id)
+            if (!empty($this->params['act-upon'])) foreach ($this->params['act-upon'] as $order_id)
             {
                 $order_ids[] = $order_id;
             }   
@@ -860,7 +860,9 @@ class reportController extends expController {
 				}
 			}
 		}	
-		
+
+        $payments_key_arr = array();
+        $payment_values_arr = array();
 		foreach($payment_summary as $key => $item) {
 			$payments_key_arr[] = '"' . $key . '"';
 			$payment_values_arr[] =  round($item, 2);
@@ -879,7 +881,7 @@ class reportController extends expController {
             'payment_summary'=>$payment_summary,
             'payments_key' => $payments_key,
             'payment_values' => $payment_values,
-            'tax_total'=>$tax_res->tax_total,
+            'tax_total'=>!empty($tax_res->tax_total)?$tax_res->tax_total:0,
             'tax_type'=>$tax_type_formatted
         ));
 	}

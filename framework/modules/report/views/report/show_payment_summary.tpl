@@ -51,14 +51,13 @@
 
 	<div id="payments" class="yui-navset">
 		<ul class="yui-nav">
-            <li class="selected"><a href="#tab1"><em>{"Payment Summary"|gettext}</em></a></li>
-            <li><a href="#tab2"><em>{"Column Chart"|gettext}</em></a></li>
-            <!--li><a href="#tab2"><em>{"Area Chart"|gettext}</em></a></li>
-            <li><a href="#tab3"><em>{"Bar Chart"|gettext}</em></a></li>
-            <li><a href="#tab4"><em>{"Column Chart"|gettext}</em></a></li>
-            <li><a href="#tab5"><em>{"Combo Chart"|gettext}</em></a></li>
-            <li><a href="#tab6"><em>{"Line Chart"|gettext}</em></a></li>
-            <li><a href="#tab7"><em>{"Pie Chart"|gettext}</em></a></li-->
+            <li class="selected"><a href="#tab1">{"Payment Summary"|gettext}</a></li>
+            <li><a href="#tab2">{"Column Chart"|gettext}</a></li>
+            <!--li><a href="#tab3">{"Area Chart"|gettext}</a></li>
+            <li><a href="#tab4">{"Bar Chart"|gettext}</a></li>
+            <li><a href="#tab5">{"Combo Chart"|gettext}</a></li>
+            <li><a href="#tab6">{"Line Chart"|gettext}</a></li>
+            <li><a href="#tab7">{"Pie Chart"|gettext}</a></li-->
 		</ul>            
 		<div class="yui-content">
 			<div id="tab1">
@@ -84,15 +83,15 @@
 				</div>
 			</div>
             <div id="tab2">
+                <!-- cke lazy -->
                 <div id="columnchart"></div>
             </div>
-			<!--div id="tab2">
+			<!--div id="tab3">
 				<div id="areachart"></div>
 			</div>
-			<div id="tab3">
+			<div id="tab4">
 				<div id="barchart"></div>
 			</div>
-			
 			<div id="tab5">
 				<div id="combochart"></div>
 			</div>
@@ -126,19 +125,24 @@
             </tbody>
         </table>                
     </div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
 {script unique="payment-summary" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
-	var YAHOO=Y.YUI2;
-	var tabView = new YAHOO.widget.TabView('payments');
+EXPONENT.YUI3_CONFIG.modules.exptabs = {
+    fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+    requires: ['history','tabview','event-custom']
+};
 
+YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+    Y.expTabs({srcNode: '#payments'});
+    Y.one('#payments').removeClass('hide');
+    Y.one('.loadingdiv').remove();
 });
 
 (function() {
-    YUI().use('charts', function (Y)
-    {
+    YUI().use('charts', function (Y) {
         var myDataValues = [
 			[{/literal}{$payments_key}{literal}],
 			[{/literal}{$payment_values}{literal}]
@@ -151,21 +155,41 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-ele
                 borderColor: "#fff",
                 textAlign: "center"
             },
-            markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex)
-            {
-                var msg = "<span style=\"text-decoration:underline\">{/literal}{"Total"|gettext}{literal} " +
-                categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")]) +
-                " {/literal}{"Payment"|gettext}{literal}</span><br/><div style=\"margin-top:5px;font-weight:bold\">" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}]) + "</div>";
+            markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex) {
+//                var msg = "<span style=\"text-decoration:underline\">{/literal}{"Total"|gettext}{literal} " +
+//                categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")]) +
+//                " {/literal}{"Payment"|gettext}{literal}</span><br/><div style=\"margin-top:5px;font-weight:bold\">" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}]) + "</div>";
+                var msg = document.createElement("div"),
+                    underlinedTextBlock = document.createElement("span"),
+                    boldTextBlock = document.createElement("div");
+                underlinedTextBlock.style.textDecoration = "underline";
+                boldTextBlock.style.marginTop = "5px";
+                boldTextBlock.style.fontWeight = "bold";
+                underlinedTextBlock.appendChild(document.createTextNode("{/literal}{"Total"|gettext}{literal}: " +
+                                                categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")])));
+                boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}])));
+                msg.appendChild(underlinedTextBlock);
+                msg.appendChild(document.createElement("br"));
+                msg.appendChild(boldTextBlock);
                 return msg;
             }
         };
 
-        //var areachart     = new Y.Chart({dataProvider:myDataValues, render:"#areachart", type:"area", tooltip: myTooltip});
-		//var barchart      = new Y.Chart({dataProvider:myDataValues, render:"#barchart", type:"bar", tooltip: myTooltip});
-		var columnchart   = new Y.Chart({dataProvider:myDataValues, render:"#columnchart", type:"column", tooltip: myTooltip});
-		//var combochart    = new Y.Chart({dataProvider:myDataValues, render:"#combochart", type:"combo", tooltip: myTooltip});
-		//var linechart     = new Y.Chart({dataProvider:myDataValues, render:"#linechart", type:"line", tooltip: myTooltip});
-		//var piechart     = new Y.Chart({dataProvider:myDataValues, render:"#piechart", type:"pie", tooltip: myTooltip});
+//        Y.Global.on('lazyload:cke', function() {
+//            columnchart.render('#columnchart');
+//        });
+
+        var columnchart   = new Y.Chart({
+            dataProvider:myDataValues,
+            render:"#columnchart",
+            type:"column",
+            tooltip: myTooltip
+        });
+//        var areachart     = new Y.Chart({dataProvider:myDataValues, render:"#areachart", type:"area", tooltip: myTooltip});
+//		var barchart      = new Y.Chart({dataProvider:myDataValues, render:"#barchart", type:"bar", tooltip: myTooltip});
+//		var combochart    = new Y.Chart({dataProvider:myDataValues, render:"#combochart", type:"combo", tooltip: myTooltip});
+//		var linechart     = new Y.Chart({dataProvider:myDataValues, render:"#linechart", type:"line", tooltip: myTooltip});
+//		var piechart     = new Y.Chart({dataProvider:myDataValues, render:"#piechart", type:"pie", tooltip: myTooltip});
     });
 })();
 {/literal}
