@@ -36,7 +36,7 @@
 {/literal}
 {/css}
 
-<div class="module topsearchquery report exp-skin-tabview">
+<div class="module topsearchquery report">
     <div class="info-header">
         <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:"Search Queries Report"|gettext}</h1>
     </div>
@@ -47,10 +47,10 @@
         {/if}
     </div>
     {/permissions}
-	<div id="topsearch" class="yui-navset">
+	<div id="topsearch" class="yui-navset exp-skin-tabview hide">
 		<ul class="yui-nav">
-			<li class="selected"><a href="#tab1"><em>{"Top Search"|gettext}</em></a></li>
-			<li><a href="#tab2"><em>{"Chart View"|gettext}</em></a></li>
+			<li class="selected"><a href="#tab1">{"Top Search"|gettext}</a></li>
+			<li><a href="#tab2">{"Chart View"|gettext}</a></li>
 		</ul>    
 		<div id="pane" class="yui-content">
 			<div id="tab1">
@@ -76,8 +76,7 @@
 				</table>
 			</div>
 			<div id="tab2">
-                <!-- cke lazy -->
-                <div id="columnchart"></div>
+                <div id="columnchart"><!-- charts lazy --></div>
             </div>
 		</div>
 	</div>
@@ -91,55 +90,62 @@ EXPONENT.YUI3_CONFIG.modules.exptabs = {
     requires: ['history','tabview','event-custom']
 };
 
-YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-    Y.expTabs({srcNode: '#topsearch'});
+var renderIntoTabview,
+    handlerArray = [];
+
+YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
+    var mytab = Y.expTabs({srcNode: '#topsearch'});
     Y.one('#topsearch').removeClass('hide');
     Y.one('.loadingdiv').remove();
-});
 
-(function() {
-    YUI().use('charts', function (Y) {
+    renderIntoTabview = function(chart, node, index) {
+        if(mytab.item(index) === mytab.get("selection")) {
+            chart.render(node);
+        } else {
+            handlerArray[index] = mytab.item(index).after("tab:selectedChange", function(e) {
+                if(mytab.item(index) === mytab.get("selection")) {
+                    chart.render(node);
+                    handlerArray[index].detach();
+                }
+            });
+        }
+    }
+    var myDataValues = [
+        [{/literal}{$records_key}{literal}],
+        [{/literal}{$records_values}{literal}]
+    ];
 
-        var myDataValues = [
-            [{/literal}{$records_key}{literal}],
-            [{/literal}{$records_values}{literal}]
-        ];
+    var myTooltip = {
+        styles: {
+            backgroundColor: "#333",
+            color: "#eee",
+            borderColor: "#fff",
+            textAlign: "center"
+        },
+        markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex) {
+            var msg = document.createElement("div"),
+                underlinedTextBlock = document.createElement("span"),
+                boldTextBlock = document.createElement("div");
+            underlinedTextBlock.style.textDecoration = "underline";
+            boldTextBlock.style.marginTop = "5px";
+            boldTextBlock.style.fontWeight = "bold";
+            underlinedTextBlock.appendChild(document.createTextNode("{/literal}{"Term"|gettext}{literal}: " +
+                                            categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")])));
+            boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"%", decimalPlaces:2}])));
+            msg.appendChild(underlinedTextBlock);
+            msg.appendChild(document.createElement("br"));
+            msg.appendChild(boldTextBlock);
+            return msg;
+        }
+    };
 
-        var myTooltip = {
-            styles: {
-                backgroundColor: "#333",
-                color: "#eee",
-                borderColor: "#fff",
-                textAlign: "center"
-            },
-            markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex) {
-                var msg = document.createElement("div"),
-                    underlinedTextBlock = document.createElement("span"),
-                    boldTextBlock = document.createElement("div");
-                underlinedTextBlock.style.textDecoration = "underline";
-                boldTextBlock.style.marginTop = "5px";
-                boldTextBlock.style.fontWeight = "bold";
-                underlinedTextBlock.appendChild(document.createTextNode("{/literal}{"Term"|gettext}{literal}: " +
-                                                categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")])));
-                boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"%", decimalPlaces:2}])));
-                msg.appendChild(underlinedTextBlock);
-                msg.appendChild(document.createElement("br"));
-                msg.appendChild(boldTextBlock);
-                return msg;
-            }
-        };
-
-//        Y.Global.on('lazyload:cke', function() {
-//            columnchart.render('#columnchart');
-//        });
-
-        var columnchart = new Y.Chart({
-            dataProvider: myDataValues,
-            render: "#columnchart",
-            type: "column",
-            tooltip: myTooltip
-        });
+    columnchart = new Y.Chart({
+        dataProvider: myDataValues,
+    //            render: "#columnchart",
+        type: "column",
+        tooltip: myTooltip
     });
-})();
+    renderIntoTabview(columnchart, "#columnchart", 1);
+});
 {/literal}
 {/script}

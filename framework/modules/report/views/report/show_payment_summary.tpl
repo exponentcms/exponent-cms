@@ -45,11 +45,9 @@
 {/literal}
 {/css}
 
-<div id="payment-summary" class="module report show-payment-summary exp-skin-tabview">
-    
+<div id="payment-summary" class="module report show-payment-summary">
     <h1>{'Payment Summary'|gettext}</h1>
-
-	<div id="payments" class="yui-navset">
+	<div id="payments" class="yui-navset exp-skin-tabview hide">
 		<ul class="yui-nav">
             <li class="selected"><a href="#tab1">{"Payment Summary"|gettext}</a></li>
             <li><a href="#tab2">{"Column Chart"|gettext}</a></li>
@@ -61,26 +59,23 @@
 		</ul>            
 		<div class="yui-content">
 			<div id="tab1">
-				<div class="exp-ecom-table exp-skin-table">
-					<table border="0" cellspacing="0" cellpadding="0">
-						<thead>
-							<tr class="{cycle values='odd,even'}">
-								<th colspan="2">
-									<h1>{"Payment Summary"|gettext}</h1>
-								</th>
-							</tr>
-						</thead>
-						<tbody>  
-							{foreach from=$payment_summary key=key item=item}
-								<tr>
-									<th>{$key}</th>
-									<td>{currency_symbol}{$item|number_format:2}</td>
-								</tr>
-							
-							{/foreach}
-						</tbody>
-					</table>
-				</div>
+                <table border="0" cellspacing="0" cellpadding="0" class="exp-ecom-table exp-skin-table">
+                    <thead>
+                        <tr class="{cycle values='odd,even'}">
+                            <th colspan="2">
+                                <h1>{"Payment Summary"|gettext}</h1>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$payment_summary key=key item=item}
+                            <tr>
+                                <th>{$key}</th>
+                                <td>{currency_symbol}{$item|number_format:2}</td>
+                            </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
 			</div>
             <div id="tab2">
                 <!-- cke lazy -->
@@ -105,7 +100,7 @@
 	</div>
 </div>
 
-<div id="tax-summary" class="module administration configure-site exp-skin-tabview">    
+<div id="tax-summary" class="module administration configure-site">
     <h1>{'Tax Summary'|gettext}</h1>
     <div class="exp-ecom-table exp-skin-table">
         <table border="0" cellspacing="0" cellpadding="0">
@@ -135,62 +130,71 @@ EXPONENT.YUI3_CONFIG.modules.exptabs = {
     requires: ['history','tabview','event-custom']
 };
 
-YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-    Y.expTabs({srcNode: '#payments'});
+var renderIntoTabview,
+    handlerArray = [];
+
+YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
+    mytab = Y.expTabs({srcNode: '#payments'});
     Y.one('#payments').removeClass('hide');
     Y.one('.loadingdiv').remove();
-});
 
-(function() {
-    YUI().use('charts', function (Y) {
-        var myDataValues = [
-			[{/literal}{$payments_key}{literal}],
-			[{/literal}{$payment_values}{literal}]
-        ];
+    renderIntoTabview = function(chart, node, index) {
+        if(mytab.item(index) === mytab.get("selection")) {
+            chart.render(node);
+        } else {
+            handlerArray[index] = mytab.item(index).after("tab:selectedChange", function(e) {
+                if(mytab.item(index) === mytab.get("selection")) {
+                    chart.render(node);
+                    handlerArray[index].detach();
+                }
+            });
+        }
+    }
 
-		var myTooltip = {
-            styles: {
-                backgroundColor: "#333",
-                color: "#eee",
-                borderColor: "#fff",
-                textAlign: "center"
-            },
-            markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex) {
+    var myDataValues = [
+        [{/literal}{$payments_key}{literal}],
+        [{/literal}{$payment_values}{literal}]
+    ];
+
+    var myTooltip = {
+        styles: {
+            backgroundColor: "#333",
+            color: "#eee",
+            borderColor: "#fff",
+            textAlign: "center"
+        },
+        markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex) {
 //                var msg = "<span style=\"text-decoration:underline\">{/literal}{"Total"|gettext}{literal} " +
 //                categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")]) +
 //                " {/literal}{"Payment"|gettext}{literal}</span><br/><div style=\"margin-top:5px;font-weight:bold\">" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}]) + "</div>";
-                var msg = document.createElement("div"),
-                    underlinedTextBlock = document.createElement("span"),
-                    boldTextBlock = document.createElement("div");
-                underlinedTextBlock.style.textDecoration = "underline";
-                boldTextBlock.style.marginTop = "5px";
-                boldTextBlock.style.fontWeight = "bold";
-                underlinedTextBlock.appendChild(document.createTextNode("{/literal}{"Total"|gettext}{literal}: " +
-                                                categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")])));
-                boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}])));
-                msg.appendChild(underlinedTextBlock);
-                msg.appendChild(document.createElement("br"));
-                msg.appendChild(boldTextBlock);
-                return msg;
-            }
-        };
+            var msg = document.createElement("div"),
+                underlinedTextBlock = document.createElement("span"),
+                boldTextBlock = document.createElement("div");
+            underlinedTextBlock.style.textDecoration = "underline";
+            boldTextBlock.style.marginTop = "5px";
+            boldTextBlock.style.fontWeight = "bold";
+            underlinedTextBlock.appendChild(document.createTextNode("{/literal}{"Total"|gettext}{literal}: " +
+                                            categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")])));
+            boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}])));
+            msg.appendChild(underlinedTextBlock);
+            msg.appendChild(document.createElement("br"));
+            msg.appendChild(boldTextBlock);
+            return msg;
+        }
+    };
 
-//        Y.Global.on('lazyload:cke', function() {
-//            columnchart.render('#columnchart');
-//        });
-
-        var columnchart   = new Y.Chart({
-            dataProvider:myDataValues,
-            render:"#columnchart",
-            type:"column",
-            tooltip: myTooltip
-        });
-//        var areachart     = new Y.Chart({dataProvider:myDataValues, render:"#areachart", type:"area", tooltip: myTooltip});
+//      var areachart     = new Y.Chart({dataProvider:myDataValues, render:"#areachart", type:"area", tooltip: myTooltip});
 //		var barchart      = new Y.Chart({dataProvider:myDataValues, render:"#barchart", type:"bar", tooltip: myTooltip});
 //		var combochart    = new Y.Chart({dataProvider:myDataValues, render:"#combochart", type:"combo", tooltip: myTooltip});
 //		var linechart     = new Y.Chart({dataProvider:myDataValues, render:"#linechart", type:"line", tooltip: myTooltip});
-//		var piechart     = new Y.Chart({dataProvider:myDataValues, render:"#piechart", type:"pie", tooltip: myTooltip});
+//		var piechart      = new Y.Chart({dataProvider:myDataValues, render:"#piechart", type:"pie", tooltip: myTooltip});
+    var columnchart   = new Y.Chart({
+        dataProvider:myDataValues,
+    //        render:"#columnchart",
+        type:"column",
+        tooltip: myTooltip
     });
-})();
+    renderIntoTabview(columnchart, "#columnchart", 1);
+});
 {/literal}
 {/script}
