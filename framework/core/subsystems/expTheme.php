@@ -281,33 +281,6 @@ class expTheme {
                     echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeLink(array('controller'=>'rss', 'action'=>'feed', 'title'=>$feed->sef_url)) . "\" />\n";
 				}
 			}
-
-			// now for the old school module rss feeds  which no longer exist
-//			global $db;
-//
-//			$modules = $db->selectObjects("sectionref", "refcount > 0");  // get all the modules being using
-//			$feeds = array();
-//			foreach ($modules as $module) {
-//				if (isset($feeds[$module->source])) continue;
-//                $location = new stdClass();
-//                $location->mod = $module->module;
-//				$location->src = $module->source;
-//				$location->int = $module->internal;
-//
-//				if (!expModules::controllerExists($module->module)) {
-//					//get the module's config data
-//					$config = $db->selectObject($module->module."_config", "location_data='".serialize($location)."'");
-//					if (!empty($config->enable_rss)) {
-//						$title = empty($config->feed_title) ? 'RSS' : htmlspecialchars($config->feed_title, ENT_QUOTES);
-//						$params['module'] = $module->module;
-//						$params['src'] = $module->source;
-//						if (!empty($module->internal)) $params['int'] = $module->internal;
-//
-//						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
-//						$feeds[$module->source] = $title;
-//					}
-//				}
-//			}
 		}
 	}
 
