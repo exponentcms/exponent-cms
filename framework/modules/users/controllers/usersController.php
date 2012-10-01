@@ -101,7 +101,8 @@ class usersController extends expController {
         $active_extensions = $db->selectObjects('profileextension','active=1','rank');
 
 		//If there is no image uploaded, use the default avatar
-        if(empty($u->image)) $u->image = DEFAULT_AVATAR;
+//        if(empty($u->image)) $u->image = DEFAULT_AVATAR;  //FIXME constant does NOT resolve
+        if(empty($u->image)) $u->image = PATH_RELATIVE."framework/modules/users/assets/images/avatar_not_found.jpg";
 
         assign_to_template(array(
             'edit_user'=>$u,

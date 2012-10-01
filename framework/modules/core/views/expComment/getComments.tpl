@@ -44,7 +44,7 @@
                             {else}
                                 {$cmt->username}
                             {/if}
-                            {*$cmt->name *} says
+                            {*$cmt->name *} {'said on'|gettext}
                         </span>
                         <span class="comment-date">{$cmt->created_at|format_date}</span>
                     </cite>
