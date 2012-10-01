@@ -92,6 +92,7 @@ class newsController extends expController {
         $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
 
         $order = $config['order'];
+        if (empty($order)) $order = 'publish DESC';
         if (strstr($order," ")) {
             $orderby = explode(" ",$order);
             $order = $orderby[0];

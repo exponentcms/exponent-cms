@@ -96,6 +96,7 @@ class remove_oldfiles extends upgradescript {
             'framework/modules-1/containermodule/views/_orphans_modules.tpl',
             'framework/modules-1/containermodule/views/_view_clipboard.tpl',
             'framework/modules-1/common//views/_msg_queue.tpl',
+            'framework/modules/text//views//text/showall_merge.tpl',
             'themes/basetheme/sample.eql',
             'themes/basetheme/sample.tar.gz',
             'themes/coolwatertheme/sample.eql',

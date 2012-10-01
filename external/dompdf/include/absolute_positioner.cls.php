@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: absolute_positioner.cls.php 460 2012-01-26 07:17:46Z fabien.menager $
+ * @version $Id$
  */
 
 /**

@@ -5,7 +5,7 @@
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: list_bullet_image_frame_decorator.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
+ * @version $Id$
  */
 
 /**

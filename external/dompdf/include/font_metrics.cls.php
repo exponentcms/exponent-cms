@@ -4,9 +4,9 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: font_metrics.cls.php 469 2012-02-05 22:25:30Z fabien.menager $
+ * @version $Id$
  */
 
 require_once DOMPDF_LIB_DIR . "/class.pdf.php";
@@ -26,7 +26,8 @@ require_once DOMPDF_LIB_DIR . "/php-font-lib/classes/font.cls.php";
 if (!defined("__DOMPDF_FONT_CACHE_FILE")) {
   if (file_exists(DOMPDF_FONT_DIR . "dompdf_font_family_cache")) {
     define('__DOMPDF_FONT_CACHE_FILE', DOMPDF_FONT_DIR . "dompdf_font_family_cache");
-  } else {
+  }
+  else {
     define('__DOMPDF_FONT_CACHE_FILE', DOMPDF_FONT_DIR . "dompdf_font_family_cache.dist.php");
   }
 }
@@ -139,8 +140,13 @@ class Font_Metrics {
    * @param string $subtype
    * @return string
    */
-  static function get_font($family, $subtype = "normal") {
-
+  static function get_font($family_raw, $subtype_raw = "normal") {
+    static $cache = array();
+    
+    if ( isset($cache[$family_raw][$subtype_raw]) ) {
+      return $cache[$family_raw][$subtype_raw];
+    }
+    
     /* Allow calling for various fonts in search path. Therefore not immediately
      * return replacement on non match.
      * Only when called with NULL try replacement.
@@ -148,42 +154,51 @@ class Font_Metrics {
      * If only the subtype fails, nevertheless return failure.
      * Only on checking the fallback font, check various subtypes on same font.
      */
-
-    if ( $family ) {
-      $family = str_replace( array("'", '"'), "", mb_strtolower($family));
-      $subtype = mb_strtolower($subtype);
-
+    
+    $subtype = strtolower($subtype_raw);
+    
+    if ( $family_raw ) {
+      $family = str_replace( array("'", '"'), "", strtolower($family_raw));
+      
       if ( isset(self::$_font_lookup[$family][$subtype]) ) {
-        return self::$_font_lookup[$family][$subtype];
+        return $cache[$family_raw][$subtype_raw] = self::$_font_lookup[$family][$subtype];
       }
+      
       return null;
     }
 
-    $family = DOMPDF_DEFAULT_FONT;
+    $family = "serif";
 
     if ( isset(self::$_font_lookup[$family][$subtype]) ) {
-      return self::$_font_lookup[$family][$subtype];
+      return $cache[$family_raw][$subtype_raw] = self::$_font_lookup[$family][$subtype];
     }
+    
+    if ( !isset(self::$_font_lookup[$family]) ) {
+      return null;
+    }
+    
+    $family = self::$_font_lookup[$family];
 
-    foreach ( self::$_font_lookup[$family] as $sub => $font ) {
+    foreach ( $family as $sub => $font ) {
       if (strpos($subtype, $sub) !== false) {
-        return $font;
+        return $cache[$family_raw][$subtype_raw] = $font;
       }
     }
 
     if ($subtype !== "normal") {
-      foreach ( self::$_font_lookup[$family] as $sub => $font ) {
+      foreach ( $family as $sub => $font ) {
         if ($sub !== "normal") {
-          return $font;
+          return $cache[$family_raw][$subtype_raw] = $font;
         }
       }
     }
 
     $subtype = "normal";
 
-    if ( isset(self::$_font_lookup[$family][$subtype]) ) {
-      return self::$_font_lookup[$family][$subtype];
+    if ( isset($family[$subtype]) ) {
+      return $cache[$family_raw][$subtype_raw] = $family[$subtype];
     }
+    
     return null;
   }
   
@@ -220,8 +235,9 @@ class Font_Metrics {
    * @see save_font_families()
    */
   static function load_font_families() {
-    if ( !is_readable(self::CACHE_FILE) )
+    if ( !is_readable(self::CACHE_FILE) ) {
       return;
+    }
 
     self::$_font_lookup = require_once(self::CACHE_FILE);
     
@@ -298,7 +314,6 @@ class Font_Metrics {
       $entry = $families[$fontname];
     }
     
-    $remote_file = $remote_file;
     $local_file = DOMPDF_FONT_DIR . md5($remote_file);
     $cache_entry = $local_file;
     $local_file .= ".ttf";

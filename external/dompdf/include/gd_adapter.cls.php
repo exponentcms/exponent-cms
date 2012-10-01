@@ -3,9 +3,9 @@
  * @package dompdf
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: gd_adapter.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
+ * @version $Id$
  */
 
 /**
@@ -297,6 +297,10 @@ class GD_Adapter implements Canvas {
     
   }
 
+  function arc($x1, $y1, $r1, $r2, $astart, $aend, $color, $width, $style = array()) {
+    // @todo
+  }
+
   /**
    * Draws a rectangle at x1,y1 with width w and height h
    *
@@ -374,8 +378,12 @@ class GD_Adapter implements Canvas {
    * @param float $y1
    * @param float $w
    * @param float $h
-   */   
+   */
   function clipping_rectangle($x1, $y1, $w, $h) {
+    // @todo
+  }
+  
+  function clipping_roundrectangle($x1, $y1, $w, $h, $rTL, $rTR, $rBR, $rBL) {
     // @todo
   }
   

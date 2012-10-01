@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: table_frame_decorator.cls.php 462 2012-01-29 22:44:23Z fabien.menager $
+ * @version $Id$
  */
 
 /**
@@ -73,6 +73,11 @@ class Table_Frame_Decorator extends Frame_Decorator {
   function __construct(Frame $frame, DOMPDF $dompdf) {
     parent::__construct($frame, $dompdf);
     $this->_cellmap = new Cellmap($this);
+    
+    if ( $frame->get_style()->table_layout === "fixed" ) {
+      $this->_cellmap->set_layout_fixed(true);
+    }
+    
     $this->_min_width = null;
     $this->_max_width = null;
     $this->_headers = array();
@@ -269,8 +274,7 @@ class Table_Frame_Decorator extends Frame_Decorator {
           // Okay, I have absolutely no idea why I need this clone here, but
           // if it's omitted, php (as of 2004-07-28) segfaults.
           $frame->set_style(clone $style);
-          $table_row = Frame_Factory::decorate_frame($frame, $this->_dompdf);
-          $table_row->set_root($this->_root);
+          $table_row = Frame_Factory::decorate_frame($frame, $this->_dompdf, $this->_root);
 
           // Add the cell to the row
           $table_row->append_child($child);
@@ -286,8 +290,9 @@ class Table_Frame_Decorator extends Frame_Decorator {
 
         // Normalise other table parts (i.e. row groups)
         foreach ($child->get_children() as $grandchild) {
-          if ( $grandchild->get_style()->display === "table-row" )
+          if ( $grandchild->get_style()->display === "table-row" ) {
             $grandchild->normalise();
+          }
         }
 
         // Add headers and footers

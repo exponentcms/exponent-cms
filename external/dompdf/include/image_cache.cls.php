@@ -6,7 +6,7 @@
  * @author  Helmut Tischer <htischer@weihenstephan.org>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: image_cache.cls.php 455 2012-01-19 19:25:18Z eclecticgeek@gmail.com $
+ * @version $Id$
  */
 
 /**
@@ -66,7 +66,7 @@ class Image_Cache {
       else if ( DOMPDF_ENABLE_REMOTE && $remote || $datauri ) {
         // Download remote files to a temporary directory
         $full_url = build_url($proto, $host, $base_path, $url);
-
+  
         // From cache
         if ( isset(self::$_cache[$full_url]) ) {
           $resolved_url = self::$_cache[$full_url];
@@ -156,6 +156,8 @@ class Image_Cache {
       if (DEBUGPNG) print "[clear unlink $file]";
       unlink($file);
     }
+    
+    self::$_cache = array();
   }
   
   static function detect_type($file) {
