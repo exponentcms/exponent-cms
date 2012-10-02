@@ -53,6 +53,10 @@
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$file->downloads}</span>
+            {if empty($file->disable_comments)}
+               &#160;|&#160;
+               <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
+            {/if}
             {if $file->expTag|@count>0 && !$config.disabletags}
                 &#160;|&#160;
                 <span class="label tags">{'Tags'|gettext}:</span>

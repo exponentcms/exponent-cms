@@ -61,6 +61,8 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'rank'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'disable_comments'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

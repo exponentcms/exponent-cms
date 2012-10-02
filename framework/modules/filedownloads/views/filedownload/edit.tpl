@@ -48,6 +48,9 @@
                     {if $config.enable_ealerts}
                   	    {control type="checkbox" name="send_ealerts" label="Send E-Alert?"|gettext value=1}
                   	{/if}
+                    {if $config.disable_item_comments}
+                   	    {control type="checkbox" name="disable_comments" label="Disable Comments to this Item?"|gettext value=1 checked=$record->disable_comments}
+                   	{/if}
                 </div>
                 <div id="tab2">
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}

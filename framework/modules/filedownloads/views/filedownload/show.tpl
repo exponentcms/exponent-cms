@@ -64,6 +64,10 @@
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$record->downloads}</span>
+            {if empty($record->disable_comments)}
+               &#160;|&#160;
+               <a class="comments" href="#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
+            {/if}
             {if $record->expTag|@count>0 && !$config.disabletags}
                 &#160;|&#160;
                 <span class="label tags">{'Tags'|gettext}:</span>
@@ -83,10 +87,10 @@
             <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media"></a>
         {/if}
         {clear}
-        {if $config.usescomments == true}
+        {if empty($record->disable_comments)}
             {comments content_type="filedownload" content_id=$record->id title="Comments"|gettext}
-        {/if}  
-	</div>		
+        {/if}
+	</div>
 </div>
 
 {if $config.show_player}

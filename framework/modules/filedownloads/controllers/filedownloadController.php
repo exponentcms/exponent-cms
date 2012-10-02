@@ -27,7 +27,7 @@ class filedownloadController extends expController {
         'tags'=>"Tags",
     );
 	public $remove_configs = array(
-        'comments',
+//        'comments',
 //        'ealerts',
         'files',
         'rss', // because we do this as a custom tab within the module
