@@ -103,7 +103,7 @@ class expCommentController extends expController {
             'refs'=>$refs,
         ));
 	}
-	
+
 	function getComments() {
 		global $user, $db;
 
@@ -147,6 +147,7 @@ class expCommentController extends expController {
             $comments->records[$key]->username = $commentor->username;
             $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
         }
+        if (empty($this->params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
         // eDebug($sql, true);
         
         // count the unapproved comments
@@ -175,6 +176,47 @@ class expCommentController extends expController {
 			'formtitle'=>$this->params['formtitle'],
 		));
 	}
+
+    /**
+     * function to arrange comments in hierarchy of parent_id's as children properties
+     *
+     * @param $comments
+     *
+     * @return array
+     */
+    function arrangecomments($comments) {
+
+        $tree = array();
+
+        /* We get all the parent into the tree array */
+        foreach ($comments as &$node) {
+            /* Note: I've used 0 for top level parent, you can change this to == 'NULL' */
+            if($node->parent_id=='0'){
+                $tree[] = $node;
+                unset($node);
+            }
+        }
+
+        /* This is the recursive function that does the magic */
+        /* $k is the position in the array */
+        function findchildren(&$parent, &$comments, $k=0){
+            if (isset($comments[$k])){
+                if($comments[$k]->parent_id==$parent->id){
+                    $com = $comments[$k];
+                    findchildren($com, $comments); // We try to find children's children
+                    $parent->children[] = $com;
+                }
+                findchildren($parent, $comments, $k+1); // And move to the next sibling
+            }
+        }
+
+        /* looping through the parent array, we try to find the children */
+        foreach ($tree as &$parent) {
+            findchildren($parent, $comments);
+        }
+
+        return $tree;
+    }
 
     /**
      * Returns count of comments attached to specified item

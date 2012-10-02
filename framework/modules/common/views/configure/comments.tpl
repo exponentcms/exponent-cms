@@ -22,5 +22,6 @@
 	</div>
 </div>
 {control type=checkbox name=usescomments label="Disable Adding New Comments"|gettext value=1 checked=$config.usescomments}
+{control type=checkbox name=disable_nested_comments label="Disable Nested Comments"|gettext value=1 checked=$config.disable_nested_comments}
 {control type=checkbox name=hidecomments label="Hide Posted Comments"|gettext value=1 checked=$config.hidecomments}
 {control type=editor name=commentinfo label="Comment Information"|gettext value=$config.commentinfo}

@@ -19,9 +19,10 @@
     {if ($smarty.const.COMMENTS_REQUIRE_LOGIN == 1 && $user->id != 0) || $smarty.const.COMMENTS_REQUIRE_LOGIN == 0}
     	{form action=update}
     		{control type=hidden name=id value=$comment->id}
+            {control type=hidden name=parent_id value=$comment->parent_id}
     		{control type=hidden name=content_id value=$content_id}
     		{control type=hidden name=content_type value=$content_type}
-
+            <div id="commentinput"></div>
     		{if $user->id == 0 || $comment->id }
     	        {control type=text name=name label="Name"|gettext required=true value=$comment->name required=1}
     		    {control type=text name=email label="Email"|gettext required=true value=$comment->email required=1}
