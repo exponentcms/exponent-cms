@@ -81,6 +81,7 @@
     {/foreach}
     </ul>
     {if $page->total_records > $config.headcount}
-        {icon action="showall" text="More News..."|gettext}
+        {*{icon action="showall" text="More News..."|gettext}*}
+        {pagelinks paginate=$page more=1 text="More News..."|gettext}
     {/if}
 </div>
