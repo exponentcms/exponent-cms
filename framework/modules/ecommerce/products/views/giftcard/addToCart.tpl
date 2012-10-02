@@ -43,7 +43,7 @@ YAHOO.util.Event.onDOMReady(function(){
         for (var jk in junk ) {
             targ.value = targ.value.replace(junk[jk],"");
         }
-        //console.debug(targ);
+        //Y.log(targ);
     });
     
 });

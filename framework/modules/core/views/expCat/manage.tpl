@@ -16,7 +16,16 @@
 {uniqueid assign="id"}
 
 <div class="module expcat manage">
-	<h1>{"Manage Categories"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+            {if !empty($page)}
+                {help text="Get Help"|gettext|cat:" "|cat:("Managing Categories"|gettext) module="manage-categories"}
+            {else}
+                {help text="Get Help"|gettext|cat:" "|cat:("Managing Categories"|gettext) module="manage-site-categories"}
+            {/if}
+        </div>
+        <h1>{"Manage Categories"|gettext}</h1>
+    </div>
 	{permissions}
     	{if $permissions.create == 1}
     		<a class="add" href="{link controller=$model_name action=edit rank=1}">{"Create a new Category"|gettext}</a>
@@ -38,11 +47,12 @@
                     <h3>{'Change'|gettext} {$page->model|capitalize} {'Item Categories'|gettext}</h3>
                     {form action=change_cats}
                         {control type=hidden name=mod value=$page->model}
+                        {$page->links}
                         <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                             <thead>
                                 <tr>
                                     <th>
-                                        <input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onChange="selectAllp(this.checked)">
+                                        <input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onchange="selectAllp(this.checked)">
                                     </th>
                                     <th>
                                         {"Item"|gettext}
@@ -68,6 +78,7 @@
                                 {/foreach}
                             </tbody>
                         </table>
+                        {$page->links}
                         <p>{'Select the item(s) to change, then select the new category'|gettext}</p>
                         {control type="dropdown" name=newcat label="Module Categories"|gettext items=$catlist}
                         {control type=buttongroup submit="Change Category on Selected Items"|gettext cancel="Cancel"|gettext returntype="viewable"}
@@ -79,6 +90,7 @@
                     {if $permissions.manage == 1}
                         {ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
                     {/if}
+                    {$page->links}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                         <thead>
                             <tr>
@@ -117,6 +129,7 @@
                             {/foreach}
                         </tbody>
                     </table>
+                    {$page->links}
                 </div>
             {/foreach}
         </div>
@@ -127,13 +140,18 @@
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-        var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-        tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+    YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//        var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+//        tabview.render();
+        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
         Y.one('#{/literal}{$id}{literal}').removeClass('hide');
         Y.one('.loadingdiv').remove();
     });
-{/literal}
 
     function selectAllp(val) {
         var checks = document.getElementsByName("change_cat[]");
@@ -141,5 +159,5 @@
           checks[i].checked = val;
         }
     }
-
+{/literal}
 {/script}

@@ -132,6 +132,7 @@ class discounts extends expRecord {
         
             if ($user->isLoggedIn()) 
             {
+                $loggedInGroup = new stdClass();
                 $loggedInGroup->id = "-2";
                 $users_groups[] = $loggedInGroup;
             }         

@@ -24,6 +24,7 @@ define('ECOM_AUTHORIZENET_AUTH_CAPTURE',0);
 define('ECOM_AUTHORIZENET_AUTH_ONLY',1);
 
 class authorizedotnet extends creditcard {
+
 	function name() { return "Authorize.net Payment Gateway"; }
 	public function captureEnabled() {return true; }
     public function voidEnabled() {return true; }
@@ -129,7 +130,8 @@ class authorizedotnet extends creditcard {
 		curl_close($ch);
 		
 		$response = explode("|", $authorize);
-        
+
+        $object = new stdClass();
 		if ($response[0] == 1) { //Approved !!!
 			$object->errorCode = 0;
 			$object->message = $response[3] . " Approval Code: ".$response[4];
@@ -156,6 +158,7 @@ class authorizedotnet extends creditcard {
 	}
 	
 	function credit_transaction($method, $amount) {
+        global $user;
 
 		$config = unserialize($this->config);
 		$billing_options = unserialize($method->billing_options);
@@ -275,7 +278,7 @@ class authorizedotnet extends creditcard {
 	
 	//This is called when a billing method is deleted. It can be used to clean up if you
 	//have any custom user_data storage.
-	function delete($config_object) {
+	function delete($where = '') {
 		return;
 	}
 	

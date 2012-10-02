@@ -20,7 +20,7 @@ if (!defined('EXPONENT')) exit('');
 
 return array(
 	'name'=>gt('Uploaded Files Importer'),
-	'description'=>gt('Restores the uploaded files which were exported with the Uploaded Files Exporter.'),
+	'description'=>gt('Restores uploaded files which were exported with the Uploaded Files Exporter.'),
 	'author'=>'James Hunt'
 );
 

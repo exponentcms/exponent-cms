@@ -149,6 +149,12 @@ $js2foot = array();
 $yui3js = array();
 /**
  * Stores the user's javascript files
+ * @global array $jqueryjs
+ * @name $jqueryjs
+ */
+$jqueryjs = array();
+/**
+ * Stores the user's javascript files
  * @global array $expJS
  * @name $expJS
  */
@@ -248,7 +254,7 @@ function renderAction(array $parms=array()) {
         $action = $parms['action'];
         /* TODO:  Not sure if this needs to be here. FJD
 		$meth = $controllerClass->getMethod($action);
-        if ($meth->isPrivate()) expQueue::flashAndFlow('error', 'The requested action could not be performed: Action not found');*/
+        if ($meth->isPrivate()) expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));*/
     } elseif ($controllerClass->hasMethod('index')) {
         $action = 'index';
     } elseif ($controllerClass->hasMethod('showall')) {
@@ -390,7 +396,6 @@ function makeLink($params=array(), $secure=false) {
 }
 
 function redirect_to($params=array(), $secure=false) {
-//  global $flow;
     global $router;
     $secure = empty($secure) ? false : true;
     $link = (!is_array($params)) ? $params : $router->makeLink($params, false, $secure);
@@ -447,7 +452,6 @@ function get_common_template($view, $loc, $controllername='') {
     $controller->loc = $loc;
     
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
-//    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
 
     if (file_exists($themepath)) {
@@ -461,6 +465,7 @@ function get_common_template($view, $loc, $controllername='') {
 
 /**
  * Return entire list of all controller configuration views available
+ *
  * @param $controller
  * @param $loc
  * @return array
@@ -471,13 +476,11 @@ function get_config_templates($controller, $loc) {
     // set paths we will search in for the view
     $commonpaths = array(
         BASE.'framework/modules/common/views/configure',
-//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/common/views/configure',
         BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/configure',
     );
     
     $modpaths = array(
         $controller->viewpath.'/configure',
-//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/configure'
 	    BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/configure'
     );
     
@@ -554,15 +557,13 @@ function find_config_views($paths=array(), $excludes=array()) {
 function get_template_for_action($controller, $action, $loc) {
     // set paths we will search in for the view
     $basepath = $controller->viewpath.'/'.$action.'.tpl';
-//    $themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
 
-    // the root action will be used if we don't find a view for this action and it is a derivitative of
+    // the root action will be used if we don't find a view for this action and it is a derivative of
     // action.  i.e. showall_by_tags would use the showall.tpl view if we do not have a view named
     // showall_by_tags.tpl
     $root_action = explode('_', $action);
     $rootbasepath = $controller->viewpath.'/'.$root_action[0].'.tpl';
-//    $rootthemepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
     $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
 
     if (file_exists($themepath)) {
@@ -599,11 +600,8 @@ function get_action_views($ctl, $action, $human_readable) {
     $controller = new $controllerName();
     
     // set path information 
-    //$basepath = $controller->viewpath;
-    //$themepath = BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath;
     $paths = array(
         $controller->viewpath,
-//        BASE.'themes/'.DISPLAY_THEME_REAL.'/modules/'.$controller->relative_viewpath,
         BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath,
     );
     
@@ -619,7 +617,7 @@ function get_action_views($ctl, $action, $human_readable) {
                         if (count($fileparts) == 1) {
                             $views[$filename] = 'Default';
                         } else {
-                            $diplayname = array_shift($fileparts); //shift the action name off the array of words
+                            array_shift($fileparts); //shift the action name off the array of words
                             $views[$filename] = ucwords(implode(' ', $fileparts));
                         }
                     }
@@ -643,7 +641,6 @@ function get_action_views($ctl, $action, $human_readable) {
 function get_filedisplay_views() {
     $paths = array(
         BASE.'framework/modules/common/views/file/',
-//        BASE.'themes/'.DISPLAY_THEME_REAL.'modules/common/views/file/',
         BASE.'themes/'.DISPLAY_THEME.'modules/common/views/file/',
     );
     
@@ -675,6 +672,7 @@ function object2Array($object=null) {
 }
 
 function expUnserialize($serial_str) {
+    if ($serial_str === 'Array') return null;  // empty array string??
     $out = preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
     $out2 = unserialize($out);
     if (is_array($out2) && !empty($out2['moduledescription'])) {  // work-around for links in module descriptions
@@ -756,6 +754,49 @@ function glist($s){
         }
     }
     return $list;
+}
+
+/**
+ * dumps the passed variable to screen, but only if in development mode
+ * @param mixed $var the variable to dump
+ * @param bool $halt if set to true will halt execution
+ * @return void
+ */
+function eDebug($var, $halt=false){
+	if (DEVELOPMENT) {
+        echo "<pre>";
+		print_r($var);
+        echo "</pre>";
+
+		if ($halt) die();
+	}
+}
+
+/**
+ * dumps the passed variable to a log, but only if in development mode
+ * @param mixed $var the variable to log
+ * @param string $type the type of entry to record
+ * @param string $path the pathname for the log file
+ * @param string $minlevel
+ * @return void
+ */
+function eLog($var, $type='', $path='', $minlevel='0') {
+	if($type == '') { $type = "INFO"; }
+	if($path == '') { $path = BASE . 'tmp/exponent.log'; }
+	if (DEVELOPMENT >= $minlevel) {
+		if (is_writable ($path) || !file_exists($path)) {
+			if (!$log = fopen ($path, "ab")) {
+				eDebug(gt("Error opening log file for writing."));
+			} else {
+				if (fwrite ($log, $type . ": " . $var . "\r\n") === FALSE) {
+					eDebug(gt("Error writing to log file")." (".$path.").");
+				}
+				fclose ($log);
+			}
+		} else {
+			eDebug(gt("Log file"." (".$path)." ".gt("not writable."));
+		}
+	}
 }
 
 ?>

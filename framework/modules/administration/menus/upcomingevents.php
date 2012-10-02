@@ -26,7 +26,7 @@ $events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
 $items = array();
 $items[] = array(
     'text'=>"<strong><u>".gt('View All Event Registrations')."</u><strong>",
-    'url'=>makeLink(array('controller'=>'eventregistration','action'=>'showall')),
+    'url'=>makeLink(array('controller'=>'eventregistration','action'=>'manage')),
 );
 
 foreach ($events as $event) {

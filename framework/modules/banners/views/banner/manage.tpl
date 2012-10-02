@@ -40,7 +40,7 @@
 		<tbody>
 			{foreach from=$page->records item=listing name=listings}
 			<tr class="{cycle values="odd,even"}">
-			    <td>{img file_id=$listing->expFile[0]->id width=75 height=48}</td>
+			    <td>{img file_id=$listing->expFile[0]->id w=75 h=48}</td>
 				<td>{$listing->title}</td>
 				<td>{$listing->company->title}</td>
 				<td>{$listing->impressions}</td>

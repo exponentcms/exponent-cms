@@ -29,9 +29,9 @@ class pixidouController extends expController {
         'exitEditor'
     );
 
-    function displayname() { return gt("Pixidou Image Editor"); }
-    function description() { return gt("Add and manage Exponent Files"); }
-    function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function displayname() { return gt("Pixidou Image Editor"); }
+    static function description() { return gt("Add and manage Exponent Files"); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
 
     function editor() {
         global $user;
@@ -43,7 +43,7 @@ class pixidouController extends expController {
 			$file->copyToDirectory(BASE.$this->cacheDir);
 			assign_to_template(array(
                 'image'=>$file,
-                'update'=>$_GET['update'],
+                'update'=>$this->params['update'],
                 'saveog'=>$canSaveOg
             ));
 	    } else {

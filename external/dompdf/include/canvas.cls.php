@@ -3,9 +3,9 @@
  * @package dompdf
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: canvas.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
+ * @version $Id$
  */
 
 /**
@@ -191,14 +191,31 @@ interface Canvas {
    * given width and height.
    *
    * @param string $img_url the path to the image
-   * @param string $img_type the type (e.g. extension) of the image
    * @param float $x x position
    * @param float $y y position
    * @param int $w width (in pixels)
    * @param int $h height (in pixels)
+   * @param string $resolution The resolution of the image
    */
   function image($img_url, $x, $y, $w, $h, $resolution = "normal");
-
+  
+  /**
+   * Add an arc to the PDF
+   *
+   * See {@link Style::munge_colour()} for the format of the colour array.
+   *
+   * @param float $x X coordinate of the arc
+   * @param float $y Y coordinate of the arc
+   * @param float $r1 Radius 1
+   * @param float $r1 Radius 2
+   * @param float $angle Angle in degrees
+   * @param float $astart Start angle in degrees
+   * @param float $aend End angle in degrees
+   * @param array $color
+   * @param array $style
+   */
+  function arc($x, $y, $r1, $r2, $astart, $aend, $color, $width, $style = array());
+  
   /**
    * Writes text at the specified x and y coordinates
    *
@@ -211,7 +228,7 @@ interface Canvas {
    * @param float $size the font size, in points
    * @param array $color
    * @param float $word_space word spacing adjustment
-   * @param float $char_space whar spacing adjustment
+   * @param float $char_space char spacing adjustment
    * @param float $angle angle
    */
   function text($x, $y, $text, $font, $size, $color = array(0,0,0), $word_space = 0, $char_space = 0, $angle = 0);

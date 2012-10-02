@@ -55,12 +55,16 @@ class ups {
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $this->upsUrl.'/ups.app/xml/'.$type);
 			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch,CURLOPT_TIMEOUT, 60);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 60);
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $output);
+            curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$curlReturned = curl_exec($ch);
 			curl_close($ch);
+
+
 
 			// Find out if the UPS service is down
 			preg_match_all('/HTTP\/1\.\d\s(\d+)/',$curlReturned,$matches);
@@ -127,7 +131,8 @@ class ups {
 			$this->upsUrl = 'https://wwwcie.ups.com'; // Don't put a trailing slash here or world will collide.
 		}else{
 			$this->debugMode = false;
-			$this->upsUrl = 'https://www.ups.com';
+//			$this->upsUrl = 'https://www.ups.com';
+            $this->upsUrl = 'https://onlinetools.ups.com';
 		}
 		return true;
 	}

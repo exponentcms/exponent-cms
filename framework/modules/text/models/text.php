@@ -22,7 +22,7 @@
  */
 
 class text extends expRecord {
-	public $table = 'text';
+//	public $table = 'text';
 
     protected $attachable_item_types = array(
         'content_expFiles'=>'expFile'

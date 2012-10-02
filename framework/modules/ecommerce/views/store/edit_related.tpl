@@ -18,7 +18,6 @@
 {capture assign="callbacks"}
 {literal}
 
-
 // the text box for the title
 var tagInput = Y.one('#related_items');
 
@@ -48,7 +47,7 @@ var removeLI = function(e) {
 }
 
 var createHTML = function(val) {
-    var li = '<li>'+val.title+' - <a href="javascript:{}">X</a><br />';
+    var li = '<li>'+val.title+' - <a class="delete" href="javascript:{}" title="{/literal}{'Remove Related Item'|gettext}">{'Remove'|gettext}{literal}</a><br />';
         li += 'Model #: '+val.model+'';
         li += '<br /><input type="checkbox" name="relateBothWays['+val.id+']" value="'+val.id+'"> {/literal}{"Relate both ways"|gettext}{literal}';
         li += '<input type=hidden name="relatedProducts['+val.id+']" value="'+val.id+'" /></li>';
@@ -74,7 +73,6 @@ oAC.formatResult = function(oResultData, sQuery, sResultMatch) {
 // what should happen when the user selects an item?
 oAC.itemSelectEvent.subscribe(appendToList);
 
-
 {/literal}
 {/capture}
 
@@ -83,7 +81,7 @@ oAC.itemSelectEvent.subscribe(appendToList);
 <ul id="relatedItemsList">
     {foreach from=$record->crosssellItem item=prod name=prods}
         <li>
-            {$prod->title|strip_tags} - <a href="javascript:{ldelim}{rdelim}">X</a><br />
+            {$prod->title|strip_tags} - <a class="delete" href="javascript:{ldelim}{rdelim}" title="{'Delete'|gettext}">{'Delete'|gettext}</a><br />
             {'Model'|gettext} #: {$prod->model|strip_tags}
             <input type=hidden name="relatedProducts[{$prod->id}]" value="{$prod->id}" />
         </li>                   

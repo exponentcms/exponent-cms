@@ -22,22 +22,23 @@
  */
 
 class sales_repController extends expController {
-    function displayname() { return gt("Ecommerce Sales Reps"); }
-    function description() { return gt("Manage Ecommerce Sales Reps"); }
-    function author() { return "Fred Dirkse - OIC Group, Inc"; }
-    function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function displayname() { return gt("e-Commerce Sales Reps"); }
+    static function description() { return gt("Manage e-Commerce Sales Reps"); }
+    static function author() { return "Fred Dirkse - OIC Group, Inc"; }
+    static function hasSources() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);
         
         $page = new expPaginator(array(
 			'model'=>'sales_rep',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
 			'where'=>1,
             'limit'=>10,
-			));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+        ));
 
 		assign_to_template(array(
             'page'=>$page
@@ -46,10 +47,12 @@ class sales_repController extends expController {
     
     public function showall() {
         redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
+//        $this->manage();
     }
     
     public function show() {
         redirect_to(array('controller'=>'sales_rep', 'action'=>'manage'));
+//        $this->manage();
     }
     
     /*public function update() {

@@ -357,7 +357,7 @@ class expValidator {
                     //Compatibility with old school form module - prb
                     if (!isset($params['manual_redirect'])) {
                         self::failAndReturnToForm($msg, $params);
-                    }else{
+                    } else {
                         return false;
                     };
                 }
@@ -366,6 +366,7 @@ class expValidator {
                 return true;
             break;
         }
+        return false;
     }
 
 	/**
@@ -402,9 +403,8 @@ class expValidator {
         
         if (count($post['_formError']) > 0) {
             self::failAndReturnToForm($post['_formError'], $post);
-        } else { 
-            return true;
         }
+        return true;
     }
 
 	/**

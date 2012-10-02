@@ -20,13 +20,13 @@
 {css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/calendar.css"}
+{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/calendar.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/container.css"}
+{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/container.css"}
 
 {/css}
-{css unique="calendar-edit1" link="`$smarty.const.YUI2_PATH`assets/skins/sam/button.css"}
+{css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/button.css"}
 
 {/css}
     <div class="rightcol exp-ecom-table">
@@ -52,24 +52,26 @@
             </thead>
             <tbody>
                 {foreach from=$orders item=order key=tkey name=typeloop}
-                <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
-                    <td>{$tkey}</td>
-                    <td>&#160;</td>
-                    <td>{$order.num_orders}</td>
-                    <td>{$order.num_items}</td>
-                    <td style="text-align:right;">${$order.grand_total|number_format:2}</td>
-                </tr>
+                    <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
+                        <td>{$tkey}</td>
+                        <td>&#160;</td>
+                        <td>{$order.num_orders}</td>
+                        <td>{$order.num_items}</td>
+                        <td style="text-align:right;">${$order.grand_total|number_format:2}</td>
+                    </tr>
                     {foreach from=$order item=stat key=skey name=typeloop}
-                    {if $skey != 'num_orders' && $skey!= 'num_items' && $skey != 'grand_total'}
-                        <tr class="{cycle values="even,odd"}" style="color:grey;">
-                            <td>&#160;</td>
-                            <td>{$skey}</td>
-                            <td>{$stat.num_orders}</td>
-                            <td>{$stat.num_items}</td>
-                            <td style="text-align:right;">${$stat.grand_total|number_format:2}</td>    
-                        </tr>
-                    {/if}
+                        {if $skey != 'num_orders' && $skey!= 'num_items' && $skey != 'grand_total'}
+                            <tr class="{cycle values="even,odd"}" style="color:grey;">
+                                <td>&#160;</td>
+                                <td>{$skey}</td>
+                                <td>{$stat.num_orders}</td>
+                                <td>{$stat.num_items}</td>
+                                <td style="text-align:right;">${$stat.grand_total|number_format:2}</td>
+                            </tr>
+                        {/if}
                     {/foreach}
+                {foreachelse}
+                    <tr><td colspan=5>{'No Orders Found!'|gettext}</td></tr>
                 {/foreach}
             <tbody>
         </table>

@@ -50,7 +50,7 @@
     {pagelinks paginate=$page top=1}
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=record}
-        {if $cat != $record->expCat[0]->id && $config.usecategories}
+        {if $cat !== $record->expCat[0]->id && $config.usecategories}
             <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
         {/if}
         <div class="item">

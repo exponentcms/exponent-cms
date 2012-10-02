@@ -39,10 +39,9 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
                 {/if}
-                {if $rank == 1}
-                    {ddrerank items=$page->records model="photo" label="Images"|gettext}
-                {/if}
-            {/if}		</div>
+                {ddrerank items=$page->records model="photo" label="Images"|gettext}
+            {/if}
+        </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
@@ -53,7 +52,7 @@
     <ul class="image-list">
     {assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}	
     {foreach from=$page->records item=record name=items}
-        {if $cat != $record->expCat[0]->id && $config.usecategories}
+        {if $cat !== $record->expCat[0]->id && $config.usecategories}
             <a href="{link action=$config.landing|default:showall src=$page->src gallery=$record->expCat[0]->id}" title='View this gallery'|gettext><h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2></a>
         {/if}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">

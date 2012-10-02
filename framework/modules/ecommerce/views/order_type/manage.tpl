@@ -20,7 +20,7 @@
 <div class="modules order_type showall">
 	<h1>{$moduletitle|default:"Manage Order Types"|gettext}</h1>
 	
-	<a href="{link action=create}">{'Create a new order type'|gettext}</a>{br}{br}
+	<a class="add" href="{link action=create}">{'Create a new order type'|gettext}</a>{br}{br}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">
@@ -31,7 +31,7 @@
                     <th>{'Emails Customer'|gettext}</th>
                     <th>{'Affects Inventory'|gettext}</th>
 					<th>{'Name'|gettext}</th>
-					<th>{'Admin'|gettext}</th>
+					<th>{'Action'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>

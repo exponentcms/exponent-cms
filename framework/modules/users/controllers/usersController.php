@@ -36,10 +36,10 @@ class usersController extends expController {
 
     //public $useractions = array('showall'=>'Show all');
 
-    function displayname() { return gt("User Manager"); }
-    function description() { return gt("This is the user management module. It allows for creating user, editing user, etc."); }
-    function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function displayname() { return gt("User Manager"); }
+    static function description() { return gt("This is the user management module. It allows for creating user, editing user, etc."); }
+    static function hasSources() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         global $user;
@@ -59,6 +59,7 @@ class usersController extends expController {
 //                    'where'=>$where,
 //                    'limit'=>$limit,
 //                    'order'=>$order,
+//                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 //                    'controller'=>$this->baseclassname,
 //                    'action'=>$this->params['action'],
 //                    'columns'=>array(
@@ -66,8 +67,8 @@ class usersController extends expController {
 //                        gt('First Name')=>'firstname',
 //                        gt('Last Name')=>'lastname',
 //                        gt('Is Admin')=>'is_acting_admin',
-//                        )
-//                    ));
+//                    )
+//                ));
 //
 //        assign_to_template(array('page'=>$page));
         assign_to_template(array(
@@ -77,6 +78,7 @@ class usersController extends expController {
     
     public function create() {
         redirect_to(array('controller'=>'users', 'action'=>'edituser'));
+//        $this->edituser();
     }
 
     public function edituser() {
@@ -87,7 +89,7 @@ class usersController extends expController {
         expSession::set("userkey",sha1(microtime()));
 	    expSession::clearCurrentUserSessionCache();
 
-        $id = !empty($this->params['id']) ? intval($this->params['id']) : null;
+        $id = !empty($this->params['id']) ? $this->params['id'] : null;
         
         // check to see if we should be editing.  You either need to be an admin, or editing own account.
         if ($user->isAdmin() || ($user->id == $id)) {
@@ -99,7 +101,8 @@ class usersController extends expController {
         $active_extensions = $db->selectObjects('profileextension','active=1','rank');
 
 		//If there is no image uploaded, use the default avatar
-        if(empty($u->image)) $u->image = DEFAULT_AVATAR;
+//        if(empty($u->image)) $u->image = DEFAULT_AVATAR;  //FIXME constant does NOT resolve
+        if(empty($u->image)) $u->image = PATH_RELATIVE."framework/modules/users/assets/images/avatar_not_found.jpg";
 
         assign_to_template(array(
             'edit_user'=>$u,
@@ -112,7 +115,7 @@ class usersController extends expController {
         global $user, $db;
 
         // get the id of user we are editing, if there is one
-        $id = !empty($this->params['id']) ? intval($this->params['id']) : null;
+        $id = !empty($this->params['id']) ? $this->params['id'] : null;
         if ((($user->id == $id) || $user->isAdmin()) && $this->params['userkey'] != expSession::get("userkey")) expHistory::back();
         
         // make sure this user should be updating user accounts
@@ -279,7 +282,7 @@ class usersController extends expController {
             $db->delete('sessionticket','1');
         }
 		
-		if (isset($_GET['id']) && $_GET['id'] == 0) {
+		if (isset($this->params['id']) && $this->params['id'] == 0) {
 			$sessions = $db->selectObjects('sessionticket', "uid<>0");
 			$filtered = 1;
 		} else {
@@ -372,18 +375,19 @@ class usersController extends expController {
 		}
 		
 		$page = new expPaginator(array(
-		            'model'=>'profileextension',
-		            'where'=>1,
-		            'limit'=>25,
-		            'order'=>'title',
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-		            'columns'=>array(
-                        gt('Name')=>'title',
-                        gt('Description')=>'body',
-                        gt('Active')=>'active'
-		                ),
-		            ));
+            'model'=>'profileextension',
+            'where'=>1,
+            'limit'=>25,
+            'order'=>'title',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'columns'=>array(
+                gt('Name')=>'title',
+                gt('Description')=>'body',
+                gt('Active')=>'active'
+            ),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+        ));
 		
 		assign_to_template(array(
             'page'=>$page
@@ -393,18 +397,19 @@ class usersController extends expController {
     public function manage_groups() {
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
-                    'model'=>'group',
-                    'where'=>1, 
-                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
-                    'order'=>empty($this->config['order']) ? 'name' : $this->config['order'],
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(
-                        gt('Name')=>'name',
-                        gt('Description')=>'description',
-                        gt('Type')=>'inclusive',
-                        )
-                    ));
+            'model'=>'group',
+            'where'=>1,
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+            'order'=>empty($this->config['order']) ? 'name' : $this->config['order'],
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'columns'=>array(
+                gt('Name')=>'name',
+                gt('Description')=>'description',
+                gt('Type')=>'inclusive',
+            ),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+        ));
                     
         assign_to_template(array(
             'page'=>$page
@@ -420,11 +425,18 @@ class usersController extends expController {
         
         // find the user
         $u = user::getUserByName($this->params['username']);
+        if (empty($u)) {
+            $u = user::getUserByEmail($this->params['username']);
+            if (!empty($u) && $u->count > 1) {
+                expValidator::failAndReturnToForm(gt('That email address applies to more than one user account, please enter your username instead.'));
+            }
+        }
+        $u = new user($u->id);
 
         if (!expValidator::check_antispam($this->params)) {
             expValidator::failAndReturnToForm(gt('Anti-spam verification failed'), $this->params);
-		} elseif (empty($u)) {
-            expValidator::failAndReturnToForm(gt('We were unable to find an account with that username'), $this->params);
+		} elseif (empty($u->id)) {
+            expValidator::failAndReturnToForm(gt('We were unable to find an account with that username/email'), $this->params);
         } elseif (empty($u->email)) {
             expValidator::failAndReturnToForm(gt('Your account does not appear to have an email address.  Please contact the site administrators to reset your password'), $this->params);
         } elseif ($u->isAdmin()) {
@@ -436,21 +448,22 @@ class usersController extends expController {
         $tok->expires = time() + 2*3600;
         $tok->token = md5(time()).uniqid('');
 	
-        $email = $template = get_template_for_action($this, 'password_reset_email', $this->loc);
+        $email = $template = get_template_for_action($this, 'email/password_reset_email', $this->loc);
         $email->assign('token',$tok);
+        $email->assign('username',$u->username);
         $msg = $email->render();
         $mail = new expMail();
         $mail->quickSend(array(
                 'html_message'=>$msg,
 			    'to'=>trim($u->email),
 			    'from'=>SMTP_FROMADDRESS,
-			    'subject'=>gt('Your password has been reset'),
+			    'subject'=>gt('Password Reset Requested'),
         ));
         
         $db->delete('passreset_token', 'uid='.$u->id);
         $db->insertObject($tok,'passreset_token');
-        flash('message', gt('An email has been sent to your email address with instructions on how to finish resetting your password.').'<br><br>'.
-            gt('The new password is good for 2 hours.  If you have not completed the password reset process in 2 hours time, the new password will expire.'));
+        flash('message', gt('An email has been sent to you with instructions on how to finish resetting your password.').'<br><br>'.
+            gt('This new password request is only valid for 2 hours.  If you have not completed the password reset process within 2 hours, the new password request will expire.'));
         
         expHistory::back();
     }
@@ -459,9 +472,9 @@ class usersController extends expController {
         global $db;
 
         $db->delete('passreset_token','expires < ' . time());
-        $tok = $db->selectObject('passreset_token','uid='.intval($_GET['uid'])." AND token='".preg_replace('/[^A-Za-z0-9]/','',$_GET['token']) ."'");
+        $tok = $db->selectObject('passreset_token','uid='.$this->params['uid']." AND token='".preg_replace('/[^A-Za-z0-9]/','',$this->params['token']) ."'");
         if ($tok == null) {
-	        flash('error', gt('Your password reset has expired.  Please try again.'));
+	        flash('error', gt('Your password reset request has expired.  Please try again.'));
 	        expHistory::back();
         } 
 
@@ -477,8 +490,9 @@ class usersController extends expController {
         $u = new user($tok->uid);
 
         // get the email message body and render it
-        $email = $template = get_template_for_action($this, 'confirm_password_email', $this->loc);
+        $email = $template = get_template_for_action($this, 'email/confirm_password_email', $this->loc);
         $email->assign('newpass',$newpass);
+        $email->assign('username',$u->username);
         $msg = $email->render();
         
         // send the new password to the user
@@ -487,16 +501,16 @@ class usersController extends expController {
                 'html_message'=>$msg,
 		        'to'=>trim($u->email),
 		        'from'=>SMTP_FROMADDRESS,
-		        'subject'=>gt('Your new password for').' '.HOSTNAME,
+		        'subject'=>gt('The account password for').' '.HOSTNAME.' '.gt('was reset'),
         ));        
         
         // Save new password
-        $u->update(array('password'=>md5($newpass)));        
+        $u->update(array('password'=>md5($newpass)));
 
         // cleanup the reset token
         $db->delete('passreset_token','uid='.$tok->uid);
 
-        flash('message', gt('Your new password has been emailed to your email account.'));
+        flash('message', gt('Your password has been reset and the new password has been emailed to you.'));
 
         // send the user the login page.
         redirect_to(array('controller'=>'login', 'action'=>'loginredirect'));
@@ -504,9 +518,10 @@ class usersController extends expController {
     
     public function change_password() {
         global $user;
+
         expHistory::set('editable', $this->params);
-        $id = isset($this->params['ud']) ? $this->params['ud'] : $this->params['id'];
-        
+        $id = isset($this->params['ud']) ? $this->params['ud'] : $user->id;
+
         if ($user->isAdmin() || ($user->id == $id)) {
             $isuser = ($user->id == $id) ? 1 : 0 ;
             $u = new user($id);
@@ -521,7 +536,8 @@ class usersController extends expController {
     }
     
     public function save_change_password() {
-        global $user, $db;
+        global $user;
+
         if (!$user->isAdmin() && ($this->params['uid'] != $user->id)) {
             flash('error', gt('You do not have permissions to change this users password.'));
             expHistory::back();
@@ -539,14 +555,14 @@ class usersController extends expController {
         if (is_string($ret)) {
             flash('error', $ret);
             expHistory::returnTo('editable');
-        }else{
+        } else {
             $u->update();  
-            $user->password = $u->password;
         }
         
         if ($this->params['uid'] != $user->id) {
-            flash('message', gt('Your password for').' '.$u->username.' '.gt('been changed.'));
+            flash('message', gt('The password for').' '.$u->username.' '.gt('has been changed.'));
         } else {
+            $user->password = $u->password;
             flash('message', gt('Your password has been changed.'));
         }
         expHistory::back();
@@ -609,7 +625,7 @@ class usersController extends expController {
     
     public function manage_group_memberships() {
         global $db, $user;
-        expHistory::set('manageable', $this->params);
+//        expHistory::set('manageable', $this->params);
 
         $memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
 
@@ -645,22 +661,23 @@ class usersController extends expController {
 
         //$limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $page = new expPaginator(array(
-//                    'model'=>'user',
-					'records'=>$users,
-                    'where'=>1, 
-//                    'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to
-                                    // add all users to a group, since it's rebuilding the group on save...
-                    'order'=>empty($this->config['order']) ? 'username' : $this->config['order'],
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(
-                        gt('Username')=>'username',
-                        gt('First Name')=>'firstname',
-                        gt('Last Name')=>'lastname',
-                        gt('Is Member')=>'is_member',
-                        gt('Is Admin')=>'is_admin',
-                        )
-                    ));
+//          'model'=>'user',
+            'records'=>$users,
+            'where'=>1,
+//          'limit'=>9999,  // unless we're showing all users on a page at once, there's no way to
+            // add all users to a group, since it's rebuilding the group on save...
+            'order'=>empty($this->config['order']) ? 'username' : $this->config['order'],
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'columns'=>array(
+                gt('Username')=>'username',
+                gt('First Name')=>'firstname',
+                gt('Last Name')=>'lastname',
+                gt('Is Member')=>'is_member',
+                gt('Is Admin')=>'is_admin',
+            ),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+        ));
                     
         assign_to_template(array(
 			'page'=>$page,
@@ -716,7 +733,7 @@ class usersController extends expController {
         global $user, $db;
         
         //$memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
-    	$group = $db->selectObject('group','id='.intval($this->params['id']));
+    	$group = $db->selectObject('group','id='.$this->params['id']);
 
 		$db->delete('groupmembership','group_id='.$group->id);
 		$memb = new stdClass();
@@ -730,7 +747,6 @@ class usersController extends expController {
 		}
 		expPermissions::triggerRefresh();
         expHistory::back();
-        
     }
 	
 	public function getUsersByJSON() {
@@ -743,23 +759,23 @@ class usersController extends expController {
         $sort_dir = SORT_ASC;
 
         // How many records to get?
-        if(strlen($_GET['results']) > 0) {
-            $results = $_GET['results'];
+        if(strlen($this->params['results']) > 0) {
+            $results = $this->params['results'];
         }
 
         // Start at which record?
-        if(strlen($_GET['startIndex']) > 0) {
-            $startIndex = $_GET['startIndex'];
+        if(strlen($this->params['startIndex']) > 0) {
+            $startIndex = $this->params['startIndex'];
         }
 
         // Sorted?
-        if(strlen($_GET['sort']) > 0) {
-            $sort = $_GET['sort'];
+        if(strlen($this->params['sort']) > 0) {
+            $sort = $this->params['sort'];
             if ($sort = 'id') $sort = 'username';
         }
 
-        if(!empty($_GET['filter'])) {
-            switch ($_GET['filter']) {
+        if(!empty($this->params['filter'])) {
+            switch ($this->params['filter']) {
                 case '1' :
                     $filter = '';
                     break;
@@ -785,7 +801,7 @@ class usersController extends expController {
         }
 
         // Sort dir?
-        if((strlen($_GET['dir']) > 0) && ($_GET['dir'] == 'desc')) {
+        if((strlen($this->params['dir']) > 0) && ($this->params['dir'] == 'desc')) {
             $dir = 'desc';
             $sort_dir = SORT_DESC;
         }
@@ -794,12 +810,12 @@ class usersController extends expController {
             $sort_dir = SORT_ASC;
         }
         
-        if (!empty($_GET['query'])) {
+        if (!empty($this->params['query'])) {
 
-            $_GET['query'] = expString::sanitize($_GET['query']);
-            $totalrecords = $this->$modelname->find('count',(empty($filter)?'':$filter." AND ")."(username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%')");
+//            $this->params['query'] = $this->params['query'];
+            $totalrecords = $this->$modelname->find('count',(empty($filter)?'':$filter." AND ")."(username LIKE '%".$this->params['query']."%' OR firstname LIKE '%".$this->params['query']."%' OR lastname LIKE '%".$this->params['query']."%' OR email LIKE '%".$this->params['query']."%')");
             
-            $users = $this->$modelname->find('all',(empty($filter)?'':$filter." AND ")."(username LIKE '%".$_GET['query']."%' OR firstname LIKE '%".$_GET['query']."%' OR lastname LIKE '%".$_GET['query']."%' OR email LIKE '%".$_GET['query']."%')" ,$sort.' '.$dir, $results, $startIndex);
+            $users = $this->$modelname->find('all',(empty($filter)?'':$filter." AND ")."(username LIKE '%".$this->params['query']."%' OR firstname LIKE '%".$this->params['query']."%' OR lastname LIKE '%".$this->params['query']."%' OR email LIKE '%".$this->params['query']."%')" ,$sort.' '.$dir, $results, $startIndex);
 			
 			for($i = 0; $i < count($users); $i++) {
 				if(ECOM == 1) {
@@ -848,8 +864,16 @@ class usersController extends expController {
 	}
 	
 	public function viewuser() {
-		
-		$u = new user($this->params['id']);
+        global $user;
+
+        if (!empty($this->params['id'])) {
+            $u = new user($this->params['id']);
+        } elseif (!empty($user->id)) {
+            $u = $user;
+        } else {
+            flash('error', gt('You may not view this user'));
+            expHistory::back();
+        }
 		$address = new address();
 	
 		$billings = $address->find('all', 'user_id='.$u->id.' AND is_billing = 1');
@@ -862,17 +886,15 @@ class usersController extends expController {
 		$sql .= DB_TABLE_PREFIX.'_order_type ot ';                                          
 		$sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;     
 		
-		
 		$limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 50;
 		//eDebug($sql, true);
 		$orders = new expPaginator(array(
 			//'model'=>'order',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
-			'sql'=>$sql,            
+            'sql'=>$sql,
+            'limit'=>$limit,
 			'order'=>'purchased',
 			'dir'=>'DESC',
-			'limit'=>$limit,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 			'columns'=>array(
                 gt('Order #')=>'invoice_id',
                 gt('Total')=>'total',
@@ -880,11 +902,12 @@ class usersController extends expController {
                 gt('Type')=>'order_type_id',
                 gt('Status')=>'order_status_id',
                 gt('Ref')=>'orig_referrer',
-				)
-			));
+            ),
+            'controller'=>$this->params['controller'],
+   			'action'=>$this->params['action'],
+        ));
 		
-		 
-		 assign_to_template(array(
+		assign_to_template(array(
 			'u'=>$u,
             'billings'=>$billings,
 			'shippings'=>$shippings,

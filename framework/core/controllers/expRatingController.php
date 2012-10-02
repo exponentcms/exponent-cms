@@ -23,15 +23,13 @@
  */
 
 class expRatingController extends expController {
-
     public $base_class = 'expRating';
 	//public $useractions = array('browse'=>'Browse content by tags');
 	public $useractions = array();
 	
-    function displayname() { return gt("Ratings Manager"); }
-    function description() { return gt("This module is for manageing ratings on records"); }
-    function author() { return "OIC Group, Inc"; }
-    function hasSources() { return false; }
+    static function displayname() { return gt("Ratings Manager"); }
+    static function description() { return gt("This module is for managing ratings on records"); }
+    static function hasSources() { return false; }
 	
 	function __construct($src=null, $params=array()) {
         global $user;
@@ -42,12 +40,15 @@ class expRatingController extends expController {
     function update() {
         global $db, $user;
         	
-        $this->params['id'] = $db->selectValue('content_expRatings','expratings_id',"content_type='".$this->params['content_type']."' AND subtype='".$this->params['subtype']."' AND poster='".$user->id."'");
+        $this->params['id'] = $db->selectValue('content_expRatings','expratings_id',"content_id='".$this->params['content_id']."' AND content_type='".$this->params['content_type']."' AND subtype='".$this->params['subtype']."' AND poster='".$user->id."'");
+        $msg = gt('Thank you for your rating');
         $rating = new expRating($this->params);
-
-        // save the comment
+        if (!empty($rating->id)) $msg = gt('Your rating has been adjusted');
+        // save the rating
         $rating->update($this->params);
-        // attach the comment to the datatype it belongs to (blog, news, etc..);
+
+        // attach the rating to the datatype it belongs to (blog, news, etc..);
+        $obj = new stdClass();
 		$obj->content_type = $this->params['content_type'];
 		$obj->content_id = $this->params['content_id'];
 		$obj->expratings_id = $rating->id;
@@ -55,7 +56,7 @@ class expRatingController extends expController {
 		if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
 		$db->insertObject($obj, $rating->attachable_table);
 
-        $ar = new expAjaxReply(200, gt('Thank you for your rating'));
+        $ar = new expAjaxReply(200,$msg);
         $ar->send();
 		
         // flash('message', $msg);

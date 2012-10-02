@@ -211,7 +211,7 @@ if ($passed) {
 if ($passed) {
 	echoStart(gt('Installing Tables').':');
 
-	$tables = administrationController::install_dbtables();
+	$tables = expDatabase::install_dbtables();
 
 	if ($db->tableIsEmpty('user')) {
 		$user = new stdClass();
@@ -224,7 +224,7 @@ if ($passed) {
 	}
 
 	if ($db->tableIsEmpty('modstate')) {
-		$modstate = array();
+		$modstate[0] = new stdClass();
 		$modstate[0]->module = 'textController';
 		$modstate[0]->active = 1;
 		foreach($modstate as $key=>$val){

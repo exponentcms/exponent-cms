@@ -50,7 +50,7 @@ class listcontrol extends formcontrol {
                 $html .= $value.'<a class="remove-from-list" href="#">remove?</a></li>';
             }
         } else {
-            '<h2 id="empty-list-'.$name.'">'.gt('There are no items yet.').'</h2>';
+            $html .= '<h2 id="empty-list-'.$name.'">'.gt('There are no items yet.').'</h2>';
         }
         
         $html .= '</ul>';
@@ -132,7 +132,7 @@ class listcontrol extends formcontrol {
         return $this->html;
     }
     
-    function form($object) {
+    static function form($object) {
         $form = new form();
         if (!isset($object->html)) {
             $object->html = "";
@@ -142,7 +142,7 @@ class listcontrol extends formcontrol {
         return $form;
     }
     
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($object == null) $object = new htmlcontrol();
         $object->html = preg_replace("/<br ?\/>$/","",trim($values['html']));
         $object->caption = '';

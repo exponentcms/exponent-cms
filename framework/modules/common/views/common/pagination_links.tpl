@@ -14,7 +14,7 @@
  *}
  
 {css unique="pagination-links" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/pagination.css"}
-    
+
 {/css}
 
 {if $page->total_records > 0}

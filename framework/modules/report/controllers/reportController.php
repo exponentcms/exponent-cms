@@ -22,14 +22,13 @@
  */
 
 class reportController extends expController {
-	//protected $basemodel_name = '';
 	//public $useractions = array('showall'=>'Show all');
-	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the Ecommerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products', 'show_payment_summary'=>'Show Payment Summary','export_order_items'=>'Export Order Items File');
+	protected $add_permissions = array('build_report'=>'Manage','cart_summary'=>'View Cart Summary Report', 'dashboard'=>'View the e-Commerce Dashboard', 'order_report'=>'Generate Order Report', 'product_report'=>'Generate Product Report','generateOrderReport'=>'View Order Report','generateProductReport'=>'View Product Report','print_orders'=>'Print Orders','batch_export'=>'Export Products', 'show_payment_summary'=>'Show Payment Summary','export_order_items'=>'Export Order Items File');
 	
-	function displayname() { return gt("Ecom Report Builder"); }
-	function description() { return gt("Build reports based on store activity"); }
-	function author() { return "Phillip Ball - OIC Group, Inc"; }
-	function hasSources() { return false; }
+    static function displayname() { return gt("Ecom Report Builder"); }
+    static function description() { return gt("Build reports based on store activity"); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
+	static function hasSources() { return false; }
     
     protected $o;
     protected $oneday = 86400;           
@@ -49,8 +48,10 @@ class reportController extends expController {
         $this->o = new order();        
         $this->tstart = time() - $this->oneday;                                                       
         $this->tend = time();     
-        $this->prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));        
-        $this->now_date = strftime("%A, %d %B %Y");
+//        $this->prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
+//        $this->now_date = strftime("%A, %d %B %Y");
+        $this->prev_month = strftime(DISPLAY_DATE_FORMAT, mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
+        $this->now_date = strftime(DISPLAY_DATE_FORMAT);
         $this->now_hour = strftime("%I");
         $this->now_min = strftime("%M");
         $this->now_ampm = strftime("%p");
@@ -88,15 +89,26 @@ class reportController extends expController {
         $this->setDateParams($this->params);                
        
         $except = array('order_discounts', 'billingmethod', 'order_status_changes','billingmethod','order_discounts');
-        $orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);                
+        $orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,0,true,false,$except,true);
         $oar = array();         
-        foreach ($orders as $order)
-        {                         
+        foreach ($orders as $order) {
             //eDebug($order,true);
-            $oar[$order->order_type->title]['grand_total']+= $order->grand_total;
-            $oar[$order->order_type->title]['num_orders']+= 1;
-            $oar[$order->order_type->title]['num_items']+= count($order->orderitem);
+            if (empty($oar[$order->order_type->title])) {
+                $oar[$order->order_type->title] = array();
+                $oar[$order->order_type->title]['grand_total'] = null;
+                $oar[$order->order_type->title]['num_orders'] = null;
+                $oar[$order->order_type->title]['num_items'] = null;
+            }
+            $oar[$order->order_type->title]['grand_total'] += $order->grand_total;
+            $oar[$order->order_type->title]['num_orders'] += 1;
+            $oar[$order->order_type->title]['num_items'] += count($order->orderitem);
             
+            if (empty($oar[$order->order_type->title][$order->order_status->title])) {
+                $oar[$order->order_type->title][$order->order_status->title] = array();
+                $oar[$order->order_type->title][$order->order_status->title]['grand_total'] = null;
+                $oar[$order->order_type->title][$order->order_status->title]['num_orders'] = null;
+                $oar[$order->order_type->title][$order->order_status->title]['num_items'] = null;
+            }
             $oar[$order->order_type->title][$order->order_status->title]['grand_total'] += $order->grand_total;
             $oar[$order->order_type->title][$order->order_status->title]['num_orders'] += 1;
             $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);
@@ -128,12 +140,12 @@ class reportController extends expController {
         $sql .= $db->prefix . "orders as o ";
         $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
         $sql .= "INNER JOIN " . $db->prefix . "product as p ON oi.product_id = p.id ";
-        if ($p['order_status'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON o.order_type_id = ot.id ";
+        if (!empty($p['order_status'][0]) && $p['order_status'][0] != -1) $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON o.order_type_id = ot.id ";
         $sql .= "INNER JOIN " . $db->prefix . "order_status as os ON os.id = o.order_status_id ";
         $sql .= "INNER JOIN " . $db->prefix . "billingmethods as b ON b.orders_id = o.id ";
         $sql .= "INNER JOIN " . $db->prefix . "shippingmethods as s ON s.id = oi.shippingmethods_id ";
         $sql .= "INNER JOIN " . $db->prefix . "geo_region as gr ON (gr.id = b.state OR gr.id = s.state) ";
-        if ($p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->prefix . "order_discounts as od ON od.orders_id = o.id ";
+        if (!empty($p['discounts'][0]) && $p['discounts'][0] != -1) $sql .= "LEFT JOIN " . $db->prefix . "order_discounts as od ON od.orders_id = o.id ";
         
         $sqlwhere = "WHERE o.purchased != 0";
         
@@ -149,7 +161,7 @@ class reportController extends expController {
         if ($p->['ampm-enddate'] == )*/
         
         $inc = 0; $sqltmp = '';
-        foreach ($p['order_status'] as $os)
+        if (!empty($p['order_status'])) foreach ($p['order_status'] as $os)
         {
             if ($os == -1) continue;
             else if ($inc == 0)
@@ -164,7 +176,7 @@ class reportController extends expController {
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
         
         $inc = 0; $sqltmp = '';  
-        foreach ($p['order_type'] as $ot)
+        if (!empty($p['order_type'])) foreach ($p['order_type'] as $ot)
         {
             if ($ot == -1) continue;
             else if ($inc == 0)
@@ -369,10 +381,19 @@ class reportController extends expController {
             'limit'=>empty($this->config['limit']) ? 25 : $this->config['limit'],
             'order'=>'invoice_id',
             'order_direction'=>'DESC',            
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Status')=>'status_title'),
-            ));
+            'columns'=>array(
+                'actupon'=>true,
+                gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',
+                gt('Date')=>'purchased_date',
+                gt('First')=>'bfirst',
+                gt('Last')=>'blast',
+                gt('Total')=>'grand_total',
+                gt('Status')=>'status_title'
+            ),
+        ));
                     
         $action_items = array('print_orders'=>'Print','export_odbc'=>'Export ODBC File');
         assign_to_template(array(
@@ -425,9 +446,11 @@ class reportController extends expController {
         //array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
         
         //eDebug(mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
-        $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))); 
+//        $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
         //eDebug(strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))));  
-        $now_date = strftime("%A, %d %B %Y");
+//        $now_date = strftime("%A, %d %B %Y");
+        $prev_month = strftime(DISPLAY_DATE_FORMAT, mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
+        $now_date = strftime(DISPLAY_DATE_FORMAT);
         $now_hour = strftime("%I");
         $now_min = strftime("%M");
         $now_ampm = strftime("%p");
@@ -766,12 +789,23 @@ class reportController extends expController {
             'count_sql'=>$count_sql,
             'sql'=>$sql . $sqlwhere, 
             'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
-            'order'=>'o.invoice_id',
+            'order'=>'invoice_id',
             'dir'=>'DESC',            
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',gt('Purchased Date')=>'purchased_date',gt('First')=>'bfirst',gt('Last')=>'blast',gt('Total')=>'grand_total',gt('Status Changed Date')=>'status_changed_date',gt('Order Type')=>'order_type',gt('Status')=>'status_title'),
-            ));
+            'columns'=>array(
+                'actupon'=>true,
+                gt('Order #')=>'invoice_id|controller=order,action=show,showby=id',
+                gt('Purchased Date')=>'purchased_date',
+                gt('First')=>'bfirst',
+                gt('Last')=>'blast',
+                gt('Total')=>'grand_total',
+                gt('Status Changed Date')=>'status_changed_date',
+                gt('Order Type')=>'order_type',
+                gt('Status')=>'status_title'
+            ),
+        ));
        
         //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
@@ -799,7 +833,7 @@ class reportController extends expController {
         }
         else
         {
-            foreach ($this->params['act-upon'] as $order_id)
+            if (!empty($this->params['act-upon'])) foreach ($this->params['act-upon'] as $order_id)
             {
                 $order_ids[] = $order_id;
             }   
@@ -826,7 +860,9 @@ class reportController extends expController {
 				}
 			}
 		}	
-		
+
+        $payments_key_arr = array();
+        $payment_values_arr = array();
 		foreach($payment_summary as $key => $item) {
 			$payments_key_arr[] = '"' . $key . '"';
 			$payment_values_arr[] =  round($item, 2);
@@ -845,7 +881,7 @@ class reportController extends expController {
             'payment_summary'=>$payment_summary,
             'payments_key' => $payments_key,
             'payment_values' => $payment_values,
-            'tax_total'=>$tax_res->tax_total,
+            'tax_total'=>!empty($tax_res->tax_total)?$tax_res->tax_total:0,
             'tax_type'=>$tax_type_formatted
         ));
 	}
@@ -1031,7 +1067,7 @@ class reportController extends expController {
         }
                 
         $inc = 0; $sqltmp = '';
-        foreach ($p['product_type'] as $ot)
+        if (!empty($p['product_type'])) foreach ($p['product_type'] as $ot)
         {
             if ($ot == '') continue;
             else if ($inc == 0)
@@ -1048,7 +1084,7 @@ class reportController extends expController {
         
         if (!isset($p['uncategorized'])){
             $inc = 0; $sqltmp = '';
-            foreach ($p['storeCategory'] as $ot)
+            if (!empty($p['storeCategory'])) foreach ($p['storeCategory'] as $ot)
             {
                 if ($ot == '') continue;
                 else if ($inc == 0)
@@ -1155,11 +1191,12 @@ class reportController extends expController {
             'count_sql'=>$sqlcount . $sql . $sqlwhere, 
             'limit'=>empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'=>'id',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>'store',
             'action'=>$this->params['action'],
             'columns'=>array('actupon'=>true,gt('ID')=>'id',gt('Product')=>'title|controller=store,action=show,showby=id',gt('SKU')=>'model',gt('Price')=>'base_price'),
             //'columns'=>array('Product'=>'title','SKU'=>'model'),
-            ));   
+        ));
         //eDebug($page,true);
         /*$page = new expPaginator(array(
             'model'=>'order',
@@ -1168,14 +1205,15 @@ class reportController extends expController {
             'sql'=>$sql,
             'order'=>'purchased',
             'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'columns'=>array(
                 'Customer'=>'lastname',
                 'Invoice #'=>'invoice_id', 
                 'Total'=>'total',
                 'Date Purchased'=>'purchased',
                 'Status'=>'order_status_id',
-                )
-            ));            */
+            )
+        ));            */
         $action_items = array('batch_export'=>'Export Products to CSV','status_export'=>'Export Status Report to CSV');
         assign_to_template(array(
             'page'=>$page,
@@ -1692,7 +1730,7 @@ class reportController extends expController {
 		// eDebug($cartsWithItemsAndInfo);
 		
 		$summary['totalcarts']    = $allCarts['count'];
-		$summary['valueproducts'] = $valueproducts;
+		$summary['valueproducts'] = intval($valueproducts);
 		$summary['cartsWithoutItems']       = round(($allCarts['count'] ? $cartsWithoutItems['count']     / $allCarts['count'] : 0) * 100, 2) . '%';
 		$summary['cartsWithItems']          = round(($allCarts['count'] ? $cartsWithItems['count']        / $allCarts['count'] : 0) * 100, 2) . '%';
 		$summary['cartsWithItemsAndInfo']   = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
@@ -1780,7 +1818,7 @@ class reportController extends expController {
         foreach ($prods as $pid)
         {   
             $except = array('company','crosssellItem','optiongroup');                       
-            $p = $baseProd->find('first','id='.$pid['id'],null,null,null,true,false,$except,true);
+            $p = $baseProd->find('first','id='.$pid['id'],null,null,0,true,false,$except,true);
             
             //eDebug($p,true);
             $out.= $this->outputField($p->id);
@@ -1892,7 +1930,7 @@ class reportController extends expController {
             }
             //eDebug($prods);
         }else{
-            foreach ($this->params['act-upon'] as $order)
+            if (!empty($this->params['act-upon'])) foreach ($this->params['act-upon'] as $order)
             {
                 $oids .= $order->id . ",";
             }
@@ -1901,8 +1939,7 @@ class reportController extends expController {
         $oids .= ")";
         eDebug($oids);
         //eDebug($orders,true);
-          
-        
+
     }
     
     function status_export()
@@ -1947,7 +1984,7 @@ class reportController extends expController {
         foreach ($prods as $pid)
         {   
             $except = array('crosssellItem','optiongroup','childProduct');                       
-            $p = $baseProd->find('first','id='.$pid['id'],null,null,null,true,true,$except,true);
+            $p = $baseProd->find('first','id='.$pid['id'],null,null,0,true,true,$except,true);
             
             /*if(count($p->expSimpleNote))
             {
@@ -1973,7 +2010,7 @@ class reportController extends expController {
             }
             $out.= $this->outputField($noteString,'') . chr(13) . chr(10); 
                     
-            $cps = $baseProd->find('all','parent_id='.$p->id,null,null,null,true,true,$except,true);
+            $cps = $baseProd->find('all','parent_id='.$p->id,null,null,0,true,true,$except,true);
             foreach ($cps as $cp)
             {                            
                 $out.= $this->outputField($cp->id);

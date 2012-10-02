@@ -36,9 +36,9 @@ class twitterController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Twitter"); }
-    function description() { return gt("Display your tweets just like on Twitter"); }
-    function author() { return "Jonathan Worent - OIC Group, Inc"; }
+    static function displayname() { return gt("Twitter"); }
+    static function description() { return gt("Display your tweets just like on Twitter"); }
+    static function author() { return "Jonathan Worent - OIC Group, Inc"; }
     
     public function showall() {
         if (!empty($this->config['consumer_key'])) {
@@ -52,7 +52,7 @@ class twitterController extends expController {
 
 	        switch ($this->config['typestatus']) {
 		        case 1:  // get users timeline including retweets
-			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,$this->config['twlimit'],null,null,true);
+			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,$this->config['twlimit'],null,false,true);
 			        break;
 		        case 2:  // get friends timeline
 					$tweets = $twitter->statusesFriendsTimeline(null,null,$this->config['twlimit']);

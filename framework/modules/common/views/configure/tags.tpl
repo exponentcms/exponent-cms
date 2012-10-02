@@ -14,6 +14,14 @@
  *
  *}
 
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Tag Settings"|gettext) module="tags"}
+		</div>
+        <h2>{"Tag Settings"|gettext}</h2>
+	</div>
+</div>
 <h2>{'Dis-Allow tags'|gettext}</h2>
 {control type=checkbox name=disabletags label="Disable Tags for this module" value=1 checked=$config.disabletags}
 {*{chain module=expTag view=manage}*}

@@ -1,0 +1,39 @@
+div.breadcrumb .crumbs {
+    background-image: url("../images/01-breadcrum-backgr.jpg");
+    background-position: left bottom;
+    background-repeat: repeat-x;
+    border-bottom: 1px solid #CCCCCC;
+    clear: both;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 10px;
+    padding-bottom: 7px;
+    padding-left: 12px;
+    padding-top: 2px;
+    text-decoration: none;
+}
+div.breadcrumb .crumbs {
+    color: #C4C4C4;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 10px;
+    text-decoration: none;
+}
+div.breadcrumb a {
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 10px;
+    text-decoration: none;
+}
+div.breadcrumb a:visited {
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 10px;
+    text-decoration: none;
+}
+div.breadcrumb a:hover {
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 10px;
+    text-decoration: underline;
+}
+div.breadcrumb a.current {
+    font-weight: bold;
+}
+div.breadcrumb a.trail {
+}

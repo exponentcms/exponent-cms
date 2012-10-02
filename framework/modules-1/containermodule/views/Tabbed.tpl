@@ -76,7 +76,7 @@
 				{permissions}
 					{if $permissions.create == 1 && $hidebox == 0}
 						<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
-							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank src=$src}"><span class="addtext">{'Add Module'|gettext}</span></a>
+							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank}"><span class="addtext">{'Add Module'|gettext}</span></a>
 						</div>
 					{/if}
 				{/permissions}	
@@ -89,9 +89,15 @@
 
 {script unique="`$tabs`" yui3mods="1"}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#{/literal}{$tabs}{literal}'});
-	    tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#{/literal}{$tabs}{literal}'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#{/literal}{$tabs}{literal}'});
 		Y.one('#{/literal}{$tabs}{literal}').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 	});

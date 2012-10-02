@@ -13,8 +13,15 @@
  *
  *}
 
-<h2>{"Configure File Display Settings"|gettext}</h2>
-    {control id="filedisplay" type='filedisplay-types' name=filedisplay label="Display Files as"|gettext value=$config.filedisplay}
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("File Display Settings"|gettext) module="files"}
+		</div>
+        <h2>{"File Display Settings"|gettext}</h2>
+	</div>
+</div>
+{control id="filedisplay" type='filedisplay-types' name=filedisplay label="Display Files as"|gettext value=$config.filedisplay}
 <div id="ff-options" style="display:none">
     {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.ffloat}
     {control type="text" label="Width of File Display Box"|gettext name="fwidth" value=$config.fwidth size=5}
@@ -24,7 +31,6 @@
 <div id="fileViewConfig">
     {if $config.filedisplay != ""}
         {assign var=presaved value=1}
-{*        {assign var=themefileview value="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME_REAL`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}*}
 	    {assign var=themefileview value="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
         {if file_exists($themefileview)}
             {include file=$themefileview}

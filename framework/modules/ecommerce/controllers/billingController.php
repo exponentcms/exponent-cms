@@ -22,12 +22,13 @@
  */
 
 class billingController extends expController {
-	public $useractions = array();
-    public $add_permissions = array('activate'=>'Activate Payment Options');
+    public $add_permissions = array(
+        'activate'=>'Activate Payment Options'
+    );
     
-	function displayname() { return gt("Ecommerce Billing Controller"); }
-	function description() { return ""; }
-	function hasSources() { return false; }
+    static function displayname() { return gt("e-Commerce Billing Controller"); }
+    static function description() { return ""; }
+	static function hasSources() { return false; }
 	
 	function selectBillingCalculator() {
 		$billing = new billing();

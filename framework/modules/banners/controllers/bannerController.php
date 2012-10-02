@@ -22,7 +22,6 @@
  */
 
 class bannerController extends expController {
-    //public $basemodel_name = '';
     public $remove_configs = array(
         'aggregation',
         'categories',
@@ -37,8 +36,8 @@ class bannerController extends expController {
         'showall'=>'Display Banner(s)'
     );
 
-    function displayname() { return gt("Banners"); }
-    function description() { return gt("Use this to display banners on your website."); }
+    static function displayname() { return gt("Banners"); }
+    static function description() { return gt("Use this to display banners on your website."); }
     
     public function showall() {
         $banners = array();
@@ -77,6 +76,7 @@ class bannerController extends expController {
         if ($count < 1) {
             flash('message', gt('There are no companies created yet.  You need to create at least one company first.'));
             redirect_to(array('controller'=>'company', 'action'=>'edit'));
+//            $this->edit();
         } else {
             parent::create();
         }
@@ -92,17 +92,18 @@ class bannerController extends expController {
 		
 		$page = new expPaginator(array(
 			'model'=>'banner',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
 			'sql'=>$sql,
 			'order'=>'title',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+        			'action'=>$this->params['action'],
 			'columns'=>array(
                 gt('Title')=>'title',
                 gt('Company')=>'companyname',
                 gt('Impressions')=>'impressions',
                 gt('Clicks')=>'clicks'
-				)
-			));
+            )
+        ));
 
 		assign_to_template(array(
             'page'=>$page

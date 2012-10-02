@@ -23,31 +23,30 @@
  */
 
 class expDefinableFieldController extends expController {
-	public $useractions = array();
 	public $basemodel_name = 'expDefinableField';
 	/**
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return gt("Definable Field"); }
+    static function displayname() { return gt("Definable Field"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is for managing definable fields"); }
+    static function description() { return gt("This module is for managing definable fields"); }
 
 	/**
 	 * does module have sources available?
 	 * @return bool
 	 */
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 
     /**
    	 * default view for individual field
    	 */
    	function show() {
-        assign_to_template(array('record'=>$record,'tag'=>$tag));
+        assign_to_template(array('record'=>$record,'tag'=>$tag));  //FIXME $record & $tag are undefined
     }
 
 	/**
@@ -68,8 +67,8 @@ class expDefinableFieldController extends expController {
 		 
 		$control_type = "";
 		$ctl = null;
-		if (isset($_GET['id'])) {
-			$control = $db->selectObject("expDefinableFields","id=".intval($_GET['id']));
+		if (isset($this->params['id'])) {
+			$control = $db->selectObject("expDefinableFields","id=".$this->params['id']);
 			if ($control) {
 				$ctl = unserialize($control->data);
 				$ctl->identifier = $control->name;
@@ -77,7 +76,7 @@ class expDefinableFieldController extends expController {
 				$control_type = get_class($ctl);
 			}
 		}
-		if ($control_type == "") $control_type = $_POST['control_type'];
+		if ($control_type == "") $control_type = $this->params['control_type'];
 		$form = call_user_func(array($control_type,"form"),$ctl);
 		if ($ctl) { 
 			$form->controls['identifier']->disabled = true;
@@ -87,22 +86,25 @@ class expDefinableFieldController extends expController {
 		$form->meta("action","save");
 		$form->meta('module',"expDefinableField");
 		$form->meta('control_type',$control_type);
-		$form->meta("type", substr($control_type, 0, -7));
+		$form->meta("type", $control_type);
 		$types = expTemplate::listControlTypes();
 		
-		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));
+
+		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));			
+		
 	}
 	
 	function save() {	
 		global $db;
 		$ctl = null;
 		$control = null;
-		if (isset($_POST['id'])) {
-			$control = $db->selectObject('expDefinableFields','id='.intval($_POST['id']));
+		if (isset($this->params['id'])) {
+			$control = $db->selectObject('expDefinableFields','id='.$this->params['id']);
 			if ($control) {
+				
 				$ctl = unserialize($control->data);
-				$ctl->identifier = $control->name;
-				$ctl->caption = $control->caption;
+				$ctl->name = $ctl->identifier;
+			
 			}
 		}
 
@@ -115,12 +117,12 @@ class expDefinableFieldController extends expController {
 		if ($ctl != null) {
 			$name = substr(preg_replace('/[^A-Za-z0-9]/','_',$ctl->identifier),0,20);
 	
-			if (!isset($_POST['id'])) {
+			if (!isset($this->params['id'])) {
 				$control->name =  $name;
 			}
 	
 			$control->data = serialize($ctl);
-			$control->type = $_POST['control_type'];
+			$control->type = $this->params['type'];
 			
 			if (isset($control->id)) {
 				$db->updateObject($control,'expDefinableFields');

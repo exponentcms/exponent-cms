@@ -35,21 +35,25 @@ class companyController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return gt("Company Listings"); }
-	function description() { return gt("This module shows company listings"); }
-	function hasSources() { return false; }
+    static function displayname() { return gt("Company Listings"); }
+    static function description() { return gt("This module shows company listings"); }
+	static function hasSources() { return false; }
 	
 	function showall() {
         expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>1, 
-                    'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
-                    'order'=>isset($this->params['order']) ? $this->params['order'] : 'rank',
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(gt('Title')=>'title',gt('Link')=>'website'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>1,
+            'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
+            'order'=>isset($this->params['order']) ? $this->params['order'] : 'rank',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title',
+                gt('Link')=>'website'
+            ),
+        ));
         
         assign_to_template(array(
             'page'=>$page,
@@ -79,21 +83,26 @@ class companyController extends expController {
         $sql = $sql_start . $sql;
         
         //eDebug($sql);
-        $order = 'p.id'; //$this->config['orderby'];
+        $order = 'id'; //$this->config['orderby'];
         $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
        
         $page = new expPaginator(array(
-                'model_field'=>'product_type',
-                'sql'=>$sql,
-                'count_sql'=>$count_sql,
-                'limit'=>$this->config['pagination_default'],
-                'order'=>$order,
-                'dir'=>$dir,
-                'controller'=>$this->params['controller'],
-                'action'=>$this->params['action'],
-                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-                )); 
+            'model_field'=>'product_type',
+            'sql'=>$sql,
+            'count_sql'=>$count_sql,
+            'limit'=>$this->config['pagination_default'],
+            'order'=>$order,
+            'dir'=>$dir,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
 
         //$ancestors = $this->category->pathToNode();   
         //$categories = ($this->parent == 0) ? $this->category->getTopLevel(null,false,true) : $this->category->getChildren(null,false,true);
@@ -129,21 +138,26 @@ class companyController extends expController {
         $sql = $sql_start . $sql;
         
         //eDebug($sql);
-        $order = 'p.id'; //$this->config['orderby'];
+        $order = 'id'; //$this->config['orderby'];
         $dir = 'DESC'; //$this->config['orderby_dir'];
         //eDebug($this->config);
        
         $page = new expPaginator(array(
-                'model_field'=>'product_type',
-                'sql'=>$sql,
-                'count_sql'=>$count_sql,
-                'limit'=>$this->config['pagination_default'],
-                'order'=>$order,
-                'dir'=>$dir,
-                'controller'=>$this->params['controller'],
-                'action'=>$this->params['action'],
-                'columns'=>array(gt('Model #')=>'model',gt('Product Name')=>'title',gt('Price')=>'base_price'),
-                )); 
+            'model_field'=>'product_type',
+            'sql'=>$sql,
+            'count_sql'=>$count_sql,
+            'limit'=>$this->config['pagination_default'],
+            'order'=>$order,
+            'dir'=>$dir,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Model #')=>'model',
+                gt('Product Name')=>'title',
+                gt('Price')=>'base_price'
+            ),
+        ));
 
         //$ancestors = $this->category->pathToNode();   
         //$categories = ($this->parent == 0) ? $this->category->getTopLevel(null,false,true) : $this->category->getChildren(null,false,true);
@@ -153,7 +167,8 @@ class companyController extends expController {
         $defaultSort = $router->current_url;
         assign_to_template(array(
             'record'=>new company($this->params['id']),
-            'page'=>$page, 'defaultSort'=>$defaultSort
+            'page'=>$page,
+            'defaultSort'=>$defaultSort
         ));
     }
 }

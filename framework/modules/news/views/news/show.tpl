@@ -14,11 +14,20 @@
  *}
 
 <div class="module news show">
+    {if $config.datetag}
+        <p class="post-date">
+            <span class="month">{$record->publish_date|format_date:"%b"}</span>
+            <span class="day">{$record->publish_date|format_date:"%e"}</span>
+            <span class="year">{$record->publish_date|format_date:"%Y"}</span>
+        </p>
+    {/if}
     <h1>{$record->title}</h1>
     {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
     {subscribe_link}
     {assign var=myloc value=serialize($__loc)}
-    <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
+    {if !$config.datetag}
+        <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
+    {/if}
     {if $record->expTag|@count>0 && !$config.disabletags}
         <div class="tags">
             {"Tags"|gettext}:
@@ -53,4 +62,28 @@
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
         {/if}
     </div>
+    {if $record->prev || $record->next}
+        <div class="module-actions">
+            {clear}
+            <hr>
+            <span style="float:left">
+                {if $record->prev}
+                    <a href="{link action=show title=$record->prev->sef_url}" title="{$record->prev->body|summarize:"html":"para"}">
+                        {icon img='page_prev.png' title='Previous Item'|gettext}
+                        {$record->prev->title}
+                    </a>
+                {/if}
+            </span>
+            <span style="float:right">
+                {if $record->next}
+                    <a href="{link action=show title=$record->next->sef_url}" title="{$record->next->body|summarize:"html":"para"}">
+                        {$record->next->title}
+                        {icon img='page_next.png' title='Next Item'|gettext}
+                    </a>
+                {/if}
+            </span>
+            {clear}
+            <hr>
+        </div>
+    {/if}
 </div>

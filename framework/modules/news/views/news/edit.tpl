@@ -72,9 +72,13 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#editnews-tabs'});
-	    tabview.render();
+   EXPONENT.YUI3_CONFIG.modules.exptabs = {
+       fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+       requires: ['history','tabview','event-custom']
+   };
+
+	YUI(EXPONENT.YUI3_CONFIG).use("get","exptabs","node-load","event-simulate",'autocomplete','autocomplete-filters','autocomplete-highlighters', function(Y) {
+        Y.expTabs({srcNode: '#editnews-tabs'});
 		Y.one('#editnews-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 
@@ -88,7 +92,6 @@
 		  queryDelay: 0,
 		  queryDelimiter: ',',
 		  source: tags,
-          resultFilters    : 'phraseMatch',
           resultHighlighter: 'phraseMatch',
 
 		  // Chain together a phraseMatch filter followed by a custom result filter
@@ -123,7 +126,6 @@
 			inputNode.ac.sendRequest('');
 			inputNode.ac.show();
 		});
-
     });
 {/literal}
 {/script}

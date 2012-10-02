@@ -91,6 +91,9 @@ if (expPermissions::check('edit',$loc) || expPermissions::check('create',$loc) |
 		$mod->name = $module->name();
 		$mod->author = $module->author();
 		$mod->description = $module->description();
+//        $mod->name = $moduleclass::name();
+//        $mod->author = $moduleclass::author();
+//        $mod->description = $moduleclass::description();
 		if (isset($container->view) && $container->internal->mod == $moduleclass) {
 			$mod->defaultView = $container->view;
 		} else $mod->defaultView = DEFAULT_VIEW;
@@ -98,7 +101,9 @@ if (expPermissions::check('edit',$loc) || expPermissions::check('create',$loc) |
 		// Get support flags
 		$mod->supportsSources = ($module->hasSources() ? 1 : 0);
 		$mod->supportsViews  = ($module->hasViews()   ? 1 : 0);
-		
+//        $mod->supportsSources = ($moduleclass::hasSources() ? 1 : 0);
+//        $mod->supportsViews  = ($moduleclass::hasViews()   ? 1 : 0);
+
 		// Get a list of views
 		$mod->views = expTemplate::listModuleViews($moduleclass);
 		natsort($mod->views);
@@ -113,6 +118,7 @@ if (expPermissions::check('edit',$loc) || expPermissions::check('create',$loc) |
         // $js_init .=  "modnames.push('" . $moduleclass . "');\r\n";
         $modules[$moduleclass] = $mod;
 		$mods[$moduleclass] = $module->name();
+//        $mods[$moduleclass] = $moduleclass::name();
 	}
 	//$js_init .= "\r\n</script>";
 	

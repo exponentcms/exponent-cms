@@ -44,11 +44,11 @@ $time = intval(isset($_GET['time']) ? $_GET['time'] : time());
 
 $days = array();
 $counts = array();
-$startweek = expDateTime::startOfWeekTimestamp($time);
-$startinfo = getdate($startweek);
+$startperiod = expDateTime::startOfWeekTimestamp($time);
+$startinfo = getdate($startperiod);
 
 //FIXME add external events to $days[$start][] for date $start, one day at a time
-$extitems = calendarmodule::getExternalEvents($loc,$startweek,expDateTime::endOfWeekTimestamp($startweek));
+$extitems = calendarmodule::getExternalEvents($loc,$startperiod,expDateTime::endOfWeekTimestamp($startperiod));
 for ($i = 0; $i < 7; $i++) {
 	$start = mktime(0,0,0,$startinfo['mon'],$startinfo['mday']+$i,$startinfo['year']);
 //	$dates = $db->selectObjects("eventdate","location_data='".serialize($loc)."' AND date = $start");
@@ -85,13 +85,13 @@ $template->assign("config",$config);
 
 $template->assign("days",$days);
 $template->assign("counts",$counts);
-$template->assign("startweek",$startweek);
-$template->assign("startprevweek3",(strtotime('-3 weeks',$startweek)));
-$template->assign("startprevweek2",(strtotime('-2 weeks',$startweek)));
-$template->assign("startprevweek",(strtotime('-1 weeks',$startweek)));
-$template->assign("startnextweek",(strtotime('+1 weeks',$startweek)));
-$template->assign("startnextweek2",(strtotime('+2 weeks',$startweek)));
-$template->assign("startnextweek3",(strtotime('+3 weeks',$startweek)));
+$template->assign("time",$startperiod);
+$template->assign("startprevweek3",(strtotime('-3 weeks',$startperiod)));
+$template->assign("startprevweek2",(strtotime('-2 weeks',$startperiod)));
+$template->assign("startprevweek",(strtotime('-1 weeks',$startperiod)));
+$template->assign("startnextweek",(strtotime('+1 weeks',$startperiod)));
+$template->assign("startnextweek2",(strtotime('+2 weeks',$startperiod)));
+$template->assign("startnextweek3",(strtotime('+3 weeks',$startperiod)));
 
 $template->output();
 

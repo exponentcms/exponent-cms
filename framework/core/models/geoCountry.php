@@ -28,7 +28,7 @@ class geoCountry extends expRecord {
 	    if (is_array($params) || is_numeric($params)) {
     	    parent::__construct($params, $get_assoc, $get_attached);
     	} else {
-	        if (is_numeric($params)) echo "true dude<Br>";
+	        if (is_numeric($params)) echo "true dude<br>";
 	        $id = $db->selectValue($this->table, 'id', "name='".$params."' OR iso_code_2letter='".$params."' OR iso_code_3letter='".$params."'" );
 	        parent::__construct($id, $get_assoc, $get_attached);
 	    }

@@ -40,10 +40,10 @@ class searchController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Search Form"); }
-    function description() { return gt("Add a form to allow users to search for content on your website."); }
-    function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function displayname() { return gt("Search Form"); }
+    static function description() { return gt("Add a form to allow users to search for content on your website."); }
+    static function hasSources() { return false; }
+    static function hasContent() { return false; }
 
     public function search() {
         // include CSS for results
@@ -66,14 +66,15 @@ class searchController extends expController {
 
         $page = new expPaginator(array(
             //'model'=>'search',
-            'controller'=>$this->params['controller'],
-            'action'=>$this->params['action'],
             'records'=>$search->getSearchResults($terms),
             //'sql'=>$sql,
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
             'dir'=>'DESC',
-			));        
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+        ));
 
         assign_to_template(array(
             'page'=>$page,
@@ -83,28 +84,25 @@ class searchController extends expController {
     
     public static function spider() {
         global $db;
-	    $db->delete('search');
-	    
-	    $searchable_mods = array();
-	    $unsearchable_mod = array();
 
+        // reinitialize search index
+	    $db->delete('search');
+
+        // old school modules
 	    foreach (expModules::modules_list() as $mod) {
-		    $name = @call_user_func(array($mod,'name'));
+//		    $name = @call_user_func(array($mod,'name'));
+            $name = @call_user_func(array($mod,'searchName'));
 		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
-			    if (call_user_func(array($mod,'spiderContent'))) {
-				    $mods[$name] = 1;
-			    }
-		    } else {
-			    //$mods[$name] = 0;
+                $mods[$name] = call_user_func(array($mod,'spiderContent'));
 		    }
 	    }
 
+        // 2.0 modules
 	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
 		    $controller = new $ctlname();		    
 		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
-			    $mods[$controller->name()] = $controller->addContentToSearch();
-		    } else {
-		        //$mods[$controller->name()] = 0;
+//			    $mods[$controller->name()] = $controller->addContentToSearch();
+                $mods[$controller->searchName()] = $controller->addContentToSearch();
 		    }
 	    }
 	
@@ -116,10 +114,12 @@ class searchController extends expController {
         
     public function show() {
         //no need to do anything..we're just showing the form... so far! MUAHAHAHAHAHAAA!   what?
+//        redirect_to(array("controller"=>'search',"action"=>'showall'));
     }
     
     public function showall() {
-        redirect_to(array("controller"=>'search',"action"=>'show'));
+//        redirect_to(array("controller"=>'search',"action"=>'show'));
+//        $this->show();
     }
 
     /**
@@ -129,15 +129,15 @@ class searchController extends expController {
         global $db;
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
-                    'model'=>'expTag',
-                    'where'=>null,
-//                    'limit'=>999,
-                    'order'=>"title",
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            'model'=>'expTag',
+            'where'=>null,
+//          'limit'=>999,
+            'order'=>"title",
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
+        ));
 
         foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
             foreach ($page->records as $key => $value) {
@@ -260,21 +260,24 @@ class searchController extends expController {
 		}
 		
         $page = new expPaginator(array(
-					'records' => $records,
-                    'where'=>1, 
-					'model'=>'search_queries',
-                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? 10 : $this->config['limit'],
-                    'order'=>empty($this->config['order']) ? 'timestamp' : $this->config['order'],
-                    'controller'=>$this->baseclassname,
-					'action'=>$this->params['action'],
-                    'columns'=>array(
-						gt('ID')=>'id',
-                        gt('Query')=>'query',
-                        gt('Timestamp')=>'timestamp',
-                        gt('User')=>'user_id',
-                        )
-                    ));
-	
+            'records' => $records,
+            'where'=>1,
+            'model'=>'search_queries',
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? 10 : $this->config['limit'],
+            'order'=>empty($this->config['order']) ? 'timestamp' : $this->config['order'],
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('ID')=>'id',
+                gt('Query')=>'query',
+                gt('Timestamp')=>'timestamp',
+                gt('User')=>'user_id',
+            ),
+        ));
+
+        $uname['id'] = implode($uname['id'],',');
+        $uname['name'] = implode($uname['name'],',');
         assign_to_template(array(
             'page'=>$page,
             'users'=>$uname,
@@ -286,7 +289,7 @@ class searchController extends expController {
 	
 	public function topSearchReport() {
 		global $db;
-		$limit = TOP_SEARCH;
+		$limit = intval(TOP_SEARCH);
 		
 		if(empty($limit)) {
 			$limit = 10;
@@ -299,7 +302,7 @@ class searchController extends expController {
         $records_key_arr = array();
         $records_values_arr = array();
 		foreach($records as $item) {
-			$records_key_arr[] = '"' . $item->query . '"';
+			$records_key_arr[] = '"' . addslashes($item->query) . '"';
 			$records_values_arr[] = number_format((($item->cnt / $count)*100), 2);
 		}
 		$records_key   = implode(",", $records_key_arr);
@@ -314,6 +317,15 @@ class searchController extends expController {
         ));
 	}
 
+    function delete_search_queries() {
+        $sq = new search_queries();
+        $sqall = $sq->find('all');
+        if (!empty($sqall)) foreach ($sqall as $sqd) {
+            $sqd->delete();
+        }
+        flash('message', gt("Search Queries successfully deleted."));
+        expHistory::back();
+    }
 }
 
 ?>

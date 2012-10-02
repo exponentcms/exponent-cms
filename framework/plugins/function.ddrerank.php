@@ -45,21 +45,22 @@ function smarty_function_ddrerank($params,&$smarty) {
         $sql = explode("LIMIT",$params['sql']);
         $params['items'] = $db->selectObjectsBySQL($sql[0]);
     } elseif (!empty($params['items'][0]->id)) {
-            $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
-	        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
-            $obj = new $model();
-            if ($params['model'] == 'expCat') {
-                if (empty($params['module'])) {
-                    $locsql = '1';
-                } else {
-                    $locsql = "module='".$params['module']."'";
-                }
+        $model = empty($params['model']) ? $params['items'][0]->classname : $params['model'] ;
+        $only = !empty($params['only']) ? ' AND '.$params['only'] : '';
+        $obj = new $model();
+        if ($params['model'] == 'expCat') {
+            if (empty($params['module'])) {
+                $locsql = '1';
             } else {
-                $locsql = "location_data='".serialize($loc)."'";
+                $locsql = "module='".$params['module']."'";
             }
+        } else {
+            $locsql = "location_data='".serialize($loc)."'";
+        }
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
-            $params['items'] = $obj->find('all',$locsql.$only,"rank");
+        $params['items'] = $obj->find('all',$locsql.$only,"rank");
     } elseif (!empty($params['module'])) {
+        $model = empty($params['model']) ? '' : $params['model'] ;
         $uniqueloc = $smarty->getTemplateVars('container');
         if (!empty($uniqueloc->internal)) {
             $uniqueloc2 = expUnserialize($uniqueloc->internal);
@@ -100,7 +101,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                 // we may need to pass through an ID for some reason, like a category ID for products
                 $html .= !empty($params['id']) ? '<input type="hidden" name="id" value="'.$params['id'].'" />' : '';
                 $html .= '<input type="hidden" name="action" value="manage_ranks" />
-                <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items']<12))?"":"height:350px").';overflow-y:auto;">
+                <ul id="listToOrder'.$uniqueid.'" style="'.((count($params['items'])<12)?"":"height:350px").';overflow-y:auto;">
                 ';
                 $odd = "even";
                 $stringlen = 40;
@@ -110,6 +111,7 @@ function smarty_function_ddrerank($params,&$smarty) {
                             $control = expUnserialize($item->data);
                             $ctrl = new $control();
                             $name = $ctrl->name();
+//                            $name = $control::name();
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
                             $stringlen = 65;
                         } elseif ($params['module'] == 'container') {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title>Exponent 2.0.9</title>
+    <parser>
+        <default-category-name>API Documentation</default-category-name>
+        <default-package-name>Framework</default-package-name>
+        <target>../exponent-api</target>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+        <visibility></visibility>
+    </parser>
+    <transformer>
+        <target>../exponent-api</target>
+    </transformer>
+    <transformations>
+         <template name="responsive" />
+    </transformations>
+    <files>
+        <directory>.</directory>
+        <ignore>external/*</ignore>
+        <ignore>tmp/*</ignore>
+        <ignore>framework/core/lang/*</ignore>
+        <ignore>framework/modules/pixidou/*</ignore>
+        <ignore>framework/modules/news/models/SimplePie.php</ignore>
+    </files>
+</phpdoc>

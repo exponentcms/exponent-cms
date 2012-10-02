@@ -33,9 +33,10 @@ class faqController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Frequently Asked Questions"); }
-    function description() { return gt("This module allows you show frequently asked questions.  Users can post questions to you to answer too."); }
-    
+    static function displayname() { return gt("Frequently Asked Questions"); }
+    static function description() { return gt("This module allows you show frequently asked questions.  Users can post questions to you to answer too."); }
+    static function isSearchable() { return true; }
+
     public function showall() {
         expHistory::set('viewable', $this->params);
         $faqs = new faq();
@@ -83,6 +84,7 @@ class faqController extends expController {
 //                    'records'=>$items_by_tags,
 //                    'limit'=>$limit,
 //                    'order'=>$order,
+//                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 //                    'controller'=>$this->baseclassname,
 //                    'action'=>$this->params['action'],
 //                    'columns'=>array('Title'=>'title'),
@@ -102,9 +104,16 @@ class faqController extends expController {
             'where' => "location_data='".serialize($this->loc)."'",
 		    'limit'=>25,
             'order'=>'rank',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('In FAQ')=>'include_in_faq',gt('Answered')=>'answer',gt('Question')=>'question',gt('Submitted')=>'created_at',gt('Submitted By')=>'submitter_name'),
+            'columns'=>array(
+                gt('In FAQ')=>'include_in_faq',
+                gt('Answered')=>'answer',
+                gt('Question')=>'question',
+                gt('Submitted')=>'created_at',
+                gt('Submitted By')=>'submitter_name'
+            ),
         ));
         
         assign_to_template(array(
@@ -160,7 +169,11 @@ class faqController extends expController {
 
         $faq = new faq();
         $faq->update($this->params);
-        $this->addContentToSearch($this->params);
+        if (!empty($this->params['include_in_faq'])) {
+            $this->params['title'] = $this->params['question'];
+            $this->params['body'] = $this->params['answer'];
+            $this->addContentToSearch($this->params);
+        }
 
         if (!empty($this->params['send_email'])) {
             redirect_to(array('controller'=>'faq', 'action'=>'edit_answer', 'id'=>$faq->id, 'src'=>$this->loc->src));
@@ -224,6 +237,51 @@ class faqController extends expController {
         flash('message', gt('Your email was sent to').' '.$faq->submitter_name.' '.gt('at').' '.$faq->submitter_email);
         expHistory::back();
     }
+
+    function addContentToSearch() {
+        global $db, $router;
+
+        //FIXME we should probably allow for a single item update/addition
+        $count = 0;
+        $model = new $this->basemodel_name(null, false, false);
+        $where = (!empty($this->params['id'])) ? 'id='.$this->params['id'] : null;
+        $content = $db->selectArrays($model->tablename,$where);
+        foreach ($content as $cnt) {
+            if (!empty($cnt['include_in_faq'])) {
+                $cnt['title'] = $cnt['question'];
+                $cnt['body'] = $cnt['answer'];
+
+                $origid = $cnt['id'];
+                unset($cnt['id']);
+                $sql = "original_id=".$origid." AND ref_module='".$this->classname."'";
+                $oldindex = $db->selectObject('search',$sql);
+                if (!empty($oldindex)) {
+                    $search_record = new search($oldindex->id, false, false);
+                    $search_record->update($cnt);
+                } else {
+                    $search_record = new search($cnt, false, false);
+                }
+
+                //build the search record and save it.
+                $search_record->original_id = $origid;
+                $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
+                // get the location data for this content
+                if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
+                $src = isset($loc->src) ? $loc->src : null;
+                $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'showall', 'src'=>$src)));
+    //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
+                $search_record->view_link = $link;
+                $search_record->ref_module = $this->classname;
+                $search_record->category = $this->searchName();
+                $search_record->ref_type = $this->searchCategory();
+                $search_record->save();
+                $count += 1;
+            }
+         }
+
+         return $count;
+    }
+
 }
 
 ?>

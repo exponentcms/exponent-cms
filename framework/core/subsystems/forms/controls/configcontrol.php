@@ -62,12 +62,12 @@ class configcontrol extends formcontrol {
 		    "yui2mods"=>'dragdrop,element,animation,resize,layout',
 		    "yui3mods"=>null,
 		    "content"=>'//comment',
-		    "src"=>PATH_RELATIVE.'framework/core/assets/js/exp-layout.js'
+		    "src"=>JS_RELATIVE.'exp-layout.js'
 		 ));
         return $html;
 	}
 	
-	function form($object) {
+	static function form($object) {
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
@@ -86,7 +86,7 @@ class configcontrol extends formcontrol {
 		return $form;
 	}
 	
-	function update($values, $object) {
+    static function update($values, $object) {
 		if ($object == null) $object = new texteditorcontrol();
 		if ($values['identifier'] == "") {
 			$post = $_POST;

@@ -23,22 +23,22 @@
 
 class product_statusController extends expController {
 
-    function displayname() { return gt("Ecommerce Product Statuses"); }
-    function description() { return gt("Manage Ecommerce Product Statuses"); }
-    function author() { return "OIC Group, Inc"; }
-    function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function displayname() { return gt("e-Commerce Product Statuses"); }
+    static function description() { return gt("Manage e-Commerce Product Statuses"); }
+    static function hasSources() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);
         
         $page = new expPaginator(array(
 			'model'=>'product_status',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
 			'where'=>1,
             'limit'=>10,
-			));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+        ));
 
 		assign_to_template(array(
             'page'=>$page
@@ -47,10 +47,12 @@ class product_statusController extends expController {
     
     public function showall() {
         redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
+//        $this->manage();
     }
     
     public function show() {
         redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
+//        $this->manage();
     }
     
 }

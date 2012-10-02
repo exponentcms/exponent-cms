@@ -20,8 +20,9 @@
  * Exponent Pagination Subsystem
  *
  * The expPaginator class is used to retrieve objects from the database
- * and paginate them.  It automagically handles the calls to other pages
- * and had built-in sorting using the defined column headers.
+ * and paginate them and optionally group the by category.
+ * It automagically handles the calls to other pages
+ * and has built-in sorting using the defined column headers.
  * 
  * Usage Example:
  *  
@@ -94,6 +95,7 @@ class expPaginator {
 	public $pages = array();
 	public $records = array();
     public $cats = array();
+    public $sort_dropdown = array();
 
 	/**
 	 * expPaginator Constructor
@@ -110,7 +112,7 @@ class expPaginator {
 		$this->records = empty($params['records']) ? array() : $params['records'];
 //		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
         $this->limit = empty($params['limit']) ? 0 : $params['limit'];
-		$this->page = empty($_REQUEST['page']) ? 1 : intval($_REQUEST['page']);
+        $this->page = empty($params['page']) ? 1 : intval($params['page']);
 		$this->action = empty($params['action']) ? '' : $params['action'];
 		$this->controller = empty($params['controller']) ? '' : $params['controller'];
 		$this->sql = empty($params['sql']) ? '' : $params['sql'];
@@ -122,6 +124,7 @@ class expPaginator {
         $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
         $this->groups = !empty($params['groups']) ? $params['groups'] : array();
         $this->grouplimit = !empty($params['grouplimit']) ? $params['grouplimit'] : null;
+        $this->dontsort = !empty($params['dontsort']) ? $params['dontsort'] : null;
 
 		// if a view was passed we'll use it.
 		if (isset($params['view'])) $this->view = $params['view'];
@@ -140,7 +143,8 @@ class expPaginator {
 		);
 		
 		if ($this->limit) $this->start = (($this->page * $this->limit) - $this->limit);
-		
+        if ($this->start<0) $this->start = 0;
+
 		//setup the columns
         $this->columns = array();
 		if (isset($params['columns'])) {
@@ -171,7 +175,7 @@ class expPaginator {
 			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
 			}
 		}
-        // allow passing of a single order/dir as stored
+        // allow passing of a single order/dir as stored in config
         if (strstr($this->order," ")) {
             $orderby = explode(" ",$this->order);
             $this->order = $orderby[0];
@@ -181,7 +185,7 @@ class expPaginator {
 		// figure out how many records we're dealing with & grab the records
 		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
-		    // sort, count and slice the records that were passed in to us
+		    // sort the records that were passed in to us
 		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
 //		    $this->total_records = count($this->records);
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
@@ -216,7 +220,7 @@ class expPaginator {
 
         // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize) {
-            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat,$this->groups);
+            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat,$this->groups,$this->dontsort);
         }
 
         // let's see how many total records there are
@@ -228,16 +232,15 @@ class expPaginator {
         // at this point we generally have all our records, now we'll trim the records to the number requested
         //FIXME we may want some more intelligent selection here based on cats/groups, e.g., don't break groups across pages, number of picture rows, etc...
         if (empty($this->grouplimit)) if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
-
-        // finally, we'll create another multi-dimensional array of the categories
+        // finally, we'll create another multi-dimensional array of categories populated with assoc items
         if (!empty($this->categorize) && $this->categorize) {
             expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
-        } else {  // categorized is off, so let's categorize by alpha instead for rolodex type use
+        } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
             $order = $this->order;
             if (strstr($this->order,",")) {
                $orderby = explode(",",$this->order);
                $order = $orderby[0];
-           }
+            }
             foreach ($this->records as $record) {
                 if (is_string($record->$order) && !is_numeric($record->$order)) {
                     $title = ucfirst($record->$order);
@@ -255,7 +258,6 @@ class expPaginator {
                 $this->cats[$title]->records[] = $record;
             }
         }
-
         if (!empty($this->grouplimit)) {
             if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
         } else {
@@ -263,8 +265,7 @@ class expPaginator {
         }
 
         if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
-        //$this->runCallback();
-      
+
         //eDebug($this->records);
 		// get the number of the last record we are showing...this is used in the page links.
 		// i.e.  "showing 10-19 of 57"...$this->last would be the 19 in that string
@@ -298,8 +299,8 @@ class expPaginator {
 		if (isset($page_params['section'])) unset($page_params['section']);
 		if (!empty($this->view)) $page_params['view'] = $this->view;
 		
-		//build out a couple links we can use in the views.		
-		$this->pagelink = $router->makeLink($page_params, null, null, true);
+		//build out a couple links we can use in the views.
+		$this->pagelink = $router->makeLink($page_params, false, false, true);
 		
 		// if don't have enough records for more than one page then we're done.
 		//if ($this->total_records <= $this->limit) return true;
@@ -324,42 +325,42 @@ class expPaginator {
 		// setup the previous link
 		if ($this->page > 1) {
 			$page_params['page'] = $this->page - 1;
-			$this->previous_page = $router->makeLink($page_params, null, null, true);
+			$this->previous_page = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the next link
 		if ($this->page < $this->total_pages) {
 			$page_params['page'] = $this->page + 1;
-			$this->next_page = $router->makeLink($page_params, null, null, true);
+			$this->next_page = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the previous 10 link
 		if ($this->page > $this->pages_to_show) {
 			$page_params['page'] = $this->first_pagelink - 1;
-        	$this->previous_shift = $router->makeLink($page_params, null, null, true);
+        	$this->previous_shift = $router->makeLink($page_params, false, false, true);
 			$page_params['page'] = 1;
-			$this->firstpage = $router->makeLink($page_params, null, null, true);
+			$this->firstpage = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the next 10 link
 		if ($this->page < ($this->total_pages - $this->pages_to_show)) {
             $page_params['page'] = $this->last_pagelink + 1;
-            $this->next_shift = $router->makeLink($page_params, null, null, true);
+            $this->next_shift = $router->makeLink($page_params, false, false, true);
 			$page_params['page'] = $this->total_pages;
-			$this->lastpage = $router->makeLink($page_params, null, null, true);
+			$this->lastpage = $router->makeLink($page_params, false, false, true);
         }
 
 		// setup the links to the pages being displayed.
 		for($i=$this->first_pagelink; $i<=$this->last_pagelink; $i++) { 
 			$page_params['page'] = $i;
-			$this->pages[$i] = $router->makeLink($page_params, null, null, true); 
+			$this->pages[$i] = $router->makeLink($page_params, false, false, true);
 		} 	
 
 		$links_template = get_common_template('pagination_links', null, 'common');
 		$links_template->assign('page', $this);
 		$this->links = $links_template->render();
 		
-		$this->makeHeaderCols($page_params);
+		$this->makeHeaderCols($page_params);  // headers for table view
          
         $sortparams = array_merge($page_params, $router->params);
 		
@@ -368,11 +369,11 @@ class expPaginator {
         else unset($sortparams['page']);
         //End From Merge ****
 
-		$this->makeSortDropdown($sortparams);
+		$this->makeSortDropdown($sortparams);  // used on non-table views
        
         $table_template = get_common_template('pagination_table', null, 'common');
         $table_template->assign('page', $this);
-        $this->table = $table_template->render();
+        $this->table = $table_template->render();  // table view
         
 	}
 	
@@ -409,7 +410,7 @@ class expPaginator {
                 if (empty($params['action'])) $params['action'] = $this->action;
             }
             
-            $current = '';
+//            $current = '';
             if (isset($params['order'])) {
                 $current = $params['order'];
                 unset($params['order']);
@@ -424,10 +425,9 @@ class expPaginator {
                 $params['dir'] = 'ASC';
                 
                 if ($col == $current) {
-                    $class  = 'current';
-                    $class .= ' '.strtolower($this->order_direction);
-                    if (isset($_REQUEST['dir'])) {
-                        $params['dir'] = $_REQUEST['dir'] == 'ASC' ? 'DESC' : 'ASC';
+                    $class  = 'current '.strtolower($this->order_direction);
+                    if (isset($params['dir'])) {
+                        $params['dir'] = $params['dir'] == 'ASC' ? 'DESC' : 'ASC';
                     } else {
                         $params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
                     }
@@ -474,7 +474,7 @@ class expPaginator {
                     if ($col == 'no-sort') {
                         $this->header_columns .= $colname;
                     } else {
-                        $this->header_columns .= '<a href="'.$router->makeLink($params, null, null, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
+                        $this->header_columns .= '<a href="'.$router->makeLink($params, false, false, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
                     }
                 }
                 
@@ -527,7 +527,7 @@ class expPaginator {
             if (isset($params['title'])) $defaultParams['title'] = $params['title'];
             if (isset($params['page'])) $defaultParams['page'] = $params['page'];
             
-            $this->sort_dropdown[$router->makeLink($defaultParams, null, null, true)] = "Default";
+            $this->sort_dropdown[$router->makeLink($defaultParams, false, false, true)] = "Default";
 			foreach ($this->columns as $colname=>$col) {
 				// if this is the column we are sorting on right now we need to setup some class info
 				/*$class = isset($this->class) ? $this->class : 'page';
@@ -536,8 +536,8 @@ class expPaginator {
 				/*if ($col == $current) {
 					$class  = 'current';
 					$class .= ' '.$this->order_direction;
-					if (isset($_REQUEST['dir'])) {
-						$params['dir'] = $_REQUEST['dir'] == 'ASC' ? 'DESC' : 'ASC';
+					if (isset($params['dir'])) {
+						$params['dir'] = $params['dir'] == 'ASC' ? 'DESC' : 'ASC';
 					} else {
 						$params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
 					}
@@ -548,14 +548,14 @@ class expPaginator {
 				if (!empty($col)) {	
                     if ($colname == 'Price') {
                         $params['dir'] = 'ASC'; 
-                        $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - Lowest to Highest";
+                        $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Lowest to Highest";
                         $params['dir'] = 'DESC'; 
-                        $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - Highest to Lowest";                          
+                        $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Highest to Lowest";
                     } else {
                         $params['dir'] = 'ASC'; 
-                        $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - A-Z";
+                        $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - A-Z";
                         $params['dir'] = 'DESC';
-                        $this->sort_dropdown[$router->makeLink($params, null, null, true)] = $colname . " - Z-A";
+                        $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Z-A";
                     }	
 				}                  								
 			}

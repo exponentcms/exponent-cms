@@ -25,7 +25,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `exponent_geo_region`
 --
 
-CREATE TABLE `exponent_geo_region` (
+CREATE TABLE IF NOT EXISTS `exponent_geo_region` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(20) COLLATE utf8_unicode_ci NOT NULL,

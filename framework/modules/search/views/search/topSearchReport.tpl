@@ -36,16 +36,23 @@
 {/literal}
 {/css}
 
-<div class="module topsearchquery report exp-skin-tabview">
+<div class="module topsearchquery report">
     <div class="info-header">
-        <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:("Search Queries Report"|gettext)}</h1>
+        <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:"Search Queries Report"|gettext}</h1>
     </div>
-	<div id="topsearch" class="yui-navset">
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.manage == 1}
+            {icon class=delete action=delete_search_queries text="Delete Past Queries"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete all past search queries?"|gettext)|cat:"');"}
+        {/if}
+    </div>
+    {/permissions}
+	<div id="topsearch" class="yui-navset exp-skin-tabview hide">
 		<ul class="yui-nav">
-			<li class="selected"><a href="#tab1"><em>{"Top Search"|gettext}</em></a></li>
-			<li><a href="#tab2"><em>{"Chart View"|gettext}</em></a></li>
+			<li class="selected"><a href="#tab1">{"Top Search"|gettext}</a></li>
+			<li><a href="#tab2">{"Chart View"|gettext}</a></li>
 		</ul>    
-		<div class="yui-content">
+		<div id="pane" class="yui-content">
 			<div id="tab1">
 				<table class="exp-skin-table">
 					<thead>
@@ -73,45 +80,72 @@
             </div>
 		</div>
 	</div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
 {script unique="topsearch" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', 'charts', 'yui2-yahoo-dom-event','yui2-element','yui2-tabview', function(Y) {
-	var YAHOO=Y.YUI2;
-	var tabView = new YAHOO.widget.TabView('topsearch');
-	
-});
+EXPONENT.YUI3_CONFIG.modules.exptabs = {
+    fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+    requires: ['history','tabview','event-custom']
+};
 
-(function() {
-    YUI().use('charts', function (Y) 
-    { 
-        var myDataValues = [ 
-			[{/literal}{$records_key}{literal}],
-			[{/literal}{$records_values}{literal}]
-        ];
-		
-		var myTooltip = {
-            styles: { 
-                backgroundColor: "#333",
-                color: "#eee",
-                borderColor: "#fff",
-                textAlign: "center"
-            },
-            markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex)
-            {
-                var msg = "<span style=\"text-decoration:underline\">{/literal}{"Total"|gettext}{literal} " +
-                categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")]) + 
-                " {/literal}{"Payment"|gettext}{literal}</span><br/><div style=\"margin-top:5px;font-weight:bold\">" + valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"%", decimalPlaces:2}]) + "</div>";
-                return msg; 
-            }
-        };
-        
-    
-		var columnchart   = new Y.Chart({dataProvider:myDataValues, render:"#columnchart", type:"column", tooltip: "myTooltip"});
-		
+var renderIntoTabview,
+    handlerArray = [];
+
+YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
+    var mytab = Y.expTabs({srcNode: '#topsearch'});
+    Y.one('#topsearch').removeClass('hide');
+    Y.one('.loadingdiv').remove();
+
+    renderIntoTabview = function(chart, node, index) {
+        if(mytab.item(index) === mytab.get("selection")) {
+            chart.render(node);
+        } else {
+            handlerArray[index] = mytab.item(index).after("tab:selectedChange", function(e) {
+                if(mytab.item(index) === mytab.get("selection")) {
+                    chart.render(node);
+                    handlerArray[index].detach();
+                }
+            });
+        }
+    }
+    var myDataValues = [
+        [{/literal}{$records_key}{literal}],
+        [{/literal}{$records_values}{literal}]
+    ];
+
+    var myTooltip = {
+        styles: {
+            backgroundColor: "#333",
+            color: "#eee",
+            borderColor: "#fff",
+            textAlign: "center"
+        },
+        markerLabelFunction: function(categoryItem, valueItem, itemIndex, series, seriesIndex) {
+            var msg = document.createElement("div"),
+                underlinedTextBlock = document.createElement("span"),
+                boldTextBlock = document.createElement("div");
+            underlinedTextBlock.style.textDecoration = "underline";
+            boldTextBlock.style.marginTop = "5px";
+            boldTextBlock.style.fontWeight = "bold";
+            underlinedTextBlock.appendChild(document.createTextNode("{/literal}{"Term"|gettext}{literal}: " +
+                                            categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")])));
+            boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"%", decimalPlaces:2}])));
+            msg.appendChild(underlinedTextBlock);
+            msg.appendChild(document.createElement("br"));
+            msg.appendChild(boldTextBlock);
+            return msg;
+        }
+    };
+
+    columnchart = new Y.Chart({
+        dataProvider: myDataValues,
+    //            render: "#columnchart",
+        type: "column",
+        tooltip: myTooltip
     });
-})();
-
+    renderIntoTabview(columnchart, "#columnchart", 1);
+});
 {/literal}
 {/script}

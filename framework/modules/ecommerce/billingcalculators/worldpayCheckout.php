@@ -161,7 +161,7 @@ class worldpayCheckout extends billingcalculator {
     * @param mixed $config_object
      * @return bool
      */
-	function delete($config_object) {
+	function delete($where = '') {
 		return;
 	}
 	

@@ -36,8 +36,8 @@ class ealertController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 	
-    function displayname() { return gt("E-Alerts"); }
-    function description() { return gt("This module will allow users to sign up for email alerts on a module by module basis."); }
+    static function displayname() { return gt("E-Alerts"); }
+    static function description() { return gt("This module will allow users to sign up for email alerts on a module by module basis."); }
     
     public function showall() {
         $ealerts = new expeAlerts();
@@ -59,7 +59,8 @@ class ealertController extends expController {
         }
 
         // find the content for the E-Alerts
-        $record = new $this->params['model']($this->params['id']);
+        $model = $this->params['model'];
+        $record = new $model($this->params['id']);
         // setup the content for the view
         $subject = $record->title;
         $body = $record->body;
@@ -76,7 +77,8 @@ class ealertController extends expController {
     
     public function send_process() {
         global $db, $router;
-        
+
+        $obj = new stdClass();
         $obj->subject = $this->params['subject'];
         $obj->body = $this->params['body'];
         $link = $router->makelink(array('controller'=>$this->params['model'], 'action'=>'show', 'title'=>$this->params['sef_url']));
@@ -102,7 +104,9 @@ class ealertController extends expController {
         $ealert = $db->selectObject('expeAlerts', 'module="'.$this->params['model'].'" AND src="'.$src.'"');
 
          // find the content for the E-Alerts
-        $record = new $this->params['model']($this->params['id']);
+        $model = $this->params['model'];
+        $record = new $model($this->params['id']);
+        $obj = new stdClass();
         $obj->subject = gt('Notification of New Content Posted to').' '.$ealert->ealert_title;
         $obj->body .= "<h3>".gt('New content was added titled')." '".$record->title."'</h3><hr>";
         if ($ealert->ealert_usebody == 0) {
@@ -275,7 +279,7 @@ class ealertController extends expController {
   
         // send a confirmation email to the user.    
         $ealerts = $db->selectObjects('expeAlerts', 'id IN ('.implode(',', $this->params['ealerts']).')');
-        $body = get_template_for_action($this, 'confirmation_email', $this->loc);
+        $body = get_template_for_action($this, 'email/confirmation_email', $this->loc);
         $body->assign('ealerts', $ealerts);
         $body->assign('subscriber', $subscriber);
         
@@ -319,6 +323,7 @@ class ealertController extends expController {
         if (empty($id)) expQueue::flashAndFlow('error', gt('We could not find any subscriptions matching the ID and Key you provided.'));
         
         // activate this users pending subscriptions
+        $sub = new stdClass();
         $sub->enabled = 1;
         $db->updateObject($sub, 'expeAlerts_subscribers', 'subscribers_id='.$id);
         

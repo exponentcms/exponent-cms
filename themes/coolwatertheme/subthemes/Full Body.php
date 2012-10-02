@@ -5,7 +5,7 @@
 	    expTheme::head(array(
 	        "xhtml"=>false,
 		    "css_primer"=>array(
-	            YUI2_PATH."yui2-reset-fonts-grids/yui2-reset-fonts-grids.css"),
+                YUI2_RELATIVE."yui2-reset-fonts-grids/yui2-reset-fonts-grids.css"),
 	        "css_core"=>array("common"),
 	        "css_links"=>true,
 	        "css_theme"=>true
@@ -33,8 +33,8 @@
 				</div>
 			</div>
 			<!-- navigation -->
-			<div  id="menu">
-				<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav")); ?>
+			<div id="menu">
+                <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_YUI Top Nav")); ?>
 			</div>
 			<!-- content-wrap starts here -->
 			<div id="content-wrap">

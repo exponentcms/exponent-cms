@@ -12,7 +12,6 @@
     width:250px;
 }
 
-
 #passwordDiv p {
     margin-left:230px;
     border-top:1px dotted #999;
@@ -31,3 +30,6 @@
     font-style: italic;
 }
 
+.address span {
+    display: inline;
+}

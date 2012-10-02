@@ -39,13 +39,11 @@ class tablebasedcalculator extends shippingcalculator {
     public function getRates($order) {   
         $a = $order->total;        
 		
-		   
 		//get the rates
 		for($i = 0; $i < @count($this->configdata['from']); $i++) {
 			// We need to check if it is not the last in the array since we don't have a 'to' value in the last element            
             if(count($this->configdata['from']) != ($i + 1)) {                
 				if( expUtil::isNumberGreaterThanOrEqualTo($a,$this->configdata['from'][$i]) && expUtil::isNumberLessThanOrEqualTo($a,$this->configdata['to'][$i])) {  
-					
 					foreach($this->shippingspeeds as $item) {
 						$c[] = @$this->configdata[str_replace(' ', '_', $item->speed)][$i];
 					}

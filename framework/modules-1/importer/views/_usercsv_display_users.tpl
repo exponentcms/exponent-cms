@@ -16,7 +16,7 @@
 <div class="importer usercsv-display-users">
 	<div class="form_header">
 		<h2>{'Users Imported Into Database'|gettext}</h2>
-		<p>{'The following users were added to the database.  If the user info is highlighted green, then the user was addded to the database with changes to the username.  If the user info is highlighted in red, that user record could not be added to the database due to errors.'|gettext}</p>
+		<p>{'The following users were added to the database.  If the user info is highlighted green, then the user was added to the database with changes to the username.  If the user info is highlighted in red, that user record could not be added to the database due to errors.'|gettext}</p>
 	</div>
 	<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
@@ -32,7 +32,7 @@
 			<tr class="row {cycle values='even_row,odd_row'}">
 				<td style="background-color:inherit;">
 					{if $user->changed == 1}<span style="color:green;">{'Changed'|gettext}</span>
-					{elseif $user->changed == "skipped"}<span style="color:red;">{'Ignored&#160;(Line&#160;%s)'|gettext|sprintf:$user->linenum})</span>
+					{elseif $user->changed == "skipped"}<span style="color:red;">{'Ignored&#160;(Line&#160;%s)'|sprintf:$user->linenum})</span>
 					{else}<span style="color:black;">{'Success'|gettext}</span>
 					{/if}
 				</td>

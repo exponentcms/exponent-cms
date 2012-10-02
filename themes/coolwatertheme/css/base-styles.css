@@ -105,7 +105,6 @@ div.bodycopy ul, ol {
 }
 
 #main div.text p{
-
 	margin-bottom: 15px;
 }
 #sidebar .text {
@@ -131,7 +130,7 @@ div.bodycopy ul, ol {
 }
 #menu {
     position:relative;
-    z-index:3;
+    z-index:5;
 }
 #content-wrap {
 	clear: both;
@@ -147,7 +146,7 @@ div.bodycopy ul, ol {
 	background: #caced1 url(../images/header.jpg) no-repeat center top;
 	padding: 0;	
 	color: #fff;
-	z-index:1;	
+	z-index:3;	
 }
 #header h1#logo-text {
     margin:0;
@@ -311,6 +310,7 @@ div.bodycopy ul, ol {
 	height: 57px;
 	text-align: center;	
 	font-size: 90%;	
+	z-index:1;	
 }
 #footer p { 
 	padding: 10px 0;

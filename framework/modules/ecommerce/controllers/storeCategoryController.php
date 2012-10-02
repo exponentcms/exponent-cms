@@ -22,12 +22,12 @@
  */
 
 class storeCategoryController extends expNestedNodeController {
-	
-	function displayname() { return gt("Store Category Manager"); }
-	function description() { return gt("This module is for manageing categories in your store."); }
-	function author() { return "OIC Group, Inc"; }
+    static function displayname() { return gt("Store Category Manager"); }
+    static function description() { return gt("This module is for managing categories in your store."); }
 
-	protected $add_permissions = array('fix_categories'=>'to run this action.');
+	protected $add_permissions = array(
+        'fix_categories'=>'to run this action.'
+    );
 
     // hide the configs we don't need
     public $remove_configs = array(
@@ -97,7 +97,6 @@ class storeCategoryController extends expNestedNodeController {
 			$control = new listbuildercontrol(@$f_recorded_product_types, $f_types);
 			$arr_product_type[$value] = $control->controlToHTML($product_type_list,"copy");
 		}
-		
 		
         assign_to_template(array(
             'product_types'=>$product_types,
@@ -175,8 +174,7 @@ class storeCategoryController extends expNestedNodeController {
         //         //  $this->tags[$i]->draggable = $this->draggable; 
         //         //  $this->tags[$i]->checkable = $this->checkable; 
         //         // }
-        //         
-        //         
+        //
         // $obj = json_encode($categories);  
     }
     
@@ -200,7 +198,6 @@ class storeCategoryController extends expNestedNodeController {
 			$product_type = new $type();
 			$product_type->saveCategories($this->params["{$type}"], $curcat->id, $type); 
 		}
-		
 		
          parent::update();
     }
@@ -230,7 +227,6 @@ class storeCategoryController extends expNestedNodeController {
                 return($Tree);
             }
         }
-        
 
         //--Call Build Tree (returns structured array)
         $TheTree = BuildTree($Nodes);
@@ -287,10 +283,8 @@ class storeCategoryController extends expNestedNodeController {
             return $ret_array;
         }*/
         
-        
         // takes a flat array with propper parent/child relationships in propper order
         // and adds the lft and rgt extents correctly for a nested set
-        
         
         /*function nestify($categories) {
             // Trees mapped            
@@ -338,8 +332,6 @@ class storeCategoryController extends expNestedNodeController {
             return $categories;
         } */
 
-
-        
         // takes a flat nested set formatted array and creates a multi-dimensional array from it
 
         /*function toHierarchy($collection)

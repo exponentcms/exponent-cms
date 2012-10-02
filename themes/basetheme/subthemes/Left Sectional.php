@@ -5,7 +5,7 @@
 	    expTheme::head(array(
 	        "xhtml"=>false,
 		    "css_primer"=>array(
-	            YUI2_PATH."yui2-reset-fonts-grids/yui2-reset-fonts-grids.css"),
+                YUI2_RELATIVE."yui2-reset-fonts-grids/yui2-reset-fonts-grids.css"),
 	        "css_core"=>array("common"),
 	        "css_links"=>true,
 	        "css_theme"=>true
@@ -19,7 +19,7 @@
 				<h1 id="logo">
 				    <a href="<?php echo URL_FULL; ?>" title="<?php echo SITE_TITLE; ?>"><?php echo ORGANIZATION_NAME; ?></a> <sub><?php echo SITE_HEADER; ?></sub>
 				</h1>
-				<?php expTheme::module(array("module"=>"navigation","view"=>"YUI Top Nav","source"=>"@top")); ?>
+                <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_YUI Top Nav")); ?>
 			</div>
 			<div id="bd">
 				<div class="yui-b">

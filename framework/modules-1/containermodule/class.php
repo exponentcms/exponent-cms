@@ -18,15 +18,14 @@
 /** @define "BASE" "../../.." */
 
 class containermodule {
-	function name() { return 'Container'; }
-	function author() { return 'James Hunt'; }
-	function description() { return 'Contains other modules'; }
-	
-	function hasContent() { return true; }
-	function hasSources() { return true; }
-	function hasViews()   { return true; }
-	
-	function supportsWorkflow() { return false; }
+    function name() { return $this->displayname(); }
+    static function displayname() { return 'Container'; }
+    static function author() { return 'James Hunt'; }
+    static function description() { return 'Contains other modules'; }
+    static function hasContent() { return true; }
+	static function hasSources() { return true; }
+    static function hasViews()   { return true; }
+    static function supportsWorkflow() { return false; }
 	
 	function permissions($internal = '') {
 		return array(
@@ -47,7 +46,7 @@ class containermodule {
 			$containers = $db->selectObjects('container',"external='" . serialize($loc) . "'");
 			
 			foreach ($containers as $container) {
-				container::delete($container);
+				self::delete($container);
 				$db->delete('container','id='.$container->id);
 			}
 		}
@@ -134,7 +133,8 @@ class containermodule {
 				ob_start();
                 $mod->_hasParent = 1;
                 if ($iscontroller) {
-                    renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
+//                    renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
+                    renderAction(array('controller'=>expModules::getControllerName($location->mod), 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
                 } else {
                     $mod->show($containers[$i]->view,$location,$containers[$i]->title);
                 }
@@ -197,7 +197,7 @@ class containermodule {
 		$template->output();
 	}
 	
-	function copyContent($oloc,$nloc, $section=0) {
+	static function copyContent($oloc,$nloc, $section=0) {
 		global $db;
 		foreach ($db->selectObjects('container',"external='".serialize($oloc)."'") as $c) {
 			unset($c->id);
@@ -222,10 +222,10 @@ class containermodule {
 		}
 	}
 	
-	static function spiderContent($item = null) {
-		// Do nothing, no content
-		return false;
-	}
+//	static function spiderContent($item = null) {
+//		// Do nothing, no content
+//		return false;
+//	}
 	
 	static function wrapOutput($modclass,$view,$loc = null,$title = '') {
 	    global $db;

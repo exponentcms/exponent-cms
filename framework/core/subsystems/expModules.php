@@ -24,16 +24,23 @@
 
 class expModules {
 
-	public static function initializeControllers() {
+    /**
+     * Initializes list of system and custom (theme) controllers and models
+     *
+     * @return array
+     */
+    public static function initializeControllers() {
 	    $controllers = array();
 	    self::loadModulesDir(BASE.'themes/'.DISPLAY_THEME.'/modules', $controllers);
 	    self::loadModulesDir(BASE.'framework/modules', $controllers);
 	    return $controllers;
 	}
 
-	// recursive function used for (auto?)loading 2.0 modules controllers & models
+	/**
+     * Recursive function used to (auto?)load 2.0 modules controllers & models
+     */
 	public static function loadModulesDir($dir, &$controllers) {
-		global $db;
+//		global $db;
 	    if (is_readable($dir)) {
 	        $dh = opendir($dir);
 	        while (($file = readdir($dh)) !== false) {
@@ -80,10 +87,15 @@ class expModules {
 	    }
 	}
 
+    /**
+     * Returns list of active controllers
+     *
+     * @return array
+     */
     public static function listActiveControllers() {
         global $db;
         
-        $controllers = expModules::listUserRunnableControllers();
+        $controllers = self::listUserRunnableControllers();
         
         foreach ($controllers as $module) {
     		if (class_exists($module)) {
@@ -103,7 +115,12 @@ class expModules {
     	return $moduleInfo;
     }
 
-	public static function listUserRunnableControllers() {
+    /**
+     * Returns list of controllers with user actions
+     *
+     * @return array
+     */
+    public static function listUserRunnableControllers() {
 	    global $available_controllers;
 
 	    $controllers = array();
@@ -115,6 +132,10 @@ class expModules {
 	    return $controllers;
 	}
 
+    /**
+     * Returns list of install/used controllers
+     *
+     */
 	public static function listInstalledControllers($type=null, $loc=null) {
 	    if (empty($type)) return array();
 	        global $db;
@@ -144,9 +165,16 @@ class expModules {
 	    return $available_controllers;
 	}
 
-	public static function getController($controllername='') {
-	    $fullname = expModules::getControllerClassName($controllername);
-	    if (expModules::controllerExists($controllername))  {
+    /**
+     * Returns controller object
+     *
+     * @param string $controllername
+     *
+     * @return null
+     */
+    public static function getController($controllername='') {
+	    $fullname = self::getControllerClassName($controllername);
+	    if (self::controllerExists($controllername))  {
 	        $controller = new $fullname();
 	        return $controller;
 	    } else {
@@ -154,34 +182,63 @@ class expModules {
 	    }
 	}
 
-	public static function controllerExists($controllername='') {
+    /**
+     * Does a controller of controllername exist in system?
+     *
+     * @param string $controllername
+     *
+     * @return bool
+     */
+    public static function controllerExists($controllername='') {
 	    global $available_controllers;
 
 	    // make sure the name is in the right format
-	    $controllername = expModules::getControllerClassName($controllername);
+	    $controllername = self::getControllerClassName($controllername);
 
 	    // check for module based controllers
 	    if (array_key_exists($controllername, $available_controllers)) {
 	        if (is_readable($available_controllers[$controllername])) return true;
 	    } else {
 	        // check for core controllers
-	        if (is_readable(BASE.'framework/core/controllers/'.expModules::getControllerClassName($controllername).'.php')) return true;
+	        if (is_readable(BASE.'framework/core/controllers/'.self::getControllerClassName($controllername).'.php')) return true;
 	    }
 
 	    // if we got here we didn't find any controllers matching the name
 	    return false;
 	}
 
-	public static function getControllerClassName($controllername) {
+    /**
+     * Returns the full controller classname with the 'Controller' suffix
+     *
+     * @param $controllername
+     *
+     * @return null|string
+     */
+    public static function getControllerClassName($controllername) {
 	    if (empty($controllername)) return null;
 	    return (substr($controllername, -10) == 'Controller') ? $controllername : $controllername.'Controller';
 	}
 
-	public static function getControllerName($controllername) {
+    /**
+     * Returns the base controller name sans the 'Controller' suffix
+     * in most cases this is also the module name
+     *
+     * @param $controllername
+     *
+     * @return null|string
+     */
+    public static function getControllerName($controllername) {
 	    if (empty($controllername)) return null;
         return (substr($controllername, -10) == 'Controller') ? substr($controllername, 0, -10) : $controllername;
 	}
 
+    /**
+     * Returns the base controller or module name sans the 'Controller' or 'module' suffix
+     *
+     * @param $modulename
+     *
+     * @return null|string
+     */
     public static function getModuleName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
@@ -191,11 +248,27 @@ class expModules {
         }
    	}
 
-	/** exdoc
+    /**
+     * Returns the controller display (formal) name
+     *
+     * @param $controllername
+     *
+     * @return null|string
+     */
+    public static function getControllerDisplayName($controllername) {
+   	    if (empty($controllername) || !self::controllerExists($controllername)) return null;
+        $controllerclassname = self::getControllerClassName($controllername);
+        $controller = new $controllerclassname();
+        return $controller->displayname();
+//        return $controllerclassname::displayname();
+   	}
+
+	/**
 	 * Looks through the database returns a list of all module class
 	 * names that exist in the system and have been turned on by
 	 * the administrator.  Inactive modules will not be included.
 	 * Returns the list of active module class names.
+     *
 	 * @node Subsystems:Modules
 	 * @return array
 	 */
@@ -211,7 +284,7 @@ class expModules {
 
 	    $ctls = array();  // 2.0 modules
 	    foreach($modulestates as $state) {
-	        if (expModules::controllerExists($state->module)) {
+	        if (self::controllerExists($state->module)) {
 	            $controller = new $state->module();
 	            if (!empty($controller->useractions)) {
 		            $ctls[] = $state->module;
@@ -222,6 +295,11 @@ class expModules {
 	    return array_merge($ctls, $mods);
 	}
 
+    /**
+     * Returns list of old school modules
+     *
+     * @return array
+     */
     public static function modules_list() {
     	$mods = array();
     	if (is_readable(BASE."framework/modules-1")) {
@@ -233,7 +311,12 @@ class expModules {
     	return $mods;
     }
 
-	public static function listActiveOSMods() {
+    /**
+     * Returns list of active old school modules
+     *
+     * @return mixed
+     */
+    public static function listActiveOSMods() {
 		global $db;
 
 		$osmods = self::modules_list();

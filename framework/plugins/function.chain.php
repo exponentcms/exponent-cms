@@ -54,7 +54,7 @@ function smarty_function_chain($params,&$smarty) {
 		    $parms = $new_parms;
 		}
         if (empty($action)) {
-            echo expTheme::showModule($params['module'], $view, $title, $src, false, null, $chrome);
+            expTheme::showModule($params['module'], $view, $title, $src, false, null, $chrome);
         } else {
             expTheme::showAction($params['module'], $action, $src, $parms);
         }

@@ -281,9 +281,9 @@
         //launches the recycle bin
         EXPONENT.recyclebin = function() {
             var mod = EXPONENT.curMod;
-            //console.debug(mod);
+            //Y.log(mod);
             var url = EXPONENT.PATH_RELATIVE+"index.php?controller=recyclebin&action=show&ajax_action=1&recymod="+mod;//+"&dest="+escape(dest)+"&vmod="+vmod+"&vview="+vview;
-            //console.debug(url);
+            //Y.log(url);
             window.open(url,'sourcePicker','title=no,resizable=yes,toolbar=no,width=900,height=750,scrollbars=yes');
         }
 

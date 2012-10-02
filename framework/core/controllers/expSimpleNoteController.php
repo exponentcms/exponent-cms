@@ -27,9 +27,9 @@ class expSimpleNoteController extends expController {
     protected $add_permissions = array('approve'=>"Approve Comments");
     protected $remove_permissions = array('edit', 'create');
 
-    function displayname() { return gt("Simple Notes"); }
-    function description() { return gt("Use this module to add Simple Notes attached to something (product, order, etc)"); }
-    function author() { return "Jonathan Worent @ OIC Group, Inc"; }
+    static function displayname() { return gt("Simple Notes"); }
+    static function description() { return gt("Use this module to add Simple Notes attached to something (product, order, etc)"); }
+    static function author() { return "Jonathan Worent @ OIC Group, Inc"; }
     
     function edit() {
         global $user;
@@ -95,9 +95,14 @@ class expSimpleNoteController extends expController {
             'limit'=>10,
             'order'=>'created_at',
             'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Approved')=>'approved',gt('Poster')=>'name',gt('Comment')=>'body'),
+            'columns'=>array(
+                gt('Approved')=>'approved',
+                gt('Poster')=>'name',
+                gt('Comment')=>'body'
+            ),
         ));
         
         assign_to_template(array(
@@ -132,9 +137,12 @@ class expSimpleNoteController extends expController {
             'limit'=>10,
             'order'=>'created_at',
             'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Readable Column Name')=>'Column Name'),
+            'columns'=>array(
+                gt('Readable Column Name')=>'Column Name'
+            ),
         ));
         
         // count the unapproved comments

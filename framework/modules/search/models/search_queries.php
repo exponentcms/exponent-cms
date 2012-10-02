@@ -22,7 +22,7 @@
  */
 
 class search_queries extends expRecord {
-	public $table = 'search_queries';
+//	public $table = 'search_queries';
 	
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 		global $db;

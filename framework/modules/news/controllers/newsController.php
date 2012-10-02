@@ -35,10 +35,9 @@ class newsController extends expController {
         'showUnpublished'=>'View Unpublished News'
     );
 
-    function displayname() { return gt("News"); }
-    function description() { return gt("Use this to display & manage news type content on your site."); }
-    function author() { return "OIC Group, Inc"; }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("News"); }
+    static function description() { return gt("Use this to display & manage news type content on your site."); }
+    static function isSearchable() { return true; }
     
     public function showall() { 
         expHistory::set('viewable', $this->params);
@@ -62,11 +61,12 @@ class newsController extends expController {
             'records'=>$items,
             'limit'=>$limit,
             'order'=>$order,
-            'controller'=>$this->baseclassname,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
             'src'=>$this->loc->src,
             'view'=>empty($this->params['view']) ? null : $this->params['view']
-            ));
+        ));
             
         assign_to_template(array(
             'page'=>$page,
@@ -74,7 +74,48 @@ class newsController extends expController {
             'rank'=>($order==='rank')?1:0
         ));
     }
-    
+
+    public function show() {
+        global $db;
+
+        expHistory::set('viewable', $this->params);
+
+        // figure out if we're looking this up by id or title
+        $id = null;
+        if (isset($this->params['id'])) {
+            $id = $this->params['id'];
+        } elseif (isset($this->params['title'])) {
+            $id = $this->params['title'];
+        }
+
+        $record = new news($id);
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+
+        $order = $config['order'];
+        if (empty($order)) $order = 'publish DESC';
+        if (strstr($order," ")) {
+            $orderby = explode(" ",$order);
+            $order = $orderby[0];
+            $order_direction = $orderby[1];
+        } else {
+            $order_direction = '';
+        }
+        if ($order_direction == 'DESC') {
+            $order_direction_next = '';
+        } else {
+            $order_direction_next = 'DESC';
+        }
+        $nextwhere = $this->aggregateWhereClause().' AND '.$order.' > '.$record->$order.' ORDER BY '.$order.' '.$order_direction_next;
+        $record->next = $record->find('first',$nextwhere);
+        $prevwhere = $this->aggregateWhereClause().' AND '.$order.' < '.$record->$order.' ORDER BY '.$order.' '.$order_direction;
+        $record->prev = $record->find('first',$prevwhere);
+
+        assign_to_template(array(
+            'record'=>$record,
+            'config'=>$config
+        ));
+    }
+
     public function showUnpublished() {
         expHistory::set('viewable', $this->params);
         
@@ -88,10 +129,15 @@ class newsController extends expController {
             'where'=>$where,
             'limit'=>25,
             'order'=>'unpublish',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Title')=>'title',gt('Published On')=>'publish',gt('Status')=>'unpublish'),
-            ));
+            'columns'=>array(
+                gt('Title')=>'title',
+                gt('Published On')=>'publish',
+                gt('Status')=>'unpublish'
+            ),
+        ));
             
         assign_to_template(array(
             'page'=>$page
@@ -118,11 +164,8 @@ class newsController extends expController {
     }
     
     public function getRSSContent() {
-        global $db;     
-    
-        $order = isset($this->config['order']) ? $this->config['order'] : 'publish';
-
         // pull the news posts from the database
+        $order = isset($this->config['order']) ? $this->config['order'] : 'publish';
         $items = $this->news->find('all', $this->aggregateWhereClause(), $order);
 
         //Convert the newsitems to rss items
@@ -138,7 +181,13 @@ class newsController extends expController {
         }
         return $rssitems;
     }
-    
+
+    /**
+     * Pull RSS Feed and display as news items
+     *
+     * @param $items
+     * @return array
+     */
     private function mergeRssData($items) {
         if (!empty($this->config['pull_rss'])) {    
             $RSS = new SimplePie();

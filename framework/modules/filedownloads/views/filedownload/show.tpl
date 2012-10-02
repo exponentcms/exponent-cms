@@ -19,6 +19,13 @@
         {if $record->expFile.preview[0] != ""}
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
+        {if $config.datetag}
+            <p class="post-date">
+                <span class="month">{$record->publish_date|format_date:"%b"}</span>
+                <span class="day">{$record->publish_date|format_date:"%e"}</span>
+                <span class="year">{$record->publish_date|format_date:"%Y"}</span>
+            </p>
+        {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
         {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
         {subscribe_link}
@@ -42,21 +49,17 @@
         {/permissions}
         <div class="attribution">
             <p>
-            <span class="label dated">{'Dated'|gettext}:</span>
-            <span class="value">{$file->publish_date|format_date}</span>
-            &#160;|&#160;
+            {if !$config.datetag}
+                <span class="label dated">{'Dated'|gettext}:</span>
+                <span class="value">{$file->publish_date|format_date}</span>
+                &#160;|&#160;
+            {/if}
             {if $record->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->duration}</span>
             {else}
                 <span class="label size">{'File Size'}:</span>
-                {if $record->expFile.downloadable[0]->filesize >= 1048576}
-                    <span class="value">{$record->expFile.downloadable[0]->filesize|megabytes} {'mb'|gettext}</span>
-                {elseif $record->expFile.downloadable[0]->filesize >= 1024}
-                    <span class="value">{$record->expFile.downloadable[0]->filesize|kilobytes} {'kb'|gettext}</span>
-                {else}
-                    <span class="value">{$record->expFile.downloadable[0]->filesize} {'bytes'|gettext}</span>
-                {/if}
+                <span class="value">{$record->expFile.downloadable[0]->filesize|bytes}</span>
             {/if}
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
@@ -87,9 +90,9 @@
 </div>
 
 {if $config.show_player}
-    {script unique="filedownload" src="`$smarty.const.FLOWPLAYER_PATH`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+    {script unique="filedownload" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
     {literal}
-    flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_PATH+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
+    flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
         {
     		wmode: 'transparent',
     		clip: {

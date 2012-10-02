@@ -4,9 +4,9 @@
 	<?php 
     expTheme::head(array(
     	"xhtml"=>false,
-        "css_primer"=>array(YUI3_PATH."cssreset/reset-min.css",
-                            YUI3_PATH."cssfonts/fonts-min.css",
-                            YUI3_PATH."cssgrids/grids-min.css"),
+        "css_primer"=>array(YUI3_RELATIVE."cssreset/reset-min.css",
+            YUI3_RELATIVE."cssfonts/fonts-min.css",
+            YUI3_RELATIVE."cssgrids/grids-min.css"),
     	"css_core"=>array("common"),
     	"css_links"=>true,
     	"css_theme"=>true
@@ -33,8 +33,8 @@
 			</div>
 		</div>
 	</div>
-	<div align="center">
-		<strong><?php expTheme::module(array("module"=>"navigation","view"=>"Top Nav","source"=>"@top")); ?></strong>
+	<div style="align:center;">
+		<strong><?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Top Nav","source"=>"@top")); ?></strong>
 	</div>
 	<?php expTheme::foot(); ?>
 </body>

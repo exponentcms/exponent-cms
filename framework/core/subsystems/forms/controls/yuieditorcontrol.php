@@ -48,7 +48,7 @@ class yuieditorcontrol extends formcontrol {
 
 	function controlToHTML($name,$label) {
 //		$html  = '<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.2/build/editor/assets/skins/sam/simpleeditor.css" />';
-		$html  = '<link rel="stylesheet" type="text/css" href="'.YUI2_PATH.'assets/skins/sam/simpleeditor.css" />';
+		$html  = '<link rel="stylesheet" type="text/css" href="'.YUI2_RELATIVE.'assets/skins/sam/simpleeditor.css" />';
 		$html .= '<div class="yui-skin-sam"><textarea name="'.$name.'" id="'.$name.'"';
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
 		if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";
@@ -89,7 +89,7 @@ class yuieditorcontrol extends formcontrol {
 		return $html;
 	}
 	
-	function form($object) {
+	static function form($object) {
 
 		$form = new form();
 		
@@ -110,7 +110,7 @@ class yuieditorcontrol extends formcontrol {
 		return $form;
 	}
 	
-	function update($values, $object) {
+	static function update($values, $object) {
 		if ($object == null) $object = new texteditorcontrol();
 		if ($values['identifier'] == "") {
 			$post = $_POST;

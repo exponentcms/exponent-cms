@@ -1,0 +1,290 @@
+/* TREE STYLES */
+
+#navtree {
+    border:1px solid #999;
+    padding:20px 10px;
+    background:#efefef;
+}
+
+#navtree table{
+    border-collapse:collapse;
+    border-spacing:0;
+    padding:0;
+    margin:0;
+    width:100%;
+}
+#navtree td{
+    border-collapse:collapse;
+    border-spacing:0;
+    border:0;
+    padding:0;
+    margin:0;
+}
+
+#navtree td a {
+    text-decoration:none;
+}
+
+#navTreeContext h6 {
+    text-align:left;
+    padding-left:20px;
+    font-size:12px;
+    color:#333;
+    border-bottom:1px solid #dedede;
+}
+
+#navTreeContext .yuimenuitem {
+    height:25px;
+}
+
+#navTreeContext .yuimenuitemlabel {
+    padding-top:5px;
+}
+
+#navTreeContext .yuimenuitemlabel-hassubmenu{
+    background-image : url(../images/menuitem_submenuindicator.png);
+    background-repeat: no-repeat;
+    background-position: 175px;
+}
+#navTreeContext .addsubpage {
+    background-image: url(../../../../core/assets/images/exp1icons.png);
+    background-repeat: no-repeat;
+    background-position:  0 -492px;
+}
+#navTreeContext .addpage {
+    background-image: url(../images/page.png);
+    background-repeat: no-repeat;
+}
+#navTreeContext .addextpage {
+    background-image: url(../images/page_world.png);
+    background-repeat: no-repeat;
+}
+#navTreeContext .addintpage {
+    background-image: url(../images/page_link.png);
+    background-repeat: no-repeat;
+}
+#navTreeContext .addsapage {
+    background-image: url(../images/page_go.png);
+    background-repeat: no-repeat;
+}
+#navTreeContext .viewpage {
+    background-image:url(../../../../core/assets/images/view.png);
+    background-repeat: no-repeat;
+}
+#navTreeContext .editpage {
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat: no-repeat;
+    background-position:0 -517px;
+}
+#navTreeContext .deletepage {
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat: no-repeat;
+    background-position:0 -68px;
+}
+#navTreeContext .userperms {
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat: no-repeat;
+    background-position:0 -8px;
+}
+#navTreeContext .groupperms {
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat: no-repeat;
+    background-position:0 -38px;
+}
+
+#navTreeContext.yui-skin-sam .bd {
+    background:white;
+    border:1px solid #444;
+    text-align:left;
+}
+
+#navTreeContext li.yuimenuitem {
+    *width:200px;
+    display:block;
+}
+
+
+.navigation.manager-hierarchy .not-hovered {
+    background:#fff;
+}
+.navigation.manager-hierarchy .hovered {
+    background:#cdcdcd;
+    color:white;
+    font-weight:bold;
+    border:1px dotted #efefef;
+}
+.navigation.manager-hierarchy .draggables {
+    width:100%;
+    padding:0;
+    border:1px solid #efefef;
+    
+}
+
+.navigation.manager-hierarchy span.options {
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat:no-repeat; 
+    background-position:100% -442px; 
+}
+
+.navigation.manager-hierarchy .draggables span {
+    color:#010101;
+    font-weight:bold;
+    padding:3px 5px 0 2px;
+    cursor:default;
+}
+.navigation.manager-hierarchy .draggables span.addpage {
+    padding:3px 20px;
+    background-image:url(../images/page.png);
+    background-repeat:no-repeat;
+}
+.navigation.manager-hierarchy .draggables span.addextpage {
+    padding:3px 20px;
+    background-image:url(../images/page_world.png);
+    background-repeat:no-repeat;
+}
+.navigation.manager-hierarchy .draggables span.addintpage {
+    padding:3px 20px;
+    background-image:url(../images/page_link.png);
+    background-repeat:no-repeat;
+}
+.navigation.manager-hierarchy .draggables a.sectionmenu{
+    width:20px;
+    height:15px;
+    padding:0 20px 0 0;
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat:no-repeat; 
+    background-position:100% -418px; 
+    text-decoration:none;
+}
+.navigation.manager-hierarchy .draghandle {
+    margin: 0;
+    height:20px;
+    width:20px;
+    padding:0;
+    float:left;
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat: no-repeat;
+    background-position:100% -571px;
+    display:block;
+}
+.navigation.manager-hierarchy .nondraggables span {
+    color:#555;
+    font-weight:bold;
+    padding:3px 0 0 2px;
+    display:block;
+}
+
+.navigation.manager-hierarchy .ghost {
+    filter: alpha(opacity=30); -moz-opacity:.3;
+}
+
+.navigation.manager-hierarchy .addbefore {
+    width:100%;
+    font-size:0px;
+    height:3px;
+    margin-bottom:1px;
+    margin-bottom:1px;
+}
+.navigation.manager-hierarchy .addbefore-h {
+    background:#000;
+}
+
+.navigation.manager-hierarchy .addafter {
+    width:100%;
+    font-size:0px;
+    height:3px;
+    margin-top:1px;
+    margin-bottom:1px;
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    _background-image:url(../../skin/exp1icons.gif);  
+    /*background-color:none;  */
+    background-position:100% -220px; 
+}
+.navigation.manager-hierarchy .addafter-h {
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    _background-image:url(../../skin/exp1icons.gif);  
+    /*background-color:none;  */
+    background-position:100% -215px; 
+}
+
+
+.ddnavproxiebeingdragged {
+    background:none;
+    text-align:left;
+    padding:0 0 5px 0;
+    margin-left:25px;
+    margin-top:25px;
+}
+
+.ddnavproxiebeingdragged .shrinkwrap{
+/*  opacity:.90;*filter:alpha(opacity=90);
+*/  border:1px solid #9a9;
+    float:left;
+    z-index:1;
+    background:white;
+    padding:2px 5px 2px 2px;
+    position:relative;
+}
+
+.ddnavproxiebeingdragged .shrinkwrap .pshadow{
+    display:none;
+/*  position:absolute;
+    z-index:-1;
+    background:#000;
+    top:2px;
+    right:-3px;
+    bottom:-3px;
+    left:2px;
+    opacity:.25;*filter:alpha(opacity=25);
+    *visibility:hidden;
+*/}
+
+
+.ddnavproxiebeingdragged span {
+    color:#333;
+    font-weight:bold;
+    font-size:12px;
+}
+
+#dropindicator{
+    width:18px; 
+    height:15px;
+    float:left;
+    margin:0 5px;
+}
+#dropindicator.dropattop{
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat:no-repeat; 
+    background-position:0 -643px; 
+}
+
+#dropindicator.dropatbottom{
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat:no-repeat; 
+    background-position:0 -665px; 
+}
+#dropindicator.putinbetween{
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat:no-repeat; 
+    background-position:0 -685px; 
+}
+
+#dropindicator.addtome{
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat:no-repeat; 
+    background-position:0 -703px; 
+}
+
+#dropindicator.nodrop{
+    background-image:url(../../../../core/assets/images/exp1icons.png);
+    background-repeat:no-repeat; 
+    background-position:0 -722px; 
+}
+
+.nodebeingdragged{
+    margin:20px 0 0 20px;
+    border:1px solid green;
+    background:#eee;
+}
+
+/* end nav stuff */

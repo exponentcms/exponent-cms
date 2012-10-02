@@ -39,6 +39,7 @@ class product_type extends expNestedNode {
 		if(count($catArray) > 0) {
 			foreach($catArray as $item) {
 				if($item <> 0) {
+                    $assoc = new stdClass();
 					$assoc->storecategories_id  = $cat_id;
 					$assoc->$product_type_id    = $item;
 					$db->insertObject($assoc, "{$type}_storeCategories");    

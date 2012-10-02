@@ -23,6 +23,7 @@
  */
 
 class expQueue {
+
 	public $name = "";
 	public function __construct($name) {
 		$this->name = $name;
@@ -54,14 +55,15 @@ class expQueue {
 	}
 
     public static function show($name=null) {
+        $html = '';
         $queues = expSession::get('flash');
         if (empty($name)) {
-            $template = new template('common','_msg_queue');
+            $template = new template('common','_msg_queue',null,false,'globalviews');
             $template->assign('queues', $queues);
             $html = $template->render();
             self::flushAllQueues();
         } elseif (!empty($queues[$name])) {
-            $template = new template('common','_msg_queue');
+            $template = new template('common','_msg_queue',null,false,'globalviews');
             $template->assign('queues', array($name=>$queues[$name]));
             $html = $template->render();
             self::flushQueue($name);

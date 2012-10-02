@@ -13,10 +13,11 @@
  *
  *}
 
-<div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
+<p>{'To setup a PayPal Payflow account, visit'|gettext} <a href="https://merchant.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=merchant/payment_gateway" target="_blank">https://merchant.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=merchant/payment_gateway</a></p>
+<div id="payflow">
+    <div id="payflow-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>{'Payflow Pro'|gettext}<br>{'Settings'|gettext}</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'Payflow'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
 	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
 	        <li><a href="#tab4"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
@@ -40,7 +41,7 @@
 	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?"|gettext value=1 checked=$calculator->configdata.email_customer}
 	        </div>
 	        <div id="tab4">
-	            {control type="checkbox" name="email_admin" label="Send a notication that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
+	            {control type="checkbox" name="email_admin" label="Send a notification that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
 	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>
         </div>
@@ -50,16 +51,16 @@
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
-//        var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('auth');
-//        YAHOO.util.Dom.removeClass("authcfg", 'hide');
-//        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-//        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
-		tabview.render();
-		Y.one('#authcfg-tabs').removeClass('hide');
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//		var tabview = new Y.TabView({srcNode:'#payflow-tabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#payflow-tabs'});
+		Y.one('#payflow-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

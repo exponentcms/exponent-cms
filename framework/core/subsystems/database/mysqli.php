@@ -47,7 +47,9 @@ class mysqli_database extends database {
 	function __construct($username, $password, $hostname, $database, $new=false) {
 		if (strstr($hostname,':')) {
 			list ( $host, $port ) = @explode (":", $hostname);
-		}
+		} else {
+            $host = $hostname;
+        }
 		if ($this->connection = @mysqli_connect($host, $username, $password, $database, $port)) {
 			$this->havedb = true;
 		}
@@ -167,30 +169,34 @@ class mysqli_database extends database {
 
         //Drop any old columns from the table if aggressive mode is set.
         if ($aggressive) {
-            $oldcols = array_diff_assoc($dd, $newdatadef);
-            if (count($oldcols)) {
-                $modified = true;
-                $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
-                foreach ($oldcols as $name => $def) {
-                    $sql .= " DROP COLUMN " . $name . ",";
-                }
-                $sql = substr($sql, 0, -1);
+            if (is_array($newdatadef) && is_array($dd)) {
+                $oldcols = @array_diff_assoc($dd, $newdatadef);
+                if (count($oldcols)) {
+                    $modified = true;
+                    $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+                    foreach ($oldcols as $name => $def) {
+                        $sql .= " DROP COLUMN " . $name . ",";
+                    }
+                    $sql = substr($sql, 0, -1);
 
-                @mysqli_query($this->connection, $sql);
+                    @mysqli_query($this->connection, $sql);
+                }
             }
         }
 
         //Add any new columns to the table
-        $diff = array_diff_assoc($newdatadef, $dd);
-        if (count($diff)) {
-            $modified = true;
-            $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
-            foreach ($diff as $name => $def) {
-                $sql .= " ADD COLUMN (" . $this->fieldSQL($name, $def) . "),";
-            }
+        if (is_array($newdatadef) && is_array($dd)) {
+            $diff = @array_diff_assoc($newdatadef, $dd);
+            if (count($diff)) {
+                $modified = true;
+                $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+                foreach ($diff as $name => $def) {
+                    $sql .= " ADD COLUMN (" . $this->fieldSQL($name, $def) . "),";
+                }
 
-            $sql = substr($sql, 0, -1);
-            @mysqli_query($this->connection, $sql);
+                $sql = substr($sql, 0, -1);
+                @mysqli_query($this->connection, $sql);
+            }
         }
 
         //Add any new indexes & keys to the table.
@@ -636,7 +642,7 @@ class mysqli_database extends database {
      *
      * @param string $table The name of the table/object to look at
      * @param string $where Criteria used to narrow the result set.
-     * @return null|void
+     * @return object/null|void
      */
     function selectObject($table, $where) {
         $res = mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1");
@@ -674,7 +680,7 @@ class mysqli_database extends database {
      * object attributes starting with an underscore ('_') will be ignored and NOT inserted
      * into the table as a field value.
      *
-     * @param Object $object The object to insert.
+     * @param object $object The object to insert.
      * @param string $table The logical table name to insert into.  This does not include the table prefix, which
      *    is automagically prepended for you.
      * @return int|void
@@ -1103,12 +1109,12 @@ class mysqli_database extends database {
     }
 
 	/**
-	 * Select a records from the database
+	 * Select records from the database
 	 * @param string $table The name of the table/object to look at
 	 * @param string $where Criteria used to narrow the result set.  If this
 	 *   is specified as null, then no criteria is applied, and all objects are
 	 *   returned
-	 * @param  $classname
+	 * @param string $classname
 	 * @param bool $get_assoc
 	 * @param bool $get_attached
 	 * @param array $except

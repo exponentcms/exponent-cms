@@ -75,7 +75,7 @@ class dropdowncontrol extends formcontrol {
             $html .= '<option value="">'.$this->include_blank.'</option>';
         }
 
-        foreach ($this->items as $value=>$caption) {
+        if (!empty($this->items)) foreach ($this->items as $value=>$caption) {
             $html .= '<option value="' . $value . '"';
             if (is_array($this->default)) {
                 if (in_array($value, $this->default)) $html .= " selected";
@@ -89,8 +89,9 @@ class dropdowncontrol extends formcontrol {
         return $html;
     }
     
-    function form($object) {
+    static function form($object) {
         $form = new form();
+        if (empty($object)) $object = new stdClass();
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
@@ -114,7 +115,7 @@ class dropdowncontrol extends formcontrol {
         return $form;
     }
     
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($values['identifier'] == "") {
             $post = $_POST;
             $post['_formError'] = gt('Identifier is required.');

@@ -22,7 +22,6 @@
  */
 
 class flowplayerController extends expController {
-    //public $basemodel_name = '';
     public $useractions = array(
         'showall'=>'Show all'
     );
@@ -36,21 +35,26 @@ class flowplayerController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Flowplayer Media Player"); }
-    function description() { return gt("Flowplayer is a media player for Web sites. Use it to embed video/audio streams into your HTML pages."); }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Flowplayer Media Player"); }
+    static function description() { return gt("Flowplayer is a media player for Web sites. Use it to embed video/audio streams into your HTML pages."); }
+    static function isSearchable() { return true; }
     
     function showall() {
         expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
-                    'order'=>"rank",
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>(isset($this->params['limit']) && $this->config['limit'] != '') ? $this->params['limit'] : 10,
+            'order'=>"rank",
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('ID#')=>'id',
+                gt('Title')=>'title',
+                gt('Body')=>'body'
+            ),
+        ));
         
         assign_to_template(array(
             'page'=>$page,

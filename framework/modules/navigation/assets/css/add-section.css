@@ -1,0 +1,23 @@
+.navigation div.head {
+    background-color: #CCC;
+    padding: 5px;
+}
+.navigation div.desc {
+    padding: .5em;
+    padding-bottom: 1.5em;
+}
+.navigation.add-section a {
+    padding-left: 18px;
+}
+.navigation.add-section a.contentpage {
+    background: url(../images/page.png) no-repeat;
+}
+.navigation.add-section a.externalpage {
+    background: url(../images/page_world.png) no-repeat;
+}
+.navigation.add-section a.internalpage {
+    background: url(../images/page_link.png) no-repeat;
+}
+.navigation.add-section a.standalone {
+    background: url(../images/page_go.png) no-repeat;
+}

@@ -13,8 +13,9 @@
  *
  *}
 
-<div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
+<p>{'To setup a Authorize.Net account, visit'|gettext} <a href="http://www.authorize.net/" target="_blank">http://www.authorize.net/</a></p>
+<div id="authorizenet">
+    <div id="authorizenet-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'Authorize.net'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Accepted'|gettext}<br>{'Credit Cards'|gettext}</em></a></li>
@@ -48,16 +49,16 @@
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-//    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-tabview', function(Y) {
-//        var YAHOO=Y.YUI2;
-//        var tabView = new YAHOO.widget.TabView('auth');
-//        YAHOO.util.Dom.removeClass("authcfg", 'hide');
-//        var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-//        YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
-		tabview.render();
-		Y.one('#authcfg-tabs').removeClass('hide');
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//		var tabview = new Y.TabView({srcNode:'#authorizenet-tabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#authorizenet-tabs'});
+		Y.one('#authorizenet-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

@@ -50,13 +50,11 @@
             {icon action=copyProduct class="copy" text="Copy Product"|gettext title="Copy `$product->title` " record=$product}
         {/if}
         {if $permissions.edit == 1}   
-        
             <a href="{link controller=store action=edit parent_id=$product->id product_type='childProduct'}" class="add">{'Add Child Product'|gettext}</a>
         {/if}
     </div>
     {/permissions}
-    
-    
+
     {******* IMAGES *****}
     <div class="large-ecom-image">
         {if $product->main_image_functionality=="iws"}
@@ -294,8 +292,7 @@
         </ul>
     </div>
     {/if*}
-    
-    {if $config.enable_ratings_and_reviews} 
+    {if $config.enable_ratings_and_reviews}
         {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product}
     {/if}
     

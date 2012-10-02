@@ -19,9 +19,11 @@
     <p>{'Please enter the name, email, and phone number of the person you would like to register for this event.  If you would like to add more registrants, simply click \'Add another registrant\'.'|gettext} </p><br/>
 
     {form name="evregfrm" action=addItem}
+        {control type="hidden" name="controller" value=cart}
         {control type="hidden" name="product_type" value=$product->product_type}
         {control type="hidden" name="product_id" value=$product->id}
-        
+        {control type="hidden" name="quantity" value=1}
+
 <div class="module cart eventregistration addToCart registration_div" id="regdiv"> 
         {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"|gettext}
         {control type="text" id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}
@@ -33,39 +35,11 @@
     
 </div>
 
-{script unique="eventreg"}
+{script unique="eventreg" yui3mods="1"}
 {literal}
-EXPONENT.validateReg = function() {
-    var frm  = YAHOO.util.Dom.get('evregfrm');
-    if (frm.registrations.value==undefined){
-	for(i=0; i<frm.registrations.length; i++){
-	   if (frm.registrations[i].value==""){
-		alert("{/literal}{"You must provide a name for each of your registrants."|gettext}{literal}");
-		frm.registrations[i].focus();
-		return;
-	   } 	
-	   if (frm.registrations_emails[i].value==""){
-                alert("{/literal}{"You must provide an email for each of your registrants."|gettext}{literal}");
-                frm.registrations_emails[i].focus();
-                return;
-           }
-	   if (frm.registrations_phones[i].value==""){
-                alert("{/literal}{"You must provide a phone for each of your registrants."|gettext}{literal}");
-                frm.registrations_phones[i].focus();
-                return;
-           }
-	}
-        YAHOO.util.Dom.get('evregfrm').submit();
-    } else if (frm.registrations.value!="" && frm.registrations_emails.value!="" && frm.registrations_phones.value!=""){
-        YAHOO.util.Dom.get('evregfrm').submit();
-    } else {
-        alert("{/literal}{"You must provide name, email, and phone information for your registrant."|gettext}{literal}");
-	frm.registrations.focus();
-    }
-}
-
-
-YAHOO.util.Event.onDOMReady(function(){
+//YAHOO.util.Event.onDOMReady(function(){
+YUI(EXPONENT.YUI3_CONFIG).use('yui2-yahoo-dom-event', function(Y) {
+    var YAHOO = Y.YUI2;
     var addNewRegs = {
         addcounter : 0,
         refcontrl : YAHOO.util.Dom.get('regdiv'),
@@ -89,11 +63,42 @@ YAHOO.util.Event.onDOMReady(function(){
             this.newcontrl.setAttribute("class",this.refcontrl.getAttribute("class"));
             this.newcontrl.innerHTML = this.refcontrl.innerHTML;
             
-            
             this.insertAfter();
+
+            document.getElementById('quantity').value = parseFloat(document.getElementById('quantity').value) + 1;
         }
     }
     addNewRegs.init();
+
+    EXPONENT.validateReg = function() {
+        var frm  = YAHOO.util.Dom.get('evregfrm');
+        if (frm.registrations.value==undefined){
+            for(i=0; i<frm.registrations.length; i++){
+               if (frm.registrations[i].value==""){
+                alert("{/literal}{"You must provide a name for each of your registrants."|gettext}{literal}");
+                frm.registrations[i].focus();
+                return;
+               }
+               if (frm.registrations_emails[i].value==""){
+                    alert("{/literal}{"You must provide an email for each of your registrants."|gettext}{literal}");
+                    frm.registrations_emails[i].focus();
+                    return;
+               }
+               if (frm.registrations_phones[i].value==""){
+                    alert("{/literal}{"You must provide a phone for each of your registrants."|gettext}{literal}");
+                    frm.registrations_phones[i].focus();
+                    return;
+               }
+            }
+            YAHOO.util.Dom.get('evregfrm').submit();
+        } else if (frm.registrations.value!="" && frm.registrations_emails.value!="" && frm.registrations_phones.value!=""){
+            YAHOO.util.Dom.get('evregfrm').submit();
+        } else {
+            alert("{/literal}{"You must provide name, email, and phone information for your registrant."|gettext}{literal}");
+            frm.registrations.focus();
+        }
+    }
+
 });
 {/literal}
 {/script}

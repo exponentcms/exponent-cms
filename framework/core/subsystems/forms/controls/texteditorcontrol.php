@@ -67,8 +67,9 @@ class texteditorcontrol extends formcontrol {
 		return $html;
 	}
 	
-	function form($object) {
+	static function form($object) {
 		$form = new form();
+        if (empty($object)) $object = new stdClass();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
@@ -89,7 +90,7 @@ class texteditorcontrol extends formcontrol {
 		return $form;
 	}
 	
-	function update($values, $object) {
+    static function update($values, $object) {
 		if ($object == null) $object = new texteditorcontrol();
 		if ($values['identifier'] == "") {
 			$post = $_POST;

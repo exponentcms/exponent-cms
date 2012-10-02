@@ -13,10 +13,18 @@
  *
  *}
 
-<h2>{"Configure this Module"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Blog Settings"|gettext) module="blog"}
+		</div>
+        <h2>{'Blog Settings'|gettext}</h2>
+	</div>
+</div>
 <p>
     {"This is where you can configure the settings to be used by this Blog module."|gettext}&#160;&#160;
     {"These settings will only apply to this particular module."|gettext}
 </p>
 {control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None"|gettxtlist values="0,1,2"}
+{control type="checkbox" name="datetag" label="Display Item Date as Badge"|gettext value=1 checked=$config.datetag}
 {control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext value=1 checked=$config.printlink}

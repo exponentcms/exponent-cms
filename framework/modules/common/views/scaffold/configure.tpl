@@ -13,13 +13,18 @@
  *
  *}
 
-<div id="config" class="module scaffold configure exp-skin-tabview">
+<div id="config" class="module scaffold configure">
     <div class="form_header">
-    	<h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
+        <div class="info-header">
+    		<div class="related-actions">
+    		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("module configuration"|gettext) page="module-configuration"}
+    		</div>
+            <h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
+    	</div>
     	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
     </div>
 	{form action=saveconfig}
-		<div id="config-tabs" class="yui-navset hide">
+		<div id="config-tabs" class="yui-navset exp-skin-tabview hide">
 			<ul class="yui-nav">
 			    {foreach from=$views item=tab name=tabs}
 			        <li{if $smarty.foreach.tabs.first} class="selected"{/if}>
@@ -42,47 +47,35 @@
 
 {script unique="conf" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('history','tabview', function(Y) {
-		var history = new Y.HistoryHash(),
-	        tabview = new Y.TabView({srcNode:'#config-tabs'});
-	    tabview.render();
-	    Y.one('#config-tabs').removeClass('hide');
-	    Y.one('.loadingdiv').remove();
+	/**
+	 * add exp-tabs module and file to the YUI configuration object.
+	 * Including the dependencies (requires) here saves 
+	 * YUI and extra http call after loading exp-tabs, 
+	 * which also contains the dependencies
+	 */
 
-		// Set the selected tab to the bookmarked history state, or to
-		// the first tab if there's no bookmarked state.
-var test= history.get('tab');
-		tabview.selectChild(history.get('tab') || 0);
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
 
-		// Store a new history state when the user selects a tab.
-		tabview.after('selectionChange', function (e) {
-		  // If the new tab index is greater than 0, set the "tab"
-		  // state value to the index. Otherwise, remove the "tab"
-		  // state value by setting it to null (this reverts to the
-		  // default state of selecting the first tab).
-		  history.addValue('tab', e.newVal.get('index') || null);
-		});
+    /**
+     * Now, we just have to specify exptabs as the module.
+     * Looking in exp-tabs.js, you can see that on line 1, that's the module name.
+     */
+    
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+		// Y.expTabs is the function defined in the exptabs script
+		// we're passing it a static js object, with nothing but a
+		// selector we want the tabs to work with
 
-		// Listen for history changes from back/forward navigation or
-		// URL changes, and update the tab selection when necessary.
-		Y.on('history:change', function (e) {
-		  // Ignore changes we make ourselves, since we don't need
-		  // to update the selection state for those. We're only
-		  // interested in outside changes, such as the ones generated
-		  // when the user clicks the browser's back or forward buttons.
-		  if (e.src === Y.HistoryHash.SRC_HASH) {
+        Y.expTabs({srcNode: '#config-tabs'});
 
-		    if (e.changed.tab) {
-		      // The new state contains a different tab selection, so
-		      // change the selected tab.
-		      tabview.selectChild(e.changed.tab.newVal);
-		    } else if (e.removed.tab) {
-		      // The tab selection was removed in the new state, so
-		      // select the first tab by default.
-		      tabview.selectChild(0);
-		    }
-		  }
-		});
+        // I didn't add this stuff to the tab script, as it's not essential to 
+        // the tab functionality itself.
+        Y.one('#config-tabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
 	});
+
 {/literal}
 {/script}

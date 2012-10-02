@@ -25,12 +25,13 @@
 class ecomconfigController extends expController {
 	//public $basemodel_name = 'expRecord';
 	//public $useractions = array('show'=>'Configuration Panel');
-	public $useractions = array();
-    public $add_permissions = array('show'=>'View Admin Options');
+    public $add_permissions = array(
+        'show'=>'View Admin Options'
+    );
 	
-    function displayname() { return gt("Ecommerce Configuration Manager"); }
-    function description() { return gt("Use this module to configure your Ecommerce store"); }
-    function hasSources() { return false; }
+    static function displayname() { return gt("e-Commerce Configuration Manager"); }
+    static function description() { return gt("Use this module to configure your e-Commerce store"); }
+    static function hasSources() { return false; }
 
     function show() {
         expHistory::set('manageable', $this->params);
@@ -141,14 +142,14 @@ class ecomconfigController extends expController {
         expHistory::set('manageable', $this->params);
 		
         $page = new expPaginator(array(
+            'model'=>'discounts',
 			'sql'=>'SELECT * FROM '.DB_TABLE_PREFIX.'_discounts',
 			'limit'=> 10,
 			'order'=>isset($this->params['order']) ? $this->params['order'] : null,
-			'model'=>'discounts',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
-			));
+        ));
 
-		
         assign_to_template(array(
         /*'apply_rules'=>$discountObj->apply_rules, 'discount_types'=>$discountObj->discount_types,*/
             'page'=>$page
@@ -192,6 +193,8 @@ class ecomconfigController extends expController {
        
         // get the shipping options and their methods
         $shipping = new shipping();
+        $shipping_services = array();
+        $shipping_methods = array();
         foreach ($shipping->available_calculators as $calcid=>$name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
@@ -279,7 +282,7 @@ class ecomconfigController extends expController {
 	    if (empty($this->params['id'])) {
 	        // look for existing discounts for the same group
 	        $existing_id = $db->selectValue('groupdiscounts', 'id', 'group_id='.$this->params['group_id']);
-	        if (!empty($existing_id)) flashAndFlow('error', 'There is already a discount for that group.');	        
+	        if (!empty($existing_id)) flashAndFlow('error',gt('There is already a discount for that group.'));
 	    }
 
         $gd = new groupdiscounts();
@@ -322,7 +325,6 @@ class ecomconfigController extends expController {
         ));
     }   
 
-
 	/*****************************************************************/
     /***************  Upcharge Rate   *******************************/
     /*****************************************************************/
@@ -340,7 +342,7 @@ class ecomconfigController extends expController {
         assign_to_template(array(
             'countries'=>$countries,
             'regions'=>$regions,
-            'upcharge'=>$this->config['upcharge']
+            'upcharge'=>!empty($this->config['upcharge'])?$this->config['upcharge']:''
         ));
 	 }
 	 

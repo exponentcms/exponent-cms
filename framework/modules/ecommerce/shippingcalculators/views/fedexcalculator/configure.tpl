@@ -13,8 +13,8 @@
  *
  *}
 
-<div id="authcfg">
-    <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
+<div id="fedex">
+    <div id="fedex-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'FedEx Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Shipping Methods'|gettext}</em></a></li>
@@ -34,6 +34,7 @@
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx Next Day Air - Delivery by 8:30AM"|gettext value="FIRST_OVERNIGHT" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx Next Day Air - Delivery by 10:30AM"|gettext value="PRIORITY_OVERNIGHT" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx Standard Overnight - Delivery by 3PM"|gettext value="STANDARD_OVERNIGHT" checked=$calculator->configdata.shipping_methods}
+	            {control type="checkbox" name="shipping_methods[]" label="FedEx 2Day - Delivery by 10:30AM" value="FEDEX_2_DAY_AM"|gettext checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx 2Day - Delivery by 4:30PM" value="FEDEX_2_DAY"|gettext checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx 3Day Express Saver - Delivery by 4:30PM"|gettext value="FEDEX_EXPRESS_SAVER" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx Ground - 1-5 Business Days"|gettext value="FEDEX_GROUND" checked=$calculator->configdata.shipping_methods}
@@ -51,8 +52,8 @@
 	        </div>
 	        <div id="tab4">
 	            {control type="text" name="default_width" label="Standard Box Width (inches)"|gettext size=5 value=$calculator->configdata.default_width}
-	            {control type="text" name="default_length" label="Standard Box length (inches)"|gettext size=5 value=$calculator->configdata.default_length}
-	            {control type="text" name="default_height" label="Standard Box Heigth (inches)"|gettext size=5 value=$calculator->configdata.default_height}
+	            {control type="text" name="default_length" label="Standard Box Length (inches)"|gettext size=5 value=$calculator->configdata.default_length}
+	            {control type="text" name="default_height" label="Standard Box Height (inches)"|gettext size=5 value=$calculator->configdata.default_height}
 	            {control type="text" name="default_max_weight" label="Default Weight for Box (lbs)"|gettext size=5 value=$calculator->configdata.default_max_weight}
 	        </div>
         </div>
@@ -62,10 +63,16 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
-		tabview.render();
-		Y.one('#authcfg-tabs').removeClass('hide');
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//		var tabview = new Y.TabView({srcNode:'#fedex-tabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#fedex-tabs'});
+		Y.one('#fedex-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

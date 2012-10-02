@@ -24,3 +24,8 @@ a.switchtheme.variation.current {
     font-style:italic;
     padding:1px 3px;
 }
+.manage-themes tr.current td {
+    background-color: #fff9bc !important;
+    border-top: 1px solid black!important;
+    border-bottom: 1px solid black!important;
+}

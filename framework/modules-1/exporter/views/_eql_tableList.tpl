@@ -16,7 +16,7 @@
 <div class="exporter eql-tablelist">
 	<div class="form_header">
 		<h2>{'Backup Current Database'|gettext}</h2>
-		<p>{'Listed below are all of the tables in your site\'s database.  Select which tables you wish to backup, and then click the \'Export Data\' button.  Doing so will generate an EQL file (which you must save) that contains the data in the selected tables.  This file can be used later to restore the database to the current state.'|gettext}</p>
+		<p>{'Listed below are all of the tables in your site\'s database.  Select which tables you wish to backup, and then click the \'Export Data\' button.  Doing so will generate an EQL file (which you must save) that contains the data in the selected tables.  This file can be used later to restore the database to this saved state.'|gettext}</p>
 	</div>
     {script unique="tablelist"}
 	{literal}
@@ -57,7 +57,7 @@
 
 					<td>{$tables[tid]}</td>
 
-					<td width="12">&#160;</td>
+					<td style="width:12px">&#160;</td>
 
 					{math equation="x+1" x=$smarty.section.tid.index assign=nextid}
 					<td>
@@ -97,7 +97,7 @@
 			</tr>
 			<tr>
 				<td colspan="5">
-					<div style="border-top: 1px solid #CCCC;">{'Use __DOMAIN__ for this website\'s domain name, __DB__ for the site\'s database name and any strftime options for time specification. The EQL extension will be added for you. Any other text will be preserved.'|gettext}<br /></div>
+					<div style="border-top: 1px solid #CCC;">{'Use __DOMAIN__ for this website\'s domain name, __DB__ for the site\'s database name and any strftime options for time specification. The EQL extension will be added for you. Any other text will be preserved.'|gettext}<br /></div>
 				</td>
 			</tr>
 			<tr>

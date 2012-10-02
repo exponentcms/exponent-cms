@@ -21,9 +21,7 @@
 
 <div class="module filedownload showall">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
-    {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
-    {/if}
+    {rss_link}
     {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
@@ -50,7 +48,7 @@
     {assign var=myloc value=serialize($__loc)}
     {assign var="cat" value="bad"}
     {foreach from=$page->records item=file name=files}
-        {if $cat != $file->expCat[0]->id && $config.usecategories}
+        {if $cat !== $file->expCat[0]->id && $config.usecategories}
             <h2 class="category">{if $file->expCat[0]->title!= ""}{$file->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
 		{/if}
 			
@@ -61,8 +59,7 @@
 			{/if}
 			
 			<h3>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
-		
-			
+
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit == 1}
@@ -80,10 +77,7 @@
 					{/if}
 				</div>
 			{/permissions}
-			
-			
-			
-		
+
 			{clear}
 			{permissions}
 				<div class="module-actions">
@@ -100,9 +94,9 @@
 </div>
 
 {if $config.show_player}
-    {script unique="filedownload" src="`$smarty.const.FLOWPLAYER_PATH`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+    {script unique="filedownload" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
     {literal}
-    flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_PATH+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
+    flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
         {
     		wmode: 'transparent',
     		clip: {

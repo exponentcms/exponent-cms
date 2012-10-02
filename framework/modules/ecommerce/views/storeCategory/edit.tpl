@@ -13,27 +13,27 @@
  *
  *}
 
-<div id="editcategory" class="storecategory edit hide exp-skin-tabview">
+<div id="editcategory" class="storecategory edit">
 	<div class="form_header">
-        	<h1>{'Edit Store Category'|gettext}</h1>
-        	<p>{'Complete and save the form below to configure this store category'|gettext}</p>
+        <h1>{'Edit Store Category'|gettext}</h1>
+        <p>{'Complete and save the form below to configure this store category'|gettext}</p>
 	</div>
-        
 	{if $node->id == ""}
 		{assign var=action value=create}
 	{else}
 		{assign var=action value=update}
 	{/if}
+    <div id="mainform">
 	{form controller=storeCategory action=$action}
         {control type=hidden name=id value=$node->id}
         {control type=hidden name=parent_id value=$node->parent_id}
         {control type=hidden name=rgt value=$node->rgt}
         {control type=hidden name=lft value=$node->lft}                
-        <div id="demo" class="yui-navset">
+        <div id="cattabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
 				<li class="selected"><a href="#general"><em>{'General'|gettext}</em></a></li>
-				<li><a href="#seo"><em>{'Meta Info'|gettext}</em></a></li>
-				<li><a href="#events"><em>{'Events'|gettext}</em></a></li>
+				<li><a href="#seo"><em>{'SEO'|gettext}</em></a></li>
+				<li><a href="#events1"><em>{'Events'|gettext}</em></a></li>
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}
 						<li><a href="#{$item}"><em>{$key} {'Product Types'|gettext}</em></a></li>
@@ -53,49 +53,40 @@
                     {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords}
                     {control type=text name=meta_description label="Meta Description"|gettext value=$node->meta_description}
                 </div>        
-                 <div id="events">   
+                 <div id="events1">
                     {control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}
-                    {control type="checkbox" name="hide_closed_events" label="Don\'t Show Closed Events"|gettext value=1 checked=$node->hide_closed_events}
+                    {control type="checkbox" name="hide_closed_events" label='Don\'t Show Closed Events'|gettext value=1 checked=$node->hide_closed_events}
                 </div>  
 				{if $product_types}
 					{foreach from=$product_types key=key item=item}
 					<div id="{$item}">	
-						<h1>{$key} Product Types</h1>
+						<h1>{$key} {'Product Types'|gettext}</h1>
 						{$product_type.$item}
 					</div>
 					{/foreach}
 				{/if}
             </div>    
         </div>
+        <div class="loadingdiv">{'Loading'|gettext}</div>
         {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
-        {/form}                      
+        {/form}
+    </div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
-{script unique="cattabs" src="`$smarty.const.PATH_RELATIVE`framework/core/subsystems/forms/controls/listbuildercontrol.js"}
+
+{script unique="cat-tabs" src="`$smarty.const.PATH_RELATIVE`framework/core/subsystems/forms/controls/listbuildercontrol.js" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','event','yui2-tabview','yui2-element', function(Y) {
-    var YAHOO=Y.YUI2;
-    var tabView = new YAHOO.widget.TabView('demo');
-    
-    var url = location.href.split('#');
-    if (url[1]) {
-        //We have a hash
-        var tabHash = url[1];
-        var tabs = tabView.get('tabs');
-        for (var i = 0; i < tabs.length; i++) {
-            if (tabs[i].get('href') == '#' + tabHash) {
-                tabView.set('activeIndex', i);
-                break;
-            }
-        }
-    }
-    
-    
-    YAHOO.util.Dom.removeClass("editcategory", 'hide');
-    var loading = YAHOO.util.Dom.getElementsByClassName('loadingdiv', 'div');
-    YAHOO.util.Dom.setStyle(loading, 'display', 'none');
-});    
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+    YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//        var history = new Y.HistoryHash(),
+//            tabview = new Y.TabView({srcNode:'#cattabs'});
+//        tabview.render();
+        Y.expTabs({srcNode: '#cattabs'});
+        Y.one('#cattabs').removeClass('hide');
+        Y.one('.loadingdiv').remove();
+    });
 {/literal}
 {/script}
-
-

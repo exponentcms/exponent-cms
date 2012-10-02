@@ -44,7 +44,7 @@
                 <tr>
                     <td style="border:1px solid #DEDEDE;">
                     {$storeConfig.storename}
-                    {$storeConfig.header}  
+                    {$storeConfig.ecomheader}
                     </td>
                     <td style="border:1px solid #DEDEDE;">
                     {$order->invoice_id}
@@ -321,6 +321,6 @@
         </table>
     </div>
     <div id="store-footer">
-        {$storeConfig.footer}
+        {$storeConfig.ecomfooter}
     </div>
 </div>

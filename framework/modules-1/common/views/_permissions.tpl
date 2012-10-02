@@ -23,7 +23,8 @@
 {/css}
 
 <form method="post">
-    <input type="hidden" name="module" value="{$__loc->mod}" />
+    {*<input type="hidden" name="module" value="{$__loc->mod}" />*}
+    <input type="hidden" name="module" value="{$page->controller}" />
     <input type="hidden" name="src" value="{$__loc->src}" />
     <input type="hidden" name="int" value="{$__loc->int}" />
     {if $user_form == 1}<input type="hidden" name="action" value="saveuserperms" />

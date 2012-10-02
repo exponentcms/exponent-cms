@@ -70,7 +70,7 @@
                         </div>
                     {/permissions}
                     {if $item->expFile[0]->id}
-                        <a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{img file_id=$item->expFile[0]->id width=200 height=150 constrain=1 style="float:left; margin-right:10px"}</a>
+                        <a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{img file_id=$item->expFile[0]->id w=200 h=150 constrain=1 style="float:left; margin-right:10px"}</a>
                     {/if}
                     {if $item->body}
                         <div class="bodycopy">
@@ -103,7 +103,7 @@
                     </div>
                 {/permissions}
                 {if $item->expFile[0]->id}
-                    <a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{img file_id=$item->expFile[0]->id width=200 height=150 constrain=1 style="float:left; margin-right:10px"}</a>
+                    <a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{img file_id=$item->expFile[0]->id w=200 h=150 constrain=1 style="float:left; margin-right:10px"}</a>
                 {/if}
                 {if $item->body}
                     <div class="bodycopy">

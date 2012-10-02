@@ -12,43 +12,53 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
+{literal}
+	.headlines .events {
+		overflow: hidden;
+	}
+{/literal}
+{/css}
 
-<div class="module events headlines">
+<div class="module events showall headlines">
     {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
-
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+             {icon action=manage text="Manage Events"|gettext}
+        {/if}
+    </div>
+    {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
     {assign var=myloc value=serialize($__loc)}
     <ul>
-    {foreach name=items from=$page item=item}
-        {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
-
-        <li>
-            <a class="link" href="{link action=showByTitle title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
-                {$item->title}
-            </a>
-            
-            {if !$config.hidedate}
-                <em class="date">{$item->publish_date|format_date}</em>
+        {foreach name=items from=$page->records item=item}
+            {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
+                <li>
+                    <div class="events">
+                        <a class="link" href="{link action=showByTitle title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+                        <a href="{link action=showByTitle title=$item->sef_url}"></a>
+                        - <em class="date">{$item->eventdate|date_format}</em>
+                        {if $item->isRss != true}
+                            {permissions}
+                            <div class="item-actions">
+                                {if $permissions.edit == true}
+                                    {icon controller="store" action=edit record=$item}
+                                {/if}
+                                {if $permissions.delete == true}
+                                    {icon controller="store" action=delete record=$item}
+                                {/if}
+                            </div>
+                            {/permissions}
+                        {/if}
+                    </div>
+                </li>
             {/if}
-            
-            {if $item->isRss != true}
-                {permissions}
-                <div class="item-actions">
-                    {if $permissions.edit == true}
-                        {icon controller="store" action=edit record=$item}
-                    {/if}
-                    {if $permissions.delete == true}
-                        {icon controller="store" action=delete record=$item}
-                    {/if}
-                </div>
-                {/permissions}
-            {/if}
-        </li>
-        {/if}
-    {/foreach}
+        {/foreach}
     </ul>
-   
 </div>

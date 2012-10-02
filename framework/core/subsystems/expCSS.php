@@ -28,7 +28,7 @@ class expCSS {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline;
         
         // primer css
-        if (isset($params['css_primer'])){
+        if (!empty($params['css_primer'])){
             $primer_array = $params['css_primer'];
             foreach ($primer_array as $path) {
                 //indexing the array by the filename
@@ -38,7 +38,7 @@ class expCSS {
         
          // less files to compile to css
         $less_vars =!empty($params['lessvars']) ? $params['lessvars'] : array();
-        if (isset($params['lesscss'])) {
+        if (!empty($params['lesscss'])) {
             $less_array = $params['lesscss'];
             if (!empty($less_array) && !is_array($less_array)) $less_array = array($less_array);
             foreach ($less_array as $less_path) {
@@ -51,9 +51,10 @@ class expCSS {
         }
 
         // files in framework/core/assets/css that is general to many views and the system overall
-        if (isset($params['corecss'])){
+        if (!empty($params['corecss'])){
             $core_array = explode(",",$params['corecss']);
             foreach ($core_array as $filename) {
+                $filename = trim($filename);
                 $existspath = BASE."framework/core/assets/css/".$filename.".css";
                 $filepath = PATH_RELATIVE."framework/core/assets/css/".$filename.".css";
                 if (is_file($existspath)) {
@@ -245,8 +246,11 @@ class expCSS {
                 $cache = BASE.$less_fname;
             }
         }
-        $new_cache = lessc::cexecute($cache, false, $vars);
+        $less = new lessc;
+        $less->setVariables($vars);
+        $new_cache = $less->cachedCompile($cache, false);
         if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
+            $new_cache['vars'] = !empty($vars)?$vars:null;
             file_put_contents(BASE.$css_fname, $new_cache['compiled']);
             file_put_contents($cache_fname, serialize($new_cache));
         }

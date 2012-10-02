@@ -23,14 +23,16 @@ if (!defined('EXPONENT')) exit('');
 if ($user->isAdmin()) {
 	global $router;
 	if (expTemplate::getModuleViewFile($loc->mod,'_userpermissions',false) == TEMPLATE_FALLBACK_VIEW) {
-		$template = new template('common','_userpermissions',$loc);
+//		$template = new template('common','_userpermissions',$loc,false,'globalviews');
+        $template = new template('common','_userpermissions',$loc);
 	} else {
 		//TODO
 		//ADK - I hard coded the common module name into the new template declaration since the path resolver 
 		// can't seem to figure out that we are in the common module and not the module that call this action.
 
 		//$template = new template($loc->mod,'_userpermissions',$loc);
-		$template = new template('common','_userpermissions',$loc);
+//		$template = new template('common','_userpermissions',$loc,false,'globalviews');
+        $template = new template('common','_userpermissions',$loc);
 	}
 	$template->assign('user_form',1);
 	
@@ -67,24 +69,27 @@ if ($user->isAdmin()) {
 		$page = new expPaginator(array(
 		//'model'=>'user',
 		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
-		'controller'=>$router->params['controller'],
-		'action'=>$router->params['action'],
+//		'controller'=>$router->params['controller'],
 		'records'=>$users,
 		//'sql'=>$sql,
 		'order'=>'username',
 		'dir'=>'ASC',
+        'page'=>(isset($_REQUEST['page']) ? $_REQUEST['page'] : 1),
+        'controller'=>$modulename,
+		'action'=>$router->params['action'],
 		'columns'=>$p,
 		));
 	} else {
 		$page = new expPaginator(array(
 		//'model'=>'user',
 		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
-		'controller'=>expString::sanitize($_GET['module']),
-		'action'=>$_GET['action'],
 		'records'=>$users,
 		//'sql'=>$sql,
 		'order'=>'username',
 		'dir'=>'ASC',
+        'page'=>(isset($_REQUEST['page']) ? $_REQUEST['page'] : 1),
+        'controller'=>expString::sanitize($_GET['module']),
+        'action'=>$_GET['action'],
 		'columns'=>$p,
 		));
 	}
@@ -93,7 +98,7 @@ if ($user->isAdmin()) {
 	$template->assign('users',$users);
 	$template->assign('page',$page);
 	$template->assign('perms',$perms);
-    $template->assign('title',$modulename != 'navigationmodule'?$mod->name().' '.($modulename != 'containermodule'?gt('module'):'').' ':gt('Page'));
+    $template->assign('title',($modulename != 'navigationController' || ($modulename == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modulename != 'containermodule' ? gt('module') : '').' ' : gt('Page'));
 
 	$template->output();
 } else {

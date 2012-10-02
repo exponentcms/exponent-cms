@@ -13,7 +13,8 @@
  *
  */
 
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-json','yui2-yahoo-dom-event', function(Y) {
+    var YAHOO = Y.YUI2;
 
     var toggleCart = {
             cartWrap: YAHOO.util.Dom.get('shoppingcartwrapper'),
@@ -73,7 +74,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         serviceForm : YAHOO.util.Dom.get('SelShpCal'),
         udID : YAHOO.util.Dom.get('shprceup'),
         ssDisplay : YAHOO.util.Dom.get('cur-calc'),
-        ajx : new EXPONENT.AjaxEvent(),
+//        ajx : new EXPONENT.AjaxEvent(),
         init : function(){
             
             //listen carefully...
@@ -103,7 +104,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             //EXPONENT.onQuantityAdjusted.subscribe(this.refreshPrices);
             EXPONENT.onQuantityAdjusted.subscribe(updateService);
     
-            
             this.switchCalc = new YAHOO.widget.Panel("calculators", { width:"250px", visible:false, zindex:55, constraintoviewport:false, close:false,draggable:false } );
             this.switchCalc.render(document.body);
     
@@ -201,7 +201,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
           }
     }   
     
-
     var giftmessage = {
         init : function () {
             var msgpops = YAHOO.util.Dom.getElementsByClassName('ordermessage', 'a');
@@ -278,23 +277,21 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     function unhide() {
         var hiding = YAHOO.util.Dom.getElementsByClassName('hide');
         YAHOO.util.Dom.removeClass(hiding,'hide');
-        
     }
+
     function hide() {
         var tohide = YAHOO.util.Dom.getElementsByClassName('tohide');
         YAHOO.util.Dom.setStyle(tohide, 'display', 'none');
-        
     }
-    
     
     //initialize things
     function inititCheckout(){
         hide();
-        //shippingMethod.init();
-        //addressManager.init();
-        //creditCard.init();
-        //giftmessage.init();
-        //toggleCart.init();
+        shippingMethod.init();
+//        addressManager.init();
+//        creditCard.init();
+        giftmessage.init();
+        toggleCart.init();
     }
     Y.on('domready',inititCheckout);
     

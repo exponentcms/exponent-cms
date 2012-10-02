@@ -22,13 +22,14 @@
  */
 
 class shippingController extends expController {
-	public $useractions = array();
-	public $add_permissions = array('toggle'=>'Enable/Disable Options');
+	public $add_permissions = array(
+        'toggle'=>'Enable/Disable Options'
+    );
 
-	function displayname() { return gt("Ecommerce Shipping Controller"); }
-	function description() { return ""; }
-	function hasSources() { return false; }
-	function hasContent() { return false; }
+    static function displayname() { return gt("e-Commerce Shipping Controller"); }
+    static function description() { return ""; }
+	static function hasSources() { return false; }
+    static function hasContent() { return false; }
 	
 	function selectShippingCalculator() {
 	    global $db;
@@ -113,6 +114,8 @@ class shippingController extends expController {
 	    expHistory::set('manageable', $this->params);
 	    $calculators = array();
         $dir = BASE."framework/modules/ecommerce/shippingcalculators";
+        $default = false;
+        $on = false;
         if (is_readable($dir)) {
             $dh = opendir($dir);
             while (($file = readdir($dh)) !== false) {
@@ -128,8 +131,15 @@ class shippingController extends expController {
                     } else {
                         $calcobj = new $classname($id);
                     }
-                    
                     $calculators[] = $calcobj;
+                    if (!$default) $default = $calcobj->is_default;
+                    if (!$on && $calcobj->enabled) $on = $calcobj->id;
+                }
+            }
+            if (!$default && $on) {
+                $db->toggle('shippingcalculator', 'is_default', 'id='.$on);
+                foreach ($calculators as $idx=>$calc) {
+                    if ($calc->id == $on) $calculators[$idx]->is_default = 1;
                 }
             }
         }
@@ -142,8 +152,25 @@ class shippingController extends expController {
 	public function toggle() {
 	    global $db;
 	    if (isset($this->params['id'])) $db->toggle('shippingcalculator', 'enabled', 'id='.$this->params['id']);
+        if ($db->selectValue('shippingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('shippingcalculator', 'enabled', 'id='.$this->params['id'])) {
+            $db->toggle('shippingcalculator', 'is_default', 'id='.$this->params['id']);
+        }
 	    expHistory::back();
 	}
+
+    public function toggle_default() {
+  	    global $db;
+        $db->toggle('shippingcalculator',"is_default",'is_default=1');
+  	    if (isset($this->params['id'])) {
+            $active = $db->selectObject('shippingcalculator',"id=".$this->params['id']);
+            $active->is_default = 1;
+            $db->updateObject($active,'shippingcalculator',null,'id');
+        }
+        if ($db->selectValue('shippingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('shippingcalculator', 'enabled', 'id='.$this->params['id'])) {
+            $db->toggle('shippingcalculator', 'enabled', 'id='.$this->params['id']);
+        }
+  	    expHistory::back();
+  	}
 
     public function configure() {
         global $db;
@@ -180,6 +207,7 @@ class shippingController extends expController {
 	
 	public function saveEditSpeed() {
 		global $db;
+        $obj = new stdClass();
 		$obj->speed = $this->params['speed'];
 		$obj->shippingcalculator_id = $this->params['shippingcalculator_id'];
 		$db->insertObject($obj, $this->params['table']);

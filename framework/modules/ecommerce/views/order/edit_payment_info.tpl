@@ -13,10 +13,10 @@
  *
  *}
 
-<div id="authcfg">
+<div id="editpayment">
     {form action=save_payment_info}
         {control type="hidden" name="id" value=$orderid}    
-        <div id="authcfg-tabs" class="yui-navset exp-skin-tabview hide">
+        <div id="editpayment-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>{'Edit Payment Info'|gettext}</em></a></li>
             </ul>            
@@ -35,10 +35,16 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#authcfg-tabs'});
-	    tabview.render();
-		Y.one('#authcfg-tabs').removeClass('hide');
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#editpayment-tabs'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#editpayment-tabs'});
+		Y.one('#editpayment-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
 {/literal}

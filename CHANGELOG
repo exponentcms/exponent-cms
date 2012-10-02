@@ -2,6 +2,39 @@ Exponent Content Management System
 Copyright (c) 2004-2012 OIC Group, Inc.
 ===============================================
 
+For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
+
+Added / Fixed / changed for 2.0.9
+-----------------------
+# This release focuses on greater HTML5 & PHP v5.4 compliance, & module upgrades
+  - upgrades old school simple poll and navigation modules into 2.0 style controllers
+    -- page type indicators now displayed in Manage Pages view
+    -- new universal navigation view to emulate most old navigation views through user settings
+    -- initial implementation of optional menu item icons
+  - adds help links to most admin displays
+  - adds next/prev item in blog and news single item view
+  - adds optional 'date badge' to news, blog, & filedownload views
+  - calendar is more forgiving of timezone changes (events won't disappear)
+    -- adds selectable weekly view to calendar
+    -- updates ical feeds and send reminders cron task to use sef urls
+  - adds new 2-column style display option in forms module
+  - updates rss feeds to use sef urls, adds individual feed 'advertise' option
+  - more efficient searches...several anomalies fixed and search activity reports available
+  - importing EQL database backup files now more descriptive if errors are encountered (detailed solution provided)
+  - adds some new upgrade scripts to attempt to clean up the system from previous updates
+    -- deletes moved files where old file in old location may still linger
+    -- attempts to fix some database issues such as mixed case naming or controller name quirks
+  - new system fallback theme so pages will display even if the entire themes folder is missing
+  - adds instructions to get e-commerce up and running
+    -- closer to an 'out of the box' solution
+    -- can now activate e-commerce w/o activating an ecom module
+    -- PayPal Express checkout updated to use new api to give more into on the PayPal screen
+    -- FedEx & UPS shipping calculators working
+    -- e-commerce use a little more intuitive/more features now functional
+  - adds a working 'upload' control to forms which will email submitted file as an attachment
+  - (finally) upgrades the YUI framework to v3.7.2 (after being stuck at v3.4.0 due to issue)
+  - plus many, many other tweaks, fixes, and features
+
 Added / Fixed / changed for 2.0.8
 -----------------------
 # This release focuses on fixing bugs and enhancing list management (tags, categories, comments)

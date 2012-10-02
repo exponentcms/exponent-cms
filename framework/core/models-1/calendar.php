@@ -48,6 +48,7 @@ class calendar {
 		}
 		//$form->register('eventdate',gt('Event Date'),new popupdatetimecontrol($object->eventdate->date,'',false));
 		$form->register('eventdate',gt('Event Date'),new yuicalendarcontrol($object->eventdate->date,'',false),true,gt('Date'));
+//        $form->register('eventdate',gt('Event Date'),new calendarcontrol($object->eventdate->date,'',false),true,gt('Date'));
 
 		$cb = new checkboxcontrol($object->is_allday,false);
 		$cb->jsHooks = array('onclick'=>'exponent_forms_disable_datetime(\'eventstart\',this.form,this.checked); exponent_forms_disable_datetime(\'eventend\',this.form,this.checked);');
@@ -61,6 +62,7 @@ class calendar {
             $customctl = $custom->render();
 			//$datectl = new popupdatetimecontrol($object->eventstart+365*86400,'',false);
 			$datectl = new yuicalendarcontrol($object->eventdate->date+365*86400,'',false);
+//            $datectl = new calendarcontrol($object->eventdate->date+365*86400,'',false);
 			$customctl = str_replace('%%UNTILDATEPICKER%%',$datectl->controlToHTML('untildate'),$customctl);
 			$form->register('recur',gt('Recurrence'),new customcontrol($customctl),true,gt('Date'));
 		} else if ($object->is_recurring == 1) {

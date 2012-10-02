@@ -22,7 +22,6 @@
  */
 
 class portfolioController extends expController {
-    //public $basemodel_name = '';
     public $useractions = array(
         'showall'=>'Show all', 
         'tags'=>"Tags",
@@ -34,9 +33,9 @@ class portfolioController extends expController {
         'rss'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Portfolio"); }
-    function description() { return gt("This module allows you to show off your work portfolio style."); }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Portfolio"); }
+    static function description() { return gt("This module allows you to show off your work portfolio style."); }
+    static function isSearchable() { return true; }
 
     public function showall() {
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
@@ -45,17 +44,20 @@ class portfolioController extends expController {
         }
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>$limit,
-                    'order'=>$order,
-                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
-                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
-                    'controller'=>$this->baseclassname,
-                    'src'=>$this->loc->src,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(gt('Title')=>'title'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>$limit,
+            'order'=>$order,
+            'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+            'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
 
         assign_to_template(array(
             'page'=>$page,

@@ -54,14 +54,15 @@ class splitcreditcard extends creditcard {
 			
 		$this->opts->cc_number = 'XXXX-XXXX-XXXX-'.substr($this->opts->cc_number,-4);
 		$method->update(array('billing_options'=>serialize($this->opts)));
-		
+
+        $object = new stdClass();
 		$object->errorCode = 0;
 		$this->opts->result = $object;      
 		$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$this->opts->result,"complete");
 		return true;
 	}	
 	
-	function postProcess() {
+	function postProcess($order,$params) {
 		return true;
 	}
 	
@@ -99,7 +100,7 @@ class splitcreditcard extends creditcard {
 	}
 	
 	//process config form
-	function update($values, $config_object) {
+	function update($params = array()) {
 		/*$config_object->email_contact = $values['email_contact'];
 		$config_object->email_subject = $values['email_subject'];
 		$config_object->email_intro = $values['email_intro'];
@@ -121,7 +122,7 @@ class splitcreditcard extends creditcard {
 	
 	//This is called when a billing method is deleted. It can be used to clean up if you
 	//have any custom user_data storage.
-	function delete($config_object) {
+	function delete($where = '') {
 		return;
 	}
 	

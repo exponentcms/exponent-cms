@@ -31,13 +31,10 @@ class taxController extends expController {
 			'delete_zone'   =>'Delete Zone'
 		);
 		
-    public $useractions = null; // keeps it from showing up in available modules to activate
-     
-    function displayname() { return gt("e-Commerce Tax Class Manager"); }
-    function description() { return gt("Manage tax classes for your Ecommerce store"); }
-    function author() { return "OIC Group, Inc"; }
-    function canImportData() { return true; }
-    function canExportData() { return true; }
+    static function displayname() { return gt("e-Commerce Tax Class Manager"); }
+    static function description() { return gt("Manage tax classes for your e-Commerce store"); }
+    static function canImportData() { return true; }
+    static function canExportData() { return true; }
 
     function manage() {               
         expHistory::set('manageable', $this->params);
@@ -79,6 +76,7 @@ class taxController extends expController {
 			$tax_rate  = $db->selectObject('tax_rate', 'class_id =' .$this->params['id']);
 			$tax_geo   = $db->selectObject('tax_geo', 'zone_id =' . $tax_rate->zone_id);
 			//Store it in a single object all the data needed
+            $record = new stdClass();
 			$record->id        = $tax_class->id;
 			$record->classname = $tax_class->name;
 			$record->rate      = $tax_rate->rate;
@@ -105,16 +103,19 @@ class taxController extends expController {
 			
 		if(empty($this->params['id'])) {
 			//Add data in tax class
+            $tax_class = new stdClass();
 			$tax_class->name = $this->params['name'];
 			$class_id        = $db->insertObject($tax_class,'tax_class');
 			
 			//Add data in the tax geo
+            $tax_geo = new stdClass();
 			$tax_geo->zone_id    = $this->params['zone'];
 			$tax_geo->country_id = $this->params['country'];
 			$tax_geo->region_id  = $this->params['state'];
 			$db->insertObject($tax_geo,'tax_geo');
 			
 			//Add data in the tax rate
+            $tax_rate = new stdClass();
 			$tax_rate->zone_id  = $this->params['zone'];
 			$tax_rate->class_id = $class_id;
 			$tax_rate->rate     = $this->params['rate'];
@@ -193,6 +194,7 @@ class taxController extends expController {
         global $db;
 			
 		if(empty($this->params['id'])) {
+            $obj = new stdClass();
 			$obj->name = $this->params['name'];
 			$db->insertObject($obj,'tax_zone');
 		} else {

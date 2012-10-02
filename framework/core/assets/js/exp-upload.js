@@ -17,7 +17,7 @@
 var YUD = YAHOO.util.Dom, YUE = YAHOO.util.Event;
 
 //initialize with the SWF url
-YAHOO.widget.Uploader.SWFURL = EXPONENT.PATH_RELATIVE+"yui/build/uploader/assets/Uploader.swf";
+YAHOO.widget.Uploader.SWFURL = EXPONENT.YUI3_RELATIVE+"uploader/assets/uploader.swf";
 
 //set up our namespace
 YAHOO.namespace("upload");

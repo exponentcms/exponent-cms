@@ -27,7 +27,7 @@
         <thead>
             <tr>
                 <th>
-                    <h1>{"Build a Report"|gettext}</h1>
+                    <h1>{"Build an Order Report"|gettext}</h1>
                 </th>
             </tr>
         </thead>
@@ -96,13 +96,13 @@
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="text" name="pnam" label="Containg A Product Name Like"|gettext value=$record->product}
+                    {control type="text" name="pnam" label="Contains A Product Name Like"|gettext value=$record->product}
                 </td>
                 
             </tr>
             <tr class="even">
                 <td>
-                    {control type="text" name="sku" label="Containg A SKU Like"|gettext value=$record->sku}
+                    {control type="text" name="sku" label="Contains A SKU Like"|gettext value=$record->sku}
                 </td>
                 
             </tr>

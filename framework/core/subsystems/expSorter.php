@@ -23,6 +23,7 @@
  */
  
 class expSorter {
+
     public $sort_array = array();
     public $sort_object_property = null;
     public $sort_order = 'ASC';

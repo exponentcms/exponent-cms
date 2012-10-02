@@ -35,8 +35,9 @@ class instorepickupcalculator extends shippingcalculator {
 
     public $shippingmethods = array("01"=>"In Store Pickup");
 
-    public function getRates($order) {        
-	    $rates = array('01'=>array('id'=>'01','title'=>$this->shippingmethods['01'],'cost'=>$this->configdata['rate']));
+    public function getRates($order) {
+        $rate = !empty($this->configdata['rate']) ? $this->configdata['rate'] : '';
+	    $rates = array('01'=>array('id'=>'01','title'=>$this->shippingmethods['01'],'cost'=>$rate));
 	    return $rates;
     }	
     

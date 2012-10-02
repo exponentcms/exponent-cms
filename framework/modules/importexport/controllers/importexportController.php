@@ -22,7 +22,6 @@
  */
 
 class importexportController extends expController {
-    
     public $useractions = array(
         /*'showall'=>'Show all products & categories',
         'showall_featured_products'=>'Show all featured products',
@@ -49,17 +48,10 @@ class importexportController extends expController {
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array('import'=>'Import Data', 'export'=>'Export Data');
      
-    function name() { return $this->displayname(); } //for backwards compat with old modules
-    function displayname() { return gt("Data Import / Export Module"); }
-    function description() { return gt("Use this module to import and export data from your Exponent website."); }
-    function author() { return "OIC Group, Inc"; }
-    function hasSources() { return false; }
-    function hasViews() { return true; }
-    function hasContent() { return false; }
-    function supportsWorkflow() { return false; }
-    function isSearchable() { return false; }
-    
-    
+    static function displayname() { return gt("Data Import / Export Module"); }
+    static function description() { return gt("Use this module to import and export data from your Exponent website."); }
+    static function hasSources() { return false; }
+    static function hasContent() { return false; }
 
     function __construct($src=null,$params=array()) {
          parent::__construct($src=null,$params);
@@ -114,10 +106,11 @@ class importexportController extends expController {
         //$file = new expFile($this->params['expFile']['import_file'][0]);
         if(!empty($_FILES['import_file']['error']))
         {
-             flash('error',gt('There was an error uploading your file.  Please try again.'));
-            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));        
+            flash('error',gt('There was an error uploading your file.  Please try again.'));
+            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));
         }
-        
+
+        $file = new stdClass();
         $file->path = $_FILES['import_file']['tmp_name'];
         echo "Attempting import...<br/>";
         

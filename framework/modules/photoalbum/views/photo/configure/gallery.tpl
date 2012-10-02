@@ -13,8 +13,14 @@
  *
  *}
 
-<h3>{"Configure this Module"|gettext}</h3>
-<hr />
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Photo Album Settings"|gettext) module="photo"}
+		</div>
+        <h2>{"Photo Album Settings"|gettext}</h2>
+	</div>
+</div>
 <h4>{'Gallery Page'|gettext}</h4>
 {control type=text name="pa_showall_thumbbox" label="Box size for image thumbnails"|gettext value=$config.pa_showall_thumbbox|default:100 size="5"}
 {control type=text name="quality" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}

@@ -16,7 +16,7 @@
 <div class="modules order_type showall">
 	<h1>{$moduletitle|default:"Sales Rep Administration"|gettext}</h1>
 	
-	<a href="{link action=create}">{'Create a new Sales Rep'|gettext}</a>{br}{br}
+	<a class="add" href="{link action=create}">{'Create a new Sales Rep'|gettext}</a>{br}{br}
 	<div id="orders">
 		{$page->links}
 		<table id="prods" class="exp-skin-table">
@@ -25,7 +25,7 @@
 				    <th>{'First Name'|gettext}</th>
 					<th>{'Last Name'|gettext}</th>
 					<th>{'Initials'|gettext}</th>
-                    <th>{'Admin'|gettext}</th>
+                    <th>{'Action'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>

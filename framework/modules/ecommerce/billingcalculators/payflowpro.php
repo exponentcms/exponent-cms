@@ -20,9 +20,9 @@
  * @package Modules
  */
 class payflowpro extends creditcard {
-	function name() { return "Payflow Pro Payment Gateway"; }
+	function name() { return "PayPal Payflow Payment Gateway"; }
 	function description() {
-	    return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a Payflo Pro Merchant Account before you can use it to process credit cards.";
+	    return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a PayPal Payflow Merchant Account before you can use it to process credit cards.";
 	}
 	function hasConfig() { return true;}
 	function hasUserForm() { return true;}
@@ -69,9 +69,7 @@ class payflowpro extends creditcard {
         return $result;
         
 	}
-    
-    
-    
+
     // sale
     function sale_transaction($method, $opts) 
     {
@@ -133,7 +131,6 @@ class payflowpro extends creditcard {
             $apiParams['CVV'] = $opts->cvv;
         }
         
-        
         // convert the api params to a name value pair string
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
@@ -144,7 +141,6 @@ class payflowpro extends creditcard {
             
         // take the last & out for the string
         $nvpstr = substr($nvpstr, 0, -1);        
-        
         
         // build hash
         $request_id = md5($opts->cc_number . $order->grand_total . time() . "1");
@@ -183,6 +179,7 @@ class payflowpro extends creditcard {
         $response = $this->parseResponse($result); //result arrray
         
         $trax_state = '';
+        $object = new stdClass();
         $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!
@@ -222,7 +219,6 @@ class payflowpro extends creditcard {
         $this->createBillingTransaction($method,number_format($order->grand_total, 2, '.', ''),$object,$trax_state);
         return $object;
     }
-    
     
     // Authorization
     function authorization($method, $opts) 
@@ -340,6 +336,7 @@ class payflowpro extends creditcard {
         
         //eDebug($response,true);
         $trax_state = '';
+        $object = new stdClass();
         $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
         $object->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0)  // Approved !!!
@@ -509,7 +506,6 @@ class payflowpro extends creditcard {
         return $object;
     }
     
-    
     // void_transaction
     function void_transaction($method) 
     {
@@ -545,7 +541,6 @@ class payflowpro extends creditcard {
             //'COMMENT2'  =>  '',
         );  
         
-        
         // convert the api params to a name value pair string
         $nvpstr = "";
         while(list($key, $value) = each($apiParams)) 
@@ -556,7 +551,6 @@ class payflowpro extends creditcard {
             
         // take the last & out for the string
         $nvpstr = substr($nvpstr, 0, -1);        
-        
         
         // build hash
         $request_id = md5($opts->cc_number . $order->grand_total . time() . "1");
@@ -635,7 +629,6 @@ class payflowpro extends creditcard {
         return $object;
     }
     
-    
     // credit transaction
     function credit_transaction($method, $amount) 
     {
@@ -671,7 +664,6 @@ class payflowpro extends creditcard {
             'COMMENT1'  =>  'Credit',
             //'COMMENT2'  =>  '',
         );  
-        
         
         // convert the api params to a name value pair string
         $nvpstr = "";
@@ -781,7 +773,7 @@ class payflowpro extends creditcard {
 	
 	//This is called when a billing method is deleted. It can be used to clean up if you
 	//have any custom user_data storage.
-	function delete($config_object) {
+	function delete($where = '') {
 		return;
 	}
 	
@@ -815,10 +807,7 @@ class payflowpro extends creditcard {
         $this->opts = null;
         return true;
     }
-    
-    
-    
-    
+
     // parse result and return an array
     function parseResponse($response) 
     {
@@ -837,10 +826,7 @@ class payflowpro extends creditcard {
         }
         return $respArr;
     }
-    
 
-    
-    
     function getRealIP()
     {
         if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet

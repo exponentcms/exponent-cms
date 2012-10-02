@@ -32,7 +32,6 @@ var updateCart = {
             }
             EXPONENT.onQuantityAdjusted.fire();
         
-        
             var cart_totals = YAHOO.util.Dom.getElementsByClassName('carttotal');
         
             var totals = YAHOO.lang.JSON.parse(o.responseText);
@@ -43,7 +42,7 @@ var updateCart = {
             var msgque =  Y.Node.get('#msg-queue');
             if (typeof(totals.message)!="undefined") {
                 var msg =  Y.Node.get('#msg-queue #msg'+totals.item_id);
-                //console.debug(msg);
+                //Y.log(msg);
                 if (Y.Lang.isNull(msg)) {
                     msgque.appendChild(Y.Node.create('<ul id="msg'+totals.item_id+'" class="queue message"><li>'+totals.message+'</li></ul>'));
                 }else {
@@ -51,7 +50,7 @@ var updateCart = {
                 };
             } else {
                 var msg =  Y.Node.get('#msg-queue #msg'+totals.item_id);
-                //console.debug(msg);
+                //Y.log(msg);
                 if (!Y.Lang.isNull(msg)) {
                     msgque.removeChild(msg);
                 };

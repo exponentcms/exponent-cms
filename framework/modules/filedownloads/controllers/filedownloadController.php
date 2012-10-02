@@ -22,7 +22,6 @@
  */
 
 class filedownloadController extends expController {
-	//protected $basemodel_name = '';
 	public $useractions = array(
         'showall'=>'Show all',
         'tags'=>"Tags",
@@ -34,9 +33,9 @@ class filedownloadController extends expController {
         'rss', // because we do this as a custom tab within the module
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return gt("File Downloads"); }
-	function description() { return gt("This module lets you put files on your website for users to download."); }
-	function isSearchable() { return true; }
+    static function displayname() { return gt("File Downloads"); }
+    static function description() { return gt("This module lets you put files on your website for users to download."); }
+    static function isSearchable() { return true; }
 	
     function showall() {
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
@@ -45,18 +44,24 @@ class filedownloadController extends expController {
         }
         $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>$limit,
-                    'order'=>$order,
-                    'controller'=>$this->baseclassname,
-                    'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
-                    'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
-                    'groups'=>empty($this->params['group']) ? array() : array($this->params['group']),
-                    'action'=>$this->params['action'],
-                    'src'=>$this->loc->src,
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>$limit,
+            'order'=>$order,
+            'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+            'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+            'dontsort'=>!empty($this->config['dontsort']) ? $this->config['dontsort'] : false,
+            'groups'=>!isset($this->params['group']) ? array() : array($this->params['group']),
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('ID#')=>'id',
+                gt('Title')=>'title',
+                gt('Body')=>'body'
+            ),
+        ));
 
         include_once(BASE.'external/mp3file.php');
         foreach ($page->records as $file) {
@@ -117,7 +122,7 @@ class filedownloadController extends expController {
 
             // Add the basic data
             $rss_item->title = expString::convertSmartQuotes($item->title);
-            $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            $rss_item->link = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
@@ -131,6 +136,7 @@ class filedownloadController extends expController {
             if ($rss_item->enclosure->type == 'audio/mpeg') $rss_item->enclosure->type = 'audio/mpg';
 
             // Add iTunes info
+            $rss_item->itunes = new iTunes();
             $rss_item->itunes->subtitle = expString::convertSmartQuotes($item->title);
             $rss_item->itunes->summary = expString::convertSmartQuotes($item->body);
             $rss_item->itunes->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;

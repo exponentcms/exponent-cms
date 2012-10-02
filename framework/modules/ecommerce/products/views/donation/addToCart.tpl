@@ -23,7 +23,7 @@
         {control type="text" name="dollar_amount" label="Dollar Amount:"|gettext value=$record->dollar_amount size=7 filter=money}
         {*control type="buttongroup" name="add2cart" submit="Pay now"*}
     {/form}
-    <a id="paynow" class="rc-link" href="">Pay now<span></span></a> or
+    <a id="paynow" class="rc-link" href="">{'Pay now'|gettext}<span></span></a> or
     <a id="continue" class="rc-link" href="{link controller=cart action=addItem}">{'Add to cart and continue shopping'|gettext}<span></span></a>
 </div>
 
@@ -47,7 +47,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
         var bp = {/literal}{$product->base_price};{literal}
         var da = YAHOO.util.Dom.get('dollar_amount');
         YAHOO.util.Event.on(da, 'blur', function(e,o){
-            ////console.debug(this.value);
+            //Y.log(this.value);
             var newint = parseInt(this.value.replace('$',"").replace(',',""));
             if (newint < bp) {
                 this.value = "$"+bp+".00";

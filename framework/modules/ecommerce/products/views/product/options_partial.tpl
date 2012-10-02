@@ -27,25 +27,25 @@
         <div class="bd collapsed">
     	    <table class="options exp-skin-table" summary="{$group->title} {'Product Options'|gettext}">
     	    <thead>
-    	    <tr>
-    	        <th colspan="5">
-    	            <h2>{$group->title}</h2>                    
-    	            {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
-    	            {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
-    	            {control type="hidden" name="optiongroups[`$group->title`][optiongroup_master_id]" value=$group->optiongroup_master_id}
-                    {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}
-                    {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required"|gettext value=1 checked=$group->required}
-        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple}
-        	        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select  Multiple"|gettext value=1 checked=$group->allow_multiple}
-        	    </th>
-    	    </tr>
-            <tr class="column-label">     
-                <th>{'Label'|gettext}</th>
-                <th>{'Adjustment'|gettext}</th>
-                <th>{'Modifier'|gettext}</th>
-                <th>{'Amount'|gettext}</th>
-                <th>{'Default'|gettext}</th>
-            </tr>
+                <tr>
+                    <th colspan="5">
+                        <h2>{$group->title}</h2>
+                        {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
+                        {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
+                        {control type="hidden" name="optiongroups[`$group->title`][optiongroup_master_id]" value=$group->optiongroup_master_id}
+                        {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}
+                        {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required"|gettext value=1 checked=$group->required}
+                        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple}
+                        {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select  Multiple"|gettext value=1 checked=$group->allow_multiple}
+                    </th>
+                </tr>
+                <tr class="column-label">
+                    <th>{'Label'|gettext}</th>
+                    <th>{'Adjustment'|gettext}</th>
+                    <th>{'Modifier'|gettext}</th>
+                    <th>{'Amount'|gettext}</th>
+                    <th>{'Default'|gettext}</th>
+                </tr>
     	    </thead>
     	    <tbody>
             {foreach key=key from=$group->options item=option}

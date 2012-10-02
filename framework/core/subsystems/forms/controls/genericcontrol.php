@@ -58,18 +58,24 @@ class genericcontrol extends formcontrol {
             $divID  = '';
             $for = '';
         }
-        if ($this->required) $label = "*" . $label;
-        $dissabled = $this->disabled == true ? "disabled" : ""; 
+//        if ($this->required) $label = "*" . $label;
+        $dissabled = $this->disabled == true ? "disabled" : "";
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
             $html = '<div'.$divID.' class="'.$this->type.'-control control'." ".$class." ".$dissabled;
             $html .= (!empty($this->required)) ? ' required">' : '">';
+      		//$html .= "<label>";
+            if($this->required) {
+                $labeltag = '<span class="required" title="'.gt('This entry is required').'">*</span>' . $label;
+            } else {
+                $labeltag = $label;
+            }
             if(empty($this->flip)){
-                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $label."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $labeltag."</label>";
                     $html .= $this->controlToHTML($name, $label);
             } else {
                     $html .= $this->controlToHTML($name, $label);
-                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $label."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $labeltag."</label>";
             }
             $html .= "</div>";
         } else {
@@ -108,6 +114,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
 
         $html .= ' />';
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
     
@@ -115,11 +122,11 @@ class genericcontrol extends formcontrol {
         return isset($values[$name])?1:0;
     }
     
-    function templateFormat($db_data, $ctl) {
+    static function templateFormat($db_data, $ctl) {
         return ($db_data==1)?gt("Yes"):gt("No");
     }
     
-    function form($object) {
+    static function form($object) {
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";
@@ -141,7 +148,7 @@ class genericcontrol extends formcontrol {
         return $form;
     }
     
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($object == null) $object = new genericcontrol();;
         if ($values['identifier'] == "") {
             $post = $_POST;

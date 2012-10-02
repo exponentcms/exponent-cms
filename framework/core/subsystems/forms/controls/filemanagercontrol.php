@@ -351,7 +351,7 @@ class filemanagercontrol extends formcontrol {
         return $this->html;
     }
     
-    function form($object) {
+    static function form($object) {
         $form = new form();
         if (!isset($object->html)) {
             $object->html = "";
@@ -361,7 +361,7 @@ class filemanagercontrol extends formcontrol {
         return $form;
     }
     
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($object == null) $object = new htmlcontrol();
         $object->html = preg_replace("/<br ?\/>$/","",trim($values['html']));
         $object->caption = '';

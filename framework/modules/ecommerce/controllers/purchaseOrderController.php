@@ -22,21 +22,21 @@
  */
 
 class purchaseOrderController extends expController {
+
 	public $basemodel_name = 'purchase_order';
 	//public $useractions = array('showall'=>'Show all');
-	public $useractions = array();
 	protected $add_permissions = array(
-	'manage'=>'Manage Purchase Orders', 
-    'edit'=>'Edit Purchase Orders', 
-    'manage_vendors'=>'Manage Vendors', 
-    'show_vendor'=>'Show Vendor Details',
-    'edit_vendor'=>'Edit Vendor',
-    'update_vendor'=>'Update Vendor',
-    'delete_vendor'=>'Delete vendors',
+        'manage'=>'Manage Purchase Orders',
+        'edit'=>'Edit Purchase Orders',
+        'manage_vendors'=>'Manage Vendors',
+        'show_vendor'=>'Show Vendor Details',
+        'edit_vendor'=>'Edit Vendor',
+        'update_vendor'=>'Update Vendor',
+        'delete_vendor'=>'Delete vendors',
     );
 	
-	function displayname() { return gt("Ecommerce Purchase Order Manager"); }
-	function description() { return gt("Use this module to create and manage purchase orders for your ecommerce store."); }
+    static function displayname() { return gt("e-Commerce Purchase Order Manager"); }
+    static function description() { return gt("Use this module to create and manage purchase orders for your ecommerce store."); }
 	
 	function manage () {
 	    expHistory::set('viewable', $this->params);

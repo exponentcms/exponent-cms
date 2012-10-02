@@ -18,16 +18,14 @@
 /** @define "BASE" "../../.." */
 
 class formmodule {
-	function name() { return 'Form'; }
-    function displayname() { return gt('(old school) form'); } //for forwards compat with new modules
-	function description() { return gt('Allows the creation of forms that can be emailed and/or stored in the database.'); }
-	function author() { return 'OIC Group, Inc'; }
-	
-	function hasSources() { return true; }
-	function hasContent() { return true; }
-	function hasViews() { return true; }
-	
-	function supportsWorkflow() { return false; }
+	function name() { return $this->displayname(); }
+    static function displayname() { return gt('Form'); } //for forwards compat with new modules
+    static function description() { return gt('Allows the creation of forms that can be emailed and/or stored in the database.'); }
+    static function author() { return 'OIC Group, Inc'; }
+	static function hasSources() { return true; }
+    static function hasContent() { return true; }
+    static function hasViews() { return true; }
+    static function supportsWorkflow() { return false; }
 	
 	function permissions($internal = "") {
 		if ($internal == "") {
@@ -53,7 +51,7 @@ class formmodule {
 		}
 	}
 	
-	function show($view,$loc = null) {
+	static function show($view,$loc = null) {
 		global $db;
         // require_once(BASE."framework/core/subsystems/forms/baseform.php");
         // require_once(BASE."framework/core/subsystems/forms/form.php");
@@ -77,6 +75,7 @@ class formmodule {
 				$f->subject = gt('Submitted form from site');
 				$frmid = $db->insertObject($f,"formbuilder_form");
 				//Create Default Report;
+                $rpt = new stdClass();
 				$rpt->name = gt('Default Report');
 				$rpt->description = "";
 				$rpt->location_data = $f->location_data;
@@ -145,10 +144,10 @@ class formmodule {
 		$db->delete("formbuilder_form","location_data='".serialize($loc)."'");
 	}
 	
-	static function spiderContent($item = null) {
-		// No content
-		return false;
-	}
+//	static function spiderContent($item = null) {
+//		// No content
+//		return false;
+//	}
 }
 
 ?>

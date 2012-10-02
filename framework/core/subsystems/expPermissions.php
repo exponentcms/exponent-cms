@@ -28,7 +28,7 @@ class expPermissions {
 	/** exdoc
 	 * Loads permission data from the database for the specified user.
 	 *
-	 * @param User $user the user to load permissions for.
+	 * @param user/object $user the user to load permissions for.
      *
 	 * @node Subsystems:expPermissions
 	 */
@@ -74,7 +74,7 @@ class expPermissions {
 	 * Returns true if the permission is granted, false if it is not.
 	 *
 	 * @param string $permission The name of the permission to check
-	 * @param Object $location The location to check on.  This will be passed
+	 * @param object $location The location to check on.  This will be passed
 	 *	to getLocationHierarchy (defined by the module) for a full hierarchy
 	 *	of permissions.
      *
@@ -90,6 +90,8 @@ class expPermissions {
 		} else {
 			return false;  // anonymous/logged-out user never has permission
 		}
+        $ploc = $location;
+        $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;
 
 		if (!is_array($permission)) $permission = array($permission);
         // always check for 'manage' permission
@@ -100,8 +102,8 @@ class expPermissions {
         }
         $permission = array_unique($permission);  // strip out duplicates
 
-		if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule, may not be needed if there is no 'int' property?
-			foreach (call_user_func(array($location->mod,"getLocationHierarchy"),$location) as $loc) {  //FIXME this is only available in calendarmodule
+		if (is_callable(array($ploc->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule, may not be needed if there is no 'int' property?
+			foreach (call_user_func(array($ploc->mod,"getLocationHierarchy"),$ploc) as $loc) {  //FIXME this is only available in calendarmodule
 				foreach ($permission as $perm) {
 					if (isset($exponent_permissions_r[$loc->mod][$loc->src][$loc->int][$perm])) {
 						return true;
@@ -111,16 +113,16 @@ class expPermissions {
 		}
         // check for explicit user (and implicit group/subscription) permission
         foreach ($permission as $perm) {
-            if (isset($exponent_permissions_r[$location->mod][$location->src][$location->int][$perm])) {
+            if (isset($exponent_permissions_r[$ploc->mod][$ploc->src][$ploc->int][$perm])) {
                 return true;
             }
         }
 
         // exit recursive calls for globally scoped modules
         $module_scope['error'] = false;
-        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
-            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
+        if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
@@ -130,9 +132,9 @@ class expPermissions {
         $tmpLoc = new stdClass();
         foreach ($permission as $perm) {
             // inclusive container perms
-            $tmpLoc->mod = $location->mod;
-            $tmpLoc->src = $location->src;
-            $tmpLoc->int = $location->int;
+            $tmpLoc->mod = $ploc->mod;
+            $tmpLoc->src = $ploc->src;
+            $tmpLoc->int = $ploc->int;
             $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
             $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
             if (@isset($exponent_permissions_r[$cLoc->mod][$cLoc->src][$cLoc->int][$perm])) {
@@ -151,30 +153,30 @@ class expPermissions {
 
         // if this is the global sidebar, then exit since we don't care about page permissions
         $module_scope['error'] = false;
-        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
-            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
+        if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
         }
 
         // check for inherited 'manage' permission from current page and its parents
-		if ($location->mod != 'navigationmodule') {
+		if ($ploc->mod != 'navigationController') {
             global $sectionObj;
-            if (self::check('manage',expCore::makeLocation('navigationmodule','',$sectionObj->id))) {
+            if (self::check('manage',expCore::makeLocation('navigationController','',$sectionObj->id))) {
 				return true;
 			}
 		} else {
             // check for recursive inherited page permission
-            $page = $db->selectObject("section","id=".$location->int);
+            $page = $db->selectObject("section","id=".$ploc->int);
             if (!empty($page->parent)) {
                 // first check for specific 'view' permission
-                if (self::check($permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
+                if (self::check($permission,expCore::makeLocation('navigationController','',$page->parent))) {
                     return true;
                 }
                 // otherwise check for 'super' permission
-//                if (self::check('manage',expCore::makeLocation('navigationmodule','',$page->parent))) {
+//                if (self::check('manage',expCore::makeLocation('navigationController','',$page->parent))) {
 //                    return true;
 //                }
             }
@@ -188,9 +190,9 @@ class expPermissions {
      * Handles explicit checks (actually assigned to the user)  implicit  and inherited checks
 	 * (assigned to a group the user belongs to).  Returns true if the permission is granted, false if it is not.
 	 *
-	 * @param User $user The user to check permission on
+	 * @param user/object $user The user to check permission on
 	 * @param string $permission The name of the permission to check
-	 * @param Object $location The location to check on.
+	 * @param object $location The location to check on.
 	 * @param boolean $explicitOnly Whether to check for explicit/implicit assignment or inherited.
 	 *
 	 * @return bool
@@ -205,13 +207,15 @@ class expPermissions {
         } elseif ($user->is_acting_admin) {
             return true;
         }
+        $ploc = $location;
+        $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;
         // check for explicit user permission
-		$explicit = $db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "' AND permission='$permission'");
+		$explicit = $db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $ploc->mod . "' AND source='" . $ploc->src . "' AND internal='" . $ploc->int . "' AND permission='$permission'");
 		if ($explicitOnly || $explicit) return !empty($explicit);
 
         // Calculate inherited permissions if we don't already have explicit/implicit perms
-        if (is_callable(array($location->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
-            foreach (call_user_func(array($location->mod,"getLocationHierarchy"),$location) as $loc) {  //FIXME this is only available in calendarmodule
+        if (is_callable(array($ploc->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
+            foreach (call_user_func(array($ploc->mod,"getLocationHierarchy"),$ploc) as $loc) {  //FIXME this is only available in calendarmodule
                 if ($db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "' AND permission='$permission'")) {
                     return true;
                 }
@@ -222,15 +226,15 @@ class expPermissions {
         $memberships = $db->selectObjects("groupmembership","member_id=".$user->id);
         foreach ($memberships as $memb) {
             $group = $db->selectObject("group","id=".$memb->group_id);
-            if (self::checkGroup($group,$permission,$location))
+            if (self::checkGroup($group,$permission,$ploc))
                 return true;
         }
 
         // exit recursive calls for globally scoped modules
         $module_scope['error'] = false;
-        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
-            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
+        if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
@@ -253,9 +257,9 @@ class expPermissions {
 //        }
         $tmpLoc = new stdClass();
         foreach ($perms as $perm) {
-            $tmpLoc->mod = $location->mod;
-            $tmpLoc->src = $location->src;
-            $tmpLoc->int = $location->int;
+            $tmpLoc->mod = $ploc->mod;
+            $tmpLoc->src = $ploc->src;
+            $tmpLoc->int = $ploc->int;
             $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
             $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
             if (!empty($cLoc) && $db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $cLoc->mod . "' AND source='" . $cLoc->src . "' AND internal='" . $cLoc->int . "' AND permission='$perm'")) {
@@ -274,35 +278,35 @@ class expPermissions {
 
         // if this is the global sidebar, then exit since we don't care about page permissions
         $module_scope['error'] = false;
-        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
-            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
+        if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
         }
 
         // check for inherited 'manage' permission from its page
-        if ($location->mod != 'navigationmodule') {
-            $tmpLoc->mod = $location->mod;
-            $tmpLoc->src = $location->src;
-            $tmpLoc->int = $location->int;
+        if ($ploc->mod != 'navigationController') {
+            $tmpLoc->mod = $ploc->mod;
+            $tmpLoc->src = $ploc->src;
+            $tmpLoc->int = $ploc->int;
             $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
             foreach ($db->selectObjects('sectionref',"is_original=1 AND module='".$tmpLoc->mod."' AND source='".$tmpLoc->src."'") as $secref) {
-                if (self::checkUser($user,'manage',expCore::makeLocation('navigationmodule','',$secref->section))) {
+                if (self::checkUser($user,'manage',expCore::makeLocation('navigationController','',$secref->section))) {
                     return true;
                 }
             }
         } else {
             // check for recursive inherited page permission
-            $page = $db->selectObject("section","id=".$location->int);
+            $page = $db->selectObject("section","id=".$ploc->int);
             if (!empty($page->parent)) {
                 // first check for specific 'view' permission
-                if (self::checkUser($user,$permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
+                if (self::checkUser($user,$permission,expCore::makeLocation('navigationController','',$page->parent))) {
                     return true;
                 }
                 // otherwise check for 'super' permission
-                if (self::checkUser($user,'manage',expCore::makeLocation('navigationmodule','',$page->parent))) {
+                if (self::checkUser($user,'manage',expCore::makeLocation('navigationController','',$page->parent))) {
                     return true;
                 }
             }
@@ -314,9 +318,9 @@ class expPermissions {
 	/** exdoc
 	 * Grants the specified permission to the specified user, on the given location
 	 *
-	 * @param User $user The user to grant the permission to
+	 * @param user/object $user The user to grant the permission to
 	 * @param string $permission The name of the permission to grant
-	 * @param Object $location The location to grant the permission on
+	 * @param object $location The location to grant the permission on
      *
 	 * @node Subsystems:expPermissions
 	 */
@@ -341,9 +345,9 @@ class expPermissions {
 	 * Checks to see if the given group has been given a specific permission on a location.
 	 * Returns true if the permission is granted, false if it is not.
 	 *
-	 * @param Group $group The group to check
+	 * @param group/object $group The group to check
 	 * @param string $permission The name of the permission to check
-	 * @param Object $location The location to check on.
+	 * @param object $location The location to check on.
 	 * @param bool $explicitOnly
      *
 	 * @return bool
@@ -354,15 +358,17 @@ class expPermissions {
 		global $db, $module_scope;
 
 		if ($group == null) return false;
+        $ploc = $location;
+        $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;
         // check for explicit group permission
-		$explicit = $db->selectObject("grouppermission","gid=" . $group->id . " AND module='" . $location->mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "' AND permission='$permission'");
+		$explicit = $db->selectObject("grouppermission","gid=" . $group->id . " AND module='" . $ploc->mod . "' AND source='" . $ploc->src . "' AND internal='" . $ploc->int . "' AND permission='$permission'");
 		if ($explicitOnly || $explicit) return !empty($explicit);
 
         // exit recursive calls for globally scoped modules
         $module_scope['error'] = false;
-        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
-            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$location->src][$location->mod]->scope == 'global') {
+        if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$ploc->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && $module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
@@ -385,9 +391,9 @@ class expPermissions {
 //        }
         $tmpLoc = new stdClass();
         foreach ($perms as $perm) {
-            $tmpLoc->mod = $location->mod;
-            $tmpLoc->src = $location->src;
-            $tmpLoc->int = $location->int;
+            $tmpLoc->mod = $ploc->mod;
+            $tmpLoc->src = $ploc->src;
+            $tmpLoc->int = $ploc->int;
             $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
             $cLoc = expUnserialize($db->selectValue('container','external','internal=\''.serialize($tmpLoc).'\''));
             if (!empty($cLoc) && $db->selectObject("grouppermission","gid=" . $group->id . " AND module='" . $cLoc->mod . "' AND source='" . $cLoc->src . "' AND internal='" . $cLoc->int . "' AND permission='$perm'")) {
@@ -406,35 +412,35 @@ class expPermissions {
 
         // if this is the global sidebar, then exit since we don't care about page permissions
         $module_scope['error'] = false;
-        if (!empty($location->src) && !empty($module_scope[$location->src][$location->mod]->scope)) {  // is this the main container?
-            $rLoc = $db->selectObject("sectionref","source='" . $location->src . "' AND module='" . $location->mod . "'");
-            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$location->src][$location->mod]->scope == 'global') {
+        if (!empty($ploc->src) && !empty($module_scope[$ploc->src][$location->mod]->scope)) {  // is this the main container?
+            $rLoc = $db->selectObject("sectionref","source='" . $ploc->src . "' AND module='" . $ploc->mod . "'");
+            if (!empty($rLoc) && $rLoc->refcount == 1000 && @$module_scope[$ploc->src][$ploc->mod]->scope == 'global') {
                 $module_scope['error'] = true;
                 return false;
             }
         }
 
         // check for inherited 'manage' permission from its page
-        if ($location->mod != 'navigationmodule') {
-            $tmpLoc->mod = $location->mod;
-            $tmpLoc->src = $location->src;
-            $tmpLoc->int = $location->int;
+        if ($ploc->mod != 'navigationController') {
+            $tmpLoc->mod = $ploc->mod;
+            $tmpLoc->src = $ploc->src;
+            $tmpLoc->int = $ploc->int;
             $tmpLoc->mod = (!strpos($tmpLoc->mod,"Controller") && !strpos($tmpLoc->mod,"module")) ? $tmpLoc->mod."Controller" : $tmpLoc->mod;
             foreach ($db->selectObjects('sectionref',"is_original=1 AND module='".$tmpLoc->mod."' AND source='".$tmpLoc->src."'") as $secref) {
-                if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$secref->section))) {
+                if (self::checkGroup($group,'manage',expCore::makeLocation('navigationController','',$secref->section))) {
                     return true;
                 }
             }
         } else {
             // check for recursive inherited page permission
-            $page = $db->selectObject("section","id=".$location->int);
+            $page = $db->selectObject("section","id=".$ploc->int);
             if (!empty($page->parent)) {
                 // first check for specific 'view' permission
-                if (self::checkGroup($group,$permission,expCore::makeLocation('navigationmodule','',$page->parent))) {
+                if (self::checkGroup($group,$permission,expCore::makeLocation('navigationController','',$page->parent))) {
                     return true;
                 }
                 // otherwise check for 'super' permission
-                if (self::checkGroup($group,'manage',expCore::makeLocation('navigationmodule','',$page->parent))) {
+                if (self::checkGroup($group,'manage',expCore::makeLocation('navigationController','',$page->parent))) {
                     return true;
                 }
             }
@@ -446,9 +452,9 @@ class expPermissions {
 	/** exdoc
 	 * Grants the specified permission to the specified user group, on the given location
 	 *
-	 * @param Group $group The group to grant the permission to
+	 * @param group/object $group The group to grant the permission to
 	 * @param string $permission The name of the permission to grant
-	 * @param Object $location The location to grant the permission on
+	 * @param object $location The location to grant the permission on
      *
 	 * @node Subsystems:expPermissions
 	 */
@@ -473,8 +479,8 @@ class expPermissions {
 	/** exdoc
 	 * Removes all permissions from a user, on a specific location.
 	 *
-	 * @param User $user The user to remove all permissions from
-	 * @param Object $location The location to remove all permission on
+	 * @param user/object $user The user to remove all permissions from
+	 * @param object $location The location to remove all permission on
      *
 	 * @return mixed
      *
@@ -488,8 +494,8 @@ class expPermissions {
 	/** exdoc
 	 * Removes all permissions from a group, on a specific location.
 	 *
-	 * @param Group $group The group to remove all permissions from
-	 * @param Object $location The location to remove all permission on
+	 * @param group/object $group The group to remove all permissions from
+	 * @param object $location The location to remove all permission on
      *
 	 * @return mixed
      *
@@ -503,7 +509,7 @@ class expPermissions {
     /** exdoc
      * Removes all user and group permissions, on a specific location.
      *
-     * @param Object $location
+     * @param object $location
      *
      * @return bool
      *
@@ -535,7 +541,7 @@ class expPermissions {
 	 * reload their permission data.  This is useful if permissions
 	 * are assigned or revoked, and is required to see these changes.
      *
-     * @param User $user
+     * @param user/object $user
      *
 	 * @node Subsystems:expPermissions
 	 */

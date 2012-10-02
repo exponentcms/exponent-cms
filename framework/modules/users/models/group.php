@@ -21,7 +21,7 @@
  * @package Modules
  */
 class group extends expRecord {
-    public $table = 'group';
+//    public $table = 'group';
     public $validates = array(
         'presence_of'=>array(
             'name'=>array('message'=>'Name is a required field.'),
@@ -95,7 +95,7 @@ class group extends expRecord {
 	 * to a $db->selectObject() call, but it may not be the same for other implementations.
 	 * Returns a group object, and null if no group was found.
 	 *
-	 * This function does NOT perform group caching like the getUserById
+	 * This function does NOT perform group caching like the user::getUserById
 	 * function does.  Multiple calls to retrieve the same group result in multiple calls
 	 * to the database.
 	 *

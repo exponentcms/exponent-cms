@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
 <?php
 global $db;
 
-$tables = administrationController::install_dbtables();
+$tables = expDatabase::install_dbtables();
 ksort($tables);
 
 ?>

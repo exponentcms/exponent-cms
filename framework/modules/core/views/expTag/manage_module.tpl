@@ -14,7 +14,12 @@
  *}
 
 <div class="module expTags manage yui-content yui3-skin-sam">
-	<h1>{"Manage Module Tags"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help"|gettext|cat:" "|cat:("Managing Tags"|gettext) module="manage-tags"}
+        </div>
+        <h1>{"Manage Module Tags"|gettext}</h1>
+    </div>
 	{permissions}
     	{if $permissions.create == 1}
     		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
@@ -22,12 +27,12 @@
     {/permissions}
     {$page->links}
     {form action=change_tags}
-        {control type=hidden name=mod value=$page->model}
+    {control type=hidden name=mod value=$page->model}
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
             <tr>
                 <th>
-                    <input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onChange="selectAllp(this.checked)">
+                    <input type='checkbox' name='checkallp' title="{'Select All/None'|gettext}" onchange="selectAllp(this.checked)">
                 </th>
                 <th>
                     {"Item"|gettext}
@@ -157,12 +162,10 @@
         });
     });
 {/literal}
-
     function selectAllp(val) {
         var checks = document.getElementsByName("change_tag[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }
     }
-
 {/script}

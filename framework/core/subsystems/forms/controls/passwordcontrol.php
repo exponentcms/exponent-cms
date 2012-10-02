@@ -51,11 +51,11 @@ class passwordcontrol extends formcontrol {
 		return $html;
 	}
 	
-	function form($object) {
+	static function form($object) {
 
 	}
 	
-	function update($values, $object) {
+    static function update($values, $object) {
 
 	}
 

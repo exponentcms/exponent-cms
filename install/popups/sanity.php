@@ -279,7 +279,7 @@
         <br />
 		<?php echo gt('Safe Mode is a security measure present in some Shared Hosting Environments.  It limits a PHP scripts from including or modifying files that are not owned by that script\'s owner.  This can cause serious and subtle problems that look like bugs if Exponent\'s files are not properly set up.'); ?>
         <br /><br />
-        <?php echo gt('If you decide to ignore this warning, make sure that ALL files included in the Exponent package are owned by the same system user.'); ?></div>
+        <?php echo gt('If you decide to ignore this warning, make sure that ALL files included in the Exponent package are owned by the same system user.'); ?>
 	</td>
 </tr>
 <tr>

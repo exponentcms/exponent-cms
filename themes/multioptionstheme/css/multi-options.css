@@ -18,9 +18,12 @@ body {margin:0; padding:0; font:92% Tahoma,sans-serif; background:#fefefe url(..
 	/* change the values of top and left to adjust the position of the logo*/
 	/*top: 25px;*/
 	/*left: 25px;*/
+	position:relative;
+	z-index:3;
 }
 #headerimage {float:right; width:500px; height:160px; margin:0 0 15px 0; overflow:hidden; border:1px solid #aaa;}
 #header h1#logo a {padding:0 0 0 70px;}
+#header .yui-top-nav {position:relative;z-index:5;}
 
 #title {width:460px; text-align:center;}
 h1 {margin:0 auto; padding:0; font-size:2.4em; font-weight:700; letter-spacing:-1px; line-height:2.2em; text-shadow:#ccc 2px 2px 8px;}
@@ -55,7 +58,17 @@ li {margin:0 0 5px 0; padding:0 0 0 5px;}
 #content {margin:0 0 15px 0; width:680px; float:left;}
 
 /* Footer */
-#footer{font-size:0.9em; clear:both; width:980px; line-height:1.4em; color:#777; font-weight:400; margin-bottom:10px;}
+#footer{
+	font-size:0.9em; 
+	clear:both; 
+	width:980px; 
+	line-height:1.4em; 
+	color:#777; 
+	font-weight:400; 
+	margin-bottom:10px;
+	position:relative;
+	z-index:1;
+}
 #footer a {color:#777; font-weight:400; text-decoration:none; border-bottom: 1px dotted #888;}
 
 /* Image alignment classes */
@@ -116,9 +129,3 @@ li {margin:0 0 5px 0; padding:0 0 0 5px;}
 	position:relative;
 	z-index:2;
 }
-
-#header, #bd, #footer {position:relative;}
-#header {z-index:3;}
-#header .top-nav {position:relative;z-index:5;}
-#bd {z-index:2;}
-#footer {z-index:1;}

@@ -19,7 +19,7 @@
     {form action="update"}
         {control type="hidden" name="id" value=$record->id}
         {control type="text" name="submitter_name" label="Name of submitter"|gettext value=$record->submitter_name|default:$user->username}
-        {control type="text" name="submitter_email" label="Submitter\'s Email"|gettext value=$record->submitter_email|default:$user->email}
+        {control type="text" name="submitter_email" label='Submitter\'s Email'|gettext value=$record->submitter_email|default:$user->email}
         {control type="checkbox" name="send_email" label="Send email to user"|gettext|cat:"?" value=1}
         {control type="textarea" name="question" label="Question"|gettext value=$record->question}
         {control type="html" name="answer" label="Answer"|gettext value=$record->answer}

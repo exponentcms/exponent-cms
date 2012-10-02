@@ -20,10 +20,12 @@ if (!defined('EXPONENT')) exit('');
 
 if (expPermissions::check('configure',$loc)) {
 	if (expTemplate::getModuleViewFile($loc->mod,'_configure',false) == TEMPLATE_FALLBACK_VIEW) {
-		$template = new template('common','_configure',$loc);
+//		$template = new template('common','_configure',$loc,false,'globalviews');
+        $template = new template('common','_configure',$loc);
 	} else {
-		$template = new template('common','_configure',$loc);
 		//$template = new template($loc->mod,'_configure',$loc);
+//		$template = new template('common','_configure',$loc,false,'globalviews');
+        $template = new template('common','_configure',$loc);
 	}
 	
 	$hasConfig = 0;
@@ -76,7 +78,7 @@ if (expPermissions::check('configure',$loc)) {
 	}
 	$template->assign('hasConfig',$hasConfig);
     $mod = new $loc->mod();
-    $template->assign('title',$_GET['module'] != 'navigationmodule'? $mod->name() : '');
+    $template->assign('title',$_GET['module'] != 'navigationController'? $mod->name() : '');
 
 	$template->output();
 } else {

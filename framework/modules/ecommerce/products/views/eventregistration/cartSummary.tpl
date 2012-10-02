@@ -16,8 +16,8 @@
 <table border="0" cellspacing="0" cellpadding="0" class="cart-item">
     <tr>
         <td class="cart-image">
-            {if $item->product->expFile.images[0]->id}
-                {img file_id=$item->product->expFile.images[0]->id square=35}
+            {if $item->product->expFile.mainimage[0]->id}
+                {img file_id=$item->product->expFile.mainimage[0]->id square=35}
             {else}
                 {'No Image Available'|gettext}
             {/if}

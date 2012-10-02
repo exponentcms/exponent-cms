@@ -19,9 +19,7 @@
 
 <div class="module blog showall">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
-    {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
-    {/if}
+    {rss_link}
     {if $moduletitle && !$config.hidemoduletitle}{'Recent Posts from'|gettext} '{$moduletitle}'</h1>{/if}
     {permissions}
 		<div class="module-actions">
@@ -43,6 +41,13 @@
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item">
+            {if $config.datetag}
+                <p class="post-date">
+                    <span class="month">{$item->publish_date|format_date:"%b"}</span>
+                    <span class="day">{$item->publish_date|format_date:"%e"}</span>
+                    <span class="year">{$item->publish_date|format_date:"%Y"}</span>
+                </p>
+            {/if}
             <h2>
             <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
             {$item->title}
@@ -56,7 +61,9 @@
                     {/if}
                     <span class="label tags">{'Posted by'|gettext}</span>
                     <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
-                    {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
+                    {if !$config.datetag}
+                        {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
+                    {/if}
                     {if $item->publish_date > $smarty.now}
                         </strong>&#160;
                     {/if}
@@ -97,6 +104,7 @@
                     {/if}
                     {if $config.usebody==1}
                         <p>{$item->body|summarize:"html":"paralinks"}</p>
+                    {elseif $config.usebody==2}
                     {else}
                         {$item->body}
                     {/if}

@@ -39,7 +39,6 @@ class search extends expRecord {
         //$terms = $this->params['search_string'];
         
         if (SAVE_SEARCH_QUERIES && $readonly == 0) {
-		
 			if(INCLUDE_ANONYMOUS_SEARCH == 1 || $user->id <> 0) {
 				$queryObj = new stdClass();
 				$queryObj->user_id    = $user->id;
@@ -79,17 +78,20 @@ class search extends expRecord {
                 }*/
            } else if ($records[$i]->ref_type == 'section') {
 		        $section = $db->selectObject('section', 'id='.$records[$i]->original_id);
-                if (empty($section) || !navigationmodule::canView($section)) {
+                if (empty($section) || !navigationController::canView($section)) {
                     unset($recs[$i]);
                     //$records[$i]->canview = false;
                 }
 	       } else {
                 $rloc = unserialize($records[$i]->location_data);
                 if (!empty($rloc)) {
-                    $sectionref = $db->selectObject("sectionref","module='".expModules::getControllerClassName($rloc->mod)."' AND source='".$rloc->src."'");
+                    if (expModules::controllerExists($rloc->mod)) {
+                        $rloc->mod = expModules::getControllerClassName($rloc->mod);
+                    }
+                    $sectionref = $db->selectObject("sectionref","module='".$rloc->mod."' AND source='".$rloc->src."'");
                     if (!empty($sectionref)) {
                         $section = $db->selectObject("section","id=".$sectionref->section);
-                        if (empty($section) || !navigationmodule::canView($section)) {
+                        if (empty($section) || !navigationController::canView($section)) {
                             unset($recs[$i]);
                             //$records[$i]->canview = false;
                         }

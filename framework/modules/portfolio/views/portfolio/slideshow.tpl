@@ -89,7 +89,7 @@
         </ul>
         {if !$config.hidecontrols}
         <div class="slideshow-buttons">
-            <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Prevous Slide"|gettext>
+            <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Previous Slide"|gettext>
                 &lt;&lt; {'Previous'|gettext}
             </a>
             <span class="slideshow-pagination">

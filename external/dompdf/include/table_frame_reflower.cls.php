@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: table_frame_reflower.cls.php 465 2012-01-30 21:58:11Z fabien.menager $
+ * @version $Id$
  */
 
 /**
@@ -151,8 +151,9 @@ class Table_Frame_Reflower extends Frame_Reflower {
       if ( $absolute_used == 0 && $percent_used == 0 ) {
         $increment = $width - $min_width;
 
-        foreach (array_keys($columns) as $i)
+        foreach (array_keys($columns) as $i) {
           $cellmap->set_column_width($i, $columns[$i]["min-width"] + $increment * ($columns[$i]["max-width"] / $max_width));
+        }
         return;
       }
 

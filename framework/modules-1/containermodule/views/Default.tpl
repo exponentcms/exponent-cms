@@ -21,7 +21,7 @@
         {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
 
         {/css}
-    	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-container.js"}
+    	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_RELATIVE`exp-container.js"}
 
     	{/script}
 		<div id="cont{$top->id}" class="exp-container-module-wrapper"{if $hasParent != 0} style="border: 1px dashed darkgray; padding: 1em;"{/if}>
@@ -43,7 +43,7 @@
 		</div>
 	{/if}
 	{if $permissions.create == 1 && empty($hidebox)}
-		<a class="addmodule" href="{link action=edit rerank=1 rank=0 src=$src}"><span class="addtext">{"Add Module"|gettext}</span></a>
+		<a class="addmodule" href="{link action=edit rerank=1 rank=0}"><span class="addtext">{"Add Module"|gettext}</span></a>
 	{/if}
 {/permissions}
 
@@ -54,7 +54,7 @@
 	{if $smarty.const.SELECTOR == 1}
 		{include file=$viewfile}
 	{else}
-		<div name="mod_{$container->id}"></div>
+		<div name="mod_{$container->id}" id="mod_{$container->id}"></div>
 		{permissions}
             {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
                  || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
@@ -63,7 +63,7 @@
                 {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
 
                 {/css}
-            	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-container.js"}
+            	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_RELATIVE`exp-container.js"}
 
             	{/script}
 
@@ -75,7 +75,7 @@
 				{/if}
 				<div class="container-chrome module-chrome">
 					<a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext}</a>
-					{getchromemenu module=$container rank=$i rerank=$rerank last=$last}
+					{nocache}{getchromemenu module=$container rank=$i rerank=$rerank last=$last}{/nocache}
 				</div>
 			{/if}
 		{/permissions}
@@ -91,7 +91,7 @@
 
 		{permissions}
 			{if $permissions.create == 1 && $hidebox == 0}
-				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration src=$src}"><span class="addtext">{"Add Module"|gettext}</span></a>
+				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration}"><span class="addtext">{"Add Module"|gettext}</span></a>
 			{/if}
 		{/permissions}
 	{/if}

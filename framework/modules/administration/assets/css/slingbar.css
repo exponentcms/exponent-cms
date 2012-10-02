@@ -133,11 +133,11 @@
 #admintoolbar li.remove a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/delete.png) no-repeat 5px 50%;
 }
-#admintoolbar li.search a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/view.png) no-repeat 5px 50%;
-}
 #admintoolbar li.manage a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/manage.png) no-repeat 5px 50%;
+}
+#admintoolbar li.search a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/view.png) no-repeat 5px 50%;
 }
 #admintoolbar li.users a.yuimenuitemlabel {
     background:url(../images/admintoolbar/manage-users.png) no-repeat 5px 50%;
@@ -503,4 +503,24 @@
 #admintoolbar .yuimenuitem-checked-disabled
 {
 	background-image: url(../images/admintoolbar/menuitem_checkbox_disabled.png);
+}
+
+/******** YUI Logger Styles **********/
+#yuilogger .yui3-console .yui3-console-title {
+    /*border: 0 none;*/
+    /*color: #000;*/
+    font-size: 12px;
+    font-weight: normal;
+    /*margin: 0;*/
+    /*text-transform: none;*/
+}
+#yuilogger .yui3-console-hd {
+    padding: 0;
+}
+#yuilogger .yui3-console .yui3-console-entry-meta {
+    margin: 0;
+}
+#yuilogger .yui3-console-separate {
+    top: 32px;
+    z-index:10;
 }

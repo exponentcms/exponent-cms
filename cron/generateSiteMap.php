@@ -72,13 +72,13 @@
 	}
 
 	//Get all the active categories
-	$categories = $db->selectObjectsBySql('SELECT sef_url FROM exponent_storeCategories WHERE is_active = 1');
+	$categories = $db->selectObjectsBySql('SELECT sef_name FROM exponent_storeCategories WHERE is_active = 1');
 	foreach ($categories as $item) {            
 		
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.=URL_FULL.$item->sef_url;
+		$columns.=URL_FULL.$item->sef_name;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';
@@ -103,13 +103,13 @@
 	}
 	
 	//Get all the active products
-	$products = $db->selectObjectsBySql("SELECT sef_url FROM exponent_product WHERE (active_type = 0 or active_type = 1) and parent_id = 0");
+	$products = $db->selectObjectsBySql("SELECT sef_name FROM exponent_product WHERE (active_type = 0 or active_type = 1) and parent_id = 0");
 	foreach ($products as $item) {            
 		
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.=URL_FULL.$item->sef_url;
+		$columns.=URL_FULL.$item->sef_name;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';

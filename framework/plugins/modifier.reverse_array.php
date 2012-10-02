@@ -29,7 +29,6 @@
  * Name:     reverse_array<br>
  * Purpose:  reverse arrays
  * 
- * @author   Noel McGran 
  * @param array
  * @return array
  */

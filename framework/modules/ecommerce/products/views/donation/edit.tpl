@@ -45,7 +45,8 @@
 	                {control type="text" name="base_price" label="Minimum dollar increment"|gettext value=$record->base_price filter=money}
 	            </div>
 	            <div id="tab3">
-	                {control type=files name=files subtype=images value=$record->expFile}
+	                {*{control type=files name=files subtype=images value=$record->expFile}*}
+                    {control type=files name=mainimages subtype="mainimage" value=$record->expFile}
 	            </div>
 	            <!--div id="tab4">
 	                {control type="text" name="quantity" label="Quantity"|gettext value=$record->quantity}
@@ -63,6 +64,7 @@
 	                {control type="text" name="weight" label="Item Weight"|gettext value=$record->weight}
 	            </div-->
 	            <div id="tab6">
+                    {icon class="manage" controller="storeCategory" action="manage" text="Manage Store Categories"|gettext}
 	                {control type="tagtree" id="managecats" name="managecats" model="storeCategory" draggable=false checkable=true values=$record->storeCategory}
 	            </div>
             </div>
@@ -74,9 +76,15 @@
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
-		tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//		var tabview = new Y.TabView({srcNode:'#editproduct-tabs'});
+//		tabview.render();
+        Y.expTabs({srcNode: '#editproduct-tabs'});
 		Y.one('#editproduct-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });

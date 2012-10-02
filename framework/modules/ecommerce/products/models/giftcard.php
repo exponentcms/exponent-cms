@@ -32,8 +32,14 @@ class giftcard extends expRecord {
 	public $requiresBilling = true; 
     public $isQuantityAdjustable = true;
     
-	protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile', 
+    protected $attachable_item_types = array(
+//        'content_expCats'=>'expCat',
+//        'content_expComments'=>'expComment',
+//        'content_expDefinableFields'=> 'expDefinableField',
+        'content_expFiles'=>'expFile',
+//        'content_expRatings'=>'expRating',
+//        'content_expSimpleNote'=>'expSimpleNote',
+//        'content_expTags'=>'expTag',
     );
 	
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
@@ -62,11 +68,12 @@ class giftcard extends expRecord {
 	    global $order;
 		expSession::set('params', $params);
 		//get the configuration
+        $cfg = new stdClass();
 		$cfg->mod = "ecomconfig";
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
         $config = new expConfig($cfg);
-        $this->config = (empty($catConfig->config) || @$catConfig->config['use_global']==1) ? $config->config : $catConfig->config;    
+        $this->config = (empty($catConfig->config) || @$catConfig->config['use_global']==1) ? $config->config : $catConfig->config;  //FIXME $catConfig doesn't exist
 		$min_amount = $this->config['minimum_gift_card_purchase'];
 		$custom_message_product = $this->config['custom_message_product'];
 	    

@@ -86,7 +86,7 @@
 
                     elCell.innerHTML = '<div class="item-actions">';
                     editstring       = '{/literal}{icon img="edit.png" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
-                    passwordstring   = '{/literal}{icon img="password.png" action="change_password" id="passwordstringid" title="Change this users password"|gettext}{literal}';
+                    passwordstring   = '{/literal}{icon img="password.png" action="change_password" ud="passwordstringid" title="Change this users password"|gettext}{literal}';
                     deletestring     = '{/literal}{icon img="delete.png" action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
                     editstring     = editstring.replace('editstringid',oRecord._oData.id);
                     passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);

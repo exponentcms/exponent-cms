@@ -23,13 +23,25 @@
 
 class donationController extends expController {
     public $basemodel_name = 'donation';
+
     public $useractions = array(
         'showall'=>'Show all Donation Causes',
     );
-    // public $useractions = array();
-    
-    function displayname() { return gt("Online Donations"); }
-    function description() { return gt("Use this module to accept donations on your website"); }
+
+    // hide the configs we don't need
+    public $remove_configs = array(
+        'aggregation',
+        'categories',
+        'comments',
+        'ealerts',
+        'files',
+        'module_title',
+        'rss',
+        'tags'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+
+    static function displayname() { return gt("Online Donations"); }
+    static function description() { return gt("Use this module to accept donations on your website"); }
 
     function showall() {
         expHistory::set('viewable', $this->params);
@@ -62,14 +74,17 @@ class donationController extends expController {
     
     function index() {
         redirect_to(array('controller'=>'donations', 'action'=>'showall'));
+//        $this->showall();
     }
     
     function show() {
         redirect_to(array('controller'=>'donations', 'action'=>'showall'));
+//        $this->showall();
     }
     
     function delete() {
         redirect_to(array('controller'=>'donations', 'action'=>'showall'));
+//        $this->showall();
     } 
 }
 

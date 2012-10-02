@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="navigationmodule yui-top-nav">
+<div class="navigation yui-top-nav">
 <div id="yuimenubar" class="yuimenubar yuimenubarnav">
 	<div class="bd">
 		<ul class="first-of-type">

@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{"Configure this Module"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Youtube Settings"|gettext) module="youtube"}
+		</div>
+        <h2>{"Youtube Settings"|gettext}</h2>
+	</div>
+</div>
 {control type="text" name="width" label="Width of Video"|gettext size=4 filter=integer value=$config.width}
 {control type="text" name="height" label="Height of Video"|gettext size=4 filter=integer value=$config.height}
 

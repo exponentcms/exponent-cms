@@ -27,9 +27,6 @@
 {$rel}
 <div class="module photoalbum showall showall-tabbed">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
-    {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
-    {/if}
     {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
@@ -43,9 +40,7 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
                 {/if}
-                {if $rank == 1}
-                    {ddrerank items=$page->records model="photo" label="Images"|gettext}
-                {/if}
+                {ddrerank items=$page->records model="photo" label="Images"|gettext}
             {/if}
         </div>
     {/permissions}
@@ -106,6 +101,11 @@
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
     EXPONENT.YUI3_CONFIG.modules = {
        'gallery-lightbox' : {
            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
@@ -113,9 +113,10 @@
        }
     }
 
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview','gallery-lightbox', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-	    tabview.render();
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs','gallery-lightbox', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
 		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
 		Y.one('.loadingdiv').remove();
         Y.Lightbox.init();

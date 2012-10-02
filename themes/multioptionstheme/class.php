@@ -39,7 +39,7 @@ class multioptionstheme extends theme {
 			"grey"=>'Grey',
 			"magenta"=>'Magenta',
 		);
-		//THEME WIDTHS
+		//Button Sizes
 		$button_sizes = array(
 			"small"=>'Small',
 			"medium"=>'Medium',

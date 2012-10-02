@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: inline_renderer.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
+ * @version $Id$
  */
 
 /**
@@ -177,7 +177,7 @@ class Inline_Renderer extends Abstract_Renderer {
     
     // Handle anchors & links
     if ( $link_node ) {
-      if ( $href = $link_node->getAttribute("href") )
+      if ( $href = $link_node->getAttribute("href") &&  !DOMPDF_DISABLE_LINKS)
         $this->_canvas->add_link($href, $x, $y, $w, $h);
     }
     

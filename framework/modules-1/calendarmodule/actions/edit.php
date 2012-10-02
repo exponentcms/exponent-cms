@@ -46,6 +46,7 @@ if (($item == null && expPermissions::check('create',$loc)) ||
 	
 	$config = $db->selectObject('calendarmodule_config',"location_data='".serialize($loc)."'");
 	if (!$config) {
+        $config = new stdClass();
 //		$config->enable_categories = 0;
 		$config->enable_feedback = 0;
 	}

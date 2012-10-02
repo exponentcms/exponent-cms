@@ -23,12 +23,11 @@
  */
 
 class expModuleController extends expController {
-
-    function displayname() { return gt("Modules"); }
-    function description() { return gt("Manages all things about Exponent Modules"); }
-    function author() { return "Phillip Ball"; }
-    function hasSources() { return false; }
-	function hasContent() { return false; }
+    static function displayname() { return gt("Modules"); }
+    static function description() { return gt("Manages all things about Exponent Modules"); }
+    static function author() { return "Phillip Ball"; }
+    static function hasSources() { return false; }
+    static function hasContent() { return false; }
     
     function manage () {
         $controllers = expModules::listActiveControllers();

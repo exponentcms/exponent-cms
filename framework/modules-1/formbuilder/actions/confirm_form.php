@@ -26,7 +26,11 @@ foreach($cols as $col) {
     $coldef = unserialize($col->data);
     $coldata = new ReflectionClass($coldef);
     $coltype = $coldata->getName();
-    $value = call_user_func(array($coltype,'parseData'),$col->name,$_POST,true);
+    if ($coltype == 'uploadcontrol') {
+        $value = call_user_func(array($coltype,'parseData'),$col->name,$_FILES,true);
+    } else {
+        $value = call_user_func(array($coltype,'parseData'),$col->name,$_POST,true);
+    }
     $value = call_user_func(array($coltype,'templateFormat'),$value,$coldef);
     //eDebug($value);
     $counts[$col->caption] = isset($counts[$col->caption]) ? $counts[$col->caption] + 1 : 1;

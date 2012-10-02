@@ -67,13 +67,9 @@ YAHOO.myowndb.slideshow = function (container, o) {
     else
         this.interval = 5000
 
-
-
-
     this.init();
 
 }
-
 
 YAHOO.myowndb.slideshow.prototype = {
     init: function()
@@ -200,7 +196,6 @@ YAHOO.myowndb.slideshow.prototype = {
             this.loop_interval = setInterval( function(){ self.transition();}, this.interval );
         }
  }  
-
 
 YAHOO.myowndb.slideshow.effects = {
     slideRight :{

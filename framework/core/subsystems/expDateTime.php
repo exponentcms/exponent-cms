@@ -66,8 +66,8 @@ class expDateTime {
 	 * if the bigger argument is specified first or not. Returns
 	 * the number of seconds between $time_a and $time_b
 	 *
-	 * @param timestamp $time_a The first timestamp
-	 * @param timestamp $time_b The second timestamp
+	 * @param int $time_a The first timestamp
+	 * @param int $time_b The second timestamp
 	 * @return array
 	 * @node Subsystems:expDateTime
 	 */
@@ -98,7 +98,7 @@ class expDateTime {
 	 * falls into.  For instance, passing a timestamp representing January 25th 1984
 	 * would return a timestamp representing January 1st 1984, at 12:00am.
 	 *
-	 * @param timestamp $timestamp The original timestamp to use when calculating.
+	 * @param int $timestamp The original timestamp to use when calculating.
 	 * @return int
 	 * @node Subsystems:expDateTime
 	 */
@@ -116,7 +116,7 @@ class expDateTime {
 	 * falls into.  For instance, passing a timestamp representing January 25th 1984
 	 * would return a timestamp representing January 31st 1984, at 11:59pm.
 	 *
-	 * @param timestamp $timestamp The original timestamp to use when calculating.
+	 * @param int $timestamp The original timestamp to use when calculating.
 	 * @return int
 	 * @node Subsystems:expDateTime
 	 */
@@ -140,7 +140,7 @@ class expDateTime {
 	 * day.  For instance, if the passed timestamp was in January,
 	 * this function would return 31.  Leap year is taken into account.
 	 *
-	 * @param timestamp $timestamp The timestamp to check.
+	 * @param int $timestamp The timestamp to check.
 	 * @return int
 	 * @node Subsystems:expDateTime
 	 */
@@ -162,7 +162,7 @@ class expDateTime {
 	 * Looks at a timestamp and returns another timestamp representing
 	 * 12:00:01 am of the same day.
 	 *
-	 * @param timestamp $timestamp The timestamp to check.
+	 * @param int $timestamp The timestamp to check.
 	 * @return int
 	 * @node Subsystems:expDateTime
 	 */
@@ -178,7 +178,7 @@ class expDateTime {
    	 * Looks at a timestamp and returns another timestamp representing
    	 * 11:59:59 pm of the same day.
    	 *
-   	 * @param timestamp $timestamp The timestamp to check.
+   	 * @param int $timestamp The timestamp to check.
    	 * @return int
    	 * @node Subsystems:expDateTime
    	 */
@@ -194,7 +194,7 @@ class expDateTime {
 	 * Looks at a timestamp and returns another timestamp representing
 	 * 12:00:01 am of the DISPLAY_START_OF_WEEK day of the same week.
 	 *
-	 * @param timestamp $timestamp The timestamp to check.
+	 * @param int $timestamp The timestamp to check.
 	 * @return int
 	 * @node Subsystems:expDateTime
 	 */
@@ -207,7 +207,7 @@ class expDateTime {
    	 * Looks at a timestamp and returns another timestamp representing
    	 * 12:00:01 am of the DISPLAY_START_OF_WEEK day of the same week.
    	 *
-   	 * @param timestamp $timestamp The timestamp to check.
+   	 * @param int $timestamp The timestamp to check.
    	 * @return int
    	 * @node Subsystems:expDateTime
    	 */
@@ -223,8 +223,8 @@ class expDateTime {
 	 * This is the simplest form of recurrence, events are spaced a given
 	 * number of days apart.
 	 *
-	 * @param timestamp $start The start of the recurrence range
-	 * @param timestamp $end The end of the recurrence range
+	 * @param int $start The start of the recurrence range
+	 * @param int $end The end of the recurrence range
 	 * @param integer $freq Frequency of recurrence - 2 means every 2 days, and 1
 	 * 	means every day.
 	 * @return array
@@ -247,8 +247,8 @@ class expDateTime {
 	 * For a technical discussion of this function and the mathematics involved,
 	 * please see the sdk/analysis/subsystems/datetime.txt file.
 	 *
-	 * @param timestamp $start The start of the recurrence range
-	 * @param timestamp $end The end of the recurrence range
+	 * @param int $start The start of the recurrence range
+	 * @param int $end The end of the recurrence range
 	 * @param integer $freq Weekly frequency - 1 means every week, 2 means every
 	 *   other week, etc.
 	 * @param array $days The weekdays (in integer notation, 0 = Sunday, etc.) that
@@ -350,8 +350,8 @@ class expDateTime {
 	 * done on a specific date (the 14th of the month) or on a specific weekday / offset
 	 * pair (the third sunday of the month).
 	 *
-	 * @param timestamp $start The start of the recurrence range
-	 * @param timestamp $end The end of the recurrence range
+	 * @param int $start The start of the recurrence range
+	 * @param int $end The end of the recurrence range
 	 * @param integer $freq Monthly frequency - 1 means every month, 2 means every
 	 *   other month, etc.
 	 * @param bool $by_day Whether or not to recur by the weekday and week offset
@@ -472,8 +472,8 @@ class expDateTime {
 	 * Unlike monthly recurrence, yearly cannot do recurrence like 'the
 	 * 17th sunday of the year'.
 	 *
-	 * @param timestamp $start The start of the recurrence range
-	 * @param timestamp $end The end of the recurrence range
+	 * @param int $start The start of the recurrence range
+	 * @param int $end The end of the recurrence range
 	 * @param integer $freq Yearly frequency - 1 means every year, 2 means every
 	 *   other year, etc.
 	 * @return array
@@ -496,10 +496,12 @@ class expDateTime {
 	 *
 	 * @return array
 	 */
-	public static function monthlyDaysTimestamp() {
+	public static function monthlyDaysTimestamp($time=null) {
 //		global $db;
 		$monthly = array();
-		$info = getdate(time());
+//		$info = getdate(time());
+        if (empty($time)) $time = time();
+        $info = getdate($time);
 		// Grab non-day numbers only (before end of month)
 		$week = 0;
 

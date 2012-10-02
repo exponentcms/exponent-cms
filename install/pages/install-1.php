@@ -156,17 +156,19 @@ if ($write_file) {
 #	if (strtolower(substr(php_sapi_name(),0,3)) == 'cgi') {
 #		//In CGI mode SCRIPT_NAME is not correct, so we will try PATH_INFO first...
 #		// We need to strip off the last two things, filename and the install dirname.
-#		$components = join('/',array_splice(split('/',$_SERVER['PATH_INFO']),0,-2)).'/';
+#		$components = implode('/',array_splice(split('/',$_SERVER['PATH_INFO']),0,-2)).'/';
 #	} else {
 #		// If we aren't in either cgi or cgi-fast, then we are compiled in and should use SCRIPT_NAME
 #		// We need to strip off the last two things, filename and the install dirname.
-#		$components = join('/',array_splice(split('/',$_SERVER['SCRIPT_NAME']),0,-2)).'/';
+#		$components = implode('/',array_splice(split('/',$_SERVER['SCRIPT_NAME']),0,-2)).'/';
 #	}
 	
 	if (isset($_SERVER['SCRIPT_NAME'])) {
-	    $components = join('/',array_splice(explode('/',$_SERVER['SCRIPT_NAME']),0,-2)).'/';
+        $scriptname = explode('/',$_SERVER['SCRIPT_NAME']);
+	    $components = implode('/',array_splice($scriptname,0,-2)).'/';
     } elseif (isset($_SERVER['PATH_INFO'])) {
-        $components = join('/',array_splice(explode('/',$_SERVER['PATH_INFO']),0,-2)).'/';
+        $pathinfo = explode('/',$_SERVER['PATH_INFO']);
+        $components = implode('/',array_splice($pathinfo,0,-2)).'/';
     } else {
         $components = '/';
     }

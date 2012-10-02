@@ -22,7 +22,7 @@
  */
 
 class flowplayer extends expRecord {
-    public $table = 'flowplayer';
+//    public $table = 'flowplayer';
 
     protected $attachable_item_types = array(
         'content_expFiles'=>'expFile'

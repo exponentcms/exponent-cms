@@ -111,7 +111,7 @@ class radiocontrol extends formcontrol {
         return $html;
     }
     
-    function form($object) {
+    static function form($object) {
         $form = new form();
         if (!isset($object->identifier)) {
             $object->identifier = "";
@@ -130,7 +130,7 @@ class radiocontrol extends formcontrol {
         return $form;
     }
     
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($object == null) $object = new radiocontrol();
         if ($values['groupname'] == "") {
             $post = $_POST;

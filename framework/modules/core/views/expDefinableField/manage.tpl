@@ -16,7 +16,12 @@
 
 {/css}
 <div class="module expDefinableField manage">
-	<h1>{"Manage Definable Fields"|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help"|gettext|cat:" "|cat:("Managing Definable Fields"|gettext) module="manage-definable-fields"}
+        </div>
+        <h1>{"Manage Definable Fields"|gettext}</h1>
+    </div>
 	{permissions}
     	{if $permissions.create == 1}
     		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}

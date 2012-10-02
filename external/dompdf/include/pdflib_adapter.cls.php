@@ -5,7 +5,7 @@
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: pdflib_adapter.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
+ * @version $Id$
  */
 
 /**
@@ -587,8 +587,18 @@ class PDFLib_Adapter implements Canvas {
     $y1 = $this->y($y1);
     $y2 = $this->y($y2);
 
-    $this->_pdf->moveto($x1,$y1);
+    $this->_pdf->moveto($x1, $y1);
     $this->_pdf->lineto($x2, $y2);
+    $this->_pdf->stroke();
+  }
+  
+  function arc($x1, $y1, $r1, $r2, $astart, $aend, $color, $width, $style = array()) {
+    $this->_set_line_style($width, "butt", "", $style);
+    $this->_set_stroke_color($color);
+
+    $y1 = $this->y($y1);
+    
+    $this->_pdf->arc($x1, $y1, $r1, $astart, $aend);
     $this->_pdf->stroke();
   }
 
@@ -622,6 +632,11 @@ class PDFLib_Adapter implements Canvas {
     
     $this->_pdf->rect(floatval($x1), floatval($y1), floatval($w), floatval($h));
     $this->_pdf->clip();
+  }
+  
+  function clipping_roundrectangle($x1, $y1, $w, $h, $rTL, $rTR, $rBR, $rBL) {
+    // @todo
+    $this->clipping_rectangle($x1, $y1, $w, $h);
   }
   
   function clipping_end() {
@@ -725,11 +740,11 @@ class PDFLib_Adapter implements Canvas {
       $img = $this->_imgs[$img_url];
     }
     else {
-      $img = $this->_imgs[$img_url] = $this->_pdf->load_image($img_type, $img_url, "");
+      $img = $this->_imgs[$img_url] = $this->_pdf->load_image($img_ext, $img_url, "");
     }
 
     $y = $this->y($y) - $h;
-    $this->_pdf->fit_image($img, $x, $y, "boxsize=\{$w $h\} fitmethod=entire");
+    $this->_pdf->fit_image($img, $x, $y, 'boxsize={'."$w $h".'} fitmethod=entire');
   }
 
   //........................................................................
@@ -854,13 +869,13 @@ class PDFLib_Adapter implements Canvas {
    * @param string $font the font file to use
    * @param float $size the font size, in points
    * @param array $color
-   * @param float $adjust word spacing adjustment
+   * @param float $word_space word spacing adjustment
+   * @param float $char_space char spacing adjustment
    * @param float $angle angle to write the text at, measured CW starting from the x-axis
    */
-  function page_text($x, $y, $text, $font, $size, $color = array(0,0,0),
-                     $adjust = 0, $angle = 0) {
+  function page_text($x, $y, $text, $font, $size, $color = array(0,0,0), $word_space = 0, $char_space = 0, $angle = 0) {
     $_t = "text";
-    $this->_page_text[] = compact("_t", "x", "y", "text", "font", "size", "color", "adjust", "angle");
+    $this->_page_text[] = compact("_t", "x", "y", "text", "font", "size", "color", "word_space", "char_space", "angle");
   }
 
   //........................................................................
@@ -917,7 +932,7 @@ class PDFLib_Adapter implements Canvas {
         case "text":
           $text = str_replace(array("{PAGE_NUM}","{PAGE_COUNT}"),
                               array($p, $this->_page_count), $text);
-          $this->text($x, $y, $text, $font, $size, $color, $adjust, $angle);
+          $this->text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
           break;
 
         case "script":

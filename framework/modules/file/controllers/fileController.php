@@ -33,9 +33,9 @@ class fileController extends expController {
         'edit_alt'=>'must be logged in'
     );
 
-    function displayname() { return gt("File Manager"); }
-    function description() { return gt("Add and manage Exponent Files"); }
-    function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function displayname() { return gt("File Manager"); }
+    static function description() { return gt("Add and manage Exponent Files"); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
 
     public function manage_fixPaths() {
         // fixes file directory issues when the old file class was used to save record
@@ -58,7 +58,7 @@ class fileController extends expController {
     public function picker() {
         global $user;
         assign_to_template(array(
-            'update'=>$_GET['update']
+            'update'=>$this->params['update']
         ));
     }
     
@@ -71,14 +71,18 @@ class fileController extends expController {
         }
 
         assign_to_template(array(
-            'update'=>$_GET['update'],
+            'update'=>$this->params['update'],
             "upload_size"=>ini_get('upload_max_filesize'),
             "post_size"=>ini_get('post_max_size'),
             "bmax"=>intval(ini_get('upload_max_filesize')/1024*1000000000)
         ));
     }
     
-    public function get_view_config() {
+    /**
+     * Locates appropriate attached file view template
+     *
+     */
+     public function get_view_config() {
         global $template;
         
         // set paths we will search in for the view
@@ -113,23 +117,23 @@ class fileController extends expController {
         $sort_dir = SORT_ASC;
 
         // How many records to get?
-        if(strlen($_GET['results']) > 0) {
-            $results = $_GET['results'];
+        if(strlen($this->params['results']) > 0) {
+            $results = $this->params['results'];
         }
 
         // Start at which record?
-        if(strlen($_GET['startIndex']) > 0) {
-            $startIndex = $_GET['startIndex'];
+        if(strlen($this->params['startIndex']) > 0) {
+            $startIndex = $this->params['startIndex'];
         }
 
         // Sorted?
-        if(strlen($_GET['sort']) > 0) {
-            $sort = $_GET['sort'];
+        if(strlen($this->params['sort']) > 0) {
+            $sort = $this->params['sort'];
 //            if ($sort = 'id') $sort = 'filename';
         }
 
         // Sort dir?
-        if((strlen($_GET['dir']) > 0) && ($_GET['dir'] == 'desc')) {
+        if((strlen($this->params['dir']) > 0) && ($this->params['dir'] == 'desc')) {
             $dir = 'desc';
             $sort_dir = SORT_DESC;
         }
@@ -138,18 +142,18 @@ class fileController extends expController {
             $sort_dir = SORT_ASC;
         }
         
-        if (isset($_GET['query'])) {
+        if (isset($this->params['query'])) {
 
             if ($user->is_acting_admin!=1) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";
             };
-            if ($_GET['fck']==1) {
+            if ($this->params['fck']==1) {
                 $filter .= "is_image=1 AND ";
             }
 
-            $_GET['query'] = expString::sanitize($_GET['query']);
-            $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'");
-            $files = $this->$modelname->find('all',$filter."filename LIKE '%".$_GET['query']."%' OR title LIKE '%".$_GET['query']."%' OR alt LIKE '%".$_GET['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
+//            $this->params['query'] = expString::sanitize($this->params['query']);
+            $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'");
+            $files = $this->$modelname->find('all',$filter."filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
 
             foreach ($files as $key=>$file) {
                 $tmpusr = new user($file->poster);
@@ -171,7 +175,7 @@ class fileController extends expController {
             if ($user->is_acting_admin!=1) {
                 $filter = "(poster=".$user->id." OR shared=1)";
             };
-            if ($_GET['fck']==1) {
+            if ($this->params['fck']==1) {
                 $filter .= !empty($filter) ? " AND " : "";
                 $filter .= "is_image=1";
             }
@@ -289,7 +293,7 @@ class fileController extends expController {
         // and then assign $user->id to $file->poster so we have an audit trail for the upload
 
         if (is_object($file)) {
-            $user = new user(intval($_REQUEST['usrid']));
+            $user = new user($this->params['usrid']);
             $file->poster = $user->id;
             $file->save();
 

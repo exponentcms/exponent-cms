@@ -28,18 +28,6 @@ if (EXPONENT_VERSION_TYPE != '') {
 }
 $my_releasedate = gt("Release date")." : ".date("F-d-Y",EXPONENT_VERSION_BUILDDATE);
 
-//$script = "
-//// YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-////
-//// });
-//
-//";
-//expJavascript::pushToFoot(array(
-//    "unique"=>'admin1',
-//    "yui3mods"=>null,
-//    "content"=>$script,
-// ));
-
 if ($user->isAdmin()) {
 	$expAdminMenu = array(
 		'text' => '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">',
@@ -118,11 +106,10 @@ if ($user->isAdmin()) {
 	);
 }
 
-
 if ($user->isAdmin()) {
-	if (SMTP_USE_PHP_MAIL){
+	if (SMTP_USE_PHP_MAIL) {
 		$expAdminMenu['submenu']['itemdata'][] = array(
-			'text' => gt("Configuration"),
+			'text' => gt("Site Configuration"),
 			'classname' => 'config',
 			'submenu' => array(
 				'id' => 'configure',
@@ -134,6 +121,44 @@ if ($user->isAdmin()) {
 							'action' => 'configure_site'
 						))
 					),
+				)
+			)
+		);
+	} else {
+		$expAdminMenu['submenu']['itemdata'][] = array(
+			'text' => gt('Site Configuration'),
+			'classname' => 'config',
+			'submenu' => array(
+				'id' => 'configure',
+				'itemdata' => array(
+					array(
+						'text' => gt("Configure Website"),
+						'url' => makeLink(array(
+							'controller' => 'administration',
+							'action' => 'configure_site'
+						))
+					),
+					array(
+						'text' => gt('Test SMTP Mail Server Settings'),
+						'url' => makeLink(array(
+							'controller' => 'administration',
+							'action' => 'test_smtp'
+						))
+					),
+				)
+			)
+		);
+	}
+}
+
+if ($user->isAdmin()) {
+	if (SMTP_USE_PHP_MAIL) {
+		$expAdminMenu['submenu']['itemdata'][] = array(
+			'text' => gt("Site Management"),
+			'classname' => 'manage',
+			'submenu' => array(
+				'id' => 'manage',
+				'itemdata' => array(
                     array(
                         'text' => gt('Manage Site Comments'),
                         'classname' => 'manage',
@@ -158,6 +183,22 @@ if ($user->isAdmin()) {
                             'action' => 'manage'
                         ))
                     ),
+                    array(
+                        'text' => gt('View Top Searches'),
+                        'classname' => 'search',
+                        'url' => makeLink(array(
+                            'controller' => 'search',
+                            'action' => 'topSearchReport'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('View Search Queries'),
+                        'classname' => 'search',
+                        'url' => makeLink(array(
+                            'controller' => 'search',
+                            'action' => 'searchQueryReport'
+                        ))
+                    ),
 					array(
 						'text' => gt('Regenerate Search Index'),
 						'classname' => 'search',
@@ -171,25 +212,11 @@ if ($user->isAdmin()) {
 		);
 	} else {
 		$expAdminMenu['submenu']['itemdata'][] = array(
-			'text' => gt('Configuration'),
-			'classname' => 'config',
+			'text' => gt('Site Management'),
+			'classname' => 'manage',
 			'submenu' => array(
-				'id' => 'configure',
+				'id' => 'manage',
 				'itemdata' => array(
-					array(
-						'text' => gt("Configure Website"),
-						'url' => makeLink(array(
-							'controller' => 'administration',
-							'action' => 'configure_site'
-						))
-					),
-					array(
-						'text' => gt('Test SMTP Mail Server Settings'),
-						'url' => makeLink(array(
-							'controller' => 'administration',
-							'action' => 'test_smtp'
-						))
-					),
                     array(
                         'text' => gt('Manage Site Comments'),
                         'classname' => 'manage',
@@ -222,6 +249,22 @@ if ($user->isAdmin()) {
                             'action' => 'manage'
                         ))
                     ),
+                    array(
+                        'text' => gt('View Top Searches'),
+                        'classname' => 'search',
+                        'url' => makeLink(array(
+                            'controller' => 'search',
+                            'action' => 'topSearchReport'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('View Search Queries'),
+                        'classname' => 'search',
+                        'url' => makeLink(array(
+                            'controller' => 'search',
+                            'action' => 'searchQueryReport'
+                        ))
+                    ),
 					array(
 						'text' => gt('Regenerate Search Index'),
 						'classname' => 'search',
@@ -237,48 +280,46 @@ if ($user->isAdmin()) {
 }
 
 $groups = $db->selectObjects('groupmembership','member_id='.$user->id.' AND is_admin=1');
-
 if ($user->isAdmin() || !empty($groups)) {
-$expAdminMenu['submenu']['itemdata'][] = array(
-    'text' => gt('User Management'),
-    'classname' => 'users',
-    'submenu' => array(
-        'id' => 'usermanagement',
-        'itemdata' => array(
-            array(
-                'text' => gt('User Accounts'),
-                'url' => makeLink(array(
-                    'controller' => 'users',
-                    'action' => 'manage'
-                )),
-                'classname' => 'euser',
-            ),
-            array(
-                'text' => gt('Group Accounts'),
-                'url' => makeLink(array(
-                    'controller' => 'users',
-                    'action' => 'manage_groups'
-                )),
-                'classname' => 'egroup',
-            ),
-            array(
-                'text' => gt('Profile Definitions'),
-                'url' => makeLink(array(
-                    'controller' => 'users',
-                    'action' => 'manage_extensions'
-                )),
-            ),
-            array(
-                'text' => gt('User Sessions'),
-                'url' => makeLink(array(
-                    'controller' => 'users',
-                    'action' => 'manage_sessions'
-                )),
+    $expAdminMenu['submenu']['itemdata'][] = array(
+        'text' => gt('User Management'),
+        'classname' => 'users',
+        'submenu' => array(
+            'id' => 'usermanagement',
+            'itemdata' => array(
+                array(
+                    'text' => gt('User Accounts'),
+                    'url' => makeLink(array(
+                        'controller' => 'users',
+                        'action' => 'manage'
+                    )),
+                    'classname' => 'euser',
+                ),
+                array(
+                    'text' => gt('Group Accounts'),
+                    'url' => makeLink(array(
+                        'controller' => 'users',
+                        'action' => 'manage_groups'
+                    )),
+                    'classname' => 'egroup',
+                ),
+                array(
+                    'text' => gt('Profile Definitions'),
+                    'url' => makeLink(array(
+                        'controller' => 'users',
+                        'action' => 'manage_extensions'
+                    )),
+                ),
+                array(
+                    'text' => gt('User Sessions'),
+                    'url' => makeLink(array(
+                        'controller' => 'users',
+                        'action' => 'manage_sessions'
+                    )),
+                )
             )
         )
-    )
-);
-
+    );
 }
 
 if ($user->isSuperAdmin()) {
@@ -297,29 +338,33 @@ if ($user->isSuperAdmin()) {
                     ))
                 ),
                 array(
+                    'text' => (LOGGER)?gt('Turn YUI Log Display off'):gt('Turn YUI Log Display on'),
+                    'classname' => (LOGGER)?'develop_on_red':'develop_off',
+                    'url' => makeLink(array(
+                        'controller' => 'administration',
+                        'action' => 'toggle_log'
+                    ))
+                ),
+                array(
                     'text' => gt('Database'),
                     'submenu' => array(
                         'id' => 'database',
                         'itemdata' => array(
                             array(
-                                'text' => gt('Install Tables'),
+                                'text'=>gt('Import Data'),
+                                'url'=>makeLink(array('controller'=>'importer','action'=>'list_importers')),
+                            ),
+                            array(
+                                'text'=>gt('Export Data'),
+                                'url'=>makeLink(array('controller'=>'exporter','action'=>'list_exporters')),
+                            ),
+                            array(
+                                'text' => gt('Update Tables'),
                                 'url' => makeLink(array(
                                     'controller' => 'administration',
                                     'action' => 'install_tables'
                                 ))
                             ),
-                             array(
-                             'text'=>gt('Import Data'),
-                             'url'=>makeLink(array('controller'=>'importer','action'=>'list_importers')),
-                             ),
-                             array(
-                             'text'=>gt('Export Data'),
-                             'url'=>makeLink(array('controller'=>'exporter','action'=>'list_exporters')),
-                             ),
-//                             array(
-//                             'text'=>gt('Archived Modules'),
-//                             'url'=>makeLink(array('controller'=>'administrationmodule','action'=>'orphanedcontent')),
-//                             ),
                             array(
                                 'text' => gt('Optimize Database'),
                                 'url' => makeLink(array(
@@ -335,6 +380,13 @@ if ($user->isSuperAdmin()) {
                                 ))
                             ),
                             array(
+                                'text' => gt('Fix Table Names'),
+                                'url' => makeLink(array(
+                                    'controller' => 'administration',
+                                    'action' => 'fix_tables'
+                                ))
+                            ),
+                            array(
                                 'text' => gt('Reset Sessions Table'),
                                 'url' => makeLink(array(
                                     'controller' => 'administration',
@@ -342,7 +394,7 @@ if ($user->isSuperAdmin()) {
                                 ))
                             ),
                             array(
-                                'text' => gt('Remove Unneeded Columns'),
+                                'text' => gt('Remove Unneeded Table Columns'),
                                 'classname' => 'remove',
                                 'url' => makeLink(array(
                                     'controller' => 'administration',
@@ -360,7 +412,6 @@ if ($user->isSuperAdmin()) {
                         )
                     )
                 ),
-                
                 array(
                     'text' => gt('Migrate 0.9x Site'),
                     'url' => makeLink(array(

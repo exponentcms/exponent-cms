@@ -27,7 +27,7 @@
  *
  * Type:     function<br>
  * Name:     getnav<br>
- * Purpose:  get and assign navigation structure
+ * Purpose:  get and assign navigation sub-structure based on type
  *
  * @param         $params
  * @param \Smarty $smarty
@@ -35,140 +35,110 @@
 function smarty_function_getnav($params,&$smarty) {
 	global $sections;
 
-	if($params['type']=="parent"){
-		
-		foreach($sections as $key=>$value){
-			$rekeyed[$value->id] = $value;
-		}
-		
-		$linkInQuestion = $rekeyed[$params['of']];
-		
-		$nav = $rekeyed[$linkInQuestion->parent];
-
-	}
-
-	if($params['type']=="siblingsandchildren"){
-
-		foreach($sections as $key=>$value){
-			$rekeyed[$value->id] = $value;
-		}
-
-
-		$linkInQuestion = $rekeyed[$params['of']];
-	//	echo $linkInQuestion->depth;
-
-		foreach ($sections as $key=>$value) {
-			if ($value->depth < $linkInQuestion->depth){
-				if($value->parent == 0) {
-					$nav[] = $value;
-				}else{
-					foreach ($value->parents as $parent){
-						if($parent == $value->id){
-							$nav[] = $value ;
-						}
-					}
-
-				}
-			}
-
-		}
-	}
-	if($params['type']=="allsubchildren"){
-		
-		foreach($sections as $key=>$value){
-			$rekeyed[$value->id] = $value;
-		}
-		
-		$linkInQuestion = $rekeyed[$params['of']];
-		
-		foreach ($sections as $key=>$value) {
-			
-			foreach ($value->parents as $pkey=>$parent){
-				if($parent == $linkInQuestion->id){
-					$nav[] = $value ;
-				}
-			}
-		
-		}
-	//	eDebug($nav);
-		
-	}
-	if($params['type']=="siblingsandchildren"){
-		
-		foreach($sections as $key=>$value){
-			$rekeyed[$value->id] = $value;
-		}
-		
-		$linkInQuestion = $rekeyed[$params['of']];
-	//	echo $linkInQuestion->depth;
-		
-		foreach ($sections as $key=>$value) {
-			if ($value->depth < $linkInQuestion->depth){
-				if($value->parent == 0) {
-					$nav[] = $value;
-				}else{
-					foreach ($value->parents as $parent){
-						if($parent == $value->id){
-							$nav[] = $value ;
-						}
-					}
-				
-				}
-			}
-			
-		}
-	}
-	if($params['type']=="siblings"){
-		
-		foreach($sections as $key=>$value){
-			$rekeyed[$value->id] = $value;
-		}
-		
-		
-		$linkInQuestion = $rekeyed[$params['of']];
-		foreach ($sections as $key=>$value) {
-			if($value->parent == $linkInQuestion->parent) {
-				$nav[] = $value;
-			}			
-		}
-		
-	}
-	if($params['type']=="children"){
-		
-		foreach($sections as $key=>$value){
-			$rekeyed[$value->id] = $value;
-		}
-		
-		$linkInQuestion = $rekeyed[$params['of']];
-		foreach ($sections as $key=>$value) {
-			if($value->parent == $linkInQuestion->id) {
-				$nav[] = $value;
-			}			
-		}
-		
-	}
-	if($params['type']=="haschildren"){
-		
-		foreach($sections as $key=>$value){
-			$rekeyed[$value->id] = $value;
-		}
-		
-		$linkInQuestion = $rekeyed[$params['of']];
-		foreach ($sections as $key=>$value) {
-			if($value->parent == $linkInQuestion->id) {
-				$tmp[] = $value;
-			}			
-		}
-		if (count($tmp)>0){
-			$nav = 1;
-		}else{
-			$nav = 0;
-		}
-		
-	}
-	
+    foreach ($sections as $key=>$value) {
+        $rekeyed[$value->id] = $value;
+    }
+    $linkInQuestion = $rekeyed[$params['of']];
+    switch ($params['type']) {
+        case "parent" :
+            $nav = $rekeyed[$linkInQuestion->parent];
+            break;
+        case "siblings" :
+            foreach ($sections as $key=>$value) {
+                if ($value->parent == $linkInQuestion->parent) {
+                    $nav[] = $value;
+                } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                    (!empty($params['top']) && $value->depth == 0) ||
+                    (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                    $nav[] = $value;
+                }
+            }
+            break;
+        case "children" :
+            foreach ($sections as $key=>$value) {
+                if ($value->parent == $linkInQuestion->id) {
+                    $nav[] = $value;
+                } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                    (!empty($params['top']) && $value->depth == 0) ||
+                    (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                    $nav[] = $value;
+                }
+            }
+            break;
+        case "siblingsandchildren" :
+            foreach ($sections as $key=>$value) {
+                if ($value->depth >= $linkInQuestion->depth && $value->depth <= $linkInQuestion->depth+1) {
+                    if ($value->parent == 0) {
+                        $nav[] = $value;
+                    } else {
+                        foreach ($value->parents as $parent) {
+                            if ($parent == $linkInQuestion->id || $parent == $linkInQuestion->parent) {
+                                $nav[] = $value ;
+                                break;
+                            } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                                (!empty($params['top']) && $value->depth == 0) ||
+                                (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                                $nav[] = $value;
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case "siblingsandallsubchildren" :
+            foreach ($sections as $key=>$value) {
+                if ($value->depth >= $linkInQuestion->depth) {
+                    if ($value->parent == 0) {
+                        $nav[] = $value;
+                    } else {
+                        foreach ($value->parents as $parent) {
+                            if ($parent == $linkInQuestion->id || $parent == $linkInQuestion->parent) {
+                                $nav[] = $value ;
+                                break;
+                            } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                                (!empty($params['top']) && $value->depth == 0) ||
+                                (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                                $nav[] = $value;
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        case "allsubchildren" :
+            foreach ($sections as $key=>$value) {
+                foreach ($value->parents as $pkey=>$parent) {
+                    if ($parent == $linkInQuestion->id) {
+                        $nav[] = $value ;
+                    } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
+                        (!empty($params['top']) && $value->depth == 0) ||
+                        (!empty($params['top']) && in_array($value->id,$linkInQuestion->parents))) {
+                        $nav[] = $value;
+                    }
+                }
+            }
+            break;
+        case "haschildren" :
+            foreach ($sections as $key=>$value) {
+                if ($value->parent == $linkInQuestion->id) {
+                    $tmp[] = $value;
+                }
+            }
+            if (count($tmp)>0) {
+                $nav = 1;
+            } else {
+                $nav = 0;
+            }
+            break;
+        case "hierarchy" :
+            $nav = navigationController::navhierarchy();
+            break;
+        default :
+            $nav = $sections;
+    }
 	$nav = (!empty($params['json'])) ? json_encode($nav) : $nav;
 	if (isset($params['assign'])) $smarty->assign($params['assign'],$nav);
+    else echo $nav;
 }
 
 ?>

@@ -30,25 +30,25 @@ class expCatController extends expController {
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return gt("Category Manager"); }
+    static function displayname() { return gt("Category Manager"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is used to manage categories"); }
+    static function description() { return gt("This module is used to manage categories"); }
 
     /**
    	 * author of module
    	 * @return string
    	 */
-   	function author() { return "Dave Leffler"; }
+    static function author() { return "Dave Leffler"; }
 
 	/**
 	 * does module have sources available?
 	 * @return bool
 	 */
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 
 	/**
 	 * manage categories
@@ -58,16 +58,21 @@ class expCatController extends expController {
 
         expHistory::set('manageable', $this->params);
         if (!empty($this->params['model'])) {
+            $modulename = expModules::getControllerClassName($this->params['model']);
+            $module = new $modulename($this->params['src']);
+            $where = $module->aggregateWhereClause();
             $page = new expPaginator(array(
-                        'model'=>$this->params['model'],
-                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+                'model'=>$this->params['model'],
+//                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+                'where'=>$where,
 //                        'order'=>'module,rank',
-                        'categorize'=>true,
-                        'controller'=>$this->params['model'],
+                'categorize'=>true,
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller'=>$this->params['model'],
 //                        'action'=>$this->params['action'],
 //                        'src'=>$this->hasSources() == true ? $this->loc->src : null,
 //                        'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            ));
             if ($this->params['model'] == 'faq') {
                 foreach ($page->records as $record) {
                     $record->title = $record->question;
@@ -75,15 +80,20 @@ class expCatController extends expController {
             }
         } else $page = '';
         $cats = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>empty($this->params['model']) ? null : "module='".$this->params['model']."'",
-                    'limit'=>50,
-                    'order'=>'module,rank',
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                ));
+            'model'=>$this->basemodel_name,
+            'where'=>empty($this->params['model']) ? null : "module='".$this->params['model']."'",
+            'limit'=>50,
+            'order'=>'module,rank',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'columns'=>array(
+                gt('ID#')=>'id',
+                gt('Title')=>'title',
+                gt('Body')=>'body'
+            ),
+        ));
 
         foreach ($db->selectColumn('content_expCats','content_type',null,null,true) as $contenttype) {
             foreach ($cats->records as $key => $value) {
@@ -149,13 +159,13 @@ class expCatController extends expController {
      *  it is assumed the records have expCats attachments, even if they are empty
      *
      * @static
-     * @param object $records
-     * @param $order sort order/dir for items
+     * @param array $records
+     * @param string $order sort order/dir for items
      * @param string $uncattitle name to use for uncategorized group
      * @param array $groups limit set to these groups only if set
      * @return void
      */
-    public static function addCats(&$records,$order,$uncattitle,$groups=array()) {
+    public static function addCats(&$records,$order,$uncattitle,$groups=array(),$dontsort=false) {
         if (empty($uncattitle)) $uncattitle = gt('Not Categorized');
         foreach ($records as $key=>$record) {
             foreach ($record->expCat as $cat) {
@@ -167,7 +177,9 @@ class expCatController extends expController {
                 break;
             }
             if (empty($records[$key]->catid)) {
-                $records[$key]->catid = null;
+                $records[$key]->catid = 0;
+                $records[$key]->expCat[0] = new stdClass();
+                $records[$key]->expCat[0]->id = 0;
                 $records[$key]->catrank = 9999;
                 $records[$key]->cat = $uncattitle;
             }
@@ -175,20 +187,24 @@ class expCatController extends expController {
                 unset ($records[$key]);
             }
         }
-        $orderby = explode(" ",$order);
-        $order = $orderby[0];
-        $order_direction = !empty($orderby[1]) && $orderby[1] == 'DESC' ? SORT_DESC : SORT_ASC;
-        expSorter::osort($records, array('catrank',$order => $order_direction));
+        //FIXME we don't always want to sort  by cat first
+        if (!$dontsort) {
+            $orderby = explode(" ",$order);
+            $order = $orderby[0];
+            $order_direction = !empty($orderby[1]) && $orderby[1] == 'DESC' ? SORT_DESC : SORT_ASC;
+            expSorter::osort($records, array('catrank',$order => $order_direction));
+        }
     }
 
     /**
      * this method fills a multidimensional array from a sorted records object
-     *  it is assumed the records object came from expCatController::addCats
+     *  it is assumed the records object is already processed by expCatController::addCats
      *
      * @static
-     * @param object $records
+     * @param array $records
      * @param array $cats array of site category objects
      * @param array $groups limit set to these groups only if set
+     * @param null $grouplimit
      * @return void
      */
     public static function sortedByCats($records,&$cats,$groups=array(),$grouplimit=null) {

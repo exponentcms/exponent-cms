@@ -106,7 +106,7 @@ class mysqlid_database extends mysqli_database {
 //   function connect ($username, $password, $hostname, $database, $new=false) {
    function __construct($username, $password, $hostname, $database, $new=false) {
 		//$log_file==null ? $this->$logFile = BASE . '/tmp/sql.log' : $log_file;
-	    if ($log_file == null) $this->logFile = BASE . 'tmp/sql.log';
+	    if (empty($log_file)) $this->logFile = BASE . 'tmp/sql.log';
 	    else $this->logFile = $log_file;
 	    //eDebug($log_file);
 	    $this->logFH = fopen($this->logFile, 'a');
@@ -280,11 +280,11 @@ class mysqlid_database extends mysqli_database {
 			$this->updateObject($object_a,$table);
 			$this->updateObject($object_b,$table);
 
+            $this->query_time('switchValues');
 			return true;
 		} else {
 			return false;
 		}
-        $this->query_time('switchValues');
 	}
 
 	/**
@@ -803,7 +803,7 @@ class mysqlid_database extends mysqli_database {
 	 *
 	 * @param string $table The name of the table/object to look at
 	 * @param string $where Criteria used to narrow the result set.
-	 * @return null|void
+	 * @return object|null|void
 	 */
 	function selectObject($table,$where) {
 		$res = mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1");
@@ -851,7 +851,7 @@ class mysqlid_database extends mysqli_database {
 	 *
 	 * @param string $table The name of the table to delete from.
 	 * @param string $where Criteria for determining which record(s) to delete.
-	 * @return void
+	 * @return mixed|void
 	 */
 	function delete($table,$where = null) {
 		if ($where != null) {
@@ -864,21 +864,23 @@ class mysqlid_database extends mysqli_database {
 			return $res;
 		}
 	}
-    
-	/**
-	 * Update one or more objects in the database.
-	 *
-	 * This function will only update the attributes of the resulting record(s)
-	 * that are also member attributes of the $object object.
-	 *
-	 * @param object $object An object specifying the fields and values for updating.
-	 *    In most cases, this will be the altered object originally returned from one of
-	 *    the select* methods.
-	 * @param string $table The table to update in.
-	 * @param string $where Optional criteria used to narrow the result set.
-	 * @return bool
-	 */
-	function updateObject($object,$table,$where=null) {
+
+    /**
+     * Update one or more objects in the database.
+     *
+     * This function will only update the attributes of the resulting record(s)
+     * that are also member attributes of the $object object.
+     *
+     * @param object $object An object specifying the fields and values for updating.
+     *    In most cases, this will be the altered object originally returned from one of
+     *    the select* methods.
+     * @param string $table The table to update in.
+     * @param string $where Optional criteria used to narrow the result set.
+     * @param string $identifier
+     * @param bool $is_revisioned
+     * @return bool
+     */
+	function updateObject($object,$table,$where=null, $identifier='id', $is_revisioned=false) {
 		$sql = "UPDATE " . $this->prefix . "$table SET ";
 		foreach (get_object_vars($object) as $var=>$val) {
 			//We do not want to save any fields that start with an '_'
@@ -956,7 +958,7 @@ class mysqlid_database extends mysqli_database {
 	 * @param integer $step The step value.  Usually 1.  This can be negative, to
 	 *    decrement, but the decrement() method is preferred, for readability.
 	 * @param string $where Optional criteria to determine which records to update.
-	 * @return void
+	 * @return mixed|void
 	 */
 	function increment($table,$field,$step,$where = null) {
 		if ($where == null) $where = "1";
@@ -1148,20 +1150,20 @@ class mysqlid_database extends mysqli_database {
 	 * @param $fieldObj
 	 * @return int
 	 */
-	function getDDFieldType($fieldObj) {
-		$type = strtolower($fieldObj->Type);
-
-		if ($type == "int(11)") return DB_DEF_ID;
-		if ($type == "int(8)") return DB_DEF_INTEGER;
-		elseif ($type == "tinyint(1)") return DB_DEF_BOOLEAN;
-		elseif ($type == "int(14)") return DB_DEF_TIMESTAMP;
-		//else if (substr($type,5) == "double") return DB_DEF_DECIMAL;
-		elseif ($type == "double") return DB_DEF_DECIMAL;
-		// Strings
-		elseif ($type == "text" || $type == "mediumtext" || $type == "longtext" || strpos($type,"varchar(") !== false) {
-			return DB_DEF_STRING;
-		}
-	}
+//	function getDDFieldType($fieldObj) {
+//		$type = strtolower($fieldObj->Type);
+//
+//		if ($type == "int(11)") return DB_DEF_ID;
+//		if ($type == "int(8)") return DB_DEF_INTEGER;
+//		elseif ($type == "tinyint(1)") return DB_DEF_BOOLEAN;
+//		elseif ($type == "int(14)") return DB_DEF_TIMESTAMP;
+//		//else if (substr($type,5) == "double") return DB_DEF_DECIMAL;
+//		elseif ($type == "double") return DB_DEF_DECIMAL;
+//		// Strings
+//		elseif ($type == "text" || $type == "mediumtext" || $type == "longtext" || strpos($type,"varchar(") !== false) {
+//			return DB_DEF_STRING;
+//		}
+//	}
 
 	/**
 	 * This is an internal function for use only within the MySQL database class
@@ -1169,15 +1171,15 @@ class mysqlid_database extends mysqli_database {
 	 * @param $fieldObj
 	 * @return int
 	 */
-	function getDDStringLen($fieldObj) {
-		$type = strtolower($fieldObj->Type);
-		if ($type == "text") return 65535;
-		else if ($type == "mediumtext") return 16777215;
-		else if ($type == "longtext") return 16777216;
-		else if (strpos($type,"varchar(") !== false) {
-			return str_replace(  array("varchar(",")"),  "",$type) + 0;
-		}
-	}
+//	function getDDStringLen($fieldObj) {
+//		$type = strtolower($fieldObj->Type);
+//		if ($type == "text") return 65535;
+//		else if ($type == "mediumtext") return 16777215;
+//		else if ($type == "longtext") return 16777216;
+//		else if (strpos($type,"varchar(") !== false) {
+//			return str_replace(  array("varchar(",")"),  "",$type) + 0;
+//		}
+//	}
 
 	/**
 	 * Returns an error message from the server.  This is intended to be
@@ -1207,9 +1209,9 @@ class mysqlid_database extends mysqli_database {
 		return ($this->connection != null && mysqli_errno($this->connection) != 0);
 	}
 
-	function limit($num,$offset) {
-		return ' LIMIT '.$offset.','.$num.' ';
-	}
+//	function limit($num,$offset) {
+//		return ' LIMIT '.$offset.','.$num.' ';
+//	}
 
 	/**
 	 * Select an array of arrays
@@ -1270,23 +1272,23 @@ class mysqlid_database extends mysqli_database {
 		return $arrays;
 	}
 
-	/**
-	 * Select a record from the database as an array
-	 *
-	 * Selects a set of arrays from the database.  Because of the way
-	 * Exponent handles objects and database tables, this is akin to
-	 * SELECTing a set of records from a database table.  Returns an
-	 * array of arrays, in any random order.
-	 *
-	 * @param string $table The name of the table/object to look at
-	 * @param string $where Criteria used to narrow the result set.  If this
-	 *   is specified as null, then no criteria is applied, and all objects are
-	 *   returned
-	 * @param null $orderby
-	 * @return array
-	 *
-	 */
-	function selectArray($table, $where = null, $orderby = null) {
+    /**
+     * Select a record from the database as an array
+     *
+     * Selects a set of arrays from the database.  Because of the way
+     * Exponent handles objects and database tables, this is akin to
+     * SELECTing a set of records from a database table.  Returns an
+     * array of arrays, in any random order.
+     *
+     * @param string $table The name of the table/object to look at
+     * @param string $where Criteria used to narrow the result set.  If this
+     *   is specified as null, then no criteria is applied, and all objects are
+     *   returned
+     * @param null $orderby
+     * @param bool $is_revisioned
+     * @return array
+     */
+	function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
 		if ($where == null) $where = "1";
 		$orderby = empty($orderby) ? '' : "ORDER BY " . $orderby;
 
@@ -1296,7 +1298,7 @@ class mysqlid_database extends mysqli_database {
 		return mysqli_fetch_assoc($res);
 	}
 	
-	function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true) {
+	function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
 		if ($where == null) $where = "1";
         $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where";
         /*$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
@@ -1370,7 +1372,7 @@ class mysqlid_database extends mysqli_database {
         if (empty($node)) return array();
         
         $where = is_numeric($node) ? 'id='.$node : 'title="'.$node.'"';
-        global $db;
+//        global $db;
         $sql = 'SELECT node.*, 
                 (COUNT(parent.title) - (sub_tree.depth + 1)) AS depth 
                 FROM `'.$this->prefix.$table.'` AS node, 

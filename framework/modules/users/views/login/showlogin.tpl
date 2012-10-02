@@ -36,9 +36,8 @@
 			{control type="password" name="password" label="Password"|gettext|cat:":" size=25}
 			{control type="buttongroup" submit="Log In"|gettext}
 		{/form}
-            {if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
-                {br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password'|gettext}?</a><br />
-            {/if}
+        {br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
+        {br}
 	</div>
 
 	{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}

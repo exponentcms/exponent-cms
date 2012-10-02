@@ -21,6 +21,7 @@
  */
 
 class creditcard extends billingcalculator {
+
 	function name() { return 'Credit Card'; }
 	function hasConfig() { return false;}
 	function hasUserForm() { return false;}
@@ -46,7 +47,8 @@ class creditcard extends billingcalculator {
 		//$opts->first_name = isset($this->opts->first_name) ? $this->opts->first_name : null;
 		//$opts->last_name = isset($this->opts->last_name) ? $this->opts->last_name : null;
 		$this->opts = expSession::get('billing_options');
-		$opts->cc_type = isset($this->opts->cc_type) ? $this->opts->cc_type : null;
+		$opts = new stdClass();
+        $opts->cc_type = isset($this->opts->cc_type) ? $this->opts->cc_type : null;
 		$opts->cc_number = isset($this->opts->cc_number) ? $this->opts->cc_number : null;
 		$opts->exp_month = isset($this->opts->exp_month) ? $this->opts->exp_month : null;
 		$opts->exp_year = isset($this->opts->exp_year) ? $this->opts->exp_year : null;
@@ -125,7 +127,7 @@ class creditcard extends billingcalculator {
         //so calling twice instead....needs to be  fixed though TODO:
 		//expValidator::validate(array('presence_of'=>'cc_number'), $params);
         //expValidator::validate(array('presence_of'=>'cvv'), $params); 
-		$this->opts = null;
+		$this->opts = new stdClass();
         //$this->opts->first_name = $params["first_name"];
         //$this->opts->last_name = $params["last_name"];
         $this->opts->cc_type = $params["cc_type"];
@@ -140,7 +142,7 @@ class creditcard extends billingcalculator {
 	function userView($opts) {
 	    if (empty($opts)) return false;
 		$html = '';
-		$html .= '<table id="ccinfo" border=0 cellspacing=0 cellpadding=0 class=""><thead>';
+		$html .= '<table id="ccinfo" border=0 cellspacing=0 cellpadding=0><thead>';
 		$html .= '<tr><th colspan="2">'.gt('You will be paying by').' '.$this->payment_type.'</th></tr></thead>';
 		$html .= '<tbody><tr class="odd"><td class="left">Type of Credit Card: </td><td>'.$opts->cc_type.'</td></tr>';
 		$html .= '<tr class="even"><td class="left">Credit Card Number: </td><td>'.'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4). '</td></tr>';

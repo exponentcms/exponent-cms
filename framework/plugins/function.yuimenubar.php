@@ -44,7 +44,7 @@ function smarty_function_yuimenubar($params,&$smarty) {
                 hidedelay: 750,
                 lazyload: true
             });
-            var aSubmenuData = '.navigationmodule::navtojson().';
+            var aSubmenuData = '.navigationController::navtojson().';
             oMenuBar.subscribe("beforeRender", function () {
                 if (this.getRoot() == this) {
 					for (i=0; i<=this.getItems().length; i++){

@@ -41,7 +41,6 @@
     padding:5px;
 }
 
-
 table#cart table,
 table#cart table td {
     border:0 none;
@@ -86,8 +85,6 @@ table#cart table td {
     padding-right:5px;
 }
 
-
-
 /****************  quantity  ***********************/
 #cart .control {
 	padding:0;
@@ -115,7 +112,6 @@ table#cart table td {
     z-index:40;
     background:#000000 url(../../../../core/assets/images/loading2.gif) no-repeat 25% 50%;
 }
-
 
 /****************  options popup  ***********************/
 #cart .options {
@@ -279,7 +275,6 @@ table#cart table td {
     color:#999999;
     background:#efefef;
 }
-
 
 /****************  quicklinks  ***********************/
 

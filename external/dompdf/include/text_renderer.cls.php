@@ -4,9 +4,9 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: text_renderer.cls.php 471 2012-02-06 21:59:10Z fabien.menager $
+ * @version $Id$
  */
 
 /**
@@ -79,25 +79,26 @@ class Text_Renderer extends Abstract_Renderer {
       $height = $line->h * ($size / $style->line_height);
     }
     
+    $line_thickness      = $size * self::DECO_THICKNESS;
+    $underline_offset    = $size * self::UNDERLINE_OFFSET;
+    $overline_offset     = $size * self::OVERLINE_OFFSET;
+    $linethrough_offset  = $size * self::LINETHROUGH_OFFSET;
+    $underline_position  = -0.08;
+    
     if ( method_exists( $this->_canvas, "get_cpdf" ) ) {
-      $cpdf = $this->_canvas->get_cpdf();
+      $cpdf_font = $this->_canvas->get_cpdf()->fonts[$style->font_family];
       
-      //$cpdf_font = $cpdf->fonts[$style->font_family];
-      //$base = ($cpdf_font["UnderlinePosition"]*$size)/1000;
-      //$descent = (($cpdf_font["Ascender"]-$cpdf_font["Descender"])*$size)/1000;
+      if (isset($cpdf_font["UnderlinePosition"])) {
+        $underline_position = $cpdf_font["UnderlinePosition"]/1000;
+      }
       
-      $fontBBox = $cpdf->fonts[$style->font_family]['FontBBox'];
-      $base = (($fontBBox[3]*$size)/1000) * 0.90;
-      $descent = ($fontBBox[1]*$size)/1000;
-      //print '<pre>Text_Renderer cpdf:'.$base.' '.$descent.' '.$size.'</pre>';
-    } else {
-      //Descent is font part below baseline, typically negative. $height is about full height of font box.
-      //$descent = -$size/6; is less accurate, depends on font family.
-      // @todo Could we get font info for PDFlib adapter and others ?
-      $base = $size*1.08;
-      $descent = $size-$height;
-      //print '<pre>Text_Renderer other than cpdf:'.$base.' '.$descent.' '.$size.'</pre>';
+      if (isset($cpdf_font["UnderlineThickness"])) {
+        $line_thickness = $size * ($cpdf_font["UnderlineThickness"]/1000);
+      }
     }
+      
+    $descent = $size * $underline_position;
+    $base    = $size;
     
     // Handle text decoration:
     // http://www.w3.org/TR/CSS21/text.html#propdef-text-decoration
@@ -123,23 +124,22 @@ class Text_Renderer extends Abstract_Renderer {
         continue;
 
       case "underline":
-        $deco_y += $base - $descent + $size * (self::UNDERLINE_OFFSET - self::DECO_THICKNESS/2);
+        $deco_y += $base - $descent + $underline_offset + $line_thickness/2;
         break;
 
       case "overline":
-        $deco_y += $size * (self::OVERLINE_OFFSET + self::DECO_THICKNESS/2);
+        $deco_y += $overline_offset + $line_thickness/2;
         break;
 
       case "line-through":
-        $deco_y += $base * 0.7 + $size * self::LINETHROUGH_OFFSET;
+        $deco_y += $base * 0.7 + $linethrough_offset;
         break;
       }
 
       $dx = 0;
       $x1 = $x - self::DECO_EXTENSION;
       $x2 = $x + $width + $dx + self::DECO_EXTENSION;
-      $this->_canvas->line($x1, $deco_y, $x2, $deco_y, $color, $size * self::DECO_THICKNESS);
-
+      $this->_canvas->line($x1, $deco_y, $x2, $deco_y, $color, $line_thickness);
     }
     
     if (DEBUG_LAYOUT && DEBUG_LAYOUT_LINES) {

@@ -6,6 +6,6 @@ Release Notes for Exponent Content Management System
 
 For a complete list of the changes made from release to release, see the CHANGELOG
 
-2.0.8 - July 2012
+2.0.9 - September 2012
 ========================
-# This release focuses on fixing bugs and enhancing list management (tags, categories, comments)
+# This release focuses on greater HTML5 & PHP v5.4 compliance, & module upgrades

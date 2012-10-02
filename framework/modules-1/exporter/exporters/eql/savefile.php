@@ -32,7 +32,6 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 	ob_start("ob_gzhandler");
 
 	if (isset($_POST['save_sample'])) { // Save as a theme sample is checked off
-//		$path = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
 		$path = BASE . "themes/".DISPLAY_THEME."/sample.eql";
 		if (!$eql = fopen ($path, "w")) {
 			flash('error',gt("Error opening eql file for writing")." ".$path);
@@ -64,7 +63,7 @@ if (!isset($_POST['tables'])) { // No checkboxes clicked, and got past the JS ch
 			header('Pragma: no-cache');
 		}
 		echo expFile::dumpDatabase($db,array_keys($_POST['tables']));
-		exit(''); // Exit, since we are exporting
+		exit; // Exit, since we are exporting
 	}
 }
 

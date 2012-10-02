@@ -19,9 +19,7 @@
 
 <div class="module calendar upcoming-events-headlines">
     <h2>
-        {if !empty($config->enable_ical)}
-            <a class="icallink module-actions" href="{link action=ical}" title="{'iCalendar Feed'|gettext}" alt="{'iCalendar Feed'|gettext}"> </a>
-        {/if}
+        {ical_link}
         {if $moduletitle && !$config->hidemoduletitle}{$moduletitle}{/if}
     </h2>
 	{permissions}

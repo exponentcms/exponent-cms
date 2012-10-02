@@ -22,7 +22,7 @@
     {$oldmod = ''}
     {foreach from=$items item=item}
         {if $item->module != $oldmod}
-            <h2 class="main">{$item->module|getcontrollername|capitalize} {'items'|gettext}</h2>
+            <h2 class="main">{$item->module|getcontrollername|capitalize} {'modules'|gettext}</h2>
         {/if}
         <div class="rb-item">
             <div class="recycledcontent">

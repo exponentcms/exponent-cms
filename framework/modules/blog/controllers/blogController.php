@@ -21,7 +21,6 @@
  */
 
 class blogController extends expController {
-    //public $basemodel_name = '';
     public $useractions = array(
         'showall'=>'Show all', 
         'tags'=>"Tags",
@@ -36,26 +35,29 @@ class blogController extends expController {
         'approve'=>"Approve Comments"
     );
 
-    function displayname() { return gt("Blog"); }
-    function description() { return gt("This module allows you to run a blog on your site."); }
-    function author() { return "Phillip Ball - OIC Group, Inc"; }
-    function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Blog"); }
+    static function description() { return gt("This module allows you to run a blog on your site."); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
+    static function isSearchable() { return true; }
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);
 
 		$page = new expPaginator(array(
-		            'model'=>$this->basemodel_name,
-		            'where'=>$this->aggregateWhereClause(),
-		            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
-		            'src'=>$this->loc->src,
-		            'order'=>'publish',
-		            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-		            'columns'=>array(gt('Title')=>'title'),
-		            ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
+            'order'=>'publish',
+            'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
 		            
 		assign_to_template(array(
             'page'=>$page
@@ -123,15 +125,18 @@ class blogController extends expController {
 	    $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
 
 		$page = new expPaginator(array(
-		            'model'=>$this->basemodel_name,
-		            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
-		            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
-		            'order'=>'publish',
-		            'dir'=>'desc',
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-		            'columns'=>array(gt('Title')=>'title'),
-		            ));
+            'model'=>$this->basemodel_name,
+            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
+            'order'=>'publish',
+            'dir'=>'desc',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
 		            
 		assign_to_template(array(
             'page'=>$page,
@@ -144,14 +149,17 @@ class blogController extends expController {
 	    
         $user = user::getUserByName($this->params['author']);
 		$page = new expPaginator(array(
-		            'model'=>$this->basemodel_name,
-		            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id,
-		            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
-		            'order'=>'publish',
-		            'controller'=>$this->baseclassname,
-		            'action'=>$this->params['action'],
-		            'columns'=>array(gt('Title')=>'title'),
-		            ));
+            'model'=>$this->basemodel_name,
+            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."poster=".$user->id,
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
+            'order'=>'publish',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
             	    
 		assign_to_template(array(
             'page'=>$page,
@@ -164,17 +172,20 @@ class blogController extends expController {
 
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
-	    $blog = new blog($id);
+        $record = new blog($id);
 	    
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
 	    // populate the location data in the template now.
-	    $loc = expUnserialize($blog->location_data);
-        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$blog->location_data."'"));
+        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+
+        $nextwhere = $this->aggregateWhereClause().' AND publish > '.$record->publish.' ORDER BY publish';
+        $record->next = $record->find('first',$nextwhere);
+        $prevwhere = $this->aggregateWhereClause().' AND publish < '.$record->publish.' ORDER BY publish DESC';
+        $record->prev = $record->find('first',$prevwhere);
 
 	    assign_to_template(array(
-            'record'=>$blog,
-            '__loc'=>$loc,
+            'record'=>$record,
             'config'=>$config));
 	}
 
@@ -193,7 +204,7 @@ class blogController extends expController {
         $model = new $modelname();
 
         // start building the sql query
-        $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$model->table.' m ';
+        $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$model->tablename.' m ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_'.$tagobj->attachable_table.' ct ';
         $sql .= 'ON m.id = ct.content_id WHERE (';
         $first = true;
@@ -207,7 +218,7 @@ class blogController extends expController {
         }
 
         foreach ($tags as $tagid) {
-            $sql .= ($first) ? 'exptag_id='.intval($tagid) : ' OR exptag_id='.intval($tagid);
+            $sql .= ($first) ? 'exptags_id='.intval($tagid) : ' OR exptags_id='.intval($tagid);
             $first = false;
         }
         $sql .= ") AND content_type='".$model->classname."'";
@@ -243,7 +254,7 @@ class blogController extends expController {
         foreach ($items as $key => $item) {
             $rss_item = new FeedItem();
             $rss_item->title = expString::convertSmartQuotes($item->title);
-            $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            $rss_item->link = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
@@ -251,8 +262,8 @@ class blogController extends expController {
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
             $comment_count = expCommentController::findComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
             if ($comment_count) {
-                $rss_item->comments = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
-//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+                $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
                 $rss_item->commentsCount = $comment_count;
             }
             $rssitems[$key] = $rss_item;

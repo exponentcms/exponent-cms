@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
  * Date/Time Control w/ Popup Date Picker and time w/ am/pm combo
  * text entry date and/or time w/ pop-up date selector
  *
- * @package Subsystems-Forms
+ * @package    Subsystems-Forms
  * @subpackage Control
  */
 class calendarcontrol extends formcontrol {
@@ -35,11 +35,17 @@ class calendarcontrol extends formcontrol {
     var $default_min = '';
     var $default_ampm = '';
 
-    static function name() { return "YAHOO! UI Calendar"; }
-    static function isSimpleControl() { return false; }
+    static function name() {
+        return "YAHOO! UI Calendar";
+    }
+
+    static function isSimpleControl() {
+        return false;
+    }
+
     static function getFieldDefinition() {
         return array(
-            DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
+            DB_FIELD_TYPE=> DB_DEF_TIMESTAMP);
     }
 
     // function yuicalendarcontrol($default = null, $disable_text = "",$showtime = true) {
@@ -56,66 +62,66 @@ class calendarcontrol extends formcontrol {
     //     }
     // }
 
-	function toHTML($label,$name) {
-		if (!empty($this->id)) {
-		    $divID  = ' id="'.$this->id.'Control"';
-		    $for = ' for="'.$this->id.'"';
-		} else {
-		    $divID  = '';
-		    $for = '';
-		}
-		
-		$disabled = $this->disabled != 0 ? "disabled" : "";
-		$class = empty($this->class) ? '' : $this->class;
-		 
-		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled."\"";
-		$html .= (!empty($this->required)) ? ' required">' : '>';
-		//$html .= "<label>";
-		if(empty($this->flip)){
-			$html .= $this->controlToHTML($name, $label);
-		} else {
-			$html .= "<label".$for." class=\"label\">".$label."</label>";
-		}
-		//$html .= "</label>";
-		$html .= "</div>";			
-		return $html;
-	}
+    function toHTML($label, $name) {
+        if (!empty($this->id)) {
+            $divID = ' id="' . $this->id . 'Control"';
+            $for   = ' for="' . $this->id . '"';
+        } else {
+            $divID = '';
+            $for   = '';
+        }
 
-    function controlToHTML($name,$label) {
-    	$assets_path = SCRIPT_RELATIVE.'framework/core/subsystems/forms/controls/assets/';
-        $html = "
-            <div id=\"calendar-container\" class=\"yui3-skin-sam\"> </div>
-            <div id=\"cal-container-".$name."\" class=\"control calendar-control\">
-            <label for=\"".$name."\" class=\"label\">".$label."</label><input size=26 type=\"text\" id=\"date-".$name."\" name=\"date-".$name."\" value=\"".$this->default_date."\" class=\"text datebox\" /> 
-            @ <input size=3 type=\"text\" id=\"time-h-".$name."\" name=\"time-h-".$name."\" value=\"".$this->default_hour."\" class=\"timebox\" maxlength=2/>
-            : <input size=3 type=\"text\" id=\"time-m-".$name."\" name=\"time-m-".$name."\" value=\"".$this->default_min."\" class=\"timebox\" maxlength=2/>
-            <select id=\"ampm-".$name."\" name=\"ampm-".$name."\">";
-            
-            if($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
-            else $html .= "<option>am</option><option selected>pm</option>";
-         $html .= "       
+        $disabled = $this->disabled != 0 ? "disabled" : "";
+        $class    = empty($this->class) ? '' : $this->class;
+
+        $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . $class . $disabled . "\"";
+        $html .= (!empty($this->required)) ? ' required">' : '>';
+        //$html .= "<label>";
+        if (empty($this->flip)) {
+            $html .= $this->controlToHTML($name, $label);
+        } else {
+            $html .= "<label" . $for . " class=\"label\">" . $label . "</label>";
+        }
+        //$html .= "</label>";
+        $html .= "</div>";
+        return $html;
+    }
+
+    function controlToHTML($name, $label = null) {
+        $assets_path = SCRIPT_RELATIVE . 'framework/core/subsystems/forms/controls/assets/';
+        $html        = "
+            <div id=\"calendar-container-" . $name . "\" class=\"yui3-skin-sam\"> </div>
+            <div id=\"cal-container-" . $name . "\" class=\"control calendar-control\">
+            <label for=\"" . $name . "\" class=\"label\">" . $label . "</label><input size=10 type=\"text\" id=\"date-" . $name . "\" name=\"date-" . $name . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />
+            @ <input size=2 type=\"text\" id=\"time-h-" . $name . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
+            : <input size=2 type=\"text\" id=\"time-m-" . $name . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>
+            <select id=\"ampm-" . $name . "\" name=\"ampm-" . $name . "\">";
+
+        if ($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
+        else $html .= "<option>am</option><option selected>pm</option>";
+        $html .= "
             </select>
         </div>
         <div style=\"clear:both\"></div>
         ";
-        
+
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','cssbutton', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','calendar','datatype-date', function(Y) {
             // Our calendar bounding div id
-            var boundingBoxId = '#calendar-container',
+            var boundingBoxId = '#calendar-container-" . $name . "',
             // This flag used to track mouse position
             isMouseOverCalendar = false,
             // A text field element that stores the date chosen in calendar
             currentValueContainer = '',
             calendar = new Y.Calendar({
                 boundingBox: boundingBoxId,
-                width: '200px',
+                width: '340px',
                 showPrevMonth: true,
                 showNextMonth: true,
             });
 
             // These are text fields' ids to store dates in
-            var dateField = '#date-".$name."';
+            var dateField = '#date-" . $name . "';
 
             // To show calendar when user clicks on text fields
             Y.on('focus', function(event) {
@@ -134,10 +140,9 @@ class calendarcontrol extends formcontrol {
                 isMouseOverCalendar = false;
             }, boundingBoxId);
 
-            // On date selection change we update value of a text field and hide calendar window
-            calendar.on('selectionChange', function (event) {
-                var newDate = event.newSelection[0];
-                Y.one(currentValueContainer).set('value', Y.DataType.Date.format(newDate));
+            // On date selection, we update value of a text field and hide calendar window
+            calendar.on('dateClick', function (event) {
+                Y.one(currentValueContainer).set('value', Y.DataType.Date.format(event.date,{format:'" . DISPLAY_DATE_FORMAT . "'}));
                 isMouseOverCalendar = false;
                 hideCalendar();
             });
@@ -190,7 +195,7 @@ class calendarcontrol extends formcontrol {
                 if (e.target.get('value')<0) {
                     e.target.set('value',0);
                 }
-            }, '#time-h-".$name."');
+            }, '#time-h-" . $name . "');
 
             // time input restriction to 12 hour
             Y.on('keyup',function(e){
@@ -200,26 +205,26 @@ class calendarcontrol extends formcontrol {
                 if (e.target.get('value')<0) {
                     e.target.set('value',0);
                 }
-            }, '#time-m-".$name."');
+            }, '#time-m-" . $name . "');
         });
         "; // end JS
 
         expJavascript::pushToFoot(array(
-            "unique"=>'calpop'.$name,
-            "yui3mods"=>1,
-            "content"=>$script,
-            "src"=>""
-         ));
-         return $html;
+            "unique"  => 'zzcal' . $name,
+            "yui3mods"=> 1,
+            "content" => $script,
+//            "src"=>""
+        ));
+        return $html;
     }
 
-    static function parseData($original_name,$formvalues) {
+    static function parseData($original_name, $formvalues) {
         if (!empty($formvalues[$original_name])) {
             return strtotime($formvalues[$original_name]);
-         } else return 0;
+        } else return 0;
     }
 
-    function templateFormat($db_data, $ctl) {
+    static function templateFormat($db_data, $ctl) {
         // if ($ctl->showtime) {
         //  return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
         // }
@@ -227,7 +232,6 @@ class calendarcontrol extends formcontrol {
         //  return strftime(DISPLAY_DATE_FORMAT, $db_data);
         // }
     }
-
 
     // function form($object) {
     //  $form = new form();
@@ -245,20 +249,20 @@ class calendarcontrol extends formcontrol {
     //  return $form;
     // }
 
-    function update($values, $object) {
+    static function update($values, $object) {
         if ($object == null) {
-            $object = new popupdatetimecontrol();
+            $object          = new popupdatetimecontrol();
             $object->default = 0;
         }
         if ($values['identifier'] == "") {
-            $post = $_POST;
+            $post               = $_POST;
             $post['_formError'] = gt('Identifier is required.');
-            expSession::set("last_POST",$post);
+            expSession::set("last_POST", $post);
             return null;
         }
         $object->identifier = $values['identifier'];
-        $object->caption = $values['caption'];
-        $object->showtime = isset($values['showtime']);
+        $object->caption    = $values['caption'];
+        $object->showtime   = isset($values['showtime']);
         return $object;
     }
 

@@ -24,7 +24,6 @@
 
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
-    public $useractions = array();
     public $add_permissions = array(
 //	    'administrate'=>'Manage Administration', //FIXME is this used? old 1.0 permission
 	    'clear'=>'Clear Caches',
@@ -35,92 +34,11 @@ class administrationController extends expController {
 	    'toggle'=>'Toggle Settings',
     );
 
-    function displayname() { return gt("Administration Controls"); }
-    function description() { return gt("This is the Administration Module"); }
-    function author() { return "OIC Group, Inc"; }
-
-	public static function install_dbtables($aggressive=false) {
-	    global $db;
-
-		expSession::clearCurrentUserSessionCache();
-		$tables = array();
-
-		// first the core and 1.0 definitions
-		$coredefs = BASE.'framework/core/definitions';
-		if (is_readable($coredefs)) {
-			$dh = opendir($coredefs);
-			while (($file = readdir($dh)) !== false) {
-				if (is_readable("$coredefs/$file") && is_file("$coredefs/$file") && substr($file,-4,4) == ".php" && substr($file,-9,9) != ".info.php") {
-					$tablename = substr($file,0,-4);
-					$dd = include("$coredefs/$file");
-					$info = null;
-					if (is_readable("$coredefs/$tablename.info.php")) $info = include("$coredefs/$tablename.info.php");
-					if (!$db->tableExists($tablename)) {
-						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-							$tables[$key] = $status;
-						}
-					} else {
-						foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
-//							if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
-							if ($status == TABLE_ALTER_FAILED){
-								$tables[$key] = $status;
-							}else{
-								$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-							}
-
-						}
-					}
-				}
-			}
-		}
-
-		// then search for module definitions
-		$moddefs = array(
-			BASE.'themes/'.DISPLAY_THEME.'/modules',
-			BASE."framework/modules",
-			);
-		foreach ($moddefs as $moddef) {
-			if (is_readable($moddef)) {
-				$dh = opendir($moddef);
-				while (($file = readdir($dh)) !== false) {
-					if (is_dir($moddef.'/'.$file) && ($file != '..' && $file != '.')) {
-						$dirpath = $moddef.'/'.$file.'/definitions';
-						if (file_exists($dirpath)) {
-							$def_dir = opendir($dirpath);
-							while (($def = readdir($def_dir)) !== false) {
-	//							eDebug("$dirpath/$def");
-								if (is_readable("$dirpath/$def") && is_file("$dirpath/$def") && substr($def,-4,4) == ".php" && substr($def,-9,9) != ".info.php") {
-									$tablename = substr($def,0,-4);
-									$dd = include("$dirpath/$def");
-									$info = null;
-									if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
-									if (!$db->tableExists($tablename)) {
-										foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
-											$tables[$key] = $status;
-										}
-									} else {
-										foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
-//											if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
-											if ($status == TABLE_ALTER_FAILED){
-												$tables[$key] = $status;
-											}else{
-												$tables[$key] = ($status == TABLE_ALTER_NOT_NEEDED ? DATABASE_TABLE_EXISTED : DATABASE_TABLE_ALTERED);
-											}
-
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return $tables;
-	}
+    static function displayname() { return gt("Administration Controls"); }
+    static function description() { return gt("This is the Administration Module"); }
 
 	public function install_tables() {
-		$tables = self::install_dbtables();
+		$tables = expDatabase::install_dbtables();
 		ksort($tables);
         assign_to_template(array(
             'status'=>$tables
@@ -128,7 +46,7 @@ class administrationController extends expController {
 	}
 
     public function delete_unused_columns() {
-   		$tables = self::install_dbtables(true);
+   		$tables = expDatabase::install_dbtables(true);
    		ksort($tables);
         assign_to_template(array(
             'status'=>$tables
@@ -184,6 +102,7 @@ class administrationController extends expController {
         foreach($tables as $table) {
             $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
             if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {
+                $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
             }
@@ -230,90 +149,110 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
-
 	public function fix_database() {
 	    global $db;
 
-	    print_r("<h1>".gt("Attempting to Fix the Exponent Database")."</h1>");
-	    print_r("<h3>".gt("Some Error Conditions can NOT be repaired by this Procedure")."!</h3><br>");
-		print_r("<pre>");
 	// upgrade sectionref's that have lost their originals
-		print_r("<strong>".gt("Searching for sectionrefs that have lost their originals")."</strong><br><br>");
+        $no_origs = array();
 		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
 		if (count($sectionrefs)) {
 			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
-		} else {
-			print_r(gt("None Found: Good")."!<br>");
+            foreach ($sectionrefs as $sectionref) {
+                if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
+                // There is no original for this sectionref so change it to the original
+                    $sectionref->is_original = 1;
+                    $db->updateObject($sectionref,"sectionref");
+                    $no_origs[] = gt("Fixed").": ".$sectionref->module." - ".$sectionref->source;
+                }
+            }
 		}
-		foreach ($sectionrefs as $sectionref) {
-			if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
-			// There is no original for this sectionref so change it to the original
-				$sectionref->is_original = 1;
-				$db->updateObject($sectionref,"sectionref");
-				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
-			}
-		}
-		print_r("</pre>");
+        assign_to_template(array(
+            'no_origs'=>$no_origs,
+        ));
 
-		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
-		print_r("<strong>".gt("Searching for sectionrefs pointing to missing sections/pages")." <br>".gt("to fix for the Recycle Bin")."</strong><br><br>");
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
-		$found = 0;
+		$no_sections = array();
 		foreach ($sectionrefs as $sectionref) {
 			if ($db->selectObject('section',"id='".$sectionref->section."'") == null) {
 			// There is no section/page for sectionref so change the refcount
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
-				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
-				$found += 1;
+                $no_sections[] = gt("Fixed").": ".$sectionref->module." - ".$sectionref->source;
 			}
 		}
-		if (!$found) {
-			print_r(gt("None Found: Good")."!<br>");
-		}
-		print_r("</pre>");
+        assign_to_template(array(
+            'no_sections'=>$no_sections,
+        ));
 
-		 print_r("<pre>");
 	 // delete sectionref's that have empty sources since they are dead
-		 print_r("<strong>".gt("Searching for unassigned modules (no source)")."</strong><br><br>");
 		 $sectionrefs = $db->selectObjects('sectionref','source=""');
+         $no_assigns = array();
 		 if ($sectionrefs != null) {
-			 print_r(gt("Removing").": ".count($sectionrefs)." ".gt("empty sectionrefs (no source)")."<br>");
+             $no_assigns[] = gt("Removing").": ".count($sectionrefs)." ".gt("empty sectionrefs (no source)");
 			 $db->delete('sectionref','source=""');
-		 } else {
-			 print_r(gt("No Empties Found: Good")."!<br>");
 		 }
+        assign_to_template(array(
+            'no_assigns'=>$no_assigns,
+        ));
 
-		print_r("<pre>");
 	// add missing sectionrefs based on existing containers (fixes aggregation problem)
-		print_r("<strong>".gt("Searching for missing sectionrefs based on existing containers")."</strong><br><br>");
 		$containers = $db->selectObjects('container',1);
+        $missing_sectionrefs = array();
 		foreach ($containers as $container) {
 			$iloc = expUnserialize($container->internal);
 			if ($db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."'") == null) {
 			// There is no sectionref for this container.  Populate sectionref
-				$newSecRef = new stdClass();
-				$newSecRef->module   = $iloc->mod;
-				$newSecRef->source   = $iloc->src;
-				$newSecRef->internal = '';
-				$newSecRef->refcount = 1;
-				$newSecRef->is_original = 1;
-				if ($container->external != "N;") {
+                if ($container->external != "N;") {
+                    $newSecRef = new stdClass();
+                    $newSecRef->module   = $iloc->mod;
+                    $newSecRef->source   = $iloc->src;
+                    $newSecRef->internal = '';
+                    $newSecRef->refcount = 1;
+                    $newSecRef->is_original = 1;
 					$eloc = expUnserialize($container->external);
 					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
 						$db->insertObject($newSecRef,"sectionref");
-						print_r(gt("Missing sectionref for container replaced").": ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id."<br>");
+						$missing_sectionrefs[] = gt("Missing sectionref for container replaced").": ".$iloc->mod." - ".$iloc->src." - PageID #".$section->id;
 					} else {
-						print_r(gt("Cant' find the container page for container").": ".$iloc->mod." - ".$iloc->src."<br>");
+                        $db->delete('container','id="'.$container->id.'"');
+                        $missing_sectionrefs[] = gt("Cant' find the container page for container").": ".$iloc->mod." - ".$iloc->src.' - '.gt('deleted');
 					}
 				}
 			}
 		}
-		print_r("</pre>");
+        assign_to_template(array(
+            'missing_sectionrefs'=>$missing_sectionrefs,
+        ));
 	}
+
+    public function fix_tables() {
+   		$renamed = expDatabase::fix_table_names();
+           assign_to_template(array(
+               'tables'=>$renamed,
+           ));
+   	}
+
+    public function install_ecommerce_tables() {
+        global $db;
+
+        $eql = BASE . "install/samples/ecommerce.eql";
+        if (file_exists($eql)) {
+            $errors = array();
+            expFile::restoreDatabase($db,$eql,$errors);
+        }
+        if (DEVELOPMENT && count($errors)) {
+            $msg = gt('Errors were encountered importing the e-Commerce data.').'<ul>';
+            foreach ($errors as $e) $msg .= '<li>'.$e.'</li>';
+            $msg .= '</ul>';
+            flash('error',$msg);
+        } else {
+            flash('message',gt('e-Commerce data was added to your database.'));
+        }
+        expHistory::back();
+   	}
 
     public function toolbar() {
         global $user;
@@ -353,6 +292,7 @@ class administrationController extends expController {
     
     public function index() {
         redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
+//        $this->toolbar();
     }
     
     public function update_SetSlingbarPosition() {
@@ -382,9 +322,10 @@ class administrationController extends expController {
    	}
 
     public function update_language() {
-        expSettings::change('LANGUAGE', $_POST['newlang']);
-        flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
+        expSettings::change('LANGUAGE', $this->params['newlang']);
+        flash('message',gt('Display Language changed to').": ".$this->params['newlang']);
         redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+//        $this->manage_lang();
    	}
 
     public function manage_lang_await() {
@@ -402,14 +343,15 @@ class administrationController extends expController {
    	}
 
     public function save_newlangfile() {
-		$result = expLang::createNewLangFile($_POST['newlang']);
+		$result = expLang::createNewLangFile($this->params['newlang']);
         flash($result['type'],$result['message']);
         if ($result['type'] != 'error') {
-            expSettings::change('LANGUAGE', $_POST['newlang']);
-            expLang::createNewLangInfoFile($_POST['newlang'],$_POST['newauthor'],$_POST['newcharset'],$_POST['newlocale']);
-            flash('message',gt('Display Language changed to').": ".$_POST['newlang']);
+            expSettings::change('LANGUAGE', $this->params['newlang']);
+            expLang::createNewLangInfoFile($this->params['newlang'],$this->params['newauthor'],$this->params['newcharset'],$this->params['newlocale']);
+            flash('message',gt('Display Language changed to').": ".$this->params['newlang']);
         }
         redirect_to(array('controller'=>'administration', 'action'=>'manage_lang'));
+//        $this->manage_lang();
    	}
 
 	public function test_smtp() {
@@ -433,6 +375,15 @@ class administrationController extends expController {
 		flash('message',$message);
 		expHistory::back();
 	}
+
+    public function toggle_log() {
+  	    $value = (LOGGER == 1) ? 0 : 1;
+  	    expSettings::change('LOGGER', $value);
+//  	    expTheme::removeCss();
+//  		$message = (LOGGER != 1) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
+//  		flash('message',$message);
+  		expHistory::back();
+  	}
 
 	public function toggle_maintenance() {
 		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
@@ -462,7 +413,7 @@ class administrationController extends expController {
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
-		flash('message',gt("CSS/Minfy Cache has been cleared"));
+		flash('message',gt("CSS/Minify Cache has been cleared"));
 		expHistory::back();
 	}
 
@@ -531,7 +482,7 @@ class administrationController extends expController {
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
-        $form->register('patch',gt('Patch Exponent CMS?'),new checkboxcontrol(null,false));
+        $form->register('patch',gt('Patch Exponent CMS?'),new checkboxcontrol(false,false));
         $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
 		$form->meta('action','install_extension_confirm');
@@ -545,8 +496,8 @@ class administrationController extends expController {
 	}
 
 	public function install_extension_confirm() {
-        if (!empty($_POST['files'])) {
-            foreach ($_POST['files'] as $title=>$url) {
+        if (!empty($this->params['files'])) {
+            foreach ($this->params['files'] as $title=>$url) {
                 $filename = tempnam("tmp/extensionuploads/",'tmp');
                 expCore::saveData($url,$filename);
                 $_FILES['mod_archive']['name'] = end(explode("/", $url));
@@ -654,7 +605,7 @@ class administrationController extends expController {
 				$files = array();
 				foreach (expFile::listFlat(BASE.'tmp/extensionuploads/'.$sessid,true,null,array(),BASE.'tmp/extensionuploads/'.$sessid) as $key=>$f) {
 					if ($key != '/archive.tar' && $key != '/archive.tar.gz' && $key != '/archive.tar.bz2' && $key != '/archive.zip') {
-                        if (empty($_POST['patch']) || !$_POST['patch']) {
+                        if (empty($this->params['patch']) || !$this->params['patch']) {
                             $key = substr($key,1);
                             if (substr($key,0,7)=='themes/') {
                                 $parts = explode('/',$key);
@@ -678,14 +629,14 @@ class administrationController extends expController {
 				assign_to_template(array(
                     'relative'=>'tmp/extensionuploads/'.$sessid,
                     'files'=>$files,
-                    'patch'=>empty($_POST['patch'])?0:$_POST['patch']
+                    'patch'=>empty($this->params['patch'])?0:$this->params['patch']
                 ));
 			}
 		}
 	}
 
 	public function install_extension_finish() {
-        $patch =$_GET['patch']==1;
+        $patch =$this->params['patch']==1;
 		$sessid = session_id();
 		if (!file_exists(BASE."tmp/extensionuploads/$sessid") || !is_dir(BASE."tmp/extensionuploads/$sessid")) {
 			$nofiles = 1;
@@ -715,7 +666,7 @@ class administrationController extends expController {
 
 			$del_return = expFile::removeDirectory(BASE."tmp/extensionuploads/$sessid");  //FIXME shouldn't use echo
 //			echo $del_return;
-            $tables = self::install_dbtables();
+            $tables = expDatabase::install_dbtables();
             ksort($tables);
             assign_to_template(array(
                 'tables'=>$tables
@@ -777,7 +728,7 @@ class administrationController extends expController {
 	    }
 	    expSettings::change('THEME_STYLE_REAL',$sv);
 	    expSession::set('theme_style',$sv);
-	    self::install_dbtables();  // update tables to include any custom definitions in the new theme
+	    expDatabase::install_dbtables();  // update tables to include any custom definitions in the new theme
 
         // $message = (MINIFY != 1) ? "Exponent is now minifying Javascript and CSS" : "Exponent is no longer minifying Javascript and CSS" ;
         // flash('message',$message);
@@ -811,7 +762,8 @@ class administrationController extends expController {
 	public function configure_theme() {
 		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
 			include_once(BASE."themes/".$this->params['theme']."/class.php");
-			$theme = new $this->params['theme']();
+            $themeclass = $this->params['theme'];
+			$theme = new $themeclass();
 			$theme->configureTheme();
 		}
 	}
@@ -819,7 +771,8 @@ class administrationController extends expController {
 	public function update_theme() {
 		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
 			include_once(BASE."themes/".$this->params['theme']."/class.php");
-			$theme = new $this->params['theme']();
+            $themeclass = $this->params['theme'];
+			$theme = new $themeclass();
 			$theme->saveThemeConfig($this->params);
 		}
 	}
@@ -903,7 +856,7 @@ class administrationController extends expController {
         $dir_permissions = glist(expSettings::dropdownData('dir_permissions'));
 
         // Homepage Dropdown
-        $section_dropdown = navigationmodule::levelDropDownControlArray(0);
+        $section_dropdown = navigationController::levelDropDownControlArray(0);
 
         // Timezone Dropdown
         $list = DateTimeZone::listAbbreviations();
@@ -982,16 +935,15 @@ class administrationController extends expController {
    	 * Routine to force launching exponent installer
    	 */
    	public static function install_exponent() {
-           //FIXME in 2.0.4 we'll add a routine to simply display a flash message with a link to this method
    		// we'll need the not_configured file to exist for install routine to work
    		if (!@file_exists(BASE.'install/not_configured')) {
    			$nc_file = fopen(BASE.'install/not_configured', "w");
    			fclose($nc_file);
    		}
-           $page = "";
-           if (@file_exists(BASE.'conf/config.php')) {
-               $page = "?page=upgrade-1";
-           }
+        $page = "";
+        if (@file_exists(BASE.'conf/config.php')) {
+            $page = "?page=upgrade-1";
+        }
    		header('Location: '.URL_FULL.'install/index.php'.$page);
    		exit('Redirecting to the Exponent Install Wizard');
    	}
@@ -1017,19 +969,19 @@ class theme {
 	 * and presents the values as text boxes.
 	 */
 	function configureTheme () {
-		if (isset($_GET['sv']) && $_GET['sv'] != '') {
-			if (strtolower($_GET['sv'])=='default') {
-			   $_GET['sv']='';
+		if (isset($this->params['sv']) && $this->params['sv'] != '') {
+			if (strtolower($this->params['sv'])=='default') {
+                $this->params['sv']='';
 			}
-			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
+			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config_".$this->params['sv'].".php");
 		} else {
-			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
 		}
 		$form = new form();
 		$form->meta('controller','administration');
 		$form->meta('action','update_theme');
-		$form->meta('theme',$_GET['theme']);
-		$form->meta('sv',isset($_GET['sv'])?$_GET['sv']:'');
+		$form->meta('theme',$this->params['theme']);
+		$form->meta('sv',isset($this->params['sv'])?$this->params['sv']:'');
 		foreach ($settings as $setting=>$key) {
 			$form->register($setting,$setting.': ',new textcontrol($key,20));
 		}

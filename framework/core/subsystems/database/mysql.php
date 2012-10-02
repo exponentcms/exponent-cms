@@ -779,19 +779,22 @@ class mysql_database extends database {
 		}
 	}
 
-	/**
-	 * Update one or more objects in the database.
-	 *
-	 * This function will only update the attributes of the resulting record(s)
-	 * that are also member attributes of the $object object.
-	 *
-	 * @param object $object An object specifying the fields and values for updating.
-	 *    In most cases, this will be the altered object originally returned from one of
-	 *    the select* methods.
-	 * @param string $table The table to update in.
-	 * @param string $where Optional criteria used to narrow the result set.
-	 * @return bool
-	 */
+    /**
+     * Update one or more objects in the database.
+     *
+     * This function will only update the attributes of the resulting record(s)
+     * that are also member attributes of the $object object.
+     *
+     * @param object $object An object specifying the fields and values for updating.
+     *                       In most cases, this will be the altered object originally returned from one of
+     *                       the select* methods.
+     * @param string $table  The table to update in.
+     * @param string $where  Optional criteria used to narrow the result set.
+     * @param string $identifier
+     * @param bool   $is_revisioned
+     *
+     * @return bool
+     */
 	function updateObject($object,$table,$where=null, $identifier='id', $is_revisioned=false) {
 		$sql = "UPDATE `" . $this->prefix . "$table` SET ";
 		foreach (get_object_vars($object) as $var=>$val) {
@@ -1326,6 +1329,74 @@ class mysql_database extends database {
 		$children = $this->selectObjectsBySql($sql);
                 return $children;
 	}
+
+	/**
+	 * Update a column in all records in a table
+	 *
+	 * @param  $table
+	 * @param  $col
+	 * @param $val
+	 * @param int|null $where
+	 * @return void
+	 */
+    function columnUpdate($table, $col, $val, $where=1) {         
+        $res = @mysql_query("UPDATE `" . $this->prefix . "$table` SET `$col`='" . $val . "' WHERE $where", $this->connection);
+        /*if ($res == null)
+            return array();
+        $objects = array();
+        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+            $objects[] = mysqli_fetch_object($res);*/
+        //return $objects;
+    }
+
+	/**
+	 * @param $table
+	 * @param string $lockType
+	 * @return mixed
+	 */
+	function lockTable($table,$lockType="WRITE") {
+        $sql = "LOCK TABLES `" . $this->prefix . "$table` $lockType";
+       
+        $res = mysql_query($sql, $this->connection); 
+        return $res;
+    }
+
+	/**
+	 * @return mixed
+	 */
+	function unlockTables() {
+        $sql = "UNLOCK TABLES";
+        
+        $res = mysql_query($sql, $this->connection);
+        return $res;
+    }
+
+	/**
+	 * Unescape a string based on the database connection
+	 * @param $string
+	 * @return string
+	 */
+	function escapeString($string) {
+	    return (mysql_real_escape_string($string, $this->connection));
+	}
+
+	/**
+	 * This function returns all the text columns in the given table
+	 * @param $table
+	 * @return array
+	 */
+	function getTextColumns($table) {
+		$sql = "SHOW COLUMNS FROM " . $this->prefix.$table . " WHERE type = 'text' OR type like 'varchar%'";
+		$res = @mysql_query($sql, $this->connection);
+		if ($res == null) return array();
+		$records = array();
+		while($row = mysql_fetch_object($res)) {
+			$records[] = $row->Field;
+		}
+		
+		return $records;
+	}
+    
 
 }
 

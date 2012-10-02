@@ -50,7 +50,8 @@ class form extends baseform {
 	}
 	
 	function secure() {
-		$this->action = (ENABLE_SSL ? SSL_URL : '') . SCRIPT_RELATIVE . SCRIPT_FILENAME;
+//		$this->action = (ENABLE_SSL ? SSL_URL : '') . SCRIPT_RELATIVE . SCRIPT_FILENAME;
+        $this->action = SCRIPT_RELATIVE . SCRIPT_FILENAME;
 		$this->meta("expid",session_id());
 	}
 
@@ -167,15 +168,19 @@ class form extends baseform {
 		}
 	}
 
-	/**
-	 * Convert the form to HTML output.
-	 *
-	 * @return string The HTML code use to display the form to the browser.
-	 */
+    /**
+     * Convert the form to HTML output.
+     *
+     * @param null $form_id
+     * @param null $module
+     *
+     * @return string The HTML code use to display the form to the browser.
+     */
 	function toHTML($form_id=null, $module=null) {
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
+            if (empty($this->controls["submit"])) $this->controls["submit"] = new stdClass();
 			$this->controls["submit"]->validateJS = "validate(this.form)";
 		}
 	

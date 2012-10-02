@@ -13,7 +13,14 @@
  *
  *}
 
-<h2>{"Configure this Module"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Portfolio Settings"|gettext) module="portfolio"}
+		</div>
+        <h2>{"Portfolio Settings"|gettext}</h2>
+	</div>
+</div>
 {control type=dropdown name=order label="Sort By"|gettext items="Alphabetical, Reverse Alphabetical, Order Manually"|gettxtlist values="title,title DESC,rank" value=$config.order|default:rank}
 {control type="checkbox" name="only_featured" label="Only show featured Portfolio Pieces"|gettext value=1 checked=$config.only_featured}
 {control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None"|gettxtlist values="0,1,2"}

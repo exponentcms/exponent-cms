@@ -22,7 +22,7 @@
  */
 
 class help_version extends expRecord {
-	public $table = 'help_version';
+//	public $table = 'help_version';
 	public $validates = array(
 		'uniqueness_of'=>array(
 			'version'=>array('message'=>'This version number is already in use.'),

@@ -22,8 +22,8 @@
 
     {/css}
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    <script type="text/javascript" src="{$smarty.const.YUI3_PATH}yui/yui-min.js"></script>
-    {script unique="picker" src="`$smarty.const.PATH_RELATIVE`framework/core/assets/js/exp-flashdetector.js"}
+    <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
+    {script unique="picker" src="`$smarty.const.JS_RELATIVE`exp-flashdetector.js"}
 
     {/script}
 </head>
@@ -71,7 +71,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
         Y.one("#uploaderOverlay").set("offsetWidth", overlayRegion.width);
         Y.one("#uploaderOverlay").set("offsetHeight", overlayRegion.height);
 
-        var swfURL = EXPONENT.YUI3_PATH + "uploader/assets/uploader.swf";
+        var swfURL = EXPONENT.YUI3_RELATIVE + "uploader/assets/uploader.swf";
 
         if (Y.UA.ie >= 6) {
         	swfURL += "?t=" + Y.guid();

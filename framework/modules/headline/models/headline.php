@@ -22,7 +22,7 @@
  */
 
 class headline extends expRecord {
-    public $table = 'headline';
+//    public $table = 'headline';
     public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'Title is a required field.'),

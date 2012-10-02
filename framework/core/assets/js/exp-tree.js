@@ -27,11 +27,10 @@ var refreshDD = function () {
     dds = YAHOO.util.Dom.getElementsByClassName("dragtable");
     
     for (var i=0; i<dds.length; i++ ){
-        //console.debug(dds[i].id);
+        //Y.log(dds[i].id);
         new EXPONENT.DragDropTree(dds[i].id.replace("dragtable",""));
     }
 }
-
 
 var buildContextMenu = function(div) {
 
@@ -79,14 +78,12 @@ var buildContextMenu = function(div) {
     }
 
     // function editUserPerms (){
-    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigationmodule&_common=1&action=userperms&int="+currentMenuNode.data.id;
+    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigation&_common=1&action=userperms&int="+currentMenuNode.data.id;
     // }
     // 
     // function editGroupPerms (){
-    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigationmodule&_common=1&action=groupperms&int="+currentMenuNode.data.id;
+    //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigation&_common=1&action=groupperms&int="+currentMenuNode.data.id;
     // }
-
-
 
     var currentMenuNode = null;
 
@@ -119,9 +116,8 @@ var buildContextMenu = function(div) {
     oContextMenu.subscribe("triggerContextMenu", onTriggerContextMenu); 
 }
 
-
 EXPONENT.DragDropTree = function(id, sGroup, config) {
-    //console.debug(id.replace('ygtv',''))
+    //Y.log(id.replace('ygtv',''))
     if (id) {
         //new YAHOO.util.DDTarget("addafter"+id,sGroup);
         //new YAHOO.util.DDTarget("addbefore"+id,sGroup);
@@ -161,8 +157,8 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
 
         for (n in tree._nodes){
             if (tree._nodes[n].children.length != 0) {
-                // console.debug("dragtable"+tree._nodes[n].children[0].index);
-                // console.debug("dragtable"+tree._nodes[n].children[tree._nodes[n].children.length-1].index);
+                // Y.log("dragtable"+tree._nodes[n].children[0].index);
+                // Y.log("dragtable"+tree._nodes[n].children[tree._nodes[n].children.length-1].index);
                 YAHOO.util.Dom.addClass("dragtable"+tree._nodes[n].children[0].index, 'topoflist')
                 YAHOO.util.Dom.addClass("dragtable"+tree._nodes[n].children[tree._nodes[n].children.length-1].index, 'bottomoflist')
             };
@@ -200,7 +196,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
         var oldclass = YAHOO.util.Dom.get('dropindicator').getAttribute("class");
         YAHOO.util.Dom.replaceClass('dropindicator',oldclass,this.ddclassindicator);
     
-        //console.debug(YAHOO.util.Dom.get('dropindicator').getAttribute("class"));
+        //Y.log(YAHOO.util.Dom.get('dropindicator').getAttribute("class"));
     
     },
 
@@ -326,9 +322,6 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
     }
 });
 
-
-
-
 YAHOO.widget.TaskNode = function(oData, oParent, expanded, checked, obj) {
 
     if (oData) { 
@@ -402,7 +395,6 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
 
  		this.tree.subscribe('clickEvent',this.checkClick);
          this.subscribe("parentChange", this.taskNodeParentChange);
-
 
      },
 
@@ -596,7 +588,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
              //sb[sb.length] = ' onclick="javascript:' + this.getCheckLink() + '">';
              sb[sb.length] = '">';
              sb[sb.length] = '<div id="nodeDragHandle' + this.index + '" class="ygtvspacer" style="width:100%;height:100%;">&#160;</div></td>';
-             //console.debug(this.getElId());
+             //Y.log(this.getElId());
              //YAHOO.util.Dom.setStyle(this.getElId(), 'background', 'red');
          }
 
@@ -639,12 +631,9 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
 
          return sb.join("");
 
-
      }
-     
-     
-});
 
+});
 
 EXPONENT.DragDropTree.init = function(div,obj,mod,menu,expandonstart) {
     applicationModule = mod;

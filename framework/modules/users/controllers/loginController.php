@@ -37,16 +37,16 @@ class loginController extends expController {
 	    'showlogin'=>'Login',
     );
 
-    function displayname() { return gt("Login Manager"); }
-    function description() { return gt("This is the login management module. It allows for logging in, logging out, etc."); }
+    static function displayname() { return gt("Login Manager"); }
+    static function description() { return gt("This is the login management module. It allows for logging in, logging out, etc."); }
 
 	/**
 	 * Display a login view
 	 */
-	function showlogin() {
+	public static function showlogin() {
 		global $db, $user, $order, $router;
 
-		$oicount = $order?$order->item_count:0;
+		$oicount = !empty($order->item_count) ? $order->item_count : 0;
 		// FIGURE OUT IF WE"RE IN PREVIEW MODE OR NOT
 		$level = 99;
 		if (expSession::is_set('uilevel')) {
@@ -126,17 +126,21 @@ class loginController extends expController {
 		} else {
 			global $user;
 			if (!empty($_POST['username'])) flash('message', gt('Welcome back').' '.$_POST['username']);
-			foreach ($user->groups as $g) {
-				if (!empty($g->redirect)) {
-					$url = URL_FULL.$g->redirect;
-					break;
-				}
-			}
-			if (isset($url)) {
-				header("Location: ".$url);
-			} else {
-				expHistory::back();
-			}
+            if ($user->isAdmin()) {
+                expHistory::back();
+            } else {
+                foreach ($user->groups as $g) {
+                    if (!empty($g->redirect)) {
+                        $url = URL_FULL.$g->redirect;
+                        break;
+                    }
+                }
+                if (isset($url)) {
+                    header("Location: ".$url);
+                } else {
+                    expHistory::back();
+                }
+            }
 		}
 	}
 
@@ -157,7 +161,8 @@ class loginController extends expController {
 //			expHistory::flowSet(SYS_FLOW_PUBLIC,SYS_FLOW_ACTION);
 			expHistory::set('viewable', $router->params);
 		}
-		redirect_to(array('controller'=>'login', 'action'=>'showlogin'));
+//		redirect_to(array('controller'=>'login', 'action'=>'showlogin'));
+        renderAction(array('controller'=>'login','action'=>'showlogin','no_output'=>true));
 	}
 }
 

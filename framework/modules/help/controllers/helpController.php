@@ -27,9 +27,9 @@ class helpController extends expController {
         'select_version'=>'Select Help Version'
     );
 
-	function displayname() { return gt("Help"); }
-	function description() { return gt("Module for managing Exponent CMS help files."); }
-	function isSearchable() { return true; }
+    static function displayname() { return gt("Help"); }
+    static function description() { return gt("Module for managing Exponent CMS help files."); }
+    static function isSearchable() { return true; }
 	
     function __construct($src=null, $params=array()) {
         global $db;
@@ -72,15 +72,20 @@ class helpController extends expController {
 
 	    // grab the pagination object
 		$page = new expPaginator(array(
-	                'model'=>'help',
-	                'where'=> $where, 
+            'model'=>'help',
+            'where'=> $where,
 //	                'limit'=>$limit,
-	                'order'=>$order,
-	                'dir'=>'ASC',
-	                'controller'=>$this->baseclassname,
-	                'action'=>$this->params['action'],
-	                'columns'=>array(gt('Title')=>'title',gt('Body')=>'body',gt('Version')=>'help_version_id'),
-	                ));
+            'order'=>$order,
+            'dir'=>'ASC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title',
+                gt('Body')=>'body',
+                gt('Version')=>'help_version_id'
+            ),
+        ));
 	    
 	    assign_to_template(array(
             'current_version'=>$ref_version,
@@ -167,6 +172,7 @@ class helpController extends expController {
 	    if (empty($current_version)) {
 	        flash('error', gt("You don't have any software versions created yet.  Please do so now."));
 	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
+//            $this->edit_version();
 	    }
 
         $sections = array();
@@ -178,15 +184,20 @@ class helpController extends expController {
 
 	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.$this->params['version'];
 	    $page = new expPaginator(array(
-	                'model'=>'help',
-	                'where'=>$where, 
-	                'limit'=>30,
-	                'order'=>'help_version_id',
-	                'dir'=>'DESC',
-	                'controller'=>$this->baseclassname,
-	                'action'=>$this->params['action'],
-	                'columns'=>array(gt('Title')=>'title',gt('Version')=>'help_version_id',gt('Section')=>'section'),
-	                ));
+            'model'=>'help',
+            'where'=>$where,
+            'limit'=>30,
+            'order'=>'help_version_id',
+            'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title',
+                gt('Version')=>'help_version_id',
+                gt('Section')=>'section'
+            ),
+        ));
 
 	    assign_to_template(array(
             'current_version'=>$current_version,
@@ -252,14 +263,20 @@ class helpController extends expController {
 	    $sql .= 'RIGHT JOIN '.DB_TABLE_PREFIX.'_help_version hv ON h.help_version_id=hv.id GROUP BY hv.version';
 	    
 	    $page = new expPaginator(array(
-	                'sql'=>$sql, 
-	                'limit'=>30,
-	                'order'=>'version',
-	                'dir'=>'DESC',
-	                'controller'=>$this->baseclassname,
-	                'action'=>$this->params['action'],
-	                'columns'=>array(gt('Version')=>'version',gt('Title')=>'title',gt('Current')=>'is_current',gt('# of Docs')=>'num_docs'),
-	                ));
+            'sql'=>$sql,
+            'limit'=>30,
+            'order'=>'version',
+            'dir'=>'DESC',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Version')=>'version',
+                gt('Title')=>'title',
+                gt('Current')=>'is_current',
+                gt('# of Docs')=>'num_docs'
+            ),
+        ));
 	    
 	    assign_to_template(array(
             'current_version'=>$current_version,
@@ -408,7 +425,9 @@ class helpController extends expController {
 
        $count = 0;
        $model = new $this->basemodel_name(null, false, false);
-       $content = $db->selectArrays($model->tablename,'help_version_id="'.$db->selectValue('help_version','id','is_current=1').'"');
+       $where = 'help_version_id="'.$db->selectValue('help_version','id','is_current=1').'"';
+       $where .= (!empty($this->params['id'])) ? ' AND id='.$this->params['id'] : null;
+       $content = $db->selectArrays($model->tablename,$where);
        foreach ($content as $cnt) {
            $origid = $cnt['id'];
            unset($cnt['id']);
@@ -421,6 +440,7 @@ class helpController extends expController {
            $search_record = new search($cnt, false, false);
            $search_record->original_id = $origid;
            $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
+//           $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
            $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
            $search_record->view_link = $link;

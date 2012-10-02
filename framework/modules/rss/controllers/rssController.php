@@ -36,19 +36,29 @@ class rssController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("RSS Syndication"); }
-    function description() { return gt("This module will allow you to display a list of your syndicated RSS feeds on a web page"); }
+    static function displayname() { return gt("RSS Syndication"); }
+    static function description() { return gt("This module will allow you to display a list of your syndicated RSS feeds on a web page"); }
     
     function showall() {
         $rss = new expRss();
         assign_to_template(array(
-            'feeds'=>$rss->getFeeds()
+            'feeds'=>$rss->getFeeds('enable_rss=1')
         ));
     }
     
     function show() {
         redirect_to(array('controller'=>'rss', 'action'=>'showall'));
+//        $this->showall();
     }
+
+    /**
+     * Alternate universal method to call rss feed without using module name/type
+     *  e.g., www.site.org/rss/feed/sef_url
+     */
+    function feed() {
+        $this->rss();
+    }
+
 }
 
 ?>

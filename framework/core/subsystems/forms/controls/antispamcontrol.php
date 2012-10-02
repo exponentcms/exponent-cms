@@ -48,7 +48,7 @@ class antispamcontrol extends formcontrol {  //FIXME this is old tech and not-la
 		return $html;
 	}
 
-	function form($object) {
+	static function form($object) {
 		$form = new form();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
@@ -58,7 +58,7 @@ class antispamcontrol extends formcontrol {  //FIXME this is old tech and not-la
 			$object->maxlength = 0;
 			$object->required = false;
 		}
-		$form->register("identifier",gt('Iidentifier'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register(null, null, new htmlcontrol('<br />'));
 		$form->register(null, null, new htmlcontrol('<br />'));
@@ -66,7 +66,7 @@ class antispamcontrol extends formcontrol {  //FIXME this is old tech and not-la
 		return $form;
 	}
 
-	function update($values, $object) {
+    static function update($values, $object) {
 		if ($object == null) $object = new antispamcontrol();
 		if ($values['identifier'] == "") {
 			$post = $_POST;

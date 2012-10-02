@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: table_cell_frame_decorator.cls.php 451 2012-01-14 14:54:23Z fabien.menager $
+ * @version $Id$
  */
 
 /**

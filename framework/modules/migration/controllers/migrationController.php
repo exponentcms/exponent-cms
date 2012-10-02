@@ -21,7 +21,6 @@
  */
 
 class migrationController extends expController {
-    //public $basemodel_name = '';
     protected $add_permissions = array(
         'analyze'=>'Analyze Data',
         'migrate'=>'Migrate Data'
@@ -52,6 +51,8 @@ class migrationController extends expController {
         'mediaplayermodule'=>'flowplayerController',
         'bannermodule'=>'bannerController',
         'feedlistmodule'=>'rssController',
+        'simplepollmodule'=>'simplePollController',
+        'navigationmodule'=>'navigationController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -64,7 +65,7 @@ class migrationController extends expController {
         'searchmodule',  
         'imagemanagermodule',
         'imageworkshopmodule',
-        'inboxmodule',
+         'inboxmodule',
         'rssmodule',
 // the following 0.97/98 modules were added to this list
 //   based on lack of info showing they will exist in 2.0
@@ -96,32 +97,31 @@ class migrationController extends expController {
         // 'calendarmodule',
         // 'formmodule',
         // 'navigationmodule',
-        // 'simplepollmodule',
     // );
 
 	/**
 	 * name of module
 	 * @return string
 	 */
-    function displayname() { return gt("Content Migration Controller"); }
+    static function displayname() { return gt("Content Migration Controller"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-    function description() { return gt("Use this module to pull Exponent 1 style content from your old site."); }
+    static function description() { return gt("Use this module to pull Exponent 1 style content from your old site."); }
 
 	/**
 	 * if module has associated sources
 	 * @return bool
 	 */
-    function hasSources() { return false; }
+    static function hasSources() { return false; }
 
 	/**
 	 * if module has associated content
 	 * @return bool
 	 */
-    function hasContent() { return false; }
+    static function hasContent() { return false; }
 
 	/**
 	 * gather info about all pages in old site for user selection
@@ -179,6 +179,8 @@ class migrationController extends expController {
 					list($u, $s) = explode(' ',microtime());
 					$this->sef_name .= '-'.$s.'-'.$u;
 				}
+                $page->sef_name = $page->sef_name;
+                unset($page->sef_name);
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
 					$failed += 1;
@@ -205,6 +207,8 @@ class migrationController extends expController {
 					list($u, $s) = explode(' ',microtime());
 					$this->sef_name .= '-'.$s.'-'.$u;
 				}
+                $page->sef_name = $page->sef_name;
+                unset($page->sef_name);
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
 					$failed += 1;
@@ -215,8 +219,8 @@ class migrationController extends expController {
 		}
 
 		if (isset($this->params['copy_permissions'])) {
-			$db->delete('userpermission',"module = 'navigationmodule' AND source = ''");
-			$db->delete('grouppermission',"module = 'navigationmodule' AND source = ''");
+			$db->delete('userpermission',"module = 'navigationController' AND source = ''");
+			$db->delete('grouppermission',"module = 'navigationController' AND source = ''");
 			
 			$users = $db->selectObjects('user','id > 1');
 			foreach($users as $user) {
@@ -224,6 +228,7 @@ class migrationController extends expController {
 				foreach($pages as $page) {
 					if ($db->selectObject('section','id = '.$page->internal)) {
 						 if ($page->permission != 'administrate') {
+                             $page->module = 'navigationController';
 							 $db->insertObject($page,'userpermission');
 						 }
 					}
@@ -235,6 +240,7 @@ class migrationController extends expController {
 				foreach($pages as $page) {
 					if ($db->selectObject('section','id = '.$page->internal)) {
 						 if ($page->permission != 'administrate') {
+                             $page->module = 'navigationController';
 							 $db->insertObject($page,'grouppermission');
 						 }
 					}
@@ -307,8 +313,10 @@ class migrationController extends expController {
         $modules = $old_db->selectObjectsBySql($sql);
         for($i=0; $i<count($modules); $i++) {
             if (array_key_exists($modules[$i]->module, $this->new_modules)) {
-                $newmod = new $this->new_modules[$modules[$i]->module]();
+//                $newmod = new $this->new_modules[$modules[$i]->module]();
+                $newmod = $this->new_modules[$modules[$i]->module];
                 $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod->displayname()."</span>";
+//                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod::displayname()."</span>";
             } elseif (in_array($modules[$i]->module, $this->deprecated_modules)) {
                 // $modules[$i]->action = '<span style="color:red;">This module is deprecated and will not be migrated.</span>';
                 $modules[$i]->notmigrating = 1;
@@ -375,6 +383,9 @@ class migrationController extends expController {
             $db->delete('poll_answer');
             $db->delete('poll_timeblock');
             $db->delete('simplepollmodule_config');
+            $db->delete('simplepoll_question');
+            $db->delete('simplepoll_answer');
+            $db->delete('simplepoll_timeblock');
             $db->delete('formbuilder_address');
             $db->delete('formbuilder_control');
             $db->delete('formbuilder_form');
@@ -438,6 +449,9 @@ class migrationController extends expController {
 						$db->delete('poll_answer');
 						$db->delete('poll_timeblock');
 						$db->delete('simplepollmodule_config');
+                        $db->delete('simplepoll_question');
+                        $db->delete('simplepoll_answer');
+                        $db->delete('simplepoll_timeblock');
 						break;
 					case 'formmodule':
 						$db->delete('formbuilder_address');
@@ -567,8 +581,8 @@ class migrationController extends expController {
         }
 
 		if (isset($this->params['copy_permissions'])) {
-			$db->delete('userpermission',"module != 'navigationmodule'");
-			$db->delete('grouppermission',"module != 'navigationmodule'");
+			$db->delete('userpermission',"module != 'navigationController'");
+			$db->delete('grouppermission',"module != 'navigationController'");
 
 			$users = $db->selectObjects('user','id > 1');
 			foreach($users as $user) {
@@ -632,7 +646,7 @@ class migrationController extends expController {
 //                $mod->description = '';
 //                $mod->codequality = '';
                 if ($db->selectObject('modstate',"module='".$mod->module."'")) {
-                    $db->updateObject($mod,'modstate');
+                    $db->updateObject($mod,'modstate',null,'module');
                 } else {
                     $db->insertObject($mod,'modstate');
                 }
@@ -952,6 +966,7 @@ class migrationController extends expController {
                 if (!empty($oldconfig)) {
                     if ($oldconfig->enable_rss == 1) {
                         $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['advertise'] = true;
                         $newconfig->config['feed_title'] = $oldconfig->feed_title;
                         $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                         $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -1092,6 +1107,7 @@ class migrationController extends expController {
                 if (!empty($oldconfig)) {
                     if ($oldconfig->enable_rss == 1) {
                         $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['advertise'] = true;
                         $newconfig->config['feed_title'] = $oldconfig->feed_title;
                         $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                         $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -1223,6 +1239,7 @@ class migrationController extends expController {
                     }
                     if ($dorss) {
                         $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['advertise'] = true;
                         $newconfig->config['feed_title'] = $oldconfig->feed_title;
                         $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                         $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -1493,6 +1510,7 @@ class migrationController extends expController {
                 if (!empty($oldconfig)) {
                     if ($oldconfig->enable_rss == 1) {
                         $newconfig->config['enable_rss'] = true;
+                        $newconfig->config['advertise'] = true;
                         $newconfig->config['feed_title'] = $oldconfig->feed_title;
                         $newconfig->config['feed_desc'] = $oldconfig->feed_desc;
                         $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
@@ -1573,6 +1591,7 @@ class migrationController extends expController {
                             $newcomment->publish = $comment['posted'];
 							$newcomment->update();
 							// attach the comment to the blog post it belongs to
+                            $obj = new stdClass();
 							$obj->content_type = 'blog';
 							$obj->content_id = $post->id;
 							$obj->expcomments_id = $newcomment->id;
@@ -1998,6 +2017,7 @@ class migrationController extends expController {
 					$loc = expUnserialize($feedlist->location_data);
 					$loc->mod = "rssController";
 					$newconfig->config['enable_rss'] = true;
+                    $newconfig->config['advertise'] = true;
 					$newconfig->config['feed_title'] = $feedlist->feed_title;
 					$newconfig->config['feed_desc'] = $feedlist->feed_desc;
 					$newconfig->config['rss_limit'] = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
@@ -2007,6 +2027,74 @@ class migrationController extends expController {
 					@$this->msg['migrated'][$iloc->mod]['count']++;
 					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 }
+				break;
+            case 'simplepollmodule':  // added v2.0.9
+                $oldconfig = $old_db->selectObject('simplepollmodule_config', "location_data='".serialize($iloc)."'");
+                if (!empty($oldconfig)) {
+                    if (!empty($oldconfig->thank_you_message)) {
+                        $newconfig->config['thank_you_message'] = 'Thank you for voting.';
+                    }
+                    if (!empty($oldconfig->already_voted_message)) {
+                        $newconfig->config['already_voted_message'] = 'You have already voted in this poll.';
+                    }
+                    if (!empty($oldconfig->voting_closed_message)) {
+                        $newconfig->config['voting_closed_message'] = 'Voting has been closed for this poll.';
+                    }
+                    if (!empty($oldconfig->anonymous_timeout)) {
+                        $newconfig->config['anonymous_timeout'] = '5';
+                    }
+                }
+
+				//check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "simplePoll";
+				if ($db->countObjects('simplepoll_question', "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'simplepollmodule';
+//					$linked = true;
+					break;
+				}
+
+				$iloc->mod = 'simplepollmodule';
+                $oldquestions = $old_db->selectArrays('poll_question', "location_data='".serialize($iloc)."'");
+				if ($oldquestions) {
+					foreach ($oldquestions as $qi) {
+						$oldanswers = $old_db->selectArrays('poll_answer', "question_id='".$qi['id']."'");
+						$oldblocks = $old_db->selectArrays('poll_timeblock', "question_id='".$qi['id']."'");
+						unset ($qi['id']);
+                        $active = $qi['is_active'];
+                        unset ($qi['is_active']);
+						$question = new simplepoll_question($qi);
+						$loc = expUnserialize($qi['location_data']);
+						$loc->mod = "simplePoll";
+                        $question->active = $active;
+						if (empty($question->question)) { $question->question = 'Untitled'; }
+                        $question->location_data = serialize($loc);
+                        $question->save();
+
+                        foreach ($oldanswers as $oi) {
+                            unset ($oi['id']);
+                            unset ($oi['question_id']);
+                            $newanswer = new simplepoll_answer($oi);
+                            $newanswer->simplepoll_question_id = $question->id;
+//                            $question->simplepoll_answer[] = $newanswer;
+                            $newanswer->update();
+                        }
+//                        $question->update();
+
+						@$this->msg['migrated'][$iloc->mod]['count']++;
+						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+					}
+				}
+				break;
+            case 'navigationmodule':
+                if ($module->view = 'Breadcrumb') {
+                    @$module->view = 'breadcumb';
+                    @$module->action = 'breadcumb';
+                } else {
+                    @$module->view = 'showall_'.$module->view;
+                }
+                @$this->msg['migrated'][$iloc->mod]['count']++;
+                @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 				break;
 			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
@@ -2069,29 +2157,29 @@ class migrationController extends expController {
                 }
 				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 				break;
-            case 'simplepollmodule':
-				if ($db->countObjects('poll_question', "location_data='".serialize($iloc)."'")) {
-					break;
-				}
-                $questions = $old_db->selectObjects('poll_question', "location_data='".serialize($iloc)."'");
-                foreach($questions as $question) {
-                    $db->insertObject($question, 'poll_question');
-					$answers = $old_db->selectObjects('poll_answer', "question_id='".$question->id."'");
-					foreach($answers as $answer) {
-						$db->insertObject($answer, 'poll_answer');
-					}
-					$timeblocks = $old_db->selectObjects('poll_timeblock', "question_id='".$question->id."'");
-					foreach($timeblocks as $timeblock) {
-						$db->insertObject($timeblock, 'poll_timeblock');
-					}
-					@$this->msg['migrated'][$iloc->mod]['count']++;
-                }
-                $configs = $old_db->selectObjects('simplepollmodule_config', "location_data='".serialize($iloc)."'");
-                foreach ($configs as $config) {
-                    $db->insertObject($config, 'simplepollmodule_config');
-                }
-				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
-				break;
+//            case 'simplepollmodule':
+//				if ($db->countObjects('poll_question', "location_data='".serialize($iloc)."'")) {
+//					break;
+//				}
+//                $questions = $old_db->selectObjects('poll_question', "location_data='".serialize($iloc)."'");
+//                foreach($questions as $question) {
+//                    $db->insertObject($question, 'poll_question');
+//					$answers = $old_db->selectObjects('poll_answer', "question_id='".$question->id."'");
+//					foreach($answers as $answer) {
+//						$db->insertObject($answer, 'poll_answer');
+//					}
+//					$timeblocks = $old_db->selectObjects('poll_timeblock', "question_id='".$question->id."'");
+//					foreach($timeblocks as $timeblock) {
+//						$db->insertObject($timeblock, 'poll_timeblock');
+//					}
+//					@$this->msg['migrated'][$iloc->mod]['count']++;
+//                }
+//                $configs = $old_db->selectObjects('simplepollmodule_config', "location_data='".serialize($iloc)."'");
+//                foreach ($configs as $config) {
+//                    $db->insertObject($config, 'simplepollmodule_config');
+//                }
+//				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+//				break;
             case 'formmodule':
 				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'")) {
 					break;
@@ -2179,6 +2267,7 @@ class migrationController extends expController {
         if (!empty($newconfig->config['enable_rss']) && $newconfig->config['enable_rss'] == true) {
             $newrss = new expRss();
             $newrss->enable_rss = $newconfig->config['enable_rss'];
+            $newrss->advertise = $newconfig->config['enable_rss'];
             $newrss->feed_title = $newconfig->config['feed_title'];
             $newrss->feed_desc = $newconfig->config['feed_desc'];
             $newrss->rss_limit = $newconfig->config['rss_limit'];
@@ -2248,13 +2337,15 @@ class migrationController extends expController {
         ) {
             flash('error', gt('You are missing some required database connection information.  Please enter DB information.'));
             redirect_to (array('controller'=>'migration', 'action'=>'configure'));
+//            $this->configure();
         }
 
        $database = expDatabase::connect($this->config['username'],$this->config['password'],$this->config['server'].':'.$this->config['port'],$this->config['database']);
 
        if (empty($database->havedb)) {
-            flash('error', gt('An error was encountered trying to connect to the database you specified. Please check your DB config.'));
-            redirect_to (array('controller'=>'migration', 'action'=>'configure'));
+           flash('error', gt('An error was encountered trying to connect to the database you specified. Please check your DB config.'));
+           redirect_to (array('controller'=>'migration', 'action'=>'configure'));
+//           $this->configure();
        }
 
        $database->prefix = $this->config['prefix']. '_';;

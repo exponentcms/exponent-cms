@@ -31,9 +31,20 @@ class donation extends product {
 	public $requiresBilling  = true; 
     public $isQuantityAdjustable = false;
     
+    protected $attachable_item_types = array(
+//        'content_expCats'=>'expCat',
+//        'content_expComments'=>'expComment',
+//        'content_expDefinableFields'=> 'expDefinableField',
+        'content_expFiles'=>'expFile',
+//        'content_expRatings'=>'expRating',
+//        'content_expSimpleNote'=>'expSimpleNote',
+//        'content_expTags'=>'expTag',
+    );
+
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 		parent::__construct($params, $get_assoc, $get_attached);
-		$this->price = '';
+//		$this->price = '';
+        $this->price = $this->base_price;
 	}
 
     public function find($range='all', $where=null, $order=null, $limit=null, $limitstart=0, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except = false) {
@@ -67,7 +78,7 @@ class donation extends product {
         } elseif (strcasecmp($range, 'bytag') == 0) {
             $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$this->table.' m ';
             $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expTags ct '; 
-            $sql .= 'ON m.id = ct.content_id WHERE ct.exptag_id='.$where." AND ct.content_type='".$this->classname."'";
+            $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id='.$where." AND ct.content_type='".$this->classname."'";
             $tag_assocs = $db->selectObjectsBySql($sql);
             $records = array();
             foreach ($tag_assocs as $assoc) {
@@ -94,10 +105,11 @@ class donation extends product {
 	}
 	
 	function addToCart($params, $orderid = null) {
-	    if (empty($params['dollar_amount'])) {
-	        return false;
-	    } else {
-	        $item = new orderitem($params);	        
+//	    if (empty($params['dollar_amount'])) {  //FIXME we don't ever pass this param
+//	        return false;
+//	    } else {
+	        $item = new orderitem($params);
+            if (empty($params['dollar_amount'])) $params['dollar_amount'] = $this->price;
 	        $item->products_price = preg_replace("/[^0-9.]/","",$params['dollar_amount']);
 	        
 	        $product = new product($params['product_id']);
@@ -109,7 +121,7 @@ class donation extends product {
 	        $item->quantity = $this->getDefaultQuantity();
 		    $item->save();
 		    return true;
-	    }
+//	    }
 	}
 }
 

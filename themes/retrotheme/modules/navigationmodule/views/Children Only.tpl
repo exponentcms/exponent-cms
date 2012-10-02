@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="module navigationmodule children-only">
+<div class="module navigation children-only">
     <h2>{if $current->id==1}Menu{else}{$current->name}{/if}</h2>         
     <ul>
         {assign var=islastdepth value="false"}
@@ -34,7 +34,6 @@
                 {/if}
             {/if}
         {/foreach}
-        
         
         {if $islastdepth=="false"}
         {foreach from=$sections item=section}

@@ -22,7 +22,9 @@
  */
 
 class addressController extends expController {
-	public $useractions = array('myaddressbook'=>'Show my addressbook');
+	public $useractions = array(
+        'myaddressbook'=>'Show my addressbook'
+    );
     public $remove_permissions = array(
         'create',
         'edit',
@@ -39,13 +41,13 @@ class addressController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-    function displayname() { return gt("Addresses"); }
-    function description() { return gt("Use this module to display and manage addresses of users on your site."); }
-    function canImportData() { return true;}
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Addresses"); }
+    static function description() { return gt("Use this module to display and manage addresses of users on your site."); }
+    static function canImportData() { return true;}
 
     function showall() {
-        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
+//        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
+        $this->myaddressbook();
 	}
     
     public function edit()
@@ -62,7 +64,7 @@ class addressController extends expController {
 	public function myaddressbook() {
 		global $user;
 		// check if the user is logged in.
-		expQueue::flashIfNotLoggedIn('message', 'You must be logged in to manage your address book.');
+		expQueue::flashIfNotLoggedIn('message',gt('You must be logged in to manage your address book.'));
 		expHistory::set('viewable', $this->params);
 		$userid = (empty($this->params['user_id'])) ? $user->id : $this->params['user_id'];
 		assign_to_template(array(
@@ -187,8 +189,10 @@ class addressController extends expController {
             $gr->save();            
         }
         flash('message',gt('Address configurations successfully updated.'));
-        redirect_to(array('controller'=>'address','action'=>'manage'));        
+        redirect_to(array('controller'=>'address','action'=>'manage'));
+//        $this->manage();
     }
+
 }
 
 ?>

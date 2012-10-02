@@ -1,0 +1,15 @@
+.navigation.collapsing .depth1, .navigation.expanding .depth1 {
+    margin-left:10px;
+}
+.navigation.collapsing .depth2, .navigation.expanding .depth2 {
+    margin-left:20px;
+}
+.navigation.collapsing .depth3, .navigation.expanding .depth3 {
+    margin-left:30px;
+}
+.navigation.collapsing .depth4, .navigation.expanding .depth4 {
+    margin-left:40px;
+}
+.navigation.collapsing .depth5, .navigation.expanding .depth5 {
+    margin-left:50px;
+}

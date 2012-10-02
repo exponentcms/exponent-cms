@@ -22,7 +22,6 @@
  */
 
 class youtubeController extends expController {
-	//protected $basemodel_name = '';
 	public $useractions = array(
         'showall'=>'Display a YouTube Video'
     );
@@ -35,20 +34,21 @@ class youtubeController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
-	function displayname() { return gt("YouTube"); }
-	function description() { return gt("Display youtube videos on your page."); }
-	function author() { return "Phillip Ball - OIC Group, Inc"; }
+    static function displayname() { return gt("YouTube"); }
+    static function description() { return gt("Display youtube videos on your page."); }
+    static function author() { return "Phillip Ball - OIC Group, Inc"; }
 	
 	function showall() {
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->aggregateWhereClause(),
-                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
-                    'order'=>'rank',
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->loc->src,
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->aggregateWhereClause(),
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+            'order'=>'rank',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+        ));
 
         if (!empty($this->config['width'])&&!empty($this->config['height'])) {
             // adjust the height/width to our settings

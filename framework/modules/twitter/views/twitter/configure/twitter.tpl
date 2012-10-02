@@ -21,7 +21,14 @@
 {/literal}
 {/css}
 
-<h2>{"Configure this Module"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Twitter Settings"|gettext) module="twitter"}
+		</div>
+        <h2>{"Twitter Settings"|gettext}</h2>
+	</div>
+</div>
 <p>{'Log in to the Twitter Developer\'s'|gettext} <a href="https://dev.twitter.com/apps" target="_blank">{'website'|gettext}</a> {'with your twitter account.'|gettext}{br}
 {'First create an application which will provide you the Consumer key and secret.'|gettext}{br}
 {'Then you must create an Access token which will give you the Access token settings.'|gettext}{br}

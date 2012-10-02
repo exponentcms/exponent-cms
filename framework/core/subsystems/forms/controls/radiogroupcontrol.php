@@ -56,12 +56,14 @@ class radiogroupcontrol extends formcontrol {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
 		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup control";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
-		$html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
-		$html .= (!empty($label))?"<td><span class=\"label\">".$label."</span></td></tr><tr>":"";
-		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
-		$html .= "</tr></table>";
-		$html .= "</div>";			
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+//		$html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
+//		$html .= (!empty($label))?"<td><span class=\"label\">".$label."</span></td></tr><tr>":"";
+        $html .= (!empty($label))?"<span class=\"label\">".$label."</span>":"";
+//        $html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
+//		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
+//		$html .= "</tr></table>";
+		$html .= $this->controlToHTML($name, $label);
+        $html .= "</div>";
 		return $html;
 	}
 	
@@ -89,7 +91,7 @@ class radiogroupcontrol extends formcontrol {
     			$html .= '</tr><tr>';
     			$i = 0;
             }
-			$html .= '<td style="border:none; padding:3px 3px 3px 5px">'.$radio->toHTML($rname, $name).'</td>';
+			$html .= '<td style="border:none; padding-left:5px">'.$radio->toHTML($rname, $name).'</td>';
 			$i++; 
 		}	
 		$html .= '</tr></table>';
@@ -97,8 +99,9 @@ class radiogroupcontrol extends formcontrol {
 		return $html;
 	}
 	
-	function form($object) {
+	static function form($object) {
 		$form = new form();
+        if (empty($object)) $object = new stdClass();
 		if (!isset($object->identifier)) {
 			$object->identifier = "";
 			$object->caption = "";
@@ -124,7 +127,7 @@ class radiogroupcontrol extends formcontrol {
 		return $form;
 	}
 	
-	function update($values, $object) {
+    static function update($values, $object) {
 		if ($object == null) $object = new radiogroupcontrol();
 		if ($values['identifier'] == "") {
 			$post = $_POST;

@@ -93,7 +93,8 @@ class upscalculator extends shippingcalculator {
                         $width = empty($item->product->width) ? $this->configdata['default_width'] : $item->product->width;
                         $height = empty($item->product->height) ? $this->configdata['default_height'] : $item->product->height;
                         $length = empty($item->product->length) ? $this->configdata['default_length'] : $item->product->length;
-                        
+
+                        $package_items[$count] = new stdClass();
                         $package_items[$count]->volume = ($width * $length * $height);
                         $package_items[$count]->weight = $lbs;
                         $package_items[$count]->w = $width;
@@ -147,9 +148,9 @@ class upscalculator extends shippingcalculator {
                     $total_weight += $pi->weight;
 #                    echo "Adding ".$pi->name."<br>";
 #                    echo "Space left in current box: ".$space_left."<br>";
-                    $no_more_room = false;
                     $used[] = $idx;
-                }                
+                    $no_more_room = false;
+                }
             }
 
             // remove the used items from the array so they wont be there on the next go around.
@@ -157,8 +158,8 @@ class upscalculator extends shippingcalculator {
                 unset($package_items[$idx]);
             }            
             
-            // if there is no more room left on the current package or we are out of items then
-            // add the package to the shippment.
+            // if there is no more room left in the current box or we are out of items then
+            // add the package to the shipment.
             if ($no_more_room || (empty($package_items) && $total_weight > 0)) {
                 $total_weight = $total_weight > 1 ? $total_weight : 1;
 #                eDebug('created standard sized package with weight of '.$total_weight);
@@ -174,19 +175,24 @@ class upscalculator extends shippingcalculator {
 	    $rateFromUPS = $upsRate->sendRateRequest();
 	    
 	    $handling = empty($has_giftcard) ? 0 : 5;
-	    if ($rateFromUPS['RatingServiceSelectionResponse']['Response']['ResponseStatusCode']['VALUE'] == 1) {
+        if (empty($rateFromUPS)) {
+            return 0;
+        } elseif ($rateFromUPS['RatingServiceSelectionResponse']['Response']['ResponseStatusCode']['VALUE'] == 1) {
 	        $rates = array();
 	        $available_methods = $this->availableMethods();
 	        foreach ($rateFromUPS['RatingServiceSelectionResponse']['RatedShipment'] as $rate) {
 	            if (array_key_exists($rate['Service']['Code']['VALUE'], $available_methods)) {
 	                $rates[$rate['Service']['Code']['VALUE']] = $rate['TotalCharges']['MonetaryValue']['VALUE'];
-	                $rates[$rate['Service']['Code']['VALUE']] = array('id' => $rate['Service']['Code']['VALUE'],
-				                          'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],
-				                          'cost' => $rate['TotalCharges']['MonetaryValue']['VALUE'] + $handling);
+	                $rates[$rate['Service']['Code']['VALUE']] = array(
+                        'id' => $rate['Service']['Code']['VALUE'],
+                        'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],
+				        'cost' => $rate['TotalCharges']['MonetaryValue']['VALUE'] + $handling
+                    );
 	            }
 	        }
 	        return $rates;
 	    } else {
+            flash('error','UPS: '.$rateFromUPS['RatingServiceSelectionResponse']['Response']['Error']['ErrorDescription']['VALUE']);
 	        return $rateFromUPS['RatingServiceSelectionResponse']['Response']['Error']['ErrorDescription']['VALUE'];
 	    }
     }	

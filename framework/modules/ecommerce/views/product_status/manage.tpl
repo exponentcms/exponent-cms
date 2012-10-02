@@ -20,14 +20,14 @@
 <div class="modules order_type showall">
 	<h1>{$moduletitle|default:"Product Status Administration"|gettext}</h1>
 	
-	<a href="{link action=create}">{'Create a new product status'|gettext}</a>{br}{br}
+	<a class="add" href="{link action=create}">{'Create a new product status'|gettext}</a>{br}{br}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">
 			<thead>
 				<tr>				   
 					<th>{'Name'|gettext}</th>
-					<th>{'Admin'|gettext}</th>
+					<th>{'Action'|gettext}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,8 +37,8 @@
 					<td>{$listing->title}</td>
 					<td>
 					    {if $permissions.manage == true}
-                            {icon controller=order_type action=edit record=$listing}
-                            {icon controller=order_type action=delete record=$listing}
+                            {icon action=edit record=$listing}
+                            {icon action=delete record=$listing}
                         {/if}
 					</td>
 				</tr>

@@ -45,7 +45,9 @@ class remove_global_categories extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-		return true;  // we'll just do it ine very instance instead of testing if user profile extensions are active
+        global $db;
+
+        return $db->selectObjects('expCats',"module=''") != null ? true : false;
 	}
 
 	/**

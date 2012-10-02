@@ -539,10 +539,11 @@ class expFile extends expRecord {
 
 		header('Content-Type: ' . $mimetype);		
 		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-		//header("Content-length: ".filesize($file->path));  // for some reason the webserver cant run stat on the files and this breaks.
 		header('Content-Transfer-Encoding: binary');
-		header('Content-Encoding:');
+//		header('Content-Encoding:');
 		header('Content-Disposition: attachment; filename="' . $file->filename . '";');
+        $filesize = filesize($file->path);
+		if ($filesize) header("Content-length: ".$filesize);  // for some reason the webserver cant run stat on the files and this breaks.
 		// IE need specific headers
 		if (EXPONENT_USER_BROWSER == 'IE') {
 			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -1460,7 +1461,7 @@ class expFile extends expRecord {
 			}
 
 			// make sure the database tables are up to date
-		    administrationController::install_dbtables();
+		    expDatabase::install_dbtables();
 
 			$table = '';
 			$table_function = '';
@@ -1484,7 +1485,7 @@ class expFile extends expRecord {
 							}
 						} else {
 	//						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
-								$errors[] = sprintf(gt('Table "%s" not found in the system (line %d)'),$table,$line_number);
+								$errors[] = sprintf(gt('Table "%s" not found in the database (line %d)'),$table,$line_number);
 	//						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
 	//							$errors[] = sprintf(gt('Data definition file for %s (%s) is not readable (line %d)'),$table,'framework/core/definitions/'.$table.'.php',$line_number);
 	//						} else {
@@ -1496,17 +1497,25 @@ class expFile extends expRecord {
 					} else if ($pair[0] == 'RECORD') {
 						// Here we need to check the conversion scripts.
 						$pair[1] = str_replace('\r\n',"\r\n",$pair[1]);
-						$object = unserialize($pair[1]);
+//						$object = expUnserialize($pair[1]);
+                        $object = @unserialize($pair[1]);
+                        if (!$object)  $object = unserialize(stripslashes($pair[1]));
 						if (function_exists($table_function)) {
 							$table_function($db,$object);
 						} else {
-							$db->insertObject($object,$table);
+							if (is_object($object)) {
+                                $db->insertObject($object,$table);
+                            } else {
+                                $errors[] = sprintf(gt('Unable to decipher "%s" record (line %d)'),$pair[0],$line_number);
+                            }
 						}
 					} else {
 						$errors[] = sprintf(gt('Invalid specifier type "%s" (line %d)'),$pair[0],$line_number);
 					}
 				}
 			}
+            // rename mixed case tables if necessary
+            expDatabase::fix_table_names();
 			if ($eql_version != $current_version) {
 				$errors[] = gt('EQL file was Not a valid EQL version');
 				return false;

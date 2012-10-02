@@ -36,6 +36,7 @@ $controls = $db->selectObjects("formbuilder_control","form_id=".$f->id." and is_
 $db_data = new stdClass();
 $emailFields = array();
 $captions = array();
+$attachments = array();
 foreach ($controls as $c) {
     $ctl = unserialize($c->data);
     $control_type = get_class($ctl);
@@ -57,6 +58,9 @@ foreach ($controls as $c) {
 		if ($c->name == "name") {
 			$from_name = $value;
 		}
+        if (get_class($ctl) == 'uploadcontrol') {
+            $attachments[] = htmlspecialchars_decode($_POST[$c->name]);
+        }
     }
 }
 
@@ -70,8 +74,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
             $db_data->timestamp = $olddata->timestamp;
 			$db_data->referrer = $olddata->referrer;
             $db->delete('formbuilder_'.$f->table_name,'id='.intval($_POST['data_id']));
-        } 
-        else {
+        } else {
             $db_data->ip = $_SERVER['REMOTE_ADDR'];
             if (expSession::loggedIn()) {
                 $db_data->user_id = $user->id;
@@ -85,6 +88,8 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
 			$db_data->referrer = $referrer;
         }        
         $db->insertObject($db_data, 'formbuilder_'.$f->table_name);
+    } else {
+        $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" .expSession::getTicketString() . "'");
     }
 
     //Email stuff here...
@@ -135,6 +140,15 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
             $emaillist = array_flip(array_flip($emaillist));
             $emaillist = array_map('trim', $emaillist);
 			$mail = new expMail();
+            if (!empty($attachments)) {
+                foreach ($attachments as $attachment) {
+                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $relpath = str_replace(PATH_RELATIVE, '', BASE);
+                    $ftype = finfo_file($finfo, $relpath.$attachment);
+                    finfo_close($finfo);
+                    $mail->attach_file_on_disk($relpath.$attachment,$ftype);
+                }
+            }
 			$mail->quickSend(array(
 				//	'headers'=>$headers,
 					'html_message'=>$emailHtml,

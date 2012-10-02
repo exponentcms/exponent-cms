@@ -19,20 +19,13 @@
 
 if (!defined('EXPONENT')) exit('');
 
-$errors = null;
-$continue = PATH_RELATIVE.'index.php?section='.SITE_DEFAULT_SECTION;
-
+$errors = array();
 expSession::clearAllUsersSessionCache();
 
 $template = new template('importer','_eql_results',$loc);
-//GREP:UPLOADCHECK
-if (!expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors)) {
-	$template->assign('success',0);
-	$template->assign('errors',$errors);
-} else {
-	$template->assign('success',1);
-	$template->assign('continue',$continue);
-}
+expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
+$template->assign('success',!count($errors));
+$template->assign('errors',$errors);
 $template->output();
 
 ?>

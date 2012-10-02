@@ -64,7 +64,6 @@
                         panel.render('create-prod-report');
                         YAHOO.util.Event.on('showcats', 'click', panel.show, panel, true);
                         YAHOO.util.Dom.removeClass('catpicker', 'hide');
-                        
                     });
                     {/literal}
                     {/script}

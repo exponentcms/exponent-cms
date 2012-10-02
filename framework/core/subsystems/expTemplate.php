@@ -82,7 +82,7 @@ class expTemplate {
 			}
 			if (!isset($values[$data[0]])) $values[$data[0]] = 0;
 			if ($data[2] == "checkbox") {
-				$form->register("_viewconfig[".$data[0]."]",$data[1],new checkboxcontrol($values[$data[0]],true),true,ucwords($view).' '.gt('View Configuration'));
+				$form->register("_viewconfig[".$data[0]."]",$data[1],new checkboxcontrol($values[$data[0]]),true,ucwords($view).' '.gt('View Configuration'));
 			} else if ($data[2] == 'text') {
 				$form->register("_viewconfig[".$data[0]."]",$data[1],new textcontrol($values[$data[0]]),true,ucwords($view).' '.gt('View Configuration'));
 			} else {

@@ -23,7 +23,7 @@
 			<a class="add" href="{link module="expHTMLEditor" action="edit"}">{"Create New Configuration"|gettext}</a>
             {help text="Get Help"|gettext|cat:" "|cat:("Managing CKEditor Toolbars"|gettext) module="ckeditor-toolbar-configuration"}
         </div>
-        <h1>{"CKEditor Toolbar Manager"|gettext}</h1>
+        <h2>{"CKEditor Toolbar Manager"|gettext}</h2>
     </div>
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
@@ -85,7 +85,7 @@
                     {if $cfg->active}
                         <span class="active">{'Active'|gettext}</span>
                     {else}
-                        <a class="inactive" href="{link module="expHTMLEditor" action=activate id=$cfg->id}" title="Activate this Toolbar"|gettext>Activate</a>
+                        <a class="inactive" href="{link module="expHTMLEditor" action=activate id=$cfg->id}" title="Activate this Toolbar"|gettext>{'Activate'|gettext}</a>
                     {/if}
                 </td>
                 <td>

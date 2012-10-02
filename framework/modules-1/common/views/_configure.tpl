@@ -18,15 +18,26 @@
 
 {/css}
 <div class="form_header">
-	<h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
+    <div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("module configuration"|gettext) page="module-configuration"}
+		</div>
+        <h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
+	</div>
 	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
 </div>
 {$form_html}
 {script unique="configure" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
-        tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+    YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
+//        tabview.render();
+        Y.expTabs({srcNode: '#configure-tabs'});
         Y.one('#configure-tabs').removeClass('hide');
         Y.one('.loadingdiv').remove();
     });

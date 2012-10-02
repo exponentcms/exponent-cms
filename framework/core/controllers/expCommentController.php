@@ -24,11 +24,15 @@
 
 class expCommentController extends expController {
     public $base_class = 'expComment';
-    protected $add_permissions = array('approve'=>"Approve Comments");
-   	protected $remove_permissions = array('create');
+    protected $add_permissions = array(
+        'approve'=>"Approve Comments"
+    );
+   	protected $remove_permissions = array(
+        'create'
+    );
 
-    function displayname() { return gt("Comments"); }
-    function description() { return gt("Use this module to add comments to a page."); }
+    static function displayname() { return gt("Comments"); }
+    static function description() { return gt("Use this module to add comments to a page."); }
     
 	function edit() {
 	    if (empty($this->params['content_id'])) {
@@ -78,9 +82,15 @@ class expCommentController extends expController {
             'limit'=>10,
             'order'=>$order,
             'dir'=>$dir,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Approved')=>'approved',gt('Poster')=>'name',gt('Comment')=>'body',gt('Type')=>'content_type'),
+            'columns'=>array(
+                gt('Approved')=>'approved',
+                gt('Poster')=>'name',
+                gt('Comment')=>'body',
+                gt('Type')=>'content_type'
+            ),
         ));
 
         $refs[][] = array();
@@ -123,9 +133,12 @@ class expCommentController extends expController {
             'sql'=>$sql, 
 //            'limit'=>999,
             'order'=>'created_at',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'columns'=>array(gt('Readable Column Name')=>'Column Name'),
+            'columns'=>array(
+                gt('Readable Column Name')=>'Column Name'
+            ),
         ));
 
         // add username and avatar
@@ -216,6 +229,7 @@ class expCommentController extends expController {
         $this->expComment->update($this->params);
         
         // attach the comment to the datatype it belongs to (blog, news, etc..);
+        $obj = new stdClass();
 		$obj->content_type = $this->params['content_type'];
 		$obj->content_id = $this->params['content_id'];
 		$obj->expcomments_id = $this->expComment->id;

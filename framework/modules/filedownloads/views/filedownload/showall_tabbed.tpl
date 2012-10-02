@@ -23,9 +23,7 @@
 
 <div class="module filedownload showall showall-tabbed">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
-    {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
-    {/if}
+    {rss_link}
     {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
@@ -71,9 +69,15 @@
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-	    tabview.render();
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
+
+	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
+//	    tabview.render();
+        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
 		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 	});

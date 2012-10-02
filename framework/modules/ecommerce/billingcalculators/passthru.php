@@ -22,8 +22,8 @@
 /** @define "BASE" "../../../.." */
 
 class passthru extends billingcalculator {
-	function name() { return "Passthru Payment"; }
-	function description() { return "Enabling this payment option will allow you or your customers to bypass payment processing at the cart and allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.<br>** This is a restricted payment option and only accessible by site admins."; }
+	function name() { return gt("Passthru Payment"); }
+	function description() { return gt("Enabling this payment option will allow you or your customers to bypass payment processing at the cart and allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.")."<br>** ".gt("This is a restricted payment option and only accessible by site admins."); }
 	function hasConfig() { return false;}
 	function hasUserForm() { return false;}
 	function isOffsite() { return false; }
@@ -48,23 +48,23 @@ class passthru extends billingcalculator {
 		if (!$config_object) {
 			$config_object->give_change = true;
 		}
-		$form->register("give_change","Give Change?",new checkboxcontrol($config_object->give_change));
+		$form->register("give_change",gt("Give Change?"),new checkboxcontrol($config_object->give_change));
 		$form->register("submit","",new buttongroupcontrol("Save","","Cancel"));
 		return $form->toHTML();
 	}
 	
 	//process config form
-	function update($values, $config_object) {
-		$config_object->give_change = $values['give_change'];
-		return $config_object;
-	}
+//	function update($values, $config_object) {  //FIXME doesn't match parent declaration update($params = array())
+//		$config_object->give_change = $values['give_change'];
+//		return $config_object;
+//	}
 	
 	//Form for user input
 	function userForm($config_object=null, $user_data=null) {
 		$form = new form();
-		$htmlinfo = "You may place your order and pay with a check or money order.  If paying by check, your order will be held util we receive the check and it clears our bank account.  Money order orders will be processed upon our receipt of the money order.<br/><br/>";
+		$htmlinfo = gt("You may place your order and pay with a check or money order.  If paying by check, your order will be held util we receive the check and it clears our bank account.  Money order orders will be processed upon our receipt of the money order.")."<br/><br/>";
 		$form->register(uniqid(""),"", new htmlcontrol($htmlinfo));
-	  	$form->register("cash_amount","Cash Amount:",new textcontrol());
+	  	$form->register("cash_amount",gt("Cash Amount:"),new textcontrol());
 		return $form->toHTML();
 	}
 	
@@ -78,7 +78,7 @@ class passthru extends billingcalculator {
 	
 	//This is called when a billing method is deleted. It can be used to clean up if you
 	//have any custom user_data storage.
-	function delete($config_object) {
+	function delete($where = '') {
 		return;
 	}
 	
@@ -86,7 +86,6 @@ class passthru extends billingcalculator {
 	function view($config_object) {
 		//add restrictions config stuff here
         return '';
-	
 	}
 	
 	//Should return html to display user data.
@@ -111,6 +110,7 @@ class passthru extends billingcalculator {
     {  
         //eDebug($params,true);
         //eturn array('order_type'=>$params['order_type'],'order_status'=>$params['order_status'],'sales_rep_1_id'=>$params['sales_rep_1_id'],'sales_rep_2_id'=>$params['sales_rep_2_id'],'sales_rep_3_id'=>$params['sales_rep_3_id']);        
+        $obj = new stdClass();
         $obj->order_type = $params['order_type'];
         $obj->order_status = $params['order_status'];
         $obj->sales_rep_1_id = $params['sales_rep_1_id'];
@@ -135,6 +135,7 @@ class passthru extends billingcalculator {
     function process($method, $opts, $params, $invoice_number)
     {
         global $order;
+        $object = new stdClass();
         $object->errorCode = 0;
         $object->message = 'Authorization pending.';
         $object->PNREF = 'Pending';
@@ -146,6 +147,7 @@ class passthru extends billingcalculator {
         $trax_state = "authorization pending"; 
         
         //$opts2->billing_info = $opts;
+        $opts2 = new stdClass();
         $opts2->result = $object;
         //eDebug($opts,true);
         /*$opts->result = $object;        
@@ -189,6 +191,7 @@ class passthru extends billingcalculator {
             
             //make sure current user is good to go
             $defAddy = $addy->find('first','user_id='.$user->id);
+            $obj = new stdClass();
             $obj->id = $defAddy->id;
             $db->setUniqueFlag($obj, 'addresses', 'is_default', 'user_id='.$user->id);
             $db->setUniqueFlag($obj, 'addresses', 'is_shipping', 'user_id='.$user->id);

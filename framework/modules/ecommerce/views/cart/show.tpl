@@ -65,7 +65,7 @@
                         {if $discounts[0]->isCartDiscount()} 
                              <tr class="{cycle values="odd, even"}">
                                 <td class="cart-totals-title">
-                                <a style="font-weight: none;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[remove coupon code]</a>&#160;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&#160;{"Total Discounts"|gettext}:
+                                <a style="font-weight: normal;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[remove coupon code]</a>&#160;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&#160;{"Total Discounts"|gettext}:
                                 </td>
                                 <td>
                                 {currency_symbol}
@@ -104,7 +104,7 @@
                         <td class="cart-totals-title">
                         {if isset($discounts[0])}                        
                             {if $discounts[0]->isShippingDiscount()}
-                                <a style="font-weight: none;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[{'remove coupon code'|gettext}]</a>&#160;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&#160;
+                                <a style="font-weight: normal;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[{'remove coupon code'|gettext}]</a>&#160;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&#160;
                             {/if}
                         {/if}
                         {* else *}
@@ -112,10 +112,15 @@
                         {* /if *}
                         </td>
                         <td>
-                        {currency_symbol}
+                            {currency_symbol}
                         </td>
-                        <td style="text-align:right;">                    
-                           {$order->shipping_total|number_format:2}                    
+                        {if is_string($order->shipping_total)}
+                        <td style="text-align:center;">
+                            {$order->shipping_total}
+                        {else}
+                        <td style="text-align:right;">
+                            {$order->shipping_total|number_format:2}
+                        {/if}
                         </td>
                     </tr>
                     {if $order->surcharge_total != 0}
@@ -168,9 +173,7 @@
 
 {script unique="editform" yui3mods=1}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('tabview', function(Y) {
-		var tabview = new Y.TabView({srcNode:'#helpedit'});
-		tabview.render();
+	YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 		Y.one('#myCart').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });

@@ -18,7 +18,7 @@
 {foreach from=$banners item=banner}
     <tr>    					        
         <td>{control type="checkbox" name="banners[]" label=" " value=$banner->id checked=$config.banners}</td>
-        <td>{img file_id=$banner->expFile[0]->id width=96 height=48}</td>
+        <td>{img file_id=$banner->expFile[0]->id w=96 h=48}</td>
         <td>{$banner->title}{br}{$banner->company->title}</td>
     </tr>
 {/foreach}

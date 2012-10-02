@@ -13,9 +13,22 @@
  *
  *}
 
-<h2>{'Podcast (RSS Feed) Settings'|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Podcast Feed Settings"|gettext) module="rss-podcast"}
+		</div>
+        <h2>{'Podcast Feed Settings'|gettext}</h2>
+	</div>
+</div>
+<blockquote>
+    {'These settings allow you to syndicate your content via a Podcast.'|gettext}&#160;&#160;
+    {'To start syndicating, all you have to do is enable Podcasting and give this module\'s content a title and description!'|gettext}
+</blockquote>
 {control type="checkbox" name="enable_rss" label="Enable Podcasting"|gettext value=1 checked=$config.enable_rss}
+{control type="checkbox" name="advertise" label="Advertise RSS"|gettext value=1 checked=$config.advertise}
 {control type="text" name="feed_title" label="Podcast Title"|gettext value=$config.feed_title}
+{control type="text" name="feed_sef_url" label="SEF URL"|gettext value=$config.feed_sef_url}
 {control type="textarea" name="feed_desc" label="Podcast Summary"|gettext value=$config.feed_desc}
 <p><strong>{'iTunes categories are semi-colon separated, with sub-categories colon separated.'|gettext}</strong>
 {br}{'Only the first category and first subcategory are used.'|gettext} e.g., Category1:sub1Cat1:sub2Cat1;Category2:sub1Cat2

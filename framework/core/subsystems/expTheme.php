@@ -26,7 +26,8 @@
 class expTheme {
 
 	public static function initialize() {
-		global $auto_dirs, $auto_dirs2, $user;
+		global $auto_dirs, $auto_dirs2;
+//        global $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 		require_once(BASE.'framework/core/compat/theme.php');
 
@@ -87,7 +88,8 @@ class expTheme {
 	//	echo self::advertiseRSS();
 	//}
 	public static function headerInfo($config) {
-		global $sectionObj, $validateTheme, $head_config, $cur_lang;
+		global $sectionObj, $validateTheme, $head_config;
+//        global $cur_lang;
 
 		$validateTheme['headerinfo'] = true;
 		// end checking for headerInfo
@@ -137,7 +139,7 @@ class expTheme {
 
 		$str = '<title>'.$metainfo['title']."</title>\n";
 		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - '.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
+		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
 		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
         // favicon
@@ -183,7 +185,8 @@ class expTheme {
    	}
 
     public static function pageMetaInfo() {
-        global $sectionObj, $db, $router;
+        global $sectionObj, $router;
+//        global $db;
 
         $metainfo = array();
         if (self::inAction() && (!empty($router->url_parts[0]) && expModules::controllerExists($router->url_parts[0]))) {
@@ -201,7 +204,6 @@ class expTheme {
 
     public static function grabView($path,$filename) {  //FIXME Not used
         $dirs = array(
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
             BASE.'themes/'.DISPLAY_THEME.'/'.$path,
             BASE.'framework/'.$path,
         );
@@ -216,10 +218,10 @@ class expTheme {
     public static function grabViews($path,$filter='') {  //FIXME Not used
         $dirs = array(
             BASE.'framework/'.$path,
-//            BASE.'themes/'.DISPLAY_THEME_REAL.'/'.$path,
             BASE.'themes/'.DISPLAY_THEME.'/'.$path,
         );
 
+        $files = array();
         foreach ($dirs as $dir) {
             if (is_dir($dir) && is_readable($dir) ) {
                 $dh = opendir($dir);
@@ -267,42 +269,18 @@ class expTheme {
 		if (defined('ADVERTISE_RSS') && ADVERTISE_RSS == 1) {
 			echo "\n\t<!-- RSS Feeds -->\n";
 			$rss = new expRss();
-			$feeds = $rss->getFeeds();
+			$feeds = $rss->getFeeds('advertise=1');
 			foreach ($feeds as $feed) {
 				if ($feed->enable_rss) {
-					$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
+//					$title = empty($feed->feed_title) ? 'RSS' : htmlspecialchars($feed->feed_title, ENT_QUOTES);
+                    $title = empty($feed->title) ? 'RSS - '.ORGANIZATION_NAME : htmlspecialchars($feed->title, ENT_QUOTES);
 					$params['module'] = $feed->module;
 					$params['src'] = $feed->src;
-					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
+//					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
+                       //FIXME need to use $feed instead of $params
+                    echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeLink(array('controller'=>'rss', 'action'=>'feed', 'title'=>$feed->sef_url)) . "\" />\n";
 				}
 			}
-
-			// now for the old school module rss feeds  which no longer exist
-//			global $db;
-//
-//			$modules = $db->selectObjects("sectionref", "refcount > 0");  // get all the modules being using
-//			$feeds = array();
-//			foreach ($modules as $module) {
-//				if (isset($feeds[$module->source])) continue;
-//                $location = new stdClass();
-//                $location->mod = $module->module;
-//				$location->src = $module->source;
-//				$location->int = $module->internal;
-//
-//				if (!expModules::controllerExists($module->module)) {
-//					//get the module's config data
-//					$config = $db->selectObject($module->module."_config", "location_data='".serialize($location)."'");
-//					if (!empty($config->enable_rss)) {
-//						$title = empty($config->feed_title) ? 'RSS' : htmlspecialchars($config->feed_title, ENT_QUOTES);
-//						$params['module'] = $module->module;
-//						$params['src'] = $module->source;
-//						if (!empty($module->internal)) $params['int'] = $module->internal;
-//
-//						echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
-//						$feeds[$module->source] = $title;
-//					}
-//				}
-//			}
 		}
 	}
 
@@ -318,14 +296,14 @@ class expTheme {
 		global $validateTheme;
 		if ($validateTheme['headerinfo']==false) {
 			echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>expTheme::head() is a required function in your theme.  Please refer to the Exponent documentation for details:<br />
-			<a href=\"http://docs.exponentcms.org/New_Themes_Guide\" target=\"_blank\">http://docs.exponentcms.org/</a>
+			<a href=\"http://docs.exponentcms.org/docs/current/header-info\" target=\"_blank\">http://docs.exponentcms.org/</a>
 			</h1>";
 			die();
 		}
 
 		if ($validateTheme['footerinfo']==false) {
 			echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>expTheme::foot() is a required function in your theme.  Please refer to the Exponent documentation for details:<br />
-			<a href=\"http://docs.exponentcms.org/New_Themes_Guide\" target=\"_blank\">http://docs.exponentcms.org/</a>
+			<a href=\"http://docs.exponentcms.org/docs/current/footer-info\" target=\"_blank\">http://docs.exponentcms.org/</a>
 			</h1>";
 			die();
 		}
@@ -380,8 +358,13 @@ class expTheme {
 				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
 			}
 		}
-        if (!is_readable($theme) && is_readable(BASE.'themes/basetheme/index.php')) {
-            $theme =  BASE.'themes/basetheme/index.php';
+        //FIXME change this to a generic system theme
+        if (!is_readable($theme)) {
+            if (is_readable(BASE.'themes/basetheme/index.php')) {
+               $theme =  BASE.'themes/basetheme/index.php';
+            } else {
+                $theme = BASE.'framework/core/index.php';
+            }
         }
 		return $theme;
 	}
@@ -460,10 +443,10 @@ class expTheme {
             return false;
         }
         if (self::inAction()) {
-//            include_once(BASE."themes/".DISPLAY_THEME_REAL."/".$theme);
             include_once(BASE."themes/".DISPLAY_THEME."/".$theme);
             exit;
         }
+        return false;
     }
 
 	/** exdoc
@@ -486,7 +469,7 @@ class expTheme {
 			$isController = expModules::controllerExists($module);
 
 			if ($isController && !isset($_REQUEST['_common'])) {
-				// this is being set just incase the url said module=modname instead of controller=modname
+				// this is being set just in case the url said module=modname instead of controller=modname
 				// with SEF URls turned on its not really an issue, but with them off some of the links
 				// aren't being made correctly...depending on how the {link} plugin was used in the view.
 				$_REQUEST['controller'] = $module;
@@ -501,10 +484,10 @@ class expTheme {
 					return true;
 				}
 
-				global $db, $user;
+				global $db, $user;  // these globals are needed for the old school actions which are loaded
 
 				// the only reason we should have a controller down in this section is if we are hitting a common action like
-				// userperms or groupperms...deal wit it.
+				// userperms or groupperms...deal with it.
 				$loc = new stdClass();
 				$loc->mod = $module;
 				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
@@ -517,8 +500,6 @@ class expTheme {
 					$actfile = "/" . $module . "/actions/" . $_REQUEST['action'] . ".php";
 				}
 
-//				if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-//					include_once(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
 				if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
                     include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
 				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
@@ -530,9 +511,10 @@ class expTheme {
 				}
 			}
 		}
+        return false;
 	}
 
-    public static function showAction($module, $action, $src="", $params=array()) {
+    public static function showAction($module, $action, $src="", $params=array()) {  //FIXME doesn't seem to be used except by smarty functions, old school?
    		global $db, $user;
 
    		$loc = new stdClass();;
@@ -548,8 +530,6 @@ class expTheme {
    		}
    		//if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 
-   //		if (is_readable(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile)) {
-   //			include(BASE."themes/".DISPLAY_THEME_REAL."/modules".$actfile);
    		if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
    				include(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
    		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
@@ -588,7 +568,8 @@ class expTheme {
     * @node Subsystems:Theme
     */
     public static function main() {
-        global $db, $user;
+        global $db;
+//        global $user;
 
         echo show_msg_queue();
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
@@ -611,13 +592,13 @@ class expTheme {
         }
     }
 
-   /** exdoc
-    * Useful only if theme does not use self::main
-    *
-    * @return
-    * @internal param bool $public Whether or not the page is public.
-    * @node     Subsystems:Theme
-    */
+    /** exdoc
+     * Useful only if theme does not use self::main
+     *
+     * @return void
+     * @internal param bool $public Whether or not the page is public.
+     * @node     Subsystems:Theme
+     */
    	public static function mainContainer() {
    		global $router;
 
@@ -659,7 +640,8 @@ class expTheme {
      * @node Subsystems:Theme
      */
 	public static function showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-		global $db, $module_scope;
+//		global $db;
+        global $module_scope;
 
 		if ($prefix == null) $prefix = "@section";
 
@@ -676,10 +658,10 @@ class expTheme {
 			//$section = $db->selectObject("section","id=".$last_section);
 			$src .= $sectionObj->id;
 //		}
-//        $module_scope[$src][$module] = new stdClass();
+        $module_scope[$src][$module] = new stdClass();
         $module_scope[$src][$module]->scope = 'sectional';
 
-		self::showModule($module,$view,$title,$src,$pickable,$sectionObj->id,$hide_menu);
+		self::showModule($module,$view,$title,$src,false,null,$hide_menu);
 	}
 
     /** exdoc
@@ -708,7 +690,7 @@ class expTheme {
 		// Loop until we find the top level parent.
 		while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
 
-		self::showModule($module,$view,$title,$prefix.$section->id,$pickable,$section,$hide_menu);
+		self::showModule($module,$view,$title,$prefix.$section->id,false,null,$hide_menu);
 	}
 
     /** exdoc
@@ -736,41 +718,41 @@ class expTheme {
     }
 
     public static function showController($params=array()) {
-        global $sectionObj, $db, $module_scope;
-        if (empty($params)) {
-	        return false;
-        } elseif (isset($params['module'])) {
-            self::module($params);
-        } else if (isset($params['controller'])) {
-			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
-			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
-			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
-			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
-
-			// set the controller and action to the one called via the function params
-			$requestvars = isset($params['params']) ? $params['params'] : array();
-			$requestvars['controller'] = $params['controller'];
-			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
-			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
-
-			// figure out the scope of the module and set the source accordingly
-			if ($params['scope'] == 'global') {
-				$params['source'] = isset($params['source']) ? $params['source'] : null;
-			} elseif ($params['scope'] == 'sectional') {
-				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
-				$params['source'] .= $sectionObj->id;
-			} elseif ($params['scope'] == 'top-sectional') {
-				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
-				$section = $sectionObj;
-				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
-				$params['source'] .= $section->id;
-			}
-//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
-            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
-			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
-        } else {
-	        return false;
-        }
+        self::module($params);
+//        global $sectionObj, $db, $module_scope;
+//        if (empty($params)) {
+//	        return false;
+//        } elseif (isset($params['module'])) {
+//            self::module($params);
+//        } else if (isset($params['controller'])) {
+//			$params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
+//			$params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
+//			$params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
+//			$params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
+//
+//			// set the controller and action to the one called via the function params
+//			$requestvars = isset($params['params']) ? $params['params'] : array();
+//			$requestvars['controller'] = $params['controller'];
+//			$requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+//			$requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+//
+//			// figure out the scope of the module and set the source accordingly
+//			if ($params['scope'] == 'global') {
+//				$params['source'] = isset($params['source']) ? $params['source'] : null;
+//			} elseif ($params['scope'] == 'sectional') {
+//				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+//				$params['source'] .= $sectionObj->id;
+//			} elseif ($params['scope'] == 'top-sectional') {
+//				$params['source']  = isset($params['source']) ? $params['source'] : '@section';
+//				$section = $sectionObj;
+//				while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
+//				$params['source'] .= $section->id;
+//			}
+////            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
+//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
+//			self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+//        }
+//        return false;
     }
 
     /**
@@ -786,7 +768,19 @@ class expTheme {
 
 	    if (empty($params)) {
 		    return false;
-	    } elseif (isset($params['controller'])) {
+        } elseif (isset($params['module']) && expModules::controllerExists($params['module'])) {
+            // hack to add compatibility for modules converted to controllers, but still hard-coded the old way
+            $params['controller'] = $params['module'];
+            unset($params['module']);
+            if (!isset($params['action'])) $params['action'] = 'showall';
+            if (isset($params['view'])) {
+                $params['view'] = $params['action'].'_'.$params['view'];
+            } else {
+                $params['view'] = 'showall';
+            }
+        }
+	    if (isset($params['controller'])) {
+            $controller = expModules::getControllerClassName($params['controller']);
             $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
             $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
             $params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
@@ -794,7 +788,7 @@ class expTheme {
 
             // set the controller and action to the one called via the function params
             $requestvars = isset($params['params']) ? $params['params'] : array();
-            $requestvars['controller'] = $params['controller'];
+            $requestvars['controller'] = $controller;
             $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
             $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
 
@@ -810,17 +804,19 @@ class expTheme {
                 while ($section->parent > 0) $section = $db->selectObject("section","id=".$section->parent);
                 $params['source'] .= $section->id;
             }
-//            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
-            $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = $params['scope'];
-            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+            $module_scope[$params['source']][$controller] = new stdClass();
+            $module_scope[$params['source']][$controller]->scope = $params['scope'];
+//            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
+            self::showModule($controller,$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
         } elseif (isset($params['module'])) {
+            $module = expModules::getModuleName($params['module']).'module';
             $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
             $source = (isset($params['source'])) ? $params['source'] : "";
             $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
             $scope = (isset($params['scope'])) ? $params['scope'] : "global";
 
             if ($scope=="global") {
-                self::showModule($params['module']."module",$params['view'],$moduletitle,$source,false,null,$chrome);
+                self::showModule($module,$params['view'],$moduletitle,$source,false,null,$chrome);
             }
             if ($scope=="top-sectional") {
 //                self::showTopSectionalModule($params['module']."module", //module
@@ -837,9 +833,9 @@ class expTheme {
                 $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
                 // Loop until we find the top level parent.
                 while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
-//                $module_scope[$source.$section->id][$params['module']."module"]= new stdClass();
-                $module_scope[$source.$section->id][$params['module']."module"]->scope = 'top-sectional';
-                self::showModule($params['module']."module",$params['view'],$moduletitle,$source.$section->id,false,$section,$chrome);
+                $module_scope[$source.$section->id][$module]= new stdClass();
+                $module_scope[$source.$section->id][$module]->scope = 'top-sectional';
+                self::showModule($module,$params['view'],$moduletitle,$source.$section->id,false,null,$chrome);
             }
             if ($scope=="sectional") {
 //                self::showSectionalModule($params['module']."module", //module
@@ -852,31 +848,30 @@ class expTheme {
                 if ($source == null) $source = "@section";
                 $src = $source;
                 $src .= $sectionObj->id;
-//                $module_scope[$src][$params['module']."module"] = new stdClass();
-                $module_scope[$src][$params['module']."module"]->scope = 'sectional';
-                self::showModule($params['module']."module",$params['view'],$moduletitle,$src,false,$sectionObj->id,$chrome);
+                $module_scope[$src][$module] = new stdClass();
+                $module_scope[$src][$module]->scope = 'sectional';
+                self::showModule($module,$params['view'],$moduletitle,$src,false,null,$chrome);
             }
-        } else {
-		    return false;
-	    }
+        }
+        return false;
     }
 
-	/** exdoc
-	 * Calls the necessary methods to show a specific module
-	 *
-	 * @param string $module The classname of the module to display
-	 * @param string $view The name of the view to display the module with
-	 * @param string $title The title of the module (support is view-dependent)
-	 * @param string $source The source of the module.
-	 * @param bool $pickable Whether or not the module is pickable in the Source Picker.
-	 * @param null $section
-	 * @param bool $hide_menu
-	 * @param array $params
-	 * @return
-	 * @node Subsystems:Theme
-	 */
+    /** exdoc
+     * Calls the necessary methods to show a specific module
+     *
+     * @param string $module The classname of the module to display
+     * @param string $view The name of the view to display the module with
+     * @param string $title The title of the module (support is view-dependent)
+     * @param string $source The source of the module.
+     * @param bool $pickable Whether or not the module is pickable in the Source Picker.
+     * @param null $section
+     * @param bool $hide_menu
+     * @param array $params
+     * @return void
+     * @node Subsystems:Theme
+     */
 	public static function showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
-		if (!AUTHORIZED_SECTION && $module != 'navigationmodule' && $module != 'loginController') return;
+		if (!AUTHORIZED_SECTION && $module != 'navigationController' && $module != 'loginController') return;
 
 		global $db, $sectionObj, $module_scope;
 		// Ensure that we have a section
@@ -897,9 +892,10 @@ class expTheme {
 //		}
 		$loc = expCore::makeLocation($module,$source."");
 
-        if (empty($module_scope[$source][$module]->scope))
-//            $module_scope[$source][$module] = new stdClass();
+        if (empty($module_scope[$source][$module]->scope)) {
+            $module_scope[$source][$module] = new stdClass();
             $module_scope[$source][$module]->scope = 'global';
+        }
         // make sure we've added this module to the sectionref table
 		if ($db->selectObject("sectionref","module='$module' AND source='".$loc->src."'") == null) {
 				$secref = new stdClass();
@@ -924,6 +920,7 @@ class expTheme {
 				// in the if blocks below...oh well, that's life.
 				if (!$iscontroller) {
 					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
+                        $container = new stdClass();  //php 5.4
 						$container->permissions = array(
 							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
@@ -946,6 +943,8 @@ class expTheme {
 					// if we hit here we're dealing with a controller...not a module
 					if (!$hide_menu ) {
 						$controller = expModules::getController($module);
+//                        $controller = expModules::getControllerClassName($module);
+                        $container = new stdClass();  //php 5.4
 						$container->permissions = array(
 							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
@@ -957,6 +956,7 @@ class expTheme {
 							$container->action = $params['action'];
 							$container->info['class'] = $loc->mod;
 							$container->info['module'] = $controller->displayname();
+//                            $container->info['module'] = $controller::displayname();
 							$container->info['source'] = $loc->src;
                             $container->info['scope'] = $module_scope[$source][$module]->scope;
 							$container->info['hasConfig'] = true;

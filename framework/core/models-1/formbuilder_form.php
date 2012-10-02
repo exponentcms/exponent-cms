@@ -35,6 +35,7 @@ class formbuilder_form {
 		} else {
 			$form->meta('id',$object->id);
 		}
+        if (!isset($object->style)) $object->style = false;
 		
         $form->register(null,'',new htmlcontrol('<h2>'.gt('General Configuration').'</h2>'),true,gt('Form'));
 		$form->register('name',gt('Name'),new textcontrol($object->name),true,gt('Form'));
@@ -43,9 +44,10 @@ class formbuilder_form {
 		$form->register(null,'', new htmlcontrol('<h3>'.gt('Button Settings').'</h3>'),true,gt('Form'));
 		$form->register('submitbtn',gt('Submit Button Text'), new textcontrol($object->submitbtn),true,gt('Form'));
 		$form->register('resetbtn',gt('Reset Button Text'), new textcontrol($object->resetbtn),true,gt('Form'));
-        $form->register(null,'', new htmlcontrol('<h3>'.gt('Database Settings').'</h3>'),true,gt('Form'));
-        $form->register('is_saved',gt('Save Submissions to the Database'),new checkboxcontrol($object->is_saved,false),true,gt('Form'));
-        $form->register(null,'', new htmlcontrol('&#160;&#160;&#160;&#160;&#160;'.gt('To help prevent data loss, you cannot remove a form\'s database table once it has been added.').'<br />'),true,gt('Form'));
+        $form->register('style',gt('Display Style'), new radiogroupcontrol($object->style,array('0'=>gt('Single Column'),'1'=>gt('Two Column')),false,100,2),true,gt('Form'));
+        $form->register(null,'', new htmlcontrol('<h3>'.gt('Database Settings').'</h3>'),true,gt('Database'));
+        $form->register('is_saved',gt('Save Submissions to the Database'),new checkboxcontrol($object->is_saved,false),true,gt('Database'));
+        $form->register(null,'', new htmlcontrol('&#160;&#160;&#160;&#160;&#160;'.gt('To help prevent data loss, you cannot remove a form\'s database table once it has been added.').'<br />'),true,gt('Database'));
         if ($object->is_saved == 1) {
             $form->controls['is_saved']->disabled = true;
             $form->meta('is_saved','1');
@@ -112,14 +114,22 @@ class formbuilder_form {
 		$object->response = $values['response'];
 		$object->submitbtn = $values['submitbtn'];
 		$object->resetbtn = $values['resetbtn'];
-		$object->subject = $values['subject'];
+        $object->is_email = (isset($values['is_email']) ? 1 : 0);
+		$object->style = $values['style'];
 		$object->is_auto_respond = $values['is_auto_respond'];
 		$object->auto_respond_subject = $values['auto_respond_subject'];
 		$object->auto_respond_body = $values['auto_respond_body'];
 		return $object;
 	}
-	
-	static function updateTable($object) {
+
+    /**
+     * Transfers form entries to database
+     *
+     * @static
+     * @param $object
+     * @return mixed
+     */
+    static function updateTable($object) {
 		global $db;
 		
 		if ($object->is_saved == 1) {

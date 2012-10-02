@@ -30,8 +30,10 @@ ob_start('epb');
 $microtime_str = explode(' ',microtime());
 $i_start = $microtime_str[0] + $microtime_str[1];
 
-$section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
-$section = $db->selectObject('section','id='.$section);
+if (!expSession::is_set('last_section')) {
+    expSession::set('last_section',SITE_DEFAULT_SECTION);
+}
+$section = $db->selectObject('section','id='.expSession::get('last_section'));
 
 // Handle sub themes
 $page = ($section && $section->subtheme != '' && is_readable('themes/'.DISPLAY_THEME.'/subthemes/'.$section->subtheme.'.php') ?
@@ -79,6 +81,9 @@ if (is_readable(BASE.$page)) {
 	}
 	
 	expSession::set('source_select',$source_select);
+    if (!defined('PRINTER_FRIENDLY')) define('PRINTER_FRIENDLY','0');
+    if (!defined('EXPORT_AS_PDF')) define('EXPORT_AS_PDF','0');
+
 	// Include the rendering page.
 	include_once(BASE.$page);
 	expTheme::satisfyThemeRequirements();

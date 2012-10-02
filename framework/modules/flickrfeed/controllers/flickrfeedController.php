@@ -26,10 +26,10 @@ class flickrfeedController extends expController {
         'showall'=>'Display Public Photostream',
     );
 
-    function displayname() { return gt("Flickr Feed"); }
-    function description() { return gt("Display your Flickr Photostream"); }
-    function author() { return "Jonathan Worent - OIC Group, Inc"; }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Flickr Feed"); }
+    static function description() { return gt("Display your Flickr Photostream"); }
+    static function author() { return "Jonathan Worent - OIC Group, Inc"; }
+    static function isSearchable() { return true; }
     
     public function showall() { 
         expHistory::set('viewable', $this->params);

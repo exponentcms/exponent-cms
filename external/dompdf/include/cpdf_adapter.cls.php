@@ -5,9 +5,9 @@
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @author  Orion Richardson <orionr@yahoo.com>
  * @author  Helmut Tischer <htischer@weihenstephan.org>
- * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @author  Fabien MÃ©nager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: cpdf_adapter.cls.php 466 2012-02-04 13:08:38Z fabien.menager $
+ * @version $Id$
  */
 
 // FIXME: Need to sanity check inputs to this class
@@ -159,12 +159,15 @@ class CPDF_Adapter implements Canvas {
    */
   function __construct($paper = "letter", $orientation = "portrait") {
 
-    if ( is_array($paper) )
+    if ( is_array($paper) ) {
       $size = $paper;
-    else if ( isset(self::$PAPER_SIZES[mb_strtolower($paper)]) )
+    }
+    else if ( isset(self::$PAPER_SIZES[mb_strtolower($paper)]) ) {
       $size = self::$PAPER_SIZES[mb_strtolower($paper)];
-    else
+    }
+    else {
       $size = self::$PAPER_SIZES["letter"];
+    }
 
     if ( mb_strtolower($orientation) === "landscape" ) {
       list($size[2], $size[3]) = array($size[3], $size[2]);
@@ -196,8 +199,7 @@ class CPDF_Adapter implements Canvas {
     foreach ($this->_image_cache as $img) {
       //debugpng
       if (DEBUGPNG) print '[__destruct unlink '.$img.']';
-      if (!DEBUGKEEPTEMP)
-        unlink($img);
+      if (!DEBUGKEEPTEMP) unlink($img);
     }
   }
   
@@ -447,12 +449,18 @@ class CPDF_Adapter implements Canvas {
   // Canvas implementation
 
   function line($x1, $y1, $x2, $y2, $color, $width, $style = array()) {
-    //pre_r(compact("x1", "y1", "x2", "y2", "color", "width", "style"));
-
     $this->_set_stroke_color($color);
     $this->_set_line_style($width, "butt", "", $style);
+    
     $this->_pdf->line($x1, $this->y($y1),
                       $x2, $this->y($y2));
+  }
+  
+  function arc($x, $y, $r1, $r2, $astart, $aend, $color, $width, $style = array()) {
+    $this->_set_stroke_color($color);
+    $this->_set_line_style($width, "butt", "", $style);
+    
+    $this->_pdf->ellipse($x, $this->y($y), $r1, $r2, 0, 8, $astart, $aend, false, false, true, false);
   }
                               
   //........................................................................
@@ -510,6 +518,10 @@ class CPDF_Adapter implements Canvas {
     $this->_pdf->clippingRectangle($x1, $this->y($y1) - $h, $w, $h);
   }
   
+  function clipping_roundrectangle($x1, $y1, $w, $h, $rTL, $rTR, $rBR, $rBL) {
+    $this->_pdf->clippingRectangleRounded($x1, $this->y($y1) - $h, $w, $h, $rTL, $rTR, $rBR, $rBL);
+  }
+  
   function clipping_end() {
     $this->_pdf->clippingEnd();
   }
@@ -549,8 +561,9 @@ class CPDF_Adapter implements Canvas {
     $this->_set_stroke_color($color);
     
     // Adjust y values
-    for ( $i = 1; $i < count($points); $i += 2)
+    for ( $i = 1; $i < count($points); $i += 2) {
       $points[$i] = $this->y($points[$i]);
+    }
     
     $this->_pdf->polygon($points, count($points) / 2, $fill);
   }
@@ -561,8 +574,9 @@ class CPDF_Adapter implements Canvas {
     $this->_set_fill_color($color);
     $this->_set_stroke_color($color);
 
-    if ( !$fill && isset($width) )
+    if ( !$fill && isset($width) ) {
       $this->_set_line_style($width, "round", "round", $style);
+    }
 
     $this->_pdf->ellipse($x, $this->y($y), $r1, 0, 0, 8, 0, 360, 1, $fill);
   }
@@ -577,18 +591,18 @@ class CPDF_Adapter implements Canvas {
 
     switch ($type) {
     case IMAGETYPE_JPEG:
-      if (DEBUGPNG)  print '!!!jpg!!!';
+      if (DEBUGPNG) print '!!!jpg!!!';
       $this->_pdf->addJpegFromFile($img, $x, $this->y($y) - $h, $w, $h);
       break;
       
     case IMAGETYPE_GIF:
     case IMAGETYPE_BMP:
-      if (DEBUGPNG)  print '!!!bmp or gif!!!';
+      if (DEBUGPNG) print '!!!bmp or gif!!!';
       // @todo use cache for BMP and GIF
       $img = $this->_convert_gif_bmp_to_png($img, $type);
 
     case IMAGETYPE_PNG:
-      if (DEBUGPNG)  print '!!!png!!!';
+      if (DEBUGPNG) print '!!!png!!!';
 
       $this->_pdf->addPngFromFile($img, $x, $this->y($y) - $h, $w, $h);
       break;
@@ -675,10 +689,12 @@ class CPDF_Adapter implements Canvas {
     if ( strpos($url, '#') === 0 ) {
       // Local link
       $name = substr($url,1);
-      if ( $name )
+      if ( $name ) {
         $this->_pdf->addInternalLink($name, $x, $y, $x + $width, $y + $height);
-
-    } else {
+      }
+      
+    }
+    else {
       $this->_pdf->addLink(rawurldecode($url), $x, $y, $x + $width, $y + $height);
     }
   }
@@ -729,12 +745,13 @@ class CPDF_Adapter implements Canvas {
    * @param string $font the font file to use
    * @param float $size the font size, in points
    * @param array $color
-   * @param float $adjust word spacing adjustment
+   * @param float $word_space word spacing adjustment
+   * @param float $char_space char spacing adjustment
    * @param float $angle angle to write the text at, measured CW starting from the x-axis
    */
-  function page_text($x, $y, $text, $font, $size, $color = array(0,0,0), $adjust = 0, $angle = 0) {
+  function page_text($x, $y, $text, $font, $size, $color = array(0,0,0), $word_space = 0, $char_space = 0, $angle = 0) {
     $_t = "text";
-    $this->_page_text[] = compact("_t", "x", "y", "text", "font", "size", "color", "adjust", "angle");
+    $this->_page_text[] = compact("_t", "x", "y", "text", "font", "size", "color", "word_space", "char_space", "angle");
   }
 
   //........................................................................
@@ -773,8 +790,9 @@ class CPDF_Adapter implements Canvas {
    */
   protected function _add_page_text() {
     
-    if ( !count($this->_page_text) )
+    if ( !count($this->_page_text) ) {
       return;
+    }
 
     $page_number = 1;
     $eval = null;
@@ -786,19 +804,18 @@ class CPDF_Adapter implements Canvas {
         extract($pt);
 
         switch ($_t) {
+          case "text":
+            $text = str_replace(array("{PAGE_NUM}","{PAGE_COUNT}"),
+                                array($page_number, $this->_page_count), $text);
+            $this->text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+            break;
             
-        case "text":
-        $text = str_replace(array("{PAGE_NUM}","{PAGE_COUNT}"),
-                            array($page_number, $this->_page_count), $text);
-        $this->text($x, $y, $text, $font, $size, $color, $adjust, $angle);
-          break;
-          
-        case "script":
-          if (!$eval) {
-            $eval = new PHP_Evaluator($this);
-          }
-          $eval->evaluate($code, array('PAGE_NUM' => $page_number, 'PAGE_COUNT' => $this->_page_count));
-          break;
+          case "script":
+            if ( !$eval ) {
+              $eval = new PHP_Evaluator($this);
+            }
+            $eval->evaluate($code, array('PAGE_NUM' => $page_number, 'PAGE_COUNT' => $this->_page_count));
+            break;
         }
       }
 

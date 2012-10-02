@@ -21,8 +21,7 @@
 {permissions}
 	<div class="module-actions">
 		<a class="downloadfile addnew mngmntlink" href="{link action=export_csv module=formbuilder id=$f->id}">{"Export as CSV"|gettext}</a>
-        &#160;&#160;|&#160;&#160;
-        {export_pdf_link landscapepdf=1 limit=999}
+        {export_pdf_link landscapepdf=1 limit=999 prepend='&#160;&#160;|&#160;&#160;'}
 	</div>
 {/permissions}
 {$page->links}

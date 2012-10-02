@@ -13,8 +13,8 @@
  *
  */
 
-var EXPONENT.attFiles =  function(name) {
-    //console.debug(name);
+EXPONENT.attFiles = function(name) {
+    //Y.log(name);
     YAHOO.util.Event.on('addfiles-'+o.name, 'click', function (e){
         YAHOO.util.Event.stopEvent(e);
         win = window.open(eXp.PATH_RELATIVE+'framework/modules-1/filemanagermodule/actions/manager.php?update=".$name."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=500,toolbar=0,resizable=0,status=0');
@@ -26,16 +26,13 @@ var EXPONENT.attFiles =  function(name) {
         YAHOO.namespace('pagetalk');
 
         YAHOO.pagetalk.passBackFile".$name." = function(id) {
-            //console.debug(id);
+            //Y.log(id);
 
             var ej = new EXPONENT.AjaxEvent();
             ej.subscribe(function (o) {
-                //console.debug(0);
+                //Y.log(0);
             },this);
             ej.fetch({action:'getFile',controller:'expFileController',json:1,params:'&id='+id});
-
-
-
 
             var df = YAHOO.util.Dom.get('filelist".$name."');
 

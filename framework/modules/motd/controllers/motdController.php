@@ -23,14 +23,13 @@
 /** @define "BASE" "../../../.." */
 
 class motdController extends expController {
-    //public $basemodel_name = '';
     public $useractions = array(
         'show'=>'Show Todays Message'
     );
 
-    function displayname() { return gt("Message of the Day"); }
-    function description() { return gt("Display a message for a given day of the year."); }
-    function isSearchable() { return true; }
+    static function displayname() { return gt("Message of the Day"); }
+    static function description() { return gt("Display a message for a given day of the year."); }
+    static function isSearchable() { return true; }
     
     function show() {
         global $db;
@@ -56,10 +55,14 @@ class motdController extends expController {
                     'where'=>$this->aggregateWhereClause(), 
                     'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
                     'order'=>'month,day',
+                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
-                    'columns'=>array(gt('Date')=>'month',gt('Message')=>'body'),
-                    ));
+                    'columns'=>array(
+                        gt('Date')=>'month',
+                        gt('Message')=>'body'
+                    ),
+                ));
         
         assign_to_template(array(
             'page'=>$page
@@ -77,6 +80,7 @@ class motdController extends expController {
     
     function index() {
         redirect_to(array('controller'=>'motd', 'action'=>'show'));
+//        $this->show();
     }
 
 }

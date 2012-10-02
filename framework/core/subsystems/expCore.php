@@ -25,23 +25,6 @@
 
 class expCore {
 
-	/** exdoc
-	 * Creates a location object, based off of the three arguments passed, and returns it.
-	 *
-	 * @internal param \The $mo module component of the location.
-	 *
-	 * @internal param \The $src source component of the location.
-	 *
-	 * @internal param \The $int internal component of the location.
-	 * @return array
-	 * @node Subsystems:expCore
-	 */
-	public static function initializeNavigation () {
-//		$sections = array();
-		$sections = navigationmodule::levelTemplate(0,0);
-		return $sections;
-	}
-
 	/**
 	 * Return an exponent location object
 	 *
@@ -49,7 +32,7 @@ class expCore {
 	 * @param null $mod
 	 * @param null $src
 	 * @param null $int
-	 * @return null
+	 * @return object
 	 */
 	public static function makeLocation($mod=null,$src=null,$int=null) {
 		$loc = new stdClass();
@@ -88,20 +71,20 @@ class expCore {
 	}
 
 	/**
-	 * Return an rss link
-	 *
+	 * Return an old style rss link
+	 * COMPATIBILITY - we now use the {rss_link} smarty function to build rss links
+     *
 	 * @static
 	 * @param $params
 	 * @return string
 	 */
 	public static function makeRSSLink($params) {
-		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
+//		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
+        $link = URL_BASE;
 
 		//FIXME: Hardcoded controller stuff!!
 		if (expModules::controllerExists($params['module'])) {
 			$link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
-		} else {
-			$link .= SCRIPT_RELATIVE . "rss.php" . "?";
 		}
 
 		foreach ($params as $key=>$value) {
@@ -115,26 +98,14 @@ class expCore {
 
 	/**
 	 * Return a podcast link
+     * COMPATIBILITY - we now use the {rss_link} smarty function to build rss & podcast links
 	 *
 	 * @static
 	 * @param $params
 	 * @return string
 	 */
 	public static function makePodcastLink($params) {
-		$link = (ENABLE_SSL ? NONSSL_URL : URL_BASE);
-		//FIXME: Hardcoded controller stuff!!
-		if (expModules::controllerExists($params['module'])) {
-			$link .= SCRIPT_RELATIVE . "site_rss.php" . "?";
-		} else {
-			$link .= SCRIPT_RELATIVE . "rss.php" . "?";
-		}
-		foreach ($params as $key=>$value) {
-			$value = chop($value);
-			$key = chop($key);
-			if ($value != "") $link .= urlencode($key)."=".urlencode($value)."&";
-		}
-		$link = substr($link,0,-1);
-		return htmlspecialchars($link,ENT_QUOTES);
+        self::makeRSSLink($params);  // all rss links are now alike
 	}
 
 	/** exdoc
@@ -153,7 +124,7 @@ class expCore {
 
 			// this is here for compatibility with the navigation module and the old way make link used prior
 			// to having the router class
-			$params['sef_name'] = $sef_name;  //FIXME $sef_name isn't set??
+//			$params['sef_name'] = sef_name;  //FIXME $sef_name isn't set??
 
 			// now that we have the router class we'll use it to build the link and then return it.
 			return $router->makeLink($params, false, true);
@@ -169,6 +140,30 @@ class expCore {
 		return $link;
 	*/
 	}
+
+    /**
+     * make an sef_name for specific model
+     *
+     * @param string $title
+     * @param string $model
+     *
+     * @return mixed|string
+     */
+    public static function makeSefUrl($title,$model) {
+        global $db, $router;
+
+        if (!empty($title)) {
+            $sef_name = $router->encode($title);
+        } else {
+            $sef_name = $router->encode('Untitled');
+        }
+        $dupe = $db->selectValue($model, 'sef_name', 'sef_name="'.$sef_name.'"');
+        if (!empty($dupe)) {
+            list($u, $s) = explode(' ',microtime());
+            $sef_name .= '-'.$s.'-'.$u;
+        }
+        return $sef_name;
+    }
 
 	/** exdoc
 	 * Decrement the reference counts for a given location.  This is used by the Container Module,
@@ -211,7 +206,7 @@ class expCore {
 	//		 $db->insertObject($newLocRef,"locationref");
 	//
 	//		 // Go ahead and assign permissions on contained module.
-	//		 if ($loc->mod != 'navigationmodule' && $loc->mod != 'administrationmodule') {
+	//		 if ($loc->mod != 'navigationController' && $loc->mod != 'administrationmodule') {
 	//			 //$perms = call_user_func(array($loc->mod,"permissions"));
 	//			 $mod = new $loc->mod();
 	//			 $perms = $mod->permissions();
@@ -269,7 +264,7 @@ class expCore {
 	 */
 	public static function maxUploadSizeMessage() {
 		$size = ini_get("upload_max_filesize");
-		$size_msg = "";
+//		$size_msg = "";
 		$type = substr($size,-1,1);
 		$shorthand_size = substr($size,0,-1);
 		switch ($type) {
@@ -372,10 +367,12 @@ class expCore {
         } elseif($type == "controllers") {
             $relpath .= "framework/views/";
         } elseif($type == "forms") {
-            if ($name != "forms/calendar") {
-                $relpath .= "framework/core/subsystems/forms/";
-            } else {  //TODO  forms/calendar only used by calendarmodule
+            if ($name == "event/email") {
+                $relpath .= "framework/modules/events/views/";
+            } elseif ($name == "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
                 $relpath .= "framework/modules-1/calendarmodule/";
+            } else {
+                $relpath .= "framework/core/subsystems/forms/";
             }
         } elseif($type == "themes") {
             $relpath .= "themes/";
@@ -398,7 +395,8 @@ class expCore {
 
 		// for later use for searching in lib/common
 		$typepath = $relpath;
-		if ($name != "" && $name != "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
+//		if ($name != "" && $name != "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
+        if ($name != "" && $name != "event/email" && $name != "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
 			$relpath .= $name . "/";
 		}
 
@@ -412,8 +410,10 @@ class expCore {
             if ($type == 'controllers' || $type == 'Controller') {
                 //do nothing
             } elseif ($name == "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
-//				$relpath2 .= "/";
                 $relpath2 .= "forms/calendar/";
+            } elseif ($name == "event/email") {
+//				$relpath2 .= "/";
+                $relpath2 .= "event/email/";
             } elseif ($type == 'controls' || $type == 'Control') {
                 $relpath2 .= 'editors/';
             } elseif ($type == 'profileextension') {
@@ -445,7 +445,6 @@ class expCore {
 		$checkpaths = array();
 		foreach($locations as $location) {
 			$checkpaths[] = $location . $typepath . $relpath2;
-	//		if (strstr($location,DISPLAY_THEME_REAL) && strstr($relpath,"framework/modules-1")) {
 			if (strstr($location,THEME_ABSOLUTE) && strstr($relpath,"framework/modules-1")) {
 				$checkpaths[] = $location . str_replace("framework/modules-1", "modules", $relpath);
 			} else {
@@ -514,7 +513,7 @@ class expCore {
 	 * @param $currency_type
 	 * @return string
 	 */
-	public static function getCurrencySymbol($currency_type) {
+	public static function getCurrencySymbol($currency_type='USD') {
 		switch ($currency_type) {
 			case "USD":
 				return "$";

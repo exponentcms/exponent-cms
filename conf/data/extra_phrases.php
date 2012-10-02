@@ -32,7 +32,7 @@
     gt('Spider Site');
     gt('Manage');
     gt('View Cart Summary Report');
-    gt('View the Ecommerce Dashboard');
+    gt('View the e-Commerce Dashboard');
     gt('Generate Order Report');
     gt('Generate Product Report');
     gt('View Order Report');
@@ -71,7 +71,7 @@
     gt('Manage Sales Reps');
     gt('Batch capture order transactions');
     gt('Batch capture order transactions');
-    gt('Import addressess from other sources');
+    gt('Import addresses from other sources');
     gt('View products in top level categories that should not be');
     gt('View all uncategorized products');
     gt('View all non-unicode charset products');
@@ -152,7 +152,7 @@
     gt('Categories - Show Top Level');
     gt('Categories - Show Full Tree');
     gt('Categories - Subcategories of current category');
-    gt('Event Registration - Upcomming Events');
+    gt('Event Registration - Upcoming Events');
     gt('Event Registration - Calendar View');
     gt('Search - Autocomplete');
     gt('Search - By Model');

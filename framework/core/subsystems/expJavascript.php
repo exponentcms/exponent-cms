@@ -24,6 +24,7 @@
 /** @define "BASE" "../../.." */
 
 class expJavascript {
+
 	public static function inAjaxAction() {
 		return empty($_REQUEST['ajax_action']) ? false : true;
 	}
@@ -33,7 +34,7 @@ class expJavascript {
 	}
 	
 	public static function parseJSFiles() {
-        global $userjsfiles,$expJS,$yui2js,$yui3js;
+        global $userjsfiles,$expJS,$yui2js,$yui3js,$jqueryjs;
         
         ob_start();
   		include(BASE.'exponent.js.php');
@@ -50,9 +51,9 @@ class expJavascript {
             $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
             $i = 0;
             $srt = array();
-//            $srt[$i] = PATH_RELATIVE.'exponent.js.php,'.YUI3_PATH.'yui/yui-min.js,';
+//            $srt[$i] = PATH_RELATIVE.'exponent.js.php,'.YUI3_RELATIVE.'yui/yui-min.js,';
 //            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
-            $srt[$i] = YUI3_PATH.'yui/yui-min.js,';
+            $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
             foreach ($expJS as $file) {
                 if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen) {
                     $srt[$i] .= $file['fullpath'].",";
@@ -70,7 +71,8 @@ class expJavascript {
             $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
 //            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
 
-            $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_PATH.'yui/yui-min.js"></script>'."\r\n" : "";
+//            $scripts .= (!empty($jqueryjs)) ? "\t"."<!-- jQuery Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.JQUERY_RELATIVE.'jquery-'.JQUERY_VERSION.'.min.js"></script>'."\r\n" : "";
+            $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_RELATIVE.'yui/yui-min.js"></script>'."\r\n" : "";
             //$scripts .= "\r\n\t"."<meta id=\"yui3marker\" />"."\r\n";
             if (!empty($expJS)) {
                 foreach ($expJS as $key=>$mod) {
@@ -104,7 +106,7 @@ class expJavascript {
 	}
 	
     public static function pushToFoot($params) {
-    	global $js2foot,$yui2js,$yui3js,$expJS;
+    	global $js2foot,$yui2js,$yui3js,$jqueryjs,$expJS;
 
     	if (self::inAjaxAction()) {
 		    echo "<div class=\"io-execute-response\">";
@@ -310,7 +312,7 @@ class expJavascript {
         } else {
             $script .= "var ".$id." = new YAHOO.widget.Panel('".$id."', { ";
         }
-
+//FIXME $hide & $footer are not defined below
         $script .= "fixedcenter:".$fixedcenter.",
                 draggable:".$draggable.",
                 modal:".$modal.",
@@ -347,7 +349,7 @@ class expJavascript {
             break;
         }
 
-        expJavascript::pushToFoot(array(
+        self::pushToFoot(array(
             "unique"=>'pop-'.$params['name'],
             "yui2mods"=>'animation,container',
             "yui3mods"=>null,

@@ -33,16 +33,16 @@ class monthyearcontrol extends formcontrol {
 	}
 
 	function toHTML($label,$name) {
-                $this->id  = (empty($this->id)) ? $name : $this->id;
-                $html = "<div id=\"".$this->id."Control\" class=\"control";
-                $html .= (!empty($this->required)) ? ' required">' : '">';
-                $html .= "<label><span class=\"label\">".$label."</span></label>";
-                $html .= $this->controlToHTML($name, $label);
-                $html .= "</div>";
-                return $html;
-        }
+        $this->id = (empty($this->id)) ? $name : $this->id;
+        $html     = "<div id=\"" . $this->id . "Control\" class=\"control";
+        $html .= (!empty($this->required)) ? ' required">' : '">';
+        $html .= "<label><span class=\"label\">" . $label . "</span></label>";
+        $html .= $this->controlToHTML($name, $label);
+        $html .= "</div>";
+        return $html;
+    }
 	
-	function controlToHTML($name,$label) {
+	function controlToHTML($name,$label=null) {
 		$html = '<select id="' . $name . '_month" name="' . $name . '_month">';
 		for ($i = 1; $i <= 12; $i++) {
 			$s = ((strlen($i) == 1)?"0".$i:$i);

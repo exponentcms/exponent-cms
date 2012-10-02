@@ -115,10 +115,7 @@
 		<tr>
 			<td style="width: 143px;">*&#160;Card&#160;Type</td>
 			<td class="creditcard-form state_field">
-	
-					{control type="dropdown" name="billing[cc_type]" values="MasterCard,VisaCard,DiscoverCard,AmExCard" items="MasterCard,Visa,Discover,American Express"}
-			
-			
+                {control type="dropdown" name="billing[cc_type]" values="MasterCard,VisaCard,DiscoverCard,AmExCard" items="MasterCard,Visa,Discover,American Express"}
 			</td>
 		</tr>
 

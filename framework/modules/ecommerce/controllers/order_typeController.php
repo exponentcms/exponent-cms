@@ -22,22 +22,22 @@
  */
 
 class order_typeController extends expController {
-
-    function displayname() { return gt("Ecommerce Order Types"); }
-    function description() { return gt("Manage Ecommerce Order Types"); }
-    function hasSources() { return false; }
-    function hasContent() { return false; }
+    static function displayname() { return gt("e-Commerce Order Types"); }
+    static function description() { return gt("Manage e-Commerce Order Types"); }
+    static function hasSources() { return false; }
+    static function hasContent() { return false; }
     
     public function manage() {
         expHistory::set('viewable', $this->params);
         
         $page = new expPaginator(array(
 			'model'=>'order_type',
-			'controller'=>$this->params['controller'],
-			'action'=>$this->params['action'],
 			'where'=>1,
             'limit'=>10,
-			));
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+        ));
 
 		assign_to_template(array(
             'page'=>$page
@@ -46,16 +46,19 @@ class order_typeController extends expController {
     
     public function showall() {
         redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
+//        $this->manage();
     }
     
     public function show() {
         redirect_to(array('controller'=>'order_type', 'action'=>'manage'));
+//        $this->manage();
     }
     
     public function update() {
         global $db;
         //reset others
         if ($this->params['is_default']){
+            $o = new stdClass();
             $o->is_default = false;
             $db->updateObject($o, 'order_type', 'is_default=1'); 
         }

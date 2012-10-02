@@ -15,11 +15,21 @@
 
 <div class="module donation showall">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-    
+    {permissions}
+        {if $permissions.edit == 1 or $permissions.manage == 1}
+            <div id="prod-admin">
+                {icon class="add" controller=store action=edit id=0 product_type=donation text="Add a new donation cause"|gettext}
+            </div>
+        {/if}
+    {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
+    {assign var=myloc value=serialize($__loc)}
     <table>
     {foreach from=$causes item=cause}
         <tr>
-            <td>{img file_id=$cause->expFile.images[0]->id square=120}</td>
+            <td>{img file_id=$cause->expFile.mainimage[0]->id square=120}</td>
             <td>
                 <h3>{$cause->title}</h3>
                 {$cause->body}
@@ -41,14 +51,7 @@
             </td>
          </tr>
     {foreachelse}
-        <h2>{"No causes have been setup to donate to."|gettext}</h2>
+        <h2>{"No causes have been setup for donations."|gettext}</h2>
     {/foreach}
     </table>
-    {permissions}
-        {if $permissions.edit == 1 or $permissions.manage == 1}
-        <div id="prod-admin">
-            <a href="{link controller=store action=edit id=0 product_type=donation}">{"Add a new donation cause"|gettext}</a>
-        </div>
-    {/if}
-    {/permissions}
 </div>

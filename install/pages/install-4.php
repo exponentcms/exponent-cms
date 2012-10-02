@@ -23,7 +23,7 @@ if (!defined('EXPONENT')) exit('');
 <form method="post" action="index.php">
 <input type="hidden" name="page" value="install-5" />
 
-<div id="tab1" class="">
+<div id="tab1">
   <h2><?php echo gt('Site Configuration'); ?></h2>
   <div class="text-control control  ">
     <label class="label"><?php echo gt('Site/Organization Name'); ?></label>

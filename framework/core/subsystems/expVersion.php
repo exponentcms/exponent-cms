@@ -96,14 +96,17 @@ class expVersion {
         if ($user->isSuperAdmin()) {
             if (!expSession::is_set('update-check')) {
                 //FIXME we need a good installation/server to place this on
-                $onlineVer = json_decode(expCore::loadData('http://www.exponentcms.org/'.'getswversion.php'))->data;
-                if (!empty($onlineVer)) {
-                    expSession::set('update-check','1');
-                    if (self::compareVersion($swversion,$onlineVer)) {
-                        $note = $onlineVer->type == ('patch' ? gt('A patch for the latest') : gt('A newer')).' '.gt('version of Exponent is available').':';
-                        $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.($onlineVer->type?$onlineVer->type:'').($onlineVer->iteration?$onlineVer->iteration:'');
-                        flash('message',$note.' v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
-                            '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">'.gt('Click here to see available Downloads').'</a>');
+                $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/'.'getswversion.php'));
+                if (!empty($jsondata->data)) {
+                    $onlineVer = $jsondata->data;
+                    if (!empty($onlineVer)) {
+                        expSession::set('update-check','1');
+                        if (self::compareVersion($swversion,$onlineVer)) {
+                            $note = ($onlineVer->type == 'patch' ? gt('A patch for the latest') : gt('A newer')).' '.gt('version of Exponent is available').':';
+                            $newvers = $onlineVer->major.'.'.$onlineVer->minor.'.'.$onlineVer->revision.($onlineVer->type?$onlineVer->type:'').($onlineVer->iteration?$onlineVer->iteration:'');
+                            flash('message',$note.' v'.$newvers.' '.gt('was released').' '.expDateTime::format_date($onlineVer->builddate).
+                                '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">'.gt('Click here to see available Downloads').'</a>');
+                        }
                     }
                 }
             }

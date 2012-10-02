@@ -16,8 +16,8 @@
 <div class="prod-listing">    
     <div class="image">
         <a href="{link controller=store action=showByTitle title=$listing->sef_url}">
-            {if $listing->expFile.images[0]->id != ""}
-                {img file_id=$listing->expFile.images[0]->id constraint=1 width=165 alt=$listing->title}
+            {if $listing->expFile.mainimage[0]->id != ""}
+                {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=165 alt=$listing->title}
             {else}
                 {'No Image'|gettext}
             {/if}
@@ -37,8 +37,8 @@
 
     <h3><a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a></h3>
     <div class="bodycopy">
-    <strong class="date">{$listing->eventdate|date_format:"%a, %B %e"}</strong> - 
-    {$listing->body}
+        <strong class="date">{$listing->eventdate|date_format:"%a, %B %e"}</strong> -
+        {$listing->body}
     </div>
     <div class="price">{currency_symbol}{$listing->price|number_format:2}</div>
     <a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="exp-ecom-link addtocart">{'Register Today'|gettext} <span></span></a>

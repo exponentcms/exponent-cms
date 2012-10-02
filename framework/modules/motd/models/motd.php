@@ -22,7 +22,7 @@
  */
 
 class motd extends expRecord {
-    public $table = 'motd';
+//    public $table = 'motd';
     public $validates = array(
         'presence_of'=>array(
             'body'=>array('message'=>'Message is a required field.'),

@@ -12,31 +12,76 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
-{css unique="showalleventregistrations" corecss="tables"}
-
+{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
+{literal}
+	.showall .events {
+		overflow: hidden;
+	}
+	
+	.showall .events .event-image {
+		float: left;
+		width: 125px;
+		margin-right: 20px;
+	}
+	
+	.showall .events .event-info {
+		float: left;
+		width: 550px;
+	}
+{/literal}
 {/css}
 
-<div class="store showall">
-    <h1>{$moduletitle|default:""}</h1>
-    <div id="products">
-    {pagelinks paginate=$page top=1}
-	<table class="exp-skin-table">
-            <thead>
-        	<tr>{$page->header_columns}<th></th></tr>
-            </thead>
-	    <tbody>
-		{foreach from=$page->records item=listing name=listings}
-            <tr class="{cycle values="odd,even"}">
-                <td><a href="{link controller=store action=edit id=$listing->id}">{$listing->title}</a></td>
-                <td>{$listing->eventdate|date_format:"%b %d,'%y"} {$listing->event_starttime|date_format:"%l:%M %p"}</td>
-                <td>{$listing->number_of_registrants} {'of'|gettext} {$listing->quantity}</td>
-                <td>
-                {icon img='groupperms.png' action=view_registrants record=$listing title="View Registrants"|gettext}
-            </tr>
-        {/foreach}
-	    </tbody>
-        </table>
-    {pagelinks paginate=$page bottom=1}
+<div class="module events showall">
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+             {icon action=manage text="Manage Events"|gettext}
+        {/if}
     </div>
+    {/permissions}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
+   	{/if}
+    {assign var=myloc value=serialize($__loc)}
+    <ul>
+        {foreach name=items from=$page->records item=item}
+            {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
+                <li>
+                    <h3><a class="link" href="{link action=showByTitle title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
+                        {$item->title}
+                    </a></h3>
+                    {if $item->isRss != true}
+                        {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit == true}
+                                {icon controller="store" action=edit record=$item}
+                            {/if}
+                            {if $permissions.delete == true}
+                                {icon controller="store" action=delete record=$item}
+                            {/if}
+                        </div>
+                        {/permissions}
+                    {/if}
+                    <div class="events">
+                        <div class="event-image">
+                             <a href="{link action=showByTitle title=$item->sef_url}">
+                            {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                            </a>
+                        </div>
+
+                        <div class="event-info">
+                            <em class="date">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
+                            <p>{$item->body|truncate:175:"..."}</p>
+                            {*<a href="{link action=showByTitle title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}
+
+                        </div>
+                    </div>
+                </li>
+            {/if}
+        {/foreach}
+    </ul>
 </div>

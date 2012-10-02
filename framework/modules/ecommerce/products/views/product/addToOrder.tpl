@@ -18,11 +18,11 @@
 {/css}
 {* edebug var=$product *}
 {if isset($params.error)}
-      <div id="msg-queue" class="common msg-queue">
-    <ul class="queue error"><li>{$params.error}</li></ul>
+    <div id="msg-queue" class="common msg-queue">
+        <ul class="queue error"><li>{$params.error}</li></ul>
     </div>
     {br}
-    {/if}
+{/if}
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
     {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
@@ -84,7 +84,7 @@
                         <th><span>{$chiprodname.name}</span></th>                            
                     {/foreach}
                     <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
-                    <th>&#160;</th>
+                    <th>{'Action'|gettext}</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,12 +92,12 @@
                     
                         <tr class="{cycle values="odd,even"}">
                             
-                                {* 
-                                    [0] => Always available even if out of stock.
-                                    [1] => Available but shown as backordered if out of stock.
-                                    [2] => Unavailable if out of stock.
-                                    [3] => Show as &quot;Call for Price&quot;.
-                                * }
+                                {* *}
+                                    {*[0] => Always available even if out of stock.*}
+                                    {*[1] => Available but shown as backordered if out of stock.*}
+                                    {*[2] => Unavailable if out of stock.*}
+                                    {*[3] => Show as &quot;Call for Price&quot;.*}
+                                {** }*}
 
                                 {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
                                     <td><input name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
@@ -165,9 +165,9 @@
                 <div class="user-input {cycle values="odd,even"}">
                     {if $uif.use}                   
                          {if $uif.is_required}
-                             {control type=text name=user_input_fields[$uifkey] size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
                          {else}
-                             {control type=text name=user_input_fields[$uifkey] size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
                          {/if}
                          {if $uif.description != ''}{$uif.description}{/if}
                     {/if}

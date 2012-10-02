@@ -25,7 +25,7 @@
         {control type="text" name="name" label="Name"|gettext value=$record->name}
         {control type="textarea" name="description" label="Description"|gettext value=$record->description}
         {*{control type="text" name="redirect" label="Login Landing Page"|gettext value=$record->redirect}*}
-        {control type="dropdown" name="redirect" label="Login Landing Page"|gettext includeblank="None"|gettext items=navigationmodule::levelDropdownControlArray(0,0,array(),false,'view',true) value=$record->redirect}
+        {control type="dropdown" name="redirect" label="Login Landing Page"|gettext includeblank="None"|gettext items=navigationController::levelDropdownControlArray(0,0,array(),false,'view',true) value=$record->redirect}
         {control type="checkbox" name="inclusive" label="Default Group"|gettext:cat:'?' value=1 checked=$record->inclusive}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}

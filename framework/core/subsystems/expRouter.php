@@ -23,6 +23,7 @@
  */
 
 class expRouter {
+
     private $maps = array();
     public  $url_parts = '';
     public  $current_url = '';
@@ -76,7 +77,7 @@ class expRouter {
         if (SEF_URLS == 1 && ($_SERVER["PHP_SELF"] == PATH_RELATIVE.'index.php' || $_SERVER["PHP_SELF"] == PATH_RELATIVE.'install/index.php') && $force_old_school == false) {
             
             if (isset($params['section']) && !isset($params['action'])) {                
-                if (empty($params['sef_name'])) {                    
+                if (empty($params['sef_name'])) {
                     global $db;
                     $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
                 }                               
@@ -87,7 +88,7 @@ class expRouter {
         
                 // we need to add the change the module parameter to controller if it exists
                 // we can remove this snippit once the old modules are gone.
-                if (!empty($params['module']) || empty($params['controller'])) $params['controller'] = $params['module'];
+                if (!empty($params['module']) && empty($params['controller'])) $params['controller'] = $params['module'];
             
                 // check to see if we have a router mapping for this controller/action
                 if (empty($no_map)){
@@ -112,14 +113,13 @@ class expRouter {
                 }
 
                 // if we found a mapping for this link then we can return it now.
-                //if ($link != '') return expRouter::encode($linkbase.$link);
+                //if ($link != '') return self::encode($linkbase.$link);
                 if ($link != '') return self::cleanLink($linkbase.$link);
                 
-                $link .= $params['controller'].'/';
-                $link .= $params['action'].'/';
+                if (!empty($params['controller'])) $link .= $params['controller'].'/';
+                if (!empty($params['action'])) $link .= $params['action'].'/';
                 foreach ($params as $key=>$value) {
-                    if(!is_array($value))
-                    {
+                    if(!is_array($value)) {
                         $value = chop($value);
                         $key = chop($key);
                         if ($value != "") {
@@ -222,6 +222,7 @@ class expRouter {
                 $tmpParams[$key] = $value;
             }
         }
+        $trackingObject = new stdClass();  //FIXME php 5.4
         $trackingObject->params = serialize($tmpParams);
         if ($this->url_type == 'page' || $this->url_type == 'base') {
             $trackingObject->section = $section;
@@ -284,7 +285,7 @@ class expRouter {
     }
 
     public function routePageRequest() {        
-        global $db;
+//        global $db;
 
         if ($this->url_type == 'base') {
             // if we made it in here this is a request for http://www.baseurl.com
@@ -294,7 +295,7 @@ class expRouter {
                 $_REQUEST['section'] = SITE_DEFAULT_SECTION;  
             }
         } else {
-            // Try to look up the page by sef_name first.  If that doesn't exist, strip out the dashes and 
+            // Try to look up the page by sef_name first.  If that doesn't exist, strip out the dashes and
             // check the regular page names.  If that still doesn't work then we'll redirect them to the 
             // search module using the page name as the search string.
             $section = $this->getPageByName($this->url_parts[0]);
@@ -317,21 +318,21 @@ class expRouter {
             //routeActionRequest with some hand wacked variables. If we can't find an override
             //then we'll return false as usual
             if (empty($section)) {
-                $sef_url = $this->url_parts[0];
+                $sef_name = $this->url_parts[0];
                 //check for a category
                 $c = new storeCategory();                
-                $cat = $c->findBy('sef_url', $sef_url);
+                $cat = $c->findBy('sef_name', $sef_name);
                 if (empty($cat)) {
                     //check for a product
                     $p = new product();
-                    $prod = $p->findBy('sef_url', $sef_url);
+                    $prod = $p->findBy('sef_name', $sef_name);
                     if(!empty($prod)) {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
                         $this->url_parts[0] = 'store'; //controller
                         $this->url_parts[1] = 'showByTitle'; //controller
                         $this->url_parts[2] = 'title'; //controller
-                        $this->url_parts[3] = $sef_url; //controller
+                        $this->url_parts[3] = $sef_name; //controller
                         //eDebug($this->url_parts,true);
                         $this->params = $this->convertPartsToParams();
                         return $this->routeActionRequest();
@@ -343,7 +344,7 @@ class expRouter {
                     $this->url_parts[0] = 'store'; //controller
                     $this->url_parts[1] = 'showall'; //controller
                     $this->url_parts[2] = 'title'; //controller                    
-                    $this->url_parts[3] = $sef_url; //controller
+                    $this->url_parts[3] = $sef_name; //controller
                     //eDebug($this->url_parts,true);
                     $this->params = $this->convertPartsToParams();
                     return $this->routeActionRequest();
@@ -492,7 +493,7 @@ class expRouter {
         return str_replace('+', '-', $url);
     }
 
-    public function getSefUrlByPageId($id=null) {
+    public function getSefUrlByPageId($id=null) {  //FIXME this method is never called and doesn't do anything as written
         if (!empty($id)) {
             global $db;
             $section = $db->selectObject('section', 'id='.intval($id));
@@ -502,18 +503,20 @@ class expRouter {
     }
 
     public function buildUrlByPageId($id=null) {
+        global $db;
+
+        //$url = URL_FULL;
+        $url = '';
         if (!empty($id)) {
-            global $db;
-            //$url = URL_FULL;
-            $url = '';
             if (SEF_URLS == 1) {
                 $section = $db->selectObject('section', 'id='.intval($id));
-                $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
+                if ($section->id != SITE_DEFAULT_SECTION) {
+                    $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
+                }
             } else {
                 $url .= 'index.php?section='.$id;
             }
         }
-        
         return $url;
     }
 
@@ -692,12 +695,12 @@ class expRouter {
             $sectionObj = $db->selectObject('section','id='. intval($section));
         }
 //        $sectionObj = $db->selectObject('section','id='. intval($section));
-        if (!navigationmodule::canView($sectionObj)) {
+        if (!navigationController::canView($sectionObj)) {
             define('AUTHORIZED_SECTION',0);
         } else {
             define('AUTHORIZED_SECTION',1);
         }
-        if (!navigationmodule::isPublic($sectionObj)) {
+        if (!navigationController::isPublic($sectionObj)) {
             define('PUBLIC_SECTION',0);
         } else {
             define('PUBLIC_SECTION',1);
@@ -713,14 +716,12 @@ class expRouter {
     
     public function getRouterMaps() {
         $mapfile = BASE.'framework/core/router_maps.php';
-//        if (file_exists(BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php')) {
-//            $mapfile = BASE.'themes/'.DISPLAY_THEME_REAL.'/router_maps.php';
 		if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/router_maps.php')) {
 			$mapfile = BASE.'themes/'.DISPLAY_THEME.'/router_maps.php';
         }
 
         include_once($mapfile);
-        $this->maps = $maps;
+        $this->maps = $maps;  // $maps is set in $mapfile
     }
     
     public function getTrackingId()

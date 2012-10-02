@@ -17,14 +17,21 @@
 
 {/css}
 
-<h2>{"Aggregate content from similar modules"|gettext}</h2>
+<div class="form_header">
+	<div class="info-header">
+		<div class="related-actions">
+		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Aggregating Content"|gettext) module="aggregation"}
+		</div>
+        <h2>{"Aggregate content from similar modules"|gettext}</h2>
+	</div>
+</div>
 {control type="checkbox" name="noeditagg" label="Prevent editing aggregate items"|gettext value=1 checked=$config.noeditagg}
 <hr />
 <table class="exp-skin-table">
     <thead>
         <tr>
             {*<th>{""|gettext}</th>*}
-            <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onChange="selectAll(this.checked)"></th>            {$tabanchor = '#tab='|cat:$smarty.foreach.body.iteration|cat:'" alt="'}
+            <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onchange="selectAll(this.checked)"></th>            {$tabanchor = '#tab='|cat:$smarty.foreach.body.iteration|cat:'" alt="'}
             {$tabno = $smarty.foreach.body.iteration-1}
             {$tabanchor = '#tab='|cat:$tabno|cat:'" alt="'}
             {$page->header_columns|replace:'" alt="':$tabanchor}

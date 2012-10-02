@@ -22,7 +22,8 @@
  */
 
 class help extends expRecord {
-	public $table = 'help';
+//	public $table = 'help';
+    public $default_sort_field = 'rank';
 	public $has_one = array('help_version');
 
 	public function __construct($params=array()) {
@@ -38,12 +39,12 @@ class help extends expRecord {
 	public function save($validate=false) {
         global $db;
 
-		if (isset($_POST['help_section'])) {
+		if (isset($this->params['help_section'])) {
 			// manipulate section & location_data to correct values
-			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . expString::sanitize($_POST['help_section'] .'"'));
-			$loc = new stdClass();;
+			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $this->params['help_section'] .'"');
+			$loc = new stdClass();
 			$loc->mod = 'help';
-			$loc->src = $_POST['help_section'];
+			$loc->src = $this->params['help_section'];
 			$loc->int = '';
 			$this->location_data = serialize($loc);
 		}
@@ -57,7 +58,7 @@ class help extends expRecord {
    }
 
 	/**
-	 * Make a unique help item sef-url within the version_version
+	 * Make a unique help item sef-url within the help_version
 	 */
 	public function makeSefUrl() {
 		global $router, $db;
@@ -153,7 +154,7 @@ class help extends expRecord {
            if (property_exists($this, 'rank')) {
                if (empty($this->rank)) {
 //                   $where = "1 ";
-                   $where .= empty($this->location_data) ? "1 " : "location_data='".$this->location_data."' ";
+                   $where = empty($this->location_data) ? "1 " : "location_data='".$this->location_data."' ";
                    $where .= " AND help_version_id='".$this->help_version_id."'";
                    //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";
                    $groupby = empty($this->location_data) ? null : 'location_data';
@@ -216,7 +217,8 @@ class help extends expRecord {
         $module = expModules::getControllerName($module);
         
         // figure out which version we're on
-        $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.EXPONENT_VERSION_TYPE;
+//        $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.EXPONENT_VERSION_TYPE;
+        $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
 
         $link  = HELP_URL;
         $link .= 'docs';

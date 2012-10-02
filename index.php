@@ -48,10 +48,12 @@ $router->routeRequest();
 
 // initialize this users cart if they have ecom installed.
 // define whether or not ecom is enabled
-if ($db->selectValue('modstate', 'active', 'module="storeController"')) {
+if ($db->selectValue('modstate', 'active', 'module="storeController"') ||
+  $db->selectValue('modstate', 'active', 'module="eventregistrationController"') ||
+  $db->selectValue('modstate', 'active', 'module="donationController"') || FORCE_ECOM) {
     define('ECOM',1);
     $order = order::getUserCart();      
-    // Create a globle store config
+    // global store config
     // We're forcing the location. Global store setting will always have this loc
     $cfg = new stdClass();
     $cfg->mod = "ecomconfig";
@@ -126,7 +128,7 @@ if (EXPORT_AS_PDF == 1) {
     $pdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
     echo '<script type="text/javascript">
         <!--
-        setTimeout("self.close();",10000)
+        setTimeout("self.close();",10000);
         //-->
         </script>';  //FIXME timeout before closing an empty pdf or html2pdf error window
 } else {

@@ -15,9 +15,7 @@
 
 <div class="module news showall">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
-    {if $config.enable_rss == true}
-        <a class="rsslink" href="{rsslink}" title="{'Subscribe to'|gettext} {$config.feed_title}"></a>
-    {/if}
+    {rss_link}
     {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
 
     {permissions}
@@ -46,14 +44,25 @@
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">
+            {if $config.datetag}
+                <p class="post-date">
+                    <span class="month">{$item->publish_date|format_date:"%b"}</span>
+                    <span class="day">{$item->publish_date|format_date:"%e"}</span>
+                    <span class="year">{$item->publish_date|format_date:"%Y"}</span>
+                </p>
+            {/if}
             <h2>
                 <a href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
                 </a>
             </h2>
-            <span class="date">{$item->publish_date|date_format}</span>
+            {if !$config.datetag}
+                <span class="date">{$item->publish_date|date_format}</span>
+            {/if}
             {if $item->expTag|@count>0 && !$config.disabletags}
-                &#160;|&#160;
+                {if !$config.datetag}
+                    &#160;|&#160;
+                {/if}
                 <span class="label tags">{'Tags'|gettext}:</span>
                 <span class="value">
                     {foreach from=$item->expTag item=tag name=tags}

@@ -23,8 +23,16 @@
  */
 
 abstract class expController {
-    protected $basemodel = null;
-    protected $classname = '';
+    protected $classname = '';      // full controller name w/ 'Controller' suffix
+    public $baseclassname = '';     // root controller name w/o 'Controller' suffix
+    public $classinfo = null;       // holds reflection class of class
+//    public $module_name = '';       //FIXME not used and not actually set right index needed of -3 instead of -2 below
+//    protected $basemodel = null;    //FIXME never used, $basemodel_name replaced?
+    public $basemodel_name = '';    // holds classname of base module associated w/ this controller
+    public $model_table = '';       // holds table name for base model
+
+    public $useractions = array();  // available user actions (methods) for this controller
+    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     protected $permissions = array(
         'manage'=>'Manage',
         'configure'=>'Configure',
@@ -36,36 +44,17 @@ abstract class expController {
     protected $remove_permissions = array();    
     protected $add_permissions = array();
 
-	/**
-	 * can this module import data?
-	 * @return bool
-	 */
-	function canImportData() { return false; }
+    public $filepath = '';          // location of this controller's files
+    public $viewpath = '';          // location of this controllers views
+    public $relative_viewpath = ''; // relative location of controller's views
+    public $asset_path = '';        // location of this controller's assets
 
-	/**
-	 * can this module export data?
-	 * @return bool
-	 */
-	function canExportData() { return false; }
+    public $requires_login = array();   // actions (methods) which require user be logged in to access
+    public $config = array();       // holds module configuration settings
+    public $params = array();       // holds parameters passed to module
+    public $loc = null;             // module location object
 
-	/**
-	 * does this module require configuration?
-	 * @return bool
-	 */
-	function requiresConfiguration() { return false; }
-    
-    public $requires_login = array();
-    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
-    public $config = array();
-    public $basemodel_name = '';
-    public $model_table = '';
-    public $classinfo = null;
-    public $loc = null;
-    public $module_name = '';
-    public $filepath = '';
-    public $viewpath = '';
-    public $relative_viewpath = '';
-	public $codequality = 'stable';
+	public $codequality = 'stable'; // code's level of stability
 
 	/**
 	 * @param null $src
@@ -82,19 +71,29 @@ abstract class expController {
 
         // figure out which "module" we belong to and setup view path information
         $controllerpath = explode('/', $this->filepath);
-        $this->module_name = $controllerpath[(count($controllerpath)-2)];
+//        $this->module_name = $controllerpath[(count($controllerpath)-3)];
        
         // set up the path to this module view files
-        array_pop($controllerpath);
+        array_pop($controllerpath);  // remove 'controllers' from array
         $controllerpath[count($controllerpath)-1] = 'views';
         array_push($controllerpath, $this->baseclassname);
         $this->relative_viewpath = implode('/', array_slice($controllerpath, -3, 3));
-        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
-        
+//        $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
+        //FIXME this requires we move the 'core' controllers into the modules folder or use this hack
+        $depth = array_search('core',$controllerpath);
+        if ($depth) {
+            $this->viewpath = BASE.'framework/modules/'.$this->relative_viewpath;
+        } else {
+            $this->viewpath = implode('/',$controllerpath);
+        }
+
         //grab the path to the module's assets
         array_pop($controllerpath);
         $controllerpath[count($controllerpath)-1] = 'assets';
-        $this->asset_path = PATH_RELATIVE.'framework/'.implode('/', array_slice($controllerpath, -3, 3))."/";
+//        $this->asset_path = PATH_RELATIVE.'framework/'.implode('/', array_slice($controllerpath, -3, 3))."/";
+        $depth = array_search('framework',$controllerpath);
+        if (!$depth) $depth = array_search('themes',$controllerpath);
+        $this->asset_path = PATH_RELATIVE.implode('/', array_slice($controllerpath, $depth))."/";
 
         // figure out which model we're using and setup some info about it
         if (empty($this->basemodel_name)) $this->basemodel_name = get_model_for_controller($this->classname);
@@ -123,55 +122,73 @@ abstract class expController {
 	 * name of module for backwards compat with old modules
 	 * @return string
 	 */
-	function name() { return $this->displayname(); }
+    function name() { return $this->displayname(); }
 	
 	/**
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return gt("Exponent Base Controller"); }
+    static function displayname() { return gt("Exponent Base Controller"); }
 
     /**
    	 * description of module
    	 * @return string
    	 */
-   	function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
+    static function description() { return gt("This is the base controller that most Exponent modules will inherit from."); }
 
 	/**
 	 * author of module
 	 * @return string
 	 */
-	function author() { return "Adam Kessler @ OIC Group, Inc"; }
+    static function author() { return "OIC Group, Inc"; }
 
 	/**
 	 * does module have sources available?
 	 * @return bool
 	 */
-	function hasSources() { return true; }
+	static function hasSources() { return true; }
 
 	/**
 	 * does module have views available?
 	 * @return bool
 	 */
-	function hasViews() { return true; }
+    static function hasViews() { return true; }
 
 	/**
 	 * does module have content available?
 	 * @return bool
 	 */
-	function hasContent() { return true; }
+    static function hasContent() { return true; }
 
 	/**
 	 * does module support workflow?
 	 * @return bool
 	 */
-	function supportsWorkflow() { return false; }
+    static function supportsWorkflow() { return false; }
 
 	/**
 	 * is module content searchable?
 	 * @return bool
 	 */
-	function isSearchable() { return false; }
+    static function isSearchable() { return false; }
+
+    /**
+   	 * can this module import data?
+   	 * @return bool
+   	 */
+    static function canImportData() { return false; }
+
+   	/**
+   	 * can this module export data?
+   	 * @return bool
+   	 */
+    static function canExportData() { return false; }
+
+   	/**
+   	 * does this module require configuration?
+   	 * @return bool
+   	 */
+    static function requiresConfiguration() { return false; }
 
 	/**
 	 * glue to make module aware of itself
@@ -192,15 +209,20 @@ abstract class expController {
         expHistory::set('viewable', $this->params);
 
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
-                    'limit'=>(isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
-                    'order'=>isset($this->params['order']) ? $this->params['order'] : null,
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+            'limit'=>(isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
+            'order'=>isset($this->params['order']) ? $this->params['order'] : null,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'columns'=>array(
+                gt('ID#')=>'id',
+                gt('Title')=>'title',
+                gt('Body')=>'body'
+            ),
+        ));
         
         assign_to_template(array(
             'page'=>$page,
@@ -236,13 +258,16 @@ abstract class expController {
         // create a pagination object for the model and render the action
         $order = 'created_at DESC';
         $page = new expPaginator(array(
-                    'records'=>$items_by_tags,
-                    'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
-                    'order'=>$order,
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'columns'=>array(gt('Title')=>'title'),
-                    ));
+            'records'=>$items_by_tags,
+            'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+            'order'=>$order,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
 //        $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'rank', 'order'=>'ASC', 'ignore_case'=>true));
         $page->records = expSorter::sort(array('array'=>$page->records, 'sortby'=>'created_at', 'order'=>'DESC', 'ignore_case'=>true));
 
@@ -329,10 +354,10 @@ abstract class expController {
         $this->loc = unserialize($record->location_data);
         
         // adding src to template's __loc var so that our links get build correct when linking to controller actions.
-        global $template;
+//        global $template;
         assign_to_template(array(
             'record'=>$record,
-            "__loc"=>$this->loc
+//            "__loc"=>$this->loc
         ));
     }
 
@@ -363,7 +388,7 @@ abstract class expController {
         $model = new $modelname();
 
         // start building the sql query
-        $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$model->table.' m ';
+        $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$model->tablename.' m ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_'.$tagobj->attachable_table.' ct '; 
         $sql .= 'ON m.id = ct.content_id WHERE (';
         $first = true;
@@ -377,7 +402,7 @@ abstract class expController {
         }
 
         foreach ($tags as $tagid) {
-            $sql .= ($first) ? 'exptag_id='.intval($tagid) : ' OR exptag_id='.intval($tagid);
+            $sql .= ($first) ? 'exptags_id='.intval($tagid) : ' OR exptags_id='.intval($tagid);
             $first = false;
         }
         $sql .= ") AND content_type='".$model->classname."'";
@@ -532,15 +557,20 @@ abstract class expController {
         expHistory::set('manageable', $this->params);
 
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
-                    'limit'=>isset($this->params['limit']) ? $this->params['limit'] : 10,
-                    'order'=>isset($this->params['order']) ? $this->params['order'] : null,
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+            'limit'=>isset($this->params['limit']) ? $this->params['limit'] : 10,
+            'order'=>isset($this->params['order']) ? $this->params['order'] : null,
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'columns'=>array(
+                gt('ID#')=>'id',
+                gt('Title')=>'title',
+                gt('Body')=>'body'
+            ),
+        ));
         
         assign_to_template(array(
             'page'=>$page,
@@ -573,12 +603,16 @@ abstract class expController {
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         $page = new expPaginator(array(
-                    'records'=>$pullable_modules,
+            'records'=>$pullable_modules,
 //                    'limit'=>count($pullable_modules),
-                    'order'=>isset($this->params['order']) ? $this->params['order'] : 'section',
-                    'dir'=>isset($this->params['dir']) ? $this->params['dir'] : '',
-                    'columns'=>array(gt('Title')=>'title',gt('Page')=>'section'),
-                    ));
+            'order'=>isset($this->params['order']) ? $this->params['order'] : 'section',
+            'dir'=>isset($this->params['dir']) ? $this->params['dir'] : '',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'columns'=>array(
+                gt('Title')=>'title',
+                gt('Page')=>'section'
+            ),
+        ));
         assign_to_template(array(
             'config'=>$this->config,
             'pullable_modules'=>$pullable_modules,
@@ -612,15 +646,15 @@ abstract class expController {
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
             $rss_item->title = expString::convertSmartQuotes($item->title);
-            $rss_item->link = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url));
+            $rss_item->link = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
             $comment_count = expCommentController::findComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
             if ($comment_count) {
-                $rss_item->comments = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
-//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->classname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+                $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
                 $rss_item->commentsCount = $comment_count;
             }
             $rssitems[$key] = $rss_item;
@@ -628,15 +662,137 @@ abstract class expController {
         return $rssitems;
     }
 
-	/**
+    /**
+     *
+     */
+    function rss() {
+        require_once(BASE.'external/feedcreator.class.php');
+
+        $id = isset($this->params['title']) ? $this->params['title'] : (isset($this->params['id']) ? $this->params['id'] : null);
+        if (empty($id)) {
+            $module = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
+            $id = array('module'=>$module,'src'=>$this->params['src']);
+        }
+        $site_rss = new expRss($id);
+        if (!empty($site_rss->id) && $site_rss->enable_rss == true) {
+            $site_rss->title = empty($site_rss->title) ? gt('RSS for').' '.URL_FULL : $site_rss->title;
+            $site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is an RSS syndication from').' '.HOSTNAME : $site_rss->feed_desc;
+            if (isset($site_rss->rss_cachetime)) { $ttl = $site_rss->rss_cachetime; }
+            if ($site_rss->rss_cachetime == 0) { $site_rss->rss_cachetime = 1440; }
+
+            if (!empty($site_rss->itunes_cats)) {
+                $ic = explode(";", $site_rss->itunes_cats);
+                $x = 0;
+                $itunes_cats = array();
+                foreach($ic as $cat){
+                    $cat_sub = explode(":", $cat);
+                    $itunes_cats[$x]->category = $cat_sub[0];
+                    if(isset($cat_sub[1])) {
+                        $itunes_cats[$x]->subcategory = $cat_sub[1];
+                    }
+                    $x++;
+                }
+            }
+
+            // NO buffering from here on out or things break unexpectedly. - RAM
+            ob_end_clean();
+
+            header('Content-Type: ' . 'application/rss+xml');
+//            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+//            header('Content-Transfer-Encoding: binary');
+            header('Content-Encoding:');
+            // IE need specific headers
+            if (EXPONENT_USER_BROWSER == 'IE') {
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                header('Vary: User-Agent');
+            } else {
+                header('Pragma: no-cache');
+            }
+
+        	$rss = new UniversalFeedCreator();
+        	$rss->cssStyleSheet = "";
+        //	$rss->useCached("PODCAST");
+        	$rss->useCached();
+            $rss->title = $site_rss->title;
+        	$rss->description = $site_rss->feed_desc;
+            $rss->image = new FeedImage();
+            $rss->image->url = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
+            $rss->image->title = $site_rss->title;
+            $rss->image->link = URL_FULL;
+        //    $rss->image->width = 64;
+        //    $rss->image->height = 64;
+        	$rss->ttl = $site_rss->rss_cachetime;
+        	$rss->link = "http://".HOSTNAME.PATH_RELATIVE;
+        	$rss->syndicationURL = "http://".HOSTNAME.$_SERVER['PHP_SELF'].'?module='.$site_rss->module.'&src='.$site_rss->src;
+        	if ($site_rss->module == "filedownload") {
+                $rss->itunes = new iTunes();
+        //		$rss->itunes->summary = $site_rss->feed_desc;
+        		$rss->itunes->author = ORGANIZATION_NAME;
+                if (!empty($itunes_cats)) {
+                    $rss->itunes->category = $itunes_cats[0]->category;
+                    $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
+                }
+        		$rss->itunes->image = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
+        //		$rss->itunes->explicit = 0;
+                $rss->itunes->subtitle = $site_rss->title;
+        //		$rss->itunes->keywords = 0;
+        		$rss->itunes->owner_email = SMTP_FROMADDRESS;
+                $rss->itunes->owner_name = ORGANIZATION_NAME;
+        	}
+
+        	$pubDate = '';
+        	foreach ($site_rss->getFeedItems() as $item) {
+        		if ($item->date > $pubDate) { $pubDate = $item->date; }
+        		$rss->addItem($item);
+        	}
+        	if (isset($site_rss->rss_limit) && $site_rss->rss_limit > 0) {
+        		$rss->items = array_slice($rss->items, 0, $site_rss->rss_limit);
+        	}
+        	$rss->pubDate = $pubDate;
+
+//        	header("Content-type: text/xml");
+        	if ($site_rss->module == "filedownload") {
+        		echo $rss->createFeed("PODCAST");
+        	} else {
+        		echo $rss->createFeed("RSS2.0");
+        	}
+        } else {
+        	echo gt("This RSS feed is not available.");
+        }
+
+		//Read the file out directly
+		exit();
+    }
+
+    /**
 	 * save module configuration
 	 */
 	function saveconfig() {
         
         // create a new RSS object if enable is checked.
         if (!empty($this->params['enable_rss'])) {
+            $params = $this->params;
+            $params['title'] = $params['feed_title'];
+            unset($params['feed_title']);
+            $params['sef_url'] = $params['feed_sef_url'];
+            unset($params['feed_sef_url']);
+            $rssfeed = new expRss($params);
+            $rssfeed->update($params);
+            $this->params['feed_sef_url'] = $rssfeed->sef_url;
+        } else {
             $rssfeed = new expRss($this->params);
-            $rssfeed->update($this->params);
+            $params = $this->params;
+            $params['enable_rss'] = false;
+            if (empty($params['advertise'])) $params['advertise'] = false;
+            $params['title'] = $params['feed_title'];
+            unset($params['feed_title']);
+            $params['sef_url'] = $params['feed_sef_url'];
+            unset($params['feed_sef_url']);
+            if (!empty($rssfeed->id)) {  // do NOT create a new record, only update existing ones
+                $rssfeed->update($params);
+                $this->params['feed_sef_url'] = $rssfeed->sef_url;
+            }
         }
         
         // create a new eAlerts object if enable is checked.
@@ -707,7 +863,7 @@ abstract class expController {
 	 * @return string
 	 */
 	function searchName() {
-        return $this->name();
+        return $this->displayname();
     }
 
 	/**
@@ -724,10 +880,11 @@ abstract class expController {
 	 */
 	function addContentToSearch() {
         global $db, $router;
-        
+
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);
-        $content = $db->selectArrays($model->tablename);
+        $where = (!empty($this->params['id'])) ? 'id='.$this->params['id'] : null;
+        $content = $db->selectArrays($model->tablename,$where);
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
@@ -746,7 +903,11 @@ abstract class expController {
             // get the location data for this content
             if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
             $src = isset($loc->src) ? $loc->src : null;
-            $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'id'=>$origid, 'src'=>$src)));
+            if (!empty($cnt['sef_url'])) {
+                $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
+            } else {
+                $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'id'=>$origid, 'src'=>$src)));
+            }
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
             $search_record->view_link = $link;
             $search_record->ref_module = $this->classname;
@@ -767,7 +928,7 @@ abstract class expController {
         // remove this modules entries from the search table.
         if ($this->isSearchable()) {
             $where = "ref_module='".$this->classname."' AND location_data='".serialize($this->loc)."'";            
-            $test = $db->selectObjects('search', $where);
+//            $test = $db->selectObjects('search', $where);
             $db->delete('search', $where);
         }
     }
@@ -839,7 +1000,7 @@ abstract class expController {
             $object = new expTag(expString::sanitize($request['tag']));
             // set the meta info
             if (!empty($object)) {
-                $metainfo['title'] = gt('Showing all Blog Posts tagged with') ." \"" . $object->title . "\"";
+                $metainfo['title'] = gt('Showing all Items tagged with') ." \"" . $object->title . "\"";
                 $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
             }

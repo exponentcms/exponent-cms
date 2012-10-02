@@ -170,7 +170,7 @@ class expHistory {
             $diff = array();
             
             // if this url is the exact same as the last for this type we won't save it..that way refresh won't fill up our history
-            if ($size > 0) $diff = array_diff_assoc($router->params, $this->history[$url_type][$size-1]['params']);        
+            if ($size > 0) $diff = @array_diff_assoc($router->params, $this->history[$url_type][$size-1]['params']);
       	    if (!empty($diff) || $size == 0) $this->history[$url_type][] = $url;
       	    
       	    // save the "lasts" information

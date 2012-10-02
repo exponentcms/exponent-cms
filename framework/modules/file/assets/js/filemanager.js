@@ -95,7 +95,7 @@ EXPONENT.filemanager = function(cfg) {
     var myDataTable = new YAHOO.widget.DataTable("dynamicdata", myColumnDefs, myDataSource, myConfigs);
     // Update totalRecords on the fly with value from server
     myDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-        //console.debug(oPayload);
+        //Y.log(oPayload);
         if (oPayload == null) {
             oPayload = {};
         }

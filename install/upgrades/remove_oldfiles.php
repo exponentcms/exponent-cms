@@ -25,8 +25,8 @@
  * This is the class remove_oldfiles
  */
 class remove_oldfiles extends upgradescript {
-	protected $from_version = '1.99.0';
-	protected $to_version = '2.0.8';
+	protected $from_version = '0.0.0';
+//	protected $to_version = '2.0.9';
 
 	/**
 	 * name/title of upgrade script
@@ -55,12 +55,76 @@ class remove_oldfiles extends upgradescript {
 	function upgrade() {
 
         $oldfiles = array (
+            // misc old files
+            'captcha.php',
+            'captcha_why.php',
+            'compat.php',
+            'content_selector.php',
+            'core_podcast.php',
+            'core_rss.php',
+            'db_recover.php',
+            'deps.php',
+            'edit_page.php',
+            'exponent_compat.php',
+            'exponent_setup.php',
+            'exponent_variables.php',
+            'iconspopup.php',
+            'login_redirect.php',
+            'manifest.php',
+            'mod_preview.php',
+            'module_preview.php',
+            'orphan_content_selector.php',
+            'orphan_source_selector.php',
+            'podcast.php',
+            'rss.php',
+            'external/editors/_header.tpl',
+            'external/editors/Default.tpl',
+            'external/editors/FCKeditor.tpl',
+            'external/editors/fcktoolbarconfig.js.php',
+            'external/editors/fcktemplates.xml',
+            'external/editors/fckstyles.xml',
+            'external/editors/wysiwyg-styles.css',
+            'external/editors/connector/FCKeditor_link.php',
+            'external/editors/connector/insert_image.php',
+            'external/editors/connector/link.php',
+            'external/editors/connector/popup.js',
+            'external/editors/connector/section_linked.php',
+            'framework/modules-1/containermodule/actions/copy_to_clipboard.php',
+            'framework/modules-1/containermodule/actions/orphans_modules.php',
+            'framework/modules-1/containermodule/actions/view_clipboard.php',
+            'framework/modules-1/containermodule/actions/view-recycle-bin.php',
+            'framework/modules-1/containermodule/views/_orphans_modules.tpl',
+            'framework/modules-1/containermodule/views/_view_clipboard.tpl',
+            'framework/modules-1/common//views/_msg_queue.tpl',
+            'framework/modules/text//views//text/showall_merge.tpl',
+            'themes/basetheme/sample.eql',
+            'themes/basetheme/sample.tar.gz',
+            'themes/coolwatertheme/sample.eql',
+            'themes/coolwatertheme/sample.tar.gz',
+            'themes/multioptiontheme/sample.eql',
+            'themes/multioptiontheme/sample.tar.gz',
+            'themes/retrotheme/sample.eql',
+            'themes/retrotheme/sample.tar.gz',
+            'themes/simpletheme/sample.eql',
+            'themes/simpletheme/sample.tar.gz',
+            'install/pages/admin_user.php',
+            'install/pages/dbcheck.php',
+            'install/pages/dbconfig.php',
+            'install/pages/sanity.php',
+            'install/pages/save_admin.php',
+            'install/pages/setlang.php',
+            'install/pages/upgrade.php',
+            'install/pages/upgrade_version.php',
+            'install/upgrades/install_tables.php',
             // obsolete definitions/models
             'framework/core/definitions/bots.php',
             'framework/core/definitions/locationref.php',
             'framework/core/definitions/toolbar_FCKeditor.php',
             'framework/core/models-1/database_importer.php',
             'framework/core/models-1/file_collection.php',
+            'framework/core/models-1/file.php',
+            'framework/core/models-1/mimetype.php',
+            'framework/modules/news/models/rssfeed.php',
             // moved definitions/models
             'framework/core/definitions/expFiles.php',
             'framework/core/definitions/content_expFiles.php',
@@ -81,6 +145,7 @@ class remove_oldfiles extends upgradescript {
             'framework/core/definitions/crosssellItem_product.php',
             'framework/core/definitions/discounts.php',
             'framework/core/definitions/eventregistration.php',
+            'framework/core/definitions/eventregistration_registrants.php',
             'framework/core/definitions/external_addresses.php',
             'framework/core/definitions/google_product_types.php',
             'framework/core/definitions/google_product_types_storeCategories.php',
@@ -175,24 +240,69 @@ class remove_oldfiles extends upgradescript {
                 if (unlink(BASE.$file)) $files_removed++;
             }
         }
-        // while we're at it, check if the old subsystems-1 folder still exists
-        if (expUtil::isReallyWritable(BASE."framework/core/subsystems-1/")) {
-            expFile::removeFilesInDirectory(BASE."framework/core/subsystems-1/");
-        }
-        // while we're at it, check if the old administrationmodule folder still exists
-        if (expUtil::isReallyWritable(BASE."framework/modules-1/administrationmodule/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/administrationmodule/");
-        }
-        // while we're at it, check if the old bots folder still exists
-        if (expUtil::isReallyWritable(BASE."framework/modules-1/bots/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/bots/");
-        }
-        // while we're at it, check if the old loginmodule folder still exists
-        if (expUtil::isReallyWritable(BASE."framework/modules-1/loginmodule/")) {
-            expFile::removeFilesInDirectory(BASE."framework/modules-1/loginmodule/");
+        // delete old directories
+        $olddirs = array(
+            "framework/subsystems/",
+            "framework/core/subsystems-1/",
+            "framework/core/datatypes/",
+            "framework/core/js/",
+            "framework/core/database/",
+            "framework/modules-1/administrationmodule/",
+            "framework/modules-1/bots/",
+            "framework/modules-1/loginmodule/",
+            "framework/modules/photoalbum/views/photos/",
+            "framework/modules/expEvent",
+            "framework/datatypes/",
+            "framework/views/",
+            "plugins/",
+            "modules/",
+            "js/",
+            "forms/",
+            "extensionuploads/",
+            "datatypes/",
+            "compat/",
+            "views/",
+            "subsystems/",
+            "conf/profiles/",
+            "install/sitetypes/",
+            "themes/common/",
+            "tmp/js/",
+            "tmp/mail/",
+            "tmp/pods/",
+            "external/editors/connector/lang/",
+            "external/editors/FCKeditor/",
+            "external/editors/images/",
+            "external/ckeditor/",
+            "external/fedex-php/",
+            "external/flowplayer3/",
+            "external/flowplayer-3.2.12/",
+            "external/magpierss/",
+            "external/yui3/",
+            "external/lissa/",
+            "external/yui/3.4.0/",
+            "external/Smarty/",
+            "external/Smarty-2/",
+            "external/Smarty-3.1.4/",
+            "external/Smarty-3.1.7/",
+            "external/Smarty-3.1.8/",
+            "external/Smarty-3.1.11/",
+            "external/Swift/",
+            "external/Swift-4/",
+            "external/Swift-4.0.5/",
+            "external/Swift-4.1.1/",
+            "external/Swift-4.1.3/",
+            "external/Swift-4.1.4/",
+            "external/Swift-4.1.5/",
+            "external/Swift-4.1.6/",
+            "external/Swift-4.1.7/",
+        );
+        foreach ($olddirs as $dir) {
+            if (expUtil::isReallyWritable(BASE.$dir)) {
+                expFile::removeDirectory(BASE.$dir);
+            }
         }
 
-		return ($files_removed?$files_removed:gt('No'))." ".gt("obsolete files were removed.");
+		return ($files_removed?$files_removed:gt('No'))." ".gt("obsolete files and folders were removed.");
 		
 	}
 }

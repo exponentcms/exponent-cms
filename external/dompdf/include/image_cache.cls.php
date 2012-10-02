@@ -6,7 +6,7 @@
  * @author  Helmut Tischer <htischer@weihenstephan.org>
  * @author  Fabien Ménager <fabien.menager@gmail.com>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: image_cache.cls.php 455 2012-01-19 19:25:18Z eclecticgeek@gmail.com $
+ * @version $Id$
  */
 
 /**
@@ -46,6 +46,11 @@ class Image_Cache {
     $parsed_url = explode_url($url);
     $message = null;
 
+    if (strpos($parsed_url['path'],'thumb.php?') !== 0) {
+        $proto = 'http://';
+        $host = HOSTNAME;
+        $url = URL_BASE.$url;
+    }
     $remote = ($proto && $proto !== "file://") || ($parsed_url['protocol'] != "");
     
     $datauri = strpos($parsed_url['protocol'], "data:") === 0;
@@ -151,6 +156,8 @@ class Image_Cache {
       if (DEBUGPNG) print "[clear unlink $file]";
       unlink($file);
     }
+    
+    self::$_cache = array();
   }
   
   static function detect_type($file) {

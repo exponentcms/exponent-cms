@@ -50,15 +50,19 @@ abstract class basetemplate {
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
 		if (!SMARTY_DEVELOPMENT) $this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
+        $this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
         $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
-		$this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
 
 		//Some (crappy) wysiwyg editors use php as their default initializer
 		//FJD - this might break some editors...we'll see.
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
-		$this->tpl->caching = false;
-		$this->tpl->cache_dir = BASE.'tmp/cache';
+//		$this->tpl->caching = false;
+        $this->tpl->setCaching(Smarty::CACHING_OFF);
+//        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
+//		$this->tpl->cache_dir = BASE.'tmp/cache';
+        $this->tpl->setCacheDir(BASE.'tmp/cache');
+        $this->tpl->cache_id = md5($this->viewfile);
 
 		$this->tpl->setPluginsDir(array(
             BASE.'themes/'.DISPLAY_THEME.'/plugins',
@@ -76,9 +80,11 @@ abstract class basetemplate {
 
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
-		$this->tpl->template_dir = $this->viewdir;
+//		$this->tpl->template_dir = $this->viewdir;
+        $this->tpl->setTemplateDir($this->viewdir);
 		
-		$this->tpl->compile_dir = BASE . 'tmp/views_c';
+//		$this->tpl->compile_dir = BASE . 'tmp/views_c';
+        $this->tpl->setCompileDir(BASE . 'tmp/views_c');
 		$this->tpl->compile_id = md5($this->viewfile);
 		
 		$this->tpl->assign("__view", $this->view);
@@ -110,7 +116,12 @@ abstract class basetemplate {
 		if (!is_array($locs)) $locs = array($locs);
 		foreach ($perms as $perm) {
 			foreach ($locs as $loc) {
-				$permissions_register[$perm] = (expPermissions::check($perm, $loc) ? 1 : 0);
+                $ploc = new stdClass();
+                $ploc->mod   = $loc->mod;
+                $ploc->src   = $loc->src;
+                $ploc->int   = $loc->int;
+                $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;
+				$permissions_register[$perm] = (expPermissions::check($perm, $ploc) ? 1 : 0);
 			}
 		}
 		$this->tpl->assign('permissions', $permissions_register);

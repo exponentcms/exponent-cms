@@ -55,13 +55,15 @@ class product extends expRecord {
     public $quantity_discount_amount_modifiers = array('$'=>'$', '%'=>'%');
     
     protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile', 
-        //'content_expTags'=>'expTag', 
-        //'content_expComments'=>'expComment',
+//        'content_expCats'=>'expCat',
+//        'content_expComments'=>'expComment',
+//        'content_expDefinableFields'=> 'expDefinableField',
+        'content_expFiles'=>'expFile',
+        'content_expRatings'=>'expRating',
         'content_expSimpleNote'=>'expSimpleNote',
+//        'content_expTags'=>'expTag',
     );
-    
-    
+
 	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
 	    global $db;
 		parent::__construct($params, $get_assoc, $get_attached);
@@ -246,8 +248,7 @@ class product extends expRecord {
         //check user input fields
         //$this->user_input_fields = expUnserialize($this->user_input_fields);
         //eDebug($this,true);
-        foreach ($this->user_input_fields as $uifkey=>$uif)
-        {   
+        if (!empty($this->user_input_fields)) foreach ($this->user_input_fields as $uifkey=>$uif) {
             if ($uif['is_required'] || (!$uif['is_required'] && strlen($params['user_input_fields'][$uifkey]) > 0)) 
             {
                 if (strlen($params['user_input_fields'][$uifkey]) < $uif['min_length'])
@@ -414,12 +415,11 @@ class product extends expRecord {
         return true;
     }
     
-    
-    
     public function process($item) {
         global $db;
         $this->quantity = $this->quantity - $item->quantity;
         //$this->save();
+        $pobj = new stdClass();
         $pobj->id = $this->id;
         $pobj->quantity = $this->quantity;
         $db->updateObject($pobj, 'product', 'id='.$this->id);
@@ -630,6 +630,7 @@ class product extends expRecord {
         {
             $db->delete('product_storeCategories', 'product_id='.$id);
             $catArray = array(0);
+            $assoc = new stdClass();
             $assoc->storecategories_id = 0;
             $assoc->product_id = $id;
             $assoc->product_type = $product_type;
@@ -650,6 +651,7 @@ class product extends expRecord {
                 if (!in_array($cat,$curCats))
                 {
                     //create new
+                    $assoc = new stdClass();
                     $assoc->storecategories_id = $cat;
                     $assoc->product_id = $id;
                     $assoc->product_type = $product_type;
@@ -748,9 +750,15 @@ class product extends expRecord {
 	public function update($params=array()) {
 		global $db;
 
+        if ($this->product_type != 'product') {
+            parent::update($params);
+            return;
+        }
 		//Get the product
 		$product = $db->selectObject('product', 'id =' . $params['id']);
 		//Get product files
+        if (empty($product)) $product = new stdClass();
+
 		$product->expFile =  $this->getProductFiles($params['id']);
 		// eDebug($product, true);
 		
@@ -828,6 +836,7 @@ class product extends expRecord {
 				$db->delete('crosssellItem_product','product_id='.$product->id);
 				foreach ($params['relatedProducts'] as $key=>$prodid) {
 					$ptype = new product($prodid);
+                    $tmp = new stdClass();
 					$tmp->product_id = $product->id;
 					$tmp->crosssellItem_id = $prodid;
 					$tmp->product_type = $ptype->product_type;
@@ -871,7 +880,7 @@ class product extends expRecord {
 		
 		//Adjusting Children Products
 		if (!empty($originalId) && !empty($this->params['copy_children'])) {
-			$origProd = new $product_type($originalId);
+			$origProd = new $product_type($originalId);  //FIXME $product_type is not set
 			$children = $origProd->find('all', 'parent_id=' . $originalId);
 			foreach ($children as $child) {
 			

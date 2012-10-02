@@ -14,6 +14,14 @@
  *}
 
 <div id="rsspullControl" class="control">
+    <div class="form_header">
+    	<div class="info-header">
+    		<div class="related-actions">
+    		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("RSS Pull Settings"|gettext) module="flickrfeed"}
+    		</div>
+            <h2>{"RSS Pull Settings"|gettext}</h2>
+    	</div>
+    </div>
     <h2>{"Add RSS Feeds"|gettext}</h2>
     {control type="text" id="feedmaker" name="feedmaker" label="RSS Feed URL"|gettext}
     <a class="addtolist add" href="#">{'Add to list'|gettext}</a>{br}{br}

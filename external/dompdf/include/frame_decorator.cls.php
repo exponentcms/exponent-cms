@@ -4,7 +4,7 @@
  * @link    http://www.dompdf.com/
  * @author  Benj Carson <benjcarson@digitaljunkies.ca>
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @version $Id: frame_decorator.cls.php 464 2012-01-30 20:44:53Z fabien.menager $
+ * @version $Id$
  */
 
 /**
@@ -87,8 +87,9 @@ abstract class Frame_Decorator extends Frame {
   function dispose($recursive = false) {
     
     if ( $recursive ) {
-      while ( $child = $this->get_first_child() )
+      while ( $child = $this->get_first_child() ) {
         $child->dispose(true);
+      }
     }
     
     $this->_root = null;
@@ -114,9 +115,8 @@ abstract class Frame_Decorator extends Frame {
   function copy(DomNode $node) {
     $frame = new Frame($node);
     $frame->set_style(clone $this->_frame->get_original_style());
-    $deco = Frame_Factory::decorate_frame($frame, $this->_dompdf);
-    $deco->set_root($this->_root);
-    return $deco;
+    
+    return Frame_Factory::decorate_frame($frame, $this->_dompdf, $this->_root);
   }
 
   /**
@@ -127,11 +127,12 @@ abstract class Frame_Decorator extends Frame {
   function deep_copy() {
     $frame = new Frame($this->get_node()->cloneNode());
     $frame->set_style(clone $this->_frame->get_original_style());
-    $deco = Frame_Factory::decorate_frame($frame, $this->_dompdf);
-    $deco->set_root($this->_root);
+    
+    $deco = Frame_Factory::decorate_frame($frame, $this->_dompdf, $this->_root);
 
-    foreach ($this->get_children() as $child)
+    foreach ($this->get_children() as $child) {
       $deco->append_child($child->deep_copy());
+    }
 
     return $deco;
   }
@@ -146,8 +147,9 @@ abstract class Frame_Decorator extends Frame {
     $this->_counters = array();
 
     // Reset all children
-    foreach ($this->get_children() as $child)
+    foreach ($this->get_children() as $child) {
       $child->reset();
+    }
   }
   
   // Getters -----------
@@ -196,45 +198,53 @@ abstract class Frame_Decorator extends Frame {
   function set_position($x = null, $y = null) {
     $this->_frame->set_position($x, $y);
   }
+  
   function __toString() { return $this->_frame->__toString(); }
   
   function prepend_child(Frame $child, $update_node = true) {
-    while ( $child instanceof Frame_Decorator )
+    while ( $child instanceof Frame_Decorator ) {
       $child = $child->_frame;
+    }
     
     $this->_frame->prepend_child($child, $update_node);
   }
 
   function append_child(Frame $child, $update_node = true) {
-    while ( $child instanceof Frame_Decorator )
+    while ( $child instanceof Frame_Decorator ) {
       $child = $child->_frame;
+    }
 
     $this->_frame->append_child($child, $update_node);
   }
 
   function insert_child_before(Frame $new_child, Frame $ref, $update_node = true) {
-    while ( $new_child instanceof Frame_Decorator )
+    while ( $new_child instanceof Frame_Decorator ) {
       $new_child = $new_child->_frame;
+    }
 
-    if ( $ref instanceof Frame_Decorator )
+    if ( $ref instanceof Frame_Decorator ) {
       $ref = $ref->_frame;
+    }
 
     $this->_frame->insert_child_before($new_child, $ref, $update_node);
   }
 
   function insert_child_after(Frame $new_child, Frame $ref, $update_node = true) {
-    while ( $new_child instanceof Frame_Decorator )
+    while ( $new_child instanceof Frame_Decorator ) {
       $new_child = $new_child->_frame;
+    }
 
-    while ( $ref instanceof Frame_Decorator )
+    while ( $ref instanceof Frame_Decorator ) {
       $ref = $ref->_frame;
+    }
     
     $this->_frame->insert_child_after($new_child, $ref, $update_node);
   }
 
   function remove_child(Frame $child, $update_node = true) {
-    while  ( $child instanceof Frame_Decorator )
+    while  ( $child instanceof Frame_Decorator ) {
       $child = $new_child->_frame;
+    }
 
     $this->_frame->remove_child($child, $update_node);
   }
@@ -247,13 +257,17 @@ abstract class Frame_Decorator extends Frame {
   function get_parent() {
     $p = $this->_frame->get_parent();
     if ( $p && $deco = $p->get_decorator() ) {
-      while ( $tmp = $deco->get_decorator() )
-        $deco = $tmp;      
+      while ( $tmp = $deco->get_decorator() ) {
+        $deco = $tmp;
+      }
+      
       return $deco;
-    } else if ( $p )
+    }
+    else if ( $p ) {
       return $p;
-    else
-      return null;
+    }
+    
+    return null;
   }
 
   /**
@@ -262,13 +276,17 @@ abstract class Frame_Decorator extends Frame {
   function get_first_child() {
     $c = $this->_frame->get_first_child();
     if ( $c && $deco = $c->get_decorator() ) {
-      while ( $tmp = $deco->get_decorator() )
-        $deco = $tmp;      
+      while ( $tmp = $deco->get_decorator() ) {
+        $deco = $tmp;
+      }
+      
       return $deco;
-    } else if ( $c )
+    }
+    else if ( $c ) {
       return $c;
-    else
-      return null;
+    }
+    
+    return null;
   }
 
   /**
@@ -277,13 +295,17 @@ abstract class Frame_Decorator extends Frame {
   function get_last_child() {
     $c = $this->_frame->get_last_child();
     if ( $c && $deco = $c->get_decorator() ) {
-      while ( $tmp = $deco->get_decorator() )
-        $deco = $tmp;      
+      while ( $tmp = $deco->get_decorator() ) {
+        $deco = $tmp;
+      }
+      
       return $deco;
-    } else if ( $c )
+    }
+    else if ( $c ) {
       return $c;
-    else
-      return null;
+    }
+    
+    return null;
   }
 
   /**
@@ -292,13 +314,16 @@ abstract class Frame_Decorator extends Frame {
   function get_prev_sibling() {
     $s = $this->_frame->get_prev_sibling();
     if ( $s && $deco = $s->get_decorator() ) {
-      while ( $tmp = $deco->get_decorator() )
-        $deco = $tmp;      
+      while ( $tmp = $deco->get_decorator() ) {
+        $deco = $tmp;
+      }
       return $deco;
-    } else if ( $s )
+    }
+    else if ( $s ) {
       return $s;
-    else
-      return null;
+    }
+    
+    return null;
   }
   
   /**
@@ -307,13 +332,17 @@ abstract class Frame_Decorator extends Frame {
   function get_next_sibling() {
     $s = $this->_frame->get_next_sibling();
     if ( $s && $deco = $s->get_decorator() ) {
-      while ( $tmp = $deco->get_decorator() )
-        $deco = $tmp;      
+      while ( $tmp = $deco->get_decorator() ) {
+        $deco = $tmp;
+      }
+      
       return $deco;
-    } else if ( $s )
+    }
+    else if ( $s ) {
       return $s;
-    else
-      return null;
+    }
+    
+    return null;
   }
 
   /**
@@ -327,16 +356,18 @@ abstract class Frame_Decorator extends Frame {
 
   function set_positioner(Positioner $posn) {
     $this->_positioner = $posn;
-    if ( $this->_frame instanceof Frame_Decorator )
+    if ( $this->_frame instanceof Frame_Decorator ) {
       $this->_frame->set_positioner($posn);
+    }
   }
   
   //........................................................................
 
   function set_reflower(Frame_Reflower $reflower) {
     $this->_reflower = $reflower;
-    if ( $this->_frame instanceof Frame_Decorator )
+    if ( $this->_frame instanceof Frame_Decorator ) {
       $this->_frame->set_reflower( $reflower );
+    }
   }
   
   /**
@@ -348,8 +379,10 @@ abstract class Frame_Decorator extends Frame {
   
   function set_root(Frame $root) {
     $this->_root = $root;
-      if ( $this->_frame instanceof Frame_Decorator )
-        $this->_frame->set_root($root);
+    
+    if ( $this->_frame instanceof Frame_Decorator ) {
+      $this->_frame->set_root($root);
+    }
   }
   
   /**
@@ -371,7 +404,10 @@ abstract class Frame_Decorator extends Frame {
     $p = $this->get_parent();
     
     while ( $p ) {
-      if ( $p->is_block() ) break;
+      if ( $p->is_block() ) {
+        break;
+      }
+      
       $p = $p->get_parent();
     }
 
@@ -389,7 +425,10 @@ abstract class Frame_Decorator extends Frame {
     // Find our nearest relative positionned parent
     $p = $this->get_parent();
     while ( $p ) {
-      if ( $p->is_positionned() ) break;
+      if ( $p->is_positionned() ) {
+        break;
+      }
+      
       $p = $p->get_parent();
     }
     
@@ -418,8 +457,9 @@ abstract class Frame_Decorator extends Frame {
       return;
     }
 
-    if ( $child->get_parent() !== $this )
+    if ( $child->get_parent() !== $this ) {
       throw new DOMPDF_Exception("Unable to split: frame is not a child of this one.");
+    }
 
     $node = $this->_frame->get_node();
     
@@ -461,12 +501,12 @@ abstract class Frame_Decorator extends Frame {
   }
 
   function reset_counter($id = self::DEFAULT_COUNTER, $value = 0) {
-    $this->get_parent()->_counters[$id] = $value;
+    $this->get_parent()->_counters[$id] = intval($value);
   }
   
   function increment_counters($counters) {
     foreach($counters as $id => $increment) {
-      $this->increment_counter($id, $increment);
+      $this->increment_counter($id, intval($increment));
     }
   }
 
@@ -511,33 +551,32 @@ abstract class Frame_Decorator extends Frame {
     }
     
     switch ($type) {
-
-    default:
-    case "decimal":
-      return $value;
-
-    case "decimal-leading-zero":
-      return str_pad($value, 2, "0");
-
-    case "lower-roman":
-      return dec2roman($value);
-
-    case "upper-roman":
-      return mb_strtoupper(dec2roman($value));
-
-    case "lower-latin":
-    case "lower-alpha":
-      return chr( ($value % 26) + ord('a') - 1);
-
-    case "upper-latin":
-    case "upper-alpha":
-      return chr( ($value % 26) + ord('A') - 1);
-
-    case "lower-greek":
-      return unichr($value + 944);
-
-    case "upper-greek":
-      return unichr($value + 912);
+      default:
+      case "decimal":
+        return $value;
+  
+      case "decimal-leading-zero":
+        return str_pad($value, 2, "0");
+  
+      case "lower-roman":
+        return dec2roman($value);
+  
+      case "upper-roman":
+        return mb_strtoupper(dec2roman($value));
+  
+      case "lower-latin":
+      case "lower-alpha":
+        return chr( ($value % 26) + ord('a') - 1);
+  
+      case "upper-latin":
+      case "upper-alpha":
+        return chr( ($value % 26) + ord('A') - 1);
+  
+      case "lower-greek":
+        return unichr($value + 944);
+  
+      case "upper-greek":
+        return unichr($value + 912);
     }
   }
 

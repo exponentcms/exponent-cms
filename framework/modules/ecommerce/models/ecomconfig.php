@@ -31,11 +31,11 @@ class ecomconfig extends expConfig {
          * @author Phillip Ball
          */
         
+        $cfg = new stdClass();
         $cfg->mod = "ecomconfig";
         $cfg->src = "@globalstoresettings";
         $cfg->int = "";
         $config = new expConfig($cfg);
-        
         
         //$config = new expConfig(expCore::makeLocation('ecomconfig'));
         if (isset($config->config[$configname])) {

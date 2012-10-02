@@ -30,19 +30,19 @@ class expTagController extends expController {
 	 * name of module
 	 * @return string
 	 */
-	function displayname() { return gt("Tag Manager"); }
+    static function displayname() { return gt("Tag Manager"); }
 
 	/**
 	 * description of module
 	 * @return string
 	 */
-	function description() { return gt("This module is used to manage tags"); }
+    static function description() { return gt("This module is used to manage tags"); }
 
 	/**
 	 * does module have sources available?
 	 * @return bool
 	 */
-	function hasSources() { return false; }
+	static function hasSources() { return false; }
 
     /**
    	 * default view for individual item
@@ -90,15 +90,20 @@ class expTagController extends expController {
 
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
-                    'model'=>$this->basemodel_name,
-                    'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
-                    'limit'=>50,
-                    'order'=>"title",
-                    'controller'=>$this->baseclassname,
-                    'action'=>$this->params['action'],
-                    'src'=>$this->hasSources() == true ? $this->loc->src : null,
-                    'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
-                    ));
+            'model'=>$this->basemodel_name,
+            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+            'limit'=>10,
+            'order'=>"title",
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'columns'=>array(
+                gt('ID#')=>'id',
+                gt('Title')=>'title',
+                gt('Body')=>'body'
+            ),
+        ));
 
         foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
             foreach ($page->records as $key => $value) {
@@ -126,10 +131,15 @@ class expTagController extends expController {
         global $db;
 
         expHistory::set('manageable', $this->params);
+        $modulename = expModules::getControllerClassName($this->params['model']);
+        $module = new $modulename($this->params['src']);
+        $where = $module->aggregateWhereClause();
         $page = new expPaginator(array(
             'model'=>$this->params['model'],
-            'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+//            'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+            'where'=>$where,
             //                        'order'=>'module,rank',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['model'],
             //                        'action'=>$this->params['action'],
             //                        'src'=>$this->hasSources() == true ? $this->loc->src : null,
@@ -146,6 +156,7 @@ class expTagController extends expController {
 //            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
 //            'limit'=>50,
 //            'order'=>"title",
+//            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 //            'controller'=>$this->baseclassname,
 //            'action'=>$this->params['action'],
 //            'src'=>$this->hasSources() == true ? $this->loc->src : null,
