@@ -55,7 +55,5 @@
         {$record->body}
     </div>
     
-    {*if $config.usescomments}
-        {comments content_type="photos" content_id=$record->id title="Comments"}
-    {/if*}
+    {*{comments content_type="photos" content_id=$record->id title="Comments"}*}
 </div>

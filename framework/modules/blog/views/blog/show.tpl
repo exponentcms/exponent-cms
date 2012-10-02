@@ -44,8 +44,10 @@
                 </strong>&#160;
             {/if}
         </span>
-        &#160;|&#160;
-        <a class="comments" href="#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
+        {if empty($record->disable_comments)}
+            &#160;|&#160;
+            <a class="comments" href="#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
+        {/if}
 		{if $record->expTag|@count>0 && !$config.disabletags}
             &#160;|&#160;
             <span class="label tags">{'Tags'|gettext}:</span>
@@ -106,5 +108,7 @@
             <hr>
         </div>
     {/if}
-    {comments content_type="blog" content_id=$record->id title="Comments"|gettext}
+    {if empty($record->disable_comments)}
+        {comments content_type="blog" content_id=$record->id title="Comments"|gettext}
+    {/if}
 </div>

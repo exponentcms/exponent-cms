@@ -68,8 +68,10 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                &#160;|&#160;
-                <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
+                {if empty($item->disable_comments)}
+                    &#160;|&#160;
+                    <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
+                {/if}
 				{if $item->expTag|@count>0 && !$config.disabletags}
                     &#160;|&#160;
                     <span class="label tags">{'Tags'|gettext}:</span>
