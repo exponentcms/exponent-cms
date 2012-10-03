@@ -10,3 +10,6 @@
 [submodule "themes/multioptionstheme"]
 	path = themes/multioptionstheme
 	url = git@github.com:exponentcms/multioptionstheme.git
+[submodule "themes/retrotheme"]
+	path = themes/retrotheme
+	url = git@github.com:exponentcms/retrotheme.git
