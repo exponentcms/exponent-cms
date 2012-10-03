@@ -4,3 +4,6 @@
 [submodule "themes/basetheme"]
 	path = themes/basetheme
 	url = git@github.com:exponentcms/basetheme.git
+[submodule "themes/coolwatertheme"]
+	path = themes/coolwatertheme
+	url = git@github.com:exponentcms/coolwatertheme.git
