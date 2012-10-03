@@ -1,3 +1,6 @@
 [submodule "external/dompdf"]
 	path = external/dompdf
 	url = git@github.com:exponentcms/dompdf.git
+[submodule "themes/basetheme"]
+	path = themes/basetheme
+	url = git@github.com:exponentcms/basetheme.git
