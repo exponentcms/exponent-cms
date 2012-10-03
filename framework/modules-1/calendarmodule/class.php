@@ -230,7 +230,7 @@ class calendarmodule {
 //                        default:  // range = month
 //                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
 //                    }
-                    $start = $startperiod + ($i*86400) - 86400;
+                     $start = $startperiod + ($i*86400) - 86400;
                     $edates = $db->selectObjects("eventdate",$locsql." AND date >= ".expDateTime::startOfDayTimestamp($start)." AND date <= ".expDateTime::endOfDayTimestamp($start));
                     $days[$start] = self::_getEventsForDates($edates,true,isset($template->viewconfig['featured_only']) ? true : false);
 //                    for ($j = 0; $j < count($days[$start]); $j++) {
