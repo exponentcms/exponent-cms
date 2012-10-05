@@ -49,26 +49,30 @@
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "delete removerss";
-            newRemove.innerHTML = " Remove?";
+            newRemove.innerHTML = " {/literal}{'Remove'|gettext}{literal}";
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
             var list = YAHOO.util.Dom.get('rsspull-feeds');
             list.appendChild(newli);
             YAHOO.util.Event.on(newRemove, 'click', function(e,o){
-                var list = YAHOO.util.Dom.get('rsspull-feeds');
-                list.removeChild(this)
+                if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
+                    var list = YAHOO.util.Dom.get('rsspull-feeds');
+                    list.removeChild(this)
+                } else return false;
             },newli,true);
             feedtoadd.value = '';
             //alert(feedtoadd);
         });
-
+    
         var existingRems = YAHOO.util.Dom.getElementsByClassName('removerss', 'a');
         YAHOO.util.Event.on(existingRems, 'click', function(e,o){
-            YAHOO.util.Event.stopEvent(e);
-            var targ = YAHOO.util.Event.getTarget(e);
-            var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
-            var list = YAHOO.util.Dom.get('rsspull-feeds');
-            list.removeChild(lItem);
+            if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
+                YAHOO.util.Event.stopEvent(e);
+                var targ = YAHOO.util.Event.getTarget(e);
+                var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
+                var list = YAHOO.util.Dom.get('rsspull-feeds');
+                list.removeChild(lItem);
+            } else return false;
         });
     });
     {/literal}
