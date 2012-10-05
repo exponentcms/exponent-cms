@@ -9,6 +9,10 @@ Added / Fixed / changed for 2.1.0
 # This release focuses on upgrading calendar module to a 2.0 controller.
 Implementing some forms modules features/possibly move it to 2.0. Making e-Commerce a better OOTB experience.
 Begin more graceful integration of jQuery/Twitter Bootstrap, etc...
+  - adds optional nested comments, and optional per-item comment disabling
+  - adds optional comments to filedownload module
+  - adds pagination option of 'More', useful for sidebar views
+  - removes extra themes to reduce size of package, available as separate addon download
 
 Added / Fixed / changed for 2.0.9
 -----------------------
