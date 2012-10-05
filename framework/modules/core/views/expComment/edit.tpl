@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="exp-comment edit bodycopy">
+<div class="exp-comment edit">
 	{if $formtitle}<h3>{$formtitle}</h3>{/if}
     {$config.commentinfo}
     {if ($smarty.const.COMMENTS_REQUIRE_LOGIN == 1 && $user->id != 0) || $smarty.const.COMMENTS_REQUIRE_LOGIN == 0}

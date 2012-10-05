@@ -18,15 +18,14 @@
 	margin: 0;
 	padding: 1px;
 	list-style: none;
-	border: 1px solid #EEE8E1; 
+	border: 1px solid #CCD1DD;
 	margin-bottom:5px;
-
 }
 .exp-comments .commentlist li cite {
 	display: block;
 	font-style: normal;
 	font-weight: bold;
-	padding: 1px;	
+	padding: 1px;
 }
 .exp-comments .commentlist li cite .comment-date {
 	position:absolute;
@@ -54,7 +53,7 @@
 .exp-comments .commentlist li .comment-text {
 	clear: both;
 	margin: 0; 
-	padding: 2px;
+	/*padding: 2px;*/
 }
 .exp-comments .commentlist li.alt {
 	background: #FAF7F5; 
@@ -67,10 +66,17 @@
     /*display:block;*/
     /*background:url(../images/feed-icon.png) no-repeat 3px 50%;*/
     /*display:inline;*/
+    text-decoration: none;
+    font-size: 85%;
 }
 
 .exp-comments .commentlist li, .exp-comments .commentlist-complex li {
 	/*margin-left: 3em;*/
+}
+
+.exp-comments .commentlist ul {
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 /*.exp-comments .commentlist li ul {*/
@@ -102,10 +108,15 @@
 
 .exp-comments li.comment {
 	/*background: white;*/
-	border: 1px solid #626262;
+	/*border: 1px solid #626262;*/
 	/*padding: 1em;*/
-	margin-bottom: 1em;
+	/*margin-bottom: 1em;*/
 }
+
+.exp-comments .bodycopy {
+    display: table-cell;
+}
+
 div.comment-block {
     margin-left: -2em;
 }

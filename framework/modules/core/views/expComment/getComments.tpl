@@ -57,7 +57,7 @@
                                     </span>
                                     <span class="comment-date">{$cmt->created_at|format_date}</span>
                                 </cite>
-                                <div class="comment-text bodycopy">
+                                <div class="comment-text">
                                     {if $cmt->avatar->image}
                                         {img src=$cmt->avatar->image h=40 style="margin:5px; float:left;"}
                                     {else}
@@ -71,12 +71,14 @@
                                             {if $permissions.delete == 1}
                                                 {icon action=delete record=$cmt title="Delete this comment"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this comment?"|gettext)|cat:"');"}
                                             {/if}
-                                        <div>
+                                        </div>
                                     {/permissions}
-                                    {$cmt->body}
-                                    {if $config.usescomments!=1 && !$config.disable_nested_comments}
-                                        <a class="comment-reply" title="{"Reply to this comment"|gettext}" onclick="EXPONENT.changeParent({$cmt->id},'{if $cmt->name != ''}{$cmt->name}{else}{$cmt->username}{/if}');" href="#commentinput">{'Reply'|gettext}</a>
-                                    {/if}
+                                    <div class="bodycopy">
+                                        {$cmt->body}
+                                        {if $config.usescomments!=1 && !$config.disable_nested_comments}
+                                            <a class="comment-reply" title="{"Reply to this comment"|gettext}" onclick="EXPONENT.changeParent({$cmt->id},'{if $cmt->name != ''}{$cmt->name}{else}{$cmt->username}{/if}');" href="#commentinput">{'Reply'|gettext}</a>
+                                        {/if}
+                                    </div>
                                     {if isset($cmt->children)}
                                         {nestcomments cmts=$cmt->children parentuser=$cmt->name depth=$depth+1}
                                     {/if}
