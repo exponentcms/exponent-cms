@@ -52,7 +52,7 @@ if ($db->selectValue('modstate', 'active', 'module="storeController"') ||
   $db->selectValue('modstate', 'active', 'module="eventregistrationController"') ||
   $db->selectValue('modstate', 'active', 'module="donationController"') || FORCE_ECOM) {
     define('ECOM',1);
-    $order = order::getUserCart();      
+    $order = order::getUserCart();
     // global store config
     // We're forcing the location. Global store setting will always have this loc
     $cfg = new stdClass();
