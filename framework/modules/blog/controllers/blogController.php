@@ -247,7 +247,7 @@ class blogController extends expController {
         global $db;
 
         $class = new blog();
-        $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish');
+        $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC');
 
         //Convert the items to rss items
         $rssitems = array();

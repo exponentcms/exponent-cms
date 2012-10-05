@@ -164,7 +164,7 @@ class newsController extends expController {
     
     public function getRSSContent() {
         // pull the news posts from the database
-        $order = isset($this->config['order']) ? $this->config['order'] : 'publish';
+        $order = isset($this->config['order']) ? $this->config['order'] : 'publish DESC';
         $items = $this->news->find('all', $this->aggregateWhereClause(), $order);
 
         //Convert the newsitems to rss items

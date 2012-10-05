@@ -636,7 +636,7 @@ abstract class expController {
         $where = $this->aggregateWhereClause();
 //        $where = empty($where) ? '1' : $where;
 		
-        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at';
+        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at DESC';
 
         $class = new $this->basemodel_name;
         $items = $class->find('all', $where, $order);
@@ -746,7 +746,7 @@ abstract class expController {
         		if ($item->date > $pubDate) { $pubDate = $item->date; }
         		$rss->addItem($item);
         	}
-        	if (isset($site_rss->rss_limit) && $site_rss->rss_limit > 0) {
+        	if (!empty($site_rss->rss_limit)) {
         		$rss->items = array_slice($rss->items, 0, $site_rss->rss_limit);
         	}
         	$rss->pubDate = $pubDate;
