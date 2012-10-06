@@ -35,14 +35,27 @@
  * @param $repeat
  */
 function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
-	if(empty($content)){
+	if(empty($content)) {
 		if (!empty($params['link'])) echo '<a href="javascript:void(0);" onclick="divtoggle(\''.$params['id'].'\')">'.$params['link'].'</a>';
 		echo '<div id="'.$params['id'].'" style="display:none">';
-	}else{	
+	} else {
 		echo $content;	
 		echo '</div>';
 	}
-	
+
+    $script = "
+        function divtoggle(obj) {
+            var el = document.getElementById(obj);
+            el.style.display = (el.style.display != 'none' ? 'none' : '' );
+        }
+    ";
+
+    expJavascript::pushToFoot(array(
+        "unique"  => 'toggle',
+//        "yui3mods"=> 1,
+        "content" => $script,
+    ));
+
 }
 
 ?>
