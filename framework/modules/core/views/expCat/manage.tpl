@@ -31,7 +31,6 @@
     		<a class="add" href="{link controller=$model_name action=edit rank=1}">{"Create a new Category"|gettext}</a>
     	{/if}
     {/permissions}
-
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {if !empty($page)}
@@ -39,6 +38,8 @@
             {/if}
             {foreach name=tabs from=$cats->modules key=moduleid item=module}
                 <li><a href="#tab{$smarty.foreach.items.iteration}">{$moduleid|capitalize} {'Categories'|gettext}</a></li>
+            {foreachelse}
+                <li><a href="#tab0">{'No Categories Defined'|gettext}</a></li>
             {/foreach}
         </ul>
         <div>
@@ -130,6 +131,10 @@
                         </tbody>
                     </table>
                     {$page->links}
+                </div>
+            {foreachelse}
+                <div id="tab0">
+                    {'No Categories Defined'|gettext}
                 </div>
             {/foreach}
         </div>

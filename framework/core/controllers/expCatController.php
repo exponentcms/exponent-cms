@@ -112,7 +112,7 @@ class expCatController extends expController {
             $cats->modules[$record->module][] = $record;
         }
         $catlist[0] = 'Uncategorized';
-        foreach ($cats->modules as $module) {
+        if (!empty($cats->modules)) foreach ($cats->modules as $module) {
             foreach ($module as $listing) {
                 $catlist[$listing->id] = $listing->title;
             }
