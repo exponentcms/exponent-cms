@@ -22,11 +22,8 @@
         	<h1>{'Group Discounts'|gettext}</h1>
 	        <p>{'You can configure certain user groups to get a discount applied to their carts when they checkout.'|gettext}</p>
 	</div>
-	
-	{br}
-	<a class="add" href="{link controller=user action=edit_group id=0}">{'Add a new group'|gettext}</a>
-	<a class="add" href="{link controller=ecomconfig action=manage_discounts}">{'Manage a Discount Rules'|gettext}</a>
-	{br}{br}
+    {icon class=add controller=user action=edit_group id=0 text='Add a new group'|gettext}
+    {icon class=manage controller=ecomconfig action=manage_discounts text='Manage Discount Rules'|gettext}
 	<h2>{'Add a new group discount'|gettext}</h2>
 	<table class="exp-skin-table">
 	<thead>
@@ -51,12 +48,19 @@
 	
 	{if $group_discounts|@count > 0}
 	<h2>{'Modify existing group discount'|gettext}</h2>
+        {permissions}
+            <div class="module-actions">
+                {if $permissions.manage == 1}
+                    {ddrerank items=$group_discounts model="groupdiscounts" label="Group Discounts"|gettext}
+                {/if}
+            </div>
+        {/permissions}
 	<table class="exp-skin-table">
 	    <thead>
 	    <tr>
 	        <th>{'Group'|gettext}</th>
 		    <th>{'Discount'|gettext}</th>
-		    <th>{'Don\'t allow{br}other{br}group discounts'|gettext}</th>
+		    <th>{'Don\'t allow other group discounts'|gettext}</th>
 		    <th>{'Order'|gettext}</th>
 		    <th>{'Action'|gettext}</th>
 	    </tr>

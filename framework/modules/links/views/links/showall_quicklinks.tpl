@@ -28,7 +28,8 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='links' text="Manage Categories"|gettext}
                 {/if}
-                {if $rank == 1}
+                {*{if $rank == 1}*}
+                {if $config.order == 'rank'}
 				    {ddrerank items=$items model="links" label="Links"|gettext}
                 {/if}
             {/if}

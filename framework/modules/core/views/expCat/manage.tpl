@@ -89,7 +89,8 @@
             {foreach name=items from=$cats->modules key=moduleid item=module}
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {if $permissions.manage == 1}
-                        {ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
+                        {*{ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}*}
+                        {ddrerank id=$moduleid items=$module model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
                     {/if}
                     {$page->links}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">

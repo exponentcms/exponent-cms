@@ -22,6 +22,11 @@
  */
 class groupdiscounts extends expRecord {
     public $table = 'groupdiscounts';
+    public $has_one = array(
+        'group',
+        'discounts',
+    );
+
     public $validates = array(
         'presence_of'=>array(
             'group_id'=>array('message'=>'You must select a group to apply this discount to.'),

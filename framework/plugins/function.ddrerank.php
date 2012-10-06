@@ -54,11 +54,14 @@ function smarty_function_ddrerank($params,&$smarty) {
             } else {
                 $locsql = "module='".$params['module']."'";
             }
-        } else {
+        } elseif (isset($obj->location_data)) {
             $locsql = "location_data='".serialize($loc)."'";
+        } else {
+            $locsql = null;
         }
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
-        $params['items'] = $obj->find('all',$locsql.$only,"rank");
+//        $params['items'] = $obj->find('all',$locsql.$only,"rank");  //FIXME why are re-pulling if we sent $iems in if we only need them in rank order???
+        $params['items'] = expSorter::sort(array('array'=>$params['items'],'sortby'=>'rank', 'order'=>'ASC'));
     } elseif (!empty($params['module'])) {
         $model = empty($params['model']) ? '' : $params['model'] ;
         $uniqueloc = $smarty->getTemplateVars('container');

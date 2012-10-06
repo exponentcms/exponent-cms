@@ -27,7 +27,8 @@
             {if !$config.disabletags}
             |  {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
             {/if}
-            {if $rank == 1}
+            {*{if $rank == 1}*}
+            {if $config.order == 'rank'}
             |  {ddrerank items=$page->records model="news" label="News Items"|gettext}
             {/if}
         {/if}

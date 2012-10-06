@@ -33,7 +33,8 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
                 {/if}
-                {if $slides|@count>1 && $rank == 1}
+                {*{if $slides|@count>1 && $rank == 1}*}
+                {if $slides|@count>1 && $config.order == 'rank'}
                     {ddrerank items=$slides model="portfolio" label="Portfolio Pieces"|gettext}
                 {/if}
             {/if}

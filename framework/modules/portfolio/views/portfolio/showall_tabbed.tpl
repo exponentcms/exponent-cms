@@ -34,7 +34,8 @@
                     {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
                 {/if}
             {/if}
-			{if $permissions.manage == 1 && $rank == 1}
+			{*{if $permissions.manage == 1 && $rank == 1}*}
+			{if $permissions.manage == 1 && $config.order == 'rank'}
 				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
 			{/if}
         </div>

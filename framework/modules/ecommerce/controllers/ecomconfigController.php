@@ -268,7 +268,12 @@ class ecomconfigController extends expController {
 		expHistory::set('manageable', $this->params);
 		$groups = group::getAllGroups();
 		$discounts = $db->selectObjects('discounts');
-		$group_discounts = $db->selectObjects('groupdiscounts', null, 'rank');
+//		$group_discounts = $db->selectObjects('groupdiscounts', null, 'rank');
+        $gd = new groupdiscounts();
+        $group_discounts = $gd->find('all', null, 'rank');
+        if (!empty($group_discounts)) foreach ($group_discounts as $key=>$group_discount) {
+            $group_discounts[$key]->title = $group_discount->group->name . ' (' . $group_discount->discounts->title . ')';
+        }
 		assign_to_template(array(
             'groups'=>$groups,
             'discounts'=>$discounts,
