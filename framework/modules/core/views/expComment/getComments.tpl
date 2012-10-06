@@ -20,7 +20,7 @@
 {uniqueid assign="id"}
 
 <div class="exp-comments">
-	{if !$hidecomments && $comments|@count > 0}
+	{if !$hidecomments && ($comments->records|@count > 0 || $config.usescomments!=1)}
 	    <a id="exp-comments"></a>
 	    {if $title}<h3>{$title}</h3>{/if}
         {if $comments->records|@count!=0}
@@ -93,7 +93,7 @@
             <div class="hide-comments">
                 {"Comments have been disabled"|gettext}
             </div>
-        {else}
+        {elseif $config.usescomments!=1}
             <div class="no-comments">
                 {"No comments yet"|gettext}
             </div>
@@ -102,7 +102,6 @@
 	{/if}
 	{if $config.usescomments!=1 && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
 	    {include file="edit.tpl"}
-        {*javascript to change #parent_id to comment id *}
 	{/if}
 </div>
 
