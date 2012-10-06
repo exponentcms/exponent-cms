@@ -36,7 +36,7 @@
 function smarty_function_control($params, &$smarty) {
     global $db, $user;
 
-    if ((isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' || $params['type'] == 'antispam') {
+    if ((isset($params['type']) && isset($params['name'])) || $params['type'] == 'buttongroup' || $params['type'] == 'antispam' || $params['type'] == 'tags') {
 //    || $params['type'] == 'captcha' || $params['type'] == 'recaptcha' || $params['type'] == 'antispam') {
 
         // if a label wasn't passed in then we need to set one.
@@ -313,8 +313,8 @@ function smarty_function_control($params, &$smarty) {
                 $control = new tagtreecontrol($params);
                 break;
             case "tags":
-                $collections = isset($params['collections']) ? $params['collections'] : array();
-                $subtype     = isset($params['subtype']) ? $params['subtype'] : null;
+                $collections = isset($params['collections']) ? $params['collections'] : array();  //FIXME we don't really use this
+                $subtype     = isset($params['subtype']) ? $params['subtype'] : null;   //FIXME we don't really use this
                 $control     = new tagpickercontrol($collections, $subtype);
                 break;
             case "antispam":

@@ -32,14 +32,7 @@
 			{/if}
 		</div>
 	{/permissions}
-	{if $record->expTag|@count>0 && !$config.disabletags}
-		<div class="tags">
-			{'Tags'|gettext}:
-			{foreach from=$record->expTag item=tag name=tags}
-				<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-			{/foreach}
-		</div>
-	{/if}
+    {tags_assigned item=$record}
     <div class="bodycopy">
         {if $config.filedisplay != "Downloadable Files"}
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}

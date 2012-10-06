@@ -60,17 +60,7 @@
             {if !$config.datetag}
                 <span class="date">{$item->publish_date|date_format}</span>
             {/if}
-            {if $item->expTag|@count>0 && !$config.disabletags}
-                {if !$config.datetag}
-                    &#160;|&#160;
-                {/if}
-                <span class="label tags">{'Tags'|gettext}:</span>
-                <span class="value">
-                    {foreach from=$item->expTag item=tag name=tags}
-                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach}
-                </span>
-            {/if}
+            {tags_assigned item=$item prepend='&#160;&#160;|&#160;&#160;'}
             {if $item->isRss != true}
                 {permissions}
                 <div class="item-actions">

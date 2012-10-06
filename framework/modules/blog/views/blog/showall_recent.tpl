@@ -59,7 +59,7 @@
                     {if $item->publish_date > $smarty.now}
                         <strong>{'Will be'|gettext}&#160;
                     {/if}
-                    <span class="label tags">{'Posted by'|gettext}</span>
+                    <span class="label posted">{'Posted by'|gettext}</span>
                     <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
                     {if !$config.datetag}
                         {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
@@ -68,19 +68,8 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                {if empty($item->disable_comments)}
-                    &#160;|&#160;
-                    <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
-                {/if}
-				{if $item->expTag|@count>0 && !$config.disabletags}
-                    &#160;|&#160;
-                    <span class="label tags">{'Tags'|gettext}:</span>
-                    <span class="value">
-                        {foreach from=$item->expTag item=tag name=tags}
-                            <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                        {/foreach}
-                    </span>
-				{/if}
+                {comments_count item=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
+                {tags_assigned item=$record prepend='&#160;&#160;|&#160;&#160;'}
             </div>
             {permissions}
                 <div class="item-actions">

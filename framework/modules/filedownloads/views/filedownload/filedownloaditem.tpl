@@ -53,19 +53,8 @@
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$file->downloads}</span>
-            {if empty($file->disable_comments)}
-               &#160;|&#160;
-               <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$record->expComment|@count} {"Comments"|gettext}</a>
-            {/if}
-            {if $file->expTag|@count>0 && !$config.disabletags}
-                &#160;|&#160;
-                <span class="label tags">{'Tags'|gettext}:</span>
-                <span class="value">
-                    {foreach from=$file->expTag item=tag name=tags}
-                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach}
-                </span>
-            {/if}
+            {comments_count item=$file show=1 prepend='&#160;&#160;|&#160;&#160;'}
+            {tags_assigned item=$file prepend='&#160;&#160;|&#160;&#160;'}
         {/if}
     </div>
     {permissions}
