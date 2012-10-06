@@ -62,74 +62,71 @@
 
             });
             
-            
         });
         {/literal}
-        {/script}
+    {/script}
     {form controller=order action=save_new_order_item id="save_new_order_item_form"}
         {control type=hidden name=product_id value=$product->id}
         {control type=hidden name=orderid value=$params.orderid}
         {control type=hidden name=product_type value=$product->classname}			        
         {control type=hidden name=options_shown value=$product->id}                    
         {if $product->childProduct|@count >= 1}
-    
-    <div id="child-products" class="exp-ecom-table">
-       <table border="0" cellspacing="0" cellpadding="0">
-            <thead>
-                <tr>
-                    <th>&#160;</th>
-                    <th><strong>{"QTY"|gettext}</strong></th>
-                    <th><strong>{"SKU"|gettext}</strong></th>
-                    {foreach from=$product->extra_fields item=chiprodname}                        
-                        <th><span>{$chiprodname.name}</span></th>                            
-                    {/foreach}
-                    <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
-                    <th>{'Action'|gettext}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {foreach from=$product->childProduct item=chiprod}
-                    
-                        <tr class="{cycle values="odd,even"}">
-                            
-                                {* *}
-                                    {*[0] => Always available even if out of stock.*}
-                                    {*[1] => Available but shown as backordered if out of stock.*}
-                                    {*[2] => Unavailable if out of stock.*}
-                                    {*[3] => Show as &quot;Call for Price&quot;.*}
-                                {** }*}
+            <div id="child-products" class="exp-ecom-table">
+               <table border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th>&#160;</th>
+                            <th><strong>{"QTY"|gettext}</strong></th>
+                            <th><strong>{"SKU"|gettext}</strong></th>
+                            {foreach from=$product->extra_fields item=chiprodname}
+                                <th><span>{$chiprodname.name}</span></th>
+                            {/foreach}
+                            <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
+                            <th>{'Action'|gettext}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$product->childProduct item=chiprod}
 
-                                {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
-                                    <td><input name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
-                                    <td><input name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
-                                {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
-                                    <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Out Of Stock</a></span></td>
-                                {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
-                                     <td colspan="2" style="text-align:center; font-weight: bold;">N/A</td> 
-                                {/if}
-                            
-                            <td><span>{$chiprod->model}</span></td>
-                            {if $chiprod->extra_fields}
-                                {foreach from=$chiprod->extra_fields item=ef}
-                                <td><span>{$ef.value|stripslashes}</span></td>
-                                {/foreach}
-                            {/if}
-                            <td style="text-align: right;"> 
-                                {if $chiprod->use_special_price}
-                                    <span style="color:red; font-size: 8px; font-weight: bold;">SALE</span>{br}
-                                    <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></span>
-                                {else}
-                                    <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
-                                {/if}                                                                 
-                            </td> 
-                            <td>
-                            </td>
-                        </tr>                
-                {/foreach}
-            </tbody>
-        </table>        
-    </div>
-                
+                                <tr class="{cycle values="odd,even"}">
+
+                                        {* *}
+                                            {*[0] => Always available even if out of stock.*}
+                                            {*[1] => Available but shown as backordered if out of stock.*}
+                                            {*[2] => Unavailable if out of stock.*}
+                                            {*[3] => Show as &quot;Call for Price&quot;.*}
+                                        {** }*}
+
+                                        {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
+                                            <td><input name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
+                                            <td><input name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
+                                        {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
+                                            <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Out Of Stock</a></span></td>
+                                        {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
+                                             <td colspan="2" style="text-align:center; font-weight: bold;">N/A</td>
+                                        {/if}
+
+                                    <td><span>{$chiprod->model}</span></td>
+                                    {if $chiprod->extra_fields}
+                                        {foreach from=$chiprod->extra_fields item=ef}
+                                        <td><span>{$ef.value|stripslashes}</span></td>
+                                        {/foreach}
+                                    {/if}
+                                    <td style="text-align: right;">
+                                        {if $chiprod->use_special_price}
+                                            <span style="color:red; font-size: 8px; font-weight: bold;">SALE</span>{br}
+                                            <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></span>
+                                        {else}
+                                            <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
+                                        {/if}
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
         {else}
             {control type=text name=qty label="Quantity" value=1}
             {control type=text name=products_price label="Products Price" value=$product->base_price}

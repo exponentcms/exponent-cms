@@ -324,7 +324,8 @@
                 <div class="item-permissions">
                 {if $permissions.add_order_item == 1 && !$pf} 
                     <tr>
-                        <td colspan="8" style='text-align: right;'><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->
+                        {*<td colspan="8" style='text-align: right;'><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->*}
+                        <td colspan="8"><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->
                         {capture assign="callbacks"}
                         {literal}                       
                         

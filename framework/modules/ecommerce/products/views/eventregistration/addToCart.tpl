@@ -24,12 +24,12 @@
         {control type="hidden" name="product_id" value=$product->id}
         {control type="hidden" name="quantity" value=1}
 
-<div class="module cart eventregistration addToCart registration_div" id="regdiv"> 
-        {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"|gettext}
-        {control type="text" id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}
-        {control type="text" id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}
-<hr>
-     </div>
+        <div class="module cart eventregistration addToCart registration_div" id="regdiv">
+            {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"|gettext}
+            {control type="text" id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}
+            {control type="text" id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}
+            <hr>
+        </div>
         <a class="exp-ecom-link plus" id="newregistrant" href="#"><em>{'Add another registrant'|gettext}</em> <span></span></a> &#160;&#160; {'OR'|gettext} &#160; <a class="exp-ecom-link addtocart" onclick="EXPONENT.validateReg()" href="#"><em>{'Add Registration to Cart'|gettext}</em><span></span></a>
     {/form}
     
