@@ -59,9 +59,7 @@ function smarty_function_help($params,&$smarty) {
         
         expCSS::pushToHead(array(
 		    "csscore"=>"admin-global",
-		    )
-		);
-
+        ));
     }
 }
 

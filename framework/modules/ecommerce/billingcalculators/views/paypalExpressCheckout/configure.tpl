@@ -56,14 +56,12 @@
 
 {script unique="authtabs" yui3mods=1}
 {literal}
-EXPONENT.YUI3_CONFIG.modules.exptabs = {
-    fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-    requires: ['history','tabview','event-custom']
-};
+    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+        requires: ['history','tabview','event-custom']
+    };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#paypal-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#paypal-tabs'});
 		Y.one('#paypal-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

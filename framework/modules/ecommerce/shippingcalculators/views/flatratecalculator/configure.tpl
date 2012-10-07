@@ -36,8 +36,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#flatrate-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#flatrate-tabs'});
 		Y.one('#flatrate-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

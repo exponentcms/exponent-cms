@@ -144,9 +144,6 @@
     };
 
     YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        var history = new Y.HistoryHash();
-//        var tabview = new Y.TabView({srcNode:'#storetabs'});
-//        tabview.render();
         Y.expTabs({srcNode: '#storetabs'});
         Y.one('#storetabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

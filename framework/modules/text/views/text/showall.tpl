@@ -65,5 +65,9 @@
 			</div>
         {/permissions}
         {clear}
+        {toggle id=test link='click here'|gettext}
+            {$text->title}
+            {$text->body}
+        {/toggle}
     {/foreach}
 </div>

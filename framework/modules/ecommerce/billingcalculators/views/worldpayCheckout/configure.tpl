@@ -49,8 +49,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#worldpay-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#worldpay-tabs'});
 		Y.one('#worldpay-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

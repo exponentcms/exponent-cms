@@ -57,8 +57,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#payflow-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#payflow-tabs'});
 		Y.one('#payflow-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

@@ -35,8 +35,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//	    var tabview = new Y.TabView({srcNode:'#instore-tabs'});
-//	    tabview.render();
         Y.expTabs({srcNode: '#instore-tabs'});
 		Y.one('#instore-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

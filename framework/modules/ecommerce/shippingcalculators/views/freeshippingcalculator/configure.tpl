@@ -36,8 +36,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//	    var tabview = new Y.TabView({srcNode:'#freeship-tabs'});
-//	    tabview.render();
         Y.expTabs({srcNode: '#freeship-tabs'});
 		Y.one('#freeship-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

@@ -84,8 +84,6 @@
 
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element','exptabs', function(Y) {
         var YAHOO=Y.YUI2;
-//		var tabview = new Y.TabView({srcNode:'#discounttabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#discounttabs'});
 		Y.one('#discounttabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
