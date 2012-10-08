@@ -8,6 +8,4 @@ For a complete list of the changes made from release to release, see the CHANGEL
 
 2.1.0 - November 2012
 ========================
-# This release focuses on upgrading calendar module to a 2.0 controller.
-Implementing some forms modules features/possibly move it to 2.0. Making e-Commerce a better OOTB experience.
-Begin more graceful integration of jQuery/Twitter Bootstrap, etc...
+# This release focuses on new calendar & forms modules, e-Commerce as OOTB experience, integration of jQuery/Twitter Bootstrap

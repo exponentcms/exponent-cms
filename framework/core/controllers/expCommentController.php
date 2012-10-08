@@ -180,7 +180,7 @@ class expCommentController extends expController {
     /**
      * function to arrange comments in hierarchy of parent_id's as children properties
      *
-     * @param $comments
+     * @param array $comments
      *
      * @return array
      */

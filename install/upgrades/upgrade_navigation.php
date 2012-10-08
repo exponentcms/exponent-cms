@@ -47,9 +47,10 @@ class upgrade_navigation extends upgradescript {
    	 * @return bool
    	 */
    	function needed() {
-        if (expUtil::isReallyWritable(BASE."framework/modules-1/navigationmodule/actions/")) {
-            return true;  // the old files still exist
-        } else return false;
+        return true;
+//        if (expUtil::isReallyWritable(BASE."framework/modules-1/navigationmodule/actions/")) {
+//            return true;  // the old files still exist
+//        } else return false;
    	}
 
 	/**
