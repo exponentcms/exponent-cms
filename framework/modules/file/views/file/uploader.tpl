@@ -60,7 +60,7 @@
 
 {script unique="uploader"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('node','uploader-deprecated', function(Y) {
     var uploader,
         selectedFiles = {};
 
@@ -71,7 +71,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader', function(Y) {
         Y.one("#uploaderOverlay").set("offsetWidth", overlayRegion.width);
         Y.one("#uploaderOverlay").set("offsetHeight", overlayRegion.height);
 
-        var swfURL = EXPONENT.YUI3_RELATIVE + "uploader/assets/uploader.swf";
+        var swfURL = EXPONENT.YUI3_RELATIVE + "uploader-deprecated/assets/uploader.swf";
 
         if (Y.UA.ie >= 6) {
         	swfURL += "?t=" + Y.guid();
