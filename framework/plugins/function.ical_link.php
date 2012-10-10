@@ -37,10 +37,14 @@ function smarty_function_ical_link($params,&$smarty) {
     $ical_on = false;
     if (isset($params['show'])) {  // force display of link
         $ical_on = !empty($params['show']);
-    } elseif (is_object($config)) {
+    } elseif (is_object($config)) {  // old school module
         $ical_on = !empty($config->enable_ical);
         $title = $config->feed_title;
         $sef = $config->sef_url;
+    } elseif (is_array($config)) {  // controller
+        $ical_on = !empty($config['enable_ical']);
+        $title = $config['feed_title'];
+        $sef = $config['feed_sef_url'];
     }
     if (isset($params['feed'])) {  // passing a feed
         $ical_on = true;
@@ -59,7 +63,6 @@ function smarty_function_ical_link($params,&$smarty) {
        	if (!isset($params['module'])) $params['module'] = $loc->mod;
         if (!isset($params['src'])) $params['src'] = $loc->src;
        	if (!isset($params['int'])) $params['int'] = $loc->int;
-
         if (!empty($sef)) {
             $link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'ical', 'title'=>$sef));
         } else {
