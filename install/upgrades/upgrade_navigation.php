@@ -140,7 +140,7 @@ class upgrade_navigation extends upgradescript {
                 unlink(BASE.$file);
             }
         }
-		// delete old navigationmodule, common, & editor connect files
+		// delete old navigationmodule folders
         $olddirs = array(
             "framework/modules-1/navigationmodule/actions/",
             "framework/modules-1/navigationmodule/views/",
@@ -150,9 +150,20 @@ class upgrade_navigation extends upgradescript {
                 expFile::removeDirectory(BASE.$dir);
             }
         }
-//        if (expUtil::isReallyWritable(BASE."framework/modules-1/common/views/")) {
-//            expFile::removeFilesInDirectory(BASE."framework/modules-1/common/views/");
-//        }
+
+        // copy custom views to new location
+        $src = THEME_ABSOLUTE."/modules/navigationmodule/views/";
+        $dst = THEME_ABSOLUTE."/modules/navigation/views/navigation/";
+        if (expUtil::isReallyWritable($src)) {
+            $dir = opendir($src);
+            if (!file_exists($dst)) @mkdir($dst);
+            while(false !== ( $file = readdir($dir)) ) {
+                if (( $file != '.' ) && ( $file != '..' )) {
+                    if (!file_exists($dst . '/showall_' . $file)) copy($src . '/' . $file,$dst . '/showall_' . $file);
+                }
+            }
+            closedir($dir);
+        }
 
 		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Navigation modules were upgraded.")."<br>".gt("and navigationmodule files were then deleted.");
 	}
