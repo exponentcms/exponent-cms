@@ -14,10 +14,10 @@
  *}
 
 {if $ancestors|@count>0}
-<div class="module store category-breadcrumb">
-    {foreach from=$ancestors item=ancestor name=path}
-        <a href="{link controller=store action=showall title=$ancestor->sef_url}">{$ancestor->title}</a>
-        {*if $smarty.foreach.path.last}{br}{else}>&#160;{/if*}
-    {/foreach}
-</div>
+    <div class="module store category-breadcrumb">
+        {foreach from=$ancestors item=ancestor name=path}
+            <a href="{link controller=store action=showall title=$ancestor->sef_url}">{$ancestor->title}</a>
+            {*if $smarty.foreach.path.last}{br}{else}>&#160;{/if*}
+        {/foreach}
+    </div>
 {/if}

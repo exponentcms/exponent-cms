@@ -18,7 +18,7 @@
 {control type="dropdown" name="shipping[required_shipping_calculator_id]" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="-- Select a shipping service --" items=$shipping_services value=$record->required_shipping_calculator_id onchange="switchMethods();"}
 {foreach from=$shipping_methods key=calcid item=methods name=sm}
     <div id="dd-{$calcid}" class="hide methods">
-    {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods"|gettext items=$methods value=$record->required_shipping_method}
+        {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods"|gettext items=$methods value=$record->required_shipping_method}
     </div>
 {/foreach}
 {icon controller="shipping" action="manage" text="Manage Shipping Options"|gettext}

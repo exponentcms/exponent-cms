@@ -14,7 +14,6 @@
  *}
 
 <div class="product">
-
     {if $listing->availability_type != 3 && $listing->active_type == 0}
         <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>   
         {*if $listing->hasChildren()}            
@@ -49,27 +48,26 @@
         {/if}
     </div>
 
-
     {permissions}
-    <div class="item-actions">
-        {if $permissions.edit == 1}
-            {icon action=edit record=$listing title="Edit `$listing->title`"}
-        {/if}
-        {if $permissions.delete == 1}
-            {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this product?"|gettext)|cat:"');"}
-        {/if}
-        {if $permissions.edit == 1}
-            {icon action=copyProduct class="copy" record=$listingtitle text="Copy" title="Copy `$listing->title` " record=$listing}
-        {/if}
-    </div>
+        <div class="item-actions">
+            {if $permissions.edit == 1}
+                {icon action=edit record=$listing title="Edit `$listing->title`"}
+            {/if}
+            {if $permissions.delete == 1}
+                {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this product?"|gettext)|cat:"');"}
+            {/if}
+            {if $permissions.edit == 1}
+                {icon action=copyProduct class="copy" record=$listingtitle text="Copy" title="Copy `$listing->title` " record=$listing}
+            {/if}
+        </div>
     {/permissions}
 
     <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">
-    {img file_id=$listing->expFile.mainimage[0]->id w=140 h=150}
+        {img file_id=$listing->expFile.mainimage[0]->id w=140 h=150}
     </a>
 
     <h3>
-    <a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a>
+        <a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a>
     </h3>   
 
     <!-- a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">
@@ -79,6 +77,4 @@
     <p class="bodycopy">
         {$listing->summary}
     </p -->
-    
-    
 </div>

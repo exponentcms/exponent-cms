@@ -45,18 +45,18 @@
         <div class="address-info">
             <table border="0" cellspacing="0" cellpadding="0">
                 <thead>
-                <tr>
-                    <th>
-                    {"Billing Address"|gettext}
-                    </th>
-                </tr>
+                    <tr>
+                        <th>
+                        {"Billing Address"|gettext}
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr class="even">
-                    <td>
-                    {$order->billingmethod[0]->addresses_id|address}
-                    </td>
-                </tr>
+                    <tr class="even">
+                        <td>
+                        {$order->billingmethod[0]->addresses_id|address}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -102,25 +102,25 @@
             {else}
             <table border="0" cellspacing="0" cellpadding="0">
                 <thead>
-                <tr>
-                    <th>
-                        <strong>{$shipping->shippingmethod->option_title}</strong> to:
-                    </th>
-                </tr>
+                    <tr>
+                        <th>
+                            <strong>{$shipping->shippingmethod->option_title}</strong> to:
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr class="even">
-                    <td>
-                        {$shipping->shippingmethod->addresses_id|address}
-                        {if $shipping->shippingmethod->to != "" || $shipping->shippingmethod->from != "" || $shipping->shippingmethod->message != ""}
-                            {br}
-                            <h4>{'Gift Message'|gettext}</h4>
-                            <strong>{'To:'|gettext} </strong>{$shipping->shippingmethod->to}{br}
-                            <strong>{'From'|gettext}: </strong>{$shipping->shippingmethod->from}{br}
-                            <strong>{'Message'|gettext}: </strong>{$shipping->shippingmethod->message}{br}
-                        {/if}
-                    </td>
-                </tr>
+                    <tr class="even">
+                        <td>
+                            {$shipping->shippingmethod->addresses_id|address}
+                            {if $shipping->shippingmethod->to != "" || $shipping->shippingmethod->from != "" || $shipping->shippingmethod->message != ""}
+                                {br}
+                                <h4>{'Gift Message'|gettext}</h4>
+                                <strong>{'To:'|gettext} </strong>{$shipping->shippingmethod->to}{br}
+                                <strong>{'From'|gettext}: </strong>{$shipping->shippingmethod->from}{br}
+                                <strong>{'Message'|gettext}: </strong>{$shipping->shippingmethod->message}{br}
+                            {/if}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         {/if}
@@ -158,59 +158,59 @@
         <div class=" order-total">
             <table class="nowrap">
                 <thead>
-                <tr>
-                    <th colspan="2">
-                        {'Totals'|gettext}
-                    </th>
-                </tr>
+                    <tr>
+                        <th colspan="2">
+                            {'Totals'|gettext}
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr class="even">
-                    <td class="right">{'Subtotal'|gettext}:</td>
-                    <td class="totals subtotal">{currency_symbol}{$order->subtotal|number_format:2}</td>
-                </tr>
-                    {if $order->total_discounts > 0}
-                    <tr class="odd">
-                        <td class="right">{'Discounts'|gettext}:</td>
-                        <td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td>
-                    </tr>
                     <tr class="even">
-                        <td class="right">{'Total'|gettext}:</td>
-                        <td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td>
+                        <td class="right">{'Subtotal'|gettext}:</td>
+                        <td class="totals subtotal">{currency_symbol}{$order->subtotal|number_format:2}</td>
                     </tr>
-                    {/if}
-                <tr class="odd">
-                    <td class="right">{'Tax'|gettext}:</td>
-                    <td class="totals tax">{currency_symbol}{$order->tax|number_format:2}</td>
-                </tr>
-                    {if $order->shipping_required == true}
-                    <tr class="even">
-                        <td class="right">{'Shipping'|gettext}:</td>
-                        <td class="totals shipping">{currency_symbol}{$order->shipping_total_before_discounts|number_format:2}</td>
-                    </tr>
-                        {if $order->shippingDiscount > 0}
+                        {if $order->total_discounts > 0}
                         <tr class="odd">
-                            <td class="right">{'Shipping'|gettext}<br/>{'Discount'|gettext}:</td>
-                            <td class="totals shipping">{currency_symbol}
-                                -{$order->shippingDiscount|number_format:2}</td>
+                            <td class="right">{'Discounts'|gettext}:</td>
+                            <td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td>
                         </tr>
                         <tr class="even">
-                            <td class="right">{'Total Shipping'|gettext}:</td>
-                            <td class="totals shipping">{currency_symbol}{$order->shipping_total|number_format:2}</td>
+                            <td class="right">{'Total'|gettext}:</td>
+                            <td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td>
                         </tr>
                         {/if}
-                    {/if}
-                    {if $order->surcharge_total != 0}
-                    <tr class="even">
-                        <td class="right">{'Freight Surcharge'|gettext}:</td>
-                        <td class="totals shipping">{currency_symbol}{$order->surcharge_total|number_format:2}</td>
+                    <tr class="odd">
+                        <td class="right">{'Tax'|gettext}:</td>
+                        <td class="totals tax">{currency_symbol}{$order->tax|number_format:2}</td>
                     </tr>
-                    {/if}
-                <tr class="odd">
-                    <td class="right">{'Final Total'|gettext}:</td>
-                    <td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td>
-                </tr>
-                {*</tr>*}
+                        {if $order->shipping_required == true}
+                        <tr class="even">
+                            <td class="right">{'Shipping'|gettext}:</td>
+                            <td class="totals shipping">{currency_symbol}{$order->shipping_total_before_discounts|number_format:2}</td>
+                        </tr>
+                            {if $order->shippingDiscount > 0}
+                            <tr class="odd">
+                                <td class="right">{'Shipping'|gettext}<br/>{'Discount'|gettext}:</td>
+                                <td class="totals shipping">{currency_symbol}
+                                    -{$order->shippingDiscount|number_format:2}</td>
+                            </tr>
+                            <tr class="even">
+                                <td class="right">{'Total Shipping'|gettext}:</td>
+                                <td class="totals shipping">{currency_symbol}{$order->shipping_total|number_format:2}</td>
+                            </tr>
+                            {/if}
+                        {/if}
+                        {if $order->surcharge_total != 0}
+                        <tr class="even">
+                            <td class="right">{'Freight Surcharge'|gettext}:</td>
+                            <td class="totals shipping">{currency_symbol}{$order->surcharge_total|number_format:2}</td>
+                        </tr>
+                        {/if}
+                    <tr class="odd">
+                        <td class="right">{'Final Total'|gettext}:</td>
+                        <td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td>
+                    </tr>
+                    {*</tr>*}
                 </tbody>
             </table>
         </div>

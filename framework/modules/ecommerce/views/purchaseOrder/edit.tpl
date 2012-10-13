@@ -22,7 +22,6 @@
     <h1>{if $record->id}{"Editing"|gettext}{else}{'Creating'|gettext}{/if} {"Purchase Order"|gettext}</h1>
     <form id="create_po">
         {control type="dropdown" name="vendor" id="vendorSelect" label="Select a Vendor"|gettext includeblank="--Select a Vendor--"|gettext frommodel=vendor key=id display=title value=$purchase_order->vendor_id}
-		
     </form>
     <div id="vendorinfo">
         <h2>{"Select a Vendor above"|gettext}</h2>
@@ -31,71 +30,70 @@
         <thead>
             <tr>
                 <th>
-                {"Your Item #"|gettext}
+                    {"Your Item #"|gettext}
                 </th>
                 <th>
-                {"Your #"|gettext}
+                    {"Your #"|gettext}
                 </th>
                 <th>
-                {"Description"|gettext}
+                    {"Description"|gettext}
                 </th>
                 <th>
-                {"Qty"|gettext}
+                    {"Qty"|gettext}
                 </th>
                 <th>
-                {"Rate"|gettext}
+                    {"Rate"|gettext}
                 </th>
                 <th>
-                {"Cust. Order"|gettext}
+                    {"Cust. Order"|gettext}
                 </th>
                 <th>
-                {"Orig. PO"|gettext}
+                    {"Orig. PO"|gettext}
                 </th>
                 <th>
-                {"ETA"|gettext}
+                    {"ETA"|gettext}
                 </th>
                 <th>
-                {"Action"|gettext}
+                    {"Action"|gettext}
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr class="controlrow">
                 <form id="controlRowValues">
-                <td>
-                    <input type="text" name="vid" value="">
-                </td>
-                <td>
-                    <input type="text" name="product" value="">
-                </td>
-                <td>
-                    <textarea name="productdescription">
-                    </textarea>
-                </td>
-                <td>
-                    <input type="text" name="qty" value="" size="5">
-                </td>
-                <td>
-                    <input type="text" name="rate" value="" size="5">
-                </td>
-                <td>
-                    <input type="text" name="custorder" value="" size="5">
-                </td>
-                <td>
-                    <input type="text" name="origpo" value="" size="5">
-                </td>
-                <td>
-                    <input type="text" name="eta" value="" size="5">
-                </td>
-                <td>
-                    <a href="#" id="addPOItem">[ {"add"|gettext} ]</a>
-                </td>
-            </form>    
+                    <td>
+                        <input type="text" name="vid" value="">
+                    </td>
+                    <td>
+                        <input type="text" name="product" value="">
+                    </td>
+                    <td>
+                        <textarea name="productdescription">
+                        </textarea>
+                    </td>
+                    <td>
+                        <input type="text" name="qty" value="" size="5">
+                    </td>
+                    <td>
+                        <input type="text" name="rate" value="" size="5">
+                    </td>
+                    <td>
+                        <input type="text" name="custorder" value="" size="5">
+                    </td>
+                    <td>
+                        <input type="text" name="origpo" value="" size="5">
+                    </td>
+                    <td>
+                        <input type="text" name="eta" value="" size="5">
+                    </td>
+                    <td>
+                        <a href="#" id="addPOItem">[ {"add"|gettext} ]</a>
+                    </td>
+                </form>
             </tr>
         </tbody>
     </table>
 </div>
-
 
 {script unique="purchase-orders" yui3mods=1}
 {literal}
@@ -149,7 +147,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', function(Y) {
         //var id = id; // Transaction ID.
         //var args = args[1]; // 'ipsum'.
     };
-
 
     var addItemRow = function (e){
         e.halt();

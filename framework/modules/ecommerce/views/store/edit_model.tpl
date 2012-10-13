@@ -29,15 +29,15 @@
 	</thead>
 	<tbody>
 		{foreach from=$record->model_alias item=model_alias key=key name=model_aliases}
-		<tr class="{cycle values='odd,even'}">
-			<td>
-				{icon action=edit_model_alias record=$model_alias img="edit.png"}  
-				{icon action=delete_model_alias record=$model_alias img="delete.png"}  
-			</td>
-			<td>
-			{$model_alias->model}
-			</td>
-		</tr>
+            <tr class="{cycle values='odd,even'}">
+                <td>
+                    {icon action=edit_model_alias record=$model_alias img="edit.png"}
+                    {icon action=delete_model_alias record=$model_alias img="delete.png"}
+                </td>
+                <td>
+                {$model_alias->model}
+                </td>
+            </tr>
 		{/foreach}
 	</tbody>
 </table>

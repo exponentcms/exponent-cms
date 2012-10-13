@@ -35,16 +35,15 @@
     </thead>
     <tbody>
         {foreach from=$zones item=zone key=key name=zones}
-        <tr class="{cycle values="odd,even"}">
-            <td>
-                {icon action=edit_zone record=$zone img="edit.png"}  
-                {icon action=delete_zone record=$zone img="delete.png"}  
-            </td>
-            <td>
-            {$zone->name}
-            </td>
-        </tr>
+            <tr class="{cycle values="odd,even"}">
+                <td>
+                    {icon action=edit_zone record=$zone img="edit.png"}
+                    {icon action=delete_zone record=$zone img="delete.png"}
+                </td>
+                <td>
+                    {$zone->name}
+                </td>
+            </tr>
         {/foreach}
     </tbody>
 </table>
-

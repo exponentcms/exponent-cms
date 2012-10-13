@@ -313,9 +313,6 @@
     };
 
     YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//        var history = new Y.HistoryHash(),
-//            tabview = new Y.TabView({srcNode:'#ordertabs'});
-//        tabview.render();
         Y.expTabs({srcNode: '#ordertabs'});
         Y.one('#ordertabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

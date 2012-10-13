@@ -73,31 +73,31 @@
         {/if}
         
         {if $product->expFile.images[0]->id}
-        <div class="additional thumbnails">
-            <h3>{"Additional Images"|gettext}</h3>
-            <ul>
-                <li>
-                    {if $config.enable_lightbox}
-                        <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
-                    {/if}
-                    {img file_id=$product->expFile.mainthumbnail[0]->id|default:$mainimg->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg->id`"}
-                    {if $config.enable_lightbox}
-                        </a>
-                    {/if}
-                </li>
-                {foreach from=$product->expFile.images item=thmb}
-                <li>
-                    {if $config.enable_lightbox}
-                        <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$thmb->id}&w={$config.enlrg_w|default:500}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
-                    {/if}
-                    {img file_id=$thmb->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$thmb->id`"}
-                    {if $config.enable_lightbox}
-                        </a>
-                    {/if}
-                </li>
-                {/foreach}
-            </ul>
-        </div>
+            <div class="additional thumbnails">
+                <h3>{"Additional Images"|gettext}</h3>
+                <ul>
+                    <li>
+                        {if $config.enable_lightbox}
+                            <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$mainimg->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                        {/if}
+                        {img file_id=$product->expFile.mainthumbnail[0]->id|default:$mainimg->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$mainimg->id`"}
+                        {if $config.enable_lightbox}
+                            </a>
+                        {/if}
+                    </li>
+                    {foreach from=$product->expFile.images item=thmb}
+                        <li>
+                            {if $config.enable_lightbox}
+                                <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$thmb->id}&w={$config.enlrg_w|default:500}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                            {/if}
+                            {img file_id=$thmb->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$thmb->id`"}
+                            {if $config.enable_lightbox}
+                                </a>
+                            {/if}
+                        </li>
+                    {/foreach}
+                </ul>
+            </div>
         {/if}
         
         {if $config.enable_lightbox}

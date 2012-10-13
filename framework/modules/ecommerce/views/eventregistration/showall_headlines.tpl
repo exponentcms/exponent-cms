@@ -23,14 +23,14 @@
 <div class="module events showall headlines">
     {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
-    <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit == true}
-            {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
-        {/if}
-        {if $permissions.manage == 1}
-             {icon action=manage text="Manage Events"|gettext}
-        {/if}
-    </div>
+        <div class="module-actions">
+            {if $permissions.create == true || $permissions.edit == true}
+                {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+            {/if}
+            {if $permissions.manage == 1}
+                 {icon action=manage text="Manage Events"|gettext}
+            {/if}
+        </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}

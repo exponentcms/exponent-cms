@@ -77,12 +77,12 @@
 	
      <div class="bd">
          {permissions}
-         <div class="item-actions">
-             {if $permissions.configure == 1 or $permissions.manage == 1}
-				 {icon controller="store" action="edit" id=$product->id title="Edit this entry"|gettext}
-                 {icon controller="store" action="delete" id=$product->id title="Delete this entry"|gettext}
-             {/if}
-         </div>
+             <div class="item-actions">
+                 {if $permissions.configure == 1 or $permissions.manage == 1}
+                     {icon controller="store" action="edit" id=$product->id title="Edit this entry"|gettext}
+                     {icon controller="store" action="delete" id=$product->id title="Delete this entry"|gettext}
+                 {/if}
+             </div>
          {/permissions}
 
          <div class="bodycopy">

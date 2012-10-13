@@ -64,5 +64,3 @@
 {script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_RELATIVE`exp-ecomcheckout.js"}
 //
 {/script}
-
-

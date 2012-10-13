@@ -21,14 +21,13 @@ if (!defined('EXPONENT')) exit('');
 global $db, $router;
 if ($db->countObjects('product', 'product_type="eventregistration"') == 0) return false;
 
-$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
-
 $items = array();
 $items[] = array(
     'text'=>"<strong><u>".gt('View All Event Registrations')."</u><strong>",
     'url'=>makeLink(array('controller'=>'eventregistration','action'=>'manage')),
 );
 
+$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
 foreach ($events as $event) {
     $prod = $db->selectObject('product', 'product_type="eventregistration" AND product_type_id='.$event->id);
     if (!empty($prod->title)) {

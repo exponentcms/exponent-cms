@@ -37,12 +37,12 @@
 	<div class="leftcol">
 		<h2>{'Select a Vendor'|gettext}</h2>
 		<ul>
-		<li {if !$vendor_id}class="current"{/if}><a href="{link action='getPurchaseOrderByJSON' ajax_action=1}">{'All Vendors'|gettext}</a></li>
-		{foreach from=$vendors item=vendor}
-			<li {if $vendor_id == $vendor->id}class="current"{/if}>
-				<a href="{link action='getPurchaseOrderByJSON' vendor=$vendor->id ajax_action=1}">{$vendor->title}</a>
-			</li>
-		{/foreach}
+            <li {if !$vendor_id}class="current"{/if}><a href="{link action='getPurchaseOrderByJSON' ajax_action=1}">{'All Vendors'|gettext}</a></li>
+            {foreach from=$vendors item=vendor}
+                <li {if $vendor_id == $vendor->id}class="current"{/if}>
+                    <a href="{link action='getPurchaseOrderByJSON' vendor=$vendor->id ajax_action=1}">{$vendor->title}</a>
+                </li>
+            {/foreach}
 		</ul>
 	</div>
 	
@@ -51,41 +51,40 @@
 			<thead>
 				<tr>
 					<th>
-					{"Order Number"|gettext}
+                        {"Order Number"|gettext}
 					</th>
 					<th>
-					{"Vendor"|gettext}
+                        {"Vendor"|gettext}
 					</th>
 					<th>
-					{"Date"|gettext}
+                        {"Date"|gettext}
 					</th>
 					<th>
-					{"Status"|gettext}
+                        {"Status"|gettext}
 					</th>
 				</tr>
 			</thead>
 			<tbody id="purchaseOrderDynmicData">
 				{foreach from=$purchase_orders item=purchase_order key=key name=purchase_order}
-				<tr>
-					<td>
-					{$purchase_order->purchase_order_number}
-					</td>
-					<td>
-				   {$purchase_order->vendor->title}
-					</td>
-					<td>
-					{$purchase_order->created_at|format_date}
-					</td>
-					<td>
-					ordered
-					</td>
-				</tr>
+                    <tr>
+                        <td>
+                            {$purchase_order->purchase_order_number}
+                        </td>
+                        <td>
+                            {$purchase_order->vendor->title}
+                        </td>
+                        <td>
+                            {$purchase_order->created_at|format_date}
+                        </td>
+                        <td>
+                            {'ordered'|gettext}
+                        </td>
+                    </tr>
 				{/foreach}
 			</tbody>
 		</table>
 	</div>
 </div>
-
 
 {script unique="purchase-orders" yui3mods=1}
 {literal}
@@ -111,7 +110,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io-base', 'json-parse', function(Y) {
 			var id = id; // Transaction ID.
 			var dataJson = responseObject.response; // Response data.
 			
-			
 			data = '';
 			var data = Y.JSON.parse(dataJson);
 			var rows = '';
@@ -134,4 +132,3 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io-base', 'json-parse', function(Y) {
 });
 {/literal}
 {/script}
-

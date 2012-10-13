@@ -14,30 +14,28 @@
  *}
 
     <td>
-    {$record.vid}
-
+        {$record.vid}
     </td>
     <td>
-    {$record.product}
-
+        {$record.product}
     </td>
     <td>
-    {$record.productdescription}
+        {$record.productdescription}
     </td>
     <td>
-    {$record.qty}
+        {$record.qty}
     </td>
     <td>
-    {$record.rate}
+        {$record.rate}
     </td>
     <td>
-    {$record.custorder}
+        {$record.custorder}
     </td>
     <td>
-    {$record.origpo}
+        {$record.origpo}
     </td>
     <td>
-    {$record.eta}
+        {$record.eta}
     </td>
     <td>
         <a href="#" class="remove">[ {'remove'|gettext} ]</a>

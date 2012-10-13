@@ -20,6 +20,5 @@
     {control type="dropdown" name="zone" label="Zone"|gettext items=$zones value=$record->zone}
     {control type=state name=state label="State/Province"|gettext value=$record->state}
     {control type=country name=country label="Country"|gettext value=$record->country}
-
     {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

@@ -30,15 +30,15 @@
             </thead>
             <tbody>
                 {foreach from=$page->records item=listing name=listings}
-                <tr class="{cycle values="odd,even"}">
-                    <td>{$listing->purchased|format_date}</td>
-                    <td><a href="{link action=myOrder id=$listing->id}">{$listing->invoice_id}</a></td>
-                    <td>${$listing->billingmethod[0]->billing_cost|number_format:2}</td>
-                </tr>
+                    <tr class="{cycle values="odd,even"}">
+                        <td>{$listing->purchased|format_date}</td>
+                        <td><a href="{link action=myOrder id=$listing->id}">{$listing->invoice_id}</a></td>
+                        <td>${$listing->billingmethod[0]->billing_cost|number_format:2}</td>
+                    </tr>
                 {foreachelse}
-                <tr>
-                    <td colspan=3>{'No Orders Found'|gettext}</td>
-                </tr>
+                    <tr>
+                        <td colspan=3>{'No Orders Found'|gettext}</td>
+                    </tr>
                 {/foreach}
             </tbody>
         </table>

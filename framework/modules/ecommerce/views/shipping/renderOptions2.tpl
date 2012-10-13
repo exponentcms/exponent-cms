@@ -45,7 +45,7 @@
             </ul>
         </div>
     </div>
-    {else}
+{else}
     <div id="shipping-error" class="error">
         {$shipping->pricelist}
     </div>

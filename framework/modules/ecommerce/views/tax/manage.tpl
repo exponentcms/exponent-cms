@@ -48,28 +48,27 @@
     </thead>
     <tbody>
         {foreach from=$taxes item=tax key=key name=taxes}
-        <tr class="{cycle values="odd,even"}">
-            <td>
-            {$tax->classname}
-            </td>
-            <td>
-            {$tax->rate|number_format:2}%
-            </td>
-            <td>
-            {$tax->zonename}
-            </td>
-            <td>
-            {$tax->state}
-            </td>
-            <td>
-            {$tax->country}
-            </td>
-			<td>
-                {icon action=edit record=$tax img="edit.png"}  
-                {icon action=delete record=$tax img="delete.png"}  
-            </td>
-        </tr>
+            <tr class="{cycle values="odd,even"}">
+                <td>
+                    {$tax->classname}
+                </td>
+                <td>
+                    {$tax->rate|number_format:2}%
+                </td>
+                <td>
+                    {$tax->zonename}
+                </td>
+                <td>
+                    {$tax->state}
+                </td>
+                <td>
+                    {$tax->country}
+                </td>
+                <td>
+                    {icon action=edit record=$tax img="edit.png"}
+                    {icon action=delete record=$tax img="delete.png"}
+                </td>
+            </tr>
         {/foreach}
     </tbody>
 </table>
-

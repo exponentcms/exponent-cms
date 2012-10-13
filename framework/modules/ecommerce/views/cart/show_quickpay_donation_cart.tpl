@@ -21,18 +21,18 @@
         <th>&#160;</th>
     </tr>
     {foreach from=$items item=item}
-    <tr class="{cycle values="odd,even"}">
-        <td class="prodrow item">
-             {get_cart_summary item=$item}
-        </td>
-        <td class="prodrow price" id="price-{$item->id}">${$item->products_price*$item->quantity|number_format:2}</td>
-        <!--<td class="prodrow price" id="price-{$item->id}">${$item->getTotal()|number_format:2}</td>-->
-        <td class="prodrow">{icon img="../../../modules/ecommerce/assets/images/delete-from-cart.png" action=removeItem record=$item alt="Remove from cart"|gettext}</td>
-    </tr>
+        <tr class="{cycle values="odd,even"}">
+            <td class="prodrow item">
+                 {get_cart_summary item=$item}
+            </td>
+            <td class="prodrow price" id="price-{$item->id}">${$item->products_price*$item->quantity|number_format:2}</td>
+            <!--<td class="prodrow price" id="price-{$item->id}">${$item->getTotal()|number_format:2}</td>-->
+            <td class="prodrow">{icon img="../../../modules/ecommerce/assets/images/delete-from-cart.png" action=removeItem record=$item alt="Remove from cart"|gettext}</td>
+        </tr>
     {/foreach}
 </table>
 {else}
-<div class="no-items">
-    {'You currently have no items in your cart'|gettext}
-</div>
+    <div class="no-items">
+        {'You currently have no items in your cart'|gettext}
+    </div>
 {/if}

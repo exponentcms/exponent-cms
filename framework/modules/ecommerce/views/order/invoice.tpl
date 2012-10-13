@@ -39,50 +39,50 @@
             <thead>
                 <tr>
                     <th>
-                    {"Source Site"|gettext}
+                        {"Source Site"|gettext}
                     </th>
                     <th>
-                    {"Order #"|gettext}
+                        {"Order #"|gettext}
                     </th>
                     <th>
-                    {"Order Date"|gettext}
+                        {"Order Date"|gettext}
                     </th>
                     <th>
-                    {"Order Type"|gettext}
+                        {"Order Type"|gettext}
                     </th>
                     <th>
-                    {"Date Shipped"|gettext}
+                        {"Date Shipped"|gettext}
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
-                    {$storeConfig.storename}
+                        {$storeConfig.storename}
                     </td>
                     <td>
-                    {$order->invoice_id}
-                    {permissions}
-                        <div class="item-permissions">
-                            {if $permissions.edit_invoice_id == 1 && !$pf}                                                                                        
-                                {br}    
-                                <a class="edit" href="{link action=edit_invoice_id id=$order->id}" title="{'Edit Invoice Number'|gettext}">{'Edit'|gettext}</a>
-                            {/if} 
-                        </div>
-                     {/permissions}
+                        {$order->invoice_id}
+                        {permissions}
+                            <div class="item-permissions">
+                                {if $permissions.edit_invoice_id == 1 && !$pf}
+                                    {br}
+                                    <a class="edit" href="{link action=edit_invoice_id id=$order->id}" title="{'Edit Invoice Number'|gettext}">{'Edit'|gettext}</a>
+                                {/if}
+                            </div>
+                         {/permissions}
                     </td>
                     <td>
-                    {$order->purchased|date_format:"%A, %B %e, %Y"}
+                        {$order->purchased|date_format:"%A, %B %e, %Y"}
                     </td>
                     <td>
-                    {$order->order_type->title}
+                        {$order->order_type->title}
                     </td>
                     <td>
-                    {if $order->shipped}
-                        {$order->shipped|date_format:"%A, %B %e, %Y":"Not Shipped Yet"}
-                    {else}
-                        {"Not Shipped Yet"|gettext}
-                    {/if}
+                        {if $order->shipped}
+                            {$order->shipped|date_format:"%A, %B %e, %Y":"Not Shipped Yet"}
+                        {else}
+                            {"Not Shipped Yet"|gettext}
+                        {/if}
                     </td>
                 </tr>
             </tbody>
@@ -92,28 +92,28 @@
             <thead>
                 <tr>
                     <th class="billing-header" style="width:27%;">
-                    {"Billing Address"|gettext}
+                        {"Billing Address"|gettext}
                     </th>
                     <th class="shipping-header" style="width:27%;">
-                    {"Shipping Address"|gettext}
+                        {"Shipping Address"|gettext}
                     </th>
                     <th class="payment-info-header" style="width:46%;">
-                    {"Payment Info"|gettext}
+                        {"Payment Info"|gettext}
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td style="width:27%;">
-                    {$order->billingmethod[0]->addresses_id|address}
-                    {permissions}
-                    <div class="item-permissions">
-                        {if $permissions.edit_address == 1 && !$pf}                                                                                        
-                        {br}    
-                        <a class="edit" href="{link action=edit_address id=$order->id type='b'}" title="{'Edit Billing Address'|gettext}">{'Edit'|gettext}</a>
-                        {/if} 
-                    </div>
-                    {/permissions}
+                        {$order->billingmethod[0]->addresses_id|address}
+                        {permissions}
+                            <div class="item-permissions">
+                                {if $permissions.edit_address == 1 && !$pf}
+                                {br}
+                                <a class="edit" href="{link action=edit_address id=$order->id type='b'}" title="{'Edit Billing Address'|gettext}">{'Edit'|gettext}</a>
+                                {/if}
+                            </div>
+                        {/permissions}
                     </td>
                     <td style="width:27%;">
                         {$shipping->shippingmethod->addresses_id|address}
@@ -128,92 +128,92 @@
                         {/permissions}   
                         {br}
                         <table style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
-                        <tr style="border: 0px; padding: 0px; margin:0px;">
-                        <td style="border: 0px; text-align: left; padding: 0px; margin:0px;">
-                            <strong>{"Shipping Method"|gettext}:</strong>{br}
-                        {$shipping->shippingmethod->option_title}
-                        {permissions}
-                            <div class="item-permissions">
-                                {if $permissions.edit_shipping_method == 1 && !$pf}                                                                                        
-                                    {br}    
-                                    <a class="edit" href="{link action=edit_shipping_method id=$order->id}" title="{'Edit Shipping Method'|gettext}">{'Edit'|gettext}</a>
-                                {/if} 
-                            </div>
-                        {/permissions}                            
-                        </td>                        
-                        <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
-                            {if $shipping->shippingmethod->carrier != ''}           
-                            <strong>{"Carrier"|gettext}:</strong>{br}
-                            {$shipping->shippingmethod->carrier}         
-                            {/if}               
-                        </td>
-                        </tr>
+                            <tr style="border: 0px; padding: 0px; margin:0px;">
+                                <td style="border: 0px; text-align: left; padding: 0px; margin:0px;">
+                                    <strong>{"Shipping Method"|gettext}:</strong>{br}
+                                    {$shipping->shippingmethod->option_title}
+                                    {permissions}
+                                        <div class="item-permissions">
+                                            {if $permissions.edit_shipping_method == 1 && !$pf}
+                                                {br}
+                                                <a class="edit" href="{link action=edit_shipping_method id=$order->id}" title="{'Edit Shipping Method'|gettext}">{'Edit'|gettext}</a>
+                                            {/if}
+                                        </div>
+                                    {/permissions}
+                                </td>
+                                <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
+                                    {if $shipping->shippingmethod->carrier != ''}
+                                    <strong>{"Carrier"|gettext}:</strong>{br}
+                                    {$shipping->shippingmethod->carrier}
+                                    {/if}
+                                </td>
+                            </tr>
                         </table>                     
                     </td>
                     <td class="div-rows" style="width:46%;">
                         <div class="odd">
                             <span class="pmt-label">
-                            {"Payment Method"|gettext}
+                                {"Payment Method"|gettext}
                             </span>
                             <span class="pmt-value">
-                            {$billing->calculator->getPaymentMethod($billing->billingmethod)}
+                                {$billing->calculator->getPaymentMethod($billing->billingmethod)}
                             </span>
                         </div>
                         <div class="even">
                             <span class="pmt-label">
-                            {"Payment Status"|gettext}
+                                {"Payment Status"|gettext}
                             </span>
                             <span class="pmt-value">
-                            {$billing->calculator->getPaymentStatus($billing->billingmethod)}
+                                {$billing->calculator->getPaymentStatus($billing->billingmethod)}
                             </span>
                         </div>
                         <div class="odd">
                             <span class="pmt-label">
-                            {"Payment Authorization #"|gettext}
+                                {"Payment Authorization #"|gettext}
                             </span>
                             <span class="pmt-value">
-                            {$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}
+                                {$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}
                             </span>
                         </div>
                         <div class="even">
                             <span class="pmt-label">
-                            {"Payment Reference #"|gettext}
+                                {"Payment Reference #"|gettext}
                             </span>
                             <span class="pmt-value">
-                            {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
                             </span>
                         </div>
                         <div class="odd">
                             <span class="pmt-label">
-                            {"AVS Address Verified"|gettext}
+                                {"AVS Address Verified"|gettext}
                             </span>
                             <span class="pmt-value">
-                            {$billing->calculator->getAVSAddressVerified($billing->billingmethod)}
+                                {$billing->calculator->getAVSAddressVerified($billing->billingmethod)}
                             </span>
                         </div>
                         <div class="even">
                             <span class="pmt-label">
-                            {"AVS ZIP Verified"|gettext}
+                                {"AVS ZIP Verified"|gettext}
                             </span>
                             <span class="pmt-value">
-                            {$billing->calculator->getAVSZipVerified($billing->billingmethod)}
+                                {$billing->calculator->getAVSZipVerified($billing->billingmethod)}
                             </span>
                         </div>
                         <div class="odd">
                             <span class="pmt-label">
-                            {"CVV # Matched"|gettext}
+                                {"CVV # Matched"|gettext}
                             </span>
                             <span class="pmt-value">
-                            {$billing->calculator->getCVVMatched($billing->billingmethod)}
+                                {$billing->calculator->getCVVMatched($billing->billingmethod)}
                             </span>
                         </div>
                          {permissions}
-                                {if $permissions.edit_shipping_method == 1 && !$pf}{br} 
-                            <div class="item-permissions">
-                                <a class="edit" href="{link action=edit_payment_info id=$order->id}" title="{'Edit Payment Method'|gettext}">{'Edit'|gettext}</a>
-                                {br}{br}   
-                            </div>
-                                {/if}                            
+                            {if $permissions.edit_shipping_method == 1 && !$pf}{br}
+                                <div class="item-permissions">
+                                    <a class="edit" href="{link action=edit_payment_info id=$order->id}" title="{'Edit Payment Method'|gettext}">{'Edit'|gettext}</a>
+                                    {br}{br}
+                                </div>
+                            {/if}
                         {/permissions}                                  
                     </td>
                 </tr>
@@ -414,7 +414,7 @@
                     {else}
                     <th  colspan=3>
                     {/if} 
-                    {"Totals"|gettext}
+                        {"Totals"|gettext}
                     </th>
                     {if !$pf}<th colspan="2"></th>{/if}                              
                </tr>
@@ -422,10 +422,10 @@
             <tbody>
                 <tr class="even">
                     <td>
-                    {"Subtotal"|gettext}
+                        {"Subtotal"|gettext}
                     </td>
                     <td style="border-right:0px">
-                    {currency_symbol}
+                        {currency_symbol}
                     </td>
                     <td  style="text-align:right; border-left:0px;">{$order->subtotal|number_format:2}
                     </td>
@@ -442,17 +442,17 @@
                     
                     </td>
                     <td style="border-right:0px">
-                    {currency_symbol}
+                        {currency_symbol}
                     </td>
                     <td style="text-align:right; border-left:0px;">-{$order->total_discounts|number_format:2}
                     </td>
                 </tr>
                 <tr class="even">
                     <td>
-                    {"Total"|gettext}
+                        {"Total"|gettext}
                     </td>
                     <td style="border-right:0px">
-                    {currency_symbol}
+                        {currency_symbol}
                     </td>
                     <td style="text-align:right; border-left:0px;">{$order->total|number_format:2}
                     </td>
@@ -460,7 +460,7 @@
                  {/if}
                   <tr class="odd">
                     <td width="90%">
-                    {"Tax"|gettext|cat:" - "}
+                        {"Tax"|gettext|cat:" - "}
                     {foreach from=$order->taxzones item=zone}
                         {$zone->name} ({$zone->rate}%)
                     {foreachelse}
@@ -468,7 +468,7 @@
                     {/foreach}
                     </td>
                     <td style="border-right:0px;">
-                    {currency_symbol}
+                        {currency_symbol}
                     </td>
                     <td style="text-align:right; border-left:0px;">{$order->tax|number_format:2}
                     </td>
@@ -483,7 +483,7 @@
                     
                     </td>
                     <td style="border-right:0px;">
-                    {currency_symbol}
+                        {currency_symbol}
                     </td>
                     <td style="text-align:right;  border-left:0px;">{$order->shipping_total|number_format:2}
                     </td>
@@ -491,10 +491,10 @@
                 {if $order->surcharge_total != 0}
                     <tr class="even">
                         <td>
-                        {"Freight Surcharge"|gettext}
+                            {"Freight Surcharge"|gettext}
                         </td>
                         <td style="border-right:0px;">
-                        {currency_symbol}
+                            {currency_symbol}
                         </td>
                         <td style="text-align:right; border-left:0px;">{$order->surcharge_total|number_format:2}
                         </td>
@@ -502,10 +502,10 @@
                 {/if}
                 <tr class="odd">
                     <td>
-                    {"Order Total"|gettext}
+                        {"Order Total"|gettext}
                     </td>
                     <td style="border-right:0px;">
-                    {currency_symbol}
+                        {currency_symbol}
                     </td>
                     <td style="text-align:right; border-left:0px;">{$order->grand_total|number_format:2}
                     </td>

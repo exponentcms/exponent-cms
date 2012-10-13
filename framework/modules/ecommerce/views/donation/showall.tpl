@@ -27,31 +27,31 @@
    	{/if}
     {assign var=myloc value=serialize($__loc)}
     <table>
-    {foreach from=$causes item=cause}
-        <tr>
-            <td>{img file_id=$cause->expFile.mainimage[0]->id square=120}</td>
-            <td>
-                <h3>{$cause->title}</h3>
-                {$cause->body}
-            </td>
-            <td>
-                <a href="{link controller=cart action=addItem quick=1 product_type=$cause->product_type product_id=$cause->id}">{'Donate Now'|gettext}</a>
-            </td>
-            <td>
-                {permissions}
-					<div class="item-actions">
-						{if $permissions.edit == 1}
-							{icon controller=store action=edit record=$cause title="Edit Donation"|gettext}
-						{/if}
-						{if $permissions.delete == 1}
-							{icon controller=store action=delete record=$cause title="Remove Donation"|gettext}
-						{/if}
-					</div>
-                {/permissions}
-            </td>
-         </tr>
-    {foreachelse}
-        <h2>{"No causes have been setup for donations."|gettext}</h2>
-    {/foreach}
+        {foreach from=$causes item=cause}
+            <tr>
+                <td>{img file_id=$cause->expFile.mainimage[0]->id square=120}</td>
+                <td>
+                    <h3>{$cause->title}</h3>
+                    {$cause->body}
+                </td>
+                <td>
+                    <a href="{link controller=cart action=addItem quick=1 product_type=$cause->product_type product_id=$cause->id}">{'Donate Now'|gettext}</a>
+                </td>
+                <td>
+                    {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit == 1}
+                                {icon controller=store action=edit record=$cause title="Edit Donation"|gettext}
+                            {/if}
+                            {if $permissions.delete == 1}
+                                {icon controller=store action=delete record=$cause title="Remove Donation"|gettext}
+                            {/if}
+                        </div>
+                    {/permissions}
+                </td>
+             </tr>
+        {foreachelse}
+            <h2>{"No causes have been setup for donations."|gettext}</h2>
+        {/foreach}
     </table>
 </div>

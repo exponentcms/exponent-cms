@@ -40,27 +40,26 @@
         </thead>
         <tbody>
 			{foreach from=$vendors item=vendor key=key name=vendor}
-            <tr class='{cycle values="odd,even"}'>
-                <td>
-                <a href="{link action=show_vendor id=$vendor->id}">{$vendor->title}</a>
-                </td>
-                <td>
-                    {permissions}
-                        {icon action=edit_vendor class="edit" id=$vendor->id}
-                        {icon action=delete_vendor class="delete" id=$vendor->id}
-                    {/permissions}
-                </td>
-            </tr>
+                <tr class='{cycle values="odd,even"}'>
+                    <td>
+                        <a href="{link action=show_vendor id=$vendor->id}">{$vendor->title}</a>
+                    </td>
+                    <td>
+                        {permissions}
+                            {icon action=edit_vendor class="edit" id=$vendor->id}
+                            {icon action=delete_vendor class="delete" id=$vendor->id}
+                        {/permissions}
+                    </td>
+                </tr>
 			{/foreach}
         </tbody>
     </table>
 </div>
 
-
 {script unique="purchase-orders" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-    
-});
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+
+    });
 {/literal}
 {/script}

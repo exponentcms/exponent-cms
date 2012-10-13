@@ -49,25 +49,25 @@
 	<h2>{'Modify existing group discount'|gettext}</h2>
 	<table class="exp-skin-table">
 	    <thead>
-	    <tr>
-	        <th>{'Name'|gettext}</th>
-		    <th>{'Promo Code'|gettext}</th>
-		    <th>{'Discount'|gettext}</th>
-		    <th>{'Action'|gettext}</th>
-	    </tr>
+            <tr>
+                <th>{'Name'|gettext}</th>
+                <th>{'Promo Code'|gettext}</th>
+                <th>{'Discount'|gettext}</th>
+                <th>{'Action'|gettext}</th>
+            </tr>
 	    </thead>
-	    {foreach from=$promo_codes item=code}
-			<tr class="{cycle values='even,odd'}"">
-			    {form action=update_promocode}
-	                {control type="hidden" name="id" value=$code->id}
-	                <td>{control type=text name=title label=" " value=$code->title}</td>
-	                <td>{control type="text" name="promo_code" label="" label=" " value=$code->promo_code}</td>
-                    <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " value=$code->discounts_id}</td>
-                    <td>{control type=buttongroup submit="Update"|gettext}</td>
-	            {/form}
-			</tr>
-		{/foreach}
-	</tbody>
+            {foreach from=$promo_codes item=code}
+                <tr class="{cycle values='even,odd'}"">
+                    {form action=update_promocode}
+                        {control type="hidden" name="id" value=$code->id}
+                        <td>{control type=text name=title label=" " value=$code->title}</td>
+                        <td>{control type="text" name="promo_code" label="" label=" " value=$code->promo_code}</td>
+                        <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " value=$code->discounts_id}</td>
+                        <td>{control type=buttongroup submit="Update"|gettext}</td>
+                    {/form}
+                </tr>
+            {/foreach}
+        </tbody>
 	</table>
 	{/if}
 </div>

@@ -42,34 +42,34 @@
 			</thead>
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
-				<tr class="{cycle values="odd,even"}">
-				    <td>
-                        {if $listing->is_default == 1}
-                            <a href="{link action=toggle_default id=$listing->id}">{icon img="toggle_on.png"}</a>
-                        {else}
-                            <a href="{link action=toggle_default id=$listing->id}">{icon img="toggle_off.png"}</a>
-                        {/if}
-				    <td>
-				        {if $listing->treat_as_closed == 1}
-				            <a href="{link action=toggle_closed id=$listing->id}">{icon img="toggle_on.png"}</a>
-				        {else}
-				            <a href="{link action=toggle_closed id=$listing->id}">{icon img="toggle_off.png"}</a>
-				        {/if}
-				    </td>
-					<td>{$listing->title}</td>
-					<td>
-					    {if $permissions.manage == true}
-                            {icon controller=order_status action=edit record=$listing}
-                            {icon controller=order_status action=delete record=$listing}
-                        {/if}
-					</td>
-				</tr>
+                    <tr class="{cycle values="odd,even"}">
+                        <td>
+                            {if $listing->is_default == 1}
+                                <a href="{link action=toggle_default id=$listing->id}">{icon img="toggle_on.png"}</a>
+                            {else}
+                                <a href="{link action=toggle_default id=$listing->id}">{icon img="toggle_off.png"}</a>
+                            {/if}
+                        <td>
+                            {if $listing->treat_as_closed == 1}
+                                <a href="{link action=toggle_closed id=$listing->id}">{icon img="toggle_on.png"}</a>
+                            {else}
+                                <a href="{link action=toggle_closed id=$listing->id}">{icon img="toggle_off.png"}</a>
+                            {/if}
+                        </td>
+                        <td>{$listing->title}</td>
+                        <td>
+                            {if $permissions.manage == true}
+                                {icon controller=order_status action=edit record=$listing}
+                                {icon controller=order_status action=delete record=$listing}
+                            {/if}
+                        </td>
+                    </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
 				        <td colspan="4">{'No order status codes have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
-		</tbody>
+            </tbody>
 		</table>
 		{pagelinks paginate=$page bottom=1}
 	</div>
