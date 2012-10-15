@@ -26,3 +26,4 @@
 {control type="checkbox" name="only_featured" label="Only show Featured Events"|gettext value=1 checked=$config.only_featured}
 {control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext value=1 checked=$config.printlink}
 {control type="checkbox" name="enable_feedback" label="Enable Feedback"|gettext value=1 checked=$config.enable_feedback}
+{control type="checkbox" name="aggregate_registrations" label="Aggregate Event Registrations"|gettext value=1 checked=$config.aggregate_registrations}
