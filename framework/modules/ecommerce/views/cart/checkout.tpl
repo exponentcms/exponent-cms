@@ -17,6 +17,7 @@
 
 {/css}
 {uniqueid assign="id"}
+{messagequeue}
 
 <div id="expresscheckout" class="cart checkout exp-skin">
     <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>

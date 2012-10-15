@@ -35,7 +35,7 @@
            class="awesome {$smarty.const.BTN_SIZE} green next">
         {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{link controller=cart action=checkout}" class="awesome {$smarty.const.BTN_SIZE} yellow back">
+        <a href="{securelink controller=cart action=checkout}" class="awesome {$smarty.const.BTN_SIZE} yellow back">
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>
@@ -226,7 +226,7 @@
            class="awesome {$smarty.const.BTN_SIZE} green next">
         {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{link controller=cart action=checkout}" class="awesome {$smarty.const.BTN_SIZE} yellow back">
+        <a href="{securelink controller=cart action=checkout}" class="awesome {$smarty.const.BTN_SIZE} yellow back">
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>

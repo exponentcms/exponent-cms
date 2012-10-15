@@ -152,7 +152,7 @@ class paypalExpressCheckout extends billingcalculator {
              *
              * @var string
              */
-            $cancelURL = makeLink(array('controller'=> 'cart', 'action'=> 'checkout'));
+            $cancelURL = makeLink(array('controller'=> 'cart', 'action'=> 'checkout'),true);
             ;
 
             $shipname = $shippingaddress->firstname . ' ';

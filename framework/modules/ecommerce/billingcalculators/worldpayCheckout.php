@@ -126,7 +126,7 @@ class worldpayCheckout extends billingcalculator {
 				$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$object, 'success');				
                 redirect_to(array('controller'=>'cart', 'action'=>'process'));
             } else {
-                redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+                redirect_to(array('controller'=>'cart', 'action'=>'checkout'),true);
             }
         }        
     }

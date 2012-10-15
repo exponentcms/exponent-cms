@@ -33,14 +33,14 @@ class billingController extends expController {
 	function selectBillingCalculator() {
 		$billing = new billing();
 		$billing->billingmethod->update($this->params);
-		$ar = new expAjaxReply(200, 'ok', $billing, array('controller'=>'cart', 'action'=>'checkout'));
+		$ar = new expAjaxReply(200, 'ok', $billing, array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();
 	}
 
 	function setAddress() {
 		$billing = new billing();
 		$billing->billingmethod->setAddress($this->params['billing_address']);
-		$ar = new expAjaxReply(200, 'ok', new address($billing->billingmethod->addresses_id), array('controller'=>'cart', 'action'=>'checkout'));
+		$ar = new expAjaxReply(200, 'ok', new address($billing->billingmethod->addresses_id), array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();
 	}
 

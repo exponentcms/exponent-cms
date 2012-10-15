@@ -44,7 +44,7 @@ class shippingController extends expController {
 		//eDebug($calcname);
 		$shipping->calculator = new $calcname($this->params['shippingcalculator_id']);
 		
-		$ar = new expAjaxReply(200, 'ok', $shipping, array('controller'=>'cart', 'action'=>'checkout'));
+		$ar = new expAjaxReply(200, 'ok', $shipping, array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();
 	}
 
@@ -55,7 +55,7 @@ class shippingController extends expController {
 		$rates = $shipping->calculator->getRates($order);
 		$rate = $rates[$id];
 		$shipping->shippingmethod->update(array('option'=>$id,'option_title'=>$rate['title'],'shipping_cost'=>$rate['cost']));
-		$ar = new expAjaxReply(200, 'ok', array('title'=>$rate['title'], 'cost'=>number_format($rate['cost'], 2)), array('controller'=>'cart', 'action'=>'checkout'));
+		$ar = new expAjaxReply(200, 'ok', array('title'=>$rate['title'], 'cost'=>number_format($rate['cost'], 2)), array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();
 	}
 
@@ -63,7 +63,7 @@ class shippingController extends expController {
 		$shipping = new shipping();
 		$shipping->shippingmethod->setAddress($this->params['shipping_address']);
 		$shipping->refresh();
-		$ar = new expAjaxReply(200, 'ok', new address($shipping->shippingmethod->addresses_id), array('controller'=>'cart', 'action'=>'checkout'));
+		$ar = new expAjaxReply(200, 'ok', new address($shipping->shippingmethod->addresses_id), array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();
 	}
 	
@@ -79,7 +79,7 @@ class shippingController extends expController {
 		    }
 		}
 		
-		$ar = new expAjaxReply(200, 'ok', $sm, array('controller'=>'cart', 'action'=>'checkout'));
+		$ar = new expAjaxReply(200, 'ok', $sm, array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();		
 	}
 	
@@ -104,7 +104,7 @@ class shippingController extends expController {
 	
 	function listPrices() {
 	    $shipping = new shipping();
-	    $ar = new expAjaxReply(200, 'ok', $shipping->listPrices(), array('controller'=>'cart', 'action'=>'checkout'));
+	    $ar = new expAjaxReply(200, 'ok', $shipping->listPrices(), array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();
 	}
 	
