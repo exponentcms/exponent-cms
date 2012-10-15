@@ -92,8 +92,7 @@ class twitterController extends expController {
 				    }
 				    $tweets[$key]['ours'] = ($value['user']['id'] == $mytwitteracct['id']) ? true : false;
 			    }
-//			    $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
-			    $tweets[$key]['created_at'] = expDateTime::relativeDate(strtotime($value['created_at'])); // convert to unix time
+			    $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
 		        if (!isset($value['retweeted_status'])) {
 			        $tweets[$key]['retweeted_status'] = false;
 		        }

@@ -50,12 +50,12 @@
                                             {$cmt->username}
                                         {/if}
                                         {if $depth}
-                                            {'said in response to'|gettext} {$parentuser} {'on'|gettext}
+                                            {'said in response to'|gettext} {$parentuser}
                                         {else}
-                                            {'said on'|gettext}
+                                            {'said'|gettext}
                                         {/if}
                                     </span>
-                                    <span class="comment-date">{$cmt->created_at|format_date}</span>
+                                    <span class="comment-date">{$cmt->created_at|relative_date}</span>
                                 </cite>
                                 <div class="comment-text">
                                     {if $cmt->avatar->image}
