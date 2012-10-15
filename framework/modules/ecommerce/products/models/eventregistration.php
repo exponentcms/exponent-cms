@@ -48,7 +48,6 @@ class eventregistration extends expRecord {
 //        'content_expTags'=>'expTag',
     );
 
-
     public function __construct($params = array(), $get_assoc = true, $get_attached = true) {
         parent::__construct($params, $get_assoc, $get_attached);
 

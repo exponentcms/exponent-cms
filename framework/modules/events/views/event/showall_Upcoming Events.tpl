@@ -46,7 +46,14 @@
 	<dl class="viewweek">
 	{foreach from=$items item=item}
 		<dt>
-			<strong><a class="itemtitle" {if $item->location_data != null}href="{link action=show id=$item->eventdate->id}"{/if}>{$item->title}</a></strong>
+			<strong>
+                <a class="itemtitle"
+                    {if $item->location_data != null}
+                        href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                    {/if}
+                    >{$item->title}
+                </a>
+            </strong>
 			{permissions}
                 {if $item->location_data != null}
                     <div class="item-actions">

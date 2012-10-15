@@ -41,7 +41,12 @@
 						<table width=100% cellpadding="0" cellspacing="0" border="0">
 							<tr>
 								<td>
-									<a class="mngmntlink calendar_mngmntlink" {if $item->location_data != null}href="{link action=show id=$item->eventdate->id}"{/if}>{$item->title}</a>
+                                    <a class="mngmntlink calendar_mngmntlink"
+                                        {if $item->location_data != null}
+                                            href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                                        {/if}
+                                        >{$item->title}
+                                    </a>
 								</td>
 							</tr>
 							<tr>

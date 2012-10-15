@@ -60,7 +60,14 @@
 		{foreach from=$days.$time item=item}
 			{assign var=count value=1}
 			<dt>
-				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" {if $item->location_data != null}href="{link action=show id=$item->eventdate->id}"{/if}><strong>{$item->title}</strong></a></span>
+				<span class="eventtitle">
+                    <a class="itemtitle calendar_mngmntlink"
+                        {if $item->location_data != null}
+                            href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                        {/if}
+                        ><strong>{$item->title}</strong>
+                    </a>
+                </span>
 				{permissions}
                     {if $item->location_data != null}
                         <div class="item-actions">

@@ -104,8 +104,10 @@
                                 {$eventstart = $item->eventstart + $item->eventdate->date}
                                 {$eventend = $item->eventend + $item->eventdate->date}
                                 <div class="calevent {if $dayts == $today}today{/if}">
-                                    <a {if $item->location_data != null}href="{link action=show id=$item->eventdate->id}"{/if}
-                                       title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $eventstart != $eventend}{$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
+                                    <a {if $item->location_data != null}
+                                        href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                                    {/if}
+                                    title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $eventstart != $eventend}{$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
                                     {permissions}
                                         {if $item->location_data != null}
                                         <div class="item-actions">

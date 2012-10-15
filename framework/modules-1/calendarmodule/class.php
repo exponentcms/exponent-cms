@@ -585,6 +585,7 @@ class calendarmodule {
                 require_once BASE.'external/iCalcreator.class.php';
                 $v = new vcalendar(); // initiate new CALENDAR
                 $v->setConfig('url',$extcal->url);
+                $v->setProperty( "X-WR-TIMEZONE", DISPLAY_DEFAULT_TIMEZONE );
                 $v->parse();
                 if ($enddate == null) {
                     $startYear = null;

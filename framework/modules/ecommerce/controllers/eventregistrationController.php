@@ -645,6 +645,35 @@ class eventregistrationController extends expController {
         expHistory::back();
     }
 
+    /**
+     * function to return event registrations as calendar events
+     *
+     * @param $startdate
+     * @param $enddate
+     *
+     * @return array
+     */
+    static function getEventsForDates($startdate, $enddate) {
+        $er = new eventregistration();
+        $events      = $er->find('all', 'product_type="eventregistration" && active_type=0');
+        $pass_events = array();
+        foreach ($events as $event) {
+            if ($event->eventdate >= $startdate && $event->eventdate <= $enddate) {
+                $newevent = new stdClass();
+                $newevent->eventdate = $event->eventdate;
+                $newevent->eventstart = $event->event_starttime;  //FIXME is this correct?
+                $newevent->eventstart += $event->eventdate;
+                $newevent->eventend = $event->event_endtime; //FIXME is this correct?
+                $newevent->eventend += $event->eventdate;
+                $newevent->title = $event->title;
+                $newevent->body  = $event->body;
+                $newevent->location_data = 'event_registration';
+                $pass_events[$event->eventdate][] = $newevent;
+            }
+        }
+        return $pass_events;
+    }
+
 }
 
 ?>

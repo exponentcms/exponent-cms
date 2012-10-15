@@ -64,9 +64,9 @@ function smarty_function_ical_link($params,&$smarty) {
         if (!isset($params['src'])) $params['src'] = $loc->src;
        	if (!isset($params['int'])) $params['int'] = $loc->int;
         if (!empty($sef)) {
-            $link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'ical', 'title'=>$sef));
+            $link = expCore::makeLink(array('module'=>$params['module'], 'action'=>'ical', 'title'=>$sef));
         } else {
-            $link = expCore::makeLink(array('module'=>'calendarmodule', 'action'=>'ical', 'src'=>$params['src']));
+            $link = expCore::makeLink(array('module'=>$params['module'], 'action'=>'ical', 'src'=>$params['src']));
         }
         // spit out the link
         echo $prepend.'<a class="'.$class.'" href="'.$link.'" title="'.$title.'">'.$text.'</a>';

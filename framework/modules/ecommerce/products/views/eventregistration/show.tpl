@@ -32,14 +32,14 @@
              </div>
          {/permissions}
          <div class="bodycopy">{$product->body}</div>
-             <span class="date">
-                 <span class="label">{'Event Date'|gettext}: </span><span class="value">{$product->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
-                 <span class="label">{'Start Time'|gettext}: </span><span class="value">{$product->event_starttime|expdate:"g:i a"}</span>{br}
-                 <span class="label">{'End Time'|gettext}: </span><span class="value">{$product->event_endtime|expdate:"g:i a"}</span>{br}
-                 {br}
-                 <span class="label">{'Seats Available:'|gettext} </span><span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
-                 <span class="label">{'Registration Closes:'|gettext} </span><span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
-             </span>
+         <span class="date">
+             <span class="label">{'Event Date'|gettext}: </span><span class="value">{$product->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
+             <span class="label">{'Start Time'|gettext}: </span><span class="value">{$product->event_starttime|expdate:"g:i a"}</span>{br}
+             <span class="label">{'End Time'|gettext}: </span><span class="value">{$product->event_endtime|expdate:"g:i a"}</span>{br}
+             {br}
+             <span class="label">{'Seats Available:'|gettext} </span><span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
+             <span class="label">{'Registration Closes:'|gettext} </span><span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
+         </span>
          <div class="price">{currency_symbol}{$product->base_price|number_format:2}</div>
          {if $product->isAvailable()}
             <a href="{link controller=cart action=addItem product_id=$product->id product_type=$product->product_type}" class="addtocart exp-ecom-link" rel="nofollow">

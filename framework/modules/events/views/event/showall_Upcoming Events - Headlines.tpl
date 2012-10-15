@@ -40,7 +40,12 @@
 		{foreach from=$items item=item}
 			{if (!$__viewconfig.num_events || $item_number < $__viewconfig.num_events) }	
 				<li>
-					<a class="link" {if $item->location_data != null}href="{link action=show id=$item->eventdate->id}"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+                    <a class="link"
+                        {if $item->location_data != null}
+                            href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                        {/if}
+                        >{$item->title}
+                    </a>
 					<em class="date">
 						{if $item->is_allday == 1}
 							{$item->eventstart|format_date}

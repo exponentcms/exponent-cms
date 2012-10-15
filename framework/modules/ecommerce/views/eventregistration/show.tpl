@@ -87,10 +87,18 @@
 
          <div class="bodycopy">
             {if $product->summary}
-            {$product->summary}
+                {$product->summary}
             {/if}
          </div>
-     
+         <span class="date">
+             <span class="label">{'Event Date'|gettext}: </span><span class="value">{$product->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
+             <span class="label">{'Start Time'|gettext}: </span><span class="value">{$product->event_starttime|expdate:"g:i a"}</span>{br}
+             <span class="label">{'End Time'|gettext}: </span><span class="value">{$product->event_endtime|expdate:"g:i a"}</span>{br}
+             {br}
+             <span class="label">{'Seats Available:'|gettext} </span><span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
+             <span class="label">{'Registration Closes:'|gettext} </span><span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
+         </span>
+
 		<div id="eventregform">		 
 			
             {form id="addtocart`$product->id`" controller=cart action=addItem}
@@ -105,12 +113,11 @@
                         {foreach from=$product->optiongroup item=og}
                             {if $og->hasEnabledOptions()}
                                 <div class="option {cycle values="odd,even"}">
-                                {if $og->allow_multiple}
-                                    {optiondisplayer product=$product options=$og->title view=checkboxes_with_quantity display_price_as=total selected=$params.options}
-
-                                {else}
-                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}
-                                {/if}
+                                    {if $og->allow_multiple}
+                                        {optiondisplayer product=$product options=$og->title view=checkboxes_with_quantity display_price_as=total selected=$params.options}
+                                    {else}
+                                        {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}
+                                    {/if}
                                 </div>
                             {/if}
                         {/foreach}

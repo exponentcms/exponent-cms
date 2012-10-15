@@ -153,7 +153,6 @@ class eventController extends expController {
                             "next_timestamp"=> strtotime('+1 days', $startperiod),
                             "next_timestamp2"=> strtotime('+2 days', $startperiod),
                             "next_timestamp3"=> strtotime('+3 days', $startperiod),
-                            "time"           => $startperiod
                         ));
                         break;
                     case "week":
@@ -168,7 +167,6 @@ class eventController extends expController {
                             "next_timestamp" => $next,
                             "next_timestamp2"=> strtotime('+14 days', $startperiod),
                             "next_timestamp3"=> strtotime('+21 days', $startperiod),
-                            "time"           => $startperiod
                         ));
                         break;
                     case "twoweek":
@@ -183,7 +181,6 @@ class eventController extends expController {
                             "next_timestamp" => $next,
                             "next_timestamp2"=> strtotime('+28 days', $startperiod),
                             "next_timestamp3"=> strtotime('+42 days', $startperiod),
-                            "time"           => $startperiod
                         ));
                         break;
                     default: // range = month
@@ -198,6 +195,7 @@ class eventController extends expController {
                             "next_timestamp2"=> strtotime('+2 months', $startperiod),
                             "next_timestamp3"=> strtotime('+3 months', $startperiod)
                         ));
+                       break;
                 }
 
                 //                $days = array();
@@ -205,6 +203,8 @@ class eventController extends expController {
                 //			$endofmonth = date('t', $time);
                 //FIXME add external events to $days[$start] for date $start, one day at a time
                 $extitems = self::getExternalEvents($this->loc, $startperiod, $next);
+                //FIXME add event registration events
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next);
                 for ($i = 1; $i <= $totaldays; $i++) {
                     //                    $info = getdate($time);
                     //                    switch ($viewrange) {
@@ -231,10 +231,13 @@ class eventController extends expController {
                     //                        );
                     //                    }
                     if (!empty($extitems[$start])) $days[$start] = array_merge($extitems[$start], $days[$start]);
+                    if (!empty($regitems[$start])) $days[$start] = array_merge($regitems[$start], $days[$start]);
                     $days[$start] = expSorter::sort(array('array'=> $days[$start], 'sortby'=> 'eventstart', 'order'=> 'ASC'));
                 }
                 assign_to_template(array(
+                    "time"           => $startperiod,
                     'days'=> $days,
+                    "now"        => $startperiod,
                 ));
                 break;
             case "monthly":
@@ -268,6 +271,8 @@ class eventController extends expController {
                 $endofmonth = date('t', $time);
                 //FIXME add external events to $monthly[$week][$i] for date $start, one day at a time
                 $extitems = self::getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
+                //FIXME add event registration events
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst));
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
@@ -277,6 +282,7 @@ class eventController extends expController {
                     $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
                     $monthly[$week][$i] = self::getEventsForDates($dates, true, isset($this->config['featured_only']) ? true : false);
                     if (!empty($extitems[$start])) $monthly[$week][$i] = array_merge($extitems[$start], $monthly[$week][$i]);
+                    if (!empty($regitems[$start])) $monthly[$week][$i] = array_merge($regitems[$start], $monthly[$week][$i]);
                     $monthly[$week][$i] = expSorter::sort(array('array'=> $monthly[$week][$i], 'sortby'=> 'eventstart', 'order'=> 'ASC'));
                     $counts[$week][$i]  = count($monthly[$week][$i]);
                     if ($weekday >= (6 + DISPLAY_START_OF_WEEK)) {
@@ -408,6 +414,14 @@ class eventController extends expController {
                     $extitem[] = $value;
                 }
                 $items = array_merge($items, $extitem);
+                    //FIXME add event registration events
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next);
+                 // we need to crunch these down
+                $regitem = array();
+                foreach ($regitems as $key=> $value) {
+                    $regitem[] = $value;
+                }
+                $items = array_merge($items, $regitem);
                 $items = expSorter::sort(array('array'=> $items, 'sortby'=> 'eventstart', 'order'=> 'ASC'));
                 // Upcoming events can be configured to show a specific number of events.
                 // The previous call gets all events in the future from today
@@ -431,6 +445,7 @@ class eventController extends expController {
                 //                }
                 assign_to_template(array(
                     'items'=> $items,
+                    "now"        => $day,
                 ));
         }
     }
@@ -545,7 +560,7 @@ class eventController extends expController {
     }
 
     function ical() {  //FIXME we need to complete this
-        global $db;
+//        global $db;
 
         // id & date_id set if single event, else
         //   src & time (opt?) set for longer list/month, etc...
