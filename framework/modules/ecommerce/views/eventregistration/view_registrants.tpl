@@ -44,9 +44,9 @@
         <p><span class="label">{'Event Date'|gettext}: </span>
             <span class="value">{$event->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
             <span class="label">{'Start Time'|gettext}: </span>
-            <span class="value">{$event->event_starttime|date_format:"%I:%M %p"}</span>{br}
+            <span class="value">{($event->eventdate+$event->event_starttime)|date_format:"%I:%M %p"}</span>{br}
             <span class="label">{'End Time'|gettext}: </span>
-            <span class="value">{$event->event_endtime|date_format:"%I:%M %p"}</span>{br}
+            <span class="value">{($event->eventdate+$event->event_endtime)|date_format:"%I:%M %p"}</span>{br}
             <span class="label">{'Price per person:'|gettext} </span>
             <span class="value">{currency_symbol}{$event->base_price|number_format:2}</span>{br}
             <span class="label">{'Seats Registered:'|gettext} </span>

@@ -660,14 +660,13 @@ class eventregistrationController extends expController {
         foreach ($events as $event) {
             if ($event->eventdate >= $startdate && $event->eventdate <= $enddate) {
                 $newevent = new stdClass();
-                $newevent->eventdate = $event->eventdate;
-                $newevent->eventstart = $event->event_starttime;  //FIXME is this correct?
-                $newevent->eventstart += $event->eventdate;
-                $newevent->eventend = $event->event_endtime; //FIXME is this correct?
-                $newevent->eventend += $event->eventdate;
+                $newevent->eventdate = new stdClass();
+                $newevent->eventdate->date = $event->eventdate;
+                $newevent->eventstart = $event->event_starttime + $event->eventdate;
+                $newevent->eventend = $event->event_endtime + $event->eventdate;
                 $newevent->title = $event->title;
                 $newevent->body  = $event->body;
-                $newevent->location_data = 'event_registration';
+                $newevent->location_data = serialize(expCore::makeLocation('eventregistration'));
                 $pass_events[$event->eventdate][] = $newevent;
             }
         }
