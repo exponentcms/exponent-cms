@@ -48,14 +48,14 @@
 		<dt>
 			<strong>
                 <a class="itemtitle"
-                    {if $item->location_data != null}
+                    {if substr($item->location_data,1,8) != 'calevent'}
                         href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
                     {/if}
                     >{$item->title}
                 </a>
             </strong>
 			{permissions}
-                {if $item->location_data != null}
+                {if substr($item->location_data,1,8) != 'calevent'}
                     <div class="item-actions">
                         {if $permissions.edit == 1}
                             {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}

@@ -666,7 +666,7 @@ class eventregistrationController extends expController {
                 $newevent->eventend = $event->event_endtime + $event->eventdate;
                 $newevent->title = $event->title;
                 $newevent->body  = $event->body;
-                $newevent->location_data = serialize(expCore::makeLocation('eventregistration'));
+                $newevent->location_data = 'eventregistration';
                 $pass_events[$event->eventdate][] = $newevent;
             }
         }

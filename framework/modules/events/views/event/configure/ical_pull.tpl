@@ -28,7 +28,7 @@
     <h4>{"Current iCal Feeds"|gettext}</h4>
     <ul id="icalpull-feeds">
         {foreach from=$config.pull_ical item=feed}
-            {if $feed!=""}<li>{control type="hidden" name="pull_ical[]" value=$feed}{$feed} - <a class="delete removeical" href="#">{"Remove"|gettext}</a></li>{/if}
+            {if $feed!=""}<li>{control type="hidden" name="pull_ical[]" value=$feed}{$feed} <a class="delete removeical" href="#">{"Remove"|gettext}</a></li>{/if}
         {foreachelse}
             <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
         {/foreach}

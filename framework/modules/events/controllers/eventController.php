@@ -202,7 +202,7 @@ class eventController extends expController {
                 // added per Ignacio
                 //			$endofmonth = date('t', $time);
                 //FIXME add external events to $days[$start] for date $start, one day at a time
-                $extitems = self::getExternalEvents($this->loc, $startperiod, $next);
+                $extitems = $this->getExternalEvents($this->loc, $startperiod, $next);
                 //FIXME add event registration events
                 if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next);
                 for ($i = 1; $i <= $totaldays; $i++) {
@@ -221,7 +221,7 @@ class eventController extends expController {
                     $start        = $startperiod + ($i * 86400) - 86400;
 //                    $edates       = $db->selectObjects("eventdate", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start));
                     $edates       = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start));
-                    $days[$start] = self::getEventsForDates($edates, true, isset($this->config['featured_only']) ? true : false);
+                    $days[$start] = $this->getEventsForDates($edates, true, isset($this->config['featured_only']) ? true : false);
                     //                    for ($j = 0; $j < count($days[$start]); $j++) {
                     //                        $thisloc = expCore::makeLocation($this->loc->mod,$this->loc->src,$days[$start][$j]->id);
                     //                        $days[$start][$j]->permissions = array(
@@ -270,7 +270,7 @@ class eventController extends expController {
                 // $endofmonth = expDateTime::endOfMonthDay($time);
                 $endofmonth = date('t', $time);
                 //FIXME add external events to $monthly[$week][$i] for date $start, one day at a time
-                $extitems = self::getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
+                $extitems = $this->getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
                 //FIXME add event registration events
                 if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst));
                 for ($i = 1; $i <= $endofmonth; $i++) {
@@ -280,7 +280,7 @@ class eventController extends expController {
                     //$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");
 //                    $dates              = $db->selectObjects("eventdate", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
                     $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
-                    $monthly[$week][$i] = self::getEventsForDates($dates, true, isset($this->config['featured_only']) ? true : false);
+                    $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['featured_only']) ? true : false);
                     if (!empty($extitems[$start])) $monthly[$week][$i] = array_merge($extitems[$start], $monthly[$week][$i]);
                     if (!empty($regitems[$start])) $monthly[$week][$i] = array_merge($regitems[$start], $monthly[$week][$i]);
                     $monthly[$week][$i] = expSorter::sort(array('array'=> $monthly[$week][$i], 'sortby'=> 'eventstart', 'order'=> 'ASC'));
@@ -321,7 +321,7 @@ class eventController extends expController {
                 ) ? 1 : 0;
 //                $dates    = $db->selectObjects("eventdate", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp(time()));
                 $dates    = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp(time()));
-                $items    = self::getEventsForDates($dates);
+                $items    = $this->getEventsForDates($dates);
                 //                if (!$continue) {
                 //                    foreach ($items as $i) {
                 //                        $iloc = expCore::makeLocation($this->loc->mod,$this->loc->src,$i->id);
@@ -405,9 +405,9 @@ class eventController extends expController {
                         $begin = null;
                         $end   = null;
                 }
-                $items = self::getEventsForDates($dates, $sort_asc, isset($this->config['featured_only']) ? true : false);
+                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['featured_only']) ? true : false);
                 //FIXME add external events to $items for date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time())
-                $extitems = self::getExternalEvents($this->loc, $begin, $end);
+                $extitems = $this->getExternalEvents($this->loc, $begin, $end);
                 // we need to crunch these down
                 $extitem = array();
                 foreach ($extitems as $key=> $value) {
@@ -415,7 +415,7 @@ class eventController extends expController {
                 }
                 $items = array_merge($items, $extitem);
                     //FIXME add event registration events
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next);
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end);
                  // we need to crunch these down
                 $regitem = array();
                 foreach ($regitems as $key=> $value) {
@@ -559,7 +559,7 @@ class eventController extends expController {
         expHistory::back();
     }
 
-    function ical() {  //FIXME we need to complete this
+    function ical() {
 //        global $db;
 
         // id & date_id set if single event, else
@@ -748,7 +748,7 @@ class eventController extends expController {
                 }
                 $msg .= "X-WR-CALNAME:$Filename\n";
 
-                $items = self::getEventsForDates($dates);
+                $items = $this->getEventsForDates($dates);
 
                 for ($i = 0; $i < count($items); $i++) {
 
@@ -1266,7 +1266,7 @@ class eventController extends expController {
         print_r($htmlmsg);
     }
 
-    static function getEventsForDates($edates, $sort_asc = true, $featuredonly = false) {
+    function getEventsForDates($edates, $sort_asc = true, $featuredonly = false) {
         global $db;
         $events     = array();
         $featuresql = "";
@@ -1284,21 +1284,24 @@ class eventController extends expController {
         return $events;
     }
 
-    static function getExternalEvents($loc, $startdate, $enddate) {
+    function getExternalEvents($loc, $startdate, $enddate) {  //FIXME this still needs to be converted
         global $db;
 
         $extevents = array();
         $dy        = 0;
-        $config    = $db->selectObject("calendarmodule_config", "location_data='" . serialize($loc) . "'");
-        if (!empty($config)) foreach ($db->selectObjects('calendar_external', "calendar_id='" . $config->id . "'") as $extcal) {
-            if ($extcal->type == GOOGLE_TYPE) {
+        $url = 0;
+//        $config    = $db->selectObject("calendarmodule_config", "location_data='" . serialize($loc) . "'");
+//        if (!empty($config)) foreach ($db->selectObjects('calendar_external', "calendar_id='" . $config->id . "'") as $extcal) {
+//            if ($extcal->type == GOOGLE_TYPE) {
+            if (!empty($this->config['pull_gcal'])) foreach ($this->config['pull_gcal'] as $extgcalurl) {
+                $url++;
                 if (!empty($startdate)) $begin = date("Y-m-d\Th:i:sP", expDateTime::startOfDayTimestamp($startdate));
                 if (!empty($enddate)) $end = date("Y-m-d\Th:i:sP", expDateTime::endOfDayTimestamp($enddate));
 
-                if (substr($extcal->url, -5) == 'basic') {
-                    $extcal->url = substr($extcal->url, 0, strlen($extcal->url) - 5) . 'full';
+                if (substr($extgcalurl, -5) == 'basic') {
+                    $extgcalurl = substr($extgcalurl, 0, strlen($extgcalurl) - 5) . 'full';
                 }
-                $feed = $extcal->url . "?orderby=starttime&singleevents=true";
+                $feed = $extgcalurl . "?orderby=starttime&singleevents=true";
                 if (!empty($startdate)) $feed .= "&start-min=" . $begin;
                 if (!empty($enddate)) $feed .= "&start-max=" . $end;
 
@@ -1357,13 +1360,17 @@ class eventController extends expController {
                     $extevents[$eventdate][$dy]->body  = $contents->item(0)->nodeValue;
                     // End DOM method
 
-                    $extevents[$eventdate][$dy]->location_data = null;
+//                    $extevents[$eventdate][$dy]->location_data = serialize(expCore::makeLocation('extevent',$extcal->id));
+                    $extevents[$eventdate][$dy]->location_data = 'gcalevent'.$url;
                     $dy++;
                 }
-            } else if ($extcal->type == ICAL_TYPE) {
+            }
+//            else if ($extcal->type == ICAL_TYPE) {
+        if (!empty($this->config['pull_ical'])) foreach ($this->config['pull_ical'] as $exticalurl) {
+            $url++;
                 require_once BASE . 'external/iCalcreator.class.php';
                 $v = new vcalendar(); // initiate new CALENDAR
-                $v->setConfig('url', $extcal->url);
+                $v->setConfig('url', $exticalurl);
                 $v->parse();
                 if ($enddate == null) {
                     $startYear  = null;
@@ -1405,6 +1412,7 @@ class eventController extends expController {
                                     $extevents[$eventdate][$dy]->eventstart = ($dtstart['value']['hour'] * 3600) + ($dtstart['value']['min'] * 60);
                                     if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600;
                                 } else {
+                                    // check for all day event
                                     if ($dtstart['value']['day'] != $thisday[2]) $yesterday = true;
                                     $extevents[$eventdate][$dy]->eventstart = null;
                                     $extevents[$eventdate][$dy]->is_allday  = 1;
@@ -1417,7 +1425,8 @@ class eventController extends expController {
                                 $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
                                 $extevents[$eventdate][$dy]->body  = $vevent->getProperty('description');
 
-                                $extevents[$eventdate][$dy]->location_data = null;
+//                                $extevents[$eventdate][$dy]->location_data = serialize(expCore::makeLocation('extevent',$extcal->id));
+                                $extevents[$eventdate][$dy]->location_data = 'icalevent'.$url;
                                 if (!$yesterday) {
                                     $dy++;
                                 } else {
@@ -1428,7 +1437,7 @@ class eventController extends expController {
                     }
                 }
             }
-        }
+//        }
         return $extevents;
     }
 

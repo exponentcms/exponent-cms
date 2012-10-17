@@ -101,15 +101,14 @@
                                 {/if}
                             {/if}
                             {foreach name=e from=$items item=item}
-                                {$eventstart = $item->eventstart + $item->eventdate->date}
-                                {$eventend = $item->eventend + $item->eventdate->date}
-                                <div class="calevent {if $dayts == $today}today{/if}">
-                                    <a {if $item->location_data != null}
-                                        href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                                {if substr($item->location_data,0,3) != 'O:8'}{$class=$item->location_data}{else}{$class=''}{/if}
+                                <div class="calevent{if $dayts == $today} today{/if} {$class}">
+                                    <a {if substr($item->location_data,1,8) != 'calevent'}
+                                        href="{if $item->location_data != 'eventregistration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
                                     {/if}
-                                    title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $eventstart != $eventend}{$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
+                                    title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
                                     {permissions}
-                                        {if $item->location_data != null}
+                                        {if substr($item->location_data,1,8) != 'calevent'}
                                         <div class="item-actions">
                                                 {if $permissions.edit == 1}
                                                     {icon img="edit.png" action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}

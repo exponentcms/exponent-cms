@@ -52,7 +52,6 @@
         <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
 	</p>
 	<dl class="viewweek">
-
 		{foreach from=$days item=items key=ts}
 			<dt>
 				<strong>
@@ -68,13 +67,13 @@
 				{assign var=none value=0}
 				<dd>
                     <a class="itemtitle"
-                        {if $item->location_data != null}
+                        {if substr($item->location_data,1,8) != 'calevent'}
                             href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
                         {/if}
                         title="{$item->body|summarize:"html":"para"}">{$item->title}
                      </a>
 					{permissions}
-                        {if $item->location_data != null}
+                        {if substr($item->location_data,1,8) != 'calevent'}
                             <div class="item-actions">
                                 {if $permissions.edit == 1}
                                     {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
@@ -111,7 +110,6 @@
 
 {script unique="cal-`$name`" yui3mods="node"}
 {literal}
-
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-calendar': {
 		fullpath: '{/literal}{$asset_path}js/calendar.js{literal}',
@@ -139,6 +137,5 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
 	});
 
 });
-
 {/literal}
 {/script}

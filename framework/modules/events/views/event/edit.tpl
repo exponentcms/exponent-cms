@@ -46,14 +46,12 @@
                 	{/if}
                 </div>
                 <div id="tab2">
-                    {$eventstart = $record->eventstart + $record->eventdate[0]->date}
-                    {$eventend = $record->eventend + $record->eventdate[0]->date}
-                    {*{control type="yuicalendarcontrol" name="eventdate" label="Event Date"|gettext value=$record->eventdate[0]->date}*}
-                    {control type="calendar" name="eventdate" label="Event Date"|gettext default_date=$record->eventdate[0]->date}
+                    {control type="yuicalendarcontrol" name="eventdate" label="Event Date"|gettext value=$record->eventdate[0]->date}
+                    {*{control type="calendar" name="eventdate" label="Event Date"|gettext default_date=$record->eventdate[0]->date}*}
                     {$jsHooks = ['onclick'=>'exponent_forms_disable_datetime(\'eventstart\',this.form,this.checked); exponent_forms_disable_datetime(\'eventend\',this.form,this.checked);']}
                   	{control type="checkbox" name="is_allday" label="All Day Event?"|gettext value=1 checked=$record->is_allday hooks=$jsHooks}
-                    {control type="datetimecontrol" name="eventstart" label="Start Time"|gettext showdate=false value=$eventstart disabled=$record->is_allday}
-                    {control type="datetimecontrol" name="eventend" label="End Time"|gettext showdate=false value=$eventend disabled=$record->is_allday}
+                    {control type="datetimecontrol" name="eventstart" label="Start Time"|gettext showdate=false value=$record->eventstart+$record->eventdate[0]->date disabled=$record->is_allday}
+                    {control type="datetimecontrol" name="eventend" label="End Time"|gettext showdate=false value=$record->eventend+$record->eventdate[0]->date disabled=$record->is_allday}
                     {if (empty($record->id)) }
                         {include "_recurring.tpl"}
                     {elseif ($record->is_recurring == 1) }

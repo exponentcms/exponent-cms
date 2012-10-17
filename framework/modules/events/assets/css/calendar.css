@@ -84,7 +84,57 @@
 	background:#d5e0ed;
 }
 
-.events.default .today, 
+.events.default .calevent.eventregistration,
+.events.default .calevent.eventregistration a:link,
+.events.default .calevent.eventregistration a:visited,
+.events.default .calevent.eventregistration a:hover,
+.events.default .calevent.eventregistration a:focus,
+.events.default .calevent.eventregistration a:active {
+	color: #000096;
+	background: #ffb9ba;
+}
+
+.events.default .calevent.gcalevent1,
+.events.default .calevent.gcalevent1 a:link,
+.events.default .calevent.gcalevent1 a:visited,
+.events.default .calevent.gcalevent1 a:hover,
+.events.default .calevent.gcalevent1 a:focus,
+.events.default .calevent.gcalevent1 a:active {
+	color: #0c0a99;
+	background: #d1e5b4;
+}
+
+.events.default .calevent.gcalevent2,
+.events.default .calevent.gcalevent2 a:link,
+.events.default .calevent.gcalevent2 a:visited,
+.events.default .calevent.gcalevent2 a:hover,
+.events.default .calevent.gcalevent2 a:focus,
+.events.default .calevent.gcalevent2 a:active {
+	color: #0c0a99;
+	background: #d5b5e5;
+}
+
+.events.default .calevent.icalevent1,
+.events.default .calevent.icalevent1 a:link,
+.events.default .calevent.icalevent1 a:visited,
+.events.default .calevent.icalevent1 a:hover,
+.events.default .calevent.icalevent1 a:focus,
+.events.default .calevent.icalevent1 a:active {
+	color: #0c0a99;
+	background: #e5d0b0;
+}
+
+.events.default .calevent.icalevent2,
+.events.default .calevent.icalevent2 a:link,
+.events.default .calevent.icalevent2 a:visited,
+.events.default .calevent.icalevent2 a:hover,
+.events.default .calevent.icalevent2 a:focus,
+.events.default .calevent.icalevent2 a:active {
+	color: #0c0a99;
+	background: #badfe5;
+}
+
+.events.default .today,
 .events.default td.today a, 
 .events.default td.today a:link, 
 .events.default td.today a:visited {

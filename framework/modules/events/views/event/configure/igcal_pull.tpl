@@ -28,7 +28,7 @@
     <h4>{"Current Google Calendar Feeds"|gettext}</h4>
     <ul id="googlepull-feeds">
         {foreach from=$config.pull_google item=feed}
-            {if $feed!=""}<li>{control type="hidden" name="pull_google[]" value=$feed}{$feed} - <a class="delete removegoogle" href="#">{"Remove"|gettext}</a></li>{/if}
+            {if $feed!=""}<li>{control type="hidden" name="pull_google[]" value=$feed}{$feed} <a class="delete removegoogle" href="#">{"Remove"|gettext}</a></li>{/if}
         {foreachelse}
             <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
         {/foreach}
