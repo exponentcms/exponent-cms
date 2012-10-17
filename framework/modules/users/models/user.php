@@ -232,7 +232,7 @@ class user extends expRecord {
 	    
 	    if ($this->isAdmin()) return true;
 
-	    // check check userpermissions to see if the user has the ability to edit anything
+	    // check userpermissions to see if the user has the ability to edit anything
         if ($db->selectValue('userpermission','uid','uid=\''.$this->id.'\' AND permission!=\'view\'')) return true;
 	    
 	    // check groups to see if this group has the ability to admin anything
