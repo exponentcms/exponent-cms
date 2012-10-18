@@ -36,7 +36,8 @@ class listbuildercontrol extends formcontrol {
 
 	function __construct($default,$source,$size=8) {
 		if (is_array($default)) $this->default = $default;
-		else $this->default = array($default);
+        elseif(!empty($default)) $this->default = array($default);
+        else $this->default = array();
 
 		$this->size = $size;
         
