@@ -30,7 +30,7 @@ class banner extends expRecord {
 
     public $validates = array(
         'presence_of'=>array(
-            'url'=>array('message'=>'Title is a required field.')
+            'url'=>array('message'=>'URL is a required field.')
         ));
         
     public function increaseImpressions() {

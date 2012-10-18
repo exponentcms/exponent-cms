@@ -415,6 +415,32 @@ class expRecord {
     }
 
     /**
+     * before validating item
+     */
+    public function beforeValidation() {
+        $this->runCallback('beforeValidation');
+        if (empty($this->id)) {
+            $this->beforeValidationOnCreate();
+        } else {
+            $this->beforeValidationOnUpdate();
+        }
+    }
+
+    /**
+     * before validating item during creation
+     */
+    public function beforeValidationOnCreate() {
+        $this->runCallback('beforeValidationOnCreate');
+    }
+
+    /**
+     * before validating item during update
+     */
+    public function beforeValidationOnUpdate() {
+        $this->runCallback('beforeValidationOnUpdate');
+    }
+
+    /**
      * validate item sef_url
      *
      * @return bool
@@ -458,69 +484,29 @@ class expRecord {
     }
 
     /**
-     * after creating item
+     * after validating item
      */
-    public function afterCreate() {
-        $this->runCallback('afterCreate');
-    }
-
-    /**
-     * after updating item
-     */
-    public function afterUpdate() {
-        $this->runCallback('afterUpdate');
-    }
-
-    /**
-     * after saving item
-     */
-    public function afterSave() {
-        global $db;
-
-        $this->runCallback('afterSave');
-
-        // save all attached items
-        if (!empty($this->attachable_items_to_save)) {
-            foreach ($this->attachable_item_types as $type) {
-                if (!empty($this->attachable_items_to_save[$type])) {
-                    $itemtype = new $type();
-                    // clean up (delete) old attachments since we'll create all from scratch
-                    $db->delete($itemtype->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id);
-//                    $refname = strtolower($type).'s_id';  //FIXME: find a better way to pluralize these names!!!
-                    $refname = strtolower($itemtype->tablename) . '_id'; //FIXME: find a better way to pluralize these names!!!
-                    foreach ($this->attachable_items_to_save[$type] as $subtype=> $item) {
-                        $obj = new stdClass();
-                        if (is_object($item)) {
-                            if (!empty($item->id)) {
-                                $obj->$refname     = $item->id;
-                                $obj->subtype      = $subtype;
-                                $obj->content_id   = $this->id;
-                                $obj->content_type = $this->classname;
-                                if ($type == 'expFile') $obj->rank = $item->rank + 1;
-                                $db->insertObject($obj, $itemtype->attachable_table);
-                            }
-                        } elseif (is_array($item)) {
-                            foreach ($item as $rank=>$value) {
-                                if (is_numeric($value)) {
-                                    $obj->$refname     = $value;
-                                    $obj->subtype      = $subtype;
-                                    $obj->content_id   = $this->id;
-                                    $obj->content_type = $this->classname;
-                                    if ($type == 'expFile') $obj->rank = $rank + 1;
-                                    $db->insertObject($obj, $itemtype->attachable_table);
-                                }
-                            }
-                        } elseif (is_numeric($item)) {
-                            $obj->$refname     = $item;
-                            $obj->content_id   = $this->id;
-                            $obj->content_type = $this->classname;
-                            if ($type == 'expFile') $obj->rank = $subtype + 1;
-                            $db->insertObject($obj, $itemtype->attachable_table);
-                        }
-                    }
-                }
-            }
+    public function afterValidation() {
+        $this->runCallback('afterValidation');
+        if (empty($this->id)) {
+            $this->afterValidationOnCreate();
+        } else {
+            $this->afterValidationOnUpdate();
         }
+    }
+
+    /**
+     * after validating item during creation
+     */
+    public function afterValidationOnCreate() {
+        $this->runCallback('afterValidationOnCreate');
+    }
+
+    /**
+     * after validating item during update
+     */
+    public function afterValidationOnUpdate() {
+        $this->runCallback('afterValidationOnUpdate');
     }
 
     /**
@@ -599,55 +585,69 @@ class expRecord {
     }
 
     /**
-     * before validating item
+     * after updating item
      */
-    public function beforeValidation() {
-        $this->runCallback('beforeValidation');
-        if (empty($this->id)) {
-            $this->beforeValidationOnCreate();
-        } else {
-            $this->beforeValidationOnUpdate();
+    public function afterUpdate() {
+        $this->runCallback('afterUpdate');
+    }
+
+    /**
+     * after creating item
+     */
+    public function afterCreate() {
+        $this->runCallback('afterCreate');
+    }
+
+    /**
+     * after saving item
+     */
+    public function afterSave() {
+        global $db;
+
+        $this->runCallback('afterSave');
+
+        // save all attached items
+        if (!empty($this->attachable_items_to_save)) {
+            foreach ($this->attachable_item_types as $type) {
+                if (!empty($this->attachable_items_to_save[$type])) {
+                    $itemtype = new $type();
+                    // clean up (delete) old attachments since we'll create all from scratch
+                    $db->delete($itemtype->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id);
+//                    $refname = strtolower($type).'s_id';  //FIXME: find a better way to pluralize these names!!!
+                    $refname = strtolower($itemtype->tablename) . '_id'; //FIXME: find a better way to pluralize these names!!!
+                    foreach ($this->attachable_items_to_save[$type] as $subtype=> $item) {
+                        $obj = new stdClass();
+                        if (is_object($item)) {
+                            if (!empty($item->id)) {
+                                $obj->$refname     = $item->id;
+                                $obj->subtype      = $subtype;
+                                $obj->content_id   = $this->id;
+                                $obj->content_type = $this->classname;
+                                if ($type == 'expFile') $obj->rank = $item->rank + 1;
+                                $db->insertObject($obj, $itemtype->attachable_table);
+                            }
+                        } elseif (is_array($item)) {
+                            foreach ($item as $rank=>$value) {
+                                if (is_numeric($value)) {
+                                    $obj->$refname     = $value;
+                                    $obj->subtype      = $subtype;
+                                    $obj->content_id   = $this->id;
+                                    $obj->content_type = $this->classname;
+                                    if ($type == 'expFile') $obj->rank = $rank + 1;
+                                    $db->insertObject($obj, $itemtype->attachable_table);
+                                }
+                            }
+                        } elseif (is_numeric($item)) {
+                            $obj->$refname     = $item;
+                            $obj->content_id   = $this->id;
+                            $obj->content_type = $this->classname;
+                            if ($type == 'expFile') $obj->rank = $subtype + 1;
+                            $db->insertObject($obj, $itemtype->attachable_table);
+                        }
+                    }
+                }
+            }
         }
-    }
-
-    /**
-     * before validating item during creation
-     */
-    public function beforeValidationOnCreate() {
-        $this->runCallback('beforeValidationOnCreate');
-    }
-
-    /**
-     * before validating item during update
-     */
-    public function beforeValidationOnUpdate() {
-        $this->runCallback('beforeValidationOnUpdate');
-    }
-
-    /**
-     * after validating item
-     */
-    public function afterValidation() {
-        $this->runCallback('afterValidation');
-        if (empty($this->id)) {
-            $this->afterValidationOnCreate();
-        } else {
-            $this->afterValidationOnUpdate();
-        }
-    }
-
-    /**
-     * after validating item during creation
-     */
-    public function afterValidationOnCreate() {
-        $this->runCallback('afterValidationOnCreate');
-    }
-
-    /**
-     * after validating item during update
-     */
-    public function afterValidationOnUpdate() {
-        $this->runCallback('afterValidationOnUpdate');
     }
 
     /**
@@ -655,32 +655,6 @@ class expRecord {
      */
     public function beforeDelete() {
         $this->runCallback('beforeDelete');
-    }
-
-    /**
-     * is run after deleting item
-     */
-    public function afterDelete() {
-        $this->runCallback('afterDelete');
-    }
-
-    /**
-     * jump to subclass calling routine
-     *
-     * @param $type
-     *
-     * @return bool
-     */
-    private function runCallback($type) {
-        if (empty($type)) return false;
-
-        // check for and run any callbacks listed in the $type array.
-        if ($this->classinfo->hasProperty($type)) {
-            $callbacks = $this->classinfo->getProperty($type);
-            foreach ($callbacks->getValue(new $this->classname(null, false, false)) as $func) {
-                $this->$func();
-            }
-        }
     }
 
     /**
@@ -714,21 +688,47 @@ class expRecord {
     }
 
     /**
+     * is run after deleting item
+     */
+    public function afterDelete() {
+        $this->runCallback('afterDelete');
+    }
+
+    /**
+     * jump to subclass calling routine
+     *
+     * @param $type
+     *
+     * @return bool
+     */
+    private function runCallback($type) {
+        if (empty($type)) return false;
+
+        // check for and run any callbacks listed in the $type array.
+        if ($this->classinfo->hasProperty($type)) {
+            $callbacks = $this->classinfo->getProperty($type);
+            foreach ($callbacks->getValue(new $this->classname(null, false, false)) as $func) {
+                $this->$func();
+            }
+        }
+    }
+
+    /**
      * make an sef_url for item
      */
     public function makeSefUrl() {
-//        global $db, $router;
-//        if (!empty($this->title)) {
-//			$this->sef_url = $router->encode($this->title);
-//		} else {
-//			$this->sef_url = $router->encode('Untitled');
-//		}
-//        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"');
-//		if (!empty($dupe)) {
-//			list($u, $s) = explode(' ',microtime());
-//			$this->sef_url .= '-'.$s.'-'.$u;
-//		}
-        $this->sef_url = expCore::makeSefUrl($this->title, $this->tablename);
+        global $db, $router;
+        if (!empty($this->title)) {
+			$this->sef_url = $router->encode($this->title);
+		} else {
+			$this->sef_url = $router->encode('Untitled');
+		}
+        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"');
+		if (!empty($dupe)) {
+			list($u, $s) = explode(' ',microtime());
+			$this->sef_url .= '-'.$s.'-'.$u;
+		}
+//        $this->sef_url = expCore::makeSefUrl($this->title, $this->tablename);  //FIXME? this is for 'sef_name', NOT 'sef_url'
         $this->runCallback('makeSefUrl');
     }
 
@@ -941,7 +941,7 @@ class expRecord {
                 $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->tablename . '_id from ' . DB_TABLE_PREFIX . '_' . $tablename . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')', $assocObj->default_sort_field != '' ? $assocObj->default_sort_field . " " . $assocObj->default_sort_direction : null);
                 $records = array();
                 foreach ($ret as $record) {
-                    $record_array = $this->object2Array($record);
+                    $record_array = object2Array($record);
                     // put in the current model as an exception, otherwise the auto assoc's keep initializing instances of each other in an
                     // infinant loop
                     $record_array['except'] = array($this->classinfo->name);
@@ -965,7 +965,7 @@ class expRecord {
                 $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->classname . '_id from ' . DB_TABLE_PREFIX . '_' . $tablename . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')');
                 $records = array();
                 foreach ($ret as $record) {
-                    $record_array = $this->object2Array($record);
+                    $record_array = object2Array($record);
                     // put in the current model as an exception, otherwise the auto assoc's keep initializing instances of each other in an
                     // infinant loop
                     $record_array['except'] = array($this->classinfo->name);
@@ -1046,16 +1046,16 @@ class expRecord {
      *
      * @return array
      */
-    private function object2Array($object = null) {
-        $ret_array = array();
-        if (empty($object)) return $ret_array;
-
-        foreach ($object as $key=> $value) {
-            $ret_array[$key] = $value;
-        }
-
-        return $ret_array;
-    }
+//    private function object2Array($object = null) {
+//        $ret_array = array();
+//        if (empty($object)) return $ret_array;
+//
+//        foreach ($object as $key=> $value) {
+//            $ret_array[$key] = $value;
+//        }
+//
+//        return $ret_array;
+//    }
 
     /**
      * return the item poster
