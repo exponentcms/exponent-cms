@@ -108,7 +108,7 @@
                                     {/if}
                                     title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
                                     {permissions}
-                                        {if substr($item->location_data,1,8) != 'calevent'}
+                                        {if substr($item->location_data,0,3) == 'O:8'}
                                         <div class="item-actions">
                                                 {if $permissions.edit == 1}
                                                     {icon img="edit.png" action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}

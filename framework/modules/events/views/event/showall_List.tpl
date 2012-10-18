@@ -45,7 +45,7 @@
 						<br />&#160;&#160;&#160;&#160;&#160;&#160;
 					{/if}
 					{permissions}
-                        {if substr($item->location_data,1,8) != 'calevent'}
+                        {if substr($item->location_data,0,3) == 'O:8'}
                             <div class="item-actions">
                                 {if $permissions.edit == 1}
                                     {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
