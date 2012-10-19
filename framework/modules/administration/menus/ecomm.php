@@ -47,7 +47,7 @@ $ecom = array(
             array(
                 'text'=>gt("Orders"),
                 'submenu'=>array(
-                    'id'=>'orders',
+                    'id'=>'ordermenu',
                     'itemdata'=>array(
                         array(
                             'text'=>gt("View Orders")." <em>(".$new_orders."  ".gt("New Orders").")",
