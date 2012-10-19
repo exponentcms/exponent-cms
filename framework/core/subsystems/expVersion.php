@@ -24,31 +24,94 @@
 /** @define "BASE" "../../.." */
 
 class expVersion {
-          
-	/**
-	 * Return a string of the current version number.
-	 *
-	 * @param bool $full Whether or not to return a full version number.  If passed as true,
-	 *	a string in the form of '2.0.3-beta5' will be returned.  Otherwise, '2.0' would be returned.
-	 * @param bool $build Whether or not to return the build date in the string.
-	 * @param bool $full
-	 * @param bool $build
+
+    /**
+     * Return a string of the current version number.
      *
-	 * @return string
+     * @param bool $full Whether or not to return a full version number.  If passed as true,
+     *	a string in the form of '2.0.3-beta5' will be returned.  Otherwise, '2.0' would be returned.
+     * @param bool $build Whether or not to return the build date in the string.
+     * @param bool $type Whether to include the type and interation of a full version number
+     *
+     * @return string
      *
      * @node Subsystems:expVersion
-	 */
-	public static function getVersion($full = false, $build = false) {
+     */
+	public static function getVersion($full = false, $build = false, $type = true) {
 		if (!defined('EXPONENT_VERSION_MAJOR')) include_once(BASE."exponent_version.php");
 		$vers = EXPONENT_VERSION_MAJOR.".".EXPONENT_VERSION_MINOR;  // can be used for numerical comparison
 		if ($full) {
 			$vers .= ".".EXPONENT_VERSION_REVISION;
-			if (EXPONENT_VERSION_TYPE != '') $vers .= "-".EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
+			if ($type && EXPONENT_VERSION_TYPE != '') $vers .= "-".EXPONENT_VERSION_TYPE.EXPONENT_VERSION_ITERATION;
 		}
 		if ($build) {
 			$vers .= " (Build Date: ".strftime("%D",EXPONENT_VERSION_BUILDDATE).")";
 		}
 		return $vers;
+	}
+
+    /**
+     * Return a string of the current version number in the database.
+     *
+     * @param bool $full Whether or not to return a full version number.  If passed as true,
+     *	a string in the form of '2.0.3-beta5' will be returned.  Otherwise, '2.0' would be returned.
+     * @param bool $build Whether or not to return the build date in the string.
+     * @param bool $type Whether to include the type and interation of a full version number
+     *
+     * @return string
+     *
+     * @node Subsystems:expVersion
+     */
+	public static function getDBVersion($full = false, $build = false, $type = true) {
+        $dbver = self::dbVersion();
+		$vers = $dbver->major.".".$dbver->minor;  // can be used for numerical comparison
+		if ($full) {
+			$vers .= ".".$dbver->revision;
+			if ($type && $dbver->type != '') $vers .= "-".$dbver->type.$dbver->iteration;
+		}
+		if ($build) {
+			$vers .= " (Build Date: ".strftime("%D",$dbver->builddate).")";
+		}
+		return $vers;
+	}
+
+    /**
+     * Return an object of the current version number of the software.
+     *
+     * @return object
+     *
+     * @node Subsystems:expVersion
+     */
+	public static function swVersion() {
+        $swversion = new stdClass();
+        $swversion->major = EXPONENT_VERSION_MAJOR;
+        $swversion->minor = EXPONENT_VERSION_MINOR;
+        $swversion->revision = EXPONENT_VERSION_REVISION;
+        $swversion->type = EXPONENT_VERSION_TYPE;
+        $swversion->iteration = EXPONENT_VERSION_ITERATION;
+        $swversion->builddate = EXPONENT_VERSION_BUILDDATE;
+        return $swversion;
+	}
+
+    /**
+     * Return an object of the current version number stored in the database.
+     *
+     * @return object
+     *
+     * @node Subsystems:expVersion
+     */
+	public static function dbVersion() {
+        global $db;
+
+        $dbversion = $db->selectObject('version',1);
+        if (empty($dbversion)) {
+            $dbversion->major = 0;
+            $dbversion->minor = 0;
+            $dbversion->revision = 0;
+            $dbversion->type = '';
+            $dbversion->iteration = '';
+        }
+        return $dbversion;
 	}
 
 	/**
@@ -57,25 +120,27 @@ class expVersion {
 	public static function checkVersion() {
 		global $db, $user;
 
-        $swversion = new stdClass();
-        $swversion->major = EXPONENT_VERSION_MAJOR;
-        $swversion->minor = EXPONENT_VERSION_MINOR;
-        $swversion->revision = EXPONENT_VERSION_REVISION;
-        $swversion->type = EXPONENT_VERSION_TYPE;
-        $swversion->iteration = EXPONENT_VERSION_ITERATION;
-        $swversion->builddate = EXPONENT_VERSION_BUILDDATE;
+//        $swversion = new stdClass();
+//        $swversion->major = EXPONENT_VERSION_MAJOR;
+//        $swversion->minor = EXPONENT_VERSION_MINOR;
+//        $swversion->revision = EXPONENT_VERSION_REVISION;
+//        $swversion->type = EXPONENT_VERSION_TYPE;
+//        $swversion->iteration = EXPONENT_VERSION_ITERATION;
+//        $swversion->builddate = EXPONENT_VERSION_BUILDDATE;
+        $swversion = self::swVersion();
 
 		// check database version against installed software version
         if ($db->havedb) {
             if ($user->isSuperAdmin()) {
-                $dbversion = $db->selectObject('version',1);
-                if (empty($dbversion)) {
-                    $dbversion->major = 0;
-                    $dbversion->minor = 0;
-                    $dbversion->revision = 0;
-                    $dbversion->type = '';
-                    $dbversion->iteration = '';
-                }
+//                $dbversion = $db->selectObject('version',1);
+//                if (empty($dbversion)) {
+//                    $dbversion->major = 0;
+//                    $dbversion->minor = 0;
+//                    $dbversion->revision = 0;
+//                    $dbversion->type = '';
+//                    $dbversion->iteration = '';
+//                }
+                $dbversion = self::dbVersion();
                 // check if software version is newer than database version
                 if (self::compareVersion($dbversion,$swversion)) {
                     $oldvers = $dbversion->major.'.'.$dbversion->minor.'.'.$dbversion->revision.($dbversion->type?$dbversion->type:'').($dbversion->iteration?$dbversion->iteration:'');
@@ -122,6 +187,7 @@ class expVersion {
      * @return bool set to true if $version1 is less than $version2
      */
     public static function compareVersion($version1, $version2) {
+        if (!is_object($version1) || !is_object($version2)) return false;
         if ($version1->major < $version2->major) {
             return true;
         } elseif ($version1->major == $version2->major && $version1->minor < $version2->minor) {

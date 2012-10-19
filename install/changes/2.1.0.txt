@@ -1,0 +1,6 @@
+version 2.1.0
+This release focuses on new calendar & forms modules, e-Commerce as OOTB experience, integration of jQuery/Twitter Bootstrap
+- adds optional nested comments, and optional per-item comment disabling
+- adds optional comments to filedownload module
+* adds pagination option of 'More', useful for sidebar views
+- removes extra themes to reduce size of package, available as separate addon download
