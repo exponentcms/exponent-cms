@@ -913,6 +913,11 @@ class navigationController extends expController {
         ));
     }
 
+    function update() {
+        parent::update();
+        expSession::clearAllUsersSessionCache('navigation');
+    }
+
     function move_standalone() {
         expSession::clearAllUsersSessionCache('navigation');
         assign_to_template(array(

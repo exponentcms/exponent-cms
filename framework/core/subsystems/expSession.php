@@ -159,11 +159,12 @@ class expSession {
 	public static function validate() {
 		global $db, $user;
 		//FJD - create a ticket for every session instead of just logged in users
-		if (!isset($_SESSION[SYS_SESSION_KEY]['ticket'])) {
+		if (empty($_SESSION[SYS_SESSION_KEY]['ticket'])) {
 			$ticket = self::createTicket();
-		}else{
+		} else {
 			$ticket = $db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'");
 		}
+        if (empty($ticket)) $ticket = self::createTicket();
 
 		//if we don't have a ticket here, that means the browser passed the cookie, the session is still
 		// active, but the DATABASE tickets table was cleared.
@@ -209,7 +210,7 @@ class expSession {
 	 */
 	public static function updateTicket($ticket, $user){
 		global $db;
-		if (isset($ticket->ticket)){
+		if (!empty($ticket->ticket)){
 			$ticket->uid = isset($user->id) ? $user->id : 0;
 			$ticket->last_active = time();
 			$db->updateObject($ticket,'sessionticket',"ticket='" . $ticket->ticket . "'");
