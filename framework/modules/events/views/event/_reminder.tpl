@@ -44,7 +44,7 @@
 					{assign var=catid value=$event->category_id}
 					<dd>
 						<strong>
-							<a class="itemtitle calendar_mngmntlink" href="{link controller=event action=show id=$event->eventdate->id}">{$event->title}</a>
+							<a class="itemtitle calendar_mngmntlink" href="{link controller=event action=show id=$event->date_id}">{$event->title}</a>
 						</strong>							
 						<div>
 							&#160;-&#160;

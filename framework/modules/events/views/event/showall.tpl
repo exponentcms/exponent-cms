@@ -104,20 +104,20 @@
                                 {if substr($item->location_data,0,3) != 'O:8'}{$class=$item->location_data}{else}{$class=''}{/if}
                                 <div class="calevent{if $dayts == $today} today{/if} {$class}">
                                     <a {if substr($item->location_data,1,8) != 'calevent'}
-                                        href="{if $item->location_data != 'eventregistration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                                        href="{if $item->location_data != 'eventregistration'}{link action=show id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
                                     {/if}
                                     title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
                                     {permissions}
                                         {if substr($item->location_data,0,3) == 'O:8'}
                                         <div class="item-actions">
                                                 {if $permissions.edit == 1}
-                                                    {icon img="edit.png" action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+                                                    {icon img="edit.png" action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
                                                 {/if}
                                                 {if $permissions.delete == 1}
                                                     {if $item->is_recurring == 0}
-                                                        {icon img="delete.png" action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                        {icon img="delete.png" action=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                                     {else}
-                                                        {icon img="delete.png" action=delete_recurring record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                                        {icon img="delete.png" action=delete_recurring record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                                     {/if}
                                                 {/if}
                                             </div>

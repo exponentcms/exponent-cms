@@ -42,7 +42,7 @@
 				<li>
                     <a class="link"
                         {if substr($item->location_data,1,8) != 'calevent'}
-                            href="{if $item->location_data != 'event_registration'}{link action=show id=$item->eventdate->id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                            href="{if $item->location_data != 'event_registration'}{link action=show id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
                         {/if}
                         >{$item->title}
                     </a>
@@ -57,13 +57,13 @@
                         {if substr($item->location_data,0,3) == 'O:8'}
                             <div class="item-actions">
                                 {if $permissions.edit == 1}
-                                    {icon action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+                                    {icon action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
                                 {/if}
                                 {if $permissions.delete == 1}
                                     {if $item->is_recurring == 0}
-                                        {icon action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                        {icon action=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                     {else}
-                                        {icon action=delete_form class=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+                                        {icon action=delete_form class=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                     {/if}
                                 {/if}
                             </div>

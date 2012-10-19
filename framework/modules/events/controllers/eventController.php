@@ -201,9 +201,7 @@ class eventController extends expController {
                 //                $days = array();
                 // added per Ignacio
                 //			$endofmonth = date('t', $time);
-                //FIXME add external events to $days[$start] for date $start, one day at a time
                 $extitems = $this->getExternalEvents($this->loc, $startperiod, $next);
-                //FIXME add event registration events
                 if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next);
                 for ($i = 1; $i <= $totaldays; $i++) {
                     //                    $info = getdate($time);
@@ -269,9 +267,7 @@ class eventController extends expController {
                 // Grab day counts (deprecated, handled by the date function)
                 // $endofmonth = expDateTime::endOfMonthDay($time);
                 $endofmonth = date('t', $time);
-                //FIXME add external events to $monthly[$week][$i] for date $start, one day at a time
                 $extitems = $this->getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
-                //FIXME add event registration events
                 if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst));
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
@@ -406,7 +402,6 @@ class eventController extends expController {
                         $end = null;
                 }
                 $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['featured_only']) ? true : false);
-                //FIXME add external events to $items for date >= ".expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time())
                 $extitems = $this->getExternalEvents($this->loc, $begin, $end);
                 // we need to crunch these down
                 $extitem = array();
@@ -414,11 +409,10 @@ class eventController extends expController {
                     $extitem[] = $value;
                 }
                 $items = array_merge($items, $extitem);
-                //FIXME add event registration events
                 if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end);
                 // we need to crunch these down
                 $regitem = array();
-                foreach ($regitems as $key => $value) {
+                if (!empty($regitems)) foreach ($regitems as $key => $value) {
                     $regitem[] = $value;
                 }
                 $items = array_merge($items, $regitem);
@@ -1263,26 +1257,23 @@ class eventController extends expController {
     }
 
     function getEventsForDates($edates, $sort_asc = true, $featuredonly = false) {
-        global $db;
         $events = array();
         $featuresql = "";
         if ($featuredonly) $featuresql = " AND is_featured=1";
         foreach ($edates as $edate) {
-            $o = $db->selectObject("event", "id=" . $edate->event_id . $featuresql);
-            if ($o != null) {
-                $o->eventdate = $edate;
-                $o->eventstart += $edate->date;
-                $o->eventend += $edate->date;
-                $events[] = $o;
+            $evs = $this->event->find('all', "id=" . $edate->event_id . $featuresql);
+            foreach ($evs as $key=>$event) {
+                $evs[$key]->eventstart += $edate->date;
+                $evs[$key]->eventend += $edate->date;
+                $evs[$key]->date_id = $edate->id;
             }
+            $events = array_merge($events, $evs);
         }
         $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventstart', 'order' => $sort_asc ? 'ASC' : 'DESC'));
         return $events;
     }
 
-    function getExternalEvents($loc, $startdate, $enddate) { //FIXME this still needs to be converted
-        global $db;
-
+    function getExternalEvents($loc, $startdate, $enddate) {
         $extevents = array();
         $dy = 0;
         $url = 0;

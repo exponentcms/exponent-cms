@@ -21,8 +21,6 @@
         <h2>{"Events Reminder Email Settings"|gettext}</h2>
 	</div>
 </div>
-{*$form->register('addresses',gt('Other Addresses'),new listbuildercontrol($defaults,null),true,gt('Reminders'));*}
-{*{control type="listbuilder" name="addresses" label="Other Addresses" values=['1'=>'Administrator']}*}
 {userlistcontrol name="users" label="Users" items=$config.users}
 {grouplistcontrol name="groups" label="Groups" items=$config.groups}
 {control type="listbuilder" name="addresses" label="Other Addresses" values=$config.addresses}

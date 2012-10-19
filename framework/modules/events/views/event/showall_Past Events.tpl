@@ -67,7 +67,7 @@
 		<tbody>
 		{foreach from=$items item=item}
 			<tr class="{cycle values="odd,even"}">
-				<td><a class="itemtitle calendar_mngmntlink" href="{link action=show id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
+				<td><a class="itemtitle calendar_mngmntlink" href="{link action=show id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
 					{if $item->is_allday == 1}
 						{$item->eventstart|format_date}
@@ -83,13 +83,13 @@
 					{permissions}
 						<div class="item-actions">
 							{if $permissions.edit == 1}
-								{icon img='edit.png' action=edit record=$item date_id=$item->eventdate->id title="Edit this Event"|gettext}
+								{icon img='edit.png' action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
 								{if $item->is_recurring == 0}
-									{icon img='delete.png' action=delete record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+									{icon img='delete.png' action=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
 								{else}
-									{icon img='delete.png' action=delete_form record=$item date_id=$item->eventdate->id title="Delete this Event"|gettext}
+									{icon img='delete.png' action=delete_form record=$item date_id=$item->date_id title="Delete this Event"|gettext}
 								{/if}
 							{/if}
 						</div>
