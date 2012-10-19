@@ -36,7 +36,8 @@
         <ul>
             <li><a href="{link controller=store action=showall}">{'Browse all Products'|gettext}</a></li>
             {foreach from=$ancestors item=ancestor name=path}
-                {math equation="x*10" x=$smarty.foreach.path.iteration assign=depth} 
+                {*{math equation="x*10" x=$smarty.foreach.path.iteration assign=depth} *}
+                {$depth=$smarty.foreach.path.iteration*10}
                 <li style="margin-left: {$depth}px">
                     {if $ancestor->id != $category->id}
                         <a href="{link controller=store action=showall title=$ancestor->sef_url}">{$ancestor->title}</a>
@@ -45,7 +46,8 @@
                     {/if}
                 </li>
                 {/foreach}      
-            {math equation="x+10" x=$depth assign=childdepth}   
+            {*{math equation="x+10" x=$depth assign=childdepth}   *}
+            {$childdepth=$depth+10}
             {foreach from=$categories item=category}
                 <li style="margin-left: {$childdepth}px">
                     <a href="{link controller=store action=showall title=$category->sef_url}">{$category->title}</a> <span class="productsincategory">({$category->product_count})</span>

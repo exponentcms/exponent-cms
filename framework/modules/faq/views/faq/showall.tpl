@@ -69,9 +69,9 @@
             <a name="cat{$catid}"></a>
             <h3>{$cat->name}</h3>
             {foreach name=a from=$cat->records item=qna}
-                {assign var=qna_found value=0}
-                {math equation="x-1" x=$qna->rank assign=prev}
-                {math equation="x+1" x=$qna->rank assign=next}
+                {*{assign var=qna_found value=0}*}
+                {*{math equation="x-1" x=$qna->rank assign=prev}*}
+                {*{math equation="x+1" x=$qna->rank assign=next}*}
                 <div class="item">
                     <a name="cat{$catid}q{$qna->rank}"></a>
                     <h4>Q{$smarty.foreach.a.iteration}. {$qna->question}</h4>
@@ -93,7 +93,7 @@
                         {$qna->answer}
                     </div>
                 </div>
-                {assign var=qna_found value=1}
+                {*{assign var=qna_found value=1}*}
             {foreachelse}
                 {if ($config->enable_categories == 1 && $catid != 0) || ($config->enable_categories==0)}
                     <div class="item">

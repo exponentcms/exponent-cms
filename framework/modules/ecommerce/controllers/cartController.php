@@ -631,14 +631,16 @@ class cartController extends expController {
         }
 
         // setup the billing & shipping calculators info
-        if ($product->requiresBilling) {
+//        if ($product->requiresBilling) {
+        if ($order->billing_required) {
             $billing = new billing();
             assign_to_template(array(
                 'billing'=> $billing
             ));
         }
 
-        if ($product->requiresShipping) {
+//        if ($product->requiresShipping) {
+        if ($order->shipping_required) {  //FIXME we exit earlier if shipping_required???
             $shipping            = new shipping();
             $shipping->pricelist = $shipping->listPrices();
             assign_to_template(array(

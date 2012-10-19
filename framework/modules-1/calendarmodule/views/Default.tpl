@@ -78,7 +78,8 @@
 			<th scope="col" abbr="{'Sunday'|gettext}" title="{'Sunday'|gettext}">{'Sunday'|gettext}</th>
 			{/if}
 		</tr>
-		{math equation="x" x=$now assign=dayts}
+		{*{math equation="x" x=$now assign=dayts}*}
+        {$dayts=$now}
 		{foreach from=$monthly item=week key=weeknum}
 			{assign var=moredata value=0}
 			{foreach name=w from=$week key=day item=events}
@@ -121,7 +122,8 @@
                                     {/permissions}
                                 </div>
                             {/foreach}
-                            {if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}
+                            {*{if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}*}
+                            {if $number != -1}{$dayts=$dayts+86400}{/if}
                         </td>
                     {/foreach}
                 </tr>

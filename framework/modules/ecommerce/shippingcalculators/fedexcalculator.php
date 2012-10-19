@@ -127,6 +127,8 @@ class fedexcalculator extends shippingcalculator {
             }
         }
 
+        if (empty($package_items)) return array();  // fedex needs at least one item to keep from complaining.
+
         //eDebug($package_items);
         // sort the items by volume
         $package_items = expSorter::sort(array('array'=> $package_items, 'sortby'=> 'volume', 'order'=> 'DESC'));

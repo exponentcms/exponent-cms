@@ -119,7 +119,9 @@ class upscalculator extends shippingcalculator {
              
              return $rates; 
         }
-        
+
+        if (empty($package_items)) return array();  // why proceed with zero packages?
+
         // sort the items by volume
         $package_items = expSorter::sort(array('array'=>$package_items,'sortby'=>'volume', 'order'=>'DESC'));
         
