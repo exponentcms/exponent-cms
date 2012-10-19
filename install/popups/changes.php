@@ -54,6 +54,6 @@
                 }
             }
         ?>
-        <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Changes prior to this can be found in the \'CHANGELOG\' file'); ?></strong></td></tr>
+        <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Previous changes can be found in the \'CHANGELOG\' file'); ?></strong></td></tr>
     </table>
 </div>
