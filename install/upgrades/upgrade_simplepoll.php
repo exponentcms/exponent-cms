@@ -76,7 +76,7 @@ class upgrade_simplepoll extends upgradescript {
             $db->updateObject($up,'userpermission',null,'uid');
         }
 
-		// convert each simplepollmodule to a simplePoll Controller
+		// convert each simplepollmodule_config to a simplePoll Controller expConfig
 	    $modules_converted = 0;
 	    $cns = $db->selectObjects('container',"internal LIKE '%simplepollmodule%'");
 	    foreach ($cns as $cn) {

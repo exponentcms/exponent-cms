@@ -98,7 +98,7 @@ $page_text = '';
 switch ($page) {
 	case 'upgrade-1':
 	    $masthead = gt("Upgrade");
-		$page_text = gt("It appears you've upgraded your Exponent code.").'<br /><br /> <a href="javascript:void(0)" onclick="return pop(\'changes\');">'.gt('Read about the changes before upgrading!').'</a> ';
+		$page_text = gt("It appears you've upgraded your Exponent code.").'<br /><br />'.gt("Before you begin the upgrade you should").' <a href="javascript:void(0)" onclick="return pop(\'changes\');">'.gt('read about the changes!').'</a> ';
 		break;
 	case 'upgrade-2':
 	    $masthead = gt("Upgrade");

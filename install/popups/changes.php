@@ -21,7 +21,7 @@
    <h1><?php echo gt('ExponentCMS Version Changelog'); ?></h1>
 </div>
 <div id="bd">
-    <p><?php echo gt('Here is the list of changes'); ?></p>
+    <p><?php echo gt('Here is the list of changes from your current version'); ?></p>
     <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
         <?php
             $swversion = expVersion::swVersion();
@@ -54,6 +54,6 @@
                 }
             }
         ?>
-        <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Previous changes can be found in the \'CHANGELOG\' file'); ?></strong></td></tr>
+        <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Older changes can be found in the \'CHANGELOG\' file'); ?></strong></td></tr>
     </table>
 </div>
