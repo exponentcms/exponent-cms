@@ -67,7 +67,7 @@ class expVersion {
         $vers = $dbver->major . "." . $dbver->minor; // can be used for numerical comparison
         if ($full) {
             $vers .= "." . $dbver->revision;
-            if ($type && $dbver->type != '') $vers .= "-" . $dbver->type . $dbver->iteration;
+            if ($type && $dbver->type != '') $vers .= "-" . $dbver->type . (!empty($dbver->iteration) ? $dbver->iteration : '');
         }
         if ($build) {
             $vers .= " (Build Date: " . strftime("%D", $dbver->builddate) . ")";

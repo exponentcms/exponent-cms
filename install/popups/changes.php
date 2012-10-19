@@ -26,6 +26,12 @@
         <?php
             $swversion = expVersion::swVersion();
             $dbversion = expVersion::dbVersion();
+            if (!expVersion::compareVersion($dbversion,$swversion)) {
+                ?>
+                <tr><td colspan="2" style="background-color: orange;"><strong><?php echo gt('You already appear to be running this version'); ?></strong></td></tr>
+                <tr><td colspan="2">&#160;</td></tr>
+                <?php
+            }
             for ($swversion->revision; $swversion->revision >= 0; $swversion->revision--) {
                 if (expVersion::compareVersion($dbversion,$swversion)) {
 //                    include('./changes/'.$swversion->major.'.'.$swversion->minor.'.'.$swversion->revision.'.php');
