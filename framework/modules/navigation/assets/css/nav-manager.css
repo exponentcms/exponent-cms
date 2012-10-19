@@ -5,7 +5,6 @@
     padding:20px 10px;
     background:#efefef;
 }
-
 #navtree table{
     border-collapse:collapse;
     border-spacing:0;
@@ -20,27 +19,26 @@
     padding:0;
     margin:0;
 }
-
 #navtree td a {
     text-decoration:none;
 }
 
 #navTreeContext h6 {
     text-align:left;
-    padding-left:20px;
+    padding-left:5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
     font-size:12px;
     color:#333;
+    background-color: #d9d9d9;
     border-bottom:1px solid #dedede;
 }
-
 #navTreeContext .yuimenuitem {
     height:25px;
 }
-
 #navTreeContext .yuimenuitemlabel {
-    padding-top:5px;
+    /*padding-top:5px;*/
 }
-
 #navTreeContext .yuimenuitemlabel-hassubmenu{
     background-image : url(../images/menuitem_submenuindicator.png);
     background-repeat: no-repeat;
@@ -50,6 +48,7 @@
     background-image: url(../../../../core/assets/images/exp1icons.png);
     background-repeat: no-repeat;
     background-position:  0 -492px;
+    padding-top:5px;
 }
 #navTreeContext .addpage {
     background-image: url(../images/page.png);
@@ -70,39 +69,41 @@
 #navTreeContext .viewpage {
     background-image:url(../../../../core/assets/images/view.png);
     background-repeat: no-repeat;
+    padding-top:5px;
 }
 #navTreeContext .editpage {
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat: no-repeat;
     background-position:0 -517px;
+    padding-top:5px;
 }
 #navTreeContext .deletepage {
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat: no-repeat;
     background-position:0 -68px;
+    padding-top:5px;
 }
 #navTreeContext .userperms {
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat: no-repeat;
     background-position:0 -8px;
+    padding-top:5px;
 }
 #navTreeContext .groupperms {
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat: no-repeat;
     background-position:0 -38px;
+    padding-top:5px;
 }
-
 #navTreeContext.yui-skin-sam .bd {
     background:white;
     border:1px solid #444;
     text-align:left;
 }
-
 #navTreeContext li.yuimenuitem {
     *width:200px;
     display:block;
 }
-
 
 .navigation.manager-hierarchy .not-hovered {
     background:#fff;
@@ -117,15 +118,12 @@
     width:100%;
     padding:0;
     border:1px solid #efefef;
-    
 }
-
 .navigation.manager-hierarchy span.options {
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat:no-repeat; 
     background-position:100% -442px; 
 }
-
 .navigation.manager-hierarchy .draggables span {
     color:#010101;
     font-weight:bold;
@@ -133,17 +131,17 @@
     cursor:default;
 }
 .navigation.manager-hierarchy .draggables span.addpage {
-    padding:3px 20px;
+    padding:0 20px;
     background-image:url(../images/page.png);
     background-repeat:no-repeat;
 }
 .navigation.manager-hierarchy .draggables span.addextpage {
-    padding:3px 20px;
+    padding:0 20px;
     background-image:url(../images/page_world.png);
     background-repeat:no-repeat;
 }
 .navigation.manager-hierarchy .draggables span.addintpage {
-    padding:3px 20px;
+    padding:0 20px;
     background-image:url(../images/page_link.png);
     background-repeat:no-repeat;
 }
@@ -173,11 +171,9 @@
     padding:3px 0 0 2px;
     display:block;
 }
-
 .navigation.manager-hierarchy .ghost {
     filter: alpha(opacity=30); -moz-opacity:.3;
 }
-
 .navigation.manager-hierarchy .addbefore {
     width:100%;
     font-size:0px;
@@ -188,7 +184,6 @@
 .navigation.manager-hierarchy .addbefore-h {
     background:#000;
 }
-
 .navigation.manager-hierarchy .addafter {
     width:100%;
     font-size:0px;
@@ -207,7 +202,6 @@
     background-position:100% -215px; 
 }
 
-
 .ddnavproxiebeingdragged {
     background:none;
     text-align:left;
@@ -215,7 +209,6 @@
     margin-left:25px;
     margin-top:25px;
 }
-
 .ddnavproxiebeingdragged .shrinkwrap{
 /*  opacity:.90;*filter:alpha(opacity=90);
 */  border:1px solid #9a9;
@@ -238,8 +231,6 @@
     opacity:.25;*filter:alpha(opacity=25);
     *visibility:hidden;
 */}
-
-
 .ddnavproxiebeingdragged span {
     color:#333;
     font-weight:bold;
@@ -257,7 +248,6 @@
     background-repeat:no-repeat; 
     background-position:0 -643px; 
 }
-
 #dropindicator.dropatbottom{
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat:no-repeat; 
@@ -268,13 +258,11 @@
     background-repeat:no-repeat; 
     background-position:0 -685px; 
 }
-
 #dropindicator.addtome{
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat:no-repeat; 
     background-position:0 -703px; 
 }
-
 #dropindicator.nodrop{
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat:no-repeat; 
