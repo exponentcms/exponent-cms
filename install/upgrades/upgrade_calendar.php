@@ -191,12 +191,8 @@ class upgrade_calendar extends upgradescript {
         // convert each calendar to an event
 	    $cals = $db->selectObjects('calendar',"1");
 	    foreach ($cals as $cal) {
-//            $id = $cal['id'];
-//            unset($cal['id']);
             unset($cal->approved);
-//            $cat = $cal['category_id'];
             unset($cal->category_id);
-//            $tags = $cal['tags'];
             unset($cal->tags);
             unset($cal->file_id);
             $loc = expUnserialize($cal->location_data);
@@ -206,48 +202,9 @@ class upgrade_calendar extends upgradescript {
             unset($cal->posted);
             $cal->edited_at = $cal->edited;
             unset($cal->edited);
-            $id = $db->insertObject($cal,'event');
-
+            $db->insertObject($cal,'event');
             $ev = new event($cal->id);
             $ev->save();
-
-        //FIXME in calendar migration to event conversion,  we have to pull in tags for next code
-//        if (!empty($oldconfig->enable_tags)) {
-//            $params = null;;
-//            $oldtags = expUnserialize($tags);
-//            if (!empty($oldtags)) {
-//                foreach ($oldtags as $oldtag){
-//                    $tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
-//                    $tag = new expTag($tagtitle);
-////								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
-//                    if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
-//                    $params['expTag'][] = $tag->id;
-//                }
-//            }
-//            $ev->update($params);
-//        }
-
-        //FIXME in calendar migration to event conversion, we have to pull in categories for next code
-//        if (!empty($oldconfig->enable_categories) && $ri['category_id']) {
-//            $params = null;
-//            $oldcat = $old_db->selectObject('category','id = '.$ri['category_id']);
-//            $cat = new expCat($oldcat->name);
-//            if (empty($cat->id)) {
-//                $cat->title = $oldcat->name;
-//                $cat->color = $oldcat->color;
-//                $catloc = expUnserialize($oldcat->location_data);
-//                if (array_key_exists($catloc->mod, $this->new_modules)) {
-//                    $mod = explode("Controller",$this->new_modules[$catloc->mod]);
-//                    $cat->module = $mod[0];
-//                }
-//                $cat->save();
-//                $cat->rank = $oldcat->rank +1;
-//                $cat->update();
-//            }
-//            $params['expCat'][] = $cat->id;
-//            $filedownload->update($params);
-//        }
-
 	    }
 
         // need to activate new event module modstate if old one was active, leave old one intact
