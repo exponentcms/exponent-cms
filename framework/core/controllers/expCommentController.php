@@ -39,7 +39,7 @@ class expCommentController extends expController {
 	        flash('message',gt('An error occurred: No content id set.'));
             expHistory::back();  
 	    } 
-        /* The global constants can be overriden by passing appropriate params */ 
+        /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
@@ -51,6 +51,7 @@ class expCommentController extends expController {
 	    $comment = new expComment($id);
 		assign_to_template(array(
 		    'content_id'=>$this->params['content_id'],
+            'content_type'=>$this->params['content_type'],
 		    'comment'=>$comment
 		));
 	}	
