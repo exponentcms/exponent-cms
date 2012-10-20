@@ -20,7 +20,7 @@
 <div class="module events upcoming-events-headlines">
     <h2>
         {ical_link}
-        {if $moduletitle && !$config->hidemoduletitle}{$moduletitle}{/if}
+        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}
     </h2>
     {$myloc=serialize($__loc)}
 	{permissions}

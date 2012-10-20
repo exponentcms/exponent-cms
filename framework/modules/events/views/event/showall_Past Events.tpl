@@ -43,11 +43,11 @@
 	</div>
 	<h1>
         {ical_link}
-        {if $moduletitle && !$config->hidemoduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
+        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
 
 	</h1>
-    {if $config->moduledescription != ""}
-        {$config->moduledescription}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
     {/if}
     {$myloc=serialize($__loc)}
 	{permissions}

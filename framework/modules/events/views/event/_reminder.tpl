@@ -21,9 +21,9 @@
 {/css}
  
 <div class="module events cal-default">
-    {if $moduletitle && !$config->hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-    {if $config->moduledescription != ""}
-        {$config->moduledescription}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
     {/if}
 	<h4 align="center">
 	{if $totaldays == 1}

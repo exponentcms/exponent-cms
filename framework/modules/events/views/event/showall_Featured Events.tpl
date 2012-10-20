@@ -21,10 +21,10 @@
 	<a href="{link action=showall}">{'Month View'|gettext}</a>{br}
 	<h1>
         {ical_link}
-        {if $moduletitle && !$config->hidemoduletitle}{$moduletitle}{/if}
+        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}
 	</h1>
-    {if $config->moduledescription != ""}
-        {$config->moduledescription}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
     {/if}
     {$myloc=serialize($__loc)}
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">
