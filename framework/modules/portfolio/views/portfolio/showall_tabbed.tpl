@@ -43,7 +43,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach name=tabs from=$page->cats key=catid item=cat}

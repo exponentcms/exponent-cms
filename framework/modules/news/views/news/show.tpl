@@ -24,7 +24,8 @@
     <h1>{$record->title}</h1>
     {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
     {subscribe_link prepend='<br />'}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {if !$config.datetag}
         <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
     {/if}

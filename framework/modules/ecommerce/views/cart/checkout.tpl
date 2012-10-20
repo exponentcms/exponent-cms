@@ -105,7 +105,8 @@
                                     {br}
                                     <em>{$discount->title}</em>
                                 </li>
-                                {if $discount->isShippingDiscount()}{assign var='is_shipping_discount' value=true}{/if}
+                                {*{if $discount->isShippingDiscount()}{assign var='is_shipping_discount' value=true}{/if}*}
+                                {if $discount->isShippingDiscount()}{$is_shipping_discount=true}{/if}
                             {/foreach}
                         </ul>
                         {if $discounts|@count==1}{'This coupon is'|gettext} {else}{'These coupons are'|gettext} {/if} {'saving you'|gettext} {currency_symbol}
@@ -127,11 +128,13 @@
 
         {if $shipping->shippingmethod->option!=""}
             {foreach from=$shipping->pricelist item=option}
-                {if $option.id == $shipping->shippingmethod->option}{assign var=shpMthdOp value=$option}{/if}
+                {*{if $option.id == $shipping->shippingmethod->option}{assign var=shpMthdOp value=$option}{/if}*}
+                {if $option.id == $shipping->shippingmethod->option}{$shpMthdOp=$option}{/if}
             {/foreach}
             {else}
             {foreach name="gtfoi" from=$shipping->pricelist item=option}
-                {if $smarty.foreach.gtfoi.first}{assign var=shpMthdOp value=$option}{/if}
+                {*{if $smarty.foreach.gtfoi.first}{assign var=shpMthdOp value=$option}{/if}*}
+                {if $smarty.foreach.gtfoi.first}{$shpMthdOp=$option}{/if}
             {/foreach}
         {/if}
         <div class="shipping-info">
@@ -151,8 +154,10 @@
                 <a id="miltiaddresslink" class="ecom-link {if hideMultiShip == 1}hide{/if}" href="{link action=splitShipping}">Ship to multiple addresses</a>
             {/if*}
 
-            {if $shipping->selectable_calculators|@count > 1}{assign var=multicalc value=1}{/if}
-            {if !$shipping->address->id}{assign var=noShippingPrices value=1}{/if}
+            {*{if $shipping->selectable_calculators|@count > 1}{assign var=multicalc value=1}{/if}*}
+            {if $shipping->selectable_calculators|@count > 1}{$multicalc=1}{/if}
+            {*{if !$shipping->address->id}{assign var=noShippingPrices value=1}{/if}*}
+            {if !$shipping->address->id}{$noShippingPrices=1}{/if}
 
             {if $multicalc}
                 <h3>{"Available Shipping Methods"|gettext}</h3>

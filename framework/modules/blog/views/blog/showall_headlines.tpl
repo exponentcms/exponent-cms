@@ -32,7 +32,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <ul>
     {foreach from=$page->records item=record name="blogs"}
         {if $smarty.foreach.blogs.iteration <= $config.headcount}

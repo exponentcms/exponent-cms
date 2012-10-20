@@ -46,8 +46,10 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
-    {assign var="cat" value="bad"}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
+    {*{assign var="cat" value="bad"}*}
+    {$cat="bad"}
     {foreach from=$page->records item=file name=files}
         {if $cat !== $file->expCat[0]->id && $config.usecategories}
             <h2 class="category">{if $file->expCat[0]->title!= ""}{$file->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
@@ -59,7 +61,7 @@
 				{img class="preview-img" file_id=$file->expFile.preview[0]->id square=150}
 			{/if}
 			
-			<h3>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
+			<h3{if $config.usecategories} class="{$cat->color}"{/if}>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
 
 			{permissions}
 				<div class="item-actions">
@@ -89,9 +91,10 @@
 			{/permissions}
 			{clear}
 		</div>
-        {assign var="cat" value=$file->expCat[0]->id}
+        {*{assign var="cat" value=$file->expCat[0]->id}*}
+        {$cat=$file->expCat[0]->id}
     {/foreach}
-    
+
 </div>
 
 {if $config.show_player}

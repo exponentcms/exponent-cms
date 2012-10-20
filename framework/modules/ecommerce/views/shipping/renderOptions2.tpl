@@ -39,7 +39,8 @@
             {/form}
             <ul>
                 {foreach from=$shipping->pricelist item=option}
-                    {if $option.id == $shipping->shippingmethod->option}{assign var=selected value=true}{else}{assign var=selected value=false}{/if}
+                    {*{if $option.id == $shipping->shippingmethod->option}{assign var=selected value=true}{else}{assign var=selected value=false}{/if}*}
+                    {if $option.id == $shipping->shippingmethod->option}{$selected=true}{else}{$selected=false}{/if}
                     <li><a rel="{$option.id}" href="#" class="shpmthdopswtch{if $shpMthdOp.id == $option.id} current{/if}">{$option.title} (${$option.cost|number_format:2})</a></li>
                 {/foreach}
             </ul>

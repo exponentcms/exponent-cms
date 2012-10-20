@@ -44,7 +44,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel">

@@ -24,10 +24,12 @@
     {/if}
     <ul>
         {foreach from=$sections item=section}
-            {assign var=inPath value=0}
+            {*{assign var=inPath value=0}*}
+            {$inPath=0}
             {foreach from=$current->parents item=parentId}
                 {if $parentId == $section->id}
-                    {assign var=inPath value=1}
+                    {*{assign var=inPath value=1}*}
+                    {$inPath=1}
                 {/if}
             {/foreach}
             {if $section->numParents == 0 || $inPath || $section->id == $current->id ||  $section->parent == $current->id}

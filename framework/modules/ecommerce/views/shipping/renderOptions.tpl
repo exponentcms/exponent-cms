@@ -24,8 +24,10 @@
             <div class="bd">
                 {form name="shpmthdopts" controller=shipping action=selectShippingOption}
                 {foreach from=$shipping->pricelist item=option}
-                    {if $option.id == $shipping->shippingmethod->option}{assign var=selected value=true}{else}{assign var=selected value=false}{/if}
-                    {assign var=oc value=$option.cost|number_format:2}
+                    {*{if $option.id == $shipping->shippingmethod->option}{assign var=selected value=true}{else}{assign var=selected value=false}{/if}*}
+                    {if $option.id == $shipping->shippingmethod->option}{$selected=true}{else}{$selected=false}{/if}
+                    {*{assign var=oc value=$option.cost|number_format:2}*}
+                    {$oc=$option.cost|number_format:2}
                     {control type=radio name="option" value=$option.id label="`$option.title` - $`$oc`" checked=$selected}
                 {/foreach}
                 <button type="submit" class="awesome small blue">{"Update Shipping Option"|gettext}</button>

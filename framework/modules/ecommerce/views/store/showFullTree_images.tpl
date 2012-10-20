@@ -36,7 +36,8 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
 
     {if $current_category->title}<h2>{$current_category->title}</h2>{/if}
     {if $current_category->id}
@@ -67,7 +68,8 @@
             
                 {if $smarty.foreach.cats.first || $open_c_row}
                     <div class="category-row">
-                    {assign var=open_c_row value=0}
+                    {*{assign var=open_c_row value=0}*}
+                    {$open_c_row=0}
                 {/if}
                         
                 <div class="cat{if $cat->is_active!=1} inactive{/if} clearfix">
@@ -92,7 +94,8 @@
                 </div>
                 {if $smarty.foreach.cats.last || $ipcr%2==0}
                     </div>
-                    {assign var=open_c_row value=1}
+                    {*{assign var=open_c_row value=1}*}
+                    {$var=open_c_row=1}
                 {/if}
                 {counter name="ipcr"}
             {/if}
@@ -101,7 +104,8 @@
         {* close the row if left open. might happen for non-admins *}
         {if $open_c_row==0}
             </div>
-            {assign var=open_c_row value=1}
+            {*{assign var=open_c_row value=1}*}
+            {$open_c_row=1}
         {/if}
     </div>
     {else}
@@ -125,9 +129,11 @@
     <div class="products">
         {foreach from=$page->records item=listing name=listings}
             {if $smarty.foreach.listings.iteration%3==0}
-                {assign var="positioninfo" value=" last-in-row"}
+                {*{assign var="positioninfo" value=" last-in-row"}*}
+                {$positioninfo=" last-in-row"}
             {else}
-                {assign var="positioninfo" value=""}
+                {*{assign var="positioninfo" value=""}*}
+                {$positioninfo=""}
             {/if}
             <div class="product{$positioninfo}">{include file=$listing->getForm('storeListing')}</div>
 

@@ -32,7 +32,8 @@
    		{$config.moduledescription}
    	{/if}
     <dl>
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {foreach from=$page->records item=doc name=docs}
         <div class="item">
             <dt>

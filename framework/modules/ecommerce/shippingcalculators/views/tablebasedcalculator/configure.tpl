@@ -81,7 +81,8 @@
 			{/foreach}
         </tr>
 		{else}
-			{assign var='lastcharge' value=$smarty.section.i.index}
+			{*{assign var='lastcharge' value=$smarty.section.i.index}*}
+            {$lastcharge=$smarty.section.i.index}
 		{/if}
 		{/section}
         <!-- stop looping me loop me -->

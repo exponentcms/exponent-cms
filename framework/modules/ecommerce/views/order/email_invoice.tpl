@@ -150,7 +150,8 @@
             </tbody>
         </table>
 
-        {assign var=sm value=$order->orderitem[0]->shippingmethod}
+        {*{assign var=sm value=$order->orderitem[0]->shippingmethod}*}
+        {$sm=$order->orderitem[0]->shippingmethod}
         {if $sm->to != "" || $sm->from != "" || $sm->message != ""}
         <table style="margin-bottom:1em;" class="gift-message" border="0" cellspacing="0" cellpadding="0">
             <thead>

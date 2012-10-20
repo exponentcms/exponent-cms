@@ -37,7 +37,8 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item">

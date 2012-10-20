@@ -19,7 +19,8 @@
 
 <div class="module photoalbum show">
     <h1>{$record->title}</h1>
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}

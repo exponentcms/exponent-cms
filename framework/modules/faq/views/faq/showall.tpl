@@ -41,7 +41,8 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {if $config.allow_user_questions}
         <a href="{link action="ask_question"}">{'Ask a Question'|gettext}</a>
     {/if}
@@ -67,7 +68,7 @@
     {if $config.usecategories && $cats|@count>0}
         {foreach name=c from=$cats key=catid item=cat}
             <a name="cat{$catid}"></a>
-            <h3>{$cat->name}</h3>
+            <h3 class="{$cat->color}">{$cat->name}</h3>
             {foreach name=a from=$cat->records item=qna}
                 {*{assign var=qna_found value=0}*}
                 {*{math equation="x-1" x=$qna->rank assign=prev}*}

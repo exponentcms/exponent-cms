@@ -42,10 +42,12 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
-			{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
+			{*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
+            {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
                 <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
                     {permissions}

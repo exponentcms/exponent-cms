@@ -76,7 +76,7 @@
 		<tbody>
 		{foreach from=$items item=item}
 			<tr class="{cycle values="odd,even"}">
-				<td><a class="itemtitle calendar_mngmntlink" href="{link action=show id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
+				<td><a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
 					{if $item->is_allday == 1}
 						{$item->eventstart|format_date}

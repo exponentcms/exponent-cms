@@ -40,12 +40,15 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
-    {assign var="cat" value="bad"}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
+    {*{assign var="cat" value="bad"}*}
+    {$cat="bad"}
     {foreach from=$page->records item=file name=files}
         {if $smarty.foreach.files.iteration<=$config.headcount || !$config.headcount}
             {include 'filedownloaditem.tpl'}
-            {assign var="cat" value=$file->expCat[0]->id}
+            {*{assign var="cat" value=$file->expCat[0]->id}*}
+            {$cat=$file->expCat[0]->id}
         {/if}
     {/foreach}
     {if $page->total_records > $config.headcount}

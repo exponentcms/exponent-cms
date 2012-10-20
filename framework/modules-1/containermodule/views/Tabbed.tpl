@@ -24,17 +24,23 @@
 <div id="{$tabs}" class="yui-navset exp-skin-tabview hide">
 	<ul class="yui-nav">
 		{foreach from=$containers item=container key=tabnum name=contain}
-			{assign var=numcontainers value=$tabnum+1}
+			{*{assign var=numcontainers value=$tabnum+1}*}
+            {$numcontainers=$tabnum+1}
 		{/foreach}
 		{section name=contain loop=$numcontainers}
-			{assign var=container value=$containers[$smarty.section.contain.index]}
-			{assign var=containereditmode value=0}
+			{*{assign var=container value=$containers[$smarty.section.contain.index]}*}
+			{*{assign var=containereditmode value=0}*}
+            {$container=$containers[$smarty.section.contain.index]}
+            {$containereditmode=0}
 			{if $container == null}
-				{assign var=tabtitle value="(empty)"|gettext}
+				{*{assign var=tabtitle value="(empty)"|gettext}*}
+                {$tabtitle="(empty)"|gettext}
 			{elseif $container->title == ""}
-				{assign var=tabtitle value="(blank)"|gettext}
+				{*{assign var=tabtitle value="(blank)"|gettext}*}
+                {$tabtitle="(blank)"|gettext}
 			{else}
-				{assign var=tabtitle value=$container->title}
+				{*{assign var=tabtitle value=$container->title}*}
+                {$tabtitle=$container->title}
 			{/if}
 			{if $smarty.section.contain.first}
 				<li class="selected"><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
@@ -61,15 +67,22 @@
 	</ul>            
 	<div class="yui-content">
 		{section name=contain loop=$numcontainers+1}	
-			{assign var=container value=$containers[$smarty.section.contain.index]}
-			{assign var=rank value=$smarty.section.contain.index}
-			{assign var=menurank value=$rank+1}
-			{assign var=index value=$smarty.section.contain.index}
-			{if $container != null}	
+			{*{assign var=container value=$containers[$smarty.section.contain.index]}*}
+			{*{assign var=rank value=$smarty.section.contain.index}*}
+			{*{assign var=menurank value=$rank+1}*}
+			{*{assign var=index value=$smarty.section.contain.index}*}
+            {$container=$containers[$smarty.section.contain.index]}
+            {$rank=$smarty.section.contain.index}
+            {$menurank=$rank+1}
+            {$index=$smarty.section.contain.index}
+			{if $container != null}
 				<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
-					{assign var=container value=$containers.$index}
-					{assign var=i value=$menurank}
-					{assign var=rerank value=0}
+					{*{assign var=container value=$containers.$index}*}
+					{*{assign var=i value=$menurank}*}
+					{*{assign var=rerank value=0}*}
+					{$container=$containers.$index}
+					{$i=$menurank}
+					{$rerank=0}
 					{include file=$viewfile}
 				</div>
 			{else}

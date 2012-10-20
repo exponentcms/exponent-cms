@@ -46,7 +46,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel">
@@ -56,7 +57,8 @@
                         {foreach from=$cat->records item=record}
                             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
                                 {if $config.lightbox}
-                                    {if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}
+                                    {*{if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}*}
+                                    {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
                                     <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
                                 {else}
                                     <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">

@@ -33,7 +33,8 @@
     {/capture}
 {/if}
 
-{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}
+{*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
+{$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
 
 {foreach from=$files item=img key=key}
 	{if $config.lightbox}<a href="{$img->url}" rel="lightbox['{$config.uniqueid}']" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;{if $config.floatthumb!="No Float"}float:{$config.floatthumb|lower};{/if}">{/if}

@@ -59,7 +59,11 @@
                             {foreach from=$type item=ai name=ai}
                                 <li>
                                 {if $key!='faq'}
-                                    <a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>
+                                    {if !empty($ai->sef_url)}
+                                        <a href="{link controller=$key action="show" title=$ai->sef_url}">{$ai->title|truncate:50:"..."}</a>
+                                    {else}
+                                        <a href="{link controller=$key action="show" id=$ai->id}">{$ai->title|truncate:50:"..."}</a>
+                                    {/if}
                                 {else}
                                     {$ai->title|truncate:50:"..."}
                                 {/if}

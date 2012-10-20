@@ -14,7 +14,7 @@
  *}
 
 <div class="item">
-	<h3><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>
+	<h3{if $config.usecategories} class="{$cat->color}"{/if}><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>
 	{permissions}
 		<div class="item-actions">
 			{if $permissions.edit == 1}

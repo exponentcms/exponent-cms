@@ -14,7 +14,8 @@
  *}
 
 <div class="module store showall-subcategories">
-    {assign var=depth value=0}
+    {*{assign var=depth value=0}*}
+    {$depth=0}
         {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
         {permissions}
         <div class="module-actions">
@@ -30,7 +31,8 @@
         {if $config.moduledescription != ""}
             {$config.moduledescription}
         {/if}
-        {assign var=myloc value=serialize($__loc)}
+        {*{assign var=myloc value=serialize($__loc)}*}
+        {$myloc=serialize($__loc)}
 
     <div id="catnav">
         <ul>

@@ -219,7 +219,8 @@ class upgrade_calendar extends upgradescript {
         $db->dropTable('calendar_reminder_address');
         $db->dropTable('calendar_external');
         $db->dropTable('calendarmodule_config');
-
+        $dd = include(BASE."framework/core/definitions/expCats.php");
+        $db->alterTable('expCats',$dd,null,true);
         // delete old calendarmodule assoc files (moved or deleted)
         $oldfiles = array (
             'framework/core/definitions/calendar.php',

@@ -14,7 +14,8 @@
  *}
 
 {if $printerfriendly==1}
-    {assign var=pf value=1}
+    {*{assign var=pf value=1}*}
+    {$pf=1}
     {if $include_css == true}
         {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}    
         {/css}
@@ -220,7 +221,8 @@
             </tbody>
         </table>
 
-        {assign var=sm value=$order->orderitem[0]->shippingmethod}
+        {*{assign var=sm value=$order->orderitem[0]->shippingmethod}*}
+        {$sm=$order->orderitem[0]->shippingmethod}
         {if $sm->to != "" || $sm->from != "" || $sm->message != ""}
         <table class="gift-message" border="0" cellspacing="0" cellpadding="0">
             <thead>

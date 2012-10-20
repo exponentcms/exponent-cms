@@ -29,7 +29,8 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
 
     {form action=search_by_model_old}
         {control type="text" name="search_string" label=" "}

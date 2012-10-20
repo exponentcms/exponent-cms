@@ -28,7 +28,11 @@
     </div>
 	{permissions}
     	{if $permissions.create == 1}
-    		<a class="add" href="{link controller=$model_name action=edit rank=1}">{"Create a new Category"|gettext}</a>
+            {if !empty($page)}
+                {icon class="add" controller=$model_name action=edit model=$page->model rank=1 text="Create a new Category"|gettext}
+            {else}
+                {icon class="add" controller=$model_name action=edit rank=1 text="Create a new Category"|gettext}
+            {/if}
     	{/if}
     {/permissions}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">

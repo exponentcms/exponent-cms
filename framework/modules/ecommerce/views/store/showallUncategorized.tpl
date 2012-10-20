@@ -33,7 +33,8 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div id="products">
 		{pagelinks paginate=$page top=1}
         <table id="prods" class="exp-skin-table" style="width:95%">

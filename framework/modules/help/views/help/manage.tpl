@@ -34,7 +34,8 @@
         </thead>
         <tbody>
         {foreach from=$page->records item=doc}
-        {assign var=sec value=$doc->section}
+        {*{assign var=myloc value=serialize($__loc)}*}
+        {$myloc=serialize($__loc)}
         <tr class="{cycle values="odd,even"}">
             <td><a href={link action=show version=$doc->help_version->version title=$doc->sef_url} title="{$doc->body|summarize:"html":"para"}">{$doc->title}</a></td>
             <td><a href="{link action=manage version=$doc->help_version->id}">{$doc->help_version->version}</a></td>

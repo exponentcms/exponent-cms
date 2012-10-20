@@ -37,7 +37,7 @@
 			{if $counts[$ts] != 0}
 				<dt>
 					<strong>
-						<a class="itemtitle calendar_mngmntlink" href="{link controller=event action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+						<a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link controller=event action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 					</strong>
 				</dt>
 				{foreach from=$events item=event}
@@ -45,7 +45,7 @@
                     {$catid=$event->category_id}
 					<dd>
 						<strong>
-							<a class="itemtitle calendar_mngmntlink" href="{link controller=event action=show id=$event->date_id}">{$event->title}</a>
+							<a class="itemtitle calendar_mngmntlink" href="{link controller=event action=show date_id=$event->date_id}">{$event->title}</a>
 						</strong>							
 						<div>
 							&#160;-&#160;

@@ -19,9 +19,11 @@
         <p>{'Complete and save the form below to configure this store category'|gettext}</p>
 	</div>
 	{if $node->id == ""}
-		{assign var=action value=create}
+		{*{assign var=action value=create}*}
+        {$action=create}
 	{else}
-		{assign var=action value=update}
+		{*{assign var=action value=update}*}
+        {$action=update}
 	{/if}
     <div id="mainform">
         {form controller=storeCategory action=$action}

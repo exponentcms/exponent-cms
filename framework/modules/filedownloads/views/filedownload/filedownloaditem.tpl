@@ -26,9 +26,9 @@
         </p>
     {/if}
     {if $config.quick_download}
-        <h3>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
+        <h3{if $config.usecategories} class="{$cat->color}"{/if}>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
     {else}
-        {if $file->title}<h3><a {if !$config.usebody}class="readmore"{/if} href="{link action=show title=$file->sef_url}" title="{$file->body|summarize:"html":"para"}">{$file->title}</a></h3>{/if}
+        {if $file->title}<h3{if $config.usecategories} class="{$cat->color}"{/if}><a {if !$config.usebody}class="readmore"{/if} href="{link action=show title=$file->sef_url}" title="{$file->body|summarize:"html":"para"}">{$file->title}</a></h3>{/if}
     {/if}
     <div class="attribution">
         {if !$config.usecategories && $file->expCat[0]->title != ""}

@@ -28,7 +28,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <ul>
     {foreach name=uce from=$page->records item=item}
         {if $smarty.foreach.uce.iteration <= 3}

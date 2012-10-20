@@ -44,7 +44,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item}
         <div class="item announcement">
             <h2>{$item->title}</h2>

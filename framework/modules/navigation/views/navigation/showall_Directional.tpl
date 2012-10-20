@@ -42,11 +42,13 @@
     &#160;|&#160;
 
     {$nextrank=$current->rank+1}
-    {assign var=gotlink value=0}
+    {*{assign var=gotlink value=0}*}
+    {$gotlink=0}
     {foreach from=$sections item=section }
         {if $section->parent == $current->parent && $section->rank == $nextrank}
             <a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{'Next Page'|gettext} &gt;</a>
-            {assign var=gotlink value=1}
+            {*{assign var=gotlink value=1}*}
+            {$gotlink=1}
         {/if}
     {/foreach}
     {if $gotlink == 0}

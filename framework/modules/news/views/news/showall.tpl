@@ -41,7 +41,8 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">

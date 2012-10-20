@@ -29,7 +29,8 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
 
     {foreach from=$page->records item=listing name=listings}
         {if $listing->is_featured}
