@@ -19,6 +19,9 @@
 if (!defined('EXPONENT')) exit('');
 global $db;
 
+$passed = true;
+$warning = array();
+
 ?>
 <h1><?php echo gt('Checking Database Configuration'); ?></h1>
 <table class="exp-skin-table">
@@ -40,7 +43,14 @@ function echoSuccess($msg = "") {
 	echo '</td></tr>';
 }
 
+function echoWarning($msg = "") {
+	echo '<span class="warning">'.gt('Warning').'</span>';
+	if ($msg != "") echo ' : ' . $msg;
+	echo '</td></tr>';
+}
+
 function echoFailure($msg = "") {
+    $passed = false;
 	echo '<span class="failed">'.gt('Failed').'</span>';
 	if ($msg != "") echo ' : ' . $msg;
 	echo '</td></tr>';
@@ -54,11 +64,8 @@ function isAllGood($str) {
 $config = $_POST['sc'];
 //$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
 
-$passed = true;
-
 if (preg_match('/[^A-Za-z0-9]/',$config['db_table_prefix'])) {
 	echoFailure(gt('Invalid table prefix.  The table prefix can only contain alphanumeric characters.'));
-	$passed = false;
 }
 
 if ($passed) {
@@ -77,7 +84,6 @@ if ($passed) {
 	if ($db->connection == null) {
 		echoFailure(gt("Trying to Connect to Database")." (".$db->error().")");
 		// FIXME:BETTER ERROR CHECKING
-		$passed = false;
 	}
 }
 
@@ -85,10 +91,20 @@ if ($passed) {
 	$tables = $db->getTables();
 	if ($db->inError()) {
 		echoFailure(gt("Trying to Get Tables")." (".$db->error().")");
-		$passed = false;
 	} else {
 		echoSuccess();
 	}
+}
+
+if ($passed && strtolower(substr(PHP_OS,0,3)) == 'win') {
+    echoStart(gt('MySQL lower_case_table_names setting').':');
+    $setting = @mysqli_fetch_assoc($db->sql("SHOW VARIABLES LIKE '%lower_case_table%'",false));
+    if ($setting['Variable_name'] == 'lower_case_table_names' && $setting['Value'] != 2) {
+        echoWarning(gt('NOT set to \'2\''));
+        $warning[] = gt('Since your server runs on Windows, you must ensure the MySQL ini file has \'lower_case_table_names = 2\' in the [mysqld] section to prevent issues!');
+    } else {
+        echoSuccess();
+    }
 }
 
 if ($passed) {
@@ -97,7 +113,6 @@ if ($passed) {
    		echoSuccess();
    	} else {
    		echoFailure(gt("This is a 0.9x database.").' '.gt("Create a new database, then MIGRATE from the 0.9x database after installation."));
-   		$passed = false;
    	}
 }
 
@@ -121,7 +136,6 @@ if ($passed) {
 		echoSuccess();
 	} else {
 		echoFailure(gt("Trying to Create Tables"));
-		$passed = false;
 	}
 }
 
@@ -133,7 +147,6 @@ if ($passed) {
 	$obj->installer_test = "Exponent Installer Wizard";
 	$insert_id = $db->insertObject($obj,$tablename);
 	if ($insert_id == 0) {
-		$passed = false;
 		echoFailure(gt("Trying to Insert Items")." (".$db->error().")");
 	} else {
 		echoSuccess();
@@ -144,7 +157,6 @@ if ($passed) {
 	echoStart(gt('Checking SELECT privilege').':');
 	$obj = $db->selectObject($tablename,"id=".$insert_id);
 	if ($obj == null || $obj->installer_test != "Exponent Installer Wizard") {
-		$passed = false;
 		echoFailure(gt("Trying to Select Items")." (".$db->error().")");
 	} else {
 		echoSuccess();
@@ -155,7 +167,6 @@ if ($passed) {
 	echoStart(gt('Checking UPDATE privilege').':');
 	$obj->installer_test = "Exponent 2";
 	if (!$db->updateObject($obj,$tablename)) {
-		$passed = false;
 		echoFailure(gt("Trying to Update Items")." (".$db->error().")");
 	} else {
 		echoSuccess();
@@ -168,7 +179,6 @@ if ($passed) {
 	$error = $db->error();
 	$obj = $db->selectObject($tablename,"id=".$insert_id);
 	if ($obj != null) {
-		$passed = false;
 		echoFailure(gt("Trying to Delete Items")." (".$error.")");
 	} else {
 		echoSuccess();
@@ -189,7 +199,6 @@ if ($passed) {
 	$obj->exponent = "Exponent";
 
 	if (!$db->insertObject($obj,$tablename)) {
-		$passed = false;
 		echoFailure(gt("Trying to Alter Tables")." (".$error.")");
 	} else {
 		echoSuccess();
@@ -201,7 +210,6 @@ if ($passed) {
 	$db->dropTable($tablename);
 	$error = $db->error();
 	if ($db->tableExists($tablename)) {
-		$passed = false;
 		echoFailure(gt("Trying to Drop Tables")." (".$error.")");
 	} else {
 		echoSuccess();
@@ -255,9 +263,7 @@ if ($passed) {
 
     // version tracking
 	$db->delete('version',1);  // clear table of old accumulated entries
-//    $version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION.'-'.EXPONENT_VERSION_TYPE.''.EXPONENT_VERSION_ITERATION;
 	$vo = new stdClass();
-//    $vo->version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;	$vo->type = EXPONENT_VERSION_TYPE;
 	$vo->major = EXPONENT_VERSION_MAJOR;
 	$vo->minor = EXPONENT_VERSION_MINOR;
 	$vo->revision = EXPONENT_VERSION_REVISION;
@@ -287,6 +293,13 @@ if ($passed) {
 	echo '<p>';
 	echo gt('Database tests passed.');
 	echo '</p>';
+    if (!empty($warning)) {
+        foreach ($warning as $message) {
+            echo '<p><span class="warning">'.gt('Warning').':</span> ';
+           	echo $message;
+           	echo '</p>';
+        }
+    }
 
 	?>
 	<a class="awesome green large" href="?page=install-4"><?php echo gt('Continue Installation'); ?></a>
