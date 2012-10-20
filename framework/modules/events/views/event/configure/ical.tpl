@@ -22,8 +22,8 @@
 	</div>
 </div>
 <blockquote>
-    {'These setting allow you make syndicate your calendar via iCal.'|gettext}&#160;&#160;
-    {'To start syndicating, all you have to do is enable iCal and give this calendar a title and description!'|gettext}
+    {'These settings allow you to syndicate your calendar via iCal publishing.'|gettext}&#160;&#160;
+    {'To start syndicating, all you have to do is enable iCal and give this calendar a title!'|gettext}
 </blockquote>
 {control type="checkbox" name="enable_ical" label="Enable iCal"|gettext value=1 checked=$config.enable_ical}
 {*{control type="checkbox" name="advertise" label="Advertise RSS"|gettext value=1 checked=$config.advertise}*}

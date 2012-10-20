@@ -21,9 +21,15 @@
         <h2>{"Events Reminder Email Settings"|gettext}</h2>
 	</div>
 </div>
-{userlistcontrol name="users" label="Users" items=$config.users}
-{grouplistcontrol name="groups" label="Groups" items=$config.groups}
-{control type="listbuilder" name="addresses" label="Other Addresses" values=$config.addresses}
+{control type="checkbox" postfalse=1 name="reminder_active" label="Enable Email Reminder feature?"|gettext checked=$config.reminder_active value=1}
+<p>{'Reminders feature requires setting up a server cron task such as:'|gettext}</p>
+<code>curl -G -s {$smarty.const.URL_BASE}/event/send_reminders/title/calendar_sef_url/days/14/code/MyCode1</code>{br}{br}
+{control type="text" name="reminder_code" label="Code to restrict sending Email Reminders"|gettext description="Enter an optional alphanumeric code to better secure sending reminder emails"|gettext value=$config.reminder_code}
+<hr><h3>{'Email Recepients'|gettext}</h3>
+{userlistcontrol name="user_list" label="Users" items=$config.user_list}
+{grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
+{control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list}
+<hr><h3>{'Email Details'|gettext}</h3>
 {control type="text" name="email_title_reminder" label="Message Subject Prefix"|gettext value=$config.email_title_reminder}
 {control type="text" name="email_from_reminder" label="From (Display)"|gettext value=$config.email_from_reminder}
 {control type="text" name="email_address_reminder" label="From (Email Address)"|gettext value=$config.email_address_reminder}

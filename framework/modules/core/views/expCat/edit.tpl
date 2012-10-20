@@ -27,7 +27,7 @@
 		{control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
 		{control type=text name=title label="Category Name"|gettext value=$record->title}
-        {control type=text name=color label="Color/Class"|gettext value=$record->color}
+        {control type=text name=color label="Color/Class"|gettext value=$record->color description='Enter a six-digit hex color preceded by #, or an \'a\' tag style name'|gettext}
         {if empty($model)}
             {control type="dropdown" name=module label="Associated Module"|gettext items=$mods value=$record->module}
         {else}

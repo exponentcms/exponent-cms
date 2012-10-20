@@ -41,12 +41,14 @@ function smarty_function_grouplistcontrol($params, &$smarty) {
 
     $selected = isset($params['items']) ? $params['items'] : null;
     foreach ($groups as $group) {
-        if (!array_key_exists($group->id, $selected)) {
+        if (!in_array($group->id, $selected)) {
             $allgroups[$group->id] = "$group->name";
+        } else {
+            $selectedgroups[$group->id] = "$group->name";
         }
     }
 
-    $control = new listbuildercontrol($selected, $allgroups, 5);
+    $control = new listbuildercontrol($selectedgroups, $allgroups, 5);
     $name    = isset($params['name']) ? $params['name'] : "grouplist";
     $label   = isset($params['label']) ? $params['label'] : "";
 //    echo $control->controlToHTML($name);
