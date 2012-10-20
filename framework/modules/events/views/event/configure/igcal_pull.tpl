@@ -22,7 +22,7 @@
             <h2>{"Google Calendar Pull Settings"|gettext}</h2>
     	</div>
     </div>
-    <h2>{"Add Google Calendar Feeds"|gettext}</h2>
+    <h2>{"Add External Google Calendar Feeds"|gettext}</h2>
     {control type="text" id="googlefeedmaker" name="googlefeedmaker" label="Google Calendar Feed URL"|gettext}
     <a class="addtogooglelist add" href="#">{'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current Google Calendar Feeds"|gettext}</h4>

@@ -27,11 +27,19 @@
 	<div class="module-actions">
 		<span class="monthviewlink">{'Calendar View'|gettext}</span>
         &#160;&#160;|&#160;&#160;
-        <a class="listviewlink" href="{link action=showall view='showall_Monthly List' time=$time}">{'List View'|gettext}</a>
+        {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
 		{permissions}
 			{if $permissions.manage == 1}
 				&#160;&#160;|&#160;&#160;
-                <a class="adminviewlink" href="{link action=showall view='showall_Administration' time=$time}">{'Administration View'|gettext}</a>
+                {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
+                {if !$config.disabletags}
+                    &#160;&#160;|&#160;&#160;
+                    {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    &#160;&#160;|&#160;&#160;
+                    {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
+                {/if}
 			{/if}
 		{/permissions}
         {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}

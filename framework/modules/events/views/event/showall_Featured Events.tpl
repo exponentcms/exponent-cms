@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module events cal-admin">
-	<a href="{link action=showall}">{'Month View'|gettext}</a>{br}
+	{icon action=showall text='Month View'|gettext}{br}
 	<h1>
         {ical_link}
         {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}

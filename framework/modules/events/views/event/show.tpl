@@ -22,11 +22,11 @@
 {$eventend = $record->eventend + $event->date}
 <div class="module events show">
 	<div class="module-actions">
-		<a class="dayviewlink" href="{link action=showall view=showall_Day time=$eventstart}" title="{'View Entire Day'|gettext}" alt="{'View Entire Day'|gettext}">{'View Day'|gettext}</a>
+		{icon class="dayviewlink" action=showall view=showall_Day time=$eventstart title='View Entire Day'|gettext text='View Day'|gettext}
         &#160;&#160;|&#160;&#160;
-		<a class="weekviewlink" href="{link action=showall view=showall_Week time=$eventstart}" title="{'View Entire Week'|gettext}" alt="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>
+		{icon class="weekviewlink" action=showall view=showall_Week time=$eventstart title='View Entire Week'|gettext text='View Week'|gettext}
         &#160;&#160;|&#160;&#160;
-		<a class="monthviewlink" href="{link action=showall time=$eventstart}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
+		{icon class="monthviewlink" action=showall time=$eventstart title='View Entire Month'|gettext text='View Month'|gettext}
 		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {br}
@@ -35,9 +35,9 @@
         {ical_link}
 		{$item->title}
 	</h2>
+    {tags_assigned item=$item}
 	{permissions}
 		<div class="item-actions">
-			{br}
 			{if $permissions.edit == 1}
 				{icon action=edit record=$item date_id=$event->id title="Edit this Event"|gettext}
 			{/if}

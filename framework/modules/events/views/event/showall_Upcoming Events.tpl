@@ -19,11 +19,19 @@
 
 <div class="module events upcoming">
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=showall time=$time}">{'Calendar View'|gettext}</a>
+		{icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
 		{permissions}
 			{if $permissions.manage == 1}
 				&#160;&#160;|&#160;&#160;
-                <a class="adminviewlink mngmntlink" href="{link action=showall view=showall_Administration time=$time}">{'Administration View'|gettext}</a>
+                {icon class="adminviewlink mngmntlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
+                {if !$config.disabletags}
+                    &#160;&#160;|&#160;&#160;
+                    {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    &#160;&#160;|&#160;&#160;
+                    {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
+                {/if}
 			{/if}
 		{/permissions}
         {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}

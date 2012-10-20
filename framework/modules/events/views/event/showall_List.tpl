@@ -19,7 +19,9 @@
 
 <div class="module events list">
     {$myloc=serialize($__loc)}
-	<a class="monthviewlink" href="{link action=showall time=$time}">{'Month View'|gettext}</a>&#160;&#160;|&#160;&#160;<span class="listviewlink">{'List View'|gettext}</span><br />
+	{icon class="monthviewlink" action=showall time=$time text='Month View'|gettext}
+    &#160;&#160;|&#160;&#160;
+    <span class="listviewlink">{'List View'|gettext}</span><br />
 	<a href="#" onclick="window.open('popup.php?controller=event&src={$__loc->src}&action=showall&view=showall_Monthly+List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{'Printer-friendly'|gettext}</a>
 	{br}{br}
 	<a class="mngmntlink calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>

@@ -19,17 +19,25 @@
 
 <div class="module events cal-admin">
 	<div class="module-actions">
-		<a class="monthviewlink" href="{link action=showall time=$time}">{'Calendar View'|gettext}</a>
+		{icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
         &#160;&#160;|&#160;&#160;
-        <a class="listviewlink" href="{link action=showall view='showall_Monthly List' time=$time}">{'List View'|gettext}</a>
+        {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
         {permissions}
             &#160;&#160;|&#160;&#160;
             <span class="adminviewlink">{'Administration View'|gettext}</span>
+            {if !$config.disabletags}
+                &#160;&#160;|&#160;&#160;
+                {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+            {/if}
+            {if $config.usecategories}
+                &#160;&#160;|&#160;&#160;
+                {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
+            {/if}
         {/permissions}
 		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
-		{br}
-		<a class="listviewlink" href="{link action=showall view='showall_Past Events' time=$time}">{'Past Events View'|gettext}</a>{br}
+        &#160;&#160;|&#160;&#160;
+		{icon class="listviewlink" action=showall view='showall_Past Events' time=$time text='Past Events View'|gettext}{br}
 	</div>
 	<h1>
         {ical_link}

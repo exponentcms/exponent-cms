@@ -29,6 +29,9 @@ class eventController extends expController {
     public $codequality = 'alpha';
 
     public $remove_configs = array(
+        'comments',
+        'ealerts',
+//        'files',
         'pagination',
         'rss',
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')

@@ -22,7 +22,7 @@
             <h2>{"iCal Pull Settings"|gettext}</h2>
     	</div>
     </div>
-    <h2>{"Add iCal/ics Feeds"|gettext}</h2>
+    <h2>{"Add External iCal/ics Feeds"|gettext}</h2>
     {control type="text" id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}
     <a class="addtoicallist add" href="#">{'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current iCal Feeds"|gettext}</h4>

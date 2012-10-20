@@ -25,9 +25,23 @@
 
 <div class="module events viewday">
 	<div class="module-actions">
-		<a class="weekviewlink" href="{link action=showall view=showall_Week time=$time}" title="{'View Entire Week'|gettext}">{'View Week'|gettext}</a>
+		{icon class="weekviewlink" action=showall view=showall_Week time=$time title='View Entire Week'|gettext text='View Week'|gettext}
         &#160;&#160;|&#160;&#160;
-		<a class="monthviewlink" href="{link action=showall time=$time}" title="{'View Entire Month'|gettext}" alt="{'View Entire Month'|gettext}">{'View Month'|gettext}</a>
+		{icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
+        {permissions}
+            {if $permissions.manage == 1}
+                &#160;&#160;|&#160;&#160;
+                  {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
+                  {if !$config.disabletags}
+                      &#160;&#160;|&#160;&#160;
+                      {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                  {/if}
+                  {if $config.usecategories}
+                      &#160;&#160;|&#160;&#160;
+                      {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
+                  {/if}
+            {/if}
+        {/permissions}
 		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
 	</div>
