@@ -18,6 +18,7 @@
 {/css}
 
 <div class="module events list">
+    {$myloc=serialize($__loc)}
 	<a class="monthviewlink" href="{link action=showall time=$time}">{'Month View'|gettext}</a>&#160;&#160;|&#160;&#160;<span class="listviewlink">{'List View'|gettext}</span><br />
 	<a href="#" onclick="window.open('popup.php?controller=event&src={$__loc->src}&action=showall&view=showall_Monthly+List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{'Printer-friendly'|gettext}</a>
 	{br}{br}
@@ -30,9 +31,11 @@
 			<div class="sectiontitle">
 			{$ts|format_date}
 			</div>
-			{assign var=none value=1}
+			{*{assign var=none value=1}*}
+            {$none=1}
 			{foreach from=$items item=item}
-				{assign var=none value=0}
+				{*{assign var=none value=0}*}
+                {$none=0}
 				<div class="paragraph">
                     <a class="mngmntlink calendar_mngmntlink"
                         {if substr($item->location_data,1,8) != 'calevent'}
@@ -48,6 +51,13 @@
                         {if substr($item->location_data,0,3) == 'O:8'}
                             <div class="item-actions">
                                 {if $permissions.edit == 1}
+                                    {if $myloc != $item->location_data}
+                                        {if $permissions.manage == 1}
+                                            {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                        {else}
+                                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                        {/if}
+                                    {/if}
                                     {icon action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
                                 {/if}
                                 {if $permissions.delete == 1}

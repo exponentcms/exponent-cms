@@ -36,6 +36,7 @@
     {if $config->moduledescription != ""}
         {$config->moduledescription}
     {/if}
+    {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
@@ -55,16 +56,18 @@
 		{foreach from=$days item=items key=ts}
 			<dt>
 				<strong>
-				{if $counts[$ts] != 0}
-					<a class="itemtitle calendar_mngmntlink" href="{link action=showall view=Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+				{if count($items) != 0}
+					<a class="itemtitle calendar_mngmntlink" href="{link action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 				{else}
 					{$ts|format_date:"%A, %b %e"}
 				{/if}
 				</strong>
 			</dt>
-			{assign var=none value=1}
+			{*{assign var=none value=1}*}
+            {$none=1}
 			{foreach from=$items item=item}
-				{assign var=none value=0}
+				{*{assign var=none value=0}*}
+                {$none=0}
 				<dd>
                     <a class="itemtitle"
                         {if substr($item->location_data,1,8) != 'calevent'}
@@ -76,6 +79,13 @@
                         {if substr($item->location_data,0,3) == 'O:8'}
                             <div class="item-actions">
                                 {if $permissions.edit == 1}
+                                    {if $myloc != $item->location_data}
+                                        {if $permissions.manage == 1}
+                                            {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                        {else}
+                                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                        {/if}
+                                    {/if}
                                     {icon action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
                                 {/if}
                                 {if $permissions.delete == 1}

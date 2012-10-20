@@ -22,6 +22,7 @@
         {ical_link}
         {if $moduletitle && !$config->hidemoduletitle}{$moduletitle}{/if}
     </h2>
+    {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="module-actions">
 			<p>
@@ -35,8 +36,10 @@
 		</div>
 	{/permissions} 
     <ul>
-		{assign var=more_events value=0}	
-		{assign var=item_number value=0}	
+		{*{assign var=more_events value=0}	*}
+		{*{assign var=item_number value=0}	*}
+        {$more_events=0}
+        {$item_number=0}
 		{foreach from=$items item=item}
 			{if (!$__viewconfig.num_events || $item_number < $__viewconfig.num_events) }	
 				<li>
@@ -57,6 +60,13 @@
                         {if substr($item->location_data,0,3) == 'O:8'}
                             <div class="item-actions">
                                 {if $permissions.edit == 1}
+                                    {if $myloc != $item->location_data}
+                                        {if $permissions.manage == 1}
+                                            {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                        {else}
+                                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                        {/if}
+                                    {/if}
                                     {icon action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
                                 {/if}
                                 {if $permissions.delete == 1}
@@ -70,9 +80,11 @@
                         {/if}
 					{/permissions}
 				</li>
-				{assign var=item_number value=$item_number+1}
+				{*{assign var=item_number value=$item_number+1}*}
+                {$item_number=$item_number+1}
 			{else}
-				{assign var=more_events value=1}	
+				{*{assign var=more_events value=1}	*}
+                {$more_events=1}
 			{/if}
 		{foreachelse}
 			<li align="center"><em>{'No upcoming events.'|gettext}</em></li>

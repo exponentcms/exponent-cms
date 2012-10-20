@@ -49,6 +49,7 @@
     {if $config->moduledescription != ""}
         {$config->moduledescription}
     {/if}
+    {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
@@ -83,6 +84,13 @@
 					{permissions}
 						<div class="item-actions">
 							{if $permissions.edit == 1}
+                                {if $myloc != $item->location_data}
+                                    {if $permissions.manage == 1}
+                                        {icon img='arrow_merge.png' action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                    {else}
+                                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                    {/if}
+                                {/if}
 								{icon img='edit.png' action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
 							{/if}
 							{if $permissions.delete == 1}

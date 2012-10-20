@@ -41,7 +41,8 @@
 					</strong>
 				</dt>
 				{foreach from=$events item=event}
-					{assign var=catid value=$event->category_id}
+					{*{assign var=catid value=$event->category_id}*}
+                    {$catid=$event->category_id}
 					<dd>
 						<strong>
 							<a class="itemtitle calendar_mngmntlink" href="{link controller=event action=show id=$event->date_id}">{$event->title}</a>

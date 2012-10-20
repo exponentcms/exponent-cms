@@ -45,6 +45,7 @@
     {if $config->moduledescription != ""}
         {$config->moduledescription}
     {/if}
+    {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
@@ -81,15 +82,19 @@
 		{*{math equation="x" x=$now assign=dayts}*}
         {$dayts=$now}
 		{foreach from=$monthly item=week key=weeknum}
-			{assign var=moredata value=0}
+			{*{assign var=moredata value=0}*}
+            {$moredata=0}
 			{foreach name=w from=$week key=day item=events}
-				{assign var=number value=$counts[$weeknum][$day]}
-				{if $number > -1}{assign var=moredata value=1}{/if}
+				{*{assign var=number value=$counts[$weeknum][$day]}*}
+                {$number=$counts[$weeknum][$day]}
+				{*{if $number > -1}{assign var=moredata value=1}{/if}*}
+                {if $number > -1}{$moredata=1}{/if}
 			{/foreach}
 			{if $moredata == 1}
                 <tr class="week{if $currentweek == $weeknum} currentweek{/if}">
                     {foreach name=w from=$week key=day item=items}
-                        {assign var=number value=$counts[$weeknum][$day]}
+                        {*{assign var=number value=$counts[$weeknum][$day]}*}
+                        {$number=$counts[$weeknum][$day]}
                         <td {if $dayts == $today}class="today"{elseif $number == -1}class="notinmonth"{else}class="oneday"{/if}>
                             {if $number > -1}
                                 {if $number == 0}
@@ -111,6 +116,13 @@
                                         {if substr($item->location_data,0,3) == 'O:8'}
                                         <div class="item-actions">
                                                 {if $permissions.edit == 1}
+                                                    {if $myloc != $item->location_data}
+                                                        {if $permissions.manage == 1}
+                                                            {icon img='arrow_merge.png' action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                                        {else}
+                                                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                                        {/if}
+                                                    {/if}
                                                     {icon img="edit.png" action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
                                                 {/if}
                                                 {if $permissions.delete == 1}
