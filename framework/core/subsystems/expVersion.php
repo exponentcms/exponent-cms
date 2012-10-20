@@ -105,6 +105,7 @@ class expVersion {
 
         $dbversion = $db->selectObject('version', 1);
         if (empty($dbversion)) {
+            $dbversion = new stdClass();
             $dbversion->major = 0;
             $dbversion->minor = 0;
             $dbversion->revision = 0;

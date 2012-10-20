@@ -27,7 +27,7 @@
 {*{control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Rank"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,rank" value=$config.order|default:'publish DESC'}*}
 {control type="checkbox" name="only_featured" label="Only show Featured Events"|gettext value=1 checked=$config.only_featured}
 {control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext description="Export-to-PDF feature requires optional dompdf add-on"|gettext value=1 checked=$config.printlink}
-{control type="checkbox" name="enable_feedback" label="Enable Optional Event Feedback"|gettext value=1 checked=$config.enable_feedback}
+{control type="checkbox" name="enable_feedback" label="Enable Event Feedback Option"|gettext value=1 checked=$config.enable_feedback}
 {if $smarty.const.ECOM}
 {control type="checkbox" name="aggregate_registrations" label="Aggregate Event Registrations"|gettext value=1 checked=$config.aggregate_registrations}
 {/if}
