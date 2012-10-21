@@ -60,7 +60,7 @@ function smarty_function_ddrerank($params,&$smarty) {
             $locsql = null;
         }
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
-//        $params['items'] = $obj->find('all',$locsql.$only,"rank");  //FIXME why are re-pulling if we sent $iems in if we only need them in rank order???
+        $params['items'] = $obj->find('all',$locsql.$only,"rank");  // we MUST re-pull since we only received one page of $items
         $params['items'] = expSorter::sort(array('array'=>$params['items'],'sortby'=>'rank', 'order'=>'ASC'));
     } elseif (!empty($params['module'])) {
         $model = empty($params['model']) ? '' : $params['model'] ;

@@ -42,7 +42,7 @@ if (!defined('EXPONENT')) exit('');
 ?>
     </p>
     <p>
-    <?php echo gt("Next, we'll").' <a href="http://docs.exponentcms.org/docs/current/install-tables" target="_blank">'.
+    <?php echo gt("Next, we'll").' <a href="http://docs.exponentcms.org/docs/current/update-tables" target="_blank">'.
         gt('Install Tables').'</a>, '.gt("and then run through any upgrade scripts needed to bring your code and database up to date."); ?>
 <?php } ?>
 </p>
