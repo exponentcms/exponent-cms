@@ -171,14 +171,16 @@ class calendarcontrol extends formcontrol {
                 } else {
                     calendar.set('date', new Date());
                 }
+
                 // Finally render the calendar window
                 calendar.render();
 
                 // Required styles to show calendar in a proper position
                 Y.one(boundingBoxId).setStyles({
                     display: 'block',
-                    position: 'absolute'
+                    position: 'absolute',
                 });
+                Y.one(boundingBoxId).setStyle('zIndex', 1000);
             };
 
             var hideCalendar = function () {

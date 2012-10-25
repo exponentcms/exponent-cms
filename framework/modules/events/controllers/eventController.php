@@ -26,7 +26,7 @@ class eventController extends expController {
     public $useractions = array(
         'showall' => 'Show Calendar',
     );
-    public $codequality = 'alpha';
+    public $codequality = 'beta';
 
     public $remove_configs = array(
         'comments',

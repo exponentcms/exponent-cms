@@ -21,7 +21,22 @@
 
 {/css}
 {css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/calendar.css"}
+.yui3-calendar-header-label {
+    cursor: pointer;
+    color:  blue;
+    text-decoration: none;
 
+}
+
+/*   Styling for the popup Panel    */
+.yui3-calendar-jumpnav-panel {
+    background-color: white;
+    border: 1px solid #949494;
+    box-shadow: none;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
 {/css}
 {css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/container.css"}
 

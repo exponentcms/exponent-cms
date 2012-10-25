@@ -32,7 +32,8 @@ class snippetController extends expController {
    		'comments',
         'files',
         'ealerts',
-   		'rss',
+        'pagination',
+        'rss',
    		'tags'
    	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 

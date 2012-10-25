@@ -228,6 +228,11 @@ function smarty_function_control($params, &$smarty) {
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
                 $control->items         = $db->selectDropdown('user', 'username');
                 break;
+            case "color":
+            case "colorpicker":
+                $control = new colorcontrol();
+                $control->default = $params['value'];
+                break;
             case "state":
                 //old use:  if (empty($params['all_us_territories'])) {
                 /*$regions = $db->select
