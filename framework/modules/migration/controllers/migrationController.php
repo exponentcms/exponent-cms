@@ -314,8 +314,8 @@ class migrationController extends expController {
             if (array_key_exists($modules[$i]->module, $this->new_modules)) {
 //                $newmod = new $this->new_modules[$modules[$i]->module]();
                 $newmod = $this->new_modules[$modules[$i]->module];
-                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod::displayname()."</span>";
-//                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod::displayname()."</span>";
+                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod->displayname()."</span>";
+//                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod::displayname()."</span>";  //TODO this doesn't work w/ php 5.2
             } elseif (in_array($modules[$i]->module, $this->deprecated_modules)) {
                 // $modules[$i]->action = '<span style="color:red;">This module is deprecated and will not be migrated.</span>';
                 $modules[$i]->notmigrating = 1;
