@@ -208,9 +208,9 @@
 }
 
 #menu h4 {
-    font-weight    : bold;
-    margin-bottom      : 4px;
-    padding-top : 7px;
+    font-weight   : bold;
+    margin-bottom : 4px;
+    padding-top   : 7px;
 }
 
 #menu p {
@@ -221,8 +221,8 @@
 #menu p.description {
     /*line-height:18px;*/
     margin-left : 10px;
-    font-style: italic;
-    font-weight: normal;
+    font-style  : italic;
+    font-weight : normal;
 }
 
 #menu li:hover div a {
@@ -321,4 +321,23 @@
     border     : 1px solid #aaaaaa;
     padding    : 4px 6px 4px 6px;
     margin     : 0px 0px 4px 0px;
+}
+
+#menu a.current {
+    background-color      : #ace2ff;
+    padding-bottom            : 4px;
+    /* Rounded Corners */
+    -moz-border-radius    : 5px;
+    -webkit-border-radius : 5px;
+    -khtml-border-radius  : 5px;
+    border-radius         : 5px;
+}
+
+#menu li.current {
+    background-color   : #027dcd;
+    padding            : 5px 15px;
+    /* Shadow */
+    -moz-box-shadow    : 3px 3px 5px #666666;
+    -webkit-box-shadow : 3px 3px 5px #666666;
+    box-shadow         : 3px 3px 5px #666666;
 }
