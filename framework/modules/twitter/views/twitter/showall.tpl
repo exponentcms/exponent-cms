@@ -31,10 +31,10 @@
 					{if $config.showimage}
 						<div style="float:left;">
 							{img src="`$tweet.image`" style="margin:2px 5px 100% 0px;"}
-							{if $tweet.retweetedbyme}{img src="$smarty.const.PATH_RELATIVE|cat:'framework/modules/twitter/assets/images/tweeted.png'" style="position:relative;top:-37px;left:-60px;margin-right:-18px"}{/if}
+							{if $tweet.retweetedbyme}{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="position:relative;top:-37px;left:-60px;margin-right:-18px"}{/if}
 						</div>
 					{elseif $tweet.retweetedbyme}
-						{img src="$smarty.const.PATH_RELATIVE|cat:'framework/modules/twitter/assets/images/tweeted.png'" style="float:left; margin:2px 5px 100% 0px;"}
+						{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="float:left; margin:2px 5px 100% 0px;"}
 					{/if}
 					<dt><em class="date">{$tweet.created_at|relative_date}{if $config.showattrib} {'via'|gettext} {$tweet.via}, {$tweet.screen_name} {'wrote'|gettext}:{/if}</em></dt>
 					<dd>
