@@ -126,7 +126,7 @@ class navigationController extends expController {
 //   				$obj->id = $sections[$i]->name.$sections[$i]->id;
                 $obj->id   = $sections[$i]->id;
                 $obj->text = $sections[$i]->name;
-                $obj->title = $sections[$i]->title;
+                $obj->title = $sections[$i]->page_title;
                 $obj->description = $sections[$i]->description;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;
@@ -170,7 +170,7 @@ class navigationController extends expController {
                 $obj       = new stdClass();
                 $obj->id   = $sections[$i]->id;
                 $obj->text = $sections[$i]->name;
-                $obj->title = $sections[$i]->title;
+                $obj->title = $sections[$i]->page_title;
                 $obj->description = $sections[$i]->description;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;

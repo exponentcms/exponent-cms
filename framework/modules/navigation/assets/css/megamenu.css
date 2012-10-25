@@ -183,7 +183,7 @@
     top   : auto;
 }
 
-#menu p, #menu h2, #menu h3, #menu ul li {
+#menu p, #menu h2, #menu h3, #menu h4, #menu ul li {
     font-family : Arial, Helvetica, sans-serif;
     /*line-height:21px;*/
     font-size   : 12px;
@@ -195,16 +195,22 @@
     font-size      : 21px;
     font-weight    : 400;
     letter-spacing : -1px;
-    margin         : 7px 0 14px 0;
+    margin         : 7px 0 4px 0;
     padding-top    : 14px;
     border-top     : 1px solid #666666;
 }
 
 #menu h3 {
     font-size   : 14px;
-    margin      : 7px 0 14px 0;
+    margin      : 7px 0 4px 0;
     padding-top : 7px;
     border-top  : 1px solid #888888;
+}
+
+#menu h4 {
+    font-weight    : bold;
+    margin-bottom      : 4px;
+    padding-top : 7px;
 }
 
 #menu p {
@@ -212,13 +218,20 @@
     margin : 0 0 10px 0;
 }
 
+#menu p.description {
+    /*line-height:18px;*/
+    margin-left : 10px;
+    font-style: italic;
+    font-weight: normal;
+}
+
 #menu li:hover div a {
     font-size : 12px;
-    color     : #015b86;
+    /*color     : #015b86;*/
 }
 
 #menu li:hover div a:hover {
-    color : #029feb;
+    /*color : #029feb;*/
 }
 
 .strong {
@@ -309,5 +322,3 @@
     padding    : 4px 6px 4px 6px;
     margin     : 0px 0px 4px 0px;
 }
-
-#menu p, #menu h2, #menu h3, #menu ul li {

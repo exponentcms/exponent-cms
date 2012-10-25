@@ -35,45 +35,31 @@
         {foreach name="children" key=key from=$hierarchy item=page}
             {if empty($page->parents)}
                 {if $key!=0}</li>{/if}
-                <li class="drop"><a {if $page->url != "#"}href="{$page->url}"{/if}{if !empty($page->itemdata)} class="drop"{/if}{if $page->new_window} target="_blank"{/if}>{if !empty($page->expFile[0]->id)}{img file_id=$page->expFile[0]->id w=16 h=16} {/if}{$page->text}</a>
+                <li class="drop"><a {if $page->url != "#"}href="{$page->url}"{/if}{if !empty($page->itemdata)} class="drop"{/if}{if $page->new_window} target="_blank"{/if}>{if !empty($page->expFile[0]->id)}{img class=img_left file_id=$page->expFile[0]->id w=16 h=16} {/if}{$page->text}</a>
                 {if !empty($page->itemdata)}
                     <div class="{$dropsize}">
                         {foreach from=$page->itemdata item=child}
                             {if empty($child->submenu)}
-                                {$description = ''}
-                                {if !empty($child->title)}
-                                    {$description = "<p><em>`$child->title`"}
-                                    {if !empty($child->description)}
-                                        {$description = "`$description`<br>`$child->description`"}
-                                    {/if}
-                                {elseif !empty($child->description)}
-                                    {$description = "<p><em>`$child->description`"}
-                                {/if}
-                                {if !empty($description)}
-                                    {$description = "`$description`</em></p>"}
+                                {if !empty($child->description)}
+                                    {$description = "<p class='description'>`$child->description`</p>"}
+                                {else}
+                                    {$description = ''}
                                 {/if}
                                 <div class="col_{$width}">
-                                    <a {if $page->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h3>{if !empty($child->expFile[0]->id)}{img file_id=$child->expFile[0]->id w=24 h=24} {/if}{$child->text}</h3></a>{$description}
+                                    <a {if $page->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h3>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id w=24 h=24}{/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h3>{$description}</a>
                                 </div>
                             {else}
                                 <div class="col_{$width}">
-                                    <a {if $page->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h3>{if !empty($child->expFile[0]->id)}{img file_id=$child->expFile[0]->id} {/if}{$child->text}</h3></a>{$description}
+                                    <a {if $page->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h3>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id} {/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h3>{$description}</a>
                                 </div>
                                 {foreach from=$child->submenu->itemdata item=submenu}
-                                    {$description = ''}
-                                    {if !empty($submenu->title)}
-                                        {$description = "<p><em>`$submenu->title`"}
-                                        {if !empty($submenu->description)}
-                                            {$description = "`$description`<br>`$submenu->description`"}
-                                        {/if}
-                                    {elseif !empty($submenu->description)}
-                                        {$description = "<p><em>`$submenu->description`"}
-                                    {/if}
-                                    {if !empty($description)}
-                                        {$description = "`$description`</em></p>"}
+                                    {if !empty($submenu->description)}
+                                        {$description = "<p class='description'>`$submenu->description`</p>"}
+                                    {else}
+                                        {$description = ''}
                                     {/if}
                                     <div class="col_1">
-                                        <a {if $page->url != "#"}href="{$submenu->url}"{/if}{if $submenu->new_window} target="_blank"{/if}>{if !empty($submenu->expFile[0]->id)}{img file_id=$submenu->expFile[0]->id} {/if}{$submenu->text}</a>{$description}
+                                        <a {if $page->url != "#"}href="{$submenu->url}"{/if}{if $submenu->new_window} target="_blank"{/if}><h4>{if !empty($submenu->expFile[0]->id)}{img class=img_left file_id=$submenu->expFile[0]->id} {/if}{if $config.usetitle && !empty($submenu->title)}{$submenu->title}{else}{$submenu->text}{/if}</h4>{$description}</a>
                                     </div>
                                 {/foreach}
                             {/if}
