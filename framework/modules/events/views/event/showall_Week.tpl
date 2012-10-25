@@ -142,24 +142,29 @@ EXPONENT.YUI3_CONFIG.modules = {
 }
 
 YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
-    var today = new Date({/literal}{$time}{literal}*1000);
+	var today = new Date({/literal}{$time}{literal}*1000);
 
 	//Popup
-	new Y.Calendar('J_popup_closeable',{
+	var cal = new Y.Calendar('J_popup_closeable',{
 		popup:true,
 		closeable:true,
-        startDay:{/literal}{$smarty.const.DISPLAY_START_OF_WEEK}{literal},
-        date:today,
-		action:['focus']
+		startDay:{/literal}{$smarty.const.DISPLAY_START_OF_WEEK}{literal},
+		date:today,
+		action:['click'],
+//        useShim:true
 	}).on('select',function(d){
-        var unixtime = parseInt(d / 1000);
-        {/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-            window.location=eXp.PATH_RELATIVE+'event/showall/view/Week/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
-        {/literal} {else} {literal}
-            window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&view=Week&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
-        {/literal} {/if} {literal}
+		var unixtime = parseInt(d / 1000);
+    {/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
+        window.location=eXp.PATH_RELATIVE+'event/showall/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
+    {/literal} {else} {literal}
+        window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
+    {/literal} {/if} {literal}
 	});
+    Y.one('#J_popup_closeable').on('click',function(d){
+        cal.show();
+    });
 
 });
+
 {/literal}
 {/script}

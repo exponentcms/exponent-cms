@@ -10,11 +10,11 @@ YUI.add('gallery-calendar', function(Y) {
  * @requires { 'node' }
  * @requires { calendar-skin-default } skin
  * 
- * Y.Calenar	
+ * Y.Calendar
  *	info	calendar constructor
  *	useage	new Y.Calendar(id,options);
  *	param	id:{string} container id
- *	confgi	selected {date} selected date
+ *	config	selected {date} selected date
  *			mindate:{date} min date
  *			maxdate:{date} max date
  *			popup:{boolean} pupup or not,false by default
@@ -71,7 +71,7 @@ Y.mix(Y.Calendar,{
 			*/
 			that.con.setStyle('top','0px');
 			that.con.setStyle('position','absolute');
-			that.con.setStyle('zIndex','1000');
+			that.con.setStyle('zIndex','1002');
 			that.con.setStyle('background','white');
 			that.con.setStyle('visibility','hidden');
 			if(that.useShim){

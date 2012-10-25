@@ -71,7 +71,7 @@
             <a class="module-actions" href="{link action=showall time=$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
             <a class="module-actions" href="{link action=showall time=$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
             <a class="module-actions" href="{link action=showall time=$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&#160;&#160;&raquo;
-            <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
+            <a class="module-actions" style="float:right;z-index:999;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
         </div>
 		<tr class="daysoftheweek">
 			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}
@@ -169,20 +169,24 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
 
 	//Popup
-	new Y.Calendar('J_popup_closeable',{
+	var cal = new Y.Calendar('J_popup_closeable',{
 		popup:true,
 		closeable:true,
 		startDay:{/literal}{$smarty.const.DISPLAY_START_OF_WEEK}{literal},
 		date:today,
-		action:['focus']
+		action:['click'],
+//        useShim:true
 	}).on('select',function(d){
 		var unixtime = parseInt(d / 1000);
-		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-			window.location=eXp.PATH_RELATIVE+'event/showall/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
-		{/literal} {else} {literal}
-			window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
-		 {/literal} {/if} {literal}
+    {/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
+        window.location=eXp.PATH_RELATIVE+'event/showall/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
+    {/literal} {else} {literal}
+        window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
+    {/literal} {/if} {literal}
 	});
+    Y.one('#J_popup_closeable').on('click',function(d){
+        cal.show();
+    });
 
 });
 

@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
  * @package    Subsystems-Forms
  * @subpackage Control
  */
-class tagpickercontrol extends formcontrol { //FIXME we do NOT want a list of checkboxes for all the tags in the system
+class tagpickercontrol extends formcontrol {
 
     var $flip = false;
     var $jsHooks = array();
