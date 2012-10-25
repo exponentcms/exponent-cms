@@ -44,40 +44,53 @@
                 {if !empty($page->itemdata)}
                     <div class="{$dropsize}">
                         {foreach from=$page->itemdata item=child}
-                            {if $child->id == $current->id}
-                                {$class = 'class="current" '}
-                            {else}
-                                {$class = ''}
-                            {/if}
-                            {if empty($child->submenu)}
-                                {if !empty($child->description)}
-                                    {$description = "<p class='description'>`$child->description`</p>"}
+                            {function menu_items depth = 0}
+                                {*{if $depth > 0}*}
+                                    {*<div class="col_{$depth}">&#160;</div>*}
+                                {*{/if}*}
+                                {if $child->id == $current->id}
+                                    {$class = 'class="current" '}
                                 {else}
-                                    {$description = ''}
+                                    {$class = ''}
                                 {/if}
-                                <div class="col_{$width}">
-                                    <a {$class}{if $page->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h3>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id w=24 h=24}{/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h3>{$description}</a>
-                                </div>
-                            {else}
-                                <div class="col_{$width}">
-                                    <a {$class}{if $page->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h3>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id} {/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h3>{$description}</a>
-                                </div>
-                                {foreach from=$child->submenu->itemdata item=submenu}
-                                    {if $submenu->id == $current->id}
-                                        {$class = ' class="current"'}
-                                    {else}
-                                        {$class = ''}
-                                    {/if}
-                                    {if !empty($submenu->description)}
-                                        {$description = "<p class='description'>`$submenu->description`</p>"}
+                                {if empty($child->submenu)}
+                                    {if !empty($child->description)}
+                                        {$description = "<p class='description'>`$child->description`</p>"}
                                     {else}
                                         {$description = ''}
                                     {/if}
-                                    <div class="col_1">
-                                        <a {$class}{if $page->url != "#"}href="{$submenu->url}"{/if}{if $submenu->new_window} target="_blank"{/if}><h4>{if !empty($submenu->expFile[0]->id)}{img class=img_left file_id=$submenu->expFile[0]->id} {/if}{if $config.usetitle && !empty($submenu->title)}{$submenu->title}{else}{$submenu->text}{/if}</h4>{$description}</a>
+                                    <div class="col_{$width}">
+                                        <a {$class}{if $page->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h3>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id w=24 h=24}{/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h3>{$description}</a>
                                     </div>
-                                {/foreach}
-                            {/if}
+                                {else}
+                                    <div class="col_{$width}">
+                                        <a {$class}{if $page->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h3>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id} {/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h3>{$description}</a>
+                                    </div>
+                                    {*{if $depth > 0}*}
+                                        {*<div class="col_{$depth}">&#160;</div>*}
+                                    {*{/if}*}
+                                    {foreach from=$child->submenu->itemdata item=submenu}
+                                        {if $submenu->id == $current->id}
+                                            {$class = ' class="current"'}
+                                        {else}
+                                            {$class = ''}
+                                        {/if}
+                                        {if !empty($submenu->description)}
+                                            {$description = "<p class='description'>`$submenu->description`</p>"}
+                                        {else}
+                                            {$description = ''}
+                                        {/if}
+                                        {if !empty($submenu->submenu)}
+                                            {menu_items child = $submenu depth=$depth+1}
+                                        {else}
+                                            <div class="col_1">
+                                                <a {$class}{if $page->url != "#"}href="{$submenu->url}"{/if}{if $submenu->new_window} target="_blank"{/if}><h4>{if !empty($submenu->expFile[0]->id)}{img class=img_left file_id=$submenu->expFile[0]->id} {/if}{if $config.usetitle && !empty($submenu->title)}{$submenu->title}{else}{$submenu->text}{/if}</h4>{$description}</a>
+                                            </div>
+                                        {/if}
+                                    {/foreach}
+                                {/if}
+                            {/function}
+                            {menu_items child = $child}
                         {/foreach}
                     </div>
                 {/if}
