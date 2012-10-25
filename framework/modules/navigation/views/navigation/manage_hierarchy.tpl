@@ -412,13 +412,18 @@ var YAHOO = Y.YUI2;
 		var draggable = (section.manage!=false)? 'draggables' : 'nondraggables' ;
 		var dragafters = (section.manage!=false)? 'addafter' : 'cannotaddafter' ;
         if (section.parent==0 && usr.is_acting_admin!=1 && usr.is_admin!=1) dragafters = 'cannotaddafter' ;
-        if (section.alias_type == 0) atype = 'addpage';
-        else if (section.alias_type == 1) atype = 'addextpage';
-        else if (section.alias_type == 2) atype = 'addintpage';
+        if (section.alias_type == 0) atype = ' addpage';
+        else if (section.alias_type == 1) atype = ' addextpage';
+        else if (section.alias_type == 2) atype = ' addintpage';
 		//var dragbefores = (section.manage!=false)? 'addbefore' : 'cannotaddbefore' ;
 		//var first = (section.rank==0)?'<div class="'+dragbefores+'" id="addbefore'+section.id+'"></div>':'';
 		var drag = (section.manage!=false)?'<div class="draghandle" id="draghandle'+section.id+'">&#160;</div>':'';
-		var html = '<div class="'+draggable+'" id="section'+section.id+'">'+drag+'<a href="'+section.link+'"><span class="sectionlabel '+atype+'" id="sectionlabel'+section.id+'">'+section.name+'</span></a></div><div class="'+dragafters+' '+last+'" id="addafter'+section.id+'"></div>';
+        if (section.active == 1) {
+            activeclass = '';
+        } else {
+            activeclass = ' inactive';
+        }
+		var html = '<div class="'+draggable+'" id="section'+section.id+'">'+drag+'<a href="'+section.link+'"><span class="sectionlabel'+activeclass+atype+'" id="sectionlabel'+section.id+'">'+section.name+'</span></a></div><div class="'+dragafters+' '+last+'" id="addafter'+section.id+'"></div>';
 		return html;
 	}
 	

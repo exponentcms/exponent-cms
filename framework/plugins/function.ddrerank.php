@@ -152,7 +152,7 @@ function smarty_function_ddrerank($params,&$smarty) {
         echo $html;
     
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','dd-scroll','panel', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','panel', function(Y) {
             var panel = new Y.Panel({
                 srcNode      : '#panel".$uniqueid."',
                 width        : 500,
@@ -184,22 +184,23 @@ function smarty_function_ddrerank($params,&$smarty) {
 
             // turn this into a function so we can initialize anytime needed
             function ddinit() {
-            //Get the list of li's in the lists and make them draggable
-            var lis = Y.Node.all('#listToOrder".$uniqueid." li');
-//            lis.each(function(v, k) {
-                // var dragItem = new Y.DD.Drag({
-                //     node: v,
-                //     target: {
-                //         padding: '0 0 0 0'
-                //     }
-                // }).plug(Y.Plugin.DDProxy, {
-                //     moveOnEnd: false
-                // }).plug(Y.Plugin.DDConstrained, {
-                //     constrain2node: ul,
-                //     stickY:true
-                // }).plug(Y.Plugin.DDNodeScroll, {
-                //     node: ul
-                // }).addHandle('.fpdrag');
+                //Get the list of li's in the lists and make them draggable
+                var lis = Y.Node.all('#listToOrder".$uniqueid." li');
+
+    //            lis.each(function(v, k) {
+                    // var dragItem = new Y.DD.Drag({
+                    //     node: v,
+                    //     target: {
+                    //         padding: '0 0 0 0'
+                    //     }
+                    // }).plug(Y.Plugin.DDProxy, {
+                    //     moveOnEnd: false
+                    // }).plug(Y.Plugin.DDConstrained, {
+                    //     constrain2node: ul,
+                    //     stickY:true
+                    // }).plug(Y.Plugin.DDNodeScroll, {
+                    //     node: ul
+                    // }).addHandle('.fpdrag');
 
                 var dragItems = new Y.DD.Delegate({
                     container: ul,
@@ -208,18 +209,17 @@ function smarty_function_ddrerank($params,&$smarty) {
                         padding: '0 0 0 0'
                     }
                 })
-                
+
                 dragItems.dd.plug(Y.Plugin.DDConstrained, {
-                    constrain2node: ul,
-                    stickY:true
+//                    constrain2node: ul,
+                    constrain: ul,
+//                    stickY:true
                 }).plug(Y.Plugin.DDProxy, {
                     moveOnEnd: false
-                }).plug(Y.Plugin.DDConstrained, {
-                    constrain2node: ul,
-                    stickY:true
                 }).plug(Y.Plugin.DDNodeScroll, {
                     node: ul
-                }).plug(Y.Plugin.DDWinScroll, {
+//                }).plug(Y.Plugin.DDWinScroll, {
+                }).plug(Y.Plugin.DDWindowScroll, {
                 }).addHandle('.fpdrag');
 
                 dragItems.on('drop:over', function(e) {
@@ -291,11 +291,11 @@ function smarty_function_ddrerank($params,&$smarty) {
                 });
 //            });
 
-            //Create simple targets for the 2 lists..
-            var tar = new Y.DD.Drop({
-                node: ul
-            });
-                 };
+                //Create simple targets for the 2 lists..
+                var tar = new Y.DD.Drop({
+                    node: ul
+                });
+            };
         });
         
         ";

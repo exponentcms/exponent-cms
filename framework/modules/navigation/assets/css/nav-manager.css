@@ -130,6 +130,10 @@
     padding:3px 5px 0 2px;
     cursor:default;
 }
+.navigation.manager-hierarchy .draggables span.inactive {
+    font-style: italic;
+    font-weight: normal;
+}
 .navigation.manager-hierarchy .draggables span.addpage {
     padding:0 20px;
     background-image:url(../images/page.png);

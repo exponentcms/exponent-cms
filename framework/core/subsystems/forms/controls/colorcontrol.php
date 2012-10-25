@@ -179,7 +179,7 @@ class colorcontrol extends formcontrol {
                 -webkit-border-radius: 15px;
                 -moz-border-radius: 15px;
                 margin: 0 auto;
-                padding: 20px;
+                padding: 10px;
                 display: block;
                 position: absolute;
                 z-index:1000;
