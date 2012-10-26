@@ -46,39 +46,38 @@ class popupdatetimecontrol extends formcontrol {
 		if ($this->default == null) {
 			if ($this->disable_text == "") $this->default = time();
 			else $this->disabled = true;
-		}
-		elseif ($this->default == 0) {
+		} elseif ($this->default == 0) {
 			$this->default = time();
 		}
 	}
 
 	function onRegister(&$form) {
-		$form->addScript("jscal-calendar",      PATH_RELATIVE."external/jscalendar/calendar.js");
-		$form->addScript("jscal-calendar-lang", PATH_RELATIVE."external/jscalendar/lang/calendar-en.js");
-		$form->addScript("jscal-calendar-setup",PATH_RELATIVE."external/jscalendar/calendar-setup.js");
-		$form->addScript("popupdatetimecontrol",PATH_RELATIVE."js/PopupDateTimeControl.js");
+//		$form->addScript("jscal-calendar",      PATH_RELATIVE."external/jscalendar/calendar.js");
+//		$form->addScript("jscal-calendar-lang", PATH_RELATIVE."external/jscalendar/lang/calendar-en.js");
+//		$form->addScript("jscal-calendar-setup",PATH_RELATIVE."external/jscalendar/calendar-setup.js");
+//		$form->addScript("popupdatetimecontrol",PATH_RELATIVE."js/PopupDateTimeControl.js");
 	}
 
 	function controlToHTML($name,$label) {
-		$html = "";
 		if ($this->default == 0) {
 			$this->default = time();
 		}
-		$imgsrc = PATH_RELATIVE."external/jscalendar/img.gif";
+		$imgsrc = PATH_RELATIVE."framework/modules/events/assets/images/date_month.png";
 		if (is_readable(THEME_ABSOLUTE."icons/calendar_trigger.gif")) {
 			$imgsrc = THEME_RELATIVE."icons/calendar_trigger.gif";
 		}
 
-		if (is_readable(THEME_ABSOLUTE."popupdatetimecontrol.css")) {
-			$html .= '<style type="text/css"> @import url('.THEME_RELATIVE.'popupdatetimecontrol.css);</style>';
-		} else {
-			$html .= '<style type="text/css"> @import url('.PATH_RELATIVE.'external/jscalendar/default.css);</style>';
-		}
+        $img = '<img align="texttop" src="'.$imgsrc.'" id="'.$name.'_trigger" ';
+        if ($this->disabled) {
+            $img .= 'style="visibility: hidden;" ';
+        } else {
+            $img .= 'style="cursor: pointer;" ';
+        }
+        $img .= 'title="'.gt('Select Date').'" onclick="return true;" onmouseover="this.style.background=\'red\';" onmouseout="this.style.background=\'\'" />';
+        $img .= "\n";
 
-		$default = "";
-		if ($this->default != null) $default = strftime("%m/%d/%Y %H:%M",$this->default);
-
-		$html .= '<input type="hidden" name="'.$name.'_hidden" id="'.$name.'_hidden" value="'.($default).'" />';
+        $html = "";
+		$html .= '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.($this->default).'" />';
 		$html .= "\n";
 		$html .= '<span class="';
 		if ($this->disabled) $html .= 'datefield_disabled';
@@ -87,72 +86,79 @@ class popupdatetimecontrol extends formcontrol {
 		# for testing
 		#$this->default = time();
 		if ($this->default == null) {
-			$html .= '&lt;No Date Selected&gt;';
+			$html .= '&lt;'.gt('No Date Selected').'&gt;';
 		} else {
-			if ($this->showtime) $html .= strftime("%A, %B %d, %Y %l:%M %P",$this->default);
-			else $html .= strftime("%A, %B %d, %Y",$this->default);
+			if ($this->showtime) {
+                $html .= strftime(DISPLAY_DATE_FORMAT,$this->default).' '.strftime(DISPLAY_TIME_FORMAT,$this->default);
+            } else $html .= strftime(DISPLAY_DATE_FORMAT,$this->default);
 		}
 		$html .= '</span>';
 		$html .= "\n";
-		$html .= '<img align="texttop" src="'.$imgsrc.'" id="'.$name.'_trigger" ';
-		if ($this->disabled) {
-			$html .= 'style="visibility: hidden;" ';
-		} else {
-			$html .= 'style="cursor: pointer;" ';
-		}
-		$html .= 'title="Date selector" onclick="return true;" onmouseover="this.style.background=\'red\';" onmouseout="this.style.background=\'\'" />';
-		$html .= "\n";
 		if ($this->disable_text != "") {// popupdatetimecontrol_enable(this.form,\''.$name.'\');
-			$html .= '<input align="texttop" style="margin-top: -2px;" type="checkbox" name="'.$name.'_disabled" onchange="popupdatetimecontrol_enable(this.form,\''.$name.'\');" onclick="popupdatetimecontrol_enable(this.form,\''.$name.'\');" ';
+			$html .= '<input align="texttop" style="margin-top: -2px;" type="checkbox" name="'.$name.'_disabled" onchange="handleCheck' . $name.'(this.form,\''.$name.'\');" onclick="handleCheck' . $name.'(this.form,\''.$name.'\');" ';
 			if ($this->disabled) $html .= ' checked="checked"';
 			$html .= '/>'.$this->disable_text;
 		} else {
 		#	$html .= '<input type="hidden" name="'.$name.'_enabled" value="1" />';
 		}
-		$html .= '<script type="text/javascript">';
-		$html .= "\n";
-		//$html .= "var d = new Date();\nd.setTime(". ($this->default*1000) .");\nalert(d);";
-		$html .= "\n";
-		//$html .= 'alert(new Date().setTime('.$this->default . '));';
-		//$html .= 'var d = new Date();  alert(d.getTime()); alert(d.getMilliseconds()); alert("'.time().'");';
-		//$html .= "\n";
-		$html .= '    Calendar.setup({';
-		$html .= "\n";
-		$html .= '	         inputField     :    "'.$name.'_hidden",';
-		$html .= "\n";
-		$html .= '                  ifFormat       :    "%m/%d/%Y %H:%M",';
-		$html .= "\n";
-		$html .= '                  displayArea    :    "'.$name.'_span",';
-		if ($this->showtime) {
-			$html .= "\n";
-			$html .= '                  daFormat       :    "%A, %B %d, %Y %l:%M %P",';
-			$html .= "\n";
-			$html .= '                  showsTime      :    true,';
-			$html .= "\n";
-			$html .= '                  singleClick    :    false,';
-		} else {
-			$html .= "\n";
-			$html .= '                  daFormat       :    "%A, %B %d, %Y",';
-			$html .= "\n";
-			$html .= '                  singleClick    :    true,';
-		}
-		$html .= "\n";
-		$html .= '                  timeFormat     :    "12",';
-		$html .= "\n";
-		$html .= '                  button         :    "'.$name.'_trigger",';
-		$html .= "\n";
-		$html .= '                  align          :    "Tl",';
-		if ($this->default != null) {
-		//	$html .= '                  date           :    Date.parse("'.strftime("%D %T",$this->default).'"),';
-			$html .= '                  date           :    new Date().setTime('.($this->default*1000).'),';
-		}
-		$html .= "\n";
-		$html .= '                  step           :    1';
-		$html .= "\n";
-		$html .= '    });';
-		$html .= "\n";
-		$html .= '</script>';
-		$html .= "\n";
+        $html .= '<a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable_'.$name.'">'.$img.'</a>';
+
+        $script = "
+            EXPONENT.YUI3_CONFIG.modules = {
+                'gallery-calendar': {
+                    fullpath: '".PATH_RELATIVE."framework/modules/events/assets/js/calendar.js',
+                    requires: ['node']
+                }
+            }
+
+            YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar','datatype-date',function(Y){
+                var today = new Date(".$this->default."*1000);
+
+                //Popup
+                var cal = new Y.Calendar('J_popup_closeable_".$name."',{
+                    popup:true,
+                    closeable:true,
+                    startDay:".DISPLAY_START_OF_WEEK.",
+                    date:today,
+                    withtime:".(!empty($this->showtime)?'true':'false').",
+                    action:['click'],
+            //        useShim:true
+                }).on('select',function(d){
+                    var unixtime = parseInt(d / 1000);
+                    Y.one('#".$name."').set('value',unixtime);
+                    Y.one('#".$name."_span').setHTML(Y.DataType.Date.format(d,{format:'".DISPLAY_DATE_FORMAT."'}));
+                });
+                Y.one('#J_popup_closeable_".$name."').on('click',function(d){
+                    cal.show();
+                });
+
+                var handleCheck".$name." = function(e) {
+                    var cal = Y.one('#J_popup_closeable_".$name."');
+                    if (cal.getStyle('display')=='none') {
+                        cal.setStyle('display','block');
+                    } else {
+                        cal.setStyle('display','none');
+                    }
+                };
+
+//                Y.Global.on('lazyload:cke', function() {
+//                    Y.one('#".$name."_disabled').detach('click',handleCheck".$name.");
+//                    Y.one('#".$name."_disabled').on('click',handleCheck".$name.");
+//                });
+
+            });
+        ";
+
+        expCSS::pushToHead(array(
+    	    "unique"=>"popcalcss" . $name,
+    	    "link"=>PATH_RELATIVE.'framework/modules/events/assets/css/default.css',
+//            "css"=>$css
+        ));
+        expJavascript::pushToFoot(array(
+            "unique"  => 'popcal' . $name,
+            "yui3mods"=> 1,
+            "content" => $script,
+        ));
 		return $html;
 	}
 
@@ -166,8 +172,7 @@ class popupdatetimecontrol extends formcontrol {
     static function templateFormat($db_data, $ctl) {
 		if ($ctl->showtime) {
 			return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
-		}
-		else {
+		} else {
 			return strftime(DISPLAY_DATE_FORMAT, $db_data);
 		}
 	}

@@ -46,39 +46,26 @@ function smarty_function_control($params, &$smarty) {
         switch ($params['type']) {
             case "popupdatetimecontrol":  //FIXME this control is broken
             case "popupdatetime":
-                $control = new popupdatetimecontrol(null, "", false);
+                if (empty($params['value'])) $params['value'] = time();
+                $disabletext = isset($params['disable_text']) ? $params['disable_text'] : '';
+                $control = new popupdatetimecontrol($params['value'], $disabletext, !empty($params['show_time'])?true:false);
                 break;
             case "yuidatetimecontrol":
             case "yuidatetime":
-                $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
-                $showdate = true;
-                if (isset($params['show_date']) && $params['show_date'] == false) {
-                    $showdate = false;
-                }
-                $showtime = true;
-                if (isset($params['show_time']) && $params['show_time'] == false) {
-                    $showtime = false;
-                }
-                $control = new yuidatetimecontrol($params['value'], $edittext, $showdate, $showtime);
                 if (empty($params['value'])) $params['value'] = time();
+                $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
+                $control = new yuidatetimecontrol($params['value'], $edittext, !empty($params['show_date'])?true:false, !empty($params['show_time'])?true:false);
                 break;
             case "yuicalendarcontrol":
             case "yuicalendar":
                 if (empty($params['value'])) $params['value'] = time();
                 $disabletext = isset($params['disable_text']) ? $params['disable_text'] : 'Change Date/Time';
-                $showtime    = true;
-                if (isset($params['show_time']) && $params['show_time'] == false) {
-                    $showtime = false;
-                }
-                $control = new yuicalendarcontrol($params['value'], $disabletext, $showtime);
-                if (empty($params['value'])) $params['value'] = time();
+                $control = new yuicalendarcontrol($params['value'], $disabletext, !empty($params['show_time'])?true:false);
                 break;
             case "datetimecontrol":
             case "datetime":
                 if (empty($params['value'])) $params['value'] = time();
-                $showdate = isset($params['showdate']) ? $params['showdate'] : true;
-                $showtime = isset($params['showtime']) ? $params['showtime'] : true;
-                $control  = new datetimecontrol($params['value'], $showdate, $showtime);
+                $control  = new datetimecontrol($params['value'], !empty($params['showdate'])?true:false, !empty($params['show_time'])?true:false);  //FIXME does this need to be show_date
                 break;
             case "calendarcontrol":
             case "calendar":

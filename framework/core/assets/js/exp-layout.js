@@ -24,7 +24,7 @@ var configPanel = function(title, leftct, centerct, width, height) {
 configPanel.prototype = {
 
 	fire: function() {
-        var YAHOO = YUI.YUI2;  //We have to get YUI from somewhere
+//        var YAHOO = YUI.YUI2;  //We have to get YUI from somewhere
 	    var Dom = YAHOO.util.Dom,
 		Event = YAHOO.util.Event,
 		layout = null,
