@@ -51,7 +51,7 @@ for($i=1; $i<=$params['starcount']; $i++) {
                 $class = "star";
         }
 
-        echo '<a class="'.$class.'" >&#160;</a>';
+        echo '<a class="'.$class.'" >&#160;*</a>';
 }
 echo '</div>';
 }

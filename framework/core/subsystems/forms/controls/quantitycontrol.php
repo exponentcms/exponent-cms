@@ -85,10 +85,10 @@ class quantitycontrol extends formcontrol {
         $html .= '<td width="14" style="padding:0;">
             <table style="float:left;margin:0;"><tr><td style="padding:0;">
             <a id="up-'.$this->id.' " class="uptick" href="javascript:void(0);" style="float:left;">
-            <img style="margin:0;padding:0;font-size:0;line-height:0;float:left;" src="'.ICON_RELATIVE.'quantity-up.png"'.XHTML_CLOSING.'>
+            <img style="margin:0;padding:0;font-size:0;line-height:0;float:left;" src="'.ICON_RELATIVE.'sortascending.png"'.XHTML_CLOSING.'>
             </a></td></tr><tr><td style="padding:0;">
             <a id="down-'.$this->id.' " class="downtick" href="javascript:void(0);" style="float:left;">
-            <img style="margin:0;padding:0;font-size:0;line-height:0;float:left;" src="'.ICON_RELATIVE.'quantity-down.png"'.XHTML_CLOSING.'>
+            <img style="margin:0;padding:0;font-size:0;line-height:0;float:left;" src="'.ICON_RELATIVE.'sortdescending.png"'.XHTML_CLOSING.'>
             </a></td></tr></table>
             </td></tr></table>';
 
@@ -97,7 +97,8 @@ class quantitycontrol extends formcontrol {
 
         // setup the JS to be used by this control.
         $script = "
-            (function() {
+            YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event',function(Y) {
+                var YAHOO = Y.YUI2;
                 EXPONENT.onQuantityAdjusted = new YAHOO.util.CustomEvent('Quantity Adjusted');
                 var upItems = YAHOO.util.Dom.getElementsByClassName('uptick');
                 var downItems = YAHOO.util.Dom.getElementsByClassName('downtick');
@@ -144,7 +145,7 @@ class quantitycontrol extends formcontrol {
                 function callAjaxAction(id, value) {
                     ".$ajaxaction."
                 }
-            })();
+            });
         ";
 
         $extfile = isset($this->loadjsfile) ? $this->loadjsfile : null;

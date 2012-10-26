@@ -54,14 +54,14 @@ class configcontrol extends formcontrol {
 		';
 	
 		$script = "
-			var cp = new configPanel(".$this->title.", 'leftopts', '".$this->welcome."', 750, 450);
+			var cp = new configPanel('".$this->title."', 'leftopts', '".$this->welcome."', 750, 450);
 		        cp.fire();
 		";	
 		expJavascript::pushToFoot(array(
 		    "unique"=>'cfgmgr',
 		    "yui2mods"=>'dragdrop,element,animation,resize,layout',
-		    "yui3mods"=>null,
-		    "content"=>'//comment',
+		    "yui3mods"=>1,
+		    "content"=>$script,
 		    "src"=>JS_RELATIVE.'exp-layout.js'
 		 ));
         return $html;
