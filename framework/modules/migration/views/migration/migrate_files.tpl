@@ -26,11 +26,10 @@
         </div>
 		<h1>{"File Migration Report"|gettext}</h1>	    
     </div>
-
-    <p> 
+    <blockquote>
 		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
 		{'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
-    </p>
+    </blockquote>
         <ul>
 			<li class=\"mig-msg\">
 				{'Emptied the expFiles table before the file import'|gettext}

@@ -13,7 +13,9 @@
  *
  *}
 
-<p>{'To setup a PayPal Payflow account, visit'|gettext} <a href="https://merchant.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=merchant/payment_gateway" target="_blank">https://merchant.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=merchant/payment_gateway</a></p>
+<blockquote>
+{'To setup a PayPal Payflow account, visit'|gettext} <a href="https://merchant.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=merchant/payment_gateway" target="_blank">https://merchant.paypal.com/us/cgi-bin/?&cmd=_render-content&content_ID=merchant/payment_gateway</a>
+</blockquote>
 <div id="payflow">
     <div id="payflow-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">

@@ -26,9 +26,9 @@
         </div>
 		<h1>{"Migrate Content"|gettext}</h1>	    
     </div>
-    <p>
+    <blockquote>
         {'The following is a list of modules we found in the database'|gettext} {$config.database}.
-    </p>
+    </blockquote>
     {form action="migrate_content"}
         <table class="exp-skin-table">
 			<thead>

@@ -13,7 +13,11 @@
  *
  *}
 
-<div class="store showallCalendar">
+{css unique=eventreg link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/calendar.css"}
+
+{/css}
+
+<div class="store events_calendar events default">
 	
 <h1>{if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}</h1>
 {permissions}

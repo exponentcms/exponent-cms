@@ -21,9 +21,9 @@
         <h2>{"Links Settings"|gettext}</h2>
 	</div>
 </div>
-<p>
+<blockquote>
     {'This is where you can configure the settings to be used by this Link Manager module.'|gettext}&#160;&#160;
     {'These settings will only apply to this particular module.'|gettext}
-</p>
+</blockquote>
 {control type=dropdown name=order label="Sort By"|gettext items="Alphabetical, Reverse Alphabetical, Order Manually, Random"|gettxtlist values="title,title DESC,rank,RAND()" value=$config.order|default:rank}
 {control type="checkbox" name="opennewwindow" label="Default to Open Link in New Window?"|gettext value=1 checked=$config.opennewwindow}

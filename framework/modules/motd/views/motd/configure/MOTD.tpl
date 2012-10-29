@@ -21,8 +21,8 @@
         <h2>{"MOTD Settings"|gettext}</h2>
 	</div>
 </div>
-<p>
+<blockquote>
     {'If no Message of the Day if found for the current day we can pull up a random previous Message of the Day.'|gettext}&#160;&#160;
     {'If you would like to use this functionality check the box below.'|gettext}
-</p>
+</blockquote>
 {control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand}

@@ -99,7 +99,7 @@
 		<tr>
 			<td>* {'Address Type'|gettext}</td>
 			<td class="state_field">
-				{control type="dropdown" name="address[address_type]" items="Business,Military,Residential" default=$record->address_type|default:"Residential" value="`$record.address.address_type`"}
+				{control type="dropdown" name="address[address_type]" items="Business,Military,Residential"|gettxtlist default=$record->address_type|default:"Residential"|gettext value="`$record.address.address_type`"}
 			</td>
 		</tr>
 	

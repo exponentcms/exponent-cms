@@ -543,7 +543,7 @@ if ($user->isSuperAdmin()) {
 	                'text' => gt('Check for updated version'),
                     'url' => makeLink(array(
                         'controller' => 'administration',
-                        'action' => 'manage_versioin'
+                        'action' => 'manage_version'
                     ))
                 )
             )

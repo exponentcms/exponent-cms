@@ -22,7 +22,7 @@
     {edebug var=$order_types *}
     {form name="passthruform" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=6}
-        {* control type=radiogroup columns=1 name="passthru_order_type" label="Select Order Type" items="Standard Order (your user),Phone Order (creates new user),Save as Quote (creates new user)" values="0,1,2" default=0 *}        
+        {* control type=radiogroup columns=1 name="passthru_order_type" label="Select Order Type" items="Standard Order (your user),Phone Order (creates new user),Save as Quote (creates new user)"|gettxtlist values="0,1,2" default=0 *}
         <table><tr><td width="150" style="vertical-align:top;">
             {control type=radiogroup columns=1 name="order_type" label="Select Order Type"|gettext items=$order_types default=$default_order_type flip=false}
             </td><td style="vertical-align:top;">
