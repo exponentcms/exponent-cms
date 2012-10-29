@@ -18,7 +18,7 @@
 
 class calendarmodule {
     function name() { return $this->displayname(); }
-    static function displayname() { return 'Calendar'; }
+    static function displayname() { return 'Old School Calendar (Deprecated)'; }
     static function author() { return 'OIC Group, Inc'; }
     static function description() { return 'Allows posting of content to a calendar.'; }
     static function hasContent() { return true; }

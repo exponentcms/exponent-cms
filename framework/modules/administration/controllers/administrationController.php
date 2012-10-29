@@ -407,6 +407,12 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
+    public function manage_version() {
+        expSession::un_set('update-check');  // reset the already checked flag
+        expVersion::checkVersion();
+   		expHistory::back();
+   	}
+
 	public function clear_smarty_cache() {
 		expTheme::clearSmartyCache();
 	}

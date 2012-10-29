@@ -107,6 +107,7 @@ class calendarcontrol extends formcontrol {
 
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('node','calendar','datatype-date', function(Y) {
+//        YUI(EXPONENT.YUI3_CONFIG).use('node','calendar','datatype-date','panel','dd-plugin','gallery-calendar-jumpnav',function(Y) {
             // Our calendar bounding div id
             var boundingBoxId = '#calendar-container-" . $name . "',
             // This flag used to track mouse position
@@ -172,6 +173,12 @@ class calendarcontrol extends formcontrol {
                     calendar.set('date', new Date());
                 }
 
+//               calendar.plug(Y.Plugin.Drag);
+//               // This plugs the JumpNav module to this Calendar instance....
+//               calendar.plug( Y.Plugin.Calendar.JumpNav, {
+//                   yearStart: 1988,  yearEnd: 2021
+//               });
+
                 // Finally render the calendar window
                 calendar.render();
 
@@ -210,13 +217,36 @@ class calendarcontrol extends formcontrol {
             }, '#time-m-" . $name . "');
         });
         "; // end JS
-
         expJavascript::pushToFoot(array(
             "unique"  => 'zzcal' . $name,
             "yui3mods"=> 1,
             "content" => $script,
-//            "src"=>""
         ));
+
+//        $css = "
+//            .yui3-calendar-header-label {
+//                cursor: pointer;
+//                color:  blue;
+//                text-decoration: none;
+//
+//            }
+//            .yui3-panel {
+//                z-index: 1001!important;
+//            }
+//            .yui3-calendar-jumpnav-panel {
+//                background-color: white;
+//                border: 1px solid #949494;
+//                box-shadow: none;
+//                border-radius: 3px;
+//                -moz-border-radius: 3px;
+//                -webkit-border-radius: 3px;
+//            }
+//        ";
+//        expCSS::pushToHead(array(
+//    	    "unique"=>"caljumpnav" . $name,
+//            "css"=>$css
+//        ));
+
         return $html;
     }
 

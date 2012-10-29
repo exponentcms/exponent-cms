@@ -44,7 +44,7 @@ function smarty_function_control($params, &$smarty) {
 
         //Figure out which type of control to use. Also, some controls need some special setup.  We handle that here.
         switch ($params['type']) {
-            case "popupdatetimecontrol":  //FIXME this control is broken
+            case "popupdatetimecontrol":
             case "popupdatetime":
                 if (empty($params['value'])) $params['value'] = time();
                 $disabletext = isset($params['disable_text']) ? $params['disable_text'] : '';
