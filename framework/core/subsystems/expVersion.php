@@ -146,10 +146,10 @@ class expVersion {
             if (!expSession::is_set('update-check')) {
                 //FIXME we need a good installation/server to place this on
                 $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
+                expSession::set('update-check', '1');
                 if (!empty($jsondata->data)) {
                     $onlineVer = $jsondata->data;
                     if (!empty($onlineVer)) {
-                        expSession::set('update-check', '1');
                         if (self::compareVersion($swversion, $onlineVer)) {
                             $note = ($onlineVer->type == 'patch' ? gt('A patch for the latest') : gt('A newer')) . ' ' . gt('version of Exponent is available') . ':';
                             $newvers = $onlineVer->major . '.' . $onlineVer->minor . '.' . $onlineVer->revision . ($onlineVer->type ? $onlineVer->type : '') . ($onlineVer->iteration ? $onlineVer->iteration : '');
@@ -157,6 +157,8 @@ class expVersion {
                                 '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">' . gt('Click here to see available Downloads') . '</a>');
                         }
                     }
+                } else {
+                    flash('error', gt('Unable to contact update server. Version check only performed once per Super-admin login.'));
                 }
             }
         }
