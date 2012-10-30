@@ -30,7 +30,8 @@ class textController extends expController {
         'categories',
 		'comments',
         'ealerts',
-		'rss',
+        'pagination',
+        'rss',
 		'tags'
 	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
