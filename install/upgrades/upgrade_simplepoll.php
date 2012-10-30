@@ -68,12 +68,12 @@ class upgrade_simplepoll extends upgradescript {
 	    $gps = $db->selectObjects('grouppermission',"module = 'simplepollmodule'");
         foreach ($gps as $gp) {
 	        $gp->module = 'simplePollController';
-	        $db->updateObject($gp,'grouppermission',null,'gid');
+	        $db->updateObject($gp,'grouppermission',"module = 'simplepollmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'simplepollmodule'");
         foreach ($ups as $up) {
             $up->module = 'simplePollController';
-            $db->updateObject($up,'userpermission',null,'uid');
+            $db->updateObject($up,'userpermission',"module = 'simplepollmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
 		// convert each simplepollmodule to a simplePoll Controller
