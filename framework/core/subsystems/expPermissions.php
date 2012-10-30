@@ -90,7 +90,7 @@ class expPermissions {
 		} else {
 			return false;  // anonymous/logged-out user never has permission
 		}
-        $ploc = $location;
+        $ploc = clone $location;
         $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;
 
 		if (!is_array($permission)) $permission = array($permission);
@@ -207,7 +207,7 @@ class expPermissions {
         } elseif ($user->is_acting_admin) {
             return true;
         }
-        $ploc = $location;
+        $ploc = clone $location;
         $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;
         // check for explicit user permission
 		$explicit = $db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $ploc->mod . "' AND source='" . $ploc->src . "' AND internal='" . $ploc->int . "' AND permission='$permission'");
@@ -358,7 +358,7 @@ class expPermissions {
 		global $db, $module_scope;
 
 		if ($group == null) return false;
-        $ploc = $location;
+        $ploc = clone $location;
         $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;
         // check for explicit group permission
 		$explicit = $db->selectObject("grouppermission","gid=" . $group->id . " AND module='" . $ploc->mod . "' AND source='" . $ploc->src . "' AND internal='" . $ploc->int . "' AND permission='$permission'");
