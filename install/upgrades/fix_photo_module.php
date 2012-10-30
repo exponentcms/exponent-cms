@@ -84,14 +84,14 @@ class fix_photo_module extends upgradescript {
             $db->updateObject($cf,'expConfigs');
             $count++;
 	    }
-        foreach ($db->selectObjects('userpermission',"module='photosController'") as $up) {
-            $up->module = 'photoController';
-            $db->updateObject($up,'userpermission',null,'uid');
-            $count++;
-	    }
         foreach ($db->selectObjects('grouppermission',"module='photosController'") as $gp) {
             $gp->module = 'photoController';
-            $db->updateObject($gp,'grouppermission',null,'gid');
+            $db->updateObject($gp,'grouppermission',"module = 'photosController' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
+            $count++;
+	    }
+        foreach ($db->selectObjects('userpermission',"module='photosController'") as $up) {
+            $up->module = 'photoController';
+            $db->updateObject($up,'userpermission',"module = 'photosController' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
             $count++;
 	    }
         $ms = $db->selectObject('modstate',"module='photosController'");
