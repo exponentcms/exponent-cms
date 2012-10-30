@@ -94,9 +94,7 @@ class migrationController extends expController {
     );
 
     // public $old_school = array(  // psuedo-variable isn't used, list of old school modules still in code base
-        // 'calendarmodule',
         // 'formmodule',
-        // 'navigationmodule',
     // );
 
 	/**
@@ -125,7 +123,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all pages in old site for user selection
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function manage_pages() {
@@ -148,7 +146,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected pages over from old site
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_pages() {
@@ -272,7 +270,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected file information (not the files themselves) over from old site
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_files() {
@@ -300,7 +298,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all modules in old site for user selection
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function manage_content() {
@@ -316,7 +314,7 @@ class migrationController extends expController {
 //                $newmod = new $this->new_modules[$modules[$i]->module]();
                 $newmod = $this->new_modules[$modules[$i]->module];
                 $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod->displayname()."</span>";
-//                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod::displayname()."</span>";
+//                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod::displayname()."</span>";  //TODO this doesn't work w/ php 5.2
             } elseif (in_array($modules[$i]->module, $this->deprecated_modules)) {
                 // $modules[$i]->action = '<span style="color:red;">This module is deprecated and will not be migrated.</span>';
                 $modules[$i]->notmigrating = 1;
@@ -335,7 +333,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected modules and their contents over from old site
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_content() {
@@ -379,6 +377,9 @@ class migrationController extends expController {
             $db->delete('calendar');
             $db->delete('eventdate');
             $db->delete('calendarmodule_config');
+            $db->delete('calendar_external');
+            $db->delete('calendar_reminder_address');
+            $db->delete('event');
             $db->delete('poll_question');
             $db->delete('poll_answer');
             $db->delete('poll_timeblock');
@@ -443,6 +444,9 @@ class migrationController extends expController {
 						$db->delete('calendar');
 						$db->delete('eventdate');
 						$db->delete('calendarmodule_config');
+                        $db->delete('calendar_external');
+                        $db->delete('calendar_reminder_address');
+                        $db->delete('event');
 						break;
 					case 'simplepollmodule':
 						$db->delete('poll_question');
@@ -662,7 +666,7 @@ class migrationController extends expController {
 
 	/**
 	 * gather info about all users/groups in old site for user selection
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @return void
 	 */
 	public function manage_users() {
@@ -695,7 +699,7 @@ class migrationController extends expController {
 
 	/**
 	 * copy selected users/groups over from old site
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @return void
 	 */
     public function migrate_users() {
@@ -808,7 +812,7 @@ class migrationController extends expController {
 
 	/**
 	 * main routine to convert old school module data into new controller format
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @param  $iloc
 	 * @param  $module
 	 * @param int $hc
@@ -2109,7 +2113,7 @@ class migrationController extends expController {
 
 	/**
 	 * pull over extra/related data required for old school modules
-	 * @global \mysqli_database $db the exponent database object
+	 * @var \mysqli_database $db the exponent database object
 	 * @param  $iloc
 	 * @param  $module
 	 * @return bool
@@ -2229,7 +2233,7 @@ class migrationController extends expController {
      * @param $m
      * @param bool $linked
      * @param $newconfig
-     * @global \mysqli_database $db the exponent database object
+     * @var \mysqli_database $db the exponent database object
      * @return void
      */
 	private function add_container($iloc,$m,$linked=false,$newconfig) {
