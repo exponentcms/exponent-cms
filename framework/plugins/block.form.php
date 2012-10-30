@@ -39,7 +39,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		$name = isset($params['name']) ? $params['name'] : 'form';
 		$id = empty($params['id']) ? $name : $params['id'];
 		$module = isset($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod;
-		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->con;
+		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->con;  //FIXME there is no 'con' property
 		$method = isset($params['method']) ? $params['method'] : "POST";
 		$enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
 
@@ -47,9 +47,6 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/inputfilters.js.php"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/required.js"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/calendar.js"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/lang/calendar-en.js"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'external/jscalendar/calendar-setup.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
 		expCSS::pushToHead(array("corecss"=>"forms"));
