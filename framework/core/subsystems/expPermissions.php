@@ -329,7 +329,8 @@ class expPermissions {
 			if (!self::checkUser($user,$permission,$location)) {
 				$obj = new stdClass();
 				$obj->uid = $user->id;
-				$obj->module = $location->mod;
+//				$obj->module = $location->mod;
+                $obj->module = expModules::controllerExists($location->mod) ? expModules::getControllerClassName($location->mod) : $location->mod;
 				$obj->source = $location->src;
 				$obj->internal = $location->int;
 				$obj->permission = $permission;
@@ -463,7 +464,8 @@ class expPermissions {
 			if (!self::checkGroup($group,$permission,$location)) {
 				$obj = new stdClass();
 				$obj->gid = $group->id;
-				$obj->module = $location->mod;
+//				$obj->module = $location->mod;
+                $obj->module = expModules::controllerExists($location->mod) ? expModules::getControllerClassName($location->mod) : $location->mod;
 				$obj->source = $location->src;
 				$obj->internal = $location->int;
 				$obj->permission = $permission;
