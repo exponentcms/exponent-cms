@@ -67,8 +67,8 @@ if (expPermissions::check('manage',$loc)) {
 		'order'=>'name',
 		'dir'=>'ASC',
         'page'=>(isset($_REQUEST['page']) ? $_REQUEST['page'] : 1),
-//        'controller'=>$router->params['controller'],
-        'controller'=>$modulename,
+        'controller'=>$router->params['controller'],
+//        'controller'=>$modulename,
         'action'=>$router->params['action'],
 		'columns'=>$p,
     ));
