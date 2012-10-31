@@ -59,10 +59,10 @@ class formmodule {
 		if (defined('PREVIEW_READONLY') && !defined('SELECTOR')) {
 			// Pass
 		}  else {
-			$f = null;
 			$f = $db->selectObject("formbuilder_form","location_data='".serialize($loc)."'");
 			if (!$f) {
 				//Create a form if it's missing...
+                $f = new stdClass();
 				$f->name = "New Form";
 				$f->description = "";
 				$f->location_data = serialize($loc);
