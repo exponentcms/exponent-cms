@@ -75,9 +75,7 @@ class navigationController extends expController {
         }
         assign_to_template(array(
             'sections'     => $navsections,
-//            'hierarchy'    => self::navhierarchy(),
             'current'      => $current,
-//            'num_sections' => count($sections),
             'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
         ));
     }
@@ -109,14 +107,11 @@ class navigationController extends expController {
         }
         assign_to_template(array(
             'sections'     => $navsections,
-//            'hierarchy'    => self::navhierarchy(),
             'current'      => $current,
-//            'num_sections' => count($sections),
-//            'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
         ));
     }
 
-    public static function navhierarchy() {
+    public static function navhierarchy($notyui=false) {
         global $sections;
 
         $json_array = array();
@@ -142,7 +137,12 @@ class navigationController extends expController {
                     $obj->disabled = true;
                 }*/
                 //$obj->disabled = true;
-                $obj->itemdata = self::getChildren($i);
+                $obj->itemdata = self::getChildren($i,$notyui);
+                $obj->maxitems = count($obj->itemdata);
+                $obj->maxdepth = 0;
+                foreach ($obj->itemdata as $menu) {
+                    if ($menu->maxdepth > $obj->maxdepth) $obj->maxdepth = $menu->maxdepth;
+                }
             }
             $json_array[] = $obj;
         }
@@ -153,7 +153,7 @@ class navigationController extends expController {
         return json_encode(self::navhierarchy());
     }
 
-    public static function getChildren(&$i) {
+    public static function getChildren(&$i,$notyui=false) {
         global $sections;
 
         //		echo "i=".$i."<br>";
@@ -174,6 +174,7 @@ class navigationController extends expController {
                 $obj->description = $sections[$i]->description;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;
+                $obj->depth = $sections[$i]->depth;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
                 } else {
@@ -182,12 +183,35 @@ class navigationController extends expController {
                 }
                 //echo "i=".$i."<br>";
                 if (self::hasChildren($i)) {
-                    $obj->submenu     = new stdClass();
-                    $obj->submenu->id = $sections[$i]->name . $sections[$i]->id;
-                    //echo "getting children of ".$sections[$i]->name;
-                    $obj->submenu->itemdata = self::getChildren($i);
+                    if ($notyui) {
+                        $obj->itemdata = self::getChildren($i,$notyui);
+                        $obj->maxitems = count($obj->itemdata);
+                        $obj->maxdepth = 0;
+                        foreach ($obj->itemdata as $menu) {
+                            if (!empty($menu->maxdepth)) {
+                                if ($menu->maxdepth > $obj->maxdepth) $obj->maxdepth = $menu->maxdepth;
+                            } else {
+                                if ($menu->depth > $obj->maxdepth) $obj->maxdepth = $menu->depth;
+                            }
+                        }
+                    } else {
+                        $obj->submenu     = new stdClass();
+                        $obj->submenu->id = $sections[$i]->name . $sections[$i]->id;
+                        //echo "getting children of ".$sections[$i]->name;
+                        $obj->submenu->itemdata = self::getChildren($i,$notyui);
+                        $obj->maxitems = count($obj->submenu->itemdata);
+                        $obj->maxdepth = 0;
+                        foreach ($obj->submenu->itemdata as $menu) {
+                            if (!empty($menu->maxdepth)) {
+                                if ($menu->maxdepth > $obj->maxdepth) $obj->maxdepth = $menu->maxdepth;
+                            } else {
+                                if ($menu->depth > $obj->maxdepth) $obj->maxdepth = $menu->depth;
+                            }
+                        }
+                    }
                     $ret_array[]            = $obj;
                 } else {
+                    $obj->maxdepth = $obj->depth;
                     $ret_array[] = $obj;
                 }
                 if (($i + 1) >= count($sections) || $sections[$i + 1]->depth <= $ret_depth) {

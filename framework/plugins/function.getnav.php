@@ -131,7 +131,7 @@ function smarty_function_getnav($params,&$smarty) {
             }
             break;
         case "hierarchy" :
-            $nav = navigationController::navhierarchy();
+            $nav = navigationController::navhierarchy(!empty($params['notyui'])?true:false);
             break;
         default :
             $nav = $sections;
