@@ -42,7 +42,7 @@
                     {control type=text name=sef_name label="SEF Name"|gettext value=$section->sef_name}
                     <div class="control"><div class="control-desc">{'If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.'|gettext}</div></div>
                     {control type=text name="internal_id" label="Width"|gettext value=$section->internal_id default=3}
-                    {control type="dropdown" name="external_link" label="Dropdown Alignment"|gettext items="Left,Right"|gettxtlist values=",align_right" value=$section->external_link}
+                    {control type="dropdown" name="external_link" label="Dropdown Alignment"|gettext items="Left,Right"|gettxtlist values="left,right" value=$section->external_link}
                     {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1}
                     {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1}
                 </div>
