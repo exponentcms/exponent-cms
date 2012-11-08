@@ -63,7 +63,7 @@ abstract class basetemplate {
         $this->tpl->cache_id = md5($this->viewfile);
 
         //FIXME we should add a check for new jQuery type plugins near the beginning of chain if used
-        if (defined('THEME_JQUERY')) {
+        if (defined('JQUERY_THEME')) {
             $this->tpl->setPluginsDir(array(
                BASE.'themes/'.DISPLAY_THEME.'/plugins',
                BASE.'framework/plugins/jquery',

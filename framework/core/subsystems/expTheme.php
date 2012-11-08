@@ -72,7 +72,7 @@ class expTheme {
 		// add our theme folder into autoload and place it first
 		array_unshift($auto_dirs2,BASE.'themes/'.DISPLAY_THEME.'/modules');
         //FIXME we should add a check for new jQuery type controls near the beginning of chain if used
-        if (defined('THEME_JQUERY')) array_unshift($auto_dirs,BASE.'framework/core/subsystems/forms/controls/jquery');
+        if (defined('JQUERY_THEME')) array_unshift($auto_dirs,BASE.'framework/core/subsystems/forms/controls/jquery');
         array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 	}
 
