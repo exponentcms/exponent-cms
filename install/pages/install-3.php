@@ -96,12 +96,13 @@ if ($passed) {
 	}
 }
 
-if ($passed && strtolower(substr(PHP_OS,0,3)) == 'win') {
+if ($passed) {
     echoStart(gt('MySQL lower_case_table_names setting').':');
+    $server = @mysqli_fetch_assoc($db->sql("SHOW VARIABLES LIKE '%lower_case_file%'",false));
     $setting = @mysqli_fetch_assoc($db->sql("SHOW VARIABLES LIKE '%lower_case_table%'",false));
-    if ($setting['Variable_name'] == 'lower_case_table_names' && $setting['Value'] != 2) {
+    if (($server['Variable_name'] == 'lower_case_file_system' && $server['Value'] == 'ON') && ($setting['Variable_name'] == 'lower_case_table_names' && $setting['Value'] != 2)) {
         echoWarning(gt('NOT set to \'2\''));
-        $warning[] = gt('Since your server runs on Windows, you must ensure the MySQL ini file has \'lower_case_table_names = 2\' in the [mysqld] section to prevent issues!');
+        $warning[] = gt('Since your server uses lowercase filenames, you must ensure the MySQL ini file has \'lower_case_table_names = 2\' in the [mysqld] section to prevent issues!');
     } else {
         echoSuccess();
     }
