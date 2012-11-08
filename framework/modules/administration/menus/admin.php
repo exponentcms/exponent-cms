@@ -366,6 +366,12 @@ if ($user->isSuperAdmin()) {
                                 ))
                             ),
                             array(
+                                'text' => gt("Manage Database"),
+                                'url'=>'#',
+                                'id'=>'manage-db',
+                                'classname' => 'manage',
+                            ),
+                            array(
                                 'text' => gt('Optimize Database'),
                                 'url' => makeLink(array(
                                     'controller' => 'administration',
