@@ -152,7 +152,7 @@ class quantitycontrol extends formcontrol {
         expJavascript::pushToFoot(array(
             "unique"=>'qty',
             "yui2mods"=>'json,connection',
-            "yui3mods"=>null,
+//            "yui3mods"=>null,
             "content"=>$script,
             "src"=>$extfile
 		));

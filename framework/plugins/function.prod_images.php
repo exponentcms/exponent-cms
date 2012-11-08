@@ -190,8 +190,8 @@ function smarty_function_prod_images($params,&$smarty) {
             ";
             expJavascript::pushToFoot(array(
                 "unique"=>'imgswatches',
-                "yui2mods"=>null,
-                "yui3mods"=>null,
+//                "yui2mods"=>null,
+                "yui3mods"=>1,
                 "content"=>$js,
                 "src"=>""
              ));

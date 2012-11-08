@@ -60,7 +60,7 @@ class configcontrol extends formcontrol {
 		expJavascript::pushToFoot(array(
 		    "unique"=>'cfgmgr',
 		    "yui2mods"=>'dragdrop,element,animation,resize,layout',
-		    "yui3mods"=>1,
+//		    "yui3mods"=>1,
 		    "content"=>$script,
 		    "src"=>JS_RELATIVE.'exp-layout.js'
 		 ));

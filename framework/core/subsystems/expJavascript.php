@@ -35,15 +35,18 @@ class expJavascript {
 	
 	public static function parseJSFiles() {
         global $userjsfiles,$expJS,$yui2js,$yui3js,$jqueryjs;
-        
+
+        $scripts = '';
         ob_start();
   		include(BASE.'exponent.js.php');
         $exponent_js = ob_get_clean();
         if (MINIFY==1&&MINIFY_INLINE_JS==1) {
             include_once(BASE.'external/minify/min/lib/JSMin.php');
             $exponent_js = JSMin::minify($exponent_js);
+        } else {
+            $scripts .= "<!-- EXPONENT namespace setup -->"."\r\n";
         }
-        $scripts = '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>';
+        $scripts .= '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>'."\r\n";
 
         if (MINIFY==1&&MINIFY_LINKED_JS==1) {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
@@ -54,6 +57,8 @@ class expJavascript {
 //            $srt[$i] = PATH_RELATIVE.'exponent.js.php,'.YUI3_RELATIVE.'yui/yui-min.js,';
 //            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
             $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
+            if (!empty($jqueryjs)) $srt[$i++] = JQUERY_SCRIPT;
+            if (!empty($jqueryjs['jqueryui'])) $srt[$i++] = JQUERYUI_SCRIPT;
             foreach ($expJS as $file) {
                 if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen) {
                     $srt[$i] .= $file['fullpath'].",";
@@ -68,21 +73,44 @@ class expJavascript {
                 $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/minify/min/index.php?f='.$link.'"></script>'."\r\n";
             }
         } else {
-            $scripts .= "\t"."<!-- EXPONENT namespace setup -->"."\r\n";
-//            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'exponent.js.php"></script>'."\r\n";
-
-//            $scripts .= (!empty($jqueryjs)) ? "\t"."<!-- jQuery Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.JQUERY_RELATIVE.'jquery-'.JQUERY_VERSION.'.min.js"></script>'."\r\n" : "";
+            if (!empty($jqueryjs)) {
+                $scripts .= "\t"."<!-- jQuery Scripts -->"."\r\n";
+                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
+                foreach ($jqueryjs as $key=>$mod) {
+                    if ($mod == 'jqueryui') {
+                        $scripts .= "\t".'<script type="text/javascript" src="'.JQUERYUI_SCRIPT.'"></script>'."\r\n";
+                    } else {
+                        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
+                            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js"></script>'."\r\n";
+                            if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
+                                expCSS::pushToHead(array(
+                           		    "unique"=>$mod,
+                           		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css',
+                           		    )
+                           		);
+                            }
+                        } elseif (file_exists(JQUERY_PATH.'addons/js/'.$mod.'.js')) {
+                            $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_RELATIVE.'addons/js/'.$mod.'.js"></script>'."\r\n";
+                            if (file_exists(JQUERY_PATH.'addons/css/'.$mod.'.css')) {
+                                expCSS::pushToHead(array(
+                           		    "unique"=>$mod,
+                           		    "link"=>JQUERY_RELATIVE.'addons/css/'.$mod.'.css',
+                           		    )
+                           		);
+                            }
+                        }
+                    }
+                }
+            }
             $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Scripts -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_RELATIVE.'yui/yui-min.js"></script>'."\r\n" : "";
-            //$scripts .= "\r\n\t"."<meta id=\"yui3marker\" />"."\r\n";
             if (!empty($expJS)) {
+                $scripts .= "\t"."<!-- Other Scripts -->"."\r\n";
                 foreach ($expJS as $key=>$mod) {
-                    //eDebug($mod['name']);
                     $scripts .= "\t".'<script type="text/javascript" src="'.$mod['fullpath'].'"></script>'."\r\n";
                 }
             }
         }
 
-        //$html .= "\t".$expYUIJSLoader->js()."\r\n";
         return $scripts;
 	}
 	
@@ -162,6 +190,16 @@ class expJavascript {
                 $yui3js[$val] = $val;
             }
         }
+
+        if(!empty($params['jquery'])){
+           $toreplace = array('"',"'"," ");
+           $stripmodquotes = str_replace($toreplace, "", $params['jquery']);
+           $splitmods = explode(",",$stripmodquotes);
+
+           foreach ($splitmods as $key=>$val){
+               $jqueryjs[$val] = $val;
+           }
+       }
 
     	if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
     }
@@ -352,7 +390,7 @@ class expJavascript {
         self::pushToFoot(array(
             "unique"=>'pop-'.$params['name'],
             "yui2mods"=>'animation,container',
-            "yui3mods"=>null,
+//            "yui3mods"=>null,
             "content"=>$script,
             "src"=>""
          ));

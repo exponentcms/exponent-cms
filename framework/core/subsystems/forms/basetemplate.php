@@ -53,8 +53,6 @@ abstract class basetemplate {
         $this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
         $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
 
-		//Some (crappy) wysiwyg editors use php as their default initializer
-		//FJD - this might break some editors...we'll see.
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
 //		$this->tpl->caching = false;
@@ -64,15 +62,26 @@ abstract class basetemplate {
         $this->tpl->setCacheDir(BASE.'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
-		$this->tpl->setPluginsDir(array(
-            BASE.'themes/'.DISPLAY_THEME.'/plugins',
-            BASE.'framework/plugins',
-            SMARTY_PATH.'plugins',
-        ));
+        //FIXME we should add a check for new jQuery type plugins near the beginning of chain if used
+        if (defined('THEME_JQUERY')) {
+            $this->tpl->setPluginsDir(array(
+               BASE.'themes/'.DISPLAY_THEME.'/plugins',
+               BASE.'framework/plugins/jquery',
+               BASE.'framework/plugins',
+               SMARTY_PATH.'plugins',
+            ));
+        } else {
+            $this->tpl->setPluginsDir(array(
+               BASE.'themes/'.DISPLAY_THEME.'/plugins',
+               BASE.'framework/plugins',
+               SMARTY_PATH.'plugins',
+            ));
+        }
 
 		//autoload filters
 //		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
-		
+        $this->tpl->loadPlugin('smarty_compiler_switch');
+
 		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
 		$this->viewdir = realpath(dirname($this->viewfile));
 

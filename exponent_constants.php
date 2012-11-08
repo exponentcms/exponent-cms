@@ -478,14 +478,26 @@ if (!defined('YUI2_RELATIVE')) {
 	define('YUI2_URL', URL_FULL.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
 }
 
+if (!defined('JQUERYUI_STYLE')) {
+    /*
+	 * Default jQuery CSS Style Constant
+	 * Changing the version here lets Exponent adjust where to look
+	 */
+	define('JQUERYUI_STYLE', 'redmond');
+}
 if (!defined('JQUERY_RELATIVE')) {
     /*
-	 * YUI 2 Version Constant
+	 * jQuery/jQueryUI Version Constants
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('JQUERY_VERSION', '1.8.2');
+    define('JQUERYUI_VERSION', '1.9.1');
 	define('JQUERY_RELATIVE', PATH_RELATIVE.'external/jquery/');
+    define('JQUERY_PATH', BASE.'external/jquery/');
 	define('JQUERY_URL', URL_FULL.'external/jquery/');
+    define('JQUERY_SCRIPT', JQUERY_RELATIVE.'js/jquery-'.JQUERY_VERSION.'.min.js');
+    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
+    define('JQUERYUI_CSS', JQUERY_RELATIVE.'css/'.JQUERYUI_STYLE.'/jquery-ui.css');
 }
 
 if (!defined('SMARTY_PATH')) {
@@ -517,5 +529,7 @@ if (!defined('FLOWPLAYER_RELATIVE')) {
     define('FLOWPLAYER_MIN_VERSION', '3.2.11');
     define('FLOWPLAYER_CONTROLS_VERSION', '3.2.14');
 }
+
+define('BING_API', '92487BA7619E18106C842DD8463C4EC411F281B1');
 
 ?>
