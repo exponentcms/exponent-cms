@@ -264,6 +264,8 @@ var YAHOO = Y.YUI2;
 			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_contentpage&id="+currentMenuNode.data.id;
 		} else if (currentMenuNode.data.obj.alias_type==1){
 			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_externalalias&id="+currentMenuNode.data.id;
+        } else if (currentMenuNode.data.obj.alias_type==3){
+            window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_freeform&id="+currentMenuNode.data.id;
 		} else {
 			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_internalalias&id="+currentMenuNode.data.id;
 		}
@@ -415,6 +417,7 @@ var YAHOO = Y.YUI2;
         if (section.alias_type == 0) atype = ' addpage';
         else if (section.alias_type == 1) atype = ' addextpage';
         else if (section.alias_type == 2) atype = ' addintpage';
+        else if (section.alias_type == 3) atype = ' addfreeform';
 		//var dragbefores = (section.manage!=false)? 'addbefore' : 'cannotaddbefore' ;
 		//var first = (section.rank==0)?'<div class="'+dragbefores+'" id="addbefore'+section.id+'"></div>':'';
 		var drag = (section.manage!=false)?'<div class="draghandle" id="draghandle'+section.id+'">&#160;</div>':'';
@@ -463,8 +466,8 @@ var YAHOO = Y.YUI2;
 						id: "submenu1",
 						itemdata: [
 							{ classname:"addpage", text: "{/literal}{"Add Content Page Here"|gettext}{literal}", onclick: { fn: addContentSubNode } },
-							{ classname:"addextpage", text: "{/literal}{"Add External Website Link Page Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
-							{ classname:"addintpage", text: "{/literal}{"Add Internal Page Alias Page Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
+							{ classname:"addextpage", text: "{/literal}{"Add External Website Link (Page) Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addintpage", text: "{/literal}{"Add Page Alias (Page) Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
 							{ classname:"addsapage", text: "{/literal}{"Move Standalone Page to Here"|gettext}{literal}", onclick: { fn: addStandaloneSubNode } }
 						]
 					}
@@ -481,9 +484,9 @@ var YAHOO = Y.YUI2;
 					submenu: {
 						id: "submenu1",
 						itemdata: [
-							{ classname:"addpage", text: "{/literal}{"Add Content Page"|gettext}{literal}", onclick: { fn: addContentSubNode } },
-							{ classname:"addextpage", text: "{/literal}{"Add External Website Link"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
-							{ classname:"addintpage", text: "{/literal}{"Add Internal Page Alias"|gettext}{literal}", onclick: { fn: addInternalSubNode } }
+							{ classname:"addpage", text: "{/literal}{"Add Content Page Here"|gettext}{literal}", onclick: { fn: addContentSubNode } },
+							{ classname:"addextpage", text: "{/literal}{"Add External Website Link (Page) Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addintpage", text: "{/literal}{"Add Page Alias (Page) Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } }
 						]
 					}
 				},

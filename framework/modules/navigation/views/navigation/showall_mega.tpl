@@ -16,10 +16,8 @@
 {css unique="mega" link="`$asset_path`css/megamenu.css"}
 
 {/css}
-{if empty($config.maxwidth)}
+{if empty($config.maxwidth) || $config.maxwidth < 1}
     {$maxwidth = 3}
-{elseif $config.maxwidth == 1}
-    {$maxwidth = $config.maxwidth}
 {elseif $config.maxwidth > 5}
     {$maxwidth = 5}
 {else}
@@ -37,8 +35,12 @@
                     {$class = ''}
                 {/if}
                 {*top level menu*}
-                <li class="drop{$class}"><a {if $parent->url != "#"}href="{$parent->url}"{/if}{if !empty($parent->itemdata)} class="drop"{/if}{if $parent->new_window} target="_blank"{/if}>{if !empty($parent->expFile[0]->id)}{img class=img_left file_id=$parent->expFile[0]->id w=16 h=16} {/if}{$parent->text}</a>
-                {if !empty($parent->itemdata)}
+                {if $parent->type != 3}
+                    <li class="drop{$class}"><a {if $parent->url != "#"}href="{$parent->url}"{/if}{if !empty($parent->itemdata)} class="drop"{/if}{if $parent->new_window} target="_blank"{/if}>{if !empty($parent->expFile[0]->id)}{img class=img_left file_id=$parent->expFile[0]->id w=16 h=16} {/if}{$parent->text}</a>
+                {else}
+                    <li class="drop{$class}"><a class="drop">{if !empty($parent->expFile[0]->id)}{img class=img_left file_id=$parent->expFile[0]->id w=16 h=16} {/if}{$parent->text}</a>
+                {/if}
+                {if !empty($parent->itemdata) &&  $parent->type != 3}
                     {if $config.height && $parent->maxdepth == 1}
                         {$columns = ceil($parent->maxitems / $config.height)}
                         {if $maxwidth > $columns}{$width = $columns}{else}{$width = $maxwidth}{/if}
@@ -73,6 +75,18 @@
                             {/foreach}
                         {/function}
                         {menu_items child = $child}
+                    </div>
+                {elseif $parent->type == 3}
+                    {if empty($parent->width) || $parent->width < 1}
+                        {$width = 3}
+                    {elseif $parent->width > 5}
+                        {$width = 5}
+                    {else}
+                        {$width = $parent->width}
+                    {/if}
+                    {$dropsize = "dropdown_`$width`column"|plural:$width}
+                    <div class="{$parent->class} {$dropsize}">
+                        {showmodule module='container' view="Default" source="menuitem-"|cat:$parent->id chrome=true}
                     </div>
                 {/if}
             {/if}

@@ -36,9 +36,17 @@
     <div class="desc">{'If you need or want a link in your site hierarchy to link to some off-site webpage, create an External Link.'|gettext}</div>
 
     <div class="head">
-        <a class="mngmntlink navigation_mngmntlink internalpage" href="{link action=edit_internalalias parent=$parent->id}">{'Internal Page Alias'|gettext}</a>
+        <a class="mngmntlink navigation_mngmntlink internalpage" href="{link action=edit_internalalias parent=$parent->id}">{'Page Alias'|gettext}</a>
     </div>
-    <div class="desc">{'If you need or want a link to another page in your site hierarchy, use an internal page alias.'|gettext}</div>
+    <div class="desc">{'If you need or want a link to another page in your site hierarchy, use a page alias.'|gettext}</div>
+
+    {if $parent->id == 0}
+        <div class="head">
+            <a class="mngmntlink navigation_mngmntlink freeformpage" href="{link action=edit_freeform parent=$parent->id}">{'Free-form Menu Item'|gettext}</a>
+        </div>
+        <div class="desc">{'If you want to embed a module/container as menu item, use a free-form menu item.'|gettext}{br}
+        <strong>{'This page/menu-item type is only functional on some navigation views such as the Mega view where it will appear without its children!'|gettext}</strong></div>
+    {/if}
 
     {if $haveStandalone != 0 && $isAdministrator}
         <div class="head">

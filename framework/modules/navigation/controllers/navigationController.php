@@ -131,6 +131,11 @@ class navigationController extends expController {
                     $obj->url     = "#";
                     $obj->onclick = "onclick: { fn: return false }";
                 }
+                $obj->type = $sections[$i]->alias_type;
+                if ($obj->type == 3) {  // mostly a hack instead of adding more table fields
+                    $obj->width = $sections[$i]->internal_id;
+                    $obj->class = $sections[$i]->external_link;
+                }
                 /*if ($sections[$i]->active == 1) {
                     $obj->disabled = false;
                 } else {
@@ -312,7 +317,7 @@ class navigationController extends expController {
                         $child->link        = expCore::makeLink(array('section' => $child->internal_id));
                     }
                 } else {
-                    // Normal link.  Just create the URL from the section's id.
+                    // Normal link, alias_type == 0.  Just create the URL from the section's id.
                     $child->link = expCore::makeLink(array('section' => $child->id), '', $child->sef_name);
                 }
                 //$child->numChildren = $db->countObjects('section','parent='.$child->id);
@@ -904,6 +909,27 @@ class navigationController extends expController {
     }
 
     function edit_internalalias() {
+        $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
+        if ($section->parent == -1) {
+            echo SITE_404_HTML;
+            exit;
+        } // doesn't work for standalone pages
+        if (empty($section->id)) {
+            $section->public = 1;
+            if (!isset($section->parent)) {
+                // This is another precaution.  The parent attribute
+                // should ALWAYS be set by the caller.
+                //FJD - if that's the case, then we should die.
+                die(SITE_403_HTML);
+                //$section->parent = 0;
+            }
+        }
+        assign_to_template(array(
+            'section' => $section,
+        ));
+    }
+
+    function edit_freeform() {
         $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
         if ($section->parent == -1) {
             echo SITE_404_HTML;

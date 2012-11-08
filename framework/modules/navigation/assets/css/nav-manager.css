@@ -62,6 +62,10 @@
     background-image: url(../images/page_link.png);
     background-repeat: no-repeat;
 }
+#navTreeContext .addfreeform {
+    background-image: url(../images/page_edit.png);
+    background-repeat: no-repeat;
+}
 #navTreeContext .addsapage {
     background-image: url(../images/page_go.png);
     background-repeat: no-repeat;
@@ -147,6 +151,11 @@
 .navigation.manager-hierarchy .draggables span.addintpage {
     padding:0 20px;
     background-image:url(../images/page_link.png);
+    background-repeat:no-repeat;
+}
+.navigation.manager-hierarchy .draggables span.addfreeform {
+    padding:0 20px;
+    background-image:url(../images/page_edit.png);
     background-repeat:no-repeat;
 }
 .navigation.manager-hierarchy .draggables a.sectionmenu{
