@@ -105,6 +105,9 @@ class eventController extends expController {
                 $viewtype = "monthly";
                 break;
             default :
+                $view_params = explode('_',$view);
+                if (!empty($view_params[1])) $viewtype = $view_params[1];
+                if (!empty($view_params[2])) $viewrange = $view_params[2];
         }
 
         switch ($viewtype) {
@@ -186,6 +189,7 @@ class eventController extends expController {
                             "next_timestamp3" => strtotime('+42 days', $startperiod),
                         ));
                         break;
+                    case "month":
                     default: // range = month
                         $startperiod = expDateTime::startOfMonthTimestamp($time);
                         $totaldays = date('t', $time);
