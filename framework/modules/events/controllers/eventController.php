@@ -1083,18 +1083,18 @@ class eventController extends expController {
             $v->setConfig('url', $exticalurl);
             $v->parse();
             if ($enddate == null) {
-                $startYear = null;
-                $startMonth = null;
-                $startDay = null;
+                $startYear = false;
+                $startMonth = false;
+                $startDay = false;
             } else {
                 $startYear = date('Y', $startdate);
                 $startMonth = date('n', $startdate);
                 $startDay = date('j', $startdate);
             }
             if ($enddate == null) {
-                $endYear = null;
-                $endMonth = null;
-                $endDay = null;
+                $endYear = false;
+                $endMonth = false;
+                $endDay = false;
             } else {
                 $endYear = date('Y', $enddate);
                 $endMonth = date('n', $enddate);
