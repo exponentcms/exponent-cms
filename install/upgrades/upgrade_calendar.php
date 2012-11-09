@@ -248,11 +248,11 @@ class upgrade_calendar extends upgradescript {
         }
 
         // copy custom views to new location
-        $src = THEME_ABSOLUTE."/modules/calendarmodule/views/";
-        $dst = THEME_ABSOLUTE."/modules/events/views/event/";
+        $src = THEME_ABSOLUTE."modules/calendarmodule/views";
+        $dst = THEME_ABSOLUTE."modules/events/views/event";
         if (expUtil::isReallyWritable($src)) {
             $dir = opendir($src);
-            if (!file_exists($dst)) @mkdir($dst);
+            if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
             while(false !== ( $file = readdir($dir)) ) {
                 if (( $file != '.' ) && ( $file != '..' )) {
                     if (!file_exists($dst . '/showall_' . $file)) copy($src . '/' . $file,$dst . '/showall_' . $file);
