@@ -24,8 +24,8 @@
 class snippetController extends expController {
     public $basemodel_name = 'snippet';
 	public $useractions = array(
-		'showall'=>'Copy and Display Snippet',
-		'showall_highlight'=>'Highlight and Display Snippet'
+		'showall'=>'Display Code Snippet',
+//		'showall_highlight'=>'Highlight and Display Snippet'
 	);
     public $remove_configs = array(
         'categories',
@@ -46,6 +46,9 @@ class snippetController extends expController {
 		$order = 'rank ASC';
 //		$items = $this->text->find('all', $where, $order);
 		$items = $this->snippet->find('all', $where, $order);
+        foreach ($items as $item) {
+            $item->highlight = highlight_string($item->body, true);
+        }
 		assign_to_template(array(
             'items'=>$items
         ));

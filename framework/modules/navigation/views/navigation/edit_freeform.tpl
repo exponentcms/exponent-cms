@@ -31,7 +31,7 @@
         {control type=hidden name=parent value=0}
         {control type=hidden name=alias_type value=3}
         {control type=hidden name=_validate value=1}
-        {control type=hidden name=active value=1}
+        {control type=hidden name=active value=0}
         <div id="configure-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'Page'|gettext}</em></a></li>

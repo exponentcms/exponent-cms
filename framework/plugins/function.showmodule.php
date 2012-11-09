@@ -38,9 +38,10 @@ function smarty_function_showmodule($params,&$smarty) {
     $view = !empty($params['view']) ? $params['view'] : null;
     $source = !empty($params['source']) ? $params['source'] : null;
     $chrome = !empty($params['chrome']) ? $params['chrome'] : null;
+    $scope = !empty($params['scope']) ? $params['scope'] : null;
     $moduletitle = !empty($params['moduletitle']) ? $params['moduletitle'] : null;
     $parms = !empty($params['params']) ? $params['params'] : null;
-    expTheme::module(array("module"=>$module,"action"=>$action,"view"=>$view,"source"=>$source,"chrome"=>$chrome,"moduletitle"=>$moduletitle,"params"=>$parms));
+    expTheme::module(array("module"=>$module,"action"=>$action,"view"=>$view,"source"=>$source,"chrome"=>$chrome,"moduletitle"=>$moduletitle,"scope"=>$scope,"params"=>$parms));
 }
 
 ?>
