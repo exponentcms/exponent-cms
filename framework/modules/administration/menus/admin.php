@@ -324,7 +324,7 @@ if ($user->isAdmin() || !empty($groups)) {
 
 if ($user->isSuperAdmin()) {
 	$expAdminMenu['submenu']['itemdata'][] = array(
-        'text' => gt('Developer Tools'),
+        'text' => gt('Super-Admin Tools'),
         'classname' => 'development',
         'submenu' => array(
             'id' => 'development',
