@@ -78,7 +78,7 @@ class colorcontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '>';
         //$html .= "<label>";
         if (empty($this->flip)) {
-            $html .= $this->controlToHTML($name, $label);
+            $html .= "<label for=\"" . $this->id . "\" style=\"display:inline\" class=\"label\">" . $label . "</label>" . $this->controlToHTML($name, $label);
         } else {
             $html .= $this->controlToHTML($name, null) . "<label" . $for . " style=\"display:inline\" class=\"label\">" . $label . "</label>";
         }
@@ -91,12 +91,13 @@ class colorcontrol extends formcontrol {
     function controlToHTML($name, $label = null) {
         $assets_path = SCRIPT_RELATIVE . 'framework/core/subsystems/forms/controls/assets/';
         $html = "
-        <label for=\"" . $this->id . "\" style=\"display:inline\" class=\"label\">" . $label . "</label><span><input ".(empty($this->hide)?"size=10 type=\"text\"":"type=\"hidden\"")." id=\"" . $this->id . "\" name=\"" . $name . "\" value=\"" . $this->default . "\" class=\"text colorbox\" />
+        <span><input ".(empty($this->hide)?"size=10 type=\"text\"":"type=\"hidden\"")." id=\"" . $this->id . "\" name=\"" . $name . "\" value=\"" . $this->default . "\" class=\"text colorbox\" />
         <div id='divpreview-" . $this->id . "' style='background-color:" . $this->default . "'> </div></span>
         <div id='container-" . $this->id . "' style='display:none'>
             <div id='picker-" . $this->id . "'></div>
             <div style=\"clear:both\"></div>
             <a id='updateColors-" . $this->id . "'>".gt('Select Current Color')."</a>
+            <a id='cancelColors-" . $this->id . "'>".gt('Cancel')."</a>
         </div>
         ";
 
@@ -138,6 +139,10 @@ class colorcontrol extends formcontrol {
                 Y.one('#updateColors-" . $this->id . "').on('click',function(ev) {
                     ev.halt();
                     updateColors();
+                });
+                Y.one('#cancelColors-" . $this->id . "').on('click',function(ev) {
+                    ev.halt();
+                    colorpicker.setStyle('display', 'none');
                 });
 
                 // retrieve the selected value from the picker
@@ -186,7 +191,7 @@ class colorcontrol extends formcontrol {
                 position: absolute;
                 z-index:1000;
             }
-            #updateColors-" . $this->id ." {
+            #updateColors-" . $this->id .", #cancelColors-" . $this->id ." {
                 display: inline-block;
                 margin: 10px 0px;
                 background-color: #666;
@@ -211,7 +216,7 @@ class colorcontrol extends formcontrol {
                 margin-bottom: 5px;
                 vertical-align: middle;
             }
-            #updateColors-" . $this->id .":hover {
+            #updateColors-" . $this->id .":hover, #cancelColors-" . $this->id .":hover {
                 background-color: #999;
                 cursor:pointer;
             }
