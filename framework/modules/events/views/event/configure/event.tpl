@@ -30,4 +30,5 @@
 {control type="checkbox" name="enable_feedback" label="Enable Event Feedback Option"|gettext value=1 checked=$config.enable_feedback}
 {if $smarty.const.ECOM}
 {control type="checkbox" name="aggregate_registrations" label="Aggregate Event Registrations"|gettext value=1 checked=$config.aggregate_registrations}
+{control type=color name=registrations_color label="Color for Event Registrations"|gettext value=$config.registrations_color description='Enter a six-digit hex color preceded by #'|gettext}
 {/if}

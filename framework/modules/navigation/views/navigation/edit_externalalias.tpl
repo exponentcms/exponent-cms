@@ -18,7 +18,7 @@
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Editing External Alias Pages"|gettext) module="edit-external-page"}
         </div>
-	    <h1>{if $section->id}{'Edit Existing External Alias'|gettext}{else}{'New External Alias'|gettext}{/if}</h1>
+	    <h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'External Alias'|gettext}</h1>
 	</div>
 	<div class="form_header">
         {'Below, enter the web address you want this section to link to.'|gettext}

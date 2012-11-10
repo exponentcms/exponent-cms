@@ -209,7 +209,7 @@ class eventController extends expController {
                 // added per Ignacio
                 //			$endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($this->loc, $startperiod, $next);
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next);
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next, $this->config['registrations_color']);
                 for ($i = 1; $i <= $totaldays; $i++) {
                     //                    $info = getdate($time);
                     //                    switch ($viewrange) {
@@ -275,7 +275,7 @@ class eventController extends expController {
                 // $endofmonth = expDateTime::endOfMonthDay($time);
                 $endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst));
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $this->config['registrations_color']);
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
@@ -416,7 +416,7 @@ class eventController extends expController {
                     $extitem[] = $value;
                 }
                 $items = array_merge($items, $extitem);
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end);
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end, $this->config['registrations_color']);
                 // we need to crunch these down
                 $regitem = array();
                 if (!empty($regitems)) foreach ($regitems as $key => $value) {
@@ -1006,7 +1006,7 @@ class eventController extends expController {
         $extevents = array();
         $dy = 0;
         $url = 0;
-        if (!empty($this->config['pull_gcal'])) foreach ($this->config['pull_gcal'] as $extgcalurl) {
+        if (!empty($this->config['pull_gcal'])) foreach ($this->config['pull_gcal'] as $key=>$extgcalurl) {
             $url++;
             if (!empty($startdate)) $begin = date("Y-m-d\Th:i:sP", expDateTime::startOfDayTimestamp($startdate));
             if (!empty($enddate)) $end = date("Y-m-d\Th:i:sP", expDateTime::endOfDayTimestamp($enddate));
@@ -1075,12 +1075,13 @@ class eventController extends expController {
 
 //                    $extevents[$eventdate][$dy]->location_data = serialize(expCore::makeLocation('extevent',$extcal->id));
                 $extevents[$eventdate][$dy]->location_data = 'gcalevent' . $url;
+                $extevents[$eventdate][$dy]->color = $this->config['pull_gcal_color'][$key];
                 $dy++;
             }
         }
         $dy = 0;
         $url = 0;
-        if (!empty($this->config['pull_ical'])) foreach ($this->config['pull_ical'] as $exticalurl) {
+        if (!empty($this->config['pull_ical'])) foreach ($this->config['pull_ical'] as $key=>$exticalurl) {
             $url++;
             require_once BASE . 'external/iCalcreator.class.php';
             $v = new vcalendar(); // initiate new CALENDAR
@@ -1159,6 +1160,7 @@ class eventController extends expController {
 
 //                                $extevents[$eventdate][$dy]->location_data = serialize(expCore::makeLocation('extevent',$extcal->id));
                             $extevents[$eventdate][$dy]->location_data = 'icalevent' . $url;
+                            $extevents[$eventdate][$dy]->color = $this->config['pull_ical_color'][$key];
                             if (!$yesterday) {
                                 $dy++;
                             } else {

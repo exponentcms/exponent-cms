@@ -219,6 +219,7 @@ function smarty_function_control($params, &$smarty) {
             case "colorpicker":
                 $control = new colorcontrol();
                 $control->default = $params['value'];
+                if (!empty($params['hide'])) $control->hide = $params['hide'];
                 break;
             case "state":
                 //old use:  if (empty($params['all_us_territories'])) {

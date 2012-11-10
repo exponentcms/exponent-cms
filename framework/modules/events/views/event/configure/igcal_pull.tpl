@@ -27,8 +27,9 @@
     <a class="addtogooglelist add" href="#">{'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current Google Calendar Feeds"|gettext}</h4>
     <ul id="googlepull-feeds">
-        {foreach from=$config.pull_google item=feed}
-            {if $feed!=""}<li>{control type="hidden" name="pull_google[]" value=$feed}{$feed} <a class="delete removegoogle" href="#">{"Remove"|gettext}</a></li>{/if}
+        {foreach from=$config.pull_gcal item=feed name=feed}
+            {*{if $feed!=""}<li>{control type="hidden" name="pull_google[]" value=$feed}{$feed} <a class="delete removegoogle" href="#">{"Remove"|gettext}</a></li>{/if}*}
+            {if $feed!=""}<li>{control type="hidden" name="pull_gcal[]" value=$feed}{control type=color label=$feed name="pull_gcal_color[]" id="pull_gcal_color`$smarty.foreach.feed.index`" value=$config.pull_gcal_color[$smarty.foreach.feed.index] hide=1 flip=1}<a class="delete removegoogle" href="#">{"Remove"|gettext}</a></li>{/if}
         {foreachelse}
             <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
         {/foreach}
@@ -40,12 +41,13 @@
         var YAHOO=Y.YUI2;
         var add = YAHOO.util.Dom.getElementsByClassName('addtogooglelist', 'a');
         YAHOO.util.Event.on(add, 'click', function(e,o){
-            YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', 'none');
             YAHOO.util.Event.stopEvent(e);
             var feedtoadd = YAHOO.util.Dom.get("googlefeedmaker");
+            if (feedtoadd.value == '') return;
+            YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
-            newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_google[]" value="'+feedtoadd.value+'" />';
+            newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_gcal[]" value="'+feedtoadd.value+'" />';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "delete removegoogle";
@@ -58,10 +60,10 @@
                 if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
                     var list = YAHOO.util.Dom.get('googlepull-feeds');
                     list.removeChild(this)
+                    if (list.children.length == 1) YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', '');;
                 } else return false;
             },newli,true);
             feedtoadd.value = '';
-            //alert(feedtoadd);
         });
     
         var existingRems = YAHOO.util.Dom.getElementsByClassName('removegoogle', 'a');
@@ -72,6 +74,7 @@
                 var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
                 var list = YAHOO.util.Dom.get('googlepull-feeds');
                 list.removeChild(lItem);
+                if (list.children.length == 1) YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', '');;
             } else return false;
         });
     });

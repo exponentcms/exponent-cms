@@ -30,6 +30,7 @@ class colorcontrol extends formcontrol {
 
     var $disable_text = "";
     var $default = '';
+    var $hide = false;
 
     static function name() {
         return "YAHOO! UI Color Picker";
@@ -62,6 +63,7 @@ class colorcontrol extends formcontrol {
 
     function toHTML($label, $name) {
         if (!empty($this->id)) {
+            if (substr($this->id,-2,2) == '[]') $this->id = substr($this->id,0,strlen($this->id)-2);
             $divID = ' id="' . $this->id . 'Control"';
             $for   = ' for="' . $this->id . '"';
         } else {
@@ -72,13 +74,13 @@ class colorcontrol extends formcontrol {
         $disabled = $this->disabled != 0 ? "disabled" : "";
         $class    = empty($this->class) ? '' : $this->class;
 
-        $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . $class . $disabled . "\"";
+        $html = "<div" . $divID . " style=\"display:inline\" class=\"" . $this->type . "-control control " . $class . $disabled . "\"";
         $html .= (!empty($this->required)) ? ' required">' : '>';
         //$html .= "<label>";
         if (empty($this->flip)) {
             $html .= $this->controlToHTML($name, $label);
         } else {
-            $html .= "<label" . $for . " class=\"label\">" . $label . "</label>";
+            $html .= $this->controlToHTML($name, null) . "<label" . $for . " style=\"display:inline\" class=\"label\">" . $label . "</label>";
         }
         //$html .= "</label>";
         if (!empty($this->description)) $html .= "<div class=\"control-desc\" style=\"display:block;\">" . $this->description . "</div>";
@@ -89,12 +91,12 @@ class colorcontrol extends formcontrol {
     function controlToHTML($name, $label = null) {
         $assets_path = SCRIPT_RELATIVE . 'framework/core/subsystems/forms/controls/assets/';
         $html = "
-        <label for=\"" . $name . "\" class=\"label\">" . $label . "</label><span><input size=10 type=\"text\" id=\"" . $name . "\" name=\"" . $name . "\" value=\"" . $this->default . "\" class=\"text colorbox\" />
-        <div id='divpreview-" . $name . "' style='background-color:" . $this->default . "'> </div></span>
-        <div id='container-" . $name . "' style='display:none'>
-            <div id='picker-" . $name . "'></div>
+        <label for=\"" . $this->id . "\" style=\"display:inline\" class=\"label\">" . $label . "</label><span><input ".(empty($this->hide)?"size=10 type=\"text\"":"type=\"hidden\"")." id=\"" . $this->id . "\" name=\"" . $name . "\" value=\"" . $this->default . "\" class=\"text colorbox\" />
+        <div id='divpreview-" . $this->id . "' style='background-color:" . $this->default . "'> </div></span>
+        <div id='container-" . $this->id . "' style='display:none'>
+            <div id='picker-" . $this->id . "'></div>
             <div style=\"clear:both\"></div>
-            <a id='updateColors-" . $name . "'>".gt('Select Current Color')."</a>
+            <a id='updateColors-" . $this->id . "'>".gt('Select Current Color')."</a>
         </div>
         ";
 
@@ -102,11 +104,11 @@ class colorcontrol extends formcontrol {
             YUI(EXPONENT.YUI3_CONFIG).use('gallery-colorpicker', function (Y) {
                 // create a picker and render it
                 var picker = new Y.ColorPicker();
-                picker.render('#picker-" . $name . "');
+                picker.render('#picker-" . $this->id . "');
                 var	hex = picker.get('hex');
-                var colorbox = Y.one('#" . $name . "');
-                var colorpicker = Y.one('#container-" . $name . "');
-                var preview = Y.one('#divpreview-" . $name . "');
+                var colorbox = Y.one('#" . $this->id . "');
+                var colorpicker = Y.one('#container-" . $this->id . "');
+                var preview = Y.one('#divpreview-" . $this->id . "');
                 // This flag used to track mouse position
                 var isMouseOverColorpicker = false;
 
@@ -128,12 +130,12 @@ class colorcontrol extends formcontrol {
                 function updateColors() {
                     hex = picker.get('hex');
                     colorbox.set('value','#'+hex.toUpperCase());
-                    document.getElementById('divpreview-" . $name . "').style.backgroundColor='#'+hex.toUpperCase();
+                    document.getElementById('divpreview-" . $this->id . "').style.backgroundColor='#'+hex.toUpperCase();
                     colorpicker.setStyle('display', 'none');
                 }
 
                 // retrieve the selected value from the picker
-                Y.one('#updateColors-" . $name . "').on('click',function(ev) {
+                Y.one('#updateColors-" . $this->id . "').on('click',function(ev) {
                     ev.halt();
                     updateColors();
                 });
@@ -172,7 +174,7 @@ class colorcontrol extends formcontrol {
         ";
 
         $css = "
-            #container-" . $name ." {
+            #container-" . $this->id ." {
                 width: 290px;
                 background-color: #ccc;
                 border-radius: 15px;
@@ -184,7 +186,7 @@ class colorcontrol extends formcontrol {
                 position: absolute;
                 z-index:1000;
             }
-            #updateColors-" . $name ." {
+            #updateColors-" . $this->id ." {
                 display: inline-block;
                 margin: 10px 0px;
                 background-color: #666;
@@ -198,7 +200,7 @@ class colorcontrol extends formcontrol {
                 text-decoration: none;
                 margin-bottom: 0;
             }
-            #divpreview-" . $name ." {
+            #divpreview-" . $this->id ." {
                 border-radius: 5px;
                 -webkit-border-radius: 5px;
                 -moz-border-radius: 5px;
@@ -209,19 +211,19 @@ class colorcontrol extends formcontrol {
                 margin-bottom: 5px;
                 vertical-align: middle;
             }
-            #updateColors-" . $name .":hover {
+            #updateColors-" . $this->id .":hover {
                 background-color: #999;
                 cursor:pointer;
             }
         ";
         expCSS::pushToHead(array(
-    	    "unique"=>"colorpicker" . $name,
+    	    "unique"=>"colorpicker" . $this->id,
     	    "link"=>"http://yui.yahooapis.com/combo?gallery-2011.09.14-20-40/build/gallery-colorpicker/assets/gallery-colorpicker-core.css",
             "css"=>$css
         ));
 
         expJavascript::pushToFoot(array(
-            "unique"  => 'zzcolor' . $name,
+            "unique"  => 'zzcolor' . $this->id,
             "yui3mods"=> 1,
             "content" => $script,
 //            "src"=>""

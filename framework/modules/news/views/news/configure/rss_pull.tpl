@@ -40,9 +40,10 @@
         var YAHOO=Y.YUI2;
         var add = YAHOO.util.Dom.getElementsByClassName('addtolist', 'a');
         YAHOO.util.Event.on(add, 'click', function(e,o){
-            YAHOO.util.Dom.setStyle('norssfeeds', 'display', 'none');
             YAHOO.util.Event.stopEvent(e);
             var feedtoadd = YAHOO.util.Dom.get("feedmaker");
+            if (feedtoadd.value == '') return;
+            YAHOO.util.Dom.setStyle('norssfeeds', 'display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
             newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_rss[]" value="'+feedtoadd.value+'" />';
@@ -58,10 +59,10 @@
                 if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
                     var list = YAHOO.util.Dom.get('rsspull-feeds');
                     list.removeChild(this)
+                    if (list.children.length == 1) YAHOO.util.Dom.setStyle('norssfeeds', 'display', '');;
                 } else return false;
             },newli,true);
             feedtoadd.value = '';
-            //alert(feedtoadd);
         });
     
         var existingRems = YAHOO.util.Dom.getElementsByClassName('removerss', 'a');
@@ -72,6 +73,7 @@
                 var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
                 var list = YAHOO.util.Dom.get('rsspull-feeds');
                 list.removeChild(lItem);
+                if (list.children.length == 1) YAHOO.util.Dom.setStyle('norssfeeds', 'display', '');;
             } else return false;
         });
     });

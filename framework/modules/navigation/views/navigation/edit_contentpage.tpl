@@ -22,7 +22,7 @@
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Editing Content Pages"|gettext) module="edit-content-page"}
         </div>
-		<h1>{if $section->id}{'Edit Existing Content Page'|gettext}{else}{'Create New Content Page'|gettext}{/if}</h1>
+		<h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext} {if $section->parent == -1}{'Standalone'|gettext}{elseif $section->parent == 0}{'Top Level'|gettext}{/if} {'Content Page'|gettext}{/if}</h1>
 	</div>
     <p>{if $section->id}{'Use the form below to change the details of this content page.'|gettext}{else}{'Use the form below to enter the information about your new content page.'|gettext}{/if}</p>
     {form action=update}

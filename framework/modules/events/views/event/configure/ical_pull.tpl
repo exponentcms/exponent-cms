@@ -27,8 +27,8 @@
     <a class="addtoicallist add" href="#">{'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current iCal Feeds"|gettext}</h4>
     <ul id="icalpull-feeds">
-        {foreach from=$config.pull_ical item=feed}
-            {if $feed!=""}<li>{control type="hidden" name="pull_ical[]" value=$feed}{$feed} <a class="delete removeical" href="#">{"Remove"|gettext}</a></li>{/if}
+        {foreach from=$config.pull_ical item=feed name=feed}
+            {if $feed!=""}<li>{control type="hidden" name="pull_ical[]" value=$feed}{control type=color label=$feed name="pull_ical_color[]" id="pull_ical_color`$smarty.foreach.feed.index`" value=$config.pull_ical_color[$smarty.foreach.feed.index] hide=1 flip=1}<a class="delete removeical" href="#">{"Remove"|gettext}</a></li>{/if}
         {foreachelse}
             <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
         {/foreach}
@@ -40,9 +40,10 @@
         var YAHOO=Y.YUI2;
         var add = YAHOO.util.Dom.getElementsByClassName('addtoicallist', 'a');
         YAHOO.util.Event.on(add, 'click', function(e,o){
-            YAHOO.util.Dom.setStyle('noicalfeeds', 'display', 'none');
             YAHOO.util.Event.stopEvent(e);
             var feedtoadd = YAHOO.util.Dom.get("icalfeedmaker");
+            if (feedtoadd.value == '') return;
+            YAHOO.util.Dom.setStyle('noicalfeeds', 'display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
             newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_ical[]" value="'+feedtoadd.value+'" />';
@@ -58,10 +59,10 @@
                 if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
                     var list = YAHOO.util.Dom.get('icalpull-feeds');
                     list.removeChild(this)
+                    if (list.children.length == 1) YAHOO.util.Dom.setStyle('noicalfeeds', 'display', '');;
                 } else return false;
             },newli,true);
             feedtoadd.value = '';
-            //alert(feedtoadd);
         });
     
         var existingRems = YAHOO.util.Dom.getElementsByClassName('removeical', 'a');
@@ -72,6 +73,7 @@
                 var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
                 var list = YAHOO.util.Dom.get('icalpull-feeds');
                 list.removeChild(lItem);
+                if (list.children.length == 1) YAHOO.util.Dom.setStyle('noicalfeeds', 'display', '');;
            } else return false;
         });
     });

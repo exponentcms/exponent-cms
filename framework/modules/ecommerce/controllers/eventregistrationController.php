@@ -653,7 +653,7 @@ class eventregistrationController extends expController {
      *
      * @return array
      */
-    static function getEventsForDates($startdate, $enddate) {
+    static function getEventsForDates($startdate, $enddate, $color="#FFFFFF") {
         $er = new eventregistration();
         $events      = $er->find('all', 'product_type="eventregistration" && active_type=0');
         $pass_events = array();
@@ -667,6 +667,7 @@ class eventregistrationController extends expController {
                 $newevent->title = $event->title;
                 $newevent->body  = $event->body;
                 $newevent->location_data = 'eventregistration';
+                $newevent->color = $color;
                 $pass_events[$event->eventdate][] = $newevent;
             }
         }

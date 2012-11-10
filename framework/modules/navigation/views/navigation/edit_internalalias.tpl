@@ -18,7 +18,7 @@
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Editing Internal Alias Pages"|gettext) module="edit-internal-page"}
         </div>
-	    <h1>{if $section->id}{'Edit Existing Internal Alias'|gettext}{else}{'New Internal Alias'|gettext}{/if}</h1>
+	    <h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'Internal Alias'|gettext}</h1>
 	</div>
 	<div class="form_header">
 		{'Select which internal page you want this section to link to.  If you link to another internal alias, the aliases will all be dereferenced, and the original destination used.  If you link to an external alias, then this section will point to the external aliases external web address.'|gettext}

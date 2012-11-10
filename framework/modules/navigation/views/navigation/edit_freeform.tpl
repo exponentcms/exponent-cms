@@ -18,7 +18,7 @@
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Editing Free-form Menu Item"|gettext) module="edit-freeform-page"}
         </div>
-	    <h1>{if $section->id}{'Edit Existing Free-form Menu Item'|gettext}{else}{'New Free-form Menu Item'|gettext}{/if}</h1>
+	    <h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'Free-form Menu Item'|gettext}</h1>
 	</div>
 	<div class="form_header">
 		<strong>{'This page/menu-item type is only functional on some navigation views such as the Mega view where it will appear without its children!'|gettext}</strong>{br}

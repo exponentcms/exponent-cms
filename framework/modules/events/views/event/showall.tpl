@@ -114,9 +114,13 @@
                                 {/if}
                             {/if}
                             {foreach name=e from=$items item=item}
-                                {if substr($item->location_data,0,3) != 'O:8'}{$class=$item->location_data}{else}{$class=''}{/if}
-                                <div class="calevent{if $dayts == $today} today{/if} {$class}">
-                                    <a{if $config.usecategories && !empty($item->color)} class="{$item->color}"{/if} {if substr($item->location_data,1,8) != 'calevent'}
+                                {if !empty($item->color)}
+                                    {$class=" style=\"background:`$item->color`;color:`$item->color|contrast`\""}
+                                {else}
+                                    {$class=''}
+                                {/if}
+                                <div class="calevent{if $dayts == $today} today{/if}"{$class}>
+                                    <a{if $config.usecategories && !empty($item->color)} class="{$item->color}"{/if}{$class} {if substr($item->location_data,1,8) != 'calevent'}
                                         href="{if $item->location_data != 'eventregistration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
                                     {/if}
                                     title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>
