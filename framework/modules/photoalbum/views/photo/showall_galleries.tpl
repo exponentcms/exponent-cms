@@ -34,7 +34,9 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='photo' text="Manage Categories"|gettext}
                 {/if}
-                {ddrerank items=$page->records model="photo" label="Images"|gettext}
+                {if $config.order == 'rank'}
+                    {ddrerank items=$page->records model="photo" label="Images"|gettext}
+                {/if}
             {/if}
         </div>
     {/permissions}
