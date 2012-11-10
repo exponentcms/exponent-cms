@@ -152,7 +152,7 @@ function smarty_function_ddrerank($params,&$smarty) {
         echo $html;
     
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','panel', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','panel','dd','dd-plugin', function(Y) {
             var panel = new Y.Panel({
                 srcNode      : '#panel".$uniqueid."',
                 width        : 500,
@@ -212,13 +212,14 @@ function smarty_function_ddrerank($params,&$smarty) {
 
                 dragItems.dd.plug(Y.Plugin.DDConstrained, {
 //                    constrain2node: ul,
-                    constrain: ul,
+//                    constrain: ul,
+                    constrain: panelContainer,
 //                    stickY:true
                 }).plug(Y.Plugin.DDProxy, {
                     moveOnEnd: false
                 }).plug(Y.Plugin.DDNodeScroll, {
                     node: ul
-//                }).plug(Y.Plugin.DDWinScroll, {
+                }).plug(Y.Plugin.DDWinScroll, {
                 }).plug(Y.Plugin.DDWindowScroll, {
                 }).addHandle('.fpdrag');
 
@@ -235,6 +236,8 @@ function smarty_function_ddrerank($params,&$smarty) {
                         }
                         //Add the node to this list
                         e.drop.get('node').get('parentNode').insertBefore(drag, drop);
+                        //Set the new parentScroll on the nodescroll plugin
+                        e.drag.nodescroll.set('parentScroll', e.drop.get('node').get('parentNode'));
                         //Resize this nodes shim, so we can drop on it later.
                         e.drop.sizeShim();
                     }
@@ -286,6 +289,8 @@ function smarty_function_ddrerank($params,&$smarty) {
                     if (drop.get('tagName').toLowerCase() !== 'li') {
                         if (!drop.contains(drag)) {
                             drop.appendChild(drag);
+                            //Set the new parentScroll on the nodescroll plugin
+                            e.drag.nodescroll.set('parentScroll', e.drop.get('node'));
                         }
                     }
                 });
