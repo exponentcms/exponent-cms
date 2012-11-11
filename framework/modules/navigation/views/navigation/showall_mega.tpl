@@ -85,7 +85,7 @@
                         {$width = $parent->width}
                     {/if}
                     {$dropsize = "dropdown_`$width`column"|plural:$width}
-                    <div class="{if $parent->class == 'right'}align_right {/if}{$dropsize}">
+                    <div class="{if $parent->class == 'right'}align_right {/if}{$dropsize} freeform-menu">
                         {showmodule module='container' view="Default" source="menuitem-"|cat:$parent->id chrome=true}
                     </div>
                 {/if}

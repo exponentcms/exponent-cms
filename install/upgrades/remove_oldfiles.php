@@ -232,6 +232,12 @@ class remove_oldfiles extends upgradescript {
             'framework/core/models/storeCategoryFeeds.php',
             'framework/core/models/taxclass.php',
             'framework/core/models/vendor.php',
+             // ecommerce renamed views
+            'framework/modules/ecommerce/views/store/showall_featured_products.tpl',
+            'framework/modules/ecommerce/views/store/events_calendar.tpl',
+            'framework/modules/ecommerce/views/store/search_by_model_old.tpl',
+            'framework/modules/ecommerce/views/store/showall_category_featured_products.tpl',
+            'framework/modules/ecommerce/views/store/upcoming_events.tpl',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
