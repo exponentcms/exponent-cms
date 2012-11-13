@@ -69,6 +69,8 @@ class eventController extends expController {
             'time' => $time,
         ));
 
+        $regcolor = !empty($this->config['registrations_color']) ? $this->config['registrations_color'] : null;
+
         $ed = new eventdate();
         $viewtype = 'default';
         $viewrange = 'all';
@@ -164,7 +166,8 @@ class eventController extends expController {
                     case "week":
                         $startperiod = expDateTime::startOfWeekTimestamp($time);
                         $totaldays = 7;
-                        $next = strtotime('+7 days', $startperiod);
+//                        $next = strtotime('+7 days', $startperiod);
+                        $next = expDateTime::endOfWeekTimestamp($startperiod);
                         if (!empty($this->config['starttype'])) $startperiod = $time;
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-21 days', $startperiod),
@@ -193,7 +196,8 @@ class eventController extends expController {
                     default: // range = month
                         $startperiod = expDateTime::startOfMonthTimestamp($time);
                         $totaldays = date('t', $time);
-                        $next = strtotime('+1 months', $startperiod);
+//                        $next = strtotime('+1 months', $startperiod);
+                        $next = expDateTime::endOfMonthTimestamp($startperiod);
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-3 months', $startperiod),
                             "prev_timestamp2" => strtotime('-2 months', $startperiod),
@@ -209,7 +213,7 @@ class eventController extends expController {
                 // added per Ignacio
                 //			$endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($this->loc, $startperiod, $next);
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next, $this->config['registrations_color']);
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next, $regcolor);
                 for ($i = 1; $i <= $totaldays; $i++) {
                     //                    $info = getdate($time);
                     //                    switch ($viewrange) {
@@ -275,7 +279,7 @@ class eventController extends expController {
                 // $endofmonth = expDateTime::endOfMonthDay($time);
                 $endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $this->config['registrations_color']);
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $regcolor);
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
@@ -416,7 +420,7 @@ class eventController extends expController {
                     $extitem[] = $value;
                 }
                 $items = array_merge($items, $extitem);
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end, $this->config['registrations_color']);
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end, $regcolor);
                 // we need to crunch these down
                 $regitem = array();
                 if (!empty($regitems)) foreach ($regitems as $key => $value) {
@@ -1075,7 +1079,7 @@ class eventController extends expController {
 
 //                    $extevents[$eventdate][$dy]->location_data = serialize(expCore::makeLocation('extevent',$extcal->id));
                 $extevents[$eventdate][$dy]->location_data = 'gcalevent' . $url;
-                $extevents[$eventdate][$dy]->color = $this->config['pull_gcal_color'][$key];
+                $extevents[$eventdate][$dy]->color = !empty($this->config['pull_gcal_color'][$key]) ? $this->config['pull_gcal_color'][$key] : null;
                 $dy++;
             }
         }
@@ -1160,7 +1164,7 @@ class eventController extends expController {
 
 //                                $extevents[$eventdate][$dy]->location_data = serialize(expCore::makeLocation('extevent',$extcal->id));
                             $extevents[$eventdate][$dy]->location_data = 'icalevent' . $url;
-                            $extevents[$eventdate][$dy]->color = $this->config['pull_ical_color'][$key];
+                            $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;
                             if (!$yesterday) {
                                 $dy++;
                             } else {

@@ -80,6 +80,7 @@
 		</tr>
 		{*{math equation="x" x=$now assign=dayts}*}
         {$dayts=$now}
+        {$dst=false}
 		{foreach from=$monthly item=week key=weeknum}
 			{assign var=moredata value=0}
 			{foreach name=w from=$week key=day item=events}
@@ -123,7 +124,17 @@
                                 </div>
                             {/foreach}
                             {*{if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}*}
-                            {if $number != -1}{$dayts=$dayts+86400}{/if}
+                            {if $number != -1}{$dayts=$dayts+86400}
+                                {if !$dst}
+                                    {if (date('I',$now) && !date('I',$dayts))}
+                                        {$dayts=$dayts+3600}
+                                        {$dst=true}
+                                    {elseif (!date('I',$now) && date('I',$dayts))}
+                                        {$dayts=$dayts-3600}
+                                        {$dst=true}
+                                    {/if}
+                                {/if}
+                            {/if}
                         </td>
                     {/foreach}
                 </tr>
