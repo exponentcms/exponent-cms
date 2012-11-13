@@ -30,6 +30,7 @@ if ($item) {
     //		$eventdates = expSorter::sort(array('array'=>$eventdates,'sortby'=>'date', 'order'=>'ASC'));
             $template->assign('dates',$eventdates);
             $template->assign('event',$item);
+            $template->assign('loc',$loc);
             $template->output();
         }  else {
             // Process a regular delete

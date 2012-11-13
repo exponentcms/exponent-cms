@@ -249,7 +249,7 @@ class eventController extends expController {
                     "now"  => $startperiod,
                 ));
                 break;
-            case "monthly":
+            case "monthly":  // build a month array of weeks with an array of days
                 //                $monthly = array();
                 //                $counts = array();
                 $info = getdate($time);
@@ -1160,7 +1160,7 @@ class eventController extends expController {
                             }
                             // dtstart required, one occurrence, (orig. start date)
                             $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
-                            $extevents[$eventdate][$dy]->body = $vevent->getProperty('description');
+                            $extevents[$eventdate][$dy]->body = nl2br($vevent->getProperty('description'));
 
 //                                $extevents[$eventdate][$dy]->location_data = serialize(expCore::makeLocation('extevent',$extcal->id));
                             $extevents[$eventdate][$dy]->location_data = 'icalevent' . $url;
