@@ -26,18 +26,18 @@
 <div class="module events viewday">
 	<div class="module-actions">
 		{icon class="weekviewlink" action=showall view=showall_Week time=$time title='View Entire Week'|gettext text='View Week'|gettext}
-        &#160;&#160;|&#160;&#160;
+        {nbsp count=2}|{nbsp count=2}
 		{icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
         {permissions}
             {if $permissions.manage == 1}
-                &#160;&#160;|&#160;&#160;
+                {nbsp count=2}|{nbsp count=2}
                   {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
                   {if !$config.disabletags}
-                      &#160;&#160;|&#160;&#160;
+                      {nbsp count=2}|{nbsp count=2}
                       {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                   {/if}
                   {if $config.usecategories}
-                      &#160;&#160;|&#160;&#160;
+                      {nbsp count=2}|{nbsp count=2}
                       {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                   {/if}
             {/if}
@@ -64,11 +64,10 @@
 		<a class="module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%A, %B %e, %Y"}">{$prev_timestamp3|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
 		<a class="module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%A, %B %e, %Y"}">{$prev_timestamp2|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
 		<a class="module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp}" title="{$prev_timestamp|format_date:"%A, %B %e, %Y"}">{$prev_timestamp|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
-		<span>{$time|format_date:"%A, %B %e, %Y"}</span>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
+        <a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable" title="{'Go to Date'|gettext}"><span>{$time|format_date:"%A, %B %e, %Y"}</span></a>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view=showall_Day time=$next_timestamp}" title="{$next_timestamp|format_date:"%A, %B %e, %Y"}">{$next_timestamp|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view=showall_Day time=$next_timestamp2}" title="{$next_timestamp2|format_date:"%A, %B %e, %Y"}">{$next_timestamp2|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view=showall_Day time=$next_timestamp3}" title="{$next_timestamp3|format_date:"%A, %B %e, %Y"}">{$next_timestamp3|format_date:"%a"}</a>
-        <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
 	</p>
 	<dl class="viewweek">
 		{*{assign var=count value=0}*}

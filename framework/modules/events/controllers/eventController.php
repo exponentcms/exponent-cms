@@ -256,9 +256,11 @@ class eventController extends expController {
                 $nowinfo = getdate(time());
                 if ($info['mon'] != $nowinfo['mon']) $nowinfo['mday'] = -10;
                 // Grab non-day numbers only (before end of month)
-                $week = 0;
+//                $week = 0;
                 $currentweek = -1;
                 $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
+                $week = intval(date('W',$timefirst));
+                if ($week >= 52 && $info['mon'] == 1) $week = 1;
                 $infofirst = getdate($timefirst);
                 $monthly[$week] = array(); // initialize for non days
                 $counts[$week] = array();

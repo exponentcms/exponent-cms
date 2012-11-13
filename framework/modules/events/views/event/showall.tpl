@@ -67,13 +67,13 @@
             <a class="module-actions" href="{link action=showall time=$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
             <a class="module-actions" href="{link action=showall time=$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
             <a class="module-actions" href="{link action=showall time=$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
-            <strong>{$time|format_date:"%B %Y"}</strong>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
+            <a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable" title="{'Go to Date'|gettext}"><strong>{$time|format_date:"%B %Y"}</strong></a>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
             <a class="module-actions" href="{link action=showall time=$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
             <a class="module-actions" href="{link action=showall time=$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
             <a class="module-actions" href="{link action=showall time=$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&#160;&#160;&raquo;
-            <a class="module-actions" style="float:right;z-index:999;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
         </div>
 		<tr class="daysoftheweek">
+            {if $config.show_weeks}<th></th>{/if}
 			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}
 			<th scope="col" abbr="{'Sunday'|gettext}" title="'Sunday'|gettext}">{'Sunday'|gettext}</th>
 			{/if}
@@ -92,15 +92,18 @@
         {$dst=false}
 		{foreach from=$monthly item=week key=weeknum}
 			{*{assign var=moredata value=0}*}
-            {$moredata=0}
-			{foreach name=w from=$week key=day item=events}
+            {*{$moredata=0}*}
+			{*{foreach name=w from=$week key=day item=events}*}
 				{*{assign var=number value=$counts[$weeknum][$day]}*}
-                {$number=$counts[$weeknum][$day]}
+                {*{$number=$counts[$weeknum][$day]}*}
 				{*{if $number > -1}{assign var=moredata value=1}{/if}*}
-                {if $number > -1}{$moredata=1}{/if}
-			{/foreach}
-			{if $moredata == 1}
+                {*{if $number > -1}{$moredata=1}{/if}*}
+			{*{/foreach}*}
+			{*{if $moredata == 1}*}
                 <tr class="week{if $currentweek == $weeknum} currentweek{/if}">
+                    {if $config.show_weeks}
+                        <td class="week{if $currentweek == $weeknum} currentweek{/if}">{$weeknum}</td>
+                    {/if}
                     {foreach name=w from=$week key=day item=items}
                         {*{assign var=number value=$counts[$weeknum][$day]}*}
                         {$number=$counts[$weeknum][$day]}
@@ -165,7 +168,7 @@
                         </td>
                     {/foreach}
                 </tr>
-			{/if}
+			{*{/if}*}
 		{/foreach}
 	</table>
 </div>

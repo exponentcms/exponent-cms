@@ -26,18 +26,18 @@
 <div class="module events monthly">
 	<div class="module-actions">
 		{icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
-        &#160;&#160;|&#160;&#160;
+        {nbsp count=2}|{nbsp count=2}
         <span class="listviewlink"></span>{'List View'|gettext}
 		{permissions}
 			{if $permissions.manage == 1}
-				&#160;&#160;|&#160;&#160;
+                {nbsp count=2}|{nbsp count=2}
                 {icon class="adminviewlink mngmntlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
-                    &#160;&#160;|&#160;&#160;
+                    {nbsp count=2}|{nbsp count=2}
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                 {/if}
                 {if $config.usecategories}
-                    &#160;&#160;|&#160;&#160;
+                    {nbsp count=2}|{nbsp count=2}
                     {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                 {/if}
 			{/if}
@@ -66,11 +66,10 @@
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%B %Y"}">{$prev_timestamp3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%B %Y"}">{$prev_timestamp2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}" title="{$prev_timestamp|format_date:"%B %Y"}">{$prev_timestamp|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
-		<strong>{$time|format_date:"%B %Y"}</strong>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
+        <a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable" title="{'Go to Date'|gettext}"><strong>{$time|format_date:"%B %Y"}</strong></a>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$next_timestamp}" title="{$next_timestamp|format_date:"%B %Y"}">{$next_timestamp|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$next_timestamp2}" title="{$next_timestamp2|format_date:"%B %Y"}">{$next_timestamp2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$next_timestamp3}" title="{$next_timestamp3|format_date:"%B %Y"}">{$next_timestamp3|format_date:"%b"}</a>&#160;&#160;&raquo;
-        <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
 	</p>
 	<dl class="viewweek">
 		{foreach from=$days item=items key=ts}

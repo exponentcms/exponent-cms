@@ -70,7 +70,7 @@
 			<tr>
 				<th class="header calendarcontentheader">{'Event Title'|gettext}</th>
 				<th class="header calendarcontentheader">{'When'|gettext}</th>
-				<th class="header calendarcontentheader">&#160;</th>
+				<th class="header calendarcontentheader">{nbsp}</th>
 			</tr>
 		</thead>
 		<tbody>
