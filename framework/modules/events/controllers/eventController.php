@@ -168,7 +168,7 @@ class eventController extends expController {
                     case "week":
                         $startperiod = expDateTime::startOfWeekTimestamp($time);
                         $totaldays = 7;
-                        $next = strtotime('+7 days', $startperiod) - 1;
+                        $next = strtotime('+7 days', $startperiod);
 //                        $next = expDateTime::endOfWeekTimestamp($startperiod);
                         if (!empty($this->config['starttype'])) $startperiod = $time;
                         assign_to_template(array(
@@ -183,7 +183,7 @@ class eventController extends expController {
                     case "twoweek":
                         $startperiod = expDateTime::startOfWeekTimestamp($time);
                         $totaldays = 14;
-                        $next = strtotime('+14 days', $startperiod) - 1;
+                        $next = strtotime('+14 days', $startperiod);
                         if (!empty($this->config['starttype'])) $startperiod = $time;
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-42 days', $startperiod),
@@ -198,7 +198,7 @@ class eventController extends expController {
                     default: // range = month
                         $startperiod = expDateTime::startOfMonthTimestamp($time);
                         $totaldays = date('t', $time);
-                        $next = strtotime('+1 months', $startperiod) - 1;
+                        $next = strtotime('+1 months', $startperiod);
 //                        $next = expDateTime::endOfMonthTimestamp($startperiod);
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-3 months', $startperiod),
@@ -230,7 +230,6 @@ class eventController extends expController {
                     //                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
                     //                    }
                     $start = $startperiod + ($i * 86400) - 86400;
-//                    $edates       = $db->selectObjects("eventdate", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start));
                     $edates = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start));
                     $days[$start] = $this->getEventsForDates($edates, true, isset($this->config['featured_only']) ? true : false);
                     //                    for ($j = 0; $j < count($days[$start]); $j++) {
@@ -288,8 +287,6 @@ class eventController extends expController {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
                     #$monthly[$week][$i] = $db->selectObjects("event","location_data='".serialize($this->loc)."' AND (eventstart >= $start AND eventend <= " . ($start+86399) . ") AND approved!=0");
-                    //$dates = $db->selectObjects("eventdate",$locsql." AND date = $start");
-//                    $dates              = $db->selectObjects("eventdate", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
                     $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
                     $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['featured_only']) ? true : false);
                     if (!empty($extitems[$start])) $monthly[$week][$i] = array_merge($extitems[$start], $monthly[$week][$i]);
@@ -330,7 +327,6 @@ class eventController extends expController {
                     expPermissions::check("edit", $this->loc) ||
                     expPermissions::check("delete", $this->loc)
                 ) ? 1 : 0;
-//                $dates    = $db->selectObjects("eventdate", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp(time()));
                 $dates = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp(time()));
                 $items = $this->getEventsForDates($dates);
                 //                if (!$continue) {
@@ -373,7 +369,6 @@ class eventController extends expController {
                         } else {
                             $eventlimit = "";
                         }
-//                        $dates = $db->selectObjects("eventdate", $locsql . " AND date >= " . $day . $eventlimit . " ORDER BY date ASC ");
                         $dates = $ed->find("all", $locsql . " AND date >= " . $day . $eventlimit . " ORDER BY date ASC ");
                         $begin = $day;
                         $end = null;
@@ -388,30 +383,28 @@ class eventController extends expController {
                         $end = $day;
                         break;
                     case "today":
-//                        $dates = $db->selectObjects("eventdate", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($day) . " AND date <= " . expDateTime::endOfDayTimestamp($day) . ")");
                         $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($day) . " AND date <= " . expDateTime::endOfDayTimestamp($day) . ")");
                         $begin = $day;
                         $end = expDateTime::endOfDayTimestamp($day);
                         break;
                     case "day":
-//                        $dates = $db->selectObjects("eventdate", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($day) . " AND date <= " . expDateTime::endOfDayTimestamp($day) . ")");
                         $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($time) . " AND date <= " . expDateTime::endOfDayTimestamp($time) . ")");
                         $begin = expDateTime::startOfDayTimestamp($time);
                         $end = expDateTime::endOfDayTimestamp($time);
                         break;
                     case "next":
-//                        $dates = array($db->selectObject("eventdate", $locsql . " AND date >= $day"));
-                        $dates = array($ed->find("all", $locsql . " AND date >= $day"));
+                        $dates = array($ed->find("all", $locsql . " AND date >= $time"));
+                        $begin = expDateTime::startOfDayTimestamp($time);
+                        $end = null;
                         break;
                     case "month":
-//                        $dates = $db->selectObjects("eventdate", $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()) . ")");
-                        $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()) . ")");
-                        $begin = expDateTime::startOfMonthTimestamp($day);
-                        $end = expDateTime::endOfMonthTimestamp($day);
+//                        $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()) . ")");
+                        $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp($time) . " AND date <= " . expDateTime::endOfMonthTimestamp($time) . ")");
+                        $begin = expDateTime::startOfMonthTimestamp($time);
+                        $end = expDateTime::endOfMonthTimestamp($time);
                         break;
                     case "all":
                     default;
-//                        $dates = $db->selectObjects("eventdate", $locsql);
                         $dates = $ed->find("all", $locsql);
                         $begin = null;
                         $end = null;
