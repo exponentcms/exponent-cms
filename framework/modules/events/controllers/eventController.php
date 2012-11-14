@@ -168,8 +168,8 @@ class eventController extends expController {
                     case "week":
                         $startperiod = expDateTime::startOfWeekTimestamp($time);
                         $totaldays = 7;
-//                        $next = strtotime('+7 days', $startperiod);
-                        $next = expDateTime::endOfWeekTimestamp($startperiod);
+                        $next = strtotime('+7 days', $startperiod);
+//                        $next = expDateTime::endOfWeekTimestamp($startperiod);
                         if (!empty($this->config['starttype'])) $startperiod = $time;
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-21 days', $startperiod),
@@ -198,8 +198,8 @@ class eventController extends expController {
                     default: // range = month
                         $startperiod = expDateTime::startOfMonthTimestamp($time);
                         $totaldays = date('t', $time);
-//                        $next = strtotime('+1 months', $startperiod);
-                        $next = expDateTime::endOfMonthTimestamp($startperiod);
+                        $next = strtotime('+1 months', $startperiod);
+//                        $next = expDateTime::endOfMonthTimestamp($startperiod);
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-3 months', $startperiod),
                             "prev_timestamp2" => strtotime('-2 months', $startperiod),
