@@ -19,7 +19,11 @@
 
 <div class="module calendar mini-cal"> 
 	<table class="mini-cal">
-		<p><a class="nav doublearrow" href="{link action=viewmonth time=$prevmonth view='Mini-Calendar'}" title="{'Prev'|gettext}">&laquo;</a> {$now|format_date:"%B"} <a class="nav doublearrow" href="{link action=viewmonth time=$nextmonth view='Mini-Calendar'}" title="{'Next'|gettext}">&raquo;</a></p>
+		<p>
+            <a class="nav doublearrow" href="{link action=viewmonth time=$prevmonth view='Mini-Calendar'}" title="{'Prev'|gettext}">&laquo;</a>
+            {$now|format_date:"%B"}
+            <a class="nav doublearrow" href="{link action=viewmonth time=$nextmonth view='Mini-Calendar'}" title="{'Next'|gettext}">&raquo;</a>
+        </p>
 
 		<tr class="daysoftheweek">
 			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}

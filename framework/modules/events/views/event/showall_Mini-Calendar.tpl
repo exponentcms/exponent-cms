@@ -18,42 +18,11 @@
 {/css}
 
 <div class="module events mini-cal">
-	<table class="mini-cal">
-		<p><a class="nav doublearrow" href="{link action=showall view='showall_Mini-Calendar' time=$prevmonth}" title="{'Prev'|gettext}">&laquo;</a> {$now|format_date:"%B"} <a class="nav doublearrow" href="{link action=showall view='showall_Mini-Calendar' time=$nextmonth}" title="{'Next'|gettext}">&raquo;</a></p>
-
-		<tr class="daysoftheweek">
-			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}
-			<th scope="col" abbr="{'Sun'|gettext}" title="{'Sunday'|gettext}">{'S'|gettext}</th>
-			{/if}
-			<th scope="col" abbr="{'Mon'|gettext}" title="{'Monday'|gettext}">{'M'|gettext}</th>
-			<th scope="col" abbr="{'Tue'|gettext}" title="{'Tuesday'|gettext}">{'T'|gettext}</th>
-			<th scope="col" abbr="{'Wed'|gettext}" title="'Wednesday'|gettext}">{'W'|gettext}</th>
-			<th scope="col" abbr="{'Thu'|gettext}" title="{'Thursday'|gettext}">{'T'|gettext}</th>
-			<th scope="col" abbr="{'Fri'|gettext}" title="{'Friday'|gettext}">{'F'|gettext}</th>
-			<th scope="col" abbr="{'Sat'|gettext}" title="{'Saturday'|gettext}">{'S'|gettext}</th>
-			{if $smarty.const.DISPLAY_START_OF_WEEK != 0}
-			<th scope="col" abbr="{'Sun'|gettext}" title="{'Sunday'|gettext}">{'S'|gettext}</th>
-			{/if}
-		</tr>
-		{foreach from=$monthly item=week key=weekid}
-			<tr class="{if $currentweek == $weekid}calendar_currentweek{/if}">
-				{foreach from=$week key=day item=dayinfo}
-					<td>
-						{if $dayinfo.number > -1}
-							{if $dayinfo.number == 0}
-								{$day}
-							{else}
-								<a class="mngmntlink calendar_mngmntlink" href="{link action=showall view=showall_Day time=$dayinfo.ts}" title="{$dayinfo.ts|format_date:'%A, %B %e, %Y'}"><em>{$day}</em></a>
-							{/if}
-						{else}
-							&#160;
-						{/if}
-					</td>
-				{/foreach}
-			</tr>
-		{/foreach}
-	</table>
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=showall}">{'View Month'|gettext}</a>
+    <input id=src type=hidden value={$src} />
+    <div id="mini-cal">
+        {include 'minical.tpl'}
+    </div>
+    {icon class="monthviewlink" action=showall time=$now text='Calendar View'|gettext}
 	{br}
 	{permissions}
 		{if $permissions.create == 1}
@@ -63,3 +32,51 @@
 		{/if}
 	{/permissions}
 </div>
+
+{script unique="minical" yui3mods="1"}
+{literal}
+
+YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+    var minical = Y.one('#mini-cal');
+    var cfg = {
+    			method: "POST",
+    			headers: { 'X-Transaction': 'Load Minical'},
+    			arguments : { 'X-Transaction': 'Load Minical'}
+    		};
+
+    src = Y.one('#src').get('value');
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=minical&ajax_action=1&src="+src;
+
+	var handleSuccess = function(ioId, o){
+		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
+
+        if(o.responseText){
+            minical.setContent(o.responseText);
+        } else {
+            Y.one('#mini-cal.loadingdiv').remove();
+        }
+	};
+
+	//A function handler to use for failed requests:
+	var handleFailure = function(ioId, o){
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "example");
+	};
+
+	//Subscribe our handlers to IO's global custom events:
+	Y.on('io:success', handleSuccess);
+	Y.on('io:failure', handleFailure);
+
+    minical.delegate('click', function(e){
+        cfg.data = "time="+Y.one('#prevtime').get('value');
+        var request = Y.io(sUrl, cfg);
+        minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
+    }, '#prev');
+    minical.delegate('click', function(e){
+        cfg.data = "time="+Y.one('#nexttime').get('value');
+        var request = Y.io(sUrl, cfg);
+        minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
+    }, '#next');
+});
+{/literal}
+{/script}

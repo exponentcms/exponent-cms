@@ -84,6 +84,7 @@ class eventController extends expController {
                 break;
             case 'showall_Monthly Summary':
             case 'showall_Mini-Calendar':
+            case 'minical':
                 $viewtype = "minical";
                 break;
             case 'showall_Monthly List':
@@ -140,7 +141,8 @@ class eventController extends expController {
                     "now"         => $timefirst,
                     "prevmonth"   => $prevmonth,
                     "thismonth"   => $timefirst,
-                    "nextmonth"   => $nextmonth
+                    "nextmonth"   => $nextmonth,
+                    "src"   => $this->loc->src
                 ));
                 break;
             case "byday":

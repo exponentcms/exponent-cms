@@ -200,6 +200,10 @@
     text-align : center;
 }
 
+.mini-cal table {
+    margin-bottom : 2px;
+}
+
 .viewweek dt {
     line-height : 2em;
 }
