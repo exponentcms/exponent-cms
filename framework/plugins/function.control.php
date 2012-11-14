@@ -41,6 +41,14 @@ function smarty_function_control($params, &$smarty) {
 
         // if a label wasn't passed in then we need to set one.
         //if (empty($params['label'])) $params['label'] = $params['name'];
+        $showdate=true;
+        if (isset($params['showdate']) && $params['showdate'] == false) {
+            $showdate = false;
+        }
+        $showtime=true;
+        if (isset($params['showtime']) && $params['showtime'] == false) {
+            $showtime = false;
+        }
 
         //Figure out which type of control to use. Also, some controls need some special setup.  We handle that here.
         switch ($params['type']) {
@@ -48,24 +56,24 @@ function smarty_function_control($params, &$smarty) {
             case "popupdatetime":
                 if (empty($params['value'])) $params['value'] = time();
                 $disabletext = isset($params['disable_text']) ? $params['disable_text'] : '';
-                $control = new popupdatetimecontrol($params['value'], $disabletext, !empty($params['show_time'])?true:false);
+                $control = new popupdatetimecontrol($params['value'], $disabletext, $showtime);
                 break;
             case "yuidatetimecontrol":
             case "yuidatetime":
                 if (empty($params['value'])) $params['value'] = time();
                 $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
-                $control = new yuidatetimecontrol($params['value'], $edittext, !empty($params['show_date'])?true:false, !empty($params['show_time'])?true:false);
+                $control = new yuidatetimecontrol($params['value'], $edittext, $showdate, $showtime);
                 break;
             case "yuicalendarcontrol":
             case "yuicalendar":
                 if (empty($params['value'])) $params['value'] = time();
                 $disabletext = isset($params['disable_text']) ? $params['disable_text'] : 'Change Date/Time';
-                $control = new yuicalendarcontrol($params['value'], $disabletext, !empty($params['show_time'])?true:false);
+                $control = new yuicalendarcontrol($params['value'], $disabletext, $showtime);
                 break;
             case "datetimecontrol":
             case "datetime":
                 if (empty($params['value'])) $params['value'] = time();
-                $control  = new datetimecontrol($params['value'], !empty($params['showdate'])?true:false, !empty($params['show_time'])?true:false);  //FIXME does this need to be show_date
+                $control  = new datetimecontrol($params['value'], $showdate, $showtime);
                 break;
             case "calendarcontrol":
             case "calendar":
@@ -91,7 +99,7 @@ function smarty_function_control($params, &$smarty) {
                     $subtype        = isset($params['subtype']) ? $params['subtype'] : null;
                     $control        = new filemanagercontrol($subtype);
                     $control->limit = isset($params['limit']) ? $params['limit'] : 10;
-                    $control->value = $params['value'];
+                    if (!empty($params['value'])) $control->value = $params['value'];
                 }
                 break;
             case "filedisplay-types":
@@ -100,9 +108,9 @@ function smarty_function_control($params, &$smarty) {
                 $control->items         = get_filedisplay_views();
                 break;
             case "dropdown":
-                $control                = new dropdowncontrol($params['default']);
+                $control                = new dropdowncontrol(!empty($params['default'])?$params['default']:null);
+                if (!empty($params['default'])) $control->default = $params['default'];
                 $control->type          = "select";
-                $control->default       = $params['default'];
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
                 $control->multiple      = isset($params['multiple']) ? true : false;
                 if (isset($params['from']) && isset($params['to'])) {
@@ -156,7 +164,7 @@ function smarty_function_control($params, &$smarty) {
                 $control = new radiogroupcontrol();
                 // differentiate it from the old school forms
                 $control->newschool = true;
-                $control->default   = $params['default'];
+                if (!empty($params['default'])) $control->default = $params['default'];
                 $control->cols      = $params['columns'];
 
                 // get the items to use as the radio button labels
@@ -172,7 +180,7 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "radio":
                 $control            = new radiocontrol();
-                $control->value     = $params['value'];
+                if (!empty($params['value'])) $control->value = $params['value'];
                 $control->newschool = true;
                 break;
             case "text":
@@ -197,7 +205,7 @@ function smarty_function_control($params, &$smarty) {
                     if (isset($params['module'])) $control->module = $params['module'];
                     if (isset($params['rows'])) $control->rows = $params['rows'];
                     if (isset($params['cols'])) $control->cols = $params['cols'];
-                    $control->height = $params['height'] ? $params['height'] : "600px";
+                    $control->height = !empty($params['height']) ? $params['height'] : "600px";
                     if (isset($params['toolbar'])) $control->toolbar = $params['toolbar'];
                 }
                 break;
@@ -218,7 +226,7 @@ function smarty_function_control($params, &$smarty) {
             case "color":
             case "colorpicker":
                 $control = new colorcontrol();
-                $control->default = $params['value'];
+                if (!empty($params['value'])) $control->value = $params['value'];
                 if (!empty($params['hide'])) $control->hide = $params['hide'];
                 break;
             case "state":
@@ -334,12 +342,22 @@ function smarty_function_control($params, &$smarty) {
             case "autocomplete":
                 $control              = new autocompletecontrol();
                 $control->schema      = "'" . str_replace(",", "','", $params['schema']) . "'";
-                $control->value       = $params['value'];
+                $control->value   = isset($params['value']) ? $params['value'] : null;
                 $control->controller  = empty($params['controller']) ? "search" : $params['controller'];
                 $control->action      = empty($params['action']) ? "autocomplete" : $params['action'];
                 $control->searchmodel = empty($params['searchmodel']) ? "text" : $params['searchmodel'];
                 $control->searchoncol = empty($params['searchoncol']) ? "title" : $params['searchoncol'];
                 $control->jsinject    = empty($params['jsinject']) ? "" : $params['jsinject'];
+                break;
+            case "massmail":
+                $control = new massmailcontrol();
+                if (!empty($params['var'])) $control->type = 1;
+                if (!empty($params['default'])) $control->default = $params['default'];
+                break;
+            case "contact":
+                $control = new contactcontrol();
+                if (!empty($params['var'])) $control->type = 1;
+                if (!empty($params['default'])) $control->default = $params['default'];
                 break;
             default:
                 $control = new genericcontrol($params['type']);

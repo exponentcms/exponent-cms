@@ -81,7 +81,7 @@
     {else}
         {$until = $record->eventdate->date}
     {/if}
-    {control type=yuicalendarcontrol name=untildate label='Recurrence'|gettext value=$until+365*86400 show_time=false}
+    {control type=yuicalendarcontrol name=untildate label='Recurrence'|gettext value=$until+365*86400 showtime=false}
 </div>
 
 {script unique="recurring"}
