@@ -7,7 +7,7 @@ This release focuses on new calendar & forms modules, e-Commerce as OOTB experie
   - adds optional color/style to categories
   - upgrades calendar to a 2.0 event controller with categories & tags
     *- converts existing calendars
-    -- adds color-coded categories, tags, and merge item
+    -- adds color-coded categories and tags
     -- add color-coded aggregation of external Google & iCal calendars, and online event registrations
   - adds new 'mega-menu' navigation view with new free-form page/menu type for embedding modules
   - adds random sorting/sequence to photo album/slideshows

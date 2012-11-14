@@ -124,7 +124,8 @@
                                     {$class=''}
                                 {/if}
                                 <div class="calevent{if $dayts == $today} today{/if}"{$class}>
-                                    <a{if $config.usecategories && !empty($item->color)} class="{$item->color}"{/if}{$class} {if substr($item->location_data,1,8) != 'calevent'}
+                                    <a{if $config.usecategories && !empty($item->color)} class="{$item->color}"{/if}{$class}{if $item->is_allday == 1} style="border-color: {$item->color|brightness:+150};border-style: solid;padding-left: 2px;border-top: 0;border-bottom: 0;border-right: 0;"{/if}
+                                    {if substr($item->location_data,1,8) != 'calevent'}
                                         href="{if $item->location_data != 'eventregistration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
                                     {/if}
                                     title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">{$item->title}</a>

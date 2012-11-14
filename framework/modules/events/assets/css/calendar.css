@@ -82,7 +82,7 @@
 .events.default td .number {
     /*border       : 1px solid #A2ADBC;*/
     /*border-width : 0 0 1px 1px;*/
-    background : #fff;
+    /*background : #fff;*/
     padding    : 3px;
     float      : right;
     display    : block;
@@ -116,8 +116,8 @@
 }
 
 .events.default td .number.today {
-    border       : 1px solid #A2ADBC;
-    border-width : 0 0 1px 1px;
+    /*border       : 1px solid #A2ADBC;*/
+    /*border-width : 0 0 1px 1px;*/
     background   : #DF9496;
     padding      : 3px;
     float        : right;
