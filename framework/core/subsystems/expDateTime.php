@@ -634,6 +634,9 @@ class expDateTime {
     	return strftime($format,$timestamp);
     }
 
+    public static function sameDay($date1, $date2) {
+        return (date("Y-m-d",$date1) == date("Y-m-d",$date2));
+    }
 }
 
 ?>

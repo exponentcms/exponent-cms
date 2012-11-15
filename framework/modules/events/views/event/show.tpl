@@ -52,8 +52,10 @@
 	{/permissions}
 	{if $item->is_allday == 1}
 		{$event->date|format_date}, {'All Day'|gettext}
+    {elseif $event->eventstart != $event->eventend}
+        {$event->date|format_date} {$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} - {$eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 	{else}
-		{$event->date|format_date} {$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} - {$eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+		{$event->date|format_date} {$eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 	{/if}
 	<div class="bodycopy">
 		{$item->body}

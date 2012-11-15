@@ -51,12 +51,10 @@
 							&#160;-&#160;
 							{if $event->is_allday == 1}
 								{'All Day'|gettext}
-							{else}
-								{if $event->eventstart != $event->eventend}
-									{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
-								{else}
-									{$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
-								{/if}
+							{elseif $event->eventstart != $event->eventend}
+                                {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                            {else}
+                                {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
 							{/if}
 							{if $showdetail == 1}
 								&#160;-&#160;{$event->body|summarize:"html":"paralinks"}

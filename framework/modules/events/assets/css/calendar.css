@@ -90,27 +90,14 @@
     text-align : right;
 }
 
-.events.default .calevent {
-    clear                 : both;
-    font-size             : 80%;
-    padding-left          : 3px;
-    border-bottom         : 1px dotted #999;
-    display               : block;
-    background            : #d5e0ed;
-    margin                : 2px;
-    -moz-border-radius    : 5px;
-    -webkit-border-radius : 5px;
-    border-radius         : 5px;
-}
-
-.events.default .today,
-.events.default td.today a,
-.events.default td.today a:link,
-.events.default td.today a:visited,
-.events.default td.today a:hover,
-.events.default td.today a:focus,
-.events.default td.today a:active {
-    color       : #F6F4DA;
+.events.default .today {
+/*.events.default td.today a,*/
+/*.events.default td.today a:link,*/
+/*.events.default td.today a:visited,*/
+/*.events.default td.today a:hover,*/
+/*.events.default td.today a:focus,*/
+/*.events.default td.today a:active {*/
+    /*color       : #F6F4DA;*/
     font-weight : bold;
     background  : #DF9496;
 }
@@ -124,6 +111,19 @@
     display      : block;
     width        : 15px;
     text-align   : right;
+}
+
+.events.default .calevent {
+    clear                 : both;
+    font-size             : 80%;
+    padding-left          : 3px;
+    border-bottom         : 1px dotted #999;
+    display               : block;
+    background            : #d5e0ed;
+    margin                : 2px;
+    -moz-border-radius    : 5px;
+    -webkit-border-radius : 5px;
+    border-radius         : 5px;
 }
 
 .events.default td.today a.edit {

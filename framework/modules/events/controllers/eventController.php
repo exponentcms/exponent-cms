@@ -229,7 +229,7 @@ class eventController extends expController {
                     //                        default:  // range = month
                     //                            $start = mktime(0,0,0,$info['mon'],$i,$info['year']);
                     //                    }
-                    $start = $startperiod + ($i * 86400) - 86400;
+                    $start = expDateTime::startOfDayTimestamp($startperiod + ($i * 86400) - 86400);
                     $edates = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start));
                     $days[$start] = $this->getEventsForDates($edates, true, isset($this->config['featured_only']) ? true : false);
                     //                    for ($j = 0; $j < count($days[$start]); $j++) {
@@ -410,20 +410,28 @@ class eventController extends expController {
                         $end = null;
                 }
                 $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['featured_only']) ? true : false);
-                $extitems = $this->getExternalEvents($this->loc, $begin, $end);
-                // we need to crunch these down
-                $extitem = array();
-                foreach ($extitems as $key => $value) {
-                    $extitem[] = $value;
+                if ($viewrange != 'past') {
+                    $extitems = $this->getExternalEvents($this->loc, $begin, $end);
+                    // we need to crunch these down
+                    $extitem = array();
+                    foreach ($extitems as $key => $days) {
+                        foreach ($days as $key => $event) {
+                            if ($viewrange == 'upcoming' && $event->eventdate->date < time()) break;
+                            if (empty($event->eventstart)) $event->eventstart = $event->eventdate->date;
+                            $extitem[] = $event;
+                        }
+                    }
+                    $items = array_merge($items, $extitem);
+                    if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end, $regcolor);
+                    // we need to crunch these down
+                    $regitem = array();
+                    if (!empty($regitems)) foreach ($regitems as $key => $days) {
+                        foreach ($days as $key => $value) {
+                            $regitem[] = $value;
+                        }
+                    }
+                    $items = array_merge($items, $regitem);
                 }
-                $items = array_merge($items, $extitem);
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end, $regcolor);
-                // we need to crunch these down
-                $regitem = array();
-                if (!empty($regitems)) foreach ($regitems as $key => $value) {
-                    $regitem[] = $value;
-                }
-                $items = array_merge($items, $regitem);
                 $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => 'ASC'));
                 // Upcoming events can be configured to show a specific number of events.
                 // The previous call gets all events in the future from today
@@ -1058,7 +1066,7 @@ class eventController extends expController {
                 $eventdate = expDateTime::startOfDayTimestamp(strtotime($dtstart));
                 $extevents[$eventdate][$dy] = new stdClass();
                 $extevents[$eventdate][$dy]->eventdate = $eventdate;
-                $dtend = $times->item(0)->getAttributeNode("endTime")->value;
+                $dtend = @$times->item(0)->getAttributeNode("endTime")->value;
                 if (strlen($dtstart) > 10) {
                     $extevents[$eventdate][$dy]->eventstart = (intval(substr($dtstart, 11, 2)) * 3600) + (intval(substr($dtstart, 14, 2)) * 60);
                     if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600;
@@ -1068,6 +1076,9 @@ class eventController extends expController {
                     $extevents[$eventdate][$dy]->eventstart = null;
                     $extevents[$eventdate][$dy]->is_allday = 1;
                 }
+                $extevents[$eventdate][$dy]->eventstart += $eventdate;
+                $extevents[$eventdate][$dy]->eventend += $eventdate;
+
                 $titles = $item->getElementsByTagName("title");
                 $extevents[$eventdate][$dy]->title = $titles->item(0)->nodeValue;
                 $contents = $item->getElementsByTagName("content");
@@ -1080,8 +1091,6 @@ class eventController extends expController {
                 $dy++;
             }
         }
-        $dy = 0;
-        $url = 0;
         if (!empty($this->config['pull_ical'])) foreach ($this->config['pull_ical'] as $key=>$exticalurl) {
             $url++;
             require_once BASE . 'external/iCalcreator.class.php';
@@ -1098,9 +1107,9 @@ class eventController extends expController {
                 $startDay = date('j', $startdate);
             }
             if ($enddate == null) {
-                $endYear = false;
-                $endMonth = false;
-                $endDay = false;
+                $endYear = $startYear+1;
+                $endMonth = $startMonth;
+                $endDay = $startDay;
             } else {
                 $endYear = date('Y', $enddate);
                 $endMonth = date('n', $enddate);
@@ -1108,58 +1117,99 @@ class eventController extends expController {
             }
             $eventArray = $v->selectComponents($startYear, $startMonth, $startDay, $endYear, $endMonth, $endDay, 'vevent');
             $tzarray = getTimezonesAsDateArrays($v);
+            $url = 0;
+            $dy = 0;
             if (!empty($eventArray)) foreach ($eventArray as $year => $yearArray) {
                 if (!empty($yearArray)) foreach ($yearArray as $month => $monthArray) {
                     if (!empty($monthArray)) foreach ($monthArray as $day => $dailyEventsArray) {
                         if (!empty($dailyEventsArray)) foreach ($dailyEventsArray as $vevent) {
                             $yesterday = false;
-                            $currddate = $vevent->getProperty('x-current-dtstart');
-                            $thisday = explode('-', $currddate[1]);
+                            $currdate = $vevent->getProperty('x-current-dtstart');
+                            $thisday = explode('-', $currdate[1]);
                             // if member of a recurrence set,
                             // returns array( 'x-current-dtstart', <DATE>)
                             // <DATE> = (string) date("Y-m-d [H:i:s][timezone/UTC offset]")
                             $dtstart = $vevent->getProperty('dtstart', false, true);
-                            $tzoffsets = array();
-                            $tzoffsets['offsetSec'] = 0;
-                            if (!empty($tzarray)) {
-                                $tzoffsets = getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
-                            }
                             $dtend = $vevent->getProperty('dtend', false, true);
-                            $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']) - $tzoffsets['offsetSec']);
-                            $extevents[$eventdate][$dy] = new stdClass();
-                            $extevents[$eventdate][$dy]->eventdate = $eventdate;
+                            $tzoffsets = array();
+                            if (!empty($tzarray)) {
+                                if (!empty($dtstart['params']['TZID'])) $tzoffsets = getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
+                            }
+                            if (empty($tzoffsets)) {
+                                $tzoffsets['offsetSec'] = -(iCalUtilityFunctions::_tz2offset(date('O',iCalUtilityFunctions::_date2timestamp($dtstart['value']))));
+                            }
+                            if ($dtstart['value']['day'] != substr($thisday[2], 0, 2)) {  //FIXME this is for the google ical feed which is bad!
+                                $dtst = strtotime($currdate[1]);
+                                $dtst1 = iCalUtilityFunctions::_timestamp2date($dtst);
+                                $dtstart['value']['year'] = $dtst1['year'];
+                                $dtstart['value']['month'] = $dtst1['month'];
+                                $dtstart['value']['day'] = $dtst1['day'];
+                                $currenddate = $vevent->getProperty('x-current-dtend');
+                                $dtet = strtotime($currenddate[1]);
+                                $dtet1 = iCalUtilityFunctions::_timestamp2date($dtet);
+                                $dtend['value']['year'] = $dtet1['year'];
+                                $dtend['value']['month'] = $dtet1['month'];
+                                $dtend['value']['day'] = $dtet1['day'];
+                                $tzoffsets['offsetSec'] = 0;
+                            }
                             if (!empty($dtstart['value']['hour'])) {
+                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']) - $tzoffsets['offsetSec']);
+                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']) - $tzoffsets['offsetSec']);
+                                $extevents[$eventdate][$dy] = new stdClass();
+                                $extevents[$eventdate][$dy]->eventdate = new stdClass();
+                                $extevents[$eventdate][$dy]->eventdate->date = $eventdate;
                                 if (intval($dtstart['value']['hour']) == 0 && intval($dtstart['value']['min']) == 0  && intval($dtstart['value']['sec']) == 0
                                     && intval($dtend['value']['hour']) == 0 && intval($dtend['value']['min']) == 0  && intval($dtend['value']['sec']) == 0
                                     && ((intval($dtstart['value']['day']) - intval($dtend['value']['day'])) == -1)) {
-                                    if ($dtstart['value']['day'] != substr($thisday[2], 0, 2)) {
+//                                    if ($dtstart['value']['day'] != substr($thisday[2], 0, 2)) {
+                                    if (date('d',$eventdate) != substr($thisday[2], 0, 2)) {
+//                                    if (date('d',$eventdate) != date('d',$eventend)) {
                                         $yesterday = true;
                                     } else {
                                         $extevents[$eventdate][$dy]->eventstart = null;
                                         $extevents[$eventdate][$dy]->is_allday = 1;
                                     }
                                 } else {
-                                    $extevents[$eventdate][$dy]->eventstart = ($dtstart['value']['hour'] * 3600) + ($dtstart['value']['min'] * 60) - $tzoffsets['offsetSec'];
-                                    if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600; // adjust for daylight savings time
+                                    if (date('d',$eventdate) != substr($thisday[2], 0, 2)) {
+//                                    if (date('d',$eventdate) != date('d',$eventend)) {
+                                        $yesterday = true;
+                                    } else {
+                                        $extevents[$eventdate][$dy]->eventstart = ($dtstart['value']['hour'] * 3600) + ($dtstart['value']['min'] * 60) - $tzoffsets['offsetSec'];
+                                        if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600; // adjust for daylight savings time
+                                    }
                                 }
                             } else {
                                 // check for all day event
-                                if ($dtstart['value']['day'] != substr($thisday[2], 0, 2)) {
+                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']));
+                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']));
+                                $extevents[$eventdate][$dy] = new stdClass();
+                                $extevents[$eventdate][$dy]->eventdate = new stdClass();
+                                $extevents[$eventdate][$dy]->eventdate->date = $eventdate;
+//                                if ($dtstart['value']['day'] != substr($thisday[2], 0, 2)) {
+                                if (date('d',$eventdate) != substr($thisday[2], 0, 2)) {
+//                                if (date('d',$eventdate) != date('d',$eventend)) {
                                     $yesterday = true;
                                 } else {
                                     $extevents[$eventdate][$dy]->eventstart = null;
                                     $extevents[$eventdate][$dy]->is_allday = 1;
                                 }
                             }
-                            if (!empty($dtend['value']['hour']) && empty($extevents[$eventdate][$dy]->is_allday)) {
+                            if (!$yesterday && isset($dtend['value']['hour']) && empty($extevents[$eventdate][$dy]->is_allday)) {
+//                                if ($dtend['value']['day'] != substr($thisday[2], 0, 2)) {
+//                                if ((date('d',$eventend) != substr($thisday[2], 0, 2))) {
+//                                    $yesterday = true;
+//                                } else {
                                 $extevents[$eventdate][$dy]->eventend = ($dtend['value']['hour'] * 3600) + ($dtend['value']['min'] * 60) - $tzoffsets['offsetSec'];
                                 if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventend += 3600; // adjust for daylight savings time
+//                                }
                             }
+                            if (isset($extevents[$eventdate][$dy]->eventstart) && $extevents[$eventdate][$dy]->eventstart != null) $extevents[$eventdate][$dy]->eventstart += $eventdate;
+                            if (isset($extevents[$eventdate][$dy]->eventend)) $extevents[$eventdate][$dy]->eventend += $eventdate;
+
                             // dtstart required, one occurrence, (orig. start date)
                             $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
-                            $extevents[$eventdate][$dy]->body = nl2br($vevent->getProperty('description'));
+                            $extevents[$eventdate][$dy]->body = str_replace(array('==0A','=0A'),' <br>',nl2br($vevent->getProperty('description')));
 
-//                                $extevents[$eventdate][$dy]->location_data = serialize(expCore::makeLocation('extevent',$extcal->id));
                             $extevents[$eventdate][$dy]->location_data = 'icalevent' . $url;
                             $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;
                             if (!$yesterday) {
