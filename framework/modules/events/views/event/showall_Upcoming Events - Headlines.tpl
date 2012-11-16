@@ -41,7 +41,7 @@
         {$more_events=0}
         {$item_number=0}
 		{foreach from=$items item=item}
-			{if (!$__viewconfig.num_events || $item_number < $__viewconfig.num_events) }	
+			{if (!$config.headcount || $item_number < $config.headcount) }
 				<li>
                     <a class="link{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
