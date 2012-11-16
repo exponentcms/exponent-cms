@@ -38,6 +38,22 @@
 	{/if}
 	{$form_html}
 	{if $edit_mode != 1}
+        <table cellpadding="5" cellspacing="0" border="0" width="100%">
+      			<tr>
+      				<td style="width:100%;border: 1px dashed lightgrey; padding: 1em;">
+      					<form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
+      						<input type="hidden" name="module" value="formbuilder" />
+      						<input type="hidden" name="action" value="edit_control" />
+      						<input type="hidden" name="form_id" value="{$form->id}" />
+      						{'Add a new'|gettext} <select name="control_type" onchange="this.form.submit()">
+      							{foreach from=$types key=value item=caption}
+      								<option value="{$value}">{$caption}</option>
+      							{/foreach}
+      						</select>
+      					</form>
+      				</td>
+      			</tr>
+      		</table>
 		</div>
 	{/if}
     {script unique="viewform"}
@@ -46,22 +62,7 @@
 		 {rdelim}
 	{/script}
 	{if $edit_mode != 1}
-		<table cellpadding="5" cellspacing="0" border="0">
-			<tr>
-				<td style="border:none;">
-					<form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
-						<input type="hidden" name="module" value="formbuilder" />
-						<input type="hidden" name="action" value="edit_control" />
-						<input type="hidden" name="form_id" value="{$form->id}" />
-						{'Add a'|gettext} <select name="control_type" onchange="this.form.submit()">
-							{foreach from=$types key=value item=caption}
-								<option value="{$value}">{$caption}</option>
-							{/foreach}
-						</select>
-					</form>
-				</td>
-			</tr>
-		</table>
+        {br}
 		<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>
 		<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Done'|gettext}</a></p>
 	{/if}

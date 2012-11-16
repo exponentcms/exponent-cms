@@ -68,6 +68,7 @@ class formmodule {
 				$f->location_data = serialize($loc);
 				$f->table_name = "";
 				$f->is_email = 0;
+                $f->select_email = 0;
 				$f->is_saved = 0;
 				$f->submitbtn = gt('Submit');
 				$f->resetbtn = gt('Reset');
@@ -92,6 +93,27 @@ class formmodule {
 
 			$form = new form();
 			$data = expSession::get('formmodule_data_'.$f->id);
+            // display list of email addresses
+            if (!$f->select_email) {
+                //Building Email List...
+                $emaillist = array();
+                foreach ($db->selectObjects("formbuilder_address","form_id=".$f->id) as $address) {
+                    if ($address->group_id != 0) {
+                        $locGroup = group::getGroupById($address->group_id);
+                        $emaillist[$locGroup->id] = $locGroup->name;
+                    } else if ($address->user_id != 0) {
+                        $locUser = user::getUserById($address->user_id);
+                        if ($locUser->email != '') $emaillist[$locUser->email] = $locUser->firstname . ' ' . $locUser->lastname;
+                    } else if ($address->email != '') {
+                        $emaillist[$address->email] = $address->email;
+                    }
+                }
+                //This is an easy way to remove duplicates
+                $emaillist = array_flip(array_flip($emaillist));
+                $emaillist = array_map('trim', $emaillist);
+                array_unshift($emaillist,gt('All Addresses'));
+                $form->register('email_dest',gt('Send Response to'), new radiogroupcontrol('',$emaillist));
+            }
 			foreach ($controls as $c) {
 				$ctl = unserialize($c->data);
 				$ctl->_id = $c->id;

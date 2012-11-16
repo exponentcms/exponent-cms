@@ -46,7 +46,7 @@ foreach($cols as $col) {
         if ($coltype == 'checkboxcontrol') {
             $responses[$col->caption.$num] = 'No';
          }elseif ($coltype=='datetimecontrol') {
-            $responses[$col->name] = $value;
+            $responses[$col->caption.$num] = $value;
         } elseif ($coltype == 'uploadcontrol') { 
             $_POST[$col->name] = PATH_RELATIVE.call_user_func(array($coltype,'moveFile'),$col->name,$_FILES,true);
 //            $value = call_user_func(array($coltype,'buildDownloadLink'),$_POST[$col->name],$_FILES[$col->name]['name'],true);
@@ -72,6 +72,15 @@ $template = new template("formbuilder","_confirm_form");
 $template->assign('recaptcha_theme', RECAPTCHA_THEME);
 $template->assign('responses', $responses);
 $template->assign('postdata', $_POST);
+if (!empty($_POST['email_dest'])) {
+    if (strval(intval($_POST['email_dest'])) == strval($_POST['email_dest'])) {
+        $grp = group::getGroupById(intval($_POST['email_dest']));
+        $template->assign('email_to', $group->name);
+    } else {
+        $usr = user::getUserByEmail($_POST['email_dest']);
+        $template->assign('email_to', $usr->firstname . ' ' . $usr->lastname);
+    }
+}
 $template->output();
 
 ?>
