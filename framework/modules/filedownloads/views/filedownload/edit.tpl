@@ -29,6 +29,7 @@
                     <h2>{'File Download'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control id="downloadable" type="files" name="downloadable" label="File for Download"|gettext subtype=downloadable value=$record->expFile limit=1}
+                    {control type=text name=ext_file label="External File URL"|gettext value=$record->ext_file}
                     {control id="preview" type="files" name="preview" label="Preview Image to display with above 'File'"|gettext subtype=preview value=$record->expFile limit=1}
                     {control type=html name=body label="Body Content"|gettext value=$record->body}
                     {if !$config.disabletags}

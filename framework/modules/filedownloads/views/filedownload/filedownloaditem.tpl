@@ -88,7 +88,11 @@
         &#160;&#160;
     {/if}
     {if !$config.quick_download}
-        {icon action=downloadfile fileid=$file->id text='Download'|gettext}
+        {if $file->ext_file}
+            <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
+        {else}
+            {icon action=downloadfile fileid=$file->id text='Download'|gettext}
+        {/if}
     {/if}
     {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
         <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">

@@ -58,7 +58,7 @@
             {if $record->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->duration}</span>
-            {else}
+            {elseif $record->expFile.downloadable[0]->filesize}
                 <span class="label size">{'File Size'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->filesize|bytes}</span>
             {/if}
@@ -71,7 +71,11 @@
         <div class="bodycopy">
             {$record->body}
         </div>
-        {icon action=downloadfile fileid=$record->id text='Download'|gettext}
+        {if $record->ext_file}
+            <a class=downloadfile href="{$record->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
+        {else}
+            {icon action=downloadfile fileid=$record->id text='Download'|gettext}
+        {/if}
         {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
             <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media"></a>
         {/if}

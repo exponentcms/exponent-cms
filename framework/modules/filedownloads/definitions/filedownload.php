@@ -63,6 +63,9 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
     'disable_comments'=>array(
    		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'ext_file'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>255),
 );
 
 ?>
