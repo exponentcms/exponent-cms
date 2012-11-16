@@ -416,7 +416,7 @@ class eventController extends expController {
                     $extitem = array();
                     foreach ($extitems as $key => $days) {
                         foreach ($days as $key => $event) {
-                            if ($viewrange == 'upcoming' && $event->eventdate->date < time()) break;
+                            if (empty($event->eventdate->date) || ($viewrange == 'upcoming' && $event->eventdate->date < time())) break;
                             if (empty($event->eventstart)) $event->eventstart = $event->eventdate->date;
                             $extitem[] = $event;
                         }
@@ -1019,6 +1019,7 @@ class eventController extends expController {
             $url++;
             if (!empty($startdate)) $begin = date("Y-m-d\Th:i:sP", expDateTime::startOfDayTimestamp($startdate));
             if (!empty($enddate)) $end = date("Y-m-d\Th:i:sP", expDateTime::endOfDayTimestamp($enddate));
+                else $end = date("Y-m-d\Th:i:sP", (expDateTime::endOfDayTimestamp($startdate + ((3600*24)*30))));
 
             if (substr($extgcalurl, -5) == 'basic') {
                 $extgcalurl = substr($extgcalurl, 0, strlen($extgcalurl) - 5) . 'full';
@@ -1062,7 +1063,6 @@ class eventController extends expController {
             foreach ($entries as $item) {
                 $times = $item->getElementsByTagName("when");
                 $dtstart = $times->item(0)->getAttributeNode("startTime")->value;
-                //                  //FIXME must convert $dtstart & $dtend timezone
                 $eventdate = expDateTime::startOfDayTimestamp(strtotime($dtstart));
                 $extevents[$eventdate][$dy] = new stdClass();
                 $extevents[$eventdate][$dy]->eventdate = $eventdate;
@@ -1090,6 +1090,7 @@ class eventController extends expController {
                 $extevents[$eventdate][$dy]->color = !empty($this->config['pull_gcal_color'][$key]) ? $this->config['pull_gcal_color'][$key] : null;
                 $dy++;
             }
+            $tmp=1;
         }
         if (!empty($this->config['pull_ical'])) foreach ($this->config['pull_ical'] as $key=>$exticalurl) {
             $url++;
@@ -1118,7 +1119,6 @@ class eventController extends expController {
             $eventArray = $v->selectComponents($startYear, $startMonth, $startDay, $endYear, $endMonth, $endDay, 'vevent');
             $tzarray = getTimezonesAsDateArrays($v);
             $url = 0;
-            $dy = 0;
             if (!empty($eventArray)) foreach ($eventArray as $year => $yearArray) {
                 if (!empty($yearArray)) foreach ($yearArray as $month => $monthArray) {
                     if (!empty($monthArray)) foreach ($monthArray as $day => $dailyEventsArray) {

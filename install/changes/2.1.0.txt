@@ -2,14 +2,16 @@ version 2.1.0
 This release focuses on new calendar & forms modules, e-Commerce as OOTB experience, integration of jQuery/Twitter Bootstrap
   - adds optional nested comments, and optional per-item comment disabling
   - adds optional comments to filedownload module items
+  - adds optional external file url for file download item
   * removes extra themes to reduce size of package, available as separate addon downloads
   - adds better version change information to initial upgrade page
   - adds optional color/style to categories
   - upgrades calendar to a 2.0 event controller with categories & tags
-    *- converts existing calendars
+    *- optionally upgrades and converts existing calendars
     -- adds color-coded categories and tags
     -- add color-coded aggregation of external Google & iCal calendars, and online event registrations
   - adds new 'mega-menu' navigation view with new free-form page/menu type for embedding modules
   - adds random sorting/sequence to photo album/slideshows
+  - adds optional user selects email destination on form submission
   - adds new built-in database manager
   - plus many, many other tweaks, fixes, and features

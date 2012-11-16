@@ -57,8 +57,12 @@ class AdminerCKeditor {
 				$lang = get_lang();
 				$lang = ($lang == "zh" || $lang == "zh-tw" ? "zh_cn" : $lang);
 			}
-			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='12' cols='50'>" . h($value) . "</textarea><script type='text/javascript'>
-CKEDITOR.replace('fields-" . js_escape($field["field"]) . "');
+			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript'>
+CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{
+        height : '80',
+        toolbarStartupExpanded : false,
+        scayt_autoStartup : true,
+    });
 </script>";
 		}
 	}

@@ -37,15 +37,16 @@ class AdminerEditCalendar {
 
 	function editInput($table, $field, $attrs, $value) {
 //		if (ereg("date|time", $field["type"])) {
-		if (ereg("date", $field["field"]) || ereg("edited_at", $field["field"]) || ereg("created_at", $field["field"]) || ereg("publish", $field["field"])) {
-			$dateFormat = "changeYear: true, changeMonth: true, defaultDate: null, dateFormat: '@', showOn: 'both', buttonImage: '".PATH_RELATIVE."framework/core/assets/images/add.png', buttonImageOnly: true,beforeShow: function(input,inst){jQuery(input).val(jQuery(input).val()*1000);}, onClose: function() {jQuery('#fields-" . js_escape($field['field']) . "').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()) / 1000);}"; //! yy-mm-dd regional
-			$timeFormat = "showSecond: true, timeFormat: 'hh:mm:ss'";
+		if (ereg("date", $field["field"]) || ereg("_at", $field["field"]) || ereg("publish", $field["field"])) {
+			$dateFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@', showOn: 'both', buttonImage: '".PATH_RELATIVE."framework/core/subsystems/forms/controls/assets/calendar/calbtn.gif', buttonImageOnly: true,beforeShow: function(input,inst){jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()) * 1000);},onClose: function() {jQuery('#fields-" . js_escape($field['field']) . "').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "c').val()) / 1000);}";
+			$timeFormat = "showSecond: true,timeFormat: 'hh:mm:ss',showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/subsystems/forms/controls/assets/calendar/calbtn.gif', buttonImageOnly: true,beforeShow: function(input,inst){jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()));},onClose: function() {jQuery('#fields-" . js_escape($field['field']) . "').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "c').val()) );}";
 			return "<input id='fields-" . h($field["field"]) . "' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
-            "<script type='text/javascript'>jQuery('#fields-" . js_escape($field["field"]) . "')."
-				. ($field["type"] == "time" ? "timepicker({ $timeFormat })"
-				: (ereg("time", $field["type"]) ? "datetimepicker({ $dateFormat, $timeFormat })"
-				: "datepicker({ $dateFormat })"
-			)) . ";</script>";
+                "<input type=hidden id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
+                "<script type='text/javascript'>jQuery('#fields-" . js_escape($field["field"]) . "c')."
+                    . ((ereg("eventstart", $field["field"]) || ereg("eventend", $field["field"])) ? "timepicker({ $timeFormat })"
+                    : (ereg("time", $field["type"]) ? "datetimepicker({ $dateFormat, $timeFormat })"
+                    : "datepicker({ $dateFormat })"
+                )) . ";</script>";
 		}
 	}
 	
