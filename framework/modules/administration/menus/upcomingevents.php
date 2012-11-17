@@ -18,7 +18,23 @@
 
 if (!defined('EXPONENT')) exit('');
 
-global $db, $router;
+global $db, $user, $router;
+
+if (!$user->isAdmin()) {
+    $viewregperms = $db->selectValue('userpermission','uid',"uid='".$user->id."' AND module=='eventregistrationController' AND permission!='view_registrants'");
+    if (!$viewregperms) {
+        $groups = $user->getGroupMemberships();
+        foreach ($groups as $group) {
+            if (!$viewregperms) {
+                $viewregperms = $db->selectValue('grouppermission','gid',"gid='".$group->id."' AND module=='eventregistrationController' AND permission!='view_registrants'");
+            } else {
+                break;
+            }
+        }
+    }
+    if (!$viewregperms) return false;
+}
+
 if ($db->countObjects('product', 'product_type="eventregistration"') == 0) return false;
 
 $items = array();
@@ -28,6 +44,7 @@ $items[] = array(
 );
 
 $events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
+//FIXME we need to check to see if we have permission to view registrants
 foreach ($events as $event) {
     $prod = $db->selectObject('product', 'product_type="eventregistration" AND product_type_id='.$event->id);
     if (!empty($prod->title)) {
