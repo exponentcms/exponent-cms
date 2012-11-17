@@ -33,21 +33,22 @@
  * @param \Smarty $smarty
  */
 function smarty_function_comments_count($params,&$smarty) {
-    if (empty($params['item'])) return;
+    if (empty($params['item'])) return;  // no item to work with
     $item = $params['item'];
-    if (!empty($item->disable_comments)) return;
+    if (!empty($item->disable_comments)) return;  // comments disabled for this item
     $config = $smarty->getTemplateVars('config');
-    if (!empty($config['usescomments']) && !count($item->expComment)) return;
+    if (!empty($config['usescomments']) && !count($item->expComment)) return; // new comments disabled and zero existing comments
+    if (!empty($config['hidecomments'])) return; // hide existing comments
 
-    // initialize a couple of variables
+    // different link for show comments and showall items
     if (!empty($params['show'])) {
+        $link = '#exp-comments';
+    } else {
         $linkparams = array();
         $linkparams['controller'] = $item->classname;
         $linkparams['action'] = 'show';
         $linkparams['title'] = $item->sef_url;
         $link = expCore::makeLink($linkparams).'#exp-comments';
-    } else {
-        $link = '#exp-comments';
     }
 
     $prepend = isset($params['prepend']) ? $params['prepend'] : '';

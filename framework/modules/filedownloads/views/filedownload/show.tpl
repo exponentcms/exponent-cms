@@ -58,14 +58,15 @@
             {if $record->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->duration}</span>
+                &#160;|&#160;
             {elseif $record->expFile.downloadable[0]->filesize}
                 <span class="label size">{'File Size'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->filesize|bytes}</span>
+                &#160;|&#160;
             {/if}
-            &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$record->downloads}</span>
-            {comments_count item=$record prepend='&#160;&#160;|&#160;&#160;'}
+            {comments_count item=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
             {tags_assigned item=$record prepend='&#160;&#160;|&#160;&#160;'}
         </div>
         <div class="bodycopy">

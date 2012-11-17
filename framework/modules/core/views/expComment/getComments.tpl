@@ -59,9 +59,9 @@
                                 </cite>
                                 <div class="comment-text">
                                     {if $cmt->avatar->image}
-                                        {img src=$cmt->avatar->image h=40 style="margin:5px; float:left;"}
+                                        {img src=$cmt->avatar->image h=40 class="avatar"}
                                     {else}
-                                        {img src="`$smarty.const.PATH_RELATIVE`framework/modules/users/assets/images/avatar_not_found.jpg" h=40 style="margin:5px; float:left;"}
+                                        {img src="`$smarty.const.PATH_RELATIVE`framework/modules/users/assets/images/avatar_not_found.jpg" h=40 class="avatar"}
                                     {/if}
                                     {permissions}
                                         <div class="item-actions">
@@ -90,9 +90,11 @@
                 {nestcomments cmt=$cmts}
             </div>
         {elseif $config.hidecomments==1}
-            <div class="hide-comments">
-                {"Comments have been disabled"|gettext}
-            </div>
+            {permissions}
+                <div class="hide-comments">
+                    {"Comments have been disabled"|gettext}
+                </div>
+            {/permissions}
         {elseif $config.usescomments!=1}
             <div class="no-comments">
                 {"No comments yet"|gettext}
@@ -100,8 +102,10 @@
         {/if}
     	{*$comments->links* <-- We'll need to fix pagination*}
 	{/if}
-	{if $config.usescomments!=1 && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
+	{if !$hideform && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
 	    {include file="edit.tpl"}
+    {else}
+    <p></p>
 	{/if}
 </div>
 

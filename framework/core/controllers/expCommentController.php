@@ -110,12 +110,11 @@ class expCommentController extends expController {
 
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
         $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-        
-        
+        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+
 //        $sql  = 'SELECT c.*, ua.image, u.username FROM '.DB_TABLE_PREFIX.'_expComments c ';
 //        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
 //        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user_avatar ua ON c.poster=ua.user_id ';
@@ -175,6 +174,10 @@ class expCommentController extends expController {
 			'hidecomments'=>$this->params['hidecomments'],
 			'title'=>$this->params['title'],
 			'formtitle'=>$this->params['formtitle'],
+            'require_login'=>$require_login,
+            'require_approval'=>$require_approval,
+            'require_notification'=>$require_notification,
+            'notification_email'=>$notification_email,
 		));
 	}
 

@@ -48,12 +48,12 @@
                 <span class="value">{$file->expFile.downloadable[0]->duration}</span>
             {else}
                 <span class="label size">{'File Size'}:</span>
-                <span class="value">{$file->expFile.downloadable[0]->filesize|bytes}</span>
+                <span class="value">{if !empty($file->expFile.downloadable[0]->filesize)}{$file->expFile.downloadable[0]->filesize|bytes}{else}{'Unknown'|gettext}{/if}</span>
             {/if}
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$file->downloads}</span>
-            {comments_count item=$file show=1 prepend='&#160;&#160;|&#160;&#160;'}
+            {comments_count item=$file prepend='&#160;&#160;|&#160;&#160;'}
             {tags_assigned item=$file prepend='&#160;&#160;|&#160;&#160;'}
         {/if}
     </div>
