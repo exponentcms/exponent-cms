@@ -187,7 +187,7 @@ class expSession {
 			$user->id = 0;
 		}
 
-		if (isset($ticket->refresh) && $ticket->refresh == 1) {
+		if (!empty($ticket->refresh)) {
 			if (isset($user)) expPermissions::load($user);
 			self::clearCurrentUserSessionCache();
 			$ticket->refresh = 0;
