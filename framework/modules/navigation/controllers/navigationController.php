@@ -718,20 +718,27 @@ class navigationController extends expController {
         //$nav = navigationController::levelTemplate(intval($_REQUEST['id'], 0));
         $id         = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
         $nav        = $db->selectObjects('section', 'parent=' . $id, 'rank');
+        //FIXME $manage_all is moot w/ cascading perms now?
         $manage_all = false;
         if (expPermissions::check('manage', expCore::makeLocation('navigationController', '', $id))) {
             $manage_all = true;
         }
+        //FIXME recode to use foreach $key=>$value
         $navcount = count($nav);
         for ($i = 0; $i < $navcount; $i++) {
             if ($manage_all || expPermissions::check('manage', expCore::makeLocation('navigationController', '', $nav[$i]->id))) {
                 $nav[$i]->manage = 1;
+                $view = true;
             } else {
                 $nav[$i]->manage = 0;
+                $view = $nav[$i]->public ? true : expPermissions::check('view', expCore::makeLocation('navigationController', '', $nav[$i]->id));
             }
             $nav[$i]->link = expCore::makeLink(array('section' => $nav[$i]->id), '', $nav[$i]->sef_name);
+            if (!$view) unset($nav[$i]);
         }
-        $nav[$navcount - 1]->last = true;
+        $nav= array_values($nav);
+//        $nav[$navcount - 1]->last = true;
+        $nav[count($nav) - 1]->last = true;
         echo expJavascript::ajaxReply(201, '', $nav);
         exit;
     }

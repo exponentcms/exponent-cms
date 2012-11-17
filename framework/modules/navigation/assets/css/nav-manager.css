@@ -134,30 +134,6 @@
     padding:3px 5px 0 2px;
     cursor:default;
 }
-.navigation.manager-hierarchy .draggables span.inactive {
-    font-style: italic;
-    font-weight: normal;
-}
-.navigation.manager-hierarchy .draggables span.addpage {
-    padding:0 20px;
-    background-image:url(../images/page.png);
-    background-repeat:no-repeat;
-}
-.navigation.manager-hierarchy .draggables span.addextpage {
-    padding:0 20px;
-    background-image:url(../images/page_world.png);
-    background-repeat:no-repeat;
-}
-.navigation.manager-hierarchy .draggables span.addintpage {
-    padding:0 20px;
-    background-image:url(../images/page_link.png);
-    background-repeat:no-repeat;
-}
-.navigation.manager-hierarchy .draggables span.addfreeform {
-    padding:0 20px;
-    background-image:url(../images/page_edit.png);
-    background-repeat:no-repeat;
-}
 .navigation.manager-hierarchy .draggables a.sectionmenu{
     width:20px;
     height:15px;
@@ -179,10 +155,34 @@
     display:block;
 }
 .navigation.manager-hierarchy .nondraggables span {
-    color:#555;
+    color: #909090;
     font-weight:bold;
     padding:3px 0 0 2px;
     display:block;
+}
+.navigation.manager-hierarchy span.inactive {
+    font-style: italic;
+    font-weight: normal;
+}
+.navigation.manager-hierarchy span.addpage {
+    padding:0 20px;
+    background-image:url(../images/page.png);
+    background-repeat:no-repeat;
+}
+.navigation.manager-hierarchy span.addextpage {
+    padding:0 20px;
+    background-image:url(../images/page_world.png);
+    background-repeat:no-repeat;
+}
+.navigation.manager-hierarchy span.addintpage {
+    padding:0 20px;
+    background-image:url(../images/page_link.png);
+    background-repeat:no-repeat;
+}
+.navigation.manager-hierarchy span.addfreeform {
+    padding:0 20px;
+    background-image:url(../images/page_edit.png);
+    background-repeat:no-repeat;
 }
 .navigation.manager-hierarchy .ghost {
     filter: alpha(opacity=30); -moz-opacity:.3;
