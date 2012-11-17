@@ -60,8 +60,12 @@
                     {if $item->publish_date > $smarty.now}
                         <strong>{'Will be'|gettext}&#160;
                     {/if}
-                    <span class="label posted">{'Posted by'|gettext}</span>
-                    <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
+                    
+                    {if !$config.displayauthor}
+                        <span class="label posted">{'Posted by'|gettext}</span>
+                        <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
+                    {/if}
+
                     {if !$config.datetag}
                         {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
                     {/if}
@@ -69,7 +73,10 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                {comments_count item=$item show=1 prepend='&#160;&#160;|&#160;&#160;'}
+                {if !$config.hidecomments}
+                    {comments_count item=$item show=1 prepend='&#160;&#160;|&#160;&#160;'}
+                {/if}
+                
                 {tags_assigned item=$item prepend='&#160;&#160;|&#160;&#160;'}
             </div>
             {permissions}

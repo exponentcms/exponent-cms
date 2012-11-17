@@ -36,8 +36,12 @@
             {if $record->publish_date > $smarty.now}
                 <strong>{'Will be'|gettext}&#160;
             {/if}
-            <span class="label posted">{'Posted by'|gettext}</span>
-            <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
+
+            {if !$config.displayauthor}
+                <span class="label posted">{'Posted by'|gettext}</span>
+                <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
+            {/if}
+
             {if !$config.datetag}
                 {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>
             {/if}
@@ -45,7 +49,9 @@
                 </strong>&#160;
             {/if}
         </span>
-        {comments_count item=$record prepend='&#160;&#160;|&#160;&#160;'}
+        {if !$config.hidecomments}
+            {comments_count item=$record prepend='&#160;&#160;|&#160;&#160;'}
+        {/if}
         {tags_assigned item=$record prepend='&#160;&#160;|&#160;&#160;'}
     </div>
     {permissions}
@@ -98,7 +104,7 @@
             <hr>
         </div>
     {/if}
-    {if empty($record->disable_comments)}
+    {if !$config.hidecomments}
         {comments content_type="blog" content_id=$record->id title="Comments"|gettext}
     {/if}
 </div>
