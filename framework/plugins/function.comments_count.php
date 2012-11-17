@@ -33,8 +33,9 @@
  * @param \Smarty $smarty
  */
 function smarty_function_comments_count($params,&$smarty) {
-    if (empty($params['item'])) return;  // no item to work with
-    $item = $params['item'];
+    if (empty($params['item']) && empty($params['record'])) return;  // no item to work with
+    $item = $params['record'];
+    if (empty($item)) $item = $params['item'];  // compatibility w/ first version of function
     if (!empty($item->disable_comments)) return;  // comments disabled for this item
     $config = $smarty->getTemplateVars('config');
     if (!empty($config['usescomments']) && !count($item->expComment)) return; // new comments disabled and zero existing comments

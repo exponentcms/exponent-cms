@@ -89,7 +89,7 @@
                                 {/if}
                             </div>
                         {/permissions}
-                    {tags_assigned item=$qna}
+                    {tags_assigned record=$qna}
                     <div class="bodycopy">
                         {$qna->answer}
                     </div>
@@ -109,7 +109,7 @@
             <div>
                 <a name="faq_{$question->id}"></a>
                 <h3>{$question->question}</h3>
-                {tags_assigned item=$question}
+                {tags_assigned record=$question}
                 <div class="bodycopy">
                     <p>{$question->answer}</p>
                 </div>

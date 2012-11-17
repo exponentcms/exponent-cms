@@ -61,7 +61,7 @@
             {if !$config.datetag}
                 <span class="date">{$item->publish_date|date_format}</span>
             {/if}
-            {tags_assigned item=$item prepend='&#160;&#160;|&#160;&#160;'}
+            {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
             {if $item->isRss != true}
                 {permissions}
                 <div class="item-actions">

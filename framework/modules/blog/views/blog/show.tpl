@@ -47,8 +47,8 @@
                 </strong>&#160;
             {/if}
         </span>
-        {comments_count item=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
-        {tags_assigned item=$record prepend='&#160;&#160;|&#160;&#160;'}
+        {comments_count record=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
+        {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
     </div>
     {permissions}
         <div class="item-actions">
@@ -100,7 +100,5 @@
             <hr>
         </div>
     {/if}
-    {if empty($record->disable_comments)}
-        {comments content_type="blog" content_id=$record->id title="Comments"|gettext}
-    {/if}
+    {comments record=$record title="Comments"|gettext}
 </div>

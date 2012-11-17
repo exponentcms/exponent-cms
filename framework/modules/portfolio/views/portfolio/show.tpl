@@ -35,7 +35,7 @@
             {/if}
 		</div>
 	{/permissions}
-    {tags_assigned item=$record}
+    {tags_assigned record=$record}
 	<div class="bodycopy">
         {if $config.filedisplay != "Downloadable Files"}
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}

@@ -53,8 +53,8 @@
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$file->downloads}</span>
-            {comments_count item=$file prepend='&#160;&#160;|&#160;&#160;'}
-            {tags_assigned item=$file prepend='&#160;&#160;|&#160;&#160;'}
+            {comments_count record=$file prepend='&#160;&#160;|&#160;&#160;'}
+            {tags_assigned record=$file prepend='&#160;&#160;|&#160;&#160;'}
         {/if}
     </div>
     {permissions}

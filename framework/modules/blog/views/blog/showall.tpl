@@ -71,8 +71,8 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                {comments_count item=$item prepend='&#160;&#160;|&#160;&#160;'}
-                {tags_assigned item=$item prepend='&#160;&#160;|&#160;&#160;'}
+                {comments_count record=$item prepend='&#160;&#160;|&#160;&#160;'}
+                {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
             </div>
             {permissions}
                 <div class="item-actions">

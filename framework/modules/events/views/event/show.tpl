@@ -35,7 +35,7 @@
         {ical_link}
 		{$item->title}
 	</h2>
-    {tags_assigned item=$item}
+    {tags_assigned record=$item}
 	{permissions}
 		<div class="item-actions">
 			{if $permissions.edit == 1}

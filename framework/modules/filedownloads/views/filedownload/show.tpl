@@ -66,8 +66,8 @@
             {/if}
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$record->downloads}</span>
-            {comments_count item=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
-            {tags_assigned item=$record prepend='&#160;&#160;|&#160;&#160;'}
+            {comments_count record=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
+            {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
         </div>
         <div class="bodycopy">
             {$record->body}
@@ -81,9 +81,7 @@
             <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media"></a>
         {/if}
         {clear}
-        {if empty($record->disable_comments)}
-            {comments content_type="filedownload" content_id=$record->id title="Comments"|gettext}
-        {/if}
+        {comments record=$record title="Comments"|gettext}
 	</div>
 </div>
 

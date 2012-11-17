@@ -29,7 +29,7 @@
     {if !$config.datetag}
         <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
     {/if}
-    {tags_assigned item=$record}
+    {tags_assigned record=$record}
     {permissions}
         <div class="item-actions">   
             {if $permissions.edit == true}
