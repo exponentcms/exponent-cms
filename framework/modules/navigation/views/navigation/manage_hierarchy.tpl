@@ -451,7 +451,9 @@ var YAHOO = Y.YUI2;
 	
 	function onTriggerContextMenu(p_oEvent) {
 		var theID = this.contextEventTarget;
-		if(YAHOO.util.Dom.hasClass(theID,"sectionlabel")){
+        if(YAHOO.util.Dom.getAncestorByClassName(theID,"nondraggables")){
+            this.cancel();
+        } else if(YAHOO.util.Dom.hasClass(theID,"sectionlabel")){
 			currentMenuNode = tree.getNodeByElement(theID);
 			oContextMenu.setItemGroupTitle(currentMenuNode.data.name,0);
 		} else {

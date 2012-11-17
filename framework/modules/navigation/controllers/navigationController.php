@@ -1025,6 +1025,21 @@ class navigationController extends expController {
         expHistory::back();
     }
 
+    // create a psuedo global manage pages permission
+    public static function checkPermissions($permission,$location) {
+        global $exponent_permissions_r, $user, $db, $router;
+
+        // only applies to the 'manage' method
+        if (empty($location->src) && empty($location->int) && !empty($router->params['action']) && $router->params['action'] == 'manage') {
+            if (!empty($exponent_permissions_r['navigationController'])) foreach ($exponent_permissions_r['navigationController'] as $page) {
+                foreach ($page as $pageperm) {
+                    if (!empty($pageperm['manage'])) return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
 
 ?>

@@ -85,6 +85,11 @@ class expPermissions {
 	public static function check($permission,$location) {
 		global $exponent_permissions_r, $user, $db, $module_scope;
 
+        if (method_exists(expModules::getController($location->mod), 'checkPermissions')){
+            $mod = expModules::getController($location->mod);
+            if ($mod::checkPermissions($permission,$location)) return true;
+        }
+
 		if (!empty($user->id)) {
 			if ($user->isAdmin()) return true;  // admin users always have permissions
 		} else {

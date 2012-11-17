@@ -674,6 +674,21 @@ class eventregistrationController extends expController {
         return $pass_events;
     }
 
+    // create a psuedo global view_registrants permission
+    public static function checkPermissions($permission,$location) {
+        global $exponent_permissions_r, $user, $db, $router;
+
+        // only applies to the 'view_registrants' method
+        if (empty($location->src) && empty($location->int) && $router->params['action'] == 'view_registrants') {
+            if (!empty($exponent_permissions_r['eventregistrationController'])) foreach ($exponent_permissions_r['eventregistrationController'] as $page) {
+                foreach ($page as $pageperm) {
+                    if (!empty($pageperm['view_registrants']) || !empty($pageperm['manage'])) return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
 
 ?>

@@ -41,7 +41,7 @@
                     {if $section->id == 0}
                         {control type=hidden name=parent value=$section->parent}
                     {else}
-                        {control type="dropdown" name="parent" label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),true,'manage') value=$section->parent}
+                        {control type=dropdown name=parent label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),$user->isAdmin(),'manage') value=$section->parent}
                     {/if}
                     {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
                     {control type=text name=external_link label="Page URL"|gettext value=$section->external_link}

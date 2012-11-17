@@ -41,7 +41,7 @@
                     {if $section->id == 0}
                         {control type=hidden name=parent value=$section->parent}
                     {else}
-                        {control type="dropdown" name="parent" label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),true,'manage') value=$section->parent}
+                        {control type=dropdown name=parent label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),$user->isAdmin(),'manage') value=$section->parent}
                     {/if}
                     {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
                     {control type="dropdown" name="internal_id" label="Page"|gettext items=navigationController::levelDropDownControlArray(0,0,array(),false,'manage') value=$section->internal_id default=$smarty.const.SITE_DEFAULT_SECTION}
