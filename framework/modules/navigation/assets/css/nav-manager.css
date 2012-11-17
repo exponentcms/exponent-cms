@@ -42,13 +42,13 @@
 #navTreeContext .yuimenuitemlabel-hassubmenu{
     background-image : url(../images/menuitem_submenuindicator.png);
     background-repeat: no-repeat;
-    background-position: 175px;
+    background-position: 100%;
 }
 #navTreeContext .addsubpage {
     background-image: url(../../../../core/assets/images/exp1icons.png);
     background-repeat: no-repeat;
     background-position:  0 -492px;
-    padding-top:5px;
+    padding-top:7px;
 }
 #navTreeContext .addpage {
     background-image: url(../images/page.png);
@@ -73,19 +73,19 @@
 #navTreeContext .viewpage {
     background-image:url(../../../../core/assets/images/view.png);
     background-repeat: no-repeat;
-    padding-top:5px;
+    padding-top:2px;
 }
 #navTreeContext .editpage {
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat: no-repeat;
     background-position:0 -517px;
-    padding-top:5px;
+    padding-top:7px;
 }
 #navTreeContext .deletepage {
     background-image:url(../../../../core/assets/images/exp1icons.png);
     background-repeat: no-repeat;
     background-position:0 -68px;
-    padding-top:5px;
+    padding-top:7px;
 }
 #navTreeContext .userperms {
     background-image:url(../../../../core/assets/images/exp1icons.png);
