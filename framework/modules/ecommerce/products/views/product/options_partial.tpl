@@ -24,6 +24,7 @@
                 <h2>{$group->title}</h2><a href="#" class="expand">{'Expand'|gettext}</a>
             </div>
             <div class="bd collapsed">
+                <!-- cke lazy -->
                 <table class="options exp-skin-table" summary="{$group->title} {'Product Options'|gettext}">
                     <thead>
                         <tr>
@@ -99,8 +100,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         }
     }
     Y.all('.options-partial .panel .hd a').on('click',action);
-    var toggles = Y.all('a.togglelink');
-    toggles.on('click', function(e){
+
+    var showit = function(e){
         e.halt();
         var targrel = e.target.get("rel");
         if (Y.one('#'+targrel).getStyle('display')=="none") {
@@ -112,8 +113,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         } else {
             Y.one('#'+targrel).setStyle('display',"none");
         }
+    }
+    Y.all('a.togglelink').on('click', showit);
+
+    Y.Global.on('lazyload:cke', function() {
+        Y.all('.options-partial .panel .hd a').on('click',action);
+        Y.all('a.togglelink').on('click', showit);
     });
-    
+
 });
 {/literal}
 {/script}

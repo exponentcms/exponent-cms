@@ -39,11 +39,13 @@ if ($db->countObjects('product', 'product_type="eventregistration"') == 0) retur
 
 $items = array();
 $items[] = array(
-    'text'=>"<strong><u>".gt('View All Event Registrations')."</u><strong>",
+    'text'=>gt('View All Event Registrations'),
     'url'=>makeLink(array('controller'=>'eventregistration','action'=>'manage')),
+    'classname'=>'events',
 );
 
-$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
+//$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
+$events = $db->selectObjects('eventregistration', 'eventdate > '.time());
 //FIXME we need to check to see if we have permission to view registrants
 foreach ($events as $event) {
     $prod = $db->selectObject('product', 'product_type="eventregistration" AND product_type_id='.$event->id);
@@ -51,6 +53,7 @@ foreach ($events as $event) {
         $thisitem = array();
         $thisitem['text'] = $prod->title.' ('.$event->number_of_registrants.'/'.$prod->quantity.')';
         $thisitem['url'] = $router->makeLink(array('controller'=>'eventregistration','action'=>'view_registrants', 'id'=>$prod->id));
+        $thisitem['classname'] = 'event';
         $items[] = $thisitem;
     }
 }

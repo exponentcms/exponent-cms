@@ -77,7 +77,10 @@
     padding:5px 0 2px 10px;
     text-transform:capitalize;
 }
-#admintoolbar li.events a.yuimenubaritemlabel {
+#admintoolbar li.events a.yuimenubaritemlabel, #admintoolbar li.events a.yuimenuitemlabel {
+    background:url(../images/admintoolbar/calendar_1.png) no-repeat 5px 40%;
+}
+#admintoolbar li.event a.yuimenuitemlabel {
     background:url(../images/admintoolbar/cal.png) no-repeat 5px 40%;
 }
 #admintoolbar li.ealerts a.yuimenubaritemlabel {
@@ -86,7 +89,6 @@
 #admintoolbar li.thispage {
     border-right:1px solid #141c3e;
 }
-
 #admintoolbar li.thispage a.yuimenubaritemlabel {
     background:url(../images/admintoolbar/page.png) no-repeat 5px 40%;
 }
@@ -105,7 +107,6 @@
 #admintoolbar li.preview_off a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
 }
-
 #admintoolbar li.config a.yuimenuitemlabel {
     background:url(../images/admintoolbar/config.png) no-repeat 5px 50%;
 }
