@@ -142,7 +142,7 @@ class expVersion {
         }
 
         // check if online version is newer than installed software version, but only once per session
-        if ($user->isSuperAdmin()) {
+        if (!(defined('SKIP_VERSION_CHECK') ? SKIP_VERSION_CHECK : 0) && $user->isSuperAdmin()) {
             if (!expSession::is_set('update-check')) {
                 //FIXME we need a good installation/server to place this on
                 $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));

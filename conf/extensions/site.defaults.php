@@ -44,5 +44,6 @@ if (!defined('HELP_ACTIVE')) define('HELP_ACTIVE','1');
 if (!defined('HELP_URL')) define('HELP_URL','http://docs.exponentcms.org/');
 
 if (!defined('FORCE_ECOM')) define('FORCE_ECOM','0');
+if (!defined('SKIP_VERSION_CHECK')) define('SKIP_VERSION_CHECK','0');
 
 ?>

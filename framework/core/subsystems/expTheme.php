@@ -167,7 +167,8 @@ class expTheme {
    			self::module(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
    		}
 
-   		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+//   		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+        if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
    			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'togglemobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
    		}
    		//echo expJavascript::parseJSFiles();
