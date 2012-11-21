@@ -27,7 +27,7 @@
 class upgrade_simplepoll extends upgradescript {
 	protected $from_version = '0.0.0';
 	protected $to_version = '2.0.9';
-//    public $optional = true;
+    public $optional = true;
 
 	/**
 	 * name/title of upgrade script

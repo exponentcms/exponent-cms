@@ -27,7 +27,7 @@
 class upgrade_calendar extends upgradescript {
 	protected $from_version = '0.0.0';
 	protected $to_version = '2.1.0';
-//    public $optional = true;
+    public $optional = true;
 
 	/**
 	 * name/title of upgrade script

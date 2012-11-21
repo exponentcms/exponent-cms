@@ -73,7 +73,7 @@ class fakeform extends form {
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</div>";
-                if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"display:inline;\">" . $this->controls[$name]->description . "</div>";
+                if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
             }
             $html .= "<div class=\"item-actions\">";
 			if (!$this->controls[$name]->_readonly) {

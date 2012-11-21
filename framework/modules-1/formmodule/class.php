@@ -94,7 +94,7 @@ class formmodule {
 			$form = new form();
 			$data = expSession::get('formmodule_data_'.$f->id);
             // display list of email addresses
-            if ($f->select_email) {
+            if (!empty($f->select_email)) {
                 //Building Email List...
                 $emaillist = array();
                 foreach ($db->selectObjects("formbuilder_address","form_id=".$f->id) as $address) {
