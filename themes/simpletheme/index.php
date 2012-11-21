@@ -24,6 +24,7 @@
 			</a>
 			</h1>
 			<?php //expTheme::module(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_flyoutYUI")); ?>
+            <?php //expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_YUI Top Nav")); ?>
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_mega","chrome"=>true)); ?>
 			<?php //expTheme::module(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks")) ?>
 			<?php expTheme::module(array("controller"=>"search","action"=>"show")) ?>

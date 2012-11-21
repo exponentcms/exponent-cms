@@ -52,6 +52,7 @@
                     <span class="day">{$item->publish_date|format_date:"%e"}</span>
                     <span class="year">{$item->publish_date|format_date:"%Y"}</span>
                 </p>
+                {$pp = ''}
             {/if}
             <h2>
                 <a href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
@@ -60,8 +61,9 @@
             </h2>
             {if !$config.datetag}
                 <span class="date">{$item->publish_date|date_format}</span>
+                {$pp = '&#160;&#160;|&#160;&#160;'}
             {/if}
-            {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
+            {tags_assigned record=$item prepend=$pp}
             {if $item->isRss != true}
                 {permissions}
                 <div class="item-actions">

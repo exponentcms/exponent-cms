@@ -23,7 +23,9 @@
                 <?php echo ORGANIZATION_NAME; ?>
 			</a>
 			</h1>
-            <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_YUI Top Nav")); ?>
+            <?php //expTheme::module(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_flyoutYUI")); ?>
+             <?php //expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_YUI Top Nav")); ?>
+             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_mega","chrome"=>true)); ?>
 			<?php expTheme::module(array("controller"=>"search","action"=>"show")) ?>
 		</div>
 		<div id="bd" class="yui3-g">
