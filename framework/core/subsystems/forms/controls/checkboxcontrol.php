@@ -72,6 +72,7 @@ class checkboxcontrol extends formcontrol {
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
 //            $html .= "</td>";
+            $flip = '';
         } else {
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
 //            $html .= "<td class=\"input\" nowrap>";
@@ -86,9 +87,10 @@ class checkboxcontrol extends formcontrol {
                 $html .= "</div>";
             }
 //            $html .= "</td>";
+            $flip = ' style="position:absolute;"';
         }
 //        $html .= "</tr></table>";
-        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\" style=\"position:absolute;\">" . $this->description . "</div>";
+        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\"".$flip.">" . $this->description . "</div><br>";
         $html .= "</div>";
         return $html;
     }

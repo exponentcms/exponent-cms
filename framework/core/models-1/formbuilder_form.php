@@ -56,7 +56,7 @@ class formbuilder_form {
 
 		$form->register(null,'', new htmlcontrol('<h2>'.gt('Email Settings').'</h2>'),true,gt('Email'));
 		$form->register('is_email',gt('Email Form'),new checkboxcontrol($object->is_email,false),true,gt('Email'));
-        $form->register('select_email',gt('Allow User to Select the Destination Email'),new checkboxcontrol($object->select_email,false),true,gt('Email'));
+        $form->register('select_email',gt('Allow User to Select the Destination Email'),new checkboxcontrol(!empty($object->select_email),false),true,gt('Email'));
 
 		// Get User list
     	$userlist = array();
