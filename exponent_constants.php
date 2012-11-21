@@ -490,7 +490,7 @@ if (!defined('JQUERY_RELATIVE')) {
 	 * jQuery/jQueryUI Version Constants
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('JQUERY_VERSION', '1.8.2');
+	define('JQUERY_VERSION', '1.8.3');
     define('JQUERYUI_VERSION', '1.9.1');
 	define('JQUERY_RELATIVE', PATH_RELATIVE.'external/jquery/');
     define('JQUERY_PATH', BASE.'external/jquery/');
