@@ -60,6 +60,7 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "yuidatetimecontrol":
             case "yuidatetime":
+                if (empty($params['value'])) $params['checked'] = true;
                 if (empty($params['value'])) $params['value'] = time();
                 $edittext = isset($params['edit_text']) ? $params['edit_text'] : 'Change Date/Time';
                 $control = new yuidatetimecontrol($params['value'], $edittext, $showdate, $showtime);
