@@ -27,17 +27,17 @@ class storeController extends expController {
 
     public $useractions = array(
         'showall'                            => 'All Products and Categories',
-        'showall_featured_products'          => 'Products - Only show Featured',
+        'showallFeaturedProducts'            => 'Products - Only show Featured',
         'showallManufacturers'               => 'Products - By Manufacturer',
         'showTopLevel'                       => 'Categories - Show Top Level',
         'showFullTree'                       => 'Categories - Show Full Tree',
         'showallSubcategories'               => 'Categories - Subcategories of current category',
-        'upcoming_events'                    => 'Event Registration - Upcoming Events',
-        'events_calendar'                    => 'Event Registration - Calendar View',
+        'upcomingEvents'                    => 'Event Registration - Upcoming Events',
+        'eventsCalendar'                    => 'Event Registration - Calendar View',
         'ecomSearch'                         => 'Search - Autocomplete',
-        'search_by_model_form'               => 'Search - By Model',
+        'searchByModelForm'               => 'Search - By Model',
         'quicklinks'                         => 'Links - Users Links',
-        'showall_category_featured_products' => 'Show Featured Products under the current category',
+        'showallCategoryFeaturedProducts'    => 'Show Featured Products under the current category',
         'showGiftCards'                      => 'Gift Cards UI',
     );
 
@@ -283,7 +283,7 @@ class storeController extends expController {
         }
     }
 
-    function upcoming_events() {
+    function upcomingEvents() {
         $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
         $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
@@ -313,7 +313,7 @@ class storeController extends expController {
         ));
     }
 
-    function events_calendar() {
+    function eventsCalendar() {
         global $db;
 
         expHistory::set('viewable', $this->params);
@@ -734,7 +734,7 @@ class storeController extends expController {
         ));
     }
 
-    function showall_featured_products() {
+    function showallFeaturedProducts() {
         $order = 'title';
         $dir   = 'ASC';
 
@@ -759,7 +759,7 @@ class storeController extends expController {
         ));
     }
 
-    function showall_category_featured_products() {
+    function showallCategoryFeaturedProducts() {
 
         $curcat = $this->category;
 
@@ -1284,7 +1284,7 @@ class storeController extends expController {
         }
     }
 
-    function search_by_model_old() {
+    function searchByModelForm() {
         // get the search terms
         $terms = $this->params['search_string'];
 
@@ -2257,6 +2257,10 @@ class storeController extends expController {
         $db->delete('model_aliases', 'id =' . $this->params['id']);
 
         expHistory::back();
+    }
+
+    function setup_wizard() {
+
     }
 }
 

@@ -28,7 +28,7 @@
 {/css}
 
 <div class="formbuilder confirm-form">
-	<h1>{'Please confirm your submission'|gettext}</h1>
+	<h1>{'Please confirm your submission'|gettext}{if $email_to} {'to'|gettext} '{$email_to}'{/if}</h1>
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="exp-skin-table">
 	    <thead>
         	<th>{'Field'|gettext}</th>

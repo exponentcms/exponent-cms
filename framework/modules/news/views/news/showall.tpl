@@ -27,7 +27,8 @@
             {if !$config.disabletags}
             |  {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
             {/if}
-            {if $rank == 1}
+            {*{if $rank == 1}*}
+            {if $config.order == 'rank'}
             |  {ddrerank items=$page->records model="news" label="News Items"|gettext}
             {/if}
         {/if}
@@ -40,7 +41,8 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">
@@ -50,6 +52,7 @@
                     <span class="day">{$item->publish_date|format_date:"%e"}</span>
                     <span class="year">{$item->publish_date|format_date:"%Y"}</span>
                 </p>
+            {$pp = ''}
             {/if}
             <h2>
                 <a href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
@@ -58,18 +61,9 @@
             </h2>
             {if !$config.datetag}
                 <span class="date">{$item->publish_date|date_format}</span>
+            {$pp = '&#160;&#160;|&#160;&#160;'}
             {/if}
-            {if $item->expTag|@count>0 && !$config.disabletags}
-                {if !$config.datetag}
-                    &#160;|&#160;
-                {/if}
-                <span class="label tags">{'Tags'|gettext}:</span>
-                <span class="value">
-                    {foreach from=$item->expTag item=tag name=tags}
-                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach}
-                </span>
-            {/if}
+            {tags_assigned record=$item prepend=$pp}
             {if $item->isRss != true}
                 {permissions}
                     <div class="item-actions">

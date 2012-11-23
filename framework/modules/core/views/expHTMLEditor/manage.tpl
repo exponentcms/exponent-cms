@@ -51,10 +51,12 @@
         <tbody>
             <tr class="{cycle values="odd,even"}{if $module->active == 1} active{/if}">
                 <td>
-					{assign var=active value=0}
+					{*{assign var=active value=0}*}
+                    {$active=0}
 					{foreach from=$configs item=cfg}
 						{if $cfg->active}
-							{assign var=active value=1}
+							{*{assign var=active value=1}*}
+                            {$active=1}
 						{/if}
 					{/foreach}
                     {if !$active}

@@ -36,7 +36,7 @@
 					{elseif $tweet.retweetedbyme}
 						{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="float:left; margin:2px 5px 100% 0px;"}
 					{/if}
-					<dt><em class="date">{$tweet.created_at}{if $config.showattrib} {'via'|gettext} {$tweet.via}, {$tweet.screen_name} {'wrote'|gettext}:{/if}</em></dt>
+					<dt><em class="date">{$tweet.created_at|relative_date}{if $config.showattrib} {'via'|gettext} {$tweet.via}, {$tweet.screen_name} {'wrote'|gettext}:{/if}</em></dt>
 					<dd>
 						{$tweet.text}
 						{permissions}

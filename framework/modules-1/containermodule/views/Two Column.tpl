@@ -20,16 +20,22 @@
 <div class="containermodule two-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
     <div class="twocolcontainerleft">
-    	{assign var=container value=$containers.0}
-    	{assign var=i value=0}
-		{assign var=rerank value=0}
+    	{*{assign var=container value=$containers.0}*}
+    	{*{assign var=i value=0}*}
+		{*{assign var=rerank value=0}*}
+    	{$container=$containers.0}
+    	{$i=0}
+		{$rerank=0}
     	{include file=$viewfile}
 		{clear}
     </div>
     <div class="twocolcontainerright">
-    	{assign var=container value=$containers.1}
-    	{assign var=i value=1}
-		{assign var=rerank value=0}
+    	{*{assign var=container value=$containers.1}*}
+    	{*{assign var=i value=1}*}
+		{*{assign var=rerank value=0}*}
+    	{$container=$containers.1}
+    	{$i=1}
+		{$rerank=0}
     	{include file=$viewfile}
 		{clear}
     </div>

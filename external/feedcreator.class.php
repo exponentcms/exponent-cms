@@ -1,12 +1,15 @@
 <?php
 /***************************************************************************
 
-FeedCreator class v1.7.2-iTunes
+FeedCreator class v1.8.0dev-iTunes
 originally (c) Kai Blankenhorn
 www.bitfolge.de
 kaib@bitfolge.de
 v1.3 work by Scott Reynen (scott@randomchaos.com) and Kai Blankenhorn
 v1.5 OPML support by Dirk Clemens
+v1.7.2-mod on-the-fly feed generation by Fabian Wolf (info@f2w.de)
+v1.7.2-ppt ATOM 1.0 support by Mohammad Hafiz bin Ismail (mypapit@gmail.com)
+v1.7.3 podcast support by Steve Blinch
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -23,7 +26,133 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 ****************************************************************************
+ *
+Changelog:
 
+v1.7.3	10-11-04
+added podcast support
+added generator attribute
+added support for custom markup in feeds and items
+
+v1.7.2	10-11-04
+license changed to LGPL
+
+v1.7.1
+fixed a syntax bug
+fixed left over debug code
+
+v1.7	07-18-04
+added HTML and JavaScript feeds (configurable via CSS) (thanks to Pascal Van Hecke)
+added HTML descriptions for all feed formats (thanks to Pascal Van Hecke)
+added a switch to select an external stylesheet (thanks to Pascal Van Hecke)
+changed default content-type to application/xml
+added character encoding setting
+fixed numerous smaller bugs (thanks to Sören Fuhrmann of golem.de)
+improved changing ATOM versions handling (thanks to August Trometer)
+improved the UniversalFeedCreator's useCached method (thanks to Sören Fuhrmann of golem.de)
+added charset output in HTTP headers (thanks to Sören Fuhrmann of golem.de)
+added Slashdot namespace to RSS 1.0 (thanks to Sören Fuhrmann of golem.de)
+
+v1.6	05-10-04
+added stylesheet to RSS 1.0 feeds
+fixed generator comment (thanks Kevin L. Papendick and Tanguy Pruvot)
+fixed RFC822 date bug (thanks Tanguy Pruvot)
+added TimeZone customization for RFC8601 (thanks Tanguy Pruvot)
+fixed Content-type could be empty (thanks Tanguy Pruvot)
+fixed author/creator in RSS1.0 (thanks Tanguy Pruvot)
+
+v1.6 beta	02-28-04
+added Atom 0.3 support (not all features, though)
+improved OPML 1.0 support (hopefully - added more elements)
+added support for arbitrary additional elements (use with caution)
+code beautification :-)
+considered beta due to some internal changes
+
+v1.5.1	01-27-04
+fixed some RSS 1.0 glitches (thanks to Stéphane Vanpoperynghe)
+fixed some inconsistencies between documentation and code (thanks to Timothy Martin)
+
+v1.5	01-06-04
+added support for OPML 1.0
+added more documentation
+
+v1.4	11-11-03
+optional feed saving and caching
+improved documentation
+minor improvements
+
+v1.3    10-02-03
+renamed to FeedCreator, as it not only creates RSS anymore
+added support for mbox
+tentative support for echo/necho/atom/pie/???
+
+v1.2    07-20-03
+intelligent auto-truncating of RSS 0.91 attributes
+don't create some attributes when they're not set
+documentation improved
+fixed a real and a possible bug with date conversions
+code cleanup
+
+v1.1    06-29-03
+added images to feeds
+now includes most RSS 0.91 attributes
+added RSS 2.0 feeds
+
+v1.0    06-24-03
+initial release
+ ****************************************************************************/
+
+/*** GENERAL USAGE *********************************************************
+
+include("feedcreator.class.php");
+
+$rss = new UniversalFeedCreator();
+$rss->useCached(); // use cached version if age<1 hour
+$rss->title = "PHP news";
+$rss->description = "daily news from the PHP scripting world";
+
+//optional
+$rss->descriptionTruncSize = 500;
+$rss->descriptionHtmlSyndicated = true;
+
+$rss->link = "http://www.dailyphp.net/news";
+$rss->syndicationURL = "http://www.dailyphp.net/".$_SERVER["PHP_SELF"];
+
+$image = new FeedImage();
+$image->title = "dailyphp.net logo";
+$image->url = "http://www.dailyphp.net/images/logo.gif";
+$image->link = "http://www.dailyphp.net";
+$image->description = "Feed provided by dailyphp.net. Click to visit.";
+
+//optional
+$image->descriptionTruncSize = 500;
+$image->descriptionHtmlSyndicated = true;
+
+$rss->image = $image;
+
+// get your news items from somewhere, e.g. your database:
+mysql_select_db($dbHost, $dbUser, $dbPass);
+$res = mysql_query("SELECT * FROM news ORDER BY newsdate DESC");
+while ($data = mysql_fetch_object($res)) {
+$item = new FeedItem();
+$item->title = $data->title;
+$item->link = $data->url;
+$item->description = $data->short;
+
+//optional
+item->descriptionTruncSize = 500;
+item->descriptionHtmlSyndicated = true;
+
+$item->date = $data->newsdate;
+$item->source = "http://www.dailyphp.net";
+$item->author = "John Doe";
+
+$rss->addItem($item);
+}
+
+// valid format strings are: RSS0.91, RSS1.0, RSS2.0, PIE0.1 (deprecated),
+// MBOX, OPML, ATOM, ATOM0.3, HTML, JS
+echo $rss->saveFeed("RSS1.0", "news/feed.xml");
 ***************************************************************************
 *          A little setup                                                 *
 **************************************************************************/
@@ -34,7 +163,7 @@ define("TIME_ZONE",date('O',time()));
 /**
  * Version string.
  **/
-// define("FEEDCREATOR_VERSION", "FeedCreator 1.7.2-iTunes");
+// define("FEEDCREATOR_VERSION", "FeedCreator 1.8.0dev-iTunes");
 define("FEEDCREATOR_VERSION", 'Exponent Content Management System - '.expVersion::getVersion(true));
 
 /**
@@ -140,17 +269,12 @@ class FeedItem extends HtmlDescribable {
 	/**
 	 * Optional attributes of an item.
 	 */
-	var $author, $authorEmail, $image, $category = Array(), $comments, $commentsRSS, $commentsCount, $guid, $source, $creator;
+	var $author, $authorEmail, $authorURL,$image, $category = Array(), $comments, $commentsRSS, $commentsCount, $guid, $source, $creator, $contributor;
 
-        /**
-         * Support for attachments
-         */
-        var $enclosure;
-
-        /**
-         * Support for iTunes
-         */
-        var $itunes;
+    /**
+     * Support for iTunes
+     */
+    var $itunes;
 	
 	/**
 	 * Publishing date of an item. May be in one of the following formats:
@@ -168,7 +292,18 @@ class FeedItem extends HtmlDescribable {
 	var $date;
 	
 	/**
-	 * Any additional elements to include as an assiciated array. All $key => $value pairs
+	 * Add <enclosure> element tag RSS 2.0, supported by ATOM 1.0 too
+	 * modified by : Mohammad Hafiz bin Ismail (mypapit@gmail.com)
+	 *
+	 *
+	 * display :
+	 * <enclosure length="17691" url="http://something.com/picture.jpg" type="image/jpeg" />
+	 *
+	 */
+	var $enclosure;
+
+	/**
+	 * Any additional elements to include as an associated array. All $key => $value pairs
 	 * will be included unencoded in the feed item in the form
 	 *     <$key>$value</$key>
 	 * Again: No encoding will be used! This means you can invalidate or enhance the feed
@@ -179,6 +314,35 @@ class FeedItem extends HtmlDescribable {
 
 	// on hold
 	// var $source;
+}
+
+class EnclosureItem extends HtmlDescribable {
+	/*
+	*
+	* core variables
+	*
+	**/
+	var $url,$length,$type;
+
+	/*
+	*
+	* supported by ATOM 1.0 only
+	*
+	*/
+
+	var $language, $title;
+	/*
+	* For use with another extension like Yahoo mRSS
+	* Warning :
+	* These variables might not show up in
+	* later release / not finalize yet!
+	*
+	*
+	* var $width, $height, $title, $description, $keywords, $thumburl;
+	*/
+
+	var $additionalElements = Array();
+
 }
 
 /**
@@ -294,10 +458,16 @@ class FeedHtmlField {
 class UniversalFeedCreator extends FeedCreator {
 	var $_feed;
 	
+	function _setMIME() {
+		//switch (strtoupper($format)) {
+		header('Content-type: ' . $this->contentType .'; charset=' . $this->encoding, true);
+	}
+
 	function _setFormat($format) {
 		switch (strtoupper($format)) {
 			
 			case "2.0":
+			case "RSS": //added 8 Jan 2007
 				// fall through
 			case "RSS2.0":
 				$this->_feed = new RSSCreator20();
@@ -329,7 +499,10 @@ class UniversalFeedCreator extends FeedCreator {
 				
 			case "ATOM":
 				// fall through: always the latest ATOM version
-				
+			case "ATOM1.0":
+				$this->_feed = new AtomCreator10();
+				break;
+
 			case "ATOM0.3":
 				$this->_feed = new AtomCreator03();
 				break;
@@ -346,7 +519,8 @@ class UniversalFeedCreator extends FeedCreator {
 
 			case "PODCAST":
 				$this->_feed = new PodcastCreator();
-				break;			
+//                $this->_feed = new RSSCreatorPodcast();
+				break;
 			default:
 				$this->_feed = new RSSCreator091();
 				break;
@@ -397,25 +571,36 @@ class UniversalFeedCreator extends FeedCreator {
 		$this->_feed->saveFeed($filename, $displayContents);
 	}
 
-	/**
-	 * Turns on caching and checks if there is a recent version of this feed in the cache.
-	 * If there is, an HTTP redirect header is sent.
-	 * To effectively use caching, you should create the FeedCreator object and call this method
-	 * before anything else, especially before you do the time consuming task to build the feed
-	 * (web fetching, for example).
-	 *
-	 * @param string $format
-	 * @param filename   string   optional the filename where a recent version of the feed is saved. If not specified, the filename is $_SERVER["PHP_SELF"] with the extension changed to .xml (see _generateFilename()).
-	 * @param timeout int      optional the timeout in seconds before a cached version is refreshed (defaults to 3600 = 1 hour)
-	 *
-	 * @internal param \format $string format the feed should comply to. Valid values are:
-	 *       "PIE0.1" (deprecated), "mbox", "RSS0.91", "RSS1.0", "RSS2.0", "OPML", "ATOM0.3".
-	 *
-	 */
+    /**
+     * Turns on caching and checks if there is a recent version of this feed in the cache.
+     * If there is, an HTTP redirect header is sent.
+     * To effectively use caching, you should create the FeedCreator object and call this method
+     * before anything else, especially before you do the time consuming task to build the feed
+     * (web fetching, for example).
+     *
+     * @param string $format format the feed should comply to. Valid values are:
+     *       "PIE0.1" (deprecated), "mbox", "RSS0.91", "RSS1.0", "RSS2.0", "OPML", "ATOM0.3".
+     * @param string $filename optional the filename where a recent version of the feed is saved. If not specified, the filename is $_SERVER["PHP_SELF"] with the extension changed to .xml (see _generateFilename()).
+     * @param int    $timeout optional the timeout in seconds before a cached version is refreshed (defaults to 3600 = 1 hour)
+     */
    function useCached($format="RSS0.91", $filename="", $timeout=3600) {
       $this->_setFormat($format);
       $this->_feed->useCached($filename, $timeout);
    }
+
+    /**
+     * Outputs feed to the browser - needed for on-the-fly feed generation (like it is done in WordPress, etc.)
+     *
+     * @param string $format format the feed should comply to. Valid values are:
+     *   "PIE0.1" (deprecated), "mbox", "RSS0.91", "RSS1.0", "RSS2.0", "OPML", "ATOM0.3".
+     *
+     * @return void
+     */
+   function outputFeed($format='RSS0.91') {
+        $this->_setFormat($format);
+        $this->_setMIME($format);
+        $this->_feed->outputFeed();
+    }
 
 }
 
@@ -446,9 +631,10 @@ class FeedCreator extends HtmlDescribable {
 	var $xslStyleSheet = "";
 
     /**
-     * Support for iTunes
+	* The url of the external css stylesheet used to format the naked syndication feed.
+	* Ignored in the output when empty.
      */
-    var $itunes;
+	var $cssStyleSheet = "";
 	
 	/**
 	 * @access private
@@ -465,11 +651,20 @@ class FeedCreator extends HtmlDescribable {
 	/**
 	 * This feed's character encoding.
 	 * @since 1.6.1
-	 **/
-	var $encoding = "ISO-8859-1";
+	 *
+	 * var $encoding = "ISO-8859-1"; //original :p
+	 */
+	var $encoding = "utf-8";
+
+	/*
+	 * Generator string
+	 *
+	 */
+
+	 var $generator = "info@mypapit.net";
 
 	/**
-	 * Any additional elements to include as an assiciated array. All $key => $value pairs
+	 * Any additional elements to include as an associated array. All $key => $value pairs
 	 * will be included unencoded in the feed in the form
 	 *     <$key>$value</$key>
 	 * Again: No encoding will be used! This means you can invalidate or enhance the feed
@@ -489,6 +684,16 @@ class FeedCreator extends HtmlDescribable {
 	function addItem($item) {
 		$this->items[] = $item;
 	}
+
+	/**
+	 *
+	 *
+	 *
+	 **/
+	 function version() {
+
+	 	return FEEDCREATOR_VERSION." (".$this->generator.")";
+	 }
 
 	/**
 	 * Truncates a string to a certain length at the most sensible point.
@@ -538,7 +743,7 @@ class FeedCreator extends HtmlDescribable {
 	 * @return string
 	 */
 	function _createGeneratorComment() {
-		return "<!-- generator=\"".FEEDCREATOR_VERSION."\" -->\n";
+		return "<!-- generator=\"".$this->version()."\" -->\n";
 	}
 
     /**
@@ -560,8 +765,8 @@ class FeedCreator extends HtmlDescribable {
 	
 	function _createStylesheetReferences() {
 		$xml = "";
-		if ($this->cssStyleSheet) $xml .= "<?xml-stylesheet href=\"".$this->cssStyleSheet."\" type=\"text/css\"?>\n";
-		if ($this->xslStyleSheet) $xml .= "<?xml-stylesheet href=\"".$this->xslStyleSheet."\" type=\"text/xsl\"?>\n";
+        if (!empty($this->cssStyleSheet)) $xml .= "<?xml-stylesheet href=\"" . $this->cssStyleSheet . "\" type=\"text/css\"?>\n";
+        if (!empty($this->xslStyleSheet)) $xml .= "<?xml-stylesheet href=\"" . $this->xslStyleSheet . "\" type=\"text/xsl\"?>\n";
 		return $xml;
 	}
 
@@ -654,7 +859,7 @@ class FeedCreator extends HtmlDescribable {
 		if ($filename=="") {
 			$filename = $this->_generateFilename();
 		}
-		$feedFile = fopen($filename, "w");
+		$feedFile = fopen($filename, "w+");
 		if ($feedFile) {
 			fputs($feedFile,$this->createFeed());
 			fclose($feedFile);
@@ -662,10 +867,25 @@ class FeedCreator extends HtmlDescribable {
 				$this->_redirect($filename);
 			}
 		} else {
-			echo "<br /><b>Error creating feed file, please check write permissions.</b><br />";
+			echo "<br /><strong>Error creating feed file, please check write permissions.</strong><br />";
 		}
 	}
 	
+	/**
+	 * Outputs this feed directly to the browser - for on-the-fly feed generation
+	 * @since 1.7.2-mod
+	 *
+	 * still missing: proper header output - currently you have to add it manually
+	 */
+	function outputFeed() {
+		echo $this->createFeed();
+}
+
+	function setEncoding($encoding="utf-8") {
+		$this->encoding = $encoding;
+
+	}
+
 }
 
 /**
@@ -683,7 +903,7 @@ class FeedDate {
 	function FeedDate($dateString="") {
 		if ($dateString=="") $dateString = date("r");
 		
-		if (is_numeric($dateString)) {
+        if (is_integer($dateString)) {
 			$this->unix = $dateString;
 			return;
 		}
@@ -709,6 +929,9 @@ class FeedDate {
 					case "GMT":	$tzOffset = 0;
 				}
 			}
+            if (!isset($tzOffset)) {
+                $tzOffset = 0;
+            }
 			$this->unix += $tzOffset;
 			return;
 		}
@@ -719,6 +942,8 @@ class FeedDate {
 			} else {
 				if ($matches[7]=="Z") {
 					$tzOffset = 0;
+                } else {
+                    $tzOffset = 0;
 				}
 			}
 			$this->unix += $tzOffset;
@@ -735,7 +960,12 @@ class FeedDate {
 	function rfc822() {
 		//return gmdate("r",$this->unix);
 		$date = gmdate("D, d M Y H:i:s", $this->unix);
-		if (TIME_ZONE!="") $date .= " ".str_replace(":","",TIME_ZONE);
+
+		if (TIME_ZONE!="") {
+			$date .= " ".str_replace(":","",TIME_ZONE);
+		} else {
+			$date .= " ".str_replace(":","","GMT");
+		}
 		return $date;
 	}
 	
@@ -779,7 +1009,7 @@ class RSSCreator10 extends FeedCreator {
 		$feed = "<?xml version=\"1.0\" encoding=\"".$this->encoding."\"?>\n";
 		$feed.= $this->_createGeneratorComment();
 		if ($this->cssStyleSheet=="") {
-			$cssStyleSheet = "http://www.w3.org/2000/08/w3c-synd/style.css";
+			$this->cssStyleSheet = "http://www.w3.org/2000/08/w3c-synd/style.css";
 		}
 		$feed.= $this->_createStylesheetReferences();
 		$feed.= "<rdf:RDF\n";
@@ -889,7 +1119,7 @@ class RSSCreator091 extends FeedCreator {
 	 */
 	function createFeed() {
 		$feed = "<?xml version=\"1.0\" encoding=\"".$this->encoding."\"?>\n";
-		/** $feed.= $this->_createGeneratorComment(); */
+		$feed.= $this->_createGeneratorComment();
 		$feed.= $this->_createStylesheetReferences();
 		$feed.= "<rss version=\"".$this->RSSVersion."\" ";
         if (!empty($this->XMLNS)) {
@@ -912,7 +1142,7 @@ class RSSCreator091 extends FeedCreator {
 		$feed.= "        <link>".$this->link."</link>\n";
 		$now = new FeedDate();
 		$feed.= "        <lastBuildDate>".htmlspecialchars($now->rfc822())."</lastBuildDate>\n";
-		$feed.= "        <generator>".FEEDCREATOR_VERSION."</generator>\n";
+		$feed.= "        <generator>". $this->version()."</generator>\n";
 
 		if (!empty($this->image)) {
 			$feed.= "        <image>\n";
@@ -1010,7 +1240,11 @@ class RSSCreator091 extends FeedCreator {
 			$feed.= "            <description>".$this->items[$i]->getDescription()."</description>\n";
 			
 			if (!empty($this->items[$i]->author)) {
-				$feed.= "            <author>".htmlspecialchars($this->items[$i]->author)."</author>\n";
+				if ($this->items[$i]->authorEmail!="") {
+					$feed.= "            <author> " . htmlspecialchars($this->items[$i]->authorEmail) . " (".htmlspecialchars($this->items[$i]->author).")</author>\n";
+				} else {
+				      $feed.= "            <author> no_email@example.com (".htmlspecialchars($this->items[$i]->author).")</author>\n";
+			    }
 			}
 			/*
 			// on hold
@@ -1167,6 +1401,147 @@ class PIECreator01 extends FeedCreator {
 }
 
 /**
+ * AtomCreator10 is a FeedCreator that implements the atom specification,
+ * as in http://www.atomenabled.org/developers/syndication/atom-format-spec.php
+ * Please note that just by using AtomCreator10 you won't automatically
+ * produce valid atom files. For example, you have to specify either an editor
+ * for the feed or an author for every single feed item.
+ *
+ * Some elements have not been implemented yet. These are (incomplete list):
+ * author URL, item author's email and URL, item contents, alternate links,
+ * other link content types than text/html. Some of them may be created with
+ * AtomCreator10::additionalElements.
+ *
+ * @see FeedCreator#additionalElements
+ * @since 1.7.2-mod (modified)
+ * @author Mohammad Hafiz Ismail (mypapit@gmail.com)
+ */
+ class AtomCreator10 extends FeedCreator {
+
+	function AtomCreator10() {
+		$this->contentType = "application/atom+xml";
+		$this->encoding = "utf-8";
+
+	}
+
+	function createFeed() {
+		$feed = "<?xml version=\"1.0\" encoding=\"".$this->encoding."\"?>\n";
+		$feed.= $this->_createGeneratorComment();
+		$feed.= $this->_createStylesheetReferences();
+		$feed.= "<feed xmlns=\"http://www.w3.org/2005/Atom\"";
+		if ($this->language!="") {
+			$feed.= " xml:lang=\"".$this->language."\"";
+		}
+		$feed.= ">\n";
+		$feed.= "    <title>".htmlspecialchars($this->title)."</title>\n";
+		$feed.= "    <subtitle>".htmlspecialchars($this->description)."</subtitle>\n";
+		$feed.= "    <link rel=\"alternate\" type=\"text/html\" href=\"".htmlspecialchars($this->link)."\"/>\n";
+		$feed.= "    <id>".htmlspecialchars($this->link)."</id>\n";
+		$now = new FeedDate();
+		$feed.= "    <updated>".htmlspecialchars($now->iso8601())."</updated>\n";
+		if ($this->editor!="") {
+			$feed.= "    <author>\n";
+			$feed.= "        <name>".$this->editor."</name>\n";
+			if ($this->editorEmail!="") {
+				$feed.= "        <email>".$this->editorEmail."</email>\n";
+			}
+			$feed.= "    </author>\n";
+		}
+		if ($this->category!="") {
+					$feed.= "        <category term=\"" . htmlspecialchars($this->category) . "\" />\n";
+		}
+		if ($this->copyright!="") {
+					$feed.= "        <rights>".FeedCreator::iTrunc(htmlspecialchars($this->copyright),100)."</rights>\n";
+		}
+		$feed.= "    <generator>".$this->version()."</generator>\n";
+
+		$feed.= "<link rel=\"self\" type=\"application/atom+xml\" href=\"". htmlspecialchars($this->syndicationURL). "\" />\n";
+		$feed.= $this->_createAdditionalElements($this->additionalElements, "    ");
+		for ($i=0;$i<count($this->items);$i++) {
+			$feed.= "    <entry>\n";
+			$feed.= "        <title>".htmlspecialchars(strip_tags($this->items[$i]->title))."</title>\n";
+			$feed.= "        <link rel=\"alternate\" type=\"text/html\" href=\"".htmlspecialchars($this->items[$i]->link)."\"/>\n";
+			if ($this->items[$i]->date=="") {
+				$this->items[$i]->date = time();
+			}
+			$itemDate = new FeedDate($this->items[$i]->date);
+			$feed.= "        <published>".htmlspecialchars($itemDate->iso8601())."</published>\n";
+			$feed.= "        <updated>".htmlspecialchars($itemDate->iso8601())."</updated>\n";
+
+
+			$tempguid = $this->items[$i]->link;
+			if ($this->items[$i]->guid!="") {
+				$tempguid = $this->items[$i]->guid;
+			}
+
+			$feed.= "        <id>". htmlspecialchars($tempguid)."</id>\n";
+			$feed.= $this->_createAdditionalElements($this->items[$i]->additionalElements, "        ");
+			if ($this->items[$i]->author!="") {
+				$feed.= "        <author>\n";
+				$feed.= "            <name>".htmlspecialchars($this->items[$i]->author)."</name>\n";
+				if ($this->items[$i]->authorEmail!="") {
+				$feed.= "            <email>".htmlspecialchars($this->items[$i]->authorEmail)."</email>\n";
+				}
+
+				if ($this->items[$i]->authorURL!="") {
+								$feed.= "            <uri>".htmlspecialchars($this->items[$i]->authorURL)."</uri>\n";
+				}
+
+				$feed.= "        </author>\n";
+			}
+
+			if ($this->category!="") {
+								$feed.= "        <category term=\"" . htmlspecialchars($this->items[$i]->category) . "\" />\n";
+			}
+
+			if ($this->items[$i]->description!="") {
+
+			/*
+			 * ATOM should have at least summary tag, however this implementation may be inaccurate
+			 */
+			 	$tempdesc = $this->items[$i]->getDescription();
+			 	$temptype="";
+
+				if ($this->items[$i]->descriptionHtmlSyndicated){
+					$temptype=" type=\"html\"";
+					$tempdesc = $this->items[$i]->getDescription();
+
+				}
+
+				if (empty($this->items[$i]->descriptionTruncSize)) {
+					$feed.= "        <content". $temptype . ">". $tempdesc ."</content>\n";
+				}
+
+				$feed.= "        <summary". $temptype . ">". $tempdesc ."</summary>\n";
+			} else {
+
+				$feed.= "	 <summary>no summary</summary>\n";
+
+			}
+
+			if ($this->items[$i]->enclosure != NULL) {
+				$feed.="        <link rel=\"enclosure\" href=\"". $this->items[$i]->enclosure->url ."\" type=\"". $this->items[$i]->enclosure->type."\"  length=\"". $this->items[$i]->enclosure->length ."\"";
+
+				if ($this->items[$i]->enclosure->language != ""){
+					 $feed .=" xml:lang=\"". $this->items[$i]->enclosure->language . "\" ";
+				}
+
+				if ($this->items[$i]->enclosure->title != ""){
+					 $feed .=" title=\"". $this->items[$i]->enclosure->title . "\" ";
+				}
+
+				$feed .=" /> \n";
+
+			}
+			$feed.= "    </entry>\n";
+		}
+		$feed.= "</feed>\n";
+		return $feed;
+	}
+
+}
+
+/**
  * AtomCreator03 is a FeedCreator that implements the atom specification,
  * as in http://www.intertwingly.net/wiki/pie/FrontPage.
  * Please note that just by using AtomCreator03 you won't automatically
@@ -1212,7 +1587,7 @@ class AtomCreator03 extends FeedCreator {
 			}
 			$feed.= "    </author>\n";
 		}
-		$feed.= "    <generator>".FEEDCREATOR_VERSION."</generator>\n";
+		$feed.= "    <generator>".$this->version()."</generator>\n";
 		$feed.= $this->_createAdditionalElements($this->additionalElements, "    ");
 		for ($i=0;$i<count($this->items);$i++) {
 			$feed.= "    <entry>\n";
@@ -1298,7 +1673,7 @@ class MBOXCreator extends FeedCreator {
 				$from = $this->title;
 			}
 			$itemDate = new FeedDate($this->items[$i]->date);
-			$feed.= "From ".strtr(MBOXCreator::qp_enc($from)," ","_")." ".date("D M d H:i:s Y",$itemDate->unix())."\n";
+			$feed= "From ".strtr(MBOXCreator::qp_enc($from)," ","_")." ".date("D M d H:i:s Y",$itemDate->unix())."\n";
 			$feed.= "Content-Type: text/plain;\n";
 			$feed.= "	charset=\"".$this->encoding."\"\n";
 			$feed.= "Content-Transfer-Encoding: quoted-printable\n";
@@ -1344,7 +1719,7 @@ class OPMLCreator extends FeedCreator {
 		$feed = "<?xml version=\"1.0\" encoding=\"".$this->encoding."\"?>\n";
 		$feed.= $this->_createGeneratorComment();
 		$feed.= $this->_createStylesheetReferences();
-		$feed.= "<opml xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n";
+		$feed.= "<opml xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0\">\n";
 		$feed.= "    <head>\n";
 		$feed.= "        <title>".htmlspecialchars($this->title)."</title>\n";
 		if (!empty($this->pubDate)) {
@@ -1370,6 +1745,11 @@ class OPMLCreator extends FeedCreator {
 			$feed.= " text=\"".$title."\"";
 			//$feed.= " description=\"".htmlspecialchars($this->items[$i]->description)."\"";
 			$feed.= " url=\"".htmlspecialchars($this->items[$i]->link)."\"";
+
+			if ($this->items[$i]->syndicationURL !="") {
+				$feed.= " xmlUrl=\"" . $this->items[$i]->syndicationURL . "\"";
+			}
+
 			$feed.= "/>\n";
 		}
 		$feed.= "    </body>\n";
@@ -1563,10 +1943,222 @@ class JSCreator extends HTMLCreator {
 	function _generateFilename() {
 		$fileInfo = pathinfo($_SERVER["PHP_SELF"]);
 		return substr($fileInfo["basename"],0,-(strlen($fileInfo["extension"])+1)).".js";
+    }
+
+}
+
+/**
+ * A PodcastCategory encapsulates an iTunes category (and zero or more
+ * subcategories) for a podcast.
+ *
+ * @author Steve Blinch <code@blitzaffe.com>
+ */
+class PodcastCategory {
+    var $name;
+    var $categories;
+
+    function PodcastCategory($name) {
+        $this->name       = $name;
+        $this->categories = array();
+    }
+
+    function addCategory($category) {
+        $this->categories[] = $category;
+    }
+}
+
+/**
+ * A Podcast acts as a container for all podcasting-related information for an
+ * RSSCreatorPodcast object.
+ *
+ * @author Steve Blinch <code@blitzaffe.com>
+ */
+class Podcast {
+
+    /**
+     * Optional attributes of a podcast.
+     */
+    var $author, $block, $explicit, $keywords, $subtitle, $summary, $new_feed_url, $owner_name, $owner_email;
+
+    /**
+     * @access private
+     */
+    var $categories, $owner;
+
+    function Podcast() {
+        $this->categories = array();
+        $this->owner      = array();
+    }
+
+    /**
+     * Adds a category to the podcast.
+     *
+     * @param \PodcastCategory $category The PodcastCategory to add to the podcast
+     *
+     * @access public
+     */
+    function addCategory($category) {
+        $this->categories[] = $category;
+    }
+
+    /**
+     * @access private
+     */
+    function getArrayElements($arr) {
+        $output = "";
+        foreach ($arr as $key=> $value) {
+            if (is_array($value)) {
+                $value = $this->getArrayElements($value);
+            } else {
+                $value = htmlentities($value);
+            }
+            if (strlen($value)) $output .= sprintf("<itunes:%s>%s</itunes:%s>", $key, $value, $key);
+        }
+        return $output;
+    }
+
+    /**
+     * @access private
+     */
+    function getElements(&$elements) {
+
+        $podcast_values = get_object_vars($this);
+
+        foreach ($podcast_values as $key=> $value) {
+            if (in_array($key, array('categories', 'owner_name', 'owner_email'))) continue;
+
+            if (is_array($value)) {
+                $value = $this->getArrayElements($value);
+            } else {
+                $value = htmlentities($value);
+            }
+            if (strlen($value)) $elements['itunes:' . $key] = $value;
+        }
+
+    }
+
+    /**
+     * Returns all podcast-related XML markup for inclusion in the feed.
+     *
+     * @access public
+     */
+    function getMarkup() {
+        $categories = "";
+        foreach ($this->categories as $key=> $category) {
+            $subcats = "";
+            foreach ($category->categories as $subkey=> $subcategory) {
+                $subcats .= sprintf("<itunes:category text=\"%s\" />", htmlentities($subcategory->name));
+            }
+            if (strlen($subcats)) {
+                $categories .= sprintf("<itunes:category text=\"%s\">%s</itunes:category>\n", htmlentities($category->name), $subcats);
+            } else {
+                $categories .= sprintf("<itunes:category text=\"%s\" />\n", htmlentities($category->name));
+            }
+        }
+
+        $owner = array(
+            'owner'=> array(
+                'name' => $this->owner_name,
+                'email'=> $this->owner_email
+            )
+        );
+
+        $output = "";
+        $output .= $this->getArrayElements($owner) . "\n";
+        $output .= $categories . "\n";
+
+        return $output;
+    }
+
+}
+
+/**
+ * A PodcastItem acts as a container for all podcasting-related information for a
+ * FeedItem object.
+ *
+ * @author Steve Blinch <code@blitzaffe.com>
+ */
+class PodcastItem {
+
+    /**
+     * Optional attributes of a podcast item.
+     */
+    var $author, $block, $duration, $explicit, $keywords, $subtitle, $summary;
+
+    /**
+     * Media file attachment attributes
+     */
+    var $enclosure_url, $enclosure_length, $enclosure_type;
+
+    /**
+     * @access private
+     */
+    function getElements(&$elements) {
+        $podcast_values = get_object_vars($this);
+
+        foreach ($podcast_values as $key=> $value) {
+            if (in_array($key, array('enclosure_url', 'enclosure_length', 'enclosure_type'))) continue;
+
+            if (strlen($value)) $elements['itunes:' . $key] = htmlentities($value);
+        }
+    }
+
+    /**
+     * Returns all podcast-related XML markup for this item for inclusion
+     * in the feed.
+     *
+     * @access public
+     */
+    function getMarkup() {
+        if (!strlen($this->enclosure_url) || ($this->enclosure_length == 0) || !strlen($this->enclosure_type)) return "";
+
+        return sprintf(
+            "<enclosure url=\"%s\" length=\"%s\" type=\"%s\" />\n",
+            $this->enclosure_url,
+            $this->enclosure_length,
+            $this->enclosure_type
+        );
+    }
+
+}
+
+/**
+ * RSSCreatorPodCast is a FeedCreator that implements RDF Site Summary (RSS)
+ * 2.0 with Podcast extensions.
+ *
+ * @see    http://phobos.apple.com/static/iTunesRSS.htm
+ * @since  1.7.3
+ * @author Steve Blinch <code@blitzaffe.com>
+ */
+class RSSCreatorPodcast extends RSSCreator20 {
+
+    var $podcast;
+
+    function RSSCreatorPodcast() {
+        parent::_setRSSVersion("2.0");
+
+        $this->addNameSpace("xmlns:itunes", "http://www.itunes.com/dtds/podcast-1.0.dtd");
+        $this->encoding = "UTF-8";
+
+        $this->podcast = new Podcast();
+    }
+
+    function createFeed() {
+        $this->additionalMarkup .= $this->podcast->getMarkup();
+
+        $this->podcast->getElements($this->additionalElements);
+
+        foreach ($this->items as $k=> $item) {
+            if (method_exists($this->items[$k]->podcast, 'getElements')) {
+                $this->items[$k]->podcast->getElements($this->items[$k]->additionalElements);
+                $this->items[$k]->additionalMarkup .= $this->items[$k]->podcast->getMarkup();
+            }
+        }
+
+        return parent::createFeed();
 	}
 	
 }	
-
 
 /*** TEST SCRIPT *********************************************************
 
@@ -1597,6 +2189,21 @@ $image->descriptionHtmlSyndicated = true;
 
 $rss->image = $image; 
 
+//optional -- applies only if this is a podcast
+$rss->podcast = new Podcast();
+$rss->podcast->subtitle = "Podcast subtitle";
+$rss->podcast->author = "Some Guy";
+$rss->podcast->summary = "Podcast summary"
+$rss->podcast->keywords = "php podcast rss itunes";
+$rss->podcast->owner_email = "owner@example.com";
+$rss->podcast->owner_name = "Some Guy";
+
+// file this podcast under Technology->Computers
+$podcast_tech_category = new PodcastCategory('Technology');
+$podcast_comp_category = new PodcastCategory('Computers');
+$podcast_tech_category->addCategory($podcast_comp_category);
+$podcast->addCategory($podcast_tech_category);
+
 // get your news items from somewhere, e.g. your database: 
 //mysql_select_db($dbHost, $dbUser, $dbPass); 
 //$res = mysql_query("SELECT * FROM news ORDER BY newsdate DESC"); 
@@ -1613,13 +2220,20 @@ $rss->image = $image;
 	$item->date = time(); 
 	$item->source = "http://www.dailyphp.net"; 
 	$item->author = "John Doe"; 
-	 
+
+// optional -- applies only if this is a podcast
+$item->podcast = new PodcastItem();
+$item->podcast->duration = 120;
+$item->podcast->enclosure_url = "http://www.example.com/podcasts/media.mp3";
+$item->podcast->enclosure_length = 1234567;
+$item->podcast->enclosure_type = "audio/mpeg";
+
+
 	$rss->addItem($item); 
 //} 
 
-// valid format strings are: RSS0.91, RSS1.0, RSS2.0, PIE0.1, MBOX, OPML, ATOM0.3, HTML, JS
-echo $rss->saveFeed("RSS0.91", "feed.xml"); 
-
+// valid format strings are: RSS0.91, RSS1.0, RSS2.0, PIE0.1, MBOX, OPML, ATOM0.3, HTML, JS, PODCAST
+echo $rss->saveFeed("PODCAST", "feed.xml");
 ***************************************************************************/
 
 ?>

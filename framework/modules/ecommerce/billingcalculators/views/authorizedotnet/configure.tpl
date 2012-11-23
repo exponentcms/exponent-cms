@@ -13,7 +13,9 @@
  *
  *}
 
-<p>{'To setup a Authorize.Net account, visit'|gettext} <a href="http://www.authorize.net/" target="_blank">http://www.authorize.net/</a></p>
+<blockquote>
+{'To setup a Authorize.Net account, visit'|gettext} <a href="http://www.authorize.net/" target="_blank">http://www.authorize.net/</a>
+</blockquote>
 <div id="authorizenet">
     <div id="authorizenet-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
@@ -55,8 +57,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#authorizenet-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#authorizenet-tabs'});
 		Y.one('#authorizenet-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

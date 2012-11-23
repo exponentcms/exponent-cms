@@ -27,7 +27,7 @@ class filedownloadController extends expController {
         'tags'=>"Tags",
     );
 	public $remove_configs = array(
-        'comments',
+//        'comments',
 //        'ealerts',
         'files',
         'rss', // because we do this as a custom tab within the module
@@ -130,9 +130,9 @@ class filedownloadController extends expController {
 
             // Add the attachment/enclosure info
             $rss_item->enclosure = new Enclosure();
-            $rss_item->enclosure->url = $item->expFile['downloadable'][0]->url;
-            $rss_item->enclosure->length = $item->expFile['downloadable'][0]->filesize;
-            $rss_item->enclosure->type = $item->expFile['downloadable'][0]->mimetype;
+            $rss_item->enclosure->url = !empty($item->expFile['downloadable'][0]->url) ? $item->expFile['downloadable'][0]->url : '';
+            $rss_item->enclosure->length = !empty($item->expFile['downloadable'][0]->filesize) ? $item->expFile['downloadable'][0]->filesize : '';
+            $rss_item->enclosure->type = !empty($item->expFile['downloadable'][0]->mimetype) ? $item->expFile['downloadable'][0]->mimetype : '';
             if ($rss_item->enclosure->type == 'audio/mpeg') $rss_item->enclosure->type = 'audio/mpg';
 
             // Add iTunes info

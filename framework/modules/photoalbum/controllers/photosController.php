@@ -46,11 +46,12 @@ class photosController extends expController {
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
             $limit = '0';
         }
+        $order = isset($this->config['order']) ? $this->config['order'] : "rank";
         $page = new expPaginator(array(
             'model'=>'photo',
             'where'=>$this->aggregateWhereClause(),
             'limit'=>$limit,
-            'order'=>'rank',
+            'order'=>$order,
             'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
             'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
             'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
@@ -65,7 +66,7 @@ class photosController extends expController {
         ));
                     
         assign_to_template(array(
-            'page'=>$page
+            'page'=>$page,
         ));
     }
     
@@ -110,17 +111,12 @@ class photosController extends expController {
     
     public function slideshow() {
         expHistory::set('viewable', $this->params);
-//        $where = $this->aggregateWhereClause();
-//        $order = 'rank';
-//        //FIXME we need to change this to expPaginator to get category grouping
-//        $s = new photo();
-//        $slides = $s->find('all',$where,$order);
-
+        $order = isset($this->config['order']) ? $this->config['order'] : "rank";
         $page = new expPaginator(array(
             'model'=>'photo',
             'where'=>$this->aggregateWhereClause(),
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
-            'order'=>'rank',
+            'order'=>$order,
             'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
             'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
             'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
@@ -135,7 +131,7 @@ class photosController extends expController {
 
         assign_to_template(array(
 //            'slides'=>$slides
-            'slides'=>$page->records
+            'slides'=>$page->records,
         ));
     }
     

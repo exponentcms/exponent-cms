@@ -13,7 +13,9 @@
  *
  *}
 
-<p>{'To setup a Worldpay account, visit'|gettext} <a href="http://www.worldpay.com/products/index.php?c=WW" target="_blank">http://www.worldpay.com/products/index.php?c=WW</a></p>
+<blockquote>
+{'To setup a Worldpay account, visit'|gettext} <a href="http://www.worldpay.com/products/index.php?c=WW" target="_blank">http://www.worldpay.com/products/index.php?c=WW</a>
+</blockquote>
 <div id="worldpay">
     <div id="worldpay-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
@@ -26,7 +28,7 @@
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
 	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
 	            {control type="text" name="installationid" label="Installation ID"|gettext value=$calculator->configdata.installationid}
-				{control type="dropdown" name="authCurrency" label="Choose currency"|gettext includeblank="-- Select currency --"|gettext default=$calculator->configdata.authCurrency items="GBP (Pounds Sterling),USD (US Dollar)" values="GBP, USD"}
+				{control type="dropdown" name="authCurrency" label="Choose currency"|gettext includeblank="-- Select currency --"|gettext default=$calculator->configdata.authCurrency items="GBP (Pounds Sterling),USD (US Dollar)"|gettxtlist values="GBP, USD"}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
 	        <div id="tab2">
@@ -49,8 +51,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#worldpay-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#worldpay-tabs'});
 		Y.one('#worldpay-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

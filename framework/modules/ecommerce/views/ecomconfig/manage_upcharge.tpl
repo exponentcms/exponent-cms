@@ -43,33 +43,32 @@
                     </th>
                 </tr>
             </thead>
-        <tbody>
-		
-        {foreach from=$countries item=country} 
-			
-            <tr class="{cycle values="odd,even"}">
-                <td colspan="2">{$country->name}
-                </td>
-				
-				<td>
-					{assign var="key" value="country_`$country->id`"}
-					{control type="text" name="upcharge[country_`$country->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
-                </td>
-            </tr>                        
-            {foreach from=$regions item=region}
-                {if $region->country_id == $country->id}
-					<tr class="{cycle values='odd,even'}">
-						<td>&#160;</td>
-						<td><strong>{$region->name}</strong></td>
-						<td>
-							{assign var="key" value="region_`$region->id`"}
-							{control type="text" name="upcharge[region_`$region->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
-						</td>  
-					</tr>                                
-                {/if}
-            {/foreach}
-        {/foreach}
-        </tbody>
+            <tbody>
+                {foreach from=$countries item=country}
+                    <tr class="{cycle values="odd,even"}">
+                        <td colspan="2">{$country->name}
+                        </td>
+                        <td>
+                            {*{assign var="key" value="country_`$country->id`"}*}
+                            {$key="country_`$country->id`"}
+                            {control type="text" name="upcharge[country_`$country->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
+                        </td>
+                    </tr>
+                    {foreach from=$regions item=region}
+                        {if $region->country_id == $country->id}
+                            <tr class="{cycle values='odd,even'}">
+                                <td>&#160;</td>
+                                <td><strong>{$region->name}</strong></td>
+                                <td>
+                                    {*{assign var="key" value="region_`$region->id`"}*}
+                                    {$key="region_`$region->id`"}
+                                    {control type="text" name="upcharge[region_`$region->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
+                                </td>
+                            </tr>
+                        {/if}
+                    {/foreach}
+                {/foreach}
+            </tbody>
         </table>
         {control type=buttongroup submit="Save Upcharge Rate"|gettext cancel="Cancel"|gettext}
     {/form}

@@ -22,69 +22,69 @@
 	{control type="hidden" name="eventregistration[base_price]" value="{$base_price}"}
 	<input type="hidden" name="eventregistration[product_type]" value="eventregistration" size="20" class="hidden "/>
 
-	<h3>Billing Address</h3>
+	<h3>{'Billing Address'|gettext}</h3>
 	<table>
 		<tr>
-			<td>* First Name</td>
+			<td>* {'First Name'|gettext}</td>
 			<td>
 				{control type="text" name="address[firstname]" value="`$record.address.firstname`" required=1}
 			</td>
 		</tr>
 		
 		<tr>
-			<td>&#160;&#160;Middle Name</td>
+			<td>&#160;&#160;{'Middle Name'|gettext}</td>
 			<td>
 				{control type="text" name="address[middlename]" value="`$record.address.middlename`"}
 			</td>
 		</tr>
 		
 		<tr>
-			<td>* Last Name</td>
+			<td>* {'Last Name'|gettext}</td>
 			<td>
 				{control type="text" name="address[lastname]" value="`$record.address.lastname`" required=1}
 			</td>
 		</tr>
 		<tr>
-			<td>&#160;&#160;Company/Organization</td>
+			<td>&#160;&#160;{'Company/Organization'|gettext}</td>
 			<td>
 				{control type="text" name="address[organization]" value="`$record.address.organization`"}
 			</td>
 		</tr>
 		<tr>
-			<td>* Address</td>
+			<td>* {'Address'|gettext}</td>
 			<td>
 				{control type="text" name="address[address1]"  value="`$record.address.address1`" required=1}
 			</td>
 		</tr>
 		<tr>
-			<td>&#160;&#160;Address 2</td>
+			<td>&#160;&#160;{'Address'|gettext} 2</td>
 			<td>
 				{control type="text" name="address[address2]" value="`$record.address.address2`"}
 			</td>
 		</tr>
 	
 		<tr>
-			<td>* City</td>
+			<td>* {'City'|gettext}</td>
 			<td>
 				{control type="text" name="address[city]" value="`$record.address.city`" required=1}
 			</td>
 		</tr>
 		
 		<tr>
-			<td>* State</td>
+			<td>* {'State'|gettext}</td>
 			<td class="state_field"> 
 				{control type="state" name="address[state]" includeblank="-- Choose a State -- " value="`$record.address.state`" label="" required=1}            
 			</td>
 		</tr>
 		<tr>
-			<td>* Country/State:</td>
+			<td>* {'Country/State'|gettext}:</td>
 			<td class="state_field">       
 				{control type="country" name="address[country]" value="`$record.address.country`" value="`$record->country`"}
 			</td>
 		</tr>
 		
 		<tr>
-			<td>* Zip&#160;Code</td>
+			<td>* {'Zip Code'|gettext}</td>
 			<td>
 				{control type="text" name="address[zip]" value="`$record.address.zip`" required=1}
 			</td>
@@ -97,20 +97,20 @@
 		</tr>
 		
 		<tr>
-			<td>* Address Type</td>
+			<td>* {'Address Type'|gettext}</td>
 			<td class="state_field">
-				{control type="dropdown" name="address[address_type]" items="Business,Military,Residential" default=$record->address_type|default:"Residential" value="`$record.address.address_type`"}
+				{control type="dropdown" name="address[address_type]" items="Business,Military,Residential"|gettxtlist default=$record->address_type|default:"Residential"|gettext value="`$record.address.address_type`"}
 			</td>
 		</tr>
 	
 		<tr>
-			<td>* Email Address</td>
+			<td>* {'Email Address'|gettext}</td>
 			<td>
 				{control type="text" name="address[email]" value="`$record.address.email`" required=1}	
 			</td>
 		</tr>
 	</table>
-	<h3>Credit Card Information</h3>
+	<h3>{'Credit Card Information'|gettext}</h3>
 	<table>
 		<tr>
 			<td style="width: 143px;">*&#160;Card&#160;Type</td>

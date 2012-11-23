@@ -33,7 +33,8 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
                 {/if}
-                {if $slides|@count>1 && $rank == 1}
+                {*{if $slides|@count>1 && $rank == 1}*}
+                {if $slides|@count>1 && $config.order == 'rank'}
                     {ddrerank items=$slides model="portfolio" label="Portfolio Pieces"|gettext}
                 {/if}
             {/if}
@@ -42,7 +43,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame"{if $config.width} style="width:{$config.width}px;height:{$config.height}px;"{/if}>
             {foreach key=key from=$slides item=slide name=slides}

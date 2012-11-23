@@ -18,7 +18,7 @@
 {/css}
 {* eDebug var=$params *}
 {if isset($params.error)}
-      <div id="msg-queue" class="common msg-queue">
+    <div id="msg-queue" class="common msg-queue">
     <ul class="queue error"><li>{$params.error}</li></ul>
     </div>
     {br}

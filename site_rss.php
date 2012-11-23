@@ -82,7 +82,7 @@ if ($site_rss->enable_rss == true) {
 		if ($item->date > $pubDate) { $pubDate = $item->date; }
 		$rss->addItem($item);
 	}
-	if (isset($site_rss->rss_limit) && $site_rss->rss_limit > 0) {
+	if (!empty($site_rss->rss_limit)) {
 		$rss->items = array_slice($rss->items, 0, $site_rss->rss_limit);
 	}
 	$rss->pubDate = $pubDate;

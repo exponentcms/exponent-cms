@@ -22,7 +22,7 @@ if (!defined('DISPLAY_THEME_REAL')) define('DISPLAY_THEME_REAL','retrotheme');
 if (!defined('FORCE_MOBILE')) define('FORCE_MOBILE','0');
 if (!defined('THEME_STYLE_REAL')) define('THEME_STYLE_REAL','');
 if (!defined('DISPLAY_ATTRIBUTION')) define('DISPLAY_ATTRIBUTION','username');
-if (!defined('DISPLAY_DATETIME_FORMAT')) define('DISPLAY_DATETIME_FORMAT','%D -- %T');
+if (!defined('DISPLAY_DATETIME_FORMAT')) define('DISPLAY_DATETIME_FORMAT','%D %T');
 if (!defined('DISPLAY_DATE_FORMAT')) define('DISPLAY_DATE_FORMAT','%D');
 if (!defined('DISPLAY_TIME_FORMAT')) define('DISPLAY_TIME_FORMAT','%l:%M%p');
 if (!defined('DISPLAY_START_OF_WEEK')) define('DISPLAY_START_OF_WEEK','0');

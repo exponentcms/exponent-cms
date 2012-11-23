@@ -26,9 +26,9 @@
         </p>
     {/if}
     {if $config.quick_download}
-        <h3>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
+        <h3{if $config.usecategories} class="{$cat->color}"{/if}>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
     {else}
-        {if $file->title}<h3><a {if !$config.usebody}class="readmore"{/if} href="{link action=show title=$file->sef_url}" title="{$file->body|summarize:"html":"para"}">{$file->title}</a></h3>{/if}
+        {if $file->title}<h3{if $config.usecategories} class="{$cat->color}"{/if}><a {if !$config.usebody}class="readmore"{/if} href="{link action=show title=$file->sef_url}" title="{$file->body|summarize:"html":"para"}">{$file->title}</a></h3>{/if}
     {/if}
     <div class="attribution">
         {if !$config.usecategories && $file->expCat[0]->title != ""}
@@ -48,20 +48,13 @@
                 <span class="value">{$file->expFile.downloadable[0]->duration}</span>
             {else}
                 <span class="label size">{'File Size'}:</span>
-                <span class="value">{$file->expFile.downloadable[0]->filesize|bytes}</span>
+                <span class="value">{if !empty($file->expFile.downloadable[0]->filesize)}{$file->expFile.downloadable[0]->filesize|bytes}{else}{'Unknown'|gettext}{/if}</span>
             {/if}
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$file->downloads}</span>
-            {if $file->expTag|@count>0 && !$config.disabletags}
-                &#160;|&#160;
-                <span class="label tags">{'Tags'|gettext}:</span>
-                <span class="value">
-                    {foreach from=$file->expTag item=tag name=tags}
-                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach}
-                </span>
-            {/if}
+            {comments_count record=$file prepend='&#160;&#160;|&#160;&#160;'}
+            {tags_assigned record=$file prepend='&#160;&#160;|&#160;&#160;'}
         {/if}
     </div>
     {permissions}
@@ -95,7 +88,11 @@
         &#160;&#160;
     {/if}
     {if !$config.quick_download}
-        {icon action=downloadfile fileid=$file->id text='Download'|gettext}
+        {if $file->ext_file}
+            <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
+        {else}
+            {icon action=downloadfile fileid=$file->id text='Download'|gettext}
+        {/if}
     {/if}
     {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
         <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">

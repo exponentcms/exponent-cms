@@ -29,7 +29,8 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='filedownload' text="Manage Categories"|gettext}
                 {/if}
-                {if $rank == 1}
+                {*{if $rank == 1}*}
+                {if $config.order == 'rank'}
                     {ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
                 {/if}
            {/if}
@@ -39,16 +40,20 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
-    {assign var="cat" value="bad"}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
+    {*{assign var="cat" value="bad"}*}
+    {$cat="bad"}
     {foreach from=$page->records item=file name=files}
         {if $smarty.foreach.files.iteration<=$config.headcount || !$config.headcount}
             {include 'filedownloaditem.tpl'}
-            {assign var="cat" value=$file->expCat[0]->id}
+            {*{assign var="cat" value=$file->expCat[0]->id}*}
+            {$cat=$file->expCat[0]->id}
         {/if}
     {/foreach}
     {if $page->total_records > $config.headcount}
-        {icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
+        {*{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}*}
+        {pagelinks paginate=$page more=1 text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>
 

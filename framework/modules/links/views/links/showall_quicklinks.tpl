@@ -28,7 +28,8 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='links' text="Manage Categories"|gettext}
                 {/if}
-                {if $rank == 1}
+                {*{if $rank == 1}*}
+                {if $config.order == 'rank'}
 				    {ddrerank items=$items model="links" label="Links"|gettext}
                 {/if}
             {/if}
@@ -37,17 +38,18 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {if $config.usecategories}
         {foreach from=$cats key=catid item=cat}
-           {if $catid != 0}
-              <div class="itemtitle"><h3>{$cat->name}</h3></div>
-           {/if}
+            {if $catid != 0}
+               <div class="itemtitle"><h3>{$cat->name}</h3></div>
+            {/if}
             <ul>
-           {foreach name=links from=$cat->records item=item}
+            {foreach name=links from=$cat->records item=item}
                 <li{if $smarty.foreach.links.last} class="item last"{/if}>
                     <div class="link">
-                        <a href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+                        <a class="{$cat->color}" href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     </div>
                     {permissions}
                         <div class="item-actions">
@@ -66,12 +68,12 @@
                             {/if}
                         </div>
                     {/permissions}
-                    {edebug var=$item}                </li>
-           {foreachelse}
-              {if ($catid != 0) }
-                  <div ><em>{'No Links'|gettext}</em></div>
-              {/if}
-           {/foreach}
+                </li>
+            {foreachelse}
+                {if ($catid != 0) }
+                    <div ><em>{'No Links'|gettext}</em></div>
+                {/if}
+            {/foreach}
             </ul>
         {/foreach}
     {else}

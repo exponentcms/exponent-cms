@@ -264,6 +264,8 @@ var YAHOO = Y.YUI2;
 			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_contentpage&id="+currentMenuNode.data.id;
 		} else if (currentMenuNode.data.obj.alias_type==1){
 			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_externalalias&id="+currentMenuNode.data.id;
+        } else if (currentMenuNode.data.obj.alias_type==3){
+            window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_freeform&id="+currentMenuNode.data.id;
 		} else {
 			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_internalalias&id="+currentMenuNode.data.id;
 		}
@@ -412,13 +414,19 @@ var YAHOO = Y.YUI2;
 		var draggable = (section.manage!=false)? 'draggables' : 'nondraggables' ;
 		var dragafters = (section.manage!=false)? 'addafter' : 'cannotaddafter' ;
         if (section.parent==0 && usr.is_acting_admin!=1 && usr.is_admin!=1) dragafters = 'cannotaddafter' ;
-        if (section.alias_type == 0) atype = 'addpage';
-        else if (section.alias_type == 1) atype = 'addextpage';
-        else if (section.alias_type == 2) atype = 'addintpage';
+        if (section.alias_type == 0) atype = ' addpage';
+        else if (section.alias_type == 1) atype = ' addextpage';
+        else if (section.alias_type == 2) atype = ' addintpage';
+        else if (section.alias_type == 3) atype = ' addfreeform';
 		//var dragbefores = (section.manage!=false)? 'addbefore' : 'cannotaddbefore' ;
 		//var first = (section.rank==0)?'<div class="'+dragbefores+'" id="addbefore'+section.id+'"></div>':'';
 		var drag = (section.manage!=false)?'<div class="draghandle" id="draghandle'+section.id+'">&#160;</div>':'';
-		var html = '<div class="'+draggable+'" id="section'+section.id+'">'+drag+'<a href="'+section.link+'"><span class="sectionlabel" id="sectionlabel'+section.id+'">'+section.name+'</span><span class="'+atype+'"</span></a></div><div class="'+dragafters+' '+last+'" id="addafter'+section.id+'"></div>';
+        if (section.active == 1) {
+            activeclass = '';
+        } else {
+            activeclass = ' inactive';
+        }
+		var html = '<div class="'+draggable+'" id="section'+section.id+'">'+drag+'<a href="'+section.link+'"><span class="sectionlabel'+activeclass+atype+'" id="sectionlabel'+section.id+'">'+section.name+'</span></a></div><div class="'+dragafters+' '+last+'" id="addafter'+section.id+'"></div>';
 		return html;
 	}
 	
@@ -443,7 +451,9 @@ var YAHOO = Y.YUI2;
 	
 	function onTriggerContextMenu(p_oEvent) {
 		var theID = this.contextEventTarget;
-		if(YAHOO.util.Dom.hasClass(theID,"sectionlabel")){
+        if(YAHOO.util.Dom.getAncestorByClassName(theID,"nondraggables")){
+            this.cancel();
+        } else if(YAHOO.util.Dom.hasClass(theID,"sectionlabel")){
 			currentMenuNode = tree.getNodeByElement(theID);
 			oContextMenu.setItemGroupTitle(currentMenuNode.data.name,0);
 		} else {
@@ -458,8 +468,8 @@ var YAHOO = Y.YUI2;
 						id: "submenu1",
 						itemdata: [
 							{ classname:"addpage", text: "{/literal}{"Add Content Page Here"|gettext}{literal}", onclick: { fn: addContentSubNode } },
-							{ classname:"addextpage", text: "{/literal}{"Add External Website Link Page Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
-							{ classname:"addintpage", text: "{/literal}{"Add Internal Page Alias Page Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
+							{ classname:"addextpage", text: "{/literal}{"Add External Website Link (Page) Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addintpage", text: "{/literal}{"Add Page Alias (Page) Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } },
 							{ classname:"addsapage", text: "{/literal}{"Move Standalone Page to Here"|gettext}{literal}", onclick: { fn: addStandaloneSubNode } }
 						]
 					}
@@ -476,9 +486,9 @@ var YAHOO = Y.YUI2;
 					submenu: {
 						id: "submenu1",
 						itemdata: [
-							{ classname:"addpage", text: "{/literal}{"Add Content Page"|gettext}{literal}", onclick: { fn: addContentSubNode } },
-							{ classname:"addextpage", text: "{/literal}{"Add External Website Link"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
-							{ classname:"addintpage", text: "{/literal}{"Add Internal Page Alias"|gettext}{literal}", onclick: { fn: addInternalSubNode } }
+							{ classname:"addpage", text: "{/literal}{"Add Content Page Here"|gettext}{literal}", onclick: { fn: addContentSubNode } },
+							{ classname:"addextpage", text: "{/literal}{"Add External Website Link (Page) Here"|gettext}{literal}", onclick: { fn: addExternalSubNode } },
+							{ classname:"addintpage", text: "{/literal}{"Add Page Alias (Page) Here"|gettext}{literal}", onclick: { fn: addInternalSubNode } }
 						]
 					}
 				},

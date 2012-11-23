@@ -18,6 +18,9 @@
 .navigation.add-section a.internalpage {
     background: url(../images/page_link.png) no-repeat;
 }
+.navigation.add-section a.freeformpage {
+    background: url(../images/page_edit.png) no-repeat;
+}
 .navigation.add-section a.standalone {
     background: url(../images/page_go.png) no-repeat;
 }

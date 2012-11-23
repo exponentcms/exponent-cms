@@ -203,7 +203,7 @@
 	</td>
 </tr>
 <tr>
-	<td id="fdp_image_cache" class="bodytext" style="font-weight: bold;" valign="top">tmp/image_cache/</td>
+	<td id="fdp_image_cache" class="bodytext" style="font-weight: bold;" valign="top">tmp/img_cache/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -212,7 +212,7 @@
 		<br />
 		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/image_cache
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/img_cache
 		</div>
 	</td>
 </tr>
@@ -232,7 +232,7 @@
 </tr>
 </table>
 
-<br /><br />
+<br />
 
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
 <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Other Tests'); ?></strong></td></tr>

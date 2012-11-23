@@ -22,49 +22,47 @@
     <p>
         {'This page allows you to turn different shipping options (known as shipping calculators) on and off for customers on your webstore.'|gettext}
     </p>
-    
     <table class="exp-skin-table">
-    <thead>
-        <tr>
-            <th>{'Default'|gettext}</th>
-            <th>{'Name'|gettext}</th>
-            <th>{'Description'|gettext}</th>
-            <th>{'on/off'|gettext}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {foreach from=$calculators item=calc}
-        <tr class="{cycle values="odd,even"}">
-            <td>
-                {permissions}
-                    {if $permissions.toggle == 1}
-                    {if $calc->is_default}
-                        <img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}>
-                    {else}
-                        <a href="{link action=toggle_default id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
+        <thead>
+            <tr>
+                <th>{'Default'|gettext}</th>
+                <th>{'Name'|gettext}</th>
+                <th>{'Description'|gettext}</th>
+                <th>{'on/off'|gettext}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$calculators item=calc}
+            <tr class="{cycle values="odd,even"}">
+                <td>
+                    {permissions}
+                        {if $permissions.toggle == 1}
+                        {if $calc->is_default}
+                            <img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}>
+                        {else}
+                            <a href="{link action=toggle_default id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
+                        {/if}
                     {/if}
-                {/if}
-                {/permissions}
-            </td>
-            <td>{$calc->title}</td>
-            <td>{$calc->body}</td>
-            <td>
-                {permissions}
-                    {if $permissions.toggle == 1}                        
-                    {if $calc->enabled}
-                        <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}></a>
-                    {else}
-                        <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
+                    {/permissions}
+                </td>
+                <td>{$calc->title}</td>
+                <td>{$calc->body}</td>
+                <td>
+                    {permissions}
+                        {if $permissions.toggle == 1}
+                        {if $calc->enabled}
+                            <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}></a>
+                        {else}
+                            <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
+                        {/if}
+                        {if $calc->hasConfig() == 1}
+                            {icon action=configure img='configure.png' record=$calc title="Configure `$calc->title`"}
+                        {/if}
                     {/if}
-                    {if $calc->hasConfig() == 1}
-                        {icon action=configure img='configure.png' record=$calc title="Configure `$calc->title`"}
-                    {/if}
-                {/if}
-                {/permissions}
-            </td>
-        </tr>
-        {/foreach}
-    </tbody>
+                    {/permissions}
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
     </table>
-        
 </div>

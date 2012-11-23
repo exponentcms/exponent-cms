@@ -33,7 +33,8 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='filedownload' text="Manage Categories"|gettext}
                 {/if}
-                {if $rank == 1}
+                {*{if $rank == 1}*}
+                {if $config.order == 'rank'}
                     {ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
                 {/if}
            {/if}
@@ -43,7 +44,8 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel">

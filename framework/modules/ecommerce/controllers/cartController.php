@@ -327,7 +327,7 @@ class cartController extends expController {
         if (!expSession::get('customer-signup') && !$user->isLoggedin()) {
             expHistory::set('viewable', $this->params);
             flash('message', gt("Please select how you would like to continue with the checkout process."));
-            expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), 'secure'));
+            expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), 'secure'),true);
         }
 
         if ($order->total < intval($config->config['min_order'])) {
@@ -402,6 +402,8 @@ class cartController extends expController {
         // we need to get the current shipping method rates
         $shipping->getRates();
 
+        if (!defined('ENABLE_SSL') || ENABLE_SSL==0) flash('error', gt('This page appears to be unsecured!  Personal information may become compromised!'));
+
         assign_to_template(array(
             'cartConfig'          => $config->config,
             //'addresses_dd'=>$addresses_dd,
@@ -440,7 +442,7 @@ class cartController extends expController {
 
         if (!$user->isLoggedIn()) {
             flash('message', gt("It appears that your session has expired. Please log in to continue the checkout process."));
-            expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), 'secure'));
+            expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), true));
         }
 
         // Make sure all the pertanent data is there...otherwise flash an error and redirect to the checkout form.
@@ -616,7 +618,7 @@ class cartController extends expController {
     function quickPay() {
         global $order, $user;
 
-        if ($order->shipping_required) redirect_to(array('controller'=> 'cart', 'action'=> 'checkout'));
+        if ($order->shipping_required) redirect_to(array('controller'=> 'cart', 'action'=> 'checkout'),true);
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
 
         // if we made it here it means that the item was add to the cart.
@@ -629,14 +631,16 @@ class cartController extends expController {
         }
 
         // setup the billing & shipping calculators info
-        if ($product->requiresBilling) {
+//        if ($product->requiresBilling) {
+        if ($order->billing_required) {
             $billing = new billing();
             assign_to_template(array(
                 'billing'=> $billing
             ));
         }
 
-        if ($product->requiresShipping) {
+//        if ($product->requiresShipping) {
+        if ($order->shipping_required) {  //FIXME we exit earlier if shipping_required???
             $shipping            = new shipping();
             $shipping->pricelist = $shipping->listPrices();
             assign_to_template(array(

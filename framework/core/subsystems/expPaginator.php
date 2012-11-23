@@ -297,9 +297,13 @@ class expPaginator {
 		if (!empty($this->src)) $page_params['src'] =  $this->src;
 		
 		if (isset($page_params['section'])) unset($page_params['section']);
+
+		//build a 'more' link we can use in the headlines views.
+		$this->morelink = $router->makeLink($page_params, false, false, true);
+
 		if (!empty($this->view)) $page_params['view'] = $this->view;
 		
-		//build out a couple links we can use in the views.
+		//build a couple more links we can use in the views.
 		$this->pagelink = $router->makeLink($page_params, false, false, true);
 		
 		// if don't have enough records for more than one page then we're done.
@@ -464,7 +468,7 @@ class expPaginator {
                     
                     expJavascript::pushToFoot(array(
                         "unique"=>'select-all',
-                        "yui3mods"=>null,
+                        "yui3mods"=>1,
                         "content"=>$js,
                         "src"=>""
                      ));

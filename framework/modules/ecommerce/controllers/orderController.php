@@ -1480,7 +1480,7 @@ exit();
     }
 
     function add_order_item() {
-        eDebug($this->params);
+//        eDebug($this->params);
         $product     = new product($this->params['product_id']);
         $paramsArray = array('orderid'=> $this->params['orderid']);
         assign_to_template(array(
@@ -1727,7 +1727,7 @@ exit();
         //$db->prefix . "billingmethods as bm ON bm.addresses_id=a.id ";
         $sql .= " WHERE match (a.firstname,a.lastname,a.email,a.organization) against ('" . $this->params['query'] .
             "*' IN BOOLEAN MODE) ";
-        $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*') ASC LIMIT 12";
+        $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
@@ -1741,7 +1741,7 @@ exit();
         //$db->prefix . "billingmethods as bm ON bm.addresses_id=a.id ";
         $sql .= " WHERE match (a.firstname,a.lastname,a.email,a.organization) against ('" . $this->params['query'] .
             "*' IN BOOLEAN MODE) ";
-        $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*') ASC LIMIT 12";
+        $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
         //eDebug($sql);
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);

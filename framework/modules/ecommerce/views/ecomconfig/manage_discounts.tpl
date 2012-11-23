@@ -41,42 +41,38 @@
 					</tr>
 				</thead>
 				<tbody>
-				{foreach from=$page->records item=listing name=listings}
-				<tr class="{cycle values='odd,even'}">
-					{form action=update_discount}
-					{control type="hidden" name="id" value=$listing->id}
-					<td style="text-align:center;">
-					{if $listing->enabled}
-						<a href="{link action=activate_discount id=$listing->id enabled=0}" title="Disable Discount">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}</a>
-					{else}
-						<a href="{link action=activate_discount id=$listing->id enabled=1}" title="Enable Discount">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}</a>
-					{/if}
-					</td>
-					
-					<td>
-						{$listing->title}
-					</td>
-					
-					<td>
-						{$listing->coupon_code}
-					</td>
-					
-					<td>
-						{if $listing->never_expires}
-							{"Never Expires"|gettext}
-                        {else}
-							{$listing->enddate|date_format:"%m/%d/%y"} - {$listing->enddate_time|expdate:"g:i a"}
-						{/if}
-					</td>
-					
-					<td>
-						{if $permissions.edit == 1}
-							{icon class=edit action=edit_discount record=$listing title="Edit Discount"}
-						{/if}
-					</td>
-					{/form} 
-				</tr>
-				{/foreach}
+                    {foreach from=$page->records item=listing name=listings}
+                        <tr class="{cycle values='odd,even'}">
+                            {form action=update_discount}
+                                {control type="hidden" name="id" value=$listing->id}
+                                <td style="text-align:center;">
+                                    {if $listing->enabled}
+                                        <a href="{link action=activate_discount id=$listing->id enabled=0}" title="Disable Discount">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}</a>
+                                    {else}
+                                        <a href="{link action=activate_discount id=$listing->id enabled=1}" title="Enable Discount">{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}</a>
+                                    {/if}
+                                </td>
+                                <td>
+                                    {$listing->title}
+                                </td>
+                                <td>
+                                    {$listing->coupon_code}
+                                </td>
+                                <td>
+                                    {if $listing->never_expires}
+                                        {"Never Expires"|gettext}
+                                    {else}
+                                        {$listing->enddate|date_format:"%m/%d/%y"} - {$listing->enddate_time|expdate:"g:i a"}
+                                    {/if}
+                                </td>
+                                <td>
+                                    {if $permissions.edit == 1}
+                                        {icon class=edit action=edit_discount record=$listing title="Edit Discount"}
+                                    {/if}
+                                </td>
+                            {/form}
+                        </tr>
+                    {/foreach}
 				</tbody>
 			</table>
 			{pagelinks paginate=$page bottom=1}

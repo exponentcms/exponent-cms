@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module migration migrate-files">
-    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><strong>{'Next Step -> Migrate Content'|gettext}</strong></a>
+    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><strong>{'Skip to Next Step -> Migrate Content'|gettext}</strong></a>
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
@@ -26,11 +26,10 @@
         </div>
 		<h1>{"File Migration Report"|gettext}</h1>	    
     </div>
-
-    <p> 
+    <blockquote>
 		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
 		{'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
-    </p>
+    </blockquote>
         <ul>
 			<li class=\"mig-msg\">
 				{'Emptied the expFiles table before the file import'|gettext}

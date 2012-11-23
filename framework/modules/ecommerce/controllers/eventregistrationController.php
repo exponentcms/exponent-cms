@@ -645,6 +645,50 @@ class eventregistrationController extends expController {
         expHistory::back();
     }
 
+    /**
+     * function to return event registrations as calendar events
+     *
+     * @param $startdate
+     * @param $enddate
+     *
+     * @return array
+     */
+    static function getEventsForDates($startdate, $enddate, $color="#FFFFFF") {
+        $er = new eventregistration();
+        $events      = $er->find('all', 'product_type="eventregistration" && active_type=0');
+        $pass_events = array();
+        foreach ($events as $event) {
+            if ($event->eventdate >= $startdate && $event->eventdate <= $enddate) {
+                $newevent = new stdClass();
+                $newevent->eventdate = new stdClass();
+                $newevent->eventdate->date = $event->eventdate;
+                $newevent->eventstart = $event->event_starttime + $event->eventdate;
+                $newevent->eventend = $event->event_endtime + $event->eventdate;
+                $newevent->title = $event->title;
+                $newevent->body  = $event->body;
+                $newevent->location_data = 'eventregistration';
+                $newevent->color = $color;
+                $pass_events[$event->eventdate][] = $newevent;
+            }
+        }
+        return $pass_events;
+    }
+
+    // create a psuedo global view_registrants permission
+    public static function checkPermissions($permission,$location) {
+        global $exponent_permissions_r, $user, $db, $router;
+
+        // only applies to the 'view_registrants' method
+        if (empty($location->src) && empty($location->int) && $router->params['action'] == 'view_registrants') {
+            if (!empty($exponent_permissions_r['eventregistrationController'])) foreach ($exponent_permissions_r['eventregistrationController'] as $page) {
+                foreach ($page as $pageperm) {
+                    if (!empty($pageperm['view_registrants']) || !empty($pageperm['manage'])) return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
 
 ?>

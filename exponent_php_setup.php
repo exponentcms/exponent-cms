@@ -57,7 +57,7 @@ $auto_dirs = array(
 );
 /**
  * Stores the search order locations for models & controllers
- * @global array $auto_dirs2
+ * @var array $auto_dirs2
  * @name $auto_dirs2
  */
 $auto_dirs2 = array(

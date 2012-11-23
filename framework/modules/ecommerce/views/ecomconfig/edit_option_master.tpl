@@ -15,20 +15,20 @@
 
 {permissions}
 {if $permissions.manage == 1}
-<div class="module storeadmin edit_option_master">
-	<h1>{$moduletitle|default:"Edit Product Options"|gettext}</h1>
-	{if $record->timesImplemented > 0}
-	<p>
-	    {'This option is being used by'|gettext} {$record->timesImplemented} {'products on your site.  Changing the name will change it for all the products currently using it.'|gettext}
-	</p>
-	{/if}
-	{form action=update_option_master}
-	    {control type="hidden" name=id value=$record->id}
-        {control type="hidden" name=rank value=$record->rank}
-	    {control type="hidden" name=optiongroup_master_id value=$record->optiongroup_master_id}
-	    {control type="text" name="title" label="Name"|gettext value=$record->title}
-	    {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
-	{/form}
-</div>
+    <div class="module storeadmin edit_option_master">
+        <h1>{$moduletitle|default:"Edit Product Options"|gettext}</h1>
+        {if $record->timesImplemented > 0}
+            <p>
+                {'This option is being used by'|gettext} {$record->timesImplemented} {'products on your site.  Changing the name will change it for all the products currently using it.'|gettext}
+            </p>
+        {/if}
+        {form action=update_option_master}
+            {control type="hidden" name=id value=$record->id}
+            {control type="hidden" name=rank value=$record->rank}
+            {control type="hidden" name=optiongroup_master_id value=$record->optiongroup_master_id}
+            {control type="text" name="title" label="Name"|gettext value=$record->title}
+            {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
+        {/form}
+    </div>
 {/if}
 {/permissions}

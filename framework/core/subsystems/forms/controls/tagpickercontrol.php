@@ -24,10 +24,12 @@ if (!defined('EXPONENT')) exit('');
  * @package    Subsystems-Forms
  * @subpackage Control
  */
-class tagpickercontrol extends formcontrol { //FIXME we do NOT want a list of checkboxes for all the tags in the system
+class tagpickercontrol extends formcontrol {
 
     var $flip = false;
     var $jsHooks = array();
+    var $record = array();
+    var $taglist = '';
 
     static function name() {
         return "Tag Picker";
@@ -45,50 +47,111 @@ class tagpickercontrol extends formcontrol { //FIXME we do NOT want a list of ch
         global $db;
 
 //		$this->tags = $db->selectNestedTree('expTags');
-        $this->tags    = $db->selectObjects('expTags', 1);
+//        $this->tags    = $db->selectObjects('expTags', 1);
+        $tags = $db->selectObjects('expTags','1','title ASC');
+   		$this->taglist = '';
+        foreach ($tags as $tag) {
+            $this->taglist .= "'".$tag->title."',";
+        }
         $this->subtype = isset($subtype) ? $subtype : '';
     }
 
     function toHTML($label, $name) {
-        $this->class = "tagpicker";
-        $this->id    = (empty($this->id)) ? $name : $this->id;
-        $html        = "<div id=\"" . $this->id . "Control\" class=\"control " . $this->class . "";
-        $html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= "<label>";
-        if (empty($this->flip)) {
-            $html .= "<span class=\"label\">" . $label . "</span>";
+        if (empty($this->class)) $this->class = "tagpicker";
+        if (empty($name)) $name = 'expTag';
+        $this->id    = (!empty($this->id)) ? $this->id : $name;
+        if (empty($label)) $label = gt('Tags (comma separated)');
+
+//        $html        = "<div id=\"" . $this->id . "Control\" class=\"control " . $this->class . "";
+//        $html .= (!empty($this->required)) ? ' required">' : '">';
+//        $html .= "<label>";
+//        if (empty($this->flip)) {
+//            $html .= "<span class=\"label\">" . $label . "</span>";
             $html .= $this->controlToHTML($name, $label);
-        } else {
-            $html .= $this->controlToHTML($name, $label);
-            $html .= "<span class=\"label\">" . $label . "</span>";
-        }
-        $html .= "</label>";
-        $html .= "</div>";
+//        } else {
+//            $html .= $this->controlToHTML($name, $label);
+//            $html .= "<span class=\"label\">" . $label . "</span>";
+//        }
+//        $html .= "</label>";
+//        $html .= "</div>";
         return $html;
     }
 
     function controlToHTML($name, $label) {
-        $this->name = empty($this->name) ? $name : $this->name;
-        $this->id   = empty($this->id) ? $name : $this->id;
+        $this->name = !empty($this->name) ? $this->name : $name;
+        $this->id   = !empty($this->id) ? $this->id : $name;
 
-        // get the selected tabs
-        $selected_tags = array();
-        foreach ($this->default as $tag) {
-            $selected_tags[] = $tag->id;
+        $this->record  = $this->default;
+        $selectedtags = '';
+        foreach ($this->record->expTag as $tag) {
+            $selectedtags .= $tag->title . ', ';
         }
-        //eDebug($this->tags);
-        $html = '';
-        foreach ($this->tags as $tag) {
-            $checkbox          = new genericcontrol('checkbox');
-            $checkbox->class   = "depth" . $tag->depth;
-            $checkbox->id      = 'tag' . $tag->id;
-            $checkbox->flip    = true;
-            $checkbox->default = $tag->id;
-            $name              = empty($this->subtype) ? 'expTag[]' : 'expTag[' . $this->subtype . '][]';
-            $checkbox->checked = in_array($tag->id, $selected_tags);
-            $html .= $checkbox->toHTML($tag->title, $name);
-        }
-        return $html;
+        $textbox = new genericcontrol('text');
+        $textbox->id = 'expTag';
+        $textbox->name = 'expTag';
+        $textbox->default = $selectedtags;
+        $textbox->size = 45;
+        $textbox->flip    = $this->flip;
+        $textbox->required    = $this->required;
+        $textbox->disabled    = $this->disabled;
+        $textbox->class    = $this->class;
+
+        $script = "
+            YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters',function(Y) {
+                var inputNode = Y.one('#expTag');
+                var tags = [".$this->taglist."];
+
+                inputNode.plug(Y.Plugin.AutoComplete, {
+                  activateFirstItem: true,
+                  allowTrailingDelimiter: true,
+                  minQueryLength: 0,
+                  queryDelay: 0,
+                  queryDelimiter: ',',
+                  source: tags,
+                  resultHighlighter: 'phraseMatch',
+
+                  // Chain together a phraseMatch filter followed by a custom result filter
+                  // that only displays tags that haven't already been selected.
+                  resultFilters: ['phraseMatch', function (query, results) {
+                    // Split the current input value into an array based on comma delimiters.
+                    var selected = inputNode.ac.get('value').split(/\s*,\s*/);
+
+                    // Pop the last item off the array, since it represents the current query
+                    // and we don't want to filter it out.
+                    selected.pop();
+
+                    // Convert the array into a hash for faster lookups.
+                    selected = Y.Array.hash(selected);
+
+                    // Filter out any results that are already selected, then return the
+                    // array of filtered results.
+                    return Y.Array.filter(results, function (result) {
+                      return !selected.hasOwnProperty(result.text);
+                    });
+                  }]
+                });
+
+                // When the input node receives focus, send an empty query to display the full
+                // list of tag suggestions.
+                    inputNode.on('focus', function () {
+                    inputNode.ac.sendRequest('');
+                });
+
+                // After a tag is selected, send an empty query to update the list of tags.
+                inputNode.ac.after('select', function () {
+                    inputNode.ac.sendRequest('');
+                    inputNode.ac.show();
+                });
+            });
+        ";
+
+        expJavascript::pushToFoot(array(
+            "unique"  => 'exptag-' . $name,
+            "yui3mods"=> 1,
+            "content" => $script,
+        ));
+
+        return $textbox->toHTML($label, $name);
     }
 }
 

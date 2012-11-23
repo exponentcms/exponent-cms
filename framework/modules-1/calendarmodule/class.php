@@ -18,7 +18,7 @@
 
 class calendarmodule {
     function name() { return $this->displayname(); }
-    static function displayname() { return 'Calendar'; }
+    static function displayname() { return 'Calendar (Deprecated)'; }
     static function author() { return 'OIC Group, Inc'; }
     static function description() { return 'Allows posting of content to a calendar.'; }
     static function hasContent() { return true; }
@@ -585,6 +585,7 @@ class calendarmodule {
                 require_once BASE.'external/iCalcreator.class.php';
                 $v = new vcalendar(); // initiate new CALENDAR
                 $v->setConfig('url',$extcal->url);
+                $v->setProperty( "X-WR-TIMEZONE", DISPLAY_DEFAULT_TIMEZONE );
                 $v->parse();
                 if ($enddate == null) {
                     $startYear = null;
@@ -609,26 +610,29 @@ class calendarmodule {
                     if (!empty($yearArray)) foreach ($yearArray as $month => $monthArray) {
                         if (!empty($monthArray)) foreach ($monthArray as $day => $dailyEventsArray) {
                             if (!empty($dailyEventsArray)) foreach ($dailyEventsArray as $vevent) {
+                                $yesterday = false;
                                 $currddate = $vevent->getProperty('x-current-dtstart');
+                                $thisday = explode('-',$currddate[1]);
                                 // if member of a recurrence set,
                                 // returns array( 'x-current-dtstart', <DATE>)
                                 // <DATE> = (string) date("Y-m-d [H:i:s][timezone/UTC offset]")
-                                $dtstart = $vevent->getProperty('dtstart');
-                                //FIXME must convert $dtstart timezone
-                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart));
+                                $dtstart = $vevent->getProperty('dtstart',false,true);
+                                //FIXME must convert $dtstart['TZID'] timezone
+                                $dtend = $vevent->getProperty('dtend',false,true);
+                                //FIXME must convert $dtend['TZID'] timezone
+                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']));
                                 $extevents[$eventdate][$dy] = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate = $eventdate;
-                                if (!empty($dtstart['hour'])) {
-                                    $extevents[$eventdate][$dy]->eventstart = ($dtstart['hour']*3600)+($dtstart['min']*60);
+                                if (!empty($dtstart['value']['hour'])) {
+                                    $extevents[$eventdate][$dy]->eventstart = ($dtstart['value']['hour']*3600)+($dtstart['value']['min']*60);
                                     if (date("I",$eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600;
                                 } else {
+                                    if ($dtstart['value']['day'] != $thisday[2]) $yesterday = true;
                                     $extevents[$eventdate][$dy]->eventstart = null;
                                     $extevents[$eventdate][$dy]->is_allday = 1;
                                 }
-                                $dtend = $vevent->getProperty('dtend');
-                                //FIXME must convert $dtend timezone
-                                if (!empty($dtend['hour'])) {
-                                    $extevents[$eventdate][$dy]->eventend = ($dtend['hour']*3600)+($dtend['min']*60);
+                                if (!empty($dtend['value']['hour'])) {
+                                    $extevents[$eventdate][$dy]->eventend = ($dtend['value']['hour']*3600)+($dtend['value']['min']*60);
                                     if (date("I",$eventdate)) $extevents[$eventdate][$dy]->eventend += 3600;
                                 }
                                 // dtstart required, one occurrence, (orig. start date)
@@ -636,7 +640,11 @@ class calendarmodule {
                                 $extevents[$eventdate][$dy]->body = $vevent->getProperty('description');
 
                                 $extevents[$eventdate][$dy]->location_data = null;
-                                $dy++;
+                                if (!$yesterday) {
+                                    $dy++;
+                                } else {
+                                    unset($extevents[$eventdate][$dy]);
+                                }
                             }
                         }
                     }

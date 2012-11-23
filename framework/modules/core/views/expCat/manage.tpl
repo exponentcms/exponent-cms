@@ -28,10 +28,13 @@
     </div>
 	{permissions}
     	{if $permissions.create == 1}
-    		<a class="add" href="{link controller=$model_name action=edit rank=1}">{"Create a new Category"|gettext}</a>
+            {if !empty($page)}
+                {icon class="add" controller=$model_name action=edit model=$page->model rank=1 text="Create a new Category"|gettext}
+            {else}
+                {icon class="add" controller=$model_name action=edit rank=1 text="Create a new Category"|gettext}
+            {/if}
     	{/if}
     {/permissions}
-
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {if !empty($page)}
@@ -39,6 +42,8 @@
             {/if}
             {foreach name=tabs from=$cats->modules key=moduleid item=module}
                 <li><a href="#tab{$smarty.foreach.items.iteration}">{$moduleid|capitalize} {'Categories'|gettext}</a></li>
+            {foreachelse}
+                <li><a href="#tab0">{'No Categories Defined'|gettext}</a></li>
             {/foreach}
         </ul>
         <div>
@@ -88,7 +93,8 @@
             {foreach name=items from=$cats->modules key=moduleid item=module}
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {if $permissions.manage == 1}
-                        {ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
+                        {*{ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}*}
+                        {ddrerank id=$moduleid items=$module model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
                     {/if}
                     {$page->links}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
@@ -131,6 +137,10 @@
                     </table>
                     {$page->links}
                 </div>
+            {foreachelse}
+                <div id="tab0">
+                    {'No Categories Defined'|gettext}
+                </div>
             {/foreach}
         </div>
     </div>
@@ -146,8 +156,6 @@
     };
 
     YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//        var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-//        tabview.render();
         Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
         Y.one('#{/literal}{$id}{literal}').removeClass('hide');
         Y.one('.loadingdiv').remove();

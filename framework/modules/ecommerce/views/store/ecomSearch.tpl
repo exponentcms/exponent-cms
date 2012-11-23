@@ -13,11 +13,11 @@
  *
  *}
 
-{css unique="autocomplete-extras" link="`$asset_path`css/ecom_search.css"}
+{*{css unique="autocomplete-extras" link="`$asset_path`css/ecom_search.css"}*}
 
-{/css}
+{*{/css}*}
 
-<div class="module ecommerce ecom-search yui3-skin-sam  yui-skin-sam">
+<div class="module ecommerce ecom-search yui3-skin-sam yui-skin-sam">
     <div id="search-autocomplete" class="control">
       {if $moduletitle && !$config.hidemoduletitle}<label class="label" for="ac-input">{$moduletitle}</label>{/if}
       <input id="ac-input" type="text" class="text">

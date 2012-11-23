@@ -39,7 +39,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
 	{form id="addtocart" controller=cart action=addItem}
 	{control type="hidden" name="product_type" value="giftcard"}
 	<table cellspacing="0" cellpadding="0" border="0" width="100%">

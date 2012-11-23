@@ -1,4 +1,4 @@
-Exponent Content Management System
+#Exponent Content Management System
 Copyright (c) 2004-2012 OIC Group, Inc.
 ===============================================
 
@@ -16,13 +16,13 @@ completely customize the layout, and delegate responsibilities to other
 users.
 
 ----------------
-Getting Started
+##Getting Started
 
 First, you'll need to install and configure Exponent. See the INSTALLATION
 file for a detailed description of how to do this.
 
 ------------
-Contributing
+##Contributing
 
 Exponent is Open Source, licensed under the GPL.  To read about the
 specifics of the GPL, please see the LICENSE file.
@@ -36,7 +36,7 @@ are encouraged to join in.  Simply fork this repository, hack away, and submit
 a pull request. We'll take a look at your code and changes
 
     * Documentation - If you're interested in helping with documentation, 
-contact us: https://github.com/inbox/new/exponentcms and we'll advise you
+contact us through the forums http://forums.exponentcms.org and we'll advise you
 as to where to contribute documentation.
 
     * Testing - As with every software application, there are bound to be
@@ -45,10 +45,8 @@ looking for more testers; people to use and abuse the CMS and expose bugs.
 The more bugs we find and fix, the better off the package is.
 
 -------------------
-Support / Questions
+##Support / Questions
 For questions, support, or further information, please visit
 http://www.exponentcms.org/
-https://github.com/inbox/new/exponentcms
 http://forums.exponentcms.org/
-
-
+http://docs.exponentcms.org/

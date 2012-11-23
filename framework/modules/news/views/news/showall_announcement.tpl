@@ -25,17 +25,27 @@
     {permissions}
     <div class="module-actions">
         {if $permissions.create == true || $permissions.edit == true}
-            {icon class="add" action=edit rank=1 text="Add a news post"|gettext}</a>
+            {icon class="add" action=edit rank=1 text="Add a news post"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+            {if !$config.disabletags}
+            |  {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
+            {/if}
+            {*{if $rank == 1}*}
+            {if $config.order == 'rank'}
+            |  {ddrerank items=$page->records model="news" label="News Items"|gettext}
+            {/if}
         {/if}
         {if $permissions.showUnpublished == 1 }
-             |  {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}</a>
+             |  {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}
         {/if}
     </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item}
         <div class="item announcement">
             <h2>{$item->title}</h2>

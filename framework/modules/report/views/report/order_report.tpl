@@ -90,7 +90,7 @@
             </tr>
              <tr class="even">
                  <td>
-                    {control type="dropdown" name="order-price-op" label="An Order Value..."|gettext items="Equal to,Less than,Greater than" values="e,l,g"}
+                    {control type="dropdown" name="order-price-op" label="An Order Value..."|gettext items="Equal to,Less than,Greater than"|gettxtlist values="e,l,g"}
                     {control type="text" name="order-price-num" value=$record->opn class="collapse orn"}
                 </td> 
             </tr>

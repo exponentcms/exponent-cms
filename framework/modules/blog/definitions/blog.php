@@ -59,6 +59,8 @@ return array(
    		DB_INDEX=>10),
 	'private'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'disable_comments'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

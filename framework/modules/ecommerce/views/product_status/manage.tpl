@@ -32,22 +32,22 @@
 			</thead>
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
-				<tr class="{cycle values="odd,even"}">
-				    <!--td>{if $smarty.foreach.listings.first == 1}{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}{/if}</td-->
-					<td>{$listing->title}</td>
-					<td>
-					    {if $permissions.manage == true}
-                            {icon action=edit record=$listing}
-                            {icon action=delete record=$listing}
-                        {/if}
-					</td>
-				</tr>
+                    <tr class="{cycle values="odd,even"}">
+                        <!--td>{if $smarty.foreach.listings.first == 1}{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}{/if}</td-->
+                        <td>{$listing->title}</td>
+                        <td>
+                            {if $permissions.manage == true}
+                                {icon action=edit record=$listing}
+                                {icon action=delete record=$listing}
+                            {/if}
+                        </td>
+                    </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
 				        <td colspan="4">{'No product status codes have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
-		</tbody>
+            </tbody>
 		</table>
 		{pagelinks paginate=$page bottom=1}
 	</div>

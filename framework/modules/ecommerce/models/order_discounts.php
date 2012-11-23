@@ -29,7 +29,7 @@ class order_discounts extends expRecord {
         ));*/
         
    
-    function validate($redirectOnFailureTo = array('controller'=>'cart', 'action'=>'checkout'))   
+    function validate($redirectOnFailureTo = array('controller'=>'cart', 'action'=>'checkout'))
     {
         global $router;
         /*$discount = new discounts($this->discounts_id);
@@ -46,7 +46,7 @@ class order_discounts extends expRecord {
             $this->delete();
             flash('error', $validateDiscountMessage . gt("This discount code has been removed from your cart."));
             //redirect_to($redirectOnFailureTo);          
-            redirect_to($router->current_url);          
+            redirect_to($router->current_url,true);
         }        
     }
         

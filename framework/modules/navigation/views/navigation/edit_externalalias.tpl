@@ -18,7 +18,7 @@
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Editing External Alias Pages"|gettext) module="edit-external-page"}
         </div>
-	    <h1>{if $section->id}{'Edit Existing External Alias'|gettext}{else}{'New External Alias'|gettext}{/if}</h1>
+	    <h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'External Alias'|gettext}</h1>
 	</div>
 	<div class="form_header">
         {'Below, enter the web address you want this section to link to.'|gettext}
@@ -36,12 +36,11 @@
             <div class="yui-content">
                 <div id="tab1">
                     {control type=text name=name label="Name"|gettext value=$section->name}
-                    {control type=text name=sef_name label="SEF Name"|gettext value=$section->sef_name}
-                    <div class="control"><div class="control-desc">{'If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.'|gettext}</div></div>
+                    {control type=text name=sef_name label="SEF Name"|gettext value=$section->sef_name description='If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.'|gettext}
                     {if $section->id == 0}
                         {control type=hidden name=parent value=$section->parent}
                     {else}
-                        {control type="dropdown" name="parent" label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),true,'manage') value=$section->parent}
+                        {control type=dropdown name=parent label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),($user->isAdmin() || $section->parent == 0),'manage') value=$section->parent}
                     {/if}
                     {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
                     {control type=text name=external_link label="Page URL"|gettext value=$section->external_link}
@@ -61,8 +60,6 @@
     };
 
     YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
-//        tabview.render();
         Y.expTabs({srcNode: '#configure-tabs'});
         Y.one('#configure-tabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

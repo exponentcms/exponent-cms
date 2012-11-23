@@ -787,6 +787,19 @@ class usersController extends expController {
             }
         }
 
+        if(!empty($_GET['filter'])) {
+            switch ($_GET['filter']) {
+                case '1' :
+                    $filter = '';
+                    break;
+                case '2' :
+                    $filter = "id != 1";
+                    break;
+                case '3' :
+                    $filter = "is_admin != 1";
+            }
+        }
+
         // Sort dir?
         if((strlen($this->params['dir']) > 0) && ($this->params['dir'] == 'desc')) {
             $dir = 'desc';

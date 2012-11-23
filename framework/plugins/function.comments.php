@@ -33,12 +33,17 @@
  * @param \Smarty $smarty
  */
 function smarty_function_comments($params,&$smarty) {
-	$hideform = empty($params['hideform']) ? false : true;
-	$hidecomments = empty($params['hidecomments']) ? false : true;
+    if (empty($params['record'])) return;  // no item to work with
+//	$hideform = empty($params['hideform']) ? false : true;
+//	$hidecomments = empty($params['hidecomments']) ? false : true;
+    $config = $smarty->getTemplateVars('config');
+    $hideform = !empty($config['usescomments']) ? true : (!empty($params['record']->disable_comments) ? true : false);  // we don't want new comments
+   	$hidecomments = !empty($config['hidecomments']) ? true : (!empty($params['record']->disable_comments) ? true : false);  // we don't want to show comments
+    if ($hideform && $hidecomments) return;  // we don't need to display anything
 	$title = empty($params['title']) ? 'Comments' : $params['title'];
 	$formtitle = empty($params['formtitle']) ? 'Leave a comment' : $params['formtitle'];
-    
-    /* The global constants can be overriden by passing appropriate params */
+
+    /* The global constants can be overridden by passing appropriate params */
     $require_login = empty($params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $params['require_login'];
     $require_approval = empty($params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $params['require_approval'];
     $require_notification = empty($params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $params['require_notification'];
@@ -46,13 +51,15 @@ function smarty_function_comments($params,&$smarty) {
     
 	renderAction(array('controller'=>'expComment', 
 			'action'=>'getComments', 
-			'content_id'=>$params['content_id'], 
-			'content_type'=>$params['content_type'], 
-			'hideform'=>$hideform, 
+//			'content_id'=>$params['content_id'],
+//			'content_type'=>$params['content_type'],
+            'content_id'=>$params['record']->id,
+            'content_type'=>$params['record']->classname,
+            'config'=>$config,
+			'hideform'=>$hideform,
 			'hidecomments'=>$hidecomments,
 			'title'=>$title,
 			'formtitle'=>$formtitle,
-			'config'=>$smarty->getTemplateVars('config'),
             'require_login'=>$require_login,
             'require_approval'=>$require_approval,
             'require_notification'=>$require_notification,

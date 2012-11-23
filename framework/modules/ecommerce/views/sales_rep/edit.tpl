@@ -17,7 +17,6 @@
     <h1>
         {if $record->id == ""}{'New Sales Rep'|gettext}{else}{'Editing'|gettext} {$record->first_name} {$record->last_name}{/if}
     </h1>
-    
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="text" name="first_name" label="First Name"|gettext value=$record->first_name}

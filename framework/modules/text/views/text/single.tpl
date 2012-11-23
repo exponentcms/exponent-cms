@@ -15,7 +15,8 @@
 
 <div class="module text single">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {if $items[0]->title}<h2>{$items[0]->title}</h2>{/if}
     {permissions}
         {if $permissions.edit == 1}

@@ -32,21 +32,21 @@
 			</thead>
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
-				<tr class="{cycle values="odd,even"}">
-					<td>{$listing->body}</td>
-					<td>
-					    {if $permissions.manage == true}
-                            {icon controller=order_status action=edit_message img='edit.png' record=$listing}
-                            {icon controller=order_status action=delete_message img='delete.png' record=$listing}
-                        {/if}
-					</td>
-				</tr>
+                    <tr class="{cycle values="odd,even"}">
+                        <td>{$listing->body}</td>
+                        <td>
+                            {if $permissions.manage == true}
+                                {icon controller=order_status action=edit_message img='edit.png' record=$listing}
+                                {icon controller=order_status action=delete_message img='delete.png' record=$listing}
+                            {/if}
+                        </td>
+                    </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
 				        <td colspan="4">{'No status codes have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
-		</tbody>
+            </tbody>
 		</table>
 		{pagelinks paginate=$page bottom=1}
 	</div>

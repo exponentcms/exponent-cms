@@ -274,6 +274,7 @@ class calendarmodule_config {
 				$db->insertObject($data,'calendar_reminder_address');
 			}
 		}
+        $db->delete('calendar_external','calendar_id='.$object->id);
         $caldata = new stdClass();
         $caldata->calendar_id = $object->id;
         if(isset($values['ical_address'])){

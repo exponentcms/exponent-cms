@@ -141,8 +141,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//	    var tabview = new Y.TabView({srcNode:'#mod-manager-tabs'});
-//	    tabview.render();
         Y.expTabs({srcNode: '#mod-manager-tabs'});
 		Y.one('#mod-manager-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

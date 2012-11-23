@@ -15,7 +15,8 @@
 
 <div id="showhelp" class="module help show">
     <h1>{$doc->title}</h1>
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
@@ -83,8 +84,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//	    var tabview = new Y.TabView({srcNode:'#showhelp-tabs'});
-//	    tabview.render();
         Y.expTabs({srcNode: '#showhelp-tabs'});
 		Y.one('#showhelp-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

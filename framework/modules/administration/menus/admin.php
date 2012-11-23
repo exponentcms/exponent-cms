@@ -324,7 +324,7 @@ if ($user->isAdmin() || !empty($groups)) {
 
 if ($user->isSuperAdmin()) {
 	$expAdminMenu['submenu']['itemdata'][] = array(
-        'text' => gt('Developer Tools'),
+        'text' => gt('Super-Admin Tools'),
         'classname' => 'development',
         'submenu' => array(
             'id' => 'development',
@@ -364,6 +364,12 @@ if ($user->isSuperAdmin()) {
                                     'controller' => 'administration',
                                     'action' => 'install_tables'
                                 ))
+                            ),
+                            array(
+                                'text' => gt("Manage Database"),
+                                'url'=>'#',
+                                'id'=>'manage-db',
+                                'classname' => 'manage',
                             ),
                             array(
                                 'text' => gt('Optimize Database'),
@@ -537,6 +543,13 @@ if ($user->isSuperAdmin()) {
                     'url' => makeLink(array(
                         'controller' => 'administration',
                         'action' => 'toggle_maintenance'
+                    ))
+                ),
+                array(
+	                'text' => gt('Check for updated version'),
+                    'url' => makeLink(array(
+                        'controller' => 'administration',
+                        'action' => 'manage_version'
                     ))
                 )
             )

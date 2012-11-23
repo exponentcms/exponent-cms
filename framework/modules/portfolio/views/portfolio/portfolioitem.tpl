@@ -14,7 +14,7 @@
  *}
 
 <div class="item">
-	<h3><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>
+	<h3{if $config.usecategories} class="{$cat->color}"{/if}><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>
 	{permissions}
 		<div class="item-actions">
 			{if $permissions.edit == 1}
@@ -32,14 +32,7 @@
 			{/if}
 		</div>
 	{/permissions}
-	{if $record->expTag|@count>0 && !$config.disabletags}
-		<div class="tags">
-			{'Tags'|gettext}:
-			{foreach from=$record->expTag item=tag name=tags}
-				<a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-			{/foreach}
-		</div>
-	{/if}
+    {tags_assigned record=$record}
     <div class="bodycopy">
         {if $config.filedisplay != "Downloadable Files"}
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}

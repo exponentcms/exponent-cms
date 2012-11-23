@@ -39,7 +39,7 @@ class expCommentController extends expController {
 	        flash('message',gt('An error occurred: No content id set.'));
             expHistory::back();  
 	    } 
-        /* The global constants can be overriden by passing appropriate params */ 
+        /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
@@ -51,6 +51,7 @@ class expCommentController extends expController {
 	    $comment = new expComment($id);
 		assign_to_template(array(
 		    'content_id'=>$this->params['content_id'],
+            'content_type'=>$this->params['content_type'],
 		    'comment'=>$comment
 		));
 	}	
@@ -103,18 +104,17 @@ class expCommentController extends expController {
             'refs'=>$refs,
         ));
 	}
-	
+
 	function getComments() {
 		global $user, $db;
 
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-//        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
+        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
         $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-//        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-//        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-        
-        
+        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
+        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+
 //        $sql  = 'SELECT c.*, ua.image, u.username FROM '.DB_TABLE_PREFIX.'_expComments c ';
 //        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
 //        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_user_avatar ua ON c.poster=ua.user_id ';
@@ -147,6 +147,7 @@ class expCommentController extends expController {
             $comments->records[$key]->username = $commentor->username;
             $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
         }
+        if (empty($this->params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
         // eDebug($sql, true);
         
         // count the unapproved comments
@@ -173,8 +174,53 @@ class expCommentController extends expController {
 			'hidecomments'=>$this->params['hidecomments'],
 			'title'=>$this->params['title'],
 			'formtitle'=>$this->params['formtitle'],
+            'require_login'=>$require_login,
+            'require_approval'=>$require_approval,
+            'require_notification'=>$require_notification,
+            'notification_email'=>$notification_email,
 		));
 	}
+
+    /**
+     * function to arrange comments in hierarchy of parent_id's as children properties
+     *
+     * @param array $comments
+     *
+     * @return array
+     */
+    function arrangecomments($comments) {
+
+        $tree = array();
+
+        /* We get all the parent into the tree array */
+        foreach ($comments as &$node) {
+            /* Note: I've used 0 for top level parent, you can change this to == 'NULL' */
+            if($node->parent_id=='0'){
+                $tree[] = $node;
+                unset($node);
+            }
+        }
+
+        /* This is the recursive function that does the magic */
+        /* $k is the position in the array */
+        function findchildren(&$parent, &$comments, $k=0){
+            if (isset($comments[$k])){
+                if($comments[$k]->parent_id==$parent->id){
+                    $com = $comments[$k];
+                    findchildren($com, $comments); // We try to find children's children
+                    $parent->children[] = $com;
+                }
+                findchildren($parent, $comments, $k+1); // And move to the next sibling
+            }
+        }
+
+        /* looping through the parent array, we try to find the children */
+        foreach ($tree as &$parent) {
+            findchildren($parent, $comments);
+        }
+
+        return $tree;
+    }
 
     /**
      * Returns count of comments attached to specified item

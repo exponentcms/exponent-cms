@@ -95,20 +95,34 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
     //Email stuff here...
     //Don't send email if this is an edit.
     if ($f->is_email == 1 && !isset($_POST['data_id'])) {
-        //Building Email List...
+          //Building Email List...
         $emaillist = array();
-        foreach ($db->selectObjects("formbuilder_address","form_id=".$f->id) as $address) {
-            if ($address->group_id != 0) {
-                foreach (group::getUsersInGroup(group::getGroupById($address->group_id)) as $locUser){
+        if ($f->select_email && !empty($_POST['email_dest'])) {
+            if (strval(intval($_POST['email_dest'])) == strval($_POST['email_dest'])) {
+                foreach (group::getUsersInGroup(group::getGroupById(intval($_POST['email_dest']))) as $locUser){
                     if ($locUser->email != '') $emaillist[] = $locUser->email;
                 }
-            } else if ($address->user_id != 0) {
-                $locUser = user::getUserById($address->user_id);
-                if ($locUser->email != '') $emaillist[] = $locUser->email;
-            } else if ($address->email != '') {
-                $emaillist[] = $address->email;
+            } else {
+                $emaillist[] = $_POST['email_dest'];
+            }
+        } else {
+            foreach ($db->selectObjects("formbuilder_address","form_id=".$f->id) as $address) {
+                if ($address->group_id != 0) {
+                    foreach (group::getUsersInGroup(group::getGroupById($address->group_id)) as $locUser){
+                        if ($locUser->email != '') $emaillist[] = $locUser->email;
+                    }
+                } else if ($address->user_id != 0) {
+                    $locUser = user::getUserById($address->user_id);
+                    if ($locUser->email != '') $emaillist[] = $locUser->email;
+                } else if ($address->email != '') {
+                    $emaillist[] = $address->email;
+                }
             }
         }
+        //This is an easy way to remove duplicates
+        $emaillist = array_flip(array_flip($emaillist));
+        $emaillist = array_map('trim', $emaillist);
+
         if ($rpt->text == "") {
             $template = new template("formbuilder","_default_report");
         } else {
@@ -136,9 +150,6 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
 			// "Content-type"=>"text/html; charset=".LANG_CHARSET
 		// );
         if (count($emaillist)) {
-            //This is an easy way to remove duplicates
-            $emaillist = array_flip(array_flip($emaillist));
-            $emaillist = array_map('trim', $emaillist);
 			$mail = new expMail();
             if (!empty($attachments)) {
                 foreach ($attachments as $attachment) {

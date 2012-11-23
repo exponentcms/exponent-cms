@@ -19,7 +19,8 @@
 
 <div class="module photoalbum show">
     <h1>{$record->title}</h1>
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {permissions}
     <div class="item-actions">
         {if $permissions.edit == 1}
@@ -41,21 +42,12 @@
             <a href="{link action=show id=$next}">{"Next Image"|gettext}</a>
         </div>
     {/if}
-    {if $record->expTag|@count>0 && !$config.disabletags}
-        <div class="tags">
-            {"Tags"|gettext}:
-            {foreach from=$record->expTag item=tag name=tags}
-                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-            {/foreach}
-        </div>
-    {/if}
+    {tags_assigned record=$record}
     <div class="bodycopy">
         {capture assign="float"}{$config.pa_float_enlarged|lower|replace:" ":""}{/capture}
         {img alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_enlarged class="img-large float-`$float`" title=$record->alt|default:$record->expFile[0]->title style="float:`$float`;"}    
         {$record->body}
     </div>
     
-    {*if $config.usescomments}
-        {comments content_type="photos" content_id=$record->id title="Comments"}
-    {/if*}
+    {*{comments record=$record title="Comments"}*}
 </div>

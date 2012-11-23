@@ -152,7 +152,7 @@ class paypalExpressCheckout extends billingcalculator {
              *
              * @var string
              */
-            $cancelURL = makeLink(array('controller'=> 'cart', 'action'=> 'checkout'));
+            $cancelURL = makeLink(array('controller'=> 'cart', 'action'=> 'checkout'),true);
             ;
 
             $shipname = $shippingaddress->firstname . ' ';
@@ -182,11 +182,11 @@ class paypalExpressCheckout extends billingcalculator {
                 'PWD'               => $pwd,
                 'SIGNATURE'         => $sig,
 //                'VERSION'           => '59.0',
-                'VERSION'           => '93.0',
+                'VERSION'           => '95.0',
 //                'ReturnUrl' => $returnURL,
                 'RETURNURL'         => $returnURL,
                 'CANCELURL'         => $cancelURL,
-                'ALLOWNOTE' => 1,  // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
+                'ALLOWNOTE' => '1',  // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
                 // TODO: build data from odrer
 //                'AMT'               => number_format($order->grand_total, 2, '.', ''), //FIXME deprecated in 63.0
 //                'CURRENCYCODE'      => 'USD',
@@ -237,8 +237,8 @@ class paypalExpressCheckout extends billingcalculator {
             $object = new stdClass();
             if (!empty($nvpResArray['curl_error'])) {
                 //curl error
-                $object->errorCode = curl_errno($ch); //Response reason code
-                $object->message   = curl_error($ch);
+                $object->errorCode = $nvpResArray['curl_errno']; //Response reason code
+                $object->message   = $nvpResArray['curl_error'];
 
                 $opts->result = $object;
                 $method->update(array('billing_options'=> serialize($opts)));
@@ -319,7 +319,7 @@ class paypalExpressCheckout extends billingcalculator {
             'PWD'           => $pwd,
             'SIGNATURE'     => $sig,
 //            'VERSION'       => '59.0',
-            'VERSION'       => '93.0',
+            'VERSION'       => '95.0',
             'SOLUTIONTYPE'  => 'Sole', //added per post
             'LANDINGPAGE'   => 'Billing', //added per post
             'TOKEN'         => $billing_options->result->token,
@@ -373,8 +373,9 @@ class paypalExpressCheckout extends billingcalculator {
         //around to check for succcess ONLY and then default to an error otherwise    
         if (!empty($nvpResArray['curl_error'])) {
             //curl error            
-            $billing_options->result->errorCode = curl_errno($ch); //Response reason code
-            $billing_options->result->message   = curl_error($ch);
+            $billing_options->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
+            $billing_options->result->message   = $nvpResArray['curl_error'];
+
             //$opts->result = $object;                
             $transaction_state = "Temporary Failure";
             $trax_state        = "error";

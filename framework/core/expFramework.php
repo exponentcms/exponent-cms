@@ -20,7 +20,7 @@
 // expModules
 /**
  * Stores the list of available/active controllers
- * @global array $available_controllers
+ * @var array $available_controllers
  * @name $available_controllers
  */
 $available_controllers = array();
@@ -28,13 +28,13 @@ $available_controllers = array();
 // expTheme
 /**
  * Stores the theme validation flags
- * @global array $validateTheme does theme have header & footer
+ * @var array $validateTheme does theme have header & footer
  * @name $validateTheme
  */
 $validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
 /**
  * Stores the list of module scopes
- * @global array $module_scope
+ * @var array $module_scope
  * @name $module_scope
  */
 $module_scope = array();
@@ -42,25 +42,25 @@ $module_scope = array();
 // expLang
 /**
  * Stores the list of language strings for the current language
- * @global array $cur_lang
+ * @var array $cur_lang
  * @name $cur_lang
  */
 $cur_lang = array();
 /**
  * Stores the list of language strings for the default language (English - US)
- * @global array $default_lang
+ * @var array $default_lang
  * @name $default_lang
  */
 $default_lang = array();
 /**
  * Stores the name of the default language file
- * @global array $default_lang_file
+ * @var array $default_lang_file
  * @name $default_lang_file
  */
 $default_lang_file = '';
 /**
  * Stores the name of the language file to be created
- * @global array $target_lang_file
+ * @var array $target_lang_file
  * @name $target_lang_file
  */
 $target_lang_file = '';
@@ -68,7 +68,7 @@ $target_lang_file = '';
 // expDatabase
 /**
  * Stores the exponent database object
- * @global \database $db the exponent database object
+ * @var \database $db the exponent database object
  * @name $db
  */
 $db = new stdClass();
@@ -76,7 +76,7 @@ $db = new stdClass();
 // expHistory
 /**
  * Stores the browsing history object
- * @global expHistory $history
+ * @var expHistory $history
  * @name $history
  */
 $history = new stdClass();
@@ -84,7 +84,7 @@ $history = new stdClass();
 // user model
 /**
  * Stores the current user object
- * @global user $user
+ * @var user $user
  * @name $user
  */
 $user = new stdClass();
@@ -92,7 +92,7 @@ $user = new stdClass();
  * This global array belongs exclusively to the user model, and is used to cache
  * users as they are retrieved, to help out with performance when doing a lot of
  * work with user accounts and profile information.
- * @global array $SYS_USERS_CACHE
+ * @var array $SYS_USERS_CACHE
  * @name $SYS_USERS_CACHE
  */
 $SYS_USERS_CACHE = array();
@@ -100,13 +100,13 @@ $SYS_USERS_CACHE = array();
 // expRouter
 /**
  * Stores the routing/link/url object
- * @global expRouter $router
+ * @var expRouter $router
  * @name $router
  */
 $router = new stdClass();
 /**
  * Stores the routing/link/url object
- * @global section $sectionObj
+ * @var section $sectionObj
  * @name $sectionObj
  */
 $sectionObj = new stdClass();
@@ -114,7 +114,7 @@ $sectionObj = new stdClass();
 // expCore
 /**
  * Stores the list of sections/pages for the site
- * @global array $sections
+ * @var array $sections
  * @name $sections
  */
 $sections = array();
@@ -122,7 +122,7 @@ $sections = array();
 /**
  * Stores the permission data for the current user.
  * This should not be modified by anything outside of the permissions subsystem.
- * @global array $exponent_permissions_r
+ * @var array $exponent_permissions_r
  * @name $exponent_permissions_r
  */
 $exponent_permissions_r = array();
@@ -130,32 +130,32 @@ $exponent_permissions_r = array();
 // expJavascript
 /**
  * Stores the user's javascript files
- * @global array $userjsfiles
+ * @var array $userjsfiles
  * @name $userjsfiles
  */
 $userjsfiles = array();
 /**
  * Stores the user's javascript files
- * @global array $js2foot
+ * @var array $js2foot
  * @name $js2foot
  */
 $js2foot = array();
 //$yui2js = array();
 /**
  * Stores the user's javascript files
- * @global array $yui3js
+ * @var array $yui3js
  * @name $yui3js
  */
 $yui3js = array();
 /**
  * Stores the user's javascript files
- * @global array $jqueryjs
+ * @var array $jqueryjs
  * @name $jqueryjs
  */
 $jqueryjs = array();
 /**
  * Stores the user's javascript files
- * @global array $expJS
+ * @var array $expJS
  * @name $expJS
  */
 $expJS = array();
@@ -163,49 +163,49 @@ $expJS = array();
 // expCSS
 /**
  * Stores the user's css files
- * @global array $css_primer
+ * @var array $css_primer
  * @name $css_primer
  */
 $css_primer = array();
 /**
  * Stores the user's css files
- * @global array $css_core
+ * @var array $css_core
  * @name $css_core
  */
 $css_core = array();
 /**
  * Stores the user's css files
- * @global array $css_links
+ * @var array $css_links
  * @name $css_links
  */
 $css_links = array();
 /**
  * Stores the user's css files
- * @global array $css_theme
+ * @var array $css_theme
  * @name $css_theme
  */
 $css_theme = array();
 /**
  * Stores the user's css files
- * @global array $css_inline
+ * @var array $css_inline
  * @name $css_inline
  */
 $css_inline = array();
 /**
  * Stores the user's css files
- * @global array $head_config
+ * @var array $head_config
  * @name $head_config
  */
 $head_config = array();
 /**
  * Stores the user's css files
- * @global string $jsForHead
+ * @var string $jsForHead
  * @name $jsForHead
  */
 $jsForHead = "";
 /**
  * Stores the user's css files
- * @global string $cssForHead
+ * @var string $cssForHead
  * @name $cssForHead
  */
 $cssForHead = "";
@@ -213,7 +213,7 @@ $cssForHead = "";
 // expTemplate
 /**
  * Stores the global template
- * @global \basetemplate $template
+ * @var \basetemplate $template
  * @name $template
  */
 $template = null;
@@ -221,7 +221,7 @@ $template = null;
 // expTimer
 /**
  * Stores the timer
- * @global expTimer $timer
+ * @var expTimer $timer
  * @name $timer
  */
 $timer = null;
@@ -229,7 +229,7 @@ $timer = null;
 // e-commerce
 /**
  * Stores the order
- * @global \order $order
+ * @var \order $order
  * @name $order
  */
 $order = null;

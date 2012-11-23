@@ -16,10 +16,10 @@
 <div class="expcat edit">
 	<div class="form_header">
         {if $record->id == ""}
-            <h1>{'Create Category'|gettext}</h1>
+            <h1>{'Create'|gettext}{if !empty($model)} {$model|capitalize}{/if} {'Category'|gettext}</h1>
             <p>{'Create a new category to add to the list of available categories'|gettext}</p>
         {else}
-            <h1>{'Edit Category'|gettext}</h1>
+            <h1>{'Edit'|gettext}{if !empty($model)} {$model|capitalize}{/if} {'Category'|gettext}</h1>
             <p>{'Edit this category to update all associated categorized items'|gettext}</p>
         {/if}
 	</div>
@@ -27,9 +27,12 @@
 		{control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
 		{control type=text name=title label="Category Name"|gettext value=$record->title}
-        {*{control type=text name=color label="Color"|gettext value=$record->color}*}
-        {control type="dropdown" name=module label="Associated Module"|gettext items=$mods value=$record->module}
+        {control type=color name=color label="Color/Class"|gettext value=$record->color description='Enter a six-digit hex color preceded by #, or an \'a\' tag style name'|gettext}
+        {if empty($model)}
+            {control type="dropdown" name=module label="Associated Module"|gettext items=$mods value=$record->module}
+        {else}
+            {control type=hidden name=module value=$model}
+        {/if}
 		{control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>
-

@@ -217,7 +217,7 @@ class order extends expRecord {
                                             expSession::login($user);
                                             //Update the last login timestamp for this user.
                                             $user->updateLastLogin();
-                                            flash('message', gt('Welcome back') . ' ' . $sessAr['firstname'] . '! ' . gt('Your shopping cart has been restored - you may continue shopping or') . ' <a href="' . makelink(array("controller"=> "cart", "action"=> "checkout")) . '">checkout</a> ' . gt('at your convenience.'));
+                                            flash('message', gt('Welcome back') . ' ' . $sessAr['firstname'] . '! ' . gt('Your shopping cart has been restored - you may continue shopping or') . ' <a href="' . makelink(array("controller"=> "cart", "action"=> "checkout"),true) . '">checkout</a> ' . gt('at your convenience.'));
                                         } else {
                                             //send to verification? If user has elected to restore their cart
                                             //eDebug($_SESSION);

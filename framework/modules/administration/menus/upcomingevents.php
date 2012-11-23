@@ -18,23 +18,42 @@
 
 if (!defined('EXPONENT')) exit('');
 
-global $db, $router;
-if ($db->countObjects('product', 'product_type="eventregistration"') == 0) return false;
+global $db, $user, $router;
 
-$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
+if (!$user->isAdmin()) {
+    $viewregperms = $db->selectValue('userpermission','uid',"uid='".$user->id."' AND module=='eventregistrationController' AND permission!='view_registrants'");
+    if (!$viewregperms) {
+        $groups = $user->getGroupMemberships();
+        foreach ($groups as $group) {
+            if (!$viewregperms) {
+                $viewregperms = $db->selectValue('grouppermission','gid',"gid='".$group->id."' AND module=='eventregistrationController' AND permission!='view_registrants'");
+            } else {
+                break;
+            }
+        }
+    }
+    if (!$viewregperms) return false;
+}
+
+if ($db->countObjects('product', 'product_type="eventregistration"') == 0) return false;
 
 $items = array();
 $items[] = array(
-    'text'=>"<strong><u>".gt('View All Event Registrations')."</u><strong>",
+    'text'=>gt('View All Event Registrations'),
     'url'=>makeLink(array('controller'=>'eventregistration','action'=>'manage')),
+    'classname'=>'events',
 );
 
+//$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
+$events = $db->selectObjects('eventregistration', 'eventdate > '.time());
+//FIXME we need to check to see if we have permission to view registrants
 foreach ($events as $event) {
     $prod = $db->selectObject('product', 'product_type="eventregistration" AND product_type_id='.$event->id);
     if (!empty($prod->title)) {
         $thisitem = array();
         $thisitem['text'] = $prod->title.' ('.$event->number_of_registrants.'/'.$prod->quantity.')';
         $thisitem['url'] = $router->makeLink(array('controller'=>'eventregistration','action'=>'view_registrants', 'id'=>$prod->id));
+        $thisitem['classname'] = 'event';
         $items[] = $thisitem;
     }
 }

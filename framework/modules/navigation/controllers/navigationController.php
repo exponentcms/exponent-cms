@@ -45,7 +45,7 @@ class navigationController extends expController {
         'delete',
         'edit'
     );
-    public $codequality = 'alpha';
+    public $codequality = 'beta';
 
     static function displayname() { return gt("Navigation"); }
 
@@ -75,9 +75,7 @@ class navigationController extends expController {
         }
         assign_to_template(array(
             'sections'     => $navsections,
-//            'hierarchy'    => self::navhierarchy(),
             'current'      => $current,
-//            'num_sections' => count($sections),
             'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
         ));
     }
@@ -109,14 +107,11 @@ class navigationController extends expController {
         }
         assign_to_template(array(
             'sections'     => $navsections,
-//            'hierarchy'    => self::navhierarchy(),
             'current'      => $current,
-//            'num_sections' => count($sections),
-//            'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
         ));
     }
 
-    public static function navhierarchy() {
+    public static function navhierarchy($notyui=false) {
         global $sections;
 
         $json_array = array();
@@ -126,11 +121,20 @@ class navigationController extends expController {
 //   				$obj->id = $sections[$i]->name.$sections[$i]->id;
                 $obj->id   = $sections[$i]->id;
                 $obj->text = $sections[$i]->name;
+                $obj->title = $sections[$i]->page_title;
+                $obj->description = $sections[$i]->description;
+                $obj->new_window = $sections[$i]->new_window;
+                $obj->expFile = $sections[$i]->expFile;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
                 } else {
                     $obj->url     = "#";
                     $obj->onclick = "onclick: { fn: return false }";
+                }
+                $obj->type = $sections[$i]->alias_type;
+                if ($obj->type == 3) {  // mostly a hack instead of adding more table fields
+                    $obj->width = $sections[$i]->internal_id;
+                    $obj->class = $sections[$i]->external_link;
                 }
                 /*if ($sections[$i]->active == 1) {
                     $obj->disabled = false;
@@ -138,7 +142,12 @@ class navigationController extends expController {
                     $obj->disabled = true;
                 }*/
                 //$obj->disabled = true;
-                $obj->itemdata = self::getChildren($i);
+                $obj->itemdata = self::getChildren($i,$notyui);
+                $obj->maxitems = count($obj->itemdata);
+                $obj->maxdepth = 0;
+                foreach ($obj->itemdata as $menu) {
+                    if ($menu->maxdepth > $obj->maxdepth) $obj->maxdepth = $menu->maxdepth;
+                }
             }
             $json_array[] = $obj;
         }
@@ -149,7 +158,7 @@ class navigationController extends expController {
         return json_encode(self::navhierarchy());
     }
 
-    public static function getChildren(&$i) {
+    public static function getChildren(&$i,$notyui=false) {
         global $sections;
 
         //		echo "i=".$i."<br>";
@@ -166,6 +175,11 @@ class navigationController extends expController {
                 $obj       = new stdClass();
                 $obj->id   = $sections[$i]->id;
                 $obj->text = $sections[$i]->name;
+                $obj->title = $sections[$i]->page_title;
+                $obj->description = $sections[$i]->description;
+                $obj->new_window = $sections[$i]->new_window;
+                $obj->expFile = $sections[$i]->expFile;
+                $obj->depth = $sections[$i]->depth;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
                 } else {
@@ -174,12 +188,35 @@ class navigationController extends expController {
                 }
                 //echo "i=".$i."<br>";
                 if (self::hasChildren($i)) {
-                    $obj->submenu     = new stdClass();
-                    $obj->submenu->id = $sections[$i]->name . $sections[$i]->id;
-                    //echo "getting children of ".$sections[$i]->name;
-                    $obj->submenu->itemdata = self::getChildren($i);
+                    if ($notyui) {
+                        $obj->itemdata = self::getChildren($i,$notyui);
+                        $obj->maxitems = count($obj->itemdata);
+                        $obj->maxdepth = 0;
+                        foreach ($obj->itemdata as $menu) {
+                            if (!empty($menu->maxdepth)) {
+                                if ($menu->maxdepth > $obj->maxdepth) $obj->maxdepth = $menu->maxdepth;
+                            } else {
+                                if ($menu->depth > $obj->maxdepth) $obj->maxdepth = $menu->depth;
+                            }
+                        }
+                    } else {
+                        $obj->submenu     = new stdClass();
+                        $obj->submenu->id = $sections[$i]->name . $sections[$i]->id;
+                        //echo "getting children of ".$sections[$i]->name;
+                        $obj->submenu->itemdata = self::getChildren($i,$notyui);
+                        $obj->maxitems = count($obj->submenu->itemdata);
+                        $obj->maxdepth = 0;
+                        foreach ($obj->submenu->itemdata as $menu) {
+                            if (!empty($menu->maxdepth)) {
+                                if ($menu->maxdepth > $obj->maxdepth) $obj->maxdepth = $menu->maxdepth;
+                            } else {
+                                if ($menu->depth > $obj->maxdepth) $obj->maxdepth = $menu->depth;
+                            }
+                        }
+                    }
                     $ret_array[]            = $obj;
                 } else {
+                    $obj->maxdepth = $obj->depth;
                     $ret_array[] = $obj;
                 }
                 if (($i + 1) >= count($sections) || $sections[$i + 1]->depth <= $ret_depth) {
@@ -280,7 +317,7 @@ class navigationController extends expController {
                         $child->link        = expCore::makeLink(array('section' => $child->internal_id));
                     }
                 } else {
-                    // Normal link.  Just create the URL from the section's id.
+                    // Normal link, alias_type == 0.  Just create the URL from the section's id.
                     $child->link = expCore::makeLink(array('section' => $child->id), '', $child->sef_name);
                 }
                 //$child->numChildren = $db->countObjects('section','parent='.$child->id);
@@ -681,20 +718,27 @@ class navigationController extends expController {
         //$nav = navigationController::levelTemplate(intval($_REQUEST['id'], 0));
         $id         = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
         $nav        = $db->selectObjects('section', 'parent=' . $id, 'rank');
+        //FIXME $manage_all is moot w/ cascading perms now?
         $manage_all = false;
         if (expPermissions::check('manage', expCore::makeLocation('navigationController', '', $id))) {
             $manage_all = true;
         }
+        //FIXME recode to use foreach $key=>$value
         $navcount = count($nav);
         for ($i = 0; $i < $navcount; $i++) {
             if ($manage_all || expPermissions::check('manage', expCore::makeLocation('navigationController', '', $nav[$i]->id))) {
                 $nav[$i]->manage = 1;
+                $view = true;
             } else {
                 $nav[$i]->manage = 0;
+                $view = $nav[$i]->public ? true : expPermissions::check('view', expCore::makeLocation('navigationController', '', $nav[$i]->id));
             }
             $nav[$i]->link = expCore::makeLink(array('section' => $nav[$i]->id), '', $nav[$i]->sef_name);
+            if (!$view) unset($nav[$i]);
         }
-        $nav[$navcount - 1]->last = true;
+        $nav= array_values($nav);
+//        $nav[$navcount - 1]->last = true;
+        $nav[count($nav) - 1]->last = true;
         echo expJavascript::ajaxReply(201, '', $nav);
         exit;
     }
@@ -892,6 +936,27 @@ class navigationController extends expController {
         ));
     }
 
+    function edit_freeform() {
+        $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
+        if ($section->parent == -1) {
+            echo SITE_404_HTML;
+            exit;
+        } // doesn't work for standalone pages
+        if (empty($section->id)) {
+            $section->public = 1;
+            if (!isset($section->parent)) {
+                // This is another precaution.  The parent attribute
+                // should ALWAYS be set by the caller.
+                //FJD - if that's the case, then we should die.
+                die(SITE_403_HTML);
+                //$section->parent = 0;
+            }
+        }
+        assign_to_template(array(
+            'section' => $section,
+        ));
+    }
+
     function edit_externalalias() {
         $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
         if ($section->parent == -1) {
@@ -965,6 +1030,21 @@ class navigationController extends expController {
         }
         expSession::clearAllUsersSessionCache('navigation');
         expHistory::back();
+    }
+
+    // create a psuedo global manage pages permission
+    public static function checkPermissions($permission,$location) {
+        global $exponent_permissions_r, $user, $db, $router;
+
+        // only applies to the 'manage' method
+        if (empty($location->src) && empty($location->int) && !empty($router->params['action']) && $router->params['action'] == 'manage') {
+            if (!empty($exponent_permissions_r['navigationController'])) foreach ($exponent_permissions_r['navigationController'] as $page) {
+                foreach ($page as $pageperm) {
+                    if (!empty($pageperm['manage'])) return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

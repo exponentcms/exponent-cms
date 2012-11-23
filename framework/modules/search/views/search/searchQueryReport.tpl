@@ -97,8 +97,6 @@
     };
 
     YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//	    var tabview = new Y.TabView({srcNode:'#searchqueryreport'});
-//	    tabview.render();
         Y.expTabs({srcNode: '#searchqueryreport'});
         Y.one('#searchqueryreport').removeClass('hide');
         Y.one('.loadingdiv').remove();

@@ -23,37 +23,40 @@
 <div class="module events showall headlines">
     {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
     {permissions}
-    <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit == true}
-            {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
-        {/if}
-        {if $permissions.manage == 1}
-             {icon action=manage text="Manage Events"|gettext}
-        {/if}
-    </div>
+        <div class="module-actions">
+            {if $permissions.create == true || $permissions.edit == true}
+                {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+            {/if}
+            {if $permissions.manage == 1}
+                 {icon action=manage text="Manage Events"|gettext}
+            {/if}
+        </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <ul>
         {foreach name=items from=$page->records item=item}
             {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
                 <li>
                     <div class="events">
-                        <a class="link" href="{link action=showByTitle title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+                        <a class="link" href="{link action=showByTitle title=$item->sef_url}" title="{'Register for this Event'|gettext}">{$item->title}</a>
                         <a href="{link action=showByTitle title=$item->sef_url}"></a>
                         - <em class="date">{$item->eventdate|date_format}</em>
+                        - {$item->body|summarize:"text":"para"}
+                        {if $item->base_price}- {'Cost'|gettext}: {currency_symbol}{$item->base_price}{/if}
                         {if $item->isRss != true}
                             {permissions}
-                            <div class="item-actions">
-                                {if $permissions.edit == true}
-                                    {icon controller="store" action=edit record=$item}
-                                {/if}
-                                {if $permissions.delete == true}
-                                    {icon controller="store" action=delete record=$item}
-                                {/if}
-                            </div>
+                                <div class="item-actions">
+                                    {if $permissions.edit == true}
+                                        {icon controller="store" action=edit record=$item}
+                                    {/if}
+                                    {if $permissions.delete == true}
+                                        {icon controller="store" action=delete record=$item}
+                                    {/if}
+                                </div>
                             {/permissions}
                         {/if}
                     </div>

@@ -17,7 +17,8 @@
 
 {/css}
 
-{assign var=i value=0}
+{*{assign var=i value=0}*}
+{$i=0}
 
 <div class="module navigation breadcrumb">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}

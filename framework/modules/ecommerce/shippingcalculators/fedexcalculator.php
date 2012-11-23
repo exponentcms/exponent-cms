@@ -127,6 +127,8 @@ class fedexcalculator extends shippingcalculator {
             }
         }
 
+        if (empty($package_items)) return array();  // fedex needs at least one item to keep from complaining.
+
         //eDebug($package_items);
         // sort the items by volume
         $package_items = expSorter::sort(array('array'=> $package_items, 'sortby'=> 'volume', 'order'=> 'DESC'));
@@ -259,8 +261,18 @@ class fedexcalculator extends shippingcalculator {
                 //eDebug($rates,true);
                 return array_reverse($rates);
             } else {
-                flash('error','FedEx: '.$response->Notifications->Message);
-                return $response->Notifications->Message;
+                if (!is_array($response->Notifications)) {
+                    $messages = array($response->Notifications);
+                } else {
+                    $messages = $response->Notifications;
+                }
+                $message = '';
+                foreach ($messages as $msg) {
+                    $message .= empty($message) ? '' : '<br />       ';
+                    $message .= $msg->Message;
+                }
+                flash('error','FedEx: '.$message);
+                return $message;
             }
         } catch (SoapFault $exception) {
             flash('error','FedEx: '.$exception->getMessage());

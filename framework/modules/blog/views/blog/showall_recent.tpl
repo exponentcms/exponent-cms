@@ -37,7 +37,8 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
         <div class="item">
@@ -59,8 +60,10 @@
                     {if $item->publish_date > $smarty.now}
                         <strong>{'Will be'|gettext}&#160;
                     {/if}
-                    <span class="label tags">{'Posted by'|gettext}</span>
-                    <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
+                    {if !$config.displayauthor}
+                        <span class="label posted">{'Posted by'|gettext}</span>
+                        <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
+                    {/if}
                     {if !$config.datetag}
                         {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
                     {/if}
@@ -68,17 +71,8 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                &#160;|&#160;
-                <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
-				{if $item->expTag|@count>0 && !$config.disabletags}
-                    &#160;|&#160;
-                    <span class="label tags">{'Tags'|gettext}:</span>
-                    <span class="value">
-                        {foreach from=$item->expTag item=tag name=tags}
-                            <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                        {/foreach}
-                    </span>
-				{/if}
+                {comments_count record=$record prepend='&#160;&#160;|&#160;&#160;'}
+                {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
             </div>
             {permissions}
                 <div class="item-actions">
@@ -117,6 +111,7 @@
         {/if}
     {/foreach}    
     {if $page->total_records > $config.headcount}
-        {icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
+        {*{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}*}
+        {pagelinks paginate=$page more=1 text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>

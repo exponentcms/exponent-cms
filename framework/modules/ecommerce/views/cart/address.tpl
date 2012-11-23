@@ -24,18 +24,20 @@
 		<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'You don\'t have any address configured yet.  Click here to setup a new address'|gettext}</a>
 	{/form}
     {clear}
-	{br}<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'Add a new address'|gettext}</a>
-	<div id="saddy" style="display:none">
-                {form name="newaddy" action=createaddress ajax=true update=addyblock}
-                        {control type=text name=firstname label="First Name"|gettext}
-                        {control type=text name=middlename label="Middle Name"|gettext}
-                        {control type=text name=lastname label="Last Name"|gettext}
-                        {control type=text name=address1 label="Address"|gettext}
-                        {control type=text name=address2 label=" "}
-                        {control type=text name=city label="City"|gettext}
-                        {control type=state name=state label="State"|gettext}
-                        {control type=text name=zip label="Zip Code"|gettext}
-                        {control type=buttongroup submit="Save Address"|gettext}
-                {/form}
-        </div>
+	{*{br}<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'Add a new address'|gettext}</a>*}
+    {toggle id=saddy link='Add a new address'|gettext}
+	{*<div id="saddy" style="display:none">*}
+        {form name="newaddy" action=createaddress ajax=true update=addyblock}
+            {control type=text name=firstname label="First Name"|gettext}
+            {control type=text name=middlename label="Middle Name"|gettext}
+            {control type=text name=lastname label="Last Name"|gettext}
+            {control type=text name=address1 label="Address"|gettext}
+            {control type=text name=address2 label=" "}
+            {control type=text name=city label="City"|gettext}
+            {control type=state name=state label="State"|gettext}
+            {control type=text name=zip label="Zip Code"|gettext}
+            {control type=buttongroup submit="Save Address"|gettext}
+        {/form}
+    {*</div>*}
+    {/toggle}
 </div>

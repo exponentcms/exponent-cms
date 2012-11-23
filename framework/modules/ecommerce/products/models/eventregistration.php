@@ -48,7 +48,6 @@ class eventregistration extends expRecord {
 //        'content_expTags'=>'expTag',
     );
 
-
     public function __construct($params = array(), $get_assoc = true, $get_attached = true) {
         parent::__construct($params, $get_assoc, $get_attached);
 
@@ -77,8 +76,8 @@ class eventregistration extends expRecord {
             $event                              = new stdClass();
             $event->eventdate                   = strtotime($params['eventdate']);
 //            $event->eventenddate                = strtotime($params['eventenddate']);
-            $event->event_starttime             = datetimecontrol::parseData('event_starttime', $params) + $event->eventdate;
-            $event->event_endtime               = datetimecontrol::parseData('event_endtime', $params) + $event->eventdate;
+            $event->event_starttime             = datetimecontrol::parseData('event_starttime', $params);
+            $event->event_endtime               = datetimecontrol::parseData('event_endtime', $params);
             $event->signup_cutoff               = strtotime($params['signup_cutoff']);
 //            $event->location                    = $params['location'];
 //            $event->terms_and_condition         = $params['terms_and_condition'];

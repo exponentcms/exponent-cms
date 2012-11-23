@@ -36,7 +36,8 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
 
     {* current category image *}
     {if $current_category->expFile[0]->id && $config.banner_width}
@@ -78,13 +79,15 @@
             <h2>{'Categories'|gettext}{if $current_category->id} {'Under'|gettext} {$current_category->title}{/if}</h2>
 
             {counter assign="ipcr" name="ipcr" start=1}
-            {assign var=open_c_row value=1}
+            {*{assign var=open_c_row value=1}*}
+            {$open_c_row=1}
             {foreach name="cats" from=$categories item="cat"}
                 {if $cat->is_active==1 || $user->isAdmin()}
 
                     {if $smarty.foreach.cats.first || $open_c_row}
                         <div class="category-row">
-                        {assign var=open_c_row value=0}
+                        {*{assign var=open_c_row value=0}*}
+                        {$open_c_row=0}
                     {/if}
 
                     <div class="cat{if $cat->is_active!=1} inactive{/if} clearfix">
@@ -118,7 +121,8 @@
 
                     {if $smarty.foreach.cats.last || $ipcr%2==0}
                         </div>
-                        {assign var=open_c_row value=1}
+                        {*{assign var=open_c_row value=1}*}
+                        {$open_c_row=1}
                     {/if}
                     {counter name="ipcr"}
 
@@ -128,7 +132,8 @@
             {* close the row if left open. might happen for non-admins *}
             {if $open_c_row==0}
                 </div>
-                {assign var=open_c_row value=1}
+                {*{assign var=open_c_row value=1}*}
+                {$open_c_row=1}
             {/if}
         </div>
     {else}
@@ -151,12 +156,14 @@
             {foreach from=$page->records item=listing name=listings}
                 {if $smarty.foreach.listings.first || $open_row}
                     <div class="product-row">
-                    {assign var=open_row value=0}
+                    {*{assign var=open_row value=0}*}
+                    {$open_row=0}
                 {/if}
                 {include file=$listing->getForm('storeListing')}
                 {if $smarty.foreach.listings.last || $ipr%$config.images_per_row==0}
                     </div>
-                    {assign var=open_row value=1}
+                    {*{assign var=open_row value=1}*}
+                    {$open_row=1}
                 {/if}
                 {counter name="ipr"}
                 {*if !$listing->active_type==2}

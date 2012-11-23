@@ -23,13 +23,15 @@
         {$config.moduledescription}
     {/if}
 	<ul>
-        {assign var=isparent value=0}
+        {*{assign var=isparent value=0}*}
+        {$isparent=0}
         {foreach from=$sections item=section}
             {if $section->parent == 0}
                 {if $current->parents[0]!=""}
                     {foreach from=$current->parents item=parent}
                         {if $parent==$section->id}
-                            {assign var=isparent value=1}
+                            {*{assign var=isparent value=1}*}
+                            {$isparent=1}
                         {/if}
                     {/foreach}
                 {/if}
@@ -39,7 +41,8 @@
                     <li><span class="navlink">{$section->name}</span></li>
                 {/if}
             {/if}
-            {assign var=isparent value=0}
+            {*{assign var=isparent value=0}*}
+            {$isparent=0}
         {/foreach}
 	</ul>
 </div>

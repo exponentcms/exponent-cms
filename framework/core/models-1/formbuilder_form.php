@@ -27,7 +27,8 @@ class formbuilder_form {
 			$object->name = '';
 			$object->description = '';
 			$object->is_email = 0;
-			$object->is_saved = 1;
+			$object->select_email = 0;
+            $object->is_saved = 1;
 			$object->response = gt('Your form has been submitted');
 			$object->resetbtn = gt('Reset');
 			$object->submitbtn = gt('Submit');
@@ -55,7 +56,8 @@ class formbuilder_form {
 
 		$form->register(null,'', new htmlcontrol('<h2>'.gt('Email Settings').'</h2>'),true,gt('Email'));
 		$form->register('is_email',gt('Email Form'),new checkboxcontrol($object->is_email,false),true,gt('Email'));
-		
+        $form->register('select_email',gt('Allow User to Select the Destination Email'),new checkboxcontrol(!empty($object->select_email),false),true,gt('Email'));
+
 		// Get User list
     	$userlist = array();
     	$defaults = array();
@@ -110,6 +112,7 @@ class formbuilder_form {
 		$object->name = $values['name'];
 		$object->description = $values['description'];
 		$object->is_email = (isset($values['is_email']) ? 1 : 0);
+        $object->is_email = (isset($values['select_email']) ? 1 : 0);
 		$object->is_saved = (isset($values['is_saved']) ? 1 : 0);
 		$object->response = $values['response'];
 		$object->submitbtn = $values['submitbtn'];

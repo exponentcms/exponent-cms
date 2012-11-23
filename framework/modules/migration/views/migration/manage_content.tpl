@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module migration manage_content">
- 	<div class="admin"><strong>{'This is the Final Migration Step'|gettext}</strong></div>
+ 	{br}<div class="admin"><strong>{'This is the Final Migration Step'|gettext}</strong></div>
     {br}<hr />
     <div class="info-header">
         <div class="related-actions">
@@ -26,9 +26,9 @@
         </div>
 		<h1>{"Migrate Content"|gettext}</h1>	    
     </div>
-    <p>
+    <blockquote>
         {'The following is a list of modules we found in the database'|gettext} {$config.database}.
-    </p>
+    </blockquote>
     {form action="migrate_content"}
         <table class="exp-skin-table">
 			<thead>

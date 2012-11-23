@@ -95,7 +95,7 @@ if ($db->tableIsEmpty('user') || $db->tableIsEmpty('modstate') || $db->tableIsEm
 	echo 'No Database Entries Were Found!';
 	echo '<br /></div>';
 	$emptydb = 'install-2';
-	$emptydbstr = gt('Switching to Installer');
+	$emptydbstr = gt('Switch to Installer');
 
     // create the not_configured file since we're in the installer
     if (!@file_exists(BASE.'install/not_configured')) {

@@ -230,20 +230,21 @@ class expCSS {
      * Automatically compile .less files into a .css file in the /tmp/css folder
      *
      * @static
-     * @param string $less_fname full pathname of the .less file
-     * @param string $css_fname filename of the output css file
-     * @param array $vars array of variables to pass to parse()
+     *
+     * @param string $less_pname full pathname of the .less file
+     * @param string $css_fname  filename of the output css file
+     * @param array  $vars       array of variables to pass to parse()
      */
-    public static function auto_compile_less($less_fname, $css_fname, $vars=array()) {
+    public static function auto_compile_less($less_pname, $css_fname, $vars=array()) {
         include_once(BASE.'external/lessphp/lessc.inc.php');
         // load the cache
-        $less_cname = str_replace("/","_",$less_fname);
+        $less_cname = str_replace("/","_",$less_pname);
         $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";
-        $cache = BASE.$less_fname;
+        $cache = BASE.$less_pname;
         if (file_exists($cache_fname)) {
             $cache = unserialize(file_get_contents($cache_fname));
             if (!empty($cache['vars']) && $vars != $cache['vars']) {
-                $cache = BASE.$less_fname;
+                $cache = BASE.$less_pname;
             }
         }
         $less = new lessc;

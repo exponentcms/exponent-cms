@@ -18,12 +18,6 @@
 
 ini_set('error_reporting', E_ALL);
 include('./exponent_version.php');
-//$swversion->major = 2;
-//$swversion->minor = 0;
-//$swversion->revision = 4;
-//$swversion->type = '';
-//$swversion->iteration = '';
-//$swversion->builddate = '1324662757';
 $swversion = new stdClass();
 $swversion->major = EXPONENT_VERSION_MAJOR;
 $swversion->minor = EXPONENT_VERSION_MINOR;

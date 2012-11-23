@@ -46,7 +46,9 @@ return array(
 	'edited_at'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'editor'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID)
+		DB_FIELD_TYPE=>DB_DEF_ID),
+    'parent_id'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_ID)
 );
 
 ?>

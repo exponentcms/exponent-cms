@@ -59,7 +59,7 @@
 						<tr>
 							<th>{"Rank"|gettext}</th>
 							<th>{"Term"|gettext}</th>
-							<th>{"% of All Searches"|gettext}</th>
+							<th>% {"of All Searches"|gettext}</th>
 						</tr>
 					</thead>
 					<tbody>

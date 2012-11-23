@@ -15,13 +15,10 @@
 #
 ##################################################
 ?>
-
-// exponent Javascript Support Systems
-
+// Exponent Javascript Support Systems
 EXPONENT = {};
 
-// map certian php CONSTANTS to JS vars
-
+// map certain php CONSTANTS to JS vars
 EXPONENT.LANG = "<?php echo LANG; ?>";
 EXPONENT.PATH_RELATIVE = "<?php echo PATH_RELATIVE; ?>";
 EXPONENT.URL_FULL = "<?php echo URL_FULL; ?>";
@@ -32,6 +29,9 @@ EXPONENT.JS_FULL = '<?php echo JS_URL; ?>';  //TODO deprecated
 EXPONENT.JS_URL = '<?php echo JS_URL; ?>';
 EXPONENT.JS_PATH = '<?php echo JS_RELATIVE; ?>';  //TODO deprecated
 EXPONENT.JS_RELATIVE = '<?php echo JS_RELATIVE; ?>';
+EXPONENT.JQUERY_RELATIVE = '<?php echo JQUERY_RELATIVE; ?>';
+EXPONENT.JQUERY_PATH = '<?php echo JQUERY_PATH; ?>';
+EXPONENT.JQUERY_URL = '<?php echo JQUERY_URL; ?>';
 EXPONENT.YUI3_VERSION = '<?php echo YUI3_VERSION; ?>';
 EXPONENT.YUI3_PATH = '<?php echo YUI3_RELATIVE; ?>';  //TODO deprecated
 EXPONENT.YUI3_RELATIVE = '<?php echo YUI3_RELATIVE; ?>';
@@ -43,20 +43,14 @@ EXPONENT.YUI2_URL = '<?php echo YUI2_URL; ?>';
 EXPONENT.FLOWPLAYER_VERSION = '<?php echo FLOWPLAYER_VERSION; ?>';
 EXPONENT.FLOWPLAYER_RELATIVE = '<?php echo FLOWPLAYER_RELATIVE; ?>';
 
+// Exponent YUI Configuration
 EXPONENT.YUI3_CONFIG = {
     combine:<?php echo (MINIFY==1&&MINIFY_YUI3==1)?1:0; ?>,
-    // base:         EXPONENT.YUI3_RELATIVE,
-    // root:         EXPONENT.YUI3_RELATIVE.substr(1),
     comboBase:    EXPONENT.PATH_RELATIVE+'external/minify/min/index.php?b='+EXPONENT.PATH_RELATIVE.substr(1)+'external/yui&f=',
     filter: {
         'searchExp': "&([2-3])",
         'replaceStr': ",$1"
     },
-    //combine: false,
-    // filter:   "debug",
-    // onFailure: function (error) {
-    //   console.debug(error);  
-    // },
     modules: {},
     groups: {
         yui2: {
@@ -68,7 +62,6 @@ EXPONENT.YUI3_CONFIG = {
                 "yui2-": {
                     configFn: function (me) {
                         if(/-skin|reset|fonts|grids|base/.test(me.name)) {
-                            //return me;
                             me.type = "css";
                             me.path = me.path.replace(/\.js/, ".css");
                             me.path = me.path.replace(/\/yui2-skin/, "/assets/skins/sam/yui2-skin");

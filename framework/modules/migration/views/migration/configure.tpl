@@ -23,9 +23,9 @@
 		<h1>{"Database Settings to Migrate Your Old Site"|gettext}</h1>	    
     </div>
 
-	<p>
+    <blockquote>
 		{'This is where you enter the database connection information for your old Exponent v1 site you want to migrate data from.'|gettext}
-	</p>
+    </blockquote>
     {form action=saveconfig}
 		{control type=text name=server label="Server Name"|gettext value=$config.server|default:'localhost'}
 		{control type="text" name="database" label="Database Name"|gettext value=$config.database}

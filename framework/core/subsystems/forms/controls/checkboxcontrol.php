@@ -69,22 +69,28 @@ class checkboxcontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '">';
         if (!empty($this->flip)) {
             $html .= "<label" . $for . " class=\"label\">" . $label . "</label>";
-            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr><td>";
+//            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
-            $html .= "</td>";
+//            $html .= "</td>";
+            $flip = '';
         } else {
-            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
-            $html .= "<td class=\"input\" nowrap>";
+//            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
+//            $html .= "<td class=\"input\" nowrap>";
             $html .= "<label class=\"label\" style=\"background: transparent;\";></label>";
 //            $html .= "</td><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             if (!empty($label) && $label != ' ') {
-                $html .= "<label" . $for . " class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">" . $label . "</label>";
+//                $html .= "<label" . $for . " class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">" . $label . "</label>";
+                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
+                if($this->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
+                $html .= $label;
+                $html .= "</div>";
             }
-            $html .= "</td>";
+//            $html .= "</td>";
+            $flip = ' style="position:absolute;"';
         }
-        $html .= "</tr></table>";
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\" style=\"display:block;\">" . $this->description . "</div>";
+//        $html .= "</tr></table>";
+        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\"".$flip.">" . $this->description . "</div><br>";
         $html .= "</div>";
         return $html;
     }

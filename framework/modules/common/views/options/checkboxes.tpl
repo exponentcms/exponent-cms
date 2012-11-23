@@ -15,8 +15,9 @@
 
 <div class="options checkboxes">
     <span class="label">{if $group->required == true}* {/if}{$group->title}</span>
-    {assign var=gid value=$group->id}
-    {foreach from=$options item=option key=id}         
+    {*{assign var=gid value=$group->id}*}
+    {$gid=$group->id}
+    {foreach from=$options item=option key=id}
         {if is_array($selected.$gid) && in_array($id, $selected.$gid)}  
             {control type="checkbox" name="options[`$group->id`][]" label=$option value=$id checked=true}
         {else}

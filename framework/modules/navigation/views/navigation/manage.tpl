@@ -43,9 +43,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var history = new Y.HistoryHash(),
-//	        tabview = new Y.TabView({srcNode:'#navmanager-tabs'});
-//	    tabview.render();
         Y.expTabs({srcNode: '#navmanager-tabs'});
 	    Y.one('#navmanager-tabs').removeClass('hide');
 	    Y.one('.loadingdiv').remove();

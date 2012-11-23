@@ -36,19 +36,19 @@
 			</thead>
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
-				<tr class="{cycle values="odd,even"}">				    
-                    <td>{if $listing->is_default == 1}{icon img="clean.png"}{/if}</td>
-                    <td>{if $listing->creates_new_user == 1}{icon img="clean.png"}{/if}</td>
-                    <td>{if $listing->emails_customer == 1}{icon img="clean.png"}{/if}</td>
-                    <td>{if $listing->affects_inventory == 1}{icon img="clean.png"}{/if}</td>
-					<td>{$listing->title}</td>
-					<td>
-					    {if $permissions.manage == true}
-                            {icon controller=order_type action=edit record=$listing}
-                            {icon controller=order_type action=delete record=$listing}
-                        {/if}
-					</td>
-				</tr>
+                    <tr class="{cycle values="odd,even"}">
+                        <td>{if $listing->is_default == 1}{icon img="clean.png"}{/if}</td>
+                        <td>{if $listing->creates_new_user == 1}{icon img="clean.png"}{/if}</td>
+                        <td>{if $listing->emails_customer == 1}{icon img="clean.png"}{/if}</td>
+                        <td>{if $listing->affects_inventory == 1}{icon img="clean.png"}{/if}</td>
+                        <td>{$listing->title}</td>
+                        <td>
+                            {if $permissions.manage == true}
+                                {icon controller=order_type action=edit record=$listing}
+                                {icon controller=order_type action=delete record=$listing}
+                            {/if}
+                        </td>
+                    </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
 				        <td colspan="4">{'No order types have been created yet.'|gettext}</td>

@@ -22,7 +22,7 @@
         <div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Editing Content Pages"|gettext) module="edit-content-page"}
         </div>
-		<h1>{if $section->id}{'Edit Existing Content Page'|gettext}{else}{'Create New Content Page'|gettext}{/if}</h1>
+		<h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext} {if $section->parent == -1}{'Standalone'|gettext}{elseif $section->parent == 0}{'Top Level'|gettext}{/if} {'Content Page'|gettext}{/if}</h1>
 	</div>
     <p>{if $section->id}{'Use the form below to change the details of this content page.'|gettext}{else}{'Use the form below to enter the information about your new content page.'|gettext}{/if}</p>
     {form action=update}
@@ -38,12 +38,11 @@
             <div class="yui-content">
                 <div id="tab1">
                     {control type=text name=name label="Name"|gettext value=$section->name}
-                    {control type=text name=sef_name label="SEF Name"|gettext value=$section->sef_name}
-                    <div class="control"><div class="control-desc">{'If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.'|gettext}</div></div>
+                    {control type=text name=sef_name label="SEF Name"|gettext value=$section->sef_name description='If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.'|gettext}
                     {if $section->id == 0 || $section->parent == -1}
                         {control type=hidden name=parent value=$section->parent}
                     {else}
-                        {control type="dropdown" name="parent" label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),true,'manage') value=$section->parent}
+                        {control type=dropdown name=parent label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),($user->isAdmin() || $section->parent == 0),'manage') value=$section->parent}
                     {/if}
                     {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
                     {control type="checkbox" name="active" label="Active"|gettext|cat:"?" checked=$section->active|default:1 value=1}
@@ -56,7 +55,7 @@
                     {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1}
                 </div>
                 <div id="tab2">
-                    <h2>SEO Information</h2>
+                    <h2>{'SEO Information'|gettext}</h2>
                     {control type=text name=page_title label="Page Title"|gettext value=$section->page_title}
                     {control type=textarea name=keywords label="Keywords"|gettext value=$section->keywords}
                     {control type=textarea name=description label="Page Description"|gettext value=$section->description}
@@ -74,8 +73,6 @@
     };
 
     YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//        var tabview = new Y.TabView({srcNode:'#configure-tabs'});
-//        tabview.render();
         Y.expTabs({srcNode: '#configure-tabs'});
         Y.one('#configure-tabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

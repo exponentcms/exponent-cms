@@ -28,7 +28,7 @@
     <h4>{"Current Feeds"|gettext}</h4>
     <ul id="rsspull-feeds">
         {foreach from=$config.pull_rss item=feed}
-            {if $feed!=""}<li>{control type="hidden" name="pull_rss[]" value=$feed}{$feed} - <a class="delete removerss" href="#">{"Remove"|gettext}</a></li>{/if}
+            {if $feed!=""}<li>{control type="hidden" name="pull_rss[]" value=$feed}{$feed} <a class="delete removerss" href="#">{"Remove"|gettext}</a></li>{/if}
         {foreachelse}
             <li id="norssfeeds">{'You don\'t have any RSS feeds configured'|gettext}</li>
         {/foreach}
@@ -40,35 +40,41 @@
         var YAHOO=Y.YUI2;
         var add = YAHOO.util.Dom.getElementsByClassName('addtolist', 'a');
         YAHOO.util.Event.on(add, 'click', function(e,o){
-            YAHOO.util.Dom.setStyle('norssfeeds', 'display', 'none');
             YAHOO.util.Event.stopEvent(e);
             var feedtoadd = YAHOO.util.Dom.get("feedmaker");
+            if (feedtoadd.value == '') return;
+            YAHOO.util.Dom.setStyle('norssfeeds', 'display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
             newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_rss[]" value="'+feedtoadd.value+'" />';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "delete removerss";
-            newRemove.innerHTML = " Remove?";
+            newRemove.innerHTML = " {/literal}{'Remove'|gettext}{literal}";
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
             var list = YAHOO.util.Dom.get('rsspull-feeds');
             list.appendChild(newli);
             YAHOO.util.Event.on(newRemove, 'click', function(e,o){
-                var list = YAHOO.util.Dom.get('rsspull-feeds');
-                list.removeChild(this)
+                if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
+                    var list = YAHOO.util.Dom.get('rsspull-feeds');
+                    list.removeChild(this)
+                    if (list.children.length == 1) YAHOO.util.Dom.setStyle('norssfeeds', 'display', '');;
+                } else return false;
             },newli,true);
             feedtoadd.value = '';
-            //alert(feedtoadd);
         });
     
         var existingRems = YAHOO.util.Dom.getElementsByClassName('removerss', 'a');
         YAHOO.util.Event.on(existingRems, 'click', function(e,o){
-            YAHOO.util.Event.stopEvent(e);
-            var targ = YAHOO.util.Event.getTarget(e);
-            var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
-            var list = YAHOO.util.Dom.get('rsspull-feeds');
-            list.removeChild(lItem);
+            if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
+                YAHOO.util.Event.stopEvent(e);
+                var targ = YAHOO.util.Event.getTarget(e);
+                var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
+                var list = YAHOO.util.Dom.get('rsspull-feeds');
+                list.removeChild(lItem);
+                if (list.children.length == 1) YAHOO.util.Dom.setStyle('norssfeeds', 'display', '');;
+            } else return false;
         });
     });
     {/literal}

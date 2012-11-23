@@ -14,9 +14,9 @@
  *}
 
 <div class="module simplepoll default">
-    {if $moduletitle && !$config->hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-    {if $config->moduledescription != ""}
-   		{$config->moduledescription}
+    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $config.moduledescription != ""}
+   		{$config.moduledescription}
    	{/if}
 	{if $question->simplepoll_answer|@count != 0}
 		{form action="vote"}

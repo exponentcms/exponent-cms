@@ -98,7 +98,7 @@ $page_text = '';
 switch ($page) {
 	case 'upgrade-1':
 	    $masthead = gt("Upgrade");
-		$page_text = gt("It appears you've upgraded your Exponent code.");
+		$page_text = gt("It appears you've upgraded your Exponent code.").'<br /><br />'.gt("Before you begin the upgrade you should").' <a href="javascript:void(0)" onclick="return pop(\'changes\');">'.gt('read about the changes!').'</a> ';
 		break;
 	case 'upgrade-2':
 	    $masthead = gt("Upgrade");
@@ -194,7 +194,7 @@ switch ($page) {
     		if (file_exists('pages/'.$page.'.php')) {
     			include('pages/'.$page.'.php');
     		} else {
-                echo gt('OOPS! Couldn\'t find the').' <strong>'.$page.'</strong> '.gt('page!');
+                echo gt('OOPS! Couldn\'t find the').' <strong>'.$page.'</strong> '.gt('page').'!';
             }
     		?>
     		</div>

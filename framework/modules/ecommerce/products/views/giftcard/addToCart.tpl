@@ -25,7 +25,6 @@
         {control type="textarea" name="msg" label="Message:"|gettext rows=3 value=$record->msg}
         {control type="buttongroup" name="add2cart" submit="Add to cart"|gettext}
     {/form}
-    
 </div>
 {script unique="a2cgc"}
 {literal}

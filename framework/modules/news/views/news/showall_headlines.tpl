@@ -30,7 +30,8 @@
                 {if !$config.disabletags}
                    {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
                 {/if}
-                {if $rank == 1}
+                {*{if $rank == 1}*}
+                {if $config.order == 'rank'}
                    {ddrerank items=$page->records model="news" label="News Items"|gettext}
                 {/if}
             {/if}
@@ -42,7 +43,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <ul>
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
@@ -81,6 +83,7 @@
     {/foreach}
     </ul>
     {if $page->total_records > $config.headcount}
-        {icon action="showall" text="More News..."|gettext}
+        {*{icon action="showall" text="More News..."|gettext}*}
+        {pagelinks paginate=$page more=1 text="More News..."|gettext}
     {/if}
 </div>

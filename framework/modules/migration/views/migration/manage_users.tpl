@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module migration manage-users">
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><strong>{'Next Step -> Migrate Pages'|gettext}</strong></a>
+	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><strong>{'Skip to Next Step -> Migrate Pages'|gettext}</strong></a>
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
@@ -26,12 +26,11 @@
         </div>
 		<h1>{"Migrate Users and Groups"|gettext}</h1>	    
     </div>
-
-    <p> 
+    <blockquote>
         {'The following is a list of users and groups we found in the database'|gettext} {$config.database}.
         {'Select the users and groups you would like to pull over from'|gettext} {$config.database}.
 		{'User and group permissions will NOT be migrated.'|gettext}
-    </p>
+    </blockquote>
     {form action="migrate_users"}
         <table class="exp-skin-table">
 			<thead>

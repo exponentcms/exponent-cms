@@ -112,7 +112,7 @@ class expCatController extends expController {
             $cats->modules[$record->module][] = $record;
         }
         $catlist[0] = 'Uncategorized';
-        foreach ($cats->modules as $module) {
+        if (!empty($cats->modules)) foreach ($cats->modules as $module) {
             foreach ($module as $listing) {
                 $catlist[$listing->id] = $listing->title;
             }
@@ -125,17 +125,27 @@ class expCatController extends expController {
     }
 
     function edit() {
-        $modules = expModules::listControllers();
         $mod = array();
-        foreach ($modules as $modname=>$mods) {
-            if (!strstr($mods,'Controller')) {
-                $mod[$modname] = ucfirst($modname);
-            }
+//        $modules = expModules::listControllers();
+//        foreach ($modules as $modname=>$mods) {
+//            if (!strstr($mods,'Controller')) {
+//                $mod[$modname] = ucfirst($modname);
+//            }
+//        }
+        $modules = expModules::listUserRunnableControllers();
+        foreach ($modules as $modname) {
+            $modname = expModules::getControllerName($modname);
+            $mod[$modname] = ucfirst($modname);
         }
         asort($mod);
         assign_to_template(array(
             'mods'=>$mod
         ));
+        if (!empty($this->params['model'])) {
+            assign_to_template(array(
+                'model'=>$this->params['model'],
+            ));
+        }
         parent::edit();
     }
 
@@ -159,10 +169,12 @@ class expCatController extends expController {
      *  it is assumed the records have expCats attachments, even if they are empty
      *
      * @static
-     * @param array $records
-     * @param string $order sort order/dir for items
+     * @param array  $records
+     * @param string $order      sort order/dir for items
      * @param string $uncattitle name to use for uncategorized group
-     * @param array $groups limit set to these groups only if set
+     * @param array  $groups     limit set to these groups only if set
+     * @param bool   $dontsort
+     *
      * @return void
      */
     public static function addCats(&$records,$order,$uncattitle,$groups=array(),$dontsort=false) {
@@ -172,7 +184,9 @@ class expCatController extends expController {
                 $records[$key]->catid = $cat->id;
                 $records[$key]->catrank = $cat->rank;
                 $records[$key]->cat = $cat->title;
-                $records[$key]->color = empty($cat->color) ? null : $cat->color;
+                $catcolor = empty($cat->color) ? null : trim($cat->color);
+                if (substr($catcolor,0,1)=='#') $catcolor = '" style="color:'.$catcolor.';';
+                $records[$key]->color = $catcolor;
                 $records[$key]->module = empty($cat->module) ? null : $cat->module;
                 break;
             }
@@ -182,12 +196,13 @@ class expCatController extends expController {
                 $records[$key]->expCat[0]->id = 0;
                 $records[$key]->catrank = 9999;
                 $records[$key]->cat = $uncattitle;
+                $records[$key]->color = null;
             }
             if (!empty($groups) && !in_array($records[$key]->catid,$groups)) {
                 unset ($records[$key]);
             }
         }
-        //FIXME we don't always want to sort  by cat first
+        // we don't always want to sort  by cat first
         if (!$dontsort) {
             $orderby = explode(" ",$order);
             $order = $orderby[0];
@@ -215,6 +230,7 @@ class expCatController extends expController {
                     $cats[$record->catid] = new stdClass();
                     $cats[$record->catid]->count = 1;
                     $cats[$record->catid]->name = $record->cat;
+                    $cats[$record->catid]->color = $record->color;
                 } else {
                     $cats[$record->catid]->count += 1;
                 }

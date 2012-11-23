@@ -59,7 +59,8 @@
 
 					<td style="width:12px">&#160;</td>
 
-					{math equation="x+1" x=$smarty.section.tid.index assign=nextid}
+					{*{math equation="x+1" x=$smarty.section.tid.index assign=nextid}*}
+                    {$nextid=$smarty.section.tid.index+1}
 					<td>
 						{if $tables[$nextid] != ""}<input type="checkbox" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' && $tables[$nextid] != 'search'}checked {/if}/>{/if}
 					</td>

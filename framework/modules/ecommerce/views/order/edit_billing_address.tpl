@@ -42,8 +42,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//	    var tabview = new Y.TabView({srcNode:'#editbilling-tabs'});
-//	    tabview.render();
         Y.expTabs({srcNode: '#editbilling-tabs'});
 		Y.one('#editbilling-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

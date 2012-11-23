@@ -37,7 +37,8 @@
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='filedownload' text="Manage Categories"|gettext}
                 {/if}
-                {if $rank == 1}
+                {*{if $rank == 1}*}
+                {if $config.order == 'rank'}
                     {ddrerank items=$page->records model="filedownload" label="Downloadable Items"|gettext}
                 {/if}
            {/if}
@@ -47,7 +48,8 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach name=tabs from=$page->cats key=catid item=cat}
@@ -75,8 +77,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//	    var tabview = new Y.TabView({srcNode:'#{/literal}{$id}{literal}'});
-//	    tabview.render();
         Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
 		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
 		Y.one('.loadingdiv').remove();

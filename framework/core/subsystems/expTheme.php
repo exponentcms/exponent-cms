@@ -60,17 +60,19 @@ class expTheme {
 		}
 		if (THEME_STYLE != '') {
 			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php')){
-			  @include_once(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php');
+			    @include_once(BASE.'themes/'.DISPLAY_THEME.'/config_'.THEME_STYLE.'.php');
 			}
 		} else {
 			if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/config.php')) {
-			  @include_once(BASE.'themes/'.DISPLAY_THEME.'/config.php');
+			    @include_once(BASE.'themes/'.DISPLAY_THEME.'/config.php');
 			}
 		}
 		if (!defined('BTN_SIZE')) define('BTN_SIZE','medium');
 		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
 		// add our theme folder into autoload and place it first
 		array_unshift($auto_dirs2,BASE.'themes/'.DISPLAY_THEME.'/modules');
+        //FIXME we should add a check for new jQuery type controls near the beginning of chain if used
+        if (defined('JQUERY_THEME')) array_unshift($auto_dirs,BASE.'framework/core/subsystems/forms/controls/jquery');
         array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 	}
 
@@ -79,14 +81,6 @@ class expTheme {
 		self::advertiseRSS();
     }
 
-	///** exdoc
-	// * @state <b>UNDOCUMENTED</b>
-	// * @node Undocumented
-	// */
-	//function self::headerInfo($config) {
-	//    echo headerInfo($config);
-	//	echo self::advertiseRSS();
-	//}
 	public static function headerInfo($config) {
 		global $sectionObj, $validateTheme, $head_config;
 //        global $cur_lang;
@@ -99,7 +93,7 @@ class expTheme {
 
 		// check to see if we're in XHTML or HTML mode
 		if(isset($config['xhtml']) && $config['xhtml']==true){
-			define('XHTML',1);define('XHTML_CLOSING',"/"); //default
+			define('XHTML',1); define('XHTML_CLOSING',"/"); //default
 		} else {
 			define('XHTML',0); define('XHTML_CLOSING',"");
 		}
@@ -173,7 +167,8 @@ class expTheme {
    			self::module(array("controller"=>"administration","action"=>"toolbar","source"=>"admin"));
    		}
 
-   		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+//   		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
+        if (MOBILE && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
    			echo ('<div style="text-align:center"><a href="'.makeLink(array('module' => 'administration','action' => 'togglemobile')).'">View site in '.(MOBILE ? "Classic":"Mobile").' mode</a></div>');
    		}
    		//echo expJavascript::parseJSFiles();
@@ -267,7 +262,7 @@ class expTheme {
 	 */
 	public static function advertiseRSS() {
 		if (defined('ADVERTISE_RSS') && ADVERTISE_RSS == 1) {
-			echo "\n\t<!-- RSS Feeds -->\n";
+			echo "\t<!-- RSS Feeds -->\r\n";
 			$rss = new expRss();
 			$feeds = $rss->getFeeds('advertise=1');
 			foreach ($feeds as $feed) {
@@ -278,7 +273,7 @@ class expTheme {
 					$params['src'] = $feed->src;
 //					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
                        //FIXME need to use $feed instead of $params
-                    echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeLink(array('controller'=>'rss', 'action'=>'feed', 'title'=>$feed->sef_url)) . "\" />\n";
+                    echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeLink(array('controller'=>'rss', 'action'=>'feed', 'title'=>$feed->sef_url)) . "\" />\r\n";
 				}
 			}
 		}

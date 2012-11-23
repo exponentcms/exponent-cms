@@ -43,8 +43,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#splitcredit-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#splitcredit-tabs'});
 		Y.one('#splitcredit-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

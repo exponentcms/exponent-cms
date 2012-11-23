@@ -1,0 +1,270 @@
+.events.content table td {
+    padding : 0;
+}
+
+/****************  default view  ***********************/
+
+.events.default table {
+    width            : 100%;
+    padding          : 0;
+    margin           : 0;
+    border-left      : 1px solid #A2ADBC;
+    font             : normal 12px/20px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    color            : #616B76;
+    text-align       : center;
+    background-color : #fff;
+}
+
+.events.default table th {
+    border-left : none;
+}
+
+.events.default table td {
+    padding     : 0;
+    border-left : none;
+}
+
+.events.default .nav,
+.events.default .nav a {
+    font            : bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    color           : #fff;
+    text-align      : center;
+    text-decoration : none;
+}
+
+.events.default div.caption {
+    margin     : 0;
+    padding    : 0;
+    width      : 100%;
+    background : #A2ADBC;
+    color      : #fff;
+    font       : bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    text-align : center;
+}
+
+.events.default th {
+    font          : bold 11px/20px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    text-align    : center;
+    color         : #616B76;
+    background    : #D9E2E1;
+    border-right  : 1px solid #A2ADBC;
+    border-bottom : 1px solid #A2ADBC;
+    border-top    : 1px solid #A2ADBC;
+}
+
+.events.default td {
+    border-right   : 1px solid #A2ADBC;
+    border-bottom  : 1px solid #A2ADBC;
+    width          : 14%;
+    height         : 80px;
+    vertical-align : top;
+    text-align     : left;
+    background     : #f6f5f1;
+}
+
+.events.default td.notinmonth, .events.default td.week {
+    background     : #e2e2e2;
+    width          : auto;
+    vertical-align : middle;
+    text-align     : center;
+}
+
+.events.default td.currentweek:before {
+    content    : "\00AB";
+}
+.events.default td.currentweek {
+    background     : #bfbfbf;
+}
+.events.default td.currentweek:after {
+    content    : "\00BB";
+}
+
+.events.default td .number {
+    /*border       : 1px solid #A2ADBC;*/
+    /*border-width : 0 0 1px 1px;*/
+    /*background : #fff;*/
+    padding    : 3px;
+    float      : right;
+    display    : block;
+    width      : 15px;
+    text-align : right;
+}
+
+.events.default .today {
+/*.events.default td.today a,*/
+/*.events.default td.today a:link,*/
+/*.events.default td.today a:visited,*/
+/*.events.default td.today a:hover,*/
+/*.events.default td.today a:focus,*/
+/*.events.default td.today a:active {*/
+    /*color       : #F6F4DA;*/
+    font-weight : bold;
+    background  : #DF9496;
+}
+
+.events.default td .number.today {
+    /*border       : 1px solid #A2ADBC;*/
+    /*border-width : 0 0 1px 1px;*/
+    background   : #DF9496;
+    padding      : 3px;
+    float        : right;
+    display      : block;
+    width        : 15px;
+    text-align   : right;
+}
+
+.events.default .calevent {
+    clear                 : both;
+    font-size             : 80%;
+    padding-left          : 3px;
+    border-bottom         : 1px dotted #999;
+    display               : block;
+    background            : #d5e0ed;
+    margin                : 2px;
+    -moz-border-radius    : 5px;
+    -webkit-border-radius : 5px;
+    border-radius         : 5px;
+}
+
+.events.default td.today a.edit {
+    text-transform : capitalize;
+    background     : url(../../../../core/assets/images/edit.png) no-repeat 0 50%;
+}
+
+.events.default td.today a.delete {
+    text-transform : capitalize;
+    background     : url(../../../../core/assets/images/delete.png) no-repeat 0 50%;
+}
+
+/****************  headlines  ***********************/
+
+.upcoming-events-headlines .link,
+.upcoming-events-headlines .date,
+.upcoming-events-summary .link,
+.upcoming-events-summary .date {
+    display : block;
+}
+
+.upcoming-events-headlines ul li,
+.upcoming-events-headlines ul,
+.upcoming-events-summary ul li,
+.upcoming-events-summary ul {
+    margin     : 0;
+    padding    : 0;
+    list-style : none;
+}
+
+.upcoming-events-headlines ul li .date,
+.upcoming-events-summary ul li .date {
+    margin-bottom : 5px;
+}
+
+.upcoming-events-headlines ul li,
+.upcoming-events-summary ul li {
+    margin-bottom : 10px;
+}
+
+/****************  mini-cal  viewday viewweek***********************/
+
+.mini-cal {
+    border     : none;
+    width      : 10em;
+    text-align : center;
+}
+
+.mini-cal caption, .viewweek caption, .viewday caption, p.caption {
+    line-height : 2.5em;
+    text-align  : center;
+    font-weight : bold;
+    border-top  : 1px solid;
+}
+
+.viewweek td {
+    padding : .1em .1em .1em 0;
+}
+
+.mini-cal th, .mini-cal td {
+    padding    : .1em .2em;
+    text-align : right;
+}
+
+.viewweek, .viewday {
+    border     : none;
+    width      : 100%;
+    list-style : none;
+    margin     : 0;
+    padding    : 0;
+}
+
+.mini-cal th {
+    text-align : center;
+}
+
+.mini-cal table {
+    margin-bottom : 2px;
+}
+
+.viewweek dt {
+    line-height : 2em;
+}
+
+.divider, .viewday li, .viewweek dt {
+    border-top : 1px solid;
+}
+
+/* BASIC CALENDAR LINK STYLES */
+
+.events .addevent {
+    background-image    : url(../images/addevent.png);
+    background-repeat   : no-repeat;
+    background-position : 0% 50%;
+    padding-left        : 18px;
+}
+
+.events .listviewlink {
+    background-image    : url(../images/list.gif);
+    background-repeat   : no-repeat;
+    background-position : 0% 50%;
+    padding-left        : 18px;
+}
+
+.events .monthviewlink {
+    background-image    : url(../images/date_month.png);
+    background-repeat   : no-repeat;
+    background-position : 0% 50%;
+    padding-left        : 18px;
+}
+
+.events .weekviewlink {
+    background-image    : url(../images/date_week.png);
+    background-repeat   : no-repeat;
+    background-position : 0% 50%;
+    padding-left        : 18px;
+}
+
+.events .dayviewlink {
+    background-image    : url(../images/date_day.png);
+    background-repeat   : no-repeat;
+    background-position : 0% 50%;
+    padding-left        : 18px;
+}
+
+.events .adminviewlink {
+    background-image    : url(../images/site-admin.png);
+    background-repeat   : no-repeat;
+    background-position : 0% 50%;
+    padding-left        : 18px;
+}
+
+.events .icallink {
+    background-image    : url(../images/ical.gif);
+    background-repeat   : no-repeat;
+    background-position : 0% 50%;
+    padding-left        : 38px;
+}
+
+a.cats {
+    padding-left      : 20px;
+    background-image  : url(../images/tree.png);
+    background-repeat : no-repeat;
+}

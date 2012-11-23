@@ -33,16 +33,15 @@
                 <div class="yui-content">
                     <div id="tab1">
                         <h2>{'General Configuration'|gettext}</h2>
-                        {control type="text" name="storename" label="Store Name"|gettext value=$config.storename}
+                        {control type="text" name="storename" label="Store Name"|gettext value=$config.storename|default:'My Store'|gettext}
                         {* control type="checkbox" name="allow_anonymous_checkout" label="Allow Anonymous Checkout" value=1 checked=$config.allow_anonymous_checkout *}
-                        {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number}
+                        {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number|default:'0001'}
                         <h2>{'Header'|gettext}</h2>
                         <p>{'This will be displayed on the top of your emails and invoices.'|gettext}</p>
                         {control type="html" name="ecomheader" label=" " rows=6 cols=60 value=$config.ecomheader}
                         <h2>{'Footer'|gettext}</h2>
                         <p>{'This will be displayed on the bottom of your emails and invoices.'|gettext}</p>
                         {control type="html" name="ecomfooter" label=" " rows=6 cols=60 value=$config.ecomfooter}
-
                     </div>
                     <div id="tab2">
                         <h2>{'Cart Title'|gettext}</h2>
@@ -112,7 +111,6 @@
                         {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?"|gettext value=1 checked=$config.enable_ratings_and_reviews}
                         {control type="checkbox" name="enable_lightbox" label="Enable Lightbox Image Viewer?"|gettext value=1 checked=$config.enable_lightbox}
                     </div>
-
                     <div id="tab9">
                         <h2>{"Product Type Settings"|gettext}</h2>
                         {control type="checkbox" name="product_types[Google]" label="Google Feed"|gettext value="google_product_type" checked=$config.product_types.Google}
@@ -122,7 +120,6 @@
                         {control type="checkbox" name="product_types[Shopping]" label="Shopping Feed"|gettext value="shopping_product_type" checked=$config.product_types.Shopping}
                         {control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed"|gettext value="pricegrabber_product_type" checked=$config.product_types.PriceGrabber}
                     </div>
-
                     <div id="tab10">
                         <h2>{"Gift Card Settings"|gettext}</h2>
                         {control type="text" name="minimum_gift_card_purchase" label="Minimum Gift Card Purchase"|gettext value=$config.minimum_gift_card_purchase filter=money}
@@ -144,9 +141,6 @@
     };
 
     YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        var history = new Y.HistoryHash();
-//        var tabview = new Y.TabView({srcNode:'#storetabs'});
-//        tabview.render();
         Y.expTabs({srcNode: '#storetabs'});
         Y.one('#storetabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

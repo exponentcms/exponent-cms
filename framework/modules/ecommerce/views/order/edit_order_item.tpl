@@ -21,7 +21,7 @@
        
         {'You may change the item quantity here, price, as well as edit the options and user input fields.'|gettext}{br}
         {'If you would like to change the product, please delete it and add the correct item.'|gettext}{br}
-        Note:{br}
+        {'Note'|gettext}:{br}
         <strong>* {'If you edit, add, or remove order items, the order will automatically recalculate the order totals.'|gettext}</strong>{br}
         <strong>* {'If this item has product options and those options modify the price, YOU must adjust the price below manually if you change the options. This will NOT recalculate the option price modifiers automatically.'|gettext}</strong>{br}
         {br} 

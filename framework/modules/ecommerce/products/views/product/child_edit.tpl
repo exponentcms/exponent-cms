@@ -252,8 +252,6 @@
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element','exptabs', function(Y) {
         var YAHOO=Y.YUI2;
 
-//		var tabview = new Y.TabView({srcNode:'#childtabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#childtabs-tabs'});
 		Y.one('#childtabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

@@ -29,7 +29,8 @@
         {if $record->title}<h2>{$record->title}</h2>{/if}
         {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
         {subscribe_link}
-        {assign var=myloc value=serialize($__loc)}
+        {*{assign var=myloc value=serialize($__loc)}*}
+        {$myloc=serialize($__loc)}
         {permissions}
 			<div class="item-actions">
 				{if $permissions.edit == 1}
@@ -57,36 +58,31 @@
             {if $record->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->duration}</span>
-            {else}
+                &#160;|&#160;
+            {elseif $record->expFile.downloadable[0]->filesize}
                 <span class="label size">{'File Size'}:</span>
                 <span class="value">{$record->expFile.downloadable[0]->filesize|bytes}</span>
+                &#160;|&#160;
             {/if}
-            &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$record->downloads}</span>
-            {if $record->expTag|@count>0 && !$config.disabletags}
-                &#160;|&#160;
-                <span class="label tags">{'Tags'|gettext}:</span>
-                <span class="value">
-                    {foreach from=$record->expTag item=tag name=tags}
-                        <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                    {/foreach}
-                </span>
-            {/if}
-            </p>
+            {comments_count record=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
+            {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
         </div>
         <div class="bodycopy">
             {$record->body}
         </div>
-        {icon action=downloadfile fileid=$record->id text='Download'|gettext}
+        {if $record->ext_file}
+            <a class=downloadfile href="{$record->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
+        {else}
+            {icon action=downloadfile fileid=$record->id text='Download'|gettext}
+        {/if}
         {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
             <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media"></a>
         {/if}
         {clear}
-        {if $config.usescomments == true}
-            {comments content_type="filedownload" content_id=$record->id title="Comments"|gettext}
-        {/if}  
-	</div>		
+        {comments record=$record title="Comments"|gettext}
+	</div>
 </div>
 
 {if $config.show_player}

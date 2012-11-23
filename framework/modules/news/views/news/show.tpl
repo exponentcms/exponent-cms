@@ -22,20 +22,14 @@
         </p>
     {/if}
     <h1>{$record->title}</h1>
-    {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
-    {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
+    {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+    {subscribe_link prepend='<br />'}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {if !$config.datetag}
         <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
     {/if}
-    {if $record->expTag|@count>0 && !$config.disabletags}
-        <div class="tags">
-            {"Tags"|gettext}:
-            {foreach from=$record->expTag item=tag name=tags}
-                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-            {/foreach}
-        </div>
-    {/if}
+    {tags_assigned record=$record}
     {permissions}
         <div class="item-actions">   
             {if $permissions.edit == true}

@@ -37,11 +37,10 @@ function smarty_function_rating($params,&$smarty) {
     
     expCSS::pushToHead(array(
 	    "unique"=>'ratings',
-	    "link"=>PATH_RELATIVE."framework/modules/core/assets/css/ratings.css",
+	    "link"=>PATH_RELATIVE."framework/core/assets/css/ratings.css",
 	    )
 	);
 	
-    
     $params['subtype'] = isset($params['subtype'])?$params['subtype']:$params['content_type'];
     
     $total_rating = 0;
@@ -60,12 +59,12 @@ function smarty_function_rating($params,&$smarty) {
     }
     $avg_percent = round($total_average*100/5)+1;
     $html = '
-    <div class="star-rating">
-        <div id="rating-total-'.$params['subtype'].'" class="star-stats">
-            <strong>'.$params['label'].'</strong>
-            <div id="user-rating-'.$params['subtype'].'" class="star-bar">
-                <div id="star-average-'.$params['subtype'].'" class="star-average" style="width:'.$avg_percent.'%"></div>';
-            if ($user->isLoggedIn()) {
+        <div class="star-rating">
+            <div id="rating-total-'.$params['subtype'].'" class="star-stats">
+                <strong>'.$params['label'].'</strong>
+                <div id="user-rating-'.$params['subtype'].'" class="star-bar">
+                    <div id="star-average-'.$params['subtype'].'" class="star-average" style="width:'.$avg_percent.'%"></div>';
+    if ($user->isLoggedIn()) {
         $html.='<div id="my-ratings-'.$params['subtype'].'" class="my-ratings">
                     <span rel="1" id="u-star1" class="u-star st1'.($myrate>=1?" selected":"").'">
                         <span rel="2" id="u-star2" class="u-star st2'.($myrate>=2?" selected":"").'">
@@ -79,11 +78,11 @@ function smarty_function_rating($params,&$smarty) {
                     </span>
                 </div>';
                 
-            }
-        if ($rating_count) $html.='</div><em><span class="avg">'.$total_average.'</span> '.gt('avg. by').' <span class="raters">'.$rating_count.'</span> '.gt('people').'</em></div>';
-        else $html .= '</div><em><span class="raters">'.gt('Be the first to rate this item.').'</em></div>';
-        
-        $rated = $db->selectValue('content_expRatings','expratings_id',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND poster='".$user->id."'");
+    }
+    if ($rating_count) $html.='</div><em><span class="avg">'.$total_average.' '.gt('avg. by').'</span> <span class="raters">'.$rating_count.' '.gt('people').'</span></em></div>';
+    else $html .= '</div><em><span class="avg"> </span> <span class="raters">'.gt('Be the first to rate this item.').'</em></div>';
+
+    $rated = $db->selectValue('content_expRatings','expratings_id',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND poster='".$user->id."'");
     $rated_val = $db->selectValue('expRatings','rating',"id='".$rated."' AND poster='".$user->id."'");
     $html .= '
         <div class="rating-form">
@@ -103,7 +102,7 @@ function smarty_function_rating($params,&$smarty) {
 
                 $html .= $control->toHTML('','rating');
 
-            $html.='<button>Save Rating</button>
+            $html.='<button>'.gt("Save Rating").'</button>
             </form>
         </div>
     </div>
@@ -119,15 +118,15 @@ function smarty_function_rating($params,&$smarty) {
         var avg_percent = '".$avg_percent."';
         
         function update_totals(mynewrating) {
-            if (myrating=='') {
+            total_rating = (total_rating==0) ? parseInt(mynewrating) : total_rating-myrating+parseInt(mynewrating);
+            if (myrating=='0') {
                 myrating = mynewrating;
                 ratingcount = parseInt(ratingcount)+1
-                Y.one('#rating-total-".$params['subtype']." .raters').setContent(ratingcount);
+                Y.one('#rating-total-".$params['subtype']." .raters').setContent(ratingcount+' ".gt('people')."');
             }
-            total_rating = (total_rating==0) ? parseInt(mynewrating) : total_rating-myrating+parseInt(mynewrating);
             total_average = total_rating/ratingcount;
             avg_percent = total_average*100/5;
-//            Y.one('#rating-total-".$params['subtype']." .avg').setContent(total_average.toFixed(1));
+            Y.one('#rating-total-".$params['subtype']." .avg').setContent(total_average.toFixed(1)+' ".gt('avg. by')."');
             Y.one('#star-average-".$params['subtype']."').setStyle('width',Math.round(avg_percent)+1+'%');
             myrating = mynewrating;
         }
@@ -148,7 +147,7 @@ function smarty_function_rating($params,&$smarty) {
         };
         function onSuccess(id,response,args) {
             messages = Y.JSON.parse(response.responseText);
-            alert(messages.replyText);
+//            alert(messages.replyText);
         };
         function onFailure(id,response,args) {
             alert('woops, something is broke...');
@@ -181,7 +180,7 @@ function smarty_function_rating($params,&$smarty) {
                 'mouseleave' : function(e) {
                     if (myrating!='') {
 //                        myratings.one('.u-star[rel='+myrating+']').addClass('selected').ancestors('.u-star').addClass('selected');
-                        myratings.one('#u-star'+myrating).addClass('selected').ancestors('.u-star').addClass('selected');
+                        myratings.one('u-star'+myrating).addClass('selected').ancestors('.u-star').addClass('selected');
                     }
                 }
             });

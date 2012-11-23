@@ -51,6 +51,9 @@ class expConfig extends expRecord {
     // extend the parent update() function to serialize the config
     // data before we build the object to be saved.
     public function update($params=array()) {
+        foreach($params['config'] as $key => $value) {
+            if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($params['config'],$key,true);
+        }
         if(is_array($params['config'])) {
             $params['config'] = serialize($params['config']);
         }

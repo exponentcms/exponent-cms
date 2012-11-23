@@ -138,7 +138,7 @@ class ckeditorcontrol extends formcontrol {
                     font_names :
                         " . $fontnames . ",
                     uiColor : '#aaaaaa',
-                    baseHref : '" . PATH_RELATIVE . "'
+                    baseHref : '" . PATH_RELATIVE . "',
                 });
 
                 CKEDITOR.on( 'instanceReady', function( ev ) {

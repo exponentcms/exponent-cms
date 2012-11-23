@@ -41,17 +41,23 @@ function smarty_function_userlistcontrol($params, &$smarty) {
 
     $selected = isset($params['items']) ? $params['items'] : null;
     foreach ($users as $user) {
-        if (!array_key_exists($user->id, $selected)) {
+        if (!in_array($user->id, $selected)) {
             //TODO should we display username w/ first/last name is parens or first/last name?
             if (empty($user->lastname) && empty($user->firstname)) {
                 $allusers[$user->id] = "($user->username)";
             } else {
                 $allusers[$user->id] = "$user->lastname, $user->firstname ($user->username)";
             }
+        } else {
+            if (empty($user->lastname) && empty($user->firstname)) {
+                $selectedusers[$user->id] = "($user->username)";
+            } else {
+                $selectedusers[$user->id] = "$user->lastname, $user->firstname ($user->username)";
+            }
         }
     }
 
-    $control = new listbuildercontrol($selected, $allusers, 5);
+    $control = new listbuildercontrol($selectedusers, $allusers, 5);
     $name    = isset($params['name']) ? $params['name'] : "userlist";
     $label   = isset($params['label']) ? $params['label'] : "";
 //    echo $control->controlToHTML($name);

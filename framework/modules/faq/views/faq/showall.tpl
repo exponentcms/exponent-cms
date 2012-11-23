@@ -41,7 +41,8 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {if $config.allow_user_questions}
         <a href="{link action="ask_question"}">{'Ask a Question'|gettext}</a>
     {/if}
@@ -67,11 +68,11 @@
     {if $config.usecategories && $cats|@count>0}
         {foreach name=c from=$cats key=catid item=cat}
             <a name="cat{$catid}"></a>
-            <h3>{$cat->name}</h3>
+            <h3 class="{$cat->color}">{$cat->name}</h3>
             {foreach name=a from=$cat->records item=qna}
-                {assign var=qna_found value=0}
-                {math equation="x-1" x=$qna->rank assign=prev}
-                {math equation="x+1" x=$qna->rank assign=next}
+                {*{assign var=qna_found value=0}*}
+                {*{math equation="x-1" x=$qna->rank assign=prev}*}
+                {*{math equation="x+1" x=$qna->rank assign=next}*}
                 <div class="item">
                     <a name="cat{$catid}q{$qna->rank}"></a>
                     <h4>Q{$smarty.foreach.a.iteration}. {$qna->question}</h4>
@@ -88,19 +89,12 @@
                                 {/if}
                             </div>
                         {/permissions}
-                    {if $qna->expTag|@count>0 && !$config.disabletags}
-                        <span class="label tags">{'Tags'|gettext}:</span>
-                        <span class="value">
-                            {foreach from=$qna->expTag item=tag name=tags}
-                                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                            {/foreach}
-                        </span>
-                    {/if}
+                    {tags_assigned record=$qna}
                     <div class="bodycopy">
                         {$qna->answer}
                     </div>
                 </div>
-                {assign var=qna_found value=1}
+                {*{assign var=qna_found value=1}*}
             {foreachelse}
                 {if ($config->enable_categories == 1 && $catid != 0) || ($config->enable_categories==0)}
                     <div class="item">
@@ -115,14 +109,7 @@
             <div>
                 <a name="faq_{$question->id}"></a>
                 <h3>{$question->question}</h3>
-                {if $question->expTag|@count>0 && !$config.disabletags}
-                    <span class="label tags">{'Tags'|gettext}:</span>
-                    <span class="value">
-                        {foreach from=$question->expTag item=tag name=tags}
-                            <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                        {/foreach}
-                    </span>
-                {/if}
+                {tags_assigned record=$question}
                 <div class="bodycopy">
                     <p>{$question->answer}</p>
                 </div>

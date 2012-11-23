@@ -1,0 +1,17 @@
+version 2.1.0
+This release focuses on new calendar module and a 'mega' menu
+  - adds optional nested comments, and optional per-item comment disabling
+  - adds optional comments to filedownload module items
+  - adds optional external file url for file download item
+  * removes extra themes to reduce size of package, available as separate addon downloads
+  - adds version change information to initial upgrade page
+  - adds optional color/style to categories
+  - upgrades calendar to a 2.0 event controller with categories & tags
+    *- optionally upgrades and converts existing calendars
+    -- adds color-coded categories and tags
+    -- adds color-coded aggregation of external Google & iCal calendars, and online event registrations
+  - adds new 'mega-menu' navigation view with new free-form page/menu type for embedding modules
+  - adds random sorting/sequence to photo album/slideshows
+  - adds optional user selectable email destination on form submission
+  - adds new built-in database manager
+  - plus many, many other tweaks, fixes, and features

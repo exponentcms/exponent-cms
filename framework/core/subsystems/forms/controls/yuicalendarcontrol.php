@@ -79,7 +79,7 @@ class yuicalendarcontrol extends formcontrol {
 
         $script = "
             YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date',function(Y) {
-
+//            YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','gallery-input-calendar-sync','event-valuechange',function(Y) {
                 // Create a new instance of calendar, placing it in
                 // #mycalendar container, setting its width to 340px,
                 // the flags for showing previous and next month's
@@ -92,6 +92,9 @@ class yuicalendarcontrol extends formcontrol {
                   showNextMonth: true,
                 });
                 calendar.render();
+//                Y.one('#" . $name . "').plug(Y.Plugin.InputCalendarSync,{
+//                    calendar: calendar
+//                });
 
                 // Parsing the date string into JS Date value
                 var date = Y.DataType.Date.parse('" . date('m/d/Y', $this->default) . "');
@@ -137,7 +140,6 @@ class yuicalendarcontrol extends formcontrol {
             "unique"  => 'zzyuical-' . $name,
             "yui3mods"=> 1,
             "content" => $script,
-//            "src"=>""
         ));
         return $html;
     }

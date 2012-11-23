@@ -37,7 +37,8 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
         <div class="item">
@@ -59,8 +60,10 @@
                     {if $item->publish_date > $smarty.now}
                         <strong>{'Will be'|gettext}&#160;
                     {/if}
-                    <span class="label posted">{'Posted by'|gettext}</span>
-                    <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
+                    {if !$config.displayauthor}
+                        <span class="label posted">{'Posted by'|gettext}</span>
+                        <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
+                    {/if}
                     {if !$config.datetag}
                         {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
                     {/if}
@@ -68,17 +71,8 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                &#160;|&#160;
-                <a class="comments" href="{link action=show title=$item->sef_url}#exp-comments">{$item->expComment|@count} {"Comments"|gettext}</a>
-				{if $item->expTag|@count>0 && !$config.disabletags}
-                    &#160;|&#160;
-                    <span class="label tags">{'Tags'|gettext}:</span>
-                    <span class="value">
-                        {foreach from=$item->expTag item=tag name=tags}
-                            <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title}</a>{if $smarty.foreach.tags.last != 1},{/if}
-                        {/foreach}
-                    </span>
-				{/if}
+                {comments_count record=$item prepend='&#160;&#160;|&#160;&#160;'}
+                {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
             </div>
             {permissions}
                 <div class="item-actions">

@@ -69,8 +69,6 @@
     };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//		var tabview = new Y.TabView({srcNode:'#fedex-tabs'});
-//		tabview.render();
         Y.expTabs({srcNode: '#fedex-tabs'});
 		Y.one('#fedex-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

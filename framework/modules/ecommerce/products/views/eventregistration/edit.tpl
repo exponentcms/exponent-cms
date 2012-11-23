@@ -51,8 +51,8 @@
                     <h2>{'Event Date/Time'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="eventdate" label="Start Date of Event"|gettext value=$record->eventdate}
 					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate}
-                    {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime showdate=false}
-                    {control type="datetimecontrol" name="event_endtime" label="End Time"|gettext value=$record->event_endtime showdate=false}
+                    {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime+$record->eventdate showdate=false}
+                    {control type="datetimecontrol" name="event_endtime" label="End Time"|gettext value=$record->event_endtime+$record->eventdate showdate=false}
                     <h2>{'Signup Cutoff'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="signup_cutoff" label="No registrations after"|gettext value=$record->signup_cutoff showtime = true}
                 </div>
@@ -87,11 +87,11 @@
 				<div id="tab8">
 					{control type="checkbox" name="require_terms_and_condition" label="Require Waiver"|gettext value=1 checked=$record->require_terms_and_condition}
 					{control type="editor" name="terms_and_condition" label="Waiver"|gettext rows=8 cols=55 value=$record->terms_and_condition}
-					{control type="radiogroup" name="terms_and_condition_toggle" label=" " items="Always Show,Toggle" values="0,1" default=$record->terms_and_condition_toggle|default:0}
+					{control type="radiogroup" name="terms_and_condition_toggle" label=" " items="Always Show,Toggle"|gettxtlist values="0,1" default=$record->terms_and_condition_toggle|default:0}
 				</div>
 				<div id="tab9">
 					<h2>{'Active/Inactive'|gettext}</h2>
-					{control type="radiogroup" name="active_type" label=" " items="Active,Inactive" values="0,2" default=$record->active_type|default:0}
+					{control type="radiogroup" name="active_type" label=" " items="Active,Inactive"|gettxtlist values="0,2" default=$record->active_type|default:0}
 					<h2>{'Status'|gettext}</h2>
 					{control type="checkbox" name="product_status_id" label="Open for Registration"|gettext value=1 checked=$record->product_status_id|default:1}
 				</div>

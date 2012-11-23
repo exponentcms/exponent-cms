@@ -53,6 +53,7 @@ class migrationController extends expController {
         'feedlistmodule'=>'rssController',
         'simplepollmodule'=>'simplePollController',
         'navigationmodule'=>'navigationController',
+        'calendarmodule'=>'eventController',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -311,8 +312,8 @@ class migrationController extends expController {
         $modules = $old_db->selectObjectsBySql($sql);
         for($i=0; $i<count($modules); $i++) {
             if (array_key_exists($modules[$i]->module, $this->new_modules)) {
-//                $newmod = new $this->new_modules[$modules[$i]->module]();
-                $newmod = $this->new_modules[$modules[$i]->module];
+                $newmod = new $this->new_modules[$modules[$i]->module]();
+//                $newmod = $this->new_modules[$modules[$i]->module];
                 $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod->displayname()."</span>";
 //                $modules[$i]->action = '<span style="color:green;">'.gt('Converting content to').' '.$newmod::displayname()."</span>";  //TODO this doesn't work w/ php 5.2
             } elseif (in_array($modules[$i]->module, $this->deprecated_modules)) {
@@ -555,9 +556,9 @@ class migrationController extends expController {
                 $this->convert($iloc, $module);
             } else if (!in_array($iloc->mod, $this->deprecated_modules)) {
                 // add old school modules not in the deprecation list
-				if ($iloc->mod == 'calendarmodule' && $module->view == 'Upcoming Events - Summary') {
-					$module->view = 'Upcoming Events - Headlines';
-				}
+//				if ($iloc->mod == 'calendarmodule' && $module->view == 'Upcoming Events - Summary') {
+//					$module->view = 'Upcoming Events - Headlines';
+//				}
 				$linked = $this->pulldata($iloc, $module);
 				if ($linked) {
 					$newmodule['i_mod'] = $iloc->mod;
@@ -569,15 +570,15 @@ class migrationController extends expController {
                     $section = $old_db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND is_original='0'");
                     $_POST['current_section'] = empty($section->section) ? 1 : $section->section;
 					$module = container::update($newmodule,$module,expUnserialize($module->external));
-                    if ($iloc->mod == 'calendarmodule') {
-                        $config = $old_db->selectObject('calendarmodule_config', "location_data='".serialize($iloc)."'");
-                        $config->id = '';
-                        $config->enable_categories = 1;
-                        $config->enable_tags = 0;
-                        $config->location_data = $module->internal;
-                        $config->aggregate = serialize(Array($iloc->src));
-                        $db->insertObject($config, 'calendarmodule_config');
-                    }
+//                    if ($iloc->mod == 'calendarmodule') {
+//                        $config = $old_db->selectObject('calendarmodule_config', "location_data='".serialize($iloc)."'");
+//                        $config->id = '';
+//                        $config->enable_categories = 1;
+//                        $config->enable_tags = 0;
+//                        $config->location_data = $module->internal;
+//                        $config->aggregate = serialize(Array($iloc->src));
+//                        $db->insertObject($config, 'calendarmodule_config');
+//                    }
 				}
 				$res = $db->insertObject($module, 'container');
 				if ($res) { @$this->msg['container']++; }
@@ -2100,6 +2101,141 @@ class migrationController extends expController {
                 @$this->msg['migrated'][$iloc->mod]['count']++;
                 @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 				break;
+            case 'calendarmodule':
+                if ($module->view == 'Default') {
+                    @$module->view = 'showall';
+                } elseif ($module->view == 'Upcoming Events - Summary') {
+                    $module->view = 'showall_Upcoming Events - Headlines';
+                } else {
+                    @$module->view = 'showall_'.$module->view;
+                }
+                $oldconfig = $old_db->selectObject('calendarmodule_config', "location_data='".serialize($iloc)."'");
+                if (!empty($oldconfig)) {
+                    if ($oldconfig->enable_ical == 1) {
+                        $newconfig->config['enable_ical'] = true;
+                        $newconfig->config['feed_title'] = $oldconfig->feed_title;
+                        $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
+                        $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
+                    }
+                    if (!empty($oldconfig->hidemoduletitle)) {
+                        $newconfig->config['hidemoduletitle'] = $oldconfig->hidemoduletitle;
+                    }
+                    if (!empty($oldconfig->moduledescription)) {
+                        $newconfig->config['moduledescription'] = $oldconfig->moduledescription;
+                    }
+                    if (!empty($oldconfig->aggregate) && $oldconfig->aggregate != 'a:0:{}') {
+                        $merged = expUnserialize($oldconfig->aggregate);
+                        foreach ($merged as $merge) {
+                            $newconfig->config['aggregate'][] = $merge;
+                        }
+                    }
+                    if (!empty($oldconfig->enable_feedback)) {
+                        $newconfig->config['enable_feedback'] = $oldconfig->enable_feedback;
+                    }
+                    if (!empty($oldconfig->email_title_reminder)) {
+                        $newconfig->config['email_title_reminder'] = $oldconfig->email_title_reminder;
+                    }
+                    if (!empty($oldconfig->email_from_reminder)) {
+                        $newconfig->config['email_from_reminder'] = $oldconfig->email_from_reminder;
+                    }
+                    if (!empty($oldconfig->email_address_reminder)) {
+                        $newconfig->config['email_address_reminder'] = $oldconfig->email_address_reminder;
+                    }
+                    if (!empty($oldconfig->email_reply_reminder)) {
+                        $newconfig->config['email_reply_reminder'] = $oldconfig->email_reply_reminder;
+                    }
+                    if (!empty($oldconfig->email_showdetail)) {
+                        $newconfig->config['email_showdetail'] = $oldconfig->email_showdetail;
+                    }
+                    if (!empty($oldconfig->email_signature)) {
+                        $newconfig->config['email_signature'] = $oldconfig->email_signature;
+                    }
+                    if (empty($oldconfig->enable_tags)) {
+                        $newconfig->config['disabletags'] = true;
+                    }
+                    if (!empty($oldconfig->enable_categories)) {
+                        $newconfig->config['enable_categories'] = $oldconfig->enable_categories;
+                    }
+
+                    // we have to pull in external addresses for reminders
+                    $addrs = $old_db->selectObjects('calendar_reminder_address',"calendar_id=".$oldconfig->id);
+                    foreach ($addrs as $addr) {
+                        if (!empty($addr->user_id)) {
+                            $newconfig->config['users'][] = $addr->user_id;
+                        } elseif (!empty($addr->group_id)) {
+                            $newconfig->config['groups'][] = $addr->group_id;
+                        } elseif (!empty($addr->email)) {
+                            $newconfig->config['addresses'][] = $addr->email;
+                        }
+                    }
+                }
+
+                // convert each eventdate
+                $eds = $old_db->selectObjects('eventdate',"1");
+                foreach ($eds as $ed) {
+                    $cloc = expUnserialize($ed->location_data);
+                    $cloc->mod = 'event';
+                    $ed->location_data = serialize($cloc);
+                    $db->insertObject($ed,'eventdate');
+                }
+
+                // convert each calendar to an event
+                $cals = $old_db->selectObjects('calendar',"1");
+                foreach ($cals as $cal) {
+                    unset($cal->approved);
+                    $cat = $cal->category_id;
+                    unset($cal->category_id);
+                    $tags = $cal->tags;
+                    unset($cal->tags);
+                    unset($cal->file_id);
+                    $loc = expUnserialize($cal->location_data);
+                    $loc->mod = "event";
+                    $cal->location_data = serialize($loc);
+                    $cal->created_at = $cal->posted;
+                    unset($cal->posted);
+                    $cal->edited_at = $cal->edited;
+                    unset($cal->edited);
+                    $db->insertObject($cal,'event');
+
+                    $ev = new event($cal->id);
+                    $ev->save();
+                    if (!empty($oldconfig->enable_tags)) {
+                        $params = null;;
+                        $oldtags = expUnserialize($tags);
+                        if (!empty($oldtags)) {
+                            foreach ($oldtags as $oldtag){
+                                $tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
+                                $tag = new expTag($tagtitle);
+//								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
+                                if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+                                $params['expTag'][] = $tag->id;
+                            }
+                        }
+                        $ev->update($params);
+                    }
+                    if (!empty($oldconfig->enable_categories) && $cat) {
+                        $params = null;
+                        $oldcat = $old_db->selectObject('category','id = '.$cat);
+                        $cat = new expCat($oldcat->name);
+                        if (empty($cat->id)) {
+                            $cat->title = $oldcat->name;
+                            $cat->color = $oldcat->color;
+                            $catloc = expUnserialize($oldcat->location_data);
+                            if (array_key_exists($catloc->mod, $this->new_modules)) {
+                                $mod = explode("Controller",$this->new_modules[$catloc->mod]);
+                                $cat->module = $mod[0];
+                            }
+                            $cat->save();
+                            $cat->rank = $oldcat->rank +1;
+                            $cat->update();
+                        }
+                        $params['expCat'][] = $cat->id;
+                        $ev->update($params);
+                    }
+                }
+                @$this->msg['migrated'][$iloc->mod]['count']++;
+                @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                break;
 			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
 				break;
@@ -2127,40 +2263,40 @@ class migrationController extends expController {
         }
 
         switch ($iloc->mod) {
-            case 'calendarmodule':
-				if ($db->countObjects('calendar', "location_data='".serialize($iloc)."'")) {
-					$linked = true;
-					break;
-				}
-                $events = $old_db->selectObjects('eventdate', "location_data='".serialize($iloc)."'");
-                foreach($events as $event) {
-                    $res = $db->insertObject($event, 'eventdate');
-					if ($res) { @$this->msg['migrated'][$iloc->mod]['count']++; }
-                }
-                $cals = $old_db->selectObjects('calendar', "location_data='".serialize($iloc)."'");
-                foreach($cals as $cal) {
-                    unset($cal->allow_registration);
-                    unset($cal->registration_limit);
-                    unset($cal->registration_allow_multiple);
-                    unset($cal->registration_cutoff);
-                    unset($cal->registration_price);
-                    unset($cal->registration_count);
-                    $db->insertObject($cal, 'calendar');
-                }
-                $configs = $old_db->selectObjects('calendarmodule_config', "location_data='".serialize($iloc)."'");
-                foreach ($configs as $config) {
-                    $reminders = $old_db->selectObjects('calendar_reminder_address', "calendar_id='".$config->id."'");
-					$config->id = '';
-					$config->enable_categories = 0;
-					$config->enable_tags = 0;
-                    $db->insertObject($config, 'calendarmodule_config');
-                    foreach($reminders as $reminder) {
-                        $reminder->calendar_id = $config->id;
-                        $db->insertObject($reminder, 'calendar_reminder_address');
-                    }
-                }
-				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
-				break;
+//            case 'calendarmodule':
+//				if ($db->countObjects('calendar', "location_data='".serialize($iloc)."'")) {
+//					$linked = true;
+//					break;
+//				}
+//                $events = $old_db->selectObjects('eventdate', "location_data='".serialize($iloc)."'");
+//                foreach($events as $event) {
+//                    $res = $db->insertObject($event, 'eventdate');
+//					if ($res) { @$this->msg['migrated'][$iloc->mod]['count']++; }
+//                }
+//                $cals = $old_db->selectObjects('calendar', "location_data='".serialize($iloc)."'");
+//                foreach($cals as $cal) {
+//                    unset($cal->allow_registration);
+//                    unset($cal->registration_limit);
+//                    unset($cal->registration_allow_multiple);
+//                    unset($cal->registration_cutoff);
+//                    unset($cal->registration_price);
+//                    unset($cal->registration_count);
+//                    $db->insertObject($cal, 'calendar');
+//                }
+//                $configs = $old_db->selectObjects('calendarmodule_config', "location_data='".serialize($iloc)."'");
+//                foreach ($configs as $config) {
+//                    $reminders = $old_db->selectObjects('calendar_reminder_address', "calendar_id='".$config->id."'");
+//					$config->id = '';
+//					$config->enable_categories = 0;
+//					$config->enable_tags = 0;
+//                    $db->insertObject($config, 'calendarmodule_config');
+//                    foreach($reminders as $reminder) {
+//                        $reminder->calendar_id = $config->id;
+//                        $db->insertObject($reminder, 'calendar_reminder_address');
+//                    }
+//                }
+//				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+//				break;
 //            case 'simplepollmodule':
 //				if ($db->countObjects('poll_question', "location_data='".serialize($iloc)."'")) {
 //					break;

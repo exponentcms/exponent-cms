@@ -64,6 +64,5 @@
 				{/if}
 			</div>
         {/permissions}
-        {clear}
     {/foreach}
 </div>

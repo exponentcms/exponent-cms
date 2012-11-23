@@ -26,7 +26,7 @@
  */
 class upgrade_simplepoll extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.0.9';
+	protected $to_version = '2.1.0';
     public $optional = true;
 
 	/**
@@ -76,7 +76,7 @@ class upgrade_simplepoll extends upgradescript {
             $db->updateObject($up,'userpermission',"module = 'simplepollmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
-		// convert each simplepollmodule to a simplePoll Controller
+		// convert each simplepollmodule_config to a simplePoll Controller expConfig
 	    $modules_converted = 0;
 	    $cns = $db->selectObjects('container',"internal LIKE '%simplepollmodule%'");
 	    foreach ($cns as $cn) {

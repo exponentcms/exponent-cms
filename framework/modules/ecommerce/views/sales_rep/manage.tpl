@@ -30,23 +30,23 @@
 			</thead>
 			<tbody>
 				{foreach from=$page->records item=listing name=listings}
-				<tr class="{cycle values="odd,even"}">
-				    <td>{$listing->first_name}</td>
-					<td>{$listing->last_name}</td>
-                    <td>{$listing->initials}</td>
-					<td>
-					    {if $permissions.manage == true}
-                            {icon controller=sales_rep action=edit img='edit.png' id=$listing->id}
-                            {icon controller=sales_rep action=delete img='delete.png' id=$listing->id}
-                        {/if}
-					</td>
-				</tr>
+                    <tr class="{cycle values="odd,even"}">
+                        <td>{$listing->first_name}</td>
+                        <td>{$listing->last_name}</td>
+                        <td>{$listing->initials}</td>
+                        <td>
+                            {if $permissions.manage == true}
+                                {icon controller=sales_rep action=edit img='edit.png' id=$listing->id}
+                                {icon controller=sales_rep action=delete img='delete.png' id=$listing->id}
+                            {/if}
+                        </td>
+                    </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
 				        <td colspan="4">{'No sales reps have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
-		</tbody>
+		    </tbody>
 		</table>
 	</div>
 </div>

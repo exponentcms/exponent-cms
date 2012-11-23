@@ -85,13 +85,14 @@ class creditcard extends billingcalculator {
 		$cvv->size = 5;
 		//$cvvhelp->id = "cvvhelp";
 
+        //FIXME we need to display/obtain user information if we are doing a quickPay checkout???
 		//$form .= $fname->toHTML("First Name", "first_name");
 		//$form .= $lname->toHTML("Last Name", "last_name");
-		$form .= $cardtypes->toHTML("Card Type", "cc_type");
-		$form .= $cardnumber->toHTML("Card #", "cc_number");
+		$form .= $cardtypes->toHTML(gt("Card Type"), "cc_type");
+		$form .= $cardnumber->toHTML(gt("Card #"), "cc_number");
 		//$form .= "<strong class=\"example\">Example: 1234567890987654</strong>";
-		$form .= $expiration->toHTML("Expiration", "expiration");
-		$form .= $cvv->toHTML("CVV # <br /><a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>", 'cvv');
+		$form .= $expiration->toHTML(gt("Expiration"), "expiration");
+		$form .= $cvv->toHTML("CVV # <br /><a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>".gt('What\'s this?')."</a>", 'cvv');
 		//$form .= $cvvhelp->toHTML('', 'cvvhelp');
 		//$form .= "<a class=\"exp-ecom-link-dis continue\" href=\"#\" id=\"checkoutnow\"><strong><em>Continue Checkout</em></strong></a>";
         //$form .= '<input id="cont-checkout" type="submit" value="Continue Checkout">';
@@ -144,10 +145,10 @@ class creditcard extends billingcalculator {
 		$html = '';
 		$html .= '<table id="ccinfo" border=0 cellspacing=0 cellpadding=0><thead>';
 		$html .= '<tr><th colspan="2">'.gt('You will be paying by').' '.$this->payment_type.'</th></tr></thead>';
-		$html .= '<tbody><tr class="odd"><td class="left">Type of Credit Card: </td><td>'.$opts->cc_type.'</td></tr>';
-		$html .= '<tr class="even"><td class="left">Credit Card Number: </td><td>'.'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4). '</td></tr>';
-		$html .= '<tr class="odd"><td class="left">Expires on: </td><td>'.$opts->exp_month.'/'.$opts->exp_year.'</td></tr>';
-		$html .= '<tr class="even"><td class="left">CVV/Security Number: </td><td>'.$opts->cvv.'</td></tr>';
+		$html .= '<tbody><tr class="odd"><td class="left">'.gt('Type of Credit Card').': </td><td>'.$opts->cc_type.'</td></tr>';
+		$html .= '<tr class="even"><td class="left">'.gt('Credit Card Number').': </td><td>'.'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4). '</td></tr>';
+		$html .= '<tr class="odd"><td class="left">'.gt('Expires on').': </td><td>'.$opts->exp_month.'/'.$opts->exp_year.'</td></tr>';
+		$html .= '<tr class="even"><td class="left">'.gt('CVV/Security Number').': </td><td>'.$opts->cvv.'</td></tr>';
 		$html .= '<tbody></table>';
 		return $html;
 	}

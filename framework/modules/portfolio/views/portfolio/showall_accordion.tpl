@@ -35,7 +35,8 @@
                     {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
                 {/if}
             {/if}
-			{if $permissions.manage == 1 && $rank == 1}
+			{*{if $permissions.manage == 1 && $rank == 1}*}
+			{if $permissions.manage == 1 && $config.order == 'rank'}
 				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
 			{/if}
         </div>
@@ -43,7 +44,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {assign var=myloc value=serialize($__loc)}
+    {*{assign var=myloc value=serialize($__loc)}*}
+    {$myloc=serialize($__loc)}
     <div class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel">

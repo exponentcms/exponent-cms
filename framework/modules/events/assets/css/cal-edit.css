@@ -1,0 +1,23 @@
+/* yui calendar control */
+
+#calinput{
+	float:left;
+	clear:left;
+}
+#calinput .text{
+	/*width:60px;*/
+	float:left;
+	margin-top:3px;
+}
+#calinput .button{
+	margin-top:3px;
+	margin-left:2px;
+	height:21px;
+	float:left;
+}
+.yuitime {
+	margin-top:3px;
+}
+.yuitime .text {
+	margin-right:2px;
+}

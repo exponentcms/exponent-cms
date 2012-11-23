@@ -27,6 +27,5 @@
 	{control type="text" name="vendor[fax]" label="Fax"|gettext value=$vendor->email}
 	{control type="text" name="vendor[website]" label="Website"|gettext value=$vendor->website}
 	{control type="text" name="vendor[email]" label="Email Address"|gettext value=$vendor->email}
-	
     {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

@@ -54,7 +54,7 @@ class upgrade_navigation extends upgradescript {
    	}
 
 	/**
-	 * converts all navigationmodule modules/items into simplePoll (controller) modules/items and deletes navigationmodule files
+	 * converts all navigationmodule modules/items into navigation (controller) modules/items and deletes navigationmodule files
 	 * @return bool
 	 */
 	function upgrade() {
@@ -152,11 +152,11 @@ class upgrade_navigation extends upgradescript {
         }
 
         // copy custom views to new location
-        $src = THEME_ABSOLUTE."/modules/navigationmodule/views/";
-        $dst = THEME_ABSOLUTE."/modules/navigation/views/navigation/";
+        $src = THEME_ABSOLUTE."modules/navigationmodule/views";
+        $dst = THEME_ABSOLUTE."modules/navigation/views/navigation";
         if (expUtil::isReallyWritable($src)) {
             $dir = opendir($src);
-            if (!file_exists($dst)) @mkdir($dst);
+            if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
             while(false !== ( $file = readdir($dir)) ) {
                 if (( $file != '.' ) && ( $file != '..' )) {
                     if (!file_exists($dst . '/showall_' . $file)) copy($src . '/' . $file,$dst . '/showall_' . $file);
