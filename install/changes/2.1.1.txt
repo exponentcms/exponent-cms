@@ -1,0 +1,2 @@
+version 2.1.1
+This release focuses on the new forms module and e-Commerce as OOTB experience
