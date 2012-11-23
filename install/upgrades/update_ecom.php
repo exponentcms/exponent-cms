@@ -32,13 +32,13 @@ class update_ecom extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Updates eCommerce header/footer to new format"; }
+	static function name() { return "Updates e-Commerce header/footer to new format"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.0.9, the eCommerce header/footer configuration was revised.  This Script updates those entries"; }
+	function description() { return "In v2.0.9, the e-Commerce header/footer configuration was revised.  This Script updates those entries"; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -77,7 +77,7 @@ class update_ecom extends upgradescript {
             $fixed++;
         }
         $config->update(array('config'=>$config->config));
-        return ($fixed?$fixed:gt('No')).' '.gt('eCommerce settings were corrected');
+        return ($fixed?$fixed:gt('No')).' '.gt('e-Commerce settings were corrected');
 	}
 
 }

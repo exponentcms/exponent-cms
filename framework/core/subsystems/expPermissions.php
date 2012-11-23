@@ -86,8 +86,9 @@ class expPermissions {
 		global $exponent_permissions_r, $user, $db, $module_scope;
 
         if (method_exists(expModules::getController($location->mod), 'checkPermissions')){
-            $mod = expModules::getController($location->mod);
-            if ($mod::checkPermissions($permission,$location)) return true;
+            $modname = expModules::getController($location->mod);
+            $mod =  new $modname;
+            if ($mod->checkPermissions($permission,$location)) return true;
         }
 
 		if (!empty($user->id)) {

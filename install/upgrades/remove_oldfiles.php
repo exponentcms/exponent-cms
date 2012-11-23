@@ -238,6 +238,7 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/ecommerce/views/store/search_by_model_old.tpl',
             'framework/modules/ecommerce/views/store/showall_category_featured_products.tpl',
             'framework/modules/ecommerce/views/store/upcoming_events.tpl',
+            'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
@@ -286,6 +287,7 @@ class remove_oldfiles extends upgradescript {
             "external/yui3/",
             "external/lissa/",
             "external/yui/3.4.0/",
+            "external/yui/3.7.2/",
             "external/Smarty/",
             "external/Smarty-2/",
             "external/Smarty-3.1.4/",
@@ -301,6 +303,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.1.5/",
             "external/Swift-4.1.6/",
             "external/Swift-4.1.7/",
+            "external/Swift-4.2.1/",
         );
         foreach ($olddirs as $dir) {
             if (expUtil::isReallyWritable(BASE.$dir)) {

@@ -63,7 +63,7 @@ class formbuilder_report {
         $form->register(null,'',new htmlcontrol('<h2>'.gt('Data Field Configuration').'</h2>'),true,gt('Data Fields'));
         $form->register(null,'', new htmlcontrol(gt('Selecting NO columns is equal to selecting all columns')),true,gt('Data Fields'));
         $form->register('column_names',gt('Columns shown in View Data/Export CSV'), new listbuildercontrol($column_names,$fields),true,gt('Data Fields'));
-		$form->register(null,'', new htmlcontrol(gt('Leave the below custom definition blank to use the default "all fields" e-mail report and record view.')),true,gt('Data Fields'));
+		$form->register(null,'', new htmlcontrol(gt('Leave the below custom definition blank to use the default \'all fields\' e-mail report and record view.')),true,gt('Data Fields'));
 		$form->register('text',gt('Custom E-Mail Report and View Record Definition'),new htmleditorcontrol($object->text),true,gt('Data Fields'));
 
         $form->register(null,null,new htmlcontrol('<div class="loadingdiv">'.gt('Loading Form Settings').'</div>'),true,'base');
