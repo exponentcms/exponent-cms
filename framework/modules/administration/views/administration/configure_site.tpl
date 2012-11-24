@@ -58,7 +58,7 @@
                     {control type="text" name="sc[SITE_TITLE]" label="Site Title"|gettext value=$smarty.const.SITE_TITLE}
 					{control type="text" name="sc[SITE_HEADER]" label="Site Header"|gettext value=$smarty.const.SITE_HEADER}
                     {control type="checkbox" postfalse=1 name="sc[SEF_URLS]" label="Search Engine Friendly URLs?"|gettext checked=$smarty.const.SEF_URLS value=1}
-					{control type="checkbox" postfalse=1 name="sc[ADVERTISE_RSS]" label="Advertise all RSS Feeds to Web Browsers?"|gettext checked=$smarty.const.ADVERTISE_RSS value=1}
+					{control type="checkbox" postfalse=1 name="sc[ADVERTISE_RSS]" label="Advertise RSS Feeds to Web Browsers?"|gettext checked=$smarty.const.ADVERTISE_RSS value=1}
                     {control type="checkbox" postfalse=1 name="sc[SKIP_VERSION_CHECK]" label="Skip Automatic Online Version Update Check?"|gettext checked=$smarty.const.SKIP_VERSION_CHECK value=1 description='You can still check for an updated version using the Exponent, Super-Admin Tools menu'|gettext}
                     {control type="dropdown" name="sc[SITE_DEFAULT_SECTION]" label="Default Section (Home Page)"|gettext items=$section_dropdown default=$smarty.const.SITE_DEFAULT_SECTION}
                     {control type="textarea" name="sc[SITE_KEYWORDS]" label='('|cat:('Meta'|gettext)|cat:') '|cat:('Keywords'|gettext) value=$smarty.const.SITE_KEYWORDS}

@@ -21,6 +21,10 @@
         <h2>{"Simple Poll Settings"|gettext}</h2>
 	</div>
 </div>
+<blockquote>
+    {"This is where you can configure the settings used by this Simple Poll module."|gettext}&#160;&#160;
+    {"These settings only apply to this particular module."|gettext}
+</blockquote>
 {control type="html" name="thank_you_message" label='\'Thank You\' Message'|gettext value=$config.thank_you_message|default:'Thank you for voting.'|gettext}
 {control type="html" name="already_voted_message" label='\'Already Voted\' Message'|gettext value=$config.already_voted_message|default:'You have already voted in this poll.'|gettext}
 {control type="html" name="voting_closed_message" label='\'Voting Closed\' Message'|gettext value=$config.voting_closed_message|default:'Voting has been closed for this poll.'|gettext}

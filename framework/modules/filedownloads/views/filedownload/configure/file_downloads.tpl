@@ -22,8 +22,8 @@
 	</div>
 </div>
 <blockquote>
-    {'This is where you can configure the settings to be used by this File Download module.'|gettext}&#160;&#160;
-    {'These settings will only apply to this particular module.'|gettext}
+    {'This is where you can configure the settings used by this File Download module.'|gettext}&#160;&#160;
+    {'These settings only apply to this particular module.'|gettext}
 </blockquote>
 {control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Number Downloads, Number Downloads Descending, Alphabetical, Reverse Alphabetical, Order Manually"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,downloads,downloads DESC,title,title DESC,rank" value=$config.order|default:'created_at DESC'}
 {control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None"|gettxtlist values="0,1,2"}

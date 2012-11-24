@@ -21,6 +21,10 @@
         <h2>{'Countdown Settings'|gettext}</h2>
 	</div>
 </div>
+<blockquote>
+    {"This is where you can configure the settings used by this Countdown module."|gettext}&#160;&#160;
+    {"These settings only apply to this particular module."|gettext}
+</blockquote>
 {control type="text" name="title" label="Title"|gettext value=$config.title}
 {control type="text" name="count" label="Countdown Date"|gettext value=$config.count}
 <em>{'NOTE: date must follow this format'|gettext}: 12/31/2020 5:00 AM</em>

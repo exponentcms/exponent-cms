@@ -21,6 +21,10 @@
         <h2>{"Youtube Settings"|gettext}</h2>
 	</div>
 </div>
+<blockquote>
+    {"This is where you can configure the settings used by this YouTube module."|gettext}&#160;&#160;
+    {"These settings only apply to this particular module."|gettext}
+</blockquote>
 {control type="text" name="width" label="Width of Video"|gettext size=4 filter=integer value=$config.width}
 {control type="text" name="height" label="Height of Video"|gettext size=4 filter=integer value=$config.height}
 

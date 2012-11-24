@@ -21,6 +21,10 @@
         <h2>{"Photo Album Settings"|gettext}</h2>
 	</div>
 </div>
+<blockquote>
+    {"This is where you can configure the settings used by this Photo Album module."|gettext}&#160;&#160;
+    {"These settings only apply to this particular module."|gettext}
+</blockquote>
 <h4>{'Gallery Page'|gettext}</h4>
 {control type=dropdown name=order label="Sort By"|gettext items="Order Manually, Random"|gettxtlist values="rank,RAND()" value=$config.order|default:rank}
 {control type=text name="pa_showall_thumbbox" label="Box size for image thumbnails"|gettext value=$config.pa_showall_thumbbox|default:100 size="5"}
