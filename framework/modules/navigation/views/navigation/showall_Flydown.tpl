@@ -21,19 +21,14 @@
     <div id="{$id}" class="yui3-menu yui3-menu-horizontal yui3-menubuttonnav">
         <div class="yui3-menu-content" style="visibility:hidden;">
     		<ul>
-                {*{assign var=startdepth value=$startdepth|default:0}*}
                 {$startdepth=$startdepth|default:0}
                 {foreach name="children" key=key from=$sections item=section}
-                    {*{assign var=nextkey value=$key+1}*}
-                    {*{assign var=previouskey value=$key-1}*}
                     {$nextkey=$key+1}
                     {$previouskey=$key-1}
 
                     {if $sections[$nextkey]->depth > $section->depth}
-                        {*{assign var=type value="label"}*}
                         {$type="label"}
                     {elseif $sections[$nextkey]->depth <= $section->depth}
-                        {*{assign var=type value="content"}*}
                         {$type="content"}
                     {/if}
 
@@ -62,10 +57,8 @@
 
                     {if $sections[$nextkey]->depth < $section->depth}
                         {if $smarty.foreach.children.last==true}
-                            {*{assign var=nextdepth value=$startdepth}*}
                             {$nextdepth=$startdepth}
                         {else}
-                            {*{assign var=nextdepth value=$sections[$nextkey]->depth}*}
                             {$nextdepth=$sections[$nextkey]->depth}
                         {/if}
 

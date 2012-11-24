@@ -24,11 +24,9 @@
     {/if}
     <ul>
     {foreach from=$sections item=section}
-        {*{assign var=commonParent value=0}*}
         {$commonParent=0}
         {foreach from=$current->parents item=parentId}
             {if $parentId == $section->id || $parentId == $section->parent}
-                {*{assign var=commonParent value=1}*}
                 {$commonParent=1}
             {/if}
         {/foreach}

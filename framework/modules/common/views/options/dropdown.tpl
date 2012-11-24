@@ -14,7 +14,6 @@
  *}
 
 <div class="options dropdown"> 
-    {*{assign var=gid value=$group->id} *}
     {$gid=$group->id}
     {if isset($selected.$gid)}
         {control id="options`$group->id`" type=dropdown name="options[`$group->id`][]" label=$group->title items=$options includeblank=$includeblank value=$selected.$gid.0 required=$required}

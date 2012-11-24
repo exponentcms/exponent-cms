@@ -20,11 +20,9 @@
     {/if}
     <h2>{$current->name}</h2>
     <ul>
-        {*{assign var=islastdepth value="false"}*}
         {$islastdepth="false"}
         {foreach from=$sections item=section}
             {if $section->parent == $current->id}
-                {*{assign var=islastdepth value="true"}*}
                 {$islastdepth="true"}
                 <li{if $section->id==$current->id || $isparent==1} class="current"{/if}>
                     {if $section->active == 1}

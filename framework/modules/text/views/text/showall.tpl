@@ -28,7 +28,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {assign var=myloc value=serialize($__loc)}
+    {$myloc=serialize($__loc)}
     {foreach from=$items item=text name=items}
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions}

@@ -15,7 +15,6 @@
 
 <div class="module text show-random">
 	    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
-        {*{assign var=myloc value=serialize($__loc)}*}
         {$myloc=serialize($__loc)}
 	    {permissions}
     	    <div class="module-actions">

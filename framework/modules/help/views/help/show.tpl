@@ -15,7 +15,6 @@
 
 <div id="showhelp" class="module help show">
     <h1>{$doc->title}</h1>
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {permissions}
     <div class="item-actions">

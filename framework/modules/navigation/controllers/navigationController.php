@@ -45,7 +45,7 @@ class navigationController extends expController {
         'delete',
         'edit'
     );
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     static function displayname() { return gt("Navigation"); }
 

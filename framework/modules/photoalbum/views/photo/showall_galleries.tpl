@@ -43,12 +43,10 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {foreach name=items from=$page->cats key=catid item=cat}
         <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}"><h2 class="category">{$cat->name}</h2></a>
         <ul class="image-list">
-        {*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
         {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
                 <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}">

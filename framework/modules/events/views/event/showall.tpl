@@ -87,16 +87,12 @@
 			<th scope="col" abbr="{'Sun'|gettext}" title="{'Sunday'|gettext}">{'Sunday'|gettext}</th>
 			{/if}
 		</tr>
-		{*{math equation="x" x=$now assign=dayts}*}
         {$dayts=$now}
         {$dst=false}
 		{foreach from=$monthly item=week key=weeknum}
-			{*{assign var=moredata value=0}*}
             {*{$moredata=0}*}
 			{*{foreach name=w from=$week key=day item=events}*}
-				{*{assign var=number value=$counts[$weeknum][$day]}*}
                 {*{$number=$counts[$weeknum][$day]}*}
-				{*{if $number > -1}{assign var=moredata value=1}{/if}*}
                 {*{if $number > -1}{$moredata=1}{/if}*}
 			{*{/foreach}*}
 			{*{if $moredata == 1}*}
@@ -105,7 +101,6 @@
                         <td class="week{if $currentweek == $weeknum} currentweek{/if}">{$weeknum}</td>
                     {/if}
                     {foreach name=w from=$week key=day item=items}
-                        {*{assign var=number value=$counts[$weeknum][$day]}*}
                         {$number=$counts[$weeknum][$day]}
                         <td {if $dayts == $today}class="today"{elseif $number == -1}class="notinmonth"{else}class="oneday"{/if}>
                             {if $number > -1}
@@ -154,7 +149,6 @@
                                     {/permissions}
                                 </div>
                             {/foreach}
-                            {*{if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}*}
                             {if $number != -1}{$dayts=$dayts+86400}
                                 {if !$dst}
                                     {if (date('I',$now) && !date('I',$dayts))}

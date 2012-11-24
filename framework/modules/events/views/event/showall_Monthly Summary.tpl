@@ -38,14 +38,11 @@
 				<td>{'Friday'|gettext}</td>
 				<td>{'Saturday'|gettext}</td>
 			</tr>
-			{*{math equation="x-86400" x=$now assign=dayts}*}
             {$dayts=$now-86400}
 			{foreach from=$monthly item=week key=weeknum}
 				<tr class="{if $currentweek == $weeknum}calendar_currentweek{/if}">
-					{*foreach name=w from=$week key=day item=events*}
 					{foreach from=$week key=day item=dayinfo}
 						<td class="daytitle{if $dayinfo.number == -1} notaday{/if}">
-							{*{if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}*}
                             {if $number != -1}{$dayts=$dayts+86400}{/if}
 							{if $dayinfo.number > -1}
 								<div class="daycell">{$day}</div>

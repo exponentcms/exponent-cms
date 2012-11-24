@@ -37,7 +37,7 @@ class simplePollController extends expController {
 		'rss',
 		'tags'
 	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     static function displayname() { return gt("Simple Poll"); }
     static function description() { return gt("A simple poll that asks a visitor one question with multiple answers.  Can manage multiple questions, though it only displays one."); }

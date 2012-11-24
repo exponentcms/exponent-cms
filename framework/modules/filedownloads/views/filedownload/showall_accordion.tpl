@@ -44,7 +44,6 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     <div class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}

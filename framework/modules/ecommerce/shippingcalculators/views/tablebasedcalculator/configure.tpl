@@ -60,7 +60,6 @@
 		{section name=i loop=$calculator->configdata.from}
 		
 		{if !($smarty.section.i.last)}
-        {*<tr class="row row-{math equation='x + y' x=$smarty.section.i.index y=1} {cycle values='odd,even'}">*}
         <tr class="row row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
         	<td class="from">
         		<a href="#" class="delete">{'Remove'|gettext}</a>
@@ -81,7 +80,6 @@
 			{/foreach}
         </tr>
 		{else}
-			{*{assign var='lastcharge' value=$smarty.section.i.index}*}
             {$lastcharge=$smarty.section.i.index}
 		{/if}
 		{/section}

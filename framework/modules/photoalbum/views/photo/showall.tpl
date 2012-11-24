@@ -48,13 +48,10 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
-    {*{assign var="cat" value="bad"}*}
     {$cat="bad"}
     {pagelinks paginate=$page top=1}
     <ul class="image-list">
-    {*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}	*}
     {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
     {foreach from=$page->records item=record name=items}
         {if $cat !== $record->expCat[0]->id && $config.usecategories}
@@ -62,7 +59,6 @@
         {/if}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
             {if $config.lightbox}
-                {*{if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}*}
                 {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
                 <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
             {else}
@@ -91,7 +87,6 @@
                 </div>
             {/permissions}
         </li>
-        {*{assign var="cat" value=$record->expCat[0]->id}*}
         {$cat=$record->expCat[0]->id}
     {/foreach}
     </ul>

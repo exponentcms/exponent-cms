@@ -31,7 +31,7 @@ class eventController extends expController {
     public $remove_configs = array(
         'comments',
         'ealerts',
-        'files',
+//        'files',
         'pagination',
         'rss',
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')

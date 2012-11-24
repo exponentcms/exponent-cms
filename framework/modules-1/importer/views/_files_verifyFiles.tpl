@@ -21,9 +21,6 @@
 	<div class="form_header">
 		<h2>{'Selected Files to Import'|gettext}</h2>
 	</div>
-	{*{assign var=haveFiles value=0}*}
-	{*{assign var=failed value=0}*}
-	{*{assign var=warn value=0}*}
     {$haveFiles=0}
     {$failed=0}
     {$warn=0}
@@ -34,7 +31,6 @@
 		</thead>
 		<tbody>
 			{foreach from=$files_data item=status key=filename }
-				{*{assign var=haveFiles value=1}*}
                 {$haveFiles=1}
 				<tr class="row {cycle values='even_row,odd_row'}">
 					<td>{$filename}</td>
@@ -42,11 +38,9 @@
 						{if $status == $smarty.const.SYS_FILES_SUCCESS}
 							<span style="color: green;">{'passed'|gettext}</span>
 						{elseif $status == $smarty.const.SYS_FILES_FOUNDFILE || $status == $smarty.const.SYS_FILES_FOUNDDIR}
-							{*{assign var=warn value=1}*}
                             {$warn=1}
 							<span style="color: orange;">{'file exists'|gettext}</span>
 						{else}
-							{*{assign var=failed value=1}*}
                             {$failed=1}
 							<span style="color: red;">{'failed'|gettext}</span>
 						{/if}

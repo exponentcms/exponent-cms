@@ -29,7 +29,6 @@
         {if $record->title}<h2>{$record->title}</h2>{/if}
         {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
         {subscribe_link}
-        {*{assign var=myloc value=serialize($__loc)}*}
         {$myloc=serialize($__loc)}
         {permissions}
 			<div class="item-actions">

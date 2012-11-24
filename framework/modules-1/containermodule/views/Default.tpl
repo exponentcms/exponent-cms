@@ -50,7 +50,6 @@
 {viewfile module=$singlemodule view=$singleview var=viewfile}
 
 {foreach key=key name=c from=$containers item=container}
-	{*{assign var=i value=$smarty.foreach.c.iteration}*}
     {$i=$smarty.foreach.c.iteration}
 	{if $smarty.const.SELECTOR == 1}
 		{include file=$viewfile}
@@ -70,10 +69,8 @@
 
 				<div id="module{$container->id}" class="exp-container-module-wrapper">
 				{if $i == $containers|@count}
-					{*{assign var=last value=true}*}
                     {$last=true}
 				{else}
-					{*{assign var=last value=false}*}
                     {$last=false}
 				{/if}
 				<div class="container-chrome module-chrome">

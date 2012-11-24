@@ -70,10 +70,8 @@
 		<a class="module-actions calendar_mngmntlink" href="{link action=showall view=showall_Day time=$next_timestamp3}" title="{$next_timestamp3|format_date:"%A, %B %e, %Y"}">{$next_timestamp3|format_date:"%a"}</a>
 	</p>
 	<dl class="viewweek">
-		{*{assign var=count value=0}*}
         {$count=0}
 		{foreach from=$days.$time item=item}
-			{*{assign var=count value=1}*}
             {$count=1}
 			<dt>
 				<span class="eventtitle">

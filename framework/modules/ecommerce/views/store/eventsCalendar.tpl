@@ -33,7 +33,6 @@
 {if $config.moduledescription != ""}
 	{$config.moduledescription}
 {/if}
-{*{assign var=myloc value=serialize($__loc)}*}
 {$myloc=serialize($__loc)}
 
 <table id="calendar" cellspacing="0" cellpadding="0" summary="{$moduletitle|default:'Subscribe to this Event RSS Feed'|gettext}">
@@ -47,15 +46,12 @@
         <th scope="col" abbr="{'Friday'|gettext}" title="{'Friday'|gettext}">{'Friday'|gettext}</th>
         <th scope="col" abbr="{'Saturday'|gettext}" title="{'Saturday'|gettext}">{'Saturday'|gettext}</th>
     </tr>
-    {*{math equation="x-86400" x=$now assign=dayts}*}
     {$dayts=$now-86400}
     {foreach from=$monthly item=week key=weeknum}
         <tr class="{if $currentweek == $weeknum} currentweek{/if}">
         {foreach name=w from=$week key=day item=events}
-            {*{assign var=number value=$counts[$weeknum][$day]}*}
             {$number=$counts[$weeknum][$day]}
             <td {if $number == -1}class="notinmonth" {/if}>
-                {*{if $number != -1}{math equation="x+86400" x=$dayts assign=dayts}{/if}*}
                 {if $number != -1}{$dayts=$dayts+86400}{/if}
                 {if $number > -1}
                     <span class="number">

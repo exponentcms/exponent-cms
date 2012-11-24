@@ -20,9 +20,6 @@
 <div class="containermodule three-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
     <div class="col1">
-    	{*{assign var=container value=$containers.0}*}
-    	{*{assign var=i value=0}*}
-		{*{assign var=rerank value=0}*}
     	{$container=$containers.0}
     	{$i=0}
 		{$rerank=0}
@@ -30,9 +27,6 @@
         {clear}
     </div>
     <div class="col2">
-    	{*{assign var=container value=$containers.1}*}
-    	{*{assign var=i value=1}*}
-		{*{assign var=rerank value=0}*}
     	{$container=$containers.1}
     	{$i=1}
 		{$rerank=0}
@@ -40,8 +34,6 @@
         {clear}
     </div>
     <div class="col3">
-    	{*{assign var=container value=$containers.2}*}
-    	{*{assign var=i value=2}*}
     	{$container=$containers.2}
     	{$i=2}
     	{include file=$viewfile}

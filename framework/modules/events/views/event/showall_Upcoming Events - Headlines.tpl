@@ -36,8 +36,6 @@
 		</div>
 	{/permissions} 
     <ul>
-		{*{assign var=more_events value=0}	*}
-		{*{assign var=item_number value=0}	*}
         {$more_events=0}
         {$item_number=0}
 		{foreach from=$items item=item}
@@ -80,10 +78,8 @@
                         {/if}
 					{/permissions}
 				</li>
-				{*{assign var=item_number value=$item_number+1}*}
                 {$item_number=$item_number+1}
 			{else}
-				{*{assign var=more_events value=1}	*}
                 {$more_events=1}
 			{/if}
 		{foreachelse}

@@ -16,7 +16,6 @@
 <div class="module portfolio show">
 	<h1>{$record->title}</h1>
     {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="item-actions">

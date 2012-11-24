@@ -27,16 +27,13 @@
     {/capture}
 {/if}
 
-{*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
 {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
 
 <div class="showcase">
     <div class="main-img">
         {if $config.pio && $params.is_listing}
-            {*{assign var=miw value=$config.listingwidth|default:$config.piwidth}*}
             {$miw=$config.listingwidth|default:$config.piwidth}
         {else}
-            {*{assign var=miw value=$config.piwidth|default:$config.listingwidth}*}
             {$miw=$config.piwidth|default:$config.listingwidth}
         {/if}
         {img file_id=$files[0]->id w=$miw alt="`$files[0]->alt`" class="mainimg `$config.tclass`"}

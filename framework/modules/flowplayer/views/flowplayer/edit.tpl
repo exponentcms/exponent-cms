@@ -19,17 +19,13 @@
     </h1>
 
 	{if !$config.video_width}
-		{*{assign var="width" value="200"}*}
         {$width="200"}
 	{else}
-		{*{assign var="width" value=$config.video_width}*}
         {$width=$config.video_width}
 	{/if}
 	{if !$config.video_height}
-		{*{assign var="height" value="143"}*}
         {$height="143"}
 	{else}
-		{*{assign var="height" value=$config.video_height}*}
         {$height=$config.video_height}
 	{/if}
     {form action=update}

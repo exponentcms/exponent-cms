@@ -33,7 +33,6 @@
     {/capture}
 {/if}
 
-{*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
 {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
 
 {foreach from=$files item=img key=key}

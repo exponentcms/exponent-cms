@@ -44,7 +44,6 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {if $config.usecategories}
         {foreach from=$cats key=catid item=cat}

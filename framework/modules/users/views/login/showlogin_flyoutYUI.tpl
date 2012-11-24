@@ -21,13 +21,9 @@
 	{if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
 		<div class="box login-form one">
 			{if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
-				{*{assign var=usertype value="Customers"|gettext}*}
-				{*{assign var=label value="Email Address"|gettext|cat:":"}*}
                 {$usertype="Customers"|gettext}
                 {$label="Email Address"|gettext|cat:":"}
 			{else}
-				{*{assign var=usertype value="Users"|gettext}*}
-				{*{assign var=label value="Username"|gettext|cat:":"}*}
                 {$usertype="Users"|gettext}
                 {$label="Username"|gettext|cat:":"}
 			{/if}

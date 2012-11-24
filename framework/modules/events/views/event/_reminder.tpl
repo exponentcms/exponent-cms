@@ -41,7 +41,6 @@
 					</strong>
 				</dt>
 				{foreach from=$events item=event}
-					{*{assign var=catid value=$event->category_id}*}
                     {$catid=$event->category_id}
 					<dd>
 						<strong>

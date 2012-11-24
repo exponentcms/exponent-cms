@@ -19,9 +19,6 @@
 
 <div class="exporter extension-filelist">
 	<h1>{"Uploading New Extension"|gettext}</h1>
-	{*{assign var=haveFiles value=1}*}
-	{*{assign var=failed value=0}*}
-	{*{assign var=warn value=0}*}
     {$haveFiles=1}
     {$failed=0}
     {$warn=0}
@@ -41,11 +38,9 @@
 						{if $file.canCreate == $smarty.const.SYS_FILES_SUCCESS}
 							<span style="color: green;">{'passed'|gettext}</span>
 						{elseif $file.canCreate == $smarty.const.SYS_FILES_FOUNDFILE || $file.canCreate == $smarty.const.SYS_FILES_FOUNDDIR}
-							{*{assign var=warn value=1}*}
                             {$warn=1}
 							<span style="color: orange;">{'file exists'|gettext}</span>
 						{else}
-							{*{assign var=failed value=1}*}
                             {$failed=1}
 							<span style="color: red;">{'failed'|gettext}</span>
 						{/if}
@@ -60,7 +55,6 @@
 					{*</td>*}
 				</tr>
 			{foreachelse}
-				{*{assign var=haveFiles value=0}*}
                 {$haveFiles=0}
 				<tr><td colspan="3">
 					<em>{'No files were found in the archive'|gettext}</em>

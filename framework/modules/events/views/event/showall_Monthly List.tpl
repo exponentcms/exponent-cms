@@ -80,10 +80,8 @@
 					</strong></div>
 				</dt>
 				<dd>
-					{*{assign var=none value=1}*}
                     {$none=1}
 					{foreach from=$items item=item}
-						{*{assign var=none value=0}*}
                         {$none=0}
 						<div class="paragraph">
 							<a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"

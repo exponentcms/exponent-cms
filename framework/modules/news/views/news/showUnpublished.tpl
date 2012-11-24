@@ -19,7 +19,6 @@
 
 <div class="module news show-expired">
     {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Expired News"|gettext}</h1>{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {pagelinks paginate=$page top=1}
 	<table id="prods" class="exp-skin-table" width="95%">

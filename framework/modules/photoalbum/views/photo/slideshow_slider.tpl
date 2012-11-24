@@ -70,12 +70,10 @@
    		{$config.moduledescription}
    	{/if}
 
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     <div id="ss-{$name}" class="slider">
 
         <ul class="sliderlist dpd-slidetab tab-nav">
-			{*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
                 <li class="slider{if $smarty.foreach.slides.first} on{/if}">

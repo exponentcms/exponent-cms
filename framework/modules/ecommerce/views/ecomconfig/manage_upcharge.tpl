@@ -49,7 +49,6 @@
                         <td colspan="2">{$country->name}
                         </td>
                         <td>
-                            {*{assign var="key" value="country_`$country->id`"}*}
                             {$key="country_`$country->id`"}
                             {control type="text" name="upcharge[country_`$country->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
                         </td>
@@ -60,7 +59,6 @@
                                 <td>&#160;</td>
                                 <td><strong>{$region->name}</strong></td>
                                 <td>
-                                    {*{assign var="key" value="region_`$region->id`"}*}
                                     {$key="region_`$region->id`"}
                                     {control type="text" name="upcharge[region_`$region->id`]" label="Rate:"|gettext size="5" value="`$upcharge.$key`"}
                                 </td>

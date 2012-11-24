@@ -14,7 +14,6 @@
  *}
 
 <div class="module store show-top-level">
-	{*{assign var=depth value=0}*}
     {$depth=0}
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
@@ -31,7 +30,6 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {if $current_category->id}
         {permissions}
