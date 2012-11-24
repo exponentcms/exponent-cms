@@ -1243,7 +1243,7 @@ class RSSCreator091 extends FeedCreator {
 				if ($this->items[$i]->authorEmail!="") {
 					$feed.= "            <author> " . htmlspecialchars($this->items[$i]->authorEmail) . " (".htmlspecialchars($this->items[$i]->author).")</author>\n";
 				} else {
-				      $feed.= "            <author> no_email@example.com (".htmlspecialchars($this->items[$i]->author).")</author>\n";
+				      $feed.= "            <author> ".htmlspecialchars($this->items[$i]->author)."</author>\n";
 			    }
 			}
 			/*
