@@ -27,7 +27,7 @@
     {/if}
     {if $config.quick_download}
         <h3{if $config.usecategories} class="{$cat->color}"{/if}>
-            {if $record->ext_file}
+            {if $file->ext_file}
                 <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
             {else}
                 {icon action=downloadfile fileid=$file->id text='Download'|gettext}
@@ -100,6 +100,7 @@
             {icon action=downloadfile fileid=$file->id text='Download'|gettext}
         {/if}
     {/if}
+    {clear}
     {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
         <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
             {if $file->expFile.preview[0] != ""}
