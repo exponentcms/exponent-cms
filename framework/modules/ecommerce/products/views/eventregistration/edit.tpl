@@ -13,6 +13,9 @@
  *
  *}
 
+{css unique="product-edit" link="`$asset_path`css/product_edit.css" corecss="tree,panels"}
+
+{/css}
 
 <div id="editevent" class="module event edit">
     {if $record->id != ""}

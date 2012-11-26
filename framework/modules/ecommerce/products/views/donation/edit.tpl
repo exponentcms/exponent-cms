@@ -13,6 +13,10 @@
  *
  *}
 
+{css unique="product-edit" link="`$asset_path`css/product_edit.css" corecss="tree,panels"}
+
+{/css}
+
 <div id="editproduct" class="module store edit">
 
     {if $record->id != ""}
@@ -46,7 +50,7 @@
 	            </div>
 	            <div id="tab3">
 	                {*{control type=files name=files subtype=images value=$record->expFile}*}
-                    {control type=files label="Main Image"|gettext name=mainimages subtype="mainimage" value=$record->expFile}
+                    {control type=files label="Main Images"|gettext name=mainimages subtype="mainimage" value=$record->expFile}
 	            </div>
 	            <!--div id="tab4">
 	                {control type="text" name="quantity" label="Quantity"|gettext value=$record->quantity}

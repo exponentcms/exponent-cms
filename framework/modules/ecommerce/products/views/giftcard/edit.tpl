@@ -13,6 +13,10 @@
  *
  *}
 
+{css unique="product-edit" link="`$asset_path`css/product_edit.css" corecss="tree,panels"}
+
+{/css}
+
 <div id="editproduct" class="module store edit">
     {if $record->id != ""}
         <h1>{'Edit Information for'|gettext} {$record->product_name}</h1>
@@ -36,7 +40,7 @@
 	                {control type="editor" name="body" label="Gift Card Description"|gettext height=250 value=$record->body}
 	            </div>
 	            <div id="tab2">
-	                {control type=files name=files subtype="mainimage" value=$record->expFile}
+	                {control type=files label="Main Images"|gettext name=files subtype="mainimage" value=$record->expFile}
 	            </div>
             </div>
         </div>
