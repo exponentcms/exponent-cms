@@ -35,11 +35,9 @@
 	                {control type="textarea" name="summary" label="Gift Card Summary"|gettext rows=3 cols=45 value=$record->summary}
 	                {control type="editor" name="body" label="Gift Card Description"|gettext height=250 value=$record->body}
 	            </div>
-	     
 	            <div id="tab2">
 	                {control type=files name=files subtype="mainimage" value=$record->expFile}
 	            </div>
-	          
             </div>
         </div>
 	    <div class="loadingdiv">{'Loading'|gettext}</div>

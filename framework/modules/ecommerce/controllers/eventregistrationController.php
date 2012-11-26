@@ -674,7 +674,7 @@ class eventregistrationController extends expController {
         return $pass_events;
     }
 
-    // create a psuedo global view_registrants permission
+    // create a pseudo global view_registrants permission
     public static function checkPermissions($permission,$location) {
         global $exponent_permissions_r, $user, $db, $router;
 

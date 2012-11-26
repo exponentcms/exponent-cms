@@ -46,7 +46,7 @@
 	            </div>
 	            <div id="tab3">
 	                {*{control type=files name=files subtype=images value=$record->expFile}*}
-                    {control type=files name=mainimages subtype="mainimage" value=$record->expFile}
+                    {control type=files label="Main Image"|gettext name=mainimages subtype="mainimage" value=$record->expFile}
 	            </div>
 	            <!--div id="tab4">
 	                {control type="text" name="quantity" label="Quantity"|gettext value=$record->quantity}

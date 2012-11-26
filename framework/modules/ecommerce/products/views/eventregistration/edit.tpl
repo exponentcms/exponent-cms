@@ -60,16 +60,11 @@
                     {control type="text" name="base_price" label="Event Price"|gettext value=$record->base_price filter=money}
                 </div>
                 <div id="tab4">
-                    {control type=files name=mainimages subtype="mainimage" value=$record->expFile}
-					<h4>{"Additional Images"|gettext}</h4>
-					<p>{"Have additional images to show for your event?"|gettext}</p>
-					<div class="additional-images">
-						{control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile}
-					</div>
-					{br}
-					<h4>{"Additional File Attachments"|gettext}</h4>
-					<p>{"Attach Product Brochures, Docs, Manuals, etc."|gettext}</p>
-					{control type=files name=brochures label="Additional Files"|gettext subtype="brochures" value=$record->expFile}
+                    {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" value=$record->expFile description="Images to show for your event"|gettext}
+                    <div class="additional-images">
+                        {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile description="Additional images to show for your event"|gettext}
+                    </div>
+					{control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
                 </div>
                 <div id="tab5">
                     <h2>{'SEO Settings'|gettext}</h2>

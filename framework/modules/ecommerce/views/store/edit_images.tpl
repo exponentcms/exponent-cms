@@ -15,17 +15,11 @@
 
 {control type="hidden" name="tab_loaded[images]" value=1}
 <div id="imagefunctionality">              
-     {"The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
-    {control type="text" name="images[image_alt_tag]" label="Image Alt Tag"|gettext value=$record->image_alt_tag}
+    {control type="text" name="images[image_alt_tag]" label="Image Alt Tag"|gettext value=$record->image_alt_tag description="The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
     {control type=radiogroup columns=2 name="images[main_image_functionality]" label="Main Image Functionality"|gettext items="Single Image,Image with Swatches"|gettxtlist values="si,iws"  default=$record->main_image_functionality|default:"si"}
-    
     <div id="si-div" class="imngfuncbody">
-        <h3>{"Single Image"|gettext}</h3>
-        <h4>{"Main Image"|gettext}</h4>
-        {control type=files name=mainimages label="Product Images"|gettext subtype="mainimage" value=$record->expFile limit=1}
-        <h4>{"Thumbnail for Main Image"|gettext}</h4>
-        <p>{"If no image is provided to use as a thumbnail, one will be generated from the main image. This image will only show if additional images are provided"|gettext}</p>
-        {control type=files name=mainthumb label="Product Images"|gettext subtype="mainthumbnail" value=$record->expFile limit=1}
+        {control type=files name=mainimages label="Main Product Image"|gettext subtype="mainimage" value=$record->expFile limit=1}
+        {control type=files name=mainthumb label="Product Thumbnail Image"|gettext subtype="mainthumbnail" value=$record->expFile limit=1 description="If no image is provided to use as a thumbnail, one will be generated from the main image. This image will only show if additional images are provided"|gettext}
     </div>
     <div id="iws-div" class="imngfuncbody" style="display:none;">
         <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -43,20 +37,11 @@
             </tr>
         </table>
     </div>
-    {br}
-    <h4>{"Additional Images"|gettext}</h4>
-    <p>{"Have additional images to show for your product?"|gettext}</p>
-    
     <div class="additional-images">
-        {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile}
+        {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile description="Additional images to show for your product"|gettext}
     </div>
-    {br}
-    <h4>{"Additional File Attachments"|gettext}</h4>
-    <p>{"Attach Product Brochures, Docs, Manuals, etc."|gettext}</p>
-    {control type=files name=brochures label="Additional Files"|gettext subtype="brochures" value=$record->expFile}
-	
+    {control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
 	{control type=files name="featured_image" label="Featured Product Images"|gettext subtype="featured_image" value=$record->expFile}
-
 </div>
 
 {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}

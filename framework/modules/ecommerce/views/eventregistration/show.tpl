@@ -70,7 +70,6 @@
 			 {img src="{$smarty.const.ICON_RELATIVE|cat:'ecom/no-image.jpg'}"}
 		 {else}
 			 {img file_id=$product->expFile.mainimage[0]->id alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
-		   
 		 {/if}
 		 {clear}
 	</div>
