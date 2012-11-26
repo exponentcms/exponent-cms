@@ -23,7 +23,11 @@ YUI.add('exptabs', function(Y) {
         tabview.after({
             'selectionChange': function(e) {
                 lazyLoad();
-                history.addValue('tab', e.newVal.get('index') || null);
+                if (e.newVal.get('index')) {
+                    history.addValue('tab', e.newVal.get('index') || null);
+                } else {
+                    history.addValue('tab', '0');
+                }
             },
             'render': function (){  //FIXME fwiw, this will never occur since we've already rendered the tab above!
                 lazyLoad();
