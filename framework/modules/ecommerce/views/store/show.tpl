@@ -60,7 +60,7 @@
         {if $product->main_image_functionality=="iws"}
             {* Image with swatches *}
             {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
-            {$product->expFile.imagesforswatches.0=mainimg}
+            {$mainimg=$product->expFile.imagesforswatches.0}
         {else}
             {if $config.enable_lightbox}
                 <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
@@ -69,7 +69,7 @@
             {if $config.enable_lightbox}
                 </a>
             {/if}
-            {$product->expFile.mainimage.0=mainimg}
+            {$mainimg=$product->expFile.mainimage.0}
         {/if}
         
         {if $product->expFile.images[0]->id}

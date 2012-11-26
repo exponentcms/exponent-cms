@@ -41,7 +41,6 @@
         {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile description="Additional images to show for your product"|gettext}
     </div>
     {control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
-	{control type=files name="featured_image" label="Featured Product Images"|gettext subtype="featured_image" value=$record->expFile}
 </div>
 
 {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}
