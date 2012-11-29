@@ -89,7 +89,7 @@ class eventController extends expController {
                 break;
             case 'showall_Monthly List':
             case 'showall_List':
-            case 'list':
+            case 'monthlist':
                 $viewtype = "byday";
                 $viewrange = "month";
                 break;

@@ -138,4 +138,3 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 });
 {/literal}
 {/script}
-
