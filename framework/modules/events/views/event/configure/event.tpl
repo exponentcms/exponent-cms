@@ -32,6 +32,7 @@
 {control type="checkbox" name="only_featured" label="Only show Featured Events"|gettext value=1 checked=$config.only_featured}
 {control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext description="Export-to-PDF feature requires optional dompdf add-on"|gettext value=1 checked=$config.printlink}
 {control type="checkbox" name="enable_feedback" label="Enable Event Feedback Option"|gettext value=1 checked=$config.enable_feedback}
+{control type="checkbox" name="enable_images" label="Enable Attached Images"|gettext value=1 checked=$config.enable_images}
 {if $smarty.const.ECOM}
 {control type="checkbox" name="aggregate_registrations" label="Aggregate Event Registrations"|gettext value=1 checked=$config.aggregate_registrations}
 {control type=color name=registrations_color label="Color for Event Registrations"|gettext value=$config.registrations_color description='Enter a six-digit hex color preceded by #'|gettext hide=1 flip=1}

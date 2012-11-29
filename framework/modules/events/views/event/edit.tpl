@@ -29,8 +29,8 @@
                 {if $config.enable_feedback}
                     <li><a href="#tab3"><em>{'Feedback'|gettext}</em></a></li>
                 {/if}
-                {if $config.filedisplay}
-                    <li><a href="#tab4"><em>{'Files'|gettext}</em></a></li>
+                {if $config.enable_images}
+                    <li><a href="#tab4"><em>{'Images'|gettext}</em></a></li>
                 {/if}
             </ul>
             <div class="yui-content yui3-skin-sam">
@@ -68,13 +68,13 @@
                 </div>
                 {if $config.enable_feedback}
                     <div id="tab3">
-                        {control type=dropdown name=feedback_form label="Feedback Form"|gettext items=$allforms values=$allforms value=$record->feedback_form}
+                        {control type=dropdown name=feedback_form label="Feedback Form"|gettext items=$allforms items=$allforms value=$record->feedback_form}
                         {control type=text name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
                     </div>
                 {/if}
-                {if $config.filedisplay}
+                {if $config.enable_images}
                     <div id="tab4">
-                        {control type=files name=images label="Attachable Files"|gettext value=$record->expFile}
+                        {control type=files name=images label="Attached Images"|gettext value=$record->expFile}
                     </div>
                 {/if}
             </div>

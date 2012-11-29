@@ -31,6 +31,12 @@
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {br}
 	</div>
+    {if $item->expFile[0]->url != ""}
+        <div class="image" style="margin: 1em 0;padding:10px;float:left;overflow: hidden;">
+            {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image"}
+            {clear}
+        </div>
+    {/if}
 	<h2>
         {ical_link}
 		{$item->title}
@@ -40,6 +46,7 @@
 		<div class="item-actions">
 			{if $permissions.edit == 1}
 				{icon action=edit record=$item date_id=$event->id title="Edit this Event"|gettext}
+                {icon action=copy record=$item date_id=$event->id title="Copy this Event"|gettext}
 			{/if}
 			{if $permissions.delete == 1}
 				{if $item->is_recurring == 0}

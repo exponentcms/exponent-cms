@@ -31,7 +31,7 @@ class eventController extends expController {
     public $remove_configs = array(
         'comments',
         'ealerts',
-//        'files',
+        'files',
         'pagination',
         'rss',
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
@@ -278,15 +278,13 @@ class eventController extends expController {
                     }
                     $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
                 }
-                // Grab day counts (deprecated, handled by the date function)
-                // $endofmonth = expDateTime::endOfMonthDay($time);
+                // Grab day counts
                 $endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
                 if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $regcolor);
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
-                    #$monthly[$week][$i] = $db->selectObjects("event","location_data='".serialize($this->loc)."' AND (eventstart >= $start AND eventend <= " . ($start+86399) . ") AND approved!=0");
                     $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
                     $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['featured_only']) ? true : false);
                     if (!empty($extitems[$start])) $monthly[$week][$i] = array_merge($extitems[$start], $monthly[$week][$i]);
@@ -375,7 +373,6 @@ class eventController extends expController {
                         //					$moreevents = count($dates) < $db->countObjects("eventdate",$locsql." AND date >= $day");
                         break;
                     case "past":
-//                        $dates = $db->selectObjects("eventdate", $locsql . " AND date < $day ORDER BY date DESC ");
                         $dates = $ed->find("all", $locsql . " AND date < $day ORDER BY date DESC ");
                         //					$moreevents = count($dates) < $db->countObjects("eventdate",$locsql." AND date < $day");
                         $sort_asc = false;
@@ -467,6 +464,7 @@ class eventController extends expController {
         expHistory::set('viewable', $this->params);
         if (!empty($this->params['date_id'])) {
             $eventdate = new eventdate($this->params['date_id']);
+            $eventdate->event = new event($eventdate->event_id);
         } else {
             $event = new event($this->params['id']);
             $eventdate = new eventdate($event->eventdate[0]->id);
@@ -485,7 +483,7 @@ class eventController extends expController {
     function edit() {
         parent::edit();
         $allforms = array();
-        $allforms[''] = gt('Disallow Feedback');
+        $allforms[""] = gt('Disallow Feedback');
         assign_to_template(array(
             'allforms'     => array_merge($allforms, expCore::buildNameList("forms", "event/email", "tpl", "[!_]*")),
             'checked_date' => !empty($this->params['date_id']) ? $this->params['date_id'] : null,
