@@ -18,7 +18,6 @@
 {/css}
 
 <div class="module events mini-cal">
-    <input id=src type=hidden value={$src} />
     <div id="mini-cal">
         {include 'minical.tpl'}
     </div>
@@ -44,12 +43,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
     			arguments : { 'X-Transaction': 'Load Minical'}
     		};
 
-    src = Y.one('#src').get('value');
+    src = '{/literal}{$__loc->src}{literal}';
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=minical&ajax_action=1&src="+src;
 
 	var handleSuccess = function(ioId, o){
-		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
+//		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical nav");
 
         if(o.responseText){
             minical.setContent(o.responseText);
@@ -60,7 +59,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "example");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "minical nav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:
@@ -68,15 +67,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 	Y.on('io:failure', handleFailure);
 
     minical.delegate('click', function(e){
-        cfg.data = "time="+Y.one('#prevtime').get('value');
+        cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-    }, '#prev');
-    minical.delegate('click', function(e){
-        cfg.data = "time="+Y.one('#nexttime').get('value');
-        var request = Y.io(sUrl, cfg);
-        minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-    }, '#next');
+    }, 'a.nav');
 });
 {/literal}
 {/script}

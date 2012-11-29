@@ -14,9 +14,9 @@
  *}
  
 <table class="mini-cal">
-    <a id=prev class="nav doublearrow" href="#" title="{'Prev'|gettext}">&laquo;</a><input id=prevtime type=hidden value={$prevmonth} />
-    {$now|format_date:"%B"}
-    <a id=next class="nav doublearrow" href="#" title="{'Next'|gettext}">&raquo;</a><input id=nexttime type=hidden value={$nextmonth} />
+    <a class="nav module-actions" href="javascript:void(0);" rel={$prevmonth} title="{'Prev'|gettext}">&laquo;</a>
+    &#160;&#160;{$now|format_date:"%B"}&#160;&#160;
+    <a class="nav module-actions" href="javascript:void(0);" rel={$nextmonth} title="{'Next'|gettext}">&raquo;</a>
 
     <tr class="daysoftheweek">
         {if $smarty.const.DISPLAY_START_OF_WEEK == 0}

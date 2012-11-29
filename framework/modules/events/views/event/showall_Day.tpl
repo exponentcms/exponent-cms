@@ -61,13 +61,13 @@
 		</div>
 	{/permissions}
 	<p class="caption">
-		<a class="module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%A, %B %e, %Y"}">{$prev_timestamp3|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
-		<a class="module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%A, %B %e, %Y"}">{$prev_timestamp2|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
-		<a class="module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp}" title="{$prev_timestamp|format_date:"%A, %B %e, %Y"}">{$prev_timestamp|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
-        <a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable{$name}" title="{'Go to Date'|gettext}"><span>{$time|format_date:"%A, %B %e, %Y"}</span></a>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=showall view=showall_Day time=$next_timestamp}" title="{$next_timestamp|format_date:"%A, %B %e, %Y"}">{$next_timestamp|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=showall view=showall_Day time=$next_timestamp2}" title="{$next_timestamp2|format_date:"%A, %B %e, %Y"}">{$next_timestamp2|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=showall view=showall_Day time=$next_timestamp3}" title="{$next_timestamp3|format_date:"%A, %B %e, %Y"}">{$next_timestamp3|format_date:"%a"}</a>
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%A, %B %e, %Y"}">{$prev_timestamp3|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%A, %B %e, %Y"}">{$prev_timestamp2|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp}" title="{$prev_timestamp|format_date:"%A, %B %e, %Y"}">{$prev_timestamp|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
+        <a class="nav" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable{$name}" title="{'Go to Date'|gettext}"><span>{$time|format_date:"%A, %B %e, %Y"}</span></a>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp}" title="{$next_timestamp|format_date:"%A, %B %e, %Y"}">{$next_timestamp|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp2}" title="{$next_timestamp2|format_date:"%A, %B %e, %Y"}">{$next_timestamp2|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp3}" title="{$next_timestamp3|format_date:"%A, %B %e, %Y"}">{$next_timestamp3|format_date:"%a"}</a>
 	</p>
 	<dl class="viewweek">
         {$count=0}

@@ -7,6 +7,9 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.1.1
 -----------------------
 # This release focuses on the new forms module and e-Commerce as OOTB experience
+  - adds event copying feature (create new event from existing event)
+  - adds optional event popup in lightbox (like google calendar)
+  - adds optional images to events and event registrations
 
 Added / Fixed / changed for 2.1.0
 -----------------------

@@ -22,11 +22,11 @@
 		<tbody>
 			<tr>
 				<td>
-					<a class="mngmntlink calendar_mngmntlink" href="{link action=showall time=$prevmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Previous Month'|gettext}" alt="{'Previous Month'|gettext}" /></a>
+					<a class="nav mngmntlink" href="{link action=showall time=$prevmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Previous Month'|gettext}" alt="{'Previous Month'|gettext}" /></a>
 				</td>
 				<td colspan="5">{if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if} {$now|format_date:"%B %Y"}</td>
 				<td>
-					<a class="mngmntlink calendar_mngmntlink" href="{link action=showall time=$nextmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next Month'|gettext}" alt="{'Next Month'|gettext}" /></a>
+					<a class="nav mngmntlink" href="{link action=showall time=$nextmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next Month'|gettext}" alt="{'Next Month'|gettext}" /></a>
 				</td>
 			</tr>
 			<tr>

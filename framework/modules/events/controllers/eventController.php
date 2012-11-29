@@ -89,14 +89,17 @@ class eventController extends expController {
                 break;
             case 'showall_Monthly List':
             case 'showall_List':
+            case 'list':
                 $viewtype = "byday";
                 $viewrange = "month";
                 break;
             case 'showall_Week':
+            case 'week':
                 $viewtype = "byday";
                 $viewrange = "week";
                 break;
             case 'showall_Day':
+            case 'day':
                 $viewtype = "byday";
                 $viewrange = "day";
                 break;
@@ -105,6 +108,7 @@ class eventController extends expController {
                 $viewrange = "upcoming";
                 break;
             case 'showall':
+            case 'month':
                 $viewtype = "monthly";
                 break;
             default :
@@ -142,7 +146,6 @@ class eventController extends expController {
                     "prevmonth"   => $prevmonth,
                     "thismonth"   => $timefirst,
                     "nextmonth"   => $nextmonth,
-                    "src"   => $this->loc->src
                 ));
                 break;
             case "byday":

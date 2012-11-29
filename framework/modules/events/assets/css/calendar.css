@@ -24,13 +24,13 @@
     border-left : none;
 }
 
-.events.default .nav,
-.events.default .nav a {
-    font            : bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-    color           : #fff;
-    text-align      : center;
-    text-decoration : none;
-}
+/*.events.default .nav,*/
+/*.events.default .nav a {*/
+    /*font            : bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;*/
+    /*color           : #fff;*/
+    /*text-align      : center;*/
+    /*text-decoration : none;*/
+/*}*/
 
 .events.default div.caption {
     margin     : 0;
@@ -267,4 +267,10 @@ a.cats {
     padding-left      : 20px;
     background-image  : url(../images/tree.png);
     background-repeat : no-repeat;
+}
+
+#popup {
+    text-align:center;
+    display:block;
+    z-index:999;
 }
