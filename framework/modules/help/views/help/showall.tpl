@@ -53,6 +53,7 @@
                         {/if}
                     {/if}
                     {icon action=edit record=$doc}
+                    {icon action=copy record=$doc}
                 {/if}
                 {if $permissions.delete == 1}
                     {icon action=delete record=$doc}

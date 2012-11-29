@@ -27,6 +27,7 @@
                 {/if}
             {/if}
             {icon action=edit record=$doc}
+            {icon action=copy record=$doc}
         {/if}
     </div>
     {/permissions}

@@ -443,6 +443,7 @@ abstract class expController {
         }
         $modelname = $this->basemodel_name;
         $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
+        if (!empty($this->params['copy'])) $record->id = null;
         assign_to_template(array(
             'record'=>$record,
             'table'=>$this->$modelname->tablename,

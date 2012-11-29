@@ -91,6 +91,7 @@
                                     {/if}
                                 {/if}
 								{icon img='edit.png' action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
+                                {icon img='copy.png' action=copy record=$item date_id=$item->date_id title="Copy this Event"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
 								{if $item->is_recurring == 0}

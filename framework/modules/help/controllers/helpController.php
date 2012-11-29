@@ -99,10 +99,12 @@ class helpController extends expController {
      */
 	public function edit() {
 	    global $db, $sectionObj;
+
 	    expHistory::set('editable', $this->params);
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $help = new help($id);
-	    
+        if (!empty($this->params['copy'])) $help->id = null;
+
 	    // get the id of the current version and use it if we need to.
         if (expSession::is_set('help-version')) {
             $version = expSession::get('help-version');  // version the site is currently using
