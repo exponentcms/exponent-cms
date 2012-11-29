@@ -19,7 +19,7 @@
 
 {/css}
 
-{css unique="cal" link="`$asset_path`css/default.css"}
+{css unique="cal-popup" link="`$asset_path`css/default.css"}
 
 {/css}
 
@@ -67,7 +67,7 @@
             <a class="module-actions" href="{link action=showall time=$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
             <a class="module-actions" href="{link action=showall time=$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
             <a class="module-actions" href="{link action=showall time=$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
-            <a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable" title="{'Go to Date'|gettext}"><strong>{$time|format_date:"%B %Y"}</strong></a>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
+            <a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable{$name}" title="{'Go to Date'|gettext}"><strong>{$time|format_date:"%B %Y"}</strong></a>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
             <a class="module-actions" href="{link action=showall time=$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
             <a class="module-actions" href="{link action=showall time=$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
             <a class="module-actions" href="{link action=showall time=$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&#160;&#160;&raquo;
@@ -114,14 +114,14 @@
                             {/if}
                             {foreach name=e from=$items item=item}
                                 {if !empty($item->color)}
-                                    {$class=" style=\"background:`$item->color`;color:`$item->color|contrast`\""}
+                                    {$style=" style=\"background:`$item->color`;color:`$item->color|contrast`\""}
                                 {else}
-                                    {$class=''}
+                                    {$style=''}
                                 {/if}
-                                <div class="calevent{if $dayts == $today} today{/if}"{$class}>
-                                    <a{if $config.usecategories && !empty($item->color)} class="{$item->color}"{/if}{$class}{if $config.show_allday && $item->is_allday == 1} style="border-color: {$item->color|brightness:+150};border-style: solid;padding-left: 2px;border-top: 0;border-bottom: 0;border-right: 0;"{/if}
+                                <div style="calevent{if $dayts == $today} today{/if}"{$style}>
+                                    <a{if $config.usecategories && !empty($item->color)} class="{$item->color}"{/if}{$style}{if $config.show_allday && $item->is_allday == 1} style="border-color: {$item->color|brightness:+150};border-style: solid;padding-left: 2px;border-top: 0;border-bottom: 0;border-right: 0;"{/if}
                                         {if substr($item->location_data,1,8) != 'calevent'}
-                                            href="{if $item->location_data != 'eventregistration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                                            href="{if $item->location_data != 'eventregistration'}{if $config.lightbox}#" class="calpopevent" id="{$item->date_id}{else}{link action=show date_id=$item->date_id}{/if}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
                                         {/if}
                                         title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">
                                         {if $item->expFile[0]->url != ""}
@@ -177,7 +177,7 @@
 	</table>
 </div>
 
-{script unique="cal-`$name`" yui3mods="node"}
+{script unique=$name yui3mods="node"}
 {literal}
 
 EXPONENT.YUI3_CONFIG.modules = {
@@ -191,7 +191,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
 
 	//Popup
-	var cal = new Y.Calendar('J_popup_closeable',{
+	var cal = new Y.Calendar('J_popup_closeable{/literal}{$name}{literal}',{
 		popup:true,
 		closeable:true,
 		startDay:{/literal}{$smarty.const.DISPLAY_START_OF_WEEK}{literal},
@@ -206,7 +206,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
         window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
     {/literal} {/if} {literal}
 	});
-    Y.one('#J_popup_closeable').on('click',function(d){
+    Y.one('#J_popup_closeable{/literal}{$name}{literal}').on('click',function(d){
         cal.show();
     });
 
@@ -214,3 +214,34 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar',function(Y){
 
 {/literal}
 {/script}
+
+{if $config.lightbox}
+{css unique="cal-lightbox" link="`$asset_path`css/lightbox.css"}
+
+{/css}
+
+{script unique="shadowbox" yui3mods=1}
+{literal}
+    EXPONENT.YUI3_CONFIG.modules = {
+        'yui2-lightbox' : {
+            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/js/lightbox.js',
+            requires : ['yui2-dom','yui2-event','yui2-connectioncore','yui2-json','yui2-selector','yui2-animation']
+        }
+    }
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-container','yui2-yahoo-dom-event','yui2-lightbox', function(Y) {
+        var YAHOO = Y.YUI2;
+        var lb2 = new this.EXPONENT.Lightbox(
+            {
+                animate: true,
+                maxWidth: 500
+            }
+        );
+        YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.calpopevent"), "click", function (e) {
+            target = YAHOO.util.Event.getTarget(e);
+            lb2.cfg.contentURL = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id;
+            lb2.show(e);
+        }, lb2, true);
+    });
+{/literal}
+{/script}
+{/if}
