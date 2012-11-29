@@ -117,7 +117,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
         if(o.responseText){
             monthcal.setContent(o.responseText);
         } else {
-            Y.one('#mini-cal.loadingdiv').remove();
+            Y.one('#month-cal.loadingdiv').remove();
         }
 	};
 
