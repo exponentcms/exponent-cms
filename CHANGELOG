@@ -9,7 +9,7 @@ Added / Fixed / changed for 2.1.1
 # This release focuses on the new forms module and e-Commerce as OOTB experience
   - adds event copying feature (create new event from existing event)
   - adds optional images to events and event registrations
-  - adds optional event popup in lightbox (like google calendar)
+  - adds optional event popup in lightbox dialog (like google calendar)
   - adds ajax-based navigation in calendar months (weeks/days), news items & blog posts to prevent reloading entire page
 
 Added / Fixed / changed for 2.1.0

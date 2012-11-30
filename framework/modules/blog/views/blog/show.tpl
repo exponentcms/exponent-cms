@@ -18,16 +18,16 @@
 {/css}
 
 <div class="module blog show">
-    <div id="blog-item">
+    <div id="blogitem">
         {include 'blogitem.tpl'}
     </div>
 </div>
 
-{script unique="blogajax" yui3mods="1"}
+{script unique="blogitemajax" yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var blogitem = Y.one('#blog-item');
+    var blogitem = Y.one('#blogitem');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Blogitem'},
@@ -44,7 +44,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
         if(o.responseText){
             blogitem.setContent(o.responseText);
         } else {
-            Y.one('#blog-item.loadingdiv').remove();
+            Y.one('#blogitem.loadingdiv').remove();
         }
 	};
 
@@ -60,7 +60,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
     blogitem.delegate('click', function(e){
         cfg.data = "title="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        blogitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Blog Post"|gettext}{literal}</div>'));
+        blogitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Post"|gettext}{literal}</div>'));
     }, 'a.nav');
 });
 {/literal}

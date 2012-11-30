@@ -76,7 +76,7 @@
             <hr>
             <span style="float:left">
                 {if $record->prev}
-                    <a class="nav" href="#" rel="{$record->prev->sef_url}" title="{$record->prev->body|summarize:"html":"para"}">
+                    <a class="nav" href="javascript:void(0);" rel="{$record->prev->sef_url}" title="{$record->prev->body|summarize:"html":"para"}">
                         {icon img='page_prev.png' title='Previous Item'|gettext}
                         {$record->prev->title}
                     </a>
@@ -84,7 +84,7 @@
             </span>
             <span style="float:right">
                 {if $record->next}
-                    <a class="nav" href="#" rel="{$record->next->sef_url}" title="{$record->next->body|summarize:"html":"para"}">
+                    <a class="nav" href="javascript:void(0);" rel="{$record->next->sef_url}" title="{$record->next->body|summarize:"html":"para"}">
                         {$record->next->title}
                         {icon img='page_next.png' title='Next Item'|gettext}
                     </a>

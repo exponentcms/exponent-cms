@@ -14,16 +14,16 @@
  *}
 
 <div class="module news show">
-    <div id="news-item">
+    <div id="newsitem">
         {include 'newsitem.tpl'}
     </div>
 </div>
 
-{script unique="newsajax" yui3mods="1"}
+{script unique="newsitemajax" yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var newsitem = Y.one('#news-item');
+    var newsitem = Y.one('#newsitem');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Newsitem'},
@@ -40,7 +40,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
         if(o.responseText){
             newsitem.setContent(o.responseText);
         } else {
-            Y.one('#news-item.loadingdiv').remove();
+            Y.one('#newsitem.loadingdiv').remove();
         }
 	};
 
@@ -56,7 +56,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
     newsitem.delegate('click', function(e){
         cfg.data = "title="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading News Post"|gettext}{literal}</div>'));
+        newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
     }, 'a.nav');
 });
 {/literal}
