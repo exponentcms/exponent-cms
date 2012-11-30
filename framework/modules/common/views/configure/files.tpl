@@ -77,6 +77,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
 	Y.on('io:failure', handleFailure);
 
     Y.one('#filedisplay').on('change',function(e){
+        e.halt();
         cfg.data = "view="+e.target.get('value');
         var request = Y.io(sUrl, cfg);
         Y.one('#fileViewConfig').setContent(Y.Node.create('<div class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));

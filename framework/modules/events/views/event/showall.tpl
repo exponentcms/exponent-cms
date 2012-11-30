@@ -100,6 +100,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 	}).on('select',function(d){
 		var unixtime = parseInt(d / 1000);
 //        window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&view=month&time='+unixtime+'&ajax_action=1&src={/literal}{$__loc->src}{literal}';
+        e.halt();
         cfg.data = "time="+unixtime;
         var request = Y.io(sUrl, cfg);
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
@@ -144,6 +145,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 	Y.on('io:failure', handleFailure);
 
     monthcal.delegate('click', function(e){
+        e.halt();
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));

@@ -41,7 +41,6 @@ class newsController extends expController {
     
     public function showall() { 
         expHistory::set('viewable', $this->params);
-
         // figure out if should limit the results
         if (isset($this->params['limit'])) {
             $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];

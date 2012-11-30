@@ -302,7 +302,7 @@ class expPaginator {
 		$this->morelink = $router->makeLink($page_params, false, false, true);
 
 		if (!empty($this->view)) $page_params['view'] = $this->view;
-		
+
 		//build a couple more links we can use in the views.
 		$this->pagelink = $router->makeLink($page_params, false, false, true);
 		
@@ -329,18 +329,21 @@ class expPaginator {
 		// setup the previous link
 		if ($this->page > 1) {
 			$page_params['page'] = $this->page - 1;
+            $this->previous_pagenum = $this->page - 1;
 			$this->previous_page = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the next link
 		if ($this->page < $this->total_pages) {
 			$page_params['page'] = $this->page + 1;
+            $this->next_pagenum = $this->page + 1;
 			$this->next_page = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the previous 10 link
 		if ($this->page > $this->pages_to_show) {
 			$page_params['page'] = $this->first_pagelink - 1;
+            $this->previous_shiftnum = $this->first_pagelink - 1;
         	$this->previous_shift = $router->makeLink($page_params, false, false, true);
 			$page_params['page'] = 1;
 			$this->firstpage = $router->makeLink($page_params, false, false, true);
@@ -349,6 +352,7 @@ class expPaginator {
 		// setup the next 10 link
 		if ($this->page < ($this->total_pages - $this->pages_to_show)) {
             $page_params['page'] = $this->last_pagelink + 1;
+            $this->next_shiftnum = $this->last_pagelink + 1;
             $this->next_shift = $router->makeLink($page_params, false, false, true);
 			$page_params['page'] = $this->total_pages;
 			$this->lastpage = $router->makeLink($page_params, false, false, true);

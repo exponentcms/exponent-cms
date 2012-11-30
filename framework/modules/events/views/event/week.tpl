@@ -15,11 +15,11 @@
 
     {$myloc=serialize($__loc)}
 	<p class="caption">
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$prev_timestamp2}" title="{'Week of'|gettext} {$prev_timestamp2|format_date:"%B %e, %Y"}">{$prev_timestamp2|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$prev_timestamp}" title="{'Week of'|gettext} {$prev_timestamp|format_date:"%B %e, %Y"}">{$prev_timestamp|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Week time=$prev_timestamp2}" rel="{$prev_timestamp2}" title="{'Week of'|gettext} {$prev_timestamp2|format_date:"%B %e, %Y"}">{$prev_timestamp2|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;
+		<a class="nav module-actions"  href="{link action=showall view=showall_Week time=$prev_timestamp}" rel="{$prev_timestamp}" title="{'Week of'|gettext} {$prev_timestamp|format_date:"%B %e, %Y"}">{$prev_timestamp|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
         <strong>{'Week of'|gettext} {$time|format_date:"%B %e, %Y"}</strong>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$next_timestamp}" title="{'Week of'|gettext} {$next_timestamp|format_date:"%B %e, %Y"}">{$next_timestamp|format_date:"%b %e"}</a>&#160;&#160;&raquo;&#160;
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$next_timestamp2}" title="{'Week of'|gettext} {$next_timestamp2|format_date:"%B %e, %Y"}">{$next_timestamp2|format_date:"%b %e"}</a>
+		<a class="nav module-actions" href="{link action=showall view=showall_Week time=$next_timestamp}" rel="{$next_timestamp}" title="{'Week of'|gettext} {$next_timestamp|format_date:"%B %e, %Y"}">{$next_timestamp|format_date:"%b %e"}</a>&#160;&#160;&raquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Week time=$next_timestamp2}" rel="{$next_timestamp2}" title="{'Week of'|gettext} {$next_timestamp2|format_date:"%B %e, %Y"}">{$next_timestamp2|format_date:"%b %e"}</a>
 	</p>
 	<dl class="viewweek">
 		{foreach from=$days item=items key=ts}

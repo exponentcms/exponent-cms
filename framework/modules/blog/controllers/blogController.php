@@ -43,7 +43,6 @@ class blogController extends expController {
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);
-
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
             'where'=>$this->aggregateWhereClause(),

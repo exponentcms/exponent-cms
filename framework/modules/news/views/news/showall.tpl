@@ -41,64 +41,64 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {$myloc=serialize($__loc)}
-    {pagelinks paginate=$page top=1}
-    {foreach from=$page->records item=item}
-        <div class="item">
-            {if $config.datetag}
-                <p class="post-date">
-                    <span class="month">{$item->publish_date|format_date:"%b"}</span>
-                    <span class="day">{$item->publish_date|format_date:"%e"}</span>
-                    <span class="year">{$item->publish_date|format_date:"%Y"}</span>
-                </p>
-            {$pp = ''}
-            {/if}
-            <h2>
-                <a href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
-                {$item->title}
-                </a>
-            </h2>
-            {if !$config.datetag}
-                <span class="date">{$item->publish_date|date_format}</span>
-            {$pp = '&#160;&#160;|&#160;&#160;'}
-            {/if}
-            {tags_assigned record=$item prepend=$pp}
-            {if $item->isRss != true}
-                {permissions}
-                    <div class="item-actions">
-                        {if $permissions.edit == true}
-                            {if $myloc != $item->location_data}
-                                {if $permissions.manage == 1}
-                                    {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
-                                {else}
-                                    {icon img='arrow_merge.png' title="Merged Content"|gettext}
-                                {/if}
-                            {/if}
-                            {icon action=edit record=$item}
-                        {/if}
-                        {if $permissions.delete == true}
-                            {icon action=delete record=$item}
-                        {/if}
-                    </div>
-                {/permissions}
-            {/if}
-            <div class="bodycopy">
-                {if $config.filedisplay != "Downloadable Files"}
-                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
-                {/if}
-                {if $config.usebody==1}
-                    <p>{$item->body|summarize:"html":"paralinks"}</p>
-                {elseif $config.usebody==2}
-				{else}
-                    {$item->body}
-                {/if}
-                {if $config.filedisplay == "Downloadable Files"}
-                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
-                {/if}
-                <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
-            </div>
-            {clear}
-        </div>
-    {/foreach}
-    {pagelinks paginate=$page bottom=1}
+    <div id="newslist">
+        {include 'newslist.tpl'}
+    </div>
 </div>
+{script unique="newslistajax" yui3mods="1"}
+{literal}
+
+YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+    var newslist = Y.one('#newslist');
+    var cfg = {
+    			method: "POST",
+    			headers: { 'X-Transaction': 'Load Newsitems'},
+    			arguments : { 'X-Transaction': 'Load Newsitems'}
+    		};
+
+    src = '{/literal}{$__loc->src}{literal}';
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=news&action=showall&view=newslist&ajax_action=1&src="+src;
+
+	var handleSuccess = function(ioId, o){
+//		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "newsitems nav");
+
+        if(o.responseText){
+            newslist.setContent(o.responseText);
+            newslist.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+            newslist.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
+        } else {
+            Y.one('#newslist.loadingdiv').remove();
+        }
+	};
+
+	//A function handler to use for failed requests:
+	var handleFailure = function(ioId, o){
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "newsitems nav");
+	};
+
+	//Subscribe our handlers to IO's global custom events:
+	Y.on('io:success', handleSuccess);
+	Y.on('io:failure', handleFailure);
+
+    newslist.delegate('click', function(e){
+        e.halt();
+        cfg.data = "page="+e.currentTarget.get('rel');
+        var request = Y.io(sUrl, cfg);
+        newslist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
+    }, 'a.pager');
+});
+{/literal}
+{/script}

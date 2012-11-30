@@ -15,13 +15,13 @@
 
     {$myloc=serialize($__loc)}
 	<p class="caption">
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%A, %B %e, %Y"}">{$prev_timestamp3|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%A, %B %e, %Y"}">{$prev_timestamp2|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$prev_timestamp}" title="{$prev_timestamp|format_date:"%A, %B %e, %Y"}">{$prev_timestamp|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp3}" rel="{$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%A, %B %e, %Y"}">{$prev_timestamp3|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp2}" rel="{$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%A, %B %e, %Y"}">{$prev_timestamp2|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp}" rel="{$prev_timestamp}" title="{$prev_timestamp|format_date:"%A, %B %e, %Y"}">{$prev_timestamp|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
         <strong>{$time|format_date:"%A, %B %e, %Y"}</strong>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$next_timestamp}" title="{$next_timestamp|format_date:"%A, %B %e, %Y"}">{$next_timestamp|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$next_timestamp2}" title="{$next_timestamp2|format_date:"%A, %B %e, %Y"}">{$next_timestamp2|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
-		<a class="nav module-actions" href="javascript:void(0);" rel="{$next_timestamp3}" title="{$next_timestamp3|format_date:"%A, %B %e, %Y"}">{$next_timestamp3|format_date:"%a"}</a>
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp}" rel="{$next_timestamp}" title="{$next_timestamp|format_date:"%A, %B %e, %Y"}">{$next_timestamp|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp2}" rel="{$next_timestamp2}" title="{$next_timestamp2|format_date:"%A, %B %e, %Y"}">{$next_timestamp2|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
+		<a class="nav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp3}" rel="{$next_timestamp3}" title="{$next_timestamp3|format_date:"%A, %B %e, %Y"}">{$next_timestamp3|format_date:"%a"}</a>
 	</p>
 	<dl class="viewweek">
         {$count=0}
