@@ -112,6 +112,20 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 
         if(o.responseText){
             monthcal.setContent(o.responseText);
+            monthcal.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+            monthcal.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
         } else {
             Y.one('#week-cal.loadingdiv').remove();
         }

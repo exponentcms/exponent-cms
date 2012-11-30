@@ -39,6 +39,20 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 
         if(o.responseText){
             newsitem.setContent(o.responseText);
+            newsitem.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+            newsitem.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
         } else {
             Y.one('#newsitem.loadingdiv').remove();
         }

@@ -52,6 +52,20 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 
         if(o.responseText){
             minical.setContent(o.responseText);
+            minical.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+            minical.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
         } else {
             Y.one('#mini-cal.loadingdiv').remove();
         }
