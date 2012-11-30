@@ -13,6 +13,7 @@
  *
  *}
 
+    {$myloc=serialize($__loc)}
 	<p class="caption">
 		<a class="nav module-actions" href="javascript:void(0);" rel="{$prev_timestamp2}" title="{'Week of'|gettext} {$prev_timestamp2|format_date:"%B %e, %Y"}">{$prev_timestamp2|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;
 		<a class="nav module-actions" href="javascript:void(0);" rel="{$prev_timestamp}" title="{'Week of'|gettext} {$prev_timestamp|format_date:"%B %e, %Y"}">{$prev_timestamp|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;

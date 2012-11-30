@@ -13,6 +13,7 @@
  *
  *}
 
+    {$myloc=serialize($__loc)}
 	<table id="calendar" summary="{$moduletitle|default:'Calendar'|gettext}">
         <div class="caption">
             &laquo;&#160;

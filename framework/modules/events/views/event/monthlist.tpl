@@ -13,6 +13,7 @@
  *
  *}
 
+    {$myloc=serialize($__loc)}
 	<p class="caption">
 		&laquo;&#160;
 		<a class="nav module-actions" href="javascript:void(0);" rel="{$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%B %Y"}">{$prev_timestamp3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;

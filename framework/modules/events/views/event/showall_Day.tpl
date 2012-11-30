@@ -52,7 +52,6 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
