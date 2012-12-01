@@ -90,12 +90,16 @@
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[SITE_ALLOW_REGISTRATION]" label="Should users be allowed to create accounts for themselves?"|gettext checked=$smarty.const.SITE_ALLOW_REGISTRATION value=1}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_USE_EMAIL]" label="Use an email address instead of a username?"|gettext checked=$smarty.const.USER_REGISTRATION_USE_EMAIL value=1}
-                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Notify a site administrator by email when a new user registers on your website?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
+                    {group label="New User Notification Email"|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Notify a site administrator when a new user registers on your website?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
                     {control type="text" name="sc[USER_REGISTRATION_NOTIF_SUBJECT]" label='Subject of the administrator\'s new user notification'|gettext value=$smarty.const.USER_REGISTRATION_NOTIF_SUBJECT}
                     {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="Email address of administrator that should be notified when a user signs up"|gettext value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
-                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send a Welcome email to the user after signing up?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
-                    {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="Subject of the Welcome email to the user"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
+                    {/group}
+                    {group label="New User Welcome Message"|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send an email to the user after signing up?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
+                    {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="Subject of the email to the user"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
                     {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="Content of email sent to the user upon completing registration"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
+                    {/group}
                 </div>
                 <div id="tab4">
 	                <div class="info-header">
@@ -120,11 +124,13 @@
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
 	                <h3><a href="manage_themes">{'Display Theme Options'|gettext}</a></h3>
 	                {control type="checkbox" postfalse=1 name="sc[FORCE_MOBILE]" label="Force Display of the Mobile Theme Variation (if available)?"|gettext checked=$smarty.const.FORCE_MOBILE value=1}
+                    {group label="Display Formats"|gettext}
                     {control type="dropdown" name="sc[DISPLAY_ATTRIBUTION]" label="Attribution Display"|gettext items=$attribution default=$smarty.const.DISPLAY_ATTRIBUTION}
 	                {control type="dropdown" name="sc[DISPLAY_DATETIME_FORMAT]" label="Date/Time Format"|gettext items=$datetime_format default=$smarty.const.DISPLAY_DATETIME_FORMAT}
                     {control type="dropdown" name="sc[DISPLAY_DATE_FORMAT]" label="Date Format"|gettext items=$date_format default=$smarty.const.DISPLAY_DATE_FORMAT}
                     {control type="dropdown" name="sc[DISPLAY_TIME_FORMAT]" label="Time Format"|gettext items=$time_format default=$smarty.const.DISPLAY_TIME_FORMAT}
                     {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week"|gettext items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
+                    {/group}
 	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default timezone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: Changes may affect calendars and other features using date functions."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport"|gettxtlist values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
@@ -152,13 +158,15 @@
                     </div>
 	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS}
                     {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
-	                (or)<h3>{"SMTP Server Settings"|gettext}</h3>
+	                ({"or"|gettext})
+                    {group label="SMTP Server Settings"|gettext}
                     {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server"|gettext value=$smarty.const.SMTP_SERVER}
                     {control type="text" name="sc[SMTP_PORT]" label="SMTP Port"|gettext value=$smarty.const.SMTP_PORT}
                     {control type="dropdown" name="sc[SMTP_PROTOCOL]" label="Type of Encrypted Connection"|gettext items=$protocol default=$smarty.const.SMTP_PROTOCOL includeblank="None"}
                     {control type="text" name="sc[SMTP_USERNAME]" label="SMTP Username"|gettext value=$smarty.const.SMTP_USERNAME}
                     {control type="text" name="sc[SMTP_PASSWORD]" label="SMTP Password"|gettext value=$smarty.const.SMTP_PASSWORD}
 	                {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn On SMTP Debugging?"|gettext checked=$smarty.const.SMTP_DEBUGGING value=1}
+                    {/group}
                 </div>
                 <div id="tab8">
 	                <div class="info-header">
@@ -204,8 +212,9 @@
                     </div>
                     {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor"|gettext items="CKEditor" values="ckeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
 	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
-						{br}<hr>
+                        {group label="Editor Configuration"|gettext}
 		                {chain module=expHTMLEditor view=manage}
+                        {/group}
 	                {/if}
                 </div>
                 <div id="tab12">
@@ -227,19 +236,21 @@
                         </div>
 		                <h2>{"PDF Generation"|gettext}</h2>
                     </div>
-                    <h2>{"WKHTMLtoPDF - Store Orders"|gettext}</h2>
+                    {group label="WKHTMLtoPDF - Store Orders"|gettext}
                     {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
                     {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
                     <blockquote>
                     {'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate application from'|gettext} <a href="http://code.google.com/p/wkhtmltopdf/downloads/list" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
                         {"and then install it on your server."|gettext}
                     </blockquote>
-                    <h2>{"DOMPDF - Export as PDF"|gettext}</h2>
+                    {/group}
+                    {group label="DOMPDF - Export as PDF"|gettext}
                     {control type="checkbox" postfalse=1 name="sc[HTML2PDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTML2PDF_OUTPUT value=1}
                     <blockquote>
                     {'DOMPDF is an optional package.  To obtain it, you\'ll need to first download'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">dompdf.zip</a>.
                         {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                     </blockquote>
+                    {/group}
                 </div>
 				<div id="tab14">
 					<div class="info-header">
@@ -251,7 +262,7 @@
                     {control type="text" name="sc[MINIFY_MAXAGE]" label="Maximum age of browser cache in seconds"|gettext value=$smarty.const.MINIFY_MAXAGE}
 					{control type="text" name="sc[MINIFY_MAX_FILES]" label='Maximum # of files that can be specified in the \'f\' GET parameter'|gettext value=$smarty.const.MINIFY_MAX_FILES}
 					{control type="text" name="sc[MINIFY_URL_LENGTH]" label="The length of minification url"|gettext value=$smarty.const.MINIFY_URL_LENGTH}
-                    <h3>{"Minify Debugging Settings"|gettext}</h3>
+                    {group label="Minify Debugging Settings"|gettext}
 					{control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?"|gettext checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_CSS]" label="Minify inline css styles?"|gettext checked=$smarty.const.MINIFY_INLINE_CSS value=1}
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_CSS]" label="Minify linked css style-sheets?"|gettext checked=$smarty.const.MINIFY_LINKED_CSS value=1}
@@ -259,6 +270,7 @@
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_JS]" label="Minify linked js scripts?"|gettext checked=$smarty.const.MINIFY_LINKED_JS value=1}
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI3]" label="Minify YUI3 items?"|gettext checked=$smarty.const.MINIFY_YUI3 value=1}
                     {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI2]" label="Minify YUI2 items?"|gettext checked=$smarty.const.MINIFY_YUI2 value=1}
+                    {/group}
                 </div>
 				<div id="tab15">
                     <div class="info-header">

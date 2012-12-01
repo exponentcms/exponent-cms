@@ -16,19 +16,21 @@
 <div class="module administration mass-mail">
     <h1>{'Mass Mailer'|gettext}</h1>
     <block>
-        {'This form allows you to send an email with optional attachment to site users.'|gettext}
+        {'This form allows you to send an email with an optional attachment to site users.'|gettext}
     </block>
     {form action=mass_mail_out}
-        <h2>{'Send this Message To'|gettext}</h2>
-        {control type="checkbox" class="emailall" postfalse=1 name="allusers" label="All Site Users?"|gettext value=1}
-        {control type="checkbox" postfalse=1 name="batchsend" label="Batch Send (Hide other user emails)?"|gettext value=1 checked=1}
-        {userlistcontrol class="email" name="user_list" label="Users"}
-        {grouplistcontrol class="email" name="group_list" label="Groups"}
-        {control type="listbuilder" class="email" name="address_list" label="Other Addresses"}
-        <hr>
-        {control type="text" name="subject" label="Subject"|gettext}
-        {control type="html" name="body" label="Message"|gettext}
-        {control type="uploader" name="attach" label="Attachment"|gettext}
+        {group label="Send this Message To"|gettext}
+            {control type="checkbox" class="emailall" postfalse=1 name="allusers" label="All Site Users?"|gettext value=1 description='Uncheck to allow user/group/freeform selection'|gettext}
+            {control type="checkbox" postfalse=1 name="batchsend" label="Batch Send?"|gettext value=1 checked=1 description='Hide email addresses from other users'|gettext}
+            {userlistcontrol class="email" name="user_list" label="Users"}
+            {grouplistcontrol class="email" name="group_list" label="Groups"}
+            {control type="listbuilder" class="email" name="address_list" label="Other Addresses"}
+        {/group}
+        {group label="Message"|gettext}
+            {control type="text" name="subject" label="Subject"|gettext}
+            {control type="html" name="body" label="Message"|gettext}
+            {control type="uploader" name="attach" label="Attachment"|gettext description='Optionally send a file attachment'|gettext}
+        {/group}
         {control type="buttongroup" submit="Send"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
