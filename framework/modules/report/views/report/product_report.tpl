@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css" corecss="tree,button"}
+{css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css" corecss="tree,button,panel"}
 
 {/css}
 {css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
@@ -46,24 +46,50 @@
                 <td>
                 <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only"|gettext value=1}  </div>{br}
                     <div class="control"> 
-                        <a href="#showcats" id="showcats"class=" awesome small black">Show Categories</a>
+                        <a href="#showcats" id="showcats"class=" awesome small black">{'Show Categories'|gettext}</a>
                     </div>
-                    <div id="catpicker" class="hide">
-                        <div class="hd">{'Select Categories'|gettext}</div>
-                        <div class="bd">                            
-                            <div style="overflow-y:scroll;height:300px;">                            
-                            {control type="tagtree" addable=false id="managecats" name="managecats" controller=storeCategory draggable=false menu=false expandonstart=false checkable=true}
+                    <div>
+                        <div id="catpicker" class="exp-skin-panel hide">
+                            <div class="yui3-widget-hd">{'Select Categories'|gettext}</div>
+                            <div class="yui3-widget-bd">
+                                <div style="overflow-y:scroll;height:300px;padding: 10px">
+                                    {control type="tagtree" addable=false id="managecats" name="managecats" controller=storeCategory draggable=false menu=false expandonstart=false checkable=true}
+                                </div>
                             </div>
                         </div>
                     </div>
                     {script unique="pickerpopper" yui3mods=1}
                     {literal}
-                    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container', function(Y) {
-                        var YAHOO=Y.YUI2;
-                        var panel = new YAHOO.widget.Panel("catpicker", { width:"500px", zIndex:10, visible:false, draggable:false, close:true, context:['showcats','tl','tr'] } ); 
-                        panel.render('create-prod-report');
-                        YAHOO.util.Event.on('showcats', 'click', panel.show, panel, true);
-                        YAHOO.util.Dom.removeClass('catpicker', 'hide');
+//                    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container', function(Y) {
+//                        var YAHOO=Y.YUI2;
+//                        var panel = new YAHOO.widget.Panel("catpicker", { width:"500px", zIndex:10, visible:false, draggable:false, close:true, context:['showcats','tl','tr'] } );
+//                        panel.render('create-prod-report');
+//                        YAHOO.util.Event.on('showcats', 'click', panel.show, panel, true);
+//                        YAHOO.util.Dom.removeClass('catpicker', 'hide');
+//                    });
+
+                    YUI(EXPONENT.YUI3_CONFIG).use('node','panel','dd','dd-plugin', function(Y) {
+                        var panel = new Y.Panel({
+                            srcNode      : '#catpicker',
+                            width        : 500,
+                            visible      : false,
+                            zIndex       : 10,
+                            centered     : false,
+                            render       : '#create-prod-report'
+                        }).plug(Y.Plugin.Drag);
+
+                        panel.dd.addHandle('.yui3-widget-hd');
+                        var panelContainer = Y.one('#catpicker').get('parentNode');
+                        panelContainer.addClass('exp-panel-container');
+                        Y.one('#catpicker').removeClass('hide');
+
+                        Y.one('#showcats').on('click',function(e){
+                            e.halt();
+                            panel.show();
+                            panel.set('centered',true);
+                            panel.align('#showcats',[Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.TL]);
+                        });
+
                     });
                     {/literal}
                     {/script}
