@@ -34,7 +34,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_grouplistcontrol($params, &$smarty) {
-    echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>';
+//    echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>';
 
     global $db;
     $groups = $db->selectObjects("group", null, "name");
@@ -49,6 +49,7 @@ function smarty_function_grouplistcontrol($params, &$smarty) {
     }
 
     $control = new listbuildercontrol($selectedgroups, $allgroups, 5);
+    if (!empty($params['class'])) $control->class = $params['class'];
     $name    = isset($params['name']) ? $params['name'] : "grouplist";
     $label   = isset($params['label']) ? $params['label'] : "";
 //    echo $control->controlToHTML($name);

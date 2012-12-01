@@ -89,7 +89,7 @@ class uploadcontrol extends formcontrol {
     }
 
 	static function moveFile($original_name,$formvalues) {
-		$dir = 'files/uploads';
+		$dir = UPLOAD_DIRECTORY_RELATIVE . 'uploads';
 		$filename = expFile::fixName(time().'_'.$formvalues[$original_name]['name']);
 		$dest = $dir.'/'.$filename;
         //Check to see if the directory exists.  If not, create the directory structure.

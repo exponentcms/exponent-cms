@@ -92,7 +92,11 @@ class listbuildercontrol extends formcontrol {
 
     function toHTML($label,$name) {
         $html = parent::toHTML($label,$name);
-        $html = '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>'.$html;
+//        $html = '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>'.$html;
+        expJavascript::pushToFoot(array(
+            "unique"=>'listbuildercontrol',
+            "src"=> PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js'
+		));
         return $html;
     }
 

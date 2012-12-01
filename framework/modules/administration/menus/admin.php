@@ -323,6 +323,15 @@ if ($user->isAdmin() || !empty($groups)) {
 }
 
 if ($user->isSuperAdmin()) {
+    $tmp= count($expAdminMenu['submenu']['itemdata']);
+    $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata'])-1]['submenu']['itemdata'][] = array(
+        'text' => gt('Mass Mailer'),
+        'url' => makeLink(array(
+            'controller' => 'administration',
+            'action' => 'mass_mail'
+        )),
+        'classname' => 'email',
+    );
 	$expAdminMenu['submenu']['itemdata'][] = array(
         'text' => gt('Super-Admin Tools'),
         'classname' => 'development',
