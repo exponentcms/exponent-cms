@@ -31,7 +31,7 @@
 <div id="fileViewConfig">
     {if $config.filedisplay != ""}
         {$presaved=1}
-        {$themefileview="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
+        {$themefileview="`$smarty.const.THEME_ABSOLUTE`modules/common/views/file/configure/`$config.filedisplay`.tpl"}
         {if file_exists($themefileview)}
             {include file=$themefileview}
         {else}
@@ -60,6 +60,20 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
         
         if(o.responseText){
             Y.one('#fileViewConfig').setContent(o.responseText);
+                Y.one('#fileViewConfig').all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+                Y.one('#fileViewConfig').all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
             Y.one('#ff-options').setStyle("display","block");
         } else {
             Y.one('#fileViewConfig .loadingdiv').remove();
