@@ -37,7 +37,8 @@ function smarty_function_rating($params,&$smarty) {
     
     expCSS::pushToHead(array(
 	    "unique"=>'ratings',
-	    "link"=>PATH_RELATIVE."framework/core/assets/css/ratings.css",
+//	    "link"=>PATH_RELATIVE."framework/core/assets/css/ratings.css",
+        "corecss"=>"ratings",
 	    )
 	);
 	

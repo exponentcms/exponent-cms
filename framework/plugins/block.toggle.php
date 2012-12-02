@@ -35,26 +35,71 @@
  * @param $repeat
  */
 function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
+    if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {toggle} plugin.")."</strong>");
+    if (empty($params['title']) && empty($params['link'])) die("<strong style='color:red'>".gt("The 'title' parameter is required for the {toggle} plugin.")."</strong>");
+
 	if(empty($content)) {
-		if (!empty($params['link'])) echo '<a href="javascript:void(0);" onclick="divtoggle(\''.$params['id'].'\')">'.$params['link'].'</a>';
-		echo '<div id="'.$params['id'].'" style="display:none">';
+        if (!empty($params['link'])) $params['title'] = $params['link'];
+        echo '<div id="'.$params['unique'].'" class="yui3-module">
+            <div id="head" class="yui3-hd">
+                <h2 title="'.gt('Click to Collapse/Expand').'">'.$params['title'].'</h2>
+                <a title="'.gt('Collapse/Expand').'" class="yui3-toggle"></a>
+            </div>
+            <div class="yui3-bd">
+        ';
 	} else {
 		echo $content;	
-		echo '</div>';
-	}
+		echo '</div></div>';
 
-    $script = "
-        function divtoggle(obj) {
-            var el = document.getElementById(obj);
-            el.style.display = (el.style.display != 'none' ? 'none' : '' );
-        }
-    ";
+        $script = "
+    YUI(EXPONENT.YUI3_CONFIG).use('anim', function(Y) {
+        var module = Y.one('#".$params['unique']."');
 
-    expJavascript::pushToFoot(array(
-        "unique"  => 'toggle',
-//        "yui3mods"=> 1,
-        "content" => $script,
-    ));
+        // add fx plugin to module body
+        var content = module.one('.yui3-bd').plug(Y.Plugin.NodeFX, {
+            from: { height: 0 },
+            to: {
+                height: function(node) { // dynamic in case of change
+                    return node.get('scrollHeight'); // get expanded height (offsetHeight may be zero)
+                }
+            },
+
+            easing: Y.Easing.easeOut,
+            duration: 0.5
+        });
+
+        var onClick = function(e) {
+            e.preventDefault();
+            module.toggleClass('yui3-closed');
+            content.fx.set('reverse', !content.fx.get('reverse')); // toggle reverse
+            content.fx.run();
+        };
+
+        module.one('#head').on('click', onClick);
+        ";
+
+        if (!empty($params['collapsed']))$script .= "
+        // start w/ item collapsed
+        module.toggleClass('yui3-closed');
+        content.fx.set('reverse', !content.fx.get('reverse')); // toggle reverse
+        content.fx.run();
+        ";
+
+        $script .= "
+    });
+            ";
+
+        expJavascript::pushToFoot(array(
+            "unique"  => 'toggle-' . $params['unique'],
+            "yui3mods"=> 1,
+            "content" => $script,
+        ));
+        expCSS::pushToHead(array(
+            "unique"=>'toggle',
+            "corecss"=>"toggle",
+            )
+        );
+    }
 
 }
 
