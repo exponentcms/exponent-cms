@@ -211,6 +211,5 @@ img.border {
     border:2px solid #D3D3D3;
     display: block;
     padding: 10px;
-    margin: 5px;
-    margin-top: 0;
+    margin: 0 0 5px;
 }
