@@ -40,6 +40,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
 	if(empty($content)) {
         if (!empty($params['link'])) $params['title'] = $params['link'];
+
         echo '<div id="'.$params['unique'].'" class="yui3-module">
             <div id="head" class="yui3-hd">
                 <h2 title="'.gt('Click to Collapse/Expand').'">'.$params['title'].'</h2>
@@ -48,7 +49,27 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             <div class="yui3-bd">
         ';
 	} else {
-		echo $content;	
+        if (!empty($params['anim'])) {
+            $anim = 'ease';
+        } else {
+            switch ($params['anim']) {
+                case 'back':
+                    $anim = 'back';
+                    break;
+                case 'bounce':
+                    $anim = 'bounce';
+                    break;
+                case 'elastic':
+                    $anim = 'elastic';
+                    break;
+                case 'ease':
+                case 'ease':
+                default:
+                    $anim = 'ease';
+                    break;
+            }
+        }
+		echo $content;
 		echo '</div></div>';
 
         $script = "
@@ -64,7 +85,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
                 }
             },
 
-            easing: Y.Easing.easeOut,
+            easing: Y.Easing.".$anim."Both,
             duration: 0.5
         });
 
