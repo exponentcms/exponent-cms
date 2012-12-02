@@ -86,6 +86,7 @@ class radiogroupcontrol extends formcontrol {
 			
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
 
+            if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$value];
 			
             if ($this->cols!=0 && $i==$this->cols) {
     			$html .= '</tr><tr>';

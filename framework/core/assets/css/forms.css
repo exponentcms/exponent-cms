@@ -135,15 +135,3 @@ input.radio {
 .control.thirds.last {
     clear:right;
 }
-
-/****************  group block formatting  ***********************/
-.group-controls {
-    border-radius: 6px;
-    -webkit-border-radius: 6px;
-   	-moz-border-radius: 6px;
-    border:2px solid #D3D3D3;
-    display: block;
-    padding: 10px;
-    margin: 5px;
-    margin-top: 0;
-}

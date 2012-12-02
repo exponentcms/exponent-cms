@@ -178,6 +178,7 @@ function smarty_function_control($params, &$smarty) {
                 } else {
                     $control->items = $items; //array_combine($items, $items);
                 }
+                if (!empty($params['item_descriptions'])) $control->item_descriptions = $params['item_descriptions'];
                 break;
             case "radio":
                 $control            = new radiocontrol();
