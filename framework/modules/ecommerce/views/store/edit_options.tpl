@@ -17,11 +17,13 @@
 	<h2>{'Add options to your product.'|gettext}</h2>
 	{control type="hidden" name="tab_loaded[options]" value=1}
     {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
+    <blockquote>
 	{'By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
 	{'By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group.'|gettext} {br}
 	{'Select Single presents the option group as a dropdown field where they may select one and only option.'|gettext}{br}
 	{'Select Multiple presents the options as a checkbox group where the user may select multiple options'|gettext}.{br}
 	{'Selecting the Default radio button for an option will cause that option to be selected by default.'|gettext} {br}{br}
+    </blockquote>
 	{include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
 {else}
 	<h2>{'Options are inherited from this product\'s parent.'|gettext}</h2>

@@ -73,18 +73,18 @@
 
 	<hr />
 	<table cellpadding="5" cellspacing="0" border="0">
-			<tr>
-				<td style="border:none;">
-					<form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
-						<input type="hidden" name="module" value="expDefinableField" />
-						<input type="hidden" name="action" value="edit" />
-						{'Add a'|gettext} <select name="control_type" onchange="this.form.submit()">
-							{foreach from=$types key=value item=caption}
-								<option value="{$value}">{$caption}</option>
-							{/foreach}
-						</select>
-					</form>
-				</td>
-			</tr>
-		</table>
+        <tr>
+            <td style="border:none;">
+                <form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
+                    <input type="hidden" name="module" value="expDefinableField" />
+                    <input type="hidden" name="action" value="edit" />
+                    {'Add a'|gettext} <select name="control_type" onchange="this.form.submit()">
+                        {foreach from=$types key=value item=caption}
+                            <option value="{$value}">{$caption}</option>
+                        {/foreach}
+                    </select>
+                </form>
+            </td>
+        </tr>
+    </table>
 </div>

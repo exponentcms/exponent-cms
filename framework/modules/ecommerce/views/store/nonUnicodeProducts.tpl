@@ -14,7 +14,7 @@
  *}
 
 <h1>{'Products with Data Issues'|gettext}</h1>
-<p>{'There are'|gettext} {$count} {'products that have non-unicode characters in it.'|gettext}</p>
+<blockquote>{'There are'|gettext} {$count} {'products that have non-unicode characters in it.'|gettext}</blockquote>
 
  <div id="products">
 	<table id="prods" class="exp-skin-table" style="width:95%">

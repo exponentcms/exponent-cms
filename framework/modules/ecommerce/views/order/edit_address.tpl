@@ -15,9 +15,9 @@
 
 <div class="module address edit address-form">
     <h1>{'Editing address'|gettext}</h1>
-    <p>
+    <blockquote>
         <em>{'Fields marked with an * are required.'|gettext}</em>
-    </p>
+    </blockquote>
     {form action=save_address}
         {control type=hidden name=orderid value=$orderid}
         {control type=hidden name=addyid value=$record->id}

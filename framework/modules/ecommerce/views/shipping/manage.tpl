@@ -19,9 +19,9 @@
 
 <div class="module shipping manage">
     <h1>{'Manage Shipping Options'|gettext}</h1>
-    <p>
+    <blockquote>
         {'This page allows you to turn different shipping options (known as shipping calculators) on and off for customers on your webstore.'|gettext}
-    </p>
+    </blockquote>
     <table class="exp-skin-table">
         <thead>
             <tr>

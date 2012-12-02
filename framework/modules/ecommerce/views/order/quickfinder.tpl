@@ -23,9 +23,9 @@
 <div class="module report generate-report">
     {$page->links}
     {form id="batch" controller=report}
-    <div class="exp-ecom-table">
-        {$page->table}
-    </div>
+        <div class="exp-ecom-table">
+            {$page->table}
+        </div>
     {/form}
 	{$page->links}
 </div>

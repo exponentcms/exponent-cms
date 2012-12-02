@@ -18,9 +18,9 @@
 {'Invoice'|gettext}: {$order->invoice_id}{br}
 {'Update Date/Time'|gettext}: {$date} {br}
 {if $comment != ''}
-    <hr>
-    {'Notes'|gettext}: {br}
-    {$comment}
+    {group label="Notes"|gettext}
+        {$comment}
+    {/group}
 {/if}
 {br}
 {if $include_shipping == true}

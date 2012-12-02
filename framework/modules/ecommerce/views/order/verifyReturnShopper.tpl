@@ -20,14 +20,13 @@
 <div class="module order verifyReturnShopper">
     <div class="top">
         <h1>{'Welcome back'|gettext} {$firstname}!</h1>
-        <p>
+        <blockquote>
             {'We see that you have shopped with us before. You can either restore your shopping cart and pick up where you left off, or start your shopping experience over with a fresh cart.'|gettext}
-        </p>
+        </blockquote>
     </div>
 
     <div class="col one">
         <h3>{'Verify the following information from your previous session to restore your shopping cart:'|gettext}{br}</h3>
-    
         {form name="verifyAndRestoreCartForm" controller="order" action="verifyAndRestoreCart"}
            {control type="text" name="lastname" id="lastname" label="Last Name:"|gettext}
            {control type="text" name="email" id="email" label="Email Address:"|gettext}

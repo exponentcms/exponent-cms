@@ -26,7 +26,6 @@
     {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.ffloat}
     {control type="text" label="Width of File Display Box"|gettext name="fwidth" value=$config.fwidth size=5}
     {control type="text" label="Width of Margin"|gettext name="fmargin" value=$config.fmargin size=5}
-    <hr />
 </div>
 <div id="fileViewConfig">
     {if $config.filedisplay != ""}

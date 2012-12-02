@@ -15,9 +15,9 @@
 
 <div class="module administration mass-mail">
     <h1>{'Mass Mailer'|gettext}</h1>
-    <block>
+    <blockquote>
         {'This form allows you to send an email with an optional attachment to site users.'|gettext}
-    </block>
+    </blockquote>
     {form action=mass_mail_out}
         {group label="Send this Message To"|gettext}
             {control type="checkbox" class="emailall" postfalse=1 name="allusers" label="All Site Users?"|gettext value=1 description='Uncheck to allow user/group/freeform selection'|gettext}

@@ -13,5 +13,6 @@
  *
  *}
 
-<h2>{"Downloadable Files Configuration"|gettext}</h2>
+{group label="Downloadable Files Configuration"|gettext}
 {control type=text name="title" label="File list title"|gettext value=$config.title}
+{/group}
