@@ -70,7 +70,8 @@ class container {
         $secref = $db->selectObject("sectionref", "module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."' AND section=$section");
         
         if ($secref) {
-            $secref->refcount -= 1;
+//            $secref->refcount -= 1;
+            $secref->refcount = 0;  // we only allow single instances in 2.0
             $db->updateObject($secref,"sectionref", "module='".$internal->mod."' AND source='".$internal->src."' AND internal='".$internal->int."' AND section=$section");
         }
         

@@ -48,7 +48,7 @@ class recyclebin extends expRecord {
                     $orphans[$i]->html = renderAction(array('controller'=>$orphans[$i]->module, 'action'=>'showall','src'=>$orphans[$i]->source,"no_output"=>true));
                 } else {
                     echo($module).'...';
-                    if (expModules::controllerExists($orphans[$i]->module)) {
+                    if (in_array($orphans[$i]->module,expModules::modules_list())) {
                         $mod = new $orphans[$i]->module();
                         ob_start();
                         $mod->show("Default",$loc);
