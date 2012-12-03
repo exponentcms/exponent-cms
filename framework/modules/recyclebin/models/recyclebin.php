@@ -48,11 +48,15 @@ class recyclebin extends expRecord {
                     $orphans[$i]->html = renderAction(array('controller'=>$orphans[$i]->module, 'action'=>'showall','src'=>$orphans[$i]->source,"no_output"=>true));
                 } else {
                     echo($module).'...';
-                    $mod = new $orphans[$i]->module();
-                    ob_start();
-                    $mod->show("Default",$loc);
-                    $orphans[$i]->html = ob_get_contents();
-                    ob_end_clean();
+                    if (expModules::controllerExists($orphans[$i]->module)) {
+                        $mod = new $orphans[$i]->module();
+                        ob_start();
+                        $mod->show("Default",$loc);
+                        $orphans[$i]->html = ob_get_contents();
+                        ob_end_clean();
+                    } else {
+                        echo($orphans[$i]->module . ' ' . gt('no longer available!'));
+                    }
                 }
             }
         }
