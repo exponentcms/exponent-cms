@@ -43,7 +43,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         echo '<div id="'.$params['unique'].'" class="yui3-module">
             <div id="head" class="yui3-hd">
-                <h2 title="'.gt('Click to Collapse/Expand').'">'.$params['title'].'</h2>
+                <h3 title="'.gt('Click to Collapse/Expand').'">'.$params['title'].'</h3>
                 <a title="'.gt('Collapse/Expand').'" class="yui3-toggle"></a>
             </div>
             <div class="yui3-bd">
@@ -51,6 +51,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 	} else {
         if (!empty($params['anim'])) {
             $anim = 'ease';
+            //FIXME replace w/ system default?
         } else {
             switch ($params['anim']) {
                 case 'back':
@@ -62,7 +63,6 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
                 case 'elastic':
                     $anim = 'elastic';
                     break;
-                case 'ease':
                 case 'ease':
                 default:
                     $anim = 'ease';

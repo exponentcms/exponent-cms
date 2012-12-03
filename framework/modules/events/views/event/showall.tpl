@@ -89,7 +89,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
     src = '{/literal}{$__loc->src}{literal}';
     var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=month&ajax_action=1&src="+src;
 
-	// Popup
+	// Popup calendar
 	var cal = new Y.Calendar('J_popup_closeable{/literal}{$__loc->src|replace:'@':'_'}{literal}',{
 		popup:true,
 		closeable:true,

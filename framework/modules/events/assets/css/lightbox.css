@@ -74,7 +74,6 @@
 
 .lb-close {
     background : url("../images/close.png") no-repeat scroll 0 0 transparent;
-    /*background: url(../../../../core/assets/images/delete.png) no-repeat scroll 0 0 transparent;*/
     cursor     : pointer;
     width      : 30px;
     height     : 30px;

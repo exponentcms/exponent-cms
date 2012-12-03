@@ -202,7 +202,7 @@ function smarty_function_prod_images($params,&$smarty) {
             for ($i=0; $i<count($swatches); $i++) {
                 $small = array("h"=>$config['swatchsmh'],"w"=>$config['swatchsmw'],"zc"=>1,"file_id"=>$swatches[$i]->id,"return"=>1,"class"=>'swatch');
                 $med = array("h"=>$config['swatchpoph'],"w"=>$config['swatchpopw'],"zc"=>1,"file_id"=>$swatches[$i]->id,"return"=>1);
-                $swtch .= '<li>'.smarty_function_img($small,$smarty);
+                $swtch = '<li>'.smarty_function_img($small,$smarty);
                 $swtch .= '<div>'.smarty_function_img($med,$smarty).'<strong>'.$swatches[$i]->title.'</strong></div>';
                 $swtch .= '</li>';
             }
