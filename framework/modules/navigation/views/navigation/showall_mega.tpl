@@ -70,7 +70,7 @@
                                     {$description = ''}
                                 {/if}
                                 {if !$depth}<div class="col_1{if !empty($child->itemdata)} column greybox{/if}">{/if}
-                                    <div class="menuitem{if !empty($description)} desc{/if}{if !empty($child->itemdata)} menuheader{/if}"><a {$class}{if $child->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h4>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id w=24 h=24}{/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h4>{if $config.usedesc}{$description}{/if}</a></div>
+                                    <div class="menuitem{if $config.usedesc && !empty($description)} desc{/if}{if !empty($child->itemdata)} menuheader{/if}"><a {$class}{if $child->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h4>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id w=24 h=24}{/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h4>{if $config.usedesc}{$description}{/if}</a></div>
                                     {if !empty($child->itemdata)}
                                     <div class="child">
                                         {if $depth < $maxdepth}{menu_items parent = $child depth=$depth+1}{/if}
