@@ -23,6 +23,11 @@
 {else}
     {$maxwidth = $config.maxwidth}
 {/if}
+{if empty($config.maxdepth) || $config.maxdepth < 1}
+    {$maxdepth = 1}
+{else}
+    {$maxdepth = $config.maxdepth - 2}
+{/if}
 <div class="module navigation mega">
     <ul id="menu">
         {getnav type='hierarchy' notyui=1 assign=hierarchy}
@@ -68,7 +73,7 @@
                                     <div class="menuitem{if !empty($description)} desc{/if}{if !empty($child->itemdata)} menuheader{/if}"><a {$class}{if $child->url != "#"}href="{$child->url}"{/if}{if $child->new_window} target="_blank"{/if}><h4>{if !empty($child->expFile[0]->id)}{img class=img_left file_id=$child->expFile[0]->id w=24 h=24}{/if}{if $config.usetitle && !empty($child->title)}{$child->title}{else}{$child->text}{/if}</h4>{if $config.usedesc}{$description}{/if}</a></div>
                                     {if !empty($child->itemdata)}
                                     <div class="child">
-                                        {menu_items parent = $child depth=$depth+1}
+                                        {if $depth < $maxdepth}{menu_items parent = $child depth=$depth+1}{/if}
                                     </div>
                                     {/if}
                                 {if !$depth}</div>{/if}
