@@ -58,7 +58,7 @@ if (is_readable($upgrade_dir)) {
     }
     echo '<ol>';
     while (($file = readdir($dh)) !== false) {
-        if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && ($file != '.' && $file != '..' && $file != '.svn' && substr($file, -4, 4) != '.swp')) {
+        if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php') {
             include_once($upgrade_dir . '/' . $file);
             $classname     = substr($file, 0, -4);
             /**
