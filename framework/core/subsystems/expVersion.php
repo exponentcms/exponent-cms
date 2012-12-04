@@ -159,7 +159,7 @@ class expVersion {
                         }
                     }
                 } else {
-                    flash('error', gt('Unable to contact update server. Version check only performed once per Super-admin login.'));
+                    flash('error', gt('Unable to contact update server. Automatic Version Check is only performed once per Super-admin login.'));
                 }
             }
         }
