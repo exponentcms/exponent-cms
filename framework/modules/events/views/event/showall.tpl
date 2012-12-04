@@ -99,8 +99,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 //        useShim:true
 	}).on('select',function(d){
 		var unixtime = parseInt(d / 1000);
-//        window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&view=month&time='+unixtime+'&ajax_action=1&src={/literal}{$__loc->src}{literal}';
-        e.halt();
         cfg.data = "time="+unixtime;
         var request = Y.io(sUrl, cfg);
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
@@ -111,7 +109,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 
     // ajax load new month
 	var handleSuccess = function(ioId, o){
-//		Y.log(o.responseText);
 		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
 
         if(o.responseText){
