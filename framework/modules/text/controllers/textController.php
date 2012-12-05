@@ -61,7 +61,7 @@ class textController extends expController {
     
     public function update() {
         // update the record.
-        $record = $this->text->update($this->params);
+        $this->text->update($this->params);
         
         // update the search index since text is relegated to page content.
         //FIXME need to come up with a better method

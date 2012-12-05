@@ -70,7 +70,7 @@ class snippetController extends expController {
 
     public function update() {
         // update the record.
-        $record = $this->snippet->update($this->params);
+        $this->snippet->update($this->params);
 
         // go back to where we came from.
         expHistory::back();
