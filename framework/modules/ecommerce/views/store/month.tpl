@@ -67,11 +67,23 @@
                             {/if}
                             {foreach name=e from=$items item=item}
                                 <div class="calevent{if $dayts == $today} today{/if}">
+                                    {if $item->is_allday}
+                                        {$title = 'All Day'|gettext}
+                                    {elseif $item->eventstart != $item->eventend}
+                                        {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                                        {$title = $title|cat:' '}
+                                        {$title = $title|cat:'to'|gettext}
+                                        {$title = $title|cat:' '}
+                                        {$title = $title|cat:($item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT)}
+                                    {else}
+                                        {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                                    {/if}
+                                    {$title = $title|cat:'-'|cat:$item->body|summarize:"html":"para"}
                                     <a href="{link controller=eventregistration action=showByTitle title=$item->sef_url}" {if $config.lightbox}class="calpopevent" id="{$item->sef_url}"{/if}
-                                        title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">
+                                        title="{$title}">
                                         {if $item->expFile.mainimage[0]->url != ""}
                                             <div class="image">
-                                                {img file_id=$item->expFile.mainimage[0]->id alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`" class="large-img" id="enlarged-image" w=92}
+                                                {img file_id=$item->expFile.mainimage[0]->id alt=$item->image_alt_tag|default:"Image of `$item->title`" title=$title class="large-img" id="enlarged-image" w=92}
                                                 {clear}
                                             </div>
                                         {/if}

@@ -72,14 +72,31 @@
                                     {$style=''}
                                 {/if}
                                 <div class="calevent{if $dayts == $today} today{/if}"{$style}>
-                                    <a{if $config.usecategories && !empty($item->color)} class="{$item->color}"{/if}{$style}{if $config.show_allday && $item->is_allday == 1} style="border-color: {$item->color|brightness:+150};border-style: solid;padding-left: 2px;border-top: 0;border-bottom: 0;border-right: 0;"{/if}
-                                        {if substr($item->location_data,1,8) != 'calevent'}
-                                            href="{if $item->location_data != 'eventregistration'}{if $config.lightbox}#" class="calpopevent" id="{$item->date_id}{else}{link action=show date_id=$item->date_id}{/if}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                                    {if $item->is_allday}
+                                        {$title = 'All Day'|gettext}
+                                    {elseif $item->eventstart != $item->eventend}
+                                        {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                                        {$title = $title|cat:' '}
+                                        {$title = $title|cat:'to'|gettext}
+                                        {$title = $title|cat:' '}
+                                        {$title = $title|cat:($item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT)}
+                                    {else}
+                                        {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                                    {/if}
+                                    {$title = $title|cat:'-'|cat:$item->body|summarize:"html":"para"}
+                                    <a class="{if $config.usecategories && !empty($item->color)}{$item->color}{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} calpopevent{/if}"
+                                        {$style}{if $config.show_allday && $item->is_allday == 1} style="border-color: {$item->color|brightness:+150};border-style: solid;padding-left: 2px;border-top: 0;border-bottom: 0;border-right: 0;"{/if}
+                                        {if substr($item->location_data,1,8) != 'calevent'}href="{if $item->location_data != 'eventregistration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                                            {if $item->date_id}id={$item->date_id}{/if}
                                         {/if}
-                                        title="{if $item->is_allday == 1}{'All Day'|gettext}{elseif $item->eventstart != $item->eventend}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{else}{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if} - {$item->body|summarize:"html":"para"}">
+                                        title="{$title}">
                                         {if $item->expFile[0]->url != ""}
                                             <div class="image">
-                                                {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image" w=92}
+                                                {if $item->date_id}
+                                                    {img file_id=$item->expFile[0]->id title=$title class="large-img" id=$item->date_id w=92}
+                                                {else}
+                                                    {img file_id=$item->expFile[0]->id title=$title class="large-img" w=92}
+                                                {/if}
                                                 {clear}
                                             </div>
                                         {/if}

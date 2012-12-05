@@ -18,8 +18,8 @@
 {/css}
 
 {$item = $event->event}
-{$eventstart = $record->eventstart + $event->date}
-{$eventend = $record->eventend + $event->date}
+{$eventstart = $item->eventstart + $event->date}
+{$eventend = $item->eventend + $event->date}
 <div class="module events show">
 	<div class="module-actions">
 		{icon class="dayviewlink" action=showall view=showall_Day time=$eventstart title='View Entire Day'|gettext text='View Day'|gettext}
