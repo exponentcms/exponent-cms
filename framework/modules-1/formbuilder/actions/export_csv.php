@@ -43,8 +43,9 @@ if (isset($_GET['id'])) {
 				$rpt->column_names .= $control->name;
 			}
 		}
-			
-		foreach (explode("|!|",$rpt->column_names) as $column_name) {
+
+        $rpt_columns = explode("|!|",$rpt->column_names);
+		foreach ($rpt_columns as $column_name) {
 			if ($column_name == "ip") {
 				$columndef .= 'new cColumn("'.gt('IP Address').'","ip",null,null),';
 			} elseif ($column_name == "user_id") {
@@ -103,9 +104,9 @@ if (isset($_GET['id'])) {
 			$file = "";
 		}
 
-		$file .= sql2csv($items);
+		$file .= sql2csv($items,$rpt_columns);
 
-		//CODE FOR LATER CREAATING A TEMP FILE
+		// CREATE A TEMP FILE
 		$tmpfname = tempnam(getcwd(), "rep"); // Rig
 
 		$handle = fopen($tmpfname, "w");
@@ -120,7 +121,6 @@ if (isset($_GET['id'])) {
 			// 'application/octet-stream' is the registered IANA type but
 			//        MSIE and Opera seems to prefer 'application/octetstream'
 			// It seems that other headers I've added make IE prefer octet-stream again. - RAM
-
 			$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
 
 			header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
@@ -140,10 +140,8 @@ if (isset($_GET['id'])) {
 			//Read the file out directly
 
 			readfile($tmpfname);
-			if (DEVELOPMENT == 0) exit();
-
-			unlink($tmpfname);
-
+			if (DEVELOPMENT == 0)
+            exit();
 		} else {
 			error_log("error file doesn't exist",0);
 		}
@@ -176,19 +174,21 @@ use the array_keys function to strip out a functional header
 
  */
 
-function sql2csv($items) {
+function sql2csv($items,$rptcols=null) {
 	$str = "";
 	foreach ($items as $key=>$item)  {
 		if($str == "") {
 			$header_Keys = array_keys((array)$item);
 			foreach ($header_Keys as $individual_Header) {
-				$str .= $individual_Header.",";
+                if (!is_array($rptcols) || in_array($individual_Header,$rptcols)) $str .= $individual_Header.",";
 			}
 			$str .= "\r\n";
 		}
-		foreach ($item as $bob=>$rowitem) {
-		 	$rowitem = str_replace(",", " ", $rowitem);
-			$str .= $rowitem.",";
+		foreach ($item as $key=>$rowitem) {
+            if (!is_array($rptcols) || in_array($key,$rptcols)) {
+                $rowitem = str_replace(",", " ", $rowitem);
+                $str .= $rowitem.",";
+            }
 		} //foreach rowitem
 		$str = substr($str,0,strlen($str)-1);
 		$str .= "\r\n";

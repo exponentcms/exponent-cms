@@ -107,6 +107,7 @@ if (isset($_GET['id'])) {
 		
 //		$template->assign('columdef',$columndef);
 //		$template->assign('sortfuncs',$sortfuncts);
+        // we left expPaginator filter out unneeded columns
         $page = new expPaginator(array(
 //                    'model'=>$f->table_name,
             'records'=>$items,
