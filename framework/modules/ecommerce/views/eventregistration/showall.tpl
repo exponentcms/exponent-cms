@@ -13,22 +13,11 @@
  *
  *}
 {css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
-{literal}
-	.showall .events {
-		overflow: hidden;
-	}
-	
-	.showall .events .event-image {
-		float: left;
-		width: 125px;
-		margin-right: 20px;
-	}
-	
-	.showall .events .event-info {
-		float: left;
-		width: 550px;
-	}
-{/literal}
+
+{/css}
+
+{css unique="event-listings1" link="`$asset_path`css/eventregistration.css"}
+
 {/css}
 
 <div class="module events showall">

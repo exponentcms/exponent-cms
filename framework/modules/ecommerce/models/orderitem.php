@@ -178,11 +178,16 @@ class orderitem extends expRecord {
 	public function getFormattedExtraData($style='list') {
 		$ret = '';
 		if ($style == 'list') {
-			$ret ='<ul>';
-			foreach(expUnserialize($this->extra_data) as $key => $item) {
-				$ret .= "<li>{$key} : {$item}</li>";
-			}
-			$ret .='<ul>';
+            $form = $this->product->getForm('formatExtraData');
+            if ($form) {
+                $ret = $this->product->displayForm('formatExtraData',array('extra_data'=>$this->extra_data,'no_output'=>true));
+            } else {
+                $ret ='<ul>';
+                foreach(expUnserialize($this->extra_data) as $key => $item) {
+                    $ret .= "<li>{$key} : {$item}</li>";
+                }
+                $ret .='<ul>';
+            }
 		}
 		return $ret;
 	}

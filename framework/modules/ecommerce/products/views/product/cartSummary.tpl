@@ -15,11 +15,14 @@
 
 <table border="0" cellspacing="0" cellpadding="0" class="cart-item">
     <tr>
-        {if $item->product->expFile.mainimage[0]->id}
         <td class="cart-image">
-            <a style="margin: 0px; padding:0px" href="{link action=showByTitle controller=store title=$item->product->getSEFURL()}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
+            {if $item->product->expFile.mainimage[0]->id}
+                <a style="margin: 0px; padding:0px" href="{link action=showByTitle controller=store title=$item->product->getSEFURL()}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
+            {else}
+                {img src="`$asset_path`images/no-image.jpg"}
+                {'No Image Available'|gettext}
+            {/if}
         </td>
-        {/if}
         <td>
             <span class="itemname"><strong><a style="margin: 0px; padding:0px" href="{link action=showByTitle controller=store title=$item->product->getSEFURL()}">{$item->products_name}</a></strong></span>
             <div class="itembody">

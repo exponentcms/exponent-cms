@@ -15,10 +15,10 @@
 
 {if $printerfriendly==1}
     {$pf=1}
-    {if $include_css == true}
+    {*{if $include_css == true}*}
         {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}    
         {/css}
-    {/if}
+    {*{/if}*}
 {else}
     {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/invoice.css"}
     {/css}

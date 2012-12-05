@@ -659,7 +659,9 @@ class cartController extends expController {
         global $order, $template;
 
         // reuse the confirm action's template
+        $tplvars = $template->tpl->tpl_vars;
         $template = get_template_for_action($this, 'confirm', $this->loc);
+        $template->tpl->tpl_vars = array_merge($tplvars,$template->tpl->tpl_vars);
 
         if (!empty($this->params['billing'])) {
             $billing = new billing();

@@ -12,14 +12,16 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
-<div class="extra-data">
-    <h3>{'The following people were registered for this event'|gettext}</h3>
-    <ul>
-    {foreach from=$extra_data item=person}    
-        <li>                
-            {$person.name}, {$person.phone}, {$person.email}        
-        </li>
-    {/foreach}
-    </ul>
-</div>
+
+{if !empty($extra_data)}
+    <div class="extra-data">
+        <h3>{'The following people were registered for this event'|gettext}</h3>
+        <ul>
+            {foreach from=$extra_data item=person}
+                <li>
+                    {$person.name}, {$person.phone}, {$person.email}
+                </li>
+            {/foreach}
+        </ul>
+    </div>
+{/if}

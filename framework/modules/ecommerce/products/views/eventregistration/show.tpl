@@ -15,8 +15,8 @@
  <div class="module store show event-registration">
      <h1>{$product->title}</h1>
      <div class="image">
-         {if $product->expFile.mainimage[0]->url == ""}
-             {img src="{$smarty.const.ICON_RELATIVE|cat:'ecom/no-image.jpg'}"}
+         {if $product->expFile.mainimage[0]->url != ""}
+             {img src="`$asset_path`images/no-image.jpg"}
          {else}
 			 {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
          {/if}

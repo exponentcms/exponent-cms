@@ -19,6 +19,7 @@
             {if $listing->expFile.mainimage[0]->id != ""}
                 {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=165 alt=$listing->title}
             {else}
+                {img src="`$asset_path`images/no-image.jpg"}
                 {'No Image'|gettext}
             {/if}
         </a>
@@ -27,9 +28,7 @@
     {permissions}
     <div class="item-actions">
         {if $permissions.configure == 1 or $permissions.manage == 1}
-            <a href="{link action=edit id=$listing->id}" title="{"Edit this entry"|gettext}">
-                <img src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
-            </a>
+            {icon action=edit id=$listing->id title="Edit this entry"|gettext}
             {icon action=delete record=$listing title="Delete this product"|gettext}
         {/if}
     </div>

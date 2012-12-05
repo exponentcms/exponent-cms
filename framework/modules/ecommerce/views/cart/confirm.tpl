@@ -21,6 +21,10 @@
 
 {/css}
 
+{css unique="cart" link="`$asset_path`css/cart.css"}
+
+{/css}
+
 <div class="module cart confirm exp-ecom-table">
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
 
@@ -154,7 +158,7 @@
         {/foreach}
         {else}
         <h2>{'You\'re purchasing'|gettext}</h2>
-    {include file="../order/partial_summary.tpl" items=$order->orderitem}
+        {include file="../order/partial_summary.tpl" items=$order->orderitem}
         <div class=" order-total">
             <table class="nowrap">
                 <thead>
@@ -232,5 +236,5 @@
         </div>
     </p>
 
-{ecomconfig var='checkout_message_bottom' default=""}
+    {ecomconfig var='checkout_message_bottom' default=""}
 </div>

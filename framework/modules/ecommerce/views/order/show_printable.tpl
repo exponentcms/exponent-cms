@@ -13,9 +13,9 @@
  *
  *}
 
-{if $include_css == true}
-    {css unique="show-printable"}
+{*{if $include_css == true}*}
+    {css unique="show-printable" link="`$asset_path`css/print-invoice.css"}
         {$css}
     {/css}
-{/if}
+{*{/if}*}
 {include file="invoice.tpl"}

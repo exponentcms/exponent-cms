@@ -314,7 +314,7 @@ class storeController extends expController {
     }
 
     function eventsCalendar() {
-        global $db;
+        global $db, $user;
 
         expHistory::set('viewable', $this->params);
 
@@ -323,32 +323,46 @@ class storeController extends expController {
             'time'=> $time
         ));
 
-        $monthly = array();
-        $counts  = array();
+//        $monthly = array();
+//        $counts  = array();
 
         $info    = getdate($time);
         $nowinfo = getdate(time());
         if ($info['mon'] != $nowinfo['mon']) $nowinfo['mday'] = -10;
         // Grab non-day numbers only (before end of month)
-        $week        = 0;
+//        $week        = 0;
         $currentweek = -1;
 
-        $timefirst = mktime(12, 0, 0, $info['mon'], 1, $info['year']);
+        $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
+        $week = intval(date('W',$timefirst));
+        if ($week >= 52 && $info['mon'] == 1) $week = 1;
         $infofirst = getdate($timefirst);
 
-        if ($infofirst['wday'] == 0) {
-            $monthly[$week] = array(); // initialize for non days
-            $counts[$week]  = array();
+//        if ($infofirst['wday'] == 0) {
+//            $monthly[$week] = array(); // initialize for non days
+//            $counts[$week]  = array();
+//        }
+//        for ($i = 1 - $infofirst['wday']; $i < 1; $i++) {
+//            $monthly[$week][$i] = array();
+//            $counts[$week][$i]  = -1;
+//        }
+//        $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
+        $monthly[$week] = array(); // initialize for non days
+        $counts[$week] = array();
+        if (($infofirst['wday'] == 0) && (DISPLAY_START_OF_WEEK == 1)) {
+            for ($i = -6; $i < (1 - DISPLAY_START_OF_WEEK); $i++) {
+                $monthly[$week][$i] = array();
+                $counts[$week][$i] = -1;
+            }
+            $weekday = $infofirst['wday'] + 7; // day number in grid.  if 7+, switch weeks
+        } else {
+            for ($i = 1 - $infofirst['wday']; $i < (1 - DISPLAY_START_OF_WEEK); $i++) {
+                $monthly[$week][$i] = array();
+                $counts[$week][$i] = -1;
+            }
+            $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
         }
-        for ($i = 1 - $infofirst['wday']; $i < 1; $i++) {
-            $monthly[$week][$i] = array();
-            $counts[$week][$i]  = -1;
-        }
-        $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
-
-        // Grab day counts (deprecated, handled by the date function)
-        // $endofmonth = expDateTime::endOfMonthDay($time);
-
+        // Grab day counts
         $endofmonth = date('t', $time);
 
         for ($i = 1; $i <= $endofmonth; $i++) {
@@ -356,36 +370,59 @@ class storeController extends expController {
             if ($i == $nowinfo['mday']) $currentweek = $week;
 
 //            $dates              = $db->selectObjects("eventregistration", "`eventdate` = $start");
-            $dates = $db->selectObjects("eventregistration", "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
-            $monthly[$week][$i] = storeController::_getEventsForDates($dates);
+//            $dates = $db->selectObjects("eventregistration", "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
+            $er = new eventregistration();
+//            $dates = $er->find('all', "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
+
+            if ($user->isAdmin()) {
+                $events = $er->find('all', 'product_type="eventregistration"', "title ASC");
+            } else {
+                $events      = $er->find('all', 'product_type="eventregistration" && active_type=0', "title ASC");
+            }
+            $dates = array();
+
+            foreach ($events as $event) {
+                // $this->signup_cutoff > time()
+                if ($event->eventdate >= expDateTime::startOfDayTimestamp($start) && $event->eventdate <= expDateTime::endOfDayTimestamp($start)) {
+                    $dates[] = $event;
+                }
+                // eDebug($event->signup_cutoff, true);
+            }
+
+            $monthly[$week][$i] = self::getEventsForDates($dates);
             $counts[$week][$i] = count($monthly[$week][$i]);
-            if ($weekday >= 6) {
+            if ($weekday >= (6 + DISPLAY_START_OF_WEEK)) {
                 $week++;
                 $monthly[$week] = array(); // allocate an array for the next week
-                $counts[$week]  = array();
-                $weekday        = 0;
+                $counts[$week] = array();
+                $weekday = DISPLAY_START_OF_WEEK;
             } else $weekday++;
         }
         // Grab non-day numbers only (after end of month)
-        for ($i = 1; $weekday && $i < (8 - $weekday); $i++) {
+        for ($i = 1; $weekday && $i < (8 + DISPLAY_START_OF_WEEK - $weekday); $i++) {
             $monthly[$week][$i + $endofmonth] = array();
-            $counts[$week][$i + $endofmonth]  = -1;
+            $counts[$week][$i + $endofmonth] = -1;
         }
 
         assign_to_template(array(
             'currentweek'=> $currentweek,
             'monthly'    => $monthly,
             'counts'     => $counts,
-            'nextmonth'  => $timefirst + (86400 * 45),
-            'prevmonth'  => $timefirst - (86400 * 15),
-            'now'        => $timefirst
+            "prevmonth3"  => strtotime('-3 months', $timefirst),
+            "prevmonth2"  => strtotime('-2 months', $timefirst),
+            "prevmonth"   => strtotime('-1 months', $timefirst),
+            "nextmonth"   => strtotime('+1 months', $timefirst),
+            "nextmonth2"  => strtotime('+2 months', $timefirst),
+            "nextmonth3"  => strtotime('+3 months', $timefirst),
+            'now'        => $timefirst,
+            "today"       => expDateTime::startOfDayTimestamp(time())
         ));
     }
 
     /*
     * Helper function for the Calendar view
     */
-    function _getEventsForDates($edates, $sort_asc = true) {
+    function getEventsForDates($edates, $sort_asc = true) {
         global $db;
         $events = array();
         foreach ($edates as $edate) {
@@ -413,15 +450,17 @@ class storeController extends expController {
 //            if ($category->hide_closed_events) {
 //                $sql .= ' AND er.signup_cutoff > ' . time();
 //            }
-            $sql .= ' AND er.id = ' . $edate->id;
+//            $sql .= ' AND er.id = ' . $edate->id;
+            $sql .= ' AND er.id = ' . $edate->product_type_id;
 
             $order = 'event_starttime';
             $dir   = 'ASC';
 
             $o            = $db->selectObjectBySql($sql);
             $o->eventdate = $edate->eventdate;
-            $o->eventstart += $edate->event_starttime;
-            $o->eventend += $edate->event_endtime;
+            $o->eventstart = $edate->event_starttime + $edate->eventdate;
+            $o->eventend = $edate->event_endtime + $edate->eventdate;
+            $o->expFile = $edate->expFile;
             $events[] = $o;
         }
         $events = expSorter::sort(array('array'=> $events, 'sortby'=> 'eventstart', 'order'=> $sort_asc ? 'ASC' : 'DESC'));
@@ -504,8 +543,8 @@ class storeController extends expController {
             'action'    => $this->params['action'],
             'columns'   => array(
                 gt('Type')        => 'product_type',
-                gt('Model #')     => 'model',
                 gt('Product Name')=> 'title',
+                gt('Model #')     => 'model',
                 gt('Price')       => 'base_price'
             )
         ));

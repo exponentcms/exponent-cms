@@ -255,8 +255,8 @@ class eventregistrationController extends expController {
 
 //        if (!empty($this->params['event'])) {
 //            $sess_id = session_id();
-            $sess_id = expSession::getTicketString();
-            $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$sess_id}' AND event_id =" . $this->params['eventregistration']['product_id']);
+//            $sess_id = expSession::getTicketString();
+            $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
             if (!empty($data)) {
                 foreach ($data as $item) {
                     if (!empty($this->params['event'][$item->control_name])) {
@@ -270,13 +270,13 @@ class eventregistrationController extends expController {
                     $obj->event_id        = $this->params['eventregistration']['product_id'];
                     $obj->control_name    = $key;
                     $obj->value           = $value;
-                    $obj->connector_id    = $sess_id;
+                    $obj->connector_id    = $order->id;
                     $obj->registered_date = time();
                     $db->insertObject($obj, "eventregistration_registrants");
                 } else {
                     $obj                  = new stdClass();
                     $obj->event_id        = $this->params['eventregistration']['product_id'];
-                    $obj->connector_id    = $sess_id;
+                    $obj->connector_id    = $order->id;
                     $obj->registered_date = time();
                     $db->insertObject($obj, "eventregistration_registrants");
                 }
@@ -512,7 +512,7 @@ class eventregistrationController extends expController {
 
         foreach ($order_ids_complete as $item) {
 //            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
-            $odr = $db->selectObject("orders", "sessionticket_ticket = {$item} and invoice_id <> 0");
+            $odr = $db->selectObject("orders", "id ='{$item}' and invoice_id <> 0");
             if (!empty($odr) || strpos($item, "admin-created") !== false) {
                 $order_ids[] = $item;
             }
@@ -536,7 +536,7 @@ class eventregistrationController extends expController {
             $control_names[] = $field->name;
         }
 
-        //Check if there are guest
+        //Check if there are guests
         if (!empty($event->num_guest_allowed)) {
             for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
                 if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
@@ -548,7 +548,19 @@ class eventregistrationController extends expController {
                     }
                     $control_names[] = $field->name . "_$i";
                 }
+            }
+        }
 
+        // new method to check for guests/registrants
+        if (!empty($event->num_guest_allowed)) {
+            $registered = array();
+            foreach ($order_ids as $order_id) {
+                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
+                $registered = array_merge($registered,$newregistrants);
+            }
+            $registrants = array();
+            foreach ($registered as $person) {
+                $registrants[] = expUnserialize($person->value);
             }
         }
 
@@ -595,14 +607,19 @@ class eventregistrationController extends expController {
         $email = array_unique($email);
 
         $registered = count($order_ids) + $num_of_guest;
-        $event->registrants = expUnserialize($event->registrants);
+        if (!empty($event->registrants)) {
+            $event->registrants = expUnserialize($event->registrants);
+        } else {
+            $event->registrants = array();
+        }
 
         $event->number_of_registrants = $registered;
         assign_to_template(array(
             'event'=> $event,
-            'header'=> $header,
-            'body'=> $body,
-            'email'=> $email
+            'registrants'=> $registrants,
+//            'header'=> $header,
+//            'body'=> $body,
+//            'email'=> $email
         ));
     }
 
@@ -648,8 +665,9 @@ class eventregistrationController extends expController {
     /**
      * function to return event registrations as calendar events
      *
-     * @param $startdate
-     * @param $enddate
+     * @param        $startdate
+     * @param        $enddate
+     * @param string $color
      *
      * @return array
      */
@@ -668,6 +686,7 @@ class eventregistrationController extends expController {
                 $newevent->body  = $event->body;
                 $newevent->location_data = 'eventregistration';
                 $newevent->color = $color;
+                $newevent->expFile = $event->expFile['mainimage'];
                 $pass_events[$event->eventdate][] = $newevent;
             }
         }

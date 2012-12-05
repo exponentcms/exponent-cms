@@ -33,7 +33,7 @@
     {foreach name=uce from=$page->records item=item}
         {if $smarty.foreach.uce.iteration <= 3}
         <li>
-            <a href="{link section=10 controller=store action=showByTitle title=$item->sef_url}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
+            <a href="{link section=10 controller=eventregistration action=showByTitle title=$item->sef_url}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
             {*<p>{$item->summary|truncate:75:"..."}</p>*}
             <p>{$item->title}</p>
         </li>

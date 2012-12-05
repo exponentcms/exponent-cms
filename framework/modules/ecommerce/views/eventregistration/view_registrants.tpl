@@ -30,6 +30,7 @@
             </div>
         {/permissions}
         <h1>{'Event Info'|gettext}</h1>
+        <h2>{$event->title}</h2>
         {permissions}
             <div class="item-actions">
                 {if $permissions.edit == true}
@@ -50,10 +51,10 @@
             <span class="label">{'Price per person:'|gettext} </span>
             <span class="value">{currency_symbol}{$event->base_price|number_format:2}</span>{br}
             <span class="label">{'Seats Registered:'|gettext} </span>
-            <span class="value">{$event->number_of_registrants} of {$event->quantity}</span>{br}
+            <span class="value">{$registrants|count} of {$event->quantity}</span>{br}
             <span class="label">{'Registration Closes:'|gettext} </span>
             <span class="value">{$event->signup_cutoff|date_format:"%A, %B %e, %Y"}</span>
-        </p>{br}
+        </p>
     </div>
 
     <div class="events">
@@ -66,18 +67,18 @@
                 </tr>
             </thead>
             <tbody>
-                {if $event->registrants|count > 0}
-                    {foreach from=$event->registrants item=user}
-                        {get_user user=$user assign=registrant}
+                {if $registrants|count > 0}
+                    {foreach from=$registrants item=registrant}
+                        {*{get_user user=$user assign=registrant}*}
                         <tr class="{cycle values="odd,even"}">
-                            <td>{$registrant->lastname}, {$registrant->firstname}</td>
-                            <td>{$registrant->email}</td>
-                            <td>{$registrant->phone}</td>
+                            <td>{$registrant.name}</td>
+                            <td>{$registrant.email}</td>
+                            <td>{$registrant.phone}</td>
                         </tr>
                     {/foreach}
                 {else}
                     <tr class="{cycle values="odd,even"}">
-                        <td colspan="3">{'There are currently no registrants.'|gettext}</td>
+                        <td colspan="3">{'There are currently no one registered'|gettext}</td>
                     </tr>
                 {/if}
             </tbody>

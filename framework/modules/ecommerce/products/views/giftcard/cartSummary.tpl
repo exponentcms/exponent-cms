@@ -19,6 +19,7 @@
             {if $item->product->expFile.mainimage[0]->id}
                 {img file_id=$item->product->expFile.mainimage[0]->id  h=50 w=50 zc=1 class="border"}
             {else}
+                {img src="`$asset_path`images/no-image.jpg"}
                 {'No Image Available'|gettext}
             {/if}
         </td>

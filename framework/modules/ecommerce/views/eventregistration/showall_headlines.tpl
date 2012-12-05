@@ -13,11 +13,11 @@
  *
  *}
 {css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
-{literal}
-	.headlines .events {
-		overflow: hidden;
-	}
-{/literal}
+
+{/css}
+
+{css unique="event-listings1" link="`$asset_path`css/eventregistration.css"}
+
 {/css}
 
 <div class="module events showall headlines">
