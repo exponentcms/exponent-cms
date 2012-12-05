@@ -481,7 +481,7 @@ class eventregistrationController extends expController {
         $out .= $body;
 
 //        $fp = BASE . 'tmp/';
-//        $fn = str_replace(' ', '_', $event->title) . '_' . gt('Roster') . '.csv';
+        $fn = str_replace(' ', '_', $event->title) . '_' . gt('Roster') . '.csv';
 //        $f  = fopen($fp . $fn, 'w');
 //        // Put all values from $out to export.csv.
 //        fputs($f, $out);

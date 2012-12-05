@@ -89,7 +89,7 @@
             </tbody>
         </table>
     </div>
-    <h2>
-        <a href="{link controller=eventregistration action=export id=$event->id}">{'Export this Event Roster'|gettext}</a>
-    </h2>
+    {if $registrants|count > 0}
+        {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
+    {/if}
 </div>
