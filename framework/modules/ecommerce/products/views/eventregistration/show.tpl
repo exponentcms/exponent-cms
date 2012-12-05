@@ -12,6 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
  <div class="module store show event-registration">
      <h1>{$product->title}</h1>
      <div class="image">

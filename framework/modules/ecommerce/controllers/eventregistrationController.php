@@ -254,7 +254,7 @@ class eventregistrationController extends expController {
         }
 
 //        if (!empty($this->params['event'])) {
-//            $sess_id = session_id();
+            $sess_id = session_id();
 //            $sess_id = expSession::getTicketString();
             $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
             if (!empty($data)) {
@@ -401,7 +401,7 @@ class eventregistrationController extends expController {
             $header[] = '"Ticket Types"'; //Add some configuration here
         }
 
-        foreach ($event->expDefinableField['registrant'] as $field) {
+        if (!empty($event->expDefinableField['registrant'])) foreach ($event->expDefinableField['registrant'] as $field) {
             $data = expUnserialize($field->data);
             if (!empty($data->caption)) {
                 $header[] = '"' . $data->caption . '"';
@@ -413,7 +413,7 @@ class eventregistrationController extends expController {
 
         if ($event->num_guest_allowed > 0) {
             for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
-                foreach ($event->expDefinableField['guest'] as $field) {
+                if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
                     $data = expUnserialize($field->data);
                     if (!empty($data->caption)) {
                         $header[] = $data->caption . "_$i";
@@ -426,64 +426,102 @@ class eventregistrationController extends expController {
             }
         }
 
-        $out  = implode(",", $header);
-        $out  = $out . "\n";
-        $body = '';
-        foreach ($order_ids as $order_id) {
-            $body .= '"' . date("M d, Y h:i a", $db->selectValue("eventregistration_registrants", "registered_date", "event_id = {$event->id} AND connector_id = '{$order_id}'")) . '",';
-
-            if ($event->hasOptions()) {
-                $or        = new order($order_id);
-                $orderitem = new orderitem();
-                if (isset($or->orderitem[0])) {
-                    $body .= '"' . str_replace("<br />", " ", $orderitem->getOption($or->orderitem[0]->options)) . '",';
-                    ;
-                } else {
-                    $body .= '"",';
-                }
+        // new method to check for guests/registrants
+        if (!empty($event->num_guest_allowed)) {
+            $registered = array();
+            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
+                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
+                $registered = array_merge($registered,$newregistrants);
             }
+//            $registrants = array();
+            foreach ($registered as $key=>$person) {
+                $registered[$key]->person = expUnserialize($person->value);
+            }
+            $header[] = '"Name"';
+            $header[] = '"Phone"';
+            $header[] = '"Email"';
+        }
 
-            foreach ($control_names as $control_name) {
-                $value = $db->selectValue("eventregistration_registrants", "value", "event_id = {$event->id} AND control_name ='{$control_name}' AND connector_id = '{$order_id}'");
-                $body .= '"' . iconv("UTF-8", "ISO-8859-1", $value) . '",';
+        if (LANG_CHARSET == 'UTF-8') {
+            $out = chr(0xEF).chr(0xBB).chr(0xBF);  // add utf-8 signature to file to open appropriately in Excel, etc...
+        } else {
+            $out = "";
+        }
+        $out  .= implode(",", $header);
+        $out  .= "\n";
+        $body = '';
+//        foreach ($order_ids as $order_id) {
+//            $body .= '"' . date("M d, Y h:i a", $db->selectValue("eventregistration_registrants", "registered_date", "event_id = {$event->id} AND connector_id = '{$order_id}'")) . '",';
+//
+//            if ($event->hasOptions()) {
+//                $or        = new order($order_id);
+//                $orderitem = new orderitem();
+//                if (isset($or->orderitem[0])) {
+//                    $body .= '"' . str_replace("<br />", " ", $orderitem->getOption($or->orderitem[0]->options)) . '",';
+//                    ;
+//                } else {
+//                    $body .= '"",';
+//                }
+//            }
+//
+//            foreach ($control_names as $control_name) {
+//                $value = $db->selectValue("eventregistration_registrants", "value", "event_id = {$event->id} AND control_name ='{$control_name}' AND connector_id = '{$order_id}'");
+//                $body .= '"' . iconv("UTF-8", "ISO-8859-1", $value) . '",';
+//            }
+//            $body = substr($body, 0, -1) . "\n";
+//        }
+        foreach ($registered as $person) {
+            $body .= '"' . date("M d, Y h:i a", $person->registered_date) . '",';
+            foreach ($person->person as $value) {
+//                $body .= '"' . iconv("UTF-8", "ISO-8859-1", $value) . '",';
+                $body .= '"' . $value . '",';
             }
             $body = substr($body, 0, -1) . "\n";
         }
         $out .= $body;
 
-        $fp = BASE . 'tmp/';
-        $fn = str_replace(' ', '_', $event->title) . '.csv';
-        $f  = fopen($fp . $fn, 'w');
-        // Put all values from $out to export.csv.
-        fputs($f, $out);
-        fclose($f);
+//        $fp = BASE . 'tmp/';
+//        $fn = str_replace(' ', '_', $event->title) . '_' . gt('Roster') . '.csv';
+//        $f  = fopen($fp . $fn, 'w');
+//        // Put all values from $out to export.csv.
+//        fputs($f, $out);
+//        fclose($f);
 
-        // NO buffering from here on out or things break unexpectedly. - RAM
-        ob_end_clean();
+		// CREATE A TEMP FILE
+		$tmpfname = tempnam(getcwd(), "rep"); // Rig
 
-        // This code was lifted from phpMyAdmin, but this is Open Source, right?
-        // 'application/octet-stream' is the registered IANA type but
-        // MSIE and Opera seems to prefer 'application/octetstream'
-        // It seems that other headers I've added make IE prefer octet-stream again. - RAM
-        $mimetype = 'application/octet-stream;';
+		$handle = fopen($tmpfname, "w");
+		fwrite($handle,$out);
+		fclose($handle);
 
-        header('Content-Type: ' . $mimetype);
-        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        //header("Content-length: ".filesize($file->path));  // for some reason the webserver cant run stat on the files and this breaks.
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Encoding:');
-        header('Content-Disposition: attachment; filename="' . $fn . '";');
-        // IE need specific headers
-        if (EXPONENT_USER_BROWSER == 'IE') {
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            header('Vary: User-Agent');
-        } else {
-            header('Pragma: no-cache');
+		if(file_exists($tmpfname)) {
+            // NO buffering from here on out or things break unexpectedly. - RAM
+            ob_end_clean();
+
+            // This code was lifted from phpMyAdmin, but this is Open Source, right?
+            // 'application/octet-stream' is the registered IANA type but
+            // MSIE and Opera seems to prefer 'application/octetstream'
+            // It seems that other headers I've added make IE prefer octet-stream again. - RAM
+            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
+            header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            header("Content-length: ".filesize($tmpfname));
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Encoding:');
+            header('Content-Disposition: attachment; filename="' . $fn . '";');
+            // IE need specific headers
+            if (EXPONENT_USER_BROWSER == 'IE') {
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                header('Vary: User-Agent');
+            } else {
+                header('Pragma: no-cache');
+            }
+
+            readfile($tmpfname);
+            if (DEVELOPMENT == 0)
+            exit();
         }
-
-        readfile($fp . $fn);
-        exit();
     }
 
     public function get_guest_controls($ajax = '') {
@@ -554,7 +592,7 @@ class eventregistrationController extends expController {
         // new method to check for guests/registrants
         if (!empty($event->num_guest_allowed)) {
             $registered = array();
-            foreach ($order_ids as $order_id) {
+            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
                 $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
                 $registered = array_merge($registered,$newregistrants);
             }

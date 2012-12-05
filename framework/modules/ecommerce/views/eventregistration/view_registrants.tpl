@@ -17,7 +17,11 @@
 
 {/css}
 
-<div class="store showall">
+{css unique="event-show1" link="`$asset_path`css/eventregistration.css"}
+
+{/css}
+
+<div class="store  store show event-registration">
     <div class="form_header">
         {permissions}
             <div class="module-actions">
@@ -42,21 +46,22 @@
             </div>
         {/permissions}
 
-        <p><span class="label">{'Event Date'|gettext}: </span>
+        <div id="eventregform">
+            <span class="label">{'Event Date'|gettext}: </span>
             <span class="value">{$event->eventdate|date_format:"%A, %B %e, %Y"}</span>{br}
             <span class="label">{'Start Time'|gettext}: </span>
             <span class="value">{($event->eventdate+$event->event_starttime)|date_format:"%I:%M %p"}</span>{br}
             <span class="label">{'End Time'|gettext}: </span>
             <span class="value">{($event->eventdate+$event->event_endtime)|date_format:"%I:%M %p"}</span>{br}
             <span class="label">{'Price per person:'|gettext} </span>
-            <span class="value">{currency_symbol}{$event->base_price|number_format:2}</span>{br}
+            <span class="value">{if $event->base_price}{currency_symbol}{$event->base_price|number_format:2}{else}{'No Cost'|gettext}{/if}</span>{br}
             <span class="label">{'Seats Registered:'|gettext} </span>
             <span class="value">{$registrants|count} of {$event->quantity}</span>{br}
             <span class="label">{'Registration Closes:'|gettext} </span>
             <span class="value">{$event->signup_cutoff|date_format:"%A, %B %e, %Y"}</span>
-        </p>
+        </div>
     </div>
-
+    {br}
     <div class="events">
         <table class="exp-skin-table">
             <thead>
@@ -78,13 +83,13 @@
                     {/foreach}
                 {else}
                     <tr class="{cycle values="odd,even"}">
-                        <td colspan="3">{'There are currently no one registered'|gettext}</td>
+                        <td colspan="3">{'There is currently no one registered'|gettext}</td>
                     </tr>
                 {/if}
             </tbody>
         </table>
     </div>
     <h2>
-        <a href="{link controller=eventregistration action=export id=$event->id}">{'Export This Event Data (Experimental)'|gettext}</a>
+        <a href="{link controller=eventregistration action=export id=$event->id}">{'Export this Event Roster'|gettext}</a>
     </h2>
 </div>
