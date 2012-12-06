@@ -411,9 +411,10 @@ class navigationController extends expController {
             // now we're going to grab all the textmodules on this page and build the body for the page based off the content
             // of all the text module added together.
             $loc            = new stdClass();
-            $loc->mod       = $this->baseclassname;
+            $loc->mod       = 'text';
+            $loc->src       = '';
             $loc->int       = '';
-            $controllername = $this->classname;
+            $controllername = 'textController';
             foreach ($db->selectObjects('sectionref', "module='" . $controllername . "' AND section=" . $section->id) as $module) {
                 $loc->src   = $module->source;
                 $controller = new $controllername();
@@ -428,43 +429,6 @@ class navigationController extends expController {
             $db->insertObject($search_record, 'search');
         }
         return count($sections);
-
-        // old method
-        global $db, $router;
-        $count   = 0;
-        $model   = new $this->basemodel_name(null, false, false);
-        $content = $db->selectArrays($model->tablename);
-        foreach ($content as $cnt) {
-            $origid = $cnt['id'];
-            unset($cnt['id']);
-            $sql      = "original_id=" . $origid . " AND ref_module='" . $this->classname . "'";
-            $oldindex = $db->selectObject('search', $sql);
-            if (!empty($oldindex)) {
-                $search_record = new search($oldindex->id, false, false);
-                $search_record->update($cnt);
-            } else {
-                $search_record = new search($cnt, false, false);
-            }
-            //build the search record and save it.
-            $search_record->original_id = $origid;
-            $search_record->posted      = empty($cnt['created_at']) ? null : $cnt['created_at'];
-            // get the location data for this content
-            if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
-            $src = isset($loc->src) ? $loc->src : null;
-            if (!empty($cnt['sef_name'])) {
-                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_name'])));
-            } else {
-                $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'id' => $origid, 'src' => $src)));
-            }
-//	        if (empty($search_record->title)) $search_record->title = 'Untitled';
-            $search_record->view_link  = $link;
-            $search_record->ref_module = $this->classname;
-            $search_record->category   = $this->searchName();
-            $search_record->ref_type   = $this->searchCategory();
-            $search_record->save();
-            $count += 1;
-        }
-        return $count;
     }
 
     /**
