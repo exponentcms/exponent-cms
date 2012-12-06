@@ -15,7 +15,7 @@
 
 <div class="prod-listing">    
     <div class="image">
-        <a href="{link controller=store action=showByTitle title=$listing->sef_url}">
+        <a href="{link controller=store action=show title=$listing->sef_url}">
             {if $listing->expFile.mainimage[0]->id != ""}
                 {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=165 alt=$listing->title}
             {else}
@@ -34,7 +34,7 @@
     </div>
     {/permissions}
 
-    <h3><a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a></h3>
+    <h3><a href="{link controller=store action=show title=$listing->sef_url}">{$listing->title}</a></h3>
     <div class="bodycopy">
         <strong class="date">{$listing->eventdate|date_format:"%a, %B %e"}</strong> -
         {$listing->body}

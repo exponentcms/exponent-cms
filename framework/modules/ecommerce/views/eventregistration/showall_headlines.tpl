@@ -41,8 +41,8 @@
             {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
                 <li>
                     <div class="events">
-                        <a class="link" href="{link action=showByTitle title=$item->sef_url}" title="{'Register for this Event'|gettext}">{$item->title}</a>
-                        <a href="{link action=showByTitle title=$item->sef_url}"></a>
+                        <a class="link" href="{link action=show title=$item->sef_url}" title="{'Register for this Event'|gettext}">{$item->title}</a>
+                        <a href="{link action=show title=$item->sef_url}"></a>
                         - <em class="date">{$item->eventdate|date_format}</em>
                         - {$item->body|summarize:"text":"para"}
                         {if $item->base_price}- {'Cost'|gettext}: {currency_symbol}{$item->base_price}{/if}

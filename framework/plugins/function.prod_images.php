@@ -71,7 +71,7 @@ function smarty_function_prod_images($params,&$smarty) {
         
     switch ($params['display']) {
         case 'single':
-            $html = '<a class="prod-img" href="'.makelink(array("controller"=>"store","action"=>"showByTitle","title"=>$rec->title)).'">';
+            $html = '<a class="prod-img" href="'.makelink(array("controller"=>"store","action"=>"show","title"=>$rec->title)).'">';
                 $width = !empty($params['width']) ? $params['width'] : 100 ;
                 $imgparams = array("constraint"=>1,
                                     "file_id"=>$images[0]->id,

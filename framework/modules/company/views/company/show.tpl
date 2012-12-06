@@ -29,10 +29,10 @@
         {*if $result->canview == 1*}
         <div class="showwrapper">
             <div class="prod-img show-img">
-                <a href="{link controller=store action=showByTitle title=$result->sef_url}">{img file_id=$result->expFile.mainimage[0]->id w=60 h=60}</a>
+                <a href="{link controller=store action=show title=$result->sef_url}">{img file_id=$result->expFile.mainimage[0]->id w=60 h=60}</a>
             </div>
             <div class="item {cycle values="odd,even"} showbody">
-                <span class="showtitle"><a href="{link controller=store action=showByTitle title=$result->sef_url}">{$result->title}{if $result->model}, SKU: {$result->model}{/if}</a></span>
+                <span class="showtitle"><a href="{link controller=store action=show title=$result->sef_url}">{$result->title}{if $result->model}, SKU: {$result->model}{/if}</a></span>
                 {if $result->body != ""}<br /><span class="summary">{$result->body|strip_tags|truncate:240}</span>{/if}
             </div>
             <div class="showrightcol"> 
@@ -49,7 +49,7 @@
                 {/if}
                 </div>
                 <div style="text-align: right;">
-                    <a href="{link controller=store action=showByTitle title=$result->sef_url}" class="exp-ecom-link view-item" rel="nofollow"><strong><em>{'View Item'|gettext}</em></strong></a>
+                    <a href="{link controller=store action=show title=$result->sef_url}" class="exp-ecom-link view-item" rel="nofollow"><strong><em>{'View Item'|gettext}</em></strong></a>
                 </div> 
             </div>
             {clear}

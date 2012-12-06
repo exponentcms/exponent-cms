@@ -30,7 +30,7 @@
             {foreach from=$products item=listing name=listings}
                 <tr class="{cycle values="odd,even"}">
                     <td>{$listing.model|default:"N/A"}</td>
-                    <td><a href={link controller=store action=showByTitle title=$listing.sef_url}>{$listing.title}</a></td>
+                    <td><a href={link controller=store action=show title=$listing.sef_url}>{$listing.title}</a></td>
                     <td>{$listing.nonunicode}</td>
                     <td>
                         {permissions}

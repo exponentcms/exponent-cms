@@ -49,16 +49,16 @@
                         <td>{$listing->product_type}</td>
                         <td>
                             {if $listing->product_type == "eventregistration"}
-                                <a href={link controller=eventregistration action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
+                                <a href={link controller=eventregistration action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
                             {else}
-                                <a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
+                                <a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
                                 {*{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}*}
                             {/if}
                         </td>
                         <td>{$listing->model|default:"N/A"}</td>
                         {*<td>*}
                             {*{if $listing->product_type == "product"}*}
-                                {*<a href={link controller=store action=showByTitle title=$listing->sef_url}>{$listing->title}</a>*}
+                                {*<a href={link controller=store action=show title=$listing->sef_url}>{$listing->title}</a>*}
                             {*{else}*}
                                 {*{$listing->title}*}
                             {*{/if}*}

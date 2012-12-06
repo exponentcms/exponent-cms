@@ -95,7 +95,7 @@
 	<ul>
         {foreach from=$order->orderitem item=oi}
             <li>
-                <a href="{link action=showByTitle controller=store title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} at ${$oi->products_price|number_format:2} each
+                <a href="{link action=show controller=store title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} at ${$oi->products_price|number_format:2} each
                 {$oi->getExtraData()}
             </li>
         {/foreach}

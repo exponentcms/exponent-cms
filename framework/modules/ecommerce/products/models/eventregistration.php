@@ -366,16 +366,18 @@ class eventregistration extends expRecord {
 //        if (!empty($params['event'])) {
 //            $sess_id = session_id();
         $sess_id = expSession::getTicketString();
-        $data = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
-        if (!empty($data)) {
-            //FIXME we are adding updating an existing item in the cart??
-            foreach ($data as $item) {
-                if (!empty($params['event'][$item->control_name])) {
-                    $item->value = serialize($params['event'][$item->control_name]);
-                    $db->updateObject($item, "eventregistration_registrants");
-                }
-            }
-        } else {
+        //FIXME for now we'll just add a new registration 'purchase' to the cart since that's the way the code flows.
+//        $data = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
+//        if (!empty($data)) {
+//            //FIXME we are adding updating an existing item in the cart??
+//            // we're only updating the items that were already in the cart?  what if more or less were added.
+//            foreach ($data as $item) {
+//                if (!empty($params['event'][$item->control_name])) {
+//                    $item->value = serialize($params['event'][$item->control_name]);
+//                    $db->updateObject($item, "eventregistration_registrants");
+//                }
+//            }
+//        } else {
             // new reservation
             if (!empty($params['event'])) foreach ($params['event'] as $key => $value) {
                 $obj = new stdClass();
@@ -392,7 +394,7 @@ class eventregistration extends expRecord {
                 $obj->registered_date = time();
                 $db->insertObject($obj, "eventregistration_registrants");
             }
-        }
+//        }
         expSession::set('session_id', $sess_id);
 //        }
 
@@ -500,6 +502,8 @@ class eventregistration extends expRecord {
 
     public function getForm($form) {
         $dirs = array(
+            BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/views/' . $this->product_type . '/',  // make sure we check the controller view first
+            BASE . 'framework/modules/ecommerce/views/' . $this->product_type . '/',
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/' . $this->product_type . '/',
             BASE . 'framework/modules/ecommerce/products/views/' . $this->product_type . '/',
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/product/',

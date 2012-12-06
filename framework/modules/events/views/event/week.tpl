@@ -38,7 +38,7 @@
 				<dd>
                     <a class="itemtitle{if $config.usecategories && !empty($item->color)} class="{$item->color}"{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
-                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                         {/if}
                         title="{$item->body|summarize:"html":"para"}">{$item->title}
                      </a>

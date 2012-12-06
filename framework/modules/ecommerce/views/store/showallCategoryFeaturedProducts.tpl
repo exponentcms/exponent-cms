@@ -42,7 +42,7 @@
                     {'No Image'|gettext}
                 {/if}
                 <div class="bodycopy">
-                    <a href="{link controller=store action=showByTitle title=$listing->title}">{$listing->title}</a>
+                    <a href="{link controller=store action=show title=$listing->title}">{$listing->title}</a>
                 </div>
             </div>
         {/if}

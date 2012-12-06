@@ -116,7 +116,8 @@ class companyController extends expController {
             'defaultSort'=>$defaultSort
         ));
     }
-    
+
+    //TODO this is a misnomer as we only accept an id NOT a title and duplicates the show() method
     function showByTitle()
     {
         global $db, $user, $router;

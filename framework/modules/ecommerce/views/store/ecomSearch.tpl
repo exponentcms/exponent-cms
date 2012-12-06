@@ -59,7 +59,7 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
     });
     
     autocomplete.ac.on('select', function (e) {
-        window.location = EXPONENT.PATH_RELATIVE+"store/showByTitle/title/"+e.result.raw.sef_url;
+        window.location = EXPONENT.PATH_RELATIVE+"store/show/title/"+e.result.raw.sef_url;
         return e.result.raw.title;
     });
     

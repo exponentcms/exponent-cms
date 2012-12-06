@@ -15,9 +15,9 @@
 
 <div class="product">
     {if $listing->availability_type != 3 && $listing->active_type == 0}
-        <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>   
+        <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>
         {*if $listing->hasChildren()}            
-            <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>   
+            <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>
         {else}
             {form id="addtocart`$listing->id`" controller=cart action=addItem} 
                 {control type="hidden" name="product_id" value="`$listing->id`"}   
@@ -30,9 +30,9 @@
         {/if*}
     {else}
         {if $listing->active_type == 1}
-            <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} grey">{"View Item"|gettext}</a>   
+            <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} grey">{"View Item"|gettext}</a>
         {elseif $listing->active_type == 2 && $user->isAdmin()}
-            <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} red">{"View Item"|gettext}</a>   
+            <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} red">{"View Item"|gettext}</a>
         {/if}
     {/if}
     <div class="prod-price"> 
@@ -62,15 +62,15 @@
         </div>
     {/permissions}
 
-    <a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">
+    <a href="{link controller=store action=show title=$listing->sef_url}" class="prod-img">
         {img file_id=$listing->expFile.mainimage[0]->id w=140 h=150}
     </a>
 
     <h3>
-        <a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a>
+        <a href="{link controller=store action=show title=$listing->sef_url}">{$listing->title}</a>
     </h3>   
 
-    <!-- a href="{link controller=store action=showByTitle title=$listing->sef_url}" class="prod-img">
+    <!-- a href="{link controller=store action=show title=$listing->sef_url}" class="prod-img">
         {img file_id=$listing->expFile.mainimage[0]->id w=135}
     </a>
     

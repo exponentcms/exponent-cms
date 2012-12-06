@@ -79,7 +79,7 @@
                                         {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
                                     {/if}
                                     {$title = $title|cat:'-'|cat:$item->body|summarize:"html":"para"}
-                                    <a href="{link controller=eventregistration action=showByTitle title=$item->sef_url}" {if $config.lightbox}class="calpopevent" id="{$item->sef_url}"{/if}
+                                    <a href="{link controller=eventregistration action=show title=$item->sef_url}" {if $config.lightbox}class="calpopevent" id="{$item->sef_url}"{/if}
                                         title="{$title}">
                                         {if $item->expFile.mainimage[0]->url != ""}
                                             <div class="image">
@@ -144,7 +144,7 @@
         YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.calpopevent"), "click", function (e) {
             YAHOO.util.Event.preventDefault(e);
             target = YAHOO.util.Event.getTarget(e);
-            lb2.cfg.contentURL = EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=showByTitle&ajax_action=1&title="+target.id;
+            lb2.cfg.contentURL = EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=show&ajax_action=1&title="+target.id;
             lb2.show(e);
         }, lb2, true);
     });

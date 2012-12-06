@@ -175,6 +175,36 @@ class eventregistrationController extends expController {
         redirect_to(array('controller'=> 'eventregistrations', 'action'=> 'showall'));
     }
 
+    function show() {
+        global $order, $template, $user;
+
+        expHistory::set('viewable', $this->params);
+        if (!empty($this->params['token'])) {
+            $record = expSession::get("last_POST_Paypal");
+        } else {
+            $record = expSession::get("last_POST");
+        }
+        $id = isset($this->params['title']) ? addslashes($this->params['title']) : $this->params['id'];
+        $product = new eventregistration($id);
+
+        //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
+        $product_type = new stdClass();
+        if ($product->active_type == 1) {
+            $product_type->user_message = "This product is temporarily unavailable for purchase.";
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
+            flash("error", $product->title . " " . gt("is currently unavailable."));
+            expHistory::back();
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
+            $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
+        }
+
+        //eDebug($product, true);
+        assign_to_template(array(
+            'product'=> $product,
+            'record'=> $record
+        ));
+    }
+
     function showByTitle() {
         global $order, $template, $user;
         expHistory::set('viewable', $this->params);
@@ -185,6 +215,7 @@ class eventregistrationController extends expController {
         }
         $product = new eventregistration(addslashes($this->params['title']));
 
+        //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
         $product_type = new stdClass();
         if ($product->active_type == 1) {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";
@@ -216,7 +247,7 @@ class eventregistrationController extends expController {
         expHistory::set('viewable', $this->params);
         expSession::set('last_POST_Paypal', $this->params);
         expSession::set('terms_and_conditions', $product->terms_and_condition); //FIXME $product doesn't exist
-        expSession::set('paypal_link', makeLink(array('controller'=> 'eventregistration', 'action'=> 'showByTitle', 'title'=> $product->sef_url)));
+        expSession::set('paypal_link', makeLink(array('controller'=> 'eventregistration', 'action'=> 'show', 'title'=> $product->sef_url)));
 
         //Validation for customValidation
         foreach ($this->params['event'] as $key => $value) {

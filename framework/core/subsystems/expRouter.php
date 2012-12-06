@@ -330,7 +330,7 @@ class expRouter {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
                         $this->url_parts[0] = 'store'; //controller
-                        $this->url_parts[1] = 'showByTitle'; //controller
+                        $this->url_parts[1] = 'show'; //controller
                         $this->url_parts[2] = 'title'; //controller
                         $this->url_parts[3] = $sef_name; //controller
                         //eDebug($this->url_parts,true);

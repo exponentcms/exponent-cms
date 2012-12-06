@@ -712,7 +712,7 @@ class product extends expRecord {
         $search->original_id = $this->id;
         $search->title = $this->title . " SKU: " . $this->model;
         //$search->view_link = $router->buildUrlByPageId($section->id);
-        $link = $router->makeLink(array('controller'=>'store', 'action'=>'showByTitle', 'title'=>$this->sef_url));
+        $link = $router->makeLink(array('controller'=>'store', 'action'=>'show', 'title'=>$this->sef_url));
         $search->view_link = $link; 
         $search->body = $this->body;
         $search->keywords = $this->keywords;

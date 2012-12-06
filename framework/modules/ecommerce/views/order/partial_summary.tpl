@@ -29,7 +29,7 @@
                 <tr class={cycle values="even,odd"}>
                     <td>
                         {if $oi->product_type == "product" || $oi->product_type == "childProduct"}
-                            <a href='{link action="showByTitle" controller="store" title="`$oi->product->getSEFURL()`"}'>
+                            <a href='{link action="show" controller="store" title="`$oi->product->getSEFURL()`"}'>
                                 {$oi->products_name}
                             </a>
                         {else}
