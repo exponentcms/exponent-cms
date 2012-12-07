@@ -23,7 +23,8 @@
 
 #menu a.current {
     background-color      : #ace2ff;
-    padding-bottom        : 4px;
+    /*padding-bottom        : 4px;*/
+    padding        : 4px;
     /* Rounded Corners */
     -moz-border-radius    : 5px;
     -webkit-border-radius : 5px;
@@ -34,6 +35,11 @@
 #menu li.current {
     background-color   : #027dcd;
     /*padding            : 5px 15px;*/
+    /* Rounded Corners */
+    -moz-border-radius    : 5px;
+    -webkit-border-radius : 5px;
+    -khtml-border-radius  : 5px;
+    border-radius         : 5px;
     /* Shadow */
     -moz-box-shadow    : 3px 3px 5px #666666;
     -webkit-box-shadow : 3px 3px 5px #666666;

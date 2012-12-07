@@ -139,7 +139,7 @@ class blogController extends expController {
 		            
 		assign_to_template(array(
             'page'=>$page,
-            'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date).'"')
+            'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date,"%B %Y").'"')
         );
 	}
 	
