@@ -14,9 +14,10 @@ function adminer_object() {
         // specify enabled plugins here
         new AdminerEditCalendar,
         new AdminerCKeditor,
-        new AdminerEditTextarea,
+//        new AdminerEditTextarea,
         new AdminerEnumOption,
         new AdminerTablesFilter,
+        new AdminerEditTextSerializedarea,
         //new AdminerEmailTable,
         //new AdminerEditForeign,
         //new AdminerForeignSystem,
