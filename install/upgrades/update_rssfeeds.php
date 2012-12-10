@@ -84,6 +84,12 @@ class update_rssfeeds extends upgradescript {
         	$params['rss_cachetime'] = !empty($config['rss_cachetime']) ? $config['rss_cachetime'] : 1440;
             if (!empty($config['itunes_cats'])) $params['itunes_cats'] = $config['itunes_cats'];
             $rssfeed = new expRss($params);
+            // now check for duplicate sef_url and create a unique one if needed
+            $dupefeed = $rssfeed->find('all',"sef_url='".$params['sef_url']."'");
+            if (!empty($dupefeed)) {
+                list($u, $s) = explode(' ',microtime());
+                $params['sef_url'] .= '-'.$s.'-'.$u;
+            }
             $rssfeed->update($params);
             // backfill the rss sef_url into the module config
             if (empty($config['feed_sef_url'])) {
