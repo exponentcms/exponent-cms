@@ -56,6 +56,20 @@ class expLang {
         $default_lang_file = BASE."framework/core/lang/English - US.php";
         $cur_lang = include(BASE."framework/core/lang/".utf8_decode(LANG).".php");
         $target_lang_file = BASE."framework/core/lang/".utf8_decode(LANG).".php";
+
+        // here's where we locate and merge custom module language files
+        $dir = THEME_ABSOLUTE.'modules';
+        if (is_readable($dir)) {
+            $dh = opendir($dir);
+            while (($f = readdir($dh)) !== false) {
+                if (is_dir($dir . '/' . $f)) {
+                    if ((is_readable($dir . '/' . $f . '/' . utf8_decode(LANGUAGE) . '.php'))) {
+                        $custom_lang = include($dir . '/' . $f . '/' . utf8_decode(LANGUAGE) . '.php');
+                        $cur_lang = array_merge($cur_lang,$custom_lang);
+                    }
+                }
+            }
+        }
     }
     
 	public static function gettext($str) {

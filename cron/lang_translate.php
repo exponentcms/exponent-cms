@@ -17,7 +17,8 @@
 ##################################################
 
 /**
- * lang_translate.php - attempts to auto-translate ExponentCMS language files
+ * lang_translate.php - attempts to auto-translate current ExponentCMS language (file)
+ * Requires the 'BING_API' constant be set to the API code for you Bing account
  */
 
 // Initialize the exponent environment
@@ -30,6 +31,7 @@ if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/Engl
 if (LANGUAGE=="English - US") {
     print "You can't update the current language 'English - US' which is also the default translation!\n";
     print "Create and/or Switch to another Translation using Manage Translations!\n";
+    print "Or use the 'lang_extract.php' script to add new phrases to it.\n";
     exit;
 } elseif (!is_readable(BASE . 'framework/core/lang/' . utf8_decode(LANGUAGE) . '.php')) {
     print "The '".utf8_decode(LANGUAGE)."' Translation doesn't seem to exist yet!\n";
