@@ -84,4 +84,3 @@
 			{/if}
 		{/foreach}
 	</dl>
-</div>
