@@ -17,7 +17,7 @@
 /** @define "BASE" "../../.." */
 
 class calendarmodule {
-    function name() { return $this->displayname(); }
+    function name() { return self::displayname(); }
     static function displayname() { return 'Calendar (Deprecated)'; }
     static function author() { return 'OIC Group, Inc'; }
     static function description() { return 'Allows posting of content to a calendar.'; }

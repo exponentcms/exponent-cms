@@ -38,7 +38,7 @@ if (expPermissions::check("create",$loc) ||
 	$container = container::update($_POST,$container,$loc);
 	
 	if (isset($container->id)) {
-		$db->updateObject($container,"container");
+		$ret = $db->updateObject($container,"container");
 	} else {
 		$db->insertObject($container,"container");
 	}
