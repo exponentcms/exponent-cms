@@ -31,7 +31,7 @@ class expRss extends expRecord {
         //'content_expComments'=>'expComment',
         //'content_expSimpleNote'=>'expSimpleNote',
     );
-    
+
     public function __construct($params=array()) {
         global $db;
         if (is_int($params) || is_string($params)) {
@@ -54,7 +54,7 @@ class expRss extends expRecord {
 	// override the update function in order to make sure we don't save duplicate entries
 	// as save called from expController does not have an id set.
 	public function update($params=array()){
-		
+		//FIXME do we really need to sub class this since we just call parent?
 		parent::update($params);
 	}
 	
