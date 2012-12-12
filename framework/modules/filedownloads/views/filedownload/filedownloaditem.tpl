@@ -28,9 +28,9 @@
     {if $config.quick_download}
         <h3{if $config.usecategories} class="{$cat->color}"{/if}>
             {if $file->ext_file}
-                <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
+                <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank">{$file->title}</a>
             {else}
-                {icon action=downloadfile fileid=$file->id text='Download'|gettext}
+                {icon action=downloadfile fileid=$file->id text=$file->title}
             {/if}
         </h3>
     {else}
