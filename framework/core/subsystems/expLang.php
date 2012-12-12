@@ -63,8 +63,8 @@ class expLang {
             $dh = opendir($dir);
             while (($f = readdir($dh)) !== false) {
                 if (is_dir($dir . '/' . $f)) {
-                    if ((is_readable($dir . '/' . $f . '/' . utf8_decode(LANGUAGE) . '.php'))) {
-                        $custom_lang = include($dir . '/' . $f . '/' . utf8_decode(LANGUAGE) . '.php');
+                    if ((is_readable($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php'))) {
+                        $custom_lang = include($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php');
                         $cur_lang = array_merge($cur_lang,$custom_lang);
                     }
                 }

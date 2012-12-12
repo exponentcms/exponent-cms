@@ -45,7 +45,7 @@
  *
  */
 
-define('DEVELOPMENT','1');
+if (!defined('DEVELOPMENT')) define('DEVELOPMENT','1');
 define('WRITE_LANG_TEMPLATE', DEVELOPMENT);
 
 // Initialize the exponent environment

@@ -162,8 +162,8 @@
     gt('Show all Donation Causes');
 
 // other phrases
-    gt('Sectional');
-    gt('Global');
+    gt('sectional');
+    gt('global');
     gt('Merge');
     gt('Accessible only to Web Server');
     gt('World Readable and Writable');

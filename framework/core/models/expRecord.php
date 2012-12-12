@@ -51,6 +51,9 @@ class expRecord {
     protected $attachable_item_types = array();
     public $attachable_items_to_save;
 
+    // for segregating items into uniqueness within a subgroup instead of unique amongst all items
+    public $grouping_sql = '';
+
     /* protected $attachable_item_types = array(
         'content_expCats'=>'expCat'
         'content_expComments'=>'expComment',
@@ -342,7 +345,7 @@ class expRecord {
         global $db;
         if (!empty($this->rank)) {
             $next_prev = $direction == 'up' ? $this->rank - 1 : $this->rank + 1;
-            $where .= empty($this->location_data) ? null : "location_data='" . $this->location_data . "'";
+            $where .= empty($this->location_data) ? null : "location_data='" . $this->location_data . "'" . $this->grouping_sql;
             $db->switchValues($this->tablename, 'rank', $this->rank, $next_prev, $where);
         }
     }
@@ -452,8 +455,8 @@ class expRecord {
 
         if (property_exists($this, 'sef_url') && !(in_array('sef_url', $this->do_not_validate))) {
             if (empty($this->sef_url)) $this->makeSefUrl();
-            $this->validates['is_valid_sef_name']['sef_url'] = array();
-            $this->validates['uniqueness_of']['sef_url']     = array();
+            if (!isset($this->validates['is_valid_sef_name']['sef_url'])) $this->validates['is_valid_sef_name']['sef_url'] = array();
+            if (!isset($this->validates['uniqueness_of']['sef_url'])) $this->validates['uniqueness_of']['sef_url']         = array();
         }
 
         // safeguard again loc data not being pass via forms...sometimes this happens when you're in a router
@@ -531,12 +534,12 @@ class expRecord {
                     //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";
                     $groupby = empty($this->location_data) ? null : 'location_data';
                     $groupby .= empty($this->rank_by_field) ? null : (empty($groupby) ? null : ',' . $this->rank_by_field);
-                    $this->rank = $db->max($this->tablename, 'rank', $groupby, $where) + 1;
+                    $this->rank = $db->max($this->tablename, 'rank', $groupby, $where . $this->grouping_sql) + 1;
                 } else {
                     // check if this rank is already there..if so increment everything below it.
-                    $obj = $db->selectObject($this->tablename, 'rank=' . $this->rank);
+                    $obj = $db->selectObject($this->tablename, 'rank=' . $this->rank . $this->grouping_sql);
                     if (!empty($obj)) {
-                        $db->increment($this->tablename, 'rank', 1, 'rank>=' . $this->rank);
+                        $db->increment($this->tablename, 'rank', 1, 'rank>=' . $this->rank . $this->grouping_sql);
                     }
                 }
             }
@@ -671,7 +674,7 @@ class expRecord {
         $this->beforeDelete();
         $db->delete($this->tablename, 'id=' . $this->id);
         if (!empty($where)) $where .= ' AND ';  // for help in reranking, NOT deleting object
-        if (property_exists($this, 'rank')) $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank);
+        if (property_exists($this, 'rank')) $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $this->grouping_sql);
 
         // delete attached items
         foreach ($this->attachable_item_types as $content_table=> $type) {
@@ -723,12 +726,11 @@ class expRecord {
 		} else {
 			$this->sef_url = $router->encode('Untitled');
 		}
-        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"');
+        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"' . $this->grouping_sql);
 		if (!empty($dupe)) {
 			list($u, $s) = explode(' ',microtime());
 			$this->sef_url .= '-'.$s.'-'.$u;
 		}
-//        $this->sef_url = expCore::makeSefUrl($this->title, $this->tablename);  //FIXME? this is for 'sef_name', NOT 'sef_url'
         $this->runCallback('makeSefUrl');
     }
 
