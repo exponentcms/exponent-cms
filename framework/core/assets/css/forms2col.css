@@ -8,6 +8,8 @@
     float: left;
     width: 150px;  /* non-flexible part truncates label */
     text-align: right;
+    white-space: normal;
+    line-height: normal;
 }
 
 .control.radio .label {
