@@ -1,5 +1,5 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-CKEditor,3.6.5,ckeditor.com,3.6.5,
+CKEditor,3.6.5,ckeditor.com,4,
 FlowPlayer,3.2.15,flowplayer.org,3.2.15./5.2.0,
 Swift,4.2.2,swiftmailer.org,4.2.2,
 ups-php,0.2,code.google.com/p/ups-php,0.2,
@@ -9,7 +9,7 @@ Smarty,3.1.12,smarty.net,3.1.12,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.1.5,github.com/mrclay/minify,2.1.5,
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.7.3,developer.yahoo.com/yui/3,3.7.3,
+YUI3,3.7.3,developer.yahoo.com/yui/3,3.8.0,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11,code.google.com/p/recaptcha,1.11,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
@@ -18,7 +18,7 @@ Twitter model,2.1.2,classes.verkoyen.eu/twitter_oauth,2.1.2,placed in Twitter mo
 SimplePie,1.3,simplepie.org,1.3.1,compiled version placed in News module/replace Magpierss
 pixidou,0.1,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.31,www.verot.net/php_class_upload.htm,0.31,"placed in Pixidou module, editted _destruct"
-dompdf,6.0b3,code.google.com/p/dompdf,6.0b3,
+dompdf,6.0b3,code.google.com/p/dompdf,6.0b3,patched to display our images
 iCalCreator,2.14,kigkonsult.se/iCalcreator,2.16,comment out timezone in config
 lessphp,0.38,leafo.net/lessphp,0.38,
 jQuery,1.8.3,jquery.com,1.8.3,
