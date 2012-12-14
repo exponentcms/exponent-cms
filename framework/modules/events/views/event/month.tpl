@@ -84,7 +84,8 @@
                                         {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
                                     {/if}
                                     {$title = $title|cat:'-'|cat:$item->body|summarize:"html":"para"}
-                                    <a class="{if $config.usecategories && !empty($item->color)}{$item->color}{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} calpopevent{/if}"
+                                    {if $item->is_cancelled}{$title = 'Event Cancelled'|gettext|cat:"\n"|cat:$title}{/if}
+                                    <a class="{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} calpopevent{/if}"
                                         {$style}{if $config.show_allday && $item->is_allday == 1} style="border-color: {$item->color|brightness:+150};border-style: solid;padding-left: 2px;border-top: 0;border-bottom: 0;border-right: 0;"{/if}
                                         {if substr($item->location_data,1,8) != 'calevent'}href="{if $item->location_data != 'eventregistration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                                             {if $item->date_id}id={$item->date_id}{/if}

@@ -38,6 +38,7 @@
                     {control type=text name=title label="Title"|gettext value=$record->title}
                 	{control type="editor" name="body" label="Body"|gettext value=$record->body}
                 	{control type="checkbox" name="is_featured" label="Feature this Event?"|gettext value=1 checked=$record->is_featured}
+                    {control type="checkbox" name="is_cancelled" label="Cancel this Event?"|gettext value=1 checked=$record->is_cancelled}
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
                     {/if}

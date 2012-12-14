@@ -37,7 +37,8 @@
             {clear}
         </div>
     {/if}
-	<h2>
+    {if $item->is_cancelled}<h2 class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</h2>{/if}
+	<h2{if $item->is_cancelled} class="cancelled"{/if}>
         {ical_link}
 		{$item->title}
 	</h2>

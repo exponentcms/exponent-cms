@@ -53,6 +53,8 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'is_featured'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'is_cancelled'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'is_recurring'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'feedback_form'=>array(
