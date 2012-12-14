@@ -746,45 +746,19 @@ class eventController extends expController {
                         }
                     }
 
+                    $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
+                    if ($items[$i]->is_cancelled) $body = gt('This Event Has Been Cancelled') . ' - ' . $body;
+                    $body = str_replace(array("\r"), "", $body);
+                    $body = str_replace(array("&#160;"), " ", $body);
+                    $body = expString::convertSmartQuotes($body);
                     if (!isset($this->params['style'])) {
                         // it's going to Outlook so remove all formatting from body text
-                        //		$body = chop(strip_tags(str_replace(array("<br />","<br>","br/>","\r","\n"),"\r\n",$items[$i]->body)));
-                        //		$body = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\r",$items[$i]->body)));
-                        //		$body = str_replace(array("\r","\n"), "=0D=0A=", $body);
-                        $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
-                        $body = str_replace(array("\r"), "", $body);
-                        $body = str_replace(array("&#160;"), " ", $body);
-                        $body = expString::convertSmartQuotes($body);
                         $body = quoted_printable_encode($body);
-                        //		$body = str_replace(array("\n"), "=0D=0A", $body);
-
-                        // $body = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\r",$items[$i]->body)));
-                        // $body = wordwrap($body);
-                        // $body = str_replace("\n","\n  ",$body);
-
-                        //		$body = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\r",$items[$i]->body)));
-                        //		$body = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$items[$i]->body)));
-                        //		$body = str_replace(array("\r","\n"), "=0D=0A=", $body);
-                        //		$body = str_replace(array("\r"), "=0D=0A=", $body);
-                        //		$body = str_replace(array("\r","\n"), "\r\n", $body);
-
                     } elseif ($this->params['style'] == "g") {
                         // It's going to Google (doesn't like quoted-printable, but likes html breaks)
-                        $body = $items[$i]->body;
-                        $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
-                        //				$body = chop(strip_tags($items[$i]->body,"<br><p>"));
-                        $body = str_replace(array("\r"), "", $body);
-                        $body = str_replace(array("&#160;"), " ", $body);
-                        $body = expString::convertSmartQuotes($body);
                         $body = str_replace(array("\n"), "<br />", $body);
                     } else {
                         // It's going elsewhere (doesn't like quoted-printable)
-                        $body = $items[$i]->body;
-                        $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
-                        //				$body = chop(strip_tags($items[$i]->body,"<br><p>"));
-                        $body = str_replace(array("\r"), "", $body);
-                        $body = str_replace(array("&#160;"), " ", $body);
-                        $body = expString::convertSmartQuotes($body);
                         $body = str_replace(array("\n"), " -- ", $body);
                     }
                     $title = $items[$i]->title;
@@ -796,7 +770,6 @@ class eventController extends expController {
                     if ($title) {
                         $msg .= "SUMMARY:$title\n";
                     }
-                    //			if($body) { $msg .= "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:".quoted_printable_encode($body)."\n";}
                     if ($body) {
                         $msg .= "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $body . "\n";
                     }
