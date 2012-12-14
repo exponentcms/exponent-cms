@@ -241,21 +241,40 @@ class expPaginator {
                $orderby = explode(",",$this->order);
                $order = $orderby[0];
             }
-            foreach ($this->records as $record) {
-                if (is_string($record->$order) && !is_numeric($record->$order)) {
-                    $title = ucfirst($record->$order);
-                    $title = empty($title[0])?'':$title[0];
-                } else {
-                    $title = '';
+            if (in_array($order,array('created_at','edited_at','publish'))) {
+                foreach ($this->records as $record) {
+                    if (is_numeric($record->$order)) {
+                        $title = date('M Y',$record->$order);
+                        $title = empty($title)?gt('Undated'):$title;
+                    } else {
+                        $title = gt('Undated');
+                    }
+                    if (empty($this->cats[$title])) {
+                        $this->cats[$title] = new stdClass();
+                        $this->cats[$title]->count = 1;
+                        $this->cats[$title]->name = $title;
+                    } else {
+                        $this->cats[$title]->count += 1;
+                    }
+                    $this->cats[$title]->records[] = $record;
                 }
-                if (empty($this->cats[$title])) {
-                    $this->cats[$title] = new stdClass();
-                    $this->cats[$title]->count = 1;
-                    $this->cats[$title]->name = $title;
-                } else {
-                    $this->cats[$title]->count += 1;
+            } else {
+                foreach ($this->records as $record) {
+                    if (is_string($record->$order) && !is_numeric($record->$order)) {
+                        $title = ucfirst($record->$order);
+                        $title = empty($title[0])?'':$title[0];
+                    } else {
+                        $title = '';
+                    }
+                    if (empty($this->cats[$title])) {
+                        $this->cats[$title] = new stdClass();
+                        $this->cats[$title]->count = 1;
+                        $this->cats[$title]->name = $title;
+                    } else {
+                        $this->cats[$title]->count += 1;
+                    }
+                    $this->cats[$title]->records[] = $record;
                 }
-                $this->cats[$title]->records[] = $record;
             }
         }
         if (!empty($this->grouplimit)) {
