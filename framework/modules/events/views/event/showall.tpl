@@ -62,6 +62,8 @@
 	{/permissions}
     <div id="popup">
         <a href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
+        <div id="lb-bg" style="display:none;">
+        </div>
         <div id="month-cal">
             {include 'month.tpl'}
         </div>
@@ -127,8 +129,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
                 var url = n.get('href');
                 Y.Get.css(url);
             });
+            Y.one('#lb-bg').setStyle('display','none');
+//            monthcal.setStyle('opacity',1);
         } else {
             Y.one('#month-cal.loadingdiv').remove();
+            monthcal.setContent('Unable to load content');
+            monthcal.setStyle('opacity',1);
         }
 	};
 
@@ -146,7 +152,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
+//        monthcal.setStyle('opacity',0.5);
+//        Y.one('#lb-bg').setStyle('display','block');
     }, 'a.nav');
+
 });
 {/literal}
 {/script}

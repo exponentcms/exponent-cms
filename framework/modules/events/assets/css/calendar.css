@@ -222,6 +222,16 @@ dl.viewweek {
     border-top : 1px solid;
 }
 
+.events .cancelled {
+    color: red;
+    text-decoration: line-through;
+}
+
+.events .cancelled-label {
+    color: red;
+    font-weight: bold;
+}
+
 /* BASIC CALENDAR LINK STYLES */
 
 .events .addevent {
@@ -283,4 +293,18 @@ a.cats {
     text-align : center;
     display    : block;
     z-index    : 999;
+}
+
+#lb-bg {
+    position   : absolute;
+    top        : 0;
+    bottom     : 0;
+    left       : 0;
+    right      : 0;
+    background : black;
+    opacity    : .25;
+    /* IE8 */
+    -ms-filter : "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+    /* IE7 */
+    filter     : alpha(opacity = 25);
 }
