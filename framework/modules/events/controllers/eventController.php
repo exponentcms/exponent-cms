@@ -544,6 +544,28 @@ class eventController extends expController {
         expHistory::back();
     }
 
+    /**
+   	 * get the metainfo for this module
+   	 * @return array
+   	 */
+   	function metainfo() {
+       global $router;
+
+       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
+           // look up the record.
+           $object = new eventdate(intval($_REQUEST['date_id']));
+           // set the meta info
+           if (!empty($object)) {
+               $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
+               $metainfo['keywords'] = empty($object->event->meta_keywords) ? SITE_KEYWORDS : $object->event->meta_keywords;
+               $metainfo['description'] = empty($object->event->meta_description) ? SITE_DESCRIPTION : $object->event->meta_description;
+           }
+           return $metainfo;
+       } else {
+           return parent::metainfo();
+       }
+   }
+
     function send_feedback() {
         $success = false;
         if (isset($this->params['id'])) {

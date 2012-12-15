@@ -189,9 +189,9 @@ class expTheme {
             $controller = new $classname();
             $metainfo = $controller->metainfo();
         } else {
-            $metainfo['title'] = ($sectionObj->page_title == "") ? SITE_TITLE : $sectionObj->page_title;
-	        $metainfo['keywords'] = ($sectionObj->keywords == "") ? SITE_KEYWORDS : $sectionObj->keywords;
-	        $metainfo['description'] = ($sectionObj->description == "") ? SITE_DESCRIPTION : $sectionObj->description;
+            $metainfo['title'] = empty($sectionObj->page_title) ? SITE_TITLE : $sectionObj->page_title;
+	        $metainfo['keywords'] = empty($sectionObj->keywords) ? SITE_KEYWORDS : $sectionObj->keywords;
+	        $metainfo['description'] = empty($sectionObj->description) ? SITE_DESCRIPTION : $sectionObj->description;
         }
 
         return $metainfo;
