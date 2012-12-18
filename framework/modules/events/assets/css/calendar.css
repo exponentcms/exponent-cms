@@ -128,6 +128,10 @@
     border-radius         : 5px;
 }
 
+.events.default .calevent .icalpopevent {
+    cursor: pointer;
+}
+
 .events.default td.today a.edit {
     text-transform : capitalize;
     background     : url(../../../../core/assets/images/edit.png) no-repeat 0 50%;
