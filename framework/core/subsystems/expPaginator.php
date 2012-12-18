@@ -242,9 +242,14 @@ class expPaginator {
                $order = $orderby[0];
             }
             if (in_array($order,array('created_at','edited_at','publish'))) {
+                if (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2)) {
+                    $datetype = 'Y';  // more than 2 years of records, so break down by year
+                } else {
+                    $datetype = 'M Y';  // less than 2 years of records, so break down by month/year
+                }
                 foreach ($this->records as $record) {
                     if (is_numeric($record->$order)) {
-                        $title = date('M Y',$record->$order);
+                        $title = date($datetype,$record->$order);
                         $title = empty($title)?gt('Undated'):$title;
                     } else {
                         $title = gt('Undated');
