@@ -551,6 +551,7 @@ class eventController extends expController {
    	function metainfo() {
        global $router;
 
+       // look for event date_id which expController::metainfo won't detect
        if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
            // look up the record.
            $object = new eventdate(intval($_REQUEST['date_id']));
@@ -1113,7 +1114,11 @@ class eventController extends expController {
                 $endDay = date('j', $enddate);
             }
             $eventArray = $v->selectComponents($startYear, $startMonth, $startDay, $endYear, $endMonth, $endDay, 'vevent');
+            // Set the timezone to GMT
+//            @date_default_timezone_set('GMT');
             $tzarray = getTimezonesAsDateArrays($v);
+            // Set the default timezone
+//            @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
             $url = 0;
             if (!empty($eventArray)) foreach ($eventArray as $year => $yearArray) {
                 if (!empty($yearArray)) foreach ($yearArray as $month => $monthArray) {
@@ -1128,12 +1133,20 @@ class eventController extends expController {
                             $dtstart = $vevent->getProperty('dtstart', false, true);
                             $dtend = $vevent->getProperty('dtend', false, true);
                             $tzoffsets = array();
+                            $date_tzoffset = 0;
                             if (!empty($tzarray)) {
+                                $ourtzoffsets = -(iCalUtilityFunctions::_tz2offset(date('O',time())));
+                                // Set the timezone to GMT
+//                                @date_default_timezone_set('GMT');
                                 if (!empty($dtstart['params']['TZID'])) $tzoffsets = getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
+                                // Set the default timezone
+//                                @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
+                                if (isset($tzoffsets['offsetSec'])) $date_tzoffset = $ourtzoffsets + $tzoffsets['offsetSec'];
                             }
                             if (empty($tzoffsets)) {
-                                $tzoffsets['offsetSec'] = -(iCalUtilityFunctions::_tz2offset(date('O',iCalUtilityFunctions::_date2timestamp($dtstart['value']))));
+                                $date_tzoffset = -(iCalUtilityFunctions::_tz2offset(date('O',iCalUtilityFunctions::_date2timestamp($dtstart['value']))));
                             }
+                            //FIXME we must have the real timezone offset for the date by this point
                             if ($dtstart['value']['day'] != substr($thisday[2], 0, 2)) {  //FIXME this is for the google ical feed which is bad!
                                 $dtst = strtotime($currdate[1]);
                                 $dtst1 = iCalUtilityFunctions::_timestamp2date($dtst);
@@ -1146,11 +1159,11 @@ class eventController extends expController {
                                 $dtend['value']['year'] = $dtet1['year'];
                                 $dtend['value']['month'] = $dtet1['month'];
                                 $dtend['value']['day'] = $dtet1['day'];
-                                $tzoffsets['offsetSec'] = 0;
+                                $date_tzoffset = 0;
                             }
                             if (!empty($dtstart['value']['hour'])) {
-                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']) - $tzoffsets['offsetSec']);
-                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']) - $tzoffsets['offsetSec']);
+                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']) - $date_tzoffset);
+                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']) - $date_tzoffset);
                                 $extevents[$eventdate][$dy] = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate->date = $eventdate;
@@ -1170,7 +1183,7 @@ class eventController extends expController {
 //                                    if (date('d',$eventdate) != date('d',$eventend)) {
                                         $yesterday = true;
                                     } else {
-                                        $extevents[$eventdate][$dy]->eventstart = ($dtstart['value']['hour'] * 3600) + ($dtstart['value']['min'] * 60) - $tzoffsets['offsetSec'];
+                                        $extevents[$eventdate][$dy]->eventstart = ($dtstart['value']['hour'] * 3600) + ($dtstart['value']['min'] * 60) - $date_tzoffset;
                                         if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600; // adjust for daylight savings time
                                     }
                                 }
@@ -1195,7 +1208,7 @@ class eventController extends expController {
 //                                if ((date('d',$eventend) != substr($thisday[2], 0, 2))) {
 //                                    $yesterday = true;
 //                                } else {
-                                $extevents[$eventdate][$dy]->eventend = ($dtend['value']['hour'] * 3600) + ($dtend['value']['min'] * 60) - $tzoffsets['offsetSec'];
+                                $extevents[$eventdate][$dy]->eventend = ($dtend['value']['hour'] * 3600) + ($dtend['value']['min'] * 60) - $date_tzoffset;
                                 if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventend += 3600; // adjust for daylight savings time
 //                                }
                             }
@@ -1204,8 +1217,8 @@ class eventController extends expController {
 
                             // dtstart required, one occurrence, (orig. start date)
                             $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
-                            $extevents[$eventdate][$dy]->body = str_replace(array('==0A','=0A'),' <br>',nl2br($vevent->getProperty('description')));
-
+                            $body = str_replace("\\n",' <br>',$vevent->getProperty('description'));
+                            $extevents[$eventdate][$dy]->body = str_replace(array('==0A','=0A'),' <br>',nl2br($body));
                             $extevents[$eventdate][$dy]->location_data = 'icalevent' . $url;
                             $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;
                             if (!$yesterday) {
