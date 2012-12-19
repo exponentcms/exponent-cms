@@ -26,7 +26,7 @@
 	</div>
 
     {form action=reparent_standalone}
-        {control type=hidden name=parent value=$section->parent}
+        {control type=hidden name=parent value=$parent}
         <div id="configure-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'Page'|gettext}</em></a></li>
