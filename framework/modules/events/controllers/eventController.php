@@ -1217,8 +1217,10 @@ class eventController extends expController {
 
                             // dtstart required, one occurrence, (orig. start date)
                             $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
-                            $body = str_replace("\\n",' <br>',$vevent->getProperty('description'));
-                            $extevents[$eventdate][$dy]->body = str_replace(array('==0A','=0A'),' <br>',nl2br($body));
+                            $body = nl2br(str_replace("\\n"," <br>\n",$vevent->getProperty('description')));
+                            $body = str_replace("\n"," <br>\n",$body);
+                            $body = str_replace(array('==0A','=0A')," <br>\n",$body);
+                            $extevents[$eventdate][$dy]->body = $body;
                             $extevents[$eventdate][$dy]->location_data = 'icalevent' . $url;
                             $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;
                             if (!$yesterday) {

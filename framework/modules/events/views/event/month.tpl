@@ -90,7 +90,7 @@
                                         {if substr($item->location_data,1,8) != 'calevent'}href="{if $item->location_data != 'eventregistration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                                             {if $item->date_id}id={$item->date_id}{/if}
                                         {/if}
-                                        {if $config.lightbox && substr($item->location_data,1,8) == 'calevent'}rel="{$item->eventstart|format_date:'%A, %B %e, %Y'}"{/if}
+                                        {if $config.lightbox && substr($item->location_data,1,8) == 'calevent'}rel="{$item->eventdate->date|format_date:'%A, %B %e, %Y'}"{/if}
                                         title="{$title}">
                                         {if $item->expFile[0]->url != ""}
                                             <div class="image">
@@ -163,12 +163,10 @@
     }
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-container','yui2-yahoo-dom-event','yui2-lightbox', function(Y) {
         var YAHOO = Y.YUI2;
-        var lb2 = new this.EXPONENT.Lightbox(
-            {
-                animate: true,
-                maxWidth: 500
-            }
-        );
+        var lb2 = new this.EXPONENT.Lightbox({
+            animate: true,
+            maxWidth: 500
+        });
         YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.calpopevent"), "click", function (e) {
             target = YAHOO.util.Event.getTarget(e);
             lb2.cfg.contentString = null;
@@ -178,7 +176,7 @@
         YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.icalpopevent"), "click", function (e) {
             target = YAHOO.util.Event.getTarget(e);
             lb2.cfg.contentURL = null;
-            popuptxt = '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + target.title + '</p>';
+            popuptxt = '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + target.title.replace(/\n/g,'<br />') + '</p>';
             lb2.cfg.contentString = popuptxt;
             lb2.show(e);
         }, lb2, true);
