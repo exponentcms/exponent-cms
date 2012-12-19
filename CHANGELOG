@@ -10,7 +10,7 @@ Added / Fixed / changed for 2.1.1
   - adds many new event calendar features
     -- adds event copying feature (create new event from existing event)
     -- adds optional images to events and event registrations
-    -- adds optional event popup in lightbox dialog (like google calendar)
+    -- adds optional event popup in a lightbox dialog (like google calendar)
     -- adds ajax-based navigation in calendar months (weeks/days), news items & blog posts to prevent reloading entire page
     -- adds 'cancel' event feature to display, yet mark events as cancelled
   - adds grouping by date for uncategorized portfolio and file download items (in addition to grouping by alpha for rolodex feature)
