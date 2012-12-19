@@ -33,6 +33,9 @@
             <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
         {/foreach}
     </ul>
+    <blockquote>
+        {'New feeds must first be saved before their color option is available'|gettext}
+    </blockquote>
 
     {script unique="icalfeedpicker" yui3mods=1}
     {literal}
@@ -46,7 +49,9 @@
             YAHOO.util.Dom.setStyle('noicalfeeds', 'display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
-            newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_ical[]" value="'+feedtoadd.value+'" />';
+//            newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_ical[]" value="'+feedtoadd.value+'" />';
+            newLabel.innerHTML = '<input type="hidden" name="pull_ical[]" value="'+feedtoadd.value+'" />';
+            newLabel.innerHTML = newLabel.innerHTML + '<div style="display:inline" class="text-control control "><label style="display:inline" class="label">' + feedtoadd.value + '</label></div>';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "delete removeical";
