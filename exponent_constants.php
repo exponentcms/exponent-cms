@@ -461,7 +461,7 @@ if (!defined('YUI3_RELATIVE')) {
 	 * YUI 3 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('YUI3_VERSION', '3.7.3');
+	define('YUI3_VERSION', '3.8.0');
     define('YUI3_RELATIVE', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
 	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
@@ -491,7 +491,7 @@ if (!defined('JQUERY_RELATIVE')) {
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('JQUERY_VERSION', '1.8.3');
-    define('JQUERYUI_VERSION', '1.9.1');
+    define('JQUERYUI_VERSION', '1.9.2');
 	define('JQUERY_RELATIVE', PATH_RELATIVE.'external/jquery/');
     define('JQUERY_PATH', BASE.'external/jquery/');
 	define('JQUERY_URL', URL_FULL.'external/jquery/');
