@@ -38,11 +38,10 @@
     </div>
 	<div class="info-header clearfix">
 		<div id="noflash"></div>
-		
 		<div class="related-actions">
 			{help text="Get Help"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
 		</div>
-
+        {control type=dropdown name="select_folder" label="Select the Upload Folder"|gettext items=$cats}
 	</div>    
     {messagequeue}
 
@@ -141,13 +140,19 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','uploader-deprecated', function(Y) {
     }
 
     function uploadFiles (event) {
-
 //    	if (selectedFiles != null) {
 //    		uploader.setSimUploadLimit(parseInt(3));
 //          uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1");
-            uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
 //      }
 //        uploader.uploadAll("http://www.yswfblog.com/upload/upload_simple.php");
+//        uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
+        var cat = Y.one('#select_folder');
+        if (cat == null) {
+            catvalue = 0;
+        } else {
+            catvalue = cat.get('value');
+        }
+        uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id'] + "&cat=" + catvalue);
     }
 
     Y.one("#uploadLink").on("click", uploadFiles);

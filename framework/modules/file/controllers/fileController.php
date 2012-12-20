@@ -87,11 +87,19 @@ class fileController extends expController {
             flash('error',gt('In order for the uploader to work correctly, \'"post_max_size\' and \'upload_max_filesize\' within your php.ini file must match one another'));
         }
 
+        $expcat = new expCat();
+        $cats = $expcat->find('all','module="file"');
+        $catarray = array();
+        $catarray[] = 'Root Folder';
+        foreach ($cats as $key=>$cat) {
+            $catarray[$cat->id] = $cat->title;
+        }
         assign_to_template(array(
             'update'=>$this->params['update'],
             "upload_size"=>ini_get('upload_max_filesize'),
             "post_size"=>ini_get('post_max_size'),
-            "bmax"=>intval(ini_get('upload_max_filesize')/1024*1000000000)
+            "bmax"=>intval(ini_get('upload_max_filesize')/1024*1000000000),
+            'cats'=>$catarray,
         ));
     }
     
@@ -347,6 +355,11 @@ class fileController extends expController {
             $file->poster = $user->id;
             $file->posted = $file->last_accessed = time();
             $file->save();
+            if (!empty($this->params['cat'])) {
+                $expcat = new expCat($this->params['cat']);
+                $params['expCat'][0] = $expcat->id;
+                $file->update($params);
+            }
 
             // a blank echo so YUI Uploader is notified of the function's completion
             echo ' ';
