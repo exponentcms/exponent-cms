@@ -184,6 +184,15 @@ if ($user->isAdmin()) {
                         ))
                     ),
                     array(
+                        'text' => gt('Manage File Folders'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expCat',
+                            'action' => 'manage',
+                            'model' => 'file'
+                        ))
+                    ),
+                    array(
                         'text' => gt('View Top Searches'),
                         'classname' => 'search',
                         'url' => makeLink(array(
@@ -239,6 +248,15 @@ if ($user->isAdmin()) {
                         'url' => makeLink(array(
                             'controller' => 'expCat',
                             'action' => 'manage'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('Manage File Folders'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expCat',
+                            'action' => 'manage',
+                            'model' => 'file'
                         ))
                     ),
 					array(

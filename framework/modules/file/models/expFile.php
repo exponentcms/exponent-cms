@@ -119,12 +119,15 @@ class expFile extends expRecord {
 	protected $attachable_table = 'content_expFiles';
 
     protected $attachable_item_types = array(
-        //'content_expFiles'=>'expFile', 
-        //'content_expTags'=>'expTag', 
-        //'content_expComments'=>'expComment',
-        //'content_expSimpleNote'=>'expSimpleNote',
+        'content_expCats'=>'expCat',
+//        'content_expComments'=>'expComment',
+//        'content_expDefinableFields' => 'expDefinableField',
+//        'content_expFiles'           => 'expFile',
+//        'content_expRatings'=>'expRating',
+//        'content_expSimpleNote'=>'expSimpleNote',
+//        'content_expTags'=>'expTag',
     );
-    
+
    /**
     * Relative OS System File path to where $filename is [to be] located
     *
@@ -261,7 +264,7 @@ class expFile extends expRecord {
 	 * @return \expFile Object@throws void
 	 *
 	 */
-	public function __construct($params = array(), $get_assoc = false, $get_attached = false) {
+	public function __construct($params = array(), $get_assoc = false, $get_attached = true) {
         // Set 'directory' as the default FILE location
         // This will be redefined if a FILE record is loaded
         // or a path is given to the Class

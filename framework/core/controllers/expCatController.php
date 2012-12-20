@@ -59,10 +59,11 @@ class expCatController extends expController {
         expHistory::set('manageable', $this->params);
         if (!empty($this->params['model'])) {
             $modulename = expModules::getControllerClassName($this->params['model']);
-            $module = new $modulename($this->params['src']);
+            $module = new $modulename(empty($this->params['src'])?null:$this->params['src']);
             $where = $module->aggregateWhereClause();
+            if ($this->params['model'] == 'file') $where = 1;
             $page = new expPaginator(array(
-                'model'=>$this->params['model'],
+                'model'=>($this->params['model'] == 'file') ? 'expFile' : $this->params['model'],
 //                        'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
                 'where'=>$where,
 //                        'order'=>'module,rank',
@@ -76,6 +77,10 @@ class expCatController extends expController {
             if ($this->params['model'] == 'faq') {
                 foreach ($page->records as $record) {
                     $record->title = $record->question;
+                }
+            } elseif ($this->params['model'] == 'file') {
+                foreach ($page->records as $record) {
+                    $record->title = $record->filename;
                 }
             }
         } else $page = '';
@@ -111,7 +116,11 @@ class expCatController extends expController {
         foreach ($cats->records as $record) {
             $cats->modules[$record->module][] = $record;
         }
-        $catlist[0] = 'Uncategorized';
+        if (!empty($this->params['model']) && $this->params['model'] == 'file') {
+            $catlist[0] = gt('Root Folder');
+        } else {
+            $catlist[0] = gt('Uncategorized');
+        }
         if (!empty($cats->modules)) foreach ($cats->modules as $module) {
             foreach ($module as $listing) {
                 $catlist[$listing->id] = $listing->title;
@@ -120,7 +129,8 @@ class expCatController extends expController {
         assign_to_template(array(
             'catlist'=>$catlist,
             'cats'=>$cats,
-            'page'=>$page
+            'page'=>$page,
+            'model'=>empty($this->params['model']) ? null : $this->params['model']
         ));
     }
 
@@ -137,6 +147,7 @@ class expCatController extends expController {
             $modname = expModules::getControllerName($modname);
             $mod[$modname] = ucfirst($modname);
         }
+        $mod['expFile'] = 'File';
         asort($mod);
         assign_to_template(array(
             'mods'=>$mod
@@ -147,6 +158,11 @@ class expCatController extends expController {
             ));
         }
         parent::edit();
+    }
+
+    function update() {
+        if ($this->params['module'] == 'expFile') $this->params['module'] = 'file';
+        parent::update();
     }
 
     /**

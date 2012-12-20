@@ -57,8 +57,25 @@ class fileController extends expController {
     
     public function picker() {
         global $user;
+
+        $expcat = new expCat();
+        $cats = $expcat->find('all','module="file"');
+        $jscatarray = array();
+        $catarray = array();
+        $catarray[] = 'Root Folder';
+        foreach ($cats as $key=>$cat) {
+            $jscatarray[$key]['label'] = $cat->title;
+            $jscatarray[$key]['value'] = $cat->id;
+            $catarray[$cat->id] = $cat->title;
+        }
+        $jsuncat['label'] = 'Root';
+        $jsuncat['value'] = null;
+        array_unshift($jscatarray,$jsuncat);
+        $catarray['-1'] = 'All Folders';
         assign_to_template(array(
-            'update'=>$this->params['update']
+            'update'=>$this->params['update'],
+            'cats'=>$catarray,
+            'jscats'=>json_encode($jscatarray)
         ));
     }
     
@@ -112,9 +129,9 @@ class fileController extends expController {
         $modelname = $this->basemodel_name;
         $results = 25; // default get all
         $startIndex = 0; // default start at 0
-        $sort = null; // default don't sort
-        $dir = 'asc'; // default sort dir is asc
-        $sort_dir = SORT_ASC;
+//        $sort = null; // default don't sort
+//        $dir = 'asc'; // default sort dir is asc
+//        $sort_dir = SORT_ASC;
 
         // How many records to get?
         if(strlen($this->params['results']) > 0) {
@@ -128,20 +145,24 @@ class fileController extends expController {
 
         // Sorted?
         if(strlen($this->params['sort']) > 0) {
-            $sort = $this->params['sort'];
+            if ($this->params['sort'] == 'cat') {
+                $sort = 'id';
+            } else {
+                $sort = $this->params['sort'];
+            }
 //            if ($sort = 'id') $sort = 'filename';
         }
 
         // Sort dir?
-        if((strlen($this->params['dir']) > 0) && ($this->params['dir'] == 'desc')) {
+        if (($this->params['dir'] == 'false') || ($this->params['dir'] == 'desc')) {
             $dir = 'desc';
             $sort_dir = SORT_DESC;
-        }
-        else {
+        } else {
             $dir = 'asc';
             $sort_dir = SORT_ASC;
         }
-        
+        $totalrecords = 0;
+
         if (isset($this->params['query'])) {
 
             if ($user->is_acting_admin!=1) {
@@ -152,15 +173,32 @@ class fileController extends expController {
             }
 
 //            $this->params['query'] = expString::sanitize($this->params['query']);
-            $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'");
-            $files = $this->$modelname->find('all',$filter."filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
+//            $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'");
+//            $files = $this->$modelname->find('all',$filter."filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
+            $files = $this->$modelname->find('all',$filter."filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'".$imagesOnly,$sort.' '.$dir);
 
+            //FiXME we need to get all records then group by cat, then trim/paginate
+            $querycat = !empty($this->params['cat']) ? $this->params['cat'] : '0';
+            $groupedfiles = array();
             foreach ($files as $key=>$file) {
-                $tmpusr = new user($file->poster);
-                $files[$key]->user->firstname = $tmpusr->firstname;
-                $files[$key]->user->lastname = $tmpusr->lastname;
-                $files[$key]->user->username = $tmpusr->username;
+                $filecat = !empty($file->expCat[0]->id) ? $file->expCat[0]->id : 0;
+                if (($querycat == $filecat || $querycat == -1)) {
+                    $totalrecords++;
+                    if (count($groupedfiles) < ($startIndex + $results)) {
+                        $groupedfiles[$key] = $files[$key];
+                        if (!empty($file->expCat[0]->title)) {
+                            $groupedfiles[$key]->cat = $file->expCat[0]->title;
+                            $groupedfiles[$key]->catid = $file->expCat[0]->id;
+                        }
+                        $tmpusr = new user($file->poster);
+                        $groupedfiles[$key]->user->firstname = $tmpusr->firstname;
+                        $groupedfiles[$key]->user->lastname = $tmpusr->lastname;
+                        $groupedfiles[$key]->user->username = $tmpusr->username;
+                    }
+                }
             }
+            $groupedfiles = array_values(array_filter($groupedfiles));
+            $files = array_slice($groupedfiles,$startIndex,$results);
 
             $returnValue = array(
                 'recordsReturned'=>count($files),
@@ -180,16 +218,28 @@ class fileController extends expController {
                 $filter .= "is_image=1";
             }
             
-            $totalrecords = $this->$modelname->find('count',$filter);
-            $files = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
-            
+//            $totalrecords = $this->$modelname->find('count',$filter);
+//            $files = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
+            $files = $this->$modelname->find('all',$filter,$sort.' '.$dir);
+
+            $groupedfiles = array();
             foreach ($files as $key=>$file) {
-                $tmpusr = new user($file->poster);
-                $files[$key]->user->firstname = $tmpusr->firstname;
-                $files[$key]->user->lastname = $tmpusr->lastname;
-                $files[$key]->user->username = $tmpusr->username;
+                if (empty($file->expCat[0]->title)) {
+                    $totalrecords++;
+                    if (count($groupedfiles) < ($startIndex + $results)) {
+                        $groupedfiles[$key] = $files[$key];
+    //                    $files[$key]->cat = $file->expCat[0]->title;
+    //                    $files[$key]->catid = $file->expCat[0]->id;
+                        $tmpusr = new user($file->poster);
+                        $groupedfiles[$key]->user->firstname = $tmpusr->firstname;
+                        $groupedfiles[$key]->user->lastname = $tmpusr->lastname;
+                        $groupedfiles[$key]->user->username = $tmpusr->username;
+                    }
+                }
             }
-            
+            $groupedfiles = array_values(array_filter($groupedfiles));
+            $files = array_slice($groupedfiles,$startIndex,$results);
+
             $returnValue = array(
                 'recordsReturned'=>count($files),
                 'totalRecords'=>$totalrecords,
@@ -275,7 +325,7 @@ class fileController extends expController {
     public function addit() {
         foreach ($this->params['addit'] as $file) {
             $newfile = new expFile(array('directory'=>dirname($file).'/','filename'=>basename($file)));
-            $newfile->posted = $newfile->las_accessed = time();
+            $newfile->posted = $newfile->last_accessed = time();
             $newfile->save();
             flash('message',$newfile->filename.' '.gt('was added to the File Manager.'));
         }
@@ -295,6 +345,7 @@ class fileController extends expController {
         if (is_object($file)) {
             $user = new user($this->params['usrid']);
             $file->poster = $user->id;
+            $file->posted = $file->last_accessed = time();
             $file->save();
 
             // a blank echo so YUI Uploader is notified of the function's completion
@@ -303,6 +354,22 @@ class fileController extends expController {
             flash('error',gt('File was not uploaded!'));
         }
     } 
+
+    public function editCat() {
+        global $user;
+        $file = new expFile($this->params['id']);
+        if ($user->id==$file->poster || $user->is_acting_admin==1) {
+            $expcat = new expCat($this->params['newValue']);
+            $params['expCat'][0] = $expcat->id;
+            $file->update($params);
+            $file->cat = $expcat->title;
+            $file->catid = $expcat->id;
+            $ar = new expAjaxReply(200, gt('Your Folder was updated successfully'), $file);
+        } else {
+            $ar = new expAjaxReply(300, gt("You didn't create this file, so you can't edit it."));
+        }
+        $ar->send();
+    }
 
     public function editTitle() {
         global $user;
@@ -346,8 +413,7 @@ class fileController extends expController {
         }
         $ar->send();
         echo json_encode($file);
-        
-    } 
+    }
 }
 
 ?>
