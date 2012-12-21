@@ -797,6 +797,10 @@ a.fileinfo:hover {
     margin-right: 22px;
 }
 
+#selectFilesButtonContainer {
+    display : inline-table;
+}
+
 #overallProgress {
     float : right;
 }

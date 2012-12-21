@@ -717,6 +717,7 @@ abstract class expController {
         //	$rss->useCached("PODCAST");
         	$rss->useCached();
             $rss->title = $site_rss->title;
+            if (!empty($this->params['type'])) $rss->title .= ' '.ucfirst($this->params['type']);
         	$rss->description = $site_rss->feed_desc;
             $rss->image = new FeedImage();
             $rss->image->url = URL_FULL.'themes/'.DISPLAY_THEME.'/images/logo.png';
@@ -744,6 +745,7 @@ abstract class expController {
         	}
 
         	$pubDate = '';
+            $site_rss->params = $this->params;
         	foreach ($site_rss->getFeedItems() as $item) {
         		if ($item->date > $pubDate) { $pubDate = $item->date; }
         		$rss->addItem($item);
@@ -754,7 +756,7 @@ abstract class expController {
         	$rss->pubDate = $pubDate;
 
 //        	header("Content-type: text/xml");
-        	if ($site_rss->module == "filedownload") {
+        	if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
         		echo $rss->createFeed("PODCAST");
         	} else {
         		echo $rss->createFeed("RSS2.0");

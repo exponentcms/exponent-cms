@@ -8,6 +8,7 @@
     /*box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.25);*/
     overflow: hidden;
     position: relative;
+    margin-top: 4px;
 }
 .yui3-module .yui3-hd {
     background-color: #CCC1B1;
@@ -16,6 +17,7 @@
 .yui3-module .yui3-hd h3 {
     border: 0 none;
     margin: 0 25px 0 0;
+    padding-bottom: 0!important;
 }
 .yui3-module .yui3-hd a {
     -moz-border-bottom-colors: none;
