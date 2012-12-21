@@ -242,7 +242,7 @@ class expPaginator {
                $order = $orderby[0];
             }
             if (in_array($order,array('created_at','edited_at','publish'))) {
-                if (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2)) {
+                if ($this->total_records && (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2))) {
                     $datetype = 'Y';  // more than 2 years of records, so break down by year
                 } else {
                     $datetype = 'M Y';  // less than 2 years of records, so break down by month/year
