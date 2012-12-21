@@ -156,8 +156,8 @@
                         </div>
 		                <h2>{"Mail Server Settings"|gettext}</h2>
                     </div>
-	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS}
-                    {br}{control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS description='This MUST be in a valid email address format or sending mail may fail!'|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
 	                ({"or"|gettext})
                     {group label="SMTP Server Settings"|gettext}
                     {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server"|gettext value=$smarty.const.SMTP_SERVER}
