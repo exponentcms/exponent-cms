@@ -131,6 +131,14 @@ class faqController extends expController {
     }
     
     public function submit_question() {
+        global $user;
+
+        // figure out the name and email address
+        if (!empty($user->id) && empty($this->params['id'])) {
+            $this->params['submitter_name'] = $user->firstname." ".$user->lastname;
+            $this->params['submitter_email'] = $user->email;
+        }
+
         $faq = new faq();
         $faq->update($this->params);
         flash('message', gt('Your question has been submitted. Some one should get back to you shortly. Thank you.'));
@@ -145,7 +153,7 @@ class faqController extends expController {
             $mail->quickSend(array(
                 'html_message'=>htmlentities($msg),
                 'to'=>trim(empty($this->config['notification_email_address'])?SMTP_FROMADDRESS:$this->config['notification_email_address']),
-                'from'=>array(SMTP_FROMADDRESS),
+                'from'=>SMTP_FROMADDRESS,
                 'subject'=>$this->config['notification_email_subject'],
             ));
         }
