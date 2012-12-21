@@ -28,146 +28,185 @@
     {/script}
 </head>
 <body class="exp-skin">
-<div id="exp-uploader">
-    <h1>{"Upload Files"|gettext}</h1>
-    <div id="actionbar">
-    	<div id="uploaderOverlay" style="position:absolute; z-index:2"></div> 
-    	<a class="select awesome small green" style="z-index:1" id="selectLink" href="#"><span>{'Select Files'|gettext}</span></a>
-        <a id="uploadLink" class="upload awesome small green" href="#"><span>{"Upload Files"|gettext}</span></a>
-        <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
+    <div id="exp-uploader">
+        <h1>{"Upload Files"|gettext}</h1>
+        <div id="actionbar">
+            <div id="selectFilesButtonContainer"></div>
+            <a id="selectLink" class="select awesome small green" style="z-index:1" href="#"><span>{'Select Files'|gettext}</span></a>
+            <a id="uploadLink" class="upload awesome small green" href="#"><span>{"Upload Files"|gettext}</span></a>
+            <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
+        </div>
+        <div class="info-header clearfix">
+            <div id="noflash"></div>
+            <div class="related-actions">
+                {help text="Get Help"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
+            </div>
+            {control type=dropdown name="select_folder" label="Select the Upload Folder"|gettext items=$cats}
+        </div>
+        {messagequeue}
+        <div id="filelist">
+            <table id="filenames2" class="exp-skin-table">
+                <thead>
+                    <tr><th>{'File name'|gettext}</th><th>{'File size'|gettext}</th><th>{'Percent uploaded'|gettext}</th><th>{'Reply from Server'|gettext}</th></tr>
+                    <tr id="nofiles">
+                        <td colspan="4" id="ddmessage">
+                            <strong>{'No files selected.'|gettext}</strong>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-	<div class="info-header clearfix">
-		<div id="noflash"></div>
-		<div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
-		</div>
-        {control type=dropdown name="select_folder" label="Select the Upload Folder"|gettext items=$cats}
-	</div>    
-    {messagequeue}
-
-    <div id="dataTableContainer">
-      <table id="filenames" class="exp-skin-table">
-        <thead>
-    	   <tr><th>{'Filename'|gettext}</th><th>{'File size'|gettext}</th><th>{'Percent uploaded'|gettext}</th></tr>
-    	</thead>
-    	<tbody>
-    	</tbody>
-      </table>	
+    <div id="uploaderContainer">
+        <div id="overallProgress"></div>
     </div>
 
-</div>
-
-{script unique="uploader"}
+{script unique="uploader2" yui3="1"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','uploader-deprecated', function(Y) {
-    var uploader,
-        selectedFiles = {};
-
+YUI(EXPONENT.YUI3_CONFIG).use("uploader", function(Y) {
+    Y.one("#overallProgress").set("text", "Uploader type: " + Y.Uploader.TYPE);
     var usr = {/literal}{obj2json obj=$user}{literal}; //user
+    var uploadBtn = Y.one("#uploadLink");
 
-    function init () {
-        var overlayRegion = Y.one("#selectLink").get('region');
-        Y.one("#uploaderOverlay").set("offsetWidth", overlayRegion.width);
-        Y.one("#uploaderOverlay").set("offsetHeight", overlayRegion.height);
+   if (Y.Uploader.TYPE != "none" && !Y.UA.ios) {
+       var uploader = new Y.Uploader({
+                                      width: "78px",
+//                                      height: "35px",
+                                      multipleFiles: true,
+                                      swfURL: EXPONENT.YUI3_RELATIVE + "uploader/assets/flashuploader.swf?t=" + Math.random(),
+                                      uploadURL: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=upload&ajax_action=1",
+                                      simLimit: 3,
+                                      withCredentials: false,
+                                      selectFilesButton: Y.one("#selectLink")
+                                     });
+       var uploadDone = false;
 
-        var swfURL = EXPONENT.YUI3_RELATIVE + "uploader-deprecated/assets/uploader.swf";
+       if (Y.Uploader.TYPE == "html5") {
+          uploader.set("dragAndDropArea", "body");
 
-        if (Y.UA.ie >= 6) {
-        	swfURL += "?t=" + Y.guid();
-        }
+          Y.one("#ddmessage").setHTML("<strong>{/literal}{'Drag and drop files here.'|gettext}{literal}</strong>");
 
-        uploader = new Y.Uploader({boundingBox:"#uploaderOverlay", 
-                                   swfURL: swfURL});	
+          uploader.on(["dragenter", "dragover"], function (event) {
+              var ddmessage = Y.one("#ddmessage");
+              if (ddmessage) {
+                ddmessage.setHTML("<strong>{/literal}{'Files detected, drop them here!'|gettext}{literal}</strong>");
+                ddmessage.addClass("yellowBackground");
+              }
+           });
 
-        uploader.on("uploaderReady", setupUploader);
-        uploader.on("fileselect", fileSelect);
-        uploader.on("uploadprogress", updateProgress);
-        uploader.on("uploadcomplete", uploadComplete);
-    }
+           uploader.on(["dragleave", "drop"], function (event) {
+              var ddmessage = Y.one("#ddmessage");
+              if (ddmessage) {
+                ddmessage.setHTML("<strong>{/literal}{'Drag and drop files here.'|gettext}{literal}</strong>");
+                ddmessage.removeClass("yellowBackground");
+              }
+           });
+       }
 
-    Y.on("domready", init);
+       uploader.render("#selectFilesButtonContainer");
 
-    function setupUploader (event) {
-    	uploader.set("multiFiles", true);
-    	uploader.set("simLimit", 3);
-    	uploader.set("log", true);
-                                
-    	var fileFilters = new Array({description:"All Files", extensions:"*.*;"}); 
-    	
-        // var fileFilters = new Array({description:"Images", extensions:"*.jpg;*.png;*.gif"},
-        //                    {description:"Videos", extensions:"*.avi;*.mov;*.mpg"}); 
+       var rowcolor = 'odd';
+       uploader.after("fileselect", function (event) {
 
-        uploader.set("fileFilters", fileFilters); 
-    }
+          var fileList = event.fileList;
+          var fileTable = Y.one("#filenames2 tbody");
+          if (fileList.length > 0 && Y.one("#nofiles") && Y.Uploader.TYPE != "html5") {
+            Y.one("#nofiles").remove();
+          }
 
-    var rowcolor = 'odd';
-    function fileSelect (event) {
-    	var fileData = event.fileList;	
-        
-    	for (var key in fileData) {
-            rowcolor = (rowcolor=='odd')?'even':'odd';
-	        if (!selectedFiles[fileData[key].id]) {
-			   var output = "<tr class=\""+rowcolor+"\"><td>" + fileData[key].name + "</td><td>" + 
-			                (Math.round(fileData[key].size/1048576*100000)/100000).toFixed(2) + "</td><td><div id='div_" + 
-			                fileData[key].id + "' class='progressbars'></div></td></tr>";
-			   Y.one("#filenames tbody").append(output);
+          if (uploadDone) {
+            uploadDone = false;
+            fileTable.setHTML("");
+          }
 
-               // var progressBar = new Y.ProgressBar({id:"pb_" + fileData[key].id, layout : '<div class="{labelClass}"></div><div class="{sliderClass}"></div>'});
-               //     progressBar.render("#div_" + fileData[key].id);
-               //     progressBar.set("progress", 0);
+          var perFileVars = {};
 
-               var progressBar = Y.Node.create("<div style='width:90%;background-color:#CCC;padding:3px;'><div style='height:12px;padding:0px;font-size:10px;color:#fff;background-color:#900;width:0;'>0%</div></div>");
-               Y.one("#div_" + fileData[key].id).setContent(progressBar);
+          Y.each(fileList, function (fileInstance) {
+//              fileTable.append("<tr id='" + fileInstance.get("id") + "_row" + "'>" +
+//                                    "<td class='filename'>" + fileInstance.get("name") + "</td>" +
+//                                    "<td class='filesize'>" + fileInstance.get("size") + "</td>" +
+//                                    "<td class='percentdone'>{/literal}{'Hasn\'t started yet'|gettext}{literal}</td>" +
+//                                    "<td class='serverdata'>&nbsp;</td>");
+              rowcolor = (rowcolor=='odd')?'even':'odd';
+              var output = "<tr class=\""+rowcolor+"\" id='" + fileInstance.get("id") + "_row" + "'><td class='filename'>" + fileInstance.get("name") + "</td><td class='filesize'>" +
+                                (Math.round(fileInstance.get("size")/1048576*100000)/100000).toFixed(2) + "</td><td class='percentdone'><div id='div_" +
+                                fileInstance.get("id") + "' class='progressbars'></div></td><td class='serverdata'>&nbsp;</td></tr>";
+              fileTable.append(output);
 
-               selectedFiles[fileData[key].id] = true;
-			}
-    	}
-    }
+                var cat = Y.one('#select_folder');
+                if (cat == null) {
+                    catvalue = 0;
+                } else {
+                    catvalue = cat.get('value');
+                }
+              perFileVars[fileInstance.get("id")] = {filename:fileInstance.get("name"),usrid:usr['id'],cat:catvalue};
+          });
 
-    function updateProgress (event) {
-		//var rowNum = fileIdHash[event["id"]];
-		var prog = Math.round(100 * (event.bytesLoaded / event.bytesTotal));
-		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:"+((prog>90)?'#fad00e':'#b30c0c')+";width:" + prog + "%;'>" + prog + "%</div></div>";
-        Y.one("#div_" + event.id).setContent(progbar);
+          uploader.set("postVarsPerFile", Y.merge(uploader.get("postVarsPerFile"), perFileVars));
+       });
 
-        // var pb = Y.Widget.getByNode("#pb_" + event.id);
-        // pb.set("progress", Math.round(100 * event.bytesLoaded / event.bytesTotal));
-    }
+       uploader.on("uploadprogress", function (event) {
+           var fileRow = Y.one("#" + event.file.get("id") + "_row");
+//                fileRow.one(".percentdone").set("text", event.percentLoaded + "%");
+           var prog = Math.round(100 * (event.bytesLoaded / event.bytesTotal));
+           var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:"+((prog>90)?'#fad00e':'#b30c0c')+";width:" + prog + "%;'>" + prog + "%</div></div>";
+           fileRow.one(".percentdone").setHTML(progbar);
+       });
 
-    function uploadComplete (event) {
-		var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src='"+EXPONENT.PATH_RELATIVE+"framework/core/assets/images/accepted.png' style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
-        Y.one("#div_" + event.id).setContent(progbar);
-    }
+       uploader.on("uploadstart", function (event) {
+            uploader.set("enabled", false);
+            uploadBtn.addClass("yui3-button-disabled");
+            uploadBtn.detach("click");
+       });
 
-    function uploadFiles (event) {
-//    	if (selectedFiles != null) {
-//    		uploader.setSimUploadLimit(parseInt(3));
-//          uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1");
-//      }
-//        uploader.uploadAll("http://www.yswfblog.com/upload/upload_simple.php");
-//        uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id']);
-        var cat = Y.one('#select_folder');
-        if (cat == null) {
-            catvalue = 0;
-        } else {
-            catvalue = cat.get('value');
-        }
-        uploader.uploadAll(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=upload&ajax_action=1&usrid=" + usr['id'] + "&cat=" + catvalue);
-    }
+       uploader.on("uploadcomplete", function (event) {
+            var fileRow = Y.one("#" + event.file.get("id") + "_row");
+//                fileRow.one(".percentdone").set("text", "{/literal}{'Finished!'|gettext}{literal}");
+                fileRow.one(".serverdata").setHTML(event.data);
+            var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src='"+EXPONENT.PATH_RELATIVE+"framework/core/assets/images/accepted.png' style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
+            fileRow.one(".percentdone").setHTML(progbar);
+       });
 
-    Y.one("#uploadLink").on("click", uploadFiles);
+       uploader.on("totaluploadprogress", function (event) {
+                Y.one("#overallProgress").setHTML("{/literal}{'Total uploaded:'|gettext}{literal} <strong>" + event.percentLoaded + "%" + "</strong>");
+       });
+
+       uploader.on("alluploadscomplete", function (event) {
+                     uploader.set("enabled", true);
+                     uploader.set("fileList", []);
+                          uploadBtn.removeClass("yui3-button-disabled");
+                          uploadBtn.on("click", function () {
+                          if (!uploadDone && uploader.get("fileList").length > 0) {
+                             uploader.uploadAll();
+                          }
+                     });
+                     Y.one("#overallProgress").set("text", "{/literal}{'Uploads complete!'|gettext}{literal}");
+                     uploadDone = true;
+       });
+
+         uploadBtn.on("click", function () {
+         if (!uploadDone && uploader.get("fileList").length > 0) {
+            uploader.uploadAll();
+         }
+       });
+   } else {
+       Y.one("#uploaderContainer").set("text", "{/literal}{'We are sorry, but to use the uploader, you either need a browser that support HTML5 or have the Flash player installed on your computer.'|gettext}{literal}");
+   }
 
     Y.all('.msg-queue .close').on('click',function(e){
         e.halt();
         e.target.get('parentNode').remove();
     });
-	
-	if(!FlashDetect.installed) { 
-		Y.one('#noflash').append('You need to have Adobe Flash Player installed in your browser to upload files.<br /><a href="http://get.adobe.com/flashplayer/" target="_blank">Download it from Adobe.</a>');   
-	}
-	
+
+    if(!FlashDetect.installed) {
+        Y.one('#noflash').append('{/literal}{'You need to have Adobe Flash Player installed in your browser to upload files.'|gettext}{literal}<br /><a href="http://get.adobe.com/flashplayer/" target="_blank">{/literal}{'Download it from Adobe.'|gettext}{literal}</a>');
+    }
+
 });
 {/literal}
 {/script}
+
 </body>
 </html>

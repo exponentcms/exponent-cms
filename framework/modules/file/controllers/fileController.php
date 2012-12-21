@@ -361,8 +361,8 @@ class fileController extends expController {
                 $file->update($params);
             }
 
-            // a blank echo so YUI Uploader is notified of the function's completion
-            echo ' ';
+            // a echo so YUI Uploader is notified of the function's completion
+            echo gt('File saved');
         } else {
             flash('error',gt('File was not uploaded!'));
         }
