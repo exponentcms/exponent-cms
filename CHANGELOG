@@ -16,6 +16,8 @@ Added / Fixed / changed for 2.1.1
   - adds grouping by date for uncategorized portfolio and file download items (in addition to grouping by alpha for rolodex feature)
   - adds custom module phrase translation libraries feature
   - adds a mass mailer for super admins to email all or selected site users
+  - updates file manager with 'folder' grouping and date features for enhanced file locating
+  - updates file uploader to allow html5 drag/drop support
 
 Added / Fixed / changed for 2.1.0
 -----------------------
