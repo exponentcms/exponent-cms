@@ -29,7 +29,14 @@
     {form action=submit_question}
         {control type="text" name="submitter_name" label="Your Name"|gettext value=$record->submitter_name}
         {control type="text" name="submitter_email" label="Your Email Address"|gettext value=$record->submitter_email}
-        {control type="textarea" name="question" label="Question"|gettext value=$record->question}
+        {*{if $user->id == 0 || $comment->id }*}
+  	        {*{control type=text name="submitter_name" label="Your Name"|gettext required=true value=$record->submitter_name}*}
+  		    {*{control type=text name="submitter_email" label="Your Email Address"|gettext required=true value=$record->submitter_email}*}
+  		{*{else}*}
+              {*{control type=text name="submitter_name" disabled=1 label="Your Name"|gettext value="`$user->firstname` `$user->lastname`"}*}
+      	    {*{control type=text name="submitter_email" disabled=1 label="Your Email Address"|gettext value=$user->email}*}
+  		{*{/if}*}
+        {control type="textarea" name="question" label="Your Question"|gettext value=$record->question}
         {control type="buttongroup" submit="Submit Question"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

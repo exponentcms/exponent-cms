@@ -43,7 +43,7 @@
     {/if}
     {$myloc=serialize($__loc)}
     {if $config.allow_user_questions}
-        <a href="{link action="ask_question"}">{'Ask a Question'|gettext}</a>
+		{icon class="helplink" action="ask_question" text='Ask a Question'|gettext}
     {/if}
     {if $config.use_toc}
         {if $config.usecategories}

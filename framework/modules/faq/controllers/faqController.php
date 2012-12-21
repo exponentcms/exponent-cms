@@ -134,6 +134,22 @@ class faqController extends expController {
         $faq = new faq();
         $faq->update($this->params);
         flash('message', gt('Your question has been submitted. Some one should get back to you shortly. Thank you.'));
+
+        // send and email notification
+//        if ($this->config['notify_of_new_question'] && !$user->isAdmin()) {
+        if ($this->config['notify_of_new_question']) {
+            $msg = gt("A Question was asked by").": <strong>" . $faq->submitter_name . "</strong><br>";
+            $msg .= "<h3>".$faq->question."</h3>";
+
+            $mail = new expMail();
+            $mail->quickSend(array(
+                'html_message'=>htmlentities($msg),
+                'to'=>trim(empty($this->config['notification_email_address'])?SMTP_FROMADDRESS:$this->config['notification_email_address']),
+                'from'=>array(SMTP_FROMADDRESS),
+                'subject'=>$this->config['notification_email_subject'],
+            ));
+        }
+
         expHistory::back();
     }
     
@@ -200,12 +216,12 @@ class faqController extends expController {
         }
         
         $faq = new faq($this->params['id']);
-        $reply  = '<h3>An answer has been posted to your question '.$faq->question.'</h3>';
+        $reply  = "<strong>" . gt('An answer has been posted to your question') . "</strong><h3>".$faq->question."</h3>";
         if ($faq->include_in_faq) {
-            $reply .= '<h4>This question has also been selected to be included in the FAQ section on our site.</h4><br>';
+            $reply .= '<h4>' . gt('This question has also been selected to be included in the FAQ section on our site.') . '</h4>';
         }
-        $reply .= '<h4>The answer to your question:</h4><p>'.$faq->answer.'</p>';
-        $reply .= '<strong>Thank you for submitting your question!</strong>';
+        $reply .= '<h4>' . gt('The answer to your question is'). ':</h4>'.$faq->answer;
+        $reply .= '<strong>' . gt('Thank you for submitting your question!') . '</strong>';
         
         $from = empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address'];
         assign_to_template(array(
@@ -222,19 +238,20 @@ class faqController extends expController {
         }
         
         $faq = new faq($this->params['id']);
-        
-        $mail = new expMail();
-        $mail->quickSend(array(
+
+        if (!empty($faq->submitter_email)) {
+            $mail = new expMail();
+            $mail->quickSend(array(
                 'html_message'=>$this->params['body'],
-			    'to'=>trim($faq->submitter_email),
-//			    'from'=>empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address'],
-//			    'from_name'=>empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name'],
-			    'from'=>array(empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address']=>
-			        empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name']),
-			    'subject'=>$this->params['subject'],
-        ));
-        
-        flash('message', gt('Your email was sent to').' '.$faq->submitter_name.' '.gt('at').' '.$faq->submitter_email);
+                'to'=>trim($faq->submitter_email),
+                'from'=>array(empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address']=>
+                    empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name']),
+                'subject'=>$this->params['subject'],
+            ));
+            flash('message', gt('Your email was sent to').' '.$faq->submitter_name.' '.gt('at').' '.$faq->submitter_email);
+        } else {
+            flash('error', gt('Your email was NOT sent to').' '.$faq->submitter_name.' '.gt('at').' '.$faq->submitter_email);
+        }
         expHistory::back();
     }
 
