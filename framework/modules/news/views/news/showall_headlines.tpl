@@ -36,7 +36,7 @@
                 {/if}
             {/if}
 			{if $permissions.showUnpublished == 1 }
-				{icon class="view" action=showUnpublished title="View Unpublished"|gettext}
+				{icon class="view" action=showUnpublished text="View Unpublished"|gettext}
 			{/if}
         </div>
     {/permissions}
