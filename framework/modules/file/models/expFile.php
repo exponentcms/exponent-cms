@@ -626,7 +626,7 @@ class expFile extends expRecord {
                 );
 
                 $_fileData = pathinfo($_path);
-                $_sizeinfo['mime'] = $_types[$_fileData['extension']];
+                if (array_key_exists($_fileData['extension'],$_types)) $_sizeinfo['mime'] = $_types[$_fileData['extension']];
 			}
         } else {
             $_sizeinfo['is_image'] = false;
@@ -635,12 +635,18 @@ class expFile extends expRecord {
                   // the mime type
                 $_types = array(
                     'mp3'=>'audio/mpeg',
+                    'ogg'=>'audio/ogg',
                     'flv'=>'video/x-flv',
                     'f4v'=>'video/mp4',
+                    'mp4'=>'video/mp4',
+                    'ogv'=>'video/ogg',
+                    '3gp'=>'video/3gpp',
+                    'webm'=>'video/webm',
+                    'pdf'=>'application/pdf',
                 );
 
                 $_fileData = pathinfo($_path);
-                $_sizeinfo['mime'] = $_types[$_fileData['extension']];
+                if (array_key_exists($_fileData['extension'],$_types)) $_sizeinfo['mime'] = $_types[$_fileData['extension']];
             }
         }
 

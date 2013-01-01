@@ -333,7 +333,8 @@ class fileController extends expController {
     public function addit() {
         foreach ($this->params['addit'] as $file) {
             $newfile = new expFile(array('directory'=>dirname($file).'/','filename'=>basename($file)));
-            $newfile->posted = $newfile->last_accessed = time();
+//            $newfile->posted = $newfile->last_accessed = time();
+            $newfile->posted = $newfile->last_accessed = filemtime($file);
             $newfile->save();
             flash('message',$newfile->filename.' '.gt('was added to the File Manager.'));
         }
