@@ -30,9 +30,11 @@
             {if $record->publish_date > $smarty.now}
                 <strong>{'Will be'|gettext}&#160;
             {/if}
+            {$prepend = ''}
             {if !$config.displayauthor}
                 <span class="label posted">{'Posted by'|gettext}</span>
                 <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
+                {$prepend = '&#160;&#160;|&#160;&#160;'}
             {/if}
             {if !$config.datetag}
                 {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>
@@ -41,7 +43,7 @@
                 </strong>&#160;
             {/if}
         </span>
-        {comments_count record=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
+        {comments_count record=$record show=1 prepend=$prepend}
         {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
     </div>
     {permissions}
