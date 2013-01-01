@@ -74,14 +74,14 @@ class add_file_posted extends upgradescript {
         foreach ($db->selectObjects('expFiles') as $file) {
             if (empty($file->posted) || empty($file->mimetype)) {
                 if (empty($file->posted)) {
-                    if (file_exists($file->directory . $file->filename)) {
-                        $file->posted = $file->last_accessed = filemtime($file->directory . $file->filename);
+                    if (file_exists(BASE . $file->directory . $file->filename)) {
+                        $file->posted = $file->last_accessed = filemtime(BASE . $file->directory . $file->filename);
                     } else {
                         $file->posted = $file->last_accessed = time();
                     }
                 }
                 if (empty($file->mimetype)) {
-                    $_fileData = pathinfo($file->directory . $file->filename);
+                    $_fileData = pathinfo(BASE . $file->directory . $file->filename);
                     if (array_key_exists($_fileData['extension'],$_types)) $file->mimetype = $_types[$_fileData['extension']];
                 }
                 $db->updateObject($file,'expFiles');
