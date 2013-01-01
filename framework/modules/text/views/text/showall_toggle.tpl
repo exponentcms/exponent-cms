@@ -30,24 +30,24 @@
     {/if}
     {$myloc=serialize($__loc)}
     {foreach from=$items item=text name=items}
-        {toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed}
-            {permissions}
-                <div class="item-actions">
-                    {if $permissions.edit == 1}
-                        {if $myloc != $text->location_data}
-                            {if $permissions.manage == 1}
-                                {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
-                            {else}
-                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
-                            {/if}
+        {permissions}
+            <div class="item-actions">
+                {if $permissions.edit == 1}
+                    {if $myloc != $text->location_data}
+                        {if $permissions.manage == 1}
+                            {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
+                        {else}
+                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
                         {/if}
-                        {icon action=edit record=$text}
                     {/if}
-                    {if $permissions.delete == 1}
-                        {icon action=delete record=$text}
-                    {/if}
-                </div>
-            {/permissions}
+                    {icon action=edit record=$text}
+                {/if}
+                {if $permissions.delete == 1}
+                    {icon action=delete record=$text}
+                {/if}
+            </div>
+        {/permissions}
+        {toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}
             <div class="bodycopy">
                 {if $config.filedisplay != "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}

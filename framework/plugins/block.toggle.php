@@ -37,7 +37,12 @@
 function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
     if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {toggle} plugin.")."</strong>");
     if (empty($params['title']) && empty($params['link'])) die("<strong style='color:red'>".gt("The 'title' parameter is required for the {toggle} plugin.")."</strong>");
-
+    $summary = !empty($params['summary']) ? $params['summary'] : 0;
+    if ($summary) {
+        $css = ".yui3-module.yui3-closed a.yui3-toggle { top: ".$summary."px; }";
+    } else {
+        $css = "";
+    }
 	if(empty($content)) {
         if (!empty($params['link'])) $params['title'] = $params['link'];
 
@@ -46,7 +51,8 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
                 <h3 title="'.gt('Click to Collapse/Expand').'">'.$params['title'].'</h3>
                 <a title="'.gt('Collapse/Expand').'" class="yui3-toggle"></a>
             </div>
-            <div class="yui3-bd">
+        ';
+        echo '    <div class="yui3-bd">
         ';
 	} else {
         if (!empty($params['anim'])) {
@@ -78,7 +84,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         // add fx plugin to module body
         var content = module.one('.yui3-bd').plug(Y.Plugin.NodeFX, {
-            from: { height: 0 },
+            from: { height: ".$summary." },
             to: {
                 height: function(node) { // dynamic in case of change
                     return node.get('scrollHeight'); // get expanded height (offsetHeight may be zero)
@@ -118,8 +124,8 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
         expCSS::pushToHead(array(
             "unique"=>'toggle',
             "corecss"=>"toggle",
-            )
-        );
+            "css"=>$css,
+        ));
     }
 
 }
