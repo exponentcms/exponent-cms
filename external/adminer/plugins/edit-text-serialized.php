@@ -18,7 +18,7 @@ class AdminerEditTextSerializedarea {
 	
 	function editInput($table, $field, $attrs, $value) {
 //		if (ereg('text', $field["type"])) {
-		if (ereg("location_data", $field["field"]) || ereg("internal", $field["field"]) || ereg("external", $field["field"]) || ereg("config", $field["field"])) {
+		if (ereg("location_data|internal|external|config", $field["field"])) {
 			return '<input value="' . h($value) . '" title="' . htmlentities(print_r(self::expUnserialize($value),true)) . '" maxlength=250 size=40 $attrs>';
 		}
 	}
