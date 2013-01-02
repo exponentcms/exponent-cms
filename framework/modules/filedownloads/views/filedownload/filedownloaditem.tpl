@@ -30,7 +30,7 @@
             {if $file->ext_file}
                 <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank">{$file->title}</a>
             {else}
-                {icon action=downloadfile fileid=$file->id text=$file->title}
+                {icon action=downloadfile fileid=$file->id text=$file->title title="{'Download'|gettext}"}
             {/if}
         </h3>
     {else}
@@ -107,6 +107,8 @@
                 {img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}
             {/if}
         </a>
+        {*<audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile['downloadable'][0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">*}
+        {*</audio>*}
     {/if}
     {clear}
     {permissions}
