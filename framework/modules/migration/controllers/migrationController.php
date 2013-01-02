@@ -176,10 +176,10 @@ class migrationController extends expController {
 				$dupe = $db->selectValue('section', 'sef_name', 'sef_name="'.$page->sef_name.'"');
 				if (!empty($dupe)) {
 					list($u, $s) = explode(' ',microtime());
-					$this->sef_name .= '-'.$s.'-'.$u;
+                    $page->sef_name .= '-'.$s.'-'.$u;
 				}
-                $page->sef_name = $page->sef_name;
-                unset($page->sef_name);
+//                $page->sef_name = $page->sef_name;
+//                unset($page->sef_name);
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
 					$failed += 1;
@@ -204,10 +204,10 @@ class migrationController extends expController {
 				$dupe = $db->selectValue('section', 'sef_name', 'sef_name="'.$page->sef_name.'"');
 				if (!empty($dupe)) {
 					list($u, $s) = explode(' ',microtime());
-					$this->sef_name .= '-'.$s.'-'.$u;
+                    $page->sef_name .= '-'.$s.'-'.$u;
 				}
-                $page->sef_name = $page->sef_name;
-                unset($page->sef_name);
+//                $page->sef_name = $page->sef_name;
+//                unset($page->sef_name);
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
 					$failed += 1;
