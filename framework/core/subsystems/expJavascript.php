@@ -72,6 +72,7 @@ class expJavascript {
                             $srt[$i] = "";
                             $srt[$i] .= JQUERYUI_SCRIPT.",";
                         }
+                        expCSS::pushToHead(array("unique"=>'000jqueryui','link'=>JQUERYUI_CSS));
                     } else {
                         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
                             if (strlen($srt[$i])+strlen(PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')<= $strlen) {
@@ -128,6 +129,7 @@ class expJavascript {
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $key=>$mod) {
                     if ($mod == 'jqueryui') {
                         $scripts .= "\t".'<script type="text/javascript" src="'.JQUERYUI_SCRIPT.'"></script>'."\r\n";
+                        expCSS::pushToHead(array("unique"=>'000jqueryui','link'=>JQUERYUI_CSS));
                     } else {
                         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
                             $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js"></script>'."\r\n";

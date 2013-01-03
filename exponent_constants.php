@@ -478,13 +478,6 @@ if (!defined('YUI2_RELATIVE')) {
 	define('YUI2_URL', URL_FULL.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
 }
 
-if (!defined('JQUERYUI_STYLE')) {
-    /*
-	 * Default jQuery CSS Style Constant
-	 * Changing the version here lets Exponent adjust where to look
-	 */
-	define('JQUERYUI_STYLE', 'redmond');
-}
 if (!defined('JQUERY_RELATIVE')) {
     /*
 	 * jQuery/jQueryUI Version Constants
@@ -497,7 +490,8 @@ if (!defined('JQUERY_RELATIVE')) {
 	define('JQUERY_URL', URL_FULL.'external/jquery/');
     define('JQUERY_SCRIPT', JQUERY_RELATIVE.'js/jquery-'.JQUERY_VERSION.'.min.js');
     define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
-    define('JQUERYUI_CSS', JQUERY_RELATIVE.'css/'.JQUERYUI_STYLE.'/jquery-ui.css');
+    if (!defined('JQUERYUI_THEME')) define('JQUERYUI_THEME', 'base');
+    define('JQUERYUI_CSS', JQUERY_RELATIVE.'css/'.JQUERYUI_THEME.'/jquery-ui.css');
 }
 
 if (!defined('SMARTY_PATH')) {
