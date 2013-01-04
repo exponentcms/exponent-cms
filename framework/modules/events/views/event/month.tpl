@@ -170,7 +170,7 @@
         YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.calpopevent"), "click", function (e) {
             target = YAHOO.util.Event.getTarget(e);
             lb2.cfg.contentString = null;
-            lb2.cfg.contentURL = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id;
+            lb2.cfg.contentURL = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}";
             lb2.show(e);
         }, lb2, true);
         YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.icalpopevent"), "click", function (e) {
