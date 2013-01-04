@@ -15,7 +15,7 @@ Added / Fixed / changed for 2.1.1
   - adds ajax-based navigation in calendar, news items & blog posts to prevent reloading entire page
   - adds 'grouping by date' for uncategorized portfolio & file download items (in addition to 'grouping by alpha' for rolodex feature)
   - adds new 'headline' view to filedownloads module
-  - adds new 'toggle' view to text module
+  - adds new 'toggle' and 'accordion' views to the text module
   - adds custom module phrase translation libraries feature
   - adds a mass mailer for super admins to email all users or selected site users
   - updates file manager with 'virtual folder' grouping and date features to assist locating files
