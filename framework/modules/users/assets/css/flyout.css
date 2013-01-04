@@ -1,6 +1,6 @@
 .flyout {
     position                          : fixed;
-    z-index                           : 10;
+    z-index                           : 999;
     top                               : 30px;
     right                             : 0;
     /*display: none;*/
@@ -75,7 +75,7 @@
 
 a.triggerlogin {
     position                           : fixed;
-    z-index                            : 10;
+    z-index                            : 999;
     text-decoration                    : none;
     top                                : 30px;
     right                              : 0;

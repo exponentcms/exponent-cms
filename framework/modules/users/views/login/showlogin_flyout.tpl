@@ -70,7 +70,7 @@
 			<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
 			<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
             {if $smarty.const.ECOM && $oicount}
-                {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext}{br}
+                {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural}){br}
             {/if}
 			<a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
 		</div>
@@ -78,14 +78,11 @@
     <a class="triggerlogin" href="#">&#160;&#160;&#160;{$displayname}</a>
 	{/if}
 
-{*{script unique="flyout" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}*}
-{*{script unique="flyout" type="text/javascript" src="`$smarty.const.BASE`external/jquery/jquery-1.8.2.min.js"}*}
-{*{script unique="flyout" type="text/javascript" src="`$smarty.const.BASE``$smarty.const.JQUERY_SCRIPT`"}*}
 {script unique="flyout" jquery=1}
 {literal}
 $(document).ready(function(){
 	$(".triggerlogin").click(function(){
-		$(".panel").toggle("fast");
+		$(".flyout").toggle("fast");
 		$(this).toggleClass("active");
 		return false;
 	});
