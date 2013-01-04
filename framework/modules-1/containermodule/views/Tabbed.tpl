@@ -32,7 +32,7 @@
 			{if $container == null}
                 {$tabtitle="(empty)"|gettext}
 			{elseif $container->title == ""}
-                {$tabtitle="(blank)"|gettext}
+                {$tabtitle=' '}
 			{else}
                 {$tabtitle=$container->title}
 			{/if}

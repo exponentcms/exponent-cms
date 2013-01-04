@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="module text showall">
+<div class="module text showall showall-toggle">
     {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">

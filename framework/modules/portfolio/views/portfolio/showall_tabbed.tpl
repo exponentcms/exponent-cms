@@ -47,7 +47,7 @@
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach name=tabs from=$page->cats key=catid item=cat}
-                <li><a href="#tab{$smarty.foreach.items.iteration}">{$cat->name}</a></li>
+                <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$cat->name}</a></li>
             {/foreach}
         </ul>
         <div>
