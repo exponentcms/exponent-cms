@@ -1,5 +1,5 @@
 Exponent Content Management System
-Copyright (c) 2004-2012 OIC Group, Inc.
+Copyright (c) 2004-2013 OIC Group, Inc.
 ===============================================
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
@@ -9,16 +9,16 @@ Added / Fixed / changed for 2.1.1
 # This release focuses on the new forms module and e-Commerce as OOTB experience
   - adds many new event calendar features
     -- adds event copying feature (create new event from existing event)
-    -- adds optional images to events and event registrations
+    -- adds optional attached images to events and event registrations
     -- adds optional event popup in a lightbox dialog (like google calendar)
-    -- adds ajax-based navigation in calendar months (weeks/days), news items & blog posts to prevent reloading entire page
-    -- adds 'cancel' event feature to display, yet mark events as cancelled
-  - adds grouping by date for uncategorized portfolio and file download items (in addition to grouping by alpha for rolodex feature)
+    -- adds 'cancelled event' feature to display events as cancelled
+  - adds ajax-based navigation in calendar, news items & blog posts to prevent reloading entire page
+  - adds 'grouping by date' for uncategorized portfolio & file download items (in addition to 'grouping by alpha' for rolodex feature)
   - adds new 'headline' view to filedownloads module
   - adds new 'toggle' view to text module
   - adds custom module phrase translation libraries feature
-  - adds a mass mailer for super admins to email all or selected site users
-  - updates file manager with 'folder' grouping and date features for enhanced file locating
+  - adds a mass mailer for super admins to email all users or selected site users
+  - updates file manager with 'virtual folder' grouping and date features to assist locating files
   - updates file uploader to allow html5 drag/drop support
 
 Added / Fixed / changed for 2.1.0

@@ -2,7 +2,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,7 +29,7 @@ exec ('php ./lang_extract.php -r ..',$output);
 output($output);
 unset ($output);
 output("Now extracting phrases from the folders!\n");
-exec ('php ./lang_extract.php ../conf ../cron ../framework ../install ../themes', $output);
+exec ('php ./lang_extract.php ../conf ../cron ../framework ../install ../themes/simpletheme', $output);
 output($output);
 unset ($output);
 
