@@ -82,14 +82,16 @@ span.active {
 /****************  administrative action links  ***********************/
 
 a.add,
+a.addtitle,
 a.alphasort,
 a.edit,
 a.configure,
 a.delete,
+a.deletetitle,
 a.manage,
 a.merge,
-a.revisions,
-a.reranklink {
+a.reranklink,
+a.revisions {
     padding:3px 3px 3px 20px;
     display:inline-block;
     *display:inline;
@@ -98,7 +100,7 @@ a.reranklink {
     background: url(../images/add.png) no-repeat 0 50%;
 }
 
-a.add {
+a.add, a.addtitle {
     background: url(../images/add.png) no-repeat 0 50%;
 }
 
@@ -114,7 +116,7 @@ a.configure {
     background: url(../images/configure.png) no-repeat 0 50%;
 }
 
-a.delete {
+a.delete, a.deletetitle {
     background: url(../images/delete.png) no-repeat 0 50%;
 }
 
@@ -305,4 +307,14 @@ ul.exp-ajax-tabs li a.current {
 
 .control input.title {
     width:98%;
+}
+
+div.editable {
+    border-color: transparent;
+    border-width: thin;
+    border-style: dotted;
+}
+
+div.editable:hover {
+    border-color: #ff8938;
 }

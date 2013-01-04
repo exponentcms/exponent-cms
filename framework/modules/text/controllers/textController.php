@@ -43,8 +43,13 @@ class textController extends expController {
 		$where = $this->aggregateWhereClause();
 		$order = 'rank ASC';
 		$items = $this->text->find('all', $where, $order);
+        $level = 99;
+        if (expSession::is_set('uilevel')) {
+        	$level = expSession::get('uilevel');
+        }
 		assign_to_template(array(
-            'items'=>$items
+            'items'=>$items,
+            'preview'=>($level == UILEVEL_PREVIEW)
         ));
 	}
 	
@@ -70,7 +75,44 @@ class textController extends expController {
         // go back to where we came from.
         expHistory::back();
     }
-    
+
+    /**
+     * function to update the text item object sent via ajax
+     * we only have to deal with a title and body which can be edited by ckeditor4 inline
+     */
+    public function saveItem() {
+        $text = new text($this->params['id']);
+        if ($this->params['type'] != 'revert') {
+            if ($this->params['id'] != 0) {
+                $prop = $this->params['type'];
+                $data = !empty($this->params['value']) ? $this->params['value'] : '';
+                if ($prop == 'title') $data = trim(strip_tags($data));
+                $text->$prop = $data;
+            } else {
+                $text->title = 'title placeholder';
+                $text->body = '<p>content placeholder</p>';
+                $text->location_data = serialize(expCore::makeLocation('text',$this->params['src'],''));
+            }
+            $text->update();
+            $ar = new expAjaxReply(200, gt('The text item was saved'), $text->id);
+        } else {
+            $ar = new expAjaxReply(200, gt('The text item was saved'), json_encode($text));
+        }
+        $ar->send();
+    }
+
+    /**
+     * function to delete the text item object sent via ajax
+     */
+    public function deleteItem() {
+        if (!empty($this->params['id'])) {
+            $text = new text($this->params['id']);
+            $text->delete();
+            $ar = new expAjaxReply(200, gt('The text item was deleted'), $text->id);
+            $ar->send();
+        }
+    }
+
 }
 
 ?>
