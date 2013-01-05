@@ -34,7 +34,7 @@
         &#160;|&#160;
         <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>
         {if $smarty.const.ECOM && $oicount}
-            &#160;|&#160;{icon class=cart controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural})
+            &#160;|&#160;{icon class=cart controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount})
         {/if}
         {br}
     {/if}

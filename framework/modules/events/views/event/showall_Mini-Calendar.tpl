@@ -21,7 +21,7 @@
     <div id="mini-cal">
         {include 'minical.tpl'}
     </div>
-    {icon class="monthviewlink" action=showall time=$now text='Calendar View'|gettext}
+    {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext}
 	{br}
 	{permissions}
 		{if $permissions.create == 1}

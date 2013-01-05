@@ -78,24 +78,29 @@
         <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
         <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
         {if $smarty.const.ECOM && $oicount}
-            {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural}){br}
+            {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount}){br}
         {/if}
         <a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
     </div>
     </div>
-    <a class="triggerlogin" href="#">&#160;&#160;&#160;{$displayname}</a>
+    <a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">&#160;&#160;&#160;{$displayname}</a>
 {/if}
 
 {script unique="flyout" type="text/javascript" yui3mods="1"}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-    Y.on('domready', function() {
-    Y.one('.triggerlogin').on('click', function() {
-    Y.one('.flyout').toggleView();
-    Y.one(this).toggleClass('active');
-    return false;
-    });
-    });
+        Y.on('domready', function() {
+            Y.one('.triggerlogin').on('click', function() {
+                Y.one('.flyout').toggleView();
+                Y.one(this).toggleClass('active');
+                if (Y.one(this).hasClass('active'))  {
+                    Y.one(this).set('title','{/literal}{'Click to close this panel'|gettext}{literal}');
+                } else {
+                    Y.one(this).set('title','{/literal}{'Click to open this panel'|gettext}{literal}');
+                }
+                return false;
+            });
+        });
     });
 {/literal}
 {/script}

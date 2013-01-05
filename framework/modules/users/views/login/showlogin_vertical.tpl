@@ -35,7 +35,7 @@
         {control type="password" name="password" label="Password"|gettext|cat:":" size=25}
         {control type="buttongroup" submit="Log In"|gettext}
         {/form}
-        {br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
+        <a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
         {br}
     </div>
 
@@ -73,9 +73,10 @@
         <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
         <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
         {if $smarty.const.ECOM && $oicount}
-            {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural}){br}
+            {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount}){br}
         {/if}
         <a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
     </div>
-    </div>
+</div>
 {/if}
+{br}

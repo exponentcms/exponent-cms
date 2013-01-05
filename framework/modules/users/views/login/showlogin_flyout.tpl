@@ -78,22 +78,27 @@
         <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
         <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
         {if $smarty.const.ECOM && $oicount}
-            {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural}){br}
+            {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount}){br}
         {/if}
         <a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
     </div>
     </div>
-    <a class="triggerlogin" href="#">&#160;&#160;&#160;{$displayname}</a>
+    <a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">&#160;&#160;&#160;{$displayname}</a>
 {/if}
 
 {script unique="flyout" jquery=1}
 {literal}
     $(document).ready(function(){
-    $(".triggerlogin").click(function(){
-    $(".flyout").toggle("fast");
-    $(this).toggleClass("active");
-    return false;
-    });
+        $(".triggerlogin").click(function(){
+            $(".flyout").toggle("fast");
+            $(this).toggleClass("active");
+            if ($(this).hasClass('active'))  {
+                $(this).attr('title','{/literal}{'Click to close this panel'|gettext}{literal}');
+            } else {
+                $(this).attr('title','{/literal}{'Click to open this panel'|gettext}{literal}');
+            }
+            return false;
+        });
     });
 {/literal}
 {/script}
