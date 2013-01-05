@@ -48,8 +48,8 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         echo '<div id="'.$params['unique'].'" class="yui3-module">
             <div id="head" class="yui3-hd">
-                <h3 title="'.gt('Click to Collapse/Expand').'">'.$params['title'].'</h3>
-                <a title="'.gt('Collapse/Expand').'" class="yui3-toggle"></a>
+                <h3 id="h3-'.$params['unique'].'" title="'.gt('Click to Expand').'">'.$params['title'].'</h3>
+                <a id="a-'.$params['unique'].'" title="'.gt('Click to Expand').'" class="yui3-toggle"></a>
             </div>
         ';
         echo '    <div class="yui3-bd">
@@ -98,6 +98,13 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             module.toggleClass('yui3-closed');
             content.fx.set('reverse', !content.fx.get('reverse')); // toggle reverse
             content.fx.run();
+            if (module.hasClass('yui3-closed'))  {
+                Y.one('#h3-".$params['unique']."').set('title','".gt('Click to Expand')."');
+                Y.one('#a-".$params['unique']."').set('title','".gt('Click to Expand')."');
+            } else {
+                Y.one('#h3-".$params['unique']."').set('title','".gt('Click to Collapse')."');
+                Y.one('#a-".$params['unique']."').set('title','".gt('Click to Collapse')."');
+            }
         };
 
         module.one('#head').on('click', onClick);
@@ -108,6 +115,8 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
         module.toggleClass('yui3-closed');
         content.fx.set('reverse', !content.fx.get('reverse')); // toggle reverse
         content.fx.run();
+        Y.one('#h3-".$params['unique']."').set('title','".gt('Click to Expand')."');
+        Y.one('#a-".$params['unique']."').set('title','".gt('Click to Expand')."');
         ";
 
         $script .= "
