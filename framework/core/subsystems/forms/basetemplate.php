@@ -83,6 +83,9 @@ abstract class basetemplate {
         $this->tpl->loadPlugin('smarty_compiler_switch');
 
 		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
+        if ($this->viewfile == TEMPLATE_FALLBACK_VIEW) {
+            $this->tpl->assign("badview", $view);
+        }
 		$this->viewdir = realpath(dirname($this->viewfile));
 
 		$this->module = $item_dir;
