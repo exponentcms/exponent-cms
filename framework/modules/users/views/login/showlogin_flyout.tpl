@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="login" link="`$asset_path`css/flyout.css"}
+{css unique="showlogin-flyout" link="`$asset_path`css/flyout.css"}
 
 {/css}
 
@@ -62,7 +62,7 @@
     <a class="triggerlogin" href="#">{'Login'|gettext}</a>
 	{else}
 		<div class="box login-form one">
-			<strong>{'Welcome, %s'|gettext|sprintf:$displayname}</strong>{br}{br}
+			<strong>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</strong>{br}{br}
 			<a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>{br}
 			{if $is_group_admin}
 				<a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}

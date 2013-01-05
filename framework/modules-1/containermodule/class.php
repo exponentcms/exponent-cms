@@ -75,8 +75,8 @@ class containermodule {
         }
     }
 
-    static function show($view, $loc = null, $title = '') {
-        if (empty($view)) $view = "Default";
+    static function show($view = "Default", $loc = null, $title = '') {
+//        if (empty($view)) $view = "Default";
 //		$source_select = array();
         $clickable_mods = null; // Show all
         $dest = null;
