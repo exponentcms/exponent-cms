@@ -17,11 +17,7 @@
 
 {/css}
 
-{css unique="showlogin-flyout" link="`$asset_path`css/flyout.css"}
-
-{/css}
-
-<div class="module login flyout" style="display: none;">
+<div class="module login vertical">
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
     <div class="box login-form one">
         {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
@@ -66,7 +62,6 @@
         </div>
     {/if}
 </div>
-    <a class="triggerlogin" href="#">{'Login'|gettext}</a>
 {else}
     <div>
         <strong>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</strong>{br}{br}
@@ -83,19 +78,4 @@
         <a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
     </div>
     </div>
-    <a class="triggerlogin" href="#">&#160;&#160;&#160;{$displayname}</a>
 {/if}
-
-{script unique="flyout" type="text/javascript" yui3mods="1"}
-{literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-    Y.on('domready', function() {
-    Y.one('.triggerlogin').on('click', function() {
-    Y.one('.flyout').toggleView();
-    Y.one(this).toggleClass('active');
-    return false;
-    });
-    });
-    });
-{/literal}
-{/script}
