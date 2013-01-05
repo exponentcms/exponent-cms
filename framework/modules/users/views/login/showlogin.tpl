@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="login" link="`$asset_path`css/login.css"}
+{css unique="showlogin" link="`$asset_path`css/login.css"}
 
 {/css}
 
@@ -62,7 +62,7 @@
 	{/if}
 {else}
 	{if !$smarty.const.ECOM}
-		<div class="login logout-only">
+		<div class=" logout">
 			<a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" href="{link action=logout}">{'Logout'|gettext}</a>
 		</div>
 	{/if}

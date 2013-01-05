@@ -30,7 +30,7 @@
 		<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>&#160;|&#160;
 		<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>
         {if $smarty.const.ECOM && $oicount}
-            &#160;|&#160;{icon class=cart controller=cart action=show text="Shopping Cart"|gettext}
+            &#160;|&#160;{icon class=cart controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural})
         {/if}
         {br}
     {/if}
