@@ -85,12 +85,10 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
         // add fx plugin to module body
         var content = module.one('.yui3-bd').plug(Y.Plugin.NodeFX, {
             from: { height: ".$summary." },
-            to: {
-                height: function(node) { // dynamic in case of change
+            to: { height: function(node) { // dynamic in case of change
                     return node.get('scrollHeight'); // get expanded height (offsetHeight may be zero)
                 }
             },
-
             easing: Y.Easing.".$anim."Both,
             duration: 0.5
         });

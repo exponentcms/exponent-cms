@@ -1,0 +1,162 @@
+.flyout_left {
+    /*float: left;*/
+    position                          : fixed;
+    z-index                           : 999;
+    top                               : 30px;
+    left                             : 0;
+    min-width                         : 160px;
+    /*display: none;*/
+    background                        : #000000;
+    color                             : #cccccc;
+    border                            : 1px solid #111111;
+    -moz-border-radius-topright        : 20px;
+    -webkit-border-top-right-radius    : 20px;
+    border-top-right-radius            : 20px;
+    -moz-border-radius-bottomright     : 20px;
+    -webkit-border-bottom-right-radius : 20px;
+    border-bottom-right-radius         : 20px;
+    /*width: 200px;*/
+    /*height: auto;*/
+    padding                           : 20px;
+    filter                            : alpha(opacity = 85);
+    opacity                           : .85;
+}
+
+.flyout_left p {
+    margin  : 0 0 15px 0;
+    padding : 0;
+    color   : #cccccc;
+}
+
+a.triggerlogin {
+    /*float: left;*/
+    position                           : fixed;
+    z-index                            : 999;
+    text-decoration                    : none;
+    top                                : 30px;
+    left                              : 0;
+    font-size                          : 0px;
+    letter-spacing                     : -1px;
+    font-family                        : verdana, helvetica, arial, sans-serif;
+    color                              : #fff;
+    padding                            : 10px 10px 10px 0px;
+    /*font-weight: 700;*/
+    background                         : #333333 url(../../../../modules/users/assets/images/plus.png) 100% 55% no-repeat;
+    border                             : 1px solid #444444;
+    -moz-border-radius-topright         : 20px;
+    -webkit-border-top-right-radius     : 20px;
+    border-top-right-radius             : 20px;
+    -moz-border-radius-bottomright      : 20px;
+    -webkit-border-bottom-right-radius  : 20px;
+    border-bottom-right-radius          : 20px;
+    -moz-border-radius-bottomleft     : 0px;
+    -webkit-border-bottom-left-radius : 0px;
+    border-bottom-left-radius         : 0px;
+    display                            : block;
+}
+
+a.triggerlogin:hover, a.triggerlogin:hover:visited {
+    position                           : fixed;
+    text-decoration                    : none;
+    top                                : 30px;
+    left                              : 0;
+    font-size                          : 11px;
+    letter-spacing                     : -1px;
+    font-family                        : verdana, helvetica, arial, sans-serif;
+    color                              : #fff;
+    padding                            : 10px 10px 10px 40px;
+    font-weight                        : 700;
+    background                         : #222222 url(../../../../modules/users/assets/images/plus.png) 5% 55% no-repeat;
+    border                             : 1px solid #444444;
+    -moz-border-radius-topright         : 20px;
+    -webkit-border-top-right-radius     : 20px;
+    border-top-right-radius             : 20px;
+    -moz-border-radius-bottomright      : 20px;
+    -webkit-border-bottom-right-radius  : 20px;
+    border-bottom-right-radius          : 20px;
+    -moz-border-radius-bottomleft     : 0px;
+    -webkit-border-bottom-left-radius : 0px;
+    border-bottom-left-radius         : 0px;
+    display                            : block;
+}
+
+/*a.triggerlogin, a.triggerlogin:visited {*/
+/*margin          : 0;*/
+/*padding         : 0;*/
+/*color           : #9FC54E;*/
+/*text-decoration : none;*/
+/*border-bottom: 1px solid #9FC54E;*/
+/*}*/
+
+/*a.triggerlogin:hover, a.triggerlogin:visited:hover {*/
+/*margin          : 0;*/
+/*padding         : 0;*/
+/*color           : #ffffff;*/
+/*text-decoration : none;*/
+/*border-bottom: 1px solid #ffffff;*/
+/*}*/
+
+a.active.triggerlogin, a.active.triggerlogin:visited {
+    background : #222222 url(../../../../modules/users/assets/images/minus.png) 100% 55% no-repeat;
+    font-size  : 0px;
+    padding    : 12px 22px 10px 0px;
+}
+
+.columns {
+    clear       : both;
+    width       : 330px;
+    padding     : 0 0 20px 0;
+    line-height : 22px;
+}
+
+.colleft {
+    float       : left;
+    width       : 130px;
+    line-height : 22px;
+}
+
+.colright {
+    float       : right;
+    width       : 130px;
+    line-height : 22px;
+}
+
+ul {
+    padding         : 0;
+    margin          : 0;
+    list-style-type : none;
+}
+
+ul li {
+    padding         : 0;
+    margin          : 0;
+    list-style-type : none;
+}
+
+hr {
+    background-color : #333333;
+    height           : 1px;
+}
+
+.flyout_left h2, .flyout_left h3, #menu .flyout_left h4 {
+    font-size   : 115%;
+    font-weight : bold;
+}
+
+.flyout_left .item-actions a, .flyout_left .module-actions a {
+    display : inline;
+}
+
+.flyout_left .item-actions, .flyout_left .module-actions, .flyout_left img {
+    clear    : both;
+    overflow : hidden;
+}
+
+.flyout_left p:after {
+    content    : ".";
+    display    : block;
+    height     : 0;
+    overflow   : hidden;
+    clear      : both;
+    visibility : hidden;
+}
