@@ -81,11 +81,11 @@
 						{/if}
 					</td>
 				</tr>
-                {if $billings[0]->id == '' || $shippings[0]->id == ''}
-                <tr><td colspan=2>
-                    <a class="manage" href="{link module=address action=myaddressbook}">{'Manage My Addresses'|gettext}</a>
-                </td></tr>
-                {/if}
+                {*{if $billings[0]->id == '' || $shippings[0]->id == ''}*}
+                    <tr><td colspan=2>
+                        <a class="manage" href="{link module=address action=myaddressbook}">{'Manage My Addresses'|gettext}</a>
+                    </td></tr>
+                {*{/if}*}
 			</tbody>
 		</table>
 	</div>
@@ -102,21 +102,20 @@
 			</thead>
 			<tbody>
 				{foreach from=$orders->records item=listing name=listings}
-				<tr class="{cycle values='odd,even'}">
-					
-					<td><a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a></td>
-					<td style="text-align:right;">${$listing->grand_total|number_format:2}</td>
-					<td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
-                    <td>{$listing->order_type}</td>
-					<td>{$listing->status}</td>
-                    <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png"}</a>{/if}</td> 
-				</tr>
+                    <tr class="{cycle values='odd,even'}">
+                        <td><a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a></td>
+                        <td style="text-align:right;">${$listing->grand_total|number_format:2}</td>
+                        <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
+                        <td>{$listing->order_type}</td>
+                        <td>{$listing->status}</td>
+                        <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png"}</a>{/if}</td>
+                    </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
 				        <td colspan="4">{'No orders have been placed yet'|gettext}</td>
 				    </tr>
 				{/foreach}
-		</tbody>
+		    </tbody>
 		</table>
 		{pagelinks paginate=$orders bottom=1}
 	</div>

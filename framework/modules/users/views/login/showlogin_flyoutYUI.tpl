@@ -66,7 +66,7 @@
         </div>
     {/if}
 </div>
-    <a class="triggerlogin" href="#">{'Login'|gettext}</a>
+<a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">{'Login'|gettext}</a>
 {else}
     <div>
         <strong>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</strong>{br}{br}
@@ -80,10 +80,12 @@
         {if $smarty.const.ECOM && $oicount}
             {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount}){br}
         {/if}
-        <a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
+        {if $user.isAdmin()}
+            <a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
+        {/if}
     </div>
-    </div>
-    <a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">&#160;&#160;&#160;{$displayname}</a>
+</div>
+<a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">&#160;&#160;&#160;{$displayname}</a>
 {/if}
 
 {script unique="flyout" type="text/javascript" yui3mods="1"}

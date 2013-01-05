@@ -886,14 +886,16 @@ class usersController extends expController {
 		$sql .= DB_TABLE_PREFIX.'_order_type ot ';                                          
 		$sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;     
 		
-		$limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 50;
+		$limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
+        $order = !empty($this->params['order']) ? $this->params['order'] : 'purchased';
+        $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'DESC';
 		//eDebug($sql, true);
 		$orders = new expPaginator(array(
 			//'model'=>'order',
             'sql'=>$sql,
             'limit'=>$limit,
-			'order'=>'purchased',
-			'dir'=>'DESC',
+			'order'=>$order,
+			'dir'=>$dir,
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 			'columns'=>array(
                 gt('Order #')=>'invoice_id',
