@@ -1236,6 +1236,37 @@ class eventController extends expController {
         return $extevents;
     }
 
+    /**
+     * function to build a control requested via ajax
+     * we the html just like the control smarty function
+     */
+    public function buildControl() {
+        $control = new colorcontrol();
+        if (!empty($this->params['value'])) $control->value = $this->params['value'];
+        if ($this->params['value'][0] != '#') $this->params['value'] = '#' . $this->params['value'];
+        $control->default = $this->params['value'];
+        if (!empty($this->params['hide'])) $control->hide = $this->params['hide'];
+        if (isset($this->params['flip'])) $control->flip = $this->params['flip'];
+        $this->params['name'] = !empty($this->params['name']) ? $this->params['name'] : '';
+        $control->name  = $this->params['name'];
+        $this->params['id'] = !empty($this->params['id']) ? $this->params['id'] : '';
+        $control->id  = isset($this->params['id']) && $this->params['id'] != "" ? $this->params['id'] : "";
+        //echo $control->id;
+        if (empty($control->id)) $control->id = $this->params['name'];
+        if (empty($control->name)) $control->name = $this->params['id'];
+
+        // attempt to translate the label
+        if (!empty($this->params['label'])) {
+            $this->params['label'] = gt($this->params['label']);
+        } else {
+            $this->params['label'] = null;
+        }
+        echo $control->toHTML($this->params['label'], $this->params['name']);
+//        $ar = new expAjaxReply(200, gt('The control was created'), json_encode(array('data'=>$code)));
+//        $ar->send();
+    }
+
+
 }
 
 ?>

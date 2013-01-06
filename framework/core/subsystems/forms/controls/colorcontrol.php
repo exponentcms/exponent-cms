@@ -92,12 +92,12 @@ class colorcontrol extends formcontrol {
         $assets_path = SCRIPT_RELATIVE . 'framework/core/subsystems/forms/controls/assets/';
         $html = "
         <span><input ".(empty($this->hide)?"size=10 type=\"text\"":"type=\"hidden\"")." id=\"" . $this->id . "\" name=\"" . $name . "\" value=\"" . $this->default . "\" class=\"text colorbox\" />
-        <div id='divpreview-" . $this->id . "' style='background-color:" . $this->default . "'> </div></span>
-        <div id='container-" . $this->id . "' style='display:none'>
+        <div id='divpreview-" . $this->id . "' class='divpreview' style='background-color:" . $this->default . ";'> </div></span>
+        <div id='container-" . $this->id . "' class='colorContainer' style='display:none'>
             <div id='picker-" . $this->id . "'></div>
             <div style=\"clear:both\"></div>
-            <a id='updateColors-" . $this->id . "'>".gt('Select Current Color')."</a>
-            <a id='cancelColors-" . $this->id . "'>".gt('Cancel')."</a>
+            <a id='updateColors-" . $this->id . "' class='updateColors'>".gt('Select Current Color')."</a>
+            <a id='cancelColors-" . $this->id . "' class='cancelColors'>".gt('Cancel')."</a>
         </div>
         ";
 
@@ -179,7 +179,7 @@ class colorcontrol extends formcontrol {
         ";
 
         $css = "
-            #container-" . $this->id ." {
+            .colorContainer {
                 width: 290px;
                 background-color: #ccc;
                 border-radius: 15px;
@@ -191,7 +191,7 @@ class colorcontrol extends formcontrol {
                 position: absolute;
                 z-index:1000;
             }
-            #updateColors-" . $this->id .", #cancelColors-" . $this->id ." {
+            .updateColors, .cancelColors {
                 display: inline-block;
                 margin: 10px 0px;
                 background-color: #666;
@@ -205,7 +205,7 @@ class colorcontrol extends formcontrol {
                 text-decoration: none;
                 margin-bottom: 0;
             }
-            #divpreview-" . $this->id ." {
+            .divpreview {
                 border-radius: 5px;
                 -webkit-border-radius: 5px;
                 -moz-border-radius: 5px;
@@ -216,13 +216,13 @@ class colorcontrol extends formcontrol {
                 margin-bottom: 5px;
                 vertical-align: middle;
             }
-            #updateColors-" . $this->id .":hover, #cancelColors-" . $this->id .":hover {
+            .updateColors:hover, .cancelColors:hover {
                 background-color: #999;
                 cursor:pointer;
             }
         ";
         expCSS::pushToHead(array(
-    	    "unique"=>"colorpicker" . $this->id,
+    	    "unique"=>"colorpicker",
     	    "link"=>"http://yui.yahooapis.com/combo?gallery-2011.09.14-20-40/build/gallery-colorpicker/assets/gallery-colorpicker-core.css",
             "css"=>$css
         ));

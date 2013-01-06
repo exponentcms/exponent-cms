@@ -34,13 +34,11 @@
             <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
         {/foreach}
     </ul>
-    <blockquote>
-        {'New feeds must first be saved before their color option is available'|gettext}
-    </blockquote>
 
+    {*FIXME convert to yui3*}
     {script unique="googlefeedpicker" yui3mods=1}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-connectioncore','yui2-json','yui2-selector','yui2-get', function(Y) {
         var YAHOO=Y.YUI2;
         var add = YAHOO.util.Dom.getElementsByClassName('addtogooglelist', 'a');
         YAHOO.util.Event.on(add, 'click', function(e,o){
@@ -50,14 +48,13 @@
             YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
-//            newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_gcal[]" value="'+feedtoadd.value+'" />';
             newLabel.innerHTML = '<input type="hidden" name="pull_gcal[]" value="'+feedtoadd.value+'" />';
-            newLabel.innerHTML = newLabel.innerHTML + '<div style="display:inline" class="text-control control "><label style="display:inline" class="label">' + feedtoadd.value + '</label></div>';
+            newLabel.innerHTML = newLabel.innerHTML + '<span id="placeholder" style="display:inline-block"></span>';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "delete removegoogle";
             newRemove.innerHTML = " {/literal}{'Remove'|gettext}{literal}";
-            newli.appendChild(newLabel);
+            newli.innerHTML = newLabel.innerHTML;
             newli.appendChild(newRemove);
             var list = YAHOO.util.Dom.get('googlepull-feeds');
             list.appendChild(newli);
@@ -68,6 +65,33 @@
                     if (list.children.length == 1) YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', '');;
                 } else return false;
             },newli,true);
+            var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&json=1&controller=event&action=buildControl&label="+feedtoadd.value+"&name=pull_gcal_color[]&id=pull_gcal_color"+list.children.length+"&hide=1&flip=1&value=000";
+            var callback = {
+                success: function(oResponse) {
+                    placeholder = YAHOO.util.Dom.get("placeholder");
+                    placeholder.innerHTML = oResponse.responseText;
+                    var scripts = placeholder.getElementsByTagName('script');
+                    for (var scrpt, i = scripts.length; i-- && (scrpt = scripts[i]);) {
+                        if(!YAHOO.util.Dom.getAttribute (scrpt,'src')){
+                            eval(scrpt.innerHTML);
+                        } else {
+                            var url = scrpt.get('src');
+                            if (url.indexOf("ckeditor")) {
+                                YAHOO.util.Get.script(url);
+                            };
+                        };
+                    };
+                    var csslinks = placeholder.getElementsByTagName('link');
+                    for (var link, i = csslinks.length; i-- && (link = csslinks[i]);) {
+                        var url = YAHOO.util.Dom.getAttribute (link,'href');
+                        YAHOO.util.Get.css(url);
+                    };
+                    YAHOO.util.Dom.setAttribute(placeholder,'id','inplace');
+                },
+                timeout: 7000,
+                scope: callback,
+            };
+            YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
             feedtoadd.value = '';
         });
     
