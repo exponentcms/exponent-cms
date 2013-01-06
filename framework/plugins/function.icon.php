@@ -127,6 +127,11 @@ function smarty_function_icon($params, &$smarty) {
         if (!empty($onclick))
             echo ' onclick="' . $onclick . '"';
         echo '>' . $linktext . '</a>';
+    } elseif(!empty($params['noaction'])) {
+        echo '<a href="#" title="' . $title . '" class="' . $class . '"';
+        if (!empty($onclick))
+            echo ' onclick="' . $onclick . '"';
+        echo '>' . $linktext . '</a>';
     } else {
         echo $linktext;
     }
