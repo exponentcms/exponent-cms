@@ -49,8 +49,7 @@
             <input type="hidden" name="controller" value="login"/>
             <input type="text" class="text" name="username" id="login_username" size="15"/>
             <input type="password" class="text" name="password" id="login_password" size="15"/>
-            <button type="submit"
-                    class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}">{'Login'|gettext}</button>
+            <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}">{'Login'|gettext}</button>
             <br/>
             {if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
                 <a href="{link controller=users action=create}">{'Create Account'|gettext}</a>

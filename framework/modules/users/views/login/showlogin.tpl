@@ -28,7 +28,6 @@
                 {$usertype="Users"|gettext}
                 {$label="Username"|gettext|cat:":"}
             {/if}
-
             <h2>{"Existing"|gettext} {$usertype}</h2>
             <!--p>If you are an existing customer please log-in below to continue in the checkout process.</p-->
             {form action=login}
@@ -42,7 +41,6 @@
         {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
             <div class="box new-user two">
                 <h2>{"New"|gettext} {$usertype}</h2>
-
                 <p>
                     {if $smarty.const.ECOM}
                         {if $oicount>0}

@@ -42,7 +42,6 @@
         {br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
         {br}
     </div>
-
     {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
         <div class="box new-user two">
             <h2>{"New"|gettext} {$usertype}</h2>
@@ -72,15 +71,14 @@
         <strong>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</strong>{br}{br}
         <a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>{br}
         {if $is_group_admin}
-                <a class="groups"
-                   href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}
+            <a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}
         {/if}
         <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
         <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
         {if $smarty.const.ECOM && $oicount}
             {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount}){br}
         {/if}
-        {if $user.isAdmin()}
+        {if $user->isAdmin()}
             <a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
         {/if}
     </div>

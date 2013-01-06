@@ -28,13 +28,6 @@ if (expSession::is_set('uilevel')) {
 	$level = expSession::get('uilevel');
 }	
 
-//if ($level == UILEVEL_PREVIEW) {
-//    $preview_url = makeLink(array('module'=>'previewmodule','action'=>'normal'));
-//    $preview_class = 'preview_on';
-//} else {
-//    $preview_url = makeLink(array('module'=>'previewmodule','action'=>'preview'));
-//    $preview_class = 'preview_off';
-//}
 /////////////////////////////////////////////////////////////////////////
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
