@@ -31,6 +31,9 @@
         {$config.moduledescription}
     {/if}
     {$myloc=serialize($__loc)}
+    {if !count($items)}
+    <div class="msg-queue info" style="text-align:center"><p>{'There are no text items/tabs in the module!'|gettext}</p></div>
+    {else}
     <div id="text-{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
             {foreach from=$items item=tab name=tabs}
@@ -95,3 +98,5 @@
 	});
 {/literal}
 {/script}
+
+{/if}
