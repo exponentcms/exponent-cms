@@ -126,6 +126,38 @@ class fileController extends expController {
         }
     }
     
+    /**
+     * Locates appropriate attached file view template
+     *
+     */
+    public function get_module_view_config() {
+        global $template;
+
+        $controller = new $this->params['mod'];
+        // set paths we will search in for the view
+        $paths = array(
+//            BASE.'themes/'.DISPLAY_THEME.'/modules/'.$this->params['mod'].'/views/'.$this->params['mod'].'/configure',
+//            BASE.'framework/modules/'.$this->params['mod'].'/views/'.$this->params['mod'].'/configure',
+            $controller->viewpath.'/configure',
+  	        BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/configure'
+        );
+
+        $config_found = false;
+        foreach ($paths as $path) {
+            $view = $path.'/'.$this->params['view'].'.config';
+            if (is_readable($view)) {
+                $template = new controllertemplate($this, $view);
+                $config_found = true;
+            }
+        }
+        if (!$config_found) {
+            echo "<p>".gt('There Are No View Specific Settings')."</p>";
+            $template = get_common_template('blank',null);
+        }
+        $ar = new expAjaxReply(200, 'ok');
+        $ar->send();
+    }
+
     public function getFile() {
         $file = new expFile($this->params['id']);
         $ar = new expAjaxReply(200, 'ok', $file);
@@ -134,6 +166,7 @@ class fileController extends expController {
 
     public function getFilesByJSON() {
         global $db,$user;
+
         $modelname = $this->basemodel_name;
         $results = 25; // default get all
         $startIndex = 0; // default start at 0
@@ -162,7 +195,7 @@ class fileController extends expController {
         }
 
         // Sort dir?
-        if (($this->params['dir'] == 'false') || ($this->params['dir'] == 'desc')) {
+        if (($this->params['dir'] == 'false') || ($this->params['dir'] == 'desc') || ($this->params['dir'] == 'yui-dt-desc')) {
             $dir = 'desc';
             $sort_dir = SORT_DESC;
         } else {
@@ -306,6 +339,27 @@ class fileController extends expController {
             }
         }
         redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+    }
+
+    public function batchDelete() {
+        global $user;
+
+        $files = json_decode($this->params['files']);
+        $error = false;
+        foreach ($files as $file) {
+            $delfile = new expFile($file->id);
+            if ($user->id==$delfile->poster || $user->is_acting_admin==1) {
+                $delfile->delete();
+            } else {
+                $error = true;
+            }
+        }
+        if ($error) {
+            $ar = new expAjaxReply(300, gt("Some files were NOT deleted because you didn't have permission."));
+        } else {
+            $ar = new expAjaxReply(200, gt('Your files were deleted successfully'), $file);
+        }
+        $ar->send();
     }
 
     public function adder() {

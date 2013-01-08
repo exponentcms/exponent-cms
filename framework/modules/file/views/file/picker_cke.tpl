@@ -59,13 +59,14 @@
         <div class="hd"></div>
         <div class="bd"></div>
     </div>
+    {br}
+    {if $smarty.get.update!='noupdate' && $smarty.get.update!='fck'}
+        <a id="useselected" style="float:right;" class="use awesome medium green" href="#"><span>{'Use Selected Files'|gettext}</span></a>
+    {/if}
     {if $permissions.manage == 1}
-        {br}
-        {if $smarty.get.update!='noupdate' && $smarty.get.update!='fck'}
-            <a id="useselected" style="float:right;" class="use awesome medium green" href="#"><span>{'Use Selected Files'|gettext}</span></a>
-        {/if}
-        <a id="addlink" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&#160;&#160;
-        <a id="deletelink" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
+        <a id="deleteselected" style="float:right;margin-right: 12px;height: 18px;" class="delete awesome medium red" href="#" onclick="return confirm('{"Are you sure you want to delete ALL selected files?"|gettext}');"><span>{'Delete Selected Files'|gettext }</span></a>
+        <a id="addlink" style="height: 18px;" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&#160;&#160;
+        <a id="deletelink" style="height: 18px;" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
         {br}{br}
     {/if}
 </div>
@@ -114,6 +115,33 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             window.close();
         }
 
+        batchDelete = function () {
+            var query = Y.one('#dt_input');
+            if (query.get('value') == null) {
+                queryvalue = '';
+            } else {
+                queryvalue = query.get('value');
+            }
+            cat = Y.one('#select_folder');
+            if (cat == null) {
+                catvalue = 0;
+            } else {
+                catvalue = cat.get('value');
+            }
+
+            var et = new EXPONENT.AjaxEvent();
+            et.subscribe(function (o) {
+                if(o.replyCode<299) {
+                } else {
+                    alert(o.replyText);
+                }
+                var state = myDataTable.getState();
+                myDataSource.sendRequest('sort='+state.sortedBy.key+'&dir='+state.sortedBy.dir+'&startIndex=0&fck='+fck+'&results={/literal}{$smarty.const.FM_LIMIT}{literal}&query=' + queryvalue + '&cat=' + catvalue,myDataTable.onDataReturnInitializeTable, myDataTable);
+                myDatable.sortColumn(state.sortedBy.key,state.sortedBy.dir);
+            },this);
+            et.fetch({action:"batchDelete",controller:"fileController",json:1,data:'&files=' + YAHOO.lang.JSON.stringify(batchIDs)});
+        }
+
         updateBatch = function (e) {
             if (e.target.get('checked')) {
                 batchIDs[e.target.get('id').substring(2)] = myDataTable.getRecord(e.target.ancestor('tr')._node).getData();
@@ -126,6 +154,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 //        Y.on('click',updateBatch,'.batchcheck');
         Y.one('#dynamicdata').delegate('click',updateBatch,'.batchcheck');
         Y.on('click', batchBack, '#useselected');
+        Y.on('click', batchDelete, '#deleteselected');
 
         // set up the info panel
         var infopanel =  new YAHOO.widget.Panel(
