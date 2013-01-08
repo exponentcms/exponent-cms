@@ -119,7 +119,9 @@ abstract class basetemplate {
 	function output() {
 		// javascript registration
 		
-		$this->tpl->display($this->view.'.tpl');
+        if (empty($this->file_is_a_config)) {
+            return $this->tpl->display($this->view.'.tpl');
+        }
 	}
 	
 	function register_permissions($perms, $locs) {
@@ -144,7 +146,11 @@ abstract class basetemplate {
 	 * @return bool|mixed|string
 	 */
 	function render() { // Caching support?
-		return $this->tpl->fetch($this->view.'.tpl');
+        if (empty($this->file_is_a_config)) {
+            return $this->tpl->fetch($this->view.'.tpl');
+        } else {
+            return $this->tpl->fetch($this->view.'.config');
+        }
 	}
 
 }

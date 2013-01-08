@@ -32,7 +32,7 @@ class youtubeController extends expController {
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("YouTube"); }
     static function description() { return gt("Display youtube videos on your page."); }

@@ -85,13 +85,20 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	}
 
 	if (!empty($module->id) && expPermissions::check('edit', $cloc) && $module->permissions['manage'] == 1) {
-		$editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
-		$list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
+        if (!expModules::controllerExists($module->info['class'])) {
+            $editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
+            $list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
+        }
 	}
 
 	if ($module->permissions['configure'] == 1) {
 		if (expModules::controllerExists($module->info['class'])) {
-			$configlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'configure', 'hcview'=>$module->view));
+            if (!empty($params['hcview'])) {
+                $hcview = $module->view;
+            } else {
+                $hcview = null;
+            }
+			$configlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'configure', 'hcview'=>$hcview));
 			$list .= '<li><a href="'.$configlink.'" class="config-mod">'.gt("Configure Settings").'</a></li>';
 		} elseif ($module->info['hasConfig']) {
 			$configlink = $router->makeLink(array('module'=>$module->info['class'], 'src'=>$module->info['source'], 'action'=>'configure', '_common'=>1));

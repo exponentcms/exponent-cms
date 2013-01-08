@@ -31,7 +31,7 @@ class faqController extends expController {
         'ealerts',
         'files',
         'rss'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Frequently Asked Questions"); }
     static function description() { return gt("This module allows you show frequently asked questions.  Users can post questions to you to answer too."); }

@@ -35,7 +35,7 @@ class snippetController extends expController {
         'pagination',
         'rss',
    		'tags'
-   	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Code Snippets"); }
     static function description() { return gt("Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."); }

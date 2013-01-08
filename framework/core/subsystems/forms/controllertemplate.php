@@ -68,7 +68,10 @@ class controllertemplate extends basetemplate {
 
 		$this->module = $controller->baseclassname;
 				
-		$this->view = substr(basename($this->viewfile),0,-4);
+        if (substr($viewfile, -7) == '.config') {
+            $this->file_is_a_config = true;
+            $this->view = substr(basename($this->viewfile),0,-7);
+        } else $this->view = substr(basename($this->viewfile),0,-4);
 
 //		$this->tpl->template_dir = $this->viewdir;
         $this->tpl->setTemplateDir($this->viewdir);

@@ -34,7 +34,7 @@ class linksController extends expController {
            'pagination',
            'rss',
            'tags'
-       ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function requiresConfiguration() { return true; }
     static function displayname() { return gt("Link Manager"); }

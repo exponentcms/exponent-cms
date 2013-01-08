@@ -459,7 +459,7 @@ function get_common_template($view, $loc, $controllername='') {
     } elseif(file_exists($basepath)) {
         return new controllertemplate($controller,$basepath);
     } else {
-        return new controllertemplate($controller, BASE.'framework/common/views/scaffold/blank.tpl');
+        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
     }
 }
 
@@ -497,27 +497,27 @@ function get_config_templates($controller, $loc) {
     }
 
     // look for a config form for this module's current view    
-    $controller->loc->mod = expModules::getControllerClassName($controller->loc->mod);
+//    $controller->loc->mod = expModules::getControllerClassName($controller->loc->mod);
     //check to see if hcview was passed along, indicating a hard-coded module
-    if (!empty($controller->params['hcview'])) {
-        $viewname = $controller->params['hcview'];
-    } else {
-        $viewname = $db->selectValue('container', 'view', "internal='".serialize($controller->loc)."'");
-    }
-    $viewconfig = $viewname.'.config';
-    foreach ($modpaths as $path) {
-        if (file_exists($path.'/'.$viewconfig)) {
-            $fileparts = explode('_', $viewname);
-            if ($fileparts[0]=='show'||$fileparts[0]=='showall') array_shift($fileparts);
-            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' '.gt('View Configuration');
-            $module_views[$viewname]['file'] =$path.'/'.$viewconfig;
-        }
-    }
+//    if (!empty($controller->params['hcview'])) {
+//        $viewname = $controller->params['hcview'];
+//    } else {
+//        $viewname = $db->selectValue('container', 'view', "internal='".serialize($controller->loc)."'");
+//    }
+//    $viewconfig = $viewname.'.config';
+//    foreach ($modpaths as $path) {
+//        if (file_exists($path.'/'.$viewconfig)) {
+//            $fileparts = explode('_', $viewname);
+//            if ($fileparts[0]=='show'||$fileparts[0]=='showall') array_shift($fileparts);
+//            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' '.gt('View Configuration');
+//            $module_views[$viewname]['file'] =$path.'/'.$viewconfig;
+//        }
+//    }
     
     // sort the views highest to lowest by filename
     // we are reverse sorting now so our array merge
     // will overwrite property..we will run array_reverse
-    // when we're finised to get them back in the right order
+    // when we're finished to get them back in the right order
     krsort($common_views);
     krsort($module_views);
     

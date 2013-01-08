@@ -31,11 +31,10 @@ class navigationController extends expController {
         'comments',
         'ealerts',
         'files',
-//        'module_title',
         'pagination',
         'rss',
         'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
     public $add_permissions = array(
         'view' => "View Page"
     );
