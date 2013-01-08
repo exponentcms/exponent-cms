@@ -215,8 +215,71 @@ class filemanagercontrol extends formcontrol {
                 
                 initDragables();
 
+                EXPONENT.batchAddFiles = {};
+
+                EXPONENT.batchAddFiles.".$name." = function(ids) {
+                    Y.each(ids, function(obj,k){
+                        var df = Y.one('#filelist".$name."');
+
+                        if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
+                        } else if (obj.mimetype=='audio/mpeg') {
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
+                        } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/video_22x22.png\">';
+                        } else {
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/generic_22x22.png\">';
+                        }
+                        
+                        var html = '<li>';
+                        html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
+                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
+                        html += filepic;
+                        html += '<span class=\"filename\">'+obj.filename+'<\/span>';
+                        html += '<\/li>';
+                        
+                        htmln = Y.Node.create(html);                        
+                        
+                        df.append(htmln);
+
+                        var dd = new Y.DD.Drag({
+                            node: htmln,
+                            proxy: true,
+                            moveOnEnd: false,
+                            target: {
+                                padding: '0 0 0 20'
+                            }
+                        }).plug(Y.Plugin.DDConstrained, {
+                            constrain2node: '#filelist".$name."',
+                            stickY:true
+                        }).plug(Y.Plugin.DDProxy, {
+                            moveOnEnd: false,
+                            borderStyle:'0'
+                        });
+
+                        
+                        var af = Y.one('#addfiles-".$name."');
+
+                        if (filesAdded==0) {
+                            fl.one('.blank').remove();
+                        }
+
+                        filesAdded++
+
+                        if (!Y.Lang.isNull(af) && limit==filesAdded) {
+                            af.remove();
+                        }
+                    })
+                    // console.log(ids);
+                }
+
                 // calback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
+
+                    if (Y.Lang.isArray(id)) {
+                        EXPONENT.batchAddFiles.".$name."();
+                        return;
+                    }
 
                     var complete = function (ioId, o) {
                         var df = Y.one('#filelist".$name."');

@@ -60,8 +60,10 @@
         <div class="bd"></div>
     </div>
     {if $permissions.manage == 1}
-        {br}<a id="addlink" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&#160;&#160;
+        {br}<a id="useselected" style="float:right;" class="use awesome medium green" href="#"><span>{'Use Selected Files'|gettext}</span></a>
+        <a id="addlink" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&#160;&#160;
         <a id="deletelink" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
+        {br}{br}
     {/if}
 </div>
 
@@ -75,9 +77,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 //        var queryString = '&results=50&output=json'; //autocomplete query
         var fck = {/literal}{if $smarty.get.fck}{$smarty.get.fck}{else}0{/if}{literal}; //are we coming from FCK as the window launcher?
         var usr = {/literal}{obj2json obj=$user}{literal}; //user
+        var update = "{/literal}{if $smarty.get.update}{$smarty.get.update}{else}0{/if}{literal}"; //user
         var thumbnails = {/literal}{$smarty.const.FM_THUMBNAILS}{literal};
         var myDataSource = null;
         var myDataTable = null;
+
+        var batchIDs = {};
 
         function getUrlParam(paramName) {
             var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
@@ -99,6 +104,25 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     		{literal}
     	}
     
+
+        batchBack = function () {
+            window.opener.EXPONENT.batchAddFiles.{/literal}{$update}{literal}(batchIDs);
+            window.close();
+        }
+
+        updateBatch = function (e) {
+            if (e.target.get('checked')) {
+                batchIDs[e.target.get('id').substring(2)] = myDataTable.getRecord(e.target.ancestor('tr')._node).getData();
+            } else {
+                delete batchIDs[e.target.get('id').substring(2)];
+            }
+            console.log(batchIDs);
+        }
+
+        Y.on('click',updateBatch,'.batchcheck');
+
+        Y.on('click', batchBack, '#useselected');
+
         // set up the info panel
         var infopanel =  new YAHOO.widget.Panel(
             "infopanel", 
@@ -287,6 +311,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                                 +deletestring;
         };
     
+        var formatBatch = function(elCell, oRecord, oColumn, sData) {
+            var checked = (batchIDs[oRecord.getData()['id']]) ? 'checked="checked" ' : '';
+            var pickerstring = '<input id="id'+oRecord.getData()['id']+'" class="batchcheck" '+ checked +'type="checkbox">';
+            elCell.innerHTML =  pickerstring;
+        };
+    
         // request to share
         var editShare = function (callback, newValue) {
             var record = this.getRecord(),
@@ -369,9 +399,13 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             { key:"title",label:"{/literal}{"Title"|gettext}{literal}",sortable:true,formatter:formatTitle,editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editTitle})},
             { key:"alt",label:"{/literal}{"alt"|gettext}{literal}",sortable:true,formatter:formatAlt,editor: new YAHOO.widget.TextboxCellEditor({asyncSubmitter:editAlt})},
             { key:"shared",label:'<img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/public.png" title="{/literal}{"Make File Public"|gettext}{literal}" />',formatter:formatShared,editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:[{label:"{/literal}{"Make this file public?"|gettext}{literal}",value:1}],asyncSubmitter:editShare})},
-            { label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions},
-//            { key:"id",label:"{/literal}{"ID"|gettext}{literal}"},
-            ];
+            { label:"{/literal}{"Actions"|gettext}{literal}",sortable:false,formatter: formatactions}
+            
+        ];
+
+        if (update != 'noupdate' && update !='fck') {
+            myColumnDefs.push({ label:"{/literal}{"Select"|gettext}{literal}",sortable:false,formatter: formatBatch})
+        };
 
         // DataSource instance
         var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=getFilesByJSON&json=1&ajax_action=1&fck="+fck+"&");
@@ -494,6 +528,18 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         e.halt();
         e.target.get('parentNode').remove();
     });
+
+    // select all
+    // Y.one('#sa-batch').on('click',function(e){
+    //     // e.halt();
+    //     if (e.target.get('checked')) {
+    //         Y.all('.batchcheck').set('checked', 'checked');;
+    //     } else {
+    //         Y.all('.batchcheck').set('checked', false);;
+    //     }
+
+    // });
+
 
 	// YUI 2 ajax helper method. This is much easier in YUI 3. Should also migrate.
 	EXPONENT.AjaxEvent = function() {
