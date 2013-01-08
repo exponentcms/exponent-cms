@@ -151,7 +151,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             Y.log(batchIDs);
         }
 
-//        Y.on('click',updateBatch,'.batchcheck');
         Y.one('#dynamicdata').delegate('click',updateBatch,'.batchcheck');
         Y.on('click', batchBack, '#useselected');
         Y.on('click', batchDelete, '#deleteselected');
@@ -572,7 +571,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     //     }
 
     // });
-
 
 	// YUI 2 ajax helper method. This is much easier in YUI 3. Should also migrate.
 	EXPONENT.AjaxEvent = function() {
