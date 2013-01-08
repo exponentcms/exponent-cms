@@ -70,6 +70,7 @@
     {/if}
 </div>
 
+    {*FIXME convert to yui3*}
 {script unique="picker"}
 {literal}
 // this.moveTo(1,1);
@@ -119,11 +120,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             } else {
                 delete batchIDs[e.target.get('id').substring(2)];
             }
-            console.log(batchIDs);
+            Y.log(batchIDs);
         }
 
-        Y.on('click',updateBatch,'.batchcheck');
-
+//        Y.on('click',updateBatch,'.batchcheck');
+        Y.one('#dynamicdata').delegate('click',updateBatch,'.batchcheck');
         Y.on('click', batchBack, '#useselected');
 
         // set up the info panel
