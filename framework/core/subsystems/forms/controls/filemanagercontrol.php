@@ -215,59 +215,66 @@ class filemanagercontrol extends formcontrol {
                 
                 initDragables();
 
-                EXPONENT.batchAddFiles = {};
+                if (EXPONENT.batchAddFiles==undefined) {
+                    EXPONENT.batchAddFiles = {};
+                }
 
                 EXPONENT.batchAddFiles.".$name." = function(ids) {
+                    var j=0;
                     Y.each(ids, function(obj,k){
-                        var df = Y.one('#filelist".$name."');
+                        if (j<limit) {
 
-                        if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
-                        } else if (obj.mimetype=='audio/mpeg') {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
-                        } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/video_22x22.png\">';
-                        } else {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/generic_22x22.png\">';
-                        }
-                        
-                        var html = '<li>';
-                        html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
-                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
-                        html += filepic;
-                        html += '<span class=\"filename\">'+obj.filename+'<\/span>';
-                        html += '<\/li>';
-                        
-                        htmln = Y.Node.create(html);                        
-                        
-                        df.append(htmln);
+                            var df = Y.one('#filelist".$name."');
 
-                        var dd = new Y.DD.Drag({
-                            node: htmln,
-                            proxy: true,
-                            moveOnEnd: false,
-                            target: {
-                                padding: '0 0 0 20'
+                            if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
+                            } else if (obj.mimetype=='audio/mpeg') {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
+                            } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/video_22x22.png\">';
+                            } else {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/generic_22x22.png\">';
                             }
-                        }).plug(Y.Plugin.DDConstrained, {
-                            constrain2node: '#filelist".$name."',
-                            stickY:true
-                        }).plug(Y.Plugin.DDProxy, {
-                            moveOnEnd: false,
-                            borderStyle:'0'
-                        });
+                            
+                            var html = '<li>';
+                            html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
+                            html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
+                            html += filepic;
+                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
+                            html += '<\/li>';
+                            
+                            htmln = Y.Node.create(html);                        
+                            
+                            df.append(htmln);
 
-                        
-                        var af = Y.one('#addfiles-".$name."');
+                            var dd = new Y.DD.Drag({
+                                node: htmln,
+                                proxy: true,
+                                moveOnEnd: false,
+                                target: {
+                                    padding: '0 0 0 20'
+                                }
+                            }).plug(Y.Plugin.DDConstrained, {
+                                constrain2node: '#filelist".$name."',
+                                stickY:true
+                            }).plug(Y.Plugin.DDProxy, {
+                                moveOnEnd: false,
+                                borderStyle:'0'
+                            });
 
-                        if (filesAdded==0) {
-                            fl.one('.blank').remove();
-                        }
+                            
+                            var af = Y.one('#addfiles-".$name."');
 
-                        filesAdded++
+                            if (filesAdded==0) {
+                                fl.one('.blank').remove();
+                            }
 
-                        if (!Y.Lang.isNull(af) && limit==filesAdded) {
-                            af.remove();
+                            filesAdded++
+
+                            if (!Y.Lang.isNull(af) && limit==filesAdded) {
+                                af.remove();
+                            }
+                            j++;
                         }
                     })
                     // console.log(ids);
