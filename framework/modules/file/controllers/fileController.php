@@ -294,8 +294,33 @@ class fileController extends expController {
         }
         
         echo json_encode($returnValue);
-    } 
-    
+    }
+
+    /**
+     * create a new virtual folder in response to an ajax request
+     * return updated list of virtual folders in response to an ajax request
+     */
+    public function createFolder() {
+        if (!empty($this->params['folder'])) {
+            $expcat = new expCat($this->params['folder']);
+            if (empty($expcat->id)) {
+                $expcat->module = 'file';
+                $expcat->title = $this->params['folder'];
+                $expcat->update();
+            }
+//            $this->params['module'] = 'file';
+//            $this->params['title'] = $this->params['folder'];
+//            parent::update();
+            $cats = $expcat->find('all','module="file"','rank');
+            $catarray = array();
+            $catarray[] = 'Root Folder';
+            foreach ($cats as $key=>$cat) {
+                $catarray[$cat->id] = $cat->title;
+            }
+            echo json_encode($catarray);
+        }
+    }
+
     public function delete() {
         global $db,$user;
         $file = new expFile($this->params['id']);

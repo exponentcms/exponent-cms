@@ -435,9 +435,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             
         ];
 
-        if (update != 'noupdate' && update !='fck') {
+//        if (update != 'noupdate' && update !='fck') {
             myColumnDefs.push({ label:"{/literal}{"Select"|gettext}{literal}",sortable:false,formatter: formatBatch})
-        };
+//        };
 
         // DataSource instance
         var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=getFilesByJSON&json=1&ajax_action=1&fck="+fck+"&");

@@ -42,6 +42,8 @@
                 {help text="Get Help"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
             </div>
             {control type=dropdown name="select_folder" label="Select the Upload Folder"|gettext items=$cats}
+            <input id="folder" type="text" name="folder" value="" size="20" class="control text" style="display: inline;margin-left: 100px;" onkeydown="if (event.keyCode == 13) document.getElementById('createLink').click()" />
+            <a id="createLink" class="add awesome small green" style="height: 18px;display:inline;margin-left: 5px;" href="#"><span>{'Create New Folder'|gettext}</span></a>
         </div>
         {messagequeue}
         <div id="filelist">
@@ -65,10 +67,11 @@
 
 {script unique="uploader2" yui3="1"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use("uploader", function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
     Y.one("#overallProgress").set("text", "Uploader type: " + Y.Uploader.TYPE);
     var usr = {/literal}{obj2json obj=$user}{literal}; //user
     var uploadBtn = Y.one("#uploadLink");
+    var createBtn = Y.one("#createLink");
 
     if (Y.Uploader.TYPE != "none" && !Y.UA.ios) {
         var uploader = new Y.Uploader({
@@ -200,6 +203,57 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader", function(Y) {
     Y.all('.msg-queue .close').on('click',function(e){
         e.halt();
         e.target.get('parentNode').remove();
+    });
+
+    var cfg = {
+    			method: "POST",
+    			headers: { 'X-Transaction': 'Create Virtual Folder'},
+    			arguments : { 'X-Transaction': 'Create Virtual Folder'}
+    		};
+
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=createFolder&ajax_action=1";
+
+	var handleSuccess = function(ioId, o){
+//		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "sermon nav");
+
+        if(o.responseText){
+            var folderlist = Y.one('#select_folder'); // the views dropdown
+            var folders = Y.JSON.parse(o.responseText);
+            folderlist.set('innerHTML', '');
+            el = Y.Node.create('<option value="0">{/literal}{"Select a Folder"|gettext}{literal}</option>');
+            for (var folder in folders) {
+                el = document.createElement('option');
+                el.appendChild(document.createTextNode(folders[folder]));
+                el.setAttribute('value', folder);
+                folderlist.appendChild(el);
+            }
+            for (var folder in folders) {
+                if (folders[folder].toLowerCase() == Y.one('#folder').get('value').toLowerCase()) {
+                    folderlist.set('value',folder);
+                }
+            }
+
+            Y.one('#folder').set('value','');
+        } else {
+//            Y.one('#sermon.loadingdiv').remove();
+        }
+	};
+
+	//A function handler to use for failed requests:
+	var handleFailure = function(ioId, o){
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "sermon nav");
+	};
+
+	//Subscribe our handlers to IO's global custom events:
+	Y.on('io:success', handleSuccess);
+	Y.on('io:failure', handleFailure);
+
+    createBtn.on("click", function (e) {
+        e.halt();
+        cfg.data = "folder="+Y.one('#folder').get('value');
+        var request = Y.io(sUrl, cfg);
+//        sermon.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Sermon"|gettext}{literal}</div>'));
     });
 
     if(!FlashDetect.installed) {

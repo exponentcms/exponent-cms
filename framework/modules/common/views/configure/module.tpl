@@ -150,13 +150,9 @@
                         el.setAttribute('value', view);
                         viewpicker.appendChild(el);
                     }
-    //                        viewpicker.removeAttribute('disabled');
-    //                        viewpicker.ancestor('div.control').removeClass('disabled');
-//                    viewpicker.value = current_view;
                     for (var view in opts) {
                         if (view == current_view) {
                             viewpicker.set('value',current_view);
-            var tmp = viewpicker.value;
                         }
                     }
     var tmp = viewpicker.get('value');
