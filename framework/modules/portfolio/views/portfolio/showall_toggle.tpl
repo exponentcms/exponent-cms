@@ -55,8 +55,6 @@
             <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
         {/if}
         <div class="item">
-            {toggle unique="portfolio`$record->id`" title=$record->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}
-            {*<h3{if $config.usecategories} class="{$cat->color}"{/if}><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>*}
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}
@@ -75,6 +73,8 @@
                 </div>
             {/permissions}
             {tags_assigned record=$record}
+            {toggle unique="portfolio`$record->id`" title=$record->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}
+            {*<h3{if $config.usecategories} class="{$cat->color}"{/if}><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>*}
             <div class="bodycopy">
                 {if $config.filedisplay != "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}
@@ -90,6 +90,7 @@
                 {/if}
             </div>
             {clear}
+            {/toggle}
             {permissions}
                 {if $permissions.create == 1}
                     <div class="module-actions">
@@ -97,7 +98,6 @@
                     </div>
                 {/if}
             {/permissions}
-            {/toggle}
         </div>
         {$cat=$record->expCat[0]->id}
     {/foreach}
