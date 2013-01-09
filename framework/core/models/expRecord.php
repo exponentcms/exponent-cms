@@ -365,7 +365,8 @@ class expRecord {
         if (empty($item->id) && empty($this->id)) return false;
         // save the attachable items
 //        $refname = strtolower($item->classname).'s_id';  //FIXME plural vs single?
-        $refname = strtolower($item->classname) . '_id'; //FIXME plural vs single?
+//        $refname = strtolower($item->classname) . '_id'; //FIXME plural vs single?
+        $refname = strtolower($item->tablename) . '_id'; //FIXME: find a better way to pluralize these names!!!
         $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND ' . $refname . '=' . $item->id);
         $obj               = new stdClass();
         $obj->$refname     = $item->id;

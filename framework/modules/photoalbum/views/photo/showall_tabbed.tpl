@@ -32,6 +32,7 @@
         <div class="module-actions">
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add to the Top"|gettext text="Add Image"|gettext}
+                {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
 			{/if}
             {if $permissions.manage == 1}
                 {if !$config.disabletags}

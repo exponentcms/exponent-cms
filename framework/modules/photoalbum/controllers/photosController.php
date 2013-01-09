@@ -164,6 +164,43 @@ class photosController extends expController {
         // call expController update to save the image
         parent::update();
     }
+
+    public function multi_add() {
+    }
+
+    public function multi_update() {
+
+        if (!empty($this->params['expFile'])) {
+            if (!empty($this->params['title'])) {
+                $prefix = $this->params['title'] . ' - ';
+            } else {
+                $prefix = '';
+            }
+            foreach ($this->params['expFile'] as $fileid) {
+                $file = new expFile($fileid);
+                if (!empty($file->id)) {
+                    $photo = new photo();
+                 $loc = new stdClass();
+                 $loc->mod = "photo";
+                 $loc->src = $this->params['src'];
+                 $loc->int = '';
+                 $photo->location_data = serialize($loc);
+ //                $photo->body = $gi['description'];
+ //                $photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;
+                 $filename = pathinfo($file->filename);
+                 $photo->title = $prefix . $filename['filename'];
+                 $photo->save();
+                 $photo->attachitem($file,'');
+ //                $photo->created_at = time();
+                 $photo->expFile = array();
+                 $photo->expFile[] = $file;
+                 $photo->update();  // save gallery name as category
+                }
+            }
+        }
+        expHistory::back();
+    }
+
 }
 
 ?>

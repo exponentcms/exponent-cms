@@ -9,7 +9,7 @@
     overflow:hidden;
     background:#ffffff;
 }
-.imagegallery.slideshow .moduleactions {  
+.photoalbum.slideshow .moduleactions {
     top:-10px;
     left:-10px;
     position:absolute;
@@ -22,7 +22,7 @@
     height:20px;
     overflow:hidden;
 }
-.imagegallery.slideshow .moduleactions a {  
+.photoalbum.slideshow .moduleactions a {
     text-decoration:none;
 }
 .yui-sldshw-displayer .itemactions {  

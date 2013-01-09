@@ -21,6 +21,9 @@
  * @package Modules
  */
 
+/**
+ * We must subclass the photosController due to a plural/singular naming issue
+ */
 class photoController extends photosController {
     public $useractions = array(
         'showall'=>'Gallery', 
