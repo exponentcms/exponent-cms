@@ -34,7 +34,7 @@
     {if !count($items)}
         {permissions}
             <div class="msg-queue info" style="text-align:center"><p>{'There are no text items/tabs in the module!'|gettext}</p></div>
-        {permissions}
+        {/permissions}
     {else}
     <div id="text-{$id}" class="yui-navset exp-skin-tabview hide">
         <ul>
