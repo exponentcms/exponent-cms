@@ -56,7 +56,7 @@ class expJavascript {
             $srt = array();
             $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
             if (!empty($jqueryjs) || defined('JQUERY_THEME')) {
-                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen) {
+                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
                     $srt[$i] .= JQUERY_SCRIPT.",";
                 } else {
                     $i++;
@@ -65,7 +65,7 @@ class expJavascript {
                 }
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $key=>$mod) {
                     if ($mod == 'jqueryui') {
-                        if (strlen($srt[$i])+strlen(JQUERYUI_SCRIPT)<= $strlen) {
+                        if (strlen($srt[$i])+strlen(JQUERYUI_SCRIPT) <= $strlen && $i <= MINIFY_MAX_FILES) {
                             $srt[$i] .= JQUERYUI_SCRIPT.",";
                         } else {
                             $i++;
@@ -75,7 +75,7 @@ class expJavascript {
                         expCSS::pushToHead(array("unique"=>'jqueryui','link'=>JQUERYUI_CSS));
                     } else {
                         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
-                            if (strlen($srt[$i])+strlen(PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')<= $strlen) {
+                            if (strlen($srt[$i])+strlen(PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
                                 $srt[$i] .= PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
                             } else {
                                 $i++;
@@ -91,7 +91,7 @@ class expJavascript {
                             }
                         } elseif (file_exists(JQUERY_PATH.'addons/js/'.$mod.'.js')) {
                             $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_RELATIVE.'addons/js/'.$mod.'.js"></script>'."\r\n";
-                            if (strlen($srt[$i])+strlen(JQUERY_RELATIVE.'addons/js/'.$mod.'.js')<= $strlen) {
+                            if (strlen($srt[$i])+strlen(JQUERY_RELATIVE.'addons/js/'.$mod.'.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
                                 $srt[$i] .= JQUERY_RELATIVE.'addons/js/'.$mod.'.js'.",";
                             } else {
                                 $i++;
@@ -110,7 +110,7 @@ class expJavascript {
                 }
             }
             foreach ($expJS as $file) {
-                if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen) {
+                if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen && $i <= MINIFY_MAX_FILES) {
                     $srt[$i] .= $file['fullpath'].",";
                 } else {
                     $i++;

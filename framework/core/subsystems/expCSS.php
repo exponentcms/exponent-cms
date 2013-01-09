@@ -114,7 +114,7 @@ class expCSS {
             $srt[$i] = "";
             foreach ($css_files as $file) {
                 if (!empty($file)) {
-                    if (strlen($srt[$i])+strlen($file)<= $strlen) {
+                    if (strlen($srt[$i])+strlen($file) <= $strlen && $i <= MINIFY_MAX_FILES) {
                         $srt[$i] .= $file.",";
                     } else {
                         $i++;
@@ -123,6 +123,7 @@ class expCSS {
                     }
                 }
             }
+            if ($srt[0] == "") array_shift($srt);
             foreach ($srt as $link) {
                 $link = rtrim($link,",");
                 $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.PATH_RELATIVE.'external/minify/min/index.php?f=' . $link . '"' . XHTML_CLOSING.'>'."\r\n";
