@@ -135,6 +135,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 } else {
                     alert(o.replyText);
                 }
+                batchIDs = {};
                 var state = myDataTable.getState();
                 myDataSource.sendRequest('sort='+state.sortedBy.key+'&dir='+state.sortedBy.dir+'&startIndex=0&fck='+fck+'&results={/literal}{$smarty.const.FM_LIMIT}{literal}&query=' + queryvalue + '&cat=' + catvalue,myDataTable.onDataReturnInitializeTable, myDataTable);
                 myDatable.sortColumn(state.sortedBy.key,state.sortedBy.dir);
