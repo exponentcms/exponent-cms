@@ -14,7 +14,7 @@
  *}
 
 <div class="module faq ask-question">
-    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Ask a Question"|gettext}</h1>{/if}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle|default:"Ask a Question"|gettext}</h1>{/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}

@@ -14,7 +14,7 @@
  *}
 
 <div class="module text show-random">
-	    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+	    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
         {$myloc=serialize($__loc)}
 	    {permissions}
     	    <div class="module-actions">

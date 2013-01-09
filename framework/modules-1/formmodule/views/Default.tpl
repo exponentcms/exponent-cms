@@ -37,7 +37,7 @@
 			{if $permissions.editreport == 1}|&#160;&#160;<a class="edit addnew mngmntlink" href="{link action=edit_report module=formbuilder id=$form->id}">{'Edit Report'|gettext}</a>&#160;&#160;{/if}
 		</div>
 	{/permissions}
-	{if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+	{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
 	 <div class="bodycopy">
     	{if $description != ""}
     		{$description}

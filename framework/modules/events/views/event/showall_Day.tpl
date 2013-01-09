@@ -47,7 +47,7 @@
 	</div>
 	<h1>
         {ical_link}
-        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}
 	</h1>
     {if $config.moduledescription != ""}
         {$config.moduledescription}

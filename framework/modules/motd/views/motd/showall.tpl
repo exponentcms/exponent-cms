@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module motd showall">
-    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Messages by day"|gettext}</h1>{/if}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle|default:"Messages by day"|gettext}</h1>{/if}
     <div class="bodycopy">
         {$record->body}
     </div>

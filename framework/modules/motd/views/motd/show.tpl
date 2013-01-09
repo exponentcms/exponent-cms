@@ -15,7 +15,7 @@
 
 {clear}
 <div class="module motd show">
-    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>{/if}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>{/if}
     {$myloc=serialize($__loc)}
     <div class="motd-message">
         <div class="motd-date">

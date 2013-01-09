@@ -39,7 +39,7 @@ flowplayer("a.flowplayer-video", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPO
 {/script}
 
 <div class="module flowplayer showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}

@@ -14,7 +14,7 @@
  *}
 
 <div class="module navigation marked-hierarchy">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}

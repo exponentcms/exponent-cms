@@ -14,7 +14,7 @@
  *}
 
 <div class="module blog tags_list">
-    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
         {if $permissions.manage == 1}
             {if !$config.disabletags}

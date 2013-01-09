@@ -40,7 +40,14 @@
 {else}
     {control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
 {/if}
-{control type="checkbox" name="hidemoduletitle" label="Hide Module Title?"|gettext value=1 checked=$config.hidemoduletitle}
+{if $smarty.const.INVERT_HIDE_TITLE}
+    {$title_str = 'Show Module Title?'|gettext}
+    {$desc_str = 'The Module Title is hidden by default.'|gettext}
+{else}
+    {$title_str = 'Hide Module Title?'|gettext}
+    {$desc_str = 'The Module Title is displayed by default.'|gettext}
+{/if}
+{control type="checkbox" name="hidemoduletitle" label=$title_str value=1 checked=$config.hidemoduletitle description=$desc_str}
 
 {if !$hcview}
 {control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}

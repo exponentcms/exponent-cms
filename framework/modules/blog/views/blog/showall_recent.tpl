@@ -18,9 +18,9 @@
 {/css}
 
 <div class="module blog showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
     {rss_link}
-    {if $moduletitle && !$config.hidemoduletitle}{'Recent Posts from'|gettext} '{$moduletitle}'</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent Posts from'|gettext} '{$moduletitle}'</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}

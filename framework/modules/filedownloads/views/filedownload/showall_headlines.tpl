@@ -20,9 +20,9 @@
 {/if}
 
 <div class="module filedownload showall headlines">
-    {if $moduletitle && !$config.hidemoduletitle}<h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{/if}
     {rss_link}
-    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h2>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}

@@ -14,9 +14,9 @@
  *}
 
 <div class="module news showall-recent">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
     {rss_link}
-    {if $moduletitle && !$config.hidemoduletitle}{'Recent'|gettext} {$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent'|gettext} {$moduletitle}</h1>{/if}
 
     {permissions}
     <div class="module-actions">

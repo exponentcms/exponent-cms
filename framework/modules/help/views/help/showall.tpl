@@ -14,7 +14,7 @@
  *}
 
 <div class="module help showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         {if $permissions.create == 1}
             {icon class=add action=edit text="Add a Help Doc"|gettext}{br}

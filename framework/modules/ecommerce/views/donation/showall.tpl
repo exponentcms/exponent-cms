@@ -14,7 +14,7 @@
  *}
 
 <div class="module donation showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         {if $permissions.edit == 1 or $permissions.manage == 1}
             <div id="prod-admin">

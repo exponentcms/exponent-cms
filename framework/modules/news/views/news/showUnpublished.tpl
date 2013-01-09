@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module news show-expired">
-    {if !$config.hidemoduletitle}<h1>{$moduletitle} - {"Expired and Unpublished News"|gettext}</h1>{/if}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle} - {"Expired and Unpublished News"|gettext}</h1>{/if}
     {pagelinks paginate=$page top=1}
     {$myloc=serialize($__loc)}
 	<table id="prods" class="exp-skin-table" width="95%">

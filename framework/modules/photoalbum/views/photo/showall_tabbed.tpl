@@ -26,8 +26,8 @@
 {/if}
 {$rel}
 <div class="module photoalbum showall showall-tabbed">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
-    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}

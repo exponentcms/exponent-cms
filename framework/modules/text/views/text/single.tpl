@@ -14,7 +14,7 @@
  *}
 
 <div class="module text single">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {$myloc=serialize($__loc)}
     {if $items[0]->title}<h2>{$items[0]->title}</h2>{/if}
     {permissions}

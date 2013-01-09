@@ -51,7 +51,7 @@
 	</div>
 	<h1>
         {ical_link}
-        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle} - {'Past Events View'|gettext}{/if}
 
 	</h1>
     {if $config.moduledescription != ""}
