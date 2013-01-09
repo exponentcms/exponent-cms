@@ -24,7 +24,7 @@
 {/if}
 
 <div class="module portfolio showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
@@ -55,7 +55,7 @@
             <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
         {/if}
         <div class="item">
-            {toggle unique="text`$record->id`" title=$record->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}
+            {toggle unique="portfolio`$record->id`" title=$record->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}
             {*<h3{if $config.usecategories} class="{$cat->color}"{/if}><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>*}
             {permissions}
                 <div class="item-actions">

@@ -16,12 +16,15 @@ Added / Fixed / changed for 2.1.1
   - adds 'grouping by date' for uncategorized portfolio & file download items (in addition to 'grouping by alpha' for rolodex feature)
   - adds new 'headline' view to filedownloads module
   - adds new 'toggle' and 'accordion' views to the text module
+  - adds new 'toggle' view to the portfolio module
   - adds new 'flyout sidebar' view to navigation module for hard-coding in themes
   - adds new 'vertical' login view
+  - adds new 'multi-add' feature to add multiple graphics to a photo album in one easy step
   - adds custom module phrase translation libraries feature
   - adds a mass mailer for super admins to email all users or selected site users
   - updates file manager with 'virtual folder' grouping and date features to assist locating files
-  - updates file uploader to allow html5 drag/drop support
+    -- also adds file manager bulk selection (add multiple files to the item at once) and bulk delete
+  - updates file uploader to allow html5 drag/drop support and some other user-friendly features
 
 Added / Fixed / changed for 2.1.0
 -----------------------
