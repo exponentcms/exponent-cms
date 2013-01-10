@@ -227,7 +227,7 @@ class expPaginator {
 		}	
 
         // next we'll sort them based on categories if needed
-        if (!empty($this->categorize) && $this->categorize) {
+        if (!empty($this->categorize) && $this->categorize && empty($this->dontsort)) {
             expCatController::addCats($this->records,$sort,$this->uncat,$this->groups,$this->dontsortwithincat);
         }
 
@@ -241,55 +241,57 @@ class expPaginator {
         //FIXME we may want some more intelligent selection here based on cats/groups, e.g., don't break groups across pages, number of picture rows, etc...
         if (empty($this->grouplimit)) if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
         // finally, we'll create another multi-dimensional array of categories populated with assoc items
-        if (!empty($this->categorize) && $this->categorize) {
-            expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
-        } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
-            $order = $this->order;
-            if (in_array($order,array('created_at','edited_at','publish'))) {
-                if ($this->total_records && (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2))) {
-                    $datetype = 'Y';  // more than 2 years of records, so break down by year
+        if (empty($this->dontsort)) {
+            if (!empty($this->categorize) && $this->categorize) {
+                expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
+            } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
+                $order = $this->order;
+                if (in_array($order,array('created_at','edited_at','publish'))) {
+                    if ($this->total_records && (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2))) {
+                        $datetype = 'Y';  // more than 2 years of records, so break down by year
+                    } else {
+                        $datetype = 'M Y';  // less than 2 years of records, so break down by month/year
+                    }
+                    foreach ($this->records as $record) {
+                        if (is_numeric($record->$order)) {
+                            $title = date($datetype,$record->$order);
+                            $title = empty($title)?gt('Undated'):$title;
+                        } else {
+                            $title = gt('Undated');
+                        }
+                        if (empty($this->cats[$title])) {
+                            $this->cats[$title] = new stdClass();
+                            $this->cats[$title]->count = 1;
+                            $this->cats[$title]->name = $title;
+                        } else {
+                            $this->cats[$title]->count += 1;
+                        }
+                        $this->cats[$title]->records[] = $record;
+                    }
                 } else {
-                    $datetype = 'M Y';  // less than 2 years of records, so break down by month/year
-                }
-                foreach ($this->records as $record) {
-                    if (is_numeric($record->$order)) {
-                        $title = date($datetype,$record->$order);
-                        $title = empty($title)?gt('Undated'):$title;
-                    } else {
-                        $title = gt('Undated');
+                    foreach ($this->records as $record) {
+                        if (is_string($record->$order) && !is_numeric($record->$order)) {
+                            $title = ucfirst($record->$order);
+                            $title = empty($title[0])?'':$title[0];
+                        } else {
+                            $title = '';
+                        }
+                        if (empty($this->cats[$title])) {
+                            $this->cats[$title] = new stdClass();
+                            $this->cats[$title]->count = 1;
+                            $this->cats[$title]->name = $title;
+                        } else {
+                            $this->cats[$title]->count += 1;
+                        }
+                        $this->cats[$title]->records[] = $record;
                     }
-                    if (empty($this->cats[$title])) {
-                        $this->cats[$title] = new stdClass();
-                        $this->cats[$title]->count = 1;
-                        $this->cats[$title]->name = $title;
-                    } else {
-                        $this->cats[$title]->count += 1;
-                    }
-                    $this->cats[$title]->records[] = $record;
-                }
-            } else {
-                foreach ($this->records as $record) {
-                    if (is_string($record->$order) && !is_numeric($record->$order)) {
-                        $title = ucfirst($record->$order);
-                        $title = empty($title[0])?'':$title[0];
-                    } else {
-                        $title = '';
-                    }
-                    if (empty($this->cats[$title])) {
-                        $this->cats[$title] = new stdClass();
-                        $this->cats[$title]->count = 1;
-                        $this->cats[$title]->name = $title;
-                    } else {
-                        $this->cats[$title]->count += 1;
-                    }
-                    $this->cats[$title]->records[] = $record;
                 }
             }
-        }
-        if (!empty($this->grouplimit)) {
-            if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
-        } else {
-            if ($this->limit) $this->cats = array_slice($this->cats, $this->start, $this->limit);
+            if (!empty($this->grouplimit)) {
+                if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
+            } else {
+                if ($this->limit) $this->cats = array_slice($this->cats, $this->start, $this->limit);
+            }
         }
 
         if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
