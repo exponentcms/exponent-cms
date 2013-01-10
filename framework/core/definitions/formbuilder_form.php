@@ -40,7 +40,7 @@ return array(
 		DB_FIELD_LEN=>100),
 	'is_email'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-    'is_email'=>array(
+    'is_saved'=>array(
   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'select_email'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
