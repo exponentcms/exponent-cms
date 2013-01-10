@@ -124,6 +124,7 @@ class expPaginator {
         $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
         $this->groups = !empty($params['groups']) ? $params['groups'] : array();
         $this->grouplimit = !empty($params['grouplimit']) ? $params['grouplimit'] : null;
+        $this->dontsortwithincat = !empty($params['dontsortwithincat']) ? $params['dontsortwithincat'] : null;
         $this->dontsort = !empty($params['dontsort']) ? $params['dontsort'] : null;
 
 		// if a view was passed we'll use it.
@@ -181,19 +182,26 @@ class expPaginator {
             $this->order = $orderby[0];
             $this->order_direction = $orderby[1];
         }
+        if ($this->dontsort) {
+            $sort = null;
+        } else {
+            $sort = $this->order.' '.$this->order_direction;
+        }
 
 		// figure out how many records we're dealing with & grab the records
 		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort the records that were passed in to us
-		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
+            if (!empty($sort)) {
+                usort($this->records,array('expPaginator', strtolower($this->order_direction)));
+            }
 //		    $this->total_records = count($this->records);
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
 //			$this->total_records = $class->find('count', $this->where);
-            $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
+            $this->records = $class->find('all', $this->where, $sort);
 		} elseif (!empty($this->where)) { //from Merge....where clause
 //			$this->total_records = $class->find('count', $this->where);
-            $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
+            $this->records = $class->find('all', $this->where, $sort);
 		} else { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
 			//$this->total_records = count($records);
@@ -203,7 +211,7 @@ class expPaginator {
                         
 //			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk
 
-            if (!empty($this->order)) $this->sql .= ' ORDER BY '.$this->order.' '.$this->order_direction;
+            if (!empty($sort)) $this->sql .= ' ORDER BY '.$sort;
 //			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
 			
 			$this->records = array();
@@ -220,7 +228,7 @@ class expPaginator {
 
         // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize) {
-            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat,$this->groups,$this->dontsort);
+            expCatController::addCats($this->records,$sort,$this->uncat,$this->groups,$this->dontsortwithincat);
         }
 
         // let's see how many total records there are
@@ -237,10 +245,6 @@ class expPaginator {
             expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
         } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
             $order = $this->order;
-            if (strstr($this->order,",")) {
-               $orderby = explode(",",$this->order);
-               $order = $orderby[0];
-            }
             if (in_array($order,array('created_at','edited_at','publish'))) {
                 if ($this->total_records && (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2))) {
                     $datetype = 'Y';  // more than 2 years of records, so break down by year

@@ -50,7 +50,7 @@ class filedownloadController extends expController {
             'order'=>$order,
             'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
             'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
-            'dontsort'=>!empty($this->config['dontsort']) ? $this->config['dontsort'] : false,
+            'dontsortwithincat'=>!empty($this->config['dontsort']) ? $this->config['dontsort'] : false,
             'groups'=>!isset($this->params['group']) ? array() : array($this->params['group']),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
