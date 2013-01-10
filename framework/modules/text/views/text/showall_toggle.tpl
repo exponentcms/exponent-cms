@@ -57,6 +57,7 @@
                     {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
                 {/if}
             </div>
+            {clear}
         {/toggle}
         {permissions}
 			<div class="module-actions">
