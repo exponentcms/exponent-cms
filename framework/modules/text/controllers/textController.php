@@ -39,17 +39,47 @@ class textController extends expController {
     static function description() { return gt("Puts text on your web pages"); }
 
 	public function showall() {
+        global $db;
+
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
 		$order = 'rank ASC';
 		$items = $this->text->find('all', $where, $order);
+
+        // now the stuff for the inline editing w/ ckeditor v4
         $level = 99;
         if (expSession::is_set('uilevel')) {
         	$level = expSession::get('uilevel');
         }
+        $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
+        if (empty($settings->data)) {
+            $settings->data = "
+                ['Source','-','Preview','-','Templates'],
+                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
+                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+                '/',
+                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                ['Link','Unlink','Anchor'],
+                '/',
+                ['Styles','Format','Font','FontSize'],
+                ['TextColor','BGColor'],
+                ['Maximize', 'ShowBlocks','-','About']";
+        }
+        if (empty($settings->skin)) $settings->skin = 'moono';
+        if (empty($settings->scayt_on)) $settings->scayt_on = 'true';
+        if (empty($settings->paste_word)) {
+            $settings->paste_word = 'forcePasteAsPlainText : true,';
+        } else {
+            $settings->paste_word = '';
+        }
+
 		assign_to_template(array(
             'items'=>$items,
-            'preview'=>($level == UILEVEL_PREVIEW)  // needed for inline edit to work
+            'preview'=>($level == UILEVEL_PREVIEW),  // needed for inline edit to work
+            'ckeditor'=>$settings,
         ));
 	}
 	
