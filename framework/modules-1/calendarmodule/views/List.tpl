@@ -21,9 +21,9 @@
 	<a class="monthviewlink" href="{link _common=1 view=Default action=show_view time=$time}">{'Month View'|gettext}</a>&#160;&#160;|&#160;&#160;<span class="listviewlink">{'List View'|gettext}</span><br />
 	<a href="#" onclick="window.open('popup.php?module=calendarmodule&src={$__loc->src}&view=Monthly List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{'Printer-friendly'|gettext}</a>
 	{br}{br}
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=show_view _common=1 view='Monthly List' time=$prev_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
+	<a href="{link action=show_view _common=1 view='Monthly List' time=$prev_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
 	<strong>{$time|format_date:"%B %Y"}</strong>
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=show_view _common=1 view='Monthly List' time=$next_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
+	<a href="{link action=show_view _common=1 view='Monthly List' time=$next_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
 	{br}{br}
 	{foreach from=$days item=items key=ts}
 		{if_elements array=$items}
@@ -34,7 +34,7 @@
 			{foreach from=$items item=item}
 				{assign var=none value=0}
 				<div class="paragraph">
-					<a class="mngmntlink calendar_mngmntlink" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+					<a {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					{if $item->is_allday == 0}&#160;{$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} - {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}{/if}
 					{if $permissions.edit == 1 || $permissions.delete == 1 || $permissions.manage == 1}
 						<br />&#160;&#160;&#160;&#160;&#160;&#160;

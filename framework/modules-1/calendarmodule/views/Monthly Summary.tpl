@@ -22,11 +22,11 @@
 		<tbody>
 			<tr>
 				<td>
-					<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$prevmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Previous Month'|gettext}" alt="{'Previous Month'|gettext}" /></a>
+					<a href="{link action=viewmonth time=$prevmonth}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Previous Month'|gettext}" alt="{'Previous Month'|gettext}" /></a>
 				</td>
 				<td colspan="5">{if $moduletitle && !$config->hidemoduletitle}{$moduletitle}{/if} {$now|format_date:"%B %Y"}</td>
 				<td>
-					<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth time=$nextmonth}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next Month'|gettext}" alt="{'Next Month'|gettext}" /></a>
+					<a href="{link action=viewmonth time=$nextmonth}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next Month'|gettext}" alt="{'Next Month'|gettext}" /></a>
 				</td>
 			</tr>
 			<tr>
@@ -49,7 +49,7 @@
 								<div class="daycell">{$day}</div>
 							{/if}
 							{if $dayinfo.number > 0}
-								<a class="mngmntlink calendar_mngmntlink" href="{link action=viewday time=$dayinfo.ts}" title="{$dayinfo.ts|format_date:"%A, %B %e, %Y"}" alt="{$dayinfo.ts|format_date:"%A, %B %e, %Y"}">
+								<a href="{link action=viewday time=$dayinfo.ts}" title="{$dayinfo.ts|format_date:"%A, %B %e, %Y"}" alt="{$dayinfo.ts|format_date:"%A, %B %e, %Y"}">
 								{$dayinfo.number} {plural singular=Event plural=Events count=$dayinfo.number}
 								</a>
 							{/if}

@@ -55,7 +55,7 @@ class listbuildercontrol extends formcontrol {
 		// eDebug($this->source, true);
 
 		$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
-		$html .= '<table cellpadding="9" border="0" width="30"><tr><td width="10" style="border:none;">';
+		$html .= '<table cellpadding="9" border="0" width="30" style="margin-bottom:0;"><tr><td width="10" style="border:none;">';
 		if (!$this->newList) {
 			$html .= "<select id='source_$name' size='".$this->size."'>";
 			foreach ($this->source as $key=>$value) {
@@ -87,6 +87,7 @@ class listbuildercontrol extends formcontrol {
 		$html .= "</select>";
 		$html .= "</td><td width='100%' style='border:none;'></td></tr></table>";
 //		$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 

@@ -31,7 +31,7 @@
 		{permissions}
 			{if $permissions.manage == 1}
                 {nbsp count=2}|{nbsp count=2}
-                {icon class="adminviewlink mngmntlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
+                {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
                     {nbsp count=2}|{nbsp count=2}
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}

@@ -273,9 +273,9 @@ abstract class expController {
     public function showall_by_tags() {
         global $db;
 
-        $modelname = $this->basemodel_name;
-        // set history
+         // set history
         expHistory::set('viewable', $this->params);
+        $modelname = $this->basemodel_name;
 
         // get the tag being passed
         $tag = new expTag($this->params['tag']);
@@ -318,6 +318,7 @@ abstract class expController {
 
     public function tags() {
 
+        expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
 
         $items = $this->$modelname->find('all', $this->aggregateWhereClause());
@@ -402,6 +403,7 @@ abstract class expController {
      * view a random item
      */
     public function showRandom() {
+        expHistory::set('viewable', $this->params);
         $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
         $limit = isset($this->params['limit']) ? $this->params['limit'] : 1;
         $order = 'RAND()';

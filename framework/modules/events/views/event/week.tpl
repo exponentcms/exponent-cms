@@ -26,7 +26,7 @@
 			<dt>
 				<strong>
 				{if count($items) != 0}
-					<a class="itemtitle calendar_mngmntlink" href="{link action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+					<a class="itemtitle" href="{link action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 				{else}
 					{$ts|format_date:"%A, %b %e"}
 				{/if}

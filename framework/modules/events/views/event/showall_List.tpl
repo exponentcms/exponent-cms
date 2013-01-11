@@ -24,9 +24,9 @@
     <span class="listviewlink">{'List View'|gettext}</span><br />
 	<a href="#" onclick="window.open('popup.php?controller=event&src={$__loc->src}&action=showall&view=showall_Monthly+List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{'Printer-friendly'|gettext}</a>
 	{br}{br}
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
+	<a href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
 	<strong>{$time|format_date:"%B %Y"}</strong>
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$next_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
+	<a href="{link action=showall view='showall_Monthly List' time=$next_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
 	{br}{br}
 	{foreach from=$days item=items key=ts}
 		{if_elements array=$items}

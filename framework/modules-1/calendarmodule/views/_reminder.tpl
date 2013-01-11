@@ -37,14 +37,14 @@
 			{if $counts[$ts] != 0}
 				<dt>
 					<strong>
-						<a class="itemtitle calendar_mngmntlink" href="{link module=calendarmodule action=viewday time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+						<a class="itemtitle" href="{link module=calendarmodule action=viewday time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 					</strong>
 				</dt>
 				{foreach from=$events item=event}
 					{assign var=catid value=$event->category_id}
 					<dd>
 						<strong>
-							<a class="itemtitle calendar_mngmntlink" href="{link module=calendarmodule action=view id=$event->id date_id=$event->eventdate->id}">{$event->title}</a>
+							<a class="itemtitle" href="{link module=calendarmodule action=view id=$event->id date_id=$event->eventdate->id}">{$event->title}</a>
 						</strong>							
 						<div>
 							&#160;-&#160;

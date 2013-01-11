@@ -48,7 +48,7 @@
  * 
  * <b>Example: Return to a waypoint (automagically)</b>
  * 
- * This example show how to let expHistory::back() automagically determine where to route the user after an action completes
+ * This example shows how to let expHistory::back() automagically determine where to route the user after an action completes
  * 
  * <code>
  * public function delete() {
@@ -58,8 +58,8 @@
  * }     
  * </code>
  * 
- * <b>Example: Return to a waypoint (manually)</b>
- * This example show how use expHistory::returnTo() to manually route the user after an 
+ * <b>Example: Return to a waypoint 'type' (manually)</b>
+ * This example shows how use expHistory::returnTo() to manually route the user after an
  * action completes. In this example the user will be routed to the last form he/she was on.
  * 
  * <code>

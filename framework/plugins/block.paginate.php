@@ -344,7 +344,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 								sText = this.columns[data].overrideFunc(this.filteredData[dataObject]);
 							}
 							if (this.columns[data].sLink != "") {
-								cell.innerHTML = "<a href='#' onclick='" + this.columns[data].sLink + this.filteredData[dataObject]['id'] + "' class='mngmntlink " + this.modulePrefix + "_mngmntlink'>" + sText + "</a>";
+								cell.innerHTML = "<a href='#' onclick='" + this.columns[data].sLink + this.filteredData[dataObject]['id'] + "'>" + sText + "</a>";
 							} else {
 								cell.innerHTML = sText;
 							}
@@ -417,18 +417,18 @@ function smarty_block_paginate($params,$content,&$smarty) {
 
 							var sOut = "";
 							if (iLeftStart > 1) {
-								sOut = "<a href='JavaScript:paginate.gotoPage(1);' class='mngmntlink " + this.modulePrefix + "_mngmntlink'>&lt&lt</a> <a href='JavaScript:paginate.gotoPage(" + ((this.currentPage - (iPad * 2) < 1)?"1":(this.currentPage - (iPad * 2))) + ");' class='mngmntlink " + this.modulePrefix + "_mngmntlink'>...</a> ";
+								sOut = "<a href='JavaScript:paginate.gotoPage(1);'>&lt&lt</a> <a href='JavaScript:paginate.gotoPage(" + ((this.currentPage - (iPad * 2) < 1)?"1":(this.currentPage - (iPad * 2))) + ");'>...</a> ";
 							}
 							for (var x = iLeftStart; x <= iRightEnd; x++) {
 								if (x != this.currentPage) {
-									sOut += "<a href='JavaScript:paginate.gotoPage(" + x + ");' class='mngmntlink " + this.modulePrefix + "_mngmntlink'>" + x + "</a> ";
+									sOut += "<a href='JavaScript:paginate.gotoPage(" + x + ");'>" + x + "</a> ";
 								}
 								else {
 									sOut += "<strong>" + x + "</strong> ";
 								}
 							}
 							if (iRightEnd < totalPages) {
-								sOut += "<a href='JavaScript:paginate.gotoPage(" + ((this.currentPage + (iPad * 2) > totalPages)?totalPages:(this.currentPage + (iPad * 2))) + ");' class='mngmntlink " + this.modulePrefix + "_mngmntlink'>...</a> <a href='JavaScript:paginate.gotoPage(" + totalPages + ");' class='mngmntlink " + this.modulePrefix + "_mngmntlink'>&gt&gt</a>";
+								sOut += "<a href='JavaScript:paginate.gotoPage(" + ((this.currentPage + (iPad * 2) > totalPages)?totalPages:(this.currentPage + (iPad * 2))) + ");'>...</a> <a href='JavaScript:paginate.gotoPage(" + totalPages + ");'>&gt&gt</a>";
 							}
 
 							document.getElementById(key).innerHTML = sOut;

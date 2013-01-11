@@ -47,7 +47,7 @@
 							{if $dayinfo.number == 0}
 								{$day}
 							{else}
-								<a class="mngmntlink calendar_mngmntlink" href="{link action=viewday time=$dayinfo.ts}" title="{$dayinfo.ts|format_date:'%A, %B %e, %Y'}"><em>{$day}</em></a>
+								<a href="{link action=viewday time=$dayinfo.ts}" title="{$dayinfo.ts|format_date:'%A, %B %e, %Y'}"><em>{$day}</em></a>
 							{/if}
 						{else}
 							&#160;
@@ -57,7 +57,7 @@
 			</tr>
 		{/foreach}
 	</table>
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=viewmonth}">{'View Month'|gettext}</a>
+	<a href="{link action=viewmonth}">{'View Month'|gettext}</a>
 	{br}
 	{permissions}
 		{if $permissions.create == 1}

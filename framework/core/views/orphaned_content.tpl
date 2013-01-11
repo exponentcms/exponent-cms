@@ -30,7 +30,7 @@
 				<strong>{'Archived Content Selector'|gettext}</strong>
 			</td>
 			<td style="width:30%" align="right">
-				[ <a class="mngmntlink" href="{$smarty.const.PATH_RELATIVE}source_selector.php">{'Live Content'|gettext}</a> ]
+				[ <a href="{$smarty.const.PATH_RELATIVE}source_selector.php">{'Live Content'|gettext}</a> ]
 			</td>
 		</tr>
 	</table>

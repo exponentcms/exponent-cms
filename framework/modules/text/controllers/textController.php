@@ -49,7 +49,7 @@ class textController extends expController {
         }
 		assign_to_template(array(
             'items'=>$items,
-            'preview'=>($level == UILEVEL_PREVIEW)
+            'preview'=>($level == UILEVEL_PREVIEW)  // needed for inline edit to work
         ));
 	}
 	

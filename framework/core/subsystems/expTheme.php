@@ -71,7 +71,6 @@ class expTheme {
 		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
 		// add our theme folder into autoload and place it first
 		array_unshift($auto_dirs2,BASE.'themes/'.DISPLAY_THEME.'/modules');
-        //FIXME we should add a check for new jQuery type controls near the beginning of chain if used
         if (defined('JQUERY_THEME')) array_unshift($auto_dirs,BASE.'framework/core/subsystems/forms/controls/jquery');
         array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 	}
@@ -456,7 +455,7 @@ class expTheme {
 			}
 //			if (expSession::is_set("themeopt_override")) {
 //				$config = expSession::get("themeopt_override");
-//				echo "<a class='mngmntlink sitetemplate_mngmntlink' href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
+//				echo "<a href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
 //			}
 
 			//FIXME: module/controller glue code..remove ASAP

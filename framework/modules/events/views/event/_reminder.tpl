@@ -44,7 +44,7 @@
                     {$catid=$event->category_id}
 					<dd>
 						<strong>
-							<a class="itemtitle calendar_mngmntlink" href="{link controller=event action=show date_id=$event->date_id}">{$event->title}</a>
+							<a class="itemtitle" href="{link controller=event action=show date_id=$event->date_id}">{$event->title}</a>
 						</strong>							
 						<div>
 							&#160;-&#160;

@@ -26,20 +26,20 @@
 				<tr><td style="padding-left: 15px">
 					{if $permissions.edit == 1}
 						{if $event->approved == 1}
-							<a href="{link action=edit id=$event->id date_id=$event->eventdate->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{'Edit'|gettext}" alt="{'Edit'|gettext}" /></a>&#160;
+							<a href="{link action=edit id=$event->id date_id=$event->eventdate->id}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{'Edit'|gettext}" alt="{'Edit'|gettext}" /></a>&#160;
 						{else}
-							<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.disabled.png'}" title="{''|gettext}" alt="{''|gettext}" />
+							<img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'edit.disabled.png'}" title="{''|gettext}" alt="{''|gettext}" />
 						{/if}
 					{/if}
 					{if $permissions.delete == 1}
 						{if $event->approved == 1}
 							{if $event->is_recurring == 0}
-								<a href="{link action=delete id=$event->id}" onclick="return confirm('{'Confirm you want to delete this item'|gettext}');"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete'|gettext}" alt="{'Delete'|gettext}" /></a>
+								<a href="{link action=delete id=$event->id}" onclick="return confirm('{'Confirm you want to delete this item'|gettext}');"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete'|gettext}" alt="{'Delete'|gettext}" /></a>
 							{else}
-								<a href="{link action=delete_form date_id=$event->eventdate->id id=$event->id}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete'|gettext}" alt="{'Delete'|gettext}" /></a>
+								<a href="{link action=delete_form date_id=$event->eventdate->id id=$event->id}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete'|gettext}" alt="{'Delete'|gettext}" /></a>
 							{/if}
 						{else}
-						<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.disabled.png'}" title="{''}" alt="{''|gettext}" />
+						<img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.disabled.png'}" title="{''}" alt="{''|gettext}" />
 						{/if}
 					{/if}
 					<div style="padding-left: 10px">
@@ -48,7 +48,7 @@
 							{$dates->eventstart|format_date:"%l:%M %P"} - {$dates->eventend|format_date:"%l:%M %P"}
 						{/if}</strong><br/>
 						{$event->body|summarize:"html":"paralinks"}</br>
-						&#160;&#160;<a class="mngmntlink calendar_mngmntlink" href="{link action=view id=$event->id date_id=$dates->id}">{'Click here for more information or to register.'|gettext}</a>
+						&#160;&#160;<a href="{link action=view id=$event->id date_id=$dates->id}">{'Click here for more information or to register.'|gettext}</a>
 					</div><br/>
 				</td></tr>
 			{/foreach}

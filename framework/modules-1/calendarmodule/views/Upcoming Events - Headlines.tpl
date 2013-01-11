@@ -26,7 +26,7 @@
 		<div class="module-actions">
 			<p>
 			{if $permissions.manage == 1}
-				<a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>{br}
+				<a class="adminviewlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>{br}
 			{/if}
 			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
@@ -75,7 +75,7 @@
     </ul>
 	<p>
 		{if $more_events == 1}
-			<a class="mngmntlink monthviewlink module-actions" href="{link _common=1 view='Upcoming Events' action='show_view' time=$time}">{'More Events...'|gettext}</a>{br}
+			<a class="monthviewlink module-actions" href="{link _common=1 view='Upcoming Events' action='show_view' time=$time}">{'More Events...'|gettext}</a>{br}
 		{/if}
 	</p>
 </div>

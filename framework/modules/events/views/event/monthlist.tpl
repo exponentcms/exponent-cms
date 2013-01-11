@@ -29,7 +29,7 @@
 			{if_elements array=$items}
 				<dt>
 					<div class="sectiontitle"><strong>
-						<a class="itemtitle calendar_mngmntlink" href="{link action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+						<a class="itemtitle" href="{link action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 					</strong></div>
 				</dt>
 				<dd>

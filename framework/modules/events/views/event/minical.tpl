@@ -40,7 +40,7 @@
                         {if $dayinfo.number == 0}
                             {$day}
                         {else}
-                            <a class="mngmntlink calendar_mngmntlink" href="{link action=showall view=showall_Day time=$dayinfo.ts}" title="{$dayinfo.ts|format_date} - {$dayinfo.number} {'Event'|gettext|plural:$dayinfo.number}"><em>{$day}</em></a>
+                            <a href="{link action=showall view=showall_Day time=$dayinfo.ts}" title="{$dayinfo.ts|format_date} - {$dayinfo.number} {'Event'|gettext|plural:$dayinfo.number}"><em>{$day}</em></a>
                         {/if}
                     {else}
                         &#160;

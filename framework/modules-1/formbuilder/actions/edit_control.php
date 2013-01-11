@@ -68,7 +68,7 @@ if ($f) {
 			$form = call_user_func(array($control_type,"form"),$ctl);
 			$form->location($loc);
 			if ($ctl) { 
-				$form->controls['identifier']->disabled = true;
+				if (isset($form->controls['identifier']->disabled)) $form->controls['identifier']->disabled = true;
 				$form->meta("id",$ctl->id);
 				$form->meta("identifier",$ctl->identifier);
 			}

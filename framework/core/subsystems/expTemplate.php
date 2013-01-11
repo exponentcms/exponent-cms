@@ -173,6 +173,7 @@ class expTemplate {
 	 * @node Undocumented
 	 * @return array
 	 */
+    //FIXME we need to also look for custom & jquery controls
 	public static function listControlTypes() {
 		$cdh = opendir(BASE."framework/core/subsystems/forms/controls");
 		$list = array();

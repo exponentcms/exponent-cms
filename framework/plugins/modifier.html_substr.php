@@ -26,14 +26,15 @@
  * Date: January 13th, 2010
  * Purpose: Cut a string preserving any tag nesting and matching.
  * Author: Original Javascript Code: Benjamin Lupu <lupufr
+ *
  * @aol.com>
- *     Translation to PHP & Smarty: Edward Dale <scompt@scompt.com>
- *     Modification to add a string: Sebastian Kuhlmann <sebastiankuhlmann@web.de>
- *     Modification to add user defined closing text before closing tag if tag matches specified elements and added read more link with variable text:
- *     Avi J Liebowitz avij.com
- *     Example Usage {$htmlString|html_substr:<lengh>:<string_to_add>:<link>:<link_text>}
+ *             Translation to PHP & Smarty: Edward Dale <scompt@scompt.com>
+ *             Modification to add a string: Sebastian Kuhlmann <sebastiankuhlmann@web.de>
+ *             Modification to add user defined closing text before closing tag if tag matches specified elements and added read more link with variable text:
+ *             Avi J Liebowitz avij.com
+ *             Example Usage {$htmlString|html_substr:<lengh>:<string_to_add>:<link>:<link_text>}
 -------------------------------------------------------------
- * @package Smarty-Plugins
+ * @package    Smarty-Plugins
  * @subpackage Modifier
  *
  * @param $string
@@ -50,16 +51,16 @@ function smarty_modifier_html_substr($string, $length, $addstring, $link, $link_
     if (strlen($string) > $length) {
         if (!empty($string) && $length > 0) {
             $isText = true;
-            $ret    = "";
-            $i      = 0;
+            $ret = "";
+            $i = 0;
 
-            $currentChar       = "";
+            $currentChar = "";
             $lastSpacePosition = -1;
-            $lastChar          = "";
+            $lastChar = "";
 
-            $tagsArray  = array();
+            $tagsArray = array();
             $currentTag = "";
-            $tagLevel   = 0;
+            $tagLevel = 0;
 
             $noTagLength = strlen(strip_tags($string));
 
@@ -78,8 +79,7 @@ function smarty_modifier_html_substr($string, $length, $addstring, $link, $link_
                     // Memorize last space position
                     if ($currentChar == " ") {
                         $lastSpacePosition = $j;
-                    }
-                    else {
+                    } else {
                         $lastChar = $currentChar;
                     }
 
@@ -130,49 +130,33 @@ function smarty_modifier_html_substr($string, $length, $addstring, $link, $link_
             }
 
             if (sizeof($tagsArray) != 0) {
-                if ($addstring != '') {
-                    $ret .= $addstring;
-                }
-                if ($link != '' && $link_text != '') {
-                    $ret .= "<a href=\"" . $link . "\" alt=\"" . $link_text . "\">" . $link_text . "</a>";
-                }
-            } else {
                 // Close broken XHTML elements
                 while (sizeof($tagsArray) != 0) {
                     if (sizeof($tagsArray) > 1) {
                         $aTag = array_pop($tagsArray);
                         $ret .= "</" . $aTag . ">";
-                    }
-                    // You may add more tags here to put the link and added text before the closing tag
-                    elseif ($aTag = 'p' || 'div') {
-                        $aTag = array_pop($tagsArray);
-                        if ($addstring != '') {
-                            $ret .= $addstring;
-                        }
-                        if ($link != '' && $link_text != '') {
-                            $ret .= "<a href=\"" . $link . "\" alt=\"" . $link_text . "\">" . $link_text . "</a>";
-                        }
-                        $ret .= "</" . $aTag . ">";
-                    }
-                    else {
+                    } // You may add more tags here to put the link and added text before the closing tag
+                    elseif ($aTag == 'p' || 'div') {
                         $aTag = array_pop($tagsArray);
                         $ret .= "</" . $aTag . ">";
-                        if ($addstring != '') {
-                            $ret .= $addstring;
-                        }
-                        if ($link != '' && $link_text != '') {
-                            $ret .= "<a href=\"" . $link . "\" alt=\"" . $link_text . "\">" . $link_text . "</a>";
-                        }
+                    } else {
+                        $aTag = array_pop($tagsArray);
+                        $ret .= "</" . $aTag . ">";
                     }
                 }
+            }
+            if ($addstring != '') {
+                $ret .= $addstring;
+            }
+            if ($link != '' && $link_text != '') {
+                $ret .= "<a href=\"" . $link . "\" alt=\"" . $link_text . "\">" . $link_text . "</a>";
             }
         } else {
             $ret = "";
         }
 
         return ($ret);
-    }
-    else {
+    } else {
         return ($string);
     }
 }

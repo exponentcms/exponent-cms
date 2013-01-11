@@ -21,42 +21,42 @@
  * Wraps the OS modules template system in use, to provide a uniform and consistent
  * interface to templates.
  *
- * @package Subsystems-Forms
+ * @package    Subsystems-Forms
  * @subpackage Template
  */
 //TODO: prepare this class for multiple template systems
 class template extends basetemplate {
-		
-	var $module = '';	
-	
-	function __construct($module, $view = null, $loc = null, $caching=false, $type=null) {
-		$type = !isset($type) ? 'modules' : $type;
 
-		//parent::__construct("modules", $module, $view);
-		parent::__construct($type, $module, $view);
-		
-		$this->viewparams = expTemplate::getViewParams($this->viewfile);
-				
-		if ($loc == null) {
-			$loc = expCore::makeLocation($module);
-		}
-		
-		$this->tpl->assign("__loc",$loc);
-		$this->tpl->assign("__name", $module);
-		
-		// View Config
-		global $db;
-		$container_key = serialize($loc);
-		$cache = expSession::getCacheValue('containermodule');
-		if (isset($cache[$container_key])){
-			$container = $cache[$container_key];
-		}else{
-			$container = $db->selectObject("container","internal='".$container_key."'");
-			$cache[$container_key] = $container;
-		}
-		$this->viewconfig = ($container && isset($container->view_data) && $container->view_data != "" ? unserialize($container->view_data) : array());
-		$this->tpl->assign("__viewconfig", $this->viewconfig);
-	}
+    var $module = '';
+
+    function __construct($module, $view = null, $loc = null, $caching = false, $type = null) {
+        $type = !isset($type) ? 'modules' : $type;
+
+        //parent::__construct("modules", $module, $view);
+        parent::__construct($type, $module, $view);
+
+        $this->viewparams = expTemplate::getViewParams($this->viewfile);
+
+        if ($loc == null) {
+            $loc = expCore::makeLocation($module);
+        }
+
+        $this->tpl->assign("__loc", $loc);
+        $this->tpl->assign("__name", $module);
+
+        // View Config
+        global $db;
+        $container_key = serialize($loc);
+        $cache = expSession::getCacheValue('containermodule');
+        if (isset($cache[$container_key])) {
+            $container = $cache[$container_key];
+        } else {
+            $container = $db->selectObject("container", "internal='" . $container_key . "'");
+            $cache[$container_key] = $container;
+        }
+        $this->viewconfig = ($container && isset($container->view_data) && $container->view_data != "" ? unserialize($container->view_data) : array());
+        $this->tpl->assign("__viewconfig", $this->viewconfig);
+    }
 
 }
 

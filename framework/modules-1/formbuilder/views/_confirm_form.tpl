@@ -43,7 +43,6 @@
     	{/foreach}
 		</tbody>
 	</table>
-
 	{form action=submit_form}
 		{foreach from=$postdata item=data key=name}
 			{control type=hidden name=$name value=$data}
@@ -51,5 +50,4 @@
 		{control type=antispam}
 		{control type=buttongroup submit="Submit Form"|gettext cancel="Change Responses"|gettext}
 	{/form}
-	
-</div> 
+</div>

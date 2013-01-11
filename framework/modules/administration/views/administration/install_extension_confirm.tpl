@@ -48,7 +48,7 @@
 					{*<td>*}
 				{*	{if $file.ext == "tpl" || $file.ext == "php"}*}
 				{*	{capture assign="filearg"}{$smarty.const.PATH_RELATVE}{$relative}{$file.absolute}{/capture}*}
-				{*		<a class="mngmntlink administration_mngmntlink" href="{link module=filemanager action=viewcode file=$filearg}">*}
+				{*		<a href="{link module=filemanager action=viewcode file=$filearg}">*}
 				{*			{if $file.ext == "tpl"}{'View Template'|gettext}{else}{'View PHP Code'|gettext}{/if}*}
 				{*		</a>*}
 				{*	{/if}*}

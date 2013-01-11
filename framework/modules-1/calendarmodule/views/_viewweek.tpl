@@ -44,11 +44,11 @@
 		</div>
 	{/permissions}
 	<p class="caption">
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startprevweek2}" title="{'Week of'|gettext} {$startprevweek2|format_date:"%B %e, %Y"}">{$startprevweek2|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startprevweek}" title="{'Week of'|gettext} {$startprevweek|format_date:"%B %e, %Y"}">{$startprevweek|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
+		<a class="module-actions" href="{link action=viewweek time=$startprevweek2}" title="{'Week of'|gettext} {$startprevweek2|format_date:"%B %e, %Y"}">{$startprevweek2|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;
+		<a class="module-actions" href="{link action=viewweek time=$startprevweek}" title="{'Week of'|gettext} {$startprevweek|format_date:"%B %e, %Y"}">{$startprevweek|format_date:"%b %e"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
 		<span>{'Week of'|gettext} {$time|format_date:"%B %e, %Y"}</span>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startnextweek}" title="{'Week of'|gettext} {$startnextweek|format_date:"%B %e, %Y"}">{$startnextweek|format_date:"%b %e"}</a>&#160;&#160;&raquo;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewweek time=$startnextweek2}" title="{'Week of'|gettext} {$startnextweek2|format_date:"%B %e, %Y"}">{$startnextweek2|format_date:"%b %e"}</a>
+		<a class="module-actions" href="{link action=viewweek time=$startnextweek}" title="{'Week of'|gettext} {$startnextweek|format_date:"%B %e, %Y"}">{$startnextweek|format_date:"%b %e"}</a>&#160;&#160;&raquo;&#160;
+		<a class="module-actions" href="{link action=viewweek time=$startnextweek2}" title="{'Week of'|gettext} {$startnextweek2|format_date:"%B %e, %Y"}">{$startnextweek2|format_date:"%b %e"}</a>
         <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
 	</p>
 	<dl class="viewweek">
@@ -57,7 +57,7 @@
 			<dt>
 				<strong>
 				{if $counts[$ts] != 0}
-					<a class="itemtitle calendar_mngmntlink" href="{link action=viewday time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+					<a class="itemtitle" href="{link action=viewday time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 				{else}
 					{$ts|format_date:"%A, %b %e"}
 				{/if}
@@ -67,7 +67,7 @@
 			{foreach from=$items item=item}
 				{assign var=none value=0}
 				<dd>
-					<a class="itemtitle calendar_mngmntlink" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}" {/if}title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+					<a class="itemtitle" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}" {/if}title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
 					{permissions}
                         {if $item->location_data != null}
                             <div class="item-actions">

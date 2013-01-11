@@ -46,13 +46,13 @@
 		</div>
 	{/permissions}
 	<p class="caption">
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$prevday3}" title="{$prevday3|format_date:"%A, %B %e, %Y"}">{$prevday3|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$prevday2}" title="{$prevday2|format_date:"%A, %B %e, %Y"}">{$prevday2|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$prevday}" title="{$prevday|format_date:"%A, %B %e, %Y"}">{$prevday|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
+		<a class="module-actions" href="{link action=viewday time=$prevday3}" title="{$prevday3|format_date:"%A, %B %e, %Y"}">{$prevday3|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
+		<a class="module-actions" href="{link action=viewday time=$prevday2}" title="{$prevday2|format_date:"%A, %B %e, %Y"}">{$prevday2|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
+		<a class="module-actions" href="{link action=viewday time=$prevday}" title="{$prevday|format_date:"%A, %B %e, %Y"}">{$prevday|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
 		<span>{$now|format_date:"%A, %B %e, %Y"}</span>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$nextday}" title="{$nextday|format_date:"%A, %B %e, %Y"}">{$nextday|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$nextday2}" title="{$nextday2|format_date:"%A, %B %e, %Y"}">{$nextday2|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
-		<a class="module-actions calendar_mngmntlink" href="{link action=viewday time=$nextday3}" title="{$nextday3|format_date:"%A, %B %e, %Y"}">{$nextday3|format_date:"%a"}</a>
+		<a class="module-actions" href="{link action=viewday time=$nextday}" title="{$nextday|format_date:"%A, %B %e, %Y"}">{$nextday|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
+		<a class="module-actions" href="{link action=viewday time=$nextday2}" title="{$nextday2|format_date:"%A, %B %e, %Y"}">{$nextday2|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
+		<a class="module-actions" href="{link action=viewday time=$nextday3}" title="{$nextday3|format_date:"%A, %B %e, %Y"}">{$nextday3|format_date:"%a"}</a>
         <a class="module-actions" style="float:right;" href="javascript:void(0);" id="J_popup_closeable">{'Go to Date'|gettext}</a>
 	</p>
 	<dl class="viewweek">
@@ -60,7 +60,7 @@
 		{foreach from=$events item=item}
 			{assign var=count value=1}
 			<dt>
-				<span class="eventtitle"><a class="itemtitle calendar_mngmntlink" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if}><strong>{$item->title}</strong></a></span>
+				<span class="eventtitle"><a class="itemtitle" {if $item->location_data != null}href="{link action=view id=$item->id date_id=$item->eventdate->id}"{/if}><strong>{$item->title}</strong></a></span>
 				{permissions}
                     {if $item->location_data != null}
                         <div class="item-actions">

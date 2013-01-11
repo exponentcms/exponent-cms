@@ -33,7 +33,7 @@
     {$myloc=serialize($__loc)}
     {if !count($items)}
         {permissions}
-            <div class="msg-queue info" style="text-align:center"><p>{'There are no text items/tabs in the module!'|gettext}</p></div>
+            <div class="msg-queue notice" style="text-align:center"><p>{'There are no text items/tabs in the module!'|gettext}</p></div>
         {/permissions}
     {else}
     <div id="text-{$id}" class="yui-navset exp-skin-tabview hide">

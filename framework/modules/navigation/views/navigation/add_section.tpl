@@ -26,23 +26,23 @@
         </div>
     </div>
     <div class="head">
-        <a class="mngmntlink navigation_mngmntlink contentpage" href="{link action=edit_contentpage parent=$parent->id}">{'Content Page'|gettext}</a>
+        <a class="contentpage" href="{link action=edit_contentpage parent=$parent->id}">{'Content Page'|gettext}</a>
     </div>
     <div class="desc">{'Content Pages are regular pages on the site that allow you to add modules to them.  With content pages, you are able to override the global Site Title, Site Description and Site Keywords settings.'|gettext}</div>
 
     <div class="head">
-        <a class="mngmntlink navigation_mngmntlink externalpage" href="{link action=edit_externalalias parent=$parent->id}">{'External Website Link'|gettext}</a>
+        <a class="externalpage" href="{link action=edit_externalalias parent=$parent->id}">{'External Website Link'|gettext}</a>
     </div>
     <div class="desc">{'If you need or want a link in your site hierarchy to link to some off-site webpage, create an External Link.'|gettext}</div>
 
     <div class="head">
-        <a class="mngmntlink navigation_mngmntlink internalpage" href="{link action=edit_internalalias parent=$parent->id}">{'Page Alias'|gettext}</a>
+        <a class="internalpage" href="{link action=edit_internalalias parent=$parent->id}">{'Page Alias'|gettext}</a>
     </div>
     <div class="desc">{'If you need or want a link to another page in your site hierarchy, use a page alias.'|gettext}</div>
 
     {if $parent->id == 0}
         <div class="head">
-            <a class="mngmntlink navigation_mngmntlink freeformpage" href="{link action=edit_freeform parent=$parent->id}">{'Free-form Menu Item'|gettext}</a>
+            <a class="freeformpage" href="{link action=edit_freeform parent=$parent->id}">{'Free-form Menu Item'|gettext}</a>
         </div>
         <div class="desc">{'If you want to embed a module/container as menu item, use a free-form menu item.'|gettext}{br}
         <strong>{'This page/menu-item type is only functional on some navigation views such as the Mega view where it will appear without its children!'|gettext}</strong></div>
@@ -50,7 +50,7 @@
 
     {if $haveStandalone != 0 && $isAdministrator}
         <div class="head">
-            <a class="mngmntlink navigation_mngmntlink standalone" href="{link action=move_standalone parent=$parent->id}">{'Move Standalone Page'|gettext}</a>
+            <a class="standalone" href="{link action=move_standalone parent=$parent->id}">{'Move Standalone Page'|gettext}</a>
         </div>
         <div class="desc">{'Use this if you want to move a standalone page into the navigation hierarchy.'|gettext}</div>
     {/if}

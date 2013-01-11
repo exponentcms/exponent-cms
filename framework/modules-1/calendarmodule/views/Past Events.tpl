@@ -25,7 +25,7 @@
 		{permissions}
 			{if $permissions.manage == 1}
 				&#160;&#160;|&#160;&#160;
-                <a class="adminviewlink mngmntlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
+                <a class="adminviewlink" href="{link _common=1 view='Administration' action='show_view' time=$time}">{'Administration View'|gettext}</a>
 			{/if}
         {/permissions}
         {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
@@ -35,8 +35,8 @@
 			<span class="listviewlink">{'Past Events View'|gettext}</span>
 			{if $permissions.manage == 1}
 				&#160;&#160;|&#160;&#160;
-				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
-				<a class="mngmntlink" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
+				<img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
+				<a href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
 				{br}
 			{/if}
 		{/permissions}
@@ -67,7 +67,7 @@
 		<tbody>
 		{foreach from=$items item=item}
 			<tr class="{cycle values="odd,even"}">
-				<td><a class="itemtitle calendar_mngmntlink" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
+				<td><a class="itemtitle" href="{link action=view id=$item->id date_id=$item->eventdate->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
 					{if $item->is_allday == 1}
 						{$item->eventstart|format_date}
