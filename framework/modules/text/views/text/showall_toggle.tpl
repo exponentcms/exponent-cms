@@ -47,7 +47,13 @@
                 {/if}
             </div>
         {/permissions}
-        {toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}
+        {if $config.show_summary}
+            {$summary = $text->body|summarize:"html":"parahtml"}
+        {else}
+            {$summary = ''}
+        {/if}
+        {*{toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}*}
+        {toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$summary}
             <div class="bodycopy">
                 {if $config.filedisplay != "Downloadable Files"}
                     {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}

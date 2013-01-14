@@ -73,7 +73,12 @@
                 </div>
             {/permissions}
             {tags_assigned record=$record}
-            {toggle unique="portfolio`$record->id`" title=$record->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}
+            {if $config.show_summary}
+                {$summary = $record->body|summarize:"html":"parahtml"}
+            {else}
+                {$summary = ''}
+            {/if}
+            {toggle unique="portfolio`$record->id`" title=$record->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height summary=$summary}
                 {*<h3{if $config.usecategories} class="{$cat->color}"{/if}><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>*}
                 <div class="bodycopy">
                     {if $config.filedisplay != "Downloadable Files"}
