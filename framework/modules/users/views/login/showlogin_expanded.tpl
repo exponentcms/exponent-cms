@@ -30,7 +30,9 @@
             <a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>
             &#160;|&#160;
         {/if}
-        <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>
+        {if !$smarty.const.USER_NO_PASSWORD_CHANGE}
+            <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>
+        {/if}
         &#160;|&#160;
         <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>
         {if $smarty.const.ECOM && $oicount}

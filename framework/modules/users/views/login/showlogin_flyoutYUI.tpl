@@ -73,7 +73,9 @@
         {if $is_group_admin}
             <a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}
         {/if}
-        <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
+        {if !$smarty.const.USER_NO_PASSWORD_CHANGE}
+            <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
+        {/if}
         <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
         {if $smarty.const.ECOM && $oicount}
             {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount}){br}
