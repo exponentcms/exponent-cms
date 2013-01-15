@@ -1,7 +1,7 @@
 YUI.add('exptabs', function(Y) {
 
     Y.expTabs = function(o) {
-        console.log("expTabs");
+        // console.log("expTabs");
         // set up history
         var history = new Y.HistoryHash();
         // Tab Navigation ul
@@ -28,6 +28,7 @@ YUI.add('exptabs', function(Y) {
             Y.one(e.currentTarget.getAttribute('href')).removeClass('hide');
             lazyLoad(Y.one(e.currentTarget.getAttribute('href')));
             history.addValue('tab', tabs.indexOf(e.currentTarget) || null);
+            Y.Global.fire("exptab:switch",e);
         };
 
         // Lazyload for CKE
@@ -54,6 +55,11 @@ YUI.add('exptabs', function(Y) {
                 }
             }
         });
+
+        return {
+            history:history,
+            tabs:tabs
+        };
     };
 
 }, '0.0.1', {
