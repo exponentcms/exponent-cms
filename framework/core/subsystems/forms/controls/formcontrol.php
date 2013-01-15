@@ -45,6 +45,14 @@ class formcontrol {
 	static function isSimpleControl() { return false; }
 
     /**
+   	 * Use Generic Control instead?
+   	 * Used to determine if control is actually a generic control
+        *
+   	 * @return bool
+   	 */
+    static function useGeneric() { return false; }
+
+    /**
      * returns the table field definition for this control
      *
      * @static

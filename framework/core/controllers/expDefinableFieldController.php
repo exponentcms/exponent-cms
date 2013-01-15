@@ -101,10 +101,8 @@ class expDefinableFieldController extends expController {
 		if (isset($this->params['id'])) {
 			$control = $db->selectObject('expDefinableFields','id='.$this->params['id']);
 			if ($control) {
-				
 				$ctl = unserialize($control->data);
 				$ctl->name = $ctl->identifier;
-			
 			}
 		}
 
