@@ -150,7 +150,7 @@ class listbuildercontrol extends formcontrol {
 			$object->identifier = "";
 			$object->caption = "";
 		}
-		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));

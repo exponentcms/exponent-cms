@@ -35,7 +35,7 @@ class youtubeController extends expController {
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("YouTube"); }
-    static function description() { return gt("Display youtube videos on your page."); }
+    static function description() { return gt("Display YouTube videos on your page."); }
     static function author() { return "Phillip Ball - OIC Group, Inc"; }
 	
 	function showall() {

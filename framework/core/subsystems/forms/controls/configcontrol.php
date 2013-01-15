@@ -77,7 +77,7 @@ class configcontrol extends formcontrol {
 			$object->cols = 60;
 			$object->maxchars = 0;
 		} 
-		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register("default",gt('Default'),  new texteditorcontrol($object->default));
 		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));

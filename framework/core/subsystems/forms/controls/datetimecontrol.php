@@ -155,7 +155,7 @@ class datetimecontrol extends formcontrol {
             $object->showtime    = true;
         }
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier", gt('Identifier'), new textcontrol($object->identifier));
+        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showdate", gt('Show Date'), new checkboxcontrol($object->showdate, false));

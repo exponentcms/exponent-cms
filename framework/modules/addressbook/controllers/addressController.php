@@ -42,7 +42,7 @@ class addressController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     static function displayname() { return gt("Addresses"); }
-    static function description() { return gt("Use this module to display and manage addresses of users on your site."); }
+    static function description() { return gt("Display and manage addresses of users on your site."); }
     static function canImportData() { return true;}
 
     function showall() {

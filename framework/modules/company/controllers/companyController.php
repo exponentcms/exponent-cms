@@ -36,7 +36,7 @@ class companyController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     static function displayname() { return gt("Company Listings"); }
-    static function description() { return gt("This module shows company listings"); }
+    static function description() { return gt("Displays company listings"); }
 	static function hasSources() { return false; }
 	
 	function showall() {

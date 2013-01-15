@@ -102,7 +102,7 @@ class dropdowncontrol extends formcontrol {
             $object->required = false;
         } 
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("items",gt('Items'), new listbuildercontrol($object->items,null));

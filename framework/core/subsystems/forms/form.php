@@ -18,7 +18,7 @@
 /** @define "BASE" "../.." */
 
 /**
- * Form Class
+ * Form Class for building and displaying a form
  *
  * An HTML-form building class, that supports
  * registerable and unregisterable controls.
@@ -40,7 +40,7 @@ class form extends baseform {
 		if ( ($ajax_action != null) && ($module != null) ) {
 			$this->ajax_updater = 1;
 			$this->meta('action',$ajax_action);
-			$this->meta('module',$module);
+			$this->meta('controller',$module);
 			$this->meta('ajax_action', '1');
 		}
 

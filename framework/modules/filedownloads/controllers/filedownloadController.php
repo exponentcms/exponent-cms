@@ -34,7 +34,7 @@ class filedownloadController extends expController {
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("File Downloads"); }
-    static function description() { return gt("This module lets you put files on your website for users to download."); }
+    static function description() { return gt("Place files on your website for users to download or use as a podcast."); }
     static function isSearchable() { return true; }
 	
     function showall() {

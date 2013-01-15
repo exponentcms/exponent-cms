@@ -36,7 +36,7 @@ class countdownController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     static function displayname() { return gt("Countdown"); }
-    static function description() { return gt("This module allows you to display a timer counting down to a specified date/time."); }
+    static function description() { return gt("Displays a timer counting down to a specified date/time."); }
     static function author() { return "Ported to Exponent by Phillip Ball. JS written by http://www.hashemian.com/tools/javascript-countdown.htm"; }
 
     /**

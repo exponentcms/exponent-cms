@@ -36,7 +36,7 @@ class textController extends expController {
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Text"); }
-    static function description() { return gt("Puts text on your web pages"); }
+    static function description() { return gt("Places text on your web pages"); }
 
 	public function showall() {
         global $db;

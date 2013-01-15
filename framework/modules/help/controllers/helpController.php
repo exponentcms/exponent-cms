@@ -28,7 +28,7 @@ class helpController extends expController {
     );
 
     static function displayname() { return gt("Help"); }
-    static function description() { return gt("Module for managing Exponent CMS help files."); }
+    static function description() { return gt("Manage Exponent CMS help files."); }
     static function isSearchable() { return true; }
 	
     function __construct($src=null, $params=array()) {

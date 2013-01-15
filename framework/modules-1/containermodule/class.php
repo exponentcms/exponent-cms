@@ -31,7 +31,7 @@ class containermodule {
     }
 
     static function description() {
-        return 'Contains other modules';
+        return 'Allows you to encapsulate other modules within a differently styled container (e.g. columns, tabs, etc...)';
     }
 
     static function hasContent() {

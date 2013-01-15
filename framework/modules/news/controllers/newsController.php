@@ -36,7 +36,7 @@ class newsController extends expController {
     );
 
     static function displayname() { return gt("News"); }
-    static function description() { return gt("Use this to display & manage news type content on your site."); }
+    static function description() { return gt("Display & manage news type content on your site."); }
     static function isSearchable() { return true; }
     
     public function showall() { 

@@ -41,7 +41,7 @@ class eventController extends expController {
     }
 
     static function description() {
-        return "Allows managing events and schedules.";
+        return "Manage events and schedules, and optionally publish them.";
     }
 
     static function author() {

@@ -38,7 +38,7 @@ class snippetController extends expController {
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Code Snippets"); }
-    static function description() { return gt("Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."); }
+    static function description() { return gt("Use this to easily place snippets of code, i.e. Javascript, embedded video, etc, on your site."); }
 	
 	public function showall() {
 	    expHistory::set('viewable', $this->params);

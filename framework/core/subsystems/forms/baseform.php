@@ -17,7 +17,7 @@
 ##################################################
 
 /**
- * Base Form Class
+ * Base Form Class for 'real' and fake form classes
  *
  * An HTML-form building class, that supports
  * registerable and unregisterable controls.
@@ -52,7 +52,7 @@ class baseform {
 	}
 	
 	function location($loc) {
-		$this->meta["module"] = $loc->mod;
+		$this->meta["controller"] = $loc->mod;
 		$this->meta["src"] = $loc->src;
 		$this->meta["int"] = $loc->int;
 		return true;

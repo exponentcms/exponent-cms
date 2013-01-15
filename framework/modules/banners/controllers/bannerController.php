@@ -37,7 +37,7 @@ class bannerController extends expController {
     );
 
     static function displayname() { return gt("Banners"); }
-    static function description() { return gt("Use this to display banners on your website."); }
+    static function description() { return gt("Display banners on your website."); }
     
     public function showall() {
         $banners = array();

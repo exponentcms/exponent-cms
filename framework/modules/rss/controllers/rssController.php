@@ -37,7 +37,7 @@ class rssController extends expController {
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("RSS Syndication"); }
-    static function description() { return gt("This module will allow you to display a list of your syndicated RSS feeds on a web page"); }
+    static function description() { return gt("Displays a list of your syndicated RSS feeds on a web page"); }
     
     function showall() {
         $rss = new expRss();

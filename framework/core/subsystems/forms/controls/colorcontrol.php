@@ -259,7 +259,7 @@ class colorcontrol extends formcontrol {
     //      $object->showtime = true;
     //  }
     // 
-    //  $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+    //  $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
     //  $form->register("caption",gt('Caption'), new textcontrol($object->caption));
     //  $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
     // 

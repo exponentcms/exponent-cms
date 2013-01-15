@@ -1098,21 +1098,25 @@ abstract class expController {
      */
     function metainfo() {
         global $router;
+
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
-        $action = $_REQUEST['action'];
+//        $action = $_REQUEST['action'];
+        $action = $router->params['action'];
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
         $modelname = $this->basemodel_name;
         switch ($action) {
             case 'showall':
-                $metainfo = array('title' => "Showing all - " . $this->displayname(), 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION);
+                $metainfo = array('title' => gt("Showing all") . " - " . $this->displayname(), 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION);
                 break;
             case 'show':
             case 'showByTitle':
                 // look up the record.
-                if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
-                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : expString::sanitize($_REQUEST['title']);
+//                if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
+                if (isset($router->params['id']) || isset($router->params['title'])) {
+//                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : expString::sanitize($_REQUEST['title']);
+                    $lookup = isset($router->params['id']) ? $router->params['id'] : $router->params['title'];
                     $object = new $modelname($lookup);
                     // set the meta info
                     if (!empty($object)) {
@@ -1127,7 +1131,8 @@ abstract class expController {
                 $functionName = $action . "_meta";
                 $mod = new $this->classname;
                 if (method_exists($mod, $functionName)) {
-                    $metainfo = $mod->$functionName($_REQUEST);
+//                    $metainfo = $mod->$functionName($_REQUEST);
+                    $metainfo = $mod->$functionName($router->params);
                 } else {
                     $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION);
                 }
