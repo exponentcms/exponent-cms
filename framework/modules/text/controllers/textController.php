@@ -51,8 +51,9 @@ class textController extends expController {
         if (expSession::is_set('uilevel')) {
         	$level = expSession::get('uilevel');
         }
-        $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
+        $settings = $db->selectObject('htmleditor_ckeditor1', 'active=1');
         if (empty($settings->data)) {
+            $settings = new stdClass();
             $settings->data = "
                 ['Source','-','Preview','-','Templates'],
                 ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
