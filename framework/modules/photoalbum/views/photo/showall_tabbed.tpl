@@ -53,7 +53,7 @@
     {$myloc=serialize($__loc)}
     {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
-        <ul>
+        <ul class="yui-nav">
             {foreach name=tabs from=$page->cats key=catid item=cat}
                 <li><a href="#tab{$smarty.foreach.items.iteration}">{$cat->name}</a></li>
             {/foreach}

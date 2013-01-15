@@ -18,9 +18,10 @@
 
 require_once('exponent.php');
 
-redirect_to(array('controller'=>'rss','action'=>'feed','module'=>$_REQUEST['module'],'src'=>$_REQUEST['src'])); // use new method
+// for backwards compatability, use the new method
+redirect_to(array('controller'=>'rss','action'=>'feed','module'=>$_REQUEST['module'],'src'=>$_REQUEST['src']));
 
-//FIXME old method
+//FIXME this is the old, deprecated method
 require_once(BASE.'external/feedcreator.class.php');
 
 $site_rss = new expRss($_REQUEST);

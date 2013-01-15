@@ -43,7 +43,7 @@
     	{/if}
     {/permissions}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
-        <ul>
+        <ul class="yui-nav">
             {if !empty($page)}
                 <li><a href="#tab0">{$page->model|capitalize} {'Items'|gettext}</a></li>
             {/if}

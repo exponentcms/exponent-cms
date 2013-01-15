@@ -551,10 +551,13 @@ class eventController extends expController {
    	function metainfo() {
        global $router;
 
+       $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
        // look for event date_id which expController::metainfo won't detect
-       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
+//       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
+       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($router->params['id']) && isset($router->params['date_id'])) {
            // look up the record.
-           $object = new eventdate(intval($_REQUEST['date_id']));
+//           $object = new eventdate(intval($_REQUEST['date_id']));
+           $object = new eventdate(intval($router->params['date_id']));
            // set the meta info
            if (!empty($object)) {
                $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;

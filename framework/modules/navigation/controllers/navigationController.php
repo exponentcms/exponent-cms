@@ -707,11 +707,14 @@ class navigationController extends expController {
     }
 
     public static function DragnDropReRank() {
-        global $db;
+        global $db, $router;
 
-        $move   = intval($_REQUEST['move']);
-        $target = intval($_REQUEST['target']);
-        $type   = $_REQUEST['type'];
+//        $move   = intval($_REQUEST['move']);
+//        $target = intval($_REQUEST['target']);
+//        $type   = $_REQUEST['type'];
+        $move   = $router->params['move'];
+        $target = $router->params['target'];
+        $type   = $router->params['type'];
         $targSec = $db->selectObject("section","id=".$target);
 //        $targSec  = new section($target);
         $check_id = $targSec->parent;

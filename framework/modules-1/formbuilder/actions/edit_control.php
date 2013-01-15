@@ -41,6 +41,7 @@ if ($f) {
 					$htmlctl->html = "<hr size='1' />";
 					break;
 			}
+            $ctl = new stdClass();
 			$ctl->name = uniqid("");
 			$ctl->caption = "";
 			$ctl->data = serialize($htmlctl);

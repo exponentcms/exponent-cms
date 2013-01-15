@@ -170,11 +170,16 @@ class expPaginator {
 		$this->order_direction = $this->dir;	
 		if (expTheme::inAction()) {
 		    //FIXME: module/controller glue code
-		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
-		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
-			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
-			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
-			}
+//		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
+//		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
+//			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
+//			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
+//			}
+            $mod = !empty($router->params['controller']) ? $router->params['controller'] : $router->params['module'];
+            if ($this->controller == $mod && $this->action == $router->params['action']) {
+      			    $this->order = isset($router->params['order']) ? $router->params['order'] : $this->order;
+      			    $this->order_direction = isset($router->params['dir']) ? $router->params['dir'] : $this->dir;
+      			}
 		}
         // allow passing of a single order/dir as stored in config
         if (strstr($this->order," ")) {

@@ -122,13 +122,14 @@ if (isset($_GET['id'])) {
 			//        MSIE and Opera seems to prefer 'application/octetstream'
 			// It seems that other headers I've added make IE prefer octet-stream again. - RAM
 			$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
-
 			header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
 			header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-			header("Content-length: ".filesize($tmpfname));
+            $filesize = filesize($tmpfname);
+            header("Content-length: " . $filesize);
 			header('Content-Transfer-Encoding: binary');
 			header('Content-Encoding:');
 			header('Content-Disposition: attachment; filename="' . 'report.csv' . '"');
+            if ($filesize) header("Content-length: ".$filesize);  // for some reason the webserver cant run stat on the files and this breaks.
 			// IE need specific headers
 			if (EXPONENT_USER_BROWSER == 'IE') {
 				header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

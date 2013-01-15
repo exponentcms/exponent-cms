@@ -14,16 +14,18 @@ Added / Fixed / changed for 2.1.1
     -- adds 'cancelled event' feature to display events as cancelled
   - adds ajax-based navigation in calendar, news items & blog posts to prevent reloading entire page
   - adds 'grouping by date' for uncategorized portfolio & file download items (in addition to 'grouping by alpha' for rolodex feature)
-  - adds new 'headline' view to filedownloads module
-  - adds new 'toggle' and 'accordion' views to the text module
-  - adds new 'toggle' view to the portfolio module
-  - adds new 'flyout sidebar' view to navigation module for hard-coding in themes
-  - adds new 'vertical' login view
+  - adds new views to several modules
+    -- new 'headline' view to filedownloads module
+    -- new 'toggle' and 'accordion' views to the text module
+    -- new 'toggle' view to the portfolio module
+    -- new 'flyout sidebar' view to navigation module for hard-coding in themes
+    -- new 'vertical' login view
   - adds new 'multi-add' feature to create multiple photo album items in one easy step
+  - adds new 'inline' view to edit text module items directly on page via CKEditor v4
   - adds custom module phrase translation libraries feature
+  - merges module 'Configure Actions & Views' and 'Configure Settings' into a single view for easy module configuration
   - adds a mass mailer for super admins to email all users or selected site users
   - adds new site configuration setting to reverse the default logic of when module titles are displayed
-  - adds new 'inline' view to edit text module items directly on page via CKEditor v4
   - updates file manager with 'virtual folder' grouping and date features to assist locating files
     -- also adds file manager bulk selection (add multiple files to an item all at once) and bulk delete
   - updates file uploader to allow html5 drag/drop support and some other user-friendly features

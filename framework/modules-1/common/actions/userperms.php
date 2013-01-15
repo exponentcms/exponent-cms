@@ -68,12 +68,14 @@ if ($user->isAdmin()) {
 	if (SEF_URLS == 1) {
 		$page = new expPaginator(array(
 		//'model'=>'user',
-		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
+//		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
+        'limit'=>(isset($router->params['limit'])?$router->params['limit']:20),
 		'records'=>$users,
 		//'sql'=>$sql,
 		'order'=>'username',
 		'dir'=>'ASC',
-        'page'=>(isset($_REQUEST['page']) ? $_REQUEST['page'] : 1),
+//        'page'=>(isset($_REQUEST['page']) ? $_REQUEST['page'] : 1),
+        'page'=>(isset($router->params['page']) ? $router->params['page'] : 1),
 		'controller'=>$router->params['controller'],
 //        'controller'=>$modulename,
 		'action'=>$router->params['action'],
@@ -82,14 +84,18 @@ if ($user->isAdmin()) {
 	} else {
 		$page = new expPaginator(array(
 		//'model'=>'user',
-		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
+//		'limit'=>(isset($_REQUEST['limit'])?intval($_REQUEST['limit']):20),
+        'limit'=>(isset($router->params['limit'])?$router->params['limit']:20),
 		'records'=>$users,
 		//'sql'=>$sql,
 		'order'=>'username',
 		'dir'=>'ASC',
-        'page'=>(isset($_REQUEST['page']) ? $_REQUEST['page'] : 1),
-        'controller'=>expString::sanitize($_GET['module']),
-        'action'=>$_GET['action'],
+//        'page'=>(isset($_REQUEST['page']) ? $_REQUEST['page'] : 1),
+        'page'=>(isset($router->params['page']) ? $router->params['page'] : 1),
+//        'controller'=>expString::sanitize($_GET['module']),
+        'controller'=>$router->params['module'],
+//        'action'=>$_GET['action'],
+        'action'=>$router->params['action'],
 		'columns'=>$p,
 		));
 	}
