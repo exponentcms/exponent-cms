@@ -99,7 +99,11 @@ class fakeform extends form {
 
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
             } elseif (!empty($this->controlLbl[$name])) {
-                $html .= "<div class=\"label\">";
+                if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
+                    $html .= "<div class=\"label\" style=\"display:inline;\">";
+                } else {
+                    $html .= "<div class=\"label\">";
+                }
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</div>";

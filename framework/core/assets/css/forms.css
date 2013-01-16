@@ -113,7 +113,7 @@ input.button {
 
 input.checkbox,
 input.radio {
-	float:left;
+	/*float:left;*/
 	margin-right:5px;
 }
 

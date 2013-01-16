@@ -18,7 +18,7 @@
 
 {/css}
 
-{if $form->style}
+{if $config.style}
     {css unique="formmod2" corecss="forms2col"}
 
     {/css}
