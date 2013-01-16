@@ -67,7 +67,7 @@
                     <a href="{link module="expHTMLEditor" action=preview id=0}" title="Preview this Toolbar"|gettext>{"Default"|gettext}</a>
                 </td>
                 <td>
-					kama
+                    moono
                 </td>
                 <td>
 					{'No'|gettext}
