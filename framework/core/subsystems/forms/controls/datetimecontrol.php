@@ -81,7 +81,7 @@ class datetimecontrol extends formcontrol {
         if ($minute < 10) $minute = "0" . $minute;
         $html = "<input type='hidden' id='__" . $name . "' name='__" . $name . "' value='" . ($this->showdate ? "1" : "0") . ($this->showtime ? "1" : "0") . "' />";
         if ($this->showdate) {
-            $html .= '<div class="datetime date"><label>' . gt('Date') . ': </label>';
+            $html .= '<div class="datetime date"><label style="display:inline;">' . gt('Date') . ': </label>';
             $html .= expDateTime::monthsDropdown($name . "_month", $default_date['mon']);
             $html .= '<input class="text" type="text" id="' . $name . '_day" name="' . $name . '_day" size="3" maxlength="2" value="' . $default_date['mday'] . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
@@ -92,7 +92,7 @@ class datetimecontrol extends formcontrol {
             $html .= '</div>';
         }
         if ($this->showtime) {
-            $html .= '<div class="datetime time"><label>' . gt('Time') . ': </label>';
+            $html .= '<br /><label class="label spacer"> </label><div class="datetime date time"><label style="display:inline;">' . gt('Time') . ': </label>';
             $html .= '<input class="text" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';

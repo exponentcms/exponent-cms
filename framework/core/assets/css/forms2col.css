@@ -12,6 +12,11 @@
     line-height: normal;
 }
 
+.control .spacer {
+  display: block;
+}
+
+
 .control.radio .label {
     width: auto;  /* make radio buttons look normal */
 }

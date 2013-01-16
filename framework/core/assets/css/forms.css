@@ -11,6 +11,9 @@
 	margin-right:5px;
     font-weight:bold;
 }
+.control .spacer {
+  display: none;
+}
 
 .control .label .required,
 .control.required .label .required {
