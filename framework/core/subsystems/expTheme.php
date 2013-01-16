@@ -144,7 +144,7 @@ class expTheme {
 		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
         //html5 support for IE 6-8
-		$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/htmlshiv/html5.js"></script><![endif]-->'."\n";
+		$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-printshiv.js"></script><![endif]-->'."\n";
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MINIFY REPLACE -->';
