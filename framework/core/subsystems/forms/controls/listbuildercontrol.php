@@ -68,15 +68,15 @@ class listbuildercontrol extends formcontrol {
 		$html .= "</td>";
 		$html .= '<td valign="middle" width="10" style="border:none;">';
 		if($process == "copy") {
-			$html .= "<input type='image' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' src='".ICON_RELATIVE."right.png' />";
+			$html .= "<input type='image' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' src='".ICON_RELATIVE."navigate-right-icon.png' />";
 		} else {
-			$html .= "<input type='image' onclick='addSelectedItem(&quot;$name&quot;); return false' src='".ICON_RELATIVE."right.png' />";
+			$html .= "<input type='image' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;); return false' src='".ICON_RELATIVE."navigate-right-icon.png' />";
 		}
 		$html .= "<br />";
 		if($process == "copy") {
-			$html .= "<input type='image' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' src='".ICON_RELATIVE."left.png' />";
+			$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 		} else {
-			$html .= "<input type='image' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."left.png' />";
+			$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 		}
 		$html .= "</td>";
 		$html .= "<td width='10' valign='top' style='border:none;'><select id='dest_$name' size='".$this->size."'>";
