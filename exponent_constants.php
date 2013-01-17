@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -483,7 +483,7 @@ if (!defined('JQUERY_RELATIVE')) {
 	 * jQuery/jQueryUI Version Constants
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('JQUERY_VERSION', '1.8.3');
+	define('JQUERY_VERSION', '1.9.0');
     define('JQUERYUI_VERSION', '1.9.2');
 	define('JQUERY_RELATIVE', PATH_RELATIVE.'external/jquery/');
     define('JQUERY_PATH', BASE.'external/jquery/');
@@ -499,7 +499,7 @@ if (!defined('SMARTY_PATH')) {
 	 * Smarty Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SMARTY_VERSION', '3.1.12');
+	define('SMARTY_VERSION', '3.1.13');
 	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
@@ -509,7 +509,7 @@ if (!defined('SWIFT_PATH')) {
 	 * Swift Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SWIFT_VERSION', '4.2.2');
+	define('SWIFT_VERSION', '4.3.0');
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 
