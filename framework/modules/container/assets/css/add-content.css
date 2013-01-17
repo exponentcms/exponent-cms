@@ -41,11 +41,11 @@
 }
 .containermodule.edit .text {
     width:250px;
-    height:20px;
+    /*height:20px;*/
 }
 .containermodule.edit .select {
-    width:255px;
-    height:25px;
+    /*width:255px;*/
+    /*height:25px;*/
 }
 
 .containermodule.edit option {
