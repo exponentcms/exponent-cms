@@ -429,7 +429,7 @@ class expTheme {
     }
 
     public static function inAction() {
-        return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
+        return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])) && (!isset($action) || ($action == $_REQUEST['action'])));
     }
 
     public static function reRoutActionTo($theme = "") {
