@@ -12,6 +12,11 @@ Added / Fixed / changed for 2.1.1
     -- adds optional attached images to events and event registrations
     -- adds optional event popup in a lightbox dialog (like google calendar)
     -- adds 'cancelled event' feature to display events as cancelled
+  - updates old school form module to a 2.0 controller
+    -- now allows greater flexibility in who can enter or view data
+    -- form is now site-wide object, can view/enter form data from different modules/pages
+    -- adds view flexibility offered by a 2.0 module for future features
+    -- updates some form control display features and format
   - adds ajax-based navigation in calendar, news items & blog posts to prevent reloading entire page
   - adds 'grouping by date' for uncategorized portfolio & file download items (in addition to 'grouping by alpha' for rolodex feature)
   - adds new views to several modules

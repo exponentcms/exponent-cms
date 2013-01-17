@@ -38,14 +38,14 @@ class formcontrol {
 
 	/**
 	 * Is this a Simple Control?
-	 * Used to determine if control is available for the Form (Builder) module
+	 * Used to determine if control is available for the Forms (design) module
      *
 	 * @return bool
 	 */
 	static function isSimpleControl() { return false; }
 
     /**
-   	 * Use Generic Control instead?
+   	 * Use the Generic Control instead?
    	 * Used to determine if control is actually a generic control
         *
    	 * @return bool
@@ -163,7 +163,7 @@ class formcontrol {
     }
 
     /**
-     * update the control settings
+     * Update the control settings
      *
      * @param $values
      * @param $object

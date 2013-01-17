@@ -27,7 +27,7 @@
 
 {/css}
 
-<div class="formbuilder forms confirm-form confirm-data">
+<div class="module forms confirm-data">
     <h1>{'Please confirm your submission'|gettext}</h1>
     <table width="100%" border="0" cellpadding="0" cellspacing="0" class="exp-skin-table">
         <thead>
@@ -44,10 +44,10 @@
         </tbody>
     </table>
     {form action=submit_data}
-        {foreach from=$postdata item=data key=name}
-            {control type=hidden name=$name value=$data}
-        {/foreach}
-        {control type=antispam}
-        {control type=buttongroup submit="Submit Form"|gettext cancel="Change Responses"|gettext}
+    {foreach from=$postdata item=data key=name}
+        {control type=hidden name=$name value=$data}
+    {/foreach}
+    {control type=antispam}
+    {control type=buttongroup submit="Submit Form"|gettext cancel="Change Responses"|gettext}
     {/form}
 </div>

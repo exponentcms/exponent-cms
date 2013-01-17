@@ -188,6 +188,7 @@ function smarty_function_control($params, &$smarty) {
             case "text":
                 $control       = new genericcontrol($params['type']);
                 $control->size = !empty($params['size']) ? $params['size'] : "40";
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
                 break;
             case "textarea":
                 $control = new texteditorcontrol();

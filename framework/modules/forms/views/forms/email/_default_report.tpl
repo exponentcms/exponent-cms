@@ -27,19 +27,19 @@
 <div class="module forms show report">
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
-            <tr>
-                <th colspan="2">
-                    <h2>{$title}</h2>
-                </th>
-            </tr>
+        <tr>
+            <th colspan="2">
+                <h2>{$title}</h2>
+            </th>
+        </tr>
         </thead>
         <tbody>
-            {foreach from=$fields key=fieldname item=value}
-                <tr class="{cycle values="even,odd"}">
-                    <td>{$captions[$fieldname]}</td>
-                    <td>{$value}</td>
-                </tr>
-            {/foreach}
+        {foreach from=$fields key=fieldname item=value}
+            <tr class="{cycle values="even,odd"}">
+                <td>{$captions[$fieldname]}</td>
+                <td>{$value}</td>
+            </tr>
+        {/foreach}
         </tbody>
     </table>
     {if !empty($referrer)}

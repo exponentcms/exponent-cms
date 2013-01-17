@@ -24,7 +24,7 @@
 {/if}
 <div class="module forms show report">
 
-{eval var=$template}
+    {eval var=$template}
 
 </div>
 {if $is_email == 0}

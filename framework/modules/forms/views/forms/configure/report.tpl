@@ -25,8 +25,8 @@
 {control type=text name='report_name' label='Report Title'|gettext value=$config.report_name}
 {control type=html name='report_desc' label='Report Description'|gettext value=$config.report_desc}
 {group label='Multi-Record View Configuration'|gettext}
-{control type="listbuilder" name="column_names_list" label="Columns shown in View Data/Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting all columns'|gettext}
+    {control type="listbuilder" name="column_names_list" label="Columns shown in View Data/Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting all columns'|gettext}
 {/group}
 {group label='Single-Record View Configuration'|gettext}
-{control type=html name='report_def' label='Custom E-Mail Report and View Record Definition'|gettext value=$config.report_def description='Leave this custom definition blank to use the default \'all fields\' e-mail report and record view.'|gettext}
+    {control type=html name='report_def' label='Custom E-Mail Report and View Record Definition'|gettext value=$config.report_def description='Leave this custom definition blank to use the default \'all fields\' e-mail report and record view.'|gettext}
 {/group}

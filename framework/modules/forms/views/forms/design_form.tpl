@@ -23,7 +23,7 @@
     {/css}
 {/if}
 
-<div class="formmodule forms design-form view-form">
+<div class="module forms design-form">
     <div class="form_title">
         <h1>{'Form Editor'|gettext}</h1>
         {if $edit_mode != 1}
@@ -57,18 +57,18 @@
                 </td>
             </tr>
         </table>
-        {*<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"*}
-              {*href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>*}
+    {*<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"*}
+    {*href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>*}
 
-        {*{script unique="viewform"}*}
-            {*function pickSource() {ldelim}*}
-            {*window.open('{$pickerurl}','sourcePicker','title=no,toolbar=no,width=800,height=600,scrollbars=yes');*}
-        {*{rdelim}*}
-        {*{/script}*}
-        {*{if !empty($forms_list)}{control type="dropdown" name="forms_id" label="Append fields from an existing form"|gettext items=$forms_list}{/if}*}
-
+    {*{script unique="viewform"}*}
+    {*function pickSource() {ldelim}*}
+    {*window.open('{$pickerurl}','sourcePicker','title=no,toolbar=no,width=800,height=600,scrollbars=yes');*}
+    {*{rdelim}*}
+    {*{/script}*}
+    {*{if !empty($forms_list)}{control type="dropdown" name="forms_id" label="Append fields from an existing form"|gettext items=$forms_list}{/if}*}
         <p>
-            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Done'|gettext}</a>
+            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
+               href="{$backlink}">{'Done'|gettext}</a>
         </p>
     {/if}
 </div>

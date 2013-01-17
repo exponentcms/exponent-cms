@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="module formbuilder forms edit-control">
+<div class="module forms edit-control">
     <div class="form_title">
         <h1>{if $is_edit == 1}{'Edit Control'|gettext}{else}{'Create a New Control'|gettext}{/if} - {$type}</h1>
     </div>

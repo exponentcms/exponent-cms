@@ -25,8 +25,6 @@ class forms extends expRecord {
 //	public $table = 'text';
     public $has_many = array(
         'forms_control',
-//        'forms_record',
-//        'forms_report'
     );
 
 //    protected $attachable_item_types = array(
@@ -98,7 +96,6 @@ class forms extends expRecord {
                 $ctl = null;
                 $control_type = '';
                 $tempdef = array();
-//				foreach ($db->selectObjects('forms_control','forms_id='.$this->id) as $control) {
                 foreach ($db->selectObjects('forms_control', 'forms_id=' . $this->id) as $control) {
                     if ($control->is_readonly == 0) {
                         $ctl = unserialize($control->data);

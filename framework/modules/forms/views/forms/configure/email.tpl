@@ -24,13 +24,13 @@
 {control type="checkbox" name="is_email" label="Email Form Data?"|gettext value=1 checked=$config.is_email}
 {control type=text name='subject' label='Email Subject'|gettext value=$config.subject}
 {group label='Email Recepients'|gettext}
-{control type="checkbox" name="select_email" label="Allow User to Select the Destination Email?"|gettext value=1 checked=$config.select_email}
-{userlistcontrol name="user_list" label="Users" items=$config.user_list}
-{grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
-{control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list}
+    {control type="checkbox" name="select_email" label="Allow User to Select the Destination Email?"|gettext value=1 checked=$config.select_email}
+    {userlistcontrol name="user_list" label="Users" items=$config.user_list}
+    {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
+    {control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list}
 {/group}
 {group label='Auto Respond Email'|gettext}
-{control type="checkbox" name="is_auto_respond" label="Auto Respond?"|gettext value=1 checked=$config.is_auto_respond}
-{control type="text" name="auto_respond_subject" label="Auto Respond Subject"|gettext value=$config.auto_respond_subject}
-{control type="textarea" name="auto_respond_body" label="Auto Respond Body"|gettext value=$config.auto_respond_body}
+    {control type="checkbox" name="is_auto_respond" label="Auto Respond?"|gettext value=1 checked=$config.is_auto_respond}
+    {control type="text" name="auto_respond_subject" label="Auto Respond Subject"|gettext value=$config.auto_respond_subject}
+    {control type="textarea" name="auto_respond_body" label="Auto Respond Body"|gettext value=$config.auto_respond_body}
 {/group}

@@ -38,9 +38,8 @@ class formsController extends expController {
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
     public $add_permissions = array(
-        'viewdata' => "View Data",
+        'viewdata'  => "View Data",
         'enterdata' => "Enter Data"
-
     );
     public $codequality = 'alpha';
 
@@ -69,7 +68,7 @@ class formsController extends expController {
     }
 
     public function showall() {
-        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata',$this->loc)) {
+        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
 
             global $db;
 
@@ -154,11 +153,11 @@ class formsController extends expController {
 
     public function show() {
 
-        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata',$this->loc)) {
+        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
             global $db;
 
-    //FIXME we need to add a browse other records (next/prev) feature here
-    //FIXME that would require a sort by which column and direction
+            //FIXME we need to add a browse other records (next/prev) feature here
+            //FIXME that would require a sort by which column and direction
             expHistory::set('viewable', $this->params);
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
@@ -211,7 +210,7 @@ class formsController extends expController {
     }
 
     public function enter_data() {
-        if (empty($this->config['restrict_enter']) || expPermissions::check('enterdata',$this->loc)) {
+        if (empty($this->config['restrict_enter']) || expPermissions::check('enterdata', $this->loc)) {
 
             global $db, $user;
 
@@ -229,7 +228,7 @@ class formsController extends expController {
                 $fc = new forms_control();
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0');
                 $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
-    //            $data = $forms_record->find('first','id='.$this->params['id']);
+                //            $data = $forms_record->find('first','id='.$this->params['id']);
             } else {
                 $controls = $f->forms_control;
                 $data = expSession::get('forms_data_' . $f->id);
@@ -254,8 +253,8 @@ class formsController extends expController {
                 //This is an easy way to remove duplicates
                 $emaillist = array_flip(array_flip($emaillist));
                 $emaillist = array_map('trim', $emaillist);
-                array_unshift($emaillist,gt('All Addresses'));
-                $form->register('email_dest',gt('Send Response to'), new radiogroupcontrol('',$emaillist));
+                array_unshift($emaillist, gt('All Addresses'));
+                $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
             }
             foreach ($controls as $c) {
                 $ctl = unserialize($c->data);
@@ -279,7 +278,7 @@ class formsController extends expController {
                 if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {
                     // make sure we have the proper config.
                     if (!defined('RECAPTCHA_PUB_KEY')) {
-                        $antispam .= '<h2 style="color:red">'.gt('reCaptcha configuration is missing the public key.').'</h2>';
+                        $antispam .= '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
                     }
                     if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
                         // skip it for logged on users based on config
@@ -287,7 +286,7 @@ class formsController extends expController {
                         // include the library and show the form control
                         require_once(BASE . 'external/recaptchalib.php');
                         $antispam .= recaptcha_get_html(RECAPTCHA_PUB_KEY);
-                        $antispam .= '<p>'.gt('Fill out the above security question to submit your form.').'</p>';
+                        $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
                     }
                 }
                 $form->register(uniqid(''), '', new htmlcontrol($antispam));
@@ -394,9 +393,9 @@ class formsController extends expController {
         expSession::set('forms_data_' . $this->params['id'], $this->params);
 
         assign_to_template(array(
-            'recaptcha_theme'=>RECAPTCHA_THEME,
-            'responses'=>$responses,
-            'postdata'=>$this->params,
+            'recaptcha_theme' => RECAPTCHA_THEME,
+            'responses'       => $responses,
+            'postdata'        => $this->params,
         ));
     }
 
@@ -412,7 +411,7 @@ class formsController extends expController {
         global $db, $user;
         $f = new forms($this->params['id']);
         $fc = new forms_control();
-        $controls = $fc->find('all',"forms_id=" . $f->id . " and is_readonly=0", "rank");
+        $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0", "rank");
         $this->get_defaults($f);
 
         $db_data = new stdClass();
@@ -480,7 +479,7 @@ class formsController extends expController {
                 $emaillist = array();
                 if (!empty($f->select_email) && !empty($this->params['email_dest'])) {
                     if (strval(intval($this->params['email_dest'])) == strval($this->params['email_dest'])) {
-                        foreach (group::getUsersInGroup(group::getGroupById(intval($this->params['email_dest']))) as $locUser){
+                        foreach (group::getUsersInGroup(group::getGroupById(intval($this->params['email_dest']))) as $locUser) {
                             if ($locUser->email != '') $emaillist[] = $locUser->email;
                         }
                     } else {
@@ -700,8 +699,6 @@ class formsController extends expController {
     }
 
     public function design_form() {
-//        global $db;
-
         if (!empty($this->params['id'])) {
             expHistory::set('editable', $this->params);
             $f = new forms($this->params['id']);
@@ -729,11 +726,11 @@ class formsController extends expController {
             }
 
             assign_to_template(array(
-                'form'         => $f,
+                'form'       => $f,
                 'forms_list' => $forms_list,
-                'form_html'=>$form->toHTML($f->id),
-                'backlink'=>expHistory::getLastNotEditable(),
-                'types'=>$types,
+                'form_html'  => $form->toHTML($f->id),
+                'backlink'   => expHistory::getLastNotEditable(),
+                'types'      => $types,
             ));
         }
     }
@@ -795,10 +792,10 @@ class formsController extends expController {
                 $form->meta('forms_id', $f->id);
                 $types = expTemplate::listControlTypes();
                 assign_to_template(array(
-                    'form_html'=>$form->toHTML($f->id),
-                    'type'=> $types[$control_type],
-                    'is_edit'=>($ctl == null ? 0 : 1),
-              ));
+                    'form_html' => $form->toHTML($f->id),
+                    'type'      => $types[$control_type],
+                    'is_edit'   => ($ctl == null ? 0 : 1),
+                ));
             }
         }
     }
@@ -946,7 +943,7 @@ class formsController extends expController {
      * create a new default config array using the form defaults
      */
     private function get_defaults($form) {
-        if (empty($this->config)) {  // NEVER overwrite an existing config
+        if (empty($this->config)) { // NEVER overwrite an existing config
             $this->config = array();
             $config = get_object_vars($form);
             unset ($config['forms_control']);
@@ -1003,8 +1000,8 @@ class formsController extends expController {
                 }
             }
 
-            $rpt_columns = explode("|!|",$f->column_names_list);
-    		foreach ($rpt_columns as $column_name) {
+            $rpt_columns = explode("|!|", $f->column_names_list);
+            foreach ($rpt_columns as $column_name) {
                 if ($column_name == "ip") {
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
@@ -1048,9 +1045,9 @@ class formsController extends expController {
                 $file = "";
             }
 
-            $file .= self::sql2csv($items,$rpt_columns);
+            $file .= self::sql2csv($items, $rpt_columns);
 
-		    // CREATE A TEMP FILE
+            // CREATE A TEMP FILE
             $tmpfname = tempnam(getcwd(), "rep"); // Rig
 
             $handle = fopen($tmpfname, "w");
@@ -1074,7 +1071,7 @@ class formsController extends expController {
                 header('Content-Transfer-Encoding: binary');
 //                header('Content-Encoding:');
                 header('Content-Disposition: attachment; filename="report.csv"');
-        		if ($filesize) header("Content-length: ".$filesize);  // for some reason the webserver cant run stat on the files and this breaks.
+                if ($filesize) header("Content-length: " . $filesize); // for some reason the webserver cant run stat on the files and this breaks.
                 // IE need specific headers
                 if (EXPONENT_USER_BROWSER == 'IE') {
                     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -1112,33 +1109,35 @@ class formsController extends expController {
      * So by nature of the array, the keys are repetated in each line (id, name, etc)
      * So if we want to make a header row, we just run through once at the beginning and
      * use the array_keys function to strip out a functional header
+     *
      * @param      $items
      *
      * @param null $rptcols
      *
      * @return string
      */
-    public static function  sql2csv($items,$rptcols=null) {
-    	$str = "";
-    	foreach ($items as $key=>$item)  {
-    		if($str == "") {
-    			$header_Keys = array_keys((array)$item);
-    			foreach ($header_Keys as $individual_Header) {
-                    if (!is_array($rptcols) || in_array($individual_Header,$rptcols)) $str .= $individual_Header.",";
-    			}
-    			$str .= "\r\n";
-    		}
-    		foreach ($item as $key=>$rowitem) {
-                if (!is_array($rptcols) || in_array($key,$rptcols)) {
-                    $rowitem = str_replace(",", " ", $rowitem);
-                    $str .= $rowitem.",";
+    public static function  sql2csv($items, $rptcols = null) {
+        $str = "";
+        foreach ($items as $key => $item) {
+            if ($str == "") {
+                $header_Keys = array_keys((array)$item);
+                foreach ($header_Keys as $individual_Header) {
+                    if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";
                 }
-    		} //foreach rowitem
-    		$str = substr($str,0,strlen($str)-1);
-    		$str .= "\r\n";
-    	} //end of foreach loop
-    	return $str;
+                $str .= "\r\n";
+            }
+            foreach ($item as $key => $rowitem) {
+                if (!is_array($rptcols) || in_array($key, $rptcols)) {
+                    $rowitem = str_replace(",", " ", $rowitem);
+                    $str .= $rowitem . ",";
+                }
+            } //foreach rowitem
+            $str = substr($str, 0, strlen($str) - 1);
+            $str .= "\r\n";
+        } //end of foreach loop
+        return $str;
     }
 
 }
+
 ?>

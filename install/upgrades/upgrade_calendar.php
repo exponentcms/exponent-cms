@@ -48,9 +48,6 @@ class upgrade_calendar extends upgradescript {
    	 */
    	function needed() {
         return true;
-//        if (expUtil::isReallyWritable(BASE."framework/modules-1/navigationmodule/actions/")) {
-//            return true;  // the old files still exist
-//        } else return false;
    	}
 
 	/**
@@ -150,11 +147,11 @@ class upgrade_calendar extends upgradescript {
                 $addrs = $db->selectObjects('calendar_reminder_address',"calendar_id=".$oldconfig->id);
                 foreach ($addrs as $addr) {
                     if (!empty($addr->user_id)) {
-                        $newconfig->config['users'][] = $addr->user_id;
+                        $newconfig->config['user_list'][] = $addr->user_id;
                     } elseif (!empty($addr->group_id)) {
-                        $newconfig->config['groups'][] = $addr->group_id;
+                        $newconfig->config['group_list'][] = $addr->group_id;
                     } elseif (!empty($addr->email)) {
-                        $newconfig->config['addresses'][] = $addr->email;
+                        $newconfig->config['address_list'][] = $addr->email;
                     }
                 }
 

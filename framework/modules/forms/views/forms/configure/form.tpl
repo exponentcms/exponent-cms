@@ -23,12 +23,12 @@
 </div>
 {*{control type=text name='forms_id' label='Select Form'|gettext value=$config.forms_id required=true}*}
 {control type="dropdown" name="forms_id" label="Select the Form Assigned to this Module"|gettext items=$forms_list default=$config.forms_id required=true}
-{control type=text name='title' label='Form Name'|gettext value=$config.name}
+{control type=text name='title' label='Form Name'|gettext value=$config.title}
 {control type="checkbox" name="restrict_enter" label="Restrict Form Entry by Using Permissions?"|gettext value=1 checked=$config.restrict_enter description='Enable this setting to only allow those users with permission to enter data.'|gettext}
 {control type=html name='description' label='Form Description'|gettext value=$config.description}
 {control type=html name='response' label='Response after submission'|gettext value=$config.response description='Message to display on site after submitting a form.'|gettext}
 {group label='Form Display Settings'|gettext}
-{control type=text name='submitbtn' label='Submit Button Text'|gettext value=$config.submitbtn|default:"Submit"|gettext}
-{control type=text name='resetbtn' label='Reset Button Text'|gettext value=$config.resetbtn|default:"Reset"|gettext}
-{control type=radiogroup name='style' label='Style'|gettext default=$config.style|default:0 items='Single Column, Two Column'|gettxtlist values='0,1'}
+    {control type=text name='submitbtn' label='Submit Button Text'|gettext value=$config.submitbtn|default:"Submit"|gettext}
+    {control type=text name='resetbtn' label='Reset Button Text'|gettext value=$config.resetbtn|default:"Reset"|gettext}
+    {control type=radiogroup name='style' label='Style'|gettext default=$config.style|default:0 items='Single Column, Two Column'|gettxtlist values='0,1'}
 {/group}
