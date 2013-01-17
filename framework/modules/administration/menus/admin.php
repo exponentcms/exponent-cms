@@ -193,6 +193,15 @@ if ($user->isAdmin()) {
                         ))
                     ),
                     array(
+                        'text' => gt('Manage Site Forms'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'forms',
+                            'action' => 'manage',
+                            'model' => 'forms'
+                        ))
+                    ),
+                    array(
                         'text' => gt('View Top Searches'),
                         'classname' => 'search',
                         'url' => makeLink(array(
@@ -265,6 +274,15 @@ if ($user->isAdmin()) {
                         'url' => makeLink(array(
                             'controller' => 'expDefinableField',
                             'action' => 'manage'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('Manage Site Forms'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'forms',
+                            'action' => 'manage',
+                            'model' => 'forms'
                         ))
                     ),
                     array(

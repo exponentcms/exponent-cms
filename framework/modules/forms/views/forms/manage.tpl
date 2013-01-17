@@ -34,7 +34,7 @@
                     {"Form Name"|gettext}
                 </th>
                 <th>
-                    {"Saved to Database"|gettext}
+                    {"Database"|gettext}
                 </th>
                 <th width="37%">
                     {"Action"|gettext}
@@ -49,9 +49,10 @@
                     </td>
                     <td>
                         {if $form->is_saved}
-                            {'Yes'|gettext}
+                            {icon class="view" action=showall id=$form->id text='View Data'|gettext}
+                            {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}
                         {else}
-                            {'No'|gettext}
+                            {'Not Saved'|gettext}
                         {/if}
                     </td>
                     <td>

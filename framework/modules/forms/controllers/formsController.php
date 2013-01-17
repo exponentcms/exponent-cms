@@ -78,6 +78,9 @@ class formsController extends expController {
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
                 $this->get_defaults($f);
+            } elseif (!empty($this->params['id'])) {
+                $f = $this->forms->find('first', 'id=' . $this->params['id']);
+                $this->get_defaults($f);
             }
             $items = $db->selectObjects('forms_' . $f->table_name, 1);
             $columns = array();
