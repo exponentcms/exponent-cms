@@ -64,7 +64,7 @@
         <a href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="lb-bg" style="display:none;">
         </div>
-        <div id="month-cal">
+        <div id="month-{$name}">
             {include 'month.tpl'}
         </div>
     </div>
@@ -82,7 +82,7 @@ EXPONENT.YUI3_CONFIG.modules = {
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegate',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
-    var monthcal = Y.one('#month-cal');
+    var monthcal = Y.one('#month-{/literal}{$name}{literal}');
     var cfg = {
                 method: "POST",
                 headers: { 'X-Transaction': 'Load Minical'},
@@ -132,7 +132,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
             Y.one('#lb-bg').setStyle('display','none');
 //            monthcal.setStyle('opacity',1);
         } else {
-            Y.one('#month-cal.loadingdiv').remove();
+            Y.one('#month-{/literal}{$name}{literal}.loadingdiv').remove();
             monthcal.setContent('Unable to load content');
             monthcal.setStyle('opacity',1);
         }

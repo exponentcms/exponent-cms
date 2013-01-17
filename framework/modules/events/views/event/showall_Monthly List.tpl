@@ -62,7 +62,7 @@
 	{/permissions}
     <div id="popup">
         <a class="calpopup" href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
-        <div id="month-cal">
+        <div id="month-{$name}">
             {include 'monthlist.tpl'}
         </div>
     </div>
@@ -80,7 +80,7 @@ EXPONENT.YUI3_CONFIG.modules = {
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegate',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
-    var monthcal = Y.one('#month-cal');
+    var monthcal = Y.one('#month-{/literal}{$name}{literal}');
     var cfg = {
                 method: "POST",
                 headers: { 'X-Transaction': 'Load Minical'},
@@ -129,7 +129,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#month-cal.loadingdiv').remove();
+            Y.one('#month-{/literal}{$name}{literal}.loadingdiv').remove();
         }
 	};
 

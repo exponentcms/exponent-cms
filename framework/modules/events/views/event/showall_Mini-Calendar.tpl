@@ -12,13 +12,15 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{uniqueid prepend="cal" assign="name"}
+
 {css unique="cal" link="`$asset_path`css/calendar.css"}
 
 {/css}
 
 <div class="module events mini-cal">
-    <div id="mini-cal">
+    <div id="mini-{$name}">
         {include 'minical.tpl'}
     </div>
     {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext}
@@ -32,11 +34,11 @@
 	{/permissions}
 </div>
 
-{script unique="minical" yui3mods="1"}
+{script unique=$name yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var minical = Y.one('#mini-cal');
+    var minical = Y.one('#mini-{/literal}{$name}{literal}');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Minical'},
@@ -67,7 +69,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#mini-cal.loadingdiv').remove();
+            Y.one('#mini-{/literal}{$name}{literal}.loadingdiv').remove();
         }
 	};
 
