@@ -63,6 +63,7 @@
         </div>
     </div>
 
+    {*FIXME convert to yui3*}
     {script unique="sidemenu" yuimodules="menu"}
     {literal}
         YAHOO.util.Event.onDOMReady(function(){

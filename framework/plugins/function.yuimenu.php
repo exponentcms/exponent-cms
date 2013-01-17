@@ -33,6 +33,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_yuimenu($params,&$smarty) {
+//FIXME convert to yui3
 	$menu = '
         function buildmenu () {
             var oMenuSidenavJs = new YAHOO.widget.Menu("'.$params['buildon'].'", {

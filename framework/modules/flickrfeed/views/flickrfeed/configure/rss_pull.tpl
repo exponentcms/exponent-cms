@@ -34,6 +34,7 @@
         {/foreach}
     </ul>
 
+    {*FIXME convert to yui3*}
     {script unique="rssfeedpicker" yui3mods=1}
     {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {

@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME convert to yui3
 EXPONENT.filemanager = function(cfg) {
     var queryString = '&results=20&output=json';
     var fck = 0;

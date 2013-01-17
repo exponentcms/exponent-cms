@@ -40,6 +40,7 @@
 	</div>
 </div>
 
+    {*FIXME convert to yui3*}
 {script yui3mods="1" unique="DDTreeNav" }
 {literal} 
 

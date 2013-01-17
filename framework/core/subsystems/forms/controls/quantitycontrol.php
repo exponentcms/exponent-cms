@@ -95,6 +95,7 @@ class quantitycontrol extends formcontrol {
         // if this control is using an ajax action then lets set up a variable for the function call
         $ajaxaction = isset($this->ajaxaction) ?  $this->ajaxaction."(id, value);" : ''; 
 
+//FIXME convert to yui3
         // setup the JS to be used by this control.
         $script = "
             YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event',function(Y) {
@@ -169,7 +170,7 @@ class quantitycontrol extends formcontrol {
             $object->cols = 60;
             $object->maxchars = 0;
         } 
-        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("default",gt('default'),  new texteditorcontrol($object->default));
         $form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));

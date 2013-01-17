@@ -47,6 +47,7 @@
  *
  */
 
+//FIXME convert to yui3
 YUI(EXPONENT.YUI3_CONFIG).use('node', 'yui2-container', 'yui2-yahoo-dom-event', 'yui2-dom', 'yui2-event', 'yui2-connectioncore', 'yui2-json', 'yui2-selector', 'yui2-animation', function (Y) {
 
     var YAHOO = Y.YUI2;

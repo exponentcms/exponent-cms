@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME convert to yui3
 var configPanel = function(title, leftct, centerct, width, height) {
 	this.title = title;
 	this.leftct = leftct;

@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME convert to yui3
 var buildmenu = function (elem,cfg) {
 
     var oMenuBar = new YAHOO.widget.MenuBar(elem, { 

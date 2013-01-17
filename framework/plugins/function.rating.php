@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -147,7 +147,7 @@ function smarty_function_rating($params,&$smarty) {
         };
         function onSuccess(id,response,args) {
             messages = Y.JSON.parse(response.responseText);
-//            alert(messages.replyText);
+            alert(messages.replyText);
         };
         function onFailure(id,response,args) {
             alert('woops, something is broke...');

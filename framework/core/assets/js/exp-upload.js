@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME convert to yui3
 //useful shortcuts
 var YUD = YAHOO.util.Dom, YUE = YAHOO.util.Event;
 

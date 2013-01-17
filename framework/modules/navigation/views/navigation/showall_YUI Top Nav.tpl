@@ -63,6 +63,7 @@
     </div>
 </div>
 
+    {*FIXME convert to yui3*}
 {script yui3mods=1 unique=$id}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('yui2-container','yui2-menu', function(Y) {

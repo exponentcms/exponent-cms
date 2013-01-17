@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME convert to yui3
 YUI.add('exp-tree', function(Y) {
 var YAHOO = Y.YUI2;
 

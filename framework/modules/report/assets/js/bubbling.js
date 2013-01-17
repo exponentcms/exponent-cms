@@ -20,6 +20,7 @@ Code licensed under the BSD License:
 http://www.bubbling-library.com/eng/licence
 version: 2.1
 */
+//FIXME convert to yui3
 YAHOO.namespace("plugin","behavior");
 (function() {
   var $Y = YAHOO.util,

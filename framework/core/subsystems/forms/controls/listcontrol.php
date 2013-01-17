@@ -56,6 +56,7 @@ class listcontrol extends formcontrol {
         $html .= '</ul>';
         $html .= '</div>';
         
+//FIXME convert to yui3
         $js = "
             var add = YAHOO.util.Dom.getElementsByClassName('addtolist', 'a');
             YAHOO.util.Event.on(add, 'click', function(e,o){

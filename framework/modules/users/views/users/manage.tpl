@@ -50,6 +50,7 @@
 	
 </div>
 
+{*FIXME convert to yui3*}
 {script unique="manage_users"}
 	{literal}
 		YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {

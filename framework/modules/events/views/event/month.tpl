@@ -153,6 +153,7 @@
 
 {/css}
 
+    {*FIXME convert to yui3*}
 {script unique="shadowbox" yui3mods=1}
 {literal}
     EXPONENT.YUI3_CONFIG.modules = {

@@ -24,6 +24,8 @@
 // added interval parameter: interval in milliseconds between 2 transitions when looping
 
 
+//FIXME convert to yui3
+//DEPRECATED, NOT USED!
 YAHOO.namespace("myowndb");
 //YAHOO.myowndb.slideshow = function (container, frames, effect) {
 YAHOO.myowndb.slideshow = function (container, o) {

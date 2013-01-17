@@ -93,6 +93,7 @@ class tagtreecontrol extends formcontrol {
         }
 
         $obj    = json_encode($this->tags);
+//FIXME convert to yui3 because of call to exp-tree.js
         $script = "
 		EXPONENT.YUI3_CONFIG.modules = {
                'exp-tree' : {

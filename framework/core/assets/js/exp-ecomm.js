@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME convert to yui3
 function updateQuantity(id, value) {
     var udmask = YAHOO.util.Dom.get('udq-'+id);
     YAHOO.util.Dom.setStyle(udmask, 'opacity', '0.75');
