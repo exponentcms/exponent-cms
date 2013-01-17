@@ -57,7 +57,7 @@
 {else}
     {$containerview = $hcview}
 {/if}
-{group label='View Configuration Settings'|gettext}
+{group label='Display Specific Configuration Settings'|gettext}
     <div id="moduleViewConfig">
         {$themefileview="`$smarty.const.THEME_ABSOLUTE`modules/`$relative_viewpath`/configure/`$containerview`.config"}
         {$modulefileview="`$viewpath`/configure/`$containerview`.config"}

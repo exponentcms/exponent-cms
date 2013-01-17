@@ -223,117 +223,123 @@ class formsController extends expController {
                 $this->get_defaults($f);
             }
 
-            $form = new form();
-            if (!empty($this->params['id'])) {
-                $fc = new forms_control();
-                $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0');
-                $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
-                //            $data = $forms_record->find('first','id='.$this->params['id']);
-            } else {
-                $controls = $f->forms_control;
-                $data = expSession::get('forms_data_' . $f->id);
-            }
-            // display list of email addresses
-            if (!empty($this->config['select_email'])) {
-                //Building Email List...
-                $emaillist = array();
-                if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
-                    $u = user::getUserById($c);
-                    $emaillist[] = $u->email;
+            if (!empty($f)) {
+                $form = new form();
+                if (!empty($this->params['id'])) {
+                    $fc = new forms_control();
+                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0');
+                    $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
+                    //            $data = $forms_record->find('first','id='.$this->params['id']);
+                } else {
+                    if (!empty($f->forms_control)) {
+                        $controls = $f->forms_control;
+                    } else {
+                        $controls = array();
+                    }
+                    $data = expSession::get('forms_data_' . $f->id);
                 }
-                if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
-                    $grpusers = group::getUsersInGroup($c);
-                    foreach ($grpusers as $u) {
+                // display list of email addresses
+                if (!empty($this->config['select_email'])) {
+                    //Building Email List...
+                    $emaillist = array();
+                    if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
+                        $u = user::getUserById($c);
                         $emaillist[] = $u->email;
                     }
-                }
-                if (!empty($this->config['address_list'])) foreach ($this->config['address_list'] as $c) {
-                    $emaillist[] = $c;
-                }
-                //This is an easy way to remove duplicates
-                $emaillist = array_flip(array_flip($emaillist));
-                $emaillist = array_map('trim', $emaillist);
-                array_unshift($emaillist, gt('All Addresses'));
-                $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
-            }
-            foreach ($controls as $c) {
-                $ctl = unserialize($c->data);
-                $ctl->_id = $c->id;
-                $ctl->_readonly = $c->is_readonly;
-                if (!empty($this->params['id'])) {
-                    if ($c->is_readonly == 0) {
-                        $name = $c->name;
-                        if ($c->is_static == 0) {
-                            $ctl->default = $data->$name;
+                    if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
+                        $grpusers = group::getUsersInGroup($c);
+                        foreach ($grpusers as $u) {
+                            $emaillist[] = $u->email;
                         }
                     }
-                } else {
-                    if (!empty($data[$c->name])) $ctl->default = $data[$c->name];
-                }
-                $form->register($c->name, $c->caption, $ctl);
-            }
-
-            if (!empty($this->params['id'])) {
-                $antispam = '';
-                if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {
-                    // make sure we have the proper config.
-                    if (!defined('RECAPTCHA_PUB_KEY')) {
-                        $antispam .= '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
+                    if (!empty($this->config['address_list'])) foreach ($this->config['address_list'] as $c) {
+                        $emaillist[] = $c;
                     }
-                    if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
-                        // skip it for logged on users based on config
+                    //This is an easy way to remove duplicates
+                    $emaillist = array_flip(array_flip($emaillist));
+                    $emaillist = array_map('trim', $emaillist);
+                    array_unshift($emaillist, gt('All Addresses'));
+                    $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
+                }
+                foreach ($controls as $c) {
+                    $ctl = unserialize($c->data);
+                    $ctl->_id = $c->id;
+                    $ctl->_readonly = $c->is_readonly;
+                    if (!empty($this->params['id'])) {
+                        if ($c->is_readonly == 0) {
+                            $name = $c->name;
+                            if ($c->is_static == 0) {
+                                $ctl->default = $data->$name;
+                            }
+                        }
                     } else {
-                        // include the library and show the form control
-                        require_once(BASE . 'external/recaptchalib.php');
-                        $antispam .= recaptcha_get_html(RECAPTCHA_PUB_KEY);
-                        $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
+                        if (!empty($data[$c->name])) $ctl->default = $data[$c->name];
                     }
+                    $form->register($c->name, $c->caption, $ctl);
                 }
-                $form->register(uniqid(''), '', new htmlcontrol($antispam));
-            }
 
-            if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
-            if (!empty($this->params['id'])) {
-                $cancel = gt('Cancel');
-                $form->meta('action', 'submit_data');
-                $form->meta('isedit', 1);
-                $form->meta('data_id', $data->id);
-                $form->location($this->loc);
+                if (!empty($this->params['id'])) {
+                    $antispam = '';
+                    if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {
+                        // make sure we have the proper config.
+                        if (!defined('RECAPTCHA_PUB_KEY')) {
+                            $antispam .= '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
+                        }
+                        if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
+                            // skip it for logged on users based on config
+                        } else {
+                            // include the library and show the form control
+                            require_once(BASE . 'external/recaptchalib.php');
+                            $antispam .= recaptcha_get_html(RECAPTCHA_PUB_KEY);
+                            $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
+                        }
+                    }
+                    $form->register(uniqid(''), '', new htmlcontrol($antispam));
+                }
+
+                if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
+                if (!empty($this->params['id'])) {
+                    $cancel = gt('Cancel');
+                    $form->meta('action', 'submit_data');
+                    $form->meta('isedit', 1);
+                    $form->meta('data_id', $data->id);
+                    $form->location($this->loc);
+                    assign_to_template(array(
+                        'edit_mode' => 1,
+                    ));
+                } else {
+                    $cancel = '';
+                    $form->meta("action", "confirm_data");
+                }
+                if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
+                if (empty($this->config['resetbtn'])) $this->config['resetbtn'] = '';
+                $form->register("submit", "", new buttongroupcontrol($this->config['submitbtn'], $this->config['resetbtn'], $cancel));
+
+                $form->meta("m", $this->loc->mod);
+                $form->meta("s", $this->loc->src);
+                $form->meta("i", $this->loc->int);
+                $form->meta("id", $f->id);
+                $formmsg = '';
+                $form->location(expCore::makeLocation("forms", $this->loc->src, $this->loc->int));
+                if (count($controls) == 0) {
+                    $form->controls['submit']->disabled = true;
+                    $formmsg .= gt('This form is blank. Select "Design Form" to add input fields.') . '<br>';
+                } elseif (empty($f->is_saved) && empty($this->config['is_email'])) {
+                    $form->controls['submit']->disabled = true;
+                    $formmsg .= gt('There are no actions assigned to this form. Select "Configure Settings" then either select "Email Form Data" and/or "Save Submissions to Database".');
+                }
+                $count = $db->countObjects("forms_" . $f->table_name);
+                if ($formmsg) {
+                    flash('notice', $formmsg);
+                }
+                if (empty($this->config['description'])) $this->config['description'] = '';
                 assign_to_template(array(
-                    'edit_mode' => 1,
+                    "description" => $this->config['description'],
+                    "form_html"   => $form->toHTML($f->id),
+                    "form"        => $f,
+                    "count"       => $count,
                 ));
-            } else {
-                $cancel = '';
-                $form->meta("action", "confirm_data");
             }
-            if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
-            if (empty($this->config['resetbtn'])) $this->config['resetbtn'] = '';
-            $form->register("submit", "", new buttongroupcontrol($this->config['submitbtn'], $this->config['resetbtn'], $cancel));
-
-            $form->meta("m", $this->loc->mod);
-            $form->meta("s", $this->loc->src);
-            $form->meta("i", $this->loc->int);
-            $form->meta("id", $f->id);
-            $formmsg = '';
-            $form->location(expCore::makeLocation("forms", $this->loc->src, $this->loc->int));
-            if (count($controls) == 0) {
-                $form->controls['submit']->disabled = true;
-                $formmsg .= gt('This form is blank. Select "Edit Form" to add input fields.') . '<br>';
-            }
-            if (empty($f->is_saved) && empty($this->config['is_email'])) {
-                $form->controls['submit']->disabled = true;
-                $formmsg .= gt('There are no actions assigned to this form. Select "Configure Settings" then either select "Email Form Data" and/or "Save Submissions to Database".');
-            }
-            $count = $db->countObjects("forms_" . $f->table_name);
-            if ($formmsg) {
-                flash('notice', $formmsg);
-            }
-            assign_to_template(array(
-                "description" => $this->config['description'],
-                "form_html"   => $form->toHTML($f->id),
-                "form"        => $f,
-                "count"       => $count,
-            ));
         } else {
             assign_to_template(array(
                 "error" => 1,
