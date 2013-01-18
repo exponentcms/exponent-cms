@@ -78,9 +78,12 @@ class colorcontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '>';
         //$html .= "<label>";
         if (empty($this->flip)) {
-            $html .= "<label for=\"" . $this->id . "\" style=\"display:inline\" class=\"label\">" . $label . "</label>" . $this->controlToHTML($name, $label);
+            $html .= "<label for=\"" . $this->id . "\" style=\"display:inline\" class=\"label\">" . $label . "</label>";
+            $html .= $this->controlToHTML($name, $label);
         } else {
-            $html .= $this->controlToHTML($name, null) . "<label" . $for . " style=\"display:inline\" class=\"label\">" . $label . "</label>";
+            $html .= "<label class=\"label\" style=\"background: transparent;\";></label>";
+            $html .= $this->controlToHTML($name, null);
+            $html .= "<label" . $for . " style=\"display:inline\" class=\"label\">" . $label . "</label>";
         }
         //$html .= "</label>";
         if (!empty($this->description)) $html .= "<div class=\"control-desc\" style=\"display:block;\">" . $this->description . "</div>";
@@ -92,7 +95,7 @@ class colorcontrol extends formcontrol {
         $assets_path = SCRIPT_RELATIVE . 'framework/core/subsystems/forms/controls/assets/';
         $html = "
         <span><input ".(empty($this->hide)?"size=10 type=\"text\"":"type=\"hidden\"")." id=\"" . $this->id . "\" name=\"" . $name . "\" value=\"" . $this->default . "\" class=\"text colorbox\" />
-        <div id='divpreview-" . $this->id . "' class='divpreview' style='background-color:" . $this->default . ";'> </div></span>
+        <div id='divpreview-" . $this->id . "' class='divpreview' style='background-color:" . $this->default . ";' title='".gt('Click to Change Color')."'> </div></span>
         <div id='container-" . $this->id . "' class='colorContainer' style='display:none'>
             <div id='picker-" . $this->id . "'></div>
             <div style=\"clear:both\"></div>
