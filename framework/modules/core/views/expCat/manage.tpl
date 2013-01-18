@@ -48,14 +48,14 @@
                 <li><a href="#tab0">{$page->model|capitalize} {'Items'|gettext}</a></li>
             {/if}
             {foreach name=tabs from=$cats->modules key=moduleid item=module}
-                <li><a href="#tab{$smarty.foreach.items.iteration}">{$moduleid|capitalize} {$catnames}</a></li>
+                <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$moduleid|capitalize} {$catnames}</a></li>
             {foreachelse}
                 <li><a href="#tab0">{if $model == 'file'}{'No Folders Defined'|gettext}{else}{'No Categories Defined'|gettext}{/if}</a></li>
             {/foreach}
         </ul>
-        <div>
+        <div class="yui-content">
             {if !empty($page)}
-                <div id="#tab0">
+                <div id="tab0">
                     <h3>{'Change'|gettext} {if $model == 'file'}{'File Folders'|gettext}{else}{$page->model|capitalize} {'Item Categories'|gettext}{/if}</h3>
                     {form action=change_cats}
                         {control type=hidden name=mod value=$page->model}

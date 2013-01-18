@@ -168,7 +168,7 @@ class expPaginator {
 		// and order direction from the request params...this is how the params are passed via the column
 		// headers.
 		$this->order_direction = $this->dir;	
-		if (expTheme::inAction()) {
+		if (expTheme::inAction() && empty($params)) {
 		    //FIXME: module/controller glue code
 //		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
 //		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
@@ -275,7 +275,7 @@ class expPaginator {
                     }
                 } else {
                     foreach ($this->records as $record) {
-                        if (is_string($record->$order) && !is_numeric($record->$order)) {
+                        if (!empty($record->$order) && is_string($record->$order) && !is_numeric($record->$order)) {
                             $title = ucfirst($record->$order);
                             $title = empty($title[0])?'':$title[0];
                         } else {

@@ -42,7 +42,7 @@
                 <li><a href="#tab{$smarty.foreach.tabs.iteration}">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
             {/foreach}
         </ul>
-        <div>
+        <div class="yui-content">
             {foreach from=$items item=text name=items}
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {permissions}

@@ -89,7 +89,7 @@ $config = array(
 		</div>
 		<div class="control">
 			<span class="label"><?php echo gt('Address'); ?>: </span>
-			<input class="text" type="text" name="sc[db_host]" value="<?php echo $config['db_host']; ?>" />
+			<input class="text" type="text" name="sc[db_host]" value="<?php echo $config['db_host']; ?>" required=1 />
 			<div class="control_help">
 				<?php echo gt('If your database server software runs on a different physical machine than the web server, enter the address of the database server machine.').
 					gt('Either an IP address (like 1.2.3.4) or an internet domain name (such as example.com) will work.').'<br /><br />'.
@@ -100,7 +100,7 @@ $config = array(
 		</div>
 		<div class="control">
 			<span class="label"><?php echo gt('Port');?>: </span>
-			<input class="text" type="text" name="sc[db_port]" value="<?php echo $config['db_port']; ?>" size="5" />
+			<input class="text" type="text" name="sc[db_port]" value="<?php echo $config['db_port']; ?>" size="5" required=1 />
 			<div class="control_help">
 				<?php echo gt('If you are using a database server that supports TCP or other network connection protocols, and that database software runs on a different physical machine than the web server,').
 					gt('enter the connection port.').'<br /><br />'.gt('If you entered \'localhost\' in the Address field, you should leave this as the default setting.'); ?>
@@ -110,11 +110,11 @@ $config = array(
 		</div>
 		<div class="control">
 			<span class="label"><?php echo gt('Database Name'); ?>: </span>
-			<input class="text" type="text" name="sc[db_name]" value="<?php echo $config['db_name']; ?>" />
+			<input class="text" type="text" name="sc[db_name]" value="<?php echo $config['db_name']; ?>" required=1 />
 		</div>
 		<div class="control">
 			<span class="label"><?php echo gt('Username'); ?>: </span>
-			<input class="text" type="text" name="sc[db_user]" value="<?php echo $config['db_user']; ?>" />
+			<input class="text" type="text" name="sc[db_user]" value="<?php echo $config['db_user']; ?>" required=1 />
 			<div class="control_help">
 				<?php echo gt('All database server software supported by Exponent require some sort of authentication.  Enter the name of the user account to use for logging into the database server.'); ?>
 				<br /><br />
@@ -123,7 +123,7 @@ $config = array(
 		</div>
 		<div class="control">
 			<span class="label"><?php echo gt('Password'); ?>: </span>
-			<input class="text" type="password" name="sc[db_pass]" value="<?php echo $config['db_pass']; ?>" />
+			<input class="text" type="password" name="sc[db_pass]" value="<?php echo $config['db_pass']; ?>" required=1 />
 			<div class="control_help">
 				<?php echo gt('Enter the password for the username you entered above.  The password will').'<strong>'.gt('not').'</strong>'.gt('be obscured, because it cannot be obscured in the configuration file.  The Exponent developers urge you to use a completely new password, unlike any of your others, for security reasons.'); ?>
 			</div>

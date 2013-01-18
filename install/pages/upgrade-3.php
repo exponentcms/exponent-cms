@@ -79,9 +79,9 @@ if (is_readable($upgrade_dir)) {
                     }
                 } else {
                     if ($upgradescript->optional) {
-                        echo '<input type="checkbox" name="'.$classname.'" value="1" class="checkbox" style="margin-top: 7px;"><label class="label " style="display:block;"><h3>'. $upgradescript->name().'</h3></label></b>';
+                        echo '<input type="checkbox" name="'.$classname.'" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>'. $upgradescript->name().'</h3></label></b>';
                     } else {
-                        echo '<input type="checkbox" name="'.$classname.'" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label " style="display:block;"><h3>'. $upgradescript->name().'</h3></label></b>';
+                        echo '<input type="checkbox" name="'.$classname.'" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>'. $upgradescript->name().'</h3></label></b>';
                     }
                     echo '<p>' . $upgradescript->description();
                 }

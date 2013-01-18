@@ -194,7 +194,7 @@ select[multiple] {
   height: auto;
 }
 label {
-  display: block;
+  /*display: block;*/
   padding: 4px 0;
   margin-bottom: 2.5px;
   vertical-align: middle;

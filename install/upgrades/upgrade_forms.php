@@ -78,6 +78,9 @@ class upgrade_forms extends upgradescript {
 		// convert each formbuilder_form & formbuilder_report record to a forms object with an formsController expConfig
 	    $cns = $db->selectObjects('container',"internal LIKE '%formmodule%'");
         foreach ($cns as $cn) {
+            $oldform = $db->selectObject('formbuilder_form', "location_data='".$cn->internal."'");
+            $oldreport = $db->selectObject('formbuilder_report', "location_data='".$cn->internal."'");
+
             $cloc = expUnserialize($cn->internal);
       	    $cloc->mod = 'formsController';
       		$cn->internal = serialize($cloc);
@@ -85,15 +88,12 @@ class upgrade_forms extends upgradescript {
             $cn->view = 'enter_data';
       	    $db->updateObject($cn,'container');
 
-            $oldform = $db->selectObject('formbuilder_form', "location_data='".$cn->internal."'");
-
             // convert form data table by renaming it
             if ($oldform->is_saved) {
                 $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'forms_'.$oldform->table_name.' TO '.DB_TABLE_PREFIX.'forms_'.$oldform->table_name);
                 //FIXME do we want to add a forms_id field?
             }
 
-            $oldreport = $db->selectObject('formbuilder_report', "location_data='".$cn->internal."'");
             $newform = new forms();
             $newform->title = $oldform->name;
             $newform->is_saved = $oldform->is_saved;
@@ -103,7 +103,7 @@ class upgrade_forms extends upgradescript {
             $newform->report_name = $oldreport->name;
             $newform->report_desc = $oldreport->description;
             $newform->report_def = $oldreport->text;
-            $newform->column_names_list = explode('|!|',$oldreport->column_names);
+            $newform->column_names_list = $oldreport->column_names;
             $newform->update();
 
              // copy & convert each formbuilder_control to a forms_control
@@ -116,23 +116,23 @@ class upgrade_forms extends upgradescript {
 
             // convert the form & report configs to an expConfig object for this module
             $newconfig = new expConfig();
-            $newconfig['forms_id'] = $newform->id;
-            if (!empty($oldform->name)) $newconfig['title'] = $oldform->name;
-            if (!empty($oldform->description)) $newconfig['description'] = $oldform->description;
-            if (!empty($oldform->response)) $newconfig['response'] = $oldform->response;
-            if (!empty($oldform->is_email)) $newconfig['is_email'] = $oldform->is_email;
-            if (!empty($oldform->select_email)) $newconfig['select_email'] = $oldform->select_email;
-            if (!empty($oldform->submitbtn)) $newconfig['submitbtn'] = $oldform->submitbtn;
-            if (!empty($oldform->resetbtn)) $newconfig['resetbtn'] = $oldform->resetbtn;
-            if (!empty($oldform->style)) $newconfig['style'] = $oldform->style;
-            if (!empty($oldform->subject)) $newconfig['subject'] = $oldform->subject;
-            if (!empty($oldform->is_auto_respond)) $newconfig['is_auto_respond'] = $oldform->is_auto_respond;
-            if (!empty($oldform->auto_respond_subject)) $newconfig['auto_respond_subject'] = $oldform->auto_respond_subject;
-            if (!empty($oldform->auto_respond_body)) $newconfig['auto_respond_body'] = $oldform->auto_respond_body;
-            if (!empty($oldreport->name)) $newconfig['report_name'] = $oldreport->name;
-            if (!empty($oldreport->description)) $newconfig['report_desc'] = $oldreport->description;
-            if (!empty($oldreport->text)) $newconfig['report_def'] = $oldreport->text;
-            if (!empty($oldreport->column_names)) $newconfig['column_names_list'] = explode('|!|',$oldreport->column_names);
+            $newconfig->config['forms_id'] = $newform->id;
+            if (!empty($oldform->name)) $newconfig->config['title'] = $oldform->name;
+            if (!empty($oldform->description)) $newconfig->config['description'] = $oldform->description;
+            if (!empty($oldform->response)) $newconfig->config['response'] = $oldform->response;
+            if (!empty($oldform->is_email)) $newconfig->config['is_email'] = $oldform->is_email;
+            if (!empty($oldform->select_email)) $newconfig->config['select_email'] = $oldform->select_email;
+            if (!empty($oldform->submitbtn)) $newconfig->config['submitbtn'] = $oldform->submitbtn;
+            if (!empty($oldform->resetbtn)) $newconfig->config['resetbtn'] = $oldform->resetbtn;
+            if (!empty($oldform->style)) $newconfig->config['style'] = $oldform->style;
+            if (!empty($oldform->subject)) $newconfig->config['subject'] = $oldform->subject;
+            if (!empty($oldform->is_auto_respond)) $newconfig->config['is_auto_respond'] = $oldform->is_auto_respond;
+            if (!empty($oldform->auto_respond_subject)) $newconfig->config['auto_respond_subject'] = $oldform->auto_respond_subject;
+            if (!empty($oldform->auto_respond_body)) $newconfig->config['auto_respond_body'] = $oldform->auto_respond_body;
+            if (!empty($oldreport->name)) $newconfig->config['report_name'] = $oldreport->name;
+            if (!empty($oldreport->description)) $newconfig->config['report_desc'] = $oldreport->description;
+            if (!empty($oldreport->text)) $newconfig->config['report_def'] = $oldreport->text;
+            if (!empty($oldreport->column_names)) $newconfig->config['column_names_list'] = explode('|!|',$oldreport->column_names);
 
             // we have to pull in addresses for emails
             $addrs = $db->selectObjects('formbuilder_address',"form_id=".$oldform->id);

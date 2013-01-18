@@ -648,6 +648,7 @@ abstract class expController {
         $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
         $page = new expPaginator(array(
             'records' => $pullable_modules,
+            'controller' => $this->loc->mod,
             'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
             'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
             'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
