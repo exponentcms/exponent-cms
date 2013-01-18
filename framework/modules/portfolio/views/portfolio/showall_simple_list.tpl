@@ -68,7 +68,7 @@
             {/permissions}
             {permissions}
                 {if $permissions.create == 1}
-                    {icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
+                    {icon class="add" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
                 {/if}
             {/permissions}
             {clear}
