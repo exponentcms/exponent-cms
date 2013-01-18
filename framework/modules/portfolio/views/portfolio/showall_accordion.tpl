@@ -46,6 +46,7 @@
    	{/if}
     {$myloc=serialize($__loc)}
     <div class="dashboard">
+        <!-- cke lazy -->
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel">
                 <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $cat->name ==""}{if $config.uncat == ""}{'The List'|gettext}{else}{$config.uncat}{/if}{else}{$cat->name}{/if}</h2></a></div>
@@ -99,11 +100,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
         if (savedState=="collapse") {
             cfg.to = { height: 0 };
             cfg.from = { height: expandHeight[pID] };
-            pBody.setStyle('height',expandHeight[pID]+"px");
+//            pBody.setStyle('height',expandHeight[pID]+"px");
             pBody.replaceClass('expanded','collapsed');
             e.target.ancestor('.panel').one('.hd a').replaceClass('collapse','expand');
         } else {
-            pBody.setStyle('height',0);
+//            pBody.setStyle('height',0);
             cfg.from = { height: 0 };
             cfg.to = { height: expandHeight[pID] };
             pBody.replaceClass('collapsed','expanded');
@@ -118,6 +119,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
 //            n.one('.bd').addClass('collapsed');
         expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
     });
+    Y.Global.on('lazyload:cke', function() {
+        panels.each(function(n,k){
+            expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
+        });
+    });
+
 });
 {/literal}
 {/script}

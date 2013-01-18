@@ -13,8 +13,8 @@ Added / Fixed / changed for 2.1.1
     -- adds optional event popup in a lightbox dialog (like google calendar)
     -- adds 'cancelled event' feature to display events as cancelled
   - updates old school form module to a 2.0 controller
-    -- now allows greater flexibility in who can enter or view data
-    -- form is now site-wide object, can view/enter form data from different modules/pages
+    -- now allows greater flexibility in which users may enter or view data
+    -- forms are now site-wide objects, can view/enter form data from different modules/pages
     -- adds view flexibility offered by a 2.0 module for future features
     -- updates some form control display features and format
   - adds ajax-based navigation in calendar, news items & blog posts to prevent reloading entire page
@@ -34,6 +34,7 @@ Added / Fixed / changed for 2.1.1
   - updates file manager with 'virtual folder' grouping and date features to assist locating files
     -- also adds file manager bulk selection (add multiple files to an item all at once) and bulk delete
   - updates file uploader to allow html5 drag/drop support and some other user-friendly features
+    -- images may be resized to a max width and files assigned to a virtual folder during upload
 
 Added / Fixed / changed for 2.1.0
 -----------------------

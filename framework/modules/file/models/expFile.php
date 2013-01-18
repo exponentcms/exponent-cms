@@ -348,7 +348,8 @@ class expFile extends expRecord {
                                        $_force    = false,
                                        $_save     = true,
                                        $_destFile = null,
-                                       $_destDir  = null
+                                       $_destDir  = null,
+                                       $_max_width = null
                                       ) {
 
         // Make sure something was sent first off...
@@ -416,8 +417,27 @@ class expFile extends expRecord {
 
 		// Move the temporary uploaded file into the destination directory,
         // and change the name.
-               
-        $tmp=move_uploaded_file($_FILES[$_postName]['tmp_name'], $_destFullPath);
+        $resized = false;
+        $maxwidth = intval($_max_width);
+        if (!empty($maxwidth)) {
+            require_once(BASE . 'framework/modules/pixidou/includes/class.upload/class.upload.php');
+            $handle = new upload($_FILES[$_postName]['tmp_name']);
+            if ($handle->uploaded) {
+                $handle->file_new_name_body = $_destFile;
+                $handle->file_new_name_ext = '';
+                $handle->image_resize       = true;
+                $handle->image_ratio        = true;
+                $handle->image_ratio_y      = true;
+                $handle->image_x            = $maxwidth;
+                $handle->process(BASE.$_destDir);
+                if ($handle->processed) {
+                    if ($handle->image_src_x != $handle->image_dst_x) $resized = true;
+                    $handle->clean();
+                }
+            }
+        } else {
+            $tmp=move_uploaded_file($_FILES[$_postName]['tmp_name'], $_destFullPath);
+        }
 
         if (file_exists($_destFullPath)) {
             $__oldumask = umask(0);
@@ -441,6 +461,7 @@ class expFile extends expRecord {
         if ( $_save === true ) {
             $_objFile->save();
         }
+        if ($resized) $_objFile->resized = true;
 		return $_objFile;
     }
 

@@ -423,14 +423,19 @@ class fileController extends expController {
     public function upload() {
         
         // upload the file, but don't save the record yet...
-        $file = expFile::fileUpload('Filedata',false,false);
-        
+        if (!empty($this->params['resize'])) {
+            $maxwidth = $this->params['max_width'];
+        } else {
+            $maxwidth = null;
+        }
+        $file = expFile::fileUpload('Filedata',false,false,null,null,$maxwidth);
         // since most likely this function will only get hit via flash in YUI Uploader
         // and since Flash can't pass cookies, we lose the knowledge of our $user
         // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,
         // and then assign $user->id to $file->poster so we have an audit trail for the upload
 
         if (is_object($file)) {
+            $resized = !empty($file->resized) ? true : false;
             $user = new user($this->params['usrid']);
             $file->poster = $user->id;
             $file->posted = $file->last_accessed = time();
@@ -442,7 +447,11 @@ class fileController extends expController {
             }
 
             // a echo so YUI Uploader is notified of the function's completion
-            echo gt('File saved');
+            if ($resized) {
+                echo gt('File resized and then saved');
+            } else {
+                echo gt('File saved');
+            }
         } else {
             flash('error',gt('File was not uploaded!'));
         }

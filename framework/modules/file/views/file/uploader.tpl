@@ -42,8 +42,13 @@
                 {help text="Get Help"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
             </div>
             {control type=dropdown name="select_folder" label="Select the Upload Folder"|gettext items=$cats}
-            <input id="folder" type="text" name="folder" value="" size="20" class="control text" style="display: inline;margin-left: 100px;" onkeydown="if (event.keyCode == 13) document.getElementById('createLink').click()" />
-            <a id="createLink" class="add awesome small green" style="height: 18px;display:inline;margin-left: 5px;" href="#"><span>{'Create New Folder'|gettext}</span></a>
+            <input id="folder" type="text" name="folder" value="" size="20" class="control text" style="display: inline;margin-left: 12px;" onkeydown="if (event.keyCode == 13) document.getElementById('createLink').click()" />
+            <a id="createLink" class="add awesome small green" style="height: 18px;display:inline;margin-left: 5px;" href="#"><span>{'Create New Folder'|gettext}</span></a>{br}
+            <div id="resizeControl" class="control checkbox">
+                <input id="resize" type="checkbox" name="resize" value="1" class="checkbox" />
+                <div class="label" style="width:auto; display:inline;">{'Resize Any Images to a Max Width of'|gettext}:</div>
+                <input id="max_width" type="text" name="max_width" value="" size="4" class="text " />
+            </div>
         </div>
         {messagequeue}
         <div id="filelist">
@@ -142,7 +147,14 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
                 } else {
                     catvalue = cat.get('value');
                 }
-                perFileVars[fileInstance.get("id")] = {filename:fileInstance.get("name"),usrid:usr['id'],cat:catvalue};
+                var resize = Y.one('#resize').get('value');
+                var widthtxt = Y.one('#max_width');
+                if (widthtxt == null) {
+                    width = 0;
+                } else {
+                    width = widthtxt.get('value');
+                }
+                perFileVars[fileInstance.get("id")] = {filename:fileInstance.get("name"),usrid:usr['id'],cat:catvalue,resize:resize,max_width:width};
             });
             uploader.set("postVarsPerFile", Y.merge(uploader.get("postVarsPerFile"), perFileVars));
         });
