@@ -16,7 +16,7 @@
 ##################################################
 
 /**
- * This is the class expTag
+ * This is the class expRating
  *
  * @subpackage Models
  * @package Core

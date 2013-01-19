@@ -16,7 +16,7 @@
 ##################################################
 
 /**
- * This is the class expTagController
+ * This is the class expRatingController
  *
  * @package Core
  * @subpackage Controllers

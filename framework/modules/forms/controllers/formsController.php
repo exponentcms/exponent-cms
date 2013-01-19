@@ -590,6 +590,7 @@ class formsController extends expController {
 
             //If is a new post show response, otherwise redirect to the flow.
             if (!isset($this->params['data_id'])) {
+                //FIXME if we change _view_response.tpl to submit_data.tpl, it'll already be $template
                 global $template;
                 $template = get_template_for_action($this, '_view_response', $this->loc);
                 $template->assign("backlink", expHistory::getLastNotEditable());

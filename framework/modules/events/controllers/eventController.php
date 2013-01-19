@@ -1269,7 +1269,6 @@ class eventController extends expController {
 //        $ar->send();
     }
 
-
 }
 
 ?>

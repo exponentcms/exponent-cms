@@ -16,7 +16,7 @@
 ##################################################
 
 /**
- * This is the class expComment
+ * This is the class expCoonfig
  *
  * @subpackage Models
  * @package Core
