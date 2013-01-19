@@ -34,8 +34,10 @@
                 <a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
                 <ul class="container-menu">
                     {if $user->isAdmin()}
-                    <li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
-                    <li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>
+                        {*<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>*}
+                        {*<li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>*}
+                        <li><a href="{link controller=users action=userperms mod=containermodule}" class="user">{"User Permissions"|gettext}</a></li>
+                        <li><a href="{link controller=users action=groupperms mod=containermodule}" class="group">{"Group Permissions"|gettext}</a></li>
                     {/if}
                     {capture name=rerank}{ddrerank module="container" where="external='`$containers[0]->external`'" label="Modules"|gettext}{/capture}
                     {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}

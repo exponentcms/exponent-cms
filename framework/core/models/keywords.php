@@ -52,10 +52,11 @@ class keywords {
 		ob_start();
 		$mods = array();
 		foreach ($refs as $ref) {
-			$loc = new stdClass();;
-			$loc->mod = $ref->module;
-			$loc->src = $ref->source;
-			$loc->int = $ref->internal;
+//			$loc = new stdClass();;
+//			$loc->mod = $ref->module;
+//			$loc->src = $ref->source;
+//			$loc->int = $ref->internal;
+            $loc = expCore::makeLocation($ref->module,$ref->source,$ref->internal);
 			if (!empty($loc->src)) {
 				if ($ref->module == 'containermodule') {
 					foreach($db->selectObjects('container', "external='".serialize($loc)."'") as $mod) {

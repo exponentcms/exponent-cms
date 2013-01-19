@@ -511,10 +511,11 @@ class expTheme {
     public static function showAction($module, $action, $src="", $params=array()) {  //FIXME doesn't seem to be used except by smarty functions, old school?
    		global $db, $user;
 
-   		$loc = new stdClass();;
-   		$loc->mod = $module;
-   		$loc->src = (isset($src) ? $src : "");
-   		$loc->int = (isset($int) ? $int : "");
+//   		$loc = new stdClass();;
+//   		$loc->mod = $module;
+//   		$loc->src = (isset($src) ? $src : "");
+//   		$loc->int = (isset($int) ? $int : "");
+        $loc = expCore::makeLocation($module,(isset($src) ? $src : ""),(isset($int) ? $int : ""));
 
    		$actfile = "/" . $module . "/actions/" . $action . ".php";
    		if (isset($params)) {

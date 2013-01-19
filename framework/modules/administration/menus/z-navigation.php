@@ -61,8 +61,10 @@ if (expPermissions::check('manage',expCore::makeLocation('navigationController',
 }
 
 if ($user->isAdmin()) {
-    $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('module'=>'navigation','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
-    $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('module'=>'navigation','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
+//    $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('module'=>'navigation','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
+//    $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('module'=>'navigation','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
+    $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('controller'=>'users','action'=>'userperms','mod'=>'navigation',"int"=>$page->id)));
+    $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('controller'=>'users','action'=>'groupperms','mod'=>'navigation',"int"=>$page->id)));
 }
 
 //FIXME do we just need to let any user w/ manage page perms to get to the manage menu hierarchy and let it decide perms from there?

@@ -48,8 +48,10 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	}
 	
 	if ($user->isAdmin()) {
-		$userlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
-		$grouplink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
+//		$userlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
+//		$grouplink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
+        $userlink = $router->makeLink(array('controller'=>'users', 'action'=>'userperms', 'mod'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source']));
+        $grouplink = $router->makeLink(array('controller'=>'users', 'action'=>'groupperms', 'mod'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source']));
 		$list .= '<li><a href="'.$userlink.'" class="user">'.gt("User Permissions").'</a></li>';
 		$list .= '<li><a href="'.$grouplink.'" class="group">'.gt("Group Permissions").'</a></li>';
 	}
@@ -100,7 +102,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
             }
 			$configlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'configure', 'hcview'=>$hcview));
 			$list .= '<li><a href="'.$configlink.'" class="config-mod">'.gt("Configure Settings").'</a></li>';
-		} elseif ($module->info['hasConfig']) {
+		} elseif ($module->info['hasConfig']) {  // old school module
 			$configlink = $router->makeLink(array('module'=>$module->info['class'], 'src'=>$module->info['source'], 'action'=>'configure', '_common'=>1));
 			$list .= '<li><a href="'.$configlink.'" class="config-mod">'.gt("Configure Settings").'</a></li>';
 		}

@@ -180,10 +180,11 @@ class photosController extends expController {
                 $file = new expFile($fileid);
                 if (!empty($file->id)) {
                     $photo = new photo();
-                 $loc = new stdClass();
-                 $loc->mod = "photo";
-                 $loc->src = $this->params['src'];
-                 $loc->int = '';
+//                 $loc = new stdClass();
+//                 $loc->mod = "photo";
+//                 $loc->src = $this->params['src'];
+//                 $loc->int = '';
+                 $loc = expCore::makeLocation("photo",$this->params['src']);
                  $photo->location_data = serialize($loc);
  //                $photo->body = $gi['description'];
  //                $photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;

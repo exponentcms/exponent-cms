@@ -69,10 +69,11 @@ class help extends expRecord {
 		if (isset($this->params['help_section'])) {
 			// manipulate section & location_data to correct values
 			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $this->params['help_section'] .'"');
-			$loc = new stdClass();
-			$loc->mod = 'help';
-			$loc->src = $this->params['help_section'];
-			$loc->int = '';
+//			$loc = new stdClass();
+//			$loc->mod = 'help';
+//			$loc->src = $this->params['help_section'];
+//			$loc->int = '';
+            $loc = expCore::makeLocation('help',$this->params['help_section']);
 			$this->location_data = serialize($loc);
 		}
 
