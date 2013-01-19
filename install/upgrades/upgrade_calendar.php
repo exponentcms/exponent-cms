@@ -26,8 +26,8 @@
  */
 class upgrade_calendar extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.1.0';
-    public $optional = true;
+	protected $to_version = '2.1.1';  // calendarmodule was fully deprecated in v2.1.1
+//    public $optional = true;
 
 	/**
 	 * name/title of upgrade script

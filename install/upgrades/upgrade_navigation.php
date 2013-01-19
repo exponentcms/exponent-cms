@@ -26,7 +26,7 @@
  */
 class upgrade_navigation extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.0.9';
+	protected $to_version = '2.0.9';  // navigationmodule was fully deprecated in v2.0.9
 //    public $optional = true;
 
 	/**

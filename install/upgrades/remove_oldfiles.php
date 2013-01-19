@@ -297,6 +297,7 @@ class remove_oldfiles extends upgradescript {
             "external/Smarty-3.1.7/",
             "external/Smarty-3.1.8/",
             "external/Smarty-3.1.11/",
+            "external/Smarty-3.1.12/",
             "external/Swift/",
             "external/Swift-4/",
             "external/Swift-4.0.5/",
@@ -307,6 +308,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.1.6/",
             "external/Swift-4.1.7/",
             "external/Swift-4.2.1/",
+            "external/Swift-4.2.3/",
         );
         foreach ($olddirs as $dir) {
             if (expUtil::isReallyWritable(BASE.$dir)) {

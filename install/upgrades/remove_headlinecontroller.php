@@ -26,7 +26,7 @@
  */
 class remove_headlinecontroller extends upgradescript {
 	protected $from_version = '0.0.0';
-//	protected $to_version = '2.0.1';
+//	protected $to_version = '2.1.2';
     public $optional = true;
 
 	/**

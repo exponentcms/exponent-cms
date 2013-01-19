@@ -26,7 +26,7 @@
  */
 class add_file_posted extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.1.1';  // posted dates began to be set in 2.1.1
+	protected $to_version = '2.1.1';  // file posted dates began to be set in 2.1.1
 
 	/**
 	 * name/title of upgrade script
