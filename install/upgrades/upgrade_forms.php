@@ -66,12 +66,12 @@ class upgrade_forms extends upgradescript {
 	    $gps = $db->selectObjects('grouppermission',"module = 'formmodule'");
         foreach ($gps as $gp) {
 	        $gp->module = 'formsController';
-	        $db->updateObject($gp,'grouppermission',null,'gid');
+	        $db->updateObject($gp,'grouppermission',"module = 'formmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'formmodule'");
         foreach ($ups as $up) {
             $up->module = 'formsController';
-            $db->updateObject($up,'userpermission',null,'uid');
+            $db->updateObject($up,'userpermission',"module = 'formmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
         $modules_converted = 0;

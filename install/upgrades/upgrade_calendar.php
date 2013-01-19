@@ -66,12 +66,12 @@ class upgrade_calendar extends upgradescript {
 	    $gps = $db->selectObjects('grouppermission',"module = 'calendarmodule'");
         foreach ($gps as $gp) {
 	        $gp->module = 'eventController';
-	        $db->updateObject($gp,'grouppermission',null,'gid');
+	        $db->updateObject($gp,'grouppermission',"module = 'calendarmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'calendarmodule'");
         foreach ($ups as $up) {
             $up->module = 'eventController';
-            $db->updateObject($up,'userpermission',null,'uid');
+            $db->updateObject($up,'userpermission',"module = 'calendarmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
         $modules_converted = 0;
