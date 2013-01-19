@@ -100,11 +100,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
         if (savedState=="collapse") {
             cfg.to = { height: 0 };
             cfg.from = { height: expandHeight[pID] };
-//            pBody.setStyle('height',expandHeight[pID]+"px");
+            pBody.setStyle('height',expandHeight[pID]+"px");
             pBody.replaceClass('expanded','collapsed');
             e.target.ancestor('.panel').one('.hd a').replaceClass('collapse','expand');
         } else {
-//            pBody.setStyle('height',0);
+            pBody.setStyle('height',0);
             cfg.from = { height: 0 };
             cfg.to = { height: expandHeight[pID] };
             pBody.replaceClass('collapsed','expanded');

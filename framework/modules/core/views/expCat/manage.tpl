@@ -59,7 +59,7 @@
                     <h3>{'Change'|gettext} {if $model == 'file'}{'File Folders'|gettext}{else}{$page->model|capitalize} {'Item Categories'|gettext}{/if}</h3>
                     {form action=change_cats}
                         {control type=hidden name=mod value=$page->model}
-                        {*{$page->links}*}
+                        {$page->links}
                         <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                             <thead>
                                 <tr>
@@ -90,7 +90,7 @@
                                 {/foreach}
                             </tbody>
                         </table>
-                        {*{$page->links}*}
+                        {$page->links}
                         <p>{'Select the item(s) to change, then select the new'|gettext|cat:" `$catname`"}</p>
                         {control type="dropdown" name=newcat label="Module"|gettext|cat:" `$catnames`" items=$catlist}
                         {control type=buttongroup submit="Change Selected Items"|gettext|cat:" `$catname`" cancel="Cancel"|gettext returntype="viewable"}
@@ -103,7 +103,7 @@
                         {*{ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}*}
                         {ddrerank id=$moduleid items=$module model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:$catnames}
                     {/if}
-                    {$cats->links}
+                    {*{$cats->links}*}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                         <thead>
                             <tr>
@@ -142,7 +142,7 @@
                             {/foreach}
                         </tbody>
                     </table>
-                    {$cats->links}
+                    {*{$cats->links}*}
                 </div>
             {foreachelse}
                 <div id="tab0">
