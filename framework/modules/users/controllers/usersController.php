@@ -933,7 +933,7 @@ class usersController extends expController {
         	foreach (user::getAllUsers(false) as $u) {
         		$have_users = 1;
         		foreach ($perms as $perm=>$name) {
-        			$var = 'perms_'.$perm;
+//        			$var = 'perms_'.$perm;
         			if (expPermissions::checkUser($u,$perm,$loc,true)) {
         				$u->$perm = 1;
         			} else if (expPermissions::checkUser($u,$perm,$loc)) {
@@ -999,31 +999,15 @@ class usersController extends expController {
         global $user;
 
         $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
-        $locarray = array();
-    //    if ($loc->mod == 'navigationController' && (isset($_POST['permdata'][2]['manage']) && $_POST['permdata'][2]['manage'] || isset($_POST['permdata'][2]['manage']) && $_POST['permdata'][2]['manage'])) {
-    //		$sections = navigationController::levelTemplate($loc->int);
-    //		$locarray[] = $loc;
-    //		foreach ($sections as $section) {
-    //			$locarray[] = expCore::makeLocation('navigationController', null, $section->id);
-    //		}
-    //	} else {
-            $locarray[] = $loc;
-    //	}
         $users = user::getAllUsers();
-        foreach ($locarray as $location) {
-            foreach ($users as $u) {
-                expPermissions::revokeAll($u,$location);
-            }
+        foreach ($users as $u) {
+            expPermissions::revokeAll($u,$loc);
         }
-
         foreach ($this->params['permdata'] as $k => $user_str) {
             $perms = array_keys($user_str);
             $u = user::getUserById($k);
-
-            foreach ($locarray as $location) {
-                for ($i = 0; $i < count($perms); $i++) {
-                    expPermissions::grant($u,$perms[$i],$location);
-                }
+            for ($i = 0; $i < count($perms); $i++) {
+                expPermissions::grant($u,$perms[$i],$loc);
             }
 
             if ($k == $user->id) {
@@ -1039,25 +1023,15 @@ class usersController extends expController {
 
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
-//        	if (expTemplate::getModuleViewFile($loc->mod,'_grouppermissions',false) == TEMPLATE_FALLBACK_VIEW) {
-//        //		$template = new template('common','_grouppermissions',$loc,false,'globalviews');
-//                $template = new template('common','_grouppermissions',$loc);
-//        	} else {
-//        		//$template = new template($loc->mod,'_grouppermissions',$loc);
-//        //		$template = new template('common','_grouppermissions',$loc,false,'globalviews');
-//                $template = new template('common','_grouppermissions',$loc);
-//        	}
-
         	$users = array(); // users = groups
             $modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;
-            //$modclass = $loc->mod;
         	$modclass = $modulename;
         	$mod = new $modclass();
         	$perms = $mod->permissions($loc->int);
 
         	foreach (group::getAllGroups() as $g) {
         		foreach ($perms as $perm=>$name) {
-        			$var = 'perms_'.$perm;
+//        			$var = 'perms_'.$perm;
         			if (expPermissions::checkGroup($g,$perm,$loc,true)) {
         				$g->$perm = 1;
         			} else if (expPermissions::checkGroup($g,$perm,$loc)) {
@@ -1103,9 +1077,7 @@ class usersController extends expController {
         		));
         	}
 
-
             assign_to_template(array(
-                'user_form'=>1,
                 'user_form'=>0,
             	'is_group'=>1,
             	'have_users'=>count($users) > 0, // users = groups
@@ -1121,33 +1093,15 @@ class usersController extends expController {
 
     public function groupperms_save() {
         $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
-        //$groups = explode(';',$_POST['permdata']);
-
-        $locarray = array();
-    //	if ($loc->mod == 'navigationController' && (isset($_POST['permdata'][1]['manage']) && $_POST['permdata'][1]['manage'] || isset($_POST['permdata'][1]['manage']) && $_POST['permdata'][1]['manage'])) {
-    //		$sections = navigationController::levelTemplate($loc->int);
-    //		$locarray[] = $loc;
-    //		foreach ($sections as $section) {
-    //			$locarray[] = expCore::makeLocation('navigationController', null, $section->id);
-    //		}
-    //	} else {
-            $locarray[] = $loc;
-    //	}
         $groups = group::getAllGroups();
-        foreach ($locarray as $location) {
-            foreach ($groups as $g) {
-                expPermissions::revokeAllGroup($g,$location);
-            }
+        foreach ($groups as $g) {
+            expPermissions::revokeAllGroup($g,$loc);
         }
-
         foreach ($this->params['permdata'] as $k => $group_str) {
             $perms = array_keys($group_str);
             $g = group::getGroupById($k);
-
-            foreach ($locarray as $location) {
-                for ($i = 0; $i < count($perms); $i++) {
-                    expPermissions::grantGroup($g,$perms[$i],$location);
-                }
+            for ($i = 0; $i < count($perms); $i++) {
+                expPermissions::grantGroup($g,$perms[$i],$loc);
             }
         }
         expPermissions::triggerRefresh();

@@ -23,12 +23,11 @@
 {/css}
 
 <form method="post">
-    <input type="hidden" name="module" value="{$__loc->mod}" />
+    <input type="hidden" name="mod" value="{$loc->mod}" />
     {*<input type="hidden" name="module" value="{$page->controller}" />*}
-    <input type="hidden" name="src" value="{$__loc->src}" />
-    <input type="hidden" name="int" value="{$__loc->int}" />
-    <input type="hidden" name="action" value="{if $user_form == 1}saveuserperms{else}savegroupperms{/if}" />
-    <input type="hidden" name="_common" value="1" />
+    <input type="hidden" name="src" value="{$loc->src}" />
+    <input type="hidden" name="int" value="{$loc->int}" />
+    <input type="hidden" name="action" value="{if $user_form == 1}userperms_save{else}groupperms_save{/if}" />
     {$page->links}
     <div style="overflow : auto; overflow-y : hidden;">
         <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
