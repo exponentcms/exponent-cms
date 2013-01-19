@@ -32,7 +32,7 @@
         <h1>{"Upload Files"|gettext}</h1>
         <div id="actionbar">
             <div id="selectFilesButtonContainer"></div>
-            <a id="selectLink" class="select awesome small green" style="z-index:1" href="#"><span>{'Select Files'|gettext}</span></a>
+            <a id="selectLink" class="select awesome small green" href="#"><span>{'Select Files'|gettext}</span></a>
             <a id="uploadLink" class="upload awesome small green" href="#"><span>{"Upload Files"|gettext}</span></a>
             <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
         </div>
@@ -83,7 +83,8 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
                                       width: "78px",
 //                                      height: "35px",
                                       multipleFiles: true,
-                                      swfURL: EXPONENT.YUI3_RELATIVE + "uploader/assets/flashuploader.swf?t=" + Math.random(),
+//                                      swfURL: EXPONENT.YUI3_RELATIVE + "uploader/assets/flashuploader.swf?t=" + Math.random(),
+                                      swfURL: EXPONENT.YUI3_URL + "uploader/assets/flashuploader.swf",
                                       uploadURL: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=upload&ajax_action=1",
                                       simLimit: 3,
                                       withCredentials: false,
