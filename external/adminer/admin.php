@@ -21,6 +21,7 @@ function adminer_object() {
         //new AdminerEmailTable,
         //new AdminerEditForeign,
         //new AdminerForeignSystem,
+        new AdminerVersionNoverify,
     );
     
     /* It is possible to combine customization and plugins: */
