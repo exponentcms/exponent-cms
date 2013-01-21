@@ -77,6 +77,13 @@
         <ul class="sliderlist dpd-slidetab tab-nav">
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
+                {if !empty($slide->title)}
+                    {$title = $slide->title}
+                {elseif !empty($slide->expFile[0]->title)}
+                    {$title = $slide->expFile[0]->title}
+                {else}
+                    {$title = ''}
+                {/if}
                 <li class="slider{if $smarty.foreach.slides.first} on{/if}">
                     {permissions}
                         <div class="item-actions">
@@ -88,18 +95,18 @@
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                     {/if}
                                 {/if}
-                                {icon img="edit.png" action=edit record=$slide title="Edit"|gettext|cat:" `$slide->title`"}
+                                {icon img="edit.png" action=edit record=$slide title="Edit"|gettext|cat:" `$title`"}
                             {/if}
                             {if $permissions.delete == 1}
-                                {icon img="delete.png" action=delete record=$slide title="Delete"|gettext|cat:" `$slide->title`"}
+                                {icon img="delete.png" action=delete record=$slide title="Delete"|gettext|cat:" `$title`"}
                             {/if}
                         </div>
                     {/permissions}
-                    <a title="{$slide->title}" href="{link action=show title=$slide->sef_url}">
-                        {img file_id=$slide->expFile[0]->id  title="View"|gettext|cat:" `$slide->title`" w=$config.th_width|default:64 h=$config.th_height|default:40 class="slide-image" zc=1 q=$quality|default:75}
+                    <a title="{$title}" href="{link action=show title=$slide->sef_url}">
+                        {img file_id=$slide->expFile[0]->id  title="View"|gettext|cat:" `$title`" w=$config.th_width|default:64 h=$config.th_height|default:40 class="slide-image" zc=1 q=$quality|default:75}
                     </a>
                     <div class="thumb-text">
-                        {if !$config.hidetext}<strong>{$slide->title}</strong>{/if}
+                        {if !$config.hidetext}<strong>{$title}</strong>{/if}
                         {if $slide->body}{$slide->body}{/if}
                     </div>
                 </li>

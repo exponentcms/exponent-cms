@@ -62,7 +62,7 @@ class filemanagercontrol extends formcontrol {
         $html .= $files;
         $html .= '</ul>';
         $html .= '<input type="hidden" name="'.$subTypeName.'" value="'.$subTypeName.'">';
-        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\"".$flip.">" . $this->description . "</div><br>";
+        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">" . $this->description . "</div><br>";
         $html .= '</div>';
         $js = "
             YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io', function(Y) {

@@ -27,10 +27,10 @@
                 <div id="tab1">
                     <h2>{'Photo Item'|gettext}</h2>
                     {control type=text name=title label="Title (overrides file manager 'title')"|gettext value=$record->title}
+                    {control type="text" name="alt" label="'Alt' tag (overrides file manager 'alt')"|gettext value=$record->alt}
                     {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
-                    {control type="text" name="alt" label="'Alt' tag (overrides file manager 'alt'"|gettext value=$record->alt}
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
                     {/if}

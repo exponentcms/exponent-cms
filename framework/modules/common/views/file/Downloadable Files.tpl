@@ -17,7 +17,7 @@
 <ul class="filelist">
     {foreach from=$files item=file}
         <li>
-            <a class="downloadfile" href="{link action="downloadfile" id=$file->id}" title="{$file->title}">{if $file->title!=""}{$file->title}{else}{$file->filename}{/if}</a>
+            <a class="downloadfile" href="{link action="downloadfile" id=$file->id}" title="{if $file->alt!=""}{$file->alt}{elseif $file->title!=""}{$file->title}{else}{$file->filename}{/if}">{if $file->title!=""}{$file->title}{else}{$file->filename}{/if}</a>
         </li>
     {/foreach}
 </ul>

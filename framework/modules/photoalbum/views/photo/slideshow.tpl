@@ -70,8 +70,15 @@
                         </div>
                     {/permissions}
                     {if !$config.hidetext}
+                        {if !empty($slide->title)}
+                            {$title = $slide->title}
+                        {elseif !empty($slide->expFile[0]->title)}
+                            {$title = $slide->expFile[0]->title}
+                        {else}
+                            {$title = ''}
+                        {/if}
                         <div class="bodycopy">
-                            <h2>{$slide->title}</h2>
+                            <h2>{$title}</h2>
                             {$slide->body}
                         </div>
                     {/if}
