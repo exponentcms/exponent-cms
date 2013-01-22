@@ -51,9 +51,9 @@ class filemanagercontrol extends formcontrol {
             $html .= ' | <small>'.gt('Limit').': <em class="limit">'.$this->limit.'</em></small>';
         }
         if ($this->count < $this->limit) {
-            $hide = ' class="hide"';
-        } else {
             $hide = '';
+        } else {
+            $hide = ' class="hide"';
         }
         $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="add" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'">'.gt('Add Files').'</a>';
         $html .= ' | <a class="add" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'">'.gt('Quick Add').'</a></span>';
@@ -386,9 +386,12 @@ class filemanagercontrol extends formcontrol {
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
                 "yui3mods"=>"1",
-//                "jquery"=>"1",
                 "content"=>$js,
-//                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
+             ));
+            expJavascript::pushToFoot(array(
+                "unique"=>"quickupload",
+    //                "jquery"=>"1",
+    //                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
                 "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
              ));
         return $html;
