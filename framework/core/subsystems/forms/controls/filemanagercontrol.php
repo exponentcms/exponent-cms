@@ -81,9 +81,9 @@ class filemanagercontrol extends formcontrol {
                     }
                 };
 
-                  var quickUpload = new AjaxUpload($('#quickaddfiles-".$name."'), {
-//                var quickUpload = new ss.SimpleUpload({
-//                        button: '#quickaddfiles-".$name."',
+//                  var quickUpload = new AjaxUpload($('#quickaddfiles-".$name."'), {
+                var quickUpload = new ss.SimpleUpload({
+                        button: '#quickaddfiles-".$name."',
                         action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
                         data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
                         responseType: 'json',
@@ -381,10 +381,10 @@ class filemanagercontrol extends formcontrol {
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
                 "yui3mods"=>"1",
-                "jquery"=>"1",
+//                "jquery"=>"1",
                 "content"=>$js,
-                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
-//                "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
+//                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
+                "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
              ));
         return $html;
     }
