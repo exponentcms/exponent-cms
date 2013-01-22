@@ -105,7 +105,15 @@ class colorcontrol extends formcontrol {
         ";
 
         $script = "
-            YUI(EXPONENT.YUI3_CONFIG).use('gallery-colorpicker', function (Y) {
+            YUI(EXPONENT.YUI3_CONFIG,{
+                gallery: 'gallery-2011.09.28-20-06',
+                modules: {
+                    'gallery-colorpicker-css': {
+                        fullpath: 'http://yui.yahooapis.com/gallery-2011.09.28-20-06/build/gallery-colorpicker/assets/gallery-colorpicker-core.css',
+                        type: 'css'
+                    },
+                }
+            }).use('gallery-colorpicker','gallery-colorpicker-css', function (Y) {
                 // create a picker and render it
                 var picker = new Y.ColorPicker();
                 picker.render('#picker-" . $this->id . "');
@@ -224,11 +232,16 @@ class colorcontrol extends formcontrol {
                 cursor:pointer;
             }
         ";
+//        expCSS::pushToHead(array(
+//    	    "unique"=>"colorpicker",
+//    	    "link"=>"http://yui.yahooapis.com/gallery-2011.09.14-20-40/build/gallery-colorpicker/assets/gallery-colorpicker-core.css",
+////            "css"=>$css
+//        ));
         expCSS::pushToHead(array(
-    	    "unique"=>"colorpicker",
-    	    "link"=>"http://yui.yahooapis.com/combo?gallery-2011.09.14-20-40/build/gallery-colorpicker/assets/gallery-colorpicker-core.css",
-            "css"=>$css
-        ));
+    	    "unique"=>"colorpicker1",
+    	    "link"=>$assets_path."colorpicker/colorpicker.css"
+    	    )
+    	);
 
         expJavascript::pushToFoot(array(
             "unique"  => 'zzcolor' . $this->id,
