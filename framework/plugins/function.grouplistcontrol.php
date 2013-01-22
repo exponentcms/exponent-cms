@@ -48,7 +48,8 @@ function smarty_function_grouplistcontrol($params, &$smarty) {
         }
     }
 
-    $control = new listbuildercontrol($selectedgroups, $allgroups, 5);
+    $size = (isset($params['size'])) ? $params['size'] : 5;
+    $control = new listbuildercontrol($selectedgroups, $allgroups, $size);
     if (!empty($params['class'])) $control->class = $params['class'];
     $name    = isset($params['name']) ? $params['name'] : "grouplist";
     $label   = isset($params['label']) ? $params['label'] : "";

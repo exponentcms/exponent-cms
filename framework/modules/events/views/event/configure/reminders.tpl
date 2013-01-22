@@ -30,7 +30,7 @@
 {group label="Email Recepients"|gettext}
 {userlistcontrol name="user_list" label="Users" items=$config.user_list}
 {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
-{control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list}
+{control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list size=5}
 {/group}
 {group label="Email Details"|gettext}
 {control type="text" name="email_title_reminder" label="Message Subject Prefix"|gettext value=$config.email_title_reminder}

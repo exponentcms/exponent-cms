@@ -27,7 +27,7 @@
     {control type="checkbox" name="select_email" label="Allow User to Select the Destination Email?"|gettext value=1 checked=$config.select_email}
     {userlistcontrol name="user_list" label="Users" items=$config.user_list}
     {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
-    {control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list}
+    {control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list size=5}
 {/group}
 {group label='Auto Respond Email'|gettext}
     {control type="checkbox" name="is_auto_respond" label="Auto Respond?"|gettext value=1 checked=$config.is_auto_respond}

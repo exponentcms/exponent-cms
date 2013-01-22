@@ -217,6 +217,7 @@ function smarty_function_control($params, &$smarty) {
                 $default = isset($params['values']) ? $params['values'] : array();
                 $source  = isset($params['source']) ? $params['source'] : null;
                 $control = new listbuildercontrol($default, $source);
+			    $control->process  = isset($params['process']) ? $params['process'] : null;
                 break;
             case "list":
                 $control = new listcontrol();

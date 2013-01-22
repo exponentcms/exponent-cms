@@ -120,6 +120,11 @@ input.radio {
 	margin-right:5px;
 }
 
+.module.forms input.checkbox {
+	/*float:left;*/
+	margin-top:12px;
+}
+
 .control .radiogroup-label {
     display:inline;
     white-space:normal;
@@ -146,9 +151,12 @@ select {
   border: 1px solid #bbb;
   box-sizing: border-box;
   display: inline-block;
-  margin-bottom: 5px;
+  margin-bottom: 5px; 
   border-radius: 4px;
   box-shadow: inset 0 1px 3px #ddd;
+}
+select {
+  margin-bottom: 0;
 }
 input:focus,
 textarea:focus,

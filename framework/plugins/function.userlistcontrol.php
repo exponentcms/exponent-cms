@@ -57,7 +57,8 @@ function smarty_function_userlistcontrol($params, &$smarty) {
         }
     }
 
-    $control = new listbuildercontrol($selectedusers, $allusers, 5);
+    $size = (isset($params['size'])) ? $params['size'] : 5;
+    $control = new listbuildercontrol($selectedusers, $allusers, $size);
     if (!empty($params['class'])) $control->class = $params['class'];
     $name    = isset($params['name']) ? $params['name'] : "userlist";
     $label   = isset($params['label']) ? $params['label'] : "";
