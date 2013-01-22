@@ -298,7 +298,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 
         // cat formatter
         var formatCat = function(elCell, oRecord, oColumn, sData) {
-            if (oRecord.getData().cat==null) {
+            if (oRecord.getData().cat==null || oRecord.getData().cat=="") {
                 elCell.innerHTML = '<em title="{/literal}{"Change Folder"|gettext}{literal}">{/literal}{"Root"|gettext}{literal}</em>';
             } else {
                 elCell.innerHTML = '<span title="{/literal}{"Change Folder"|gettext}{literal}">' + sData + '</span>';
@@ -401,8 +401,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                     callback(true, oldValue);
                 }
             },this);
-            var req = {action:"editAlt",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)};
-            ea.fetch(req);
+            ea.fetch({action:"editAlt",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
         };
 
         // request to change the cat
@@ -411,8 +410,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 column = this.getColumn(),
                 oldValue = this.value,
                 datatable = this.getDataTable();
-            var et = new EXPONENT.AjaxEvent();
-            et.subscribe(function (o) {
+            var ec = new EXPONENT.AjaxEvent();
+            ec.subscribe(function (o) {
                 if(o.replyCode<299) {
                     callback(true, o.data.cat);
                 } else {
@@ -420,7 +419,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                     callback(true, oldValue);
                 }
             },this);
-            et.fetch({action:"editCat",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
+            ec.fetch({action:"editCat",controller:"fileController",json:1,data:'&id='+record.getData().id + '&newValue=' + encodeURIComponent(newValue)});
         };
 
         // Column definitions
