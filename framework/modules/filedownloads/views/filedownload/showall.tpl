@@ -52,11 +52,11 @@
 </div>
 
 {if $config.show_player}
-    {script unique="flowplayersrc" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+    {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
     {/script}
 {/if}
 
-{script unique="filelistajax" yui3mods="1"}
+{script unique="filedownload" yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {

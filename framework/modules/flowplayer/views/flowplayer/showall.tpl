@@ -13,7 +13,12 @@
  *
  *}
 
+{uniqueid assign=flowplayer}
+
 {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+{/script}
+
+{script unique=$flowplayer}
 {literal}
 flowplayer("a.flowplayer-video", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
     {
