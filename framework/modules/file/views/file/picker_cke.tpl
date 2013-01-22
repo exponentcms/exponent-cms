@@ -109,7 +109,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     		{literal}
     	}
     
-
         batchBack = function () {
             window.opener.EXPONENT.batchAddFiles.{/literal}{$update}{literal}(batchIDs);
             window.close();
