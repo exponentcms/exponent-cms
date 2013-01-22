@@ -50,7 +50,8 @@ class filemanagercontrol extends formcontrol {
             $html .= ' | <small>'.gt('Limit').': <em class="limit">'.$this->limit.'</em></small>';
         }
         if ($this->count < $this->limit){
-            $html .= ' | <a class="add" href="#" id="addfiles-'.$name.'">'.gt('Add Files').'</a>';
+            $html .= ' <span id="adders-'.$name.'">| <a class="add" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'">'.gt('Add Files').'</a>';
+            $html .= ' | <a class="add" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'">'.gt('Quick Add').'</a></span>';
         }
         $html .= '</label></div>';
 
@@ -79,10 +80,35 @@ class filemanagercontrol extends formcontrol {
                         alert('".gt('Please disable your popup blocker')."!!');
                     }
                 };
-                
+
+                  var quickUpload = new AjaxUpload($('#quickaddfiles-".$name."'), {
+//                var quickUpload = new ss.SimpleUpload({
+//                        button: '#quickaddfiles-".$name."',
+                        action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
+                        data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
+                        responseType: 'json',
+                        name: 'uploadfile',
+//                        debug: true,
+                        onSubmit: function(file, ext){
+//                             if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
+//                                // extension is not allowed
+//                                return false;
+//                            }
+                        },
+                        onComplete: function(file, response){
+                            //Add uploaded file to list
+                            if(response.replyCode==200){
+                                EXPONENT.passBackFile".$name."(response.data);
+                            }
+                        },
+                    });
+//                );
+
                 var listenForAdder = function(){
                     var af = Y.one('#addfiles-".$name."');
                     af.on('click',openFilePickerWindow);
+                    var afq = Y.one('#quickaddfiles-".$name."');
+                    afq.on('click',quickUpload);
                 };
                 
                 var showEmptyLI = function(){
@@ -97,17 +123,12 @@ class filemanagercontrol extends formcontrol {
                 // remove the file from the list
                 fl.delegate('click',function(e){
                     e.target.ancestor('li').remove();
-                    
                     showFileAdder();
                 },'.delete');
                 
                 var showFileAdder = function() {
-                    var sf = Y.one('#addfiles-".$name."');
-                    if (Y.Lang.isNull(sf)) {
-                        var afl = Y.Node.create('<a class=\"add\" href=\"#\" id=\"addfiles-".$name."\">".gt('Add Files')."</a>');
-                        Y.one('#filemanager".$name." .hd').append(afl);
-                        listenForAdder();
-                    }
+                    Y.one('#adders-".$name."').removeClass('hide');
+                    listenForAdder();
                     filesAdded--;
                     if (filesAdded == 0) showEmptyLI();
                 }
@@ -262,25 +283,23 @@ class filemanagercontrol extends formcontrol {
                                 borderStyle:'0'
                             });
 
-                            
-                            var af = Y.one('#addfiles-".$name."');
-
                             if (filesAdded==0) {
                                 fl.one('.blank').remove();
                             }
 
                             filesAdded++
 
-                            if (!Y.Lang.isNull(af) && limit==filesAdded) {
-                                af.remove();
+                            if (limit==filesAdded) {
+                                Y.one('#adders-".$name."').addClass('hide');
                             }
+
                             j++;
                         }
                     })
                     // console.log(ids);
                 }
 
-                // calback function from open window
+                // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
 
                     if (Y.Lang.isArray(id)) {
@@ -308,9 +327,8 @@ class filemanagercontrol extends formcontrol {
                         html += filepic;
                         html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                         html += '<\/li>';
-                        
-                        htmln = Y.Node.create(html);                        
-                        
+                        htmln = Y.Node.create(html);
+
                         df.append(htmln);
 
                         var dd = new Y.DD.Drag({
@@ -328,17 +346,14 @@ class filemanagercontrol extends formcontrol {
                             borderStyle:'0'
                         });
 
-                        
-                        var af = Y.one('#addfiles-".$name."');
-
                         if (filesAdded==0) {
                             fl.one('.blank').remove();
                         }
 
                         filesAdded++
 
-                        if (!Y.Lang.isNull(af) && limit==filesAdded) {
-                            af.remove();
+                        if (limit==filesAdded) {
+                            Y.one('#adders-".$name."').addClass('hide');
                         }
 
                         //initDragables();
@@ -366,8 +381,10 @@ class filemanagercontrol extends formcontrol {
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
                 "yui3mods"=>"1",
+                "jquery"=>"1",
                 "content"=>$js,
-                "src"=>""
+                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
+//                "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
              ));
         return $html;
     }
