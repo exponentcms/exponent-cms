@@ -25,6 +25,7 @@ Added / Fixed / changed for 2.1.1
     -- new 'toggle' view to the portfolio module
     -- new 'flyout sidebar' view to navigation module for hard-coding in themes
     -- new 'vertical' login view
+  - now allows multiple files within a file download item; defaults to 1st attachment, but displays all attachments in show item view
   - adds new 'multi-add' feature to create multiple photo album items in one easy step
   - adds new 'inline' view to edit text module items directly on page via CKEditor v4
   - adds custom module phrase translation libraries feature
@@ -33,6 +34,7 @@ Added / Fixed / changed for 2.1.1
   - adds new site configuration setting to reverse the default logic of when module titles are displayed
   - updates file manager with 'virtual folder' grouping and date features to assist locating files
     -- also adds file manager bulk selection (add multiple files to an item all at once) and bulk delete
+    -- adds new QuickUpload feature to bypass file manager/file uploader for file selection
   - updates file uploader to allow html5 drag/drop support and some other user-friendly features
     -- images may be resized to a max width and files assigned to a virtual folder during upload
 

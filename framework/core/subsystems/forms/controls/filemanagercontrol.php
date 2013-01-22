@@ -29,6 +29,7 @@ class filemanagercontrol extends formcontrol {
 
     var $html;
     var $span;
+    var $description = "";
     
     static function name() { return "Manage Files"; }
     static function isSimpleControl() { return false; }
@@ -49,10 +50,13 @@ class filemanagercontrol extends formcontrol {
         if ($this->limit!=null){
             $html .= ' | <small>'.gt('Limit').': <em class="limit">'.$this->limit.'</em></small>';
         }
-        if ($this->count < $this->limit){
-            $html .= ' <span id="adders-'.$name.'">| <a class="add" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'">'.gt('Add Files').'</a>';
-            $html .= ' | <a class="add" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'">'.gt('Quick Add').'</a></span>';
+        if ($this->count < $this->limit) {
+            $hide = ' class="hide"';
+        } else {
+            $hide = '';
         }
+        $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="add" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'">'.gt('Add Files').'</a>';
+        $html .= ' | <a class="add" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'">'.gt('Quick Add').'</a></span>';
         $html .= '</label></div>';
 
         if (empty($files)) {
@@ -63,6 +67,7 @@ class filemanagercontrol extends formcontrol {
         $html .= $files;
         $html .= '</ul>';
         $html .= '<input type="hidden" name="'.$subTypeName.'" value="'.$subTypeName.'">';
+        if ($this->limit>1) $this->description .= " " . gt('Drag the files to change their sequence.');
         if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">" . $this->description . "</div><br>";
         $html .= '</div>';
         $js = "

@@ -88,8 +88,9 @@ class filedownloadController extends expController {
         }
         
         $fd = new filedownload($this->params['fileid']); 
-        
-        if (empty($fd->expFile['downloadable'][0]->id)) {
+        if (empty($this->params['filenum'])) $this->params['filenum'] = 0;
+
+        if (empty($fd->expFile['downloadable'][$this->params['filenum']]->id)) {
             flash('error', gt('There was an error while trying to download your file.  The file you were looking for could not be found.'));
             expHistory::back();
         }        
@@ -98,7 +99,7 @@ class filedownloadController extends expController {
         $fd->save();
         
         // this will set the id to the id of the actual file..makes the download go right.
-        $this->params['id'] = $fd->expFile['downloadable'][0]->id;
+        $this->params['id'] = $fd->expFile['downloadable'][$this->params['filenum']]->id;
         parent::downloadfile();        
     }
     

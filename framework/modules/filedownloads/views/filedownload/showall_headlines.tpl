@@ -70,7 +70,7 @@
                         {if $file->ext_file}
                             <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank"> </a>
                         {else}
-                            {icon img="download.png" action=downloadfile fileid=$file->id title="{'Download'|gettext}"}
+                            {icon img="download.png" action=downloadfile fileid=$file->id filenum=0 title="{'Download'|gettext}"}
                         {/if}
                     {/if}
                     <a {if !$config.quick_download}class="readmore" {/if}href="{link action=show title=$file->sef_url}" title="{$file->body|summarize:"html":"para"}">{$file->title}</a>
@@ -120,7 +120,7 @@
                     </div>
                 {/permissions}
                 {clear}
-                {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
+                {if $config.show_player && !$file->ext_file && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
                     <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
                         {if $file->expFile.preview[0] != ""}
                             {img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}
