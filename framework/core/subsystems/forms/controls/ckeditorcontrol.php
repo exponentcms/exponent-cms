@@ -95,7 +95,7 @@ class ckeditorcontrol extends formcontrol {
                     ['Maximize', 'ShowBlocks','-','About']";
             }
         }
-        if (empty($skin)) $skin = 'moono';
+        if (empty($skin)) $skin = 'kama';
         if (empty($scayt_on)) $scayt_on = 'true';
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
         if (empty($plugins)) $plugins = '';
