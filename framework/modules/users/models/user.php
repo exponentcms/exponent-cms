@@ -112,7 +112,7 @@ class user extends expRecord {
 		$obj = new stdClass();
 		$obj->id = $this->id;
 		$obj->last_login = time();
-		$db->updateObject($obj, 'user' ,null, 'uid');
+		$db->updateObject($obj, 'user' ,'id='.$obj->id, 'uid');
 		//$this->update(array('last_login'=>time()));
 	}
 
