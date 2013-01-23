@@ -35,8 +35,8 @@
         <h2>{"Existing"|gettext} {$usertype}</h2>
         <!--p>If you are an existing customer please log-in below to continue in the checkout process.</p-->
         {form action=login}
-        {control type="text" name="username" label=$label size=25}
-        {control type="password" name="password" label="Password"|gettext|cat:":" size=25}
+        {control type="text" name="username" label=$label size=25 required=1}
+        {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1}
         {control type="buttongroup" submit="Log In"|gettext}
         {/form}
         {br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>

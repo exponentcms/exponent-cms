@@ -49,8 +49,8 @@
         <form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
             <input type="hidden" name="action" value="login"/>
             <input type="hidden" name="controller" value="login"/>
-            <input type="text" class="text" name="username" id="login_username" size="15"/>
-            <input type="password" class="text" name="password" id="login_password" size="15"/>
+            <input type="text" class="text" name="username" id="login_username" size="15" required="1"/>
+            <input type="password" class="text" name="password" id="login_password" size="15" required="1"/>
             <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}">{'Login'|gettext}</button>
             <br/>
             {if $smarty.const.SITE_ALLOW_REGISTRATION == 1}

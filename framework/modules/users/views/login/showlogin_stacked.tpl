@@ -25,8 +25,8 @@
     {if $loggedin == false}
         <div>
             {form action=login}
-            {control type="text" name="username" label="Username"|gettext|cat:":" size=25}
-            {control type="password" name="password" label="Password"|gettext|cat:":" size=25}
+            {control type="text" name="username" label="Username"|gettext|cat:":" size=25 required=1}
+            {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1}
             {control type="buttongroup" submit="Login Now"|gettext|cat:"!"}
             {/form}
         </div>
