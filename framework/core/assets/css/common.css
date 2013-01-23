@@ -19,8 +19,8 @@ a img {
 	border:none;
 }
 
-.hide {
-    display:none;
+.hide, .hide a {
+    display:none!important;
 }
 
 /****************  common visitor-facing styles  ***********************/

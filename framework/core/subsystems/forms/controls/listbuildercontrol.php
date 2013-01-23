@@ -57,7 +57,7 @@ class listbuildercontrol extends formcontrol {
 		$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
 		$html .= '<table cellpadding="9" border="0" width="30" style="margin-bottom:0;"><tr><td width="10" style="border:none;">';
 		if (!$this->newList) {
-			$html .= "<div class=\"control-desc\">".gt('All').' '.$label."</div><select id='source_$name' size='".$this->size."'>";
+			$html .= "<div class=\"control-desc\">".gt('Available').' '.$label."</div><select id='source_$name' size='".$this->size."'>";
 			foreach ($this->source as $key=>$value) {
 				$html .= "<option value='$key'>$value</option>";
 			}

@@ -52,7 +52,7 @@
                             {icon class="view" action=showall id=$form->id text='View Data'|gettext}
                             {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}
                         {else}
-                            {'Not Saved'|gettext}
+                            {'Data Not Saved'|gettext}
                         {/if}
                     </td>
                     <td>
