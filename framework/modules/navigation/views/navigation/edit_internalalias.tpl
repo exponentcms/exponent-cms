@@ -42,10 +42,10 @@
                     {else}
                         {control type=dropdown name=parent label="Parent Page"|gettext items=navigationController::levelDropdownControlArray(0,0,array($section->id),($user->isAdmin() || $section->parent == 0),'manage') value=$section->parent}
                     {/if}
-                    {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
-                    {control type="dropdown" name="internal_id" label="Page"|gettext items=navigationController::levelDropDownControlArray(0,0,array(),false,'manage') value=$section->internal_id default=$smarty.const.SITE_DEFAULT_SECTION}
-                    {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1}
-                    {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1}
+                    {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1 description='Should menu links for this page open in a new window/tab?'|gettext}
+                    {control type="dropdown" name="internal_id" label="Page"|gettext items=navigationController::levelDropDownControlArray(0,0,array(),false,'manage') value=$section->internal_id default=$smarty.const.SITE_DEFAULT_SECTION description='Select a page to associate this with'|gettext}
+                    {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1 description='Should this page and menu item be visible to all users regardless of permissions?'|gettext}
+                    {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
                 </div>
             </div>
         </div>
