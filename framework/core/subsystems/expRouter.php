@@ -688,7 +688,7 @@ class expRouter {
         global $db;
         if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
-                $section = $this->url_style=="sef" ? $this->getPageByName($_REQUEST['section']) : intval($_REQUEST['section']) ;
+                $section = $this->url_style=="sef" ? $this->getPageByName($_REQUEST['section'])->id : intval($_REQUEST['section']) ;
             } else {
                 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             }
@@ -705,8 +705,8 @@ class expRouter {
     public function getSectionObj($section) {
         global $db;
         if ($section == "*") {
-            $action = $this->params['controller']."Controller";
-            $sectionObj = call_user_func($action."::getSection",$this->params);
+            $controller = expModules::getModuleClassName($this->params['controller']);
+            $sectionObj = call_user_func($controller."::getSection",$this->params);
         } else {
             $sectionObj = $db->selectObject('section','id='. intval($section));
         }
