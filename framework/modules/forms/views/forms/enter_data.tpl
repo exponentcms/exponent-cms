@@ -54,7 +54,7 @@
             {/if}
         {/if}
         <div class="bodycopy">
-            {if empty($form)}
+            {if empty($form) && $permissions.configure}
                 {permissions}
                     <div class="module-actions">
                         <div class="msg-queue notice" style="text-align:center">
