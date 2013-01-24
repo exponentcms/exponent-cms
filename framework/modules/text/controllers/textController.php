@@ -52,8 +52,8 @@ class textController extends expController {
         	$level = expSession::get('uilevel');
         }
         $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
+        if (empty($settings->name)) $settings = new stdClass();
         if (empty($settings->data)) {
-            $settings = new stdClass();
             $settings->data = "
                 ['Source','-','Preview','-','Templates'],
                 ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
@@ -69,7 +69,7 @@ class textController extends expController {
                 ['TextColor','BGColor'],
                 ['Maximize', 'ShowBlocks','-','About']";
         }
-        if (empty($settings->skin)) $settings->skin = 'moono';
+        if (empty($settings->skin)) $settings->skin = 'kama';
         if (empty($settings->scayt_on)) $settings->scayt_on = 'true';
         if (empty($settings->paste_word)) {
             $settings->paste_word = 'forcePasteAsPlainText : true,';
