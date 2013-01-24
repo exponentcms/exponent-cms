@@ -99,9 +99,9 @@ class expModules {
         
         foreach ($controllers as $module) {
     		if (class_exists($module)) {
-    			$mod = new $module();
+//    			$mod = new $module();
+                $mod = self::getController($module);
     			$modstate = $db->selectObject("modstate","module='$module'");
-
     			$moduleInfo[$module] = new stdClass();
     			$moduleInfo[$module]->class = $module;
     			$moduleInfo[$module]->name = $mod->name();
@@ -125,15 +125,15 @@ class expModules {
 
 	    $controllers = array();
 	    foreach($available_controllers as $name=>$path) {
-	        $controller = new $name();
-	        if (!empty($controller->useractions)) $controllers[] = $name;
+	        $controller = new $name();  // we want both models and controllers to filter out models
+	        if (!empty($controller->useractions)) $controllers[] = self::getControllerName($name);
 	    }
 
 	    return $controllers;
 	}
 
     /**
-     * Returns list of install/used controllers
+     * Returns list of installed/used controllers
      *
      */
 	public static function listInstalledControllers($type=null, $loc=null) {
@@ -166,7 +166,7 @@ class expModules {
 	}
 
     /**
-     * Returns controller object
+     * Returns new controller object
      *
      * @param string $controllername
      *
@@ -239,12 +239,47 @@ class expModules {
      *
      * @return null|string
      */
-    public static function getModuleName($modulename) {
+    public static function getModuleBaseName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
         } else {
             return (substr($modulename, -6) == 'module') ? substr($modulename, 0, -6) : $modulename;
+        }
+   	}
+
+    /**
+     * Returns the full controller or module class name with the 'Controller' or 'module' suffix
+     * as needed to instantiate the class
+     *
+     * @param $modulename
+     *
+     * @return null|string
+     */
+    public static function getModuleClassName($modulename) {
+   	    if (empty($modulename)) return null;
+        if (self::controllerExists($modulename)) {
+            return (substr($modulename, -10) == 'Controller') ? $modulename : $modulename.'Controller';
+        } else {
+            return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
+        }
+   	}
+
+    /**
+     * Returns the controller sans the 'Controller' or module name with 'module' suffix
+     * this is how we store them in the db as 2.0/old school
+     * and in most cases is the name of the model/data
+     *
+     * @param $modulename
+     *
+     * @return null|string
+     */
+    public static function getModuleName($modulename) {
+   	    if (empty($modulename)) return null;
+        if (self::controllerExists($modulename)) {
+            return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
+        } else {
+            return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
         }
    	}
 
@@ -285,7 +320,8 @@ class expModules {
 	    $ctls = array();  // 2.0 modules
 	    foreach($modulestates as $state) {
 	        if (self::controllerExists($state->module)) {
-	            $controller = new $state->module();
+//	            $controller = new $state->module();
+                $controller = self::getController($state->module);
 	            if (!empty($controller->useractions)) {
 		            $ctls[] = $state->module;
 	            }
