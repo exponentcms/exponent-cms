@@ -1,6 +1,6 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 CKEditor,4.0.1,ckeditor.com,4.0.1,
-FlowPlayer,3.2.15,flowplayer.org,3.2.15./5.3.0,
+FlowPlayer,3.2.15,flowplayer.org,3.2.15./5.3.1,
 Swift,4.3.0,swiftmailer.org,4.3.0,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
@@ -9,7 +9,7 @@ Smarty,3.1.13,smarty.net,3.1.13,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.1.5,github.com/mrclay/minify,2.1.5,
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.8.0,developer.yahoo.com/yui/3,3.8.0,
+YUI3,3.8.0,developer.yahoo.com/yui/3,3.8.1,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11,code.google.com/p/recaptcha,1.11,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
@@ -22,8 +22,9 @@ dompdf,6.0b3,code.google.com/p/dompdf,6.0b3,patched to display our images
 iCalCreator,2.16.6,kigkonsult.se/iCalcreator,2.16.6,
 lessphp,0.38,leafo.net/lessphp,0.38,
 jQuery,1.9.0,jquery.com,1.9.0,
-jQueryUI,1.9.2,jqueryui.com,1.9.2,
+jQueryUI,1.9.2,jqueryui.com,1.10.0,
 Twitter-Bootstrap,,twitter.github.com/bootstrap,2.2.2,"patched bootstrap.less for & includes swatches, fontawesome"
-Font-Awesome,,fortawesome.github.com/Font-Awesome,3.0.1,
+Font-Awesome,,fortawesome.github.com/Font-Awesome,3.0.2,
 Adminer,3.6.2,www.adminer.org,3.6.2,
 html5shiv,,code.google.com/p/html5shiv/,,
+SimpleAjaxUploader,Nov-12,https://github.com/LPology/Simple-Ajax-Uploader,Nov-12,
