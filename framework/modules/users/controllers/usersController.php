@@ -925,8 +925,8 @@ class usersController extends expController {
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
         	$users = array();
-        	$modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;
-        	$modclass = $modulename;
+//        	$modclass = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;  //FIXME long controller name
+            $modclass = expModules::getModuleClassName(($loc->mod));
         	$mod = new $modclass();
         	$perms = $mod->permissions($loc->int);
         	$have_users = 0;
@@ -988,7 +988,8 @@ class usersController extends expController {
                	'page'=>$page,
                	'perms'=>$perms,
                 'loc'=>$loc,
-                'title'=>($modulename != 'navigationController' || ($modulename == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modulename != 'containermodule' ? gt('module') : '').' ' : gt('Page'),
+//                'title'=>($modclass != 'navigationController' || ($modclass == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modclass != 'containermodule' ? gt('module') : '').' ' : gt('Page'),
+                'title'=>($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name().' '.($loc->mod != 'container2' ? gt('module') : '').' ' : gt('Page'),
             ));
         } else {
         	echo SITE_403_HTML;
@@ -1024,8 +1025,8 @@ class usersController extends expController {
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
         	$users = array(); // users = groups
-            $modulename = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;
-        	$modclass = $modulename;
+//        	$modclass = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;  //FIXME long controller name
+            $modclass = expModules::getModuleClassName($loc->mod);
         	$mod = new $modclass();
         	$perms = $mod->permissions($loc->int);
 
@@ -1084,7 +1085,8 @@ class usersController extends expController {
             	'users'=>$users,
             	'page'=>$page,
             	'perms'=>$perms,
-                'title'=>($modulename != 'navigationController' || ($modulename == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modulename != 'containermodule' ? gt('module') : '').' ' : gt('Page'),
+                'loc'=>$loc,
+                'title'=>($modclass != 'navigationController' || ($modclass == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modclass != 'containermodule' ? gt('module') : '').' ' : gt('Page'),
             ));
         } else {
         	echo SITE_403_HTML;
