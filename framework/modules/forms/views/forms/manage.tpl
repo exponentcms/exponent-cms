@@ -64,6 +64,8 @@
                         </div>
                     </td>
                 </tr>
+            {foreachelse}
+                <tr><td colspan=3>{'No Forms were found in the system.'|gettext}</td></tr>
             {/foreach}
         </tbody>
     </table>

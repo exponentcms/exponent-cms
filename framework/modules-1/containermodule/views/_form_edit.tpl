@@ -49,6 +49,8 @@
             {*{control type=text size=31 label="Module Title"|gettext name="title" value=$container->title}*}
             {control type=text size=31 label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
 
+            {control type="checkbox" name="is_private" flip=1 label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
+
             {control type=dropdown id="modcntrol" name=modcntrol items=$modules includeblank="Select a Module"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
             {if $is_edit}{control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}{/if}
 

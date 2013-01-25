@@ -48,7 +48,7 @@
     {$desc_str = 'The Module Title is displayed by default.'|gettext}
 {/if}
 {control type="checkbox" name="hidemoduletitle" label=$title_str value=1 checked=$config.hidemoduletitle description=$desc_str}
-
+{control type="checkbox" name="is_private" label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
 {if !$hcview}
 {control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}
 {control type=dropdown id="actions" name=actions items=$actions value=$container->action label="Content Action"|gettext}
@@ -66,7 +66,7 @@
         {elseif file_exists($modulefileview)}
             {include file=$modulefileview}
         {else}
-            <p>{'There Are No View Specific Settings'|gettext}</p>
+            <p>{'There Are No Display Specific Settings'|gettext}</p>
         {/if}
     </div>
 {/group}

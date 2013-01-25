@@ -364,7 +364,7 @@ class expCore {
 		$relpath = '';
 		if ($type == "modules" || $type == 'profileextension') {
             $relpath .= "framework/modules-1/";
-        } elseif($type == "controllers") {
+        } elseif($type == "Controller" || $type=='controllers') {
             $relpath .= "framework/views/";
         } elseif($type == "forms") {
             if ($name == "event/email") {
@@ -374,23 +374,21 @@ class expCore {
             } else {
                 $relpath .= "framework/core/subsystems/forms/";
             }
-        } elseif($type == "themes") {
+        } elseif($type == "themes" || $type == "Control" || $type == "Theme") {
             $relpath .= "themes/";
         } elseif($type == "models") {
             $relpath .= "models/";
         } elseif($type == "controls") {
 //			$relpath .= "themes/";
             $relpath .= "external/";
-        } elseif($type == "Control") {
-            $relpath .= "themes/";
+//        } elseif($type == "Control") {
+//            $relpath .= "themes/";
         } elseif($type == "Form") {
             $relpath .= "framework/core/subsystems/forms/";
         } elseif($type == "Module") {
             $relpath .= "modules/";
-        } elseif($type == "Controller" || $type=='controllers') {
-            $relpath .= "framework/views/";
-        } elseif($type == "Theme") {
-            $relpath .= "themes/";
+//        } elseif($type == "Theme") {
+//            $relpath .= "themes/";
         }
 
 		// for later use for searching in lib/common
@@ -407,7 +405,7 @@ class expCore {
         } elseif($subtype == "js") {
             $relpath2 .= "js/";
         } elseif($subtype == "tpl") {
-            if ($type == 'controllers' || $type == 'Controller') {
+            if ($type == 'Controller' || $type == 'controllers') {
                 //do nothing
             } elseif ($name == "forms/calendar") {  //TODO  forms/calendar only used by calendarmodule
                 $relpath2 .= "forms/calendar/";

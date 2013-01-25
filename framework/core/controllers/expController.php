@@ -893,6 +893,7 @@ abstract class expController {
                 $container->title = $this->params['moduletitle'];
                 $container->action = $this->params['actions'];
                 $container->view = $this->params['views'];
+                $container->is_private = $this->params['is_private'];
                 $db->updateObject($container, 'container');
                 expSession::clearAllUsersSessionCache('containermodule');
             }
@@ -902,6 +903,7 @@ abstract class expController {
             unset($this->params['actions']);
             unset($this->params['views']);
             unset($this->params['actions']);
+            unset($this->params['is_private']);
         }
 
         // create a new RSS object if enable is checked.

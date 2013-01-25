@@ -235,7 +235,7 @@ $timer = null;
 $order = null;
 
 /**
- * Main module display logic/routine
+ * Main module display logic/routine for MVC modules
  *
  * @param array $parms
  * @return bool|mixed|string
@@ -554,7 +554,7 @@ function find_config_views($paths=array(), $excludes=array()) {
     return $views;
 }
 
-function get_template_for_action($controller, $action, $loc) {
+function get_template_for_action($controller, $action, $loc=null) {
     // set paths we will search in for the view
     $basepath = $controller->viewpath.'/'.$action.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
@@ -596,9 +596,10 @@ function get_template_for_action($controller, $action, $loc) {
  */
 function get_action_views($ctl, $action, $human_readable) {
     // setup the controller
-    $controllerName = expModules::getControllerClassName($ctl);
-    $controller = new $controllerName();
-    
+//    $controllerName = expModules::getControllerClassName($ctl);
+//    $controller = new $controllerName();
+    $controller = expModules::getController($ctl);
+
     // set path information 
     $paths = array(
         $controller->viewpath,

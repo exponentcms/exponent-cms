@@ -345,7 +345,7 @@ class expRecord {
         global $db;
         if (!empty($this->rank)) {
             $next_prev = $direction == 'up' ? $this->rank - 1 : $this->rank + 1;
-            $where .= empty($this->location_data) ? null : "location_data='" . $this->location_data . "'" . $this->grouping_sql;
+            $where .= empty($this->location_data) ? null : (!empty($where) ? " AND " : '') . "location_data='" . $this->location_data . "'" . $this->grouping_sql;
             $db->switchValues($this->tablename, 'rank', $this->rank, $next_prev, $where);
         }
     }
@@ -529,7 +529,7 @@ class expRecord {
             if (property_exists($this, 'poster')) $this->poster = empty($this->poster) ? $user->id : $this->poster;
             // fill in the rank field if it exist
             if (property_exists($this, 'rank')) {
-                if (empty($this->rank)) {
+                if (!isset($this->rank)) {
                     $where = "1 ";
                     $where .= empty($this->location_data) ? null : "AND location_data='" . $this->location_data . "' ";
                     //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";

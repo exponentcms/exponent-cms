@@ -56,13 +56,12 @@ class expPermissions {
 				}
 			}
 			// Retrieve all of the implicit user permissions (by virtue of subscriptions).
-			foreach ($db->selectObjects('subscriptions_users','user_id='.$user->id) as $memb) {
-				foreach ($db->selectObjects('subscriptionpermission','subscription_id=' . $memb->subscription_id) as $obj) {
-					$exponent_permissions_r[$obj->module][$obj->source][$obj->internal][$obj->permission] = 1;
-				}
-			}
-		}
-
+//			foreach ($db->selectObjects('subscriptions_users','user_id='.$user->id) as $memb) {
+//				foreach ($db->selectObjects('subscriptionpermission','subscription_id=' . $memb->subscription_id) as $obj) {
+//					$exponent_permissions_r[$obj->module][$obj->source][$obj->internal][$obj->permission] = 1;
+//				}
+//			}
+        }
 		expSession::set('permissions',$exponent_permissions_r);
 
 	}
@@ -85,10 +84,11 @@ class expPermissions {
 	public static function check($permission,$location) {
 		global $exponent_permissions_r, $user, $db, $module_scope;
 
-        if (method_exists(expModules::getController($location->mod), 'checkPermissions')){
-            $modname = expModules::getController($location->mod);
-            $mod =  new $modname;
-            if ($mod->checkPermissions($permission,$location)) return true;
+        if (expModules::controllerExists($location->mod)) {
+            $mod = expModules::getController($location->mod);
+            if (method_exists($mod, 'checkPermissions')){
+                if ($mod->checkPermissions($permission,$location)) return true;
+            }
         }
 
 		if (!empty($user->id)) {
@@ -151,7 +151,7 @@ class expPermissions {
                     return true;
                 }
             }
-         }
+        }
         if (@$module_scope['error'] === true) {
             $module_scope['error'] = false;
             return false;

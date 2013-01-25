@@ -208,7 +208,7 @@ class upgrade_calendar extends upgradescript {
         $ms = $db->selectObject('modstate',"module='calendarmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='eventController'")) {
             $ms->module = 'eventController';
-            $db->insertObject($ms,'modstate');
+            $db->insertObject($ms,'modstate',"module='calendarmodule'",'module');
         }
 
  		// delete calendarmodule tables

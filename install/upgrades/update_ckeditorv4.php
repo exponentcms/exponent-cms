@@ -63,7 +63,7 @@ class update_ckeditorv4 extends upgradescript {
            $fixed = 0;
            $settings = $db->selectObject('htmleditor_ckeditor','skin!="kama"');  // only valid v3 skin still in v4 is 'kama'
            if (!empty($settings)) foreach ($settings as $setting) {
-               $setting->skin = 'moono';  // default skin for v4
+               $setting->skin = 'kama';  // exp default skin for v4
                $db->updateObject($setting,'htmleditor_ckeditor');
                $fixed++;
            }

@@ -111,7 +111,7 @@ function smarty_function_ddrerank($params, &$smarty) {
             $stringlen = 40;
             foreach ($params['items'] as $item) {
                 if (!empty($params['module'])) {
-                    if ($params['module'] == 'formbuilder_control') {
+                    if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control') {
                         $control = expUnserialize($item->data);
                         $ctrl = new $control();
                         $name = $ctrl->name();

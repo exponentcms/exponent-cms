@@ -62,3 +62,12 @@
     width:140px;
     padding:0 15px;
 }
+
+.containermodule.edit .control .control-desc {
+    margin-left: 170px;
+}
+
+#moduleViewConfig h2 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}

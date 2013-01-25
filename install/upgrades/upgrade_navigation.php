@@ -121,7 +121,7 @@ class upgrade_navigation extends upgradescript {
         $ms = $db->selectObject('modstate',"module='navigationmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='navigationController'")) {
             $ms->module = 'navigationController';
-            $db->insertObject($ms,'modstate');
+            $db->insertObject($ms,'modstate',"module='navigationmodule'",'module');
         }
 
         // delete old navigationmodule assoc files (moved or deleted)

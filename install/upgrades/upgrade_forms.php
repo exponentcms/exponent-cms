@@ -163,7 +163,7 @@ class upgrade_forms extends upgradescript {
         $ms = $db->selectObject('modstate',"module='formmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='formsController'")) {
             $ms->module = 'formsController';
-            $db->insertObject($ms,'modstate');
+            $db->insertObject($ms,'modstate',"module='formmodule'",'module');
         }
 
  		// delete formmodule tables
