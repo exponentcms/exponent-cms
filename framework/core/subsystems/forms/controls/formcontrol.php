@@ -83,7 +83,7 @@ class formcontrol {
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {
-            $labeltag = '<span class="required" title="'.gt('This entry is required').'">*</span>' . $label;
+            $labeltag = '<span class="required" title="'.gt('This entry is required').'">* </span>' . $label;
         } else {
             $labeltag = $label;
         }
