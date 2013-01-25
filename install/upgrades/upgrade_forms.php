@@ -60,17 +60,17 @@ class upgrade_forms extends upgradescript {
 		// convert each formmodule reference to an formsController reference
 	    $srs = $db->selectObjects('sectionref',"module = 'formmodule'");
 	    foreach ($srs as $sr) {
-		    $sr->module = 'formsController';
+		    $sr->module = 'forms';
 		    $db->updateObject($sr,'sectionref');
 	    }
 	    $gps = $db->selectObjects('grouppermission',"module = 'formmodule'");
         foreach ($gps as $gp) {
-	        $gp->module = 'formsController';
+	        $gp->module = 'forms';
 	        $db->updateObject($gp,'grouppermission',"module = 'formmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'formmodule'");
         foreach ($ups as $up) {
-            $up->module = 'formsController';
+            $up->module = 'forms';
             $db->updateObject($up,'userpermission',"module = 'formmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
@@ -82,7 +82,7 @@ class upgrade_forms extends upgradescript {
             $oldreport = $db->selectObject('formbuilder_report', "location_data='".$cn->internal."'");
 
             $cloc = expUnserialize($cn->internal);
-      	    $cloc->mod = 'formsController';
+      	    $cloc->mod = 'forms';
       		$cn->internal = serialize($cloc);
             $cn->action = 'enter_data';
             $cn->view = 'enter_data';
@@ -150,8 +150,9 @@ class upgrade_forms extends upgradescript {
                 // now save/attach the expConfig
                 if ($newconfig->config != null) {
                     $newmodinternal = expUnserialize($cn->internal);
-                    $newmod = explode("Controller",$newmodinternal->mod);
-                    $newmodinternal->mod = $newmod[0];
+//                    $newmod = explode("Controller",$newmodinternal->mod);
+//                    $newmodinternal->mod = $newmod[0];
+                    $newmodinternal->mod = expModules::getModuleName($newmodinternal->mod);
                     $newconfig->location_data = $newmodinternal;
                     $newconfig->save();
                 }
@@ -162,7 +163,7 @@ class upgrade_forms extends upgradescript {
         // need to activate new forms module modstate if old one was active, leave old one intact
         $ms = $db->selectObject('modstate',"module='formmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='formsController'")) {
-            $ms->module = 'formsController';
+            $ms->module = 'forms';
             $db->insertObject($ms,'modstate',"module='formmodule'",'module');
         }
 

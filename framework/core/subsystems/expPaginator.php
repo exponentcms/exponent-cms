@@ -323,7 +323,7 @@ class expPaginator {
 		//if (empty($page_params['src']) && isset($params['src'])) $page_params['src'] = $params['src'];
 		if (!empty($this->controller)) {
 		    unset($page_params['module']);
-		    $page_params['controller'] = str_replace("Controller","",$this->controller);
+		    $page_params['controller'] = expModules::getModuleName($this->controller);
 		} else {
             $page_params['controller'] = $mod;  // we can't be passing an empty controller or module to the router
         }

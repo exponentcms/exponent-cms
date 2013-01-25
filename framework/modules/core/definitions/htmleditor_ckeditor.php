@@ -25,19 +25,33 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
-	'module'=>array(
+	'name'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
-	'source'=>array(
+	'skin'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
-	'internal'=>array(
+	'data'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'section'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	'refcount'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+		DB_FIELD_LEN=>10000),
+	'plugins'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>255),
+	'scayt_on'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	'paste_word'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	'active'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'stylesset'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>255),
+    'formattags'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>255),
+    'fontnames'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>255),
 );
 
 ?>

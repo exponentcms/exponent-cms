@@ -123,7 +123,7 @@ class fix_database extends upgradescript {
 				$newSecRef->is_original = 1;
 				if ($container->external != "N;") {
 					$eloc = expUnserialize($container->external);
-					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
+					$section = $db->selectObject('sectionref',"module='container2' AND source='".$eloc->src."'");
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
 						$db->insertObject($newSecRef,"sectionref");

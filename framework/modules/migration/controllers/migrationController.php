@@ -2510,7 +2510,7 @@ class migrationController extends expController {
 		foreach ($sectionrefs as $sectionref) {
 			if ($old_db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
 			// There is no original for this sectionref so change it to the original
-				$sectionref->is_original = 1;
+//				$sectionref->is_original = 1;
 				$old_db->updateObject($sectionref,"sectionref");
 				print_r("Fixed: ".$sectionref->module." - ".$sectionref->source."<br>");
 			}

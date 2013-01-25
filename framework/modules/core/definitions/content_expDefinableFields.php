@@ -23,20 +23,27 @@
 return array(
 	'id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
-	'module'=>array(
+        DB_PRIMARY=>true,
+        DB_INCREMENT=>false),
+	'expdefinablefields_id'=>array(
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_PRIMARY=>false,
+        DB_INCREMENT=>false),
+	'content_id'=>array(
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_PRIMARY=>false,
+        DB_INCREMENT=>false),
+	'content_type'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'source'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'internal'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'section'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	'refcount'=>array(
+		DB_FIELD_LEN=>50,
+		DB_PRIMARY=>false,
+		DB_INCREMENT=>false),
+	'subtype'=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>50,
+        DB_PRIMARY=>false,
+        DB_INCREMENT=>false),
+	'rank'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );
 

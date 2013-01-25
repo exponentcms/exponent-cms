@@ -48,9 +48,12 @@ $router->routeRequest();
 
 // initialize this users cart if they have ecom installed.
 // define whether or not ecom is enabled
-if ($db->selectValue('modstate', 'active', 'module="storeController"') ||
-  $db->selectValue('modstate', 'active', 'module="eventregistrationController"') ||
-  $db->selectValue('modstate', 'active', 'module="donationController"') || FORCE_ECOM) {
+//if ($db->selectValue('modstate', 'active', 'module="storeController"') ||
+//  $db->selectValue('modstate', 'active', 'module="eventregistrationController"') ||
+//  $db->selectValue('modstate', 'active', 'module="donationController"') || FORCE_ECOM) {
+if ($db->selectValue('modstate', 'active', 'module="store"') ||
+  $db->selectValue('modstate', 'active', 'module="eventregistration"') ||
+  $db->selectValue('modstate', 'active', 'module="donation"') || FORCE_ECOM) {
     define('ECOM',1);
     $order = order::getUserCart();
     // global store config

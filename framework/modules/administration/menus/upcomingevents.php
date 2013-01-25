@@ -21,12 +21,12 @@ if (!defined('EXPONENT')) exit('');
 global $db, $user, $router;
 
 if (!$user->isAdmin()) {
-    $viewregperms = $db->selectValue('userpermission','uid',"uid='".$user->id."' AND module=='eventregistrationController' AND permission!='view_registrants'");
+    $viewregperms = $db->selectValue('userpermission','uid',"uid='".$user->id."' AND module=='eventregistration' AND permission!='view_registrants'");
     if (!$viewregperms) {
         $groups = $user->getGroupMemberships();
         foreach ($groups as $group) {
             if (!$viewregperms) {
-                $viewregperms = $db->selectValue('grouppermission','gid',"gid='".$group->id."' AND module=='eventregistrationController' AND permission!='view_registrants'");
+                $viewregperms = $db->selectValue('grouppermission','gid',"gid='".$group->id."' AND module=='eventregistration' AND permission!='view_registrants'");
             } else {
                 break;
             }

@@ -1,5 +1,4 @@
 <?php
-
 ##################################################
 #
 # Copyright (c) 2004-2013 OIC Group, Inc.
@@ -17,27 +16,16 @@
 ##################################################
 
 /**
- * @subpackage Definitions
+ * This is the class expDefinableField
+ *
+ * @subpackage Models
  * @package Core
  */
-return array(
-	'id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
-	'module'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'source'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'internal'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'section'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	'refcount'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
-);
+class expDefinableField extends expRecord {
+	public $table = 'expDefinableFields';
+	public $attachable_table = 'content_expDefinableFields';
+    protected $attachable_item_types = array();
+	
+}
 
 ?>

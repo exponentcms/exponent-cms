@@ -632,7 +632,6 @@ abstract class expController {
         }
 
         redirect_to($this->params['lastpage']);
-
     }
 
     /**
@@ -660,7 +659,8 @@ abstract class expController {
 
         if (empty($this->params['hcview'])) {
             $containerloc = new stdClass();
-            $containerloc->mod = expModules::getControllerClassName($this->loc->mod);
+//            $containerloc->mod = expModules::getControllerClassName($this->loc->mod);  //FIXME long controller name
+            $containerloc->mod = expModules::getModuleName($this->loc->mod);
             $containerloc->src = $this->loc->src;
             $containerloc->int = '';
             $container = $db->selectObject('container', "internal='" . serialize($containerloc) . "'");
@@ -895,7 +895,7 @@ abstract class expController {
                 $container->view = $this->params['views'];
                 $container->is_private = $this->params['is_private'];
                 $db->updateObject($container, 'container');
-                expSession::clearAllUsersSessionCache('containermodule');
+                expSession::clearAllUsersSessionCache('containers');
             }
             unset($this->params['container_id']);
             unset($this->params['moduletitle']);

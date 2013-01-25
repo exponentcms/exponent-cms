@@ -26,7 +26,7 @@
 class expCore {
 
 	/**
-	 * Return an exponent location object
+	 * Return an exponent location object with corrected module name
 	 *
 	 * @static
 	 * @param null $mod
@@ -36,7 +36,7 @@ class expCore {
 	 */
 	public static function makeLocation($mod=null,$src=null,$int=null) {
 		$loc = new stdClass();
-		$loc->mod = !empty($mod) ? $mod : '';
+		$loc->mod = !empty($mod) ? expModules::getModuleName($mod) : '';  // this will remove 'Controller' or add 'module'
 		$loc->src = !empty($src) ? $src : '';
 		$loc->int = !empty($int) ? strval(intval($int)) : '';
 		return $loc;
@@ -164,77 +164,6 @@ class expCore {
         }
         return $sef_name;
     }
-
-	/** exdoc
-	 * Decrement the reference counts for a given location.  This is used by the Container Module,
-	 * and probably won't be needed by 95% of the code in Exponent.
-	 *
-	 * @param object $loc The location object to decrement references for.
-	 * @param integer $section The id of the section that the location exists in.
-	 * @node Subsystems:expCore
-	 */
-	public static function decrementLocationReference($loc,$section) {
-		global $db;
-		$oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-		$oldSecRef->refcount -= 1;
-		$db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-	}
-
-	/** exdoc
-	 * Increment the reference counts for a given location.  This is used by the Container Module,
-	 * and probably won't be needed by 95% of the code in Exponent.
-	 *
-	 * @param object $loc The location object to increment references for.
-	 * @param integer $section The id of the section that the location exists in.
-	 * @node Subsystems:expCore
-	 */
-	public static function incrementLocationReference($loc,$section) {
-		global $db;
-	//	 $newLocRef = $db->selectObject("locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
-	//	 $is_new = false; // For the is_original sectionref attribute
-	//	 if ($newLocRef != null) {
-	//		 // Pulled an existing source.  Update refcount
-	//		 $newLocRef->refcount += 1;
-	//		 $db->updateObject($newLocRef,"locationref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
-	//	 } else {
-	//		 $is_new = true;
-	//		 // New source.  Populate reference
-	//		 $newLocRef->module   = $loc->mod;
-	//		 $newLocRef->source   = $loc->src;
-	//		 $newLocRef->internal = $loc->int;
-	//		 $newLocRef->refcount = 1;
-	//		 $db->insertObject($newLocRef,"locationref");
-	//
-	//		 // Go ahead and assign permissions on contained module.
-	//		 if ($loc->mod != 'navigationController' && $loc->mod != 'administrationmodule') {
-	//			 //$perms = call_user_func(array($loc->mod,"permissions"));
-	//			 $mod = new $loc->mod();
-	//			 $perms = $mod->permissions();
-	//			 global $user;
-	//			 foreach (array_keys($perms) as $perm) {
-	//				 expPermissions::grant($user,$perm,$loc);
-	//			 }
-	//		 }
-	//		 expPermissions::triggerSingleRefresh($user);
-	//	 }
-
-		$newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-		if ($newSecRef != null) {
-			// Pulled an existing source for this section.  Update refcount
-			$newSecRef->refcount += 1;
-			$db->updateObject($newSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-		} else {
-			// New source for this section.  Populate reference
-			$newSecRef->module   = $loc->mod;
-			$newSecRef->source   = $loc->src;
-			$newSecRef->internal = $loc->int;
-			$newSecRef->section = $section;
-			$newSecRef->refcount = 1;
-	//		$newSecRef->is_original = ($is_new ? 1 : 0);
-			$newSecRef->is_original = 1;
-			$db->insertObject($newSecRef,"sectionref");
-		}
-	}
 
 	/** exdoc
 	 * This function checks a full URL against a set of

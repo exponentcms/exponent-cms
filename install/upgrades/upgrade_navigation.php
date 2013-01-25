@@ -63,17 +63,17 @@ class upgrade_navigation extends upgradescript {
 		// convert each navigationmodule reference to a navigation Controller reference
 	    $srs = $db->selectObjects('sectionref',"module = 'navigationmodule'");
 	    foreach ($srs as $sr) {
-		    $sr->module = 'navigationController';
+		    $sr->module = 'navigation';
 		    $db->updateObject($sr,'sectionref');
 	    }
 	    $gps = $db->selectObjects('grouppermission',"module = 'navigationmodule'");
         foreach ($gps as $gp) {
-	        $gp->module = 'navigationController';
+	        $gp->module = 'navigation';
 	        $db->updateObject($gp,'grouppermission',"module = 'navigationmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'navigationmodule'");
         foreach ($ups as $up) {
-            $up->module = 'navigationController';
+            $up->module = 'navigation';
             $db->updateObject($up,'userpermission',"module = 'navigationmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
@@ -92,7 +92,7 @@ class upgrade_navigation extends upgradescript {
 	    $cns = $db->selectObjects('container',"internal LIKE '%navigationmodule%'");
 	    foreach ($cns as $cn) {
 		    $cloc = expUnserialize($cn->internal);
-	        $cloc->mod = 'navigationController';
+	        $cloc->mod = 'navigation';
 		    $cn->internal = serialize($cloc);
             if ($cn->view == 'Breadcrumb') {
                 $cn->action = 'breadcrumb';
@@ -109,7 +109,8 @@ class upgrade_navigation extends upgradescript {
         $srs = $db->selectObjects('sectionref','1');
    	    foreach ($srs as $sr) {
             if (expModules::controllerExists($sr->module)) {
-                $sr->module = expModules::getControllerClassName($sr->module);
+//                $sr->module = expModules::getControllerClassName($sr->module);  //FIXME long controller name
+                $sr->module = expModules::getModuleName($sr->module);  //FIXME long controller name
                 $db->updateObject($sr,'sectionref');
             }
    	    }
@@ -120,7 +121,7 @@ class upgrade_navigation extends upgradescript {
         // need to activate new Navigation module modstate if old one was active, leave old one intact
         $ms = $db->selectObject('modstate',"module='navigationmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='navigationController'")) {
-            $ms->module = 'navigationController';
+            $ms->module = 'navigation';
             $db->insertObject($ms,'modstate',"module='navigationmodule'",'module');
         }
 

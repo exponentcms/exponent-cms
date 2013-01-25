@@ -1,66 +1,70 @@
-.containermodule.edit form {
+.container.edit form {
     position:relative;
 }
 
-.containermodule.edit #recyclebin {
+.container.edit #recyclebin {
     padding:5px;
     padding:3px 0 3px 5px;
     text-align:left;
 }
 
-.containermodule.edit #recyclebin.disabled label {
+.container.edit #recyclebin.disabled label {
     color:#777777;
 }
 
-.containermodule.edit #recyclebin.disabled a {
+.container.edit #recyclebin.disabled a {
     color:#777777;
 }
 
-.containermodule.edit #browse-bin {
+.container.edit #browse-bin {
     display:block;
     margin:3px 0 3px 170px;
     padding:4px 0 4px 28px;
     background:url(../images/trashcan_full.png) no-repeat;
 }
-.containermodule.edit #recyclebin.disabled a {
+.container.edit #recyclebin.disabled a {
     text-decoration:none;
     margin:3px 0 3px 170px;
     padding:4px 0 4px 28px;
     background:url(../images/trashcan_full_grey.png) no-repeat;
 }
 
-.containermodule.edit .control label {
+.container.edit .control label {
     display:block;
     font-weight:bold;
     margin:2px 0;
 }
 
-.containermodule.edit .using-rb {
-    background:url(../../../../../framework/modules/recyclebin/assets/images/usingrb-check.png) no-repeat 70px 0;
+.container.edit .using-rb {
+    background:url(../../../recyclebin/assets/images/usingrb-check.png) no-repeat 70px 0;
     padding-right:25px;
 }
-.containermodule.edit .text {
+.container.edit .text {
     width:250px;
     /*height:20px;*/
 }
-.containermodule.edit .select {
+.container.edit .select {
     /*width:255px;*/
     /*height:25px;*/
 }
 
-.containermodule.edit option {
+.container.edit option {
     /*padding:3px;*/
 }
 
-.containermodule.edit .control.buttongroup {
+.container.edit .control.buttongroup {
     padding-left:175px;
 }
 
-.containermodule.edit .control label {
+.container.edit .control label {
     float:left;
     text-align:right;
     width:140px;
     padding:0 15px;
+}
+
+.container.edit .control .control-desc {
+    margin-left: 170px;
 }
 
 .containermodule.edit .control .control-desc {

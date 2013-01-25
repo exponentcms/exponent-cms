@@ -60,17 +60,17 @@ class upgrade_calendar extends upgradescript {
 		// convert each calendarmodule reference to an eventController reference
 	    $srs = $db->selectObjects('sectionref',"module = 'calendarmodule'");
 	    foreach ($srs as $sr) {
-		    $sr->module = 'eventController';
+		    $sr->module = 'event';
 		    $db->updateObject($sr,'sectionref');
 	    }
 	    $gps = $db->selectObjects('grouppermission',"module = 'calendarmodule'");
         foreach ($gps as $gp) {
-	        $gp->module = 'eventController';
+	        $gp->module = 'event';
 	        $db->updateObject($gp,'grouppermission',"module = 'calendarmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'calendarmodule'");
         foreach ($ups as $up) {
-            $up->module = 'eventController';
+            $up->module = 'event';
             $db->updateObject($up,'userpermission',"module = 'calendarmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
@@ -80,7 +80,7 @@ class upgrade_calendar extends upgradescript {
         foreach ($cns as $cn) {
             $oldconfig = $db->selectObject('calendarmodule_config', "location_data='".$cn->internal."'");
    		    $cloc = expUnserialize($cn->internal);
-   	        $cloc->mod = 'eventController';
+   	        $cloc->mod = 'event';
    		    $cn->internal = serialize($cloc);
                if ($cn->view == 'Default') {
                    $cn->action = 'showall';
@@ -168,8 +168,9 @@ class upgrade_calendar extends upgradescript {
 
             if ($newconfig->config != null) {
                 $newmodinternal = expUnserialize($cn->internal);
-                $newmod = explode("Controller",$newmodinternal->mod);
-                $newmodinternal->mod = $newmod[0];
+//                $newmod = explode("Controller",$newmodinternal->mod);
+//                $newmodinternal->mod = $newmod[0];
+                $newmodinternal->mod = expModules::getModuleName($newmodinternal->mod);
                 $newconfig->location_data = $newmodinternal;
                 $newconfig->save();
             }
@@ -208,7 +209,7 @@ class upgrade_calendar extends upgradescript {
         $ms = $db->selectObject('modstate',"module='calendarmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='eventController'")) {
             $ms->module = 'eventController';
-            $db->insertObject($ms,'modstate',"module='calendarmodule'",'module');
+            $db->insertObject($ms,'modstate');
         }
 
  		// delete calendarmodule tables

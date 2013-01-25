@@ -22,22 +22,23 @@
  */
 return array(
 	'id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
-	'module'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'source'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'internal'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'section'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	'refcount'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_PRIMARY=>true,
+        DB_INCREMENT=>true),
+    'title'=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>100),
+    'sef_url'=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>200),
+    'rank'=>array(
+        DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'module'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>100),
+   	'color'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>100),
 );
 
 ?>

@@ -56,7 +56,7 @@ $info = array(
     )
 );
 
-if (expPermissions::check('manage',expCore::makeLocation('navigationController','',$section))) {
+if (expPermissions::check('manage',expCore::makeLocation('navigation','',$section))) {
     $info['itemdata'][] = array('text'=>gt('Edit this page'),'classname'=>'edit', 'url'=>makeLink(array('module'=>'navigation', 'action'=>'edit_contentpage', 'id'=>$page->id)));
 }
 
@@ -72,12 +72,12 @@ $manageperms = false;
 if ($user->isAdmin()) {
     $manageperms = true;
 } else {
-    $manageperms = $db->selectValue('userpermission','uid',"uid='".$user->id."' AND module='navigationController' AND permission='manage'");
+    $manageperms = $db->selectValue('userpermission','uid',"uid='".$user->id."' AND module='navigation' AND permission='manage'");
     if (!$manageperms) {
         $groups = $user->getGroupMemberships();
         foreach ($groups as $group) {
             if (!$manageperms) {
-                $manageperms = $db->selectValue('grouppermission','gid',"gid='".$group->id."' AND module='navigationController' AND permission='manage'");
+                $manageperms = $db->selectValue('grouppermission','gid',"gid='".$group->id."' AND module='navigation' AND permission='manage'");
             } else {
                 break;
             }

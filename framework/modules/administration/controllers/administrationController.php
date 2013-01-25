@@ -154,22 +154,22 @@ class administrationController extends expController {
 	    global $db;
 
 	// upgrade sectionref's that have lost their originals
-        $no_origs = array();
-		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
-		if (count($sectionrefs)) {
-			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
-            foreach ($sectionrefs as $sectionref) {
-                if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
-                // There is no original for this sectionref so change it to the original
-                    $sectionref->is_original = 1;
-                    $db->updateObject($sectionref,"sectionref");
-                    $no_origs[] = gt("Fixed").": ".$sectionref->module." - ".$sectionref->source;
-                }
-            }
-		}
-        assign_to_template(array(
-            'no_origs'=>$no_origs,
-        ));
+//        $no_origs = array();
+//		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
+//		if (count($sectionrefs)) {
+//			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
+//            foreach ($sectionrefs as $sectionref) {
+//                if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
+//                // There is no original for this sectionref so change it to the original
+//                    $sectionref->is_original = 1;
+//                    $db->updateObject($sectionref,"sectionref");
+//                    $no_origs[] = gt("Fixed").": ".$sectionref->module." - ".$sectionref->source;
+//                }
+//            }
+//		}
+//        assign_to_template(array(
+//            'no_origs'=>$no_origs,
+//        ));
 
 	// upgrade sectionref's that point to missing sections (pages)
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
@@ -210,9 +210,10 @@ class administrationController extends expController {
                     $newSecRef->source   = $iloc->src;
                     $newSecRef->internal = '';
                     $newSecRef->refcount = 1;
-                    $newSecRef->is_original = 1;
+//                    $newSecRef->is_original = 1;
 					$eloc = expUnserialize($container->external);
-					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
+//					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
+                    $section = $db->selectObject('sectionref',"module='container2' AND source='".$eloc->src."'");
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
 						$db->insertObject($newSecRef,"sectionref");

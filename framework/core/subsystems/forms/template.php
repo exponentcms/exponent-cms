@@ -47,7 +47,7 @@ class template extends basetemplate {
         // View Config
         global $db;
         $container_key = serialize($loc);
-        $cache = expSession::getCacheValue('containermodule');
+        $cache = expSession::getCacheValue('containers');
         if (isset($cache[$container_key])) {
             $container = $cache[$container_key];
         } else {

@@ -279,7 +279,7 @@ class navigationController extends expController {
         for ($i = 0; $i < count($kids); $i++) {
             $child = $kids[$i];
             //foreach ($kids as $child) {
-            if ($child->public == 1 || expPermissions::check('view', expCore::makeLocation('navigationController', '', $child->id))) {
+            if ($child->public == 1 || expPermissions::check('view', expCore::makeLocation('navigation', '', $child->id))) {
                 $child->numParents    = count($parents);
                 $child->depth         = $depth;
                 $child->first         = ($i == 0 ? 1 : 0);
@@ -349,7 +349,7 @@ class navigationController extends expController {
         $nodes = $db->selectObjects('section', 'parent=' . $parent, 'rank');
 //		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
         foreach ($nodes as $node) {
-            if ((($perm == 'view' && $node->public == 1) || expPermissions::check($perm, expCore::makeLocation('navigationController', '', $node->id))) && !in_array($node->id, $ignore_ids)) {
+            if ((($perm == 'view' && $node->public == 1) || expPermissions::check($perm, expCore::makeLocation('navigation', '', $node->id))) && !in_array($node->id, $ignore_ids)) {
                 if ($node->active == 1) {
                     $text = str_pad('', ($depth + ($full ? 1 : 0)) * 3, '.', STR_PAD_LEFT) . $node->name;
                 } else {
@@ -364,7 +364,7 @@ class navigationController extends expController {
         if ($addstandalones && $parent == 0) {
             $sections = $db->selectObjects('section', 'parent=-1');
             foreach ($sections as $node) {
-                if ((($perm == 'view' && $node->public == 1) || expPermissions::check($perm, expCore::makeLocation('navigationController', '', $node->id))) && !in_array($node->id, $ignore_ids)) {
+                if ((($perm == 'view' && $node->public == 1) || expPermissions::check($perm, expCore::makeLocation('navigation', '', $node->id))) && !in_array($node->id, $ignore_ids)) {
                     if ($node->active == 1) {
                         $text = str_pad('', ($depth + ($full ? 1 : 0)) * 3, '.', STR_PAD_LEFT) . $node->name;
                     } else {
@@ -388,7 +388,7 @@ class navigationController extends expController {
 
         //global $sections;
         //		global $router;
-        $db->delete('search', "ref_module='navigationController' AND ref_type='section'");
+        $db->delete('search', "ref_module='navigation' AND ref_type='section'");
         // this now ensures we get internal pages, instead of relying on the global $sections, which does not.
         $sections = $db->selectObjects('section', 'active=1');
         foreach ($sections as $section) {
@@ -413,7 +413,7 @@ class navigationController extends expController {
             $loc->mod       = 'text';
             $loc->src       = '';
             $loc->int       = '';
-            $controllername = 'textController';
+            $controllername = 'text';
             foreach ($db->selectObjects('sectionref', "module='" . $controllername . "' AND section=" . $section->id) as $module) {
                 $loc->src   = $module->source;
                 $controller = new $controllername();
@@ -450,7 +450,7 @@ class navigationController extends expController {
         $nodes = $db->selectObjects('section', 'parent=' . $parent, 'rank');
 //		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
         foreach ($nodes as $node) {
-            if (($node->public == 1 || expPermissions::check('view', expCore::makeLocation('navigationController', '', $node->id))) && !in_array($node->id, $ignore_ids)) {
+            if (($node->public == 1 || expPermissions::check('view', expCore::makeLocation('navigation', '', $node->id))) && !in_array($node->id, $ignore_ids)) {
                 $html .= '<option value="' . $node->id . '" ';
                 if ($default == $node->id) $html .= 'selected';
                 $html .= '>';
@@ -509,7 +509,7 @@ class navigationController extends expController {
             if (call_user_func(array($ref->module, 'hasContent'))) {
                 $oloc = expCore::makeLocation($ref->module, $ref->source);
                 $nloc = expCore::makeLocation($ref->module, $src);
-                if ($ref->module != "containermodule") {
+                if ($ref->module != "container2") {
                     call_user_func(array($ref->module, 'copyContent'), $oloc, $nloc);
                 } else {
                     call_user_func(array($ref->module, 'copyContent'), $oloc, $nloc, $section->id);
@@ -551,7 +551,7 @@ class navigationController extends expController {
         $secrefs = $db->selectObjects('sectionref', 'section=' . $parent);
         foreach ($secrefs as $secref) {
             $loc = expCore::makeLocation($secref->module, $secref->source, $secref->internal);
-            expCore::decrementLocationReference($loc, $parent);
+            recyclebin::sendToRecycleBin($loc, $parent);
             if (class_exists($secref->module)) {
                 $modclass = $secref->module;
                 //FIXME: more module/controller glue code
@@ -587,7 +587,7 @@ class navigationController extends expController {
         }
         if ($section->public == 0) {
             // Not a public section.  Check permissions.
-            return expPermissions::check('view', expCore::makeLocation('navigationController', '', $section->id));
+            return expPermissions::check('view', expCore::makeLocation('navigation', '', $section->id));
         } else { // Is public.  check parents.
             if ($section->parent <= 0) {
                 // Out of parents, and since we are still checking, we haven't hit a private section.
@@ -619,7 +619,7 @@ class navigationController extends expController {
         $standalones = self::levelTemplate(-1, 0);
         //		$canmanage = false;
         foreach ($standalones as $standalone) {
-            $loc = expCore::makeLocation('navigationController', '', $standalone->id);
+            $loc = expCore::makeLocation('navigation', '', $standalone->id);
             if (expPermissions::check('manage', $loc)) return true;
         }
         return false;
@@ -642,12 +642,12 @@ class navigationController extends expController {
         $allgroups = array();
         while ($section->parent > 0) {
             //			$ploc = expCore::makeLocation('navigationController', null, $section);
-            $allusers  = array_merge($allusers, $db->selectColumn('userpermission', 'uid', "permission='manage' AND module='navigationController' AND internal=" . $section->parent));
-            $allgroups = array_merge($allgroups, $db->selectColumn('grouppermission', 'gid', "permission='manage' AND module='navigationController' AND internal=" . $section->parent));
+            $allusers  = array_merge($allusers, $db->selectColumn('userpermission', 'uid', "permission='manage' AND module='navigation' AND internal=" . $section->parent));
+            $allgroups = array_merge($allgroups, $db->selectColumn('grouppermission', 'gid', "permission='manage' AND module='navigation' AND internal=" . $section->parent));
             $section   = $db->selectObject('section', 'id=' . $section->parent);
         }
         foreach ($branch as $section) {
-            $sloc = expCore::makeLocation('navigationController', null, $section->id);
+            $sloc = expCore::makeLocation('navigation', null, $section->id);
             // remove any manage permissions for this page and it's children
             // $db->delete('userpermission', "module='navigationController' AND internal=".$section->id);
             // $db->delete('grouppermission', "module='navigationController' AND internal=".$section->id);
@@ -683,18 +683,18 @@ class navigationController extends expController {
         $nav        = $db->selectObjects('section', 'parent=' . $id, 'rank');
         //FIXME $manage_all is moot w/ cascading perms now?
         $manage_all = false;
-        if (expPermissions::check('manage', expCore::makeLocation('navigationController', '', $id))) {
+        if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $id))) {
             $manage_all = true;
         }
         //FIXME recode to use foreach $key=>$value
         $navcount = count($nav);
         for ($i = 0; $i < $navcount; $i++) {
-            if ($manage_all || expPermissions::check('manage', expCore::makeLocation('navigationController', '', $nav[$i]->id))) {
+            if ($manage_all || expPermissions::check('manage', expCore::makeLocation('navigation', '', $nav[$i]->id))) {
                 $nav[$i]->manage = 1;
                 $view = true;
             } else {
                 $nav[$i]->manage = 0;
-                $view = $nav[$i]->public ? true : expPermissions::check('view', expCore::makeLocation('navigationController', '', $nav[$i]->id));
+                $view = $nav[$i]->public ? true : expPermissions::check('view', expCore::makeLocation('navigation', '', $nav[$i]->id));
             }
             $nav[$i]->link = expCore::makeLink(array('section' => $nav[$i]->id), '', $nav[$i]->sef_name);
             if (!$view) unset($nav[$i]);
@@ -1004,7 +1004,7 @@ class navigationController extends expController {
 
         // only applies to the 'manage' method
         if (empty($location->src) && empty($location->int) && !empty($router->params['action']) && $router->params['action'] == 'manage') {
-            if (!empty($exponent_permissions_r['navigationController'])) foreach ($exponent_permissions_r['navigationController'] as $page) {
+            if (!empty($exponent_permissions_r['navigation'])) foreach ($exponent_permissions_r['navigation'] as $page) {
                 foreach ($page as $pageperm) {
                     if (!empty($pageperm['manage'])) return true;
                 }

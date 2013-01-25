@@ -119,7 +119,7 @@ class helpController extends expController {
 			if (!empty($helpsection->location_data)) {
 				$helpsrc = expUnserialize($helpsection->location_data);
 				if (!array_key_exists($helpsrc->src, $sectionlist)) {
-                    $sectionlist[$helpsrc->src] = $db->selectValue('section', 'name', 'id="' . $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $helpsrc->src .'"').'"');
+                    $sectionlist[$helpsrc->src] = $db->selectValue('section', 'name', 'id="' . $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src .'"').'"');
 				}
 			}
 		}
@@ -178,7 +178,7 @@ class helpController extends expController {
 	    }
 
         $sections = array();
-        foreach ($db->selectObjects('sectionref','module="helpController"') as $sectionref) {
+        foreach ($db->selectObjects('sectionref','module="help"') as $sectionref) {
             if (!empty($sectionref->source) && empty($sections[$sectionref->source])) {
                 $sections[$sectionref->source] = $db->selectValue('section', 'name', 'id="' . $sectionref->section .'"');
             }
@@ -476,7 +476,7 @@ class helpController extends expController {
         }
         $doc = $help->find('first','help_version_id='.$version_id.' and sef_url="'.$params['title'].'"');
 	    $session_section = expSession::get('last_section') ? expSession::get('last_section') : 1 ;
-        $help_sectionref = $db->selectObject('sectionref','module="helpController" AND source="'. expUnserialize($doc->location_data)->src.'"');
+        $help_sectionref = $db->selectObject('sectionref','module="help" AND source="'. expUnserialize($doc->location_data)->src.'"');
         $sid = !empty($help_sectionref) ? $help_sectionref->section : (($doc->section!=0) ? $doc->section : $session_section);
         if (!expSession::get('last_section')) {
             expSession::set('last_section',$sid);

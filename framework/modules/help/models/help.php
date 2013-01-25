@@ -68,7 +68,7 @@ class help extends expRecord {
         $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
 		if (isset($this->params['help_section'])) {
 			// manipulate section & location_data to correct values
-			$this->section = $db->selectValue('sectionref', 'section', 'module = "helpController" AND source="' . $this->params['help_section'] .'"');
+			$this->section = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $this->params['help_section'] .'"');
 //			$loc = new stdClass();
 //			$loc->mod = 'help';
 //			$loc->src = $this->params['help_section'];

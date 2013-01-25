@@ -239,7 +239,7 @@ class expModules {
      *
      * @return null|string
      */
-    public static function getModuleName($modulename) {
+    public static function getModuleBaseName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
@@ -274,7 +274,7 @@ class expModules {
      *
      * @return null|string
      */
-    public static function getModuleName2($modulename) {
+    public static function getModuleName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;

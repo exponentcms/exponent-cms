@@ -47,6 +47,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 		$rerank = 1;
 	}
 	
+    // does it need permissions menu items?
 	if ($user->isAdmin()) {
 //		$userlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'userperms', '_common'=>1));
 //		$grouplink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
@@ -58,7 +59,8 @@ function smarty_function_getchromemenu($params,&$smarty) {
 
     echo $list;
     $list = '';
-	if (!empty($params['rank']) && $module->info['class'] == 'containermodule' && expPermissions::check('configure', $cloc)) {
+    // does it need a reorder modules menu item?
+	if (!empty($params['rank']) && ($module->info['class'] == 'container2Controller') && expPermissions::check('configure', $cloc)) {
         foreach ($smarty->smarty->plugins_dir as $value) {
             $filepath = $value ."/function.ddrerank.php";
             if (file_exists($filepath)) {
@@ -67,7 +69,8 @@ function smarty_function_getchromemenu($params,&$smarty) {
             }
         }
         $reorder = array();
-        $reorder['module'] = "container";
+        $reorder['module'] = "container2";
+        $reorder['model'] = "container";
         $reorder['where'] = "external='".$module->internal."'";
         $reorder['label'] = gt("Modules");
         echo '
@@ -75,24 +78,18 @@ function smarty_function_getchromemenu($params,&$smarty) {
         smarty_function_ddrerank($reorder, $smarty);
         echo '</li>
         ';
-
-//		$uplink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order','a'=>$params['rank'] - 2,'b'=>$params['rank'] - 1));
-//		$downlink = $router->makeLink(array('module'=>'containermodule','src'=>$cloc->src,'action'=>'order', 'a'=>$params['rank'] - 1,'b'=>$params['rank']));
-//		if ($params['rank'] != 1) {	//dont show this up arrow if it's the first module in a container
-//			$list .= '<li><a href="'.$uplink.'" class="mod-up">'.gt("Move Module Up").'</a></li>';
-//		}
-//		if (!$params['last']) { //if this is the last module in a container don't show down arrow.
-//			$list .= '<li><a href="'.$downlink.'" class="mod-down">'.gt("Move Module Down").'</a></li>';
-//		}
 	}
 
+    // does it need an old school configure action & view menu item?
 	if (!empty($module->id) && expPermissions::check('edit', $cloc) && $module->permissions['manage'] == 1) {
         if (!expModules::controllerExists($module->info['class'])) {
-            $editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
+//            $editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
+            $editlink = $router->makeLink(array('controller'=>'container2', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
             $list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
         }
 	}
 
+    // does it need a configure settings menu item?
 	if ($module->permissions['configure'] == 1) {
 		if (expModules::controllerExists($module->info['class'])) {
             if (!empty($params['hcview'])) {
@@ -108,11 +105,14 @@ function smarty_function_getchromemenu($params,&$smarty) {
 		}
 	}
 
+    // does it need a delete module menu item?
 	if (!empty($module->id) && expPermissions::check('delete', $cloc)) {
-		$deletelink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
+//		$deletelink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
+        $deletelink = $router->makeLink(array('controller'=>'container2', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
 		$list .= '<li><a href="'.$deletelink.'" class="delete" onclick="alert(\''.gt("This content is being sent to the Recycle Bin to be recovered later if you wish.").'\')">'.gt("Remove Module").'</a></li>';
 	}
 	
+    // does it need a help menu item?
 	if (HELP_ACTIVE) {
 		$helplink = help::makeHelpLink(expModules::getControllerName($module->info['class']));
 		$list .= '<li><a href="'.$helplink.'" class="helplink" target="_blank">'.gt("Get Help").'</a></li>';

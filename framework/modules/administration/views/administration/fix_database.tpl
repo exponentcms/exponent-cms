@@ -16,17 +16,17 @@
 <h1>{"Attempting to Fix the Exponent Database"|gettext}</h1>
 <h2>{"Note: Some Error Conditions can NOT be repaired by this Procedure!"|gettext}</h2>
 <hr>
-<h3>{"Searching for sectionrefs which have lost their originals"|gettext}</h3>
-<ul>
-    {if $no_origs}
-        {foreach from=$no_origs item=no_orig}
-            <li>{$no_orig}</li>
-        {/foreach}
-    {else}
-        <li>{"None Found: Good"|gettext}</li>
-    {/if}
-</ul>
-<hr>
+{*<h3>{"Searching for sectionrefs which have lost their originals"|gettext}</h3>*}
+{*<ul>*}
+    {*{if $no_origs}*}
+        {*{foreach from=$no_origs item=no_orig}*}
+            {*<li>{$no_orig}</li>*}
+        {*{/foreach}*}
+    {*{else}*}
+        {*<li>{"None Found: Good"|gettext}</li>*}
+    {*{/if}*}
+{*</ul>*}
+{*<hr>*}
 <h3>{"Searching for sectionrefs pointing to missing sections/pages, to fix Recycle Bin"|gettext}</h3>
 <ul>
     {if $no_sections}

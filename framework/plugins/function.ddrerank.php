@@ -65,14 +65,14 @@ function smarty_function_ddrerank($params, &$smarty) {
         $params['items'] = expSorter::sort(array('array' => $params['items'], 'sortby' => 'rank', 'order' => 'ASC'));
     } elseif (!empty($params['module'])) {
         $model = empty($params['model']) ? '' : $params['model'];
-        $uniqueloc = $smarty->getTemplateVars('container');
+        $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
         if (!empty($uniqueloc->internal)) {
             $uniqueloc2 = expUnserialize($uniqueloc->internal);
             $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
         }
         $where = !empty($params['where']) ? $params['where'] : 1;
         $only = !empty($params['only']) ? ' AND ' . $params['only'] : '';
-        $params['items'] = $db->selectObjects($params['module'], $where . $only, "rank");
+        $params['items'] = $db->selectObjects($params['model'], $where . $only, "rank");
     } else {
         $params['items'] = array();
     }
@@ -118,9 +118,9 @@ function smarty_function_ddrerank($params, &$smarty) {
 //                            $name = $control::name();
                         $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
                         $stringlen = 65;
-                    } elseif ($params['module'] == 'container') {
+                    } elseif ($params['module'] == 'container' || $params['module'] == 'container2') {
                         $mod = expUnserialize($item->internal);
-                        $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleName($mod->mod)) . ')';
+                        $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleBaseName($mod->mod)) . ')';
                         $stringlen = 65;
                     }
                 }

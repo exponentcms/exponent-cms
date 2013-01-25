@@ -21,7 +21,7 @@
 {/css}
 
 <div class="module container flyout{$side}" style="display: none;">
-    {showmodule module='container' view="Default" source="@flyout_sidebar" scope=$scope chrome=true}
+    {showmodule module='container2' action="showall" view="showall" source="@flyout_sidebar" scope=$scope chrome=true}
 </div>
 <a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">{'View Panel'|gettext}</a>
 
