@@ -22,9 +22,9 @@ dompdf,6.0b3,code.google.com/p/dompdf,6.0b3,patched to display our images
 iCalCreator,2.16.6,kigkonsult.se/iCalcreator,2.16.6,
 lessphp,0.38,leafo.net/lessphp,0.38,
 jQuery,1.9.0,jquery.com,1.9.0,
-jQueryUI,1.9.2,jqueryui.com,1.10.0,
+jQueryUI,1.10.0,jqueryui.com,1.10.0,
 Twitter-Bootstrap,,twitter.github.com/bootstrap,2.2.2,"patched bootstrap.less for & includes swatches, fontawesome"
 Font-Awesome,,fortawesome.github.com/Font-Awesome,3.0.2,
-Adminer,3.6.2,www.adminer.org,3.6.2,
+Adminer,3.6.3,www.adminer.org,3.6.3,
 html5shiv,,code.google.com/p/html5shiv/,,
-SimpleAjaxUploader,Nov-12,https://github.com/LPology/Simple-Ajax-Uploader,Nov-12,
+SimpleAjaxUploader,12-Nov,https://github.com/LPology/Simple-Ajax-Uploader,12-Nov,

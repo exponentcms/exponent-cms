@@ -1,5 +1,5 @@
 version 2.1.1
-This release focuses on the new forms module and e-Commerce as OOTB experience
+This release focuses on the new forms module
   - adds many new event calendar features
     -- adds event copying feature (create new event from existing event)
     -- adds optional attached images to events and event registrations
@@ -23,10 +23,11 @@ This release focuses on the new forms module and e-Commerce as OOTB experience
   - adds new 'inline' view to edit text module items directly on page via CKEditor v4
   - adds custom module phrase translation libraries feature
   - merges module 'Configure Actions & Views' and 'Configure Settings' into a single view for easy module configuration
+  - adds new 'private module' setting to optionally restrict viewing of a specific module by permission
   - adds a mass mailer for super admins to email all users or selected site users
   - adds new site configuration setting to reverse the default logic of when module titles are displayed
   - updates file manager with 'virtual folder' grouping and date features to assist locating files
     -- also adds file manager bulk selection (add multiple files to an item all at once) and bulk delete
     -- adds new QuickUpload feature to bypass file manager/file uploader for file selection
   - updates file uploader to allow html5 drag/drop support and some other user-friendly features
-    -- images may be resized to a max width and files assigned to a virtual folder during upload
+    -- images may be optionally resized to a max width, and files assigned to a virtual folder during upload
