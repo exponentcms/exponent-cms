@@ -61,7 +61,7 @@ class upgrade_container2 extends upgradescript {
             $db->updateObject($sr,'sectionref');
             $count++;
 	    }
-        foreach ($db->selectObjects('sectionref',"module LIKE '%Controller%'") as $ph) {
+        foreach ($db->selectObjects('sectionref',"module LIKE '%Controller%'") as $sr) {
             $sr->module = expModules::getModuleName($sr->module);  // convert module name to 2.0 style
             $db->updateObject($sr,'sectionref');
             $count++;
