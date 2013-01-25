@@ -1,0 +1,117 @@
+/* override some conflicts between exponent classes and bootstrap */
+body { //    background-color: @special; /* here is a sample variable set example */
+}
+
+.pagination {
+  float  : right;
+  margin : 0;
+}
+
+.pagination .currentpage {
+  background-color  : whiteSmoke;
+  float             : left;
+  padding           : 0 14px;
+  line-height       : 18px;
+  text-decoration   : none;
+  border            : 1px solid #DDD;
+  border-left-width : 0;
+}
+
+.pagination a {
+  line-height : 18px;
+}
+
+.showall-accordion .dashboard .hd a.collapse {
+  height : 34px;
+}
+
+.showall-accordion .dashboard .hd h2 {
+  height  : 34px;
+  padding : 0 0 0 33px;
+}
+
+input[type="image"] {
+  width : 16px;
+}
+
+input[type="text"], textarea {
+  width : 300px;
+}
+
+input.text {
+  width          : 200px;
+  vertical-align : top;
+}
+
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+  margin-left  : 0;
+  margin-right : 5px;
+}
+
+.radio, .checkbox {
+  padding-left : 0px;
+}
+
+input.radio, input.checkbox {
+  float        : none;
+  margin-right : 2px;
+}
+
+li [class^="icon-"], li [class*=" icon-"], li .icon-large[class^="icon-"], li .icon-large[class*=" icon-"] {
+  width : auto;
+}
+
+.nav li.dropdown ul.dropdown-menu li:HOVER ul.dropdown-menu li:HOVER.dropdown > ul.dropdown-menu,
+.nav li.dropdown ul.dropdown-menu li:HOVER ul.dropdown-menu {
+  display               : block;
+  position              : absolute;
+  left                  : 100%;
+  -webkit-border-radius : 3px;
+  -moz-border-radius    : 3px;
+  border-radius         : 3px;
+}
+
+.nav li.dropdown ul.dropdown-menu li:HOVER ul.dropdown-menu li.dropdown > ul.dropdown-menu,
+.nav li.dropdown ul.dropdown-menu ul.dropdown-menu {
+  display    : none;
+  float      : right;
+  position   : relative;
+  top        : auto;
+  margin-top : -30px;
+}
+
+.nav li.dropdown ul.dropdown-menu .dropdown-menu::before {
+  content            : '';
+  display            : inline-block;
+  border-top         : 7px solid transparent;
+  border-bottom      : 7px solid transparent;
+  border-right       : 7px solid #CCC;
+  border-right-color : rgba(0, 0, 0, 0.2);
+  position           : absolute;
+  top                : 9px;
+  left               : -14px;
+}
+
+.nav li.dropdown ul.dropdown-menu .dropdown-menu::after {
+  content       : '';
+  display       : inline-block;
+  border-top    : 6px solid transparent;
+  border-bottom : 6px solid transparent;
+  border-right  : 6px solid white;
+  position      : absolute;
+  top           : 10px;
+  left          : -12px;
+}
+
+.nav b.caret {
+  border-top-color    : black;
+  border-bottom-color : black;
+}
+
+#admintoolbar {
+  z-index : 1031;
+}
+
+.navbar-spacer {
+  height : 85px;
+}
