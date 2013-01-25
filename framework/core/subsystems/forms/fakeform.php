@@ -91,7 +91,7 @@ class fakeform extends form {
             }
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
                 $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
-                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
+                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</div>";
                 if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
@@ -104,7 +104,7 @@ class fakeform extends form {
                 } else {
                     $html .= "<div class=\"label\">";
                 }
-                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
+                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</div>";
             }
