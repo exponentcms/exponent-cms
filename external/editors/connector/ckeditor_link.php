@@ -61,7 +61,9 @@
             }
 
             function openFileManager() {
-                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&ck=1&update=fck&CKEditor=body&CKEditorFuncNum=2&langCode=en';
+                var funcNum = getUrlParam('CKEditorFuncNum');
+                var partNum = getUrlParam('CKEditor');
+                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&ck=1&update=fck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
             }
 
 			function openContentLinker() {
