@@ -37,6 +37,7 @@
 
     </div>
 
+    {*FIXME convert to yui3*}
     {script unique="eventreg" yui3mods="1"}
     {literal}
     //YAHOO.util.Event.onDOMReady(function(){

@@ -41,7 +41,7 @@ class donationController extends expController {
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Online Donations"); }
-    static function description() { return gt("Use this module to accept donations on your website"); }
+    static function description() { return gt("Allows you to accept donations on your website"); }
 
     function showall() {
         expHistory::set('viewable', $this->params);
@@ -57,7 +57,8 @@ class donationController extends expController {
         if (empty($router->params['action'])) return false;
         
         // figure out what metadata to pass back based on the action we are in.
-        $action = $_REQUEST['action'];
+//        $action   = $_REQUEST['action'];
+        $action   = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'');
         switch($action) {
             case 'donate':

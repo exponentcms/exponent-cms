@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -32,7 +32,7 @@
             </div>
             {if $options|@count > 0 || $item->getUserInputFields()!= ''}
                 <div class="options">
-                    <a href="#" class="infoicon">{"Additional Information"|gettext}</a>
+                    <a href="javascript:void();" class="infoicon">{"Additional Information"|gettext}</a>
                     <div class="exp-dropmenu">
                         {if $options|@count > 0}
                             <div class="hd" style="padding:0 5px">

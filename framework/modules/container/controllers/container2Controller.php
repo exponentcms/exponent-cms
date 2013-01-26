@@ -52,7 +52,7 @@ class container2Controller extends expController {
         $clickable_mods = null; // Show all
         $dest = null;
         $singleview = '_container';
-        $singlemodule = 'container2'; //FIXME needs to be containerController
+        $singlemodule = 'container2';
         if (expSession::is_set('source_select') && defined('SELECTOR')) {
             $source_select = expSession::get('source_select');
             $singleview = $source_select['view'];

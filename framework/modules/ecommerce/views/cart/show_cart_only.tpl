@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -49,10 +49,11 @@
                                 </table>
                             {/form}
                         {else}
+                            {$item->quantity}
                         {/if}
                     </td>
                     <td class="prodrow">
-                        <a href="{link action=removeItem id=$item->id}" title="{'Remove'|gettext} {$item->product->title} {'from cart'|gettext}">
+                        <a href="{link action=removeItem id=$item->id}" title="{'Remove'|gettext} {$item->product->title} {'from cart'|gettext}" onclick="return confirm('{'Are you sure you want to remove this item?'|gettext}');">
                             <img src='{$asset_path}images/remove.png' alt=" " />
                         </a>
                     </td>

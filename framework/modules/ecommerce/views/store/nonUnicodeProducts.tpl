@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -44,5 +44,5 @@
         </tbody>
 	</table>
 	{br}
-	<a href={link controller=store action=cleanNonUnicodeProducts} onclick="return confirm('{"Are you sure you want to clean all of the products shown above?"|gettext}');">{'Clean Data'|gettext}</a>
+	<a href="{link controller=store action=cleanNonUnicodeProducts}" onclick="return confirm('{"Are you sure you want to clean all of the products shown above?"|gettext}');">{'Clean Data'|gettext}</a>
 </div>

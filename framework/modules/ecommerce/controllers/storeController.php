@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,10 +48,10 @@ class storeController extends expController {
         'comments',
         'ealerts',
         'files',
-        'module_title',
+//        'module_title',
         'rss',
         'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array(
@@ -83,7 +83,7 @@ class storeController extends expController {
     }
 
     static function description() {
-        return gt("Use this module to display products and categories of you e-Commerce store");
+        return gt("Displays products and categories from your e-Commerce store");
     }
 
     static function author() {
@@ -1243,12 +1243,12 @@ class storeController extends expController {
     }
 
     function quicklinks() {
-        //we need to get the total items in the cart so that if the user at least 1 item in order to check out.
+        global $order;
 
-        $itemcount = 1;
+        $oicount = !empty($order->item_count) ? $order->item_count : 0;
         //eDebug($itemcount);
         assign_to_template(array(
-            "itemcount" => $itemcount
+            "oicount" => $oicount,
         ));
     }
 
@@ -1722,8 +1722,8 @@ class storeController extends expController {
                     if (!empty($email_addy)) {
                         $from_status = $db->selectValue('order_status', 'title', 'id=' . $change->from_status_id);
                         $to_status = $db->selectValue('order_status', 'title', 'id=' . $change->to_status_id);
-                        $template->assign(
-                        //assign_to_template(
+//                        $template->assign(
+                        assign_to_template(
                             array(
                                 'comment'          => $change->comment,
                                 'to_status'        => $to_status,

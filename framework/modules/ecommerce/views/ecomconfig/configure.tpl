@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,6 +41,7 @@
                     </div>
                     <div id="tab2">
                         {group label="Cart"|gettext}
+                        {control type="checkbox" name="show_cart" label="Adding an Item Displays Shopping Cart?"|gettext value=1 checked=$config.show_cart description='Move directly to the shopping cart after adding a new item?'|gettext}
                         {control type="text" name="cart_title_text" label="Shopping Cart Title"|gettext value=$config.cart_title_text description='The title that appears at the top of your shopping cart.'|gettext}
                         {control type="html" name="cart_description_text" label="Shopping Cart Description Text"|gettext value=$config.cart_description_text description='This will be displayed at the top of your shopping cart.'|gettext}
                         {/group}

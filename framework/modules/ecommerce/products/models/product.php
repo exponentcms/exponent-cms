@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,7 @@ class product extends expRecord {
     );
     public $active_display_desc = array(
             0=>'',
-            1=>'It will not be shown in product listings and the "Add to Cart" button is disabled but is still viewable directly. This can be advantageous with the page cacheing in the search engines.',
+            1=>'It will not be shown in product listings and the "Add to Cart" button is disabled but is still viewable directly. This can be advantageous with the page caching in the search engines.',
             2=>'Trying to view this product will produce an error indicating this product is currently not available.',
     );
 
@@ -196,8 +196,7 @@ class product extends expRecord {
                  $params['qty'] += $this->minimum_order_quantity - ($qty + $qCheck);
                  $qty = $params['qty'];                             
             }
-        }else
-        {
+        } else {
             foreach ($params['children'] as $idKey=>$childQty)
             {
                 $cprod = new childProduct($idKey);

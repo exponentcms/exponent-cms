@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -46,17 +46,13 @@
                 {foreach from=$oi->product->optiongroup item=og}
                     {if $og->hasEnabledOptions()} 
                         <div class="option {cycle values="odd,even"}"> 
-                            
                             {if $og->allow_multiple}
-                            
-                                {optiondisplayer product=$oi->product options=$og->title view=checkboxes display_price_as=diff selected=$oi->selectedOpts}           
+                                {optiondisplayer product=$oi->product options=$og->title view=checkboxes display_price_as=diff selected=$oi->selectedOpts}
                             {else}
                                 {if $og->required}
-                                
-                                    {optiondisplayer product=$oi->product options=$og->title view=dropdown display_price_as=diff selected=$oi->selectedOpts required=true}          
+                                    {optiondisplayer product=$oi->product options=$og->title view=dropdown display_price_as=diff selected=$oi->selectedOpts required=true}
                                 {else}
-                                
-                                    {optiondisplayer product=$oi->product options=$og->title view=dropdown display_price_as=diff selected=$oi->selectedOpts}          
+                                    {optiondisplayer product=$oi->product options=$og->title view=dropdown display_price_as=diff selected=$oi->selectedOpts}
                                 {/if}                                           
                             {/if}
                         </div> 

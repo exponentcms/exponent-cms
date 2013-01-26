@@ -82,6 +82,7 @@
         requires: ['history','tabview','event-custom']
     };
 
+    {*FIXME convert to yui3*}
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element','exptabs', function(Y) {
         var YAHOO=Y.YUI2;
         Y.expTabs({srcNode: '#discounttabs'});

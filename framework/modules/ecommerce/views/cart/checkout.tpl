@@ -33,6 +33,7 @@
             {$cartConfig.policy}
         </div>
     </div>
+    {*FIXME convert to yui3*}
         {script unique="policypop" yui3mods=1}
             {literal}
             YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container', function(Y) {
@@ -277,13 +278,13 @@
             <h2>{"Payment Information"|gettext}</h2>
             <h3>{"Available Payment Methods"|gettext}</h3>
             <div id="{$id}" class="yui-navset exp-skin-tabview hide">
-                <ul>
-                    {foreach from=$billing->calculator_views item=cviews name=calcs}
-                        <li><a href="#tab{$smarty.foreach.items.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                <ul class="yui-nav">
+                    {foreach from=$billing->calculator_views item=cviews name=tabs}
+                        <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>
                     {/foreach}
                 </ul>
-                <div>
-                    {foreach from=$billing->calculator_views item=cviews name=calcs}
+                <div class="yui-content">
+                    {foreach from=$billing->calculator_views item=cviews name=items}
                         <div id="tab{$smarty.foreach.items.iteration}">
                             {include file=$cviews.view calcid=$cviews.id}
                         </div>

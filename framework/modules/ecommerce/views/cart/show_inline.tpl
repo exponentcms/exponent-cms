@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module cart show-inline">
-    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     <div class="total">
         {"Total"|gettext}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
     </div>
@@ -34,7 +34,7 @@
                     </a>
                     {$item->quantity} @ <span class="price">{currency_symbol}{$item->products_price|number_format:2}</span>
                 </div>
-                <a href="{link action=removeItem id=$item->id}" class="delete">Remove from cart</a>
+                <a href="{link action=removeItem id=$item->id}" class="delete" onclick="return confirm('{'Are you sure you want to remove this item?'|gettext}');">{'Remove from cart'|gettext}</a>
                 {clear}
             </li>
         {foreachelse}

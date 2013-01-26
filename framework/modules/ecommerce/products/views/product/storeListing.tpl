@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -38,7 +38,7 @@
     <div class="prod-price"> 
         {if $listing->availability_type == 3}       
             {"Call for Price"|gettext}
-        {else}                   
+        {else}
             {if $listing->use_special_price}
                 <span class="regular-price on-sale">{currency_symbol}{$listing->base_price|number_format:2}</span>
                 <span class="sale-price">{currency_symbol}{$listing->special_price|number_format:2}&#160;<sup>{"SALE!"|gettext}</sup></span>
@@ -52,12 +52,10 @@
         <div class="item-actions">
             {if $permissions.edit == 1}
                 {icon action=edit record=$listing title="Edit `$listing->title`"}
+                {icon action=copyProduct class="copy" record=$listingtitle text="Copy" title="Copy `$listing->title` " record=$listing}
             {/if}
             {if $permissions.delete == 1}
                 {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this product?"|gettext)|cat:"');"}
-            {/if}
-            {if $permissions.edit == 1}
-                {icon action=copyProduct class="copy" record=$listingtitle text="Copy" title="Copy `$listing->title` " record=$listing}
             {/if}
         </div>
     {/permissions}

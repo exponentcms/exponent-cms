@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,8 +13,8 @@
  *
  *}
 
+{control type="hidden" name="tab_loaded[extrafields]" value=1}
 {if $record->parent_id == 0}
-	{control type="hidden" name="tab_loaded[extrafields]" value=1} 
 	<h2>{'Extra Fields'|gettext}</h2>
 	<blockquote>{'You may add up to four extra fields to your product here.  These field names are also picked up by your child products where you can assign values to them.'|gettext}</blockquote>
 	<table> 

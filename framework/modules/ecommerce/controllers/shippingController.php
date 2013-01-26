@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -143,6 +143,8 @@ class shippingController extends expController {
                 }
             }
         }
+        $scalc = new shippingcalculator();
+        $calculators = $scalc->find('all');
         assign_to_template(array(
             'calculators'=>$calculators
         ));

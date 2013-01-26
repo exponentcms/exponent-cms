@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -31,7 +31,7 @@ class eventregistration extends expRecord {
     public $product_name = 'Event Registration';
     public $product_type = 'eventregistration';
     public $requiresShipping = false;
-    public $requiresBilling = true;
+    public $requiresBilling = true;  //FIXME only if a cost is involved
     public $isQuantityAdjustable = false;
 
     public $default_sort_field = 'rank';
@@ -379,6 +379,7 @@ class eventregistration extends expRecord {
 //            }
 //        } else {
             // new reservation
+            $db->delete("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
             if (!empty($params['event'])) foreach ($params['event'] as $key => $value) {
                 $obj = new stdClass();
                 $obj->event_id = $params['product_id'];

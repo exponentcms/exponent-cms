@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -70,7 +70,6 @@ class cartController extends expController {
                 }
                 if (isset($child)) $this->params['product_id'] = $child->parent_id;
             }
-
         }
 
         $product = new $product_type($this->params['product_id'], true, true); //need true here?
@@ -86,7 +85,6 @@ class cartController extends expController {
         }
 
         if ($product->product_type == "product" || $product->product_type == "childProduct") {
-
             if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown'] != $product->id)) {
 
                 // if we hit here it means this product type was missing some
@@ -109,18 +107,20 @@ class cartController extends expController {
         //eDebug($this->params, true);
         //$this->params['qty'] = 1; //REMOVE ME
         if ($product->addToCart($this->params)) {
-
-            if (empty($this->params['quick'])) {
-                //FIXME, why do we give them a link to the cart and also display it?
-                flash('message', gt("Added") . " " . $product->title . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
-                //expHistory::back();
-                //eDebug(show_msg_queue(false),true);
-                redirect_to(array('controller'=>'cart', 'action'=>'show'));
-//                $this->show();
-                //expHistory::lastNotEditable();
+            if (ecomconfig::getConfig('show_cart') || !empty($this->params['quick'])) {
+                global $order;
+                if (!$order->grand_total && !$order->shipping_required) {
+                    redirect_to(array('controller'=>'cart', 'action'=>'quickConfirm'));
+                } elseif (!$order->shipping_required) {
+                    redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
+                } else {
+                    //expHistory::back();
+                    //eDebug(show_msg_queue(false),true);
+                    redirect_to(array('controller'=>'cart', 'action'=>'show'));
+                    //expHistory::lastNotEditable();
+                }
             } else {
-                redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
-//                $this->quickPay();
+                flash('message', gt("Added") . " " . $product->title . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
             }
         } else {
             //expHistory::back();
@@ -160,7 +160,7 @@ class cartController extends expController {
                 echo json_encode($updates);
             }
         } else {
-
+            if (empty($this->params['quantity']) && !empty($this->params['qtyr'])) $this->params['quantity'] = $this->params['qtyr'];
             if (!is_numeric($this->params['quantity'])) {
                 flash('error', gt('Please enter a valid quantity.'));
                 expHistory::back();
@@ -311,7 +311,7 @@ class cartController extends expController {
         global $user, $order;
 
         if (empty($order)) {
-            flash('error', gt('There is an error with your shopping card.'));
+            flash('error', gt('There is an error with your shopping cart.'));
             expHistory::back();
         }
 
@@ -646,6 +646,28 @@ class cartController extends expController {
             assign_to_template(array(
                 'shipping'=> $shipping
             ));
+        }
+
+        assign_to_template(array(
+            'product'=> $product,
+            'user'   => $user,
+            'order'  => $order
+        ));
+    }
+
+    function quickConfirm() {
+        global $order, $user;
+
+        if ($order->shipping_required || $order->grand_total) redirect_to(array('controller'=> 'cart', 'action'=> 'checkout'),true);
+        if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
+
+        // if we made it here it means that the item was add to the cart.
+        expHistory::set('viewable', $this->params);
+
+        // call each products checkout() callback & calculate total
+        foreach ($order->orderitem as $item) {
+            $product = new $item->product_type($item->product_id);
+            $product->checkout();
         }
 
         assign_to_template(array(

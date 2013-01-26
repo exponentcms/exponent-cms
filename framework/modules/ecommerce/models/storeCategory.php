@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,7 +28,7 @@ class storeCategory extends expNestedNode {
         'content_expFiles'=>'expFile', 
     ); 
 	
-	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
+	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 		global $db;
 		parent::__construct($params, $get_assoc, $get_attached);
 

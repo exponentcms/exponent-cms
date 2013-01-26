@@ -809,7 +809,8 @@ exit();
 
         // figure out what metadata to pass back based on the action 
         // we are in.
-        $action   = $_REQUEST['action'];
+//        $action   = $_REQUEST['action'];
+        $action   = $router->params['action'];
         $metainfo = array('title'=> '', 'keywords'=> '', 'description'=> '');
         switch ($action) {
             case 'showall':

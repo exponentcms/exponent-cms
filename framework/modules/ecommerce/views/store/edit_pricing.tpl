@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,8 +18,8 @@
     {group label="General Pricing"|gettext}
         <table>
             <tr>
-                <td>{control type="text" name="pricing[base_price]" label="Base Price"|gettext value=$record->base_price filter=decimal}</td>
-                <td>{control type="text" name="pricing[special_price]" label="Special Price"|gettext value=$record->special_price filter=decimal}</td>
+                <td>{control type="text" name="pricing[base_price]" label="Base Price"|gettext value=$record->base_price filter=decimal size=15}</td>
+                <td>{control type="text" name="pricing[special_price]" label="Special Price"|gettext value=$record->special_price filter=decimal size=15}</td>
             </tr>
             <tr>
                 <td colspan="2">{control type="checkbox" name="pricing[use_special_price]" label="Use Special Price"|gettext value=1 checked=$record->use_special_price postfalse=1}</td>

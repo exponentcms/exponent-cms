@@ -26,6 +26,8 @@
         {control type="buttongroup" name="add2cart" submit="Add to cart"|gettext}
     {/form}
 </div>
+
+    {*FIXME convert to yui3*}
 {script unique="a2cgc"}
 {literal}
 YAHOO.util.Event.onDOMReady(function(){

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,10 +16,11 @@
 ##################################################
 
     //Initialized the exponent
-    require_once("bootstrap.php");    
+//    require_once("bootstrap.php");    
+    require_once('../exponent.php');
     
 	//Get the filename to be use
-    $filename = EXP_PATH . 'sitemap.xml';    
+    $filename = BASE . 'sitemap.xml';    
    
     //Header of the xml file
     $content="<?xml version='1.0' encoding='UTF-8'?>".chr(13).chr(10);
@@ -40,8 +41,9 @@
     $columns = '';
     
 	//Get all the sections
-    $sections = $db->selectObjectsBySql('SELECT sef_name FROM exponent_section WHERE public = 1 and active = 1');
-	
+//    $sections = $db->selectObjectsBySql('SELECT sef_name FROM '.DB_TABLE_PREFIX.'_section WHERE public = 1 and active = 1');
+    $sections = $db->selectColumn('section','sef_name','public = 1 and active = 1');
+
 	foreach ($sections as $item) {            
 		
 		$columns = '<url>'.chr(13).chr(10);
@@ -72,8 +74,9 @@
 	}
 
 	//Get all the active categories
-	$categories = $db->selectObjectsBySql('SELECT sef_name FROM exponent_storeCategories WHERE is_active = 1');
-	foreach ($categories as $item) {            
+//	$categories = $db->selectObjectsBySql('SELECT sef_name FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE is_active = 1');
+    $categories = $db->selectColumn('storeCategories','sef_name','is_active = 1');
+	foreach ($categories as $item) {
 		
 		$columns = '<url>'.chr(13).chr(10);
 	
@@ -103,8 +106,9 @@
 	}
 	
 	//Get all the active products
-	$products = $db->selectObjectsBySql("SELECT sef_name FROM exponent_product WHERE (active_type = 0 or active_type = 1) and parent_id = 0");
-	foreach ($products as $item) {            
+//	$products = $db->selectObjectsBySql('SELECT sef_name FROM '.DB_TABLE_PREFIX.'_product WHERE (active_type = 0 or active_type = 1) and parent_id = 0');
+    $products = $db->selectColumn('product','sef_name','(active_type = 0 or active_type = 1) and parent_id = 0');
+	foreach ($products as $item) {
 		
 		$columns = '<url>'.chr(13).chr(10);
 	

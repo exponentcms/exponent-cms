@@ -27,6 +27,7 @@
     <a id="continue" class="rc-link" href="{link controller=cart action=addItem}">{'Add to cart and continue shopping'|gettext}<span></span></a>
 </div>
 
+    {*FIXME convert to yui3*}
 {script unique="a2cgc" yui3mods=1}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {

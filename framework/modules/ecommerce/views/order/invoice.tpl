@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,7 @@
 
 <div id="invoice">
     <div id="store-header">
-        <h1>{$storeConfig.storename}</h1>
+        <h1>{$storeConfig.storename} {'Invoice'|gettext}</h1>
         {$storeConfig.ecomheader}
     </div>
     {if $pf && $storeConfig.enable_barcode}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -85,7 +85,7 @@
 
     YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs",'tabview',"node-load","event-simulate",'cookie', function(Y) {
        
-       var lastTab = !Y.Lang.isNull(Y.Cookie.get("edit-tab")) ? Y.Cookie.get("edit-tab") : 0;
+//       var lastTab = !Y.Lang.isNull(Y.Cookie.get("edit-tab")) ? Y.Cookie.get("edit-tab") : 0;
        var tabs = Y.all('#dynamicload li a');
        var cdiv = Y.one('#loadcontent');
        
@@ -102,7 +102,7 @@
            var cTab = cTabs.item(tIndex);
            var puri =  tab.getAttribute('href');
 
-           Y.Cookie.set("edit-tab", tIndex);
+//           Y.Cookie.set("edit-tab", tIndex);
            
            tabs.removeClass('current');
            tab.addClass('current');
@@ -134,8 +134,9 @@
        
        tabs.on('click',loadTab);
 
-       tabs.item(lastTab).simulate('click');
-       
+//       tabs.item(lastTab).simulate('click');
+       tabs.item(0).simulate('click');
+
        Y.one('#editproduct-tabs').removeClass('hide');
        Y.one('.loadingdiv').remove();
     });
