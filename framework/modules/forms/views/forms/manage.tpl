@@ -20,7 +20,7 @@
 <div class="module forms manage">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("Managing Forms"|gettext) module="forms-configuration"}
+            {help text="Get Help"|gettext|cat:" "|cat:("Managing Forms"|gettext) module="manage-site-forms"}
         </div>
         <h2>{"Site Forms Manager"|gettext}</h2>
     </div>
