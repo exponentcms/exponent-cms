@@ -53,7 +53,7 @@ class migrationController extends expController {
         'navigationmodule'=>'navigationController',
         'calendarmodule'=>'eventController',
         'formmodule'=>'formsController',
-        'contactmodule'=>'formmodule',  // this module is converted to a functionally similar old school formmodule
+        'contactmodule'=>'formsController',  // this module is converted to a functionally similar form
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -2093,6 +2093,7 @@ class migrationController extends expController {
 					break;
 				}
 
+                $iloc->mod = 'calendarmodule';
                 // convert each eventdate
                 $eds = $old_db->selectObjects('eventdate',"1");
                 foreach ($eds as $ed) {
@@ -2168,7 +2169,7 @@ class migrationController extends expController {
 				if ($contactform) {
                     // for forms 2.0 we create a site form (form & report consolidated)
                     $newform = new forms();
-                    $newform->title = 'Send us an e-mail';
+                    $newform->title = 'Contact Form';
                     $newform->is_saved = false;
                     $newform->table_name = '';
                     $newform->description = '';
@@ -2229,7 +2230,88 @@ class migrationController extends expController {
 				}
 				break;
             case 'formmodule':  // convert to forms module
-                //FIXME move the pull_data stuff up here and convert
+                $module->view = "enter_data";
+                $module->action = "enter_data";
+
+                // new form update
+                $oldform = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
+                $oldreport = $old_db->selectObject('formbuilder_report', "location_data='".serialize($iloc)."'");
+
+                if (!empty($oldform->id)) {
+                    $newform = new forms();
+                    $newform->title = $oldform->name;
+                    $newform->is_saved = $oldform->is_saved;
+                    $newform->table_name = $oldform->table_name;
+                    if (empty($newform->title) && !empty($newform->table_name)) $newform->title = explode('_',' ',$newform->table_name);
+                    $newform->description = $oldform->description;
+                    $newform->response = $oldform->response;
+                    $newform->report_name = $oldreport->name;
+                    $newform->report_desc = $oldreport->description;
+                    $newform->report_def = $oldreport->text;
+                    $newform->column_names_list = $oldreport->column_names;
+                    $newform->update();
+
+                     // copy & convert each formbuilder_control to a forms_control
+                    $fcs = $old_db->selectObjects('formbuilder_control',"form_id=".$oldform->id);
+                    foreach ($fcs as $fc) {
+                        $fc->forms_id = $newform->id;
+                        unset ($fc->form_id);
+                        $db->insertObject($fc,'forms_control');
+                    }
+
+                    // import form saved data
+                    if ($oldform->is_saved) {
+                        $newform->updateTable();  // creates the table in database
+                        $records = $old_db->selectObjects('formbuilder_'.$oldform->table_name, 1);
+                        foreach($records as $record) {
+                            //FIXME do we want to add a forms_id field?
+                            $db->insertObject($record, 'forms_'.$oldform->table_name);
+                        }
+                    }
+
+                    // convert the form & report configs to an expConfig object for this module
+                    $newconfig = new expConfig();
+                    $newconfig->config['forms_id'] = $newform->id;
+                    if (!empty($oldform->name)) $newconfig->config['title'] = $oldform->name;
+                    if (!empty($oldform->description)) $newconfig->config['description'] = $oldform->description;
+                    if (!empty($oldform->response)) $newconfig->config['response'] = $oldform->response;
+                    if (!empty($oldform->is_email)) $newconfig->config['is_email'] = $oldform->is_email;
+                    if (!empty($oldform->select_email)) $newconfig->config['select_email'] = $oldform->select_email;
+                    if (!empty($oldform->submitbtn)) $newconfig->config['submitbtn'] = $oldform->submitbtn;
+                    if (!empty($oldform->resetbtn)) $newconfig->config['resetbtn'] = $oldform->resetbtn;
+                    if (!empty($oldform->style)) $newconfig->config['style'] = $oldform->style;
+                    if (!empty($oldform->subject)) $newconfig->config['subject'] = $oldform->subject;
+                    if (!empty($oldform->is_auto_respond)) $newconfig->config['is_auto_respond'] = $oldform->is_auto_respond;
+                    if (!empty($oldform->auto_respond_subject)) $newconfig->config['auto_respond_subject'] = $oldform->auto_respond_subject;
+                    if (!empty($oldform->auto_respond_body)) $newconfig->config['auto_respond_body'] = $oldform->auto_respond_body;
+                    if (!empty($oldreport->name)) $newconfig->config['report_name'] = $oldreport->name;
+                    if (!empty($oldreport->description)) $newconfig->config['report_desc'] = $oldreport->description;
+                    if (!empty($oldreport->text)) $newconfig->config['report_def'] = $oldreport->text;
+                    if (!empty($oldreport->column_names)) $newconfig->config['column_names_list'] = explode('|!|',$oldreport->column_names);
+
+                    // we have to pull in addresses for emails
+                    $addrs = $old_db->selectObjects('formbuilder_address',"form_id=".$oldform->id);
+                    foreach ($addrs as $addr) {
+                        if (!empty($addr->user_id)) {
+                            $newconfig->config['user_list'][] = $addr->user_id;
+                        } elseif (!empty($addr->group_id)) {
+                            $newconfig->config['group_list'][] = $addr->group_id;
+                        } elseif (!empty($addr->email)) {
+                            $newconfig->config['address_list'][] = $addr->email;
+                        }
+                    }
+
+                    // now save/attach the expConfig
+                    if ($newconfig->config != null) {
+                        $newmodinternal = $iloc;
+                        $newmod = explode("Controller",$newmodinternal->mod);
+                        $newmodinternal->mod = $newmod[0];
+                        $newconfig->location_data = $newmodinternal;
+                    }
+                }
+
+                @$this->msg['migrated'][$iloc->mod]['count']++;
+                @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 break;
 			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
@@ -2315,45 +2397,45 @@ class migrationController extends expController {
 //                }
 //				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 //				break;
-            case 'formmodule':
-				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'")) {
-					break;
-				}
-                $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
-				$oldformid = $form->id;
-				unset($form->id);
-                $form->id = $db->insertObject($form, 'formbuilder_form');
-				@$this->msg['migrated'][$iloc->mod]['count']++;
-				$addresses = $old_db->selectObjects('formbuilder_address', "form_id='".$oldformid."'");
-                foreach($addresses as $address) {
-					unset($address->id);
-					$address->form_id = $form->id;
-                    $db->insertObject($address, 'formbuilder_address');
-				}
-				$controls = $old_db->selectObjects('formbuilder_control', "form_id='".$oldformid."'");
-                foreach($controls as $control) {
-					unset($control->id);
-					$control->form_id = $form->id;
-                    $db->insertObject($control, 'formbuilder_control');
-				}
-				$reports = $old_db->selectObjects('formbuilder_report', "form_id='".$oldformid."'");
-                foreach($reports as $report) {
-					unset($report->id);
-					$report->form_id = $form->id;
-                    $db->insertObject($report, 'formbuilder_report');
-				}
-				if (isset($form->table_name)) {
-					if (isset($this->params['wipe_content'])) {
-						$db->delete('formbuilder_'.$form->table_name);
-					}
-					formbuilder_form::updateTable($form);
-					$records = $old_db->selectObjects('formbuilder_'.$form->table_name, 1);
-					foreach($records as $record) {
-						$db->insertObject($record, 'formbuilder_'.$form->table_name);
-					}
-				}
-				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
-				break;
+//            case 'formmodule':
+//				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'")) {
+//					break;
+//				}
+//                $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
+//				$oldformid = $form->id;
+//				unset($form->id);
+//                $form->id = $db->insertObject($form, 'formbuilder_form');
+//				@$this->msg['migrated'][$iloc->mod]['count']++;
+//				$addresses = $old_db->selectObjects('formbuilder_address', "form_id='".$oldformid."'");
+//                foreach($addresses as $address) {
+//					unset($address->id);
+//					$address->form_id = $form->id;
+//                    $db->insertObject($address, 'formbuilder_address');
+//				}
+//				$controls = $old_db->selectObjects('formbuilder_control', "form_id='".$oldformid."'");
+//                foreach($controls as $control) {
+//					unset($control->id);
+//					$control->form_id = $form->id;
+//                    $db->insertObject($control, 'formbuilder_control');
+//				}
+//				$reports = $old_db->selectObjects('formbuilder_report', "form_id='".$oldformid."'");
+//                foreach($reports as $report) {
+//					unset($report->id);
+//					$report->form_id = $form->id;
+//                    $db->insertObject($report, 'formbuilder_report');
+//				}
+//				if (isset($form->table_name)) {
+//					if (isset($this->params['wipe_content'])) {
+//						$db->delete('formbuilder_'.$form->table_name);
+//					}
+//					formbuilder_form::updateTable($form);
+//					$records = $old_db->selectObjects('formbuilder_'.$form->table_name, 1);
+//					foreach($records as $record) {
+//						$db->insertObject($record, 'formbuilder_'.$form->table_name);
+//					}
+//				}
+//				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+//				break;
         }
         return $linked;
     }
