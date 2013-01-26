@@ -65,15 +65,15 @@ if (!function_exists('smarty_function_ddrerank')) {
             $params['items'] = $obj->find('all', $locsql . $only, "rank"); // we MUST re-pull since we only received one page of $items
             $params['items'] = expSorter::sort(array('array' => $params['items'], 'sortby' => 'rank', 'order' => 'ASC'));
         } elseif (!empty($params['module'])) {
-            $model = empty($params['model']) ? '' : $params['model'];
-            $uniqueloc = $smarty->getTemplateVars('container2');
+        $model = empty($params['model']) ? $params['module'] : $params['model'];
+        $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
             if (!empty($uniqueloc->internal)) {
                 $uniqueloc2 = expUnserialize($uniqueloc->internal);
                 $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
             }
             $where = !empty($params['where']) ? $params['where'] : 1;
             $only = !empty($params['only']) ? ' AND ' . $params['only'] : '';
-            $params['items'] = $db->selectObjects($params['module'], $where . $only, "rank");
+        $params['items'] = $db->selectObjects($model, $where . $only, "rank");
         } else {
             $params['items'] = array();
         }
@@ -112,14 +112,14 @@ if (!function_exists('smarty_function_ddrerank')) {
                 $stringlen = 40;
                 foreach ($params['items'] as $item) {
                     if (!empty($params['module'])) {
-                        if ($params['module'] == 'formbuilder_control') {
+                    if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control') {
                             $control = expUnserialize($item->data);
                             $ctrl = new $control();
                             $name = $ctrl->name();
 //                            $name = $control::name();
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
                             $stringlen = 65;
-                        } elseif ($params['module'] == 'container2') {
+                    } elseif ($params['module'] == 'container' || $params['module'] == 'container2') {
                             $mod = expUnserialize($item->internal);
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleBaseName($mod->mod)) . ')';
                             $stringlen = 65;

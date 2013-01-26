@@ -64,7 +64,7 @@ function smarty_function_ddrerank($params, &$smarty) {
         $params['items'] = $obj->find('all', $locsql . $only, "rank"); // we MUST re-pull since we only received one page of $items
         $params['items'] = expSorter::sort(array('array' => $params['items'], 'sortby' => 'rank', 'order' => 'ASC'));
     } elseif (!empty($params['module'])) {
-        $model = empty($params['model']) ? '' : $params['model'];
+        $model = empty($params['model']) ? $params['module'] : $params['model'];
         $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
         if (!empty($uniqueloc->internal)) {
             $uniqueloc2 = expUnserialize($uniqueloc->internal);
@@ -72,7 +72,7 @@ function smarty_function_ddrerank($params, &$smarty) {
         }
         $where = !empty($params['where']) ? $params['where'] : 1;
         $only = !empty($params['only']) ? ' AND ' . $params['only'] : '';
-        $params['items'] = $db->selectObjects($params['model'], $where . $only, "rank");
+        $params['items'] = $db->selectObjects($model, $where . $only, "rank");
     } else {
         $params['items'] = array();
     }
