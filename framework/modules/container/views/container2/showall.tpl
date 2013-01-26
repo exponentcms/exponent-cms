@@ -39,7 +39,13 @@
                         <li><a href="{link controller=users action=userperms mod=container2}" class="user">{"User Permissions"|gettext}</a></li>
                         <li><a href="{link controller=users action=groupperms mod=container2}" class="group">{"Group Permissions"|gettext}</a></li>
                     {/if}
-                    {capture name=rerank}{ddrerank module="container2" model="container" where="external='`$containers[1]->external`'" label="Modules"|gettext}{/capture}
+                    {foreach $containers as $container}
+                        {if !empty($container->external)}
+                            {$external = $container->external}
+                            {break}
+                        {/if}
+                    {/foreach}
+                    {capture name=rerank}{ddrerank module="container2" model="container" where="external='`$external`'" label="Modules"|gettext}{/capture}
                     {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
                     {if $smarty.const.HELP_ACTIVE}<li>{help text="Help with Containers"|gettext}</li>{/if}
                 </ul>
