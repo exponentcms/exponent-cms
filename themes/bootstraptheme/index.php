@@ -26,7 +26,7 @@
         </nav>
         <div id="main" class="row">
             <aside class="span3">
-                <?php expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left")); ?>
+                <?php expTheme::module(array("controller"=>"container2","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
             </aside>
             <div id="content" class="span9">
                 <?php expTheme::main(); ?>
