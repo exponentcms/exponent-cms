@@ -294,6 +294,7 @@
                     <h2>{"e-Commerce Configuration"|gettext}</h2>
                 </div>
                 {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
+                {control type="checkbox" postfalse=1 name="sc[DISABLE_SSL_WARNING]" label="Disable Checkout Unsecure Warning?"|gettext checked=$smarty.const.DISABLE_SSL_WARNING value=1 description='Normally a warning is displayed when attempting to checkout on an unsecured site.'|gettext}
                 <hr>
                 <h4>{'Getting e-Commerce up and running'|gettext}</h4>
                 <ol>

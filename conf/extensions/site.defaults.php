@@ -36,6 +36,7 @@ if (!defined('SESSION_TIMEOUT')) define('SESSION_TIMEOUT','7200');
 if (!defined('SESSION_TIMEOUT_HTML')) define('SESSION_TIMEOUT_HTML',exponent_unhtmlentities('<h3>Expired Login Session</h3>Your session has expired, because you were idle too long.  You will have to log back into the system to continue what you were doing.'));
 
 if (!defined('ENABLE_SSL')) define('ENABLE_SSL','0');
+if (!defined('DISABLE_SSL_WARNING')) define('DISABLE_SSL_WARNING','0');
 
 if (!defined('FILE_DEFAULT_MODE_STR')) define('FILE_DEFAULT_MODE_STR','0666');
 if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');

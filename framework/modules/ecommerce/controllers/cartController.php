@@ -402,7 +402,7 @@ class cartController extends expController {
         // we need to get the current shipping method rates
         $shipping->getRates();
 
-        if (!defined('ENABLE_SSL') || ENABLE_SSL==0) flash('error', gt('This page appears to be unsecured!  Personal information may become compromised!'));
+        if ((!defined('ENABLE_SSL') || ENABLE_SSL==0) && (!defined('DISABLE_SSL_WARNING') || DISABLE_SSL_WARNING==0)) flash('error', gt('This page appears to be unsecured!  Personal information may become compromised!'));
 
         assign_to_template(array(
             'cartConfig'          => $config->config,
