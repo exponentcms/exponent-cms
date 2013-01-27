@@ -113,7 +113,7 @@ function sanity_checkFiles() {
 		//'framework/datatypes/'=>sanity_checkDirectory('framework/datatypes',SANITY_READWRITE),
 		//'conf/profiles/'=>sanity_checkFile(BASE.'conf/profiles',0,SANITY_READWRITE),
 		//'overrides.php'=>sanity_checkFile(BASE.'overrides.php',1,SANITY_READWRITE),
-		'framework/modules-1/'=>sanity_checkFile(BASE.'framework/modules-1/',0,SANITY_READONLY),
+//		'framework/modules-1/'=>sanity_checkFile(BASE.'framework/modules-1/',0,SANITY_READONLY),
 		'tmp/'=>sanity_checkDirectory('tmp',SANITY_READWRITE),
 		'tmp/extensionuploads/'=>sanity_checkFile(BASE.'tmp/extensionuploads',0,SANITY_READWRITE),
 		'tmp/views_c'=>sanity_checkDirectory('tmp/views_c',SANITY_READWRITE),

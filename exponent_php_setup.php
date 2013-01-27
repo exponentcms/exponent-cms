@@ -116,15 +116,15 @@ function expLoadClasses($class) {
 	}
 
 	// autoload the old school modules instead of using exponent_modules_initialize()
-	if (is_readable(BASE.'framework/modules-1')) {
-		$dh = opendir(BASE.'framework/modules-1');
-		while (($file = readdir($dh)) !== false) {
-			if ($file == $class && is_dir(BASE.'framework/modules-1/'.$file) && is_readable(BASE.'framework/modules-1/'.$file.'/class.php')) {
-				include_once(BASE.'framework/modules-1/'.$file.'/class.php');
-				return;
-			}
-		}
-	}
+//	if (is_readable(BASE.'framework/modules-1')) {
+//		$dh = opendir(BASE.'framework/modules-1');
+//		while (($file = readdir($dh)) !== false) {
+//			if ($file == $class && is_dir(BASE.'framework/modules-1/'.$file) && is_readable(BASE.'framework/modules-1/'.$file.'/class.php')) {
+//				include_once(BASE.'framework/modules-1/'.$file.'/class.php');
+//				return;
+//			}
+//		}
+//	}
 
 }
 
