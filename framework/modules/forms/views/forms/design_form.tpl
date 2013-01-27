@@ -23,9 +23,14 @@
     {/css}
 {/if}
 
+<div class="info-header">
+    <div class="related-actions">
+        {help text="Get Help"|gettext|cat:" "|cat:("Designing Forms"|gettext) module="design-forms"}
+    </div>
+    <h2>{"Forms Designer"|gettext}</h2>
+</div>
 <div class="module forms design-form">
     <div class="form_title">
-        <h1>{'Form Editor'|gettext}</h1>
         {if $edit_mode != 1}
             {'Use the drop down to add fields to this form.'|gettext}
             <div class="module-actions">

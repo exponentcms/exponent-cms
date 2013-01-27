@@ -1001,7 +1001,7 @@ class eventController extends expController {
                 $evs[$key]->date_id = $edate->id;
                 if (!empty($event->expCat)) {
                     $catcolor = empty($event->expCat[0]->color) ? null : trim($event->expCat[0]->color);
-                    if (substr($catcolor,0,1)=='#') $catcolor = '" style="color:'.$catcolor.';';
+//                    if (substr($catcolor,0,1)=='#') $catcolor = '" style="color:'.$catcolor.';';
                     $evs[$key]->color = $catcolor;
                 }
             }

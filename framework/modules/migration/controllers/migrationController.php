@@ -53,7 +53,7 @@ class migrationController extends expController {
         'navigationmodule'=>'navigationController',
         'calendarmodule'=>'eventController',
         'formmodule'=>'formsController',
-        'contactmodule'=>'formmodule',  // this module is converted to a functionally similar old school formmodule
+        'contactmodule'=>'formsController',  // this module is converted to a functionally similar form
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -69,7 +69,6 @@ class migrationController extends expController {
          'inboxmodule',
         'rssmodule',
 // the following 0.97/98 modules were added to this list
-//   based on lack of info showing they will exist in 2.0
         'articlemodule',
         'bbmodule',
         'pagemodule',
@@ -88,9 +87,6 @@ class migrationController extends expController {
         'svgallerymodule',
         'uiswitchermodule',
         'filemanagermodule',
-    );
-
-    public $needs_written = array(
     );
 
 	/**
@@ -314,8 +310,8 @@ class migrationController extends expController {
             } elseif (in_array($modules[$i]->module, $this->deprecated_modules)) {
                 // $modules[$i]->action = '<span style="color:red;">This module is deprecated and will not be migrated.</span>';
                 $modules[$i]->notmigrating = 1;
-            } elseif (in_array($modules[$i]->module, $this->needs_written)) {
-                $modules[$i]->action = '<span style="color:orange;">'.gt('Still needs migration script written').'</span>';
+//            } elseif (in_array($modules[$i]->module, $this->needs_written)) {
+//                $modules[$i]->action = '<span style="color:orange;">'.gt('Still needs migration script written').'</span>';
             } else {
                 $modules[$i]->action = gt('Migrating as is.');
             }
@@ -1946,7 +1942,7 @@ class migrationController extends expController {
 					$newconfig->config['rss_limit'] = isset($feedlist->rss_limit) ? $feedlist->rss_limit : 24;
 					$newconfig->config['rss_cachetime'] = isset($feedlist->rss_cachetime) ? $feedlist->rss_cachetime : 1440;
 					$newconfig->location_data = $loc;
-					$newconfig->save();
+//					$newconfig->save();
 					@$this->msg['migrated'][$iloc->mod]['count']++;
 					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 }
@@ -2088,6 +2084,16 @@ class migrationController extends expController {
                     }
                 }
 
+                //check to see if it's already pulled in (circumvent !is_original)
+				$ploc = $iloc;
+				$ploc->mod = "event";
+				if ($db->countObjects('event', "location_data='".serialize($ploc)."'")) {
+					$iloc->mod = 'calendarmodule';
+//					$linked = true;
+					break;
+				}
+
+                $iloc->mod = 'calendarmodule';
                 // convert each eventdate
                 $eds = $old_db->selectObjects('eventdate',"1");
                 foreach ($eds as $ed) {
@@ -2154,88 +2160,159 @@ class migrationController extends expController {
                 @$this->msg['migrated'][$iloc->mod]['count']++;
                 @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 break;
-            case 'contactmodule':  // convert to forms module
-				$module->view == "enter_data";
-                $module->action == "enter_data";
-
-				//check to see if it's already pulled in (circumvent !is_original)
-				$ploc = $iloc;
-				$ploc->mod = "formmodule";
-				if ($db->countObjects('formbuilder_form', "location_data='".serialize($ploc)."'")) {
-					$iloc->mod = 'contactmodule';
-//					$linked = true;
-					break;
-				}
+            case 'contactmodule':  // v2.1.1 now converted to a forms 2.0 module
+				$module->view = "enter_data";
+                $module->action = "enter_data";
 
                 $iloc->mod = 'contactmodule';
                 $contactform = $old_db->selectObject('contactmodule_config', "location_data='".serialize($iloc)."'");
 				if ($contactform) {
-					$loc = expUnserialize($contactform->location_data);
-					$loc->mod = 'formmodule';
-					$contactform->location_data = serialize($loc);
-	//				$replyto_address = $contactform->replyto_address;
-					unset($contactform->replyto_address);
-	//				$from_address = $contactform->from_address;
-					unset($contactform->from_address);
-	//				$from_name = $contactform->from_name;
-					unset($contactform->from_name);
-					unset($contactform->use_captcha);
-					$contactform->name = 'Send us an e-mail';
-					$contactform->description = '';
-					$contactform->response = $contactform->final_message;
-					unset($contactform->final_message);
-					$contactform->table_name ='';
-					$contactform->is_email = true;
-					$contactform->is_saved = false;
-					$contactform->submitbtn = 'Send Message';
-					$contactform->resetbtn = 'Reset';
-					unset($contactform->id);
-					$contactform->id = $db->insertObject($contactform, 'formbuilder_form');
+                    // for forms 2.0 we create a site form (form & report consolidated)
+                    $newform = new forms();
+                    $newform->title = 'Contact Form';
+                    $newform->is_saved = false;
+                    $newform->table_name = '';
+                    $newform->description = '';
+                    $newform->response = $contactform->final_message;
+                    $newform->update();
 
-					$addresses = $old_db->selectObjects('contact_contact', "location_data='".serialize($iloc)."'");
-					foreach($addresses as $address) {
-						unset($address->addressbook_contact_id);
-						unset($address->contact_info);
-						unset($address->location_data);
-						$address->form_id = $contactform->id;
-						$db->insertObject($address, 'formbuilder_address');
-					}
-
-					$report = new stdClass();
-					$report->name = $contactform->subject;
-					$report->location_data = $contactform->location_data;
-					$report->form_id = $contactform->id;
-					$db->insertObject($report, 'formbuilder_report');
-					// now add the controls to the form
+                    // now add the controls to the site form
 					$control = new stdClass();
 					$control->name = 'name';
 					$control->caption = 'Your Name';
-					$control->form_id = $contactform->id;
-					$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:9:"Your Name";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:4:"name";}';
-					$control->rank = 0;
+					$control->forms_id = $newform->id;
+					$control->data = 'O:11:"textcontrol":14:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:9:"Your Name";s:11:"placeholder";s:8:"John Doe";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:4:"name";s:11:"description";s:22:"Please enter your name";}';
+					$control->rank = 0;  //FIXME for v2.2 we need to start @ 1
 					$control->is_readonly = 0;
 					$control->is_static = 0;
-					$db->insertObject($control, 'formbuilder_control');
+					$db->insertObject($control, 'forms_control');
 					$control->name = 'email';
 					$control->caption = 'Your Email';
-					$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:18:"Your Email Address";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:5:"email";}';
+					$control->data = 'O:11:"textcontrol":14:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:10:"Your Email";s:11:"placeholder";s:18:"johndoe@mailer.org";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:5:"email";s:11:"description";s:31:"Please enter your email address";}';
 					$control->rank = 1;
-					$db->insertObject($control, 'formbuilder_control');
+					$db->insertObject($control, 'forms_control');
 					$control->name = 'subject';
 					$control->caption = 'Subject';
-					$control->data = 'O:11:"textcontrol":12:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:7:"Subject";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:7:"subject";}';
+					$control->data = 'O:11:"textcontrol":14:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:7:"Subject";s:11:"placeholder";s:22:"Subject line for email";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:7:"subject";s:11:"description";s:21:"Enter a quick summary";}';
 					$control->rank = 2;
-					$db->insertObject($control, 'formbuilder_control');
+					$db->insertObject($control, 'forms_control');
 					$control->name = 'message';
 					$control->caption = 'Message';
-					$control->data = 'O:17:"texteditorcontrol":12:{s:4:"cols";i:60;s:4:"rows";i:8;s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:0;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:8:"maxchars";i:0;s:10:"identifier";s:7:"message";s:7:"caption";s:7:"Message";}';
+					$control->data = 'O:17:"texteditorcontrol":13:{s:4:"cols";i:60;s:4:"rows";i:8;s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:0;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:8:"maxchars";i:0;s:10:"identifier";s:7:"message";s:7:"caption";s:7:"Message";s:11:"description";s:33:"Enter the content of your message";}';
 					$control->rank = 3;
-					$db->insertObject($control, 'formbuilder_control');
+					$db->insertObject($control, 'forms_control');
+
+                    //  and then an expConfig to link to that site form with config settings
+                    $newconfig->config['forms_id'] = $newform->id;
+                    $newconfig->config['title'] = 'Send us an e-mail';
+                    $newconfig->config['description'] = '';
+                    $newconfig->config['is_email'] = true;
+                    if (!empty($contactform->subject)) {
+                        $newconfig->config['report_name'] = $contactform->subject;
+                        $newconfig->config['subject'] = $contactform->subject;
+                    }
+                    if (!empty($contactform->final_message)) $newconfig->config['response'] = $contactform->final_message;
+                    $newconfig->config['submitbtn'] = 'Send Message';
+                    $newconfig->config['resetbtn'] = 'Reset';
+
+                    // we have to pull in addresses for emails
+                    $addrs = $old_db->selectObjects('contact_contact', "location_data='".serialize($iloc)."'");
+                    foreach ($addrs as $addr) {
+                        if (!empty($addr->user_id)) {
+                            $newconfig->config['user_list'][] = $addr->user_id;
+                        } elseif (!empty($addr->email)) {
+                            $newconfig->config['address_list'][] = $addr->email;
+                        }
+                    }
 
 					@$this->msg['migrated'][$iloc->mod]['count']++;
 					@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 				}
 				break;
+            case 'formmodule':  // convert to forms module
+                $module->view = "enter_data";
+                $module->action = "enter_data";
+
+                // new form update
+                $oldform = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
+                $oldreport = $old_db->selectObject('formbuilder_report', "location_data='".serialize($iloc)."'");
+
+                if (!empty($oldform->id)) {
+                    $newform = new forms();
+                    $newform->title = $oldform->name;
+                    $newform->is_saved = $oldform->is_saved;
+                    $newform->table_name = $oldform->table_name;
+                    if (empty($newform->title) && !empty($newform->table_name)) $newform->title = explode('_',' ',$newform->table_name);
+                    $newform->description = $oldform->description;
+                    $newform->response = $oldform->response;
+                    $newform->report_name = $oldreport->name;
+                    $newform->report_desc = $oldreport->description;
+                    $newform->report_def = $oldreport->text;
+                    $newform->column_names_list = $oldreport->column_names;
+                    $newform->update();
+
+                     // copy & convert each formbuilder_control to a forms_control
+                    $fcs = $old_db->selectObjects('formbuilder_control',"form_id=".$oldform->id);
+                    foreach ($fcs as $fc) {
+                        $fc->forms_id = $newform->id;
+                        unset ($fc->form_id);
+                        $db->insertObject($fc,'forms_control');
+                    }
+
+                    // import form saved data
+                    if ($oldform->is_saved) {
+                        $newform->updateTable();  // creates the table in database
+                        $records = $old_db->selectObjects('formbuilder_'.$oldform->table_name, 1);
+                        foreach($records as $record) {
+                            //FIXME do we want to add a forms_id field?
+                            $db->insertObject($record, 'forms_'.$oldform->table_name);
+                        }
+                    }
+
+                    // convert the form & report configs to an expConfig object for this module
+                    $newconfig = new expConfig();
+                    $newconfig->config['forms_id'] = $newform->id;
+                    if (!empty($oldform->name)) $newconfig->config['title'] = $oldform->name;
+                    if (!empty($oldform->description)) $newconfig->config['description'] = $oldform->description;
+                    if (!empty($oldform->response)) $newconfig->config['response'] = $oldform->response;
+                    if (!empty($oldform->is_email)) $newconfig->config['is_email'] = $oldform->is_email;
+                    if (!empty($oldform->select_email)) $newconfig->config['select_email'] = $oldform->select_email;
+                    if (!empty($oldform->submitbtn)) $newconfig->config['submitbtn'] = $oldform->submitbtn;
+                    if (!empty($oldform->resetbtn)) $newconfig->config['resetbtn'] = $oldform->resetbtn;
+                    if (!empty($oldform->style)) $newconfig->config['style'] = $oldform->style;
+                    if (!empty($oldform->subject)) $newconfig->config['subject'] = $oldform->subject;
+                    if (!empty($oldform->is_auto_respond)) $newconfig->config['is_auto_respond'] = $oldform->is_auto_respond;
+                    if (!empty($oldform->auto_respond_subject)) $newconfig->config['auto_respond_subject'] = $oldform->auto_respond_subject;
+                    if (!empty($oldform->auto_respond_body)) $newconfig->config['auto_respond_body'] = $oldform->auto_respond_body;
+                    if (!empty($oldreport->name)) $newconfig->config['report_name'] = $oldreport->name;
+                    if (!empty($oldreport->description)) $newconfig->config['report_desc'] = $oldreport->description;
+                    if (!empty($oldreport->text)) $newconfig->config['report_def'] = $oldreport->text;
+                    if (!empty($oldreport->column_names)) $newconfig->config['column_names_list'] = explode('|!|',$oldreport->column_names);
+
+                    // we have to pull in addresses for emails
+                    $addrs = $old_db->selectObjects('formbuilder_address',"form_id=".$oldform->id);
+                    foreach ($addrs as $addr) {
+                        if (!empty($addr->user_id)) {
+                            $newconfig->config['user_list'][] = $addr->user_id;
+                        } elseif (!empty($addr->group_id)) {
+                            $newconfig->config['group_list'][] = $addr->group_id;
+                        } elseif (!empty($addr->email)) {
+                            $newconfig->config['address_list'][] = $addr->email;
+                        }
+                    }
+
+                    // now save/attach the expConfig
+                    if ($newconfig->config != null) {
+                        $newmodinternal = $iloc;
+                        $newmod = explode("Controller",$newmodinternal->mod);
+                        $newmodinternal->mod = $newmod[0];
+                        $newconfig->location_data = $newmodinternal;
+                    }
+                }
+
+                @$this->msg['migrated'][$iloc->mod]['count']++;
+                @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                break;
 			default:
                 @$this->msg['noconverter'][$iloc->mod]++;
 				break;
@@ -2320,51 +2397,51 @@ class migrationController extends expController {
 //                }
 //				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
 //				break;
-            case 'formmodule':
-				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'")) {
-					break;
-				}
-                $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
-				$oldformid = $form->id;
-				unset($form->id);
-                $form->id = $db->insertObject($form, 'formbuilder_form');
-				@$this->msg['migrated'][$iloc->mod]['count']++;
-				$addresses = $old_db->selectObjects('formbuilder_address', "form_id='".$oldformid."'");
-                foreach($addresses as $address) {
-					unset($address->id);
-					$address->form_id = $form->id;
-                    $db->insertObject($address, 'formbuilder_address');
-				}
-				$controls = $old_db->selectObjects('formbuilder_control', "form_id='".$oldformid."'");
-                foreach($controls as $control) {
-					unset($control->id);
-					$control->form_id = $form->id;
-                    $db->insertObject($control, 'formbuilder_control');
-				}
-				$reports = $old_db->selectObjects('formbuilder_report', "form_id='".$oldformid."'");
-                foreach($reports as $report) {
-					unset($report->id);
-					$report->form_id = $form->id;
-                    $db->insertObject($report, 'formbuilder_report');
-				}
-				if (isset($form->table_name)) {
-					if (isset($this->params['wipe_content'])) {
-						$db->delete('formbuilder_'.$form->table_name);
-					}
-					formbuilder_form::updateTable($form);
-					$records = $old_db->selectObjects('formbuilder_'.$form->table_name, 1);
-					foreach($records as $record) {
-						$db->insertObject($record, 'formbuilder_'.$form->table_name);
-					}
-				}
-				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
-				break;
+//            case 'formmodule':
+//				if ($db->countObjects('formbuilder_form', "location_data='".serialize($iloc)."'")) {
+//					break;
+//				}
+//                $form = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");
+//				$oldformid = $form->id;
+//				unset($form->id);
+//                $form->id = $db->insertObject($form, 'formbuilder_form');
+//				@$this->msg['migrated'][$iloc->mod]['count']++;
+//				$addresses = $old_db->selectObjects('formbuilder_address', "form_id='".$oldformid."'");
+//                foreach($addresses as $address) {
+//					unset($address->id);
+//					$address->form_id = $form->id;
+//                    $db->insertObject($address, 'formbuilder_address');
+//				}
+//				$controls = $old_db->selectObjects('formbuilder_control', "form_id='".$oldformid."'");
+//                foreach($controls as $control) {
+//					unset($control->id);
+//					$control->form_id = $form->id;
+//                    $db->insertObject($control, 'formbuilder_control');
+//				}
+//				$reports = $old_db->selectObjects('formbuilder_report', "form_id='".$oldformid."'");
+//                foreach($reports as $report) {
+//					unset($report->id);
+//					$report->form_id = $form->id;
+//                    $db->insertObject($report, 'formbuilder_report');
+//				}
+//				if (isset($form->table_name)) {
+//					if (isset($this->params['wipe_content'])) {
+//						$db->delete('formbuilder_'.$form->table_name);
+//					}
+//					formbuilder_form::updateTable($form);
+//					$records = $old_db->selectObjects('formbuilder_'.$form->table_name, 1);
+//					foreach($records as $record) {
+//						$db->insertObject($record, 'formbuilder_'.$form->table_name);
+//					}
+//				}
+//				@$this->msg['migrated'][$iloc->mod]['name'] = $iloc->mod;
+//				break;
         }
         return $linked;
     }
 
     /**
-     * used to create containers for new modules
+     * used to create containers, expConfigs, and expRss for new modules
      * @param $iloc
      * @param $m
      * @param bool $linked
@@ -2375,6 +2452,7 @@ class migrationController extends expController {
 	private function add_container($iloc,$m,$linked=false,$newconfig) {
         global $db;
 
+        // first the container
         $old_db = $this->connect();
         $section = $old_db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND is_original='0'");
 		if ($iloc->mod != 'contactmodule') {
@@ -2404,6 +2482,8 @@ class migrationController extends expController {
             }
 		}
 		$db->insertObject($m, 'container');
+
+        // now save the expConfig
         if (!empty($newconfig->config['enable_rss']) && $newconfig->config['enable_rss'] == true) {
             $newrss = new expRss();
             $newrss->enable_rss = $newconfig->config['enable_rss'];
@@ -2420,6 +2500,8 @@ class migrationController extends expController {
             $newconfig->location_data = $newmodinternal;
             $newconfig->save();
         }
+
+        // and save the expRss table
         if (!empty($newrss->enable_rss) && $newconfig->config['enable_rss'] == true) {
             $newrss->module = $newmodinternal->mod;
             $newrss->src = $newmodinternal->src;

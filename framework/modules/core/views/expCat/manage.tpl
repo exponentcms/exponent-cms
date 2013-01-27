@@ -27,6 +27,8 @@
         <div class="related-actions">
             {if !empty($page)}
                 {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-categories"}
+            {elseif $model == 'file'}
+                {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-file-folders"}
             {else}
                 {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-site-categories"}
             {/if}

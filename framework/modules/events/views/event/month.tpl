@@ -67,26 +67,39 @@
                             {/if}
                             {foreach name=e from=$items item=item}
                                 {if !empty($item->color)}
-                                    {$style=" style=\"background:`$item->color`;color:`$item->color|contrast`;\""}
+                                    {$style = " style=\"background:`$item->color`;color:`$item->color|contrast`;"}
                                 {else}
-                                    {$style=''}
+                                    {$style = ''}
                                 {/if}
-                                <div class="calevent{if $dayts == $today} today{/if}"{$style}>
-                                    {if $item->is_allday}
-                                        {$title = 'All Day'|gettext}
-                                    {elseif $item->eventstart != $item->eventend}
-                                        {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
-                                        {$title = $title|cat:' '}
-                                        {$title = $title|cat:'to'|gettext}
-                                        {$title = $title|cat:' '}
-                                        {$title = $title|cat:($item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT)}
+                                {$alldaystyle = ''}
+                                {if $config.show_allday && $item->is_allday}
+                                    {if empty($style)}
+                                        {$alldaystyle = ' style="'}
                                     {else}
-                                        {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                                        {$alldaystyle = $style}
+                                        {$style = "`$style`\""}
                                     {/if}
-                                    {$title = $title|cat:' - <br> '|cat:$item->body|summarize:"html":"para"}
-                                    {if $item->is_cancelled}{$title = 'Event Cancelled'|gettext|cat:"\n"|cat:$title}{/if}
-                                    <a class="{if $item->is_cancelled}cancelled{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} calpopevent{elseif $config.lightbox && substr($item->location_data,1,8) == 'calevent'} icalpopevent{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
-                                        {$style}{if $config.show_allday && $item->is_allday} style="border-color: {$item->color|brightness:+150};border-style: solid;padding-left: 2px;border-top: 0;border-bottom: 0;border-right: 0;"{/if}
+                                    {$alldaystyle = "`$alldaystyle` border-color:`$item->color|brightness:+150`;border-style:solid;padding-left:2px;border-top:0;border-bottom:0;border-right:0;\""}
+                                {elseif empty($style)}
+                                    {$style = "`$style`\""}
+                                    {$alldaystyle = $style}
+                                {/if}
+                                {if $item->is_allday}
+                                    {$title = 'All Day'|gettext}
+                                {elseif $item->eventstart != $item->eventend}
+                                    {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                                    {$title = $title|cat:' '}
+                                    {$title = $title|cat:'to'|gettext}
+                                    {$title = $title|cat:' '}
+                                    {$title = "`$title``$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT`"}
+                                {else}
+                                    {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                                {/if}
+                                {$title = "`$title` - <br> `$item->body|summarize:"html":"para"`"}
+                                {if $item->is_cancelled}{$title = 'Event Cancelled'|gettext|cat:"\n"|cat:$title}{/if}
+                                <div class="calevent{if $dayts == $today} today{/if}"{$style}>
+                                    <a class="{if $item->is_cancelled}cancelled{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} calpopevent{elseif $config.lightbox && substr($item->location_data,1,8) == 'calevent'} icalpopevent{/if}"
+                                        {$alldaystyle}
                                         {if substr($item->location_data,1,8) != 'calevent'}href="{if $item->location_data != 'eventregistration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                                             {if $item->date_id}id={$item->date_id}{/if}
                                         {/if}

@@ -1150,9 +1150,11 @@ abstract class expController {
             $object = new expTag(expString::sanitize($request['tag']));
             // set the meta info
             if (!empty($object)) {
+                $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
                 $metainfo['title'] = gt('Showing all Items tagged with') . " \"" . $object->title . "\"";
                 $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                return $metainfo;
             }
         }
     }

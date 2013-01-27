@@ -14,7 +14,14 @@
  *}
 
 <div class="module administration mass-mail">
-    <h1>{'Mass Mailer'|gettext}</h1>
+    <div class="form_header">
+   		<div class="info-header">
+   			<div class="related-actions">
+   			    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("mass mailing"|gettext) page="mass-mailer"}
+   			</div>
+   			<h1>{'Mass Mailer'|gettext}</h1>
+   		</div>
+   	</div>
     <blockquote>
         {'This form allows you to send an email with an optional attachment to site users.'|gettext}
     </blockquote>
