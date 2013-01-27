@@ -71,10 +71,33 @@ class importexportController extends expController {
         parent::__construct($src = null, $params);
     }
 
+    function manage() {  // only method currently called
+        global $available_controllers;
+
+        $importDD = array();
+        $exportDD = array();
+        foreach ($available_controllers as $key => $path) {
+            if (strpos($key, "Controller") !== false) {
+                $c = new $key();
+                if ($c->canImportData()) $importDD[$key] = $c->name();
+                if ($c->canExportData()) $exportDD[$key] = $c->name();
+            }
+        }
+
+        assign_to_template(array(
+            'importDD' => $importDD,
+            'exportDD' => $exportDD,
+        ));
+    }
+
     function import() {
         assign_to_template(array(
             'type' => $this->params['import_type']
         ));
+    }
+
+    function export() {
+        eDebug($this->params);
     }
 
     function parseCategory($data) {
@@ -438,29 +461,6 @@ class importexportController extends expController {
             }
             echo "</style>";
         }
-    }
-
-    function export() {
-        eDebug($this->params);
-    }
-
-    function manage() {
-        global $available_controllers;
-
-        $importDD = array();
-        $exportDD = array();
-        foreach ($available_controllers as $key => $path) {
-            if (strpos($key, "Controller") !== false) {
-                $c = new $key();
-                if ($c->canImportData()) $importDD[$key] = $c->name();
-                if ($c->canExportData()) $exportDD[$key] = $c->name();
-            }
-        }
-
-        assign_to_template(array(
-            'importDD' => $importDD,
-            'exportDD' => $exportDD,
-        ));
     }
 
 }

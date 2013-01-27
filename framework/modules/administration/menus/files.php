@@ -18,6 +18,8 @@
 
 if (!defined('EXPONENT')) exit('');
 
+global $user;
+
 //$script = "
 //// YUI(EXPONENT.YUI3_CONFIG).use('node','event-custom', function(Y) {
 ////
@@ -30,26 +32,60 @@ if (!defined('EXPONENT')) exit('');
 //    "content"=>$script,
 // ));
 
-return array(
-    'text'=>gt('Files'),
-    'classname'=>'files',
-    'submenu'=>array(
-        'id'=>'file-functions',
-        'itemdata'=>array(
-            array(
-                'text'=>gt("File Manager"),
-                'url'=>'#',
-                'classname'=>'filemanager',
-                'id'=>'filemanager-toolbar',
+if ($user->isSuperAdmin()) {
+    return array(
+        'text'=>gt('Files'),
+        'classname'=>'files',
+        'submenu'=>array(
+            'id'=>'file-functions',
+            'itemdata'=>array(
+                array(
+                    'text'=>gt("File Manager"),
+                    'url'=>'#',
+                    'classname'=>'filemanager',
+                    'id'=>'filemanager-toolbar',
+                ),
+                array(
+                    'text'=>gt("Upload Files"),
+                    'url'=>'#',
+                    'classname'=>'fileuploader',
+                    'id'=>'fileuploader-toolbar',
+                ),
+                array(
+                    'text'=>gt('Import Files'),
+                    'url'=>makeLink(array('controller'=>'file','action'=>'import_files')),
+                    'classname'=>'import',
+                ),
+                array(
+                    'text'=>gt('Export Files'),
+                    'url'=>makeLink(array('controller'=>'file','action'=>'export_files')),
+                    'classname'=>'export',
+                ),
             ),
-            array(
-                'text'=>gt("Upload Files"),
-                'url'=>'#',
-                'classname'=>'fileuploader',
-                'id'=>'fileuploader-toolbar',
-            )
-        ),
-    )
-);
+        )
+    );
+} else {
+    return array(
+        'text'=>gt('Files'),
+        'classname'=>'files',
+        'submenu'=>array(
+            'id'=>'file-functions',
+            'itemdata'=>array(
+                array(
+                    'text'=>gt("File Manager"),
+                    'url'=>'#',
+                    'classname'=>'filemanager',
+                    'id'=>'filemanager-toolbar',
+                ),
+                array(
+                    'text'=>gt("Upload Files"),
+                    'url'=>'#',
+                    'classname'=>'fileuploader',
+                    'id'=>'fileuploader-toolbar',
+                ),
+            ),
+        )
+    );
+}
 
 ?>

@@ -176,6 +176,12 @@
 #admintoolbar li.email a.yuimenuitemlabel {
     background:url(../images/admintoolbar/mail-reply-all.png) no-repeat 5px 50%;
 }
+#admintoolbar li.import a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/upload.png) no-repeat 5px 50%;
+}
+#admintoolbar li.export a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/download.png) no-repeat 5px 50%;
+}
 
 #admintoolbar li.yuimenuitem-selected {
     background-color:#0e1d3f;

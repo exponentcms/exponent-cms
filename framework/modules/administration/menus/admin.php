@@ -396,12 +396,14 @@ if ($user->isSuperAdmin()) {
                         'id' => 'database',
                         'itemdata' => array(
                             array(
-                                'text'=>gt('Import Data'),
-                                'url'=>makeLink(array('controller'=>'importer','action'=>'list_importers')),
+                                'text'=>gt('Import Database'),
+                                'url'=>makeLink(array('controller'=>'file','action'=>'import_eql')),
+                                'classname'=>'import',
                             ),
                             array(
-                                'text'=>gt('Export Data'),
-                                'url'=>makeLink(array('controller'=>'exporter','action'=>'list_exporters')),
+                                'text'=>gt('Export Database'),
+                                'url'=>makeLink(array('controller'=>'file','action'=>'export_eql')),
+                                'classname'=>'export',
                             ),
                             array(
                                 'text' => gt('Update Tables'),

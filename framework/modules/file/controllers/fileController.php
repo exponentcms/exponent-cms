@@ -24,7 +24,11 @@
 class fileController extends expController {
     public $basemodel_name = "expFile";
     //public $useractions = array('showall'=>'Show all');
-    //public $add_permissions = array('picker'=>'Manage Files');
+    public $add_permissions = array(
+//        'picker'=>'Manage Files',
+        'import'=>'Import',
+        'export'=>'Export',
+    );
     public $remove_permissions = array(
         'delete'
     );
@@ -553,6 +557,305 @@ class fileController extends expController {
         $ar->send();
         echo json_encode($file);
     }
+
+    public function import_eql() {
+        global $template;
+
+        $form = new form();
+        $form->meta('controller','file');
+        $form->meta('action','import_eql_process');
+
+        $form->register('file',gt('EQL File'),new uploadcontrol());
+        //$form->register('select_tables',gt('Select Specific Tables?'), new checkboxcontrol(false));
+        $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
+
+        $template->assign('form_html',$form->toHTML());
+    }
+
+    public  function import_eql_process() {
+        global $template, $db;
+
+        $errors = array();
+        expSession::clearAllUsersSessionCache();
+
+        expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
+        $template->assign('success',!count($errors));
+        $template->assign('errors',$errors);
+    }
+
+    public function export_eql() {
+        global $template, $db, $user;
+
+        expDatabase::fix_table_names();
+        $tables = $db->getTables();
+        if (!function_exists('tmp_removePrefix')) {
+        	function tmp_removePrefix($tbl) {
+        		// we add 1, because DB_TABLE_PREFIX  no longer has the trailing
+        		// '_' character - that is automatically added by the database class.
+        		return substr($tbl,strlen(DB_TABLE_PREFIX)+1);
+        	}
+        }
+        $tables = array_map('tmp_removePrefix',$tables);
+        usort($tables,'strnatcmp');
+
+        $template->assign('user',$user);
+        $template->assign('tables',$tables);
+    }
+
+    public function export_eql_process() {
+        global $db;
+
+        if (!isset($this->params['tables'])) { // No checkboxes clicked, and got past the JS check
+        	echo gt('You must choose at least one table to export.');
+        } else { // All good
+        	$filename = str_replace(
+        		array('__DOMAIN__','__DB__'),
+        		array(str_replace('.','_',HOSTNAME),DB_NAME),
+                $this->params['filename']);
+        	$filename = preg_replace('/[^A-Za-z0-9_.-]/','-',strftime($filename,time()).'.eql');
+
+        	ob_end_clean();
+        	ob_start("ob_gzhandler");
+
+        	if (isset($this->params['save_sample'])) { // Save as a theme sample is checked off
+        		$path = BASE . "themes/".DISPLAY_THEME."/sample.eql";
+        		if (!$eql = fopen ($path, "w")) {
+        			flash('error',gt("Error opening eql file for writing")." ".$path);
+        		} else {
+        			$eqlfile = expFile::dumpDatabase($db,array_keys($this->params['tables']));
+        			if (fwrite ($eql, $eqlfile)  === FALSE) {
+        				flash('error',gt("Error writing to eql file")." ".$path);
+        			}
+        			fclose ($eql);
+        			flash('message',gt("Sample database (eql file) saved to")." '".DISPLAY_THEME."' ".gt("theme"));
+        			expHistory::back();
+        		}
+        	} else {
+        		// This code was lifted from phpMyAdmin, but this is Open Source, right?
+
+        		// 'application/octet-stream' is the registered IANA type but
+        		//        MSIE and Opera seems to prefer 'application/octetstream'
+        		$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+        		header('Content-Type: ' . $mime_type);
+        		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        		// IE need specific headers
+        		if (EXPONENT_USER_BROWSER == 'IE') {
+        			header('Content-Disposition: inline; filename="' . $filename . '"');
+        			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        			header('Pragma: public');
+        		} else {
+        			header('Content-Disposition: attachment; filename="' . $filename . '"');
+        			header('Pragma: no-cache');
+        		}
+        		echo expFile::dumpDatabase($db,array_keys($this->params['tables']));
+        		exit; // Exit, since we are exporting
+        	}
+        }
+    }
+
+    public function import_files() {
+        global $template;
+
+        $form = new form();
+        $form->meta('controller','files');
+        $form->meta('action','import_files_process');
+        $form->register('file',gt('Files Archive'),new uploadcontrol());
+        $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
+
+        $template->assign('form_html',$form->toHTML());
+    }
+
+    public function import_files_process() {
+        global $template;
+
+        if ($_FILES['file']['error'] != UPLOAD_ERR_OK) {
+        	switch($_FILES['file']['error']) {
+        		case UPLOAD_ERR_INI_SIZE:
+        		case UPLOAD_ERR_FORM_SIZE:
+        			echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+        			break;
+        		case UPLOAD_ERR_PARTIAL:
+        			echo gt('The file you uploaded was only partially uploaded.').'<br />';
+        			break;
+        		case UPLOAD_ERR_NO_FILE:
+        			echo gt('No file was uploaded.').'<br />';
+        			break;
+        	}
+        } else {
+        	$basename = basename($_FILES['file']['name']);
+
+        	include_once(BASE.'external/Tar.php');
+        	$tar = new Archive_Tar($_FILES['file']['tmp_name'],'gz');
+
+        	$dest_dir = BASE.'tmp/extensionuploads/'.uniqid('');
+        	@mkdir($dest_dir);
+        	if (!file_exists($dest_dir)) {
+        		echo gt('Unable to create temporary directory to extract files archive.');
+        	} else {
+        		$return = $tar->extract($dest_dir);
+        		if (!$return) {
+        			echo '<br />'.gt('Error extracting TAR archive').'<br />';
+        		} else if (!file_exists($dest_dir.'/files') || !is_dir($dest_dir.'/files')) {
+        			echo '<br />'.gt('Invalid archive format').'<br />';
+        		} else {
+        			// Show the form for specifying which mod types to 'extract'
+
+        			$mods = array(); // Stores the mod classname, the files list, and the module's real name
+
+        			$dh = opendir($dest_dir.'/files');
+        			while (($file = readdir($dh)) !== false) {
+        				if ($file{0} != '.' && is_dir($dest_dir.'/files/'.$file)) {
+        					$mods[$file] = array(
+        						'',
+        						array_keys(expFile::listFlat($dest_dir.'/files/'.$file,1,null,array(),$dest_dir.'/files/'))
+        					);
+        //					if (class_exists($file)) {
+        //						$mods[$file][0] = call_user_func(array($file,'name')); // $file is the class name of the module
+        //					}
+        				} elseif ($file != '.' && $file != '..') {
+        					$mods[$file] = array(
+        						'',
+        						$file
+        					);
+        				}
+        			}
+
+        			$template->assign('dest_dir',$dest_dir);
+        			$template->assign('file_data',$mods);
+        		}
+        	}
+        }
+    }
+
+    public function import_files_extract() {
+        global $template;
+
+        $dest_dir = $this->params['dest_dir'];
+        $files = array();
+        foreach (array_keys($this->params['mods']) as $file) {
+        	$files[$file] = expFile::canCreate(BASE.'files/'.$file);
+        //	if (class_exists($mod)) {
+        //		$files[$mod][0] = call_user_func(array($mod,'name'));
+        //	}
+        //	foreach (array_keys(expFile::listFlat($dest_dir.'/files',1,null,array(),$dest_dir.'/files/')) as $file) {
+        //		$files[$mod][1][$file] = expFile::canCreate(BASE.'files/'.$file);
+        //	}
+        }
+
+        expSession::set('dest_dir',$dest_dir);
+        expSession::set('files_data',$files);
+
+        $template->assign('files_data',$files);
+    }
+
+    public function import_files_finish() {
+        global $template;
+
+        $dest_dir = expSession::get('dest_dir');
+        $files = expSession::get('files_data');
+        if (!file_exists(BASE.'files')) {
+        	mkdir(BASE.'files',0777);
+        }
+
+        $filecount = 0;
+        foreach (array_keys($files) as $file) {
+        	expFile::copyDirectoryStructure($dest_dir.'/files/'.$file,BASE.'files/'.$file);
+        	copy($dest_dir.'/files/'.$file,BASE.'files/'.$file);
+        	$filecount += 1;
+        }
+
+        expSession::un_set('dest_dir');
+        expSession::un_set('files_data');
+
+        expFile::removeDirectory($dest_dir);
+
+        $template->assign('file_count',$filecount);
+    }
+
+    public function export_files() {
+        global $template, $user;
+
+        $loc = expCore::makeLocation($this->params['controller'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
+        //$mods = array();
+        //$dh = opendir(BASE.'files');
+        //while (($file = readdir($dh)) !== false) {
+        //	if (is_dir(BASE.'files/'.$file) && $file{0} != '.' && class_exists($file)) {
+        //		$mods[$file] = call_user_func(array($file,'name'));
+        //	}
+        //}
+        //uasort($mods,'strnatcmp');
+
+//        $template = new template('exporter','_files_modList',$loc);
+        //$template->assign('mods',$mods);
+        $template->assign('user',$user);
+//        $template->output();
+    }
+
+    public function export_files_process() {
+        global $db;
+
+        //if (!isset($this->params['mods'])) {
+        //	echo gt('You must select at least one module to export files for.');
+        //	return;
+        //}
+
+        include_once(BASE.'external/Tar.php');
+
+        $files = array();
+        //foreach (array_keys($this->params['mods']) as $mod) {
+        //	foreach ($db->selectObjects('file',"directory LIKE 'files/".$mod."%'") as $file) {
+            foreach ($db->selectObjects('expFiles',1) as $file) {
+                $files[] = BASE.$file->directory.'/'.$file->filename;
+            }
+        //}
+
+        $fname = tempnam(BASE.'/tmp','exporter_files_');
+        $tar = new Archive_Tar($fname,'gz');
+        $tar->createModify($files,'',BASE);
+
+        $filename = str_replace(
+            array('__DOMAIN__','__DB__'),
+            array(str_replace('.','_',HOSTNAME),DB_NAME),
+            $this->params['filename']);
+        $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',strftime($filename,time()).'.tar.gz');
+
+        if (isset($this->params['save_sample'])) { // Save as a theme sample is checked off
+            copy($fname,BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz");
+            unlink($fname);
+            flash('message',gt("Sample uploaded files archive saved to")." '".DISPLAY_THEME_REAL."' ".gt("theme"));
+            expHistory::back();
+        } else {
+            ob_end_clean();
+            // This code was lifted from phpMyAdmin, but this is Open Source, right?
+
+            // 'application/octet-stream' is the registered IANA type but
+            //        MSIE and Opera seems to prefer 'application/octetstream'
+            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+            header('Content-Type: ' . $mime_type);
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            // IE need specific headers
+            if (EXPONENT_USER_BROWSER == 'IE') {
+                header('Content-Disposition: inline; filename="' . $filename . '"');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+            } else {
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                header('Pragma: no-cache');
+            }
+
+            $fh = fopen($fname,'rb');
+            while (!feof($fh)) {
+                echo fread($fh,8192);
+            }
+            fclose($fh);
+            unlink($fname);
+        }
+
+        exit(''); // Exit, since we are exporting.
+    }
+
 }
 
 ?>
