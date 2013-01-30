@@ -28,21 +28,20 @@ abstract class expController {
     public $classinfo = null; // holds reflection class of class
 //    public $module_name = '';       //FIXME not used and not actually set right index needed of -3 instead of -2 below
 //    protected $basemodel = null;    //FIXME never used, $basemodel_name replaced?
-    public $basemodel_name = ''; // holds classname of base module associated w/ this controller
+    public $basemodel_name = ''; // holds classname of base model associated w/ this controller
     public $model_table = ''; // holds table name for base model
 
     public $useractions = array(); // available user actions (methods) for this controller
-    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
-    protected $permissions = array(
+    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    protected $permissions = array(  // standard set of permissions for all modules unless add'ed or remove'd
         'manage'    => 'Manage',
         'configure' => 'Configure',
         'create'    => 'Create',
         'edit'      => 'Edit',
         'delete'    => 'Delete',
-        //'perms'=>'Manage Permissions',
     );
-    protected $remove_permissions = array();
-    protected $add_permissions = array();
+    protected $remove_permissions = array();  // $permissions not applicable for this module
+    protected $add_permissions = array();  // additional $permmissions for this module
 
     public $filepath = ''; // location of this controller's files
     public $viewpath = ''; // location of this controllers views
@@ -459,7 +458,7 @@ abstract class expController {
     }
 
     /**
-     * create an item in this module
+     * create an item in this module (deprecated in favor of edit w/o id param
      */
     function create() {
         $args = array('controller' => $this->params['controller'], 'action' => 'edit');
@@ -469,7 +468,7 @@ abstract class expController {
     }
 
     /**
-     * edit item in module
+     * edit item in module, also used to copy items
      */
     function edit() {
         global $db;
@@ -510,7 +509,7 @@ abstract class expController {
     }
 
     /**
-     * update item in module
+     * update (save) item in module
      */
     function update() {
         global $db;
@@ -581,7 +580,7 @@ abstract class expController {
     }
 
     /**
-     * rerank items in module
+     * rerank items in model
      */
     function rerank() {
         $modelname = $this->basemodel_name;
@@ -619,7 +618,7 @@ abstract class expController {
     }
 
     /**
-     * display view to rerank items
+     * rerank module items from ddrerank
      */
     function manage_ranks() {
         $rank = 1;
@@ -729,6 +728,81 @@ abstract class expController {
     }
 
     /**
+     * save module configuration
+     */
+    function saveconfig() {
+        global $db;
+
+        // update module title/action/view
+        if (!empty($this->params['container_id'])) {
+            $container = $db->selectObject('container', "id=" . $this->params['container_id']);
+            if (!empty($container)) {
+                $container->title = $this->params['moduletitle'];
+                $container->action = $this->params['actions'];
+                $container->view = $this->params['views'];
+                $container->is_private = $this->params['is_private'];
+                $db->updateObject($container, 'container');
+                expSession::clearAllUsersSessionCache('containermodule');
+            }
+            unset($this->params['container_id']);
+            unset($this->params['moduletitle']);
+            unset($this->params['modcntrol']);
+            unset($this->params['actions']);
+            unset($this->params['views']);
+            unset($this->params['actions']);
+            unset($this->params['is_private']);
+        }
+
+        // create a new RSS object if enable is checked.
+        if (!empty($this->params['enable_rss'])) {
+            $params = $this->params;
+            $params['title'] = $params['feed_title'];
+            unset($params['feed_title']);
+            $params['sef_url'] = $params['feed_sef_url'];
+            unset($params['feed_sef_url']);
+            $rssfeed = new expRss($params);
+            $rssfeed->update($params);
+            $this->params['feed_sef_url'] = $rssfeed->sef_url;
+        } else {
+            $rssfeed = new expRss($this->params);
+            $params = $this->params;
+            $params['enable_rss'] = false;
+            if (empty($params['advertise'])) $params['advertise'] = false;
+            $params['title'] = $params['feed_title'];
+            unset($params['feed_title']);
+            $params['sef_url'] = $params['feed_sef_url'];
+            unset($params['feed_sef_url']);
+            if (!empty($rssfeed->id)) { // do NOT create a new record, only update existing ones
+                $rssfeed->update($params);
+                $this->params['feed_sef_url'] = $rssfeed->sef_url;
+            }
+        }
+
+        // create a new eAlerts object if enable is checked.
+        if (!empty($this->params['enable_ealerts'])) {
+            $ealert = new expeAlerts($this->params);
+            $ealert->update($this->params);
+        }
+
+        // unset some unneeded params
+        unset($this->params['module']);
+        unset($this->params['controller']);
+        unset($this->params['src']);
+        unset($this->params['int']);
+        unset($this->params['id']);
+        unset($this->params['cid']);
+        unset($this->params['action']);
+        unset($this->params['PHPSESSID']);
+
+        // setup and save the config
+        $config = new expConfig($this->loc);
+        $config->update(array('config' => $this->params));
+
+        flash('message', gt('Configuration updated'));
+        expHistory::back();
+    }
+
+    /**
      * get the items in an rss feed format
      *
      * this function is very general and will most of the time need to be overwritten and customized
@@ -770,7 +844,7 @@ abstract class expController {
     }
 
     /**
-     *
+     * method to display an rss feed from this module
      */
     function rss() {
         require_once(BASE . 'external/feedcreator.class.php');
@@ -880,80 +954,6 @@ abstract class expController {
         exit();
     }
 
-    /**
-     * save module configuration
-     */
-    function saveconfig() {
-        global $db;
-
-        // update module title/action/view
-        if (!empty($this->params['container_id'])) {
-            $container = $db->selectObject('container', "id=" . $this->params['container_id']);
-            if (!empty($container)) {
-                $container->title = $this->params['moduletitle'];
-                $container->action = $this->params['actions'];
-                $container->view = $this->params['views'];
-                $container->is_private = $this->params['is_private'];
-                $db->updateObject($container, 'container');
-                expSession::clearAllUsersSessionCache('containermodule');
-            }
-            unset($this->params['container_id']);
-            unset($this->params['moduletitle']);
-            unset($this->params['modcntrol']);
-            unset($this->params['actions']);
-            unset($this->params['views']);
-            unset($this->params['actions']);
-            unset($this->params['is_private']);
-        }
-
-        // create a new RSS object if enable is checked.
-        if (!empty($this->params['enable_rss'])) {
-            $params = $this->params;
-            $params['title'] = $params['feed_title'];
-            unset($params['feed_title']);
-            $params['sef_url'] = $params['feed_sef_url'];
-            unset($params['feed_sef_url']);
-            $rssfeed = new expRss($params);
-            $rssfeed->update($params);
-            $this->params['feed_sef_url'] = $rssfeed->sef_url;
-        } else {
-            $rssfeed = new expRss($this->params);
-            $params = $this->params;
-            $params['enable_rss'] = false;
-            if (empty($params['advertise'])) $params['advertise'] = false;
-            $params['title'] = $params['feed_title'];
-            unset($params['feed_title']);
-            $params['sef_url'] = $params['feed_sef_url'];
-            unset($params['feed_sef_url']);
-            if (!empty($rssfeed->id)) { // do NOT create a new record, only update existing ones
-                $rssfeed->update($params);
-                $this->params['feed_sef_url'] = $rssfeed->sef_url;
-            }
-        }
-
-        // create a new eAlerts object if enable is checked.
-        if (!empty($this->params['enable_ealerts'])) {
-            $ealert = new expeAlerts($this->params);
-            $ealert->update($this->params);
-        }
-
-        // unset some unneeded params
-        unset($this->params['module']);
-        unset($this->params['controller']);
-        unset($this->params['src']);
-        unset($this->params['int']);
-        unset($this->params['id']);
-        unset($this->params['cid']);
-        unset($this->params['action']);
-        unset($this->params['PHPSESSID']);
-
-        // setup and save the config
-        $config = new expConfig($this->loc);
-        $config->update(array('config' => $this->params));
-
-        flash('message', gt('Configuration updated'));
-        expHistory::back();
-    }
 
     /**
      * download a file attached to item
