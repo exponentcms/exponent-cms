@@ -158,9 +158,9 @@ select {
 select {
   margin-bottom: 0;
 }
-input:focus,
-textarea:focus,
-select:focus {
+input:focus, input:hover,
+textarea:focus, textarea:hover,
+select:focus, select:hover {
   outline: 0;
   outline: thin dotted \9;
   /* IE6-9 */
@@ -181,15 +181,15 @@ textarea[readonly] {
   cursor: not-allowed;
   background-color: #ddd;
 }
-input:focus:invalid,
-textarea:focus:invalid,
-select:focus:invalid {
+input:focus:invalid, input:hover:invalid,
+textarea:focus:invalid, textarea:hover:invalid,
+select:focus:invalid, select:hover:invalid {
   color: #b94a48;
   border: 1px solid #ee5f5b;
 }
-input:focus:invalid:focus,
-textarea:focus:invalid:focus,
-select:focus:invalid:focus {
+input:focus:invalid:focus, input:hover:invalid:hover,
+textarea:focus:invalid:focus, textarea:hover:invalid:hover,
+select:focus:invalid:focus, select:hover:invalid:hover {
   border-color: #e9322d;
   box-shadow: 0 0 5px #ce1a15;
 }
