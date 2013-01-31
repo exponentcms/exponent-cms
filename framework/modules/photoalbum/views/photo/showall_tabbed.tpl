@@ -52,7 +52,7 @@
    	{/if}
     {$myloc=serialize($__loc)}
     {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
-    <div id="{$id}" class="yui-navset exp-skin-tabview hide">
+    <div id="photos-{$id}" class="yui-navset exp-skin-tabview">
         <ul class="yui-nav">
             {foreach name=tabs from=$page->cats key=catid item=cat}
                 <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$cat->name}</a></li>
@@ -118,10 +118,10 @@
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+//    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+//        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+//        requires: ['history','tabview','event-custom']
+//    };
 
     EXPONENT.YUI3_CONFIG.modules = {
        'gallery-lightbox' : {
@@ -131,10 +131,16 @@
     }
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs','gallery-lightbox', function(Y) {
-        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
+//        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
+//		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
+//		Y.one('.loadingdiv').remove();
         Y.Lightbox.init();
 	});
+{/literal}
+{/script}
+
+{script unique="photos-`$id`" jquery="jqueryui"}
+{literal}
+    $('#photos-{/literal}{$id}{literal}').tabs().next().remove();
 {/literal}
 {/script}

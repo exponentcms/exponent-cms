@@ -13,6 +13,8 @@
  *
  *}
 
+{uniqueid assign="id"}
+
 <div id="showhelp" class="module help show">
     <h1>{$doc->title}</h1>
     {$myloc=serialize($__loc)}
@@ -31,7 +33,7 @@
         {/if}
     </div>
     {/permissions}
-	<div id="showhelp-tabs" class="yui-navset exp-skin-tabview hide">
+	<div id="showhelp-tabs-{$id}" class="yui-navset exp-skin-tabview">
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>{'General Overview'|gettext}</em></a></li>
 			{if $doc->actions_views}
@@ -76,17 +78,23 @@
 	<div class="loadingdiv">{"Loading Help"|gettext}</div>
 </div>
 
-{script unique="editform" yui3mods=1}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+{*{script unique="editform" yui3mods=1}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#showhelp-tabs'});
-		Y.one('#showhelp-tabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-    });
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#showhelp-tabs'});*}
+		{*Y.one('#showhelp-tabs').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+    {*});*}
+{*{/literal}*}
+{*{/script}*}
+
+{script unique="`$id`" jquery="jqueryui"}
+{literal}
+    $('#showhelp-tabs-{/literal}{$id}{literal}').tabs().next().remove();
 {/literal}
 {/script}

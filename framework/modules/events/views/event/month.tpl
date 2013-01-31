@@ -95,7 +95,7 @@
                                 {else}
                                     {$title = $item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
                                 {/if}
-                                {$title = "`$title` - <br> `$item->body|summarize:"html":"para"`"}
+                                {$title = "`$title` - \n `$item->body|summarize:"html":"para"`"}
                                 {if $item->is_cancelled}{$title = 'Event Cancelled'|gettext|cat:"\n"|cat:$title}{/if}
                                 <div class="calevent{if $dayts == $today} today{/if}"{$style}>
                                     <a class="{if $item->is_cancelled}cancelled{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} calpopevent{elseif $config.lightbox && substr($item->location_data,1,8) == 'calevent'} icalpopevent{/if}"

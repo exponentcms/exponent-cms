@@ -53,7 +53,7 @@
    	{/if}
     {subscribe_link}
     {$myloc=serialize($__loc)}
-    <div id="{$id}" class="yui-navset exp-skin-tabview hide">
+    <div id="{$id}" class="yui-navset exp-skin-tabview">
         <ul class="yui-nav">
             {foreach name=tabs from=$page->cats key=catid item=cat}
                 <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$cat->name}</a></li>
@@ -72,21 +72,27 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="`$id`" yui3mods="1"}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+{*{script unique="`$id`" yui3mods="1"}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-	});
-{/literal}
-{/script}
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});*}
+		{*Y.one('#{/literal}{$id}{literal}').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+	{*});*}
+{*{/literal}*}
+{*{/script}*}
 
 {*<script>*}
     {*$('audio,video').mediaelementplayer();*}
 {*</script>*}
+
+{script unique="`$id`" jquery="jqueryui"}
+{literal}
+    $('#{/literal}{$id}{literal}').tabs().next().remove();
+{/literal}
+{/script}

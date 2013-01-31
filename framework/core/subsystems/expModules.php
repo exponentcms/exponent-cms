@@ -99,9 +99,9 @@ class expModules {
         
         foreach ($controllers as $module) {
     		if (class_exists($module)) {
-//    			$mod = new $module();
-                $mod = self::getController($module);
+    			$mod = new $module();
     			$modstate = $db->selectObject("modstate","module='$module'");
+
     			$moduleInfo[$module] = new stdClass();
     			$moduleInfo[$module]->class = $module;
     			$moduleInfo[$module]->name = $mod->name();
@@ -125,8 +125,8 @@ class expModules {
 
 	    $controllers = array();
 	    foreach($available_controllers as $name=>$path) {
-	        $controller = new $name();  // we want both models and controllers to filter out models
-	        if (!empty($controller->useractions)) $controllers[] = self::getControllerName($name);
+	        $controller = new $name();
+	        if (!empty($controller->useractions)) $controllers[] = $name;
 	    }
 
 	    return $controllers;
@@ -320,8 +320,7 @@ class expModules {
 	    $ctls = array();  // 2.0 modules
 	    foreach($modulestates as $state) {
 	        if (self::controllerExists($state->module)) {
-//	            $controller = new $state->module();
-                $controller = self::getController($state->module);
+	            $controller = new $state->module();
 	            if (!empty($controller->useractions)) {
 		            $ctls[] = $state->module;
 	            }

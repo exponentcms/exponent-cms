@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="showlogin-expanded" corecss="button"}
+{css unique="showlogin-expanded" corecss="button,forms"}
 
 {/css}
 
@@ -46,18 +46,16 @@
         <br/>
     {/if}
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-        <form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
-            <input type="hidden" name="action" value="login"/>
-            <input type="hidden" name="controller" value="login"/>
-            <input type="text" class="text" name="username" id="login_username" size="15" required="1"/>
-            <input type="password" class="text" name="password" id="login_password" size="15" required="1"/>
-            <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}">{'Login'|gettext}</button>
-            <br/>
+            {form action=login}
+                {control type="text" name="username" label=$label size=25 required=1}
+                {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1}
+                {control type="buttongroup" submit="Log In"|gettext}
+            {/form}
+            {br}
             {if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
                 <a href="{link controller=users action=create}">{'Create Account'|gettext}</a>
                 &#160;|&#160;
             {/if}
             <a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
-        </form>
     {/if}
 </div>

@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="showlogin-stacked" corecss="button"}
+{css unique="showlogin-expanded" corecss="button,forms"}
 
 {/css}
 
@@ -25,9 +25,9 @@
     {if $loggedin == false}
         <div>
             {form action=login}
-            {control type="text" name="username" label="Username"|gettext|cat:":" size=25 required=1}
-            {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1}
-            {control type="buttongroup" submit="Login Now"|gettext|cat:"!"}
+                {control type="text" name="username" label="Username"|gettext|cat:":" size=25 required=1}
+                {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1}
+                {control type="buttongroup" submit="Log In"|gettext|cat:"!"}
             {/form}
         </div>
     {else}
