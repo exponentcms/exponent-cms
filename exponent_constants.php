@@ -490,7 +490,7 @@ if (!defined('JQUERY_RELATIVE')) {
 	define('JQUERY_URL', URL_FULL.'external/jquery/');
     define('JQUERY_SCRIPT', JQUERY_RELATIVE.'js/jquery-'.JQUERY_VERSION.'.min.js');
     define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
-    if (!defined('JQUERYUI_THEME')) define('JQUERYUI_THEME', 'base');
+    if (!defined('JQUERYUI_THEME')) define('JQUERYUI_THEME', 'exponent');
     define('JQUERYUI_CSS', JQUERY_RELATIVE.'css/'.JQUERYUI_THEME.'/jquery-ui.css');
 }
 

@@ -36,7 +36,7 @@
             <div class="msg-queue notice" style="text-align:center"><p>{'There are no text items/tabs in the module!'|gettext}</p></div>
         {/permissions}
     {else}
-    <div id="text-{$id}" class="yui-navset exp-skin-tabview hide">
+    <div id="text-{$id}" class="yui-navset exp-skin-tabview">
         <ul class="yui-nav">
             {foreach from=$items item=tab name=tabs}
                 <li><a href="#tab{$smarty.foreach.tabs.iteration}">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
@@ -86,19 +86,24 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="text-`$id`" yui3mods="1"}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+{*{script unique="text-`$id`" yui3mods="1"}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#text-{/literal}{$id}{literal}'});
-		Y.one('#text-{/literal}{$id}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-	});
-{/literal}
-{/script}
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#text-{/literal}{$id}{literal}'});*}
+		{*Y.one('#text-{/literal}{$id}{literal}').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+	{*});*}
+{*{/literal}*}
+{*{/script}*}
 
+    {script unique="text-`$id`" jquery="jqueryui"}
+    {literal}
+        $('#text-{/literal}{$id}{literal}').tabs().next().remove();
+    {/literal}
+    {/script}
 {/if}
