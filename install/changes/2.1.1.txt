@@ -9,7 +9,7 @@ This release focuses on the new forms module and user interface improvements
     -- now allows greater flexibility in which users may enter or view data
     -- forms are now site-wide objects, can view/enter form data from different modules/pages
     -- adds view flexibility offered by a 2.0 module for future features
-    -- updates some form control display features and format
+    -- updates form control (input) display features and format to be more consistent and modern
   - adds ajax-based navigation in calendar, news items & blog posts to prevent reloading entire page
   - adds 'grouping by date' for uncategorized portfolio & file download items (in addition to 'grouping by alpha' for rolodex feature)
   - adds new views to several modules
@@ -31,3 +31,4 @@ This release focuses on the new forms module and user interface improvements
     -- adds new QuickUpload feature to bypass file manager/file uploader for file selection
   - updates file uploader to allow html5 drag/drop support and some other user-friendly features
     -- images may be optionally resized to a max width, and files assigned to a virtual folder during upload
+  * calendarmodule and simplepollmodule (old school) are now fully deprecated (removed)
