@@ -6,6 +6,10 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
+Added / Fixed / changed for 2.1.2
+-----------------------
+### This release focuses on things not completed in 2.1.1, but not destined for the v2.2 major version update
+
 Added / Fixed / changed for 2.1.1
 -----------------------
 ### This release focuses on the new forms module and user interface improvements
