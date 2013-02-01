@@ -1,6 +1,8 @@
-Exponent Content Management System
-Copyright (c) 2004-2013 OIC Group, Inc.
+#Exponent Content Management System..
+
 ===============================================
+
+Copyright (c) 2004-2013 OIC Group, Inc.
 
 Exponent CMS, Credits
 
