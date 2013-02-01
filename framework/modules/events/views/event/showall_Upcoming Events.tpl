@@ -101,7 +101,12 @@
 			</strong>
 		</dd>
 		<dd>
-			{$item->body|summarize:html:paralinks}
+            {if $config.usebody=='0'}
+                {$item->body}
+            {elseif $config.usebody==2}
+            {else}
+                <p>{$item->body|summarize:"html":"paralinks"}</p>
+            {/if}
 		</dd>
 	{foreachelse}
 		<dd><em>{'No upcoming events.'|gettext}</em></dd>
