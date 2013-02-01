@@ -25,6 +25,9 @@
 {/css}
 {/if}
 {$rel}
+
+{uniqueid assign="id"}
+
 <div class="module photoalbum showall showall-accordion">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
@@ -50,7 +53,7 @@
    		{$config.moduledescription}
    	{/if}
     {$myloc=serialize($__loc)}
-    <div class="dashboard">
+    <div id="photo-{$id}" class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel">
                 <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $cat->name ==""}{if $config.uncat == ""}{'The List'|gettext}{else}{$config.uncat}{/if}{else}{$cat->name}{/if}</h2></a></div>
@@ -109,7 +112,7 @@
     </div>
 </div>
 
-{script unique="expand-panels" yui3mods="1"}
+{script unique="expand-panels-`$id`" yui3mods="1"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
    'gallery-lightbox' : {
@@ -119,12 +122,11 @@ EXPONENT.YUI3_CONFIG.modules = {
 }
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','anim','gallery-lightbox', function(Y) {
-    var panels = Y.all(".dashboard .panel");
+    var panels = Y.all("#photo-{/literal}{$id}{literal}.dashboard .panel");
     var expandHeight = [];
     var exclusiveExp = {/literal}{if $config.initial_view==1||$config.initial_view==3}true{else}false{/if}{literal};
     var action = function(e){
         e.halt();
-
         var pBody = e.target.ancestor('.panel').one('.bd');
         var pID = e.target.ancestor('.panel').getAttribute('id');
         var savedState = e.target.ancestor('.panel').one('.hd a').getAttribute("class");
