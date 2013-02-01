@@ -82,6 +82,7 @@
         {/foreach}
     </div>
 </div>
+
 {script unique="expand-panels-`$id`" yui3mods="1"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {

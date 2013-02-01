@@ -55,7 +55,7 @@
                     {/if}
                     {foreach name=w from=$week key=day item=items}
                         {$number=$counts[$weeknum][$day]}
-                        <td {if $dayts == $today}class="today"{elseif $number == -1}class="notinmonth"{else}class="oneday"{/if}>
+                        <td class="{if $number == -1}notinmonth{elseif $dayts == $today}today{else}oneday{/if}">
                             {if $number > -1}
                                 {if $number == 0}
                                     <span class="number{if $dayts == $today} today{/if}">
