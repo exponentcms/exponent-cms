@@ -17,6 +17,8 @@
 
 {/css}
 
+{uniqueid assign="id"}
+
 <div class="module text showall-accordion">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
@@ -33,7 +35,7 @@
         {$config.moduledescription}
     {/if}
     {$myloc=serialize($__loc)}
-    <div class="dashboard">
+    <div id="text-{$id}" class="dashboard">
         {foreach from=$items item=text name=items}
             <div id="item{$text->id}" class="panel">
                 <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $text->title ==""}&#160;{else}{$text->title}{/if}</h2></a></div>
@@ -80,16 +82,14 @@
         {/foreach}
     </div>
 </div>
-
-{script unique="expand-panels" yui3mods="1"}
+{script unique="expand-panels-`$id`" yui3mods="1"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
-    var panels = Y.all(".dashboard .panel");
+    var panels = Y.all("#text-{/literal}{$id}{literal}.dashboard .panel");
     var expandHeight = [];
     var exclusiveExp = {/literal}{if $config.initial_view==1||$config.initial_view==3}true{else}false{/if}{literal};
     var action = function(e){
         e.halt();
-
         var pBody = e.target.ancestor('.panel').one('.bd');
         var pID = e.target.ancestor('.panel').getAttribute('id');
         var savedState = e.target.ancestor('.panel').one('.hd a').getAttribute("class");
