@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -27,14 +27,16 @@
 <code> curl -G -s {$smarty.const.URL_BASE}/event/send_reminders/title/calendar_sef_url/days/14/code/MyCode1</code>
 </blockquote>
 {control type="text" name="reminder_code" label="Code to restrict sending Email Reminders"|gettext description="Enter an optional alphanumeric code to better secure sending reminder emails"|gettext value=$config.reminder_code}
-<hr><h3>{'Email Recepients'|gettext}</h3>
+{group label="Email Recepients"|gettext}
 {userlistcontrol name="user_list" label="Users" items=$config.user_list}
 {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
-{control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list}
-<hr><h3>{'Email Details'|gettext}</h3>
+{control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list size=5}
+{/group}
+{group label="Email Details"|gettext}
 {control type="text" name="email_title_reminder" label="Message Subject Prefix"|gettext value=$config.email_title_reminder}
 {control type="text" name="email_from_reminder" label="From (Display)"|gettext value=$config.email_from_reminder}
 {control type="text" name="email_address_reminder" label="From (Email Address)"|gettext value=$config.email_address_reminder}
 {control type="text" name="email_reply_reminder" label="Reply-to"|gettext value=$config.email_reply_reminder}
 {control type="checkbox" name="email_showdetail" label="Show detail in message?"|gettext value=1 checked=$config.email_showdetail}
 {control type="textarea" name="email_signature" label="Email Signature"|gettext value=$config.email_signature}
+{/group}

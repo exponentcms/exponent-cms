@@ -41,15 +41,15 @@
 }
 .containermodule.edit .text {
     width:250px;
-    height:20px;
+    /*height:20px;*/
 }
 .containermodule.edit .select {
-    width:255px;
-    height:25px;
+    /*width:255px;*/
+    /*height:25px;*/
 }
 
 .containermodule.edit option {
-    padding:3px;
+    /*padding:3px;*/
 }
 
 .containermodule.edit .control.buttongroup {
@@ -61,4 +61,13 @@
     text-align:right;
     width:140px;
     padding:0 15px;
+}
+
+.containermodule.edit .control .control-desc {
+    margin-left: 170px;
+}
+
+#moduleViewConfig h2 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
 }

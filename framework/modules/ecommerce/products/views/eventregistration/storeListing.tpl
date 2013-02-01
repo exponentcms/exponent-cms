@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,10 +15,11 @@
 
 <div class="prod-listing">    
     <div class="image">
-        <a href="{link controller=store action=showByTitle title=$listing->sef_url}">
+        <a href="{link controller=store action=show title=$listing->sef_url}">
             {if $listing->expFile.mainimage[0]->id != ""}
                 {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=165 alt=$listing->title}
             {else}
+                {img src="`$asset_path`images/no-image.jpg"}
                 {'No Image'|gettext}
             {/if}
         </a>
@@ -27,15 +28,13 @@
     {permissions}
     <div class="item-actions">
         {if $permissions.configure == 1 or $permissions.manage == 1}
-            <a href="{link action=edit id=$listing->id}" title="{"Edit this entry"|gettext}">
-                <img src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
-            </a>
+            {icon action=edit id=$listing->id title="Edit this entry"|gettext}
             {icon action=delete record=$listing title="Delete this product"|gettext}
         {/if}
     </div>
     {/permissions}
 
-    <h3><a href="{link controller=store action=showByTitle title=$listing->sef_url}">{$listing->title}</a></h3>
+    <h3><a href="{link controller=store action=show title=$listing->sef_url}">{$listing->title}</a></h3>
     <div class="bodycopy">
         <strong class="date">{$listing->eventdate|date_format:"%a, %B %e"}</strong> -
         {$listing->body}

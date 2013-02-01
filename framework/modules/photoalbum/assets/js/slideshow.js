@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,6 +24,8 @@
 // added interval parameter: interval in milliseconds between 2 transitions when looping
 
 
+//FIXME convert to yui3
+//DEPRECATED, NOT USED!
 YAHOO.namespace("myowndb");
 //YAHOO.myowndb.slideshow = function (container, frames, effect) {
 YAHOO.myowndb.slideshow = function (container, o) {

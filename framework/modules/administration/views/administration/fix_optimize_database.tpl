@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -29,7 +29,7 @@
 		{foreach from=$before key=table item=info}
 			<tr class="{cycle values="even, odd"}">
 				<td>{$table}</td>
-				<td align="right">{math format="%.3f" equation="x / 1024" x=$info->data_total} {'kb'|gettext}</td>
+				<td align="right">{$info->data_total|bytes}</td>
 			</tr>
 		{/foreach}
 	</tbody>

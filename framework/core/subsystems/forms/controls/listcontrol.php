@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -56,28 +56,29 @@ class listcontrol extends formcontrol {
         $html .= '</ul>';
         $html .= '</div>';
         
+//FIXME convert to yui3
         $js = "
             var add = YAHOO.util.Dom.getElementsByClassName('addtolist', 'a');
             YAHOO.util.Event.on(add, 'click', function(e,o){
-            YAHOO.util.Dom.setStyle('empty-list-".$name."', 'display', 'none');
-            YAHOO.util.Event.stopEvent(e);
-            var listitem = YAHOO.util.Dom.get('list-input-".$name."');
-            var newli = document.createElement('li');
-            var newLabel = document.createElement('span');
-            newLabel.innerHTML = listitem.value + '<input type=\"hidden\" name=\"".$name."[]\" value=\"'+listitem.value+'\" />';
-            var newRemove = document.createElement('a');
-            newRemove.setAttribute('href','#');
-            newRemove.innerHTML = ' ".gt('Remove')."?';
-            newli.appendChild(newLabel);
-            newli.appendChild(newRemove);
-            var list = YAHOO.util.Dom.get('list-values-".$name."');
-            list.appendChild(newli);
-            YAHOO.util.Event.on(newRemove, 'click', function(e,o){
+                YAHOO.util.Dom.setStyle('empty-list-".$name."', 'display', 'none');
+                YAHOO.util.Event.stopEvent(e);
+                var listitem = YAHOO.util.Dom.get('list-input-".$name."');
+                var newli = document.createElement('li');
+                var newLabel = document.createElement('span');
+                newLabel.innerHTML = listitem.value + '<input type=\"hidden\" name=\"".$name."[]\" value=\"'+listitem.value+'\" />';
+                var newRemove = document.createElement('a');
+                newRemove.setAttribute('href','#');
+                newRemove.innerHTML = ' ".gt('Remove')."?';
+                newli.appendChild(newLabel);
+                newli.appendChild(newRemove);
                 var list = YAHOO.util.Dom.get('list-values-".$name."');
-                list.removeChild(this)
-            },newli,true);
-            listitem.value = '';
-            //alert(listitem);
+                list.appendChild(newli);
+                YAHOO.util.Event.on(newRemove, 'click', function(e,o){
+                    var list = YAHOO.util.Dom.get('list-values-".$name."');
+                    list.removeChild(this)
+                },newli,true);
+                listitem.value = '';
+                //alert(listitem);
             });
         
             var existingRems = YAHOO.util.Dom.getElementsByClassName('remove-from-list', 'a');

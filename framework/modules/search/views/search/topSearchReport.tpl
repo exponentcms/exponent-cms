@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -94,22 +94,10 @@ var renderIntoTabview,
     handlerArray = [];
 
 YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
-    var mytab = Y.expTabs({srcNode: '#topsearch'});
+    var tabhistory = Y.expTabs({srcNode: '#topsearch'});
     Y.one('#topsearch').removeClass('hide');
     Y.one('.loadingdiv').remove();
 
-    renderIntoTabview = function(chart, node, index) {
-        if(mytab.item(index) === mytab.get("selection")) {
-            chart.render(node);
-        } else {
-            handlerArray[index] = mytab.item(index).after("tab:selectedChange", function(e) {
-                if(mytab.item(index) === mytab.get("selection")) {
-                    chart.render(node);
-                    handlerArray[index].detach();
-                }
-            });
-        }
-    }
     var myDataValues = [
         [{/literal}{$records_key}{literal}],
         [{/literal}{$records_values}{literal}]
@@ -145,7 +133,18 @@ YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
         type: "column",
         tooltip: myTooltip
     });
-    renderIntoTabview(columnchart, "#columnchart", 1);
+
+    Y.Global.on("exptab:switch", function(e){
+        if (tabhistory.tabs.indexOf(e.currentTarget)==1) {
+            columnchart.render('#columnchart');
+        };
+    });
+
+    if (tabhistory.history.get('tab')==1) {
+        columnchart.render('#columnchart');
+    };
+
+    // renderIntoTabview(columnchart, "#columnchart", 1);
 });
 {/literal}
 {/script}

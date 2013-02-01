@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,10 +35,10 @@ class snippetController extends expController {
         'pagination',
         'rss',
    		'tags'
-   	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Code Snippets"); }
-    static function description() { return gt("Use this to put snippets of code, i.e. Javascript, embedded video, etc, on your site."); }
+    static function description() { return gt("Use this to easily place snippets of code, i.e. Javascript, embedded video, etc, on your site."); }
 	
 	public function showall() {
 	    expHistory::set('viewable', $this->params);
@@ -70,7 +70,7 @@ class snippetController extends expController {
 
     public function update() {
         // update the record.
-        $record = $this->snippet->update($this->params);
+        $this->snippet->update($this->params);
 
         // go back to where we came from.
         expHistory::back();

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -19,7 +19,7 @@
 
 class containermodule {
     function name() {
-        return $this->displayname();
+        return self::displayname();
     }
 
     static function displayname() {
@@ -31,7 +31,7 @@ class containermodule {
     }
 
     static function description() {
-        return 'Contains other modules';
+        return 'Allows you to encapsulate other modules within a differently styled container (e.g. columns, tabs, etc...)';
     }
 
     static function hasContent() {
@@ -69,14 +69,14 @@ class containermodule {
             $containers = $db->selectObjects('container', "external='" . serialize($loc) . "'");
 
             foreach ($containers as $container) {
-                self::delete($container);
+                container::delete($container);
                 $db->delete('container', 'id=' . $container->id);
             }
         }
     }
 
-    static function show($view, $loc = null, $title = '') {
-        if (empty($view)) $view = "Default";
+    static function show($view = "Default", $loc = null, $title = '') {
+//        if (empty($view)) $view = "Default";
 //		$source_select = array();
         $clickable_mods = null; // Show all
         $dest = null;
@@ -97,10 +97,10 @@ class containermodule {
         $container = null;
         $container_key = serialize($loc);
         $cache = expSession::getCacheValue('containermodule');
-        if (!isset($this) || !isset($this->_hasParent) || $this->_hasParent == 0) {
+//        if (!isset($this) || !isset($this->_hasParent) || $this->_hasParent == 0) {
             // Top level container.
             if (!isset($cache['top'][$container_key])) {
-                $container = $db->selectObject('container', "external='" . serialize(null) . "' AND internal='" . $container_key . "'");
+                $container = $db->selectObject('container', "internal='" . $container_key . "'");
                 //if container isn't here already, then create it.
                 if ($container == null) {
                     $container = new stdClass();
@@ -117,7 +117,7 @@ class containermodule {
             }
             if (!defined('PREVIEW_READONLY') || defined('SELECTOR')) $view = empty($container->view) ? $view : $container->view;
 //			$title = $container->title;
-        }
+//        } else flash('error','container $this is set');
         $container->scope = empty($module_scope[$loc->src]["containermodule"]->scope) ? '' : $module_scope[$loc->src]["containermodule"]->scope;
 
         $template = new template('containermodule', $view, $loc, $cache);
@@ -156,12 +156,10 @@ class containermodule {
                 ob_start();
                 $mod->_hasParent = 1;
                 if ($iscontroller) {
-//                    renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
                     renderAction(array('controller' => expModules::getControllerName($location->mod), 'action' => $containers[$i]->action, 'src' => $location->src, 'view' => $containers[$i]->view, 'moduletitle' => $containers[$i]->title));
                 } else {
                     $mod->show($containers[$i]->view, $location, $containers[$i]->title);
                 }
-
                 $containers[$i]->output = trim(ob_get_contents());
                 ob_end_clean();
 
@@ -211,7 +209,7 @@ class containermodule {
 
         $template->assign('user', $user);
         $template->assign('containers', $containers);
-        $template->assign('hasParent', (isset($this) && isset($this->_hasParent) ? 1 : 0));
+//        $template->assign('hasParent', (isset($this) && isset($this->_hasParent) ? 1 : 0));
         $template->register_permissions(
             array('manage', 'create', 'edit', 'delete', 'configure'),
             $loc

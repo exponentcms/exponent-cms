@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -33,7 +33,6 @@
     {/capture}
 {/if}
 
-{*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
 {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
 
 {foreach from=$files item=img key=key}

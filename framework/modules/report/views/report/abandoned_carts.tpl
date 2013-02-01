@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,6 +19,7 @@
 
 {/css}
 
+{*FIXME needs to be converted to yui3*}
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/utilities/utilities.js"></script>
 <script type="text/javascript" src="{$asset_path}/js/bubbling.js"></script>
 <script type="text/javascript" src="{$asset_path}/js/accordion.js"></script>
@@ -175,8 +176,7 @@
 					</div>
 				</div>
 			{/if}
-			
-					{if $cartsWithItemsAndInfo|@count gt 1}
+        {if $cartsWithItemsAndInfo|@count gt 1}
 			{br}
 			{br}
 			<div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
@@ -193,41 +193,41 @@
 								</tr>
 							</thead>
 							<tbody>
-							{foreach from=$cartsWithItemsAndInfo item=item} 
-								{if is_array($item)}
-								<tr>
-									<td>{$item.name}</td>
-									<td>{$item.email}</td>
-									<td>{$item.last_visit}</td>
-									<td>{$item.referrer}</td>
-								</tr>
-								<tr>
-									<table>
-										<thead>
-											<tr>
-												<td colspan="3"><h3 style="margin:0; padding: 0;">Products</h3></td>
-											</tr>
-											<tr>
-												<td><strong>Product Title</strong></td>
-												<td><strong>Quantity</strong></td>
-												<td><strong>Price</strong></td>
-											</tr>
-										</thead>
-										<tbody>
-										{foreach from=$item item=item2}  
-											{if isset($item2->products_name)}
-												<tr>
-													<td>{$item2->products_name}</td>
-													<td>{$item2->quantity}</td>
-													<td>{$item2->products_price_adjusted}</td>
-												</tr>
-											{/if}
-										{/foreach}
-										</tbody>
-									</table>
-								</tr>
-								{/if}
-							{/foreach}
+                                {foreach from=$cartsWithItemsAndInfo item=item}
+                                    {if is_array($item)}
+                                    <tr>
+                                        <td>{$item.name}</td>
+                                        <td>{$item.email}</td>
+                                        <td>{$item.last_visit}</td>
+                                        <td>{$item.referrer}</td>
+                                    </tr>
+                                    <tr>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3"><h3 style="margin:0; padding: 0;">Products</h3></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Product Title</strong></td>
+                                                    <td><strong>Quantity</strong></td>
+                                                    <td><strong>Price</strong></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            {foreach from=$item item=item2}
+                                                {if isset($item2->products_name)}
+                                                    <tr>
+                                                        <td>{$item2->products_name}</td>
+                                                        <td>{$item2->quantity}</td>
+                                                        <td>{$item2->products_price_adjusted}</td>
+                                                    </tr>
+                                                {/if}
+                                            {/foreach}
+                                            </tbody>
+                                        </table>
+                                    </tr>
+                                    {/if}
+                                {/foreach}
 							</tbody>
 						</table>
 					</div>

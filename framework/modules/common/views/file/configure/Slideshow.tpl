@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,7 @@
  *
  *}
  
-<h2>{'Image Slideshow Configuration'|gettext}</h2>
+{group label="Image Slideshow Configuration"|gettext}
 {control type=text name="width" label="Slideshow width"|gettext value=$config.width|default:350 size="5"}
 {control type=text name="height" label="Slideshow height"|gettext value=$config.height|default:200 size="5"}
 {control type=text name="speed" label="Seconds per slide"|gettext value=$config.speed|default:5 size="5"}
@@ -32,3 +32,4 @@ values="fadeOut,slideRight,slideLeft,slideUp,squeezeLeft,squeezeRight,squeezeUp,
 <h4>{'Configure the box size the Slideshow images'|gettext}</h4>
 {control type=text name="pa_image_width" label="Image Width"|gettext value=$config.pa_image_width|default:100 size="5"}
 {control type=text name="pa_image_height" label="Image Height"|gettext value=$config.pa_image_height|default:100 size="5"*}
+{/group}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,9 +23,9 @@
 <div class="module report generate-report">
     {$page->links}
     {form id="batch" controller=report}
-    <div class="exp-ecom-table">
-        {$page->table}
-    </div>
+        <div class="exp-ecom-table">
+            {$page->table}
+        </div>
     {/form}
 	{$page->links}
 </div>

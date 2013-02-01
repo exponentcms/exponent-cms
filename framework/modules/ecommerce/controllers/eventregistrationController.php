@@ -175,6 +175,36 @@ class eventregistrationController extends expController {
         redirect_to(array('controller'=> 'eventregistrations', 'action'=> 'showall'));
     }
 
+    function show() {
+        global $order, $template, $user;
+
+        expHistory::set('viewable', $this->params);
+        if (!empty($this->params['token'])) {
+            $record = expSession::get("last_POST_Paypal");
+        } else {
+            $record = expSession::get("last_POST");
+        }
+        $id = isset($this->params['title']) ? addslashes($this->params['title']) : $this->params['id'];
+        $product = new eventregistration($id);
+
+        //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
+        $product_type = new stdClass();
+        if ($product->active_type == 1) {
+            $product_type->user_message = "This product is temporarily unavailable for purchase.";
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
+            flash("error", $product->title . " " . gt("is currently unavailable."));
+            expHistory::back();
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
+            $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
+        }
+
+        //eDebug($product, true);
+        assign_to_template(array(
+            'product'=> $product,
+            'record'=> $record
+        ));
+    }
+
     function showByTitle() {
         global $order, $template, $user;
         expHistory::set('viewable', $this->params);
@@ -185,6 +215,7 @@ class eventregistrationController extends expController {
         }
         $product = new eventregistration(addslashes($this->params['title']));
 
+        //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
         $product_type = new stdClass();
         if ($product->active_type == 1) {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";
@@ -216,7 +247,7 @@ class eventregistrationController extends expController {
         expHistory::set('viewable', $this->params);
         expSession::set('last_POST_Paypal', $this->params);
         expSession::set('terms_and_conditions', $product->terms_and_condition); //FIXME $product doesn't exist
-        expSession::set('paypal_link', makeLink(array('controller'=> 'eventregistration', 'action'=> 'showByTitle', 'title'=> $product->sef_url)));
+        expSession::set('paypal_link', makeLink(array('controller'=> 'eventregistration', 'action'=> 'show', 'title'=> $product->sef_url)));
 
         //Validation for customValidation
         foreach ($this->params['event'] as $key => $value) {
@@ -254,9 +285,9 @@ class eventregistrationController extends expController {
         }
 
 //        if (!empty($this->params['event'])) {
-//            $sess_id = session_id();
-            $sess_id = expSession::getTicketString();
-            $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$sess_id}' AND event_id =" . $this->params['eventregistration']['product_id']);
+            $sess_id = session_id();
+//            $sess_id = expSession::getTicketString();
+            $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
             if (!empty($data)) {
                 foreach ($data as $item) {
                     if (!empty($this->params['event'][$item->control_name])) {
@@ -270,13 +301,13 @@ class eventregistrationController extends expController {
                     $obj->event_id        = $this->params['eventregistration']['product_id'];
                     $obj->control_name    = $key;
                     $obj->value           = $value;
-                    $obj->connector_id    = $sess_id;
+                    $obj->connector_id    = $order->id;
                     $obj->registered_date = time();
                     $db->insertObject($obj, "eventregistration_registrants");
                 } else {
                     $obj                  = new stdClass();
                     $obj->event_id        = $this->params['eventregistration']['product_id'];
-                    $obj->connector_id    = $sess_id;
+                    $obj->connector_id    = $order->id;
                     $obj->registered_date = time();
                     $db->insertObject($obj, "eventregistration_registrants");
                 }
@@ -401,7 +432,7 @@ class eventregistrationController extends expController {
             $header[] = '"Ticket Types"'; //Add some configuration here
         }
 
-        foreach ($event->expDefinableField['registrant'] as $field) {
+        if (!empty($event->expDefinableField['registrant'])) foreach ($event->expDefinableField['registrant'] as $field) {
             $data = expUnserialize($field->data);
             if (!empty($data->caption)) {
                 $header[] = '"' . $data->caption . '"';
@@ -413,7 +444,7 @@ class eventregistrationController extends expController {
 
         if ($event->num_guest_allowed > 0) {
             for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
-                foreach ($event->expDefinableField['guest'] as $field) {
+                if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
                     $data = expUnserialize($field->data);
                     if (!empty($data->caption)) {
                         $header[] = $data->caption . "_$i";
@@ -426,64 +457,102 @@ class eventregistrationController extends expController {
             }
         }
 
-        $out  = implode(",", $header);
-        $out  = $out . "\n";
-        $body = '';
-        foreach ($order_ids as $order_id) {
-            $body .= '"' . date("M d, Y h:i a", $db->selectValue("eventregistration_registrants", "registered_date", "event_id = {$event->id} AND connector_id = '{$order_id}'")) . '",';
-
-            if ($event->hasOptions()) {
-                $or        = new order($order_id);
-                $orderitem = new orderitem();
-                if (isset($or->orderitem[0])) {
-                    $body .= '"' . str_replace("<br />", " ", $orderitem->getOption($or->orderitem[0]->options)) . '",';
-                    ;
-                } else {
-                    $body .= '"",';
-                }
+        // new method to check for guests/registrants
+        if (!empty($event->num_guest_allowed)) {
+            $registered = array();
+            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
+                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
+                $registered = array_merge($registered,$newregistrants);
             }
+//            $registrants = array();
+            foreach ($registered as $key=>$person) {
+                $registered[$key]->person = expUnserialize($person->value);
+            }
+            $header[] = '"Name"';
+            $header[] = '"Phone"';
+            $header[] = '"Email"';
+        }
 
-            foreach ($control_names as $control_name) {
-                $value = $db->selectValue("eventregistration_registrants", "value", "event_id = {$event->id} AND control_name ='{$control_name}' AND connector_id = '{$order_id}'");
-                $body .= '"' . iconv("UTF-8", "ISO-8859-1", $value) . '",';
+        if (LANG_CHARSET == 'UTF-8') {
+            $out = chr(0xEF).chr(0xBB).chr(0xBF);  // add utf-8 signature to file to open appropriately in Excel, etc...
+        } else {
+            $out = "";
+        }
+        $out  .= implode(",", $header);
+        $out  .= "\n";
+        $body = '';
+//        foreach ($order_ids as $order_id) {
+//            $body .= '"' . date("M d, Y h:i a", $db->selectValue("eventregistration_registrants", "registered_date", "event_id = {$event->id} AND connector_id = '{$order_id}'")) . '",';
+//
+//            if ($event->hasOptions()) {
+//                $or        = new order($order_id);
+//                $orderitem = new orderitem();
+//                if (isset($or->orderitem[0])) {
+//                    $body .= '"' . str_replace("<br />", " ", $orderitem->getOption($or->orderitem[0]->options)) . '",';
+//                    ;
+//                } else {
+//                    $body .= '"",';
+//                }
+//            }
+//
+//            foreach ($control_names as $control_name) {
+//                $value = $db->selectValue("eventregistration_registrants", "value", "event_id = {$event->id} AND control_name ='{$control_name}' AND connector_id = '{$order_id}'");
+//                $body .= '"' . iconv("UTF-8", "ISO-8859-1", $value) . '",';
+//            }
+//            $body = substr($body, 0, -1) . "\n";
+//        }
+        foreach ($registered as $person) {
+            $body .= '"' . date("M d, Y h:i a", $person->registered_date) . '",';
+            foreach ($person->person as $value) {
+//                $body .= '"' . iconv("UTF-8", "ISO-8859-1", $value) . '",';
+                $body .= '"' . $value . '",';
             }
             $body = substr($body, 0, -1) . "\n";
         }
         $out .= $body;
 
-        $fp = BASE . 'tmp/';
-        $fn = str_replace(' ', '_', $event->title) . '.csv';
-        $f  = fopen($fp . $fn, 'w');
-        // Put all values from $out to export.csv.
-        fputs($f, $out);
-        fclose($f);
+//        $fp = BASE . 'tmp/';
+        $fn = str_replace(' ', '_', $event->title) . '_' . gt('Roster') . '.csv';
+//        $f  = fopen($fp . $fn, 'w');
+//        // Put all values from $out to export.csv.
+//        fputs($f, $out);
+//        fclose($f);
 
-        // NO buffering from here on out or things break unexpectedly. - RAM
-        ob_end_clean();
+		// CREATE A TEMP FILE
+		$tmpfname = tempnam(getcwd(), "rep"); // Rig
 
-        // This code was lifted from phpMyAdmin, but this is Open Source, right?
-        // 'application/octet-stream' is the registered IANA type but
-        // MSIE and Opera seems to prefer 'application/octetstream'
-        // It seems that other headers I've added make IE prefer octet-stream again. - RAM
-        $mimetype = 'application/octet-stream;';
+		$handle = fopen($tmpfname, "w");
+		fwrite($handle,$out);
+		fclose($handle);
 
-        header('Content-Type: ' . $mimetype);
-        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-        //header("Content-length: ".filesize($file->path));  // for some reason the webserver cant run stat on the files and this breaks.
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Encoding:');
-        header('Content-Disposition: attachment; filename="' . $fn . '";');
-        // IE need specific headers
-        if (EXPONENT_USER_BROWSER == 'IE') {
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            header('Vary: User-Agent');
-        } else {
-            header('Pragma: no-cache');
+		if(file_exists($tmpfname)) {
+            // NO buffering from here on out or things break unexpectedly. - RAM
+            ob_end_clean();
+
+            // This code was lifted from phpMyAdmin, but this is Open Source, right?
+            // 'application/octet-stream' is the registered IANA type but
+            // MSIE and Opera seems to prefer 'application/octetstream'
+            // It seems that other headers I've added make IE prefer octet-stream again. - RAM
+            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
+            header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            header("Content-length: ".filesize($tmpfname));
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Encoding:');
+            header('Content-Disposition: attachment; filename="' . $fn . '";');
+            // IE need specific headers
+            if (EXPONENT_USER_BROWSER == 'IE') {
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                header('Vary: User-Agent');
+            } else {
+                header('Pragma: no-cache');
+            }
+
+            readfile($tmpfname);
+            if (DEVELOPMENT == 0)
+            exit();
         }
-
-        readfile($fp . $fn);
-        exit();
     }
 
     public function get_guest_controls($ajax = '') {
@@ -512,7 +581,7 @@ class eventregistrationController extends expController {
 
         foreach ($order_ids_complete as $item) {
 //            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
-            $odr = $db->selectObject("orders", "sessionticket_ticket = {$item} and invoice_id <> 0");
+            $odr = $db->selectObject("orders", "id ='{$item}' and invoice_id <> 0");
             if (!empty($odr) || strpos($item, "admin-created") !== false) {
                 $order_ids[] = $item;
             }
@@ -536,7 +605,7 @@ class eventregistrationController extends expController {
             $control_names[] = $field->name;
         }
 
-        //Check if there are guest
+        //Check if there are guests
         if (!empty($event->num_guest_allowed)) {
             for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
                 if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
@@ -548,7 +617,19 @@ class eventregistrationController extends expController {
                     }
                     $control_names[] = $field->name . "_$i";
                 }
+            }
+        }
 
+        // new method to check for guests/registrants
+        if (!empty($event->num_guest_allowed)) {
+            $registered = array();
+            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
+                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
+                $registered = array_merge($registered,$newregistrants);
+            }
+            $registrants = array();
+            foreach ($registered as $person) {
+                $registrants[] = expUnserialize($person->value);
             }
         }
 
@@ -595,14 +676,19 @@ class eventregistrationController extends expController {
         $email = array_unique($email);
 
         $registered = count($order_ids) + $num_of_guest;
-        $event->registrants = expUnserialize($event->registrants);
+        if (!empty($event->registrants)) {
+            $event->registrants = expUnserialize($event->registrants);
+        } else {
+            $event->registrants = array();
+        }
 
         $event->number_of_registrants = $registered;
         assign_to_template(array(
             'event'=> $event,
-            'header'=> $header,
-            'body'=> $body,
-            'email'=> $email
+            'registrants'=> $registrants,
+//            'header'=> $header,
+//            'body'=> $body,
+//            'email'=> $email
         ));
     }
 
@@ -648,8 +734,9 @@ class eventregistrationController extends expController {
     /**
      * function to return event registrations as calendar events
      *
-     * @param $startdate
-     * @param $enddate
+     * @param        $startdate
+     * @param        $enddate
+     * @param string $color
      *
      * @return array
      */
@@ -668,13 +755,14 @@ class eventregistrationController extends expController {
                 $newevent->body  = $event->body;
                 $newevent->location_data = 'eventregistration';
                 $newevent->color = $color;
+                $newevent->expFile = $event->expFile['mainimage'];
                 $pass_events[$event->eventdate][] = $newevent;
             }
         }
         return $pass_events;
     }
 
-    // create a psuedo global view_registrants permission
+    // create a pseudo global view_registrants permission
     public static function checkPermissions($permission,$location) {
         global $exponent_permissions_r, $user, $db, $router;
 

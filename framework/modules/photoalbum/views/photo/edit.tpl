@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,7 @@
  *
  *}
 
-<div id="editgallery" class="module imagegallery edit">
+<div id="editgallery" class="module photoalbum edit">
     {if $record->id}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
     {form action=update}
         {control type=hidden name=id value=$record->id}
@@ -26,11 +26,11 @@
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'Photo Item'|gettext}</h2>
-                    {control type=text name=title label="Title (overrides file manager 'title')"|gettext value=$record->title}
+                    {control type=text name=title label="Title"|gettext value=$record->title description='Overrides file manager \'title\''|gettext}
+                    {control type="text" name="alt" label="'Alt' tag"|gettext value=$record->alt description='Overrides file manager \'alt\''|gettext}
                     {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
-                    {control type="text" name="alt" label="'Alt' tag (overrides file manager 'alt'"|gettext value=$record->alt}
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
                     {/if}

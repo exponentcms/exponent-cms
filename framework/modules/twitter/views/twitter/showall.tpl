@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div class="module twitter showall">
-	{if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+	{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
 	{permissions}
 	    <div class="module-actions">
 	        {if $permissions.create == 1}

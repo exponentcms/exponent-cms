@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,9 +14,9 @@
  *}
 
 <div class="module blog showall-headlines">
-    {if $moduletitle && !$config.hidemoduletitle}<h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{/if}
     {rss_link}
-    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h2>{/if}
     {permissions}
 		<div clas="module-actions">
 			{if $permissions.edit == 1}
@@ -32,7 +32,6 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     <ul>
     {foreach from=$page->records item=record name="blogs"}

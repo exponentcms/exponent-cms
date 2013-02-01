@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -51,11 +51,9 @@
         <tbody>
             <tr class="{cycle values="odd,even"}{if $module->active == 1} active{/if}">
                 <td>
-					{*{assign var=active value=0}*}
                     {$active=0}
 					{foreach from=$configs item=cfg}
 						{if $cfg->active}
-							{*{assign var=active value=1}*}
                             {$active=1}
 						{/if}
 					{/foreach}
@@ -69,7 +67,7 @@
                     <a href="{link module="expHTMLEditor" action=preview id=0}" title="Preview this Toolbar"|gettext>{"Default"|gettext}</a>
                 </td>
                 <td>
-					kama
+                    kama
                 </td>
                 <td>
 					{'No'|gettext}

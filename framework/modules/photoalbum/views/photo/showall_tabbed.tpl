@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,12 +26,13 @@
 {/if}
 {$rel}
 <div class="module photoalbum showall showall-tabbed">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
-    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add to the Top"|gettext text="Add Image"|gettext}
+                {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
 			{/if}
             {if $permissions.manage == 1}
                 {if !$config.disabletags}
@@ -49,28 +50,39 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
-    {*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
     {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
-    <div id="{$id}" class="yui-navset exp-skin-tabview hide">
-        <ul>
+    <div id="photos-{$id}" class="yui-navset exp-skin-tabview">
+        <ul class="yui-nav">
             {foreach name=tabs from=$page->cats key=catid item=cat}
-                <li><a href="#tab{$smarty.foreach.items.iteration}">{$cat->name}</a></li>
+                <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$cat->name}</a></li>
             {/foreach}
         </ul>
-        <div>
+        <div class="yui-content">
             {foreach name=items from=$page->cats key=catid item=cat}
                 <div id="tab{$smarty.foreach.items.iteration}">
                     <ul class="image-list">
                         {foreach from=$cat->records item=record}
+                            {if !empty($record->title)}
+                                {$title = $record->title}
+                            {elseif !empty($record->expFile[0]->title)}
+                                {$title = $record->expFile[0]->title}
+                            {else}
+                                {$title = ''}
+                            {/if}
+                            {if !empty($record->alt)}
+                                {$alt = $record->alt}
+                            {elseif !empty($record->expFile[0]->alt)}
+                                {$alt = $record->expFile[0]->alt}
+                            {else}
+                                {$alt = $title}
+                            {/if}
                             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
                                 {if $config.lightbox}
-                                    {*{if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}*}
                                     {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
-                                    <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
+                                    <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$alt|default:$title}">
                                 {else}
-                                    <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
+                                    <a href="{link action=show title=$record->sef_url}" title="{$alt|default:$title}">
                                 {/if}
                                     {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
                                 </a>
@@ -106,10 +118,10 @@
 
 {script unique="`$id`" yui3mods="1"}
 {literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+//    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+//        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+//        requires: ['history','tabview','event-custom']
+//    };
 
     EXPONENT.YUI3_CONFIG.modules = {
        'gallery-lightbox' : {
@@ -119,10 +131,16 @@
     }
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs','gallery-lightbox', function(Y) {
-        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
+//        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
+//		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
+//		Y.one('.loadingdiv').remove();
         Y.Lightbox.init();
 	});
+{/literal}
+{/script}
+
+{script unique="photos-`$id`" jquery="jqueryui"}
+{literal}
+    $('#photos-{/literal}{$id}{literal}').tabs().next().remove();
 {/literal}
 {/script}

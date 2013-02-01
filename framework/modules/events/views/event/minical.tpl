@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,9 +14,9 @@
  *}
  
 <table class="mini-cal">
-    <a id=prev class="nav doublearrow" href="#" title="{'Prev'|gettext}">&laquo;</a><input id=prevtime type=hidden value={$prevmonth} />
-    {$now|format_date:"%B"}
-    <a id=next class="nav doublearrow" href="#" title="{'Next'|gettext}">&raquo;</a><input id=nexttime type=hidden value={$nextmonth} />
+    <a class="nav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$prevmonth}" rel={$prevmonth} title="{'Prev Month'|gettext}">&laquo;</a>
+    &#160;&#160;{$now|format_date:"%B"}&#160;&#160;
+    <a class="nav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$nextmonth}" rel={$nextmonth} title="{'Next Month'|gettext}">&raquo;</a>
 
     <tr class="daysoftheweek">
         {if $smarty.const.DISPLAY_START_OF_WEEK == 0}
@@ -40,7 +40,7 @@
                         {if $dayinfo.number == 0}
                             {$day}
                         {else}
-                            <a class="mngmntlink calendar_mngmntlink" href="{link action=showall view=showall_Day time=$dayinfo.ts}" title="{$dayinfo.ts|format_date:'%A, %B %e, %Y'}"><em>{$day}</em></a>
+                            <a href="{link action=showall view=showall_Day time=$dayinfo.ts}" title="{$dayinfo.ts|format_date} - {$dayinfo.number} {'Event'|gettext|plural:$dayinfo.number}"><em>{$day}</em></a>
                         {/if}
                     {else}
                         &#160;

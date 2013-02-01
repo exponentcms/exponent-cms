@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,22 +18,22 @@
 
 /**
  * @subpackage Controllers
- * @package Modules
+ * @package    Modules
  */
 
 class importexportController extends expController {
     public $useractions = array(
-        /*'showall'=>'Show all products & categories',
-        'showall_featured_products'=>'Show all featured products',
-        'upcoming_events'=>'Show all upcoming events',
-        'showallSubcategories'=>'Show subcategories to the current category.',
-        'showallManufacturers'=>'Show products by manufacturer',
-        'quicklinks'=>'Quick Links for Users',
-        'showTopLevel'=>'Show Top Level Store Categories',
-        'search_by_model_form'=>'Product Search - By Model',
-        'events_calendar'=>'Show events in a calendar'     */
+//        'showall'=>'Show all products & categories',
+//        'showall_featured_products'=>'Show all featured products',
+//        'upcoming_events'=>'Show all upcoming events',
+//        'showallSubcategories'=>'Show subcategories to the current category.',
+//        'showallManufacturers'=>'Show products by manufacturer',
+//        'quicklinks'=>'Quick Links for Users',
+//        'showTopLevel'=>'Show Top Level Store Categories',
+//        'search_by_model_form'=>'Product Search - By Model',
+//        'events_calendar'=>'Show events in a calendar'
     );
-    
+
     // hide the configs we don't need
     public $remove_configs = array(
         'aggregation',
@@ -43,100 +43,104 @@ class importexportController extends expController {
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
-    
-    //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
-    protected $add_permissions = array('import'=>'Import Data', 'export'=>'Export Data');
-     
-    static function displayname() { return gt("Data Import / Export Module"); }
-    static function description() { return gt("Use this module to import and export data from your Exponent website."); }
-    static function hasSources() { return false; }
-    static function hasContent() { return false; }
+    ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
-    function __construct($src=null,$params=array()) {
-         parent::__construct($src=null,$params);
-        
+    //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
+    protected $add_permissions = array(
+        'import' => 'Import Data',
+        'export' => 'Export Data'
+    );
+
+    static function displayname() {
+        return gt("Data Import / Export Module");
     }
-    
+
+    static function description() {
+        return gt("Use this module to import and export data from your Exponent website.");
+    }
+
+    static function hasSources() {
+        return false;
+    }
+
+    static function hasContent() {
+        return false;
+    }
+
+    function __construct($src = null, $params = array()) {
+        parent::__construct($src = null, $params);
+    }
+
     function import() {
         assign_to_template(array(
-            'type'=>$this->params['import_type']
+            'type' => $this->params['import_type']
         ));
     }
-    
-    function parseCategory($data)
-    {
+
+    function parseCategory($data) {
         global $db;
-        if (!empty($data))
-        {
-            $cats1 = explode("::",trim($data));
+        if (!empty($data)) {
+            $cats1 = explode("::", trim($data));
             //eDebug($cats1);
             $cats1count = count($cats1);
             $counter = 1;
             $categories1 = array();
-            foreach ($cats1 as $key=>$cat)
-            {
+            foreach ($cats1 as $key => $cat) {
                 //eDebug($cat);
-                if ($counter == 1) $categories1[$counter] = $db->selectObject('storeCategories', 'title="'. $cat .'" AND parent_id=0');
-                else $categories1[$counter] = $db->selectObject('storeCategories', 'title="'. $cat .'" AND parent_id=' . $categories1[$counter-1]->id);
+                if ($counter == 1) $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=0');
+                else $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=' . $categories1[$counter - 1]->id);
                 //eDebug($categories1);
-                if (empty($categories1[$counter]->id)) 
-                {
-                    return "'" . $cat . "' of the set: '" . $data . "' is not a valid category.";                    
-                }  
-                                   
-                if ($counter == $cats1count)
-                {
+                if (empty($categories1[$counter]->id)) {
+                    return "'" . $cat . "' ".gt('of the set').": '" . $data . "' ".gt("is not a valid category").".";
+                }
+
+                if ($counter == $cats1count) {
                     return $categories1[$counter]->id;
-                }   
-                $counter++;                           
+                }
+                $counter++;
             }
             //eDebug($createCats);
             //eDebug($categories1,true);
-        }else{
-            return "Category was empty.";
-        }    
+        } else {
+            return gt("Category was empty.");
+        }
     }
-    
-    function validate()
-    {
+
+    function validate() {
         global $db;
         //eDebug($this->params,true); 
         set_time_limit(0);
         //$file = new expFile($this->params['expFile']['import_file'][0]);
-        if(!empty($_FILES['import_file']['error']))
-        {
-            flash('error',gt('There was an error uploading your file.  Please try again.'));
-            redirect_to(array('controller'=>'store','action'=>'import_external_addresses'));
+        if (!empty($_FILES['import_file']['error'])) {
+            flash('error', gt('There was an error uploading your file.  Please try again.'));
+            redirect_to(array('controller' => 'store', 'action' => 'import_external_addresses'));
         }
 
         $file = new stdClass();
         $file->path = $_FILES['import_file']['tmp_name'];
-        echo "Attempting import...<br/>";
-        
+        echo gt("Attempting import")."...<br/>";
+
         $checkhandle = fopen($file->path, "r");
         $checkdata = fgetcsv($checkhandle, 10000, ",");
-        $fieldCount = count($checkdata);   
-        
+        $fieldCount = count($checkdata);
+
         $count = 1;
         while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) {
             $count++;
-            if (count($checkdata) != $fieldCount) 
-            {                   
-                echo "Line ". $count ." of your CSV import file does not contain the correct number of columns.<br/>";
-                echo "Found " . $fieldCount . " header fields, but only " . count($checkdata) ." field in row " . $count . " Please check your file and try again.";
+            if (count($checkdata) != $fieldCount) {
+                echo gt("Line ") . $count . " ".gt("of your CSV import file does not contain the correct number of columns.")."<br/>";
+                echo gt("Found")." " . $fieldCount . " ".gt("header fields, but only")." " . count($checkdata) . " ".gt("field in row")." " . $count . " ".gt("Please check your file and try again.");
                 exit();
             }
-        }        
+        }
         fclose($checkhandle);
-        
-        echo "<br/>".gt("CSV File passed validation")."...<br/>";
-        
-        if($this->params['import_type'] == 'storeController') $this->importProduct($file);
+
+        echo "<br/>" . gt("CSV File passed validation") . "...<br/>";
+
+        if ($this->params['import_type'] == 'storeController') $this->importProduct($file);
         //else if($this->params['import_type'] == 'addressController') $this->importAddresses($file);
-       
     }
-    
+
     /*function importAddresses($file)
     {
         $handle = fopen($file->path, "r");
@@ -247,7 +251,7 @@ class importexportController extends expController {
                 $extAddy->save(false);
             }
             
-            echo "Sucessfully imported row " . $count . ", name: " . $extAddy->firstname . " " . $extAddy->lastname . "<br/>";
+            echo "Successfully imported row " . $count . ", name: " . $extAddy->firstname . " " . $extAddy->lastname . "<br/>";
             //eDebug($product);
         
         }   
@@ -270,17 +274,15 @@ class importexportController extends expController {
             echo "</font>";
         }    
     }*/
-    
-    function importProduct($file)
-    {
+
+    function importProduct($file) {
         $handle = fopen($file->path, "r");
         $data = fgetcsv($handle, 10000, ",");
         //eDebug($data);        
-        foreach ($data as $key=>$value)
-        {
-            $dataset[$value] = '';    
+        foreach ($data as $key => $value) {
+            $dataset[$value] = '';
         }
-        
+
         //eDebug($dataset,true);
         $count = 1;
         $errorSet = array();
@@ -312,36 +314,33 @@ class importexportController extends expController {
         21=feed_title
         22=feed_body   
         */
-        
+
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
-               
-			//eDebug($data, true);
-            if (isset($data[0]) && $data[0] != 0)
-            {
-                $product = new product($data[0],false,false);
-                if (empty($product->id)) 
-                {
-                    $errorSet[$count] = $product->id . " is not a valid product ID.";
+
+            //eDebug($data, true);
+            if (isset($data[0]) && $data[0] != 0) {
+                $product = new product($data[0], false, false);
+                if (empty($product->id)) {
+                    $errorSet[$count] = $product->id . " ".gt("is not a valid product ID.");
                     continue;
                 }
-            }else{
+            } else {
                 //$errorSet[$count] = "Product ID not supplied.";
                 //continue;
                 $product = new product();
                 //$product->save(false);
             }
-           
+
             $checkTitle = trim($data[3]);
-            if (empty($checkTitle)) 
-            {
-                $errorSet[$count] = "No product name (title) supplied, skipping this record...";
-                continue;    
-            } 
+            if (empty($checkTitle)) {
+                $errorSet[$count] = gt("No product name (title) supplied, skipping this record...");
+                continue;
+            }
             $product->parent_id = $data[1];
             $product->child_rank = $data[2];
             $product->title = stripslashes(stripslashes($data[3]));
-            $product->body = utf8_encode(stripslashes(reportController::parseAndTrimImport(($data[4]),true)));            
+            $product->body = utf8_encode(stripslashes(reportController::parseAndTrimImport(($data[4]), true)));
             //$product->body = utf8_encode(stripslashes(stripslashes(($data[4]))));            
             $product->model = stripslashes(stripslashes($data[5]));
             $product->warehouse_location = stripslashes(stripslashes($data[6]));
@@ -349,41 +348,38 @@ class importexportController extends expController {
             $product->meta_title = stripslashes(stripslashes($data[8]));
             $product->meta_keywords = stripslashes(stripslashes($data[9]));
             $product->meta_description = stripslashes(stripslashes($data[10]));
-            
+
             $product->tax_class_id = $data[11];
-            
+
             $product->quantity = $data[12];
-            
-            $product->availability_type = $data[13];   
-            
+
+            $product->availability_type = $data[13];
+
             $product->base_price = $data[14];
             $product->special_price = $data[15];
             $product->use_special_price = $data[16];
             $product->active_type = $data[17];
             $product->product_status_id = $data[18];
-            
+
             $product->surcharge = $data[31];
             $product->feed_title = stripslashes(stripslashes($data[33]));
             $product->feed_body = stripslashes(stripslashes($data[34]));
-            
-            if(empty($product->id)) $product->minimum_order_quantity = 1;
-             
-            if ($product->parent_id==0)
-            {
+
+            if (empty($product->id)) $product->minimum_order_quantity = 1;
+
+            if ($product->parent_id == 0) {
                 $createCats = array();
-                $createCatsRank = array();            
-                for ($x=19; $x<=30; $x++)
-                {
+                $createCatsRank = array();
+                for ($x = 19; $x <= 30; $x++) {
                     if (!empty($data[$x])) $result = $this->parseCategory($data[$x]);
                     else continue;
-                   
-                    if (is_numeric($result)) 
-                    {
+
+                    if (is_numeric($result)) {
                         $createCats[] = $result;
-                        $createCatsRank[$result] = $data[32];    
-                    }else{
+                        $createCatsRank[$result] = $data[32];
+                    } else {
                         $errorSet[$count][] = $result;
-                        continue 2;   
+                        continue 2;
                     }
                 }
             }
@@ -407,72 +403,66 @@ class importexportController extends expController {
             [17] => category3
             [18] => category4
             [19] => surcharge*/
-            
+
             //eDebug($createCats,true);
-            if(!empty($product->user_input_fields) && is_array($product->user_input_fields))
+            if (!empty($product->user_input_fields) && is_array($product->user_input_fields))
                 $product->user_input_fields = serialize($product->user_input_fields);
             //eDebug($product->user_input_fields);                
-            
-            if(!empty($product->user_input_fields) && !is_array($product->user_input_fields))
-                $product->user_input_fields = str_replace("'","\'",$product->user_input_fields);
+
+            if (!empty($product->user_input_fields) && !is_array($product->user_input_fields))
+                $product->user_input_fields = str_replace("'", "\'", $product->user_input_fields);
 
             //eDebug($product->user_input_fields,true);                
             $product->save(false);
             //eDebug($product->body);
-            
+
             //sort order and categories             
-            if ($product->parent_id==0) 
-            {
-                $product->saveCategories($createCats,$createCatsRank);                
+            if ($product->parent_id == 0) {
+                $product->saveCategories($createCats, $createCatsRank);
                 //eDebug($createCatsRank);
             }
-            echo "Sucessfully imported row " . $count . ", product: " . $product->title . "<br/>";
+            echo "Successfully imported row " . $count . ", product: " . $product->title . "<br/>";
             //eDebug($product);
-        
-        }   
-        
-        if(count($errorSet))
-        {
-            echo "<br/><hr><br/><style color:'red'>The following records were NOT imported:<br/>";
-            foreach ($errorSet as $row=>$err)
-            {
+
+        }
+
+        if (count($errorSet)) {
+            echo "<br/><hr><br/><style color:'red'>".gt('The following records were NOT imported').":<br/>";
+            foreach ($errorSet as $row => $err) {
                 echo "Row: " . $row . ". Reason:<br/>";
-                if (is_array($err))
-                {
-                    foreach ($err as $e)
-                    {
+                if (is_array($err)) {
+                    foreach ($err as $e) {
                         echo "--" . $e . "<br/>";
                     }
-                }
-                else echo "--" . $err . "<br/>";
+                } else echo "--" . $err . "<br/>";
             }
             echo "</style>";
-        }    
+        }
     }
-    
+
     function export() {
-        eDebug($this->params);        
+        eDebug($this->params);
     }
-    
+
     function manage() {
-	
         global $available_controllers;
+
         $importDD = array();
         $exportDD = array();
-        foreach ($available_controllers as $key=>$path) {
-			if(strpos($key, "Controller") !== false) {
-				$c = new $key();
-				if ($c->canImportData()) $importDD[$key] = $c->name(); 
-				if ($c->canExportData()) $exportDD[$key] = $c->name();
-			}
+        foreach ($available_controllers as $key => $path) {
+            if (strpos($key, "Controller") !== false) {
+                $c = new $key();
+                if ($c->canImportData()) $importDD[$key] = $c->name();
+                if ($c->canExportData()) $exportDD[$key] = $c->name();
+            }
         }
-        
+
         assign_to_template(array(
-            'importDD'=>$importDD, 
-            'exportDD'=>$exportDD, 
+            'importDD' => $importDD,
+            'exportDD' => $exportDD,
         ));
-        
     }
+
 }
 
 ?>

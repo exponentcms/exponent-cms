@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,7 +22,7 @@
             <td>{'From'|gettext}: {$config.answer_from_name} &lt;{$from}&gt;</td>
         </tr>
         <tr>
-            <td>{'To:'|gettext} {$faq->submitter_name} &lt;{$faq->submitter_name}&gt;</td>
+            <td>{'To:'|gettext} {$faq->submitter_name} &lt;{$faq->submitter_email}&gt;</td>
         </tr>
         </table>
         {control type="hidden" name="id" value=$faq->id}

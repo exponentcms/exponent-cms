@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,9 +14,8 @@
  *}
 
 <div class="module store show-top-level">
-	{*{assign var=depth value=0}*}
     {$depth=0}
-        {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
         {permissions}
         <div class="module-actions">
             {if $permissions.create == true || $permissions.edit == true}
@@ -31,7 +30,6 @@
         {if $config.moduledescription != ""}
             {$config.moduledescription}
         {/if}
-        {*{assign var=myloc value=serialize($__loc)}*}
         {$myloc=serialize($__loc)}
 
         {if $current_category->title}<h2>{$current_category->title}</h2>{/if}

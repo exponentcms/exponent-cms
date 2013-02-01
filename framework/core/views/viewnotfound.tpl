@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +13,8 @@
  *
  *}
 
-<ul class="error">
-	<li>{"The view you are trying to use was not found for this module"|gettext}</li>
+<div class="msg-queue error">
+    <ul>
+        <li>{"The view you are trying to use"|gettext} ({$badview}) {"was not found for this module"|gettext} ({$__loc->mod})</li>
 </ul>
+</div>

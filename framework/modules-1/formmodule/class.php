@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,8 +18,8 @@
 /** @define "BASE" "../../.." */
 
 class formmodule {
-	function name() { return $this->displayname(); }
-    static function displayname() { return gt('Form'); } //for forwards compat with new modules
+	function name() { return self::displayname(); }
+    static function displayname() { return gt('Form (Deprecated)'); } //for forwards compat with new modules
     static function description() { return gt('Allows the creation of forms that can be emailed and/or stored in the database.'); }
     static function author() { return 'OIC Group, Inc'; }
 	static function hasSources() { return true; }

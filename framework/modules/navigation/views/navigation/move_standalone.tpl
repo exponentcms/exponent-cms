@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,7 @@
 	</div>
 
     {form action=reparent_standalone}
-        {control type=hidden name=parent value=$section->parent}
+        {control type=hidden name=parent value=$parent}
         <div id="configure-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'Page'|gettext}</em></a></li>

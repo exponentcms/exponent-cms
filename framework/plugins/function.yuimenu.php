@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,6 +33,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_yuimenu($params,&$smarty) {
+//FIXME convert to yui3
 	$menu = '
         function buildmenu () {
             var oMenuSidenavJs = new YAHOO.widget.Menu("'.$params['buildon'].'", {

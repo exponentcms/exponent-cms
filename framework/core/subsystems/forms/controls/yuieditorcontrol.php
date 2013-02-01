@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -60,6 +60,7 @@ class yuieditorcontrol extends formcontrol {
 		$html .= ">";
 		$html .= $this->default;
 		$html .= "</textarea></div>";
+//FIXME convert to yui3
 		$script = "
 		(function() {
     			var Dom = YAHOO.util.Dom,
@@ -101,7 +102,7 @@ class yuieditorcontrol extends formcontrol {
 			$object->cols = 60;
 			$object->maxchars = 0;
 		} 
-		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 		$form->register("default",gt('Default'),  new texteditorcontrol($object->default));
 		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));

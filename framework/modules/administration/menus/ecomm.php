@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,8 +21,7 @@ if (!defined('EXPONENT')) exit('');
 if (!$user->isAdmin()) return false;
 
 global $db;
-// hide the menu if the store controller isn't activated
-//$active = $db->selectValue('modstate', 'active', 'module="storeController"');
+
 $active = ECOM;
 if (empty($active)) return false;
 

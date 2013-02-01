@@ -1,0 +1,34 @@
+version 2.1.1
+This release focuses on the new forms module and user interface improvements
+  - adds many new event calendar features
+    -- adds event copying feature (create new event from existing event)
+    -- adds optional attached images to events and event registrations
+    -- adds optional event popup in a lightbox dialog (like google calendar)
+    -- adds 'cancelled event' feature to display events as cancelled
+  - updates old school form module to a 2.0 controller
+    -- now allows greater flexibility in which users may enter or view data
+    -- forms are now site-wide objects, can view/enter form data from different modules/pages
+    -- adds view flexibility offered by a 2.0 module for future features
+    -- updates form control (input) display features and format to be more consistent and modern
+  - adds ajax-based navigation in calendar, news items & blog posts to prevent reloading entire page
+  - adds 'grouping by date' for uncategorized portfolio & file download items (in addition to 'grouping by alpha' for rolodex feature)
+  - adds new views to several modules
+    -- new 'headline' view to filedownloads module
+    -- new 'toggle' and 'accordion' views to the text module
+    -- new 'toggle' view to the portfolio module
+    -- new 'flyout sidebar' view to navigation module for hard-coding in themes
+    -- new 'vertical' login view
+  - now allows multiple files within a file download item; defaults to 1st attachment, but displays all attachments in show item view
+  - adds new 'multi-add' feature to create multiple photo album items in one easy step
+  - adds new 'inline' view to edit text module items directly on page via CKEditor v4
+  - adds custom module phrase translation libraries feature
+  - merges module 'Configure Actions & Views' and 'Configure Settings' into a single view for easy module configuration
+  - adds new 'private module' setting to optionally restrict viewing of a specific module by permission
+  - adds a mass mailer for super admins to email all users or selected site users
+  - adds new site configuration setting to reverse the default logic of when module titles are displayed
+  - updates file manager with 'virtual folder' grouping and date features to assist locating files
+    -- also adds file manager bulk selection (add multiple files to an item all at once) and bulk delete
+    -- adds new QuickUpload feature to bypass file manager/file uploader for file selection
+  - updates file uploader to allow html5 drag/drop support and some other user-friendly features
+    -- images may be optionally resized to a max width, and files assigned to a virtual folder during upload
+  * calendarmodule and simplepollmodule (old school) are now fully deprecated (removed)

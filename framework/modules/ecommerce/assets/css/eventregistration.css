@@ -1,29 +1,142 @@
+/*table, td, tr {*/
+    /*border : none !important;*/
+/*}*/
 
-table ,td, tr{border: none !important;}
-.required .label {display: none; }
+.required .label {
+    display : none;
+}
+
 .state_field .label {
-	display: none;
+    display : none;
 }
 
 .creditcard-form.dropdown {
-	overflow: hidden;
+    overflow : hidden;
 }
 
 .creditcard-form.dropdown div {
-	float: left;
-	margin-right: 10px;
+    float        : left;
+    margin-right : 10px;
 }
 
 .cvv_ver:hover {
-	color: #6B6B6B;
-	text-decoration: none;
+    color           : #6B6B6B;
+    text-decoration : none;
 
 }
 
 .creditcard-form {
-      padding-left: 10px;
+    padding-left : 10px;
 }
 
 .top-nav #yuimenubar ul li a:hover {
-      cursor: pointer;
+    cursor : pointer;
+}
+
+/*
+eventsCalendar view
+*/
+.showall .events {
+    overflow : hidden;
+}
+
+.showall .events .event-image {
+    float        : left;
+    width        : 125px;
+    margin-right : 20px;
+}
+
+.showall .events .event-info {
+    float : left;
+    width : 550px;
+}
+
+/*
+showall_headlines view
+*/
+.headlines .events {
+    overflow : hidden;
+}
+
+/*
+show view
+*/
+
+.seatsContainer {
+    background: none repeat scroll 0 0 #EBD98E;
+    border-bottom: 1px solid #CEBB6C;
+    border-top: 1px solid #CEBB6C;
+    height: 63px;
+    /*margin-bottom: 20px;*/
+    width: 340px;
+}
+.seatStatus {
+    clear: left;
+    float: left;
+    height: 43px;
+    line-height: 43px;
+    padding: 10px;
+    text-align: left;
+    width: 220px;
+    display: inline;
+}
+.seatAmount {
+    background: none repeat scroll 0 0 #DFCC7A;
+    clear: right;
+    float: right;
+    height: 43px;
+    padding: 10px;
+    width: 80px;
+}
+.seatCost {
+    color: #CC0000;
+    font-size: large;
+    font-weight: bold;
+}
+
+#eventregform .text-control p.helper {
+    text-align  : center;
+    margin-left : 210px;
+    width       : 230px;
+}
+
+#eventregform .control .text {
+    width : 230px;
+}
+
+#eventregform .text-control p.helper span {
+    font-size : 10px;
+    display   : block;
+}
+
+#eventregform .radiogroup label {
+    float       : none;
+    padding-top : 10px;
+    width       : 100px;
+}
+
+#eventregform .checkbox  label {
+    padding-top : 10px;
+}
+
+#eventregform .label {
+    display       : block;
+    display: inline;
+    font-size     : 114%;
+    font-weight   : bold;
+    margin-bottom : 4px;
+    margin-right  : 5px;
+}
+
+#eventregform .p_addElement {
+    text-align : center;
+}
+
+#eventregform .terms_and_conditions #terms_and_conditionControl {
+    width  : 270px;
+    margin : auto;
+}
+
+.more-text {
+    overflow : hidden;
 }

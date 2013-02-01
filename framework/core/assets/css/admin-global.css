@@ -82,14 +82,16 @@ span.active {
 /****************  administrative action links  ***********************/
 
 a.add,
+a.addtitle,
 a.alphasort,
 a.edit,
 a.configure,
 a.delete,
+a.deletetitle,
 a.manage,
 a.merge,
-a.revisions,
-a.reranklink {
+a.reranklink,
+a.revisions {
     padding:3px 3px 3px 20px;
     display:inline-block;
     *display:inline;
@@ -98,7 +100,7 @@ a.reranklink {
     background: url(../images/add.png) no-repeat 0 50%;
 }
 
-a.add {
+a.add, a.addtitle {
     background: url(../images/add.png) no-repeat 0 50%;
 }
 
@@ -114,7 +116,7 @@ a.configure {
     background: url(../images/configure.png) no-repeat 0 50%;
 }
 
-a.delete {
+a.delete, a.deletetitle {
     background: url(../images/delete.png) no-repeat 0 50%;
 }
 
@@ -157,7 +159,9 @@ a.revisions {
 
 /****************  tabview admin  ***********************/
 
-.exp-skin-tabview .yui-navset-top .yui-nav li {
+.exp-skin-tabview .yui-navset-top .yui-nav li,
+ul.exp-ajax-tabs,
+ul.exp-ajax-tabs li {
     display:inline-block;
     zoom:1;
     *display:inline;
@@ -177,7 +181,6 @@ a.revisions {
     cursor:pointer;
     padding-right:4px;
     font-size:11px;
-    
     background:url(../images/tabs/tab-norm-r.gif) no-repeat 100% 0;
 }
 .exp-skin-tabview .yui-navset-top .yui-nav li em {
@@ -251,7 +254,8 @@ a.revisions {
 
 /* YUI3 Tabview */
 
-.exp-skin-tabview .yui3-tab-label {
+.exp-skin-tabview .yui3-tab-label,
+ul.exp-ajax-tabs li a {
     display:inline-block;
     *display:inline;
     zoom:1;
@@ -273,9 +277,14 @@ a.revisions {
     margin:0 4px 2px 0;
 }
 
-.exp-skin-tabview .yui3-tab-selected .yui3-tab-label, 
+ul.exp-ajax-tabs li a {
+    margin:0 2px 2px 0;
+}
+
+.exp-skin-tabview .yui3-tab-selected .yui3-tab-label,
 .exp-skin-tabview .yui3-tab-selected .yui3-tab-label:focus, 
-.exp-skin-tabview .yui3-tab-selected .yui3-tab-label:hover {
+.exp-skin-tabview .yui3-tab-selected .yui3-tab-label:hover,
+ul.exp-ajax-tabs li a.current {
     color:#ffffff;
 	background-color:#081939; 
     text-shadow:none;
@@ -294,120 +303,18 @@ a.revisions {
             border-radius: 5px; 
 }
 
-/* simple ajax tabs */
-
-ul.exp-ajax-tabs,
-ul.exp-ajax-tabs li {
-    list-style:none;
-    margin:0;
-    padding:0;
-    display:inline-block;
-    *display:inline;
-    zoom:1;
-    vertical-align:top;    
-}
-
-ul.exp-ajax-tabs li a {
-    display:inline-block;
-    *display:inline;
-    zoom:1;
-    vertical-align:top;
-    padding:5px 4px 4px 8px;
-    color:#333;
-    font-style:normal;
-    font-family:arial;
-    font-size:10px;
-    font-weight:bold;
-    text-align:center;
-    text-shadow:1px 1px 0px #fff;
-    text-decoration:none;
-	background: #eae6df url(../images/button/gradient.png) repeat-x; 
-       -moz-border-radius: 3px; 
-    -webkit-border-radius: 3px; 
-            border-radius: 3px; 
-    border:1px solid #cdcdcd;
-    margin:0 0 2px 0;
-}
-
-ul.exp-ajax-tabs li a.current {
-    color:#ffffff;
-	background-color:#081939; 
-    text-shadow:none;
-}
-
-div.exp-ajax-tabs-content {
-    padding:10px;
-    margin:0;
-    border:1px solid #888;
-       -moz-border-radius: 5px; 
-    -webkit-border-radius: 5px; 
-            border-radius: 5px; 
-}
-
-/****************  tables  ***********************/
-
-/*.exp-skin-table table,
-table.exp-skin-table {
-    border-collapse:separate;
-    border-spacing:0;
-    margin:0 0 1em 0;
-    color:#000;
-    border-bottom:1px solid #523A0B;
-    width: 100%;
-}
-
-
-.exp-skin-table thead th,
-.exp-skin-tablethead td,
-.exp-skin-tabletfoot th,
-.exp-skin-tabletfoot td {
-    border:1px solid #523A0B;
-    border-width:1px 0;
-    background:#EBE5D9;
-}
-.exp-skin-table th {
-    font-weight:bold;
-    line-height:normal;
-    padding:5px;
-    text-align:left;
-}
-.exp-skin-table tbody th,
-.exp-skin-table td {
-    padding:0.25em 0.5em;
-    text-align:left;
-    vertical-align:top;
-    }
-.exp-skin-table tbody th {
-    font-weight:normal;
-    white-space:nowrap;
-    }
-.exp-skin-table tbody td,
-.exp-skin-table tbody th {
-    border:1px solid #fff;
-    border-width:1px 0;
-    }
-.exp-skin-table tbody tr.odd th,
-.exp-skin-table tbody tr.odd td {
-    border-color:#EBE5D9;
-    background:#F7F4EE;
-    }
-.exp-skin-table tbody tr:hover td,
-.exp-skin-table tbody tr:hover th {
-    background:#d5e3f3;
-    border-color:#999;
-    border-style:dotted;
-}
-.exp-skin-table caption {
-    font-family:Georgia,Times,serif;
-    font-weight:normal;
-    font-size:1.4em;
-    text-align:left;
-    margin:0;
-    padding:0.5em 0.25em;
-}
-*/
 /****************  some form stuff  ***********************/
 
 .control input.title {
     width:98%;
+}
+
+div.editable {
+    border-color: transparent;
+    border-width: thin;
+    border-style: dotted;
+}
+
+div.editable:hover {
+    border-color: #ff8938;
 }

@@ -19,8 +19,8 @@ a img {
 	border:none;
 }
 
-.hide {
-    display:none;
+.hide, .hide a {
+    display:none!important;
 }
 
 /****************  common visitor-facing styles  ***********************/
@@ -147,9 +147,11 @@ img.border {
 /* item date badge */
 .show .post-date, .showall .post-date {
 	float: left;
-	width: 52px;
+	/*width: 52px;*/
+    width: 45px;
 	text-align: center;
-	margin: 0 12px 5px 0;
+	/*margin: 0 12px 5px 0;*/
+    margin: 0 8px 3px 0;
 	border: solid 1px #bebebe;
 	background: #fff;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ecebeb');
@@ -165,7 +167,8 @@ img.border {
 }
 .show .post-date .month, .showall .post-date .month {
 	color: #fff;
-	font: 11px/100% Arial, Helvetica, sans-serif;
+	/*font: 11px/100% Arial, Helvetica, sans-serif;*/
+    font: 10px/100% Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	display: block;
@@ -193,12 +196,25 @@ img.border {
 .show .post-date .day, .showall .post-date .day {
 	color: #666;
 	padding: 2px 0 1px;
-	font: bold 18px/100% Arial, Helvetica, sans-serif;
+	/*font: bold 18px/100% Arial, Helvetica, sans-serif;*/
+    font: bold 16px/100% Arial, Helvetica, sans-serif;
 	display: block;
 }
 .show .post-date .year, .showall .post-date .year {
 	color: #999;
-	padding: 0 0 4px;
-	font: 10px/100% Arial, Helvetica, sans-serif;
+	/*padding: 0 0 4px;*/
+	/*font: 10px/100% Arial, Helvetica, sans-serif;*/
+    font: 9px/100% Arial, Helvetica, sans-serif;
 	display: block;
+}
+
+/****************  group block formatting  ***********************/
+.group-controls {
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+   	-moz-border-radius: 6px;
+    border:2px solid #D3D3D3;
+    display: block;
+    padding: 10px;
+    margin: 0 0 5px;
 }

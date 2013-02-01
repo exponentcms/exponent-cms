@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -158,7 +158,7 @@
         {/foreach}
         {else}
         <h2>{'You\'re purchasing'|gettext}</h2>
-    {include file="../order/partial_summary.tpl" items=$order->orderitem}
+        {include file="../order/partial_summary.tpl" items=$order->orderitem}
         <div class=" order-total">
             <table class="nowrap">
                 <thead>

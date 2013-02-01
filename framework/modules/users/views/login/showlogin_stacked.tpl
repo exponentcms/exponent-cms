@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,26 +13,29 @@
  *
  *}
 
+{css unique="showlogin-expanded" corecss="button,forms"}
+
+{/css}
+
 <div class="module login stacked">
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
     {if $loggedin == false}
-		{if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
-        {if $config.moduledescription != ""}
-           {$config.moduledescription}
-        {/if}
-		<div>
-			{form action=login}
-				{control type="text" name="username" label="Username"|gettext|cat:":" size=25}
-				{control type="password" name="password" label="Password"|gettext|cat:":" size=25}
-				{control type="buttongroup" submit="Login Now"|gettext|cat:"!"}
-			{/form}
-		</div>
-	{else}
-		<h2>{$displayname}</h2>
-		<div class="bodycopy">
-			<ul>
-				<li><a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" href="{link action=logout}">{"Log Out"|gettext}</a></li>
-			</ul>
-		</div>
+        <div>
+            {form action=login}
+                {control type="text" name="username" label="Username"|gettext|cat:":" size=25 required=1}
+                {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1}
+                {control type="buttongroup" submit="Log In"|gettext|cat:"!"}
+            {/form}
+        </div>
+    {else}
+        <h2>{$displayname}</h2>
+        <div class="logout">
+            <a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
+               href="{link action=logout}">{"Log Out"|gettext}</a>
+        </div>
     {/if}
 </div>
 

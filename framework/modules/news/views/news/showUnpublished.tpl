@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,10 +18,9 @@
 {/css}
 
 <div class="module news show-expired">
-    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Expired News"|gettext}</h1>{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
-    {$myloc=serialize($__loc)}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle} - {"Expired and Unpublished News"|gettext}</h1>{/if}
     {pagelinks paginate=$page top=1}
+    {$myloc=serialize($__loc)}
 	<table id="prods" class="exp-skin-table" width="95%">
 	    <thead>
 		<tr>

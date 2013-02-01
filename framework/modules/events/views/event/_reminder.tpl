@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 {/css}
  
 <div class="module events cal-default">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -41,11 +41,10 @@
 					</strong>
 				</dt>
 				{foreach from=$events item=event}
-					{*{assign var=catid value=$event->category_id}*}
                     {$catid=$event->category_id}
 					<dd>
 						<strong>
-							<a class="itemtitle calendar_mngmntlink" href="{link controller=event action=show date_id=$event->date_id}">{$event->title}</a>
+							<a class="itemtitle" href="{link controller=event action=show date_id=$event->date_id}">{$event->title}</a>
 						</strong>							
 						<div>
 							&#160;-&#160;

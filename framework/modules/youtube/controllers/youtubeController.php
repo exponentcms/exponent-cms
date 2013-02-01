@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,10 +32,10 @@ class youtubeController extends expController {
         'files',
         'rss',
         'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("YouTube"); }
-    static function description() { return gt("Display youtube videos on your page."); }
+    static function description() { return gt("Display YouTube videos on your page."); }
     static function author() { return "Phillip Ball - OIC Group, Inc"; }
 	
 	function showall() {

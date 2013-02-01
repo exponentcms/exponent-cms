@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,7 +24,7 @@
 {/if}
 
 <div class="module portfolio showall-simple-list">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
@@ -47,10 +47,8 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {pagelinks paginate=$page top=1}
-    {*{assign var="cat" value="bad"}*}
     {$cat="bad"}
     {foreach from=$page->records item=record}
         {if $cat !== $record->expCat[0]->id && $config.usecategories}
@@ -70,12 +68,11 @@
             {/permissions}
             {permissions}
                 {if $permissions.create == 1}
-                    {icon class="add addhere" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
+                    {icon class="add" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
                 {/if}
             {/permissions}
             {clear}
         </div>
-        {*{assign var="cat" value=$record->expCat[0]->id}*}
         {$cat=$record->expCat[0]->id}
     {/foreach}
     {clear}

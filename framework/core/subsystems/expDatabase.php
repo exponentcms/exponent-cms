@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -130,7 +130,7 @@ class expDatabase {
     public static function install_dbtables($aggressive=false) {
    	    global $db;
 
-   		expSession::clearCurrentUserSessionCache();
+   		expSession::clearAllUsersSessionCache();
    		$tables = array();
 
    		// first the core and 1.0 definitions

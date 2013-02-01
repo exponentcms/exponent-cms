@@ -14,12 +14,14 @@ function adminer_object() {
         // specify enabled plugins here
         new AdminerEditCalendar,
         new AdminerCKeditor,
-        new AdminerEditTextarea,
+//        new AdminerEditTextarea,
         new AdminerEnumOption,
         new AdminerTablesFilter,
+        new AdminerEditTextSerializedarea,
         //new AdminerEmailTable,
         //new AdminerEditForeign,
         //new AdminerForeignSystem,
+        new AdminerVersionNoverify,
     );
     
     /* It is possible to combine customization and plugins: */
@@ -63,5 +65,5 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-3.6.1-mysql.php";
+include "./adminer-3.6.3-mysql.php";
 ?>

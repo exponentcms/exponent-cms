@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,14 +36,13 @@ class blogController extends expController {
     );
 
     static function displayname() { return gt("Blog"); }
-    static function description() { return gt("This module allows you to run a blog on your site."); }
+    static function description() { return gt("Run a blog on your site."); }
     static function author() { return "Phillip Ball - OIC Group, Inc"; }
     static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
     static function isSearchable() { return true; }
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);
-
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
             'where'=>$this->aggregateWhereClause(),
@@ -140,7 +139,7 @@ class blogController extends expController {
 		            
 		assign_to_template(array(
             'page'=>$page,
-            'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date).'"')
+            'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date,"%B %Y").'"')
         );
 	}
 	
@@ -257,6 +256,7 @@ class blogController extends expController {
             $rss_item->link = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+            $rss_item->authorEmail = user::getEmailById($item->poster);
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->guid = expUnserialize($item->location_data)->src.'-id#'.$item->id;
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
@@ -310,9 +310,11 @@ class blogController extends expController {
             }
 
             if (!empty($str)) {
+                $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
                 $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
                 $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                return $metainfo;
             }
         }
     }
@@ -320,12 +322,14 @@ class blogController extends expController {
     function showall_by_date_meta($request) {
         // look up the record.
         if (isset($request['month'])) {
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
             $ts = strftime('%B, %Y',$mk);
             // set the meta info
             $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts ;
             $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
             $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+            return $metainfo;
         }
     }
 

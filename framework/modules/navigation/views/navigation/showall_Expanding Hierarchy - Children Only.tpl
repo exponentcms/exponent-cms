@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,24 +18,20 @@
 {/css}
 
 <div class="module navigation expanding expanding-hierarchy-children-only">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
     <ul>
         {foreach from=$sections item=section}
             {if $section->numParents != 0}
-                {*{assign var=commonParent value=0}*}
-                {*{assign var=isParent value=0}*}
                 {$commonParent=0}
                 {$isParent=0}
                 {foreach from=$current->parents item=parentId}
                     {if $parentId == $section->id}
-                        {*{assign var=isParent value=1}*}
                         {$isParent=1}
                     {/if}
                     {if $parentId == $section->id || $parentId == $section->parent}
-                        {*{assign var=commonParent value=1}*}
                         {$commonParent=1}
                     {/if}
                 {/foreach}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,17 +18,15 @@
 {/css}
 
 <div class="module navigation collapsing collapsing-hierarchy">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
     <ul>
         {foreach from=$sections item=section}
-            {*{assign var=inPath value=0}*}
             {$inPath=0}
             {foreach from=$current->parents item=parentId}
                 {if $parentId == $section->id}
-                    {*{assign var=inPath value=1}*}
                     {$inPath=1}
                 {/if}
             {/foreach}

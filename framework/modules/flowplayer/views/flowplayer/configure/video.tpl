@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,6 +21,10 @@
         <h2>{"Flowplayer Settings"|gettext}</h2>
 	</div>
 </div>
+<blockquote>
+    {"This is where you can configure the settings used by this Flowplayer module."|gettext}&#160;&#160;
+    {"These settings only apply to this particular module."|gettext}
+</blockquote>
 {control type="checkbox" name="autoplay" label="Automatically Play Videos"|gettext value=1 checked=$config.autoplay}
 {control type="text" name="video_width" label="Video Width"|gettext value=$config.video_width|default:200 size=4}
 {control type="text" name="video_height" label="Video Height"|gettext value=$config.video_height|default:143 size=4}

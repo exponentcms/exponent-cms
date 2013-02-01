@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,7 +41,7 @@
 	</div>
 	<h1>
         {ical_link}
-        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle} - {'Administration View'|gettext}{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle} - {'Administration View'|gettext}{/if}
 	</h1>
     {if $config.moduledescription != ""}
         {$config.moduledescription}
@@ -67,7 +67,7 @@
 		<tbody>
 		{foreach from=$items item=item}
 			<tr class="{cycle values="odd,even"}">
-				<td><a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
+				<td><a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
 				{if $item->is_allday == 1}
 					{$item->eventstart|format_date}
@@ -91,6 +91,7 @@
                                     {/if}
                                 {/if}
 								{icon img='edit.png' action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
+                                {icon img='copy.png' action=copy record=$item date_id=$item->date_id title="Copy this Event"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
 								{if $item->is_recurring == 0}

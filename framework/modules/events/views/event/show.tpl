@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,8 +18,8 @@
 {/css}
 
 {$item = $event->event}
-{$eventstart = $record->eventstart + $event->date}
-{$eventend = $record->eventend + $event->date}
+{$eventstart = $item->eventstart + $event->date}
+{$eventend = $item->eventend + $event->date}
 <div class="module events show">
 	<div class="module-actions">
 		{icon class="dayviewlink" action=showall view=showall_Day time=$eventstart title='View Entire Day'|gettext text='View Day'|gettext}
@@ -31,7 +31,14 @@
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {br}
 	</div>
-	<h2>
+    {if $item->expFile[0]->url != ""}
+        <div class="image" style="margin: 1em 0;padding:10px;float:left;overflow: hidden;">
+            {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image"}
+            {clear}
+        </div>
+    {/if}
+    {if $item->is_cancelled}<h2 class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</h2>{/if}
+	<h2{if $item->is_cancelled} class="cancelled"{/if}>
         {ical_link}
 		{$item->title}
 	</h2>
@@ -40,6 +47,7 @@
 		<div class="item-actions">
 			{if $permissions.edit == 1}
 				{icon action=edit record=$item date_id=$event->id title="Edit this Event"|gettext}
+                {icon action=copy record=$item date_id=$event->id title="Copy this Event"|gettext}
 			{/if}
 			{if $permissions.delete == 1}
 				{if $item->is_recurring == 0}

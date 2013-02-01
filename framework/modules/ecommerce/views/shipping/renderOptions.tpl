@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,19 +20,18 @@
             <strong class="selected-info">{$shipping->shippingmethod->option_title}
                 <em>{currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}</em></strong>
             {if $shipping->pricelist|@count >1}
-            <h4>{"Available Options"|gettext}</h4>
-            <div class="bd">
-                {form name="shpmthdopts" controller=shipping action=selectShippingOption}
-                {foreach from=$shipping->pricelist item=option}
-                    {*{if $option.id == $shipping->shippingmethod->option}{assign var=selected value=true}{else}{assign var=selected value=false}{/if}*}
-                    {if $option.id == $shipping->shippingmethod->option}{$selected=true}{else}{$selected=false}{/if}
-                    {*{assign var=oc value=$option.cost|number_format:2}*}
-                    {$oc=$option.cost|number_format:2}
-                    {control type=radio name="option" value=$option.id label="`$option.title` - $`$oc`" checked=$selected}
-                {/foreach}
-                <button type="submit" class="awesome small blue">{"Update Shipping Option"|gettext}</button>
-                {/form}
-            </div>
+                {group label="Available Options"|gettext}
+                <div class="bd">
+                    {form name="shpmthdopts" controller=shipping action=selectShippingOption}
+                    {foreach from=$shipping->pricelist item=option}
+                        {if $option.id == $shipping->shippingmethod->option}{$selected=true}{else}{$selected=false}{/if}
+                        {$oc=$option.cost|number_format:2}
+                        {control type=radio name="option" value=$option.id label="`$option.title` - $`$oc`" checked=$selected}
+                    {/foreach}
+                    <button type="submit" class="awesome small blue">{"Update Shipping Option"|gettext}</button>
+                    {/form}
+                </div>
+                {/group}
             {/if}
         </div>
     </div>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,11 +20,11 @@
 <div class="module administration manage-unused-tables">
     <h1>{'Deprecated/Unused Tables'|gettext}</h1>
     <h2>{$unused_tables|@count} {'unused tables found'|gettext}</h2>
-    <p>
+    <blockquote>
         {'The list of tables below are ones that are no longer used by Exponent. However, these tables probably'|gettext}
         {'aren\'t hurting anything.  If you do not have a good idea of what a table does or why it is there'|gettext}
         {'it is probably best to just leave it.'|gettext}
-    </p>
+    </blockquote>
     
     {form action=delete_unused_tables}
         <table class="exp-skin-table">

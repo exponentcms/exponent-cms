@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -77,6 +77,7 @@ class remove_oldfiles extends upgradescript {
             'orphan_source_selector.php',
             'podcast.php',
             'rss.php',
+            'external/adminer/adminer-3.6.1*',
             'external/editors/_header.tpl',
             'external/editors/Default.tpl',
             'external/editors/FCKeditor.tpl',
@@ -97,6 +98,8 @@ class remove_oldfiles extends upgradescript {
             'framework/modules-1/containermodule/views/_view_clipboard.tpl',
             'framework/modules-1/common//views/_msg_queue.tpl',
             'framework/modules/text//views//text/showall_merge.tpl',
+            'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
+            'framework/modules/common/views/configure/module_title.tpl',
             'themes/basetheme/sample.eql',
             'themes/basetheme/sample.tar.gz',
             'themes/coolwatertheme/sample.eql',
@@ -238,7 +241,6 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/ecommerce/views/store/search_by_model_old.tpl',
             'framework/modules/ecommerce/views/store/showall_category_featured_products.tpl',
             'framework/modules/ecommerce/views/store/upcoming_events.tpl',
-            'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
@@ -288,12 +290,14 @@ class remove_oldfiles extends upgradescript {
             "external/lissa/",
             "external/yui/3.4.0/",
             "external/yui/3.7.2/",
+            "external/yui/3.7.3/",
             "external/Smarty/",
             "external/Smarty-2/",
             "external/Smarty-3.1.4/",
             "external/Smarty-3.1.7/",
             "external/Smarty-3.1.8/",
             "external/Smarty-3.1.11/",
+            "external/Smarty-3.1.12/",
             "external/Swift/",
             "external/Swift-4/",
             "external/Swift-4.0.5/",
@@ -304,6 +308,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.1.6/",
             "external/Swift-4.1.7/",
             "external/Swift-4.2.1/",
+            "external/Swift-4.2.3/",
         );
         foreach ($olddirs as $dir) {
             if (expUtil::isReallyWritable(BASE.$dir)) {

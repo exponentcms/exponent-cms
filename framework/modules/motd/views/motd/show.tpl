@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,8 +15,7 @@
 
 {clear}
 <div class="module motd show">
-    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle|default:"Message of the Day"|gettext}</h1>{/if}
     {$myloc=serialize($__loc)}
     <div class="motd-message">
         <div class="motd-date">

@@ -99,7 +99,7 @@
     background:url(../images/admintoolbar/logout.png) no-repeat 3px 50%;
 }
 #admintoolbar li.password a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/lock.png) no-repeat 3px 50%;
+    background:url(../../../../core/assets/images/change_password.png) no-repeat 3px 50%;
 }
 #admintoolbar li.preview_on a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
@@ -172,6 +172,9 @@
 }
 #admintoolbar li.fileuploader a.yuimenuitemlabel {
     background:url(../images/admintoolbar/upload.png) no-repeat 5px 50%;
+}
+#admintoolbar li.email a.yuimenuitemlabel {
+    background:url(../images/admintoolbar/mail-reply-all.png) no-repeat 5px 50%;
 }
 
 #admintoolbar li.yuimenuitem-selected {

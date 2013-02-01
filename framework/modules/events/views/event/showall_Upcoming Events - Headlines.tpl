@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,14 +20,14 @@
 <div class="module events upcoming-events-headlines">
     <h2>
         {ical_link}
-        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}
     </h2>
     {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="module-actions">
 			<p>
 			{if $permissions.manage == 1}
-				{icon class="adminviewlink mngmntlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}{br}
+				{icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}{br}
 			{/if}
 			{if $permissions.create == 1}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
@@ -36,16 +36,15 @@
 		</div>
 	{/permissions} 
     <ul>
-		{*{assign var=more_events value=0}	*}
-		{*{assign var=item_number value=0}	*}
         {$more_events=0}
         {$item_number=0}
 		{foreach from=$items item=item}
 			{if (!$config.headcount || $item_number < $config.headcount) }
 				<li>
-                    <a class="link{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
+                    {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
+                    <a class="link{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
-                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title="{$item->body|summarize:"html":"para"}"}{/if}"
                         {/if}
                         >{$item->title}
                     </a>
@@ -68,6 +67,7 @@
                                         {/if}
                                     {/if}
                                     {icon action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
+                                    {icon action=copy record=$item date_id=$item->date_id title="Copy this Event"|gettext}
                                 {/if}
                                 {if $permissions.delete == 1}
                                     {if $item->is_recurring == 0}
@@ -80,10 +80,8 @@
                         {/if}
 					{/permissions}
 				</li>
-				{*{assign var=item_number value=$item_number+1}*}
                 {$item_number=$item_number+1}
 			{else}
-				{*{assign var=more_events value=1}	*}
                 {$more_events=1}
 			{/if}
 		{foreachelse}
@@ -92,7 +90,7 @@
     </ul>
 	<p>
 		{if $more_events == 1}
-			<a class="mngmntlink monthviewlink module-actions" href="{link action=showall view='showall_Upcoming Events' time=$time}">{'More Events...'|gettext}</a>{br}
+			<a class="monthviewlink module-actions" href="{link action=showall view='showall_Upcoming Events' time=$time}">{'More Events...'|gettext}</a>{br}
 		{/if}
 	</p>
 </div>

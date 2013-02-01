@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,10 +36,11 @@ class recyclebin extends expRecord {
         //foreach ($orphans as $orphan) {
         $numrecycled = count($orphans);
         for($i=0; $i<$numrecycled; $i++) {
-            $loc = new stdClass();
-            $loc->mod = $orphans[$i]->module;
-            $loc->src = $orphans[$i]->source;
-            $loc->int = $orphans[$i]->internal;
+//            $loc = new stdClass();
+//            $loc->mod = $orphans[$i]->module;
+//            $loc->src = $orphans[$i]->source;
+//            $loc->int = $orphans[$i]->internal;
+            $loc = expCore::makeLocation($orphans[$i]->module,$orphans[$i]->source,$orphans[$i]->internal);
             $orphans[$i]->loc = serialize($loc);
             if ($orphans[$i]->module == 'recyclebinController') {
                 unset($orphans[$i]);
@@ -48,11 +49,15 @@ class recyclebin extends expRecord {
                     $orphans[$i]->html = renderAction(array('controller'=>$orphans[$i]->module, 'action'=>'showall','src'=>$orphans[$i]->source,"no_output"=>true));
                 } else {
                     echo($module).'...';
-                    $mod = new $orphans[$i]->module();
-                    ob_start();
-                    $mod->show("Default",$loc);
-                    $orphans[$i]->html = ob_get_contents();
-                    ob_end_clean();
+                    if (in_array($orphans[$i]->module,expModules::modules_list())) {
+                        $mod = new $orphans[$i]->module();
+                        ob_start();
+                        $mod->show("Default",$loc);
+                        $orphans[$i]->html = ob_get_contents();
+                        ob_end_clean();
+                    } else {
+                        echo($orphans[$i]->module . ' ' . gt('no longer available!'));
+                    }
                 }
             }
         }

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -33,7 +33,7 @@
         {if $untrans}
             <p>{"There are"|gettext} {$untrans} {"Untranslated Phrases in the"|gettext} {$smarty.const.LANG} {"Translation"|gettext}</p>
         {/if}
-        <p>{'You may use the \'lang_update.php\' script to help correct this for the'|gettext} {$smarty.const.LANG} {"translation"|gettext}</p>
+        <p>{'You may use the \'lang_translate.php\' script to help correct this for the'|gettext} {$smarty.const.LANG} {"translation"|gettext}</p>
     {/if}
     <hr>
     <h2>{"Create a New Translation based on the Current Translation"|gettext} - {$smarty.const.LANG}</h2>

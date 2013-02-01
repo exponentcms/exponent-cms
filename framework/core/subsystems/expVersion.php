@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -159,7 +159,7 @@ class expVersion {
                         }
                     }
                 } else {
-                    flash('error', gt('Unable to contact update server. Version check only performed once per Super-admin login.'));
+                    flash('error', gt('Unable to contact update server. Automatic Version Check is only performed once per Super-admin login.'));
                 }
             }
         }

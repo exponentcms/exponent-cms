@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,7 +21,6 @@ if (!defined('EXPONENT')) exit('');
 global $user, $router, $db, $section;
 
 // determine if the Pages menu should NOT be displayed
-//if (!$db->selectValue('userpermission','uid','uid=\''.$user->id.'\' AND permission!=\'view\' AND internal!=\'\'') && !$user->isAdmin()) return false;
 if (!$user->isAdmin()) {
     $pageperms = !$db->selectValue('userpermission','uid',"uid='".$user->id."' AND source=='' AND internal!=''");
     if (!$pageperms) {
@@ -62,8 +61,10 @@ if (expPermissions::check('manage',expCore::makeLocation('navigationController',
 }
 
 if ($user->isAdmin()) {
-    $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('module'=>'navigation','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
-    $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('module'=>'navigation','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
+//    $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('module'=>'navigation','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
+//    $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('module'=>'navigation','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
+    $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('controller'=>'users','action'=>'userperms','mod'=>'navigation',"int"=>$page->id)));
+    $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('controller'=>'users','action'=>'groupperms','mod'=>'navigation',"int"=>$page->id)));
 }
 
 //FIXME do we just need to let any user w/ manage page perms to get to the manage menu hierarchy and let it decide perms from there?

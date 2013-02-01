@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,6 @@
 
 <div class="module filedownload show">
 	<div class="item">
-        {$filetype=$record->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
         {if $record->expFile.preview[0] != ""}
             {img class="preview-img" file_id=$record->expFile.preview[0]->id square=150}
         {/if}
@@ -29,7 +28,6 @@
         {if $record->title}<h2>{$record->title}</h2>{/if}
         {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
         {subscribe_link}
-        {*{assign var=myloc value=serialize($__loc)}*}
         {$myloc=serialize($__loc)}
         {permissions}
 			<div class="item-actions">
@@ -49,19 +47,9 @@
 			</div>
         {/permissions}
         <div class="attribution">
-            <p>
             {if !$config.datetag}
                 <span class="label dated">{'Dated'|gettext}:</span>
                 <span class="value">{$file->publish_date|format_date}</span>
-                &#160;|&#160;
-            {/if}
-            {if $record->expFile.downloadable[0]->duration}
-                <span class="label size">{'Duration'}:</span>
-                <span class="value">{$record->expFile.downloadable[0]->duration}</span>
-                &#160;|&#160;
-            {elseif $record->expFile.downloadable[0]->filesize}
-                <span class="label size">{'File Size'}:</span>
-                <span class="value">{$record->expFile.downloadable[0]->filesize|bytes}</span>
                 &#160;|&#160;
             {/if}
             <span class="label downloads"># {'Downloads'|gettext}:</span>
@@ -75,10 +63,41 @@
         {if $record->ext_file}
             <a class=downloadfile href="{$record->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
         {else}
-            {icon action=downloadfile fileid=$record->id text='Download'|gettext}
-        {/if}
-        {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-            <a href="{$record->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media"></a>
+            {if count($record->expFile.downloadable) > 1}
+                <h3 style="border-bottom:1px solid #777777;">{'Downloads'|gettext}</h3>
+            {/if}
+            <ul>
+                {foreach from=$record->expFile.downloadable item=file key=filenum name=files}
+                    <li style="margin-bottom: 10px;">
+                        {$filetype=$file->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
+                        {if $filenum == 0 && !empty($record->title)}
+                            {$title = $record->title}
+                        {elseif !empty($file->title)}
+                            {$title = $file->title}
+                        {else}
+                            {$title = $file->filename}
+                        {/if}
+                        {icon action=downloadfile fileid=$record->id filenum=$filenum title='Download'|gettext text=$title}
+                        <div class="attribution">
+                            {if $record->expFile.downloadable[$filenum]->duration}
+                                <span class="label size">{'Duration'}:</span>
+                                <span class="value">{$record->expFile.downloadable[$filenum]->duration}</span>
+                                &#160;|&#160;
+                            {elseif $record->expFile.downloadable[$filenum]->filesize}
+                                <span class="label size">{'File Size'}:</span>
+                                <span class="value">{$record->expFile.downloadable[$filenum]->filesize|bytes}</span>
+                            {/if}
+                        </div>
+                        {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
+                            <a href="{$record->expFile.downloadable[$filenum]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
+                                {if $record->expFile.preview[0] != ""}
+                                    {img class="preview-img" file_id=$record->expFile.preview[0]->id w=360 h=240 zc=1}
+                                {/if}
+                            </a>
+                        {/if}
+                    </li>
+                {/foreach}
+            </ul>
         {/if}
         {clear}
         {comments record=$record title="Comments"|gettext}
@@ -86,7 +105,10 @@
 </div>
 
 {if $config.show_player}
-    {script unique="filedownload" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+    {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+    {/script}
+
+    {script unique="filedownload"}
     {literal}
     flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
         {

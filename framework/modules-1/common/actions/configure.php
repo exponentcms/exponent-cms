@@ -1,8 +1,8 @@
 <?php
-
+//FIXME no need to upgrade to 2.0, only affects old school modules
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #

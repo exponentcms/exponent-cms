@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,6 +28,8 @@ class usersController extends expController {
         'toggle_extension'=>'Activate Extensions',
         'kill_session'=>'End Sessions',
         'boot_user'=>'Boot Users',
+        'userperms'=>'User Permissions',
+        'groupperms'=>'Group Permissions',
     );
     public $remove_permissions = array(
         'create',
@@ -886,14 +888,16 @@ class usersController extends expController {
 		$sql .= DB_TABLE_PREFIX.'_order_type ot ';                                          
 		$sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $u->id;     
 		
-		$limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 50;
+		$limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
+        $order = !empty($this->params['order']) ? $this->params['order'] : 'purchased';
+        $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'DESC';
 		//eDebug($sql, true);
 		$orders = new expPaginator(array(
 			//'model'=>'order',
             'sql'=>$sql,
             'limit'=>$limit,
-			'order'=>'purchased',
-			'dir'=>'DESC',
+			'order'=>$order,
+			'dir'=>$dir,
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 			'columns'=>array(
                 gt('Order #')=>'invoice_id',
@@ -914,6 +918,197 @@ class usersController extends expController {
             'orders'=>$orders,
         ));
 	}
+
+    public function userperms() {
+        global $user;
+
+        if (!empty($this->params['mod']) && $user->isAdmin()) {
+            $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
+        	$users = array();
+//        	$modclass = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;  //FIXME long controller name
+            $modclass = expModules::getModuleClassName(($loc->mod));
+        	$mod = new $modclass();
+        	$perms = $mod->permissions($loc->int);
+        	$have_users = 0;
+        	foreach (user::getAllUsers(false) as $u) {
+        		$have_users = 1;
+        		foreach ($perms as $perm=>$name) {
+//        			$var = 'perms_'.$perm;
+        			if (expPermissions::checkUser($u,$perm,$loc,true)) {
+        				$u->$perm = 1;
+        			} else if (expPermissions::checkUser($u,$perm,$loc)) {
+        				$u->$perm = 2;
+        			} else {
+        				$u->$perm = 0;
+        			}
+        		}
+        		$users[] = $u;
+        	}
+
+        	$p[gt("User Name")] = 'username';
+        	$p[gt("First Name")] = 'firstname';
+        	$p[gt("Last Name")] = 'lastname';
+        	foreach ($mod->permissions() as $key => $value) {
+        //        $p[gt($value)]=$key;
+                $p[gt($value)]='no-sort';
+        	}
+
+        	if (SEF_URLS == 1) {
+        		$page = new expPaginator(array(
+        		//'model'=>'user',
+                'limit'=>(isset($this->params['limit'])?$this->params['limit']:20),
+        		'records'=>$users,
+        		//'sql'=>$sql,
+                'order'=>(isset($this->params['order']) ? $this->params['order'] : 'username'),
+                'dir'=>(isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+        		'controller'=>$this->params['controller'],
+        		'action'=>$this->params['action'],
+        		'columns'=>$p,
+        		));
+        	} else {
+        		$page = new expPaginator(array(
+        		//'model'=>'user',
+                'limit'=>(isset($this->params['limit'])?$this->params['limit']:20),
+        		'records'=>$users,
+        		//'sql'=>$sql,
+                'order'=>(isset($this->params['order']) ? $this->params['order'] : 'username'),
+                'dir'=>(isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller'=>$this->params['module'],
+                'action'=>$this->params['action'],
+        		'columns'=>$p,
+        		));
+        	}
+
+            assign_to_template(array(
+                'user_form'=>1,
+                'have_users'=>$have_users,
+               	'users'=>$users,
+               	'page'=>$page,
+               	'perms'=>$perms,
+                'loc'=>$loc,
+//                'title'=>($modclass != 'navigationController' || ($modclass == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modclass != 'containermodule' ? gt('module') : '').' ' : gt('Page'),
+                'title'=>($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name().' '.($loc->mod != 'container2' ? gt('module') : '').' ' : gt('Page'),
+            ));
+        } else {
+        	echo SITE_403_HTML;
+        }
+    }
+
+    public function userperms_save() {
+        global $user;
+
+        $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
+        $users = user::getAllUsers();
+        foreach ($users as $u) {
+            expPermissions::revokeAll($u,$loc);
+        }
+        foreach ($this->params['permdata'] as $k => $user_str) {
+            $perms = array_keys($user_str);
+            $u = user::getUserById($k);
+            for ($i = 0; $i < count($perms); $i++) {
+                expPermissions::grant($u,$perms[$i],$loc);
+            }
+
+            if ($k == $user->id) {
+                expPermissions::load($user);
+            }
+        }
+        expPermissions::triggerRefresh();
+        expHistory::back();
+    }
+
+    public function groupperms() {
+        global $user;
+
+        if (!empty($this->params['mod']) && $user->isAdmin()) {
+            $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
+        	$users = array(); // users = groups
+//        	$modclass = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;  //FIXME long controller name
+            $modclass = expModules::getModuleClassName($loc->mod);
+        	$mod = new $modclass();
+        	$perms = $mod->permissions($loc->int);
+
+        	foreach (group::getAllGroups() as $g) {
+        		foreach ($perms as $perm=>$name) {
+//        			$var = 'perms_'.$perm;
+        			if (expPermissions::checkGroup($g,$perm,$loc,true)) {
+        				$g->$perm = 1;
+        			} else if (expPermissions::checkGroup($g,$perm,$loc)) {
+        				$g->$perm = 2;
+        			} else {
+        				$g->$perm = 0;
+        			}
+        		}
+        		$users[] = $g;
+        	}
+
+        	$p[gt("Group")] = 'username';
+        	foreach ($mod->permissions() as $key => $value) {
+        //        $p[gt($value)]=$key;
+                $p[gt($value)]='no-sort';
+        	}
+
+        	if (SEF_URLS == 1) {
+        		$page = new expPaginator(array(
+        		//'model'=>'user',
+                'limit'=>(isset($this->params['limit'])?$this->params['limit']:20),
+        		'records'=>$users,
+        		//'sql'=>$sql,
+                'order'=>(isset($this->params['order']) ? $this->params['order'] : 'name'),
+                'dir'=>(isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller'=>$this->params['controller'],
+                'action'=>$this->params['action'],
+        		'columns'=>$p,
+            ));
+        	} else {
+        		$page = new expPaginator(array(
+        		//'model'=>'user',
+                'limit'=>(isset($this->params['limit'])?$this->params['limit']:20),
+        		'records'=>$users,
+        		//'sql'=>$sql,
+                'order'=>(isset($this->params['order']) ? $this->params['order'] : 'name'),
+                'dir'=>(isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+                'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller'=>$this->params['module'],
+                'action'=>$this->params['action'],
+        		'columns'=>$p,
+        		));
+        	}
+
+            assign_to_template(array(
+                'user_form'=>0,
+            	'is_group'=>1,
+            	'have_users'=>count($users) > 0, // users = groups
+            	'users'=>$users,
+            	'page'=>$page,
+            	'perms'=>$perms,
+                'loc'=>$loc,
+                'title'=>($modclass != 'navigationController' || ($modclass == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modclass != 'containermodule' ? gt('module') : '').' ' : gt('Page'),
+            ));
+        } else {
+        	echo SITE_403_HTML;
+        }
+    }
+
+    public function groupperms_save() {
+        $loc = expCore::makeLocation($this->params['mod'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
+        $groups = group::getAllGroups();
+        foreach ($groups as $g) {
+            expPermissions::revokeAllGroup($g,$loc);
+        }
+        foreach ($this->params['permdata'] as $k => $group_str) {
+            $perms = array_keys($group_str);
+            $g = group::getGroupById($k);
+            for ($i = 0; $i < count($perms); $i++) {
+                expPermissions::grantGroup($g,$perms[$i],$loc);
+            }
+        }
+        expPermissions::triggerRefresh();
+        expHistory::back();
+    }
 
 }
 

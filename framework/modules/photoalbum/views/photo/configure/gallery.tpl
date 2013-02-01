@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,14 +21,18 @@
         <h2>{"Photo Album Settings"|gettext}</h2>
 	</div>
 </div>
-<h4>{'Gallery Page'|gettext}</h4>
+<blockquote>
+    {"This is where you can configure the settings used by this Photo Album module."|gettext}&#160;&#160;
+    {"These settings only apply to this particular module."|gettext}
+</blockquote>
+{group label="Gallery Page"|gettext}
 {control type=dropdown name=order label="Sort By"|gettext items="Order Manually, Random"|gettxtlist values="rank,RAND()" value=$config.order|default:rank}
 {control type=text name="pa_showall_thumbbox" label="Box size for image thumbnails"|gettext value=$config.pa_showall_thumbbox|default:100 size="5"}
 {control type=text name="quality" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
 {control type="checkbox" name="lightbox" label="Use lightbox effect"|gettext value=1 checked=$config.lightbox}
 {control type="dropdown" name="landing" label="Gallery pages displayed as:"|gettext items="Gallery,Slideshow"|gettxtlist values="showall,slideshow" value=$config.landing}
-<hr />
-<h4>{'Detail Page or Lightbox'|gettext}</h4>
+{/group}
+{group label="Detail Page or Lightbox"|gettext}
 {control type=text name="pa_showall_enlarged" label="Box size for enlarged images"|gettext value=$config.pa_showall_enlarged|default:300 size="5"}
-<h4>{'Detail Page'|gettext}</h4>
 {control type="dropdown" name="pa_float_enlarged" label="Float enlarged image"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.pa_float_enlarged}
+{/group}

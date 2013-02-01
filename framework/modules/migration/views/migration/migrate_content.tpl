@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module migration migrate_content">
-    <div class="admin"><h3>{'This was the Final Migration Step'|gettext}</h3></div>
+    <div class="admin"><h3>{'Congratulations! Migration is Complete'|gettext}</h3></div>
     {br}<hr />
     <div class="info-header">
         <div class="related-actions">

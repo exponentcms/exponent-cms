@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,24 +24,22 @@
     <span class="listviewlink">{'List View'|gettext}</span><br />
 	<a href="#" onclick="window.open('popup.php?controller=event&src={$__loc->src}&action=showall&view=showall_Monthly+List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{'Printer-friendly'|gettext}</a>
 	{br}{br}
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'left.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
+	<a href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'navigate-left-icon.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
 	<strong>{$time|format_date:"%B %Y"}</strong>
-	<a class="mngmntlink calendar_mngmntlink" href="{link action=showall view='showall_Monthly List' time=$next_timestamp}"><img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'right.png'}" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
+	<a href="{link action=showall view='showall_Monthly List' time=$next_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'navigate-right-icon.png'}" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
 	{br}{br}
 	{foreach from=$days item=items key=ts}
 		{if_elements array=$items}
 			<div class="sectiontitle">
 			{$ts|format_date}
 			</div>
-			{*{assign var=none value=1}*}
             {$none=1}
 			{foreach from=$items item=item}
-				{*{assign var=none value=0}*}
                 {$none=0}
 				<div class="paragraph">
-                    <a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
+                    <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
-                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                         {/if}
                         title="{$item->body|summarize:"html":"para"}">{$item->title}
                     </a>
@@ -61,6 +59,7 @@
                                         {/if}
                                     {/if}
                                     {icon action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
+                                    {icon action=copy record=$item date_id=$item->date_id title="Copy this Event"|gettext}
                                 {/if}
                                 {if $permissions.delete == 1}
                                     {if $item->is_recurring == 0}

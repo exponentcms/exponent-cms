@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +19,7 @@
 
 <div class="module ecommerce ecom-search yui3-skin-sam yui-skin-sam">
     <div id="search-autocomplete" class="control">
-      {if $moduletitle && !$config.hidemoduletitle}<label class="label" for="ac-input">{$moduletitle}</label>{/if}
+      {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<label class="label" for="ac-input">{$moduletitle}</label>{/if}
       <input id="ac-input" type="text" class="text">
     </div>
 </div>
@@ -59,7 +59,7 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
     });
     
     autocomplete.ac.on('select', function (e) {
-        window.location = EXPONENT.PATH_RELATIVE+"store/showByTitle/title/"+e.result.raw.sef_url;
+        window.location = EXPONENT.PATH_RELATIVE+"store/show/title/"+e.result.raw.sef_url;
         return e.result.raw.title;
     });
     

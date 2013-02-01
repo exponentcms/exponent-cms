@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -163,7 +163,7 @@ class yuidatetimecontrol extends formcontrol {
             $object->showdate = true;
             $object->showtime = true;
         } 
-        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
         $form->register("showtime",gt('Show tTme'), new checkboxcontrol($object->showtime,false));

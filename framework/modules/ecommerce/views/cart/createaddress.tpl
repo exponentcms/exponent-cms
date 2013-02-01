@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -31,9 +31,7 @@
         {/foreach}
 	{/form}
     {clear}
-	{*{br}<a href="javascript:void(0);" onclick="divtoggle('saddy')">{'Add a new address'|gettext}</a>*}
     {toggle id=saddy link='Add a new address'|gettext}
-	{*<div id="saddy" style="display:none">*}
         {form name="newaddy" action=createaddress ajax=true update=addyblock}
             {control type=text name=firstname label="First Name"|gettext}
             {control type=text name=middlename label="Middle Name"|gettext}
@@ -45,6 +43,5 @@
             {control type=text name=zip label="Zip Code"|gettext}
             {control type=buttongroup submit="Save Address"|gettext}
         {/form}
-    {*</div>*}
     {/toggle}
 </div>

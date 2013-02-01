@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,11 +21,8 @@
 	<div id="sidenav" class="yuimenu">
 		<div class="bd">
             <ul class="first-of-type">
-				{*{assign var=startdepth value=0}*}
                 {$startdepth=0}
 				{foreach name="children" key=key from=$sections item=section}
-                    {*{assign var=nextkey value=$key+1}*}
-                    {*{assign var=previouskey value=$key-1}*}
                     {$nextkey=$key+1}
                     {$previouskey=$key-1}
 
@@ -47,10 +44,8 @@
 
                     {if $sections[$nextkey]->depth < $section->depth}
                             {if $smarty.foreach.children.last==true}
-                                {*{assign var=nextdepth value=$startdepth}*}
                                 {$nextdepth=$startdepth}
                             {else}
-                                {*{assign var=nextdepth value=$sections[$nextkey]->depth}*}
                                 {$nextdepth=$sections[$nextkey]->depth}
                             {/if}
                                 {$looper=$section->depth-$nextdepth}
@@ -68,6 +63,7 @@
         </div>
     </div>
 
+    {*FIXME convert to yui3*}
     {script unique="sidemenu" yuimodules="menu"}
     {literal}
         YAHOO.util.Event.onDOMReady(function(){

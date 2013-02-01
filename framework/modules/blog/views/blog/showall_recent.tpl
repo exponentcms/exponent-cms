@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,9 +18,9 @@
 {/css}
 
 <div class="module blog showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
     {rss_link}
-    {if $moduletitle && !$config.hidemoduletitle}{'Recent Posts from'|gettext} '{$moduletitle}'</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent Posts from'|gettext} '{$moduletitle}'</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
@@ -37,7 +37,6 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
@@ -60,18 +59,20 @@
                     {if $item->publish_date > $smarty.now}
                         <strong>{'Will be'|gettext}&#160;
                     {/if}
+                    {$prepend = ''}
                     {if !$config.displayauthor}
                         <span class="label posted">{'Posted by'|gettext}</span>
-                        <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
+                        <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
+                        {$prepend = '&#160;&#160;|&#160;&#160;'}
                     {/if}
                     {if !$config.datetag}
-                        {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
+                        {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>
                     {/if}
-                    {if $item->publish_date > $smarty.now}
+                    {if $record->publish_date > $smarty.now}
                         </strong>&#160;
                     {/if}
                 </span>
-                {comments_count record=$record prepend='&#160;&#160;|&#160;&#160;'}
+                {comments_count record=$record show=1 prepend=$prepend}
                 {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
             </div>
             {permissions}

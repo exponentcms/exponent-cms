@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,6 +32,7 @@ class administrationController extends expController {
 	    "theme"=>"Manage Themes",
 	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle'=>'Toggle Settings',
+        'mass'=>'Mass Mailing',
     );
 
     static function displayname() { return gt("Administration Controls"); }
@@ -101,7 +102,7 @@ class administrationController extends expController {
 
         foreach($tables as $table) {
             $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
-            if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {
+            if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {  //FIXME formbuilder will be deprecated in v212
                 $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
@@ -686,6 +687,115 @@ class administrationController extends expController {
             'redirect'=>expHistory::getLastNotEditable()
         ));
 	}
+
+    public function mass_mail() {
+        // nothing we need to do except display view
+    }
+
+    public function mass_mail_out() {
+        global $user;
+
+        $emaillist = array();
+        if (!empty($this->params['allusers'])) {
+            foreach (user::getAllUsers() as $u) {
+                $emaillist[] = $u->email;
+            }
+        } else {
+            if(!empty($this->params['group_list'])) {
+                foreach (listbuildercontrol::parseData($this->params,'grouplist') as $group_id) {
+                   $grpusers = group::getUsersInGroup($group_id);
+                   foreach ($grpusers as $u) {
+                       $emaillist[] = $u->email;
+                   }
+                }
+            }
+            if(!empty($this->params['user_list'])) {
+                foreach (listbuildercontrol::parseData($this->params,'user_list') as $user_id) {
+                    $u = user::getUserById($user_id);
+                    $emaillist[] = $u->email;
+                }
+            }
+            if(!empty($this->params['address_list'])) {
+                foreach (listbuildercontrol::parseData($this->params,'address_list') as $email) {
+                    $emaillist[] = $email;
+                }
+            }
+        }
+
+        //This is an easy way to remove duplicates
+        $emaillist = array_flip(array_flip($emaillist));
+        $emaillist = array_map('trim', $emaillist);
+
+        if (empty($emaillist)) {
+            $post     = empty($_POST) ? array() : $_POST;
+            expValidator::failAndReturnToForm(gt('No Mailing Recipients Selected!'), $post);
+        }
+        if (empty($this->params['subject']) && empty($this->params['body']) && empty($_FILES['attach']['size'])) {
+            $post     = empty($_POST) ? array() : $_POST;
+            expValidator::failAndReturnToForm(gt('Nothing to Send!'), $post);
+        }
+
+        $emailText = $this->params['body'];
+		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
+		$emailHtml = $this->params['body'];
+
+        $from = $user->email;
+		if (empty($from)) {
+			$from = trim(SMTP_FROMADDRESS);
+		}
+        $from_name = $user->firstname." ".$user->lastname." (".$user->username.")";
+		if (empty($from_name)) {
+			$from_name = trim(ORGANIZATION_NAME);
+		}
+        $subject = $this->params['subject'];
+		if (empty($subject)) {
+            $subject = gt('Email from') . ' ' . trim(ORGANIZATION_NAME);
+		}
+        $headers = array(
+            "MIME-Version" => "1.0",
+            "Content-type" => "text/html; charset=" . LANG_CHARSET
+        );
+
+        if (count($emaillist)) {
+			$mail = new expMail();
+            if (!empty($_FILES['attach']['size'])) {
+                $dir = 'tmp';
+                $filename = expFile::fixName(time().'_'.$_FILES['attach']['name']);
+                $dest = $dir.'/'.$filename;
+                //Check to see if the directory exists.  If not, create the directory structure.
+                if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
+                // Move the temporary uploaded file into the destination directory, and change the name.
+                expFile::moveUploadedFile($_FILES['attach']['tmp_name'],BASE.$dest);
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+//                $relpath = str_replace(PATH_RELATIVE, '', BASE);
+                $ftype = finfo_file($finfo, BASE.$dest);
+                finfo_close($finfo);
+                $mail->attach_file_on_disk(BASE.$dest,$ftype);
+            }
+            if ($this->params['batchsend']) {
+                $mail->quickBatchSend(array(
+                    	'headers'=>$headers,
+                        'html_message'=>$emailHtml,
+                        "text_message"=>$emailText,
+                        'to'=>$emaillist,
+                        'from'=>array(trim($from)=>$from_name),
+                        'subject'=>$subject,
+                ));
+            } else {
+                $mail->quickSend(array(
+                    	'headers'=>$headers,
+                        'html_message'=>$emailHtml,
+                        "text_message"=>$emailText,
+                        'to'=>$emaillist,
+                        'from'=>array(trim($from)=>$from_name),
+                        'subject'=>$subject,
+                ));
+            }
+            if (!empty($dest)) unlink(BASE.$dest);  // delete temp file attachment
+            flash('message',gt('Mass Email was sent'));
+            expHistory::back();
+        }
+    }
 
     public function manage_themes() {
         expHistory::set('manageable', $this->params);

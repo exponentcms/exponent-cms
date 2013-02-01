@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -83,6 +83,9 @@ abstract class basetemplate {
         $this->tpl->loadPlugin('smarty_compiler_switch');
 
 		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
+        if ($this->viewfile == TEMPLATE_FALLBACK_VIEW) {
+            $this->tpl->assign("badview", $view);
+        }
 		$this->viewdir = realpath(dirname($this->viewfile));
 
 		$this->module = $item_dir;
@@ -116,7 +119,9 @@ abstract class basetemplate {
 	function output() {
 		// javascript registration
 		
-		$this->tpl->display($this->view.'.tpl');
+        if (empty($this->file_is_a_config)) {
+            return $this->tpl->display($this->view.'.tpl');
+        }
 	}
 	
 	function register_permissions($perms, $locs) {
@@ -141,7 +146,11 @@ abstract class basetemplate {
 	 * @return bool|mixed|string
 	 */
 	function render() { // Caching support?
-		return $this->tpl->fetch($this->view.'.tpl');
+        if (empty($this->file_is_a_config)) {
+            return $this->tpl->fetch($this->view.'.tpl');
+        } else {
+            return $this->tpl->fetch($this->view.'.config');
+        }
 	}
 
 }

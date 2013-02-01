@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,13 +28,6 @@ if (expSession::is_set('uilevel')) {
 	$level = expSession::get('uilevel');
 }	
 
-//if ($level == UILEVEL_PREVIEW) {
-//    $preview_url = makeLink(array('module'=>'previewmodule','action'=>'normal'));
-//    $preview_class = 'preview_on';
-//} else {
-//    $preview_url = makeLink(array('module'=>'previewmodule','action'=>'preview'));
-//    $preview_class = 'preview_off';
-//}
 /////////////////////////////////////////////////////////////////////////
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////

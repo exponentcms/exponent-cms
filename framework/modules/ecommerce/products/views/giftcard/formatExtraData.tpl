@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,10 +13,11 @@
  *
  *}
 
-<div class="extra-data"> 
-    <blockquote>
-        <strong>{'To:'|gettext} </strong>{$extra_data.to} <strong>{'From'|gettext}: </strong>{$extra_data.from}
-        {br}{$extra_data.msg}
-    </blockquote>
-</div>
-
+{if !empty($extra_data)}
+    <div class="extra-data">
+        <blockquote>
+            <strong>{'To:'|gettext} </strong>{$extra_data.to} <strong>{'From'|gettext}: </strong>{$extra_data.from}
+            {br}{$extra_data.msg}
+        </blockquote>
+    </div>
+{/if}

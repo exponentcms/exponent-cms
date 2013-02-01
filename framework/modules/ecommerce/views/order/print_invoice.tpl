@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -116,7 +116,7 @@
                     <ul>
                         {foreach from=$method->orderitem item=oi}
                             <li>
-                                <a href="{link action=showByTitle controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} ${$oi->products_price|number_format:2} {'each'|gettext}
+                                <a href="{link action=show controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} ${$oi->products_price|number_format:2} {'each'|gettext}
                                 {$oi->getExtraData()}
                             </li>
                         {/foreach}
@@ -126,7 +126,7 @@
         {else}
             {foreach from=$order->orderitem item=oi}
                 <li>
-                    <a href="{link action=showByTitle controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} ${$oi->products_price|number_format:2} {'each'|gettext}
+                    <a href="{link action=show controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} ${$oi->products_price|number_format:2} {'each'|gettext}
                     {$oi->getExtraData()}
                 </li>
             {/foreach}

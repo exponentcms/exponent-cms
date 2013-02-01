@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div class="module store upcoming-events">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create == true || $permissions.edit == true}
@@ -28,13 +28,12 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     <ul>
     {foreach name=uce from=$page->records item=item}
         {if $smarty.foreach.uce.iteration <= 3}
         <li>
-            <a href="{link section=10 controller=store action=showByTitle title=$item->sef_url}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
+            <a href="{link section=10 controller=eventregistration action=show title=$item->sef_url}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
             {*<p>{$item->summary|truncate:75:"..."}</p>*}
             <p>{$item->title}</p>
         </li>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -33,7 +33,6 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     <div id="products">
 		{pagelinks paginate=$page top=1}
@@ -50,7 +49,7 @@
                     {* FIXME We currently don't do categories for events & gift cards*}
                     {if $listing->product_type != 'eventregistration' && $listing->product_type != 'giftcard'}
                         <tr class="{cycle values="odd,even"}">
-                            <td><a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a></td>
+                            <td><a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a></td>
                             <td>{$listing->model|default:"N/A"}</td>
                             <td>{$listing->title}</td>
                             <td>${$listing->base_price|number_format:2}</td>

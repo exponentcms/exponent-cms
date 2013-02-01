@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -178,6 +178,7 @@ function smarty_function_control($params, &$smarty) {
                 } else {
                     $control->items = $items; //array_combine($items, $items);
                 }
+                if (!empty($params['item_descriptions'])) $control->item_descriptions = $params['item_descriptions'];
                 break;
             case "radio":
                 $control            = new radiocontrol();
@@ -187,6 +188,7 @@ function smarty_function_control($params, &$smarty) {
             case "text":
                 $control       = new genericcontrol($params['type']);
                 $control->size = !empty($params['size']) ? $params['size'] : "40";
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
                 break;
             case "textarea":
                 $control = new texteditorcontrol();
@@ -215,6 +217,7 @@ function smarty_function_control($params, &$smarty) {
                 $default = isset($params['values']) ? $params['values'] : array();
                 $source  = isset($params['source']) ? $params['source'] : null;
                 $control = new listbuildercontrol($default, $source);
+			    $control->process  = isset($params['process']) ? $params['process'] : null;
                 break;
             case "list":
                 $control = new listcontrol();

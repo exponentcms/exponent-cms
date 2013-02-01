@@ -47,10 +47,15 @@ class product extends expRecord {
     
     public $active_display = array(
             0=>'Active',
-            1=>'Inactive but findable. <br>It will not be shown in product listings and the "Add to Cart" button is disabled but is still viewable directly. This can be advantageous with the page cacheing in the search engines.',
-            2=>'Inactive and disabled. <br>Trying to view this product will produce an error indicating this product is currently not available.',
+            1=>'Inactive but findable.',
+            2=>'Inactive and disabled.',
     );
-    
+    public $active_display_desc = array(
+            0=>'',
+            1=>'It will not be shown in product listings and the "Add to Cart" button is disabled but is still viewable directly. This can be advantageous with the page cacheing in the search engines.',
+            2=>'Trying to view this product will produce an error indicating this product is currently not available.',
+    );
+
     public $quantity_discount_items_modifiers = array('gte'=>'Equal to or more than', 'gt'=>'More than');
     public $quantity_discount_amount_modifiers = array('$'=>'$', '%'=>'%');
     
@@ -707,7 +712,7 @@ class product extends expRecord {
         $search->original_id = $this->id;
         $search->title = $this->title . " SKU: " . $this->model;
         //$search->view_link = $router->buildUrlByPageId($section->id);
-        $link = $router->makeLink(array('controller'=>'store', 'action'=>'showByTitle', 'title'=>$this->sef_url));
+        $link = $router->makeLink(array('controller'=>'store', 'action'=>'show', 'title'=>$this->sef_url));
         $search->view_link = $link; 
         $search->body = $this->body;
         $search->keywords = $this->keywords;

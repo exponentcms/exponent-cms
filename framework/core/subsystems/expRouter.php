@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,7 +27,17 @@ class expRouter {
     private $maps = array();
     public  $url_parts = '';
     public  $current_url = '';
+    /**
+     * Type of url
+     * either 'base' (default page), 'page', 'action', or 'malformed'
+     * @var string
+     */
     public  $url_type = '';
+    /**
+     * Style of url
+     * either 'sef' or 'query'
+     * @var string
+     */
     public  $url_style = '';
     public  $params = array();
     public  $sefPath = null;
@@ -275,7 +285,13 @@ class expRouter {
         } elseif (isset($_SERVER['REQUEST_URI'])) {
             // if we hit here, we don't really need to do much.  All the pertinent info will come thru in the POST/GET vars
             // so we don't really need to worry about what the URL looks like.
-            $this->url_style = 'query';          
+            if ($_SERVER['REQUEST_URI'] == PATH_RELATIVE) {
+                $this->url_type = 'base';
+            } else {
+                $this->url_style = 'query';
+            }
+        } else {
+            $this->url_type = 'base';
         }
                               
         // Check if this was a printer friendly link request
@@ -330,7 +346,7 @@ class expRouter {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
                         $this->url_parts[0] = 'store'; //controller
-                        $this->url_parts[1] = 'showByTitle'; //controller
+                        $this->url_parts[1] = 'show'; //controller
                         $this->url_parts[2] = 'title'; //controller
                         $this->url_parts[3] = $sef_name; //controller
                         //eDebug($this->url_parts,true);
@@ -670,9 +686,10 @@ class expRouter {
 
     public function getSection() {
         global $db;
+
         if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
-                $section = $this->url_type=="sef" ? $this->getPageByName($_REQUEST['section']) : intval($_REQUEST['section']) ;
+                $section = $this->url_style=="sef" ? $this->getPageByName($_REQUEST['section'])->id : intval($_REQUEST['section']) ;
             } else {
                 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             }
@@ -689,8 +706,8 @@ class expRouter {
     public function getSectionObj($section) {
         global $db;
         if ($section == "*") {
-            $action = $this->params['controller']."Controller";
-            $sectionObj = call_user_func($action."::getSection",$this->params);
+            $controller = expModules::getModuleClassName($this->params['controller']);
+            $sectionObj = call_user_func($controller."::getSection",$this->params);
         } else {
             $sectionObj = $db->selectObject('section','id='. intval($section));
         }
@@ -707,9 +724,11 @@ class expRouter {
         }
     
         if (isset($_REQUEST['section'])) {
-                expSession::set('last_section', intval($_REQUEST['section']));
+            expSession::set('last_section', intval($_REQUEST['section']));
+        } elseif ($section == SITE_DEFAULT_SECTION) {
+            expSession::set('last_section', intval(SITE_DEFAULT_SECTION));
         } else {
-                //expSession::unset('last_section');
+            //expSession::unset('last_section');
         }
         return $sectionObj;
     }
@@ -721,7 +740,7 @@ class expRouter {
         }
 
         include_once($mapfile);
-        $this->maps = $maps;  // $maps is set in $mapfile
+        $this->maps = $maps;  // $maps is set by included $mapfile
     }
     
     public function getTrackingId()

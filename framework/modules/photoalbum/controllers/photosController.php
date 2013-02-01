@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,10 +34,10 @@ class photosController extends expController {
         'files',
         'pagination',  // we need to customize it in this module?
         'rss'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Photo Album"); }
-    static function description() { return gt("This module allows you to display and manage images."); }
+    static function description() { return gt("Displays and manages images."); }
     static function isSearchable() { return true; }
     
     public function showall() {
@@ -164,6 +164,44 @@ class photosController extends expController {
         // call expController update to save the image
         parent::update();
     }
+
+    public function multi_add() {
+    }
+
+    public function multi_update() {
+
+        if (!empty($this->params['expFile'])) {
+            if (!empty($this->params['title'])) {
+                $prefix = $this->params['title'] . ' - ';
+            } else {
+                $prefix = '';
+            }
+            foreach ($this->params['expFile'] as $fileid) {
+                $file = new expFile($fileid);
+                if (!empty($file->id)) {
+                    $photo = new photo();
+//                 $loc = new stdClass();
+//                 $loc->mod = "photo";
+//                 $loc->src = $this->params['src'];
+//                 $loc->int = '';
+                 $loc = expCore::makeLocation("photo",$this->params['src']);
+                 $photo->location_data = serialize($loc);
+ //                $photo->body = $gi['description'];
+ //                $photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;
+                 $filename = pathinfo($file->filename);
+                 $photo->title = $prefix . $filename['filename'];
+                 $photo->save();
+                 $photo->attachitem($file,'');
+ //                $photo->created_at = time();
+                 $photo->expFile = array();
+                 $photo->expFile[] = $file;
+                 $photo->update();  // save gallery name as category
+                }
+            }
+        }
+        expHistory::back();
+    }
+
 }
 
 ?>

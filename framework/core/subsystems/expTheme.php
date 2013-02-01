@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -71,7 +71,6 @@ class expTheme {
 		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
 		// add our theme folder into autoload and place it first
 		array_unshift($auto_dirs2,BASE.'themes/'.DISPLAY_THEME.'/modules');
-        //FIXME we should add a check for new jQuery type controls near the beginning of chain if used
         if (defined('JQUERY_THEME')) array_unshift($auto_dirs,BASE.'framework/core/subsystems/forms/controls/jquery');
         array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 	}
@@ -145,7 +144,7 @@ class expTheme {
 		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
         //html5 support for IE 6-8
-		$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/htmlshiv/html5.js"></script><![endif]-->'."\n";
+		$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-printshiv.js"></script><![endif]-->'."\n";
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MINIFY REPLACE -->';
@@ -189,9 +188,9 @@ class expTheme {
             $controller = new $classname();
             $metainfo = $controller->metainfo();
         } else {
-            $metainfo['title'] = ($sectionObj->page_title == "") ? SITE_TITLE : $sectionObj->page_title;
-	        $metainfo['keywords'] = ($sectionObj->keywords == "") ? SITE_KEYWORDS : $sectionObj->keywords;
-	        $metainfo['description'] = ($sectionObj->description == "") ? SITE_DESCRIPTION : $sectionObj->description;
+            $metainfo['title'] = empty($sectionObj->page_title) ? SITE_TITLE : $sectionObj->page_title;
+	        $metainfo['keywords'] = empty($sectionObj->keywords) ? SITE_KEYWORDS : $sectionObj->keywords;
+	        $metainfo['description'] = empty($sectionObj->description) ? SITE_DESCRIPTION : $sectionObj->description;
         }
 
         return $metainfo;
@@ -430,7 +429,7 @@ class expTheme {
     }
 
     public static function inAction() {
-        return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])));
+        return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])) && (!isset($action) || ($action == $_REQUEST['action'])));
     }
 
     public static function reRoutActionTo($theme = "") {
@@ -456,7 +455,7 @@ class expTheme {
 			}
 //			if (expSession::is_set("themeopt_override")) {
 //				$config = expSession::get("themeopt_override");
-//				echo "<a class='mngmntlink sitetemplate_mngmntlink' href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
+//				echo "<a href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
 //			}
 
 			//FIXME: module/controller glue code..remove ASAP
@@ -512,10 +511,11 @@ class expTheme {
     public static function showAction($module, $action, $src="", $params=array()) {  //FIXME doesn't seem to be used except by smarty functions, old school?
    		global $db, $user;
 
-   		$loc = new stdClass();;
-   		$loc->mod = $module;
-   		$loc->src = (isset($src) ? $src : "");
-   		$loc->int = (isset($int) ? $int : "");
+//   		$loc = new stdClass();;
+//   		$loc->mod = $module;
+//   		$loc->src = (isset($src) ? $src : "");
+//   		$loc->int = (isset($int) ? $int : "");
+        $loc = expCore::makeLocation($module,(isset($src) ? $src : ""),(isset($int) ? $int : ""));
 
    		$actfile = "/" . $module . "/actions/" . $action . ".php";
    		if (isset($params)) {

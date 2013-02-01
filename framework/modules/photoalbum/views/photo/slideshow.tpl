@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,11 +20,12 @@
 {/css}
 
 <div class="module photoalbum slideshow">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create == 1}
             {icon class=add action=edit rank=1 text="Add a Slide"|gettext}
+            {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
         {/if}
         {if $permissions.manage == 1}
             {if !$config.disabletags}
@@ -42,11 +43,9 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container" style="width:{$config.width|default:350}px;">
         <ul class="slideshow-frame" style="width:{$config.width|default:350}px;height:{$config.height|default:300}px;">
-			{*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}*}
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
                 <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
@@ -71,8 +70,15 @@
                         </div>
                     {/permissions}
                     {if !$config.hidetext}
+                        {if !empty($slide->title)}
+                            {$title = $slide->title}
+                        {elseif !empty($slide->expFile[0]->title)}
+                            {$title = $slide->expFile[0]->title}
+                        {else}
+                            {$title = ''}
+                        {/if}
                         <div class="bodycopy">
-                            <h2>{$slide->title}</h2>
+                            <h2>{$title}</h2>
                             {$slide->body}
                         </div>
                     {/if}

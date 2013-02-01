@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
  
 <div class="module importexport manage">
     <h1>{'Upload Your CSV File of External Addresses (MilitaryClothing.com, NameTapes.com, or Amazon)'|gettext}</h1>
-    {'This will clear any existing external addresses for this source and replace with the addresses you upload.'|gettext}
+    <blockquote>{'This will clear any existing external addresses for this source and replace with the addresses you upload.'|gettext}</blockquote>
     {form action=process_external_addresses}
         <input type="file" name="address_csv" size="50">
         {control type="dropdown" name="type_of_address" label="Select the source of the CSV file:"|gettext size=4 multiple=false items=$sources default=-1}

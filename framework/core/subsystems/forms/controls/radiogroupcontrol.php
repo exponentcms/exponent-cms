@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -86,6 +86,7 @@ class radiogroupcontrol extends formcontrol {
 			
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
 
+            if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$value];
 			
             if ($this->cols!=0 && $i==$this->cols) {
     			$html .= '</tr><tr>';
@@ -113,7 +114,7 @@ class radiogroupcontrol extends formcontrol {
 			$object->items = array();
 		} 
         if (empty($object->description)) $object->description = "";
-		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));

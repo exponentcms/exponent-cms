@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -89,16 +89,11 @@
                     </div>
                     <div id="images">
                         <div id="imagefunctionality">
-                            {"The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
-                            {control type="text" name="image_alt_tag" label="Image Alt Tag"|gettext value=$record->image_alt_tag}
+                            {control type="text" name="image_alt_tag" label="Image Alt Tag"|gettext value=$record->image_alt_tag description="The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
                             {control type=radiogroup columns=2 name="main_image_functionality" label="Main Image Functionality"|gettext items="Single Image,Image with Swatches"|gettxtlist values="si,iws"  default=$record->main_image_functionality|default:"si"}
                             <div id="si-div" class="imngfuncbody">
-                                <h3>{"Single Image"|gettext}</h3>
-                                <h4>{"Main Image"|gettext}</h4>
-                                {control type=files name=mainimages label="Product Images"|gettext subtype="mainimage" value=$record->expFile}
-                                <h4>{"Thumbnail for Main Image"|gettext}</h4>
-                                <p>{"If no image is provided to use as a thumbnail, one will be generated from the main image."|gettext}</p>
-                                {control type=files name=mainthumb label="Product Images"|gettext subtype="mainthumbnail" value=$record->expFile}
+                                {control type=files name=mainimages label="Main Product Images"|gettext subtype="mainimage" value=$record->expFile}
+                                {control type=files name=mainthumb label="Product Thumbnail Images"|gettext subtype="mainthumbnail" value=$record->expFile description="If no image is provided to use as a thumbnail, one will be generated from the main image."|gettext}
                             </div>
                             <div id="iws-div" class="imngfuncbody" style="display:none;">
                                 <table border="0" cellspacing="0" cellpadding="1" width="100%">
@@ -117,17 +112,10 @@
                                 </table>
                             </div>
                             <hr />
-                            {br}
-                            <h4>{"Additional Images"|gettext}</h4>
-                            <p>{"Have additional images to show for your product?"|gettext}</p>
-
                             <div class="additional-images">
-                                {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile}
+                                {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile description="Additional images to show for your product"|gettext}
                             </div>
-                            {br}
-                            <h4>{"Additional File Attachments"|gettext}</h4>
-                            <p>{"Attach Product Brochures, Docs, Manuals, etc."|gettext}</p>
-                            {control type=files name=brochures label="Additional Files"|gettext subtype="brochures" value=$record->expFile}
+                            {control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
                         </div>
 
                         {script unique="mainimagefunctionality"}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,13 @@
         </p>
     {/if}
     {if $config.quick_download}
-        <h3{if $config.usecategories} class="{$cat->color}"{/if}>{icon action=downloadfile fileid=$file->id title='Download'|gettext text=$file->title}</h3>
+        <h3{if $config.usecategories} class="{$cat->color}"{/if}>
+            {if $file->ext_file}
+                <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank">{$file->title}</a>
+            {else}
+                {icon action=downloadfile fileid=$file->id filenum=0 text=$file->title title="{'Download'|gettext}"}
+            {/if}
+        </h3>
     {else}
         {if $file->title}<h3{if $config.usecategories} class="{$cat->color}"{/if}><a {if !$config.usebody}class="readmore"{/if} href="{link action=show title=$file->sef_url}" title="{$file->body|summarize:"html":"para"}">{$file->title}</a></h3>{/if}
     {/if}
@@ -91,15 +97,18 @@
         {if $file->ext_file}
             <a class=downloadfile href="{$file->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
         {else}
-            {icon action=downloadfile fileid=$file->id text='Download'|gettext}
+            {icon action=downloadfile fileid=$file->id filenum=0 text='Download'|gettext}
         {/if}
     {/if}
-    {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
+    {clear}
+    {if $config.show_player && !$file->ext_file && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
         <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
             {if $file->expFile.preview[0] != ""}
                 {img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}
             {/if}
         </a>
+        {*<audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile['downloadable'][0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">*}
+        {*</audio>*}
     {/if}
     {clear}
     {permissions}

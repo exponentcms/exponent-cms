@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -124,6 +124,7 @@ class expPaginator {
         $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
         $this->groups = !empty($params['groups']) ? $params['groups'] : array();
         $this->grouplimit = !empty($params['grouplimit']) ? $params['grouplimit'] : null;
+        $this->dontsortwithincat = !empty($params['dontsortwithincat']) ? $params['dontsortwithincat'] : null;
         $this->dontsort = !empty($params['dontsort']) ? $params['dontsort'] : null;
 
 		// if a view was passed we'll use it.
@@ -167,13 +168,18 @@ class expPaginator {
 		// and order direction from the request params...this is how the params are passed via the column
 		// headers.
 		$this->order_direction = $this->dir;	
-		if (expTheme::inAction()) {
+		if (expTheme::inAction() && empty($params)) {
 		    //FIXME: module/controller glue code
-		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
-		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
-			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
-			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
-			}
+//		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
+//		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
+//			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
+//			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
+//			}
+            $mod = !empty($router->params['controller']) ? $router->params['controller'] : $router->params['module'];
+            if ($this->controller == $mod && $this->action == $router->params['action']) {
+      			    $this->order = isset($router->params['order']) ? $router->params['order'] : $this->order;
+      			    $this->order_direction = isset($router->params['dir']) ? $router->params['dir'] : $this->dir;
+      			}
 		}
         // allow passing of a single order/dir as stored in config
         if (strstr($this->order," ")) {
@@ -181,19 +187,26 @@ class expPaginator {
             $this->order = $orderby[0];
             $this->order_direction = $orderby[1];
         }
+        if ($this->dontsort) {
+            $sort = null;
+        } else {
+            $sort = $this->order.' '.$this->order_direction;
+        }
 
 		// figure out how many records we're dealing with & grab the records
 		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort the records that were passed in to us
-		    usort($this->records,array('expPaginator', strtolower($this->order_direction)));
+            if (!empty($sort)) {
+                usort($this->records,array('expPaginator', strtolower($this->order_direction)));
+            }
 //		    $this->total_records = count($this->records);
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
 //			$this->total_records = $class->find('count', $this->where);
-            $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
+            $this->records = $class->find('all', $this->where, $sort);
 		} elseif (!empty($this->where)) { //from Merge....where clause
 //			$this->total_records = $class->find('count', $this->where);
-            $this->records = $class->find('all', $this->where, $this->order.' '.$this->order_direction);
+            $this->records = $class->find('all', $this->where, $sort);
 		} else { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
 			//$this->total_records = count($records);
@@ -203,8 +216,8 @@ class expPaginator {
                         
 //			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk
 
-            if (!empty($this->order)) $this->sql .= ' ORDER BY '.$this->order.' '.$this->order_direction;
-			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
+            if (!empty($sort)) $this->sql .= ' ORDER BY '.$sort;
+//			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
 			
 			$this->records = array();
 			if (isset($this->model) || isset($params['model_field'])) {
@@ -219,8 +232,8 @@ class expPaginator {
 		}	
 
         // next we'll sort them based on categories if needed
-        if (!empty($this->categorize) && $this->categorize) {
-            expCatController::addCats($this->records,$this->order.' '.$this->order_direction,$this->uncat,$this->groups,$this->dontsort);
+        if (!empty($this->categorize) && $this->categorize && empty($this->dontsort)) {
+            expCatController::addCats($this->records,$sort,$this->uncat,$this->groups,$this->dontsortwithincat);
         }
 
         // let's see how many total records there are
@@ -233,35 +246,57 @@ class expPaginator {
         //FIXME we may want some more intelligent selection here based on cats/groups, e.g., don't break groups across pages, number of picture rows, etc...
         if (empty($this->grouplimit)) if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
         // finally, we'll create another multi-dimensional array of categories populated with assoc items
-        if (!empty($this->categorize) && $this->categorize) {
-            expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
-        } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
-            $order = $this->order;
-            if (strstr($this->order,",")) {
-               $orderby = explode(",",$this->order);
-               $order = $orderby[0];
-            }
-            foreach ($this->records as $record) {
-                if (is_string($record->$order) && !is_numeric($record->$order)) {
-                    $title = ucfirst($record->$order);
-                    $title = empty($title[0])?'':$title[0];
+        if (empty($this->dontsort)) {
+            if (!empty($this->categorize) && $this->categorize) {
+                expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
+            } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
+                $order = $this->order;
+                if (in_array($order,array('created_at','edited_at','publish'))) {
+                    if ($this->total_records && (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2))) {
+                        $datetype = 'Y';  // more than 2 years of records, so break down by year
+                    } else {
+                        $datetype = 'M Y';  // less than 2 years of records, so break down by month/year
+                    }
+                    foreach ($this->records as $record) {
+                        if (is_numeric($record->$order)) {
+                            $title = date($datetype,$record->$order);
+                            $title = empty($title)?gt('Undated'):$title;
+                        } else {
+                            $title = gt('Undated');
+                        }
+                        if (empty($this->cats[$title])) {
+                            $this->cats[$title] = new stdClass();
+                            $this->cats[$title]->count = 1;
+                            $this->cats[$title]->name = $title;
+                        } else {
+                            $this->cats[$title]->count += 1;
+                        }
+                        $this->cats[$title]->records[] = $record;
+                    }
                 } else {
-                    $title = '';
+                    foreach ($this->records as $record) {
+                        if (!empty($record->$order) && is_string($record->$order) && !is_numeric($record->$order)) {
+                            $title = ucfirst($record->$order);
+                            $title = empty($title[0])?'':$title[0];
+                        } else {
+                            $title = '';
+                        }
+                        if (empty($this->cats[$title])) {
+                            $this->cats[$title] = new stdClass();
+                            $this->cats[$title]->count = 1;
+                            $this->cats[$title]->name = $title;
+                        } else {
+                            $this->cats[$title]->count += 1;
+                        }
+                        $this->cats[$title]->records[] = $record;
+                    }
                 }
-                if (empty($this->cats[$title])) {
-                    $this->cats[$title] = new stdClass();
-                    $this->cats[$title]->count = 1;
-                    $this->cats[$title]->name = $title;
-                } else {
-                    $this->cats[$title]->count += 1;
-                }
-                $this->cats[$title]->records[] = $record;
             }
-        }
-        if (!empty($this->grouplimit)) {
-            if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
-        } else {
-            if ($this->limit) $this->cats = array_slice($this->cats, $this->start, $this->limit);
+            if (!empty($this->grouplimit)) {
+                if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
+            } else {
+                if ($this->limit) $this->cats = array_slice($this->cats, $this->start, $this->limit);
+            }
         }
 
         if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
@@ -302,7 +337,7 @@ class expPaginator {
 		$this->morelink = $router->makeLink($page_params, false, false, true);
 
 		if (!empty($this->view)) $page_params['view'] = $this->view;
-		
+
 		//build a couple more links we can use in the views.
 		$this->pagelink = $router->makeLink($page_params, false, false, true);
 		
@@ -329,18 +364,21 @@ class expPaginator {
 		// setup the previous link
 		if ($this->page > 1) {
 			$page_params['page'] = $this->page - 1;
+            $this->previous_pagenum = $this->page - 1;
 			$this->previous_page = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the next link
 		if ($this->page < $this->total_pages) {
 			$page_params['page'] = $this->page + 1;
+            $this->next_pagenum = $this->page + 1;
 			$this->next_page = $router->makeLink($page_params, false, false, true);
 		}
 
 		// setup the previous 10 link
 		if ($this->page > $this->pages_to_show) {
 			$page_params['page'] = $this->first_pagelink - 1;
+            $this->previous_shiftnum = $this->first_pagelink - 1;
         	$this->previous_shift = $router->makeLink($page_params, false, false, true);
 			$page_params['page'] = 1;
 			$this->firstpage = $router->makeLink($page_params, false, false, true);
@@ -349,6 +387,7 @@ class expPaginator {
 		// setup the next 10 link
 		if ($this->page < ($this->total_pages - $this->pages_to_show)) {
             $page_params['page'] = $this->last_pagelink + 1;
+            $this->next_shiftnum = $this->last_pagelink + 1;
             $this->next_shift = $router->makeLink($page_params, false, false, true);
 			$page_params['page'] = $this->total_pages;
 			$this->lastpage = $router->makeLink($page_params, false, false, true);

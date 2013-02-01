@@ -24,13 +24,13 @@
     border-left : none;
 }
 
-.events.default .nav,
-.events.default .nav a {
-    font            : bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
-    color           : #fff;
-    text-align      : center;
-    text-decoration : none;
-}
+/*.events.default .nav,*/
+/*.events.default .nav a {*/
+/*font            : bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;*/
+/*color           : #fff;*/
+/*text-align      : center;*/
+/*text-decoration : none;*/
+/*}*/
 
 .events.default div.caption {
     margin     : 0;
@@ -70,13 +70,15 @@
 }
 
 .events.default td.currentweek:before {
-    content    : "\00AB";
+    content : "\00AB";
 }
+
 .events.default td.currentweek {
-    background     : #bfbfbf;
+    background : #bfbfbf;
 }
+
 .events.default td.currentweek:after {
-    content    : "\00BB";
+    content : "\00BB";
 }
 
 .events.default td .number {
@@ -91,12 +93,12 @@
 }
 
 .events.default .today {
-/*.events.default td.today a,*/
-/*.events.default td.today a:link,*/
-/*.events.default td.today a:visited,*/
-/*.events.default td.today a:hover,*/
-/*.events.default td.today a:focus,*/
-/*.events.default td.today a:active {*/
+    /*.events.default td.today a,*/
+    /*.events.default td.today a:link,*/
+    /*.events.default td.today a:visited,*/
+    /*.events.default td.today a:hover,*/
+    /*.events.default td.today a:focus,*/
+    /*.events.default td.today a:active {*/
     /*color       : #F6F4DA;*/
     font-weight : bold;
     background  : #DF9496;
@@ -105,12 +107,12 @@
 .events.default td .number.today {
     /*border       : 1px solid #A2ADBC;*/
     /*border-width : 0 0 1px 1px;*/
-    background   : #DF9496;
-    padding      : 3px;
-    float        : right;
-    display      : block;
-    width        : 15px;
-    text-align   : right;
+    background : #DF9496;
+    padding    : 3px;
+    float      : right;
+    display    : block;
+    width      : 15px;
+    text-align : right;
 }
 
 .events.default .calevent {
@@ -124,6 +126,10 @@
     -moz-border-radius    : 5px;
     -webkit-border-radius : 5px;
     border-radius         : 5px;
+}
+
+.events.default .calevent .icalpopevent {
+    cursor: pointer;
 }
 
 .events.default td.today a.edit {
@@ -173,10 +179,14 @@
 }
 
 .mini-cal caption, .viewweek caption, .viewday caption, p.caption {
-    line-height : 2.5em;
-    text-align  : center;
-    font-weight : bold;
-    border-top  : 1px solid;
+    background    : #A2ADBC;
+    color         : #fff;
+    font          : bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    line-height   : 2.5em;
+    text-align    : center;
+    font-weight   : bold;
+    border-top    : 1px solid black;
+    margin-bottom : 0;
 }
 
 .viewweek td {
@@ -204,12 +214,26 @@
     margin-bottom : 2px;
 }
 
+dl.viewweek {
+    text-align : left;
+}
+
 .viewweek dt {
     line-height : 2em;
 }
 
 .divider, .viewday li, .viewweek dt {
     border-top : 1px solid;
+}
+
+.events .cancelled {
+    color: red;
+    text-decoration: line-through;
+}
+
+.events .cancelled-label {
+    color: red;
+    font-weight: bold;
 }
 
 /* BASIC CALENDAR LINK STYLES */
@@ -267,4 +291,24 @@ a.cats {
     padding-left      : 20px;
     background-image  : url(../images/tree.png);
     background-repeat : no-repeat;
+}
+
+#popup {
+    text-align : center;
+    display    : block;
+    z-index    : 999;
+}
+
+#lb-bg {
+    position   : absolute;
+    top        : 0;
+    bottom     : 0;
+    left       : 0;
+    right      : 0;
+    background : black;
+    opacity    : .25;
+    /* IE8 */
+    -ms-filter : "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+    /* IE7 */
+    filter     : alpha(opacity = 25);
 }

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -112,7 +112,7 @@ class user extends expRecord {
 		$obj = new stdClass();
 		$obj->id = $this->id;
 		$obj->last_login = time();
-		$db->updateObject($obj, 'user' ,null, 'uid');
+		$db->updateObject($obj, 'user' ,'id='.$obj->id, 'uid');
 		//$this->update(array('last_login'=>time()));
 	}
 

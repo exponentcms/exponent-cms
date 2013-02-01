@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,41 +15,50 @@
 
 {uniqueid assign="id"}
 
+{if $model == 'file'}
+    {$catnames = "Folders"|gettext}
+    {$catname = "Folder"|gettext}
+{else}
+    {$catnames = "Categories"|gettext}
+    {$catname = "Category"|gettext}
+{/if}
 <div class="module expcat manage">
     <div class="info-header">
         <div class="related-actions">
             {if !empty($page)}
-                {help text="Get Help"|gettext|cat:" "|cat:("Managing Categories"|gettext) module="manage-categories"}
+                {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-categories"}
+            {elseif $model == 'file'}
+                {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-file-folders"}
             {else}
-                {help text="Get Help"|gettext|cat:" "|cat:("Managing Categories"|gettext) module="manage-site-categories"}
+                {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-site-categories"}
             {/if}
         </div>
-        <h1>{"Manage Categories"|gettext}</h1>
+        <h1>{"Manage"|gettext|cat:" `$catnames`"}</h1>
     </div>
 	{permissions}
     	{if $permissions.create == 1}
             {if !empty($page)}
-                {icon class="add" controller=$model_name action=edit model=$page->model rank=1 text="Create a new Category"|gettext}
+                {icon class="add" controller=$model_name action=edit model=$page->model rank=1 text="Create a new"|gettext|cat:" `$catname`"}
             {else}
-                {icon class="add" controller=$model_name action=edit rank=1 text="Create a new Category"|gettext}
+                {icon class="add" controller=$model_name action=edit rank=1 text="Create a new"|gettext|cat:" `$catname`"}
             {/if}
     	{/if}
     {/permissions}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
-        <ul>
+        <ul class="yui-nav">
             {if !empty($page)}
                 <li><a href="#tab0">{$page->model|capitalize} {'Items'|gettext}</a></li>
             {/if}
             {foreach name=tabs from=$cats->modules key=moduleid item=module}
-                <li><a href="#tab{$smarty.foreach.items.iteration}">{$moduleid|capitalize} {'Categories'|gettext}</a></li>
+                <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$moduleid|capitalize} {$catnames}</a></li>
             {foreachelse}
-                <li><a href="#tab0">{'No Categories Defined'|gettext}</a></li>
+                <li><a href="#tab0">{if $model == 'file'}{'No Folders Defined'|gettext}{else}{'No Categories Defined'|gettext}{/if}</a></li>
             {/foreach}
         </ul>
-        <div>
+        <div class="yui-content">
             {if !empty($page)}
-                <div id="#tab0">
-                    <h3>{'Change'|gettext} {$page->model|capitalize} {'Item Categories'|gettext}</h3>
+                <div id="tab0">
+                    <h3>{'Change'|gettext} {if $model == 'file'}{'File Folders'|gettext}{else}{$page->model|capitalize} {'Item Categories'|gettext}{/if}</h3>
                     {form action=change_cats}
                         {control type=hidden name=mod value=$page->model}
                         {$page->links}
@@ -63,7 +72,7 @@
                                         {"Item"|gettext}
                                     </th>
                                     <th>
-                                        {"Category"|gettext}
+                                        {$catname}
                                     </th>
                                 </tr>
                             </thead>
@@ -84,9 +93,9 @@
                             </tbody>
                         </table>
                         {$page->links}
-                        <p>{'Select the item(s) to change, then select the new category'|gettext}</p>
-                        {control type="dropdown" name=newcat label="Module Categories"|gettext items=$catlist}
-                        {control type=buttongroup submit="Change Category on Selected Items"|gettext cancel="Cancel"|gettext returntype="viewable"}
+                        <p>{'Select the item(s) to change, then select the new'|gettext|cat:" `$catname`"}</p>
+                        {control type="dropdown" name=newcat label="Module"|gettext|cat:" `$catnames`" items=$catlist}
+                        {control type=buttongroup submit="Change Selected Items"|gettext|cat:" `$catname`" cancel="Cancel"|gettext returntype="viewable"}
                     {/form}
                 </div>
             {/if}
@@ -94,14 +103,14 @@
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {if $permissions.manage == 1}
                         {*{ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}*}
-                        {ddrerank id=$moduleid items=$module model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}
+                        {ddrerank id=$moduleid items=$module model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:$catnames}
                     {/if}
-                    {$page->links}
+                    {*{$cats->links}*}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                         <thead>
                             <tr>
                                 <th>
-                                {"Category Name"|gettext}
+                                {$catname} {"Name"|gettext}
                                 </th>
                                 <th>
                                 {"Use Count"|gettext}
@@ -124,10 +133,10 @@
                                     <td>
                                         {permissions}
                                             {if $permissions.edit == 1}
-                                                {icon controller=$controller action=edit record=$listing title="Edit this category"|gettext}
+                                                {icon controller=$controller action=edit record=$listing title="Edit this"|gettext|cat:" `$catname`"}
                                             {/if}
                                             {if $permissions.delete == 1}
-                                                {icon controller=$controller action=delete record=$listing title="Delete this category"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
+                                                {icon controller=$controller action=delete record=$listing title="Delete this"|gettext|cat:" `$catname`" onclick="return confirm('"|cat:("Are you sure you want to delete this?"|gettext)|cat:"');"}
                                             {/if}
                                         {/permissions}
                                     </td>
@@ -135,11 +144,11 @@
                             {/foreach}
                         </tbody>
                     </table>
-                    {$page->links}
+                    {*{$cats->links}*}
                 </div>
             {foreachelse}
                 <div id="tab0">
-                    {'No Categories Defined'|gettext}
+                    {if $model == 'file'}{'No Folders Defined'|gettext}{else}{'No Categories Defined'|gettext}{/if}
                 </div>
             {/foreach}
         </div>

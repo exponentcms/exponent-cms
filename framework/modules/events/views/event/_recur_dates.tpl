@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -38,9 +38,9 @@
 			}
 		{/literal}
         {/script}
-			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>
+			<a href="#" onclick="recur_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>
 			&#160;/&#160;
-			<a class="mngmntlink calendar_mngmntlink" href="#" onclick="recur_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
+			<a href="#" onclick="recur_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
 		</td>
 	</tr>
 </div>

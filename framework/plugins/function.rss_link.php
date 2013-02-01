@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,9 +62,19 @@ function smarty_function_rss_link($params,&$smarty) {
 
 //       	$link =  expCore::makeLink(array('controller'=>$params['module'], 'action'=>'rss', 'title'=>$sef));
         if (!empty($sef)) {
-            $link = expCore::makeLink(array('controller'=>'rss', 'action'=>'feed', 'title'=>$sef));
+            if (!empty($params['type'])) {
+                $link_params = array('controller'=>'rss', 'action'=>'feed', 'title'=>$sef, 'type'=>$params['type']);
+            } else {
+                $link_params = array('controller'=>'rss', 'action'=>'feed', 'title'=>$sef);
+            }
+            $link = expCore::makeLink($link_params);
         } else {
-            $link = expCore::makeLink(array('controller'=>$params['module'], 'action'=>'rss', 'src'=>$params['src']));
+            if (!empty($params['type'])) {
+                $link_params = array('controller'=>$params['module'], 'action'=>'rss', 'src'=>$params['src'], 'type'=>$params['type']);
+            } else {
+                $link_params = array('controller'=>$params['module'], 'action'=>'rss', 'src'=>$params['src']);
+            }
+            $link = expCore::makeLink($link_params);
         }
         // spit out the link
         echo $prepend.'<a class="'.$class.'" href="'.$link.'" title="'.$title.'">'.$text.'</a>';

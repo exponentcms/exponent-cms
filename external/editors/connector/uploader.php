@@ -32,6 +32,7 @@ require_once("../../../exponent.php");
                 // and then assign $user->id to $file->poster so we have an audit trail for the upload
                 if (is_object($file)) {
                     $file->poster = $user->id;
+                    $file->posted = $file->last_accessed = time();
                     $file->save();
                     $url = $file->path_relative;
                 } else {

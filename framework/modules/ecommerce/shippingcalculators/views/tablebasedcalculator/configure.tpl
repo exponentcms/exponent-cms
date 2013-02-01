@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -35,80 +35,77 @@
     {icon class="add" action="editspeed/id/`$calculator->id`" text="Create new Shipping Speed"|gettext}
     {br}{br}
 	<div class="{if !$calculator->shippingspeeds}hide{/if}">
-    <hr>
-    {br}
-	
-    <div>
-    <a href="#" id="newrange">{"Add Range Set"|gettext}</a>
-    </div>
-    {br}
-    <table id="shippingtable" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-        <thead>
-            <tr>
-                <th colspan="4" style="width:50%">
-                    {"Price Range"|gettext}
-                </th>
-				{foreach from=$calculator->shippingspeeds item=calc}
-                <th>
-                   {$calc->speed}
-                </th>
-				{/foreach}
-            </tr>
-        </thead>
-        <tbody>
-        <!-- loop me -->
-		{section name=i loop=$calculator->configdata.from}
-		
-		{if !($smarty.section.i.last)}
-        {*<tr class="row row-{math equation='x + y' x=$smarty.section.i.index y=1} {cycle values='odd,even'}">*}
-        <tr class="row row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
-        	<td class="from">
-        		<a href="#" class="delete">{'Remove'|gettext}</a>
-        	</td>
-        	<td class="from">
-        		<label for="from-{$smarty.section.i.index}">$</label><input type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">
-        	</td>
-        	<td>
-        		{'to'|gettext}
-        	</td>
-        	<td class="to">
-        		<label for="to-{$smarty.section.i.index}">$</label><input type="text" size="10" id="to-{$smarty.section.i.index}" value="{$calculator->configdata.to[i]}" name="to[]">
-        	</td>
-			{foreach from=$calculator->shippingspeeds item=calc}
-        	<td>
-        		<label for="rate[{$shippingspeed}][]">$</label><input type="text" size="10" id="rate[{$shippingspeed}][]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$smarty.section.i.index}" name="{$calc->speed|remove_space}[]">
-        	</td>
-			{/foreach}
-        </tr>
-		{else}
-			{*{assign var='lastcharge' value=$smarty.section.i.index}*}
-            {$lastcharge=$smarty.section.i.index}
-		{/if}
-		{/section}
-        <!-- stop looping me loop me -->
+        <hr>
+        {br}
 
-        <tr class="even last">
-            <td class="from">
-		
-            </td>
-            <td class="from">
-                <label for="from-1">$</label><input type="text" name="from[]" value="{$calculator->configdata.from[$lastcharge]}" id="from-1" size="10">
-            </td>
-            <td>
-                {'and up'|gettext}
-            </td>
-            <td class="to">
+        <div>
+            <a href="#" id="newrange">{"Add Range Set"|gettext}</a>
+        </div>
+        {br}
+        <table id="shippingtable" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+            <thead>
+                <tr>
+                    <th colspan="4" style="width:50%">
+                        {"Price Range"|gettext}
+                    </th>
+                    {foreach from=$calculator->shippingspeeds item=calc}
+                    <th>
+                       {$calc->speed}
+                    </th>
+                    {/foreach}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- loop me -->
+                {section name=i loop=$calculator->configdata.from}
+                    {if !($smarty.section.i.last)}
+                    <tr class="row row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
+                        <td class="from">
+                            <a href="#" class="delete">{'Remove'|gettext}</a>
+                        </td>
+                        <td class="from">
+                            <label for="from-{$smarty.section.i.index}">$</label><input type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">
+                        </td>
+                        <td>
+                            {'to'|gettext}
+                        </td>
+                        <td class="to">
+                            <label for="to-{$smarty.section.i.index}">$</label><input type="text" size="10" id="to-{$smarty.section.i.index}" value="{$calculator->configdata.to[i]}" name="to[]">
+                        </td>
+                        {foreach from=$calculator->shippingspeeds item=calc}
+                        <td>
+                            <label for="rate[{$shippingspeed}][]">$</label><input type="text" size="10" id="rate[{$shippingspeed}][]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$smarty.section.i.index}" name="{$calc->speed|remove_space}[]">
+                        </td>
+                        {/foreach}
+                    </tr>
+                    {else}
+                        {$lastcharge=$smarty.section.i.index}
+                    {/if}
+                {/section}
+                <!-- stop looping me loop me -->
 
-            </td>
-			{foreach from=$calculator->shippingspeeds item=calc}
-			
-            <td>
-				<label for="standard-1">$</label><input type="text" name="{$calc->speed|remove_space}[]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$lastcharge}" id="shipping_rate[1][]" size="10">
-            </td>
-			{/foreach}
-        </tr>
-        </tbody>
-    </table>
+                <tr class="even last">
+                    <td class="from">
+
+                    </td>
+                    <td class="from">
+                        <label for="from-1">$</label><input type="text" name="from[]" value="{$calculator->configdata.from[$lastcharge]}" id="from-1" size="10">
+                    </td>
+                    <td>
+                        {'and up'|gettext}
+                    </td>
+                    <td class="to">
+
+                    </td>
+                    {foreach from=$calculator->shippingspeeds item=calc}
+
+                    <td>
+                        <label for="standard-1">$</label><input type="text" name="{$calc->speed|remove_space}[]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$lastcharge}" id="shipping_rate[1][]" size="10">
+                    </td>
+                    {/foreach}
+                </tr>
+            </tbody>
+        </table>
 	</div>
     {br}
 </div>

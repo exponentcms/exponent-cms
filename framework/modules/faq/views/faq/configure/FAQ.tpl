@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,6 +21,10 @@
         <h2>{'FAQ Settings'|gettext}</h2>
 	</div>
 </div>
+<blockquote>
+    {"This is where you can configure the settings used by this FAQ module."|gettext}&#160;&#160;
+    {"These settings only apply to this particular module."|gettext}
+</blockquote>
 {control type="checkbox" name="allow_user_questions" label="Allow users to ask questions"|gettext value=1 checked=$config.allow_user_questions}
-{control type="checkbox" name="use_toc" label="Show Table of Content when displaying FAQs"|gettext value=1 checked=$config.use_toc}
+{control type="checkbox" name="use_toc" label="Show Table of Contents when displaying FAQs"|gettext value=1 checked=$config.use_toc}
 

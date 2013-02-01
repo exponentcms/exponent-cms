@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,25 +21,19 @@
 
 <div class="containermodule tabbed"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
 {viewfile module=$singlemodule view=$singleview var=viewfile} 
-<div id="{$tabs}" class="yui-navset exp-skin-tabview hide">
+<div id="{$tabs}" class="yui-navset exp-skin-tabview">
 	<ul class="yui-nav">
 		{foreach from=$containers item=container key=tabnum name=contain}
-			{*{assign var=numcontainers value=$tabnum+1}*}
             {$numcontainers=$tabnum+1}
 		{/foreach}
 		{section name=contain loop=$numcontainers}
-			{*{assign var=container value=$containers[$smarty.section.contain.index]}*}
-			{*{assign var=containereditmode value=0}*}
             {$container=$containers[$smarty.section.contain.index]}
             {$containereditmode=0}
 			{if $container == null}
-				{*{assign var=tabtitle value="(empty)"|gettext}*}
                 {$tabtitle="(empty)"|gettext}
 			{elseif $container->title == ""}
-				{*{assign var=tabtitle value="(blank)"|gettext}*}
-                {$tabtitle="(blank)"|gettext}
+                {$tabtitle=' '}
 			{else}
-				{*{assign var=tabtitle value=$container->title}*}
                 {$tabtitle=$container->title}
 			{/if}
 			{if $smarty.section.contain.first}
@@ -67,19 +61,12 @@
 	</ul>            
 	<div class="yui-content">
 		{section name=contain loop=$numcontainers+1}	
-			{*{assign var=container value=$containers[$smarty.section.contain.index]}*}
-			{*{assign var=rank value=$smarty.section.contain.index}*}
-			{*{assign var=menurank value=$rank+1}*}
-			{*{assign var=index value=$smarty.section.contain.index}*}
             {$container=$containers[$smarty.section.contain.index]}
             {$rank=$smarty.section.contain.index}
             {$menurank=$rank+1}
             {$index=$smarty.section.contain.index}
 			{if $container != null}
 				<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
-					{*{assign var=container value=$containers.$index}*}
-					{*{assign var=i value=$menurank}*}
-					{*{assign var=rerank value=0}*}
 					{$container=$containers.$index}
 					{$i=$menurank}
 					{$rerank=0}
@@ -97,20 +84,26 @@
 		{/section}		
 	</div>
 </div>
+    <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
 
-{script unique="`$tabs`" yui3mods="1"}
+{*{script unique="`$tabs`" yui3mods="1"}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
+
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#{/literal}{$tabs}{literal}'});*}
+		{*Y.one('#{/literal}{$tabs}{literal}').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+	{*});*}
+{*{/literal}*}
+{*{/script}*}
+
+{script unique="`$tabs`" jquery="jqueryui"}
 {literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
-
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#{/literal}{$tabs}{literal}'});
-		Y.one('#{/literal}{$tabs}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-	});
+    $('#{/literal}{$tabs}{literal}').tabs().next().remove();
 {/literal}
 {/script}

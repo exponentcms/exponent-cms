@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div class="module store showall-featured-products">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create == true || $permissions.edit == true}
@@ -29,7 +29,6 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
 
     {foreach from=$page->records item=listing name=listings}
@@ -43,7 +42,7 @@
                     {'No Image'|gettext}
                 {/if}
                 <div class="bodycopy">
-                    <a href="{link controller=store action=showByTitle title=$listing->title}">{$listing->title}</a>
+                    <a href="{link controller=store action=show title=$listing->title}">{$listing->title}</a>
                 </div>
             </div>
         {/if}

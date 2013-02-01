@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,7 +42,7 @@ class addressController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     static function displayname() { return gt("Addresses"); }
-    static function description() { return gt("Use this module to display and manage addresses of users on your site."); }
+    static function description() { return gt("Display and manage addresses of users on your site."); }
     static function canImportData() { return true;}
 
     function showall() {
@@ -63,6 +63,7 @@ class addressController extends expController {
     
 	public function myaddressbook() {
 		global $user;
+
 		// check if the user is logged in.
 		expQueue::flashIfNotLoggedIn('message',gt('You must be logged in to manage your address book.'));
 		expHistory::set('viewable', $this->params);

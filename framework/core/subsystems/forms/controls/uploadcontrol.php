@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -65,7 +65,7 @@ class uploadcontrol extends formcontrol {
 			$object->default = "";
 		}
         if (empty($object->description)) $object->description = "";
-		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
@@ -89,7 +89,7 @@ class uploadcontrol extends formcontrol {
     }
 
 	static function moveFile($original_name,$formvalues) {
-		$dir = 'files/uploads';
+		$dir = UPLOAD_DIRECTORY_RELATIVE . 'uploads';
 		$filename = expFile::fixName(time().'_'.$formvalues[$original_name]['name']);
 		$dest = $dir.'/'.$filename;
         //Check to see if the directory exists.  If not, create the directory structure.

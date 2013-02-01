@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -184,6 +184,24 @@ if ($user->isAdmin()) {
                         ))
                     ),
                     array(
+                        'text' => gt('Manage File Folders'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expCat',
+                            'action' => 'manage',
+                            'model' => 'file'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('Manage Site Forms'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'forms',
+                            'action' => 'manage',
+                            'model' => 'forms'
+                        ))
+                    ),
+                    array(
                         'text' => gt('View Top Searches'),
                         'classname' => 'search',
                         'url' => makeLink(array(
@@ -241,12 +259,30 @@ if ($user->isAdmin()) {
                             'action' => 'manage'
                         ))
                     ),
+                    array(
+                        'text' => gt('Manage File Folders'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'expCat',
+                            'action' => 'manage',
+                            'model' => 'file'
+                        ))
+                    ),
 					array(
                         'text' => gt('Manage Definable Fields'),
                         'classname' => 'manage',
                         'url' => makeLink(array(
                             'controller' => 'expDefinableField',
                             'action' => 'manage'
+                        ))
+                    ),
+                    array(
+                        'text' => gt('Manage Site Forms'),
+                        'classname' => 'manage',
+                        'url' => makeLink(array(
+                            'controller' => 'forms',
+                            'action' => 'manage',
+                            'model' => 'forms'
                         ))
                     ),
                     array(
@@ -323,6 +359,15 @@ if ($user->isAdmin() || !empty($groups)) {
 }
 
 if ($user->isSuperAdmin()) {
+    $tmp= count($expAdminMenu['submenu']['itemdata']);
+    $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata'])-1]['submenu']['itemdata'][] = array(
+        'text' => gt('Mass Mailer'),
+        'url' => makeLink(array(
+            'controller' => 'administration',
+            'action' => 'mass_mail'
+        )),
+        'classname' => 'email',
+    );
 	$expAdminMenu['submenu']['itemdata'][] = array(
         'text' => gt('Super-Admin Tools'),
         'classname' => 'development',

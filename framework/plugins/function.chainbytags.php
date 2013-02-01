@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -43,7 +43,7 @@ function smarty_function_chainbytags($params,&$smarty) {
 	}
 
 	$view = isset($params['view']) ? $params['view'] : 'showall';
-	$action = isset($params['action']) ? $params['action'] : 'showByTags';
+	$action = isset($params['action']) ? $params['action'] : 'showall_by_tags';
 	$model = isset($params['model']) ? $params['model'] : '';
 	echo renderAction(array('controller'=>$params['controller'], 'action'=>$action, 'view'=>$view, 'tags'=>$tags, 'model'=>$model));
 }

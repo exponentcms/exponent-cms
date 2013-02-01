@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,7 +18,7 @@
 /** @define "BASE" "../.." */
 
 /**
- * Fake Form Class
+ * Fake Form Class for displaying a wysiwyg form designer
  *
  * An HTML-form building class, that supports
  * registerable and unregisterable controls.
@@ -28,8 +28,8 @@
  */
 class fakeform extends form {
 
-	function toHTML($form_id=null, $module=null) {
-        if (empty($module)) $module="formbuilder";
+	function toHTML($forms_id=null, $module=null) {
+        if (empty($module)) $module="forms";
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
@@ -67,7 +67,7 @@ class fakeform extends form {
             $html .= "<div class=\"item-actions\">";
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
-				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'form_id'=>$form_id)).'" title="'.gt('Edit this Control').'" >';
+				$html .= '<a href="'.$router->makeLink(array('controller'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
 				$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
 				$html .= '</a>';
 			} else {
@@ -77,10 +77,10 @@ class fakeform extends form {
 			$html .= '&#160;';
 			if (!$this->controls[$name]->_readonly && $this->controls[$name]->_controltype != 'htmlcontrol' ) {
 				//$html .= '<a href="?module='.$module.'&action=delete_control&id='.$this->controls[$name]->_id.'" onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
-				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
+				$html .= '<a href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
 			}
 			else {
-				$html .= '<a href="'.$router->makeLink(array('module'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
+				$html .= '<a href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
 			}
 			$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
 			$html .= '</a>';
@@ -91,7 +91,7 @@ class fakeform extends form {
             }
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
                 $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
-                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
+                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</div>";
                 if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
@@ -99,8 +99,12 @@ class fakeform extends form {
 
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
             } elseif (!empty($this->controlLbl[$name])) {
-                $html .= "<div class=\"label\">";
-                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
+                if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
+                    $html .= "<div class=\"label\" style=\"display:inline;\">";
+                } else {
+                    $html .= "<div class=\"label\">";
+                }
+                if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</div>";
             }

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,17 +12,18 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{uniqueid prepend="cal" assign="name"}
+
 {css unique="cal" link="`$asset_path`css/calendar.css"}
 
 {/css}
 
 <div class="module events mini-cal">
-    <input id=src type=hidden value={$src} />
-    <div id="mini-cal">
+    <div id="mini-{$name}">
         {include 'minical.tpl'}
     </div>
-    {icon class="monthviewlink" action=showall time=$now text='Calendar View'|gettext}
+    {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext}
 	{br}
 	{permissions}
 		{if $permissions.create == 1}
@@ -33,34 +34,48 @@
 	{/permissions}
 </div>
 
-{script unique="minical" yui3mods="1"}
+{script unique=$name yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var minical = Y.one('#mini-cal');
+    var minical = Y.one('#mini-{/literal}{$name}{literal}');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Minical'},
     			arguments : { 'X-Transaction': 'Load Minical'}
     		};
 
-    src = Y.one('#src').get('value');
+    src = '{/literal}{$__loc->src}{literal}';
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=minical&ajax_action=1&src="+src;
 
 	var handleSuccess = function(ioId, o){
-		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
+//		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical nav");
 
         if(o.responseText){
             minical.setContent(o.responseText);
+            minical.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+            minical.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
         } else {
-            Y.one('#mini-cal.loadingdiv').remove();
+            Y.one('#mini-{/literal}{$name}{literal}.loadingdiv').remove();
         }
 	};
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "example");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "minical nav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:
@@ -68,15 +83,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 	Y.on('io:failure', handleFailure);
 
     minical.delegate('click', function(e){
-        cfg.data = "time="+Y.one('#prevtime').get('value');
+        e.halt();
+        cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-    }, '#prev');
-    minical.delegate('click', function(e){
-        cfg.data = "time="+Y.one('#nexttime').get('value');
-        var request = Y.io(sUrl, cfg);
-        minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-    }, '#next');
+    }, 'a.nav');
 });
 {/literal}
 {/script}

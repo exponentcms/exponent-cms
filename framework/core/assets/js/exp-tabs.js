@@ -1,58 +1,67 @@
 YUI.add('exptabs', function(Y) {
 
     Y.expTabs = function(o) {
+        // console.log("expTabs");
+        // set up history
+        var history = new Y.HistoryHash();
+        // Tab Navigation ul
+        var tabs = Y.all(o.srcNode+' ul.yui-nav li a');
+        //Tab Content containers
+        var tabContent = Y.all(o.srcNode+' div.yui-content > div');
 
-        var history = new Y.HistoryHash(),
-            tabview = new Y.TabView({
-                srcNode: o.srcNode
-            });
-        tabview.render();
+        // Set up the tab navigations with the right classes to grab the existing styles
+        tabs.each(function(k){
+            k.addClass('yui3-tab-label yui3-tab-content').get('parentNode').addClass('yui3-tab yui3-widget');
+        });
 
-        var lazyLoad = function () {
-            var islazycke = tabview.get('selection').get('content').indexOf('<!-- cke lazy -->');
+        // Hide all tab content containers
+        tabContent.addClass('hide');
+
+        // tab click callback
+        // Reveals the tab content, sets the current tab in history
+        // Fires of a check fo CKLazyload (which may not be needed anymore)
+        var openTab = function(e) {
+            e.halt();
+            e.container.all('li').removeClass('yui3-tab-selected');
+            e.currentTarget.get('parentNode').addClass('yui3-tab-selected');
+            tabContent.addClass('hide');
+            Y.one(e.currentTarget.getAttribute('href')).removeClass('hide');
+            lazyLoad(Y.one(e.currentTarget.getAttribute('href')));
+            history.addValue('tab', tabs.indexOf(e.currentTarget) || null);
+            Y.Global.fire("exptab:switch",e);
+        };
+
+        // Lazyload for CKE
+        var lazyLoad = function (tab) {
+            var islazycke = tab.get('innerHTML').indexOf('<!-- cke lazy -->');
             if(islazycke != 0 && islazycke >= 1) {
                 Y.Global.fire("lazyload:cke");
             }
         };
 
-        // Set the selected tab to the bookmarked history state, or to
-        // the first tab if there's no bookmarked state.
-        tabview.selectChild(history.get('tab') || 0);
+        // Listener for tab clicks
+        Y.one(o.srcNode+' ul.yui-nav').delegate('click', openTab, 'a');
 
-        // Store a new history state when the user selects a tab.
-        tabview.after({
-            'selectionChange': function(e) {
-                lazyLoad();
-                history.addValue('tab', e.newVal.get('index') || null);
-            },
-            'render': function (){  //FIXME fwiw, this will never occur since we've already rendered the tab above!
-                lazyLoad();
-            }
-        });
+        // Clicks the first tab if we don't have a history for this tabset
+        tabs.item(history.get('tab') || 0).simulate('click');
 
-        // Listen for history changes from back/forward navigation or
-        // URL changes, and update the tab selection when necessary.
+        // Watches the URL for hash changes
         Y.on('history:change', function(e) {
-            // Ignore changes we make ourselves, since we don't need
-            // to update the selection state for those. We're only
-            // interested in outside changes, such as the ones generated
-            // when the user clicks the browser's back or forward buttons.
             if (e.src === Y.HistoryHash.SRC_HASH) {
-
                 if (e.changed.tab) {
-                    // The new state contains a different tab selection, so
-                    // change the selected tab.
-                    tabview.selectChild(e.changed.tab.newVal);
+                    tabs.item(e.changed.tab.newVal).simulate('click');
                 } else if (e.removed.tab) {
-                    // The tab selection was removed in the new state, so
-                    // select the first tab by default.
-                    tabview.selectChild(0);
+                    tabs.item(0).simulate('click');
                 }
             }
         });
-        return (tabview);  // let's return the tabview object so we can manipulate it in the calling function
+
+        return {
+            history:history,
+            tabs:tabs
+        };
     };
 
 }, '0.0.1', {
-    requires: ['history', 'tabview','event-custom']
+    requires: ['history','node','tabview','event-custom']
 });

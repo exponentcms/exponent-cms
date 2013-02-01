@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,11 +22,11 @@
 	</div>
 </div>
 <blockquote>
-    {'This is where you can configure the settings to be used by this banner module.'|gettext}&#160;&#160;
-    {'These settings will only apply to this particular banner module.'|gettext}
+    {'This is where you can configure the settings used by this Banner module.'|gettext}&#160;&#160;
+    {'These settings only apply to this particular banner module.'|gettext}
 </blockquote>
 <h2>{'Number of Banners to Display'|gettext}</h2>
 {control type="text" name="limit" label="Number of banners"|gettext size=3 filter=integer value=$config.limit}
-<h2>Banner Size</h2>
+<h2>{'Banner Size'|gettext}</h2>
 {control type="text" name="width" label="Width"|gettext size=4 filter=integer value=$config.width}
 {control type="text" name="height" label="Height"|gettext size=4 filter=integer value=$config.height}

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,9 +13,9 @@
  *
  *}
 
-{if $include_css == true}
-    {css unique="show-printable"}
+{*{if $include_css == true}*}
+    {css unique="show-printable" link="`$asset_path`css/print-invoice.css"}
         {$css}
     {/css}
-{/if}
+{*{/if}*}
 {include file="invoice.tpl"}

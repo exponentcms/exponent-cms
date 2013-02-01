@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -133,7 +133,7 @@ class expModules {
 	}
 
     /**
-     * Returns list of install/used controllers
+     * Returns list of installed/used controllers
      *
      */
 	public static function listInstalledControllers($type=null, $loc=null) {
@@ -166,7 +166,7 @@ class expModules {
 	}
 
     /**
-     * Returns controller object
+     * Returns new controller object
      *
      * @param string $controllername
      *
@@ -245,6 +245,41 @@ class expModules {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
         } else {
             return (substr($modulename, -6) == 'module') ? substr($modulename, 0, -6) : $modulename;
+        }
+   	}
+
+    /**
+     * Returns the full controller or module class name with the 'Controller' or 'module' suffix
+     * as needed to instantiate the class
+     *
+     * @param $modulename
+     *
+     * @return null|string
+     */
+    public static function getModuleClassName($modulename) {
+   	    if (empty($modulename)) return null;
+        if (self::controllerExists($modulename)) {
+            return (substr($modulename, -10) == 'Controller') ? $modulename : $modulename.'Controller';
+        } else {
+            return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
+        }
+   	}
+
+    /**
+     * Returns the controller sans the 'Controller' or module name with 'module' suffix
+     * this is how we store them in the db as 2.0/old school
+     * and in most cases is the name of the model/data
+     *
+     * @param $modulename
+     *
+     * @return null|string
+     */
+    public static function getModuleName2($modulename) {
+   	    if (empty($modulename)) return null;
+        if (self::controllerExists($modulename)) {
+            return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
+        } else {
+            return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
         }
    	}
 

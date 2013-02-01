@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,9 +18,9 @@
 {'Invoice'|gettext}: {$order->invoice_id}{br}
 {'Update Date/Time'|gettext}: {$date} {br}
 {if $comment != ''}
-    <hr>
-    {'Notes'|gettext}: {br}
-    {$comment}
+    {group label="Notes"|gettext}
+        {$comment}
+    {/group}
 {/if}
 {br}
 {if $include_shipping == true}

@@ -8,7 +8,15 @@
     float: left;
     width: 150px;  /* non-flexible part truncates label */
     text-align: right;
+    white-space: normal;
+    line-height: normal;
 }
+
+.control .spacer {
+  display: block;
+    background: transparent;
+}
+
 
 .control.radio .label {
     width: auto;  /* make radio buttons look normal */

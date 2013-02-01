@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,12 @@
  *
  *}
 
+{uniqueid assign=flowplayer}
+
 {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+{/script}
+
+{script unique=$flowplayer}
 {literal}
 flowplayer("playlist-player", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
     {
@@ -41,7 +46,7 @@ flowplayer("playlist-player", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONEN
 {/script}
 
 <div class="module flowplayer showall-playlist">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
    		<div class="module-actions">
    			{if $permissions.manage == 1}

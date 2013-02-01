@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,11 +26,12 @@
 {/if}
 {$rel}
 <div class="module photoalbum showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
+                {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
 			{/if}
             {if $permissions.manage == 1}
                 {if !$config.disabletags}
@@ -48,25 +49,35 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
-    {*{assign var="cat" value="bad"}*}
     {$cat="bad"}
     {pagelinks paginate=$page top=1}
     <ul class="image-list">
-    {*{assign var=quality value=$config.quality|default:$smarty.const.THUMB_QUALITY}	*}
     {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
     {foreach from=$page->records item=record name=items}
+        {if !empty($record->title)}
+            {$title = $record->title}
+        {elseif !empty($record->expFile[0]->title)}
+            {$title = $record->expFile[0]->title}
+        {else}
+            {$title = ''}
+        {/if}
+        {if !empty($record->alt)}
+            {$alt = $record->alt}
+        {elseif !empty($record->expFile[0]->alt)}
+            {$alt = $record->expFile[0]->alt}
+        {else}
+            {$alt = $title}
+        {/if}
         {if $cat !== $record->expCat[0]->id && $config.usecategories}
             <a href="{link action=$config.landing|default:showall src=$page->src gallery=$record->expCat[0]->id}" title='View this gallery'|gettext><h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2></a>
         {/if}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
             {if $config.lightbox}
-                {*{if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}*}
                 {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
-                <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
+                <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$alt|default:$title}">
             {else}
-                <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
+                <a href="{link action=show title=$record->sef_url}" title="{$alt|default:$title}">
             {/if}
                 {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
             </a>
@@ -91,7 +102,6 @@
                 </div>
             {/permissions}
         </li>
-        {*{assign var="cat" value=$record->expCat[0]->id}*}
         {$cat=$record->expCat[0]->id}
     {/foreach}
     </ul>

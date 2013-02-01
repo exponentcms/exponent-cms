@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,14 +26,11 @@
     {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.ffloat}
     {control type="text" label="Width of File Display Box"|gettext name="fwidth" value=$config.fwidth size=5}
     {control type="text" label="Width of Margin"|gettext name="fmargin" value=$config.fmargin size=5}
-    <hr />
 </div>
 <div id="fileViewConfig">
     {if $config.filedisplay != ""}
-        {*{assign var=presaved value=1}*}
         {$presaved=1}
-	    {*{assign var=themefileview value="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}*}
-        {$themefileview="`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
+        {$themefileview="`$smarty.const.THEME_ABSOLUTE`modules/common/views/file/configure/`$config.filedisplay`.tpl"}
         {if file_exists($themefileview)}
             {include file=$themefileview}
         {else}
@@ -62,6 +59,20 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
         
         if(o.responseText){
             Y.one('#fileViewConfig').setContent(o.responseText);
+                Y.one('#fileViewConfig').all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+                Y.one('#fileViewConfig').all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
             Y.one('#ff-options').setStyle("display","block");
         } else {
             Y.one('#fileViewConfig .loadingdiv').remove();
@@ -79,6 +90,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
 	Y.on('io:failure', handleFailure);
 
     Y.one('#filedisplay').on('change',function(e){
+        e.halt();
         cfg.data = "view="+e.target.get('value');
         var request = Y.io(sUrl, cfg);
         Y.one('#fileViewConfig').setContent(Y.Node.create('<div class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));

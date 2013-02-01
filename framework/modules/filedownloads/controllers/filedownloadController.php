@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -31,10 +31,10 @@ class filedownloadController extends expController {
 //        'ealerts',
         'files',
         'rss', // because we do this as a custom tab within the module
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("File Downloads"); }
-    static function description() { return gt("This module lets you put files on your website for users to download."); }
+    static function description() { return gt("Place files on your website for users to download or use as a podcast."); }
     static function isSearchable() { return true; }
 	
     function showall() {
@@ -50,7 +50,7 @@ class filedownloadController extends expController {
             'order'=>$order,
             'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
             'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
-            'dontsort'=>!empty($this->config['dontsort']) ? $this->config['dontsort'] : false,
+            'dontsortwithincat'=>!empty($this->config['dontsort']) ? $this->config['dontsort'] : false,
             'groups'=>!isset($this->params['group']) ? array() : array($this->params['group']),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
@@ -88,8 +88,9 @@ class filedownloadController extends expController {
         }
         
         $fd = new filedownload($this->params['fileid']); 
-        
-        if (empty($fd->expFile['downloadable'][0]->id)) {
+        if (empty($this->params['filenum'])) $this->params['filenum'] = 0;
+
+        if (empty($fd->expFile['downloadable'][$this->params['filenum']]->id)) {
             flash('error', gt('There was an error while trying to download your file.  The file you were looking for could not be found.'));
             expHistory::back();
         }        
@@ -98,7 +99,7 @@ class filedownloadController extends expController {
         $fd->save();
         
         // this will set the id to the id of the actual file..makes the download go right.
-        $this->params['id'] = $fd->expFile['downloadable'][0]->id;
+        $this->params['id'] = $fd->expFile['downloadable'][$this->params['filenum']]->id;
         parent::downloadfile();        
     }
     
@@ -125,6 +126,7 @@ class filedownloadController extends expController {
             $rss_item->link = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+            $rss_item->authorEmail = user::getEmailById($item->poster);
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
 

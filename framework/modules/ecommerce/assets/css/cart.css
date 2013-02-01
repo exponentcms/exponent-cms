@@ -295,7 +295,7 @@ table#cart table td {
 }
 
 .store.quick-links a.password {
-	background-image: url(../../../../core/assets/images/lock.png);
+	background-image: url(../../../../core/assets/images/change_password.png);
 	background-repeat: no-repeat;
 }
 
@@ -310,7 +310,7 @@ table#cart table td {
 }
 
 .store.quick-links .login {
-    background:transparent url(../../../../core/assets/images/lock.png) no-repeat scroll 0 50%;
+    background:transparent url(../../../../core/assets/images/change_password.png) no-repeat scroll 0 50%;
 }
 
 .store.quick-links a.logout {

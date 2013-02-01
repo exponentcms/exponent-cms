@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,34 +14,38 @@
  *}
 
 {permissions}
-	{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
-      || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
-        {$mainNeedsClosing=1}
-      
-        {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
+    {if $top->external == 'N;'}
+        {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
+          || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
+            {$mainNeedsClosing=1}
 
-        {/css}
-    	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_RELATIVE`exp-container.js"}
+            {css unique="container-chrome" link=$smarty.const.PATH_RELATIVE|cat:'framework/modules/container/assets/css/admin-container.css'}
 
-    	{/script}
-		<div id="cont{$top->id}" class="exp-container-module-wrapper"{if $hasParent != 0} style="border: 1px dashed darkgray; padding: 1em;"{/if}>
-	{/if}
-    {*if $hasParent == 0 && ($permissions.edit || $permissions.create || $permissions.delete || $permissions.order_module || $permissions.manage)*}
-    {if $hasParent == 0 && ($permissions.configure == 1 || $container->permissions.configure == 1)}
-	{** top level container module **}
-		<div class="container-chrome">
-			<a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
-			<ul class="container-menu">
-                {if $user->isAdmin()}
-                <li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>
-                <li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>
-                {/if}
-                {capture name=rerank}{ddrerank module="container" where="external='`$containers[0]->external`'" label="Modules"|gettext}{/capture}
-                {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
-				{if $smarty.const.HELP_ACTIVE}<li>{help text="Help with Containers"|gettext}</li>{/if}
-			</ul>
-		</div>
-	{/if}
+            {/css}
+            {script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_RELATIVE`exp-container.js"}
+
+            {/script}
+            <div id="cont{$top->id}" class="exp-container-module-wrapper"{if $container->hasParent != 0} style="border: 1px dashed darkgray; padding: 1em;"{/if}>
+        {/if}
+        {*if $hasParent == 0 && ($permissions.edit || $permissions.create || $permissions.delete || $permissions.order_module || $permissions.manage)*}
+        {if $container->hasParent == 0 && ($permissions.configure == 1 || $container->permissions.configure == 1)}
+        {** top level container module **}
+            <div class="container-chrome">
+                <a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
+                <ul class="container-menu">
+                    {if $user->isAdmin()}
+                        {*<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>*}
+                        {*<li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>*}
+                        <li><a href="{link controller=users action=userperms mod=containermodule}" class="user">{"User Permissions"|gettext}</a></li>
+                        <li><a href="{link controller=users action=groupperms mod=containermodule}" class="group">{"Group Permissions"|gettext}</a></li>
+                    {/if}
+                    {capture name=rerank}{ddrerank module="container" where="external='`$containers[0]->external`'" label="Modules"|gettext}{/capture}
+                    {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
+                    {if $smarty.const.HELP_ACTIVE}<li>{help text="Help with Containers"|gettext}</li>{/if}
+                </ul>
+            </div>
+        {/if}
+    {/if}
 	{if $permissions.create == 1 && empty($hidebox)}
 		<a class="addmodule" href="{link action=edit rerank=1 rank=0}"><span class="addtext">{"Add Module"|gettext}</span></a>
 	{/if}
@@ -50,7 +54,6 @@
 {viewfile module=$singlemodule view=$singleview var=viewfile}
 
 {foreach key=key name=c from=$containers item=container}
-	{*{assign var=i value=$smarty.foreach.c.iteration}*}
     {$i=$smarty.foreach.c.iteration}
 	{if $smarty.const.SELECTOR == 1}
 		{include file=$viewfile}
@@ -69,25 +72,23 @@
             	{/script}
 
 				<div id="module{$container->id}" class="exp-container-module-wrapper">
-				{if $i == $containers|@count}
-					{*{assign var=last value=true}*}
-                    {$last=true}
-				{else}
-					{*{assign var=last value=false}*}
-                    {$last=false}
-				{/if}
-				<div class="container-chrome module-chrome">
-					<a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext}</a>
-					{nocache}{getchromemenu module=$container rank=$i rerank=$rerank last=$last}{/nocache}
-				</div>
-			{/if}
-		{/permissions}
-		
-		{$container->output}
+                    {if $i == $containers|@count}
+                        {$last=true}
+                    {else}
+                        {$last=false}
+                    {/if}
+                    <div class="container-chrome module-chrome">
+                        <a href="#" class="trigger" title="{$container->info.module|gettext}">{$container->info.module|gettext}</a>
+                        {nocache}{getchromemenu module=$container rank=$i rerank=$rerank last=$last}{/nocache}
+                    </div>
+                {/if}
+            {/permissions}
 
-		{permissions}
-            {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
-                 || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
+            {$container->output}
+
+            {permissions}
+                {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
+                     || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
 				</div>
 			{/if}
 		{/permissions}

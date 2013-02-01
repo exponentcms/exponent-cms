@@ -36,42 +36,30 @@
                         {control type="text" name="storename" label="Store Name"|gettext value=$config.storename|default:'My Store'|gettext}
                         {* control type="checkbox" name="allow_anonymous_checkout" label="Allow Anonymous Checkout" value=1 checked=$config.allow_anonymous_checkout *}
                         {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number|default:'0001'}
-                        <h2>{'Header'|gettext}</h2>
-                        <p>{'This will be displayed on the top of your emails and invoices.'|gettext}</p>
-                        {control type="html" name="ecomheader" label=" " rows=6 cols=60 value=$config.ecomheader}
-                        <h2>{'Footer'|gettext}</h2>
-                        <p>{'This will be displayed on the bottom of your emails and invoices.'|gettext}</p>
-                        {control type="html" name="ecomfooter" label=" " rows=6 cols=60 value=$config.ecomfooter}
+                        {control type="html" name="ecomheader" label='Header'|gettext rows=6 cols=60 value=$config.ecomheader description='This will be displayed on the top of your emails and invoices.'|gettext}
+                        {control type="html" name="ecomfooter" label='Footer'|gettext rows=6 cols=60 value=$config.ecomfooter description='This will be displayed on the bottom of your emails and invoices.'|gettext}
                     </div>
                     <div id="tab2">
-                        <h2>{'Cart Title'|gettext}</h2>
-                        <p>{'The title that appears at the top of your shopping cart.'|gettext}</p>
-                        {control type="text" name="cart_title_text" label="Shopping Cart Title"|gettext value=$config.cart_title_text}
-                        <h2>{'Cart Message'|gettext}</h2>
-                        <p>{'This will be displayed at the top of your shopping cart.'|gettext}</p>
-                        {control type="html" name="cart_description_text" label="Shopping Cart Description Text"|gettext value=$config.cart_description_text}
-                        <hr>
-                        <h2>{'Checkout Title'|gettext}</h2>
-                        <p>{'The title that appears at the top of your final confirmation checkout page.'|gettext}</p>
-                        {control type="text" name="checkout_title_top" label="Checkout Title"|gettext value=$config.checkout_title_top}
-                        <h2>{'Checkout Message - Top'|gettext}</h2>
-                        <p>{'This will be displayed on the top of your final confirmation checkout page.'|gettext}</p>
-                        {control type="html" name="checkout_message_top" label=" " rows=6 cols=60 value=$config.checkout_message_top}
-                        <h2>{'Checkout Message - Bottom'|gettext}</h2>
-                        <p>{'This will be displayed on the bottom of your final confirmation checkout page.'|gettext}</p>
-                        {control type="html" name="checkout_message_bottom" label=" " rows=6 cols=60 value=$config.checkout_message_bottom}
-                        <h2>{'SSL Display Seal Code'|gettext}</h2>
-                        <p>{'This will be displayed in various places on your site.'|gettext}</p>
-                        {control type="textarea" name="ssl_seal" label=" " rows=6 cols=60 value=$config.ssl_seal}
+                        {group label="Cart"|gettext}
+                        {control type="text" name="cart_title_text" label="Shopping Cart Title"|gettext value=$config.cart_title_text description='The title that appears at the top of your shopping cart.'|gettext}
+                        {control type="html" name="cart_description_text" label="Shopping Cart Description Text"|gettext value=$config.cart_description_text description='This will be displayed at the top of your shopping cart.'|gettext}
+                        {/group}
+                        {group label="Checkout"|gettext}
+                        {control type="text" name="checkout_title_top" label="Checkout Title"|gettext value=$config.checkout_title_top description='The title that appears at the top of your final confirmation checkout page.'|gettext}
+                        {control type="html" name="checkout_message_top" label='Checkout Message - Top'|gettext rows=6 cols=60 value=$config.checkout_message_top description='This will be displayed on the top of your final confirmation checkout page.'|gettext}
+                        {control type="html" name="checkout_message_bottom" label='Checkout Message - Bottom'|gettext rows=6 cols=60 value=$config.checkout_message_bottom description='This will be displayed on the bottom of your final confirmation checkout page.'|gettext}
+                        {control type="textarea" name="ssl_seal" label='SSL Display Seal Code'|gettext rows=6 cols=60 value=$config.ssl_seal description='This will be displayed in various places on your site.'|gettext}
+                        {/group}
                     </div>
                     <div id="tab3">
-                        <h2>{'Product Sorting'|gettext}</h2>
+                        {group label="Product Sorting"|gettext}
                         {control type="dropdown" name="orderby" label="Default sort order"|gettext items="Name, Price, Rank"|gettxtlist values="title,base_price,rank" value=$config.orderby}
                         {control type="dropdown" name="orderby_dir" label="Sort direction"|gettext items="Ascending, Descending"|gettxtlist values="ASC, DESC" value=$config.orderby_dir}
-
-                        <h2>{'Pagination and Display'|gettext}</h2>
+                        {/group}
+                        {group label="Pagination and Display"|gettext}
                         {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}
                         {control type="checkbox" name="show_first_category" label="Show the first category in your store by default?"|gettext value=1 checked=$config.show_first_category}
+                        {/group}
                         {*
                         <h2>Sub Category Display</h2>
                         drop down coming soon...

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -55,21 +55,21 @@ function validateForm(f){
     <div class="form_section">
         <div class="control">
             <span class="label"><?php echo gt('Username'); ?>: </span>
-            <input class="text" type="text" name="username" value="<?php echo gt('admin'); ?>" />
+            <input class="text" type="text" name="username" value="<?php echo gt('admin'); ?>" required=1 />
             <div class="control_help">
                 <?php echo gt('The username of your administrator account.  You should change this to something other than the default of \'admin\'.'); ?>
             </div>
         </div>
         <div class="control">
             <span class="label"><?php echo gt('Password'); ?>: </span>
-            <input class="text" type="password" name="password" value="" />
+            <input class="text" type="password" name="password" value="" required=1 />
             <div class="control_help">
                 <?php echo gt('The password of your administrator account.'); ?>
             </div>
         </div>
             <div class="control">
             <span class="label"><?php echo gt('Password Again'); ?>: </span>
-            <input class="text" type="password" name="password2" value="" />
+            <input class="text" type="password" name="password2" value="" required=1 />
             <div class="control_help">
                 <?php echo gt('Type your password again.'); ?>
             </div>
@@ -84,7 +84,7 @@ function validateForm(f){
         </div>
         <div class="control">
             <span class="label"><?php echo gt('Email Address'); ?>: </span>
-            <input class="text" type="text" name="email" value="" />
+            <input class="text" type="text" name="email" value="" required=1 />
         </div>
     </div>
     <button class="awesome large green"><?php echo gt('Create Administrator'); ?></button>

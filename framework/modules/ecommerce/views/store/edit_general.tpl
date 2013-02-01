@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,7 +23,7 @@
 	{control type="textarea" name="general[summary]" label="Product Summary"|gettext rows=5 cols=85 value=$record->summary}
 	{control type="editor" name="general[body]" label="Product Description"|gettext height=450 value=$record->body}
 	{control type="text" class="title" name="general[feed_title]" label="Product Title for Data Feeds"|gettext value=$record->feed_title}
-	{control type="textarea" name="general[feed_body]" label="Product Description for Data Feeds (Description ONLY! - no HTML, no promotional language, no email addresses, phone numbers, or references to this website.)"|gettext rows=5 cols=85 value=$record->feed_body}
+	{control type="textarea" name="general[feed_body]" label="Product Description for Data Feeds"|gettext rows=5 cols=85 value=$record->feed_body description="Description ONLY! - no HTML, no promotional language, no email addresses, phone numbers, or references to this website"|gettext}
 	{if $product_types}
 	{foreach from=$product_types key=key item=item}
 		{control type="text" class="title" name="general[`$item`]" label="`$key` Product Type" value=$record->$item}

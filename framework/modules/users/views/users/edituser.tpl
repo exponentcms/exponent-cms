@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -36,12 +36,12 @@
 	            <div id="tab1">
 	                {if $edit_user->id == "" || $edit_user->id == 0}
                         {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
-                            {control type=text name=username label="Username"|gettext value=$edit_user->username}
+                            {control type=text name=username label="Username"|gettext value=$edit_user->username required=1}
                         {else}
-                            {control type=text name=email label="Email Address"|gettext value=$edit_user->email}
+                            {control type=text name=email label="Email Address"|gettext value=$edit_user->email required=1}
                         {/if}
-                        {control type=password name=pass1 label="Password"|gettext}
-                        {control type=password name=pass2 label="Confirm Password"|gettext}
+                        {control type=password name=pass1 label="Password"|gettext required=1}
+                        {control type=password name=pass2 label="Confirm Password"|gettext required=1}
                     {else}
                         {control type="hidden" name="id" value=$edit_user->id}
 	                {/if}

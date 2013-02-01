@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,7 +16,7 @@
 #
 ##################################################
 
-if (!defined('SMTP_FROMADDRESS')) define('SMTP_FROMADDRESS','website@localhost');
+if (!defined('SMTP_FROMADDRESS')) define('SMTP_FROMADDRESS','website@mysite.org');
 if (!defined('SMTP_USE_PHP_MAIL')) define('SMTP_USE_PHP_MAIL','0');
 if (!defined('SMTP_SERVER')) define('SMTP_SERVER','localhost');
 if (!defined('SMTP_PORT')) define('SMTP_PORT','25');

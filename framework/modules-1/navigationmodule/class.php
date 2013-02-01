@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -18,7 +18,7 @@
 /** @define "BASE" "../../.." */
 
 class navigationmodule {
-    function name() { return $this->displayname(); }
+    function name() { return self::displayname(); }
 	static function displayname() { return 'Navigator (Deprecated)'; }
     static function author() { return 'OIC Group, Inc'; }
     static function description() { return 'Allows users to navigate through pages on the site, and allows Administrators to manage the site page structure / hierarchy.'; }

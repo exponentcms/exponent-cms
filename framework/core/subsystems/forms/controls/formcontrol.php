@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -38,11 +38,19 @@ class formcontrol {
 
 	/**
 	 * Is this a Simple Control?
-	 * Used to determine if control is available for the Form (Builder) module
+	 * Used to determine if control is available for the Forms (design) module
      *
 	 * @return bool
 	 */
 	static function isSimpleControl() { return false; }
+
+    /**
+   	 * Use the Generic Control instead?
+   	 * Used to determine if control is actually a generic control
+        *
+   	 * @return bool
+   	 */
+    static function useGeneric() { return false; }
 
     /**
      * returns the table field definition for this control
@@ -75,7 +83,7 @@ class formcontrol {
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {
-            $labeltag = '<span class="required" title="'.gt('This entry is required').'">*</span>' . $label;
+            $labeltag = '<span class="required" title="'.gt('This entry is required').'">* </span>' . $label;
         } else {
             $labeltag = $label;
         }
@@ -155,7 +163,7 @@ class formcontrol {
     }
 
     /**
-     * update the control settings
+     * Update the control settings
      *
      * @param $values
      * @param $object

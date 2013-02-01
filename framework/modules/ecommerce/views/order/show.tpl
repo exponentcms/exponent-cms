@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -294,9 +294,7 @@
                         </td>
                     </tr>
                 </table>     
-                <hr>
-                <h2>{"Notes on this order"|gettext}</h2>
-                {simplenote content_type="order" content_id=$order->id require_login="1" require_approval="0" require_notification="0" tab="notes"}
+                {simplenote content_type="order" content_id=$order->id require_login="1" require_approval="0" require_notification="0" tab="notes" title="Notes on this order"|gettext}
             </div>
         {/if}
     {/permissions}

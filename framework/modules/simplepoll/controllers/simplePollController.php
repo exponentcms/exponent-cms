@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,8 +36,8 @@ class simplePollController extends expController {
         'pagination',
 		'rss',
 		'tags'
-	); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
-    public $codequality = 'beta';
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+//    public $codequality = 'beta';
 
     static function displayname() { return gt("Simple Poll"); }
     static function description() { return gt("A simple poll that asks a visitor one question with multiple answers.  Can manage multiple questions, though it only displays one."); }

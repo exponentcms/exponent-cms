@@ -293,6 +293,8 @@ version: 2.5.1
 	font-size:12px;
 	text-decoration:underline;
 	color:blue;
+    background-color: transparent!important;
+    margin-left: 0;
 }
 
 .ygtvspacer { height: 22px; width: 12px; }

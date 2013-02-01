@@ -49,15 +49,15 @@ class listbuildercontrol extends formcontrol {
 		}
 	}
 
-	function controlToHTML($name, $process = null) {
+	function controlToHTML($name, $label, $process = null) {
 		$this->process = $process;
 		$this->_normalize();
 		// eDebug($this->source, true);
 
 		$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
-		$html .= '<table cellpadding="9" border="0" width="30"><tr><td width="10" style="border:none;">';
+		$html .= '<table cellpadding="9" border="0" width="30" style="margin-bottom:0;"><tr><td width="10" style="border:none;">';
 		if (!$this->newList) {
-			$html .= "<select id='source_$name' size='".$this->size."'>";
+			$html .= "<div class=\"control-desc\">".gt('Available').' '.$label."</div><select id='source_$name' size='".$this->size."'>";
 			foreach ($this->source as $key=>$value) {
 				$html .= "<option value='$key'>$value</option>";
 			}
@@ -68,18 +68,18 @@ class listbuildercontrol extends formcontrol {
 		$html .= "</td>";
 		$html .= '<td valign="middle" width="10" style="border:none;">';
 		if($process == "copy") {
-			$html .= "<input type='image' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' src='".ICON_RELATIVE."right.png' />";
+			$html .= "<input type='image' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;,&quot;copy&quot;); return false' src='".ICON_RELATIVE."navigate-right-icon.png' />";
 		} else {
-			$html .= "<input type='image' onclick='addSelectedItem(&quot;$name&quot;); return false' src='".ICON_RELATIVE."right.png' />";
+			$html .= "<input type='image' title='".gt('Add to list')."' onclick='addSelectedItem(&quot;$name&quot;); return false' src='".ICON_RELATIVE."navigate-right-icon.png' />";
 		}
 		$html .= "<br />";
 		if($process == "copy") {
-			$html .= "<input type='image' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' src='".ICON_RELATIVE."left.png' />";
+			$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;,&quot;copy&quot); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 		} else {
-			$html .= "<input type='image' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."left.png' />";
+			$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 		}
 		$html .= "</td>";
-		$html .= "<td width='10' valign='top' style='border:none;'><select id='dest_$name' size='".$this->size."'>";
+		$html .= "<td width='10' valign='top' style='border:none;'><div class=\"control-desc\">".gt('Selected').' '.$label."</div><select id='dest_$name' size='".$this->size."'>";
 		foreach ($this->default as $key=>$value) {
 			if (isset($this->source[$key])) $value = $this->source[$key];
 			$html .= "<option value='$key'>$value</option>";
@@ -87,12 +87,44 @@ class listbuildercontrol extends formcontrol {
 		$html .= "</select>";
 		$html .= "</td><td width='100%' style='border:none;'></td></tr></table>";
 //		$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 
     function toHTML($label,$name) {
-        $html = parent::toHTML($label,$name);
-        $html = '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>'.$html;
+		if (!empty($this->id)) {
+		    $divID  = ' id="'.$this->id.'Control"';
+		    $for = ' for="'.$this->id.'"';
+		} else {
+		    $divID  = '';
+		    $for = '';
+		}
+		
+		$disabled = $this->disabled != 0 ? "disabled" : "";
+		$class = empty($this->class) ? '' : $this->class;
+		 
+		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;
+		$html .= !empty($this->required) ? ' required">' : '">';
+		//$html .= "<label>";
+        if($this->required) {
+            $labeltag = '<span class="required" title="'.gt('This entry is required').'">*</span>' . $label;
+        } else {
+            $labeltag = $label;
+        }
+		$process = empty($this->process) ? null : $this->process;
+		if(empty($this->flip)){
+			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
+			$html .= $this->controlToHTML($name, $label, $process);
+		} else {
+			$html .= $this->controlToHTML($name, $label, $process);
+			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
+		}
+		//$html .= "</label>";
+		$html .= "</div>";			
+        expJavascript::pushToFoot(array(
+            "unique"=>'listbuildercontrol',
+            "src"=> PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js'
+		));
         return $html;
     }
 
@@ -145,7 +177,7 @@ class listbuildercontrol extends formcontrol {
 			$object->identifier = "";
 			$object->caption = "";
 		}
-		$form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
 
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));

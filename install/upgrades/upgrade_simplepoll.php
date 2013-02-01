@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,8 +26,8 @@
  */
 class upgrade_simplepoll extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.1.0';
-    public $optional = true;
+	protected $to_version = '2.1.1';  // simplepollmodule was deprecated in v2.0.9, but fully in v2.1.1
+//    public $optional = true;
 
 	/**
 	 * name/title of upgrade script
@@ -116,9 +116,9 @@ class upgrade_simplepoll extends upgradescript {
 
         // need to replace old module modstate with new SimplePoll module
         $ms = $db->selectObject('modstate',"module='simplepollmodule'");
-        if (!empty($ms)) {
+        if (!empty($ms) && !$db->selectObject('modstate',"module='simplePollController'")) {
             $ms->module = 'simplePollController';
-            $db->updateObject($ms,'modstate',"module='simplePollController'",'module');
+            $db->updateObject($ms,'modstate',"module='simplepollmodule'",'module');
         }
 
 		// convert questions, answers, & time-blocks

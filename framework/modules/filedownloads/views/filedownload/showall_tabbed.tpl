@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +13,10 @@
  *
  *}
 
+{*<script src="/exp2/external/jquery/js/jquery-1.8.3.js"></script>*}
+{*<script src="/exp2/external/mediaelement/build/mediaelement-and-player.js"></script>*}
+{*<link rel="stylesheet" href="/exp2/external/mediaelement/build/mediaelementplayer.css" />*}
+
 {uniqueid assign="id"}
 
 {if $config.usecategories}
@@ -22,9 +26,9 @@
 {/if}
 
 <div class="module filedownload showall showall-tabbed">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
     {rss_link}
-    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
@@ -48,15 +52,14 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
-    <div id="{$id}" class="yui-navset exp-skin-tabview hide">
-        <ul>
+    <div id="{$id}" class="yui-navset exp-skin-tabview">
+        <ul class="yui-nav">
             {foreach name=tabs from=$page->cats key=catid item=cat}
-                <li><a href="#tab{$smarty.foreach.items.iteration}">{$cat->name}</a></li>
+                <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$cat->name}</a></li>
             {/foreach}
         </ul>
-        <div>
+        <div class="yui-content">
             {foreach name=items from=$page->cats key=catid item=cat}
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {foreach from=$cat->records item=file}
@@ -69,17 +72,27 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="`$id`" yui3mods="1"}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+{*{script unique="`$id`" yui3mods="1"}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-	});
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});*}
+		{*Y.one('#{/literal}{$id}{literal}').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+	{*});*}
+{*{/literal}*}
+{*{/script}*}
+
+{*<script>*}
+    {*$('audio,video').mediaelementplayer();*}
+{*</script>*}
+
+{script unique="`$id`" jquery="jqueryui"}
+{literal}
+    $('#{/literal}{$id}{literal}').tabs().next().remove();
 {/literal}
 {/script}

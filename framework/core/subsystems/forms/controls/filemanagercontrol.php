@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,6 +29,7 @@ class filemanagercontrol extends formcontrol {
 
     var $html;
     var $span;
+    var $description = "";
     
     static function name() { return "Manage Files"; }
     static function isSimpleControl() { return false; }
@@ -49,9 +50,13 @@ class filemanagercontrol extends formcontrol {
         if ($this->limit!=null){
             $html .= ' | <small>'.gt('Limit').': <em class="limit">'.$this->limit.'</em></small>';
         }
-        if ($this->count < $this->limit){
-            $html .= ' | <a class="add" href="#" id="addfiles-'.$name.'">'.gt('Add Files').'</a>';
+        if ($this->count < $this->limit) {
+            $hide = '';
+        } else {
+            $hide = ' class="hide"';
         }
+        $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="add" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'">'.gt('Add Files').'</a>';
+        $html .= ' | <a class="add" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'">'.gt('Quick Add').'</a></span>';
         $html .= '</label></div>';
 
         if (empty($files)) {
@@ -62,6 +67,8 @@ class filemanagercontrol extends formcontrol {
         $html .= $files;
         $html .= '</ul>';
         $html .= '<input type="hidden" name="'.$subTypeName.'" value="'.$subTypeName.'">';
+        if ($this->limit>1) $this->description .= " " . gt('Drag the files to change their sequence.');
+        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">" . $this->description . "</div>";
         $html .= '</div>';
         $js = "
             YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io', function(Y) {
@@ -78,10 +85,35 @@ class filemanagercontrol extends formcontrol {
                         alert('".gt('Please disable your popup blocker')."!!');
                     }
                 };
-                
+
+//                  var quickUpload = new AjaxUpload($('#quickaddfiles-".$name."'), {
+                var quickUpload = new ss.SimpleUpload({
+                        button: '#quickaddfiles-".$name."',
+                        action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
+                        data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
+                        responseType: 'json',
+                        name: 'uploadfile',
+//                        debug: true,
+                        onSubmit: function(file, ext){
+//                             if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
+//                                // extension is not allowed
+//                                return false;
+//                            }
+                        },
+                        onComplete: function(file, response){
+                            //Add uploaded file to list
+                            if(response.replyCode==200){
+                                EXPONENT.passBackFile".$name."(response.data);
+                            }
+                        },
+                    });
+//                );
+
                 var listenForAdder = function(){
                     var af = Y.one('#addfiles-".$name."');
                     af.on('click',openFilePickerWindow);
+                    var afq = Y.one('#quickaddfiles-".$name."');
+                    afq.on('click',quickUpload);
                 };
                 
                 var showEmptyLI = function(){
@@ -96,17 +128,12 @@ class filemanagercontrol extends formcontrol {
                 // remove the file from the list
                 fl.delegate('click',function(e){
                     e.target.ancestor('li').remove();
-                    
                     showFileAdder();
                 },'.delete');
                 
                 var showFileAdder = function() {
-                    var sf = Y.one('#addfiles-".$name."');
-                    if (Y.Lang.isNull(sf)) {
-                        var afl = Y.Node.create('<a class=\"add\" href=\"#\" id=\"addfiles-".$name."\">".gt('Add Files')."</a>');
-                        Y.one('#filemanager".$name." .hd').append(afl);
-                        listenForAdder();
-                    }
+                    Y.one('#adders-".$name."').removeClass('hide');
+                    listenForAdder();
                     filesAdded--;
                     if (filesAdded == 0) showEmptyLI();
                 }
@@ -214,8 +241,76 @@ class filemanagercontrol extends formcontrol {
                 
                 initDragables();
 
-                // calback function from open window
+                if (EXPONENT.batchAddFiles==undefined) {
+                    EXPONENT.batchAddFiles = {};
+                }
+
+                EXPONENT.batchAddFiles.".$name." = function(ids) {
+                    var j=0;
+                    Y.each(ids, function(obj,k){
+                        if (j<limit) {
+
+                            var df = Y.one('#filelist".$name."');
+
+                            if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
+                            } else if (obj.mimetype=='audio/mpeg') {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
+                            } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/video_22x22.png\">';
+                            } else {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/generic_22x22.png\">';
+                            }
+                            
+                            var html = '<li>';
+                            html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
+                            html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
+                            html += filepic;
+                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
+                            html += '<\/li>';
+                            
+                            htmln = Y.Node.create(html);                        
+                            
+                            df.append(htmln);
+
+                            var dd = new Y.DD.Drag({
+                                node: htmln,
+                                proxy: true,
+                                moveOnEnd: false,
+                                target: {
+                                    padding: '0 0 0 20'
+                                }
+                            }).plug(Y.Plugin.DDConstrained, {
+                                constrain2node: '#filelist".$name."',
+                                stickY:true
+                            }).plug(Y.Plugin.DDProxy, {
+                                moveOnEnd: false,
+                                borderStyle:'0'
+                            });
+
+                            if (filesAdded==0) {
+                                fl.one('.blank').remove();
+                            }
+
+                            filesAdded++
+
+                            if (limit==filesAdded) {
+                                Y.one('#adders-".$name."').addClass('hide');
+                            }
+
+                            j++;
+                        }
+                    })
+                    // console.log(ids);
+                }
+
+                // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
+
+                    if (Y.Lang.isArray(id)) {
+                        EXPONENT.batchAddFiles.".$name."();
+                        return;
+                    }
 
                     var complete = function (ioId, o) {
                         var df = Y.one('#filelist".$name."');
@@ -237,9 +332,8 @@ class filemanagercontrol extends formcontrol {
                         html += filepic;
                         html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                         html += '<\/li>';
-                        
-                        htmln = Y.Node.create(html);                        
-                        
+                        htmln = Y.Node.create(html);
+
                         df.append(htmln);
 
                         var dd = new Y.DD.Drag({
@@ -257,17 +351,14 @@ class filemanagercontrol extends formcontrol {
                             borderStyle:'0'
                         });
 
-                        
-                        var af = Y.one('#addfiles-".$name."');
-
                         if (filesAdded==0) {
                             fl.one('.blank').remove();
                         }
 
                         filesAdded++
 
-                        if (!Y.Lang.isNull(af) && limit==filesAdded) {
-                            af.remove();
+                        if (limit==filesAdded) {
+                            Y.one('#adders-".$name."').addClass('hide');
                         }
 
                         //initDragables();
@@ -296,7 +387,12 @@ class filemanagercontrol extends formcontrol {
                 "unique"=>"filepicker".$name,
                 "yui3mods"=>"1",
                 "content"=>$js,
-                "src"=>""
+             ));
+            expJavascript::pushToFoot(array(
+                "unique"=>"quickupload",
+    //                "jquery"=>"1",
+    //                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
+                "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
              ));
         return $html;
     }

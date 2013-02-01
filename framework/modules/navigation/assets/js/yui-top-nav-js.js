@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME convert to yui3
 var buildmenu = function (elem,cfg) {
 
     var oMenuBar = new YAHOO.widget.MenuBar(elem, { 

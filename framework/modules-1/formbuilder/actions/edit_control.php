@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,6 +41,7 @@ if ($f) {
 					$htmlctl->html = "<hr size='1' />";
 					break;
 			}
+            $ctl = new stdClass();
 			$ctl->name = uniqid("");
 			$ctl->caption = "";
 			$ctl->data = serialize($htmlctl);
@@ -68,7 +69,7 @@ if ($f) {
 			$form = call_user_func(array($control_type,"form"),$ctl);
 			$form->location($loc);
 			if ($ctl) { 
-				$form->controls['identifier']->disabled = true;
+				if (isset($form->controls['identifier']->disabled)) $form->controls['identifier']->disabled = true;
 				$form->meta("id",$ctl->id);
 				$form->meta("identifier",$ctl->identifier);
 			}

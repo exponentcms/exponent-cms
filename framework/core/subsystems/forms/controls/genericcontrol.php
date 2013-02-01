@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,7 @@ class genericcontrol extends formcontrol {
         return array();
     }
 
-    function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="") {
+    function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="") {
         $this->type = (empty($type)) ? "text" : $type;
         $this->default = $default;
         $this->class = $class;
@@ -48,6 +48,7 @@ class genericcontrol extends formcontrol {
         $this->onclick = $onclick;
         $this->maxlength = $maxlength;
         $this->size = '';
+        $this->placeholder = $placeholder;
     }
     
     function toHTML($label,$name) {
@@ -95,6 +96,7 @@ class genericcontrol extends formcontrol {
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->maxlength != "") $html .= ' maxlength="' . $this->maxlength . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
+        if ($this->placeholder != "") $html .= " placeholder=\"".$this->placeholder."\" ";
         if ($this->filter != "") {
             $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\" ";
             $html .= "onblur=\"".$this->filter."_filter.onblur(this);\" ";
@@ -136,7 +138,7 @@ class genericcontrol extends formcontrol {
             $object->required = false;
         } 
         
-        $form->register("identifier",gt('Identifier'),new textcontrol($object->identifier));
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));

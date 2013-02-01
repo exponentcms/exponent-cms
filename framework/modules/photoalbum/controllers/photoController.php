@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,6 +21,9 @@
  * @package Modules
  */
 
+/**
+ * We must subclass the photosController due to a plural/singular naming issue
+ */
 class photoController extends photosController {
     public $useractions = array(
         'showall'=>'Gallery', 

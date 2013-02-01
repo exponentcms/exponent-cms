@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +25,7 @@
 		{permissions}
 			{if $permissions.manage == 1}
 				&#160;&#160;|&#160;&#160;
-                {icon class="adminviewlink mngmntlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
+                {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
                     &#160;&#160;|&#160;&#160;
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
@@ -43,15 +43,15 @@
 			<span class="listviewlink">{'Past Events View'|gettext}</span>
 			{if $permissions.manage == 1}
 				&#160;&#160;|&#160;&#160;
-				<img class="mngmnt_icon" style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
-				<a class="mngmntlink" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
+				<img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
+				<a class="" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
 				{br}
 			{/if}
 		{/permissions}
 	</div>
 	<h1>
         {ical_link}
-        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle} - {'Past Events View'|gettext}{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle} - {'Past Events View'|gettext}{/if}
 
 	</h1>
     {if $config.moduledescription != ""}
@@ -76,7 +76,7 @@
 		<tbody>
 		{foreach from=$items item=item}
 			<tr class="{cycle values="odd,even"}">
-				<td><a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
+				<td><a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
 					{if $item->is_allday == 1}
 						{$item->eventstart|format_date}
@@ -100,6 +100,7 @@
                                     {/if}
                                 {/if}
 								{icon img='edit.png' action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
+                                {icon img='copy.png' action=copy record=$item date_id=$item->date_id title="Copy this Event"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
 								{if $item->is_recurring == 0}

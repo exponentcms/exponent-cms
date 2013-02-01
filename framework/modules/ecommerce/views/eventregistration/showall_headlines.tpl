@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,15 +13,15 @@
  *
  *}
 {css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
-{literal}
-	.headlines .events {
-		overflow: hidden;
-	}
-{/literal}
+
+{/css}
+
+{css unique="event-listings1" link="`$asset_path`css/eventregistration.css"}
+
 {/css}
 
 <div class="module events showall headlines">
-    {if $moduletitle && !$config.hidemoduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create == true || $permissions.edit == true}
@@ -35,15 +35,14 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     <ul>
         {foreach name=items from=$page->records item=item}
             {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
                 <li>
                     <div class="events">
-                        <a class="link" href="{link action=showByTitle title=$item->sef_url}" title="{'Register for this Event'|gettext}">{$item->title}</a>
-                        <a href="{link action=showByTitle title=$item->sef_url}"></a>
+                        <a class="link" href="{link action=show title=$item->sef_url}" title="{'Register for this Event'|gettext}">{$item->title}</a>
+                        <a href="{link action=show title=$item->sef_url}"></a>
                         - <em class="date">{$item->eventdate|date_format}</em>
                         - {$item->body|summarize:"text":"para"}
                         {if $item->base_price}- {'Cost'|gettext}: {currency_symbol}{$item->base_price}{/if}

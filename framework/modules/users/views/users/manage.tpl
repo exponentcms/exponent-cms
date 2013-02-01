@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -50,6 +50,7 @@
 	
 </div>
 
+{*FIXME convert to yui3*}
 {script unique="manage_users"}
 	{literal}
 		YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', function(Y) {
@@ -86,7 +87,7 @@
 
                     elCell.innerHTML = '<div class="item-actions">';
                     editstring       = '{/literal}{icon img="edit.png" action="edituser" id="editstringid" title="Edit this user"|gettext}{literal}';
-                    passwordstring   = '{/literal}{icon img="password.png" action="change_password" ud="passwordstringid" title="Change this users password"|gettext}{literal}';
+                    passwordstring   = '{/literal}{icon img="change_password.png" action="change_password" ud="passwordstringid" title="Change this users password"|gettext}{literal}';
                     deletestring     = '{/literal}{icon img="delete.png" action="delete" id="deletestringid" title="Delete this user"|gettext onclick="return confirm(\'"|cat:("Are you sure you want to delete this user?"|gettext)|cat:"\');"}{literal}';
                     editstring     = editstring.replace('editstringid',oRecord._oData.id);
                     passwordstring = passwordstring.replace('passwordstringid',oRecord._oData.id);

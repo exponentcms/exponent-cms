@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,6 @@
 
 <div class="options checkboxes">
     <span class="label">{if $group->required == true}* {/if}{$group->title}</span>
-    {*{assign var=gid value=$group->id}*}
     {$gid=$group->id}
     {foreach from=$options item=option key=id}
         {if is_array($selected.$gid) && in_array($id, $selected.$gid)}  

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,18 +30,17 @@ class newsController extends expController {
         'categories',
         'comments',
 //        'ealerts',
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
     public $add_permissions = array(
         'showUnpublished'=>'View Unpublished News'
     );
 
     static function displayname() { return gt("News"); }
-    static function description() { return gt("Use this to display & manage news type content on your site."); }
+    static function description() { return gt("Display & manage news type content on your site."); }
     static function isSearchable() { return true; }
     
     public function showall() { 
         expHistory::set('viewable', $this->params);
-
         // figure out if should limit the results
         if (isset($this->params['limit'])) {
             $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
@@ -175,6 +174,7 @@ class newsController extends expController {
             $rss_item->link = makeLink(array('controller'=>'news', 'action'=>'show', 'title'=>$item->sef_url));
             $rss_item->description = $item->body;
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+            $rss_item->authorEmail = user::getEmailById($item->poster);
             $rss_item->date = date('r',$item->publish_date);
             $rssitems[$key] = $rss_item;
         }

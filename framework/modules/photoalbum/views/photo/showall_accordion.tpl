@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,12 +25,16 @@
 {/css}
 {/if}
 {$rel}
+
+{uniqueid assign="id"}
+
 <div class="module photoalbum showall showall-accordion">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
+                {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
 			{/if}
             {if $permissions.manage == 1}
                 {if !$config.disabletags}
@@ -48,22 +52,34 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
-    <div class="dashboard">
+    <div id="photo-{$id}" class="dashboard">
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel">
                 <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $cat->name ==""}{if $config.uncat == ""}{'The List'|gettext}{else}{$config.uncat}{/if}{else}{$cat->name}{/if}</h2></a></div>
                 <div class="piece bd {if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}expanded{else}collapsed{/if}">
                     <ul class="image-list">
                         {foreach from=$cat->records item=record}
+                            {if !empty($record->title)}
+                                {$title = $record->title}
+                            {elseif !empty($record->expFile[0]->title)}
+                                {$title = $record->expFile[0]->title}
+                            {else}
+                                {$title = ''}
+                            {/if}
+                            {if !empty($record->alt)}
+                                {$alt = $record->alt}
+                            {elseif !empty($record->expFile[0]->alt)}
+                                {$alt = $record->expFile[0]->alt}
+                            {else}
+                                {$alt = $title}
+                            {/if}
                             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
                                 {if $config.lightbox}
-                                    {*{if $record->expFile[0]->width >= $record->expFile[0]->height}{assign var=x value="w"}{else}{assign var=x value="w"}{/if}*}
                                     {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
-                                    <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->title|default:$record->expFile[0]->title}">
+                                    <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$alt|default:$title}">
                                 {else}
-                                    <a href="{link action=show title=$record->sef_url}" title="{$record->title|default:$record->expFile[0]->title}">
+                                    <a href="{link action=show title=$record->sef_url}" title="{$alt|default:$title}">
                                 {/if}
                                     {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
                                 </a>
@@ -96,7 +112,7 @@
     </div>
 </div>
 
-{script unique="expand-panels" yui3mods="1"}
+{script unique="expand-panels-`$id`" yui3mods="1"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
    'gallery-lightbox' : {
@@ -106,12 +122,11 @@ EXPONENT.YUI3_CONFIG.modules = {
 }
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','anim','gallery-lightbox', function(Y) {
-    var panels = Y.all(".dashboard .panel");
+    var panels = Y.all("#photo-{/literal}{$id}{literal}.dashboard .panel");
     var expandHeight = [];
     var exclusiveExp = {/literal}{if $config.initial_view==1||$config.initial_view==3}true{else}false{/if}{literal};
     var action = function(e){
         e.halt();
-
         var pBody = e.target.ancestor('.panel').one('.bd');
         var pID = e.target.ancestor('.panel').getAttribute('id');
         var savedState = e.target.ancestor('.panel').one('.hd a').getAttribute("class");

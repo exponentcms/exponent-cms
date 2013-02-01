@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,19 +16,20 @@
 <div class="prod-listing">    
     <div class="bd">
         <div class="thimage">
-            <a href="{link action=showByTitle title=$listing->sef_url}" title="{$listing->body|format_tooltip}">
+            <a href="{link action=show title=$listing->sef_url}" title="{$listing->body|format_tooltip}">
                 {if $listing->expFile.mainimage[0]->id != ""}
                     {*img class=listingimage file_id=$listing->expFile[0]->id constraint=1 width=150 height=550 alt=$listing->title*}
                     {img class=listingimage file_id=$listing->expFile.mainimage[0]->id square=149 alt=$listing->title}
                     {br}
                 {else}
+                    {img src="`$asset_path`images/no-image.jpg"}
                     {'No Image'|gettext}
                 {/if}
             </a>                    
         </div>
         <div class="bodycopy">
             <h2>
-                <a href="{link action=showByTitle title=$listing->sef_url}">
+                <a href="{link action=show title=$listing->sef_url}">
                     {$listing->title}
                 </a>
             </h2>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -83,12 +83,12 @@ class ckeditorcontrol extends formcontrol {
                     ['Source','-','Preview','-','Templates'],
                     ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
                     ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
                     '/',
                     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
                     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
                     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
                     ['Link','Unlink','Anchor'],
-                    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
                     '/',
                     ['Styles','Format','Font','FontSize'],
                     ['TextColor','BGColor'],
@@ -123,14 +123,18 @@ class ckeditorcontrol extends formcontrol {
                     scayt_autoStartup : " . $scayt_on . ",
                     filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "ck"=> 1, "update"=> "fck")) . "',
                     filebrowserUploadUrl : '" . PATH_RELATIVE . "external/editors/connector/uploader.php',
-                    filebrowserWindowWidth : '" . FM_WIDTH . "',
-                    filebrowserWindowHeight : '" . FM_HEIGHT . "',
+                    filebrowserWindowWidth : " . FM_WIDTH . ",
+                    filebrowserWindowHeight : " . FM_HEIGHT . ",
                     filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "external/editors/connector/ckeditor_link.php',
-                    filebrowserLinkWindowWidth : '320',
-                    filebrowserLinkWindowHeight : '600',
+                    filebrowserLinkWindowWidth : 320,
+                    filebrowserLinkWindowHeight : 600,
                     filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "external/editors/connector/ckeditor_link.php',
                     extraPlugins : 'stylesheetparser,tableresize," . $plugins . "',
+                    height : 200,
+                    autoGrow_minHeight : 200,
                     autoGrow_maxHeight : 400,
+                    autoGrow_onStartup : false,
+                    toolbarCanCollapse : true,
                     entities_additional : '',
                     " . $contentCSS . "
                     stylesSet : " . $stylesset . ",
@@ -180,6 +184,7 @@ class ckeditorcontrol extends formcontrol {
         $html .= ">";
         $html .= htmlentities($this->default, ENT_COMPAT, LANG_CHARSET);
         $html .= "</textarea>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
 

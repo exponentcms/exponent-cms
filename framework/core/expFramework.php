@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -235,7 +235,7 @@ $timer = null;
 $order = null;
 
 /**
- * Main module display logic/routine
+ * Main module display logic/routine for MVC modules
  *
  * @param array $parms
  * @return bool|mixed|string
@@ -459,7 +459,7 @@ function get_common_template($view, $loc, $controllername='') {
     } elseif(file_exists($basepath)) {
         return new controllertemplate($controller,$basepath);
     } else {
-        return new controllertemplate($controller, BASE.'framework/common/views/scaffold/blank.tpl');
+        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
     }
 }
 
@@ -497,27 +497,27 @@ function get_config_templates($controller, $loc) {
     }
 
     // look for a config form for this module's current view    
-    $controller->loc->mod = expModules::getControllerClassName($controller->loc->mod);
+//    $controller->loc->mod = expModules::getControllerClassName($controller->loc->mod);
     //check to see if hcview was passed along, indicating a hard-coded module
-    if (!empty($controller->params['hcview'])) {
-        $viewname = $controller->params['hcview'];
-    } else {
-        $viewname = $db->selectValue('container', 'view', "internal='".serialize($controller->loc)."'");
-    }
-    $viewconfig = $viewname.'.config';
-    foreach ($modpaths as $path) {
-        if (file_exists($path.'/'.$viewconfig)) {
-            $fileparts = explode('_', $viewname);
-            if ($fileparts[0]=='show'||$fileparts[0]=='showall') array_shift($fileparts);
-            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' '.gt('View Configuration');
-            $module_views[$viewname]['file'] =$path.'/'.$viewconfig;
-        }
-    }
+//    if (!empty($controller->params['hcview'])) {
+//        $viewname = $controller->params['hcview'];
+//    } else {
+//        $viewname = $db->selectValue('container', 'view', "internal='".serialize($controller->loc)."'");
+//    }
+//    $viewconfig = $viewname.'.config';
+//    foreach ($modpaths as $path) {
+//        if (file_exists($path.'/'.$viewconfig)) {
+//            $fileparts = explode('_', $viewname);
+//            if ($fileparts[0]=='show'||$fileparts[0]=='showall') array_shift($fileparts);
+//            $module_views[$viewname]['name'] = ucwords(implode(' ', $fileparts)).' '.gt('View Configuration');
+//            $module_views[$viewname]['file'] =$path.'/'.$viewconfig;
+//        }
+//    }
     
     // sort the views highest to lowest by filename
     // we are reverse sorting now so our array merge
     // will overwrite property..we will run array_reverse
-    // when we're finised to get them back in the right order
+    // when we're finished to get them back in the right order
     krsort($common_views);
     krsort($module_views);
     
@@ -554,7 +554,7 @@ function find_config_views($paths=array(), $excludes=array()) {
     return $views;
 }
 
-function get_template_for_action($controller, $action, $loc) {
+function get_template_for_action($controller, $action, $loc=null) {
     // set paths we will search in for the view
     $basepath = $controller->viewpath.'/'.$action.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
@@ -596,9 +596,10 @@ function get_template_for_action($controller, $action, $loc) {
  */
 function get_action_views($ctl, $action, $human_readable) {
     // setup the controller
-    $controllerName = expModules::getControllerClassName($ctl);
-    $controller = new $controllerName();
-    
+//    $controllerName = expModules::getControllerClassName($ctl);
+//    $controller = new $controllerName();
+    $controller = expModules::getController($ctl);
+
     // set path information 
     $paths = array(
         $controller->viewpath,

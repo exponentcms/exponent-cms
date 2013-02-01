@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <div class="module shipping configure">
     <h1>{'Configure'|gettext} {$calculator->title}</h1>
-    <p>{'Use this form to configure the'|gettext} {$calculator->title}</p>
+    <blockquote>{'Use this form to configure the'|gettext} {$calculator->title}</blockquote>
     
     {form action=saveconfig}
         {control type="hidden" name="id" value=$calculator->id}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,7 +58,7 @@ if (is_readable($upgrade_dir)) {
     }
     echo '<ol>';
     while (($file = readdir($dh)) !== false) {
-        if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && ($file != '.' && $file != '..' && $file != '.svn' && substr($file, -4, 4) != '.swp')) {
+        if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php') {
             include_once($upgrade_dir . '/' . $file);
             $classname     = substr($file, 0, -4);
             /**
@@ -79,9 +79,9 @@ if (is_readable($upgrade_dir)) {
                     }
                 } else {
                     if ($upgradescript->optional) {
-                        echo '<input type="checkbox" name="'.$classname.'" value="1" class="checkbox" style="margin-top: 7px;"><label class="label " style="display:block;"><h3>'. $upgradescript->name().'</h3></label></b>';
+                        echo '<input type="checkbox" name="'.$classname.'" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>'. $upgradescript->name().'</h3></label></b>';
                     } else {
-                        echo '<input type="checkbox" name="'.$classname.'" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label " style="display:block;"><h3>'. $upgradescript->name().'</h3></label></b>';
+                        echo '<input type="checkbox" name="'.$classname.'" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>'. $upgradescript->name().'</h3></label></b>';
                     }
                     echo '<p>' . $upgradescript->description();
                 }

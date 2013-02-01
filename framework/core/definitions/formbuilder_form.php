@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,7 +40,7 @@ return array(
 		DB_FIELD_LEN=>100),
 	'is_email'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-    'is_email'=>array(
+    'is_saved'=>array(
   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'select_email'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),

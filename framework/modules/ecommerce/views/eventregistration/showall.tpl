@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,26 +13,15 @@
  *
  *}
 {css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
-{literal}
-	.showall .events {
-		overflow: hidden;
-	}
-	
-	.showall .events .event-image {
-		float: left;
-		width: 125px;
-		margin-right: 20px;
-	}
-	
-	.showall .events .event-info {
-		float: left;
-		width: 550px;
-	}
-{/literal}
+
+{/css}
+
+{css unique="event-listings1" link="`$asset_path`css/eventregistration.css"}
+
 {/css}
 
 <div class="module events showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create == true || $permissions.edit == true}
@@ -46,13 +35,12 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     <ul>
         {foreach name=items from=$page->records item=item}
             {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
                 <li>
-                    <h3><a class="link" href="{link action=showByTitle title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
+                    <h3><a class="link" href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
                         {$item->title}
                     </a></h3>
                     {if $item->isRss != true}
@@ -69,7 +57,7 @@
                     {/if}
                     <div class="events">
                         <div class="event-image">
-                             <a href="{link action=showByTitle title=$item->sef_url}">
+                             <a href="{link action=show title=$item->sef_url}">
                             {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
                             </a>
                         </div>
@@ -77,7 +65,7 @@
                         <div class="event-info">
                             <em class="date">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
                             <p>{$item->body|truncate:175:"..."}</p>
-                            {*<a href="{link action=showByTitle title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}
+                            {*<a href="{link action=show title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}
 
                         </div>
                     </div>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -38,7 +38,7 @@ if (expPermissions::check("create",$loc) ||
 	$container = container::update($_POST,$container,$loc);
 	
 	if (isset($container->id)) {
-		$db->updateObject($container,"container");
+		$ret = $db->updateObject($container,"container");
 	} else {
 		$db->insertObject($container,"container");
 	}

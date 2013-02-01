@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -68,7 +68,7 @@ class checkboxcontrol extends formcontrol {
         $html = "<div" . $divID . " class=\"control checkbox";
         $html .= (!empty($this->required)) ? ' required">' : '">';
         if (!empty($this->flip)) {
-            $html .= "<label" . $for . " class=\"label\">" . $label . "</label>";
+            $html .= "<label" . $for . " class=\"label\" style=\"display:inline;\">" . $label . "</label>";
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
 //            $html .= "</td>";
@@ -76,7 +76,7 @@ class checkboxcontrol extends formcontrol {
         } else {
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
 //            $html .= "<td class=\"input\" nowrap>";
-            $html .= "<label class=\"label\" style=\"background: transparent;\";></label>";
+            $html .= "<label class=\"label spacer\" style=\"background: transparent;\";></label>";
 //            $html .= "</td><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             if (!empty($label) && $label != ' ') {
@@ -196,7 +196,7 @@ class checkboxcontrol extends formcontrol {
             $object->required    = false;
         }
         if (empty($object->description)) $object->description = "";
-        $form->register("identifier", gt('Identifier'), new textcontrol($object->identifier));
+        $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("default", gt('Default'), new checkboxcontrol($object->default, false));

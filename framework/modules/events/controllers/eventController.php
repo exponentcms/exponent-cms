@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,14 +34,14 @@ class eventController extends expController {
         'files',
         'pagination',
         'rss',
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() {
         return "Events";
     }
 
     static function description() {
-        return "Allows managing events and schedules.";
+        return "Manage events and schedules, and optionally publish them.";
     }
 
     static function author() {
@@ -89,14 +89,17 @@ class eventController extends expController {
                 break;
             case 'showall_Monthly List':
             case 'showall_List':
+            case 'monthlist':
                 $viewtype = "byday";
                 $viewrange = "month";
                 break;
             case 'showall_Week':
+            case 'week':
                 $viewtype = "byday";
                 $viewrange = "week";
                 break;
             case 'showall_Day':
+            case 'day':
                 $viewtype = "byday";
                 $viewrange = "day";
                 break;
@@ -105,6 +108,7 @@ class eventController extends expController {
                 $viewrange = "upcoming";
                 break;
             case 'showall':
+            case 'month':
                 $viewtype = "monthly";
                 break;
             default :
@@ -142,7 +146,6 @@ class eventController extends expController {
                     "prevmonth"   => $prevmonth,
                     "thismonth"   => $timefirst,
                     "nextmonth"   => $nextmonth,
-                    "src"   => $this->loc->src
                 ));
                 break;
             case "byday":
@@ -278,15 +281,13 @@ class eventController extends expController {
                     }
                     $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
                 }
-                // Grab day counts (deprecated, handled by the date function)
-                // $endofmonth = expDateTime::endOfMonthDay($time);
+                // Grab day counts
                 $endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
                 if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $regcolor);
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
-                    #$monthly[$week][$i] = $db->selectObjects("event","location_data='".serialize($this->loc)."' AND (eventstart >= $start AND eventend <= " . ($start+86399) . ") AND approved!=0");
                     $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
                     $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['featured_only']) ? true : false);
                     if (!empty($extitems[$start])) $monthly[$week][$i] = array_merge($extitems[$start], $monthly[$week][$i]);
@@ -375,7 +376,6 @@ class eventController extends expController {
                         //					$moreevents = count($dates) < $db->countObjects("eventdate",$locsql." AND date >= $day");
                         break;
                     case "past":
-//                        $dates = $db->selectObjects("eventdate", $locsql . " AND date < $day ORDER BY date DESC ");
                         $dates = $ed->find("all", $locsql . " AND date < $day ORDER BY date DESC ");
                         //					$moreevents = count($dates) < $db->countObjects("eventdate",$locsql." AND date < $day");
                         $sort_asc = false;
@@ -467,6 +467,7 @@ class eventController extends expController {
         expHistory::set('viewable', $this->params);
         if (!empty($this->params['date_id'])) {
             $eventdate = new eventdate($this->params['date_id']);
+            $eventdate->event = new event($eventdate->event_id);
         } else {
             $event = new event($this->params['id']);
             $eventdate = new eventdate($event->eventdate[0]->id);
@@ -485,7 +486,7 @@ class eventController extends expController {
     function edit() {
         parent::edit();
         $allforms = array();
-        $allforms[''] = gt('Disallow Feedback');
+        $allforms[""] = gt('Disallow Feedback');
         assign_to_template(array(
             'allforms'     => array_merge($allforms, expCore::buildNameList("forms", "event/email", "tpl", "[!_]*")),
             'checked_date' => !empty($this->params['date_id']) ? $this->params['date_id'] : null,
@@ -542,6 +543,32 @@ class eventController extends expController {
         }
         expHistory::back();
     }
+
+    /**
+   	 * get the metainfo for this module
+   	 * @return array
+   	 */
+   	function metainfo() {
+       global $router;
+
+       $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+       // look for event date_id which expController::metainfo won't detect
+//       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
+       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($router->params['id']) && isset($router->params['date_id'])) {
+           // look up the record.
+//           $object = new eventdate(intval($_REQUEST['date_id']));
+           $object = new eventdate(intval($router->params['date_id']));
+           // set the meta info
+           if (!empty($object)) {
+               $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
+               $metainfo['keywords'] = empty($object->event->meta_keywords) ? SITE_KEYWORDS : $object->event->meta_keywords;
+               $metainfo['description'] = empty($object->event->meta_description) ? SITE_DESCRIPTION : $object->event->meta_description;
+           }
+           return $metainfo;
+       } else {
+           return parent::metainfo();
+       }
+   }
 
     function send_feedback() {
         $success = false;
@@ -745,45 +772,19 @@ class eventController extends expController {
                         }
                     }
 
+                    $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
+                    if ($items[$i]->is_cancelled) $body = gt('This Event Has Been Cancelled') . ' - ' . $body;
+                    $body = str_replace(array("\r"), "", $body);
+                    $body = str_replace(array("&#160;"), " ", $body);
+                    $body = expString::convertSmartQuotes($body);
                     if (!isset($this->params['style'])) {
                         // it's going to Outlook so remove all formatting from body text
-                        //		$body = chop(strip_tags(str_replace(array("<br />","<br>","br/>","\r","\n"),"\r\n",$items[$i]->body)));
-                        //		$body = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\r",$items[$i]->body)));
-                        //		$body = str_replace(array("\r","\n"), "=0D=0A=", $body);
-                        $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
-                        $body = str_replace(array("\r"), "", $body);
-                        $body = str_replace(array("&#160;"), " ", $body);
-                        $body = expString::convertSmartQuotes($body);
                         $body = quoted_printable_encode($body);
-                        //		$body = str_replace(array("\n"), "=0D=0A", $body);
-
-                        // $body = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\r",$items[$i]->body)));
-                        // $body = wordwrap($body);
-                        // $body = str_replace("\n","\n  ",$body);
-
-                        //		$body = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\r",$items[$i]->body)));
-                        //		$body = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$items[$i]->body)));
-                        //		$body = str_replace(array("\r","\n"), "=0D=0A=", $body);
-                        //		$body = str_replace(array("\r"), "=0D=0A=", $body);
-                        //		$body = str_replace(array("\r","\n"), "\r\n", $body);
-
                     } elseif ($this->params['style'] == "g") {
                         // It's going to Google (doesn't like quoted-printable, but likes html breaks)
-                        $body = $items[$i]->body;
-                        $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
-                        //				$body = chop(strip_tags($items[$i]->body,"<br><p>"));
-                        $body = str_replace(array("\r"), "", $body);
-                        $body = str_replace(array("&#160;"), " ", $body);
-                        $body = expString::convertSmartQuotes($body);
                         $body = str_replace(array("\n"), "<br />", $body);
                     } else {
                         // It's going elsewhere (doesn't like quoted-printable)
-                        $body = $items[$i]->body;
-                        $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
-                        //				$body = chop(strip_tags($items[$i]->body,"<br><p>"));
-                        $body = str_replace(array("\r"), "", $body);
-                        $body = str_replace(array("&#160;"), " ", $body);
-                        $body = expString::convertSmartQuotes($body);
                         $body = str_replace(array("\n"), " -- ", $body);
                     }
                     $title = $items[$i]->title;
@@ -795,7 +796,6 @@ class eventController extends expController {
                     if ($title) {
                         $msg .= "SUMMARY:$title\n";
                     }
-                    //			if($body) { $msg .= "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:".quoted_printable_encode($body)."\n";}
                     if ($body) {
                         $msg .= "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . $body . "\n";
                     }
@@ -1001,7 +1001,7 @@ class eventController extends expController {
                 $evs[$key]->date_id = $edate->id;
                 if (!empty($event->expCat)) {
                     $catcolor = empty($event->expCat[0]->color) ? null : trim($event->expCat[0]->color);
-                    if (substr($catcolor,0,1)=='#') $catcolor = '" style="color:'.$catcolor.';';
+//                    if (substr($catcolor,0,1)=='#') $catcolor = '" style="color:'.$catcolor.';';
                     $evs[$key]->color = $catcolor;
                 }
             }
@@ -1117,7 +1117,11 @@ class eventController extends expController {
                 $endDay = date('j', $enddate);
             }
             $eventArray = $v->selectComponents($startYear, $startMonth, $startDay, $endYear, $endMonth, $endDay, 'vevent');
+            // Set the timezone to GMT
+//            @date_default_timezone_set('GMT');
             $tzarray = getTimezonesAsDateArrays($v);
+            // Set the default timezone
+//            @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
             $url = 0;
             if (!empty($eventArray)) foreach ($eventArray as $year => $yearArray) {
                 if (!empty($yearArray)) foreach ($yearArray as $month => $monthArray) {
@@ -1132,12 +1136,20 @@ class eventController extends expController {
                             $dtstart = $vevent->getProperty('dtstart', false, true);
                             $dtend = $vevent->getProperty('dtend', false, true);
                             $tzoffsets = array();
+                            $date_tzoffset = 0;
                             if (!empty($tzarray)) {
+                                $ourtzoffsets = -(iCalUtilityFunctions::_tz2offset(date('O',time())));
+                                // Set the timezone to GMT
+//                                @date_default_timezone_set('GMT');
                                 if (!empty($dtstart['params']['TZID'])) $tzoffsets = getTzOffsetForDate($tzarray, $dtstart['params']['TZID'], $dtstart['value']);
+                                // Set the default timezone
+//                                @date_default_timezone_set(DISPLAY_DEFAULT_TIMEZONE);
+                                if (isset($tzoffsets['offsetSec'])) $date_tzoffset = $ourtzoffsets + $tzoffsets['offsetSec'];
                             }
                             if (empty($tzoffsets)) {
-                                $tzoffsets['offsetSec'] = -(iCalUtilityFunctions::_tz2offset(date('O',iCalUtilityFunctions::_date2timestamp($dtstart['value']))));
+                                $date_tzoffset = -(iCalUtilityFunctions::_tz2offset(date('O',iCalUtilityFunctions::_date2timestamp($dtstart['value']))));
                             }
+                            //FIXME we must have the real timezone offset for the date by this point
                             if ($dtstart['value']['day'] != substr($thisday[2], 0, 2)) {  //FIXME this is for the google ical feed which is bad!
                                 $dtst = strtotime($currdate[1]);
                                 $dtst1 = iCalUtilityFunctions::_timestamp2date($dtst);
@@ -1150,11 +1162,11 @@ class eventController extends expController {
                                 $dtend['value']['year'] = $dtet1['year'];
                                 $dtend['value']['month'] = $dtet1['month'];
                                 $dtend['value']['day'] = $dtet1['day'];
-                                $tzoffsets['offsetSec'] = 0;
+                                $date_tzoffset = 0;
                             }
                             if (!empty($dtstart['value']['hour'])) {
-                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']) - $tzoffsets['offsetSec']);
-                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']) - $tzoffsets['offsetSec']);
+                                $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']) - $date_tzoffset);
+                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']) - $date_tzoffset);
                                 $extevents[$eventdate][$dy] = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate->date = $eventdate;
@@ -1174,7 +1186,7 @@ class eventController extends expController {
 //                                    if (date('d',$eventdate) != date('d',$eventend)) {
                                         $yesterday = true;
                                     } else {
-                                        $extevents[$eventdate][$dy]->eventstart = ($dtstart['value']['hour'] * 3600) + ($dtstart['value']['min'] * 60) - $tzoffsets['offsetSec'];
+                                        $extevents[$eventdate][$dy]->eventstart = ($dtstart['value']['hour'] * 3600) + ($dtstart['value']['min'] * 60) - $date_tzoffset;
                                         if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventstart += 3600; // adjust for daylight savings time
                                     }
                                 }
@@ -1199,7 +1211,7 @@ class eventController extends expController {
 //                                if ((date('d',$eventend) != substr($thisday[2], 0, 2))) {
 //                                    $yesterday = true;
 //                                } else {
-                                $extevents[$eventdate][$dy]->eventend = ($dtend['value']['hour'] * 3600) + ($dtend['value']['min'] * 60) - $tzoffsets['offsetSec'];
+                                $extevents[$eventdate][$dy]->eventend = ($dtend['value']['hour'] * 3600) + ($dtend['value']['min'] * 60) - $date_tzoffset;
                                 if (date("I", $eventdate)) $extevents[$eventdate][$dy]->eventend += 3600; // adjust for daylight savings time
 //                                }
                             }
@@ -1208,8 +1220,10 @@ class eventController extends expController {
 
                             // dtstart required, one occurrence, (orig. start date)
                             $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
-                            $extevents[$eventdate][$dy]->body = str_replace(array('==0A','=0A'),' <br>',nl2br($vevent->getProperty('description')));
-
+                            $body = nl2br(str_replace("\\n"," <br>\n",$vevent->getProperty('description')));
+                            $body = str_replace("\n"," <br>\n",$body);
+                            $body = str_replace(array('==0A','=0A')," <br>\n",$body);
+                            $extevents[$eventdate][$dy]->body = $body;
                             $extevents[$eventdate][$dy]->location_data = 'icalevent' . $url;
                             $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;
                             if (!$yesterday) {
@@ -1223,6 +1237,36 @@ class eventController extends expController {
             }
         }
         return $extevents;
+    }
+
+    /**
+     * function to build a control requested via ajax
+     * we the html just like the control smarty function
+     */
+    public function buildControl() {
+        $control = new colorcontrol();
+        if (!empty($this->params['value'])) $control->value = $this->params['value'];
+        if ($this->params['value'][0] != '#') $this->params['value'] = '#' . $this->params['value'];
+        $control->default = $this->params['value'];
+        if (!empty($this->params['hide'])) $control->hide = $this->params['hide'];
+        if (isset($this->params['flip'])) $control->flip = $this->params['flip'];
+        $this->params['name'] = !empty($this->params['name']) ? $this->params['name'] : '';
+        $control->name  = $this->params['name'];
+        $this->params['id'] = !empty($this->params['id']) ? $this->params['id'] : '';
+        $control->id  = isset($this->params['id']) && $this->params['id'] != "" ? $this->params['id'] : "";
+        //echo $control->id;
+        if (empty($control->id)) $control->id = $this->params['name'];
+        if (empty($control->name)) $control->name = $this->params['id'];
+
+        // attempt to translate the label
+        if (!empty($this->params['label'])) {
+            $this->params['label'] = gt($this->params['label']);
+        } else {
+            $this->params['label'] = null;
+        }
+        echo $control->toHTML($this->params['label'], $this->params['name']);
+//        $ar = new expAjaxReply(200, gt('The control was created'), json_encode(array('data'=>$code)));
+//        $ar->send();
     }
 
 }

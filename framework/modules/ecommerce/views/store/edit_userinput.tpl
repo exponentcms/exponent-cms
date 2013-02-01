@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +16,7 @@
 {if $record->parent_id == 0}
 	<h2>{'User Input Fields'|gettext}</h2>
 	{control type="hidden" name="tab_loaded[userinput]" value=1} 
-	{'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}{br}
+	<blockquote>{'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}</blockquote>
 	{control class="userInputToggle" type="checkbox" name="user_input_use[0]"  label="Show User Field 1"|gettext value=1 checked=$record->user_input_fields.0.use}
 	<div>
 		<table>

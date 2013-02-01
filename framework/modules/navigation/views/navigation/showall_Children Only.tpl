@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,17 +14,15 @@
  *}
 
 <div class="module navigation children-only">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
     <h2>{$current->name}</h2>
     <ul>
-        {*{assign var=islastdepth value="false"}*}
         {$islastdepth="false"}
         {foreach from=$sections item=section}
             {if $section->parent == $current->id}
-                {*{assign var=islastdepth value="true"}*}
                 {$islastdepth="true"}
                 <li{if $section->id==$current->id || $isparent==1} class="current"{/if}>
                     {if $section->active == 1}

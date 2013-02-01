@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,7 @@ class companyController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
 
     static function displayname() { return gt("Company Listings"); }
-    static function description() { return gt("This module shows company listings"); }
+    static function description() { return gt("Displays company listings"); }
 	static function hasSources() { return false; }
 	
 	function showall() {
@@ -116,7 +116,8 @@ class companyController extends expController {
             'defaultSort'=>$defaultSort
         ));
     }
-    
+
+    //TODO this is a misnomer as we only accept an id NOT a title and duplicates the show() method
     function showByTitle()
     {
         global $db, $user, $router;

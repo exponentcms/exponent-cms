@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -65,6 +65,7 @@ class radiocontrol extends formcontrol {
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .="</td>";
         }
+        if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"control-desc\">".$this->description."</div></td>";
         $html .= "</tr></table></div>";
 
         return $html;

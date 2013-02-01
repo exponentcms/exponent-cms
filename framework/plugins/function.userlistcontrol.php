@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,7 +34,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_userlistcontrol($params, &$smarty) {
-    echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>';
+//    echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>';
 
     global $db;
     $users = $db->selectObjects("user", null, "username");
@@ -57,7 +57,9 @@ function smarty_function_userlistcontrol($params, &$smarty) {
         }
     }
 
-    $control = new listbuildercontrol($selectedusers, $allusers, 5);
+    $size = (isset($params['size'])) ? $params['size'] : 5;
+    $control = new listbuildercontrol($selectedusers, $allusers, $size);
+    if (!empty($params['class'])) $control->class = $params['class'];
     $name    = isset($params['name']) ? $params['name'] : "userlist";
     $label   = isset($params['label']) ? $params['label'] : "";
 //    echo $control->controlToHTML($name);

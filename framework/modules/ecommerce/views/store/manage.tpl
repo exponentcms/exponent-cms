@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,7 @@
 			{/if}
             {if $permissions.manage == 1}
                 {icon controller=storeCategory action=manage text="Manage Categories"|gettext}
-                {icon class=configure controller=store action=config text="Configure Store"|gettext}
+                {icon class=configure controller=store action=config text="Configure Store"|gettext}{br}
                 {icon class=report controller=store action=nonUnicodeProducts text="Show Non-Unicode Products"|gettext}
                 {icon class=import controller=store action=uploadModelAliases text="Upload Model Aliases"|gettext}
             {/if}
@@ -37,7 +37,7 @@
         <table id="prods" class="exp-skin-table" style="width:95%">
             <thead>
                 <tr>
-                    <th></th>
+                    {*<th></th>*}
                     {$page->header_columns}
                     <th>{'Action'|gettext}</th>
                 </tr>
@@ -45,27 +45,28 @@
             <tbody>
                 {foreach from=$page->records item=listing name=listings}
                     <tr class="{cycle values="odd,even"}">
-                        <!--td>{img file_id=$listing->expFile.images[0]->id square=60}</td-->
-                        <td>
-                            {if $listing->product_type == "product"}
-                                <a href={link controller=store action=showByTitle title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a>
-                            {else}
-                                {img file_id=$listing->expFile.mainimage[0]->id square=true h=50}
-                            {/if}
-                        </td>
+                        {*<td>{img file_id=$listing->expFile.images[0]->id square=60}</td>*}
                         <td>{$listing->product_type}</td>
-                        <td>{$listing->model|default:"N/A"}</td>
                         <td>
-                            {if $listing->product_type == "product"}
-                                <a href={link controller=store action=showByTitle title=$listing->sef_url}>{$listing->title}</a>
+                            {if $listing->product_type == "eventregistration"}
+                                <a href={link controller=eventregistration action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
                             {else}
-                                {$listing->title}
+                                <a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
+                                {*{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}*}
                             {/if}
                         </td>
+                        <td>{$listing->model|default:"N/A"}</td>
+                        {*<td>*}
+                            {*{if $listing->product_type == "product"}*}
+                                {*<a href={link controller=store action=show title=$listing->sef_url}>{$listing->title}</a>*}
+                            {*{else}*}
+                                {*{$listing->title}*}
+                            {*{/if}*}
+                        {*</td>*}
                         <td>
-                            {if $listing->product_type == "product"}
+                            {*{if $listing->product_type == "product"}*}
                                 ${$listing->base_price|number_format:2}
-                            {/if}
+                            {*{/if}*}
                         </td>
                         <td>
                             {permissions}
@@ -77,7 +78,7 @@
                                         {icon action=delete record=$listing title="Delete `$listing->title`"}
                                     {/if}
                                     {if $permissions.edit == 1 && $listing->product_type == "product"}
-                                        {icon action=copyProduct img="copy.png" title="Copy `$listing->title` " record=$listing}
+                                        {icon class=copy action=copyProduct title="Copy `$listing->title` " record=$listing}
                                     {/if}
                                 </div>
                             {/permissions}

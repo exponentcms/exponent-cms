@@ -1,6 +1,6 @@
 .flyout {
     position                          : fixed;
-    z-index                           : 10;
+    z-index                           : 999;
     top                               : 30px;
     right                             : 0;
     /*display: none;*/
@@ -26,37 +26,6 @@
     color   : #cccccc;
 }
 
-.flyout a.profile, .flyout a.profile:visited, .flyout a.profile:hover {
-    padding-left : 25px;
-    padding-left : 25px;
-    background   : url(../../../../modules/administration/assets/images/admintoolbar/editpage.png) no-repeat 3px 50%;
-}
-
-.flyout a.password, .flyout a.password:visited, .flyout a.password:hover {
-    padding-left : 25px;
-    background   : url(../../../../core/assets/images/lock.png) no-repeat 3px 50%;
-}
-
-.flyout a.logout, .flyout a.logout:visited, .flyout a.logout:hover {
-    padding-left : 25px;
-    background   : url(../../../../modules/administration/assets/images/admintoolbar/logout.png) no-repeat 3px 50%;
-}
-
-.flyout a.cart, .flyout a.cart:visited, .flyout a.cart:hover {
-    padding-left : 25px;
-    background   : url(../../../../modules/ecommerce/assets/images/view_cart.png) no-repeat 3px 50%;
-}
-
-.flyout a.preview_on, .flyout a.preview_on:visited, .flyout a.preview_on:hover {
-    padding-left : 25px;
-    background   : url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
-}
-
-.flyout a.preview_off, .flyout a.preview_off:visited, .flyout a.preview_off:hover {
-    padding-left : 25px;
-    background   : url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
-}
-
 .flyout a, .flyout a:visited {
     margin          : 0;
     padding         : 0;
@@ -75,7 +44,7 @@
 
 a.triggerlogin {
     position                           : fixed;
-    z-index                            : 10;
+    z-index                            : 999;
     text-decoration                    : none;
     top                                : 30px;
     right                              : 0;

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,7 +48,7 @@
  * 
  * <b>Example: Return to a waypoint (automagically)</b>
  * 
- * This example show how to let expHistory::back() automagically determine where to route the user after an action completes
+ * This example shows how to let expHistory::back() automagically determine where to route the user after an action completes
  * 
  * <code>
  * public function delete() {
@@ -58,8 +58,8 @@
  * }     
  * </code>
  * 
- * <b>Example: Return to a waypoint (manually)</b>
- * This example show how use expHistory::returnTo() to manually route the user after an 
+ * <b>Example: Return to a waypoint 'type' (manually)</b>
+ * This example shows how use expHistory::returnTo() to manually route the user after an
  * action completes. In this example the user will be routed to the last form he/she was on.
  * 
  * <code>
@@ -170,7 +170,10 @@ class expHistory {
             $diff = array();
             
             // if this url is the exact same as the last for this type we won't save it..that way refresh won't fill up our history
-            if ($size > 0) $diff = @array_diff_assoc($router->params, $this->history[$url_type][$size-1]['params']);
+            if ($size > 0) {
+                $diff = @array_diff_assoc($router->params, $this->history[$url_type][$size-1]['params']);
+                if (!$diff && (count($router->params) != count($this->history[$url_type][$size-1]['params']))) $diff = true;;
+            }
       	    if (!empty($diff) || $size == 0) $this->history[$url_type][] = $url;
       	    
       	    // save the "lasts" information

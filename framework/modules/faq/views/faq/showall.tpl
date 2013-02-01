@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 
 <div class="module faq showall">
     <a name="top"></a>
-    {if !$config.hidemoduletitle}<h1>{$moduletitle|default:"Frequently Asked Questions"|gettext}</h1>{/if}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle|default:"Frequently Asked Questions"|gettext}</h1>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create == 1}
@@ -41,10 +41,9 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {if $config.allow_user_questions}
-        <a href="{link action="ask_question"}">{'Ask a Question'|gettext}</a>
+		{icon class="helplink" action="ask_question" text='Ask a Question'|gettext}
     {/if}
     {if $config.use_toc}
         {if $config.usecategories}
@@ -70,9 +69,6 @@
             <a name="cat{$catid}"></a>
             <h3 class="{$cat->color}">{$cat->name}</h3>
             {foreach name=a from=$cat->records item=qna}
-                {*{assign var=qna_found value=0}*}
-                {*{math equation="x-1" x=$qna->rank assign=prev}*}
-                {*{math equation="x+1" x=$qna->rank assign=next}*}
                 <div class="item">
                     <a name="cat{$catid}q{$qna->rank}"></a>
                     <h4>Q{$smarty.foreach.a.iteration}. {$qna->question}</h4>
@@ -94,7 +90,6 @@
                         {$qna->answer}
                     </div>
                 </div>
-                {*{assign var=qna_found value=1}*}
             {foreachelse}
                 {if ($config->enable_categories == 1 && $catid != 0) || ($config->enable_categories==0)}
                     <div class="item">

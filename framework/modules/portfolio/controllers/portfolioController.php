@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -31,10 +31,10 @@ class portfolioController extends expController {
         'comments',
         'ealerts',
         'rss'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Portfolio"); }
-    static function description() { return gt("This module allows you to show off your work portfolio style."); }
+    static function description() { return gt("Display a portfolio or listing."); }
     static function isSearchable() { return true; }
 
     public function showall() {

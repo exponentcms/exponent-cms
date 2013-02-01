@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,7 +42,8 @@ class expTemplate {
 		// Something is really screwed up.
 		if ($viewfilepath == false) {
 			// Fall back to something that won't error.
-			return BASE . 'framework/core/views/viewnotfound.tpl';
+//			return BASE . 'framework/core/views/viewnotfound.tpl';
+            return TEMPLATE_FALLBACK_VIEW;
 		}
 		//return first match
 		return array_shift($viewfilepath);
@@ -155,7 +156,7 @@ class expTemplate {
 	 * @return array
 	 * @node Subsystems:Template
 	 */
-	public static function listModuleViews($module) {  //FIXME only used by 1) containermodule edit action for OS modules
+	public static function listModuleViews($module) {  //FIXME only used by container2 edit action for OS modules
 		return expCore::buildNameList("modules", $module, "tpl", "[!_]*");
 	}
 
@@ -173,6 +174,7 @@ class expTemplate {
 	 * @node Undocumented
 	 * @return array
 	 */
+    //FIXME we need to also look for custom & jquery controls
 	public static function listControlTypes() {
 		$cdh = opendir(BASE."framework/core/subsystems/forms/controls");
 		$list = array();

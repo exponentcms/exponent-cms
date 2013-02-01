@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -16,7 +16,7 @@
 ##################################################
 
 /**
- * This is the class expTagController
+ * This is the class expRatingController
  *
  * @package Core
  * @subpackage Controllers

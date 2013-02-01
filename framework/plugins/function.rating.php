@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -37,7 +37,7 @@ function smarty_function_rating($params,&$smarty) {
     
     expCSS::pushToHead(array(
 	    "unique"=>'ratings',
-	    "link"=>PATH_RELATIVE."framework/core/assets/css/ratings.css",
+        "corecss"=>"ratings",
 	    )
 	);
 	
@@ -147,7 +147,7 @@ function smarty_function_rating($params,&$smarty) {
         };
         function onSuccess(id,response,args) {
             messages = Y.JSON.parse(response.responseText);
-//            alert(messages.replyText);
+            alert(messages.replyText);
         };
         function onFailure(id,response,args) {
             alert('woops, something is broke...');
@@ -178,9 +178,9 @@ function smarty_function_rating($params,&$smarty) {
                     myratings.all('.u-star').removeClass('selected');
                 },
                 'mouseleave' : function(e) {
-                    if (myrating!='') {
+                    if (myrating != 0) {
 //                        myratings.one('.u-star[rel='+myrating+']').addClass('selected').ancestors('.u-star').addClass('selected');
-                        myratings.one('u-star'+myrating).addClass('selected').ancestors('.u-star').addClass('selected');
+                        myratings.one('#u-star'+myrating).addClass('selected').ancestors('.u-star').addClass('selected');
                     }
                 }
             });

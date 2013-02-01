@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,13 +16,11 @@
 <div id="editcategory" class="storecategory edit">
 	<div class="form_header">
         <h1>{'Edit Store Category'|gettext}</h1>
-        <p>{'Complete and save the form below to configure this store category'|gettext}</p>
+        <blockquote>{'Complete and save the form below to configure this store category'|gettext}</blockquote>
 	</div>
 	{if $node->id == ""}
-		{*{assign var=action value=create}*}
         {$action=create}
 	{else}
-		{*{assign var=action value=update}*}
         {$action=update}
 	{/if}
     <div id="mainform">

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,9 +14,8 @@
  *}
 
 <div class="module store showall-subcategories">
-    {*{assign var=depth value=0}*}
     {$depth=0}
-        {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
         {permissions}
         <div class="module-actions">
             {if $permissions.create == true || $permissions.edit == true}
@@ -31,14 +30,12 @@
         {if $config.moduledescription != ""}
             {$config.moduledescription}
         {/if}
-        {*{assign var=myloc value=serialize($__loc)}*}
         {$myloc=serialize($__loc)}
 
     <div id="catnav">
         <ul>
             <li><a href="{link controller=store action=showall}">{'Browse all Products'|gettext}</a></li>
             {foreach from=$ancestors item=ancestor name=path}
-                {*{math equation="x*10" x=$smarty.foreach.path.iteration assign=depth} *}
                 {$depth=$smarty.foreach.path.iteration*10}
                 <li style="margin-left: {$depth}px">
                     {if $ancestor->id != $category->id}
@@ -48,7 +45,6 @@
                     {/if}
                 </li>
                 {/foreach}      
-            {*{math equation="x+10" x=$depth assign=childdepth}   *}
             {$childdepth=$depth+10}
             {foreach from=$categories item=category}
                 <li style="margin-left: {$childdepth}px">

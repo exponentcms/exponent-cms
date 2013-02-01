@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -162,8 +162,8 @@
     gt('Show all Donation Causes');
 
 // other phrases
-    gt('Sectional');
-    gt('Global');
+    gt('sectional');
+    gt('global');
     gt('Merge');
     gt('Accessible only to Web Server');
     gt('World Readable and Writable');

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -44,6 +44,7 @@ class autocompletecontrol extends formcontrol {
             </div>
         ';
         
+//FIXME convert to yui3
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-animation','yui2-autocomplete','yui2-connection','yui2-datasource', function(Y) {
             YAHOO = Y.YUI2;

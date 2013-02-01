@@ -60,8 +60,7 @@
         {if $product->main_image_functionality=="iws"}
             {* Image with swatches *}
             {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
-            {*{assign value=$product->expFile.imagesforswatches.0 var=mainimg}*}
-            {$product->expFile.imagesforswatches.0=mainimg}
+            {$mainimg=$product->expFile.imagesforswatches.0}
         {else}
             {if $config.enable_lightbox}
                 <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
@@ -70,8 +69,7 @@
             {if $config.enable_lightbox}
                 </a>
             {/if}
-            {*{assign value=$product->expFile.mainimage.0 var=mainimg}*}
-            {$product->expFile.mainimage.0=mainimg}
+            {$mainimg=$product->expFile.mainimage.0}
         {/if}
         
         {if $product->expFile.images[0]->id}
@@ -543,7 +541,6 @@
 
                  {if $smarty.foreach.listings.first || $open_row}
                      <div class="product-row">
-                     {*{assign var=open_row value=0}*}
                      {$open_row=0}
                  {/if}
 
@@ -552,7 +549,6 @@
 
                  {if $smarty.foreach.listings.last || $ipr%$config.images_per_row==0}
                      </div>
-                     {*{assign var=open_row value=1}*}
                      {$open_row=1}
                  {/if}
                  {counter name="ipr"}

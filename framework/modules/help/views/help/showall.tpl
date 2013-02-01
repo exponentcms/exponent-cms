@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div class="module help showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         {if $permissions.create == 1}
             {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
@@ -32,7 +32,6 @@
    		{$config.moduledescription}
    	{/if}
     <dl>
-    {*{assign var=myloc value=serialize($__loc)}*}
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=doc name=docs}
         <div class="item">
@@ -54,6 +53,7 @@
                         {/if}
                     {/if}
                     {icon action=edit record=$doc}
+                    {icon action=copy record=$doc}
                 {/if}
                 {if $permissions.delete == 1}
                     {icon action=delete record=$doc}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -83,10 +83,10 @@ if (isset($_REQUEST['upgrade'])) {
 	<form action="index.php?page=final" method="POST">
 		<input type="hidden" name="lang" value="<?php echo LANGUAGE; ?>" />
 		<div class="text-control control ">
-			<label class="label"><?php echo gt("Username").':'; ?></label><input type="text" class="text " size="25" value="" name="username">
+			<label class="label"><?php echo gt("Username").':'; ?></label><input type="text" class="text " size="25" value="" name="username" required=1>
 		</div>
 		<div class="password-control control ">
-			<label class="label"><?php echo gt("Password").':'; ?></label><input type="password" class="password " size="25" value="" name="password">
+			<label class="label"><?php echo gt("Password").':'; ?></label><input type="password" class="password " size="25" value="" name="password" required=1>
 		</div>
         <div class="formcontrol radiogroup">
             <span class="label"><?php echo gt('And'); ?>:</span>

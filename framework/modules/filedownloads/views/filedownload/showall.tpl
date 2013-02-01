@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,9 +20,9 @@
 {/if}
 
 <div class="module filedownload showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
     {rss_link}
-    {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create == 1}
@@ -46,41 +46,70 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    {*{assign var=myloc value=serialize($__loc)}*}
-    {$myloc=serialize($__loc)}
-    {pagelinks paginate=$page top=1}
-    {*{assign var="cat" value="bad"}*}
-    {$cat="bad"}
-    {foreach from=$page->records item=file name=files}
-        {if $cat !== $file->expCat[0]->id && $config.usecategories}
-            <a href="{link action=showall src=$page->src group=$file->expCat[0]->id}" title='View this group'|gettext><h2 class="category">{if $file->expCat[0]->title!= ""}{$file->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2></a>
-        {/if}
-        {include 'filedownloaditem.tpl'}
-        {*{assign var="cat" value=$file->expCat[0]->id}*}
-        {$cat=$file->expCat[0]->id}
-    {/foreach}
-    {pagelinks paginate=$page bottom=1}
+    <div id="filelist">
+        {include 'filelist.tpl'}
+    </div>
 </div>
 
 {if $config.show_player}
-    {script unique="filedownload" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
-    {literal}
-    flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
-        {
-    		wmode: 'transparent',
-    		clip: {
-    			autoPlay: false,
-    			},
-            plugins:  {
-                controls: {
-                    play: true,
-                    scrubber: true,
-                    fullscreen: false,
-                    autoHide: false
-                }
-            }
-        }
-    );
-    {/literal}
+    {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
     {/script}
 {/if}
+
+{script unique="filedownload" yui3mods="1"}
+{literal}
+
+YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+    var filelist = Y.one('#filelist');
+    var cfg = {
+    			method: "POST",
+    			headers: { 'X-Transaction': 'Load Fileitems'},
+    			arguments : { 'X-Transaction': 'Load Fileitems'}
+    		};
+
+    src = '{/literal}{$__loc->src}{literal}';
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=filedownload&action=showall&view=filelist&ajax_action=1&src="+src;
+
+	var handleSuccess = function(ioId, o){
+//		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "fileitems nav");
+
+        if(o.responseText){
+            filelist.setContent(o.responseText);
+            filelist.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+            filelist.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
+        } else {
+            Y.one('#filelist.loadingdiv').remove();
+        }
+	};
+
+	//A function handler to use for failed requests:
+	var handleFailure = function(ioId, o){
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "fileitems nav");
+	};
+
+	//Subscribe our handlers to IO's global custom events:
+	Y.on('io:success', handleSuccess);
+	Y.on('io:failure', handleFailure);
+
+    filelist.delegate('click', function(e){
+        e.halt();
+        cfg.data = "page="+e.currentTarget.get('rel');
+        var request = Y.io(sUrl, cfg);
+        filelist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
+    }, 'a.pager');
+});
+{/literal}
+{/script}

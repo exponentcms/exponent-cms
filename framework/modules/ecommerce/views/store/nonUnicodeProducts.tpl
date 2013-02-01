@@ -14,7 +14,7 @@
  *}
 
 <h1>{'Products with Data Issues'|gettext}</h1>
-<p>{'There are'|gettext} {$count} {'products that have non-unicode characters in it.'|gettext}</p>
+<blockquote>{'There are'|gettext} {$count} {'products that have non-unicode characters in it.'|gettext}</blockquote>
 
  <div id="products">
 	<table id="prods" class="exp-skin-table" style="width:95%">
@@ -30,7 +30,7 @@
             {foreach from=$products item=listing name=listings}
                 <tr class="{cycle values="odd,even"}">
                     <td>{$listing.model|default:"N/A"}</td>
-                    <td><a href={link controller=store action=showByTitle title=$listing.sef_url}>{$listing.title}</a></td>
+                    <td><a href={link controller=store action=show title=$listing.sef_url}>{$listing.title}</a></td>
                     <td>{$listing.nonunicode}</td>
                     <td>
                         {permissions}

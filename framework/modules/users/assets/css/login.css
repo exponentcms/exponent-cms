@@ -1,19 +1,55 @@
 .login .box {
-    display:inline-block;
-    *display:inline;
-    zoom:1;
-    vertical-align:top;
-    width:45%;
-    padding:5px;
-    margin:5px;
-    border-right:1px dotted #aaa;
+    display        : inline-block;
+    *display       : inline;
+    zoom           : 1;
+    vertical-align : top;
+    width          : 45%;
+    padding        : 5px;
+    margin         : 5px;
+    border-right   : 1px dotted #aaa;
 }
 
 .login .box.two {
-   border:0;
+    border : 0;
 }
 
 .login .box input.text,
 .login .box input.password {
-    max-width:90%;
+    max-width : 90%;
+}
+
+.login a.profile, .login a.profile:visited, .login a.profile:hover {
+    padding-left : 25px;
+    padding-left : 25px;
+    background   : url(../../../../modules/administration/assets/images/admintoolbar/editpage.png) no-repeat 3px 50%;
+}
+
+.login a.password, .login a.password:visited, .login a.password:hover {
+    padding-left : 25px;
+    background   : url(../../../../core/assets/images/change_password.png) no-repeat 3px 50%;
+}
+
+.login a.logout, .login a.logout:visited, .login a.logout:hover {
+    padding-left : 25px;
+    background   : url(../../../../modules/administration/assets/images/admintoolbar/logout.png) no-repeat 3px 50%;
+}
+
+.login a.groups, .login a.groups:visited, .login a.groups:hover {
+    padding-left : 25px;
+    background   : url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -56px;
+}
+
+.login a.cart, .login a.cart:visited, .login a.cart:hover {
+    padding-left : 25px;
+    background   : url(../../../../modules/ecommerce/assets/images/view_cart.png) no-repeat 3px 50%;
+}
+
+.login a.preview_on, .login a.preview_on:visited, .login a.preview_on:hover {
+    padding-left : 25px;
+    background   : url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
+}
+
+.login a.preview_off, .login a.preview_off:visited, .login a.preview_off:hover {
+    padding-left : 25px;
+    background   : url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
 }

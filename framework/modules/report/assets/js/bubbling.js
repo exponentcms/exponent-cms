@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,6 +20,7 @@ Code licensed under the BSD License:
 http://www.bubbling-library.com/eng/licence
 version: 2.1
 */
+//FIXME convert to yui3
 YAHOO.namespace("plugin","behavior");
 (function() {
   var $Y = YAHOO.util,

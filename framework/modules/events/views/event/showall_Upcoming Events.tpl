@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,7 +23,7 @@
 		{permissions}
 			{if $permissions.manage == 1}
 				&#160;&#160;|&#160;&#160;
-                {icon class="adminviewlink mngmntlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
+                {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
                     &#160;&#160;|&#160;&#160;
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
@@ -39,7 +39,7 @@
 	</div>
 	<h1>
         {ical_link}
-        {if $moduletitle && !$config.hidemoduletitle}{$moduletitle}{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}
 	</h1>
     {if $config.moduledescription != ""}
         {$config.moduledescription}
@@ -55,10 +55,11 @@
 	<dl class="viewweek">
 	{foreach from=$items item=item}
 		<dt>
+            {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
 			<strong>
-                <a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
+                <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
                     {if substr($item->location_data,1,8) != 'calevent'}
-                        href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=showByTitle title=$item->title}{/if}"
+                        href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title="{$item->body|summarize:"html":"para"}"}{/if}"
                     {/if}
                     >{$item->title}
                 </a>
@@ -75,6 +76,7 @@
                                 {/if}
                             {/if}
                             {icon action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
+                            {icon action=copy record=$item date_id=$item->date_id title="Copy this Event"|gettext}
                         {/if}
                         {if $permissions.delete == 1}
                             {if $item->is_recurring == 0}
@@ -99,7 +101,12 @@
 			</strong>
 		</dd>
 		<dd>
-			{$item->body|summarize:html:paralinks}
+            {if $config.usebody=='0'}
+                {$item->body}
+            {elseif $config.usebody==2}
+            {else}
+                <p>{$item->body|summarize:"html":"paralinks"}</p>
+            {/if}
 		</dd>
 	{foreachelse}
 		<dd><em>{'No upcoming events.'|gettext}</em></dd>

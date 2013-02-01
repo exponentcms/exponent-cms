@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -235,7 +235,7 @@ class expMail {
 		} else {
 			trim($params['to']);
 		}
-		$this->message->setTo($params['to']);
+		$this->message->setTo((array)$params['to']);
 
     	// set up the from address(es)
 		if (is_array($params['from'])) {
@@ -245,7 +245,7 @@ class expMail {
 		} else {
 			trim($params['from']);
 		}
-		$this->message->setFrom($params['from']);
+		$this->message->setFrom((array)$params['from']);
 
 		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
 
@@ -260,7 +260,11 @@ class expMail {
 
 		$numsent = 0;
 		try {
-			$numsent = $this->mailer->send($this->message);
+            $failed = array();
+			$numsent = $this->mailer->send($this->message,$failed);
+            if (!empty($failed)) {
+                flash('error',gt('Unable to Send Mail to').' - '.implode(', ',$failed));
+            }
 		} catch (Swift_TransportException $e) {
 			flash('error',gt('Sending Mail Failed!').' - '.$e->getMessage());
 		}
@@ -306,7 +310,12 @@ class expMail {
 		if (!$this->from) {
 			$this->addFrom(SMTP_FROMADDRESS);
 		}
-		return $this->mailer->send($this->message);
+        $failed = array();
+		$numsent = $this->mailer->send($this->message,$failed);
+        if (!empty($failed)) {
+            flash('error',gt('Unable to Send Mail to').' - '.implode(', ',$failed));
+        }
+        return $numsent;
 	}
 
 	/**
@@ -379,7 +388,7 @@ class expMail {
 		foreach ($params['to'] as $address=>$name) {
 			try {
 				$this->message->setTo(array($address=>$name));
-				$numsent += $this->send();
+				$numsent += $this->send($this->message);
 			} catch (Swift_TransportException $e) {
 				flash('error',gt('Batch Send Mail Failed!').' - '.$address.' - '.$e->getMessage());
 			}

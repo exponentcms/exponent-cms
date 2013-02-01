@@ -2,7 +2,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,6 +36,8 @@
  * lang_extract.php - extracts gettext strings from ExponentCMS files
  * adapted from http://smarty-gettext.sf.net/  Sagi Bashari <sagi@boom.org.il>
  *
+ * Requires the 'BING_API' constant be set to the API code for you Bing account
+ *
  * Usage:
  * ./lang_extract.php <filename or directory> <file2> <..>
  *
@@ -43,7 +45,7 @@
  *
  */
 
-define('DEVELOPMENT','1');
+if (!defined('DEVELOPMENT')) define('DEVELOPMENT','1');
 define('WRITE_LANG_TEMPLATE', DEVELOPMENT);
 
 // Initialize the exponent environment

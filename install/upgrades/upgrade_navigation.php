@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,7 +26,7 @@
  */
 class upgrade_navigation extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.0.9';
+	protected $to_version = '2.0.9';  // navigationmodule was fully deprecated in v2.0.9
 //    public $optional = true;
 
 	/**
@@ -121,7 +121,7 @@ class upgrade_navigation extends upgradescript {
         $ms = $db->selectObject('modstate',"module='navigationmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='navigationController'")) {
             $ms->module = 'navigationController';
-            $db->insertObject($ms,'modstate');
+            $db->insertObject($ms,'modstate',"module='navigationmodule'",'module');
         }
 
         // delete old navigationmodule assoc files (moved or deleted)

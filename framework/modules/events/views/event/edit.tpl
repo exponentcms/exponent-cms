@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -29,8 +29,8 @@
                 {if $config.enable_feedback}
                     <li><a href="#tab3"><em>{'Feedback'|gettext}</em></a></li>
                 {/if}
-                {if $config.filedisplay}
-                    <li><a href="#tab4"><em>{'Files'|gettext}</em></a></li>
+                {if $config.enable_images}
+                    <li><a href="#tab4"><em>{'Images'|gettext}</em></a></li>
                 {/if}
             </ul>
             <div class="yui-content yui3-skin-sam">
@@ -38,6 +38,7 @@
                     {control type=text name=title label="Title"|gettext value=$record->title}
                 	{control type="editor" name="body" label="Body"|gettext value=$record->body}
                 	{control type="checkbox" name="is_featured" label="Feature this Event?"|gettext value=1 checked=$record->is_featured}
+                    {control type="checkbox" name="is_cancelled" label="Cancel this Event?"|gettext value=1 checked=$record->is_cancelled}
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
                     {/if}
@@ -68,13 +69,13 @@
                 </div>
                 {if $config.enable_feedback}
                     <div id="tab3">
-                        {control type=dropdown name=feedback_form label="Feedback Form"|gettext items=$allforms values=$allforms value=$record->feedback_form}
+                        {control type=dropdown name=feedback_form label="Feedback Form"|gettext items=$allforms items=$allforms value=$record->feedback_form}
                         {control type=text name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
                     </div>
                 {/if}
-                {if $config.filedisplay}
+                {if $config.enable_images}
                     <div id="tab4">
-                        {control type=files name=images label="Attachable Files"|gettext value=$record->expFile}
+                        {control type=files name=images label="Attached Images"|gettext value=$record->expFile}
                     </div>
                 {/if}
             </div>

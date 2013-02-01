@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -101,10 +101,8 @@ class expDefinableFieldController extends expController {
 		if (isset($this->params['id'])) {
 			$control = $db->selectObject('expDefinableFields','id='.$this->params['id']);
 			if ($control) {
-				
 				$ctl = unserialize($control->data);
 				$ctl->name = $ctl->identifier;
-			
 			}
 		}
 
