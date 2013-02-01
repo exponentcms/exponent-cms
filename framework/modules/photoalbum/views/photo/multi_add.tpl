@@ -27,7 +27,7 @@
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'Photo Items'|gettext}</h2>
-                    {control type=text name=title label=" Base Title"|gettext value=$record->title description="This will become the root title for these photo album items."|gettext}
+                    {control type=text name=title label="Base Title"|gettext value=$record->title description="This will become the root title for these photo album items."|gettext}
                     {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=64}
                 </div>
             </div>
