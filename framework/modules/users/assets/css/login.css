@@ -26,7 +26,7 @@
 
 .login a.password, .login a.password:visited, .login a.password:hover {
     padding-left : 25px;
-    background   : url(../../../../core/assets/images/lock.png) no-repeat 3px 50%;
+    background   : url(../../../../core/assets/images/key.png) no-repeat 3px 50%;
 }
 
 .login a.logout, .login a.logout:visited, .login a.logout:hover {
