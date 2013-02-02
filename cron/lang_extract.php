@@ -50,6 +50,21 @@ define('WRITE_LANG_TEMPLATE', DEVELOPMENT);
 
 // Initialize the exponent environment
 include_once('../exponent_bootstrap.php');
+if (!defined('DISPLAY_THEME')) {
+	/* exdoc
+	 * The directory and class name of the current active theme.  This may be different
+	 * than the configured theme (DISPLAY_THEME_REAL) due to previewing.
+	 */
+	define('DISPLAY_THEME',DISPLAY_THEME_REAL);
+}
+
+if (!defined('THEME_ABSOLUTE')) {
+	/* exdoc
+	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
+	 */
+	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
+}
+
 // Initialize the language subsystem
 expLang::loadLang();
 global $default_lang, $cur_lang;
