@@ -120,7 +120,7 @@ class expDatabase {
         $renamed = array();
         foreach ($tablenames as $oldtablename=>$newtablename) {
             if (!$db->tableExists($newtablename)) {
-                $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.$oldtablename.' TO '.DB_TABLE_PREFIX.$newtablename);
+                $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_'.$oldtablename.' TO '.DB_TABLE_PREFIX.'_'.$newtablename);
                 $renamed[] = $newtablename;
             }
         }
