@@ -1,6 +1,8 @@
-#Exponent Content Management System
-Copyright (c) 2004-2013 OIC Group, Inc.
+#Exponent Content Management System..
+
 ===============================================
+
+Copyright (c) 2004-2013 OIC Group, Inc.
 
 For installation information, please read the INSTALLATION file.
 
@@ -31,15 +33,13 @@ You are free to use and redistribute it, and make changes / fix bugs. The
 Exponent development team encourages you to get involved. We are currently
 looking for contributions in the following area:
 
-    * Development - Those able and willing to contribute development skills
-are encouraged to join in.  Simply fork this repository, hack away, and submit 
-a pull request. We'll take a look at your code and changes
-
-    * Documentation - If you're interested in helping with documentation, 
+* Development - Those able and willing to contribute development skills are 
+encouraged to join in.  Simply fork this repository, hack away, and submit a pull 
+request. We'll take a look at your code and changes
+* Documentation - If you're interested in helping with documentation, 
 contact us through the forums http://forums.exponentcms.org and we'll advise you
 as to where to contribute documentation.
-
-    * Testing - As with every software application, there are bound to be
+* Testing - As with every software application, there are bound to be
 bugs. We think the system is stable enough to use, but we are always
 looking for more testers; people to use and abuse the CMS and expose bugs.
 The more bugs we find and fix, the better off the package is.
@@ -47,6 +47,9 @@ The more bugs we find and fix, the better off the package is.
 -------------------
 ##Support / Questions
 For questions, support, or further information, please visit
-http://www.exponentcms.org/
-http://forums.exponentcms.org/
-http://docs.exponentcms.org/
+
+* http://www.exponentcms.org/
+
+* http://forums.exponentcms.org/
+
+* http://docs.exponentcms.org/
