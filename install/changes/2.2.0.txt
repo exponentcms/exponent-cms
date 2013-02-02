@@ -1,0 +1,6 @@
+version 2.2.0
+The next major release and the first version of Exponent w/o any 1.0 modules, etc..., primarily will implement Container 2.0 and Twitter-Bootstrap
+  * replaces the containermodule with container2 controller
+  - forces deprecation/removal of formmodule/formbuilder, headlineController
+    -- also deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
+  - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
