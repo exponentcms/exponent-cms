@@ -416,7 +416,8 @@ class navigationController extends expController {
             $controllername = 'text';
             foreach ($db->selectObjects('sectionref', "module='" . $controllername . "' AND section=" . $section->id) as $module) {
                 $loc->src   = $module->source;
-                $controller = new $controllername();
+//                $controller = new $controllername();
+                $controller = expModules::getController($controllername);
                 $textitems  = $db->selectObjects($controller->model_table, "location_data='" . serialize($loc) . "'");
                 foreach ($textitems as $textitem) {
                     if (!empty($textitem)) {
