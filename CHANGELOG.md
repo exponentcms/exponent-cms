@@ -6,9 +6,13 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
-Added / Fixed / changed for 2.1.2
+Added / Fixed / changed for 2.2.0
 -----------------------
-### This release focuses on things not completed in 2.1.1, but not destined for the v2.2 major version update
+### The next major release and the first version of Exponent w/o any 1.0 modules, etc..., primarily will implement Container 2.0 and Twitter-Bootstrap
+  - replaces the containermodule with container2 controller
+  - forces deprecation/removal of formmodule/formbuilder, headlineController
+    -- also deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
+  - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
 
 Added / Fixed / changed for 2.1.1
 -----------------------
