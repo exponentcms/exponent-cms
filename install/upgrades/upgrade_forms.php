@@ -91,7 +91,7 @@ class upgrade_forms extends upgradescript {
             if (!empty($oldform->id)) {
                 // convert form data table by renaming it
                 if ($oldform->is_saved) {
-                    $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'formbuilder_'.$oldform->table_name.' TO '.DB_TABLE_PREFIX.'forms_'.$oldform->table_name);
+                    $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_formbuilder_'.$oldform->table_name.' TO '.DB_TABLE_PREFIX.'_forms_'.$oldform->table_name);
                     //FIXME do we want to add a forms_id field?
                 }
 
