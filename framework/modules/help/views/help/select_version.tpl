@@ -20,6 +20,9 @@
         font-size: 100%;
         font-weight: bold;
     }
+    .help.select-version select {
+        width: auto;
+    }
 {/literal}
 {/css}
 

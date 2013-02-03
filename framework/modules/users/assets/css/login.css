@@ -53,3 +53,7 @@
     padding-left : 25px;
     background   : url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
 }
+
+.login.expanded .control {
+    display: inline!important;
+}
