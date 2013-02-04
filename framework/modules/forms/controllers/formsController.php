@@ -41,7 +41,7 @@ class formsController extends expController {
         'viewdata'  => "View Data",
         'enterdata' => "Enter Data"
     );
-    public $codequality = 'alpha';
+    public $codequality = 'beta';
 
     static function displayname() {
         return gt("Forms");
@@ -488,13 +488,13 @@ class formsController extends expController {
                 $emaillist = array();
                 if (!empty($f->select_email) && !empty($this->params['email_dest'])) {
                     if (strval(intval($this->params['email_dest'])) == strval($this->params['email_dest'])) {
-                        foreach (group::getUsersInGroup(group::getGroupById(intval($this->params['email_dest']))) as $locUser) {
+                        foreach (group::getUsersInGroup($this->params['email_dest']) as $locUser) {
                             if ($locUser->email != '') $emaillist[] = $locUser->email;
                         }
                     } else {
                         $emaillist[] = $this->params['email_dest'];
                     }
-                } else {
+                } else { // send to all form addressee's
                     $emaillist = array();
                     if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                         $u = user::getUserById($c);
