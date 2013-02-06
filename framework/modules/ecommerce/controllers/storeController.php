@@ -558,7 +558,7 @@ class storeController extends expController {
 
         //FIXME not sure this is the correct sql, not sure what we are trying to pull out
         $sql = 'SELECT DISTINCT(p.id),p.product_type FROM ' . DB_TABLE_PREFIX . '_product p JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories psc ON p.id = psc.product_id ';
-        $sql .= 'JOIN exponent_storeCategories sc ON psc.storecategories_id = sc.parent_id WHERE ';
+        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_storeCategories sc ON psc.storecategories_id = sc.parent_id WHERE ';
         $sql .= 'p.parent_id=0 AND sc.parent_id != 0';
 
         expSession::set('product_export_query', $sql);
@@ -2108,7 +2108,7 @@ class storeController extends expController {
         }
 
         //check if there are interrupted model alias in the db
-        $res = $db->selectObjectsBySql("SELECT * FROM exponent_model_aliases_tmp WHERE is_processed = 0");
+        $res = $db->selectObjectsBySql("SELECT * FROM ".DB_TABLE_PREFIX."_model_aliases_tmp WHERE is_processed = 0");
         if (!empty($res)) {
             assign_to_template(array(
                 'continue' => '1'
@@ -2126,7 +2126,7 @@ class storeController extends expController {
 
             //if go to the next processs
             if (isset($this->params['next'])) {
-                $res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
+                $res = $db->selectObjectBySql("SELECT * FROM ".DB_TABLE_PREFIX."_model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
                 //Update the record in the tmp table to mark it as process
                 $res->is_processed = 1;
                 $db->updateObject($res, 'model_aliases_tmp');
@@ -2138,7 +2138,7 @@ class storeController extends expController {
 
         do {
             $count = $db->countObjects('model_aliases_tmp', 'is_processed=0');
-            $res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT {$index}, 1");
+            $res = $db->selectObjectBySql("SELECT * FROM ".DB_TABLE_PREFIX."_model_aliases_tmp LIMIT {$index}, 1");
             //Validation
             //Check the field one
             if (!empty($res)) {
@@ -2224,7 +2224,7 @@ class storeController extends expController {
         $product = $db->selectObject("product", "title='{$title}'");
 
         if (!empty($product->id)) {
-            $res = $db->selectObjectBySql("SELECT * FROM exponent_model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
+            $res = $db->selectObjectBySql("SELECT * FROM ".DB_TABLE_PREFIX."_model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
             //Add the first field
             $tmp = new stdClass();
             $tmp->model = $res->field1;
