@@ -26,7 +26,7 @@
  */
 class upgrade_forms extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.1.2';  // formmodule (formbuilder) will be fully deprecated in v2.1.2
+	protected $to_version = '2.2.0';  // formmodule (formbuilder) will be fully deprecated in v2.1.2
 //    public $optional = true;
 
 	/**
