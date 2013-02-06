@@ -41,7 +41,7 @@ class formsController extends expController {
         'viewdata'  => "View Data",
         'enterdata' => "Enter Data"
     );
-    public $codequality = 'alpha';
+    public $codequality = 'beta';
 
     static function displayname() {
         return gt("Forms");
@@ -247,21 +247,32 @@ class formsController extends expController {
                     $emaillist = array();
                     if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                         $u = user::getUserById($c);
-                        $emaillist[] = $u->email;
-                    }
-                    if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
-                        $grpusers = group::getUsersInGroup($c);
-                        foreach ($grpusers as $u) {
-                            $emaillist[] = $u->email;
+                        if (!empty($u->email)) {
+                            if (!empty($u->firstname) || !empty($u->lastname)) {
+                                $title = $u->firstname . ' ' . $u->lastname . ' ('. $u->email . ')';
+                            } else {
+                                $title = $u->username . ' ('. $u->email . ')';
+                            }
+                            $emaillist[$u->email] = $title;
                         }
                     }
+                    if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
+//                        $grpusers = group::getUsersInGroup($c);
+//                        foreach ($grpusers as $u) {
+//                            $emaillist[] = $u->email;
+//                        }
+                        $g = group::getGroupById($c);
+                        $emaillist[$c] = $g->name;
+                    }
                     if (!empty($this->config['address_list'])) foreach ($this->config['address_list'] as $c) {
-                        $emaillist[] = $c;
+                        $emaillist[$c] = $c;
                     }
                     //This is an easy way to remove duplicates
                     $emaillist = array_flip(array_flip($emaillist));
                     $emaillist = array_map('trim', $emaillist);
-                    array_unshift($emaillist, gt('All Addresses'));
+                    $emaillist = array_reverse($emaillist, true);
+                    $emaillist[0] = gt('All Addresses');
+                    $emaillist = array_reverse($emaillist, true);
                     $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
                 }
                 foreach ($controls as $c) {
@@ -486,15 +497,15 @@ class formsController extends expController {
             if (!empty($this->config['is_email']) && !isset($this->params['data_id'])) {
                 //Building Email List...
                 $emaillist = array();
-                if (!empty($f->select_email) && !empty($this->params['email_dest'])) {
+                if (!empty($this->config['select_email']) && !empty($this->params['email_dest'])) {
                     if (strval(intval($this->params['email_dest'])) == strval($this->params['email_dest'])) {
-                        foreach (group::getUsersInGroup(group::getGroupById(intval($this->params['email_dest']))) as $locUser) {
+                        foreach (group::getUsersInGroup($this->params['email_dest']) as $locUser) {
                             if ($locUser->email != '') $emaillist[] = $locUser->email;
                         }
                     } else {
                         $emaillist[] = $this->params['email_dest'];
                     }
-                } else {
+                } else { // send to all form addressee's
                     $emaillist = array();
                     if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                         $u = user::getUserById($c);

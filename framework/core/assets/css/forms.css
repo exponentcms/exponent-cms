@@ -122,7 +122,8 @@ input.radio {
 
 .module.forms input.checkbox {
 	/*float:left;*/
-	margin-top:12px;
+	/*margin-top:12px;*/
+    margin-top:3px;
 }
 
 .control .radiogroup-label {
@@ -194,7 +195,8 @@ select:focus:invalid:focus, select:hover:invalid:hover {
   box-shadow: 0 0 5px #ce1a15;
 }
 select {
-  width: 220px;
+  /*width: 220px;*/
+  width: auto;
   border: 1px solid #ccc;
   background-color: white;
 }

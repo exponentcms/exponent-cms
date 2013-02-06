@@ -154,6 +154,29 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         Y.on('click', batchBack, '#useselected');
         Y.on('click', batchDelete, '#deleteselected');
 
+        /**
+        * @function: getBytesWithUnit()
+        * @purpose: Converts bytes to the most simplified unit.
+        * @param: (number) bytes, the amount of bytes
+        * @returns: (string)
+        */
+        var getBytesWithUnit = function( bytes ){
+            if( isNaN( bytes ) ){ return; }
+            var units = [ ' bytes', ' KB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB' ];
+            var amountOf2s = Math.floor( Math.log( +bytes )/Math.log(2) );
+            if( amountOf2s < 1 ){
+                amountOf2s = 0;
+            }
+            var i = Math.floor( amountOf2s / 10 );
+            bytes = +bytes / Math.pow( 2, 10*i );
+
+            // Rounds to 1 decimals places.
+            if( bytes.toString().length > bytes.toFixed(3).toString().length ){
+                bytes = bytes.toFixed(1);
+            }
+            return bytes + units[i];
+        };
+
         // set up the info panel
         var infopanel =  new YAHOO.widget.Panel(
             "infopanel", 
@@ -215,7 +238,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                         '</td></tr><tr class="even"><td><span>{/literal}{"Alt"|gettext}{literal}:</span>'+oRecordData.alt+
                         '</td></tr><tr class="odd"><td><span>{/literal}{"File Type"|gettext}{literal}:</span>'+oRecordData.mimetype+
                         imageInfo +
-                        '</td></tr><tr class="even"><td><span>{/literal}{"File Size"|gettext}{literal}:</span>'+oRecordData.filesize+
+//                        '</td></tr><tr class="even"><td><span>{/literal}{"File Size"|gettext}{literal}:</span>'+oRecordData.filesize+
+                        '</td></tr><tr class="even"><td><span>{/literal}{"File Size"|gettext}{literal}:</span>'+getBytesWithUnit(oRecordData.filesize)+
                         '</td></tr><tr class="odd"><td><span>{/literal}{"URL"|gettext}{literal}:</span>'+oRecordData.url+
                         '</td></tr><tr class="even"><td><span>{/literal}{"Folder"|gettext}{literal}:</span>'+foldercat+
                         '</td></tr><tr class="odd"><td><span>{/literal}{"Date Uploaded"|gettext}{literal}:</span>'+posteddate+
@@ -272,10 +296,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 
         // filename formatter
         var formatFilename = function(elCell, oRecord, oColumn, sData) {
+            var title = "{/literal}{"Display File Details"|gettext}{literal}\n" + getBytesWithUnit(oRecord._oData.filesize);
+            if (oRecord._oData.is_image==1){
+                title = title + ", " + oRecord._oData.image_height + 'x' + oRecord._oData.image_width + ' px';
+            }
             if (oRecord.getData().is_image==1 && thumbnails) {
-                elCell.innerHTML = '<a title="{/literal}{"Display File Details"|gettext}{literal}" href="#" class="fileinfo"><img src="'+EXPONENT.PATH_RELATIVE+'thumb.php?&id='+oRecord.getData().id+'&w={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}&h={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}"> '+oRecord.getData().filename+'</a>';
+                elCell.innerHTML = '<a title="'+title+'" href="#" class="fileinfo"><img src="'+EXPONENT.PATH_RELATIVE+'thumb.php?&id='+oRecord.getData().id+'&w={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}&h={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}"> '+oRecord.getData().filename+'</a>';
             } else {
-                elCell.innerHTML = '<a title="{/literal}{"Display File Details"|gettext}{literal}" href="#" class="fileinfo">'+oRecord.getData().filename+'</a>';
+                elCell.innerHTML = '<a title="'+title+'" href="#" class="fileinfo">'+oRecord.getData().filename+'</a>';
             }
         };
 

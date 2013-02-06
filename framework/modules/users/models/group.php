@@ -72,16 +72,16 @@ class group extends expRecord {
 	 * @return array
 	 * @node Model:Group
 	 */
-	public static function getUsersInGroup($g) {
+	public static function getUsersInGroup($gid) {
 		global $db;
-		if ($g == null || !isset($g->id)) {
+		if ($gid == null || !intval($gid)) {
 			// Don't have enough information to consult the membership tables.
 			// Return an empty array.
 			return array();
 		}
 		// Holding array for the member users.
 		$users = array();
-		foreach ($db->selectObjects('groupmembership','group_id='.$g->id) as $m) {
+		foreach ($db->selectObjects('groupmembership','group_id='.$gid) as $m) {
 			// Loop over the membership records for this group, and append a basic user object to the holding array.
 			$users[] = $db->selectObject('user','id='.$m->member_id);
 		}

@@ -47,11 +47,10 @@
     {/if}
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
             {form action=login}
-                {control type="text" name="username" label=$label size=25 required=1}
-                {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1}
+                {control type="text" name="username" label='' placeholder='Username'|gettext size=15 required=1}
+                {control type="password" name="password" label='' placeholder='Password'|gettext size=15 required=1}
                 {control type="buttongroup" submit="Log In"|gettext}
             {/form}
-            {br}
             {if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
                 <a href="{link controller=users action=create}">{'Create Account'|gettext}</a>
                 &#160;|&#160;

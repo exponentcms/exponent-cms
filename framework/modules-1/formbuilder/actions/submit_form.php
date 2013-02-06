@@ -99,7 +99,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
         $emaillist = array();
         if ($f->select_email && !empty($_POST['email_dest'])) {
             if (strval(intval($_POST['email_dest'])) == strval($_POST['email_dest'])) {
-                foreach (group::getUsersInGroup(group::getGroupById(intval($_POST['email_dest']))) as $locUser){
+                foreach (group::getUsersInGroup(intval($_POST['email_dest'])) as $locUser){
                     if ($locUser->email != '') $emaillist[] = $locUser->email;
                 }
             } else {
@@ -108,7 +108,7 @@ if (!isset($_POST['data_id']) || (isset($_POST['data_id']) && expPermissions::ch
         } else {
             foreach ($db->selectObjects("formbuilder_address","form_id=".$f->id) as $address) {
                 if ($address->group_id != 0) {
-                    foreach (group::getUsersInGroup(group::getGroupById($address->group_id)) as $locUser){
+                    foreach (group::getUsersInGroup($address->group_id) as $locUser){
                         if ($locUser->email != '') $emaillist[] = $locUser->email;
                     }
                 } else if ($address->user_id != 0) {
