@@ -436,6 +436,7 @@ class expFile extends expRecord {
                 $handle->image_ratio = true;
                 $handle->image_ratio_y = true;
                 $handle->image_x = $maxwidth;
+                $handle->jpeg_quality = THUMB_QUALITY;
                 $handle->process(BASE . $_destDir);
                 if ($handle->processed) {
                     if ($handle->image_src_x != $handle->image_dst_x) $resized = true;
