@@ -1,6 +1,6 @@
 <?php
 // +------------------------------------------------------------------------+
-// | class.upload.xx_XX.php                                                 |
+// | class.upload.el_GR.php                                                 |
 // +------------------------------------------------------------------------+
 // | Copyright (c) Christos Grezios 2009. All rights reserved.              |
 // | Version       0.25                                                     |

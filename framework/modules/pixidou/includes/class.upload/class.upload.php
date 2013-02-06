@@ -3,8 +3,8 @@
 // | class.upload.php                                                       |
 // +------------------------------------------------------------------------+
 // | Copyright (c) Colin Verot 2003-2010. All rights reserved.              |
-// | Version       0.31                                                     |
-// | Last modified 11/04/2011                                               |
+// | Version       0.32                                                     |
+// | Last modified 15/01/2013                                               |
 // | Email         colin@verot.net                                          |
 // | Web           http://www.verot.net                                     |
 // +------------------------------------------------------------------------+
@@ -31,7 +31,7 @@
 /**
  * Class upload
  *
- * @version   0.31
+ * @version   0.32
  * @author    Colin Verot <colin@verot.net>
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  * @copyright Colin Verot
@@ -119,6 +119,18 @@
  *  }
  * </pre>
  *
+ * <b>How to process a file uploaded via XMLHttpRequest?</b><br>
+ * Use the class as following, the rest being the same as above:
+ * <pre>
+ *  $handle = new upload('php:'.$_SERVER['HTTP_X_FILE_NAME']);
+ * </pre>
+ * Prefixing the argument with "php:" tells the class to retrieve the uploaded data 
+ * in php://input, and the rest is the stream's filename, which is generally in 
+ * $_SERVER['HTTP_X_FILE_NAME']. But you can use any other name you see fit:
+ * <pre>
+ *  $handle = new upload('php:mycustomname.ext');
+ * </pre>
+ *
  * <b>How to process local files?</b><br>
  * Use the class as following, the rest being the same as above:
  * <pre>
@@ -191,10 +203,14 @@
  *  <pre>$handle->image_background_color = '#FF00FF';</pre></li>
  *  <li><b>{@link image_default_color}</b> fallback color background color for non alpha-transparent output formats, such as JPEG or BMP, in hexadecimal (default: #FFFFFF)<br>
  *  <pre>$handle->image_default_color = '#FF00FF';</pre></li>
+ *  <li><b>{@link png_compression}</b> sets the compression level for PNG images, between 1 (fast but large files) and 9 (slow but smaller files) (default: null (Zlib default))<br>
+ *  <pre>$handle->png_compression = 9;</pre></li>
  *  <li><b>{@link jpeg_quality}</b> sets the compression quality for JPEG images (default: 85)<br>
  *  <pre>$handle->jpeg_quality = 50;</pre></li>
  *  <li><b>{@link jpeg_size}</b> if set to a size in bytes, will approximate {@link jpeg_quality} so the output image fits within the size (default: null)<br>
  *  <pre>$handle->jpeg_size = 3072;</pre></li>
+ *  <li><b>{@link image_interlace}</b> if set to true, the image will be saved interlaced (default: false)<br>
+ *  <pre>$handle->image_interlace = true;</pre></li>
  * </ul>
  * The following eight settings can be used to invalidate an upload if the file is an image (note that <i>open_basedir</i> restrictions prevent the use of these settings)
  * <ul>
@@ -265,12 +281,14 @@
  *  <pre>$handle->image_greyscale = true;</pre></li>
  *  <li><b>{@link image_threshold}</b> applies a threshold filter. value between -127 and 127 (default: null)<br>
  *  <pre>$handle->image_threshold = 20;</pre></li>
+ *  <li><b>{@link image_pixelate}</b> pixelate an image, value is block size (default: null)<br>
+ *  <pre>$handle->image_pixelate = 10;</pre></li>
  *  <li><b>{@link image_unsharp}</b> applies an unsharp mask, with alpha transparency support (default: false)<br>
  *  <pre>$handle->image_unsharp = true;</pre></li>
  *  <li><b>{@link image_unsharp_amount}</b> unsharp mask amount, typically 50 - 200 (default: 80)<br>
  *  <pre>$handle->image_unsharp_amount = 120;</pre></li>
  *  <li><b>{@link image_unsharp_radius}</b> unsharp mask radius, typically 0.5 - 1 (default: 0.5)<br>
- *  <pre>$handle->image_unsharp_radius = 0.8;</pre></li>
+ *  <pre>$handle->image_unsharp_radius = 1;</pre></li>
  *  <li><b>{@link image_unsharp_threshold}</b> unsharp mask threshold, typically 0 - 5 (default: 1)<br>
  *  <pre>$handle->image_unsharp_threshold = 0;</pre></li>
  * </ul>
@@ -402,10 +420,21 @@
  *
  * Most of the image operations require GD. GD2 is greatly recommended
  *
- * The class is compatible with PHP 4.3+, and compatible with PHP5
+ * The class requires PHP 4.3+, and is compatible with PHP5
  *
  * <b>Changelog</b>
  * <ul>
+ *  <li><b>v 0.32</b> 15/01/2013<br>
+ *   - add support for XMLHttpRequest uploads<br>
+ *   - added {@link image_pixelate}<br>
+ *   - added {@link image_interlace}<br>
+ *   - added {@link png_compression} to change PNG compressoin level<br>
+ *   - deactivate exec() if Suhosin is enabled<br>
+ *   - add more extension to dangerous scripts detection<br>
+ *   - imagejpeg takes null as second argument since PHP 5.4<br>
+ *   - default PECL Fileinfo MAGIC path to null<br>
+ *   - set gd.jpeg_ignore_warning to true by default<br>
+ *   - fixed file name normalization</li>
  *  <li><b>v 0.31</b> 11/04/2011<br>
  *   - added application/x-rar MIME type<br>
  *   - make sure exec() and ini_get_all()function are not disabled if we want to use them<br>
@@ -884,7 +913,7 @@ class upload {
      *
      * You can also set it with the path of the magic database file.
      * If set to true, the class will try to read the MAGIC environment variable
-     *   and if it is empty, will default to '/usr/share/file/magic'
+     *   and if it is empty, will default to the system's default
      * If set to an empty string, it will call finfo_open without the path argument
      *
      * This variable is set to true by default for security reason
@@ -971,7 +1000,7 @@ class upload {
 
     /**
      * Set this variable to true to allow automatic chmod of the destination
-     * directory if it is not writable
+     * directory if it is not writeable
      *
      * Default value is true
      *
@@ -1242,6 +1271,18 @@ class upload {
     var $image_min_ratio;
 
     /**
+     * Compression level for PNG images
+     * 
+     * Between 1 (fast but large files) and 9 (slow but smaller files)
+     *
+     * Default value is null (Zlib default)
+     *
+     * @access public
+     * @var integer
+     */
+    var $png_compression;
+
+    /**
      * Quality of JPEG created/converted destination image
      *
      * Default value is 85
@@ -1266,6 +1307,16 @@ class upload {
      * @var integer
      */
     var $jpeg_size;
+
+    /**
+     * Turns the interlace bit on
+     *
+     * This is actually used only for JPEG images, and defaults to false
+     *
+     * @access public
+     * @var boolean
+     */
+    var $image_interlace;
 
     /**
      * Preserve transparency when resizing or converting an image (deprecated)
@@ -1454,6 +1505,18 @@ class upload {
     var $image_greyscale;
 
     /**
+     * Pixelate an image
+     *
+     * Value is integer, represents the block size
+     *
+     * Default value is null
+     *
+     * @access public
+     * @var integer;
+     */
+    var $image_pixelate;
+
+    /**
      * Applies an unsharp mask, with alpha transparency support
      *
      * Beware that this unsharp mask is quite resource-intensive
@@ -1483,8 +1546,11 @@ class upload {
      * Sets the unsharp mask radius
      *
      * Value is an integer between 0 and 50, typically between 0.5 and 1
+     * It is not recommended to change it, the default works best
      *
      * Unless used with {@link image_unsharp}, this setting has no effect
+     *
+     * From PHP 5.1, imageconvolution is used, and this setting has no effect
      *
      * Default value is 0.5
      *
@@ -2223,8 +2289,10 @@ class upload {
         $this->image_ratio_no_zoom_out  = false;
         $this->image_ratio_x            = false;    // calculate the $image_x if true
         $this->image_ratio_y            = false;    // calculate the $image_y if true
+        $this->png_compression          = null;
         $this->jpeg_quality             = 85;
         $this->jpeg_size                = null;
+        $this->image_interlace          = false;
         $this->preserve_transparency    = false;
         $this->image_is_transparent     = false;
         $this->image_transparent_color  = null;
@@ -2251,6 +2319,7 @@ class upload {
         $this->image_overlay_percent    = null;
         $this->image_negative           = false;
         $this->image_greyscale          = false;
+        $this->image_pixelate           = null;
         $this->image_unsharp            = false;
         $this->image_unsharp_amount     = 80;
         $this->image_unsharp_radius     = 0.5;
@@ -2503,7 +2572,7 @@ class upload {
      */
     function upload($file, $lang = 'en_GB') {
 
-        $this->version            = '0.31';
+        $this->version            = '0.32';
 
         $this->file_src_name      = '';
         $this->file_src_name_body = '';
@@ -2649,41 +2718,78 @@ class upload {
             $this->error = $this->translate('file_error');
         }
 
-        // check if we sent a local filename rather than a $_FILE element
+        // check if we sent a local filename or a PHP stream rather than a $_FILE element
         if (!is_array($file)) {
             if (empty($file)) {
                 $this->uploaded = false;
                 $this->error = $this->translate('file_error');
             } else {
-                $this->no_upload_check = TRUE;
-                // this is a local filename, i.e.not uploaded
-                $this->log .= '<b>' . $this->translate("source is a local file") . ' ' . $file . '</b><br />';
-
-                if ($this->uploaded && !file_exists($file)) {
-                    $this->uploaded = false;
-                    $this->error = $this->translate('local_file_missing');
-                }
-
-                if ($this->uploaded && !is_readable($file)) {
-                    $this->uploaded = false;
-                    $this->error = $this->translate('local_file_not_readable');
-                }
-
-                if ($this->uploaded) {
-                    $this->file_src_pathname   = $file;
-                    $this->file_src_name       = basename($file);
-                    $this->log .= '- local file name OK<br />';
-                    preg_match('/\.([^\.]*$)/', $this->file_src_name, $extension);
-                    if (is_array($extension) && sizeof($extension) > 0) {
-                        $this->file_src_name_ext      = strtolower($extension[1]);
-                        $this->file_src_name_body     = substr($this->file_src_name, 0, ((strlen($this->file_src_name) - strlen($this->file_src_name_ext)))-1);
+                if (substr($file, 0, 4) == 'php:') {
+                    // this is a local filename, i.e.not uploaded
+                    $file = preg_replace('/^php:(.*)/i', '$1', $file);
+                    if (!$file) $file = $_SERVER['HTTP_X_FILE_NAME'];
+                    if (!$file) $file = 'unknown';
+                    $this->log .= '<b>' . $this->translate("source is a PHP stream") . ' ' . $file . '</b><br />';
+                    $this->no_upload_check = TRUE;
+                    
+                    $this->log .= '- this is a PHP stream, requires a temp file ... ';
+                    $hash = $this->temp_dir() . md5($file . rand(1, 1000));
+                    if (file_put_contents($hash, file_get_contents('php://input'))) {
+                        $this->file_src_pathname = $hash;
+                        $this->log .= ' file created<br />';
+                        $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;temp file is: ' . $this->file_src_pathname . '<br />';
                     } else {
-                        $this->file_src_name_ext      = '';
-                        $this->file_src_name_body     = $this->file_src_name;
+                        $this->log .= ' failed<br />';
+                        $this->uploaded = false;
+                        $this->error = $this->translate('temp_file');
                     }
-                    $this->file_src_size = (file_exists($file) ? filesize($file) : 0);
+
+                    if ($this->uploaded) {
+                        $this->file_src_name       = $file;
+                        $this->log .= '- local file OK<br />';
+                        preg_match('/\.([^\.]*$)/', $this->file_src_name, $extension);
+                        if (is_array($extension) && sizeof($extension) > 0) {
+                            $this->file_src_name_ext      = strtolower($extension[1]);
+                            $this->file_src_name_body     = substr($this->file_src_name, 0, ((strlen($this->file_src_name) - strlen($this->file_src_name_ext)))-1);
+                        } else {
+                            $this->file_src_name_ext      = '';
+                            $this->file_src_name_body     = $this->file_src_name;
+                        }
+                        $this->file_src_size = (file_exists($file) ? filesize($file) : 0);
+                    }
+                    $this->file_src_error = 0;
+
+                } else {
+                    // this is a local filename, i.e.not uploaded
+                    $this->log .= '<b>' . $this->translate("source is a local file") . ' ' . $file . '</b><br />';
+                    $this->no_upload_check = TRUE;
+
+                    if ($this->uploaded && !file_exists($file)) {
+                        $this->uploaded = false;
+                        $this->error = $this->translate('local_file_missing');
+                    }
+
+                    if ($this->uploaded && !is_readable($file)) {
+                        $this->uploaded = false;
+                        $this->error = $this->translate('local_file_not_readable');
+                    }
+                    
+                    if ($this->uploaded) {
+                        $this->file_src_pathname   = $file;
+                        $this->file_src_name       = basename($file);
+                        $this->log .= '- local file OK<br />';
+                        preg_match('/\.([^\.]*$)/', $this->file_src_name, $extension);
+                        if (is_array($extension) && sizeof($extension) > 0) {
+                            $this->file_src_name_ext      = strtolower($extension[1]);
+                            $this->file_src_name_body     = substr($this->file_src_name, 0, ((strlen($this->file_src_name) - strlen($this->file_src_name_ext)))-1);
+                        } else {
+                            $this->file_src_name_ext      = '';
+                            $this->file_src_name_body     = $this->file_src_name;
+                        }
+                        $this->file_src_size = (file_exists($file) ? filesize($file) : 0);
+                    }
+                    $this->file_src_error = 0;  
                 }
-                $this->file_src_error = 0;
             }
         } else {
             // this is an element from $_FILE, i.e. an uploaded file
@@ -2762,15 +2868,14 @@ class upload {
                 if ($this->mime_fileinfo) {
                     $this->log .= '- Checking MIME type with Fileinfo PECL extension<br />';
                     if (function_exists('finfo_open')) {
+                        $path = null;
                         if ($this->mime_fileinfo !== '') {
                             if ($this->mime_fileinfo === true) {
                                 if (getenv('MAGIC') === FALSE) {
                                     if (substr(PHP_OS, 0, 3) == 'WIN') {
                                         $path = realpath(ini_get('extension_dir') . '/../') . 'extras/magic';
-                                    } else {
-                                        $path = '/usr/share/file/magic';
+                                        $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;MAGIC path defaults to ' . $path . '<br />';
                                     }
-                                    $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;MAGIC path defaults to ' . $path . '<br />';
                                 } else {
                                     $path = getenv('MAGIC');
                                     $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;MAGIC path is set to ' . $path . ' from MAGIC variable<br />';
@@ -2779,6 +2884,8 @@ class upload {
                                 $path = $this->mime_fileinfo;
                                 $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;MAGIC path is set to ' . $path . '<br />';
                             }
+                        }
+                        if ($path) {
                             $f = @finfo_open(FILEINFO_MIME, $path);
                         } else {
                             $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;MAGIC path will not be used<br />';
@@ -2825,7 +2932,7 @@ class upload {
                 if ($this->mime_file) {
                     $this->log .= '- Checking MIME type with UNIX file() command<br />';
                     if (substr(PHP_OS, 0, 3) != 'WIN') {
-                        if (function_exists('exec')) {
+                        if (function_exists('exec') && function_exists('escapeshellarg') && !extension_loaded('suhosin')) {
                             if (strlen($mime = @exec("file -bi ".escapeshellarg($this->file_src_pathname))) != 0) {
                                 $this->file_src_mime = trim($mime);
                                 $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;MIME type detected as ' . $this->file_src_mime . ' by UNIX file() command<br />';
@@ -3055,6 +3162,31 @@ class upload {
     }
 
     /**
+     * Returns the temp directory
+     *
+     * @access private
+     * @return string Temp directory string
+     */
+    function temp_dir() {
+        $dir = '';
+        if (function_exists('sys_get_temp_dir')) $dir = sys_get_temp_dir();
+        if (!$dir && $tmp=getenv('TMP'))    $dir = $tmp;
+        if (!$dir && $tmp=getenv('TEMP'))   $dir = $tmp;
+        if (!$dir && $tmp=getenv('TMPDIR')) $dir = $tmp;
+        if (!$dir) {
+            $tmp = tempnam(__FILE__,'');
+            if (file_exists($tmp)) {
+                unlink($tmp);
+                $dir = dirname($tmp);
+            }
+        }
+        if (!$dir) return '';
+        $slash = (strtolower(substr(PHP_OS, 0, 3)) === 'win' ? '\\' : '/');
+        if (substr($dir, -1) != $slash) $dir = $dir . $slash;
+        return $dir;
+    }
+
+    /**
      * Decodes colors
      *
      * @access private
@@ -3062,10 +3194,12 @@ class upload {
      * @return array RGB colors
      */
     function getcolors($color) {
-        $r = sscanf($color, "#%2x%2x%2x");
-        $red   = (array_key_exists(0, $r) && is_numeric($r[0]) ? $r[0] : 0);
-        $green = (array_key_exists(1, $r) && is_numeric($r[1]) ? $r[1] : 0);
-        $blue  = (array_key_exists(2, $r) && is_numeric($r[2]) ? $r[2] : 0);
+        $color = str_replace('#', '', $color);
+        if (strlen($color) == 3) $color = str_repeat(substr($color, 0, 1), 2) . str_repeat(substr($color, 1, 1), 2) . str_repeat(substr($color, 2, 1), 2);
+        $r = sscanf($color, "%2x%2x%2x");
+        $red   = (is_array($r) && array_key_exists(0, $r) && is_numeric($r[0]) ? $r[0] : 0);
+        $green = (is_array($r) && array_key_exists(1, $r) && is_numeric($r[1]) ? $r[1] : 0);
+        $blue  = (is_array($r) && array_key_exists(2, $r) && is_numeric($r[2]) ? $r[2] : 0);
         return array($red, $green, $blue);
     }
 
@@ -3192,8 +3326,8 @@ class upload {
      * If the output format is PNG, then we do it pixel per pixel to retain the alpha channel
      *
      * @access private
-     * @param $dst_im
-     * @param $src_im
+     * @param  resource $dst_img Destination image
+     * @param  resource $src_img Overlay image
      * @param  int      $dst_x   x-coordinate of destination point
      * @param  int      $dst_y   y-coordinate of destination point
      * @param  int      $src_x   x-coordinate of source point
@@ -3201,8 +3335,6 @@ class upload {
      * @param  int      $src_w   Source width
      * @param  int      $src_h   Source height
      * @param  int      $pct     Optional percentage of the overlay, between 0 and 100 (default: 100)
-     * @internal param \resource $dst_img Destination image
-     * @internal param \resource $src_img Overlay image
      * @return resource Destination image
      */
     function imagecopymergealpha(&$dst_im, &$src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct = 0) {
@@ -3308,7 +3440,7 @@ class upload {
         $file_src_name_ext = $this->file_src_name_ext;
 
         if (!$this->uploaded) {
-            $this->error = $this->translate('file_not_uploaded').$file_src_name.'-'.$file_src_name_body.'-'.$file_src_name_ext;
+            $this->error = $this->translate('file_not_uploaded');
             $this->processed = false;
         }
 
@@ -3351,7 +3483,7 @@ class upload {
                 }
                 // if the file is text based, or has a dangerous extension, we rename it as .txt
                 if ((((substr($this->file_src_mime, 0, 5) == 'text/' && $this->file_src_mime != 'text/rtf') || strpos($this->file_src_mime, 'javascript') !== false)  && (substr($file_src_name, -4) != '.txt'))
-                    || preg_match('/\.(php|pl|py|cgi|asp|js)$/i', $this->file_src_name)
+                    || preg_match('/\.(php|php5|php4|php3|phtml|pl|py|cgi|asp|js)$/i', $this->file_src_name)
                     || $this->file_force_extension && empty($file_src_name_ext)) {
                     $this->file_src_mime = 'text/plain';
                     if ($this->file_src_name_ext) $file_src_name_body = $file_src_name_body . '.' . $this->file_src_name_ext;
@@ -3367,7 +3499,7 @@ class upload {
             } else if ($this->mime_check && !empty($this->file_src_mime) && strpos($this->file_src_mime, '/') !== false) {
                 list($m1, $m2) = explode('/', $this->file_src_mime);
                 $allowed = false;
-                // check whether the mime type is allowed
+                // check wether the mime type is allowed
                 if (!is_array($this->allowed)) $this->allowed = array($this->allowed);
                 foreach($this->allowed as $k => $v) {
                     list($v1, $v2) = explode('/', $v);
@@ -3376,7 +3508,7 @@ class upload {
                         break;
                     }
                 }
-                // check whether the mime type is forbidden
+                // check wether the mime type is forbidden
                 if (!is_array($this->forbidden)) $this->forbidden = array($this->forbidden);
                 foreach($this->forbidden as $k => $v) {
                     list($v1, $v2) = explode('/', $v);
@@ -3468,7 +3600,7 @@ class upload {
                 $this->log .= '- file name body prepend : ' . $this->file_name_body_pre . '<br />';
             }
             if ($this->file_safe_name) { // formats the name
-                $this->file_dst_name_body = strtr($this->file_dst_name_body, 'ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöøùúûüýÿ', 'SZszYAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy');
+                $this->file_dst_name_body = utf8_encode(strtr(utf8_decode($this->file_dst_name_body), utf8_decode('ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜÝàáâãäåçèéêëìíîïñòóôõöøùúûüýÿ'), 'SZszYAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy'));
                 $this->file_dst_name_body = strtr($this->file_dst_name_body, array('Þ' => 'TH', 'þ' => 'th', 'Ð' => 'DH', 'ð' => 'dh', 'ß' => 'ss', 'Œ' => 'OE', 'œ' => 'oe', 'Æ' => 'AE', 'æ' => 'ae', 'µ' => 'u'));
                 $this->file_dst_name_body = preg_replace(array('/\s/', '/\.[\.]+/', '/[^\w_\.\-]/'), array('_', '.', ''), $this->file_dst_name_body);
                 $this->log .= '- file name safe format<br />';
@@ -3493,6 +3625,7 @@ class upload {
                                  || is_numeric($this->image_threshold)
                                  || !empty($this->image_tint_color)
                                  || !empty($this->image_overlay_color)
+                                 || $this->image_pixelate
                                  || $this->image_unsharp
                                  || !empty($this->image_text)
                                  || $this->image_greyscale
@@ -3568,13 +3701,13 @@ class upload {
             } else if (!$this->no_upload_check) {
                 if (!is_uploaded_file($this->file_src_pathname)) {
                     $this->processed = false;
-                    $this->error = $this->translate('source_missing').'1 no upload check';
+                    $this->error = $this->translate('source_missing');
                 }
             // otherwise, if we don't check on uploaded files (local file for instance), we use file_exists()
             } else {
                 if (!file_exists($this->file_src_pathname)) {
                     $this->processed = false;
-                    $this->error = $this->translate('source_missing'.'2 file exists');
+                    $this->error = $this->translate('source_missing');
                 }
             }
 
@@ -3600,11 +3733,11 @@ class upload {
                     $this->error = $this->translate('destination_path_not_dir');
                 }
 
-                // checks if the destination directory is writable, and attempt to make it writable
+                // checks if the destination directory is writeable, and attempt to make it writeable
                 $hash = md5($this->file_dst_name_body . rand(1, 1000));
                 if ($this->processed && !($f = @fopen($this->file_dst_path . $hash . (!empty($this->file_dst_name_ext) ? '.' . $this->file_dst_name_ext : ''), 'a+'))) {
                     if ($this->dir_auto_chmod) {
-                        $this->log .= '- ' . $this->file_dst_path . ' is not writable. Attempting chmod:';
+                        $this->log .= '- ' . $this->file_dst_path . ' is not writeable. Attempting chmod:';
                         if (!@chmod($this->file_dst_path, $this->dir_chmod)) {
                             $this->log .= ' failed<br />';
                             $this->processed = false;
@@ -3658,6 +3791,9 @@ class upload {
             }
 
             if ($image_manipulation) {
+
+                // make sure GD doesn't complain too much
+                ini_set("gd.jpeg_ignore_warning", 1);
 
                 // checks if the source file is readable
                 if ($this->processed && !($f = @fopen($this->file_src_pathname, 'r'))) {
@@ -4001,7 +4137,7 @@ class upload {
                             if ($cl < 0) imagefilledrectangle($tmp, 0, 0, -$cl-1, $this->image_dst_y, $fill);
                         }
 
-                        // we transfer tmp into image_dst
+                        // we transfert tmp into image_dst
                         $image_dst = $this->imagetransfer($tmp, $image_dst);
                     }
 
@@ -4015,7 +4151,7 @@ class upload {
                                 if (strpos($this->image_flip, 'v') !== false) {
 	                                imagecopy($tmp, $image_dst, $x, $this->image_dst_y - $y - 1, $x, $y, 1, 1);
                                 } else {
-	                                imagecopy($tmp, $image_dst, $this->image_dst_x - $x - 1, $y, $x, $y, 1, 1);
+                                    imagecopy($tmp, $image_dst, $this->image_dst_x - $x - 1, $y, $x, $y, 1, 1);
                                 }
                             }
                         }
@@ -4056,6 +4192,20 @@ class upload {
                         }
                     }
 
+                    // pixelate image
+                    if ((is_numeric($this->image_pixelate) && $this->image_pixelate > 0)) {
+                        $this->log .= '- pixelate image (' . $this->image_pixelate . 'px)<br />';
+                        $filter = $this->imagecreatenew($this->image_dst_x, $this->image_dst_y);
+                        if ($gd_version >= 2) {
+                            imagecopyresampled($filter, $image_dst, 0, 0, 0, 0, round($this->image_dst_x / $this->image_pixelate), round($this->image_dst_y / $this->image_pixelate), $this->image_dst_x, $this->image_dst_y);
+                            imagecopyresampled($image_dst, $filter, 0, 0, 0, 0, $this->image_dst_x, $this->image_dst_y, round($this->image_dst_x / $this->image_pixelate), round($this->image_dst_y / $this->image_pixelate));
+                        } else {
+                            imagecopyresized($filter, $image_dst, 0, 0, 0, 0, round($this->image_dst_x / $this->image_pixelate), round($this->image_dst_y / $this->image_pixelate), $this->image_dst_x, $this->image_dst_y);
+                            imagecopyresized($image_dst, $filter, 0, 0, 0, 0, $this->image_dst_x, $this->image_dst_y, round($this->image_dst_x / $this->image_pixelate), round($this->image_dst_y / $this->image_pixelate));
+                        }
+                        imagedestroy($filter);
+                    }
+ 
                     // unsharp mask
                     if ($gd_version >= 2 && $this->image_unsharp && is_numeric($this->image_unsharp_amount) && is_numeric($this->image_unsharp_radius) && is_numeric($this->image_unsharp_threshold)) {
                         // Unsharp Mask for PHP - version 2.1.1
@@ -4756,11 +4906,11 @@ class upload {
                         // inspired by: JPEGReducer class version 1, 25 November 2004, Author: Huda M ElMatsani, justhuda at netscape dot net
                         $this->log .= '- JPEG desired file size : ' . $this->jpeg_size . '<br />';
                         // calculate size of each image. 75%, 50%, and 25% quality
-                        ob_start(); imagejpeg($image_dst,'',75);  $buffer = ob_get_contents(); ob_end_clean();
+                        ob_start(); imagejpeg($image_dst,null,75);  $buffer = ob_get_contents(); ob_end_clean();
                         $size75 = strlen($buffer);
-                        ob_start(); imagejpeg($image_dst,'',50);  $buffer = ob_get_contents(); ob_end_clean();
+                        ob_start(); imagejpeg($image_dst,null,50);  $buffer = ob_get_contents(); ob_end_clean();
                         $size50 = strlen($buffer);
-                        ob_start(); imagejpeg($image_dst,'',25);  $buffer = ob_get_contents(); ob_end_clean();
+                        ob_start(); imagejpeg($image_dst,null,25);  $buffer = ob_get_contents(); ob_end_clean();
                         $size25 = strlen($buffer);
 
                         // make sure we won't divide by 0
@@ -4871,6 +5021,9 @@ class upload {
                             break;
                     }
 
+                    // interlace options
+                    if($this->image_interlace) imageinterlace($image_dst, true);
+
                     // outputs image
                     $this->log .= '- saving image...<br />';
                     switch($this->image_convert) {
@@ -4880,7 +5033,7 @@ class upload {
                                 $result = @imagejpeg($image_dst, $this->file_dst_pathname, $this->jpeg_quality);
                             } else {
                                 ob_start();
-                                $result = @imagejpeg($image_dst, '', $this->jpeg_quality);
+                                $result = @imagejpeg($image_dst, null, $this->jpeg_quality);
                                 $return_content = ob_get_contents();
                                 ob_end_clean();
                             }
@@ -4895,10 +5048,18 @@ class upload {
                             imagealphablending( $image_dst, false );
                             imagesavealpha( $image_dst, true );
                             if (!$return_mode) {
-                                $result = @imagepng($image_dst, $this->file_dst_pathname);
+                                if (is_numeric($this->png_compression) && version_compare(PHP_VERSION, '5.1.2') >= 0) {
+                                    $result = @imagepng($image_dst, $this->file_dst_pathname, $this->png_compression);
+                                } else {
+                                    $result = @imagepng($image_dst, $this->file_dst_pathname);
+                                }
                             } else {
                                 ob_start();
-                                $result = @imagepng($image_dst);
+                                if (is_numeric($this->png_compression) && version_compare(PHP_VERSION, '5.1.2') >= 0) {
+                                    $result = @imagepng($image_dst, null, $this->png_compression);
+                                } else {
+                                    $result = @imagepng($image_dst);
+                                }
                                 $return_content = ob_get_contents();
                                 ob_end_clean();
                             }
@@ -5013,8 +5174,6 @@ class upload {
      * This function has been written by DHKold, and is used with permission of the author
      *
      * @access public
-     * @param $filename
-     * @return bool|\resource
      */
     function imagecreatefrombmp($filename) {
         if (! $f1 = fopen($filename,"rb")) return false;
@@ -5090,9 +5249,6 @@ class upload {
      * This function has been published on the PHP website, and can be used freely
      *
      * @access public
-     * @param $im
-     * @param string $filename
-     * @return bool
      */
     function imagebmp(&$im, $filename = "") {
 
