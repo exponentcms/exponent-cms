@@ -31,6 +31,9 @@ return array(
 	'external'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>250),
+	'module'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>100),
 	'title'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>255),
@@ -42,11 +45,13 @@ return array(
 		DB_FIELD_LEN=>100),
 	'rank'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+	'is_existing'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'view_data'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),
-    'is_private'=>array(
-   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	'is_private'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>
