@@ -298,7 +298,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         var formatFilename = function(elCell, oRecord, oColumn, sData) {
             var title = "{/literal}{"Display File Details"|gettext}{literal}\n" + getBytesWithUnit(oRecord._oData.filesize);
             if (oRecord._oData.is_image==1){
-                title = title + ", " + oRecord._oData.image_height + ' x ' + oRecord._oData.image_width;
+                title = title + ", " + oRecord._oData.image_height + 'x' + oRecord._oData.image_width + ' px';
             }
             if (oRecord.getData().is_image==1 && thumbnails) {
                 elCell.innerHTML = '<a title="'+title+'" href="#" class="fileinfo"><img src="'+EXPONENT.PATH_RELATIVE+'thumb.php?&id='+oRecord.getData().id+'&w={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}&h={/literal}{$smarty.const.FM_THUMB_SIZE}{literal}"> '+oRecord.getData().filename+'</a>';
