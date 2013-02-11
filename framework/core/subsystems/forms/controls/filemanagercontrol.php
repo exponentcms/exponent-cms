@@ -93,18 +93,21 @@ class filemanagercontrol extends formcontrol {
                         data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
                         responseType: 'json',
                         name: 'uploadfile',
+                        disabledClass: 'quick-upload-disabled',
 //                        debug: true,
                         onSubmit: function(file, ext){
 //                             if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
 //                                // extension is not allowed
 //                                return false;
 //                            }
+                            quickUpload.disable();
                         },
                         onComplete: function(file, response){
                             //Add uploaded file to list
                             if(response.replyCode==200){
                                 EXPONENT.passBackFile".$name."(response.data);
                             }
+                            quickUpload.enable();
                         },
                     });
 //                );

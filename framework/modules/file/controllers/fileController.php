@@ -463,6 +463,8 @@ class fileController extends expController {
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
             $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME']);
+            $file->posted = $file->last_accessed = time();
+            $file->save();
             $ar = new expAjaxReply(200, gt('Your File was uploaded successfully'), $file->id);
             $ar->send();
         } else {  //$_POST upload

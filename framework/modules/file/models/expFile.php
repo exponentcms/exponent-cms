@@ -544,7 +544,7 @@ class expFile extends expRecord {
         $maxwidth = intval($_max_width);
         if (!empty($maxwidth)) {
             require_once(BASE . 'framework/modules/pixidou/includes/class.upload/class.upload.php');
-            $handle = new upload($_FILES[$_postName]['tmp_name']);
+            $handle = new upload($_FILES[$fileName]['tmp_name']);
             if ($handle->uploaded) {
                 $handle->file_new_name_body = $_destFile;
                 $handle->file_new_name_ext = '';

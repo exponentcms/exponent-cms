@@ -9,6 +9,7 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.1.2
 -----------------------
 ### This release focuses on things not completed in 2.1.1, but not destined for the v2.2 major version update
+ - adds category and tag assignment to multi-add photo album feature
 
 Added / Fixed / changed for 2.1.1
 -----------------------
