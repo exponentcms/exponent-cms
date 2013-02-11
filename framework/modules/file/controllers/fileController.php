@@ -375,6 +375,7 @@ class fileController extends expController {
             $delfile = new expFile($file->id);
             if ($user->id==$delfile->poster || $user->is_acting_admin==1) {
                 $delfile->delete();
+                unlink($delfile->directory.$delfile->filename);
             } else {
                 $error = true;
             }
