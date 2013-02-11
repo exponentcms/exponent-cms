@@ -1,4 +1,4 @@
-// Amelia 2.3.0
+// Amelia 2.2.2
 // Bootswatch
 // -----------------------------------------------------
 
@@ -6,7 +6,8 @@
 // TYPOGRAPHY
 // -----------------------------------------------------
 
-@import url('//fonts.googleapis.com/css?family=Lobster|Cabin:400,700');
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+@import url('https://fonts.googleapis.com/css?family=Cabin:400,700');
 
 h6 {
 	color: @textColor;
@@ -160,11 +161,16 @@ hr {
 
 div.subnav {
 
-	margin: 0 1px;
-	background: rgba(42, 99, 105, 0.9) none;
-	border: none;
+	background-color: rgba(42, 99, 105, 0.9);
+	background-image: none;
+	border: 0px solid transparent;
 	.border-radius(0);
 	.box-shadow(none);
+
+	.nav > li.open > a {
+		border-color: transparent;
+		background-color: rgba(255, 255, 255, 0.4);
+	}
 
 	.nav > li > a {
 		color: @textColor;
@@ -177,27 +183,27 @@ div.subnav {
 	}
 
 	.nav > .active > a {
-		background-color: rgba(255, 255, 255, 0.4);
+		background-color: transparent;
 		border-color: transparent;
 		color: @textColor;
 		.box-shadow(none);
 	}
 
+	.nav > .active > a:hover,
 	.nav > li > a:hover,
-	.nav > .active > a:hover, {
+	.nav > li.active > a:hover, {
 		border-right-color: transparent;
 		background-color: rgba(255, 255, 255, 0.4);
 		color: @textColor;
 	}
 
-	.nav > li.open > a {
-		border-color: transparent;
-		background-color: rgba(255, 255, 255, 0.4);
+	.nav > li:first-child > a:hover {
+		border-left-color: rgba(255, 255, 255, 0.4);
+		border-left-width: 1px;
 	}
 
 	&-fixed {
-		top: @navbarHeight + 1;
-		margin: 0;
+		top: 50px;
 	}
 }
 
@@ -221,13 +227,17 @@ div.subnav {
 	}
 
 	li.active > a,
-	li.active > a:hover {
+	li:active > a,
+	li.active > a:hover,
+	li:active > a:hover {
 		color: @textColor;
 	}
 
 	li.active > a,
+	li:active > a,
 	li > a:hover,
-	li.active > a:hover {
+	li.active > a:hover,
+	li:active > a:hover {
 		background-color: #8AD5DC;
 		border-color: transparent;
 		text-shadow: none;
@@ -252,13 +262,14 @@ div.subnav {
 	li > a,
 	li > a:hover,
 	li.active > a,
-	li.active > a:hover {
+	li:active > a,
+	li.active > a:hover,
+	li:active > a:hover {
 		border-color: transparent;
 	}
 }
 
 .nav-list {
-
 	.nav-header {
 		text-shadow: none;
 		color: @textColor;
@@ -269,8 +280,10 @@ div.subnav {
 	}
 
 	li.active > a,
+	li:active > a,
 	li > a:hover,
-	li.active > a:hover {
+	li.active > a:hover,
+	li:active > a:hover {
 		background-color: #8AD5DC;
 		text-shadow: none;
 	}
@@ -547,13 +560,6 @@ input, textarea, .search-query, .uneditable-input,
 
 // ALERTS, LABELS, BADGES
 // -----------------------------------------------------
-
-.alert {
-
-	h1, h2, h3, h4, h5, h6 {
-		color: @textColor;
-	}
-}
 
 .alert, .label {
 	border-color: transparent;

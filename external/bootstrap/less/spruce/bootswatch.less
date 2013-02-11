@@ -1,4 +1,4 @@
-// Spruce 2.3.0
+// Spruce 2.2.2
 // Bootswatch
 // -----------------------------------------------------
 
@@ -6,7 +6,7 @@
 // TYPOGRAPHY
 // --------------------------------------------------
 
-@import url(//fonts.googleapis.com/css?family=Crete+Round);
+@import url(http://fonts.googleapis.com/css?family=Crete+Round);
 
 h1 > small,
 h2 > small,
@@ -129,10 +129,6 @@ blockquote {
 
 	&-inverse {
 
-		.navbar-search .search-query {
-			color: @gray;
-		}
-
 		.dropdown-menu {
 			background-color: @navbarInverseLinkBackgroundHover;
 
@@ -149,7 +145,7 @@ blockquote {
 			}
 
 			.nav-header {
-				color: @gray;
+				color: @headingsColor;
 			}
 		}
 
@@ -186,8 +182,10 @@ blockquote {
 
 div.subnav {
 
-	background: @green none;
+	background-color: @green;
+	background-image: none;
 	border-color: transparent;
+	.border-radius(0);
 
 	.nav > li > a {
 		padding: 12px 12px 10px;
@@ -320,7 +318,7 @@ div.subnav {
 
 	.divider {
 		background-color: transparent;
-		border-bottom: 1px solid @grayLight;
+		border-bottom: 1px solid @headingsColor;
 	}
 }
 
@@ -330,6 +328,7 @@ div.subnav {
 	background-image: none;
 	.box-shadow(none);
 	border-color: transparent;
+	.border-radius(0);
 
 	li {
 		color: @white;
@@ -361,6 +360,7 @@ div.subnav {
 		background-image: none;
 		.box-shadow(none);
 		border-color: transparent;
+		.border-radius(0);
 	}
 
 
@@ -415,6 +415,7 @@ div.subnav {
 // --------------------------------------------------
 
 .btn {
+	.border-radius(0);
 	font-family: @headingsFontFamily;
 	font-weight: @headingsFontWeight;
     text-shadow: none;
@@ -430,6 +431,25 @@ div.subnav {
 
 // TABLES
 // --------------------------------------------------
+
+.table,
+.table.table-bordered,
+.table.table-striped {
+	.border-radius(0);
+}
+
+.table-bordered thead:first-child tr:first-child th:first-child,
+.table-bordered tbody:first-child tr:first-child td:first-child,
+.table-bordered thead:first-child tr:first-child th:last-child,
+.table-bordered tbody:first-child tr:first-child td:last-child,
+.table-bordered tbody:last-child tr:last-child td:first-child, {
+	.border-radius(0);
+}
+
+.table thead tr th:first-child,
+.table tbody tr td:first-child {
+	// border-left: none;
+}
 
 .table th,
 .table-striped tbody tr:nth-child(odd) th {
@@ -476,24 +496,12 @@ input, textarea, select {
 
 .form-actions {
 	border-top: none;
-}
-
-.control-group {
-
-	&.warning,
-	&.error,
-	&.success {
-
-		.control-label {
-			color: @textColor;
-		}
-	}
+	.border-radius(4px);
 }
 
 .control-group.error {
 
-	.help-block,
-	.help-inline {
+	label, .help-block, .help-inline {
 		color: @red;
 	}
 
@@ -505,8 +513,7 @@ input, textarea, select {
 
 .control-group.success {
 
-	.help-block,
-	.help-inline {
+	label, .help-block, .help-inline {
 		color: @green;
 	}
 
@@ -518,8 +525,7 @@ input, textarea, select {
 
 .control-group.warning {
 
-	.help-block,
-	.help-inline {
+	label, .help-block, .help-inline {
 		color: @orange;
 	}
 
@@ -579,16 +585,22 @@ input, textarea, select {
 
 .well {
 	border: none;
+	.border-radius(0);
 	.box-shadow(none);
 }
 
 .hero-unit {
 	border: none;
+	.border-radius(0);
 }
 
 .thumbnail {
 	border: none;
 	.box-shadow(none);
+
+	img {
+		.border-radius(4px);
+	}
 }
 
 .dropdown-menu .nav-header {
@@ -628,6 +640,10 @@ input, textarea, select {
 		label {
 			color: @textColor;
 		}
+	}
+
+	&-footer {
+		.border-radius(0 0 4px 4px);
 	}
 }
 

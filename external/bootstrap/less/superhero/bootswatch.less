@@ -1,4 +1,4 @@
-// Superhero 2.3.0
+// Superhero 2.2.2
 // Bootswatch
 // -----------------------------------------------------
 
@@ -6,7 +6,8 @@
 // TYPOGRAPHY
 // --------------------------------------------------
 
-@import url('//fonts.googleapis.com/css?family=Oswald|Noticia+Text');
+@import url(https://fonts.googleapis.com/css?family=Oswald);
+@import url(https://fonts.googleapis.com/css?family=Noticia+Text);
 
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, h6 {
 	font-family: @headingsFontFamily;
@@ -169,39 +170,52 @@ blockquote.pull-right {
 }
 
 div.subnav {
-	margin: 0 1px;
-	background: @blue none;
+	background-color: @blue;
+	background-image: none;
 	border: none;
 
 	.nav > li > a,
 	.nav > li.active > a {
-		border-color: transparent;
+		border-left: none;
+		border-right: none;
 		color: @textColor;
 	}
 
 	.nav > li > a:hover,
 	.nav > li.active > a:hover {
 		background-color: lighten(@blue, 10%);
-		border-color: transparent;
+	}
+
+	.nav > li + li > a {
+		border-top: 0px solid transparent;
+	}
+
+	.nav > li:first-child > a,
+	.nav > li:first-child > a:hover,
+	.nav > li.active:first-child > a,
+	.nav > li.active:first-child > a:hover {
+		.border-radius(4px 0 0 4px);
 	}
 
 	.nav > li.active > a,
 	.nav > li.active > a:hover {
-		background: @orange none;
-		.box-shadow(none);
 		color: @white;
+		background-color: @orange;
+		background-image: none;
+		.box-shadow(none);
 	}
 
 	&.subnav-fixed {
-		top: @navbarHeight + 1;
-		margin: 0;
+		top: 70px;
 		.box-shadow(none);
 
 		.nav > li > a,
-		.nav > li > a:hover,
 		.nav > li.active > a,
+		.nav > li > a:hover,
 		.nav > li.active > a:hover {
 			border-color: transparent;
+			padding-left: 12px;
+			padding-right: 12px;
 			.border-radius(0);
 		}
 
