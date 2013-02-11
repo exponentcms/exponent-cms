@@ -153,7 +153,7 @@
 
          Y.on('toolbar:loaded',function(){
              if (document.getElementById("reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
-             if (document.getElementById("manage-db"))Y.one('#manage-db').on('click', adminerwindow);
+             if (document.getElementById("manage-db")) Y.one('#manage-db').on('click', adminerwindow);
              Y.one('#docs-toolbar').on('click',docswindow);
              Y.one('#forums-toolbar').on('click',forumswindow);
              Y.one('#filemanager-toolbar').on('click',filepickerwindow);

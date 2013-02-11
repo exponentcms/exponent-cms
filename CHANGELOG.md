@@ -14,6 +14,11 @@ Added / Fixed / changed for 2.2.0
     -- also deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
 
+Added / Fixed / changed for 2.1.2
+-----------------------
+### This release focuses on things not completed in 2.1.1, but not destined for the v2.2 major version update
+ - adds category and tag assignment to multi-add photo album feature
+
 Added / Fixed / changed for 2.1.1
 -----------------------
 ### This release focuses on the new forms module and user interface improvements
