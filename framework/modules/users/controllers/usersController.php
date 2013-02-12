@@ -1127,8 +1127,8 @@ class usersController extends expController {
         global $template;
 
   //FIXME we need a true tmp
-        if (expFile::canCreate(BASE . "framework/modules-1/importer/importers/usercsv/tmp/test") != SYS_FILES_SUCCESS) {
-            $template->assign("error", "The modules/importer/importers/usercsv/tmp directory is not writable.  Please contact your administrator.");
+        if (expFile::canCreate(BASE . "tmp/test") != SYS_FILES_SUCCESS) {
+            $template->assign("error", "The /tmp directory is not writable.  Please contact your administrator.");
         } else {
             //Setup the mete data (hidden values)
             $form = new form();
@@ -1168,7 +1168,7 @@ class usersController extends expController {
         }
 
         //Get the temp directory to put the uploaded file
-        $directory = "framework/modules-1/importer/importers/usercsv/tmp";  //FIXME we need a true tmp
+        $directory = "tmp";  //FIXME we need a true tmp
 
         //Get the file save it to the temp directory
         if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {

@@ -29,7 +29,7 @@ class expTheme {
 		global $auto_dirs, $auto_dirs2;
 //        global $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
-		require_once(BASE.'framework/core/compat/theme.php');
+//		require_once(BASE.'framework/core/compat/theme.php');
 
 		if (!defined('DISPLAY_THEME')) {
 			/* exdoc
@@ -496,8 +496,8 @@ class expTheme {
 
 				if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
                     include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
-				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
-					include_once(BASE.'framework/modules-1/'.$actfile);
+//				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
+//					include_once(BASE.'framework/modules-1/'.$actfile);
 				} else {
 					echo SITE_404_HTML . '<br /><br /><hr size="1" />';
 					echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($module),strip_tags($_REQUEST['action']));
@@ -527,8 +527,8 @@ class expTheme {
 
    		if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
    				include(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
-   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
-   			include(BASE.'framework/modules-1/'.$actfile);
+//   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
+//   			include(BASE.'framework/modules-1/'.$actfile);
    		} else {
    			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
    			echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($_REQUEST['module']),strip_tags($_REQUEST['action']));
@@ -580,7 +580,7 @@ class expTheme {
             }
         } else {
             if (isset($_REQUEST['module'])) {
-                include_once(BASE."framework/modules-1/containermodule/actions/orphans_content.php");  //FIXME not sure how to convert this yet
+                include_once(BASE."framework/modules/container/orphans_content.php");  //FIXME not sure how to convert this yet
             } else {
                 echo gt('Select a module');
             }

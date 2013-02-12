@@ -310,7 +310,7 @@ class expFile extends expRecord {
             // Assign info back to class
             $this->is_image = $_fileInfo['is_image'];
             $this->filesize = $_fileInfo['fileSize'];
-            $this->mimetype = $_fileInfo['mime'];
+            if (!empty($_fileInfo['mime'])) $this->mimetype = $_fileInfo['mime'];
             if ($_fileInfo['is_image']) {
                 $this->image_width = $_fileInfo[0];
                 $this->image_height = $_fileInfo[1];

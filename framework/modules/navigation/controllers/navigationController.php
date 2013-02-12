@@ -124,13 +124,16 @@ class navigationController extends expController {
                 $obj->description = $sections[$i]->description;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;
+                $obj->type = $sections[$i]->alias_type;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
+                    if ($obj->type == 1 && substr($obj->url, 4) != 'http') {
+                        $obj->url = 'http://' . $obj->url;
+                    }
                 } else {
                     $obj->url     = "#";
                     $obj->onclick = "onclick: { fn: return false }";
                 }
-                $obj->type = $sections[$i]->alias_type;
                 if ($obj->type == 3) {  // mostly a hack instead of adding more table fields
                     $obj->width = $sections[$i]->internal_id;
                     $obj->class = $sections[$i]->external_link;
@@ -181,6 +184,9 @@ class navigationController extends expController {
                 $obj->depth = $sections[$i]->depth;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
+                    if ($sections[$i]->alias_type == 1 && substr($obj->url, 4) != 'http') {
+                        $obj->url = 'http://' . $obj->url;
+                    }
                 } else {
                     $obj->url     = "#";
                     $obj->onclick = "onclick: { fn: return false }";

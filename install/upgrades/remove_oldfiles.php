@@ -32,13 +32,13 @@ class remove_oldfiles extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Remove old definition and model files"; }
+	static function name() { return "Remove old files"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Several model and definition files were moved from the core folder into their specific module folder in v2.0.8.  This Script removes the leftover files from previous versions."; }
+	function description() { return "Several files have been moved or are no longer needed.  This Script removes those leftover files from previous versions."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
@@ -90,13 +90,13 @@ class remove_oldfiles extends upgradescript {
             'external/editors/connector/link.php',
             'external/editors/connector/popup.js',
             'external/editors/connector/section_linked.php',
-            'framework/modules-1/containermodule/actions/copy_to_clipboard.php',
-            'framework/modules-1/containermodule/actions/orphans_modules.php',
-            'framework/modules-1/containermodule/actions/view_clipboard.php',
-            'framework/modules-1/containermodule/actions/view-recycle-bin.php',
-            'framework/modules-1/containermodule/views/_orphans_modules.tpl',
-            'framework/modules-1/containermodule/views/_view_clipboard.tpl',
-            'framework/modules-1/common//views/_msg_queue.tpl',
+//            'framework/modules-1/containermodule/actions/copy_to_clipboard.php',
+//            'framework/modules-1/containermodule/actions/orphans_modules.php',
+//            'framework/modules-1/containermodule/actions/view_clipboard.php',
+//            'framework/modules-1/containermodule/actions/view-recycle-bin.php',
+//            'framework/modules-1/containermodule/views/_orphans_modules.tpl',
+//            'framework/modules-1/containermodule/views/_view_clipboard.tpl',
+//            'framework/modules-1/common//views/_msg_queue.tpl',
             'framework/modules/text//views//text/showall_merge.tpl',
             'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
             'framework/modules/common/views/configure/module_title.tpl',
@@ -123,10 +123,10 @@ class remove_oldfiles extends upgradescript {
             'framework/core/definitions/bots.php',
             'framework/core/definitions/locationref.php',
             'framework/core/definitions/toolbar_FCKeditor.php',
-            'framework/core/models-1/database_importer.php',
-            'framework/core/models-1/file_collection.php',
-            'framework/core/models-1/file.php',
-            'framework/core/models-1/mimetype.php',
+//            'framework/core/models-1/database_importer.php',
+//            'framework/core/models-1/file_collection.php',
+//            'framework/core/models-1/file.php',
+//            'framework/core/models-1/mimetype.php',
             'framework/modules/news/models/rssfeed.php',
             // moved definitions/models
             'framework/core/definitions/expFiles.php',
@@ -241,7 +241,7 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/ecommerce/views/store/search_by_model_old.tpl',
             'framework/modules/ecommerce/views/store/showall_category_featured_products.tpl',
             'framework/modules/ecommerce/views/store/upcoming_events.tpl',
-            // core controllers/models/definitions
+            // core controllers/models/definitions moved to /framework/modules folder
             'framework/core/controllers/expCatController.php',
             'framework/core/controllers/expCommentController.php',
             'framework/core/controllers/expDefinableFieldController.php',
@@ -277,15 +277,18 @@ class remove_oldfiles extends upgradescript {
         // delete old directories
         $olddirs = array(
             "framework/subsystems/",
-            "framework/core/subsystems-1/",
-            "framework/core/datatypes/",
-            "framework/core/js/",
+            "framework/core/compat/",
             "framework/core/database/",
-            "framework/modules-1/administrationmodule/",
-            "framework/modules-1/bots/",
-            "framework/modules-1/loginmodule/",
+            "framework/core/datatypes/",
+            "framework/core/models-1/",
+            "framework/core/js/",
+            "framework/core/subsystems-1/",
+//            "framework/modules-1/administrationmodule/",
+//            "framework/modules-1/bots/",
+//            "framework/modules-1/loginmodule/",
+            "framework/modules-1/",
             "framework/modules/photoalbum/views/photos/",
-            "framework/modules/expEvent",
+            "framework/modules/expEvent/",
             "framework/datatypes/",
             "framework/views/",
             "plugins/",

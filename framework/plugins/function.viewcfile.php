@@ -33,7 +33,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_viewcfile($params,&$smarty) {
-    $controller = new $params['module']();
+    $controller = expModules::getController($params['module']);
 	$view = get_template_for_action($controller,$params['view']);
 	$smarty->assign($params['var'],$view->viewfile);
 }
