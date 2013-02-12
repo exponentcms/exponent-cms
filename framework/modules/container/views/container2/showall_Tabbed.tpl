@@ -20,8 +20,8 @@
 {uniqueid assign=tabs}
 
 <div class="containermodule tabbed"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
-{viewcfile module=$singlemodule view=$singleview var=viewcfile}
-<div id="{$tabs}" class="yui-navset exp-skin-tabview hide">
+{viewcfile module=$singlemodule view=$singleview var=viewfile}
+<div id="{$tabs}" class="yui-navset exp-skin-tabview">
 	<ul class="yui-nav">
 		{foreach from=$containers item=container key=tabnum name=contain}
             {$numcontainers=$tabnum+1}
@@ -70,13 +70,13 @@
 					{$container=$containers.$index}
 					{$i=$menurank}
 					{$rerank=0}
-					{include file=$viewcfile}
+					{include file=$viewfile}
 				</div>
 			{else}
 				{permissions}
 					{if $permissions.create == 1 && $hidebox == 0}
 						<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
-							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>
+							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module-t'|gettext}</span></a>
 						</div>
 					{/if}
 				{/permissions}	

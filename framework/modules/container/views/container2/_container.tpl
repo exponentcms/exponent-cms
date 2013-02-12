@@ -33,7 +33,7 @@
 {else}
 	{permissions}
 		{if $permissions.create == 1 && $hidebox == 0}
-			<a class="addmodule" href="{link action=edit rank=$i+1}"><span class="addtext">{'Add Module'|gettext}</span></a>
+			<a class="addmodule" href="{link action=edit rank=$i+1}"><span class="addtext">{'Add Module_c'|gettext}</span></a>
 		{/if}
 	{/permissions}
 {/if}

@@ -18,25 +18,25 @@
 {/css}
  
 <div class="containermodule three-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
-    {viewcfile module=$singlemodule view=$singleview var=viewcfile}
+    {viewcfile module=$singlemodule view=$singleview var=viewfile}
     <div class="col1">
     	{$container=$containers.0}
-    	{$i=0}
+    	{$i=0+1}
 		{$rerank=0}
-    	{include file=$viewcfile}
+    	{include file=$viewfile}
         {clear}
     </div>
     <div class="col2">
     	{$container=$containers.1}
-    	{$i=1}
+    	{$i=1+1}
 		{$rerank=0}
-    	{include file=$viewcfile}
+    	{include file=$viewfile}
         {clear}
     </div>
     <div class="col3">
     	{$container=$containers.2}
-    	{$i=2}
-    	{include file=$viewcfile}
+    	{$i=2+1}
+    	{include file=$viewfile}
         {clear}
     </div>
     {clear}

@@ -18,19 +18,19 @@
 {/css}
  
 <div class="containermodule two-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
-    {viewcfile module=$singlemodule view=$singleview var=viewcfile}
+    {viewcfile module=$singlemodule view=$singleview var=viewfile}
     <div class="twocolcontainerleft">
     	{$container=$containers.0}
-    	{$i=0}
+    	{$i=0+1}
 		{$rerank=0}
-    	{include file=$viewcfile}
+    	{include file=$viewfile}
 		{clear}
     </div>
     <div class="twocolcontainerright">
     	{$container=$containers.1}
-    	{$i=1}
+    	{$i=1+1}
 		{$rerank=0}
-    	{include file=$viewcfile}
+    	{include file=$viewfile}
 		{clear}
     </div>
     {clear}
