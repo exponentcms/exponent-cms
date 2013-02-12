@@ -310,7 +310,7 @@ class expFile extends expRecord {
             // Assign info back to class
             $this->is_image = $_fileInfo['is_image'];
             $this->filesize = $_fileInfo['fileSize'];
-            $this->mimetype = $_fileInfo['mime'];
+            if (!empty($_fileInfo['mime'])) $this->mimetype = $_fileInfo['mime'];
             if ($_fileInfo['is_image']) {
                 $this->image_width = $_fileInfo[0];
                 $this->image_height = $_fileInfo[1];
@@ -427,16 +427,15 @@ class expFile extends expRecord {
         $resized = false;
         $maxwidth = intval($_max_width);
         if (!empty($maxwidth)) {
-            $tempFile = tempnam(sys_get_temp_dir(), 'exp_upload_') . $_destFile;
-            move_uploaded_file($_FILES[$_postName]['tmp_name'], $tempFile);
             require_once(BASE . 'framework/modules/pixidou/includes/class.upload/class.upload.php');
-            $handle = new upload($tempFile);
+            $handle = new upload($_FILES[$_postName]['tmp_name']);
             if ($handle->uploaded) {
                 $handle->file_new_name_body = $_destFile;
                 $handle->file_new_name_ext = '';
                 $handle->image_resize = true;
+                $handle->image_ratio = true;
+                $handle->image_ratio_y = true;
                 $handle->image_x = $maxwidth;
-                $handle->image_y = $maxwidth;
                 $handle->image_ratio_no_zoom_in = true;
                 $handle->jpeg_quality = THUMB_QUALITY;
                 $handle->process(BASE . $_destDir);
@@ -544,18 +543,15 @@ class expFile extends expRecord {
         $resized = false;
         $maxwidth = intval($_max_width);
         if (!empty($maxwidth)) {
-            $tempFile = tempnam(sys_get_temp_dir(), 'exp_upload_') . $_destFile;
-            move_uploaded_file($_FILES[$fileName]['tmp_name'], $tempFile);
             require_once(BASE . 'framework/modules/pixidou/includes/class.upload/class.upload.php');
-            $handle = new upload($tempFile);
+            $handle = new upload($_FILES[$fileName]['tmp_name']);
             if ($handle->uploaded) {
                 $handle->file_new_name_body = $_destFile;
                 $handle->file_new_name_ext = '';
                 $handle->image_resize = true;
+                $handle->image_ratio = true;
+                $handle->image_ratio_y = true;
                 $handle->image_x = $maxwidth;
-                $handle->image_y = $maxwidth;
-                $handle->image_ratio_no_zoom_in = true;
-                $handle->jpeg_quality = THUMB_QUALITY;
                 $handle->process(BASE . $_destDir);
                 if ($handle->processed) {
                     if ($handle->image_src_x != $handle->image_dst_x) $resized = true;
