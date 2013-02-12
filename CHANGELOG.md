@@ -6,13 +6,24 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
-Added / Fixed / changed for 2.2.0
+Added / Fixed / changed for 2.2.0 alpha 2
+-----------------------
+### The next major release and the first version of Exponent w/o any 1.0 modules, etc..., primarily will implement Container 2.0 and Twitter-Bootstrap
+  - Fixes the 'nested container not displayed' issue
+  - Removes all the 'old school' files
+  - Contains all the fixes from v2.1.2
+### Known Issues
+  - Inserting a nested container will prevent the 'order' menu from working properly in the parent and child containers
+
+Added / Fixed / changed for 2.2.0 alpha 1
 -----------------------
 ### The next major release and the first version of Exponent w/o any 1.0 modules, etc..., primarily will implement Container 2.0 and Twitter-Bootstrap
   - replaces the containermodule with container2 controller
   - forces deprecation/removal of formmodule/formbuilder, headlineController
-    -- also deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
+    -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
+### Known Issues
+  - This is the first release of the v2.2 code
 
 Added / Fixed / changed for 2.1.2
 -----------------------
