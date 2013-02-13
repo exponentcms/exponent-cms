@@ -26,9 +26,9 @@
             {foreach from=$containers item=container key=tabnum name=contain}
                 {$numcontainers=$tabnum+1}
             {/foreach}
-            {section name=contain loop=$numcontainers}
+            {section name=contain loop=$numcontainers start=1}
                 {$container=$containers[$smarty.section.contain.index]}
-                {$containereditmode=0}
+                {*{$containereditmode=0}*}
                 {if $container == null}
                     {$tabtitle="(empty)"|gettext}
                 {elseif $container->title == ""}
@@ -60,7 +60,7 @@
             {/permissions}
         </ul>
         <div class="yui-content">
-            {section name=contain loop=$numcontainers+1}
+            {section name=contain loop=$numcontainers+1 start=1}
                 {$container=$containers[$smarty.section.contain.index]}
                 {$rank=$smarty.section.contain.index}
                 {$menurank=$rank+1}

@@ -179,7 +179,7 @@ class container2Controller extends expController {
         assign_to_template(array(
             'user'=>$user,
             'containers'=> $containers,
-//            'hasParent'=>(isset($this) && isset($this->_hasParent) ? 1 : 0),
+//            'hasParent'=>(isset($this) && isset($this->_hasParent) ? 1 : 0),  // used to see if we need a border
         ));
 
 	}

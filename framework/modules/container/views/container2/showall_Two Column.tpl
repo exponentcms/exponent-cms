@@ -20,14 +20,14 @@
 <div class="containermodule two-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewcfile module=$singlemodule view=$singleview var=viewfile}
     <div class="twocolcontainerleft">
-    	{$container=$containers.0}
+    	{$container=$containers.1}
     	{$i=0}
 		{$rerank=0}
     	{include file=$viewfile}
 		{clear}
     </div>
     <div class="twocolcontainerright">
-    	{$container=$containers.1}
+    	{$container=$containers.2}
     	{$i=1}
 		{$rerank=0}
     	{include file=$viewfile}

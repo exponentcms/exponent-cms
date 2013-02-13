@@ -57,7 +57,7 @@ class upgrade_container2 extends upgradescript {
 
         $count = 0;
         foreach ($db->selectObjects('sectionref',"module='containermodule'") as $sr) {
-            $sr->module = 'container2';  // containermdoule is now container2 controller
+            $sr->module = 'container2';  // containermodule is now container2 controller
             $db->updateObject($sr,'sectionref');
             $count++;
 	    }
@@ -68,7 +68,7 @@ class upgrade_container2 extends upgradescript {
 	    }
         foreach ($db->selectObjects('container',"external LIKE '%containermodule%'") as $co) {
             $loc = expUnserialize($co->external);
-            $loc->mod = 'container2';  // containermdoule is now container2 controller
+            $loc->mod = 'container2';  // containermodule is now container2 controller
             $co->external = serialize($loc);
             $db->updateObject($co,'container');
             $count++;
@@ -82,7 +82,7 @@ class upgrade_container2 extends upgradescript {
 	    }
         foreach ($db->selectObjects('container',"internal LIKE '%containermodule%'") as $co) {
             $loc = expUnserialize($co->internal);
-            $loc->mod = 'container2';  // containermdoule is now container2 controller
+            $loc->mod = 'container2';  // containermodule is now container2 controller
             $co->internal = serialize($loc);
             $db->updateObject($co,'container');
             $count++;
@@ -94,8 +94,23 @@ class upgrade_container2 extends upgradescript {
             $db->updateObject($co,'container');
             $count++;
 	    }
+        // adjust container ranks
+        $rank = 1;
+        $ext = $null = serialize(null);
+        foreach ($db->selectObjects('container',null,'external, rank') as $co) {
+            if ($co->external != $ext) {
+                $rank = 1;
+                $ext = $co->external;
+            }
+            if ($co->external != $null) {
+                $co->rank = $rank++;
+            } else {
+                $co->rank = 0;
+            }
+            $db->updateObject($co,'container');
+	    }
         foreach ($db->selectObjects('grouppermission',"module = 'containermodule'") as $gp) {
-            $gp->module = 'container2';  // containermdoule is now container2 controller
+            $gp->module = 'container2';  // containermodule is now container2 controller
             $db->updateObject($gp,'grouppermission',"module = 'containermodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
             $count++;
 	    }
@@ -106,7 +121,7 @@ class upgrade_container2 extends upgradescript {
             $count++;
 	    }
         foreach ($db->selectObjects('userpermission',"modul e= 'containermodule'") as $up) {
-            $up->module = 'container2';  // containermdoule is now container2 controller
+            $up->module = 'container2';  // containermodule is now container2 controller
             $db->updateObject($up,'userpermission',"module = 'containermodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
             $count++;
 	    }
@@ -118,7 +133,7 @@ class upgrade_container2 extends upgradescript {
 	    }
         foreach ($db->selectObjects('modstate',"module = 'containermodule'") as $ms) {
             if (!empty($ms)) {
-                $ms->module = 'container2';  // containermdoule is now container2 controller
+                $ms->module = 'container2';  // containermodule is now container2 controller
                 $db->updateObject($ms,'modstate',"module='containermodule'",'module');
                 $count++;
             }
