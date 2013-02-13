@@ -94,9 +94,9 @@ if (!function_exists('smarty_function_ddrerank')) {
             if (!empty($params['label'])) {
                 $params['label'] = gt($params['label']);
             }
-            if (empty($params['uniqueid'])) {
+            if (empty($params['uniqueid'])) {  // make a button
                 echo '<a id="rerank' . $uniqueid . '" class="btn icon-sort ' . BTN_SIZE . '" href="#"> ' . gt("Order") . ' ' . $params['label'] . '</a>';
-            } else {
+            } else {  // make a menu item
                 echo '<a id="rerank' . $uniqueid . '" class="reranklink" href="#">' . gt("Order") . ' ' . $params['label'] . '</a>';
             }
 

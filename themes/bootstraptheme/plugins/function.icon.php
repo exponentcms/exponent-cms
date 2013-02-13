@@ -114,6 +114,7 @@ if (!function_exists('smarty_function_icon')) {
                 break;
             case 'add' :
             case 'addtitle' :
+            case 'switchtheme add' :
                 $class = "plus-sign";
                 $btn = " btn-success";
                 break;
