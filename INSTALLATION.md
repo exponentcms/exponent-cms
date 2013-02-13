@@ -1,4 +1,4 @@
-#Exponent Content Management System..
+#Exponent Content Management System
 
 ===============================================
 
@@ -8,10 +8,10 @@ Installation of Exponent CMS 2.0
 --------------------------------
 
 Requirements
-- Linux-based web host
+- Linux-based web host (recommended)
 - Apache 2.0 or greater
 - PHP 5.2 or greater
-- MySQLi database
+- MySQL database
 
 ---------------------
 
@@ -23,7 +23,7 @@ content from 1.0 to 2.0.
 ---------------------
 
 1. Download the latest package
-    - Check http://www.exponentcms.org for the latest available releases. 
+    - Check [http://www.exponentcms.org](http://www.exponentcms.org) for the latest available releases. 
 
 2. Unpack the archive in place on your web server
     - This can be locally if you have a web server installed on your computer, or on any number of linux-based hosts.
@@ -46,4 +46,4 @@ content from 1.0 to 2.0.
 
 5. Enjoy using Exponent!
 
-6. For additional help and documentation, visit docs.exponentcms.org.
+6. For additional help and documentation, visit [docs.exponentcms.org](docs.exponentcms.org).

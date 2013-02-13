@@ -1,4 +1,4 @@
-#Exponent Content Management System..
+#Exponent Content Management System
 
 ===============================================
 
@@ -37,7 +37,7 @@ looking for contributions in the following area:
 encouraged to join in.  Simply fork this repository, hack away, and submit a pull 
 request. We'll take a look at your code and changes
 * Documentation - If you're interested in helping with documentation, 
-contact us through the forums http://forums.exponentcms.org and we'll advise you
+contact us through the forums [http://forums.exponentcms.org](http://forums.exponentcms.org) and we'll advise you
 as to where to contribute documentation.
 * Testing - As with every software application, there are bound to be
 bugs. We think the system is stable enough to use, but we are always

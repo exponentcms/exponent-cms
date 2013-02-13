@@ -1,4 +1,4 @@
-#Exponent Content Management System..
+#Exponent Content Management System
 
 ===============================================
 
@@ -8,16 +8,16 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 
 Added / Fixed / changed for 2.2.0 alpha 2
 -----------------------
-### The next major release and the first version of Exponent w/o any 1.0 modules, etc..., primarily will implement Container 2.0 and Twitter-Bootstrap
+### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
   - Fixes the 'nested container not displayed' issue
   - Removes all the 'old school' files
   - Contains all the fixes from v2.1.2
 ### Known Issues
-  - Inserting a nested container will prevent the 'order' menu from working properly in the parent and child containers
+  - None
 
 Added / Fixed / changed for 2.2.0 alpha 1
 -----------------------
-### The next major release and the first version of Exponent w/o any 1.0 modules, etc..., primarily will implement Container 2.0 and Twitter-Bootstrap
+### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
   - replaces the containermodule with container2 controller
   - forces deprecation/removal of formmodule/formbuilder, headlineController
     -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist

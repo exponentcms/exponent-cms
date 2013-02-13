@@ -1,4 +1,4 @@
-#Exponent Content Management System..
+#Exponent Content Management System
 
 ===============================================
 
