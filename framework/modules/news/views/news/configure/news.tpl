@@ -26,7 +26,7 @@
     {"These settings only apply to this particular module."|gettext}
 </blockquote>
 {*control type=dropdown name=order label="Sort Order"|gettext items="$sortopts" value=$config.order*}
-{control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Rank"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,rank" value=$config.order|default:'publish DESC'}
+{control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Order Manually"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,rank" value=$config.order|default:'publish DESC'}
 {control type="checkbox" name="only_featured" label="Only show Featured News Items"|gettext value=1 checked=$config.only_featured}
 {control type="radiogroup" name="usebody" label="Display News Body in List"|gettext value=$config.usebody|default:0 items="Full,Summary,None"|gettxtlist values="0,1,2"}
 {control type="checkbox" name="datetag" label="Display Item Date as Badge"|gettext value=1 checked=$config.datetag}
