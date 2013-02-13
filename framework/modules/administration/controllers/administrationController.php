@@ -452,9 +452,9 @@ class administrationController extends expController {
 	public function install_extension() {
 
 		$modsurl =array(
-			'themes'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a70cebdc96',
-			'fixes'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a710126abf',
-			'mods'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a7148c84a9'
+			'themes'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-themes',
+			'fixes'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-fixes',
+			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods'
 		);
 
 		$RSS = new SimplePie();
