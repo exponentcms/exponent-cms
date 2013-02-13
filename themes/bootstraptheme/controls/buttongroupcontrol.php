@@ -60,7 +60,14 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
 		$html = "";
 		if ($this->submit != "") {
-			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn icon-save '.BTN_SIZE.' '.$this->class;
+            if (stripos($this->submit, 'save') !== false) {
+                $icon = 'icon-save';
+            } elseif (stripos($this->submit, 'log') !== false) {
+                $icon = 'icon-signin';
+            } else {
+                $icon = 'icon-ok-circle';
+            }
+			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn '.$icon.' '.BTN_SIZE.' '.$this->class;
 			if ($this->disabled) $html .= " disabled";  // disabled class
 			$html .='" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";  // disabled attribute

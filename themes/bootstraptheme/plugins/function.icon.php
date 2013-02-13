@@ -117,6 +117,16 @@ if (!function_exists('smarty_function_icon')) {
                 $class = "plus-sign";
                 $btn = " btn-success";
                 break;
+            case 'copy' :
+                $class = "copy";
+                break;
+            case 'downloadfile' :
+                $class = "download-alt";
+                break;
+            case 'uploadfile' :
+            case 'imxport' :
+                $class = "upload-alt";
+                break;
             case 'manage' :
                 $class = "briefcase";
                 break;
