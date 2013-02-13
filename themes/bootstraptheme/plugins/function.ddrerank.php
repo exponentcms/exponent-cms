@@ -65,15 +65,18 @@ if (!function_exists('smarty_function_ddrerank')) {
             $params['items'] = $obj->find('all', $locsql . $only, "rank"); // we MUST re-pull since we only received one page of $items
             $params['items'] = expSorter::sort(array('array' => $params['items'], 'sortby' => 'rank', 'order' => 'ASC'));
         } elseif (!empty($params['module'])) {
-        $model = empty($params['model']) ? $params['module'] : $params['model'];
-        $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
-            if (!empty($uniqueloc->internal)) {
-                $uniqueloc2 = expUnserialize($uniqueloc->internal);
-                $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
-            }
+            $model = empty($params['model']) ? $params['module'] : $params['model'];
             $where = !empty($params['where']) ? $params['where'] : 1;
             $only = !empty($params['only']) ? ' AND ' . $params['only'] : '';
-        $params['items'] = $db->selectObjects($model, $where . $only, "rank");
+            $params['items'] = $db->selectObjects($model, $where . $only, "rank");
+            // we need a good uniqueid since we get both internal and external calls from the same container template
+//            $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
+//            if (!empty($uniqueloc->external)) {
+            if (!empty($params['uniqueid'])) {
+//                $uniqueloc2 = expUnserialize($uniqueloc->external);
+                $uniqueloc2 = expUnserialize($params['uniqueid']);
+                $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
+            }
         } else {
             $params['items'] = array();
         }

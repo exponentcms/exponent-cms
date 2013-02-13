@@ -45,7 +45,7 @@
                             {break}
                         {/if}
                     {/foreach}
-                    {capture name=rerank}{ddrerank module="container2" model="container" where="external='`$external`'" label="Modules"|gettext}{/capture}
+                    {capture name=rerank}{ddrerank module="container2" model="container" uniqueid=$external where="external='`$external`'" label="Modules"|gettext}{/capture}
                     {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
                     {if $smarty.const.HELP_ACTIVE}<li>{help text="Help with Containers"|gettext}</li>{/if}
                 </ul>

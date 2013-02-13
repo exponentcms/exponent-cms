@@ -72,7 +72,8 @@ function smarty_function_getchromemenu($params,&$smarty) {
         $reorder['module'] = "container2";
         $reorder['model'] = "container";
         $reorder['where'] = "external='".$module->internal."'";
-        $reorder['label'] = gt("Modules");
+        $reorder['uniqueid'] = $module->internal;
+        $reorder['label'] = gt("Modules-c");
         echo '
         <li>';
         smarty_function_ddrerank($reorder, $smarty);
