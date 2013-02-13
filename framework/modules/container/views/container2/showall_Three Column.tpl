@@ -21,21 +21,21 @@
     {viewcfile module=$singlemodule view=$singleview var=viewfile}
     <div class="col1">
     	{$container=$containers.0}
-    	{$i=0+1}
+    	{$i=0}
 		{$rerank=0}
     	{include file=$viewfile}
         {clear}
     </div>
     <div class="col2">
     	{$container=$containers.1}
-    	{$i=1+1}
+    	{$i=1}
 		{$rerank=0}
     	{include file=$viewfile}
         {clear}
     </div>
     <div class="col3">
     	{$container=$containers.2}
-    	{$i=2+1}
+    	{$i=2}
     	{include file=$viewfile}
         {clear}
     </div>

@@ -20,70 +20,70 @@
 {uniqueid assign=tabs}
 
 <div class="containermodule tabbed"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
-{viewcfile module=$singlemodule view=$singleview var=viewfile}
-<div id="{$tabs}" class="yui-navset exp-skin-tabview">
-	<ul class="yui-nav">
-		{foreach from=$containers item=container key=tabnum name=contain}
-            {$numcontainers=$tabnum+1}
-		{/foreach}
-		{section name=contain loop=$numcontainers}
-            {$container=$containers[$smarty.section.contain.index]}
-            {$containereditmode=0}
-			{if $container == null}
-                {$tabtitle="(empty)"|gettext}
-			{elseif $container->title == ""}
-                {$tabtitle=' '}
-			{else}
-                {$tabtitle=$container->title}
-			{/if}
-			{if $smarty.section.contain.first}
-				<li class="selected"><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
-			{elseif $container != null}
-				<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
-			{else}
-				{permissions}
-					{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1)}
-						<li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
-					{/if}
-				{/permissions}
-			{/if}
-		{/section}	
-		{permissions}
-			{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delet == 1 || $permissions.create == 1 || $permissions.configure == 1)}
-				{if $smarty.section.contain.total != 0}
-					<li>
-				{else}
-					<li class="selected">
-				{/if}
-				<a href="#tab{$smarty.section.contain.index+1}"><em>({'Add New'|gettext})</em></a></li>
-			{/if}
-		{/permissions}		
-	</ul>            
-	<div class="yui-content">
-		{section name=contain loop=$numcontainers+1}	
-            {$container=$containers[$smarty.section.contain.index]}
-            {$rank=$smarty.section.contain.index}
-            {$menurank=$rank+1}
-            {$index=$smarty.section.contain.index}
-			{if $container != null}
-				<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
-					{$container=$containers.$index}
-					{$i=$menurank}
-					{$rerank=0}
-					{include file=$viewfile}
-				</div>
-			{else}
-				{permissions}
-					{if $permissions.create == 1 && $hidebox == 0}
-						<div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
-							<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module-t'|gettext}</span></a>
-						</div>
-					{/if}
-				{/permissions}	
-			{/if}	
-		{/section}		
-	</div>
-</div>
+    {viewcfile module=$singlemodule view=$singleview var=viewfile}
+    <div id="{$tabs}" class="yui-navset exp-skin-tabview">
+        <ul class="yui-nav">
+            {foreach from=$containers item=container key=tabnum name=contain}
+                {$numcontainers=$tabnum+1}
+            {/foreach}
+            {section name=contain loop=$numcontainers}
+                {$container=$containers[$smarty.section.contain.index]}
+                {$containereditmode=0}
+                {if $container == null}
+                    {$tabtitle="(empty)"|gettext}
+                {elseif $container->title == ""}
+                    {$tabtitle=' '}
+                {else}
+                    {$tabtitle=$container->title}
+                {/if}
+                {if $smarty.section.contain.first}
+                    <li class="selected"><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
+                {elseif $container != null}
+                    <li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
+                {else}
+                    {permissions}
+                        {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1)}
+                            <li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
+                        {/if}
+                    {/permissions}
+                {/if}
+            {/section}
+            {permissions}
+                {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delet == 1 || $permissions.create == 1 || $permissions.configure == 1)}
+                    {if $smarty.section.contain.total != 0}
+                        <li>
+                    {else}
+                        <li class="selected">
+                    {/if}
+                    <a href="#tab{$smarty.section.contain.index+1}"><em>({'Add New'|gettext})</em></a></li>
+                {/if}
+            {/permissions}
+        </ul>
+        <div class="yui-content">
+            {section name=contain loop=$numcontainers+1}
+                {$container=$containers[$smarty.section.contain.index]}
+                {$rank=$smarty.section.contain.index}
+                {$menurank=$rank+1}
+                {$index=$smarty.section.contain.index}
+                {if $container != null}
+                    <div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
+                        {$container=$containers.$index}
+                        {$i=$menurank}
+                        {$rerank=0}
+                        {include file=$viewfile}
+                    </div>
+                {else}
+                    {permissions}
+                        {if $permissions.create == 1 && $hidebox == 0}
+                            <div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
+                                <a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>
+                            </div>
+                        {/if}
+                    {/permissions}
+                {/if}
+            {/section}
+        </div>
+    </div>
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
