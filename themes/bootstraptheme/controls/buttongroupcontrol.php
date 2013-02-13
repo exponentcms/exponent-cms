@@ -60,7 +60,7 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
 		$html = "";
 		if ($this->submit != "") {
-			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn '.$this->class;
+			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn icon-save '.BTN_SIZE.' '.$this->class;
 			if ($this->disabled) $html .= " disabled";  // disabled class
 			$html .='" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";  // disabled attribute
@@ -73,18 +73,18 @@ class buttongroupcontrol extends formcontrol {
 				$html .= '{ return true; }';
 			}
 			$html .= ' else { return false; }"';
-			$html .= ' >';
+			$html .= ' > ';
 			$html .= $this->submit;
 			$html .= ' </button>';
 		}
 		//if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
 		if ($this->cancel != "") {
 			if ($this->returntype == "") {
-				$html .= '<button type="cancel" class="cancel btn" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
+				$html .= '<button type="cancel" class="cancel icon-ban-circle '.BTN_SIZE.' btn" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
 			} else {
-			    $html .= '<button type="cancel" class="cancel btn" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
+			    $html .= '<button type="cancel" class="cancel icon-ban-circle '.BTN_SIZE.' btn" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
 			}
-			$html .= '>';
+			$html .= '> ';
 			$html .= $this->cancel;
 			$html .= '</button>';
 		}
