@@ -18,9 +18,9 @@
     .navbar-fixed-top {
         margin-top: 30px;
     }
-    {*.navbar-spacer {*}
-        {*height: 115px;*}
-    {*}*}
+    .navbar-spacer {
+        height: 75px;
+    }
 {/if}
 {/css}
 
