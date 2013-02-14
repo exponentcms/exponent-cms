@@ -416,7 +416,8 @@ class administrationController extends expController {
 
 	public function clear_smarty_cache() {
 		expTheme::clearSmartyCache();
-	}
+        expSession::clearAllUsersSessionCache();
+    }
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
@@ -439,6 +440,7 @@ class administrationController extends expController {
 
 	public function clear_all_caches() {
 		expTheme::removeSmartyCache();
+        expSession::clearAllUsersSessionCache();
 		expTheme::removeCss();
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
