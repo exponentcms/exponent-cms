@@ -85,4 +85,3 @@
 			<dd><em>{'No Events'|gettext}</em></dd>
 		{/if}
 	</dl>
-</div>
