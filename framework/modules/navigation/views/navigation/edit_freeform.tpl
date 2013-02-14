@@ -16,7 +16,7 @@
 <div class="module navigation edit_freeform">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Editing Free-form Menu Item"|gettext) module="edit-freeform-page"}
+			{help text="Get Help with"|gettext|cat:" "|cat:("Editing Free-form Menu Item"|gettext) module="edit-freeform-page"}
         </div>
 	    <h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'Free-form Menu Item'|gettext}</h1>
 	</div>

@@ -16,7 +16,7 @@
 <div id="manage_lang" class="module administration manage-lang">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("Managing Translations"|gettext) module="manage-language"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Translations"|gettext) module="manage-language"}
         </div>
         <h1>{"Manage Translations"|gettext}</h1>
     </div>

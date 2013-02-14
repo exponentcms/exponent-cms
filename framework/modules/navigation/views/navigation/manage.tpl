@@ -17,7 +17,7 @@
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
-				{help text="Get Help"|gettext|cat:" "|cat:("Managing Pages"|gettext) module="manage-all-pages"}
+				{help text="Get Help with"|gettext|cat:" "|cat:("Managing Pages"|gettext) module="manage-all-pages"}
 			</div>
 			<h1>{'Manage Pages'|gettext}</h1>
 		</div>

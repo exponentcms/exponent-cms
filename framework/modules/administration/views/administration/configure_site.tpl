@@ -19,7 +19,7 @@
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
-			    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("configuring your website"|gettext) page="site-configuration"}
+			    {help text="Get Help with"|gettext|cat:" "|cat:("configuring your website"|gettext) page="site-configuration"}
 			</div>
 			<h1>{'Configure Website'|gettext}</h1>
 		</div>
@@ -50,7 +50,7 @@
                 <div id="tab1">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("general site configuration settings"|gettext) module="general-configuration"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("general site configuration settings"|gettext) module="general-configuration"}
                         </div>
 		                <h2>{"General Site Configuration"|gettext}</h2>
                     </div>
@@ -67,7 +67,7 @@
                 <div id="tab2">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("anti-spam measure settings"|gettext) module="anti-spam-measures"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("anti-spam measure settings"|gettext) module="anti-spam-measures"}
                         </div>
 		                <h2>{"Anti-Spam Measures"|gettext}</h2>
                     </div>
@@ -84,7 +84,7 @@
                 <div id="tab3">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("user registration settings"|gettext) module="user-registration"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("user registration settings"|gettext) module="user-registration"}
                         </div>
 		                <h2>{"User Registration"|gettext}</h2>
                     </div>
@@ -97,15 +97,15 @@
                     {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="Email address of administrator that should be notified when a user signs up"|gettext value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
                     {/group}
                     {group label="New User Welcome Message"|gettext}
-                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send an email to the user after signing up?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
-                    {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="Subject of the email to the user"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
-                    {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="Content of email sent to the user upon completing registration"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
+                    {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send an email to the user after registering?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
+                    {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="Welcome Email Subject"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
+                    {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="Welcome Email Content"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                     {/group}
                 </div>
                 <div id="tab4">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("user comment policy settings"|gettext) module="user-comment-policies"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("user comment policy settings"|gettext) module="user-comment-policies"}
                         </div>
 		                <h2>{"User Comment Policies"|gettext}</h2>
                     </div>
@@ -117,7 +117,7 @@
                 <div id="tab5">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("display settings"|gettext) module="display-settings"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("display settings"|gettext) module="display-settings"}
                         </div>
 		                <h2>{"Display Settings"|gettext}</h2>
                     </div>
@@ -140,7 +140,7 @@
                 <div id="tab6">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("file manager settings"|gettext) module="filemanager-settings"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("file manager settings"|gettext) module="filemanager-settings"}
                         </div>
 		                <h2>{"File Manager/Uploader Settings"|gettext}</h2>
                     </div>
@@ -154,7 +154,7 @@
                 <div id="tab7">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("mail server settings"|gettext) module="mail-server-settings"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("mail server settings"|gettext) module="mail-server-settings"}
                         </div>
 		                <h2>{"Mail Server Settings"|gettext}</h2>
                     </div>
@@ -173,7 +173,7 @@
                 <div id="tab8">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("site maintenance mode settings"|gettext) module="site-maintenance-mode-settings"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("site maintenance mode settings"|gettext) module="site-maintenance-mode-settings"}
                         </div>
 		                <h2>{"Site Maintenance Mode Settings"|gettext}</h2>
                     </div>
@@ -183,7 +183,7 @@
                 <div id="tab9">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("security settings"|gettext) module="security-settings"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("security settings"|gettext) module="security-settings"}
                         </div>
 		                <h2>{"Security Settings"|gettext}</h2>
                     </div>
@@ -198,7 +198,7 @@
                 <div id="tab10">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("help link settings"|gettext) module="help-link-settings"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("help link settings"|gettext) module="help-link-settings"}
                         </div>
 		                <h2>{"Help Link Settings"|gettext}</h2>
                     </div>
@@ -208,7 +208,7 @@
                 <div id="tab11">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("WYSIWYG Editor Settings"|gettext) module="wysiwyg-editor-settings"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("WYSIWYG Editor Settings"|gettext) module="wysiwyg-editor-settings"}
                         </div>
 		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
@@ -222,7 +222,7 @@
                 <div id="tab12">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("error message settings"|gettext) module="error-messages"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("error message settings"|gettext) module="error-messages"}
                         </div>
 		                <h2>{"Error Messages"|gettext}</h2>
                     </div>
@@ -234,7 +234,7 @@
                 <div id="tab13">
 	                <div class="info-header">
                         <div class="related-actions">
-	                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("generating PDF settings"|gettext) module="pdf-generation"}
+	                        {help text="Get Help with"|gettext|cat:" "|cat:("generating PDF settings"|gettext) module="pdf-generation"}
                         </div>
 		                <h2>{"PDF Generation"|gettext}</h2>
                     </div>
@@ -257,7 +257,7 @@
 				<div id="tab14">
 					<div class="info-header">
 			            <div class="related-actions">
-				            {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("minification settings"|gettext) module="minify-configuration"}
+				            {help text="Get Help with"|gettext|cat:" "|cat:("minification settings"|gettext) module="minify-configuration"}
 			            </div>
 			            <h2>{"Minify Configuration"|gettext}</h2>
 			        </div>
@@ -277,7 +277,7 @@
 				<div id="tab15">
                     <div class="info-header">
                         <div class="related-actions">
-                            {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("search report settings"|gettext) module="search-report-settings"}
+                            {help text="Get Help with"|gettext|cat:" "|cat:("search report settings"|gettext) module="search-report-settings"}
                         </div>
                         <h2>{"Search Report Configuration"|gettext}</h2>
                     </div>
@@ -289,7 +289,7 @@
                 <div id="tab16">
                 <div class="info-header">
                     <div class="related-actions">
-                        {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
+                        {help text="Get Helpwith"|gettext|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
                     </div>
                     <h2>{"e-Commerce Configuration"|gettext}</h2>
                 </div>

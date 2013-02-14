@@ -20,7 +20,7 @@
 <div class="module navigation edit_contentpage">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Editing Content Pages"|gettext) module="edit-content-page"}
+			{help text="Get Help with"|gettext|cat:" "|cat:("Editing Content Pages"|gettext) module="edit-content-page"}
         </div>
 		<h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext} {if $section->parent == -1}{'Standalone'|gettext}{elseif $section->parent == 0}{'Top Level'|gettext}{/if} {'Content Page'|gettext}{/if}</h1>
 	</div>

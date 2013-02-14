@@ -39,7 +39,7 @@
         <div class="info-header clearfix">
             <div id="noflash"></div>
             <div class="related-actions">
-                {help text="Get Help"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
+                {help text="Get Help with"|gettext|cat:" "|cat:("Uploading Files"|gettext) module="upload-files"}
             </div>
             {control type=dropdown name="select_folder" label="Select the Upload Folder"|gettext items=$cats}
             <input id="folder" type="text" name="folder" value="" size="20" class="control text" style="display: inline;margin-left: 12px;" onkeydown="if (event.keyCode == 13) document.getElementById('createLink').click()" />

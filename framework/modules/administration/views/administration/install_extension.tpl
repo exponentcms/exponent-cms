@@ -16,7 +16,7 @@
 <div id="uploadextension" class="module administration install-extension">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("Installing New Extensions"|gettext) module="install-extension"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Installing New Extensions"|gettext) module="install-extension"}
         </div>
         <h1>{'Install new Extension'|gettext}</h1>
     </div>

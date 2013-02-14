@@ -17,7 +17,7 @@
     <div class="form_header">
     	<div class="info-header">
     		<div class="related-actions">
-    		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Google Calendar Pull Settings"|gettext) module="google-pull"}
+    		    {help text="Get Help with"|gettext|cat:" "|cat:("Google Calendar Pull Settings"|gettext) module="google-pull"}
     		</div>
             <h2>{"Google Calendar Pull Settings"|gettext}</h2>
     	</div>

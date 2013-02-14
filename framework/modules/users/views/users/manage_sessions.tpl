@@ -20,7 +20,7 @@
 <div class="module users manage-sessions">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Managing User Sessions"|gettext) module="manage-sessions"}
+			{help text="Get Help with"|gettext|cat:" "|cat:("Managing User Sessions"|gettext) module="manage-sessions"}
         </div>
         <h1>{"Manage User Sessions"|gettext}</h1>
     </div>

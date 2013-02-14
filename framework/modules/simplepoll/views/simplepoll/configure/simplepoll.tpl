@@ -16,7 +16,7 @@
 <div class="form_header">
 	<div class="info-header">
 		<div class="related-actions">
-		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Simple Poll Settings"|gettext) module="simplepoll"}
+		    {help text="Get Help with"|gettext|cat:" "|cat:("Simple Poll Settings"|gettext) module="simplepoll"}
 		</div>
         <h2>{"Simple Poll Settings"|gettext}</h2>
 	</div>
