@@ -84,8 +84,8 @@ class upgrade_forms extends upgradescript {
             $cloc = expUnserialize($cn->internal);
       	    $cloc->mod = 'formsController';
       		$cn->internal = serialize($cloc);
-            $cn->action = 'enter_data';
-            $cn->view = 'enter_data';
+            $cn->action = 'enterdata';
+            $cn->view = 'enterdata';
       	    $db->updateObject($cn,'container');
 
             if (!empty($oldform->id)) {

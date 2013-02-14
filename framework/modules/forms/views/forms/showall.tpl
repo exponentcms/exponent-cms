@@ -57,7 +57,7 @@
                                 <td>
                                     {icon img="view.png" action=show forms_id=$f->id id=$user->id title='View all data fields for this record'|gettext}
                                     {if $permissions.edit == 1}
-                                        {icon img="edit.png" action=enter_data forms_id=$f->id id=$user->id title='Edit this record'|gettext}
+                                        {icon img="edit.png" action=enterdata forms_id=$f->id id=$user->id title='Edit this record'|gettext}
                                     {/if}
                                     {if $permissions.delete == 1}
                                         {icon img="delete.png" action=delete forms_id=$f->id id=$user->id title='Delete this record'|gettext}

@@ -184,7 +184,7 @@ class expRecord {
             foreach ($where as $id) $records[] = new $this->classname($id);
             return $records;
         } elseif (strcasecmp($range, 'bytag') == 0) {  // return items tagged with request (id or title/sef_url)
-            if (!is_integer($where))  $where = $db->selectObject(DB_TABLE_PREFIX . '_expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
+            if (!is_int($where))  $where = $db->selectObject(DB_TABLE_PREFIX . '_expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
             $sql = 'SELECT DISTINCT m.id FROM ' . DB_TABLE_PREFIX . '_' . $this->tablename . ' m ';
             $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_content_expTags ct ';
             $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . intval($where) . " AND ct.content_type='" . $this->classname . "'";
@@ -196,7 +196,7 @@ class expRecord {
             }
             return $records;
         } elseif (strcasecmp($range, 'bycat') == 0) {  // return items categorized/grouped under request (id or title/sef_url)
-            if (!is_integer($where))  $where = $db->selectObject(DB_TABLE_PREFIX . '_expCats',"title='" . $where . "' OR sef_url='" . $where . "'");
+            if (!is_int($where))  $where = $db->selectObject(DB_TABLE_PREFIX . '_expCats',"title='" . $where . "' OR sef_url='" . $where . "'");
             $sql = 'SELECT DISTINCT m.id FROM ' . DB_TABLE_PREFIX . '_' . $this->tablename . ' m ';
             $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_content_expCats ct ';
             $sql .= 'ON m.id = ct.content_id WHERE ct.expcats_id=' . intval($where) . " AND ct.content_type='" . $this->classname . "'";

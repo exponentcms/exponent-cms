@@ -23,7 +23,7 @@
 
 class formsController extends expController {
     public $useractions = array(
-        'enter_data' => 'Input Records',
+        'enterdata' => 'Input Records',
         'showall'    => 'Show All Records',
         'show'       => 'Show a Single Record',
     );
@@ -166,7 +166,7 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
-                redirect_to(array('controller' => 'forms', 'action' => 'enter_data', 'forms_id' => $f->id));
+                redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
 
             $fc = new forms_control();
@@ -213,6 +213,10 @@ class formsController extends expController {
     }
 
     public function enter_data() {
+        $this->enterdata();
+    }
+
+    public function enterdata() {
         if (empty($this->config['restrict_enter']) || expPermissions::check('enterdata', $this->loc)) {
 
             global $db, $user;
@@ -692,12 +696,13 @@ class formsController extends expController {
      * Updates the form
      */
     public function update_form() {
+        parent::update();
         if (!empty($this->params['is_saved']) && empty($this->params['table_name'])) {
             // we are now saving data to the database and need to create it first
             $form = new forms($this->params['id']);
             $this->params['table_name'] = $form->updateTable();
+            parent::update();  // now with a form tablename
         }
-        parent::update();
     }
 
     public function delete_form() {

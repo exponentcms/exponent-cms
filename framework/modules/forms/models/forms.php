@@ -67,7 +67,7 @@ class forms extends expRecord {
             );
 
             if (!isset($this->id)) {
-                $this->table_name = preg_replace('/[^A-Za-z0-9]/', '_', $this->name);
+                $this->table_name = preg_replace('/[^A-Za-z0-9]/', '_', $this->title);
                 $tablename = 'forms_' . $this->table_name;
                 $index = '';
                 while ($db->tableExists($tablename . $index)) {
@@ -78,7 +78,7 @@ class forms extends expRecord {
                 $this->table_name .= $index;
             } else {
                 if ($this->table_name == '') {
-                    $tablename = preg_replace('/[^A-Za-z0-9]/', '_', $this->name);
+                    $tablename = preg_replace('/[^A-Za-z0-9]/', '_', $this->title);
                     $index = '';
                     while ($db->tableExists('forms_' . $tablename . $index)) {
                         $index++;
