@@ -41,7 +41,7 @@ class textcontrol extends formcontrol {
             DB_FIELD_LEN=>512);
     }
 
-    function __construct($default = "", $size=40 , $disabled = false, $maxlength = 0, $filter = "", $required = false, $placeholder = "") {
+    function __construct($default = "", $size=40 , $disabled = false, $maxlength = 0, $filter = "", $required = false, $placeholder = "", $pattern="") {
         $this->default = $default;
         $this->size = $size;
         $this->disabled = $disabled;
@@ -49,6 +49,7 @@ class textcontrol extends formcontrol {
         $this->filter = $filter;
         $this->required = $required;
         $this->placeholder = $placeholder;
+        $this->pattern = $pattern;
     }
 
     function controlToHTML($name, $label) {
@@ -62,6 +63,7 @@ class textcontrol extends formcontrol {
         $html .= ($this->tabindex>=0?"tabindex=\"".$this->tabindex."\" ":"");
         $html .= ($this->accesskey != ""?"accesskey=\"".$this->accesskey."\" ":"");
         $html .= ($this->placeholder?"placeholder=\"".$this->placeholder."\" ":"");
+        if ($this->pattern != "") $html .= " pattern=\"".$this->pattern."\" ";
         if ($this->filter != "") {
             $html .= "onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\" ";
             $html .= "onblur=\"".$this->filter."_filter.onblur(this);\" ";
@@ -88,6 +90,7 @@ class textcontrol extends formcontrol {
             $object->maxlength = 0;
             $object->required = false;
             $object->placeholder = "";
+            $object->pattern = "";
         }
         if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
@@ -95,6 +98,7 @@ class textcontrol extends formcontrol {
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("placeholder",gt('Placeholder'), new textcontrol($object->placeholder));
+        $form->register("pattern",gt('Pattern'), new textcontrol($object->pattern));
         $form->register("size",gt('Size'), new textcontrol((($object->size==0)?"":$object->size),4,false,3,"integer"));
         $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,false));

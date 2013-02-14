@@ -186,9 +186,16 @@ function smarty_function_control($params, &$smarty) {
                 $control->newschool = true;
                 break;
             case "text":
+            case "email":
+            case "url":
+            case "tel":
+            case "telephone":
+            case "number":
+            case "range":
                 $control       = new genericcontrol($params['type']);
                 $control->size = !empty($params['size']) ? $params['size'] : "40";
                 $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
+                $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
                 break;
             case "textarea":
                 $control = new texteditorcontrol();

@@ -36,7 +36,7 @@ class genericcontrol extends formcontrol {
         return array();
     }
 
-    function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="") {
+    function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="", $pattern="") {
         $this->type = (empty($type)) ? "text" : $type;
         $this->default = $default;
         $this->class = $class;
@@ -49,6 +49,7 @@ class genericcontrol extends formcontrol {
         $this->maxlength = $maxlength;
         $this->size = '';
         $this->placeholder = $placeholder;
+        $this->pattern = $pattern;
     }
     
     function toHTML($label,$name) {
@@ -97,6 +98,7 @@ class genericcontrol extends formcontrol {
         if ($this->maxlength != "") $html .= ' maxlength="' . $this->maxlength . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
         if ($this->placeholder != "") $html .= " placeholder=\"".$this->placeholder."\" ";
+        if ($this->pattern != "") $html .= " pattern=\"".$this->pattern."\" ";
         if ($this->filter != "") {
             $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\" ";
             $html .= "onblur=\"".$this->filter."_filter.onblur(this);\" ";
@@ -142,9 +144,7 @@ class genericcontrol extends formcontrol {
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));
-        $form->register(null, null, new htmlcontrol('<br />'));
         $form->register("required", gt('Required'), new checkboxcontrol($object->required,true));
-        $form->register(null, null, new htmlcontrol('<br />')); 
         $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         
         return $form;
