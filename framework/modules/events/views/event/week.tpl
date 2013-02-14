@@ -61,7 +61,7 @@
                                     {if $item->is_recurring == 0}
                                         {icon action=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                     {else}
-                                        {icon action=delete_form class=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
+                                        {icon action=delete_recurring class=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                     {/if}
                                 {/if}
                             </div>
