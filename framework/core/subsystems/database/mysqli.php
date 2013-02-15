@@ -164,6 +164,7 @@ class mysqli_database extends database {
      * @return array
      */
     function alterTable($tablename, $newdatadef, $info, $aggressive = false) {
+        expSession::clearCurrentUserSessionCache();
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
 

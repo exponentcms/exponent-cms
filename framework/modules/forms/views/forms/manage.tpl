@@ -20,7 +20,7 @@
 <div class="module forms manage">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("Managing Forms"|gettext) module="manage-site-forms"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Forms"|gettext) module="manage-site-forms"}
         </div>
         <h2>{"Site Forms Manager"|gettext}</h2>
     </div>
@@ -30,6 +30,11 @@
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
             <tr>
+                {if $__loc->src}
+                    <th>
+                        {"Assigned"|gettext}
+                    </th>
+                {/if}
                 <th>
                     {"Form Name"|gettext}
                 </th>
@@ -44,12 +49,21 @@
         <tbody>
             {foreach from=$forms item=form}
                 <tr class="{cycle values="odd,even"}">
+                    {if $__loc->src}
+                       <td>
+                           {if $config.forms_id == $form->id}
+                               <span class="active">{'Active'|gettext}</span>
+                           {else}
+                               <a class="inactive" href="{link action=activate id=$form->id}" title="Assign this Form to the Module"|gettext>{'Activate'|gettext}</a>
+                           {/if}
+                       </td>
+                   {/if}
                     <td>
                         {$form->title}
                     </td>
                     <td>
                         {if $form->is_saved}
-                            {icon class="view" action=showall id=$form->id text='View Data'|gettext}
+                            {icon class="view" action=showall id=$form->id text='View Data'|gettext|cat:" (`$form->count`)"}
                             {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}
                         {else}
                             {'Data Not Saved'|gettext}
@@ -57,10 +71,10 @@
                     </td>
                     <td>
                         <div class="item-actions">
-                            {icon class=edit action=edit_form record=$form title="Edit this Form"|gettext}
-                            {icon class=copy action=edit_form copy=1 record=$form title="Copy this Form"|gettext}
-                            {icon class=configure action=design_form record=$form text="Design"|gettext title="Design this Form"|gettext}
-                            {icon class=delete action=delete_form record=$form title="Delete this Form"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this form and ALL the saved data?"|gettext)|cat:"');"}
+                            {icon img='edit.png' action=edit_form record=$form title="Edit this Form"|gettext}
+                            {icon img='copy.png' action=edit_form copy=1 record=$form title="Copy this Form"|gettext}
+                            {icon img='configure.png' action=design_form record=$form title="Design this Form"|gettext|cat:" (`$form->control_count` "|cat:'Controls'|gettext|cat:')'}
+                            {icon img='delete.png' action=delete_form record=$form title="Delete this Form"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this form and ALL the saved data?"|gettext)|cat:"');"}
                         </div>
                     </td>
                 </tr>

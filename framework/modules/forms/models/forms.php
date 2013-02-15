@@ -84,6 +84,7 @@ class forms extends expRecord {
                         $index++;
                     }
                     $this->table_name = $tablename . $index;
+                    $this->update();  // save our table name to form
                 }
 
                 $tablename = 'forms_' . $this->table_name;

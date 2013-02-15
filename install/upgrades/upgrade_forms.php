@@ -96,7 +96,7 @@ class upgrade_forms extends upgradescript {
                 }
 
                 $newform = new forms();
-                $newform->title = $oldform->name;
+                $newform->title = !empty($oldform->name) ? $oldform->name : gt('Untitled');
                 $newform->is_saved = $oldform->is_saved;
                 $newform->table_name = $oldform->table_name;
                 $newform->description = $oldform->description;

@@ -32,13 +32,13 @@ class fix_forms extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Update forms module with new default action name and fix save data table name"; }
+	static function name() { return "Update forms module with needed fixes"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "When the new forms module was released it wouldn't correctly create a tablename to save data.  This script updates existing forms."; }
+	function description() { return "When the new forms module was initially released it wouldn't correctly create a tablename to save data and didn't create the required form name.  This script updates existing forms."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -63,6 +63,14 @@ class fix_forms extends upgradescript {
             $actions_converted++;
 	    }
 
+        // fix any forms with no (required) title/name
+        $names_added = 0;
+        foreach ($db->selectObjects('forms',"title=''") as $sf) {
+            $sf->title = gt('Untitled');
+            $db->updateObject($sf,'forms');
+            $names_added++;
+	    }
+
         // fix any saved tables with bad names
         $tables_converted = 0;
         foreach ($db->selectObjects('forms',"is_saved=1") as $sf) {
@@ -81,7 +89,8 @@ class fix_forms extends upgradescript {
 	    }
 
         return ($actions_converted?$actions_converted:gt('No'))." ".gt("Forms modules were fixed.")."<br>".
-            ($tables_converted?$tables_converted:gt('No'))." ".gt("Forms tables were corrected.");
+            ($names_added?$names_added:gt('No'))." ".gt("Form names were fixed.")."<br>".
+            ($tables_converted?$tables_converted:gt('No'))." ".gt("Form save data tables were corrected.");
 	}
 }
 

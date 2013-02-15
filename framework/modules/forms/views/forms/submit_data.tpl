@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="module forms view-response">
+<div class="module forms submit-data">
     {messagequeue}
     <div style="padding: 1em;">
         {$response_html}

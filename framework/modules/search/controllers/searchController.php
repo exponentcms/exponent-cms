@@ -74,6 +74,7 @@ class searchController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
         ));
 
         assign_to_template(array(

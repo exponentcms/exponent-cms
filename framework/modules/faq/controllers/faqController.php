@@ -107,6 +107,7 @@ class faqController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
             'columns'=>array(
                 gt('In FAQ')=>'include_in_faq',
                 gt('Answered')=>'answer',

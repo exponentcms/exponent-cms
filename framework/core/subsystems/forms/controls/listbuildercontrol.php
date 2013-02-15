@@ -57,7 +57,7 @@ class listbuildercontrol extends formcontrol {
 		$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
 		$html .= '<table cellpadding="9" border="0" width="30" style="margin-bottom:0;"><tr><td width="10" style="border:none;">';
 		if (!$this->newList) {
-			$html .= "<div class=\"control-desc\">".gt('Available').' '.$label."</div><select id='source_$name' size='".$this->size."'>";
+			$html .= "<div class=\"control-desc\">".gt('Available')."</div><select id='source_$name' size='".$this->size."'>";
 			foreach ($this->source as $key=>$value) {
 				$html .= "<option value='$key'>$value</option>";
 			}
@@ -79,7 +79,7 @@ class listbuildercontrol extends formcontrol {
 			$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 		}
 		$html .= "</td>";
-		$html .= "<td width='10' valign='top' style='border:none;'><div class=\"control-desc\">".gt('Selected').' '.$label."</div><select id='dest_$name' size='".$this->size."'>";
+		$html .= "<td width='10' valign='top' style='border:none;'><div class=\"control-desc\">".gt('Selected')."</div><select id='dest_$name' size='".$this->size."'>";
 		foreach ($this->default as $key=>$value) {
 			if (isset($this->source[$key])) $value = $this->source[$key];
 			$html .= "<option value='$key'>$value</option>";

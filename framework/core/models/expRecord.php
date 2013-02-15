@@ -529,7 +529,8 @@ class expRecord {
             if (property_exists($this, 'poster')) $this->poster = empty($this->poster) ? $user->id : $this->poster;
             // fill in the rank field if it exist
             if (property_exists($this, 'rank')) {
-                if (!isset($this->rank)) {
+//                if (!isset($this->rank)) {
+                if (empty($this->rank)) {  // ranks begin at 1, so 0 is now last
                     $where = "1 ";
                     $where .= empty($this->location_data) ? null : "AND location_data='" . $this->location_data . "' ";
                     //FIXME: $where .= empty($this->rank_by_field) ? null : "AND " . $this->rank_by_field . "='" . $this->$this->rank_by_field . "'";

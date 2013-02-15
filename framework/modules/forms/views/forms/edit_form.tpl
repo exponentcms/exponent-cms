@@ -30,52 +30,44 @@
     {control type=hidden name=id value=$form->id}
     <div id="editform-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
-            <li class="selected"><a href="#tab1"><em>{'General'|gettext}</em></a></li>
-            <li><a href="#tab2"><em>{'Database'|gettext}</em></a></li>
-            <li><a href="#tab3"><em>{'Default Report'|gettext}</em></a></li>
+            <li class="selected"><a href="#tab1"><em>{'Form'|gettext}</em></a></li>
+            <li><a href="#tab2"><em>{'Default Report'|gettext}</em></a></li>
         </ul>
         <div class="yui-content yui3-skin-sam">
             <div id="tab1">
                 <div class="form_header">
                     <div class="info-header">
                         <div class="related-actions">
-                            {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Form Settings"|gettext) module="form-settings"}
+                            {help text="Get Help with"|gettext|cat:" "|cat:("Form Settings"|gettext) module="form-settings"}
                         </div>
                         <h2>{"Form Settings"|gettext}</h2>
                     </div>
                 </div>
                 {control type=text name='title' label='Form Name'|gettext value=$form->title required=true}
                 {control type="text" name="sef_url" label="SEF URL"|gettext value=$form->sef_url}
-                {control type=html name='description' label='Form Description'|gettext value=$form->description}
+                {control type=html name='description' label='Form Description'|gettext value=$form->description description='Placed below module description and above the form'|gettext}
+                {control type=html name='response' label='Submission Response Display'|gettext value=$form->response description='Message to display on the site after submitting a form'|gettext}
+                {group label='Form Database Settings'|gettext}
+                    {if $form->is_saved}
+                        {control type="checkbox" name="is_saved" label="Save Form Submissions to the Database?"|gettext value=1 checked=$form->is_saved disabled=true}
+                        {control type=hidden name=is_saved value=$form->is_saved}
+                    {else}
+                        {control type="checkbox" name="is_saved" label="Save Form Submissions to the Database?"|gettext value=1 checked=$form->is_saved description='Forms not saved to the database, are required to send an email on submission'|gettext}
+                    {/if}
+                    {if !empty($form->table_name)}
+                        {control type=text name='table_name' label='Table Name'|gettext value=$form->table_name disabled=true}
+                        {control type=hidden name='table_name' value=$form->table_name}
+                    {/if}
+                    <blockquote>
+                        {'To help prevent data loss, you cannot remove a form\'s database table once it has been added.'|gettext}
+                    </blockquote>
+                {/group}
             </div>
             <div id="tab2">
                 <div class="form_header">
                     <div class="info-header">
                         <div class="related-actions">
-                            {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Form Database Settings"|gettext) module="form-database-settings"}
-                        </div>
-                        <h2>{"Form Database Settings"|gettext}</h2>
-                    </div>
-                </div>
-                {if $form->is_saved}
-                    {control type="checkbox" name="is_saved" label="Save Form Submissions to the Database?"|gettext value=1 checked=$form->is_saved disabled=true}
-                    {control type=hidden name=is_saved value=$form->is_saved}
-                {else}
-                    {control type="checkbox" name="is_saved" label="Save Form Submissions to the Database?"|gettext value=1 checked=$form->is_saved description='Forms not saved to the database, are required to send an email on submission.'|gettext}
-                {/if}
-                {if !empty($form->table_name)}
-                    {control type=text name='table_name' label='Table Name'|gettext value=$form->table_name disabled=true}
-                    {control type=hidden name='table_name' value=$form->table_name}
-                {/if}
-                <blockquote>
-                    {'To help prevent data loss, you cannot remove a form\'s database table once it has been added.'|gettext}
-                </blockquote>
-            </div>
-            <div id="tab3">
-                <div class="form_header">
-                    <div class="info-header">
-                        <div class="related-actions">
-                            {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Form Report Settings"|gettext) module="form-report-settings"}
+                            {help text="Get Help with"|gettext|cat:" "|cat:("Form Report Settings"|gettext) module="form-report-settings"}
                         </div>
                         <h2>{"Default Report Settings"|gettext}</h2>
                         <blockquote>
@@ -88,7 +80,7 @@
                         {control type="listbuilder" name="column_names_list" label="Columns for View Data/Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
                     {/group}
                     {group label='Single-Record View Configuration'|gettext}
-                        {control type=html name='report_def' label='Custom E-Mail Report and View Record Definition'|gettext value=$form->report_def description='Leave this custom definition blank to use the default \'all fields\' e-mail report and record view.'|gettext}
+                        {control type=html name='report_def' label='Custom E-Mail Report and View Record Definition'|gettext value=$form->report_def description='Leave this custom definition blank to use the default \'all fields\' e-mail report and record view'|gettext}
                     {/group}
                 </div>
             </div>
