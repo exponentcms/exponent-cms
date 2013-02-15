@@ -34,7 +34,7 @@
         {if $edit_mode != 1}
             {'Use the drop down to add fields to this form.'|gettext}
             <div class="module-actions">
-                {ddrerank module="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}
+                {ddrerank module="forms_control" model="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}
             </div>
         {/if}
     </div>
