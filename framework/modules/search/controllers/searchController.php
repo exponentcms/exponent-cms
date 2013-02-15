@@ -74,6 +74,7 @@ class searchController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
         ));
 
         assign_to_template(array(
@@ -178,7 +179,7 @@ class searchController extends expController {
         //eDebug($sql);
         
         //$res = $mod->find('all',$sql,'id',25);
-        $sql = "select DISTINCT(p.id), p.title, model, sef_url, f.id as fileid from exponent_product as p INNER JOIN exponent_content_expfiles as cef ON p.id=cef.content_id INNER JOIN exponent_expfiles as f ON cef.expfiles_id = f.id where match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') AND p.parent_id=0 order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') desc LIMIT 25";
+        $sql = "select DISTINCT(p.id), p.title, model, sef_url, f.id as fileid from ".DB_TABLE_PREFIX."_product as p INNER JOIN ".DB_TABLE_PREFIX."_content_expfiles as cef ON p.id=cef.content_id INNER JOIN ".DB_TABLE_PREFIX."_expfiles as f ON cef.expfiles_id = f.id where match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') AND p.parent_id=0 order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') desc LIMIT 25";
         //$res = $db->selectObjectsBySql($sql);
         //$res = $db->selectObjectBySql('SELECT * FROM `exponent_product`');
         

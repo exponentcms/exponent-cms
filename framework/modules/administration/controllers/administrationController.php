@@ -416,7 +416,8 @@ class administrationController extends expController {
 
 	public function clear_smarty_cache() {
 		expTheme::clearSmartyCache();
-	}
+        expSession::clearAllUsersSessionCache();
+    }
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
@@ -439,6 +440,7 @@ class administrationController extends expController {
 
 	public function clear_all_caches() {
 		expTheme::removeSmartyCache();
+        expSession::clearAllUsersSessionCache();
 		expTheme::removeCss();
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
@@ -451,9 +453,9 @@ class administrationController extends expController {
 	public function install_extension() {
 
 		$modsurl =array(
-			'themes'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a70cebdc96',
-			'fixes'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a710126abf',
-			'mods'=>'http://www.exponentcms.org/site_rss.php?module=filedownload&src=%40random4e6a7148c84a9'
+			'themes'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-themes',
+			'fixes'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-fixes',
+			'mods'=>'http://www.exponentcms.org/rss/feed/title/exponentcms-mods'
 		);
 
 		$RSS = new SimplePie();

@@ -106,7 +106,7 @@
 								{if $item->is_recurring == 0}
 									{icon img='delete.png' action=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
 								{else}
-									{icon img='delete.png' action=delete_form record=$item date_id=$item->date_id title="Delete this Event"|gettext}
+									{icon img='delete.png' action=delete_recurring record=$item date_id=$item->date_id title="Delete this Event"|gettext}
 								{/if}
 							{/if}
 						</div>

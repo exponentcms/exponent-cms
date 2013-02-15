@@ -80,6 +80,7 @@ class helpController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
             'columns'=>array(
                 gt('Title')=>'title',
                 gt('Body')=>'body',
@@ -194,6 +195,7 @@ class helpController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
             'columns'=>array(
                 gt('Title')=>'title',
                 gt('Version')=>'help_version_id',
@@ -272,6 +274,7 @@ class helpController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
             'columns'=>array(
                 gt('Version')=>'version',
                 gt('Title')=>'title',

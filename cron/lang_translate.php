@@ -18,7 +18,7 @@
 
 /**
  * lang_translate.php - attempts to auto-translate current ExponentCMS language (file)
- * Requires the 'BING_API' constant be set to the API code for you Bing account
+ * Requires the 'BING_API' constant be set to the API code for your Bing account
  */
 
 // Initialize the exponent environment

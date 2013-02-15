@@ -245,7 +245,7 @@ class expMail {
 		} else {
 			trim($params['from']);
 		}
-		$this->message->setFrom((array)$params['from']);
+		$this->message->setFrom((array)$params['from']);  //FIXME we need to use this->addFrom() instead
 
 		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
 
@@ -371,7 +371,7 @@ class expMail {
 		} else {
 			trim($params['from']);
 		}
-		$this->message->setFrom($params['from']);
+		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
 
 		$this->addSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
 
@@ -739,6 +739,7 @@ class expMail {
 	 * @param string $name  This is the name associated with the above email address.
 	 */
 	public function addFrom($email = null, $name = null) {
+        //FIXME we need to ensure this is a valid mail address as Swiftmailer send will fail otherwise
 		if (!empty($email) && !empty($name)) {
 			$this->from = array($email, $name);
 			$this->message->setFrom($email, $name);

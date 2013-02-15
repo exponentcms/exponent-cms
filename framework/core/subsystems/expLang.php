@@ -220,6 +220,7 @@ class expLang {
 
     public static function translate($text, $from = 'en', $to = 'fr') {
         include_once(BASE.'external/BingTranslate.class.php');
+        include_once(BASE.'external/bingapi.php');
         $from1 = explode('_',$from);
         $from = $from1[0];
         $to1 = explode('_',$to);
@@ -230,6 +231,7 @@ class expLang {
 
     public static function getLangs() {
         include_once(BASE.'external/BingTranslate.class.php');
+        include_once(BASE.'external/bingapi.php');
         $gt = new BingTranslateWrapper(BING_API);
         return $gt->LanguagesSupported();
     }

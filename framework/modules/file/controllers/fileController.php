@@ -72,6 +72,10 @@ class fileController extends expController {
         $jsuncat['value'] = null;
         array_unshift($jscatarray,$jsuncat);
         $catarray['-1'] = 'All Folders';
+        if (strstr($this->params['update'],'?') !== false) {
+            $update = explode($this->parmas['update'],'?');
+            if (!empty($update)) $this->params['update'] = $update[0];
+        }
         assign_to_template(array(
             'update'=>$this->params['update'],
             'cats'=>$catarray,
@@ -375,6 +379,7 @@ class fileController extends expController {
             $delfile = new expFile($file->id);
             if ($user->id==$delfile->poster || $user->is_acting_admin==1) {
                 $delfile->delete();
+                unlink($delfile->directory.$delfile->filename);
             } else {
                 $error = true;
             }
@@ -463,6 +468,8 @@ class fileController extends expController {
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
             $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME']);
+            $file->posted = $file->last_accessed = time();
+            $file->save();
             $ar = new expAjaxReply(200, gt('Your File was uploaded successfully'), $file->id);
             $ar->send();
         } else {  //$_POST upload

@@ -151,7 +151,7 @@ class storeCategoryController extends expNestedNodeController {
         $rank = 1;
         $category = new storeCategory($this->params['id']);
         foreach($this->params['rerank'] as $key=>$id) {
-            $sql = "SELECT DISTINCT sc.* FROM exponent_product_storeCategories sc JOIN exponent_product p ON p.id = sc.product_id WHERE p.id=".$id." AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ".$category->lft." AND ".$category->rgt.") ORDER BY rank ASC";
+            $sql = "SELECT DISTINCT sc.* FROM ".DB_TABLE_PREFIX."_product_storeCategories sc JOIN ".DB_TABLE_PREFIX."_product p ON p.id = sc.product_id WHERE p.id=".$id." AND sc.storecategories_id IN (SELECT id FROM ".DB_TABLE_PREFIX."_storeCategories WHERE rgt BETWEEN ".$category->lft." AND ".$category->rgt.") ORDER BY rank ASC";
             $prod = $db->selectObjectBySQL($sql);
             $prod->rank = $rank;
             $db->updateObject($prod,"product_storeCategories","storecategories_id=".$prod->storecategories_id." AND product_id=".$id);

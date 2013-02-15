@@ -16,7 +16,7 @@
 <div class="module navigation edit_externalalias">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Editing External Alias Pages"|gettext) module="edit-external-page"}
+			{help text="Get Help with"|gettext|cat:" "|cat:("Editing External Alias Pages"|gettext) module="edit-external-page"}
         </div>
 	    <h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'External Alias'|gettext}</h1>
 	</div>

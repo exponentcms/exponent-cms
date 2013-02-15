@@ -24,7 +24,7 @@
 <div class="module users manage yui-skin-sam">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("Managing Users"|gettext) module="manage-users"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Users"|gettext) module="manage-users"}
         </div>
         <h1>{$moduletitle|default:"Manage Users"|gettext}</h1>
     </div>

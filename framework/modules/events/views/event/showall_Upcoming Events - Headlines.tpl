@@ -44,8 +44,9 @@
                     {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
                     <a class="link{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
-                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title="{$item->body|summarize:"html":"para"}"}{/if}"
+                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                         {/if}
+                       title="{$item->body|summarize:"html":"para"}"
                         >{$item->title}
                     </a>
 					<em class="date">
@@ -73,7 +74,7 @@
                                     {if $item->is_recurring == 0}
                                         {icon action=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                     {else}
-                                        {icon action=delete_form class=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
+                                        {icon action=delete_recurring class=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                     {/if}
                                 {/if}
                             </div>

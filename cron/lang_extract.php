@@ -36,7 +36,7 @@
  * lang_extract.php - extracts gettext strings from ExponentCMS files
  * adapted from http://smarty-gettext.sf.net/  Sagi Bashari <sagi@boom.org.il>
  *
- * Requires the 'BING_API' constant be set to the API code for you Bing account
+ * Requires the 'BING_API' constant be set to the API code for your Bing account
  *
  * Usage:
  * ./lang_extract.php <filename or directory> <file2> <..>

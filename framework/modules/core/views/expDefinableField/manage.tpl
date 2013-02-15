@@ -18,7 +18,7 @@
 <div class="module expDefinableField manage">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("Managing Definable Fields"|gettext) module="manage-definable-fields"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Definable Fields"|gettext) module="manage-definable-fields"}
         </div>
         <h1>{"Manage Definable Fields"|gettext}</h1>
     </div>

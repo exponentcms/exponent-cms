@@ -17,7 +17,7 @@
     <div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
-				{help text="Get Help"|gettext|cat:" "|cat:("Managing Group Permissions"|gettext) module="manage-group-permissions"}
+				{help text="Get Help with"|gettext|cat:" "|cat:("Managing Group Permissions"|gettext) module="manage-group-permissions"}
 			</div>
 			<h1>{'Assign Group Permissions for this'|gettext} {$title}</h1>
 		</div>

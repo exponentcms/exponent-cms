@@ -4,12 +4,12 @@
 
 Copyright (c) 2004-2013 OIC Group, Inc.
 
-For installation information, please read the INSTALLATION file.
+For installation information, please read the INSTALLATION.md file.
 
 For LICENSING information, please read the LICENSE file.
 
 For questions, support, or further information, please visit
-http://www.exponentcms.org/
+[http://www.exponentcms.org/](http://www.exponentcms.org/)
 
 Exponent CMS 2.0 is an exciting web-based content management system. It makes
 creating and maintaining websites easy for non-technical users, while
@@ -20,7 +20,7 @@ users.
 ----------------
 ##Getting Started
 
-First, you'll need to install and configure Exponent. See the INSTALLATION
+First, you'll need to install and configure Exponent. See the INSTALLATION.md
 file for a detailed description of how to do this.
 
 ------------
@@ -48,8 +48,8 @@ The more bugs we find and fix, the better off the package is.
 ##Support / Questions
 For questions, support, or further information, please visit
 
-* http://www.exponentcms.org/
+* [http://www.exponentcms.org/](http://www.exponentcms.org/)
 
-* http://forums.exponentcms.org/
+* [http://forums.exponentcms.org/](http://forums.exponentcms.org/)
 
-* http://docs.exponentcms.org/
+* [http://docs.exponentcms.org/](http://docs.exponentcms.org/)

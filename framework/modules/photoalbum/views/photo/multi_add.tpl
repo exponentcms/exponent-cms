@@ -14,9 +14,9 @@
  *}
 
 <div id="editgallery" class="module photoalbum edit multi-add">
-    <h1>{'Upload Multiple Images to the Photo Album'|gettext}</h1>
+    <h1>{'Add Multiple Images to the Photo Album'|gettext}</h1>
     <blockquote>
-        {"This form allows you to create multiple photo items at one time."|gettext}&#160;&#160;
+        {"This form allows you to add multiple photo items at one time."|gettext}&#160;&#160;
         {"You will likely though have to edit them individually later to provide a better title."|gettext}
     </blockquote>
     {form action=multi_update}
@@ -27,8 +27,14 @@
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'Photo Items'|gettext}</h2>
-                    {control type=text name=title label="Base Title"|gettext value=$record->title description="This will become the root title for these photo album items."|gettext}
+                    {control type=text name=title label="Base Title"|gettext value=$record->title description="(Optional) This will become the root title used for these photo album items."|gettext}
                     {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=64}
+                    {if !$config.disabletags}
+                        {control type="tags"}
+                    {/if}
+                    {if $config.usecategories}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                    {/if}
                 </div>
             </div>
         </div>

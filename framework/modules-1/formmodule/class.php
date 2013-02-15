@@ -111,7 +111,9 @@ class formmodule {
                 //This is an easy way to remove duplicates
                 $emaillist = array_flip(array_flip($emaillist));
                 $emaillist = array_map('trim', $emaillist);
-                array_unshift($emaillist,gt('All Addresses'));
+                $emaillist = array_reverse($emaillist, true);
+                $emaillist[0] = gt('All Addresses');
+                $emaillist = array_reverse($emaillist, true);
                 $form->register('email_dest',gt('Send Response to'), new radiogroupcontrol('',$emaillist));
             }
 			foreach ($controls as $c) {

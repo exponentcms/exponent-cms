@@ -26,7 +26,7 @@ class eventController extends expController {
     public $useractions = array(
         'showall' => 'Show Calendar',
     );
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     public $remove_configs = array(
         'comments',
@@ -234,7 +234,7 @@ class eventController extends expController {
                     //                    }
                     $start = expDateTime::startOfDayTimestamp($startperiod + ($i * 86400) - 86400);
                     $edates = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start));
-                    $days[$start] = $this->getEventsForDates($edates, true, isset($this->config['featured_only']) ? true : false);
+                    $days[$start] = $this->getEventsForDates($edates, true, isset($this->config['only_featured']) ? true : false);
                     //                    for ($j = 0; $j < count($days[$start]); $j++) {
                     //                        $thisloc = expCore::makeLocation($this->loc->mod,$this->loc->src,$days[$start][$j]->id);
                     //                        $days[$start][$j]->permissions = array(
@@ -289,7 +289,7 @@ class eventController extends expController {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
                     $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
-                    $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['featured_only']) ? true : false);
+                    $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false);
                     if (!empty($extitems[$start])) $monthly[$week][$i] = array_merge($extitems[$start], $monthly[$week][$i]);
                     if (!empty($regitems[$start])) $monthly[$week][$i] = array_merge($regitems[$start], $monthly[$week][$i]);
                     $monthly[$week][$i] = expSorter::sort(array('array' => $monthly[$week][$i], 'sortby' => 'eventstart', 'order' => 'ASC'));
@@ -409,7 +409,7 @@ class eventController extends expController {
                         $begin = null;
                         $end = null;
                 }
-                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['featured_only']) ? true : false);
+                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false);
                 if ($viewrange != 'past') {
                     $extitems = $this->getExternalEvents($this->loc, $begin, $end);
                     // we need to crunch these down

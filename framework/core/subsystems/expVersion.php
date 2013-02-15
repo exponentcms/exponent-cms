@@ -155,7 +155,7 @@ class expVersion {
                             $note = ($onlineVer->type == 'patch' ? gt('A patch for the latest') : gt('A newer')) . ' ' . gt('version of Exponent is available') . ':';
                             $newvers = $onlineVer->major . '.' . $onlineVer->minor . '.' . $onlineVer->revision . ($onlineVer->type ? $onlineVer->type : '') . ($onlineVer->iteration ? $onlineVer->iteration : '');
                             flash('message', $note . ' v' . $newvers . ' ' . gt('was released') . ' ' . expDateTime::format_date($onlineVer->builddate) .
-                                '<br><a href="https://github.com/exponentcms/exponent-cms/downloads" target="_blank">' . gt('Click here to see available Downloads') . '</a>');
+                                '<br><a href="https://sourceforge.net/projects/exponentcms/files/" target="_blank">' . gt('Click here to see available Downloads') . '</a>');
                         }
                     }
                 } else {

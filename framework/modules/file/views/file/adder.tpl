@@ -32,7 +32,7 @@
     </div>
 	<div class="info-header clearfix">
 		<div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Adding Files"|gettext) module="add-files"}
+			{help text="Get Help with"|gettext|cat:" "|cat:("Adding Files"|gettext) module="add-files"}
 		</div>
         <p>{"Select the following files found on the server to add them to the File Manager."|gettext}</p>
 	</div>

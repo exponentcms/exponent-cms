@@ -23,7 +23,7 @@
 
 class formsController extends expController {
     public $useractions = array(
-        'enter_data' => 'Input Records',
+        'enterdata' => 'Input Records',
         'showall'    => 'Show All Records',
         'show'       => 'Show a Single Record',
     );
@@ -41,7 +41,7 @@ class formsController extends expController {
         'viewdata'  => "View Data",
         'enterdata' => "Enter Data"
     );
-    public $codequality = 'alpha';
+    public $codequality = 'beta';
 
     static function displayname() {
         return gt("Forms");
@@ -136,7 +136,9 @@ class formsController extends expController {
                 'order'   => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : 'id',
                 'dir'     => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
                 'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
+                'controller'=>$this->baseclassname,
                 'action'  => $this->params['action'],
+                'src'=>$this->loc->src,
                 'columns' => $columns
             ));
 
@@ -166,7 +168,7 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
-                redirect_to(array('controller' => 'forms', 'action' => 'enter_data', 'forms_id' => $f->id));
+                redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
 
             $fc = new forms_control();
@@ -213,6 +215,10 @@ class formsController extends expController {
     }
 
     public function enter_data() {
+        $this->enterdata();
+    }
+
+    public function enterdata() {
         if (empty($this->config['restrict_enter']) || expPermissions::check('enterdata', $this->loc)) {
 
             global $db, $user;
@@ -247,21 +253,32 @@ class formsController extends expController {
                     $emaillist = array();
                     if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                         $u = user::getUserById($c);
-                        $emaillist[] = $u->email;
-                    }
-                    if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
-                        $grpusers = group::getUsersInGroup($c);
-                        foreach ($grpusers as $u) {
-                            $emaillist[] = $u->email;
+                        if (!empty($u->email)) {
+                            if (!empty($u->firstname) || !empty($u->lastname)) {
+                                $title = $u->firstname . ' ' . $u->lastname . ' ('. $u->email . ')';
+                            } else {
+                                $title = $u->username . ' ('. $u->email . ')';
+                            }
+                            $emaillist[$u->email] = $title;
                         }
                     }
+                    if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
+//                        $grpusers = group::getUsersInGroup($c);
+//                        foreach ($grpusers as $u) {
+//                            $emaillist[] = $u->email;
+//                        }
+                        $g = group::getGroupById($c);
+                        $emaillist[$c] = $g->name;
+                    }
                     if (!empty($this->config['address_list'])) foreach ($this->config['address_list'] as $c) {
-                        $emaillist[] = $c;
+                        $emaillist[$c] = $c;
                     }
                     //This is an easy way to remove duplicates
                     $emaillist = array_flip(array_flip($emaillist));
                     $emaillist = array_map('trim', $emaillist);
-                    array_unshift($emaillist, gt('All Addresses'));
+                    $emaillist = array_reverse($emaillist, true);
+                    $emaillist[0] = gt('All Addresses');
+                    $emaillist = array_reverse($emaillist, true);
                     $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
                 }
                 foreach ($controls as $c) {
@@ -281,6 +298,7 @@ class formsController extends expController {
                     $form->register($c->name, $c->caption, $ctl);
                 }
 
+                // if we are editing an existing record we'll need to do recaptcha here since we won't call confirm_data
                 if (!empty($this->params['id'])) {
                     $antispam = '';
                     if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {
@@ -486,15 +504,15 @@ class formsController extends expController {
             if (!empty($this->config['is_email']) && !isset($this->params['data_id'])) {
                 //Building Email List...
                 $emaillist = array();
-                if (!empty($f->select_email) && !empty($this->params['email_dest'])) {
+                if (!empty($this->config['select_email']) && !empty($this->params['email_dest'])) {
                     if (strval(intval($this->params['email_dest'])) == strval($this->params['email_dest'])) {
-                        foreach (group::getUsersInGroup(group::getGroupById(intval($this->params['email_dest']))) as $locUser) {
+                        foreach (group::getUsersInGroup($this->params['email_dest']) as $locUser) {
                             if ($locUser->email != '') $emaillist[] = $locUser->email;
                         }
                     } else {
                         $emaillist[] = $this->params['email_dest'];
                     }
-                } else {
+                } else { // send to all form addressee's
                     $emaillist = array();
                     if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                         $u = user::getUserById($c);
@@ -515,10 +533,10 @@ class formsController extends expController {
                 $emaillist = array_map('trim', $emaillist);
 
                 if ($this->config['report_def'] == "") {
-                    $msgtemplate = get_template_for_action($this, 'email/_default_report', $this->loc);
+                    $msgtemplate = get_template_for_action($this, 'email/default_report', $this->loc);
 
                 } else {
-                    $msgtemplate = get_template_for_action($this, 'email/_custom_report', $this->loc);
+                    $msgtemplate = get_template_for_action($this, 'email/custom_report', $this->loc);
                     $msgtemplate->assign('template', $this->config['report_def']);
                 }
                 $msgtemplate->assign("fields", $emailFields);
@@ -590,12 +608,11 @@ class formsController extends expController {
 
             //If is a new post show response, otherwise redirect to the flow.
             if (!isset($this->params['data_id'])) {
-                //FIXME if we change _view_response.tpl to submit_data.tpl, it'll already be $template
-                global $template;
-                $template = get_template_for_action($this, '_view_response', $this->loc);
-                $template->assign("backlink", expHistory::getLastNotEditable());
                 if (empty($this->config['response'])) $this->config['response'] = gt('Thanks for your submission');
-                $template->assign("response_html", $this->config['response']);
+                assign_to_template(array(
+                    "backlink"=>expHistory::getLastNotEditable(),
+                    "response_html"=>$this->config['response'],
+                ));
             } else {
                 flash('message', gt('Record was updated!'));
         //        expHistory::back();
@@ -621,11 +638,47 @@ class formsController extends expController {
         expHistory::back();
     }
 
+    /**
+     * Manage site forms
+     *
+     */
     public function manage() {
+        global $db;
+
         $forms = $this->forms->find('all', 1);
+        foreach($forms as $key=>$f) {
+            if (!empty($f->table_name) && $db->tableExists("forms_" . $f->table_name) ) {
+                $forms[$key]->count = $db->countObjects("forms_" . $f->table_name);
+            }
+            $forms[$key]->control_count = count($f->forms_control);
+        }
+
         assign_to_template(array(
             'forms' => $forms
         ));
+    }
+
+    /**
+     * Assign selected form to current module
+     *
+     */
+    public function activate() {
+        // assign new form assigned
+        $this->config['forms_id'] = $this->params['id'];
+        // set default settings for this form
+        $f = new forms($this->params['id']);
+        if (!empty($f->description)) $this->config['description'] = $f->description;
+        if (!empty($f->response)) $this->config['response'] = $f->response;
+        if (!empty($f->report_name)) $this->config['report_name'] = $f->report_name;
+        if (!empty($f->report_desc)) $this->config['report_desc'] = $f->report_desc;
+        if (!empty($f->column_names_list)) $this->config['column_names_list'] = $f->column_names_list;
+        if (!empty($f->report_def)) $this->config['report_def'] = $f->report_def;
+
+        // setup and save the config
+        $config = new expConfig($this->loc);
+        $config->update(array('config' => $this->config));
+
+        expHistory::back();
     }
 
     public function edit_form() {
@@ -681,12 +734,13 @@ class formsController extends expController {
      * Updates the form
      */
     public function update_form() {
+        parent::update();
         if (!empty($this->params['is_saved']) && empty($this->params['table_name'])) {
             // we are now saving data to the database and need to create it first
             $form = new forms($this->params['id']);
             $this->params['table_name'] = $form->updateTable();
+            parent::update();  // now with a form tablename
         }
-        parent::update();
     }
 
     public function delete_form() {
@@ -902,13 +956,13 @@ class formsController extends expController {
         $fields = array();
         $column_names = array();
         $cols = array();
-        $forms_list = array();
-        $forms = $this->forms->find('all', 1);
-        if (!empty($forms)) foreach ($forms as $form) {
-            $forms_list[$form->id] = $form->title;
-        } else {
-            $forms_list[0] = gt('You must select a form1');
-        }
+//        $forms_list = array();
+//        $forms = $this->forms->find('all', 1);
+//        if (!empty($forms)) foreach ($forms as $form) {
+//            $forms_list[$form->id] = $form->title;
+//        } else {
+//            $forms_list[0] = gt('You must select a form1');
+//        }
         if (!empty($this->config['column_names_list'])) {
             $cols = $this->config['column_names_list'];
         }
@@ -935,13 +989,16 @@ class formsController extends expController {
             $fields['timestamp'] = gt('Timestamp');
             if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
         }
+        $title = gt('No Form Assigned Yet!');
         if (!empty($this->config['forms_id'])) {
             $form = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             $this->config['is_saved'] = $form->is_saved;
             $this->config['table_name'] = $form->table_name;
+            $title = $form->title;
         }
         assign_to_template(array(
-            'forms_list'   => $forms_list,
+//            'forms_list'   => $forms_list,
+            'form_title'   => $title,
             'column_names' => $column_names,
             'fields'       => $fields,
         ));

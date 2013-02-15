@@ -124,6 +124,9 @@
     margin-left:30px;
 }
 
+a.quick-upload-disabled {
+    color: #808080!important;
+}
 /*
 .filemanager.control .hd {
     height:24px;

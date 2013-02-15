@@ -166,9 +166,24 @@ class photosController extends expController {
     }
 
     public function multi_add() {
+        global $db;
+
+        $tags = $db->selectObjects('expTags', '1', 'title ASC');
+        $taglist = '';
+        foreach ($tags as $tag) {
+            $taglist .= "'" . $tag->title . "',";
+        }
+        $modelname = $this->basemodel_name;
+        assign_to_template(array(
+//            'record'     => $record,
+            'table'      => $this->$modelname->tablename,
+//            'controller' => $this->params['controller'],
+            'taglist'    => $taglist
+        ));
     }
 
     public function multi_update() {
+        global $db;
 
         if (!empty($this->params['expFile'])) {
             if (!empty($this->params['title'])) {
@@ -176,28 +191,49 @@ class photosController extends expController {
             } else {
                 $prefix = '';
             }
-            foreach ($this->params['expFile'] as $fileid) {
-                $file = new expFile($fileid);
-                if (!empty($file->id)) {
-                    $photo = new photo();
-//                 $loc = new stdClass();
-//                 $loc->mod = "photo";
-//                 $loc->src = $this->params['src'];
-//                 $loc->int = '';
-                 $loc = expCore::makeLocation("photo",$this->params['src']);
-                 $photo->location_data = serialize($loc);
- //                $photo->body = $gi['description'];
- //                $photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;
-                 $filename = pathinfo($file->filename);
-                 $photo->title = $prefix . $filename['filename'];
-                 $photo->save();
-                 $photo->attachitem($file,'');
- //                $photo->created_at = time();
-                 $photo->expFile = array();
-                 $photo->expFile[] = $file;
-                 $photo->update();  // save gallery name as category
+            $params = array();
+            //check for and handle tags
+            if (array_key_exists('expTag', $this->params)) {
+                $tags = explode(",", trim($this->params['expTag']));
+
+                foreach ($tags as $tag) {
+                    if (!empty($tag)) {
+                        $tag = strtolower(trim($tag));
+                        $tag = str_replace('"', "", $tag); // strip double quotes
+                        $tag = str_replace("'", "", $tag); // strip single quotes
+                        $expTag = new expTag($tag);
+                        if (empty($expTag->id)) $expTag->update(array('title' => $tag));
+                        $params['expTag'][] = $expTag->id;
+                    }
                 }
             }
+
+            //check for and handle cats
+            if (array_key_exists('expCat', $this->params) && !empty($this->params['expCat'])) {
+                $catid = $this->params['expCat'];
+                $params['expCat'][] = $catid;
+            }
+            foreach ($this->params['expFile'] as $fileid) {
+                $params['expFile'][0] = new expFile($fileid);
+                if (!empty($params['expFile'][0]->id)) {
+                    $photo = new photo();
+                    $photo->expFile = $params['expFile'];
+                    $loc = expCore::makeLocation("photo",$this->params['src']);
+                    $photo->location_data = serialize($loc);
+    //                $photo->body = $gi['description'];
+    //                $photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;
+                    $filename = pathinfo($params['expFile']->filename);
+                    $photo->title = $prefix . $filename['filename'];
+                    if (!empty($params['expTag'])) {
+                        $photo->expTag = $params['expTag'];
+                    }
+                    if (!empty($params['expCat'])) {
+                        $photo->expCat = $params['expCat'];
+                    }
+                    $photo->update($params);  // save gallery name as category
+                }
+            }
+            $this->addContentToSearch();
         }
         expHistory::back();
     }

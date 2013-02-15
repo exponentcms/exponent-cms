@@ -16,17 +16,18 @@
 <div class="form_header">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Form Settings"|gettext) module="form-settings"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Form Settings"|gettext) module="form-settings"}
         </div>
         <h2>{"Form Settings"|gettext}</h2>
     </div>
 </div>
-{*{control type=text name='forms_id' label='Select Form'|gettext value=$config.forms_id required=true}*}
-{control type="dropdown" name="forms_id" label="Select the Form Assigned to this Module"|gettext items=$forms_list default=$config.forms_id required=true}
-{control type=text name='title' label='Form Name'|gettext value=$config.title}
-{control type="checkbox" name="restrict_enter" label="Restrict Form Entry by Using Permissions?"|gettext value=1 checked=$config.restrict_enter description='Enable this setting to only allow those users with permission to enter data.'|gettext}
-{control type=html name='description' label='Form Description'|gettext value=$config.description}
-{control type=html name='response' label='Response after submission'|gettext value=$config.response description='Message to display on site after submitting a form.'|gettext}
+{control type=text name='title' label='Assigned Form'|gettext value=$form_title disabled=true description='Forms are assigned using \'Manage Forms\''|gettext}
+{control type=hidden name="forms_id" value=$config.forms_id}
+{if $config.is_saved && !empty($config.table_name)}
+    {control type=text name='table_name' label='Saved to Database'|gettext value=$config.table_name disabled=true}
+{/if}
+{control type="checkbox" name="restrict_enter" label="Restrict Form Entry by Using Permissions?"|gettext value=1 checked=$config.restrict_enter description='Enable this setting to only allow those users with permission to enter data'|gettext}
+{control type=html name='description' label='Form Description'|gettext value=$config.description description='Placed below module description and above the form'|gettext}
 {group label='Form Display Settings'|gettext}
     {control type=text name='submitbtn' label='Submit Button Text'|gettext value=$config.submitbtn|default:"Submit"|gettext}
     {control type=text name='resetbtn' label='Reset Button Text'|gettext value=$config.resetbtn|default:"Reset"|gettext}

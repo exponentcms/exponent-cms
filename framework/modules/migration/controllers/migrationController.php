@@ -2161,8 +2161,8 @@ class migrationController extends expController {
                 @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 break;
             case 'contactmodule':  // v2.1.1 now converted to a forms 2.0 module
-				$module->view = "enter_data";
-                $module->action = "enter_data";
+				$module->view = "enterdata";
+                $module->action = "enterdata";
 
                 $iloc->mod = 'contactmodule';
                 $contactform = $old_db->selectObject('contactmodule_config', "location_data='".serialize($iloc)."'");
@@ -2230,8 +2230,8 @@ class migrationController extends expController {
 				}
 				break;
             case 'formmodule':  // convert to forms module
-                $module->view = "enter_data";
-                $module->action = "enter_data";
+                $module->view = "enterdata";
+                $module->action = "enterdata";
 
                 // new form update
                 $oldform = $old_db->selectObject('formbuilder_form', "location_data='".serialize($iloc)."'");

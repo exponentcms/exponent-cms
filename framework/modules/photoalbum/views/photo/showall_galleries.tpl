@@ -85,14 +85,14 @@
                     </div>
                 {/permissions}
             </li>
-            <li>
-                <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}"><h3>{$cat->records[0]->title}</h3></a>
-            </li>
-            <li>
-                <div class="bodycopy">
-                    {$cat->records[0]->body}
-                </div>
-            </li>
+            {*<li>*}
+                {*<a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}"><h3>{$cat->records[0]->title}</h3></a>*}
+            {*</li>*}
+            {*<li>*}
+                {*<div class="bodycopy">*}
+                    {*{$cat->records[0]->body}*}
+                {*</div>*}
+            {*</li>*}
         </ul>
     {/foreach}
 </div>
