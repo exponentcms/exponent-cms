@@ -32,7 +32,7 @@
     {messagequeue}
 	<div class="info-header">
 		<div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Managing Files"|gettext) module="file-manager"}
+			{help text="Get Help with"|gettext|cat:" "|cat:("Managing Files"|gettext) module="file-manager"}
             <blockquote>
                {'Click the cell to change Folder, Title, or alt.'|gettext}
            </blockquote>

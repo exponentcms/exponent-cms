@@ -26,11 +26,11 @@
     <div class="info-header">
         <div class="related-actions">
             {if !empty($page)}
-                {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-categories"}
+                {help text="Get Help wiht"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-categories"}
             {elseif $model == 'file'}
-                {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-file-folders"}
+                {help text="Get Help with"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-file-folders"}
             {else}
-                {help text="Get Help"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-site-categories"}
+                {help text="Get Help with"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-site-categories"}
             {/if}
         </div>
         <h1>{"Manage"|gettext|cat:" `$catnames`"}</h1>

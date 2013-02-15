@@ -20,7 +20,7 @@
 <div class="module expcomment manage">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("Managing Comments"|gettext) module="manage-comments"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Comments"|gettext) module="manage-comments"}
         </div>
         <h1>{"Manage Comments"|gettext}</h1>
     </div>

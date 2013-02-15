@@ -198,7 +198,6 @@ if ($user->isAdmin()) {
                         'url' => makeLink(array(
                             'controller' => 'forms',
                             'action' => 'manage',
-                            'model' => 'forms'
                         ))
                     ),
                     array(
@@ -282,7 +281,6 @@ if ($user->isAdmin()) {
                         'url' => makeLink(array(
                             'controller' => 'forms',
                             'action' => 'manage',
-                            'model' => 'forms'
                         ))
                     ),
                     array(

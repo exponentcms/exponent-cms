@@ -16,7 +16,7 @@
 <div class="form_header">
 	<div class="info-header">
 		<div class="related-actions">
-		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("Pagination Settings"|gettext) module="pagination"}
+		    {help text="Get Help with"|gettext|cat:" "|cat:("Pagination Settings"|gettext) module="pagination"}
 		</div>
         <h2>{"Pagination Settings"|gettext}</h2>
 	</div>

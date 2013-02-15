@@ -17,7 +17,7 @@
     <div class="form_header">
     	<div class="info-header">
     		<div class="related-actions">
-    		    {help text="Get Help"|gettext|cat:" "|cat:("with"|gettext)|cat:" "|cat:("iCal Pull Settings"|gettext) module="ical-pull"}
+    		    {help text="Get Help with"|gettext|cat:" "|cat:("iCal Pull Settings"|gettext) module="ical-pull"}
     		</div>
             <h2>{"iCal Pull Settings"|gettext}</h2>
     	</div>

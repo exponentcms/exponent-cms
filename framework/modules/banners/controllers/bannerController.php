@@ -96,7 +96,8 @@ class bannerController extends expController {
 			'order'=>'title',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
-        			'action'=>$this->params['action'],
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
 			'columns'=>array(
                 gt('Title')=>'title',
                 gt('Company')=>'companyname',

@@ -168,19 +168,7 @@ class expPaginator {
 		// and order direction from the request params...this is how the params are passed via the column
 		// headers.
 		$this->order_direction = $this->dir;	
-		if (expTheme::inAction() && empty($params)) {
-		    //FIXME: module/controller glue code
-//		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
-//		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
-//			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
-//			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
-//			}
-            $mod = !empty($router->params['controller']) ? $router->params['controller'] : $router->params['module'];
-            if ($this->controller == $mod && $this->action == $router->params['action']) {
-      			    $this->order = isset($router->params['order']) ? $router->params['order'] : $this->order;
-      			    $this->order_direction = isset($router->params['dir']) ? $router->params['dir'] : $this->dir;
-      			}
-		}
+
         // allow passing of a single order/dir as stored in config
         if (strstr($this->order," ")) {
             $orderby = explode(" ",$this->order);
@@ -325,6 +313,21 @@ class expPaginator {
 		    unset($page_params['module']);
 		    $page_params['controller'] = expModules::getModuleName($this->controller);
 		} else {
+            if (expTheme::inAction() && empty($params)) {
+                //FIXME: module/controller glue code
+    //		    $mod = !empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['controller']) : expString::sanitize($_REQUEST['module']);
+    //		    if ($this->controller == $mod && $this->action == $_REQUEST['action']) {
+    //			    $this->order = isset($_REQUEST['order']) ? $_REQUEST['order'] : $this->order;
+    //			    $this->order_direction = isset($_REQUEST['dir']) ? $_REQUEST['dir'] : $this->dir;
+    //			}
+                $mod = !empty($router->params['controller']) ? $router->params['controller'] : $router->params['module'];
+                if ($this->controller == $mod && $this->action == $router->params['action']) {
+                    $this->order = isset($router->params['order']) ? $router->params['order'] : $this->order;
+                    $this->order_direction = isset($router->params['dir']) ? $router->params['dir'] : $this->dir;
+                }
+            } else {
+                $mod = $params->controller;
+            }
             $page_params['controller'] = $mod;  // we can't be passing an empty controller or module to the router
         }
 		

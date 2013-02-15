@@ -25,7 +25,7 @@
 
 <div class="info-header">
     <div class="related-actions">
-        {help text="Get Help"|gettext|cat:" "|cat:("Designing Forms"|gettext) module="design-forms"}
+        {help text="Get Help with"|gettext|cat:" "|cat:("Designing Forms"|gettext) module="design-forms"}
     </div>
     <h2>{"Forms Designer"|gettext}</h2>
 </div>

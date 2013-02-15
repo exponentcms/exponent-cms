@@ -16,7 +16,7 @@
 <div class="module users change-password">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help"|gettext|cat:" "|cat:("Changing User Passwords"|gettext) module="change-my-password"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Changing User Passwords"|gettext) module="change-my-password"}
         </div>
         <h1>{'Change'|gettext} {if $isuser}{'your'|gettext}{else}{$u->username}'s{/if} {'password'|gettext}</h1>
     </div>

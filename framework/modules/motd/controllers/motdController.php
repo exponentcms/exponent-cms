@@ -58,6 +58,7 @@ class motdController extends expController {
                     'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
                     'controller'=>$this->baseclassname,
                     'action'=>$this->params['action'],
+                    'src'=>$this->loc->src,
                     'columns'=>array(
                         gt('Date')=>'month',
                         gt('Message')=>'body'

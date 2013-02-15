@@ -16,7 +16,7 @@
 <div class="module navigation move_standalonepage">
     <div class="info-header">
         <div class="related-actions">
-			{help text="Get Help"|gettext|cat:" "|cat:("Moving Standalone Pages"|gettext) module="move-standalone-page"}
+			{help text="Get Help with"|gettext|cat:" "|cat:("Moving Standalone Pages"|gettext) module="move-standalone-page"}
         </div>
 	    <h1>{'Move Standalone Page'|gettext}</h1>
 	</div>
