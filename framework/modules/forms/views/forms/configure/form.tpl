@@ -22,6 +22,7 @@
     </div>
 </div>
 {control type=text name='title' label='Assigned Form'|gettext value=$form_title disabled=true description='Forms are assigned using \'Manage Forms\''|gettext}
+{control type=hidden name="forms_id" value=$config.forms_id}
 {if $config.is_saved && !empty($config.table_name)}
     {control type=text name='table_name' label='Saved to Database'|gettext value=$config.table_name disabled=true}
 {/if}
