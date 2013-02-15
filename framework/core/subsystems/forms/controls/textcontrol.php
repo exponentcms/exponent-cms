@@ -63,7 +63,7 @@ class textcontrol extends formcontrol {
         $html .= ($this->tabindex>=0?"tabindex=\"".$this->tabindex."\" ":"");
         $html .= ($this->accesskey != ""?"accesskey=\"".$this->accesskey."\" ":"");
         $html .= ($this->placeholder?"placeholder=\"".$this->placeholder."\" ":"");
-        if ($this->pattern != "") $html .= " pattern=\"".$this->pattern."\" ";
+        if (!empty($this->pattern)) $html .= " pattern=\"".$this->pattern."\" ";
         if ($this->filter != "") {
             $html .= "onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\" ";
             $html .= "onblur=\"".$this->filter."_filter.onblur(this);\" ";
