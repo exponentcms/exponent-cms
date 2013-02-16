@@ -20,17 +20,18 @@ if (!defined('EXPONENT')) exit('');
 
 global $db;
 
-$num_version = expVersion::getVersion();
-$db_version = $db->selectObject('version','1');
-if (empty($db_version)) {
-    $db_version = new stdClass();
-    $db_version->major = 1;
-    $db_version->minor = 0;
-    $db_version->revision = 0;
-    $db_version->type = '';
-    $db_version->iteration = '';
-    $db_version->builddate = '';
-}
+//$num_version = expVersion::getVersion();
+//$db_version = $db->selectObject('version','1');
+//if (empty($db_version)) {
+//    $db_version = new stdClass();
+//    $db_version->major = 1;
+//    $db_version->minor = 0;
+//    $db_version->revision = 0;
+//    $db_version->type = '';
+//    $db_version->iteration = '';
+//    $db_version->builddate = '';
+//}
+$db_version = expVersion::dbVersion();
 
 ?>
 <h2><?php echo gt('Upgrade Scripts'); ?></h2>

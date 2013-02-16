@@ -164,7 +164,7 @@ define("TIME_ZONE",date('O',time()));
  * Version string.
  **/
 // define("FEEDCREATOR_VERSION", "FeedCreator 1.8.0dev-iTunes");
-define("FEEDCREATOR_VERSION", 'Exponent Content Management System - '.expVersion::getVersion(true));
+define("FEEDCREATOR_VERSION", 'Exponent Content Management System - '.expVersion::getVersion(true,true));
 
 /**
  * An Enclosure is a part of an Item

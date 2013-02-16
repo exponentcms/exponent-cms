@@ -159,7 +159,7 @@ switch ($page) {
 <head>
 	<title><?php echo gt('Exponent Install Wizard'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
-    <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true); ?>" />
+    <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true,true); ?>" />
 	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssreset/reset.css" />
 	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssfonts/fonts.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />

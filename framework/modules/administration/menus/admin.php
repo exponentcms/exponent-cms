@@ -20,7 +20,8 @@ if (!defined('EXPONENT')) exit('');
 
 global $user, $db;
 
-$my_version = gt("Exponent Version") . " : " . EXPONENT_VERSION_MAJOR . "." . EXPONENT_VERSION_MINOR . "." . EXPONENT_VERSION_REVISION . "<br />";
+//$my_version = gt("Exponent Version") . " : " . EXPONENT_VERSION_MAJOR . "." . EXPONENT_VERSION_MINOR . "." . EXPONENT_VERSION_REVISION . "<br />";
+$my_version = gt("Exponent Version") . " : " . expVersion::getVersion(true) . "<br />";
 if (EXPONENT_VERSION_TYPE != '') {
     $my_type = gt("Release level") . " : " . EXPONENT_VERSION_TYPE . EXPONENT_VERSION_ITERATION . "<br />";
 } else {
@@ -314,6 +315,7 @@ if ($user->isAdmin()) {
 }
 
 $groups = $db->selectObjects('groupmembership', 'member_id=' . $user->id . ' AND is_admin=1');
+//FIXME should a group admin get the entire User Management menu?
 if ($user->isAdmin() || !empty($groups)) {
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text'      => gt('User Management'),
