@@ -96,6 +96,7 @@
 								{icon class=configure action=configure_theme theme=$class sv=$smarty.const.THEME_STYLE title="Configure this Theme"|gettext}
 							{/if}
 						{/if}
+                        {icon class=export action=export_theme theme=$class title="Export this Theme"|gettext}
 					</td>
 				</tr>
         	{/foreach}

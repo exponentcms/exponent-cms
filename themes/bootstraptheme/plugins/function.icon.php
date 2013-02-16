@@ -122,10 +122,11 @@ if (!function_exists('smarty_function_icon')) {
                 $class = "copy";
                 break;
             case 'downloadfile' :
+            case 'export' :
                 $class = "download-alt";
                 break;
             case 'uploadfile' :
-            case 'imxport' :
+            case 'import' :
                 $class = "upload-alt";
                 break;
             case 'manage' :

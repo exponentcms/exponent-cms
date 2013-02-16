@@ -895,6 +895,45 @@ class administrationController extends expController {
 		}
 	}
 
+    public function export_theme() {
+        include_once(BASE.'external/Tar.php');
+
+        $themeclass = $this->params['theme'];
+        $fname = tempnam(BASE.'/tmp','exporter_files_');
+        $tar = new Archive_Tar($fname,'gz');
+        $tar->createModify(BASE.'themes/'.$themeclass,'',BASE.'themes/');
+
+        $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$themeclass.'.tar.gz');
+
+        ob_end_clean();
+        // This code was lifted from phpMyAdmin, but this is Open Source, right?
+
+        // 'application/octet-stream' is the registered IANA type but
+        //        MSIE and Opera seems to prefer 'application/octetstream'
+        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+        header('Content-Type: ' . $mime_type);
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        // IE need specific headers
+        if (EXPONENT_USER_BROWSER == 'IE') {
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Pragma: no-cache');
+        }
+
+        $fh = fopen($fname,'rb');
+        while (!feof($fh)) {
+            echo fread($fh,8192);
+        }
+        fclose($fh);
+        unlink($fname);
+
+        exit(''); // Exit, since we are exporting.
+    }
+
 	public function togglemobile() {
 		if (!expSession::is_set('mobile')) {  // account for FORCE_MOBILE initial state
 			expSession::set('mobile',MOBILE);
