@@ -39,7 +39,7 @@ class formsController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
     public $add_permissions = array(
         'viewdata'  => "View Data",
-//        'enterdata' => "Enter Data"
+        'enter_data' => "Enter Data"  // slight naming variatino to not fully restrict enterdata method
     );
     public $codequality = 'beta';
 
