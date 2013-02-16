@@ -129,7 +129,8 @@ class container2Controller extends expController {
                 $mod = new $modclass();
 
                 ob_start();
-                $mod->_hasParent = 1;
+//                $mod->_hasParent = 1;
+                if ($containers[$i]->external != 'N;' && $location->mod == 'container2') $containers[$i]->hasParent = 1;
                 if ($iscontroller) {
                     renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
                 } else {
