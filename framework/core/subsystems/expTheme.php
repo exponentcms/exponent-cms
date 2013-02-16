@@ -578,12 +578,12 @@ class expTheme {
             } else {
                 self::mainContainer();
             }
-        } else {
-            if (isset($_REQUEST['module'])) {
-                include_once(BASE."framework/modules/container/orphans_content.php");  //FIXME not sure how to convert this yet
-            } else {
-                echo gt('Select a module');
-            }
+//        } else {
+//            if (isset($_REQUEST['module'])) {
+//                include_once(BASE."framework/modules/container/orphans_content.php");  //FIXME not sure how to convert this yet
+//            } else {
+//                echo gt('Select a module');
+//            }
         }
     }
 
