@@ -37,6 +37,6 @@
 {control type="text" name="email_from_reminder" label="From (Display)"|gettext value=$config.email_from_reminder}
 {control type="text" name="email_address_reminder" label="From (Email Address)"|gettext value=$config.email_address_reminder}
 {control type="text" name="email_reply_reminder" label="Reply-to"|gettext value=$config.email_reply_reminder}
-{control type="checkbox" name="email_showdetail" label="Show detail in message?"|gettext value=1 checked=$config.email_showdetail}
+{control type="checkbox" name="email_showdetail" label="Show event details in message?"|gettext value=1 checked=$config.email_showdetail}
 {control type="textarea" name="email_signature" label="Email Signature"|gettext value=$config.email_signature}
 {/group}

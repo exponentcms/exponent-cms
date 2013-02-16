@@ -32,7 +32,7 @@ class blog extends expRecord {
     public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'Title is a required field.'),
-            'body'=>array('message'=>'Body is a required field.'),
+            'body'=>array('message'=>'Post Content is a required field.'),
         )
     );
 

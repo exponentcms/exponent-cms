@@ -83,7 +83,7 @@ class helpController extends expController {
             'src'=>$this->loc->src,
             'columns'=>array(
                 gt('Title')=>'title',
-                gt('Body')=>'body',
+                gt('Details')=>'body',
                 gt('Version')=>'help_version_id'
             ),
         ));
