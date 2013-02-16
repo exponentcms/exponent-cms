@@ -10,6 +10,7 @@ Added / Fixed / changed for 2.2.0 alpha 3
 -----------------------
 ### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
   - removes deprecated headline controller, modules converted into text modules, suggest a custom text module 'headline' view be created if needed
+  - adds theme export feature
 ### Known Issues
   - None
 

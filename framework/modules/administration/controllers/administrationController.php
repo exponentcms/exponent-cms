@@ -810,6 +810,7 @@ class administrationController extends expController {
     				$theme = new $file();
     				$t = new stdClass();
 				    $t->user_configured = isset($theme->user_configured) ? $theme->user_configured : '';
+                    $t->stock_theme = isset($theme->stock_theme) ? $theme->stock_theme : '';
     				$t->name = $theme->name();
     				$t->description = $theme->description();
     				$t->author = $theme->author();
@@ -1115,6 +1116,7 @@ class administrationController extends expController {
  */
 class theme {
 	public $user_configured = false;
+    public $stock_theme = false;
 
 	function name() { return "theme"; }
 	function author() { return ""; }

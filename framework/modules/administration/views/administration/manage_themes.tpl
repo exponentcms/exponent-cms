@@ -64,7 +64,7 @@
                                     (<em>{"Previewing"|gettext}</em>)
                                 {else}
                                     {*{icon img="view.png" action=theme_preview theme=$class sv=$sv title="Preview this Theme"|gettext}*}
-                                    {icon class="view" action=theme_preview theme=$class sv=$sv title="Preview this Theme Style"|gettext}
+                                    {icon class="view" action=theme_preview theme=$class sv=$sv title="Preview this Theme Style"|gettext text="Preview"|gettext}
                                 {/if}
 								{if $smarty.const.DISPLAY_THEME_REAL == $class && ($smarty.const.THEME_STYLE_REAL == $sv || ($smarty.const.THEME_STYLE_REAL == "" && $sv == "Default"))}
 									<span class="switchtheme current">{$sv} ({"Current"|gettext})</span>
@@ -77,18 +77,21 @@
 						{else}
                             {if $smarty.const.DISPLAY_THEME != $class}
                                 {*{icon img="view.png" action=theme_preview theme=$class title="Preview this Theme"|gettext}*}
-                                {icon class="view" action=theme_preview theme=$class title="Preview this Theme"|gettext}
+                                {icon class="view" action=theme_preview theme=$class title="Preview this Theme"|gettext text="Preview"|gettext}
                             {elseif $smarty.const.DISPLAY_THEME_REAL != $smarty.const.DISPLAY_THEME}
                                 (<em>{"Previewing"|gettext}</em>)
                             {/if}
 							{if $smarty.const.DISPLAY_THEME_REAL != $class}
 								{*<a class="switchtheme add" href="{link action=theme_switch theme=$class}" title={'Select this Theme'|gettext}>{"Use"|gettext}</a>*}
-                                {icon class="switchtheme add" action=theme_switch theme=$class title='Select this Theme'|gettext text="Use"|gettext}
+                                {icon class="switchtheme add" action=theme_switch theme=$class title='Select this Theme'|gettext text="Default"|gettext}
 							{else}
 								<span class="switchtheme current">({"Current"|gettext})</span>
 							{/if}
                             {br}
 						{/if}
+                        {if (!$theme->stock_theme)}
+                            {icon class=export action=export_theme theme=$class title="Export this Theme"|gettext}
+                        {/if}
 						{if ($theme->user_configured)}
 							{if $smarty.const.THEME_STYLE == ""}
 								{icon class=configure action=configure_theme theme=$class title="Configure this Theme"|gettext}
@@ -96,7 +99,6 @@
 								{icon class=configure action=configure_theme theme=$class sv=$smarty.const.THEME_STYLE title="Configure this Theme"|gettext}
 							{/if}
 						{/if}
-                        {icon class=export action=export_theme theme=$class title="Export this Theme"|gettext}
 					</td>
 				</tr>
         	{/foreach}

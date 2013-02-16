@@ -20,6 +20,7 @@ if (class_exists('bootstraptheme')) return;
 
 class bootstraptheme extends theme {
     public $user_configured = true;
+    public $stock_theme = true;
 
 	function name() { return "Twitter Bootstrap Theme"; }
 	function author() { return "David Leffler"; }
