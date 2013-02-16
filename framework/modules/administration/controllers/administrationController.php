@@ -257,7 +257,6 @@ class administrationController extends expController {
    	}
 
     public function toolbar() {
-        global $user;
         $menu = array();
 		$dirs = array(
 			BASE.'framework/modules/administration/menus',
@@ -274,12 +273,12 @@ class administrationController extends expController {
 		    }
 		}
 
-        // sort the menus alphabetically by filename
+        // sort the top level menus alphabetically by filename
 		ksort($menu);		
 		$sorted = array();
 		foreach($menu as $m) $sorted[] = $m;
         
-        //slingbar position
+        // slingbar position
         if (isset($_COOKIE['slingbar-top'])){
             $top = $_COOKIE['slingbar-top'];
         } else {
