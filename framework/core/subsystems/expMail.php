@@ -245,7 +245,8 @@ class expMail {
 		} else {
 			trim($params['from']);
 		}
-		$this->message->setFrom((array)$params['from']);  //FIXME we need to use this->addFrom() instead
+//		$this->message->setFrom((array)$params['from']);  //FIXME we need to use this->addFrom() instead
+        $this->addFrom($params['from']);
 
 		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
 
@@ -371,7 +372,8 @@ class expMail {
 		} else {
 			trim($params['from']);
 		}
-		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
+//		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
+        $this->addFrom($params['from']);
 
 		$this->addSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
 
@@ -432,12 +434,11 @@ class expMail {
 	 *	  # Path Headers
 	 *			Path headers are like very-restricted mailbox headers. They contain a single email address with no associated name. The Return-Path header of a message is a path header.
 	 */
-	//FIXME the $headers parameter is wiped out with the 2nd line
 	public function addHeaders($headers) {
 		$headers = $this->message->getHeaders();
 		foreach ($headers as $header => $value) {
 			//new SWIFT 4 way
-			$headers->addTextHeader($header, $value);
+            $headers->addTextHeader($header, $value);
 		}
 	}
 
@@ -738,15 +739,23 @@ class expMail {
 	 * @param string $email This is the email address you want to use as the sender.
 	 * @param string $name  This is the name associated with the above email address.
 	 */
-	public function addFrom($email = null, $name = null) {
-        //FIXME we need to ensure this is a valid mail address as Swiftmailer send will fail otherwise
-		if (!empty($email) && !empty($name)) {
-			$this->from = array($email, $name);
-			$this->message->setFrom($email, $name);
-		} else {
-			$this->from = $email;
-			$this->message->setFrom($email);
-		}
+	public function addFrom($email = null) {
+        // attempt to fix a bad from address
+        if (is_array($email)) {
+            foreach ($email as $address=>$name) {
+                if (strstr($address,'.') === false) {
+                    $email[$name] .= '.net';
+                }
+            }
+        } else {
+            if (strstr($email,'.') === false) {
+                $email .= '.net';
+            }
+        }
+        $this->from = $email;
+        if (!empty($email)) {
+            $this->message->setFrom($email);
+        }
 	}
 
 	/**
