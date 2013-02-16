@@ -39,7 +39,7 @@ class formsController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
     public $add_permissions = array(
         'viewdata'  => "View Data",
-        'enterdata' => "Enter Data"
+//        'enterdata' => "Enter Data"
     );
     public $codequality = 'beta';
 
