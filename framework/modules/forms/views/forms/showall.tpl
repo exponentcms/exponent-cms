@@ -50,7 +50,11 @@
                         <tr class="{cycle values="even,odd"}">
                             {foreach from=$page->columns item=column name=column}
                                 <td>
-                                    {$user->$column}
+                                    {if $smarty.foreach.column.iteration == 1}
+                                        <a href={link action=show forms_id=$f->id id=$user->id}>{$user->$column}</a>
+                                    {else}
+                                        {$user->$column}
+                                    {/if}
                                 </td>
                             {/foreach}
                             <div class="item-actions">
