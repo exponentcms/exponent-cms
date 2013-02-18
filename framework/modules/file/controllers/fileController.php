@@ -77,8 +77,8 @@ class fileController extends expController {
         array_unshift($jscatarray,$jsuncat);
         $catarray['-1'] = 'All Folders';
         if (strstr($this->params['update'],'?')) {
-            $update = explode($this->params['update'],'?');
-            if (!empty($update)) $this->params['update'] = $update[0];
+            $update = explode('?',$this->params['update']);
+            if (!empty($update[0])) $this->params['update'] = $update[0];
         }
         assign_to_template(array(
             'update'=>$this->params['update'],
