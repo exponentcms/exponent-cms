@@ -644,7 +644,7 @@ abstract class expController {
         $views = get_config_templates($this, $this->loc);
 
         // needed for aggregation list
-        $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
+        $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
         $page = new expPaginator(array(
             'records' => $pullable_modules,
             'controller' => $this->loc->mod,

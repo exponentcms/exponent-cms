@@ -116,7 +116,7 @@ class storeCategoryController extends expNestedNodeController {
         $this->loc->src = "@store-".$this->params['id'];
         $config = new expConfig($this->loc);
         $this->config = $config->config;
-        $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
+        $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         assign_to_template(array(
             'config'=>$this->config,
