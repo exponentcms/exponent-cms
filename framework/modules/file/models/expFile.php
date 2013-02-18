@@ -1566,7 +1566,7 @@ class expFile extends expRecord {
             $dump .= 'VERSION:' . $force_version . "\r\n\r\n";
         }
 
-        if (!is_array($tables)) {
+        if (!is_array($tables)) {  // dump all the tables
             $tables = $db->getTables();
             if (!function_exists('tmp_removePrefix')) {
                 function tmp_removePrefix($tbl) {

@@ -591,8 +591,6 @@ class storeController extends expController {
     }
 
     function showallByManufacturer() {
-        global $template;
-
         expHistory::set('viewable', $this->params);
 
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;

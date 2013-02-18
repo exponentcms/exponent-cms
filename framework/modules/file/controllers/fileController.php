@@ -566,8 +566,6 @@ class fileController extends expController {
     }
 
     public function import_eql() {
-        global $template;
-
         $form = new form();
         $form->meta('controller','file');
         $form->meta('action','import_eql_process');
@@ -576,22 +574,26 @@ class fileController extends expController {
         //$form->register('select_tables',gt('Select Specific Tables?'), new checkboxcontrol(false));
         $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
 
-        $template->assign('form_html',$form->toHTML());
+        assign_to_template(array(
+            'form_html' => $form->toHTML(),
+        ));
     }
 
     public  function import_eql_process() {
-        global $template, $db;
+        global $db;
 
         $errors = array();
         expSession::clearAllUsersSessionCache();
 
         expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
-        $template->assign('success',!count($errors));
-        $template->assign('errors',$errors);
+        assign_to_template(array(
+            'success' => !count($errors),
+            'errors' => $errors,
+        ));
     }
 
     public function export_eql() {
-        global $template, $db, $user;
+        global $db, $user;
 
         expDatabase::fix_table_names();
         $tables = $db->getTables();
@@ -605,8 +607,10 @@ class fileController extends expController {
         $tables = array_map('tmp_removePrefix',$tables);
         usort($tables,'strnatcmp');
 
-        $template->assign('user',$user);
-        $template->assign('tables',$tables);
+        assign_to_template(array(
+            'user' => $user,
+            'tables' => $tables,
+        ));
     }
 
     public function export_eql_process() {
@@ -662,20 +666,18 @@ class fileController extends expController {
     }
 
     public function import_files() {
-        global $template;
-
         $form = new form();
         $form->meta('controller','files');
         $form->meta('action','import_files_process');
         $form->register('file',gt('Files Archive'),new uploadcontrol());
         $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
 
-        $template->assign('form_html',$form->toHTML());
+        assign_to_template(array(
+            'form_html' => $form->toHTML(),
+        ));
     }
 
     public function import_files_process() {
-        global $template;
-
         if ($_FILES['file']['error'] != UPLOAD_ERR_OK) {
         	switch($_FILES['file']['error']) {
         		case UPLOAD_ERR_INI_SIZE:
@@ -728,16 +730,16 @@ class fileController extends expController {
         				}
         			}
 
-        			$template->assign('dest_dir',$dest_dir);
-        			$template->assign('file_data',$mods);
+                    assign_to_template(array(
+                        'dest_dir' => $dest_dir,
+                        'file_data' => $mods,
+                    ));
         		}
         	}
         }
     }
 
     public function import_files_extract() {
-        global $template;
-
         $dest_dir = $this->params['dest_dir'];
         $files = array();
         foreach (array_keys($this->params['mods']) as $file) {
@@ -753,12 +755,12 @@ class fileController extends expController {
         expSession::set('dest_dir',$dest_dir);
         expSession::set('files_data',$files);
 
-        $template->assign('files_data',$files);
+        assign_to_template(array(
+            'files_data' => $files,
+        ));
     }
 
     public function import_files_finish() {
-        global $template;
-
         $dest_dir = expSession::get('dest_dir');
         $files = expSession::get('files_data');
         if (!file_exists(BASE.'files')) {
@@ -777,11 +779,13 @@ class fileController extends expController {
 
         expFile::removeDirectory($dest_dir);
 
-        $template->assign('file_count',$filecount);
+        assign_to_template(array(
+            'file_count' => $filecount,
+        ));
     }
 
     public function export_files() {
-        global $template, $user;
+        global $user;
 
         $loc = expCore::makeLocation($this->params['controller'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
         //$mods = array();
@@ -793,10 +797,9 @@ class fileController extends expController {
         //}
         //uasort($mods,'strnatcmp');
 
-//        $template = new template('exporter','_files_modList',$loc);
-        //$template->assign('mods',$mods);
-        $template->assign('user',$user);
-//        $template->output();
+        assign_to_template(array(
+            'user' => $user,
+        ));
     }
 
     public function export_files_process() {

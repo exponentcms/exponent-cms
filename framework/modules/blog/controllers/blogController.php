@@ -169,7 +169,7 @@ class blogController extends expController {
 	}
 	
 	public function show() {
-	    global $db, $template;
+	    global $db;
 
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
