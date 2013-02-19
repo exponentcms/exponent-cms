@@ -351,6 +351,41 @@ abstract class expController {
         ));
     }
 
+    public function categories() {
+
+        expHistory::set('viewable', $this->params);
+        $modelname = $this->basemodel_name;
+
+        $items = $this->$modelname->find('all', $this->aggregateWhereClause());
+        $used_cats = array();
+        foreach ($items as $item) {
+            foreach ($item->expCat as $tag) {
+                if (isset($used_cats[$tag->id])) {
+                    $used_cats[$tag->id]->count += 1;
+                } else {
+                    $expcat = new expCat($tag->id);
+                    $used_cats[$tag->id] = $expcat;
+                    $used_cats[$tag->id]->count = 1;
+                }
+            }
+        }
+
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
+//        $used_cats = expSorter::sort(array('array'=>$used_cats,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+//        $used_cats = expSorter::sort(array('array'=>$used_cats, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        $used_cats = expSorter::sort(array('array' => $used_cats, 'order' => 'count DESC', 'type' => 'a'));
+        if (!empty($this->config['limit'])) $used_cats = array_slice($used_cats, 0, $this->config['limit']);
+        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+        if ($order != 'hits') {
+            $used_cats = expSorter::sort(array('array' => $used_cats, 'order' => $order, 'ignore_case' => true, 'rank' => ($order === 'rank') ? 1 : 0));
+        }
+
+        assign_to_template(array(
+            'cats' => $used_cats
+        ));
+    }
+
     /**
      * default view for individual item
      */
@@ -833,7 +868,7 @@ abstract class expController {
             $rss_item->authorEmail = user::getEmailById($item->poster);
             $rss_item->date = isset($item->publish_date) ? date('r', $item->publish_date) : date('r', $item->created_at);
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
-            $comment_count = expCommentController::findComments(array('content_id' => $item->id, 'content_type' => $this->basemodel_name));
+            $comment_count = expCommentController::countComments(array('content_id' => $item->id, 'content_type' => $this->basemodel_name));
             if ($comment_count) {
                 $rss_item->comments = makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $item->sef_url)) . '#exp-comments';
 //                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';

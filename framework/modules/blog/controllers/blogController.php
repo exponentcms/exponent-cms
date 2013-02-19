@@ -26,6 +26,7 @@ class blogController extends expController {
         'tags'=>"Tags",
         'authors'=>"Authors",
         'dates'=>"Dates",
+        'comments'=>"Comments",
     );
     public $remove_configs = array(
         'categories',
@@ -64,6 +65,7 @@ class blogController extends expController {
 	}
 
 	public function authors() {
+        expHistory::set('viewable', $this->params);
         $blogs = $this->blog->find('all');
         $users = array();
         foreach ($blogs as $blog) {
@@ -83,6 +85,7 @@ class blogController extends expController {
 	public function dates() {
 	    global $db;
 
+        expHistory::set('viewable', $this->params);
         $where = $this->aggregateWhereClause();
 	    $dates = $db->selectColumn('blog', 'publish', $where, 'publish DESC');
 	    $blog_date = array();
@@ -117,9 +120,29 @@ class blogController extends expController {
         ));
 	}
 	
-	public function showall_by_date() {
+    public function comments() {
 	    expHistory::set('viewable', $this->params);
-	    
+        $blogs = $this->blog->find('all');
+        $all_comments = array();
+        // get all the blog comments
+        foreach ($blogs as $blog) {
+            $more_comments = expCommentController::getComments(array('content_type'=>'blog','content_id'=>$blog->id));
+            if (!empty($more_comments)) {
+                foreach ($more_comments as $next_comment) {
+                    $next_comment->ref = $blog->title;
+                    $next_comment->sef_url = $blog->sef_url;
+                }
+                $all_comments = array_merge($all_comments,$more_comments);
+            }
+        }
+        // sort/limit all the blog comments
+        $comments = $all_comments;
+	    assign_to_template(array(
+            'comments'=>$comments,
+        ));
+	}
+    public function showall_by_date() {
+	    expHistory::set('viewable', $this->params);
 	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
 	    $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
 
@@ -262,7 +285,7 @@ class blogController extends expController {
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->guid = expUnserialize($item->location_data)->src.'-id#'.$item->id;
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
-            $comment_count = expCommentController::findComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
+            $comment_count = expCommentController::countComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
             if ($comment_count) {
                 $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
 //                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';

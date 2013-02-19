@@ -50,7 +50,7 @@ function smarty_function_comments($params,&$smarty) {
     $notification_email = empty($params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $params['notification_email'];
     
 	renderAction(array('controller'=>'expComment', 
-			'action'=>'getComments', 
+			'action'=>'showComments',
 //			'content_id'=>$params['content_id'],
 //			'content_type'=>$params['content_type'],
             'content_id'=>$params['record']->id,
