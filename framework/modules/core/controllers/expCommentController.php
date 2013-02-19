@@ -127,7 +127,7 @@ class expCommentController extends expController {
         $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
-        if (!($user->is_admin || $user->is_acting_admin)) {
+        if (!$user->isAdmin()) {
             $sql .= 'AND c.approved=1';
         }
 
@@ -150,6 +150,7 @@ class expCommentController extends expController {
             $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
             $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
         }
+
         if (empty($this->params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
         // eDebug($sql, true);
         
@@ -238,7 +239,7 @@ class expCommentController extends expController {
         $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
         $sql .= 'WHERE cnt.content_id='.$params['content_id']." AND cnt.content_type='".$params['content_type']."' ";
-        if (!($user->is_admin || $user->is_acting_admin)) {
+        if (!$user->isAdmin()) {
             $sql .= 'AND c.approved=1';
         }
 
@@ -263,7 +264,7 @@ class expCommentController extends expController {
           $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
           $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
           $sql .= 'WHERE cnt.content_id='.$params['content_id']." AND cnt.content_type='".$params['content_type']."' ";
-          if (!($user->is_admin || $user->is_acting_admin)) {
+          if (!$user->isAdmin()) {
               $sql .= 'AND c.approved=1';
           }
 

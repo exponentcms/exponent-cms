@@ -135,12 +135,15 @@ class blogController extends expController {
                 $all_comments = array_merge($all_comments,$more_comments);
             }
         }
-        // sort/limit all the blog comments
-        $comments = $all_comments;
+        // sort then limit all the blog comments
+        $all_comments = expSorter::sort(array('array' => $all_comments, 'sortby' => 'created_at', 'order' => 'DESC', 'ignore_case' => true));
+        $limit = (isset($this->config['headcount']) && $this->config['headcount'] != '') ? $this->config['headcount'] : 10;
+        $comments = array_slice($all_comments,0,$limit);
 	    assign_to_template(array(
             'comments'=>$comments,
         ));
 	}
+
     public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
 	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
