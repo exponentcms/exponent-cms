@@ -22,14 +22,15 @@
 
 class blogController extends expController {
     public $useractions = array(
-        'showall'=>'Show all', 
-        'tags'=>"Tags",
-        'authors'=>"Authors",
-        'dates'=>"Dates",
-        'comments'=>"Comments",
+        'showall'=>'Show All Posts',
+        'tags'=>"Show Blog Post Tags",
+        'authors'=>"Show Blog Post Authors",
+        'categories'=>"Show Blog Post Categories",
+        'dates'=>"Show Blog Post Dates",
+        'comments'=>"Show Recent Blog Post Comments",
     );
     public $remove_configs = array(
-        'categories',
+//        'categories',
 //        'ealerts'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $add_permissions = array(
@@ -50,6 +51,9 @@ class blogController extends expController {
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
             'order'=>'publish',
             'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
+            'categorize'=> empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+            'groups'=>!isset($this->params['cat']) ? array() : array($this->params['cat']),
+            'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -60,7 +64,8 @@ class blogController extends expController {
         ));
 		            
 		assign_to_template(array(
-            'page'=>$page
+            'page'=>$page,
+            'show_cat'=>isset($this->params['cat'])
         ));
 	}
 
@@ -120,30 +125,6 @@ class blogController extends expController {
         ));
 	}
 	
-    public function comments() {
-	    expHistory::set('viewable', $this->params);
-        $blogs = $this->blog->find('all');
-        $all_comments = array();
-        // get all the blog comments
-        foreach ($blogs as $blog) {
-            $more_comments = expCommentController::getComments(array('content_type'=>'blog','content_id'=>$blog->id));
-            if (!empty($more_comments)) {
-                foreach ($more_comments as $next_comment) {
-                    $next_comment->ref = $blog->title;
-                    $next_comment->sef_url = $blog->sef_url;
-                }
-                $all_comments = array_merge($all_comments,$more_comments);
-            }
-        }
-        // sort then limit all the blog comments
-        $all_comments = expSorter::sort(array('array' => $all_comments, 'sortby' => 'created_at', 'order' => 'DESC', 'ignore_case' => true));
-        $limit = (isset($this->config['headcount']) && $this->config['headcount'] != '') ? $this->config['headcount'] : 10;
-        $comments = array_slice($all_comments,0,$limit);
-	    assign_to_template(array(
-            'comments'=>$comments,
-        ));
-	}
-
     public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
 	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));

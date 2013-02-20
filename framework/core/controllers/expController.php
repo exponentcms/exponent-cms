@@ -358,15 +358,20 @@ abstract class expController {
 
         $items = $this->$modelname->find('all', $this->aggregateWhereClause());
         $used_cats = array();
+        $used_cats[0] = new stdClass();
+        $used_cats[0]->id = 0;
+        $used_cats[0]->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
         foreach ($items as $item) {
-            foreach ($item->expCat as $tag) {
-                if (isset($used_cats[$tag->id])) {
-                    $used_cats[$tag->id]->count += 1;
+            if (!empty($item->expCat)) {
+                if (isset($used_cats[$item->expCat[0]->id])) {
+                    $used_cats[$item->expCat[0]->id]->count += 1;
                 } else {
-                    $expcat = new expCat($tag->id);
-                    $used_cats[$tag->id] = $expcat;
-                    $used_cats[$tag->id]->count = 1;
+                    $expcat = new expCat($item->expCat[0]->id);
+                    $used_cats[$item->expCat[0]->id] = $expcat;
+                    $used_cats[$item->expCat[0]->id]->count = 1;
                 }
+            } else {
+                $used_cats[0]->count += 1;
             }
         }
 
@@ -377,7 +382,7 @@ abstract class expController {
         $used_cats = expSorter::sort(array('array' => $used_cats, 'order' => 'count DESC', 'type' => 'a'));
         if (!empty($this->config['limit'])) $used_cats = array_slice($used_cats, 0, $this->config['limit']);
         $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
-        if ($order != 'hits') {
+        if ($order != 'count') {
             $used_cats = expSorter::sort(array('array' => $used_cats, 'order' => $order, 'ignore_case' => true, 'rank' => ($order === 'rank') ? 1 : 0));
         }
 
@@ -385,6 +390,32 @@ abstract class expController {
             'cats' => $used_cats
         ));
     }
+
+    public function comments() {
+	    expHistory::set('viewable', $this->params);
+        $modelname = $this->basemodel_name;
+
+        $items = $this->$modelname->find('all');
+        $all_comments = array();
+        // get all the blog comments
+        foreach ($items as $item) {
+            $more_comments = expCommentController::getComments(array('content_type'=>$modelname,'content_id'=>$item->id));
+            if (!empty($more_comments)) {
+                foreach ($more_comments as $next_comment) {
+                    $next_comment->ref = $item->title;
+                    $next_comment->sef_url = $item->sef_url;
+                }
+                $all_comments = array_merge($all_comments,$more_comments);
+            }
+        }
+        // sort then limit all the blog comments
+        $all_comments = expSorter::sort(array('array' => $all_comments, 'sortby' => 'created_at', 'order' => 'DESC', 'ignore_case' => true));
+        $limit = (isset($this->config['headcount']) && $this->config['headcount'] != '') ? $this->config['headcount'] : 10;
+        $comments = array_slice($all_comments,0,$limit);
+	    assign_to_template(array(
+            'comments'=>$comments,
+        ));
+	}
 
     /**
      * default view for individual item

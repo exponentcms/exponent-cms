@@ -24,6 +24,7 @@
 class blog extends expRecord {
 
     protected $attachable_item_types = array(
+        'content_expCats'=>'expCat',
         'content_expFiles'=>'expFile',
         'content_expTags'=>'expTag',
         'content_expComments'=>'expComment'

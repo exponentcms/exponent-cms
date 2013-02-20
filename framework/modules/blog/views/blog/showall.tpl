@@ -26,6 +26,9 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
     {rss_link}
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h1>{/if}
+    {if $show_cat}
+        <h3>{'Posts filed under'|gettext} {if empty({$page->records[0]->expCat[0]->title})}{$config.uncat}{else}{$page->records[0]->expCat[0]->title}{/if}</h3>
+    {/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.edit == 1}
