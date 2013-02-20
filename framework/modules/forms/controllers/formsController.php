@@ -755,6 +755,7 @@ class formsController extends expController {
 //            $this->params['_validate'] = false;  // we don't want a check for unique sef_name
 //            parent::update();  // now with a form tablename
         }
+        expHistory::back();
     }
 
     public function delete_form() {
@@ -774,7 +775,7 @@ class formsController extends expController {
         }
 
         $form->delete();
-        expHistory::back();
+        expHistory::returnTo('manageable');
     }
 
     public function design_form() {
