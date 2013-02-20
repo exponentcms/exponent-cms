@@ -484,7 +484,7 @@ if (!defined('JQUERY_RELATIVE')) {
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('JQUERY_VERSION', '1.9.1');
-    define('JQUERYUI_VERSION', '1.10.0');
+    define('JQUERYUI_VERSION', '1.10.1');
 	define('JQUERY_RELATIVE', PATH_RELATIVE.'external/jquery/');
     define('JQUERY_PATH', BASE.'external/jquery/');
 	define('JQUERY_URL', URL_FULL.'external/jquery/');
