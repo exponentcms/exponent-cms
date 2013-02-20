@@ -39,7 +39,7 @@ class formsController extends expController {
     ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
     public $add_permissions = array(
         'viewdata'  => "View Data",
-        'enter_data' => "Enter Data"  // slight naming variatino to not fully restrict enterdata method
+        'enter_data' => "Enter Data"  // slight naming variation to not fully restrict enterdata method
     );
     public $codequality = 'beta';
 
@@ -1218,6 +1218,344 @@ class formsController extends expController {
             $str .= "\r\n";
         } //end of foreach loop
         return $str;
+    }
+
+    public function export_eql() {
+        global $db;
+
+        if (!empty($this->params['id'])) {
+            $f = new forms($this->params['id']);
+
+            $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$f->table_name.'.eql');
+
+            ob_end_clean();
+            ob_start("ob_gzhandler");
+
+            // This code was lifted from phpMyAdmin, but this is Open Source, right?
+
+            // 'application/octet-stream' is the registered IANA type but
+            //        MSIE and Opera seems to prefer 'application/octetstream'
+            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+            header('Content-Type: ' . $mime_type);
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            // IE need specific headers
+            if (EXPONENT_USER_BROWSER == 'IE') {
+                header('Content-Disposition: inline; filename="' . $filename . '"');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+            } else {
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                header('Pragma: no-cache');
+            }
+            echo expFile::dumpDatabase($db,array('forms_'.$f->table_name));
+            exit; // Exit, since we are exporting
+        }
+    }
+
+    public function import_csv() {
+        if (expFile::canCreate(BASE . "tmp/test") != SYS_FILES_SUCCESS) {
+            assign_to_template(array(
+                "error" => "The /tmp directory is not writable.  Please contact your administrator.",
+            ));
+        } else {
+            //Setup the meta data (hidden values)
+            $form = new form();
+            $form->meta("controller", "forms");
+            $form->meta("action", "import_csv_mapper");
+
+            //Setup the arrays with the name/value pairs for the dropdown menus
+            $delimiterArray = Array(
+                ',' => gt('Comma'),
+                ';' => gt('Semicolon'),
+                ':' => gt('Colon'),
+                ' ' => gt('Space'));
+
+            //Register the dropdown menus
+            $form->register("delimiter", gt('Delimiter Character'), New dropdowncontrol(",", $delimiterArray));
+            $form->register("upload", gt('CSV File to Upload'), New uploadcontrol());
+            $form->register("rowstart", gt('Row to Begin at'), New textcontrol("1", 1, 0, 6));
+            $form->register("use_header", gt('First Row is Header'), New checkboxcontrol(0, 0));
+            $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+
+            assign_to_template(array(
+                "form_html" => $form->tohtml(),
+            ));
+        }
+    }
+
+    public function import_csv_mapper() {
+        //Get the post data for future massaging
+        $post = $this->params;
+
+        //Check to make sure the user filled out the required input.
+        if (!is_numeric($this->params["rowstart"])) {
+            unset($post['rowstart']);
+            $post['_formError'] = gt('The starting row must be a number.');
+            expSession::set("last_POST", $post);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit('Redirecting...');
+        }
+
+        //Get the temp directory to put the uploaded file
+        $directory = "tmp";
+
+        //Get the file save it to the temp directory
+        if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
+            //	$file = file::update("upload",$directory,null,time()."_".$_FILES['upload']['name']);
+            $file = expFile::fileUpload("upload", false, false, time() . "_" . $_FILES['upload']['name'], $directory.'/'); //FIXME quick hack to remove file model
+            if ($file == null) {
+                switch ($_FILES["upload"]["error"]) {
+                    case UPLOAD_ERR_INI_SIZE:
+                    case UPLOAD_ERR_FORM_SIZE:
+                        $post['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
+                        break;
+                    case UPLOAD_ERR_PARTIAL:
+                        $post['_formError'] = gt('The file was only partially uploaded.');
+                        break;
+                    case UPLOAD_ERR_NO_FILE:
+                        $post['_formError'] = gt('No file was uploaded.');
+                        break;
+                    default:
+                        $post['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
+                        break;
+                }
+                expSession::set("last_POST", $post);
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit("");
+            }
+        }
+        /*
+        if (mime_content_type(BASE.$directory."/".$file->filename) != "text/plain"){
+            $post['_formError'] = "File is not a delimited text file.";
+            expSession::set("last_POST",$post);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit("");
+        }
+        */
+
+        //split the line into its columns
+        $headerinfo = null;
+        $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
+        for ($x = 0; $x < $this->params["rowstart"]; $x++) {
+            $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
+            if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
+        }
+
+        //FIXME we need the control names here
+        $colNames = array(
+            "none"      => gt('--Disregard this column--'),
+            "username"  => gt('Username'),
+            "password"  => gt('Password'),
+            "firstname" => gt('First Name'),
+            "lastname"  => gt('Last Name'),
+            "email"     => gt('Email Address')
+        );
+
+        //Check to see if the line got split, otherwise throw an error
+        if ($lineInfo == null) {
+            $post['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
+            expSession::set("last_POST", $post);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit("");
+        } else {
+            $headerbr = '';
+            if ($headerinfo != null) {
+                $headerbr = ':<br>';
+            }
+            //Setup the mete data (hidden values)
+            $form = new form();
+            $form->meta("controller", "forms");
+            $form->meta("action", "import_csv_process");
+            $form->meta("rowstart", $this->params["rowstart"]);
+            $form->meta("filename", $directory . "/" . $file->filename);
+            $form->meta("delimiter", $this->params["delimiter"]);
+            for ($i = 0; $i < count($lineInfo); $i++) {
+                $form->register("column[$i]", $headerinfo[$i] . $headerbr . $lineInfo[$i], new dropdowncontrol("none", $colNames));
+            }
+            $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+
+            assign_to_template(array(
+                "form_html" => $form->tohtml(),
+            ));
+        }
+    }
+
+    public function import_csv_process() {
+        $form = new form();
+        $form->meta("controller", "forms");
+        $form->meta("action", "import_csv_display");
+        $form->meta("column", $this->params["column"]);
+        $form->meta("delimiter", $this->params["delimiter"]);
+        $form->meta("filename", $this->params["filename"]);
+        $form->meta("rowstart", $this->params["rowstart"]);
+
+        if (in_array("username", $this->params["column"]) == false) {
+            $unameOptions = array(
+                "FILN"    => gt('First Initial / Last Name'),
+                "FILNNUM" => gt('First Initial / Last Name / Random Number'),
+                "EMAIL"   => gt('Email Address'),
+                "FNLN"    => gt('First Name / Last Name'));
+        } else {
+            $unameOptions = array("INFILE" => gt('Username Specified in CSV File'));
+        }
+
+        if (in_array("password", $this->params["column"]) == false) {
+            $pwordOptions = array(
+                "RAND"    => gt('Generate Random Passwords'),
+                "DEFPASS" => gt('Use the Default Password Supplied Below'));
+        } else {
+            $pwordOptions = array("INFILE" => gt('Password Specified in CSV File'));
+        }
+
+        if (count($pwordOptions) == 1) {
+            $disabled = true;
+        } else {
+            $disabled = false;
+        }
+
+        $form->register("unameOptions", gt('User Name Generations Options'), New dropdowncontrol("INFILE", $unameOptions));
+        $form->register("pwordOptions", gt('Password Generation Options'), New dropdowncontrol("defpass", $pwordOptions));
+        $form->register("pwordText", gt('Default Password'), New textcontrol("", 10, $disabled));
+        $form->register("update", gt('Update users already in database'), New checkboxcontrol(0, 0));
+        $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+
+        assign_to_template(array(
+            "form_html" => $form->tohtml(),
+        ));
+    }
+
+    public function import_csv_display() {
+        $file = fopen(BASE . $this->params["filename"], "r");
+        $post = null;
+        $post = $this->params;
+        $userinfo = new stdClass();
+        $userinfo->username = "";
+        $userinfo->firstname = "";
+        $userinfo->lastname = "";
+        $userinfo->is_admin = 0;
+        $userinfo->is_acting_admin = 0;
+        $userinfo->is_locked = 0;
+        $userinfo->email = '';
+        $userarray = array();
+        $usersdone = array();
+        $linenum = 1;
+
+        while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
+
+            if ($linenum >= $post["rowstart"]) {
+                $i = 0;
+
+                $userinfo = new stdClass();
+                $userinfo->changed = "";
+
+                foreach ($filedata as $field) {
+                    if ($post["column"][$i] != "none") {
+                        $colname = $post["column"][$i];
+                        $userinfo->$colname = trim($field);
+                    }
+                    $i++;
+                }
+
+                switch ($post["unameOptions"]) {
+
+                    case "FILN":
+                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
+                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname{0} . $userinfo->lastname));
+                        } else {
+                            $userinfo->username = "";
+                            $userinfo->clearpassword = "";
+                            $userinfo->changed = "skipped";
+                        }
+                        break;
+                    case "FILNNUM":
+                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
+                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname{0} . $userinfo->lastname . rand(100, 999)));
+                        } else {
+                            $userinfo->username = "";
+                            $userinfo->clearpassword = "";
+                            $userinfo->changed = "skipped";
+                        }
+                        break;
+                    case "EMAIL":
+                        if ($userinfo->email != "") {
+                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->email));
+                        } else {
+                            $userinfo->username = "";
+                            $userinfo->clearpassword = "";
+                            $userinfo->changed = "skipped";
+                        }
+                        break;
+                    case "FNLN":
+                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
+                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname . $userinfo->lastname));
+                        } else {
+                            $userinfo->username = "";
+                            $userinfo->clearpassword = "";
+                            $userinfo->changed = "skipped";
+                        }
+                        break;
+                    case "INFILE":
+                        if ($userinfo->username != "") {
+                            $userinfo->username = str_replace(" ", "", $userinfo->username);
+                        } else {
+                            $userinfo->username = "";
+                            $userinfo->clearpassword = "";
+                            $userinfo->changed = "skipped";
+                        }
+                        break;
+                }
+
+                if ((!isset($userinfo->changed)) || ($userinfo->changed != "skipped")) {
+                    switch ($post["pwordOptions"]) {
+
+                        case "RAND":
+                            $newpass = "";
+                            for ($i = 0; $i < rand(12, 20); $i++) {
+                                $num = rand(48, 122);
+                                if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
+                                else $i--;
+                            }
+                            $userinfo->clearpassword = $newpass;
+                            break;
+                        case "DEFPASS":
+                            $userinfo->clearpassword = str_replace(" ", "", trim($this->params["pwordText"]));
+                            break;
+                    }
+
+                    $userinfo->password = md5($userinfo->clearpassword);
+
+                    $suffix = "";
+                    while (user::getUserByName($userinfo->username . $suffix) != null) { //username already exists
+                        if (isset($this->params["update"]) == 1) {
+                            if (in_array($userinfo->username, $usersdone)) {
+                                $suffix = rand(100, 999);
+                                $userinfo->changed = 1;
+                            } else {
+                                $tmp = user::getUserByName($userinfo->username . $suffix);
+                                $userinfo->id = $tmp->id;
+                                break;
+                            }
+                        } else {
+                            $suffix = rand(100, 999);
+                            $userinfo->changed = 1;
+                        }
+                    }
+
+                    $userinfo->username = $userinfo->username . $suffix;
+                    $userarray[] = exponent_users_saveUser($userinfo); //FIXME function was deprecated use $this->update()
+                    $usersdone[] = $userinfo->username;
+                } else {
+                    $userinfo->linenum = $linenum;
+                    $userarray[] = $userinfo;
+                }
+            }
+            $linenum++;
+        }
+        assign_to_template(array(
+            "userarray" => $userarray,
+        ));
+        unlink(BASE . $this->params["filename"]);
     }
 
 }

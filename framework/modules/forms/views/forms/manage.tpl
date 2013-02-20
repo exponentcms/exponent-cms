@@ -65,6 +65,7 @@
                         {if $form->is_saved}
                             {icon class="view" action=showall id=$form->id text='View Data'|gettext|cat:" (`$form->count`)"}
                             {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}
+                            {icon class="downloadfile" action=export_eql id=$form->id text="Export EQL"|gettext}
                         {else}
                             {'Data Not Saved'|gettext}
                         {/if}
