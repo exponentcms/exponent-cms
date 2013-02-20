@@ -28,7 +28,7 @@
     <ul>
         {foreach from=$tags item=tag}
             <li>
-                <a href="{link action=showall_by_tags tag=$tag->sef_url}">{$tag->title} ({$tag->count})</a>
+                <a href="{link action=showall_by_tags tag=$tag->sef_url}" title="{'View all posts tagged with'|gettext} '{$tag->title}'">{$tag->title} ({$tag->count})</a>
             </li>
         {/foreach}
     </ul>

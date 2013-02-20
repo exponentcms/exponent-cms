@@ -26,7 +26,10 @@
     <ul>
         {foreach from=$comments item=comment}
             <li>
-                <a href="{link action=show title="`$comment->sef_url`"}#exp-comments" title="{$comment->body|summarize:"html":"para"}">{$comment->name} {'on'|gettext} {$comment->ref}</a>
+                {if !$config.hidedate}
+                <em class="date">{$comment->created_at|relative_date}</em>{br}
+                {/if}
+                <a href="{link action=show title="`$comment->sef_url`"}#exp-comments" title="{$comment->body|summarize:"html":"para"}">{$comment->name} {'commented on'|gettext} {$comment->ref}</a>
             </li>
         {/foreach}
     </ul>
