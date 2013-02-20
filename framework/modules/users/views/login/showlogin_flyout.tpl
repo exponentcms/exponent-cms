@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="showlogin" link="`$asset_path`css/login.css" corecss="forms"}
+{css unique="showlogin" link="`$asset_path`css/login.css" corecss="button, forms"}
 
 {/css}
 
