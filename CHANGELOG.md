@@ -34,6 +34,10 @@ Added / Fixed / changed for 2.2.0 alpha 1
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
 ### Known Issues
   - This is the first release of the v2.2 code
+### This release only fixes bugs found in 2.1.2, everything else is destined for the v2.2 major version update
+ - fixes form copy feature
+ - fixes a 'file manager doesn't display files' issue on some servers
+ - makes blog aggregation configuration tab more intuitive
 
 Added / Fixed / changed for 2.1.2
 -----------------------
