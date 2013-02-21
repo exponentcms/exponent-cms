@@ -100,10 +100,10 @@
             <div class="back-to-top"><a href="#top" title="{'Follow this link to go back to the top'|gettext}">{'Back to the top'|gettext}</a></div>
         {/foreach}
     {else}
-        {foreach from=$items item=question}
+        {foreach name=a from=$items item=question}
             <div>
                 <a name="faq_{$question->id}"></a>
-                <h3>{$question->question}</h3>
+                <h3>Q{$smarty.foreach.a.iteration}. {$question->question}</h3>
                 {tags_assigned record=$question}
                 <div class="bodycopy">
                     <p>{$question->answer}</p>
