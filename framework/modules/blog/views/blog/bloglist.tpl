@@ -51,7 +51,7 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                {comments_count record=$item show=1 prepend=$prepend}
+                {comments_count record=$item prepend=$prepend}
                 {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
             </div>
             {permissions}

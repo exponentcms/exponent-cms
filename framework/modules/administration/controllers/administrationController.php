@@ -380,9 +380,6 @@ class administrationController extends expController {
     public function toggle_log() {
   	    $value = (LOGGER == 1) ? 0 : 1;
   	    expSettings::change('LOGGER', $value);
-//  	    expTheme::removeCss();
-//  		$message = (LOGGER != 1) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
-//  		flash('message',$message);
   		expHistory::back();
   	}
 
@@ -440,7 +437,7 @@ class administrationController extends expController {
 
 	public function clear_all_caches() {
 		expTheme::removeSmartyCache();
-        expSession::clearAllUsersSessionCache();
+        expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
 		expTheme::removeCss();
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');

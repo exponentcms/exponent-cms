@@ -23,11 +23,11 @@
 class blogController extends expController {
     public $useractions = array(
         'showall'=>'Show All Posts',
-        'tags'=>"Show Blog Post Tags",
-        'authors'=>"Show Blog Post Authors",
-        'categories'=>"Show Blog Post Categories",
-        'dates'=>"Show Blog Post Dates",
-        'comments'=>"Show Recent Blog Post Comments",
+        'tags'=>"Show Post Tags",
+        'authors'=>"Show Post Authors",
+        'categories'=>"Show Post Categories",
+        'dates'=>"Show Post Dates",
+        'comments'=>"Show Recent Post Comments",
     );
     public $remove_configs = array(
 //        'categories',
@@ -65,8 +65,11 @@ class blogController extends expController {
 		            
 		assign_to_template(array(
             'page'=>$page,
-            'show_cat'=>isset($this->params['cat'])
         ));
+        if (isset($this->params['cat'])) assign_to_template(array(
+            'moduletitle' => gt('Posts filed under') . ' ' . (empty($page->records[0]->expCat[0]->title) ? $this->config['uncat'] : $page->records[0]->expCat[0]->title),
+        ));
+
 	}
 
 	public function authors() {
