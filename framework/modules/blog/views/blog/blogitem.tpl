@@ -46,7 +46,7 @@
                 </strong>&#160;
             {/if}
         </span>
-        {comments_count record=$record show=1 prepend=$prepend}
+        {comments_count record=$record prepend=$prepend}
         {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
     </div>
     {permissions}
