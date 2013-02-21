@@ -61,13 +61,13 @@ if (isset($_POST['sc'])) {
 
 if (isset($_POST['install_sample'])) {
     // we still use $_POST['install_sample'] from install-5.php, even though the system samples are in a static location
-    $eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
-    if (!file_exists($eql)) $eql = BASE . $_POST['install_sample'] . ".eql";
+    $eql = BASE . "themes/".DISPLAY_THEME_REAL . "/" . $_POST['install_sample'] . ".eql";
+    if (!file_exists($eql)) $eql = BASE . "install/samples/" . $_POST['install_sample'] . ".eql";
 	if (file_exists($eql)) {
 		$errors = array();
 		expFile::restoreDatabase($db,$eql,$errors);
-        $files = BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz";
-        if (!file_exists($files)) $files = BASE . $_POST['install_sample'] . ".tar.gz";
+        $files = BASE . "themes/" . DISPLAY_THEME_REAL . "/" .  $_POST['install_sample'] . ".tar.gz";
+        if (!file_exists($files)) $files = BASE . "install/samples/" . $_POST['install_sample'] . ".tar.gz";
 		if (file_exists($files)) {  // only install if there was an eql file
 			include_once(BASE.'external/Tar.php');
 			$tar = new Archive_Tar($files);

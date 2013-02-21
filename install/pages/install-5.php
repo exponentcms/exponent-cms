@@ -30,7 +30,20 @@ $themes = array();
 if (is_readable(BASE . 'themes')) {
     echo '<form method="post" action="index.php">';
     echo '<div class="theme">';
-    echo file_exists(BASE . "install/samples/sample.eql") ? '<b font-size:120%><input type="checkbox" name="install_sample" value="install/samples/sample" class="checkbox"><label class="label ">'.gt('Install Sample Content?').'</label></b>' : '';
+    if (file_exists(BASE . "install/samples/sample.eql")) {
+        echo '<b font-size:120%><label class="label">'.gt('Install Sample Content?').' </label></b>';
+        echo '<select name="install_sample">';
+        echo '    <option value="">'.gt('No Sample Data').'</option>';
+        echo '    <option value="sample">'.gt('Sample Site').'</option>';
+        $dh = opendir(BASE . 'install/samples');
+        while (($file = readdir($dh)) !== false) {
+            if (substr($file,-4,4) == '.eql' && $file != 'sample.eql' && $file != 'ecommerce.eql') {  //FIXME we should add to ecommerce.eql for a full sample store
+                $filename = substr($file,0,strlen($file)-4);
+                echo '    <option value="'.$filename.'">'.ucwords($filename).' '.gt('Site').'</option>';
+            }
+        }
+        echo '</select>';
+    }
     echo "</div>";
     $dh = opendir(BASE . 'themes');
     while (($file = readdir($dh)) !== false) {
