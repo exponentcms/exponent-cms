@@ -1,0 +1,6 @@
+version 2.1.3
+This release only fixes bugs found in 2.1.2, everything else is destined for the v2.2 major version update
+ - fixes form copy feature
+ - fixes a 'file manager doesn't display files' issue on some servers
+ - makes blog aggregation configuration tab more intuitive
+ - fixes some migration issues with forms, events, & navigation

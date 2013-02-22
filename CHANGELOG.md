@@ -6,6 +6,14 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
+Added / Fixed / changed for 2.1.3
+-----------------------
+### This release only fixes bugs found in 2.1.2, everything else is destined for the v2.2 major version update
+ - fixes form copy feature
+ - fixes a 'file manager doesn't display files' issue on some servers
+ - makes blog aggregation configuration tab more intuitive
+ - fixes some migration issues with forms, events, & navigation
+
 Added / Fixed / changed for 2.1.2
 -----------------------
 ### This release focuses on things not completed in 2.1.1, but not destined for the v2.2 major version update

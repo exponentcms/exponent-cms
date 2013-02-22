@@ -182,12 +182,13 @@ class usersController extends expController {
 	        $memb = new stdClass();
 	        $memb->member_id = $u->id;
 	        // Also need to process the groupcodes, for promotional signup
-	        $code_where = '';
-	        if (isset($this->params['groupcode']) && $this->params['groupcode'] != '') {
-		        $code_where = " OR code='".$this->params['groupcode']."'";
-	        }
+//	        $code_where = '';
+//	        if (isset($this->params['groupcode']) && $this->params['groupcode'] != '') {
+//		        $code_where = " OR code='".$this->params['groupcode']."'";
+//	        }
             // Add to default plus any groupcode groups
-	        foreach($db->selectObjects('group','inclusive=1'.$code_where) as $g) {
+//	        foreach($db->selectObjects('group','inclusive=1'.$code_where) as $g) {
+            foreach($db->selectObjects('group','inclusive=1') as $g) {
 		        $memb->group_id = $g->id;
 		        $db->insertObject($memb,'groupmembership');
 	        }

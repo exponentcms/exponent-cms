@@ -87,7 +87,7 @@ class formsController extends expController {
             $fc = new forms_control();
             if (empty($this->config['column_names_list'])) {
                 //define some default columns...
-                $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0');
+                $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0','rank');
                 foreach (array_slice($controls, 0, 5) as $control) {
                     $this->config['column_names_list'][] = $control->name;
                 }
@@ -115,7 +115,7 @@ class formsController extends expController {
                     }
                     $columns[gt('Timestamp')] = 'timestamp';
                 } else {
-                    $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $f->id);
+                    $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $f->id,'rank');
                     if ($control) {
                         $ctl = unserialize($control->data);
                         $control_type = get_class($ctl);
@@ -146,8 +146,8 @@ class formsController extends expController {
                 "backlink"    => expHistory::getLastNotEditable(),
                 "f"           => $f,
                 "page"        => $page,
-                "title"       => $this->config['report_name'],
-                "description" => $this->config['report_desc'],
+                "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : '',
+                "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
             ));
         } else {
             assign_to_template(array(
@@ -172,7 +172,7 @@ class formsController extends expController {
             }
 
             $fc = new forms_control();
-            $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0');
+            $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0','rank');
             $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
 
             if ($controls && $data) {
@@ -200,8 +200,9 @@ class formsController extends expController {
     //            "backlink"=>expHistory::getLastNotEditable(),
                 'backlink'    => expHistory::getLast('editable'),
                 "f"           => $f,
+                "record_id"   => $this->params['id'],
                 "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : gt('Viewing Record'),
-                "description" => $this->config['report_desc'],
+                "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
                 'fields'      => $fields,
                 'captions'    => $captions,
                 'is_email'    => 0,
@@ -236,7 +237,7 @@ class formsController extends expController {
                 $form = new form();
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
-                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0');
+                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0','rank');
                     $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
                     //            $data = $forms_record->find('first','id='.$this->params['id']);
                 } else {
@@ -438,7 +439,7 @@ class formsController extends expController {
         global $db, $user;
         $f = new forms($this->params['id']);
         $fc = new forms_control();
-        $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0", "rank");
+        $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0",'rank');
         $this->get_defaults($f);
 
         $db_data = new stdClass();
@@ -696,7 +697,7 @@ class formsController extends expController {
             $cols = explode('|!|', $f->column_names_list);
         }
         $fc = new forms_control();
-        foreach ($fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0') as $control) {
+        foreach ($fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0','rank') as $control) {
             $ctl = unserialize($control->data);
             $control_type = get_class($ctl);
             $def = call_user_func(array($control_type, 'getFieldDefinition'));
@@ -718,7 +719,9 @@ class formsController extends expController {
         if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
 
         if (!empty($this->params['copy'])) {
+            $f->old_id = $f->id;
             $f->id = null;
+            $f->sef_url = null;
             $f->is_saved = false;
             $f->table_name = null;
         }
@@ -734,18 +737,31 @@ class formsController extends expController {
      * Updates the form
      */
     public function update_form() {
-        parent::update();
+        $this->forms->update($this->params);
+        if (!empty($this->params['old_id'])) {
+            // copy all the controls to the new form
+            $fc = new forms_control();
+            $controls = $fc->find('all','forms_id='.$this->params['old_id'],'rank');
+            foreach ($controls as $control) {
+                $control->id = null;
+                $control->forms_id = $this->forms->id;
+                $control->update();
+            }
+        }
         if (!empty($this->params['is_saved']) && empty($this->params['table_name'])) {
             // we are now saving data to the database and need to create it first
-            $form = new forms($this->params['id']);
-            $this->params['table_name'] = $form->updateTable();
-            parent::update();  // now with a form tablename
+//            $form = new forms($this->params['id']);
+            $this->params['table_name'] = $this->forms->updateTable();
+//            $this->params['_validate'] = false;  // we don't want a check for unique sef_name
+//            parent::update();  // now with a form tablename
         }
+        expHistory::back();
     }
 
     public function delete_form() {
         global $db;
 
+        expHistory::set('editable', $this->params);
         $modelname = $this->basemodel_name;
         if (empty($this->params['id'])) {
             flash('error', gt('Missing id for the') . ' ' . $modelname . ' ' . gt('you would like to delete'));
@@ -759,7 +775,7 @@ class formsController extends expController {
         }
 
         $form->delete();
-        expHistory::back();
+        expHistory::returnTo('manageable');
     }
 
     public function design_form() {
@@ -968,7 +984,7 @@ class formsController extends expController {
         }
         if (isset($this->config['forms_id'])) {
             $fc = new forms_control();
-            foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' and is_readonly=0') as $control) {
+            foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' and is_readonly=0','rank') as $control) {
                 $ctl = unserialize($control->data);
                 $control_type = get_class($ctl);
                 $def = call_user_func(array($control_type, 'getFieldDefinition'));
@@ -1088,7 +1104,7 @@ class formsController extends expController {
                         $items[$key] = $item;
                     }
                 } else {
-                    $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $this->params['id']);
+                    $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $this->params['id'],'rank');
                     if ($control) {
                         $ctl = unserialize($control->data);
                         $control_type = get_class($ctl);

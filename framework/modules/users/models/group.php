@@ -114,8 +114,8 @@ class group extends expRecord {
 	 * of groups can be returned.  Returns a list of groups, according to
 	 *  the two parameters passed in.
 	 *
-	 * @param bool|int $allow_exclusive Whether or not to include exclusive groups in the returned list.
-	 * @param bool|int $allow_inclusive Whether or not to include inclusive groups in the returned list.
+	 * @param bool|int $allow_exclusive Whether or not to include exclusive (non-default) groups in the returned list.
+	 * @param bool|int $allow_inclusive Whether or not to include inclusive (default) groups in the returned list.
 	 * @return array
 	 * @node Model:Group
 	 */
@@ -126,11 +126,11 @@ class group extends expRecord {
 			return $db->selectObjects('group');
 		} else if ($allow_exclusive) {
 			// At this point, we know that $allow_inclusive was passed as false
-			// So, we need to retrieve groups that are not inclusive.
+			// So, we need to retrieve groups that are not inclusive (non-default).
 			return $db->selectObjects('group','inclusive = 0');
 		} else if ($allow_inclusive) {
 			// At this point, we know that $allow_exclusive was passed as false
-			// So, we need to retrieve groups that are inclusive.
+			// So, we need to retrieve groups that are inclusive (default).
 			return $db->selectObjects('group','inclusive = 1');
 		} else {
 			// Both arguments were passed as false.  This is nonsensical, but why not
