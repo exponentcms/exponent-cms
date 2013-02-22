@@ -41,6 +41,7 @@ Added / Fixed / changed for 2.1.3
  - fixes form copy feature
  - fixes a 'file manager doesn't display files' issue on some servers
  - makes blog aggregation configuration tab more intuitive
+ - fixes some migration issues with forms, events, & navigation
 
 Added / Fixed / changed for 2.1.2
 -----------------------
