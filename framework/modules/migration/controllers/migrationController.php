@@ -2006,14 +2006,16 @@ class migrationController extends expController {
 				}
 				break;
             case 'navigationmodule':  // added v2.0.9
-                if ($module->view = 'Breadcrumb') {
-                    @$module->view = 'breadcumb';
-                    @$module->action = 'breadcumb';
-                } else {
-                    @$module->view = 'showall_'.$module->view;
+                if (!empty($module->view)) {
+                    if ($module->view == 'Breadcrumb') {
+                        @$module->view = 'breadcumb';
+                        @$module->action = 'breadcumb';
+                    } else {
+                        @$module->view = 'showall_'.$module->view;
+                    }
+                    @$this->msg['migrated'][$iloc->mod]['count']++;
+                    @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 }
-                @$this->msg['migrated'][$iloc->mod]['count']++;
-                @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 				break;
             case 'calendarmodule':  // added v2.1.0
                 if ($module->view == 'Default') {
@@ -2068,7 +2070,7 @@ class migrationController extends expController {
                         $newconfig->config['disabletags'] = true;
                     }
                     if (!empty($oldconfig->enable_categories)) {
-                        $newconfig->config['enable_categories'] = $oldconfig->enable_categories;
+                        $newconfig->config['usecategories'] = $oldconfig->enable_categories;
                     }
 
                     // we have to pull in external addresses for reminders
@@ -2242,7 +2244,7 @@ class migrationController extends expController {
                     $newform->title = $oldform->name;
                     $newform->is_saved = $oldform->is_saved;
                     $newform->table_name = $oldform->table_name;
-                    if (empty($newform->title) && !empty($newform->table_name)) $newform->title = explode('_',' ',$newform->table_name);
+                    if (empty($newform->title) && !empty($newform->table_name)) $newform->title = implode(' ',explode('_',$newform->table_name));
                     $newform->description = $oldform->description;
                     $newform->response = $oldform->response;
                     $newform->report_name = $oldreport->name;
@@ -2255,6 +2257,7 @@ class migrationController extends expController {
                     $fcs = $old_db->selectObjects('formbuilder_control',"form_id=".$oldform->id);
                     foreach ($fcs as $fc) {
                         $fc->forms_id = $newform->id;
+                        unset ($fc->id);
                         unset ($fc->form_id);
                         $db->insertObject($fc,'forms_control');
                     }
@@ -2502,7 +2505,7 @@ class migrationController extends expController {
         }
 
         // and save the expRss table
-        if (!empty($newrss->enable_rss) && $newconfig->config['enable_rss'] == true) {
+        if (!empty($newrss->enable_rss)) {
             $newrss->module = $newmodinternal->mod;
             $newrss->src = $newmodinternal->src;
             $newrss->save();
@@ -2531,6 +2534,8 @@ class migrationController extends expController {
 		$this->config = expUnserialize($config->config);
 //        flash('message', 'Migration Configuration Saved');
 //        expHistory::back();
+        $this->connect();  // now make sure the parameters work
+
 		if (isset($this->params['fix_database'])) $this->fix_database();
         //FIXME we need to push the button.css file to head for coolwater theme?
         expCSS::pushToHead(array(

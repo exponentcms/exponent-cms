@@ -664,7 +664,12 @@ abstract class expController {
             $containerloc->src = $this->loc->src;
             $containerloc->int = '';
             $container = $db->selectObject('container', "internal='" . serialize($containerloc) . "'");
-            $container->internal = unserialize($container->internal);
+            if (empty($container)) {
+                $container = new stdClass();
+                $container->action = 'showall';
+            } else {
+                $container->internal = unserialize($container->internal);
+            }
 //            expSession::clearAllUsersSessionCache('containermodule');
 
 //            $modules_list = expModules::getActiveModulesAndControllersList();
@@ -696,12 +701,15 @@ abstract class expController {
 //        array_multisort(array_map('strtolower', $mods), $mods);
 
             $actions = $this->useractions;
-            // Language-ize the action names
-            foreach ($actions as $key => $value) {
-                $actions[$key] = gt($value);
+            $mod_views = array();
+            if (!empty($actions)) {
+                  // Language-ize the action names
+                foreach ($actions as $key => $value) {
+                    $actions[$key] = gt($value);
+                }
+                $mod_views = get_action_views($this->classname, $container->action, $actions[$container->action]);
+                if (count($mod_views) < 1) $mod_views[$container->action] = $actions[$container->action] . ' - Default View';
             }
-            $mod_views = get_action_views($this->classname, $container->action, $actions[$container->action]);
-            if (count($mod_views) < 1) $mod_views[$container->action] = $actions[$container->action] . ' - Default View';
 
             assign_to_template(array(
                 'container' => $container,
