@@ -76,5 +76,8 @@
             }
         };
         Y.one('#add_sourceControl').delegate('click', EXPONENT.handleClick, "#add_source");
+        if (!Y.one('#add_source').get('checked')) {
+            aggnodes.setStyle('display','none');
+        }
     });
 {/script}
