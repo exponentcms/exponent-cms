@@ -217,7 +217,7 @@ class user extends expRecord {
 	    if (!$this->isLoggedIn()) return array();	    
 	    
 	    // For administrators, we synthesize group memberships - they effectively belong to all groups.  
-	    if ($this->isAdmin()) return group::getAllGroups(true, true);
+	    if ($this->isAdmin()) return group::getAllGroups();
         
         $groups = array(); // Holding array for the groups.
 	    foreach ($db->selectObjects('groupmembership','member_id='.$this->id) as $m) {
