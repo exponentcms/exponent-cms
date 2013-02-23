@@ -1449,7 +1449,7 @@ class migrationController extends expController {
                 }
 				break;
             case 'headlinemodule':
-                $module->view = 'showall';
+                $module->view = 'showall_headline';
 
 				//check to see if it's already pulled in (circumvent !is_original)
                 $ploc = clone($iloc);

@@ -82,7 +82,7 @@ class remove_headlinecontroller extends upgradescript {
 		    $cloc = expUnserialize($cn->internal);
 	        $cloc->mod = 'text';
 		    $cn->internal = serialize($cloc);
-		    $cn->view = 'showall';
+		    $cn->view = 'showall_headline';
 		    $cn->action = 'showall';
 	        $db->updateObject($cn,'container');
 	        $modules_converted += 1;
