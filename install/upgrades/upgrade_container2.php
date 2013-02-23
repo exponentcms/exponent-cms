@@ -84,6 +84,25 @@ class upgrade_container2 extends upgradescript {
             $loc = expUnserialize($co->internal);
             $loc->mod = 'container2';  // containermodule is now container2 controller
             $co->internal = serialize($loc);
+            $co->action = 'showall';
+            if ($co->view == 'Default') {
+                $co->view = 'showall';
+            } else {
+                $co->view = 'showall_'.$co->view;
+            }
+            $db->updateObject($co,'container');
+            $count++;
+	    }
+        // fix 2.2alpha1/2 not setting action/view
+        foreach ($db->selectObjects('container',"internal LIKE '%container2%'") as $co) {
+            $co->action = 'showall';
+            if (strstr($co->view,'showall') === false) {
+                if ($co->view == 'Default') {
+                    $co->view = 'showall';
+                } else {
+                    $co->view = 'showall_'.$co->view;
+                }
+            }
             $db->updateObject($co,'container');
             $count++;
 	    }
@@ -95,17 +114,17 @@ class upgrade_container2 extends upgradescript {
             $count++;
 	    }
         // adjust container ranks
-        $rank = 1;
+        $rank = 1; // 2.0 index starts at 1, not 0 like old school
         $ext = $null = serialize(null);
         foreach ($db->selectObjects('container',null,'external, rank') as $co) {
             if ($co->external != $ext) {
-                $rank = 1;
+                $rank = 1; // 2.0 index starts at 1, not 0 like old school
                 $ext = $co->external;
             }
             if ($co->external != $null) {
-                $co->rank = $rank++;
+                $co->rank = $rank++; // 2.0 index starts at 1, not 0 like old school
             } else {
-                $co->rank = 0;
+                $co->rank = 0;  // top level containers have a rank of 0
             }
             $db->updateObject($co,'container');
 	    }

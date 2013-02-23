@@ -99,7 +99,11 @@ class upgrade_navigation extends upgradescript {
                 $cn->view = 'breadcrumb';
             } else {
                 $cn->action = 'showall';
-		        $cn->view = 'showall_'.$cn->view;
+                if ($cn->view == 'Default') {
+                    $cn->view = 'showall';
+                } else {
+                    $cn->view = 'showall_'.$cn->view;
+                }
             }
 	        $db->updateObject($cn,'container');
 	        $modules_converted += 1;

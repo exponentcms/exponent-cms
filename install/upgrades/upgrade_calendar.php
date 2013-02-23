@@ -82,13 +82,12 @@ class upgrade_calendar extends upgradescript {
    		    $cloc = expUnserialize($cn->internal);
    	        $cloc->mod = 'event';
    		    $cn->internal = serialize($cloc);
-               if ($cn->view == 'Default') {
-                   $cn->action = 'showall';
-                   $cn->view = 'showall';
-               } else {
-                   $cn->action = 'showall';
+            $cn->action = 'showall';
+            if ($cn->view == 'Default') {
+                $cn->view = 'showall';
+            } else {
    		        $cn->view = 'showall_'.$cn->view;
-               }
+            }
    	        $db->updateObject($cn,'container');
 
             $newconfig = new expConfig();
