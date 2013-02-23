@@ -74,7 +74,7 @@ if (isset($_POST['install_sample'])) {
 			$return = $tar->extract(BASE);
 		}
 	}
-    if (DEVELOPMENT && count($errors)) {
+    if (DEVELOPMENT && !empty($errors)) {
         echo '<h2>'.gt('Errors were encountered populating the site database.').'</h2><ul>';
         foreach ($errors as $e) echo '<li>'.$e.'</li>';
         echo '</ul>';

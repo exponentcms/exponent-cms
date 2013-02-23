@@ -268,7 +268,7 @@ class expModules {
     /**
      * Returns the controller sans the 'Controller' or module name with 'module' suffix
      * this is how we store them in the db as 2.0/old school
-     * and in most cases is the name of the model/data
+     * and in most cases it is the name of the model/data
      *
      * @param $modulename
      *
