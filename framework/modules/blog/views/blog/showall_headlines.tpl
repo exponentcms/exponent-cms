@@ -47,6 +47,10 @@
         {if $smarty.foreach.blogs.iteration <= $config.headcount}
         <li class="item">
             <a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a>
+            {if !$config.displayauthor}
+                <span class="label posted"> {'by'|gettext} </span>
+                <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
+            {/if}
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}

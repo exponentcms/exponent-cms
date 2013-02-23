@@ -27,9 +27,13 @@
         {foreach from=$comments item=comment}
             <li>
                 {if !$config.hidedate}
-                <em class="date">{$comment->created_at|relative_date}</em>{br}
+                    <em class="date">{$comment->created_at|relative_date}</em>{br}
                 {/if}
-                <a href="{link action=show title="`$comment->sef_url`"}#exp-comments" title="{$comment->body|summarize:"html":"para"}">{$comment->name} {'commented on'|gettext} {$comment->ref}</a>
+                {if !$config.displayauthor}
+                    <a href="{link action=show title="`$comment->sef_url`"}#exp-comments" title="{$comment->body|summarize:"html":"para"}">{$comment->name} {'commented on'|gettext} {$comment->ref}</a>
+                {else}
+                    <a href="{link action=show title="`$comment->sef_url`"}#exp-comments" title="{$comment->body|summarize:"html":"para"}">{'Comment on'|gettext} {$comment->ref}</a>
+                {/if}
             </li>
         {/foreach}
     </ul>
