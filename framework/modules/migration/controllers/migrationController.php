@@ -1021,7 +1021,7 @@ class migrationController extends expController {
                                 $catloc = expUnserialize($oldcat->location_data);
                                 if (array_key_exists($catloc->mod, $this->new_modules)) {
                                     $mod = expModules::getModuleName($this->new_modules[$catloc->mod]);
-                                    $cat->module = $mod[0];
+                                    $cat->module = $mod;
                                 }
                                 $cat->save();
                                 $cat->rank = $oldcat->rank + 1;
@@ -1323,7 +1323,7 @@ class migrationController extends expController {
                                     $catloc = expUnserialize($oldcat->location_data);
                                     if (array_key_exists($catloc->mod, $this->new_modules)) {
                                         $mod = expModules::getModuleName($this->new_modules[$catloc->mod]);
-                                        $cat->module = $mod[0];
+                                        $cat->module = $mod;
                                     }
                                     $cat->save();
                                     $cat->rank = $oldcat->rank +1;
@@ -1644,7 +1644,7 @@ class migrationController extends expController {
                                 $catloc = expUnserialize($oldcat->location_data);
                                 if (array_key_exists($catloc->mod, $this->new_modules)) {
                                     $mod = expModules::getModuleName($this->new_modules[$catloc->mod]);
-                                    $cat->module = $mod[0];
+                                    $cat->module = $mod;
                                 }
                                 $cat->save();
                                 $cat->rank = $oldcat->rank + 1;
@@ -1744,7 +1744,7 @@ class migrationController extends expController {
                                 $catloc = expUnserialize($oldcat->location_data);
                                 if (array_key_exists($catloc->mod, $this->new_modules)) {
                                     $mod = expModules::getModuleName($this->new_modules[$catloc->mod]);
-                                    $cat->module = $mod[0];
+                                    $cat->module = $mod;
                                 }
                                 $cat->save();
                                 $cat->rank = $oldcat->rank + 1;
@@ -2145,7 +2145,7 @@ class migrationController extends expController {
                             $catloc = expUnserialize($oldcat->location_data);
                             if (array_key_exists($catloc->mod, $this->new_modules)) {
                                 $mod = expModules::getModuleName($this->new_modules[$catloc->mod]);
-                                $cat->module = $mod[0];
+                                $cat->module = $mod;
                             }
                             $cat->save();
                             $cat->rank = $oldcat->rank +1;
@@ -2526,7 +2526,7 @@ class migrationController extends expController {
         if ($newconfig->config != null) {
 //            $newmodinternal = expUnserialize($m->internal);
 //            $newmod = expModules::getModuleName($newmodinternal->mod);
-//            $newmodinternal->mod = $newmod[0];
+//            $newmodinternal->mod = $newmod;
             $newconfig->location_data = expUnserialize($m->internal);
             $newconfig->save();
         }
