@@ -19,7 +19,9 @@
 if (!defined('EXPONENT')) exit('');
 
 //expSession::un_set('installer_config');
+expTheme::removeSmartyCache();
 expSession::clearAllSessionData();
+expTheme::removeCss();
 
 global $user;
 
