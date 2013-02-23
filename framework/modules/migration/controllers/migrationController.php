@@ -526,6 +526,12 @@ class migrationController extends expController {
             if (!$db->selectObject('container',"internal='".serialize($newint)."'")) {
                 unset($cont->id);
                 $cont->internal = serialize($newint);
+                $cont->action = 'showall';
+                if ($cont->view == 'Default') {
+                    $cont->view = 'showall';
+                } else {
+                    $cont->view = 'showall_'.$cont->view;
+                }
                 $db->insertObject($cont, 'container');
                 @$this->msg['container']++;
             }
@@ -2309,7 +2315,19 @@ class migrationController extends expController {
                 @$this->msg['migrated'][$iloc->mod]['count']++;
                 @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                 break;
-			default:
+            case 'containermodule':
+                if (!$hc) {
+                    $module->action = 'showall';
+                    if ($module->view == 'Default') {
+                        @$module->view = 'showall';
+                    } else {
+                        @$module->view = 'showall_'.$module->view;
+                    }
+                    @$this->msg['migrated'][$iloc->mod]['count']++;
+                    @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+                }
+				break;
+            default:
                 @$this->msg['noconverter'][$iloc->mod]++;
 				break;
 		}
