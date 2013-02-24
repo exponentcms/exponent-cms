@@ -48,7 +48,8 @@ class radiocontrol extends formcontrol {
 		    $for = ' for="'.$this->id.'"';
 		} else {
 		    $divID  = '';
-		    $for = ' for="'.$name.'"';
+//		    $for = ' for="'.$name.'"';
+            $for = ' for="'.$name.$this->value.'"';
 		}
         $html = '<div'.$divID.' class="radio control';
         $html .= (!empty($this->required)) ? ' required">' : '">';
