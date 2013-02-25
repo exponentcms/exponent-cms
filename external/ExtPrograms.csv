@@ -1,6 +1,6 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-CKEditor,4.0.1,ckeditor.com,4.0.1,
-FlowPlayer,3.2.15,flowplayer.org,3.2.15./5.3.1,
+CKEditor,4.0.1,ckeditor.com,4.0.1.1,
+FlowPlayer,3.2.15,flowplayer.org,3.2.16./5.3.2,
 Swift,4.3.0,swiftmailer.org,4.3.0,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
@@ -19,10 +19,10 @@ SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
 pixidou,0.1,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module
 dompdf,6.0b3,code.google.com/p/dompdf,6.0b3,patched to display our images
-iCalCreator,2.16.6,kigkonsult.se/iCalcreator,2.16.6,
+iCalCreator,2.16.6,kigkonsult.se/iCalcreator,2.16.12,
 lessphp,0.38,leafo.net/lessphp,0.38,
 jQuery,1.9.1,jquery.com,1.9.1,
-jQueryUI,1.10.0,jqueryui.com,1.10.0,
+jQueryUI,1.10.1,jqueryui.com,1.10.1,
 Twitter-Bootstrap,2.2.2,twitter.github.com/bootstrap,2.3.0,"patched bootstrap.less for & includes swatches, fontawesome"
 Font-Awesome,3.0.2,fortawesome.github.com/Font-Awesome,3.0.2,
 Adminer,3.6.3,www.adminer.org,3.6.3,

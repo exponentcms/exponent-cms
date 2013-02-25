@@ -440,12 +440,12 @@ if (!defined('JS_RELATIVE')) {
      * The relative path to Exponent's core javascript.
 	 */
     define('JS_RELATIVE',PATH_RELATIVE.'framework/core/assets/js/');
-    define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');  //TODO deprecated
+//    define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');  //TODO deprecated
     /** exdoc
    	 * The absolute url to Exponent's core javascript.
    	 */
     define('JS_URL',URL_FULL.'framework/core/assets/js/');
-   	define('JS_FULL',URL_FULL.'framework/core/assets/js/');  //TODO deprecated
+//   	define('JS_FULL',URL_FULL.'framework/core/assets/js/');  //TODO deprecated
 }
 
 // iconset base
@@ -463,7 +463,7 @@ if (!defined('YUI3_RELATIVE')) {
 	 */
 	define('YUI3_VERSION', '3.8.0');
     define('YUI3_RELATIVE', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
-	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
+//	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
 }
 
@@ -474,7 +474,7 @@ if (!defined('YUI2_RELATIVE')) {
 	 */
 	define('YUI2_VERSION', '2.9.0');
     define('YUI2_RELATIVE', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
-	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');  //TODO deprecated
+//	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');  //TODO deprecated
 	define('YUI2_URL', URL_FULL.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
 }
 
@@ -518,10 +518,10 @@ if (!defined('FLOWPLAYER_RELATIVE')) {
 	 * Flowplayer Version(s) Constant - Flowplayer doesn't always use same version across all its components
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('FLOWPLAYER_VERSION', '3.2.15');
+	define('FLOWPLAYER_VERSION', '3.2.16');
 	define('FLOWPLAYER_RELATIVE', PATH_RELATIVE.'external/flowplayer-'.FLOWPLAYER_VERSION.'/flowplayer/');
-    define('FLOWPLAYER_MIN_VERSION', '3.2.11');
-    define('FLOWPLAYER_CONTROLS_VERSION', '3.2.14');
+    define('FLOWPLAYER_MIN_VERSION', '3.2.12');
+    define('FLOWPLAYER_CONTROLS_VERSION', '3.2.15');
 }
 
 ?>
