@@ -77,6 +77,8 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
     var usr = {/literal}{obj2json obj=$user}{literal}; //user
     var uploadBtn = Y.one("#uploadLink");
     var createBtn = Y.one("#createLink");
+    var simLimit = '{/literal}{$smarty.const.SIMLIMIT}{literal}';
+    if (simLimit == 0) simLimit = 3;
 
     if (Y.Uploader.TYPE != "none" && !Y.UA.ios) {
         var uploader = new Y.Uploader({
@@ -86,7 +88,7 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
 //                                      swfURL: EXPONENT.YUI3_RELATIVE + "uploader/assets/flashuploader.swf?t=" + Math.random(),
                                       swfURL: EXPONENT.YUI3_URL + "uploader/assets/flashuploader.swf",
                                       uploadURL: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=upload&ajax_action=1",
-                                      simLimit: 3,
+                                      simLimit: simLimit,
                                       withCredentials: false,
                                       selectFilesButton: Y.one("#selectLink")
                                      });
