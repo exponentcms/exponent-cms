@@ -33,7 +33,7 @@
             </div>
         </div>
         <footer class="row">
-            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer","chrome"=>1)) ?>
+            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall_single","source"=>"@footer","chrome"=>1)) ?>
         </footer>
 <!--        <script src="--><?php //echo JQUERY_SCRIPT; ?><!--"></script>-->
 <!--        <script src="--><?php //echo PATH_RELATIVE; ?><!--external/bootstrap/js/bootstrap.min.js"></script>-->

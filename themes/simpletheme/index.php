@@ -48,7 +48,7 @@
 			</div>
 		</div>
 		<div id="ft">
-            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer")) ?>
+            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall_single","source"=>"@footer")) ?>
 		</div>
 	</div>
 <?php expTheme::foot(); ?>

@@ -30,7 +30,7 @@
             </div>
         </div>
         <footer class="row">
-            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer","chrome"=>1)) ?>
+            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall_single","source"=>"@footer","chrome"=>1)) ?>
         </footer>
         <?php
             expJavascript::pushToFoot(array(
