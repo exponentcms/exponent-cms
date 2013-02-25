@@ -57,6 +57,19 @@ a.copy {
     background:url(../images/copy.png) no-repeat 3px 5px;
 }
 
+a.export {
+    display:inline-block;
+    zoom:1;
+    padding:4px 5px 4px 25px;
+    background:url(../images/download.png) no-repeat 3px 5px;
+}
+
+a.import {
+    display:inline-block;
+    zoom:1;
+    padding:4px 5px 4px 25px;
+    background:url(../images/upload.png) no-repeat 3px 5px;
+}
 
 /****************  active / inactive  ***********************/
 
@@ -88,6 +101,8 @@ a.edit,
 a.configure,
 a.delete,
 a.deletetitle,
+a.export,
+a.import,
 a.manage,
 a.merge,
 a.reranklink,
@@ -118,6 +133,14 @@ a.configure {
 
 a.delete, a.deletetitle {
     background: url(../images/delete.png) no-repeat 0 50%;
+}
+
+a.export {
+    background: url(../images/download.png) no-repeat 0 50%;
+}
+
+a.import {
+    background: url(../images/upload.png) no-repeat 0 50%;
 }
 
 a.manage {
