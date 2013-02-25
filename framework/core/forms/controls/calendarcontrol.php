@@ -88,7 +88,7 @@ class calendarcontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label = null) {
-        $assets_path = SCRIPT_RELATIVE . 'framework/core/subsystems/forms/controls/assets/';
+        $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
         $html        = "
             <div id=\"calendar-container-" . $name . "\" class=\"yui3-skin-sam\"> </div>
             <div id=\"cal-container-" . $name . "\" class=\"control calendar-control\">

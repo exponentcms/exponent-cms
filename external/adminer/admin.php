@@ -27,7 +27,7 @@ function adminer_object() {
     /* It is possible to combine customization and plugins: */
     class AdminerCustomization extends AdminerPlugin { 
 		function name() { // custom name in title and heading 
-			return gt('Exponent Database');
+			return gt('Exponent CMS Database');
 		} 
 		function permanentLogin() { // key used for permanent login 
 			return ""; 

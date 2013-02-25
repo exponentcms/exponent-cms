@@ -15,7 +15,7 @@
 #
 ##################################################
 
-#This glue file is included by framework/core/subsystems/forms/controls/htmleditorcontrol.php
+#This glue file is included by framework/core/forms/controls/htmleditorcontrol.php
 *}
 <div class="">
 	<textarea id="{$content->name}" name="{$content->name}">{$content->value}</textarea>

@@ -44,9 +44,9 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		$enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
 
 		echo "<!-- Form Object 'form' -->\r\n";
-		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/inputfilters.js.php"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/required.js"></script>'."\r\n";
+		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/inputfilters.js.php"></script>'."\r\n";
+		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/controls/listbuildercontrol.js"></script>'."\r\n";
+		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
 		expCSS::pushToHead(array("corecss"=>"forms"));

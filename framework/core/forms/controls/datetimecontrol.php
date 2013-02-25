@@ -65,7 +65,7 @@ class datetimecontrol extends formcontrol {
         }
         //$html .= "</label>";
         $html .= "</div>";
-        $html = '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/datetimecontrol.js"></script>' . $html;
+        $html = '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/forms/controls/datetimecontrol.js"></script>' . $html;
         return $html;
     }
 
@@ -111,7 +111,7 @@ class datetimecontrol extends formcontrol {
     }
 
     function onRegister(&$form) {
-        $form->addScript('datetime_disable', PATH_RELATIVE . 'framework/core/subsystems/forms/controls/datetimecontrol.js');
+        $form->addScript('datetime_disable', PATH_RELATIVE . 'framework/core/forms/controls/datetimecontrol.js');
     }
 
     static function parseData($original_name, $formvalues, $for_db = false) {

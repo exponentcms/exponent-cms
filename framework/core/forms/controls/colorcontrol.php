@@ -92,7 +92,7 @@ class colorcontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label = null) {
-        $assets_path = SCRIPT_RELATIVE . 'framework/core/subsystems/forms/controls/assets/';
+        $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
         $html = "
         <span><input ".(empty($this->hide)?"size=10 type=\"text\"":"type=\"hidden\"")." id=\"" . $this->id . "\" name=\"" . $name . "\" value=\"" . $this->default . "\" class=\"text colorbox\" />
         <div id='divpreview-" . $this->id . "' class='divpreview' style='background-color:" . $this->default . ";' title='".gt('Click to Change Color')."'> </div></span>

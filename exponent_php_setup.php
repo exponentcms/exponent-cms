@@ -47,8 +47,8 @@ $auto_dirs = array(
     BASE.'framework/core/subsystems',
     BASE.'framework/core/controllers',
    	BASE.'framework/core/models',
-	BASE.'framework/core/subsystems/forms',
-	BASE.'framework/core/subsystems/forms/controls',
+	BASE.'framework/core/forms',
+	BASE.'framework/core/forms/controls',
     BASE.'framework/core/models-1',  // old 1.0 datatypes
 	BASE.'framework/modules/ecommerce/billingcalculators',
 	BASE.'framework/modules/ecommerce/shippingcalculators',

@@ -291,6 +291,7 @@ class remove_oldfiles extends upgradescript {
             "framework/core/models-1/",
             "framework/core/js/",
             "framework/core/subsystems-1/",
+            "framework/core/subsystems/forms/",
 //            "framework/modules-1/administrationmodule/",
 //            "framework/modules-1/bots/",
 //            "framework/modules-1/loginmodule/",

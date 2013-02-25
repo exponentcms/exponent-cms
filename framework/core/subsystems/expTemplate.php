@@ -176,10 +176,10 @@ class expTemplate {
 	 */
     //FIXME we need to also look for custom & jquery controls
 	public static function listControlTypes() {
-		$cdh = opendir(BASE."framework/core/subsystems/forms/controls");
+		$cdh = opendir(BASE."framework/core/forms/controls");
 		$list = array();
 		while (($ctl = readdir($cdh)) !== false) {
-			if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/subsystems/forms/controls/$ctl")) {
+			if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/forms/controls/$ctl")) {
 				if (call_user_func(array(substr($ctl,0,-4),"isSimpleControl"))) {
 					$list[substr($ctl,0,-4)] = call_user_func(array(substr($ctl,0,-4),"name"));
 				}

@@ -123,7 +123,7 @@ class listbuildercontrol extends formcontrol {
 		$html .= "</div>";			
         expJavascript::pushToFoot(array(
             "unique"=>'listbuildercontrol',
-            "src"=> PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js'
+            "src"=> PATH_RELATIVE . 'framework/core/forms/controls/listbuildercontrol.js'
 		));
         return $html;
     }
@@ -152,7 +152,7 @@ class listbuildercontrol extends formcontrol {
 	}
 
 	function onRegister(&$form) {
-		$form->addScript("listbuilder",PATH_RELATIVE."framework/core/subsystems/forms/controls/listbuildercontrol.js");
+		$form->addScript("listbuilder",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
 	}
 
 	static function parseData($formvalues, $name, $forceindex = false) {
