@@ -101,6 +101,7 @@ class filemanagercontrol extends formcontrol {
 //                                return false;
 //                            }
                             quickUpload.disable();
+                            Y.one('#quickaddfiles-".$name."').addClass('ajax');
                         },
                         onComplete: function(file, response){
                             //Add uploaded file to list
@@ -108,6 +109,7 @@ class filemanagercontrol extends formcontrol {
                                 EXPONENT.passBackFile".$name."(response.data);
                             }
                             quickUpload.enable();
+                            Y.one('#quickaddfiles-".$name."').removeClass('ajax');
                         },
                     });
 //                );

@@ -96,6 +96,7 @@ span.active {
 
 a.add,
 a.addtitle,
+a.ajax,
 a.alphasort,
 a.edit,
 a.configure,
@@ -157,6 +158,10 @@ a.reranklink, .container-chrome ul li a.reranklink {
 
 a.revisions {
     background: url(../images/revisions.png) no-repeat 0 50%;
+}
+
+a.ajax {
+    background: url(../images/ajax-loader.gif) no-repeat 0 50%;
 }
 
 /****************  tags style  ***********************/
