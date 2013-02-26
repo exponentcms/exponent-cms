@@ -70,6 +70,7 @@ class upgrade_container2 extends upgradescript {
             $loc = expUnserialize($co->external);
             $loc->mod = 'container2';  // containermodule is now container2 controller
             $co->external = serialize($loc);
+            $co->view_data = null;
             $db->updateObject($co,'container');
             $count++;
 	    }
@@ -77,6 +78,7 @@ class upgrade_container2 extends upgradescript {
             $loc = expUnserialize($co->external);
             $loc->mod = expModules::getModuleName($loc->mod);  // convert module name to 2.0 style
             $co->external = serialize($loc);
+            $co->view_data = null;
             $db->updateObject($co,'container');
             $count++;
 	    }
@@ -90,6 +92,7 @@ class upgrade_container2 extends upgradescript {
             } else {
                 $co->view = 'showall_'.$co->view;
             }
+            $co->view_data = null;
             $db->updateObject($co,'container');
             $count++;
 	    }
@@ -103,6 +106,7 @@ class upgrade_container2 extends upgradescript {
                     $co->view = 'showall_'.$co->view;
                 }
             }
+            $co->view_data = null;
             $db->updateObject($co,'container');
             $count++;
 	    }
@@ -110,6 +114,7 @@ class upgrade_container2 extends upgradescript {
             $loc = expUnserialize($co->internal);
             $loc->mod = expModules::getModuleName($loc->mod);  // convert module name to 2.0 style
             $co->internal = serialize($loc);
+            $co->view_data = null;
             $db->updateObject($co,'container');
             $count++;
 	    }

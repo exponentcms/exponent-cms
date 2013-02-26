@@ -532,6 +532,7 @@ class migrationController extends expController {
                 } else {
                     $cont->view = 'showall_'.$cont->view;
                 }
+                $cont->view_data = null;
                 $db->insertObject($cont, 'container');
                 @$this->msg['container']++;
             }
