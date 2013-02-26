@@ -639,7 +639,8 @@ abstract class expController {
         // if this module is searchable lets delete spidered content
         if ($this->isSearchable()) {
             $search = new search();
-            $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->classname . "'");
+//            $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->classname . "'");
+            $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->baseclassname . "'");
             if (!empty($content->id)) $content->delete();
         }
 
@@ -1103,7 +1104,8 @@ abstract class expController {
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
-            $sql = "original_id=" . $origid . " AND ref_module='" . $this->classname . "'";
+//            $sql = "original_id=" . $origid . " AND ref_module='" . $this->classname . "'";
+            $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
             $oldindex = $db->selectObject('search', $sql);
             if (!empty($oldindex)) {
                 $search_record = new search($oldindex->id, false, false);
@@ -1125,7 +1127,8 @@ abstract class expController {
             }
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
             $search_record->view_link = $link;
-            $search_record->ref_module = $this->classname;
+//            $search_record->ref_module = $this->classname;
+            $search_record->ref_module = $this->baseclassname;
             $search_record->category = $this->searchName();
             $search_record->ref_type = $this->searchCategory();
             $search_record->save();
@@ -1142,7 +1145,8 @@ abstract class expController {
         global $db;
         // remove this modules entries from the search table.
         if ($this->isSearchable()) {
-            $where = "ref_module='" . $this->classname . "' AND location_data='" . serialize($this->loc) . "'";
+//            $where = "ref_module='" . $this->classname . "' AND location_data='" . serialize($this->loc) . "'";
+            $where = "ref_module='" . $this->baseclassname . "' AND location_data='" . serialize($this->loc) . "'";
 //            $test = $db->selectObjects('search', $where);
             $db->delete('search', $where);
         }

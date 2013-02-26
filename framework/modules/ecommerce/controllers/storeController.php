@@ -934,9 +934,10 @@ class storeController extends expController {
                 $search_record = new search($cnt, false, false);
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
                 $search_record->view_link = $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url']));
-                $search_record->ref_type = $this->basemodel_name;
-                $search_record->ref_module = 'store';
+//                $search_record->ref_module = 'store';
+                $search_record->ref_module  = $this->baseclassname;
                 $search_record->category = 'Products';
+                $search_record->ref_type = $this->basemodel_name;
 
                 $search_record->original_id = $origid;
                 //$search_record->location_data = serialize($this->loc);

@@ -449,7 +449,8 @@ class helpController extends expController {
            $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$cnt['sef_url'])));
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
            $search_record->view_link = $link;
-           $search_record->ref_module = $this->classname;
+//           $search_record->ref_module = $this->classname;
+           $search_record->ref_module = $this->baseclassname;
            $search_record->category = $this->searchName();
            $search_record->ref_type = $this->searchCategory();
            $search_record->save();
