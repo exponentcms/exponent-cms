@@ -13,6 +13,7 @@
 
     <link href="bootstrap.min.css" rel="stylesheet">
     <link href="../default/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/bootswatch.css" rel="stylesheet">
 
    <script type="text/javascript">
@@ -33,7 +34,7 @@
 
   </head>
 
-  <body class="preview" data-spy="scroll" data-target=".subnav" data-offset="80">
+  <body class="preview" id="top" data-spy="scroll" data-target=".subnav" data-offset="80">
     <script src="../js/bsa.js"></script>
 
 
@@ -48,10 +49,10 @@
          <span class="icon-bar"></span>
        </a>
        <a class="brand" href="../">Bootswatch</a>
-       <div class="nav-collapse" id="main-menu">
+       <div class="nav-collapse collapse" id="main-menu">
         <ul class="nav" id="main-menu-left">
           <li><a onclick="pageTracker._link(this.href); return false;" href="http://news.bootswatch.com">News</a></li>
-          <li><a id="swatch-link" href="/#gallery">Gallery</a></li>
+          <li><a id="swatch-link" href="../#gallery">Gallery</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Preview <b class="caret"></b></a>
             <ul class="dropdown-menu" id="swatch-menu">
@@ -100,12 +101,11 @@
   <div class="row">
     <div class="span6">
       <h1>Cosmo</h1>
-      <p class="lead">A preview of changes in this swatch.</p>
+      <p class="lead">An ode to Metro.</p>
     </div>
     <div class="span6">
       <div class="bsa well">
           <div id="bsap_1277971" class="bsarocks bsap_c466df00a3cd5ee8568b5c4983b6bb19"></div>
-          <div class="clearfix"><a href="http://adpacks.com" id="bsap_aplink">via Ad Packs</a></div>
       </div>
     </div>
   </div>
@@ -866,7 +866,7 @@
       <hr>
 
       <footer id="footer">
-        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p class="pull-right"><a href="#top">Back to top</a></p>
         <div class="links">
           <a href="http://news.bootswatch.com" onclick="pageTracker._link(this.href); return false;">Blog</a>
           <a href="http://feeds.feedburner.com/bootswatch">RSS</a>
@@ -879,7 +879,7 @@
         </div>
         Made by <a target="_blank" href="http://thomaspark.me" onclick="pageTracker._link(this.href); return false;">Thomas Park</a>. Contact him <a href="mailto:hello@thomaspark.me">hello@thomaspark.me</a>.<br/>
         Code licensed under the <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.<br/>
-        Based on <a target="_blank" href="http://twitter.github.com/bootstrap/">Bootstrap</a>. Hosted on <a target="_blank" href="http://pages.github.com/">GitHub</a>. Icons from <a target="_blank" href="http://glyphicons.com/">Glyphicons</a>. Web fonts from <a target="_blank" href="http://www.google.com/webfonts">Google</a>.</p>
+        Based on <a target="_blank" href="http://twitter.github.com/bootstrap/">Bootstrap</a>. Hosted on <a target="_blank" href="http://pages.github.com/">GitHub</a>. Icons from <a target="_blank" href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Web fonts from <a target="_blank" href="http://www.google.com/webfonts">Google</a>.</p>
       </footer>
 
     </div><!-- /container -->
@@ -889,9 +889,8 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/application.js"></script>
     <script src="../js/bootswatch.js"></script>
 
 
