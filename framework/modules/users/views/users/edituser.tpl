@@ -13,6 +13,10 @@
  *
  *}
 
+{css unique="edit_user" corecss="tables"}
+
+{/css}
+
 <div id='edituser' class="module users edit">
     {form action=update}
 	    <div class="info-header">
@@ -28,8 +32,11 @@
 	    <div id="edituser-tabs" class="yui-navset exp-skin-tabview hide">
 		    <ul class="yui-nav">
 		        <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
+                {if !empty($groups->records)}
+                    <li class="selected"><a href="#tab2"><em>{"Group Membership"|gettext}</em></a></li>
+                {/if}
                 {foreach from=$extensions item=extension}
-		            <li><a href="#tab{$extension->id}"><em>{$extension->title}</em></a></li>
+		            <li><a href="#tab{$extension->id+2}"><em>{$extension->title}</em></a></li>
                 {/foreach}
 		    </ul>
 	        <div class="yui-content">
@@ -69,10 +76,47 @@
                         {/if}
                     {/if}
 	            </div>
+                {if !empty($groups->records)}
+                <div id="tab2">
+                    {pagelinks paginate=$groups top=1}
+                	<table class="exp-skin-table">
+                	    <thead>
+                			<tr>
+                				{$groups->header_columns}
+                                <th>{'Member'|gettext}</th>
+                			</tr>
+                		</thead>
+                		<tbody>
+                			{foreach from=$groups->records item=group name=listings}
+                                <tr class="{cycle values="odd,even"}">
+                                    <td>{$group->name}</td>
+                                    <td>{$group->description}</td>
+                                    <td>
+                                        {$checked = false}
+                                        {foreach from=$mygroups item=mygroup}
+                                            {if $mygroup->id == $group->id}
+                                                {$checked = true}
+                                            {/if}
+                                        {/foreach}
+                                        {if $edit_user->isAdmin()}
+                                            {control type=checkbox name='member[]' value=$group->id checked=$checked disabled=true}
+                                        {else}
+                                            {control type=checkbox name='member[]' value=$group->id checked=$checked}
+                                        {/if}
+                                    </td>
+                                </tr>
+                			{foreachelse}
+                			    <tr><td colspan="{$groups->columns|count}">{'No User Groups Available'|gettext}.</td></tr>
+                			{/foreach}
+                		</tbody>
+                	</table>
+                    {pagelinks paginate=$groups bottom=1}
+                </div>
+                {/if}
 	            {foreach from=$extensions item=extension}
-	            <div id="tab{$extension->id}" >
-	                {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl"}
-	            </div>
+                    <div id="tab{$extension->id+2}" >
+                        {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl"}
+                    </div>
 	            {/foreach}
 	        </div>
 	    </div>

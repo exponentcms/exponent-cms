@@ -124,6 +124,27 @@ class usersController extends expController {
             'extensions' => $active_extensions,
             "userkey"    => expSession::get("userkey")
         ));
+
+        if ($user->isAdmin()) {
+            $page = new expPaginator(array(
+                'model'      => 'group',
+                'where'      => 1,
+                'limit'      => (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+                'order'      => empty($this->config['order']) ? 'name' : $this->config['order'],
+                'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
+                'columns'    => array(
+                    gt('Name')        => 'name',
+                    gt('Description') => 'description',
+                ),
+                'controller' => $this->baseclassname,
+                'action'     => $this->params['action'],
+            ));
+
+            assign_to_template(array(
+                'groups' => $page,
+                'mygroups' => $u->getGroupMemberships(),
+            ));
+        }
     }
 
     public function update() {
@@ -183,6 +204,25 @@ class usersController extends expController {
                     $ext->update($this->params);
                 }
             }
+        }
+
+        // update group membership assignment
+        if (!empty($this->params['member'])) {
+            $old_groups = $db->selectObjects('groupmembership', 'member_id=' . $u->id);
+//            $db->delete('groupmembership', 'member_id=' . $u->id);  // start from scratch
+            $memb = new stdClass();
+            $memb->member_id = $u->id;
+            foreach ($this->params['member'] as $grp) {
+                $memb->group_id = $grp;
+                $memb->is_admin = false;
+                foreach ($old_groups as $oldgroup) {
+                    if ($oldgroup->group_id == $grp) {
+                        if ($oldgroup->is_admin) $memb->is_admin = true;  // retain group admin setting
+                    }
+                }
+                $db->insertObject($memb, 'groupmembership');
+            }
+            if ($u->id == $user->id) expPermissions::triggerRefresh();
         }
 
         // if this is a new account then we will check to see if we need to send 

@@ -340,7 +340,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'classname' => 'egroup',
                 ),
                 array(
-                    'text' => gt('Profile Definitions'),
+                    'text' => gt('User Profile Extensions'),
                     'url'  => makeLink(array(
                         'controller' => 'users',
                         'action'     => 'manage_extensions'
