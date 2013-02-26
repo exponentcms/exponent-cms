@@ -15,6 +15,7 @@ Added / Fixed / changed for 2.2.0 alpha 3
   - adds new 'blog' site sample in addition to 'sample site' during installation
   - adds category support to blog module
     -- adds new comments and categories views to blog
+  - adds file upload pause, resume, & cancel feature
   - contains all the fixes in 2.1.3
 ### Known Issues
   - None

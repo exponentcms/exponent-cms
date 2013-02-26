@@ -8,3 +8,4 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
   - adds new 'blog' site sample in addition to 'sample site' during installation
   - adds category support to blog module
     -- adds new comments and categories views to blog
+  - adds file upload pause, resume, & cancel feature
