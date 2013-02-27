@@ -94,8 +94,15 @@ if (!function_exists('smarty_function_ddrerank')) {
             if (!empty($params['label'])) {
                 $params['label'] = gt($params['label']);
             }
+            if (BTN_SIZE == 'large') {
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
+            } else {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            }
             if (empty($params['uniqueid'])) {  // make a button
-                echo '<a id="rerank' . $uniqueid . '" class="btn icon-sort ' . BTN_SIZE . '" href="#"> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.' icon-sort ' . $icon_size . '" href="#"> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             } else {  // make a menu item
                 echo '<a id="rerank' . $uniqueid . '" class="reranklink" href="#">' . gt("Order") . ' ' . $params['label'] . '</a>';
             }

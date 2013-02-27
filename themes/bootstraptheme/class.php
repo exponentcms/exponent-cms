@@ -40,8 +40,8 @@ class bootstraptheme extends theme {
        	}
 		//Button Sizes
         $icon_sizes = array(
-			'Medium',
-			"icon-large"=>'Large',
+            "medium"=>'Medium',
+			"large"=>'Large',
 		);
 
    		$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
@@ -53,7 +53,7 @@ class bootstraptheme extends theme {
         $form->meta('BTN_COLOR','btn');
 //        $form->meta('BTN_SIZE','icon-large');
    		$form->register('swatch',gt('Theme Style').': ',new dropdowncontrol($settings['SWATCH'],$swatches));
-        $form->register('btn_size',gt('Icon Size').': ',new dropdowncontrol($settings['BTN_SIZE'],$icon_sizes));
+        $form->register('btn_size',gt('Button Size').': ',new dropdowncontrol($settings['BTN_SIZE'],$icon_sizes));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
    		assign_to_template(array(
            'name'=>self::name(),

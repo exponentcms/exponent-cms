@@ -105,18 +105,25 @@ if (!function_exists('smarty_function_icon')) {
 
         $linktext = $img . $text;
 
-        $btn = '';
+        if (BTN_SIZE == 'large') {
+            $btn_size = 'btn-small';
+            $icon_size = 'icon-large';
+        } else {
+            $btn_size = 'btn-mini';
+            $icon_size = '';
+        }
+        $btn_type = '';
         switch ($class) {
             case 'delete' :
             case 'deletetitle' :
                 $class = "remove-sign";
-                $btn = " btn-danger";
+                $btn_type = "btn-danger";
                 break;
             case 'add' :
             case 'addtitle' :
             case 'switchtheme add' :
                 $class = "plus-sign";
-                $btn = " btn-success";
+                $btn_type = "btn-success";
                 break;
             case 'copy' :
                 $class = "copy";
@@ -162,7 +169,7 @@ if (!function_exists('smarty_function_icon')) {
                 $params['copy'] = true;
                 $params['action'] = 'edit';
             }
-            echo '<a href="' . expCore::makeLink($params) . '" title="' . $title . '" class=" btn'.$btn.' icon-'.$class.' '.BTN_SIZE.'"';
+            echo '<a href="' . expCore::makeLink($params) . '" title="' . $title . '" class=" btn '.$btn_type.' '.$btn_size.' icon-'.$class.' '.$icon_size.'"';
             if (($params['action'] == "delete" || $params['action'] == "merge") && empty($onclick))
                 echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))

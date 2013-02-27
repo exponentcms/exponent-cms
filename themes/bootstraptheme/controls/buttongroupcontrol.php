@@ -60,6 +60,13 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
 		$html = "";
 		if ($this->submit != "") {
+            if (BTN_SIZE == 'large') {
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
+            } else {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            }
             if (stripos($this->submit, 'save') !== false) {
                 $icon = 'icon-save';
             } elseif (stripos($this->submit, 'log') !== false) {
@@ -67,7 +74,7 @@ class buttongroupcontrol extends formcontrol {
             } else {
                 $icon = 'icon-ok-circle';
             }
-			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn '.$icon.' '.BTN_SIZE.' '.$this->class;
+			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn '.$btn_size.' '.$icon.' '.$icon_size.' '.$this->class;
 			if ($this->disabled) $html .= " disabled";  // disabled class
 			$html .='" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";  // disabled attribute
@@ -87,9 +94,9 @@ class buttongroupcontrol extends formcontrol {
 		//if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
 		if ($this->cancel != "") {
 			if ($this->returntype == "") {
-				$html .= '<button type="cancel" class="cancel icon-ban-circle '.BTN_SIZE.' btn" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
+				$html .= '<button type="cancel" class="cancel btn '.$btn_size.' icon-ban-circle '.$icon_size.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
 			} else {
-			    $html .= '<button type="cancel" class="cancel icon-ban-circle '.BTN_SIZE.' btn" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
+			    $html .= '<button type="cancel" class="cancel btn '.$btn_size.' icon-ban-circle '.$icon_size.'" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
 			}
 			$html .= '> ';
 			$html .= $this->cancel;
