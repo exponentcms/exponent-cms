@@ -74,7 +74,7 @@ class form extends baseform {
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = $label;
         $this->tabs[$name] = $tab;
-		if (function_exists($control,'onRegister')) $control->onRegister($this);
+		if (method_exists($control,'onRegister')) $control->onRegister($this);
 		return true;
 	}
 
