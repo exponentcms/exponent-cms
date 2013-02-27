@@ -1125,26 +1125,26 @@ class theme {
 	 * and presents the values as text boxes.
 	 */
 	function configureTheme () {
-		if (isset($this->params['sv']) && $this->params['sv'] != '') {
-			if (strtolower($this->params['sv'])=='default') {
-                $this->params['sv']='';
+		if (isset($this->params['sv']) && $_GET['sv'] != '') {
+			if (strtolower($_GET['sv'])=='default') {
+                $_GET['sv']='';
 			}
-			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config_".$this->params['sv'].".php");
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
 		} else {
-			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
 		}
 		$form = new form();
 		$form->meta('controller','administration');
 		$form->meta('action','update_theme');
-		$form->meta('theme',$this->params['theme']);
-		$form->meta('sv',isset($this->params['sv'])?$this->params['sv']:'');
+		$form->meta('theme',$_GET['theme']);
+		$form->meta('sv',isset($_GET['sv'])?$_GET['sv']:'');
 		foreach ($settings as $setting=>$key) {
 			$form->register($setting,$setting.': ',new textcontrol($key,20));
 		}
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		assign_to_template(array(
-            'name'=>self::name(),
+            'name'=>$this->name().(!empty($_GET['sv'])?' '.$_GET['sv']:''),
             'form_html'=>$form->toHTML()
         ));
 	}

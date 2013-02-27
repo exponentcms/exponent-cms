@@ -56,8 +56,8 @@ class bootstraptheme extends theme {
         $form->register('btn_size',gt('Button Size').': ',new dropdowncontrol($settings['BTN_SIZE'],$icon_sizes));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
    		assign_to_template(array(
-           'name'=>self::name(),
-           'form_html'=>$form->tohtml()
+            'name'=>$this->name().(!empty($_GET['sv'])?' '.$_GET['sv']:''),
+            'form_html'=>$form->tohtml()
         ));
    	}
 

@@ -73,6 +73,13 @@
                                         {*<a class="switchtheme add" href="{link action=theme_switch theme=$class sv=$sv}" title={'Select this Style'|gettext}>{$sv}</a>*}
                                         {icon class="switchtheme add" action=theme_switch theme=$class sv=$sv title='Select this Theme Style'|gettext text='Use'|gettext}
                                     {/if}
+                                    {if ($theme->user_configured)}
+                                        {if $sv == "Default"}
+                                            {icon class=configure action=configure_theme theme=$class title="Configure Default Theme Style"|gettext}
+                                        {else}
+                                            {icon class=configure action=configure_theme theme=$class sv=$sv title="Configure this Theme Style"|gettext}
+                                        {/if}
+                                    {/if}
                                 {/group}
 							{/foreach}
 						{else}
@@ -89,18 +96,14 @@
                                 {else}
                                     <span class="switchtheme current">({"Current"|gettext})</span>
                                 {/if}
+                                {if ($theme->user_configured)}
+                                    {icon class=configure action=configure_theme theme=$class title="Configure this Theme"|gettext}
+        						{/if}
                             {/group}
 						{/if}
                         {if (!$theme->stock_theme)}
                             {icon class=export action=export_theme theme=$class title="Export this Theme"|gettext}
                         {/if}
-						{if ($theme->user_configured)}
-							{if $smarty.const.THEME_STYLE == ""}
-								{icon class=configure action=configure_theme theme=$class title="Configure this Theme"|gettext}
-							{else}
-								{icon class=configure action=configure_theme theme=$class sv=$smarty.const.THEME_STYLE title="Configure this Theme"|gettext}
-							{/if}
-						{/if}
 					</td>
 				</tr>
         	{/foreach}
