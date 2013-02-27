@@ -231,10 +231,10 @@ class administrationController extends expController {
 	}
 
     public function fix_tables() {
-   		$renamed = expDatabase::fix_table_names();
-           assign_to_template(array(
-               'tables'=>$renamed,
-           ));
+        $renamed = expDatabase::fix_table_names();
+        assign_to_template(array(
+            'tables'=>$renamed,
+        ));
    	}
 
     public function install_ecommerce_tables() {
