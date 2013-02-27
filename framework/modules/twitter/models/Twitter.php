@@ -81,7 +81,7 @@ class Twitter
      * @param string $consumerKey    The consumer key to use.
      * @param string $consumerSecret The consumer secret to use.
      */
-    public function __construct($consumerKey, $consumerSecret)
+    public function __construct($consumerKey="", $consumerSecret="")
     {
         $this->setConsumerKey($consumerKey);
         $this->setConsumerSecret($consumerSecret);
