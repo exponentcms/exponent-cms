@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Exponent 2.1.1</title>
+    <title>Exponent 2.2.0</title>
     <parser>
         <default-category-name>API Documentation</default-category-name>
         <default-package-name>Framework</default-package-name>
@@ -22,11 +22,28 @@
     </transformations>
     <files>
         <directory>.</directory>
+        <ignore>bin/*</ignore>
+        <ignore>data/*</ignore>
+        <ignore>docs/*</ignore>
         <ignore>external/*</ignore>
+        <ignore>features/*</ignore>
+        <ignore>files/*</ignore>
+        <ignore>src/*</ignore>
+        <ignore>tests/*</ignore>
+        <ignore>vendor/*</ignore>
         <ignore>tmp/*</ignore>
         <ignore>conf/data/extra_phrases.php</ignore>
         <ignore>framework/core/lang/*</ignore>
         <ignore>framework/modules/pixidou/*</ignore>
         <ignore>framework/modules/news/models/SimplePie.php</ignore>
+        <ignore>.travis.yml</ignore>
+        <ignore>build.xml</ignore>
+        <ignore>compile</ignore>
+        <ignore>composer.*</ignore>
+        <ignore>CONTRIBUTING.md</ignore>
+        <ignore>installer.php</ignore>
+        <ignore>package.xml</ignore>
+        <ignore>phpdoc.dist.xml</ignore>
+        <ignore>phpunit.xml.dist</ignore>
     </files>
 </phpdoc>
