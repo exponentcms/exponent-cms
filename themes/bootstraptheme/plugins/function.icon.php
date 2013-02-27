@@ -99,8 +99,10 @@ if (!function_exists('smarty_function_icon')) {
         if (empty($params['img']) && empty($params['text'])) {
             $img = gt(ucfirst($class));
         } else if (!empty($params['img'])) {
+            $class = explode('.',$params['img'])[0];
+            $img = '';
 //	    $img 	= '<img class="'.$class.' btn" src="'.ICON_RELATIVE.$params['img'].'" title="'.$title.'" alt="'.$alt.'"'.XHTML_CLOSING.'>';
-            $img = '<img class="' . $class . ' " src="' . ICON_RELATIVE . $params['img'] . '" title="' . $title . '" alt="' . $alt . '"' . XHTML_CLOSING . '>';
+//            $img = '<img class="' . $class . ' " src="' . ICON_RELATIVE . $params['img'] . '" title="' . $title . '" alt="' . $alt . '"' . XHTML_CLOSING . '>';
         } else $img = '';
 
         $linktext = $img . $text;
@@ -117,13 +119,13 @@ if (!function_exists('smarty_function_icon')) {
             case 'delete' :
             case 'deletetitle' :
                 $class = "remove-sign";
-                $btn_type = "btn-danger";
+                $btn_type = "btn-danger";  // red
                 break;
             case 'add' :
             case 'addtitle' :
             case 'switchtheme add' :
                 $class = "plus-sign";
-                $btn_type = "btn-success";
+                $btn_type = "btn-success";  // green
                 break;
             case 'copy' :
                 $class = "copy";
