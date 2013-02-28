@@ -153,7 +153,7 @@ if (!function_exists('smarty_function_icon')) {
                 $class = "wrench";
                 break;
             case 'view' :
-                $class = "zoom-in";
+                $class = "search";
                 break;
             case 'page_next' :
                 $class ='double-angle-right';
@@ -169,6 +169,15 @@ if (!function_exists('smarty_function_icon')) {
                 break;
             case 'groupperms' :
                 $class = 'group';
+                break;
+            case 'monthviewlink' :
+                $class = 'calendar';
+                break;
+            case 'listviewlink' :
+                $class = 'list';
+                break;
+            case 'adminviewlink' :
+                $class = 'cogs';
                 break;
         }
         if (!empty($params['style']) ) $btn_type = $params['style'];
@@ -200,7 +209,7 @@ if (!function_exists('smarty_function_icon')) {
                 echo ' onclick="' . $onclick . '"';
             echo '> ' . $linktext . '</a>';
         } else {
-            echo '<div class=" btn '.$btn_type.' '.$btn_size.' icon-'.$class.' '.$icon_size.'">'.$linktext.'</div>';
+            echo '<div class=" btn disabled '.$btn_type.' '.$btn_size.' icon-'.$class.' '.$icon_size.'"> '.$linktext.'</div>';
         }
     }
 }

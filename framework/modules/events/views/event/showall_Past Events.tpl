@@ -40,11 +40,11 @@
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {permissions}
             &#160;&#160;|&#160;&#160;
-			<span class="listviewlink">{'Past Events View'|gettext}</span>
+			{*<span class="listviewlink">{'Past Events View'|gettext}</span>*}
+            {icon class="listviewlink" text='Past Events View'|gettext}
 			{if $permissions.manage == 1}
 				&#160;&#160;|&#160;&#160;
-				<img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'delete.png'}" title="{'Delete All Past Events'|gettext}" alt="{'Delete All Past Events'|gettext}" />
-				<a class="" href="{link action=delete_all_past}" onclick="return confirm('{'Delete All Past Events?'|gettext}');" title="{'Delete All Past Events'|gettext}">{'Purge All Past Events'|gettext}</a>
+				{icon class=delete action=delete_all_past onclick="return confirm('"|cat:("Delete All Past Events?"|gettext)|cat:"');" title="Delete All Past Events"|gettext text="Purge All Past Events"|gettext}
 				{br}
 			{/if}
 		{/permissions}

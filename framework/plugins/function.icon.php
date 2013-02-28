@@ -133,7 +133,7 @@ function smarty_function_icon($params, &$smarty) {
             echo ' onclick="' . $onclick . '"';
         echo '>' . $linktext . '</a>';
     } else {
-        echo $linktext;
+        echo '<span class="'.$class.'"> '.$linktext.'</span>';
     }
 }
 
