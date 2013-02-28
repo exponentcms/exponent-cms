@@ -62,8 +62,10 @@ class checkboxcontrol extends formcontrol {
             $divID = ' id="' . $this->id . 'Control"';
             $for   = ' for="' . $this->id . '"';
         } else {
-            $divID = '';
-            $for   = '';
+//            $divID = '';
+            $divID = ' id="' . $name . 'Control"';
+//            $for   = '';
+            $for   = ' for="' . $name . '"';
         }
         $html = "<div" . $divID . " class=\"control checkbox";
         $html .= (!empty($this->required)) ? ' required">' : '">';
@@ -116,7 +118,8 @@ class checkboxcontrol extends formcontrol {
 
     function controlToHTML($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;
-        $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
+//        $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
+        $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : ' id="' . $name . '"';
         $html        = '<input' . $inputID . ' class="checkbox" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         if (!$this->flip) $html .= ' style="float:left;"';
         if ($this->default) $html .= ' checked="checked"';
