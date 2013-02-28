@@ -6,9 +6,7 @@
         define("BOOTSTRAP_THEME",'1');
 	    expTheme::head(array(
 	        "xhtml"=>false,
-            "css_primer"=>array(
-                PATH_RELATIVE."external/normalize/normalize.css",
-            ),
+            "normalize"=>true,
 		    "lesscss"=>array(
                 "external/bootstrap/less/bootstrap.less",
                 "external/bootstrap/less/responsive.less",

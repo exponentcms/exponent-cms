@@ -27,6 +27,11 @@ class expCSS {
     public static function pushToHead($params) {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline;
         
+        // normalize.css is always at the top
+        if (!empty($params['normalize'])){
+            $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
+        }
+
         // primer css
         if (!empty($params['css_primer'])){
             $primer_array = $params['css_primer'];

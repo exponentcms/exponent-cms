@@ -97,12 +97,15 @@ class expTheme {
 			define('XHTML',0); define('XHTML_CLOSING',"");
 		}
 
-		// Load primer CSS files, or default to false if not set.
-		if(!empty($config['css_primer']) || !empty($config['lesscss'])){
+		// load primer, lesscss, & normalize CSS files
+		if(!empty($config['css_primer']) || !empty($config['lesscss']) || !empty($config['normalize'])){
 			expCSS::pushToHead($config);
 		};
+
+		// default primer CSS files to false if not set.
         if(empty($config['css_primer'])) $config['css_primer'] = false;
 
+        // parse & load core css files
 		if(isset($config['css_core'])) {
 			if (is_array($config['css_core'])) {
 				$corecss = implode(",",$config['css_core']);
@@ -114,7 +117,7 @@ class expTheme {
 			$config['css_core'] = false;
 		};
 
-		// Default the running of view based CSS inclusion to true
+		// default the running of view based CSS inclusion to true
 		if(empty($config['css_links'])){
 			$config['css_links'] = true;
 		}
