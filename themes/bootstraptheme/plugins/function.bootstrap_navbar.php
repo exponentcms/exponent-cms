@@ -49,18 +49,23 @@ function smarty_function_bootstrap_navbar($params,&$smarty) {
 function build_menu($page) {
     global $sectionObj;
 
-    //FIXME we need to take into account the active flag
-    $menu = '';
+//    $menu = '';
     if (empty($page->itemdata) && empty($page->submenu)) {  // this is a menu item
-        $menu = '<li';
+        $menu = '<li tabindex="-1"';
         if ($sectionObj->id == $page->id) $menu .= ' class="active"';
+        if ($page->url == "#") $menu .= ' class="disabled"';
         $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>'.$page->text.'</a></li>'."\n";
     } else {                                                // this is a submenu item
-        $menu = '<li class="dropdown';
+        if ($page->depth) {
+            $menu = '<li class="dropdown-submenu';
+        } else {
+            $menu = '<li class="dropdown';
+        }
         if ($sectionObj->id == $page->id) $menu .= ' active';
-        $menu .= '"><a href="'.$page->url.'" class="dropdown-toggle" data-toggle="dropdown"'.($page->new_window?' target="_blank"':'').'>'.$page->text.'<b class="caret"></b></a>'."\n";
-        $menu .= '<ul class="dropdown-menu">'."\n";
-        if ($page->url != "#") {
+        $menu .= '"><a href="'.$page->url.'" class="dropdown-toggle" data-toggle="dropdown"'.($page->new_window?' target="_blank"':'').'>'.$page->text;
+        if (!$page->depth) $menu .= '<b class="caret"></b>';
+        $menu .= '</a>'."\n".'<ul class="dropdown-menu pull-'.$params['menualign'].'">'."\n";
+        if ($page->url != "#") {  // we also need a 'menu item' for active parent pages
             $topmenu = new stdClass();
             $topmenu->id = $page->id;
             $topmenu->text = $page->text;

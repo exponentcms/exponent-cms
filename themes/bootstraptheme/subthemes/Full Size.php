@@ -28,6 +28,7 @@
         </div>
         <footer class="row">
             <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall_single","source"=>"@footer","chrome"=>1)) ?>
+            <?php if (MENU_LOCATION == 'fixed-bottom') echo '<div class="menu-spacer-bottom"></div>'; ?>
         </footer>
         <?php
             expJavascript::pushToFoot(array(

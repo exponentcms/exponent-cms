@@ -19,7 +19,7 @@
 
 {if $page->total_records > 0}
     <div class="pagination-links">
-        <div class="pagination">
+        <div class="pagination pagination-small">
             <ul>
             {if $page->previous_page != ''}<li><a href="{$page->previous_page}" rel="{$page->previous_pagenum}">&laquo;</a></li> {/if}
             {if $page->firstpage != ''}<li><a href="{$page->firstpage}" rel="1">1</a></li> {/if}

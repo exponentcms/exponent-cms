@@ -36,7 +36,7 @@
 		<div id="bd" class="yui3-g">
 			<div id="leftcol" class="yui3-u-1-4">
 			    <div class="content">
-<!--    			    --><?php //expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left","scope"=>"sectional")); ?>
+    			    <?php //expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left","scope"=>"sectional")); ?>
                     <?php expTheme::module(array("controller"=>"container2","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"sectional")); ?>
 			    </div>
 			</div>
