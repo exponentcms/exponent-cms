@@ -9,7 +9,9 @@
             YUI3_RELATIVE."cssfonts/fonts-min.css",
             YUI3_RELATIVE."cssgrids/grids-min.css"
         ),
-    	"css_core"=>array("common"),
+    	"css_core"=>array(
+            "common"
+        ),
     	"css_links"=>true,
     	"css_theme"=>true
         )
