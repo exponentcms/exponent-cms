@@ -171,6 +171,7 @@ if (!function_exists('smarty_function_icon')) {
                 $class = 'group';
                 break;
             case 'monthviewlink' :
+            case 'weekviewlink' :
                 $class = 'calendar';
                 break;
             case 'listviewlink' :
