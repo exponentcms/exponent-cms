@@ -352,7 +352,6 @@ class expTheme {
 				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
 			}
 		}
-        //FIXME change this to a generic system theme
         if (!is_readable($theme)) {
             if (is_readable(BASE.'themes/basetheme/index.php')) {
                $theme =  BASE.'themes/basetheme/index.php';

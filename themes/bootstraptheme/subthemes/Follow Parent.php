@@ -6,13 +6,19 @@
         define("BOOTSTRAP_THEME",'1');
 	    expTheme::head(array(
 	        "xhtml"=>false,
+            "css_primer"=>array(
+                PATH_RELATIVE."external/normalize/normalize.css",
+            ),
 		    "lesscss"=>array(
                 "external/bootstrap/less/bootstrap.less",
                 "external/bootstrap/less/responsive.less",
             ),
             "lessvars"=>array(
+                'swatch'=>SWATCH,
             ),
-	        "css_core"=>array("common"),
+	        "css_core"=>array(
+                "common"
+            ),
 	        "css_links"=>true,
 	        "css_theme"=>true
         ));
