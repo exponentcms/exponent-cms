@@ -3,6 +3,7 @@
 	<head>
 	    <?php
         define("JQUERY_THEME",'1');
+        define("BOOTSTRAP_THEME",'1');
 	    expTheme::head(array(
 	        "xhtml"=>false,
 		    "lesscss"=>array(

@@ -61,28 +61,45 @@ class fakeform extends form {
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
 		$rank = 0;
 		$even = "odd";
+        if (BTN_SIZE == 'large') {
+            $btn_size = 'btn-small';
+            $icon_size = 'icon-large';
+        } else {
+            $btn_size = 'btn-mini';
+            $icon_size = '';
+        }
+        $edit_class = '';
+        $delete_class = '';
+        if (BOOTSTRAP_THEME) {
+            $edit_class = ' class="btn '.$btn_size.' icon-edit'.$icon_size.'"';
+            $delete_class = ' class="btn btn-danger '.$btn_size.' icon-remove-sign'.$icon_size.'"';
+        }
 		foreach ($this->controlIdx as $name) {
 			$even = ($even=="odd") ? "even" : "odd";
 			$html .= "<div class=\"formmoduleedit ".$even." control\" style=\"border: 1px dashed lightgrey; padding: 1em;\" >";
             $html .= "<div class=\"item-actions\">";
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
-				$html .= '<a href="'.$router->makeLink(array('controller'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
-				$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
+				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
+                if (!BOOTSTRAP_THEME) $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
 				$html .= '</a>';
 			} else {
-				$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
+                if (!BOOTSTRAP_THEME) {
+                    $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
+                } else {
+                    $html .= '<div class="btn disabled '.$btn_size.' icon-edit'.$icon_size.'"> </div>';
+                }
 			}
 
 			$html .= '&#160;';
 			if (!$this->controls[$name]->_readonly && $this->controls[$name]->_controltype != 'htmlcontrol' ) {
 				//$html .= '<a href="?module='.$module.'&action=delete_control&id='.$this->controls[$name]->_id.'" onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
-				$html .= '<a href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
+				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
 			}
 			else {
-				$html .= '<a href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
+				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
 			}
-			$html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
+            if (!BOOTSTRAP_THEME) $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
 			$html .= '</a>';
             $html .= "</div>";
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
@@ -90,23 +107,24 @@ class fakeform extends form {
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
-                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
+                $for   = ' for="' . $name . '"';
+                $html .= "<label ".$for." class=\"label\" style=\"width:auto; display:inline;\">";
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
-                $html .= "</div>";
+                $html .= "</label>";
                 if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
             }
 
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
             } elseif (!empty($this->controlLbl[$name])) {
                 if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
-                    $html .= "<div class=\"label\" style=\"display:inline;\">";
+                    $html .= "<label ".$for." class=\"label\" style=\"display:inline;\">";
                 } else {
-                    $html .= "<div class=\"label\">";
+                    $html .= "<label class=\"label\">";
                 }
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
-                $html .= "</div>";
+                $html .= "</label>";
             }
 //			$html .= "<div class=\"formmoduleeditactions\">";
 //			if ($rank != count($this->controlIdx)-1) {

@@ -3,6 +3,7 @@
 	<head>
 	    <?php
         define("JQUERY_THEME",'1');
+        define("BOOTSTRAP_THEME",'1');
 	    expTheme::head(array(
 	        "xhtml"=>false,
 		    "lesscss"=>array(
@@ -22,7 +23,7 @@
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Bootstrap Top Nav")); ?>
         </nav>
         <div id="main" class="row">
-            <aside class="span3">
+            <aside id="sidebar" class="span3">
                 <?php expTheme::module(array("controller"=>"container2","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"top-sectional")); ?>
             </aside>
             <div id="content" class="span9">

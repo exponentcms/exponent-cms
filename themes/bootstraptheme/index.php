@@ -3,6 +3,7 @@
 	<head>
 	    <?php
         define("JQUERY_THEME",'1');
+        define("BOOTSTRAP_THEME",'1');
         if (!defined('SWATCH')) define('SWATCH',"''");
 	    expTheme::head(array(
 	        "xhtml"=>false,
@@ -25,7 +26,7 @@
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Bootstrap Top Nav")); ?>
         </nav>
         <div id="main" class="row">
-            <aside class="span3">
+            <aside id="sidebar" class="span3">
                 <?php expTheme::module(array("controller"=>"container2","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
             </aside>
             <div id="content" class="span9">
