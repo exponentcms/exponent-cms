@@ -74,7 +74,7 @@ class buttongroupcontrol extends formcontrol {
             } else {
                 $icon = 'icon-ok-circle';
             }
-			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn '.$btn_size.' '.$icon.' '.$icon_size.' '.$this->class;
+			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn btn-primary '.$btn_size.' '.$icon.' '.$icon_size.' '.$this->class;
 			if ($this->disabled) $html .= " disabled";  // disabled class
 			$html .='" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";  // disabled attribute

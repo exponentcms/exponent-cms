@@ -142,6 +142,7 @@ if (!function_exists('smarty_function_icon')) {
                 $class = "briefcase";
                 break;
             case 'merge' :
+            case 'arrow_merge' :
                 $class = "signin";
                 break;
             case 'reranklink' :
@@ -154,7 +155,25 @@ if (!function_exists('smarty_function_icon')) {
             case 'view' :
                 $class = "zoom-in";
                 break;
+            case 'page_next' :
+                $class ='double-angle-right';
+                break;
+            case 'page_prev' :
+                $class = 'double-angle-left';
+                break;
+            case 'change_password' :
+                $class = 'key';
+                break;
+            case 'clean' :
+                $class = 'check';
+                break;
+            case 'groupperms' :
+                $class = 'group';
+                break;
         }
+        if (!empty($params['style']) ) $btn_type = $params['style'];
+        if (!empty($params['icon']) ) $class = $params['icon'];
+
         // we need to unset these vars before we pass the params array off to makeLink
         unset($params['alt']);
         unset($params['title']);
@@ -162,7 +181,8 @@ if (!function_exists('smarty_function_icon')) {
         unset($params['img']);
         unset($params['class']);
         unset($params['record']);
-        unset($params['record']);
+        unset($params['style']);
+        unset($params['icon']);
         $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
         unset($params['onclick']);
         //eDebug($params);
@@ -180,7 +200,7 @@ if (!function_exists('smarty_function_icon')) {
                 echo ' onclick="' . $onclick . '"';
             echo '> ' . $linktext . '</a>';
         } else {
-            echo $linktext;
+            echo '<div class=" btn '.$btn_type.' '.$btn_size.' icon-'.$class.' '.$icon_size.'">'.$linktext.'</div>';
         }
     }
 }
