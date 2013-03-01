@@ -131,6 +131,7 @@ class expTheme {
 		if (empty($sectionObj)) return false;
 
         // set up controls search order based on framework
+        if (empty($head_config['framework'])) $head_config['framework'] = '';
         if ($head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
         if ($head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
         array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');

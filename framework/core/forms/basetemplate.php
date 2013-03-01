@@ -65,6 +65,7 @@ abstract class basetemplate {
         $this->tpl->cache_id = md5($this->viewfile);
 
         // set up plugin search order based on framework
+        if (empty($head_config['framework'])) $head_config['framework'] = '';
         if ($head_config['framework'] == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
