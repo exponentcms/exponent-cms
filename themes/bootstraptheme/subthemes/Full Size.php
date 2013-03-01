@@ -2,18 +2,10 @@
 <html>
 	<head>
 	    <?php
-        define("JQUERY_THEME",'1');
-        define("BOOTSTRAP_THEME",'1');
 	    expTheme::head(array(
 	        "xhtml"=>false,
             "normalize"=>true,
-		    "lesscss"=>array(
-                "external/bootstrap/less/bootstrap.less",
-                "external/bootstrap/less/responsive.less",
-            ),
-            "lessvars"=>array(
-                'swatch'=>SWATCH,
-            ),
+            'framework'=>'bootstrap',
 	        "css_core"=>array(
                 "common"
             ),
@@ -36,11 +28,6 @@
             <?php if (MENU_LOCATION == 'fixed-bottom') echo '<div class="menu-spacer-bottom"></div>'; ?>
         </footer>
         <?php
-            expJavascript::pushToFoot(array(
-                "unique"=>'bootstraptheme',
-                "jquery"=>1,
-                "src"=>PATH_RELATIVE."external/bootstrap/js/bootstrap.min.js",
-            ));
             expTheme::foot();
         ?>
 	</body>

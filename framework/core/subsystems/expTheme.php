@@ -26,7 +26,7 @@
 class expTheme {
 
 	public static function initialize() {
-		global $auto_dirs, $auto_dirs2;
+		global $auto_dirs2;
 //        global $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 //		require_once(BASE.'framework/core/compat/theme.php');
@@ -69,10 +69,12 @@ class expTheme {
 		}
 		if (!defined('BTN_SIZE')) define('BTN_SIZE','medium');
 		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
-		// add our theme folder into autoload and place it first
+        if (!defined('SWATCH')) define('SWATCH',"''");  // Twitter Bootstrap theme
+        if (!defined('JQUERYUI_THEME')) define('JQUERYUI_THEME', 'exponent');
+        define('JQUERYUI_CSS', JQUERY_RELATIVE.'css/'.JQUERYUI_THEME.'/jquery-ui.min.css');
+
+		// add our theme folder into autoload to prioritize custom (theme) modules
 		array_unshift($auto_dirs2,BASE.'themes/'.DISPLAY_THEME.'/modules');
-        if (defined('JQUERY_THEME')) array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
-        array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 	}
 
     public static function head($config = array()){
@@ -81,8 +83,7 @@ class expTheme {
     }
 
 	public static function headerInfo($config) {
-		global $sectionObj, $validateTheme, $head_config;
-//        global $cur_lang;
+		global $sectionObj, $validateTheme, $head_config, $auto_dirs;
 
 		$validateTheme['headerinfo'] = true;
 		// end checking for headerInfo
@@ -127,9 +128,12 @@ class expTheme {
 			$config['css_theme'] = true;
 		}
 
-		//eDebug($config);
-
 		if (empty($sectionObj)) return false;
+
+        // set up controls search order based on framework
+        if ($head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
+        if ($head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
+        array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 
 		$metainfo = self::pageMetaInfo();
 

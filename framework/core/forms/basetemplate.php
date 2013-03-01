@@ -45,6 +45,8 @@ abstract class basetemplate {
 	//	
 	
 	function __construct($item_type, $item_dir, $view = "Default") {
+        global $head_config;
+
 		include_once(SMARTY_PATH.'Smarty.class.php');
 
 		// Set up the Smarty template variable we wrap around.
@@ -55,26 +57,34 @@ abstract class basetemplate {
 
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
-//		$this->tpl->caching = false;
+//		  $this->tpl->caching = false;
         $this->tpl->setCaching(Smarty::CACHING_OFF);
 //        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
-//		$this->tpl->cache_dir = BASE.'tmp/cache';
+//		  $this->tpl->cache_dir = BASE.'tmp/cache';
         $this->tpl->setCacheDir(BASE.'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
-        //FIXME we should add a check for new jQuery type plugins near the beginning of chain if used
-        if (defined('JQUERY_THEME')) {
+        // set up plugin search order based on framework
+        if ($head_config['framework'] == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
-               BASE.'themes/'.DISPLAY_THEME.'/plugins',
-               BASE.'framework/plugins/jquery',
-               BASE.'framework/plugins',
-               SMARTY_PATH.'plugins',
+                BASE.'themes/'.DISPLAY_THEME.'/plugins',
+                BASE.'framework/plugins/bootstrap',
+                BASE.'framework/plugins/jquery',
+                BASE.'framework/plugins',
+                SMARTY_PATH.'plugins',
+            ));
+        } elseif ($head_config['framework'] == 'jquery') {
+            $this->tpl->setPluginsDir(array(
+                BASE.'themes/'.DISPLAY_THEME.'/plugins',
+                BASE.'framework/plugins/jquery',
+                BASE.'framework/plugins',
+                SMARTY_PATH.'plugins',
             ));
         } else {
             $this->tpl->setPluginsDir(array(
-               BASE.'themes/'.DISPLAY_THEME.'/plugins',
-               BASE.'framework/plugins',
-               SMARTY_PATH.'plugins',
+                BASE.'themes/'.DISPLAY_THEME.'/plugins',
+                BASE.'framework/plugins',
+                SMARTY_PATH.'plugins',
             ));
         }
 

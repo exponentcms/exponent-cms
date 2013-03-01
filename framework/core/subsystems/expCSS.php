@@ -102,6 +102,8 @@ class expCSS {
         unset($head_config['xhtml']);
         unset($head_config['lesscss']);
         unset($head_config['lessvars']);
+        unset($head_config['normalize']);
+        unset($head_config['framework']);
 
         $css_files = array();
         foreach($head_config as $key=>$value) {
