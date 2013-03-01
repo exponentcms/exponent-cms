@@ -1,6 +1,6 @@
-#Exponent Content Management System..
+#Exponent Content Management System
 
-===============================================
+----------
 
 Copyright (c) 2004-2013 OIC Group, Inc.
 
@@ -41,6 +41,7 @@ Added / Fixed / changed for 2.2.0 alpha 1
   - This is the first release of the v2.2 code
 
 Added / Fixed / changed for 2.1.3
+-----------------------
 ### This release only fixes bugs found in 2.1.2, everything else is destined for the v2.2 major version update
  - fixes form copy feature
  - fixes a 'file manager doesn't display files' issue on some servers

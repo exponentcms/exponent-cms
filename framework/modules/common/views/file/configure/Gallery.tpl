@@ -22,12 +22,12 @@
 {/css}
 
 {group label="Image Gallery Configuration"|gettext}
-{control type="checkbox" name="lightbox" label="Lightbox effect"|gettext value=1 checked=$config.lightbox}
-{control type="text" name="piwidth" label="Width of primary image"|gettext value=$config.piwidth|default:100 size=5 description="Setting to 0 will default to <em>Thumbnail Box Size</em> settings"|gettext}
-{control type="checkbox" name="pio" label="Only show primary image on listing pages"|gettext value=1 checked=$config.pio}
-{control type="dropdown" name="floatthumb" label="Float thumbnails"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.floatthumb}
-{control type="text" name="thumb" label="Thumbnail box size"|gettext value=$config.thumb|default:100 size=5}
-{control type="text" name="spacing" label="Thumbnail spacing"|gettext value=$config.spacing|default:10 size=5}
-{control type=text name="quality" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
-{control type="text" name="tclass" label="Stylesheet class to apply to images"|gettext value=$config.tclass}
+    {control type="checkbox" name="lightbox" label="Lightbox effect"|gettext value=1 checked=$config.lightbox}
+    {control type="text" name="piwidth" label="Width of primary image"|gettext value=$config.piwidth|default:100 size=5 description="Setting to 0 will default to <em>Thumbnail Box Size</em> settings"|gettext}
+    {control type="checkbox" name="pio" label="Only show primary image on listing pages"|gettext value=1 checked=$config.pio}
+    {control type="dropdown" name="floatthumb" label="Float thumbnails"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.floatthumb}
+    {control type="text" name="thumb" label="Thumbnail size"|gettext value=$config.thumb|default:100 size=5}
+    {control type="text" name="spacing" label="Thumbnail spacing"|gettext value=$config.spacing|default:10 size=5}
+    {control type=text name="quality" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
+    {control type="text" name="tclass" label="Stylesheet class to apply to images"|gettext value=$config.tclass}
 {/group}
