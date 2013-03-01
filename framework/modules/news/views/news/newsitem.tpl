@@ -46,14 +46,15 @@
         </div>
     {/permissions}
     <div class="bodycopy">
-        {if $config.filedisplay != "Downloadable Files"}
+        {if $config.ffloat != "Below"}
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
         {/if}
         {$record->body}
-        {if $config.filedisplay == "Downloadable Files"}
+        {if $config.ffloat == "Below"}
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
         {/if}
     </div>
+    {clear}
     {if $record->prev || $record->next}
         <div class="module-actions">
             {clear}

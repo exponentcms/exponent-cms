@@ -35,12 +35,13 @@
         </div>
     {/permissions}
     <div class="bodycopy">
-        {if $config.filedisplay != "Downloadable Files"}
+        {if $config.ffloat != "Below"}
             {filedisplayer view="`$config.filedisplay`" files=$items[0]->expFile record=$items[0]}
         {/if}
         {$items[0]->body}
-        {if $config.filedisplay == "Downloadable Files"}
+        {if $config.ffloat == "Below"}
             {filedisplayer view="`$config.filedisplay`" files=$items[0]->expFile record=$items[0]}
         {/if}
     </div>
+    {clear}
 </div>

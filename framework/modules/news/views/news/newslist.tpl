@@ -55,7 +55,7 @@
                 {/permissions}
             {/if}
             <div class="bodycopy">
-                {if $config.filedisplay != "Downloadable Files"}
+                {if $config.ffloat != "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
                 {if $config.usebody==1}
@@ -64,7 +64,7 @@
 				{else}
                     {$item->body}
                 {/if}
-                {if $config.filedisplay == "Downloadable Files"}
+                {if $config.ffloat == "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
                 <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
