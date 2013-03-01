@@ -52,7 +52,7 @@ class fakeform extends form {
 			//expSession::un_set("last_POST");
 		}
 
-		global $router;
+		global $router, $head_config;
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
 		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
@@ -70,7 +70,7 @@ class fakeform extends form {
         }
         $edit_class = '';
         $delete_class = '';
-        if (BOOTSTRAP_THEME) {
+        if ($head_config['framework'] == 'bootstrap') {
             $edit_class = ' class="btn '.$btn_size.' icon-edit'.$icon_size.'"';
             $delete_class = ' class="btn btn-danger '.$btn_size.' icon-remove-sign'.$icon_size.'"';
         }
@@ -81,10 +81,10 @@ class fakeform extends form {
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
 				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
-                if (!BOOTSTRAP_THEME) $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
+                if (!$head_config['framework'] == 'bootstrap') $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
 				$html .= '</a>';
 			} else {
-                if (!BOOTSTRAP_THEME) {
+                if (!$head_config['framework'] == 'bootstrap') {
                     $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
                 } else {
                     $html .= '<div class="btn disabled '.$btn_size.' icon-edit'.$icon_size.'"> </div>';
@@ -99,7 +99,7 @@ class fakeform extends form {
 			else {
 				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
 			}
-            if (!BOOTSTRAP_THEME) $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
+            if (!$head_config['framework'] == 'bootstrap') $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
 			$html .= '</a>';
             $html .= "</div>";
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
