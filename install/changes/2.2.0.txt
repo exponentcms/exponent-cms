@@ -9,3 +9,4 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
   - adds category support to blog module
     -- adds new comments and categories views to blog
   - adds file upload pause, resume, & cancel feature
+  - adds normalize.css and Twitter Bootstrap as system (theme) features

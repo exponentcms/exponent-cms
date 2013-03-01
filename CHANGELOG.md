@@ -16,6 +16,7 @@ Added / Fixed / changed for 2.2.0 alpha 3
   - adds category support to blog module
     -- adds new comments and categories views to blog
   - adds file upload pause, resume, & cancel feature
+  - adds normalize.css and Twitter Bootstrap as system (theme) features
   - contains all the fixes in 2.1.3
 ### Known Issues
   - None
