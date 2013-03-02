@@ -2011,8 +2011,8 @@ class migrationController extends expController {
             case 'navigationmodule':  // added v2.0.9
                 if (!empty($module->view)) {
                     if ($module->view == 'Breadcrumb') {
-                        @$module->view = 'breadcumb';
-                        @$module->action = 'breadcumb';
+                        @$module->view = 'breadcrumb';
+                        @$module->action = 'breadcrumb';
                     } else {
                         @$module->view = 'showall_'.$module->view;
                     }
