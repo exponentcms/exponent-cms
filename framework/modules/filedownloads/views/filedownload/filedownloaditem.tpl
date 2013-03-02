@@ -101,15 +101,29 @@
         {/if}
     {/if}
     {clear}
-    {if $config.show_player && !$file->ext_file && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
-            {if $file->expFile.preview[0] != ""}
-                {img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}
-            {/if}
-        </a>
-        {*<audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile['downloadable'][0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">*}
-        {*</audio>*}
+    {*{if $config.show_player && !$file->ext_file && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}*}
+        {*<a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">*}
+            {*{if $file->expFile.preview[0] != ""}*}
+                {*{img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}*}
+            {*{/if}*}
+        {*</a>*}
+    {*{/if}*}
+
+    {if $config.show_player && !$file->ext_file}
+        {if $filetype == "mp3"}
+            <audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile['downloadable'][0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">
+            </audio>
+        {elseif $filetype == "mp4" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
+            <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$file->expFile['downloadable'][0]->directory}{$file->expFile.downloadable[0]->filename}" type="{$file->expFile.downloadable[0]->mimetype}"
+            	id="player{$file->expFile['downloadable'][0]->id}"
+                {if $record->expFile.preview[0]->id}
+                poster="{$record->expFile.preview[0]->id}"
+                {/if}
+            	controls="controls" preload="none">
+            </video>
+        {/if}
     {/if}
+
     {clear}
     {permissions}
         <div class="module-actions">

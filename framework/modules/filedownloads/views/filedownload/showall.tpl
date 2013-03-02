@@ -18,6 +18,9 @@
 
 {/css}
 {/if}
+{css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
+
+{/css}
 
 <div class="module filedownload showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
@@ -52,7 +55,15 @@
 </div>
 
 {if $config.show_player}
-    {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
+    {*{/script}*}
+
+    {script unique="mediaelement" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+        $('audio,video').mediaelementplayer({
+        	success: function(player, node) {
+        		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+        	}
+        });
     {/script}
 {/if}
 
