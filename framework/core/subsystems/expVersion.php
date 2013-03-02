@@ -45,7 +45,7 @@ class expVersion {
             if ($type && EXPONENT_VERSION_TYPE != '') $vers .= "-" . EXPONENT_VERSION_TYPE . EXPONENT_VERSION_ITERATION;
         }
         if ($build) {
-            $vers .= " (Build Date: " . strftime("%D", EXPONENT_VERSION_BUILDDATE) . ")";
+            $vers .= " (Build Date: " . date("F-d-Y", EXPONENT_VERSION_BUILDDATE) . ")";
         }
         return $vers;
     }
@@ -70,7 +70,7 @@ class expVersion {
             if ($type && $dbver->type != '') $vers .= "-" . $dbver->type . (!empty($dbver->iteration) ? $dbver->iteration : '');
         }
         if ($build) {
-            $vers .= " (Build Date: " . strftime("%D", $dbver->builddate) . ")";
+            $vers .= " (Build Date: " . date("F-d-Y", $dbver->builddate) . ")";
         }
         return $vers;
     }
