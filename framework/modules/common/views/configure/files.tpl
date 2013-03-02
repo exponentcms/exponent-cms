@@ -25,8 +25,8 @@
 <div id="ff-options" style="display:none">
     {group label="File Display Box"|gettext}
         {control type="dropdown" name="ffloat" label="Placement in Relation to Content"|gettext items="Above,Left,Right,Below"|gettxtlist value=$config.ffloat}
-        {control type="text" label="Width of Box"|gettext name="fwidth" value=$config.fwidth size=5}
-        {control type="text" label="Width of Margin"|gettext name="fmargin" value=$config.fmargin size=5}
+        {control type="text" label="Width of Box"|gettext name="fwidth" value=$config.fwidth size=5 description="empty = auto width, single thumbnail column"|gettext}
+        {control type="text" label="Width of Margin"|gettext name="fmargin" value=$config.fmargin size=5 description="Placed between display box and content"|gettext}
     {/group}
 </div>
 <div id="fileViewConfig">

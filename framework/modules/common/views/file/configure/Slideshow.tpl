@@ -16,10 +16,10 @@
 {group label="Image Slideshow Configuration"|gettext}
     {control type=text name="width" label="Slideshow width"|gettext value=$config.width|default:350 size="5"}
     {control type=text name="height" label="Slideshow height"|gettext value=$config.height|default:200 size="5"}
-    {control type=text name="speed" label="Seconds per slide"|gettext value=$config.speed|default:5 size="5"}
-    {control type=text name="quality" label="Slide thumbnail JPEG quality"|gettext|cat:" (0 - 95, 100)<br><small>"|cat:("If quality is set to 100, the raw image will be used instead of thumbnailing"|gettext|cat:"</small>") value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
-    {*{control type=checkbox name="hidetext" label="Hide Title and Description text in slides"|gettext checked=$config.hidetext value=1}*}
-    {*control type="checkbox" name="hidecontrols" label="Hide controls"|gettext checked=$config.hidecontrols|default:0 value=1*}
+    {control type=text name="speed" label="Slideshow speed in seconds per slide"|gettext value=$config.speed|default:5 size="5"}
+    {control type=text name="quality" label="Slide thumbnail JPEG quality"|gettext|cat:" (0 - 95, 100)" description="If quality is set to 100, the raw image will be used instead of thumbnailing"|gettext value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
+    {{control type=checkbox name="hidetext" label="Hide slide title"|gettext checked=$config.hidetext value=1}}
+    {control type="checkbox" name="hidecontrols" label="Hide slide controls"|gettext checked=$config.hidecontrols|default:0 value=1}
 
     {*control type=dropdown name="pa_slideshow_anim"
     items="Fade,Slide Right,Slide Left,Slide Up,Reveal Left,Reveal Right,Reveal up,Reveal Down"|gettxtlist

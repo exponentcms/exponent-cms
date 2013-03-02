@@ -17,15 +17,9 @@
 
 {/css}
 
-{if $config.floatthumb!="No Float" && !$config.lightbox}
-    {capture assign="imgflot"}
-    float:{$config.floatthumb|lower};
-    {/capture}
-
-    {capture assign="spacing"}
-    margin:{$config.spacing}px;
-    {/capture}
-{/if}
+{capture assign="spacing"}
+margin:{$config.spacing}px;
+{/capture}
 
 {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
 
@@ -36,12 +30,31 @@
         {else}
             {$miw=$config.piwidth|default:$config.listingwidth}
         {/if}
-        {img file_id=$files[0]->id w=$miw alt="`$files[0]->alt`" class="mainimg `$config.tclass`"}
+        {if $files[0]->alt != ""}
+            {$alt = $files[0]->alt}
+        {elseif $files[0]->title!=""}
+            {$alt = $files[0]->title}
+        {else}
+            {$alt = $files[0]->filename}
+        {/if}
+        {img file_id=$files[0]->id w=$miw h=$miw alt="`$alt`" class="mainimg `$config.tclass`"}
     </div>
     {if ($config.pio && !$params.is_listing) || !$config.pio}
         <div class="thumb-imgs">
             {foreach from=$files item=img key=key}
-                <a href="{$img->url}" rel="showcase-{$img->id}" title="{$img->title}" class="image-link" style="margin:{$config.spacing}px;">{img file_id=$img->id w=$config.thumb h=$config.thumb zc=1 q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$img->alt`" class="`$config.tclass`"}</a>
+                {if $img->alt != ""}
+                    {$alt = $img->alt}
+                {elseif $img->title!=""}
+                    {$alt = $img->title}
+                {else}
+                    {$alt = $img->filename}
+                {/if}
+                {if $img->title != ""}
+                    {$title = $img->title}
+                {else}
+                    {$title = $img->filename}
+                {/if}
+                <a href="{$img->url}" rel="showcase-{$img->id}" title="{$title}" class="image-link" style="margin:{$config.spacing}px;">{img file_id=$img->id w=$config.thumb h=$config.thumb f=jpeg q=$quality|default:75 style="`$spacing`" alt="`$alt`" class="`$config.tclass`"}</a>
             {/foreach}
         </div>
     {/if}
@@ -60,7 +73,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
         e.halt();
         var mainimg = e.currentTarget.ancestor('.showcase').one('.main-img img');
         var newid = e.currentTarget.getAttribute('rel').replace('showcase-','');
-        mainimg.setAttribute('src',EXPONENT.PATH_RELATIVE+"thumb.php?id="+newid+"&w={/literal}{$miw}{literal}&q={/literal}{$quality|default:75}{literal}");
+        mainimg.setAttribute('src',EXPONENT.PATH_RELATIVE+"thumb.php?id="+newid+"&w={/literal}{$miw}{literal}&h={/literal}{$miw}{literal}&f=jpeg&q={/literal}{$quality|default:75}{literal}");
     });
     //Y.Lightbox.init();    
 });

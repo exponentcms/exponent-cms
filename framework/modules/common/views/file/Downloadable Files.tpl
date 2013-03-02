@@ -13,11 +13,24 @@
  *
  *}
 
+
 {if $config.title}<h3>{$config.title}</h3>{/if}
 <ul class="filelist">
     {foreach from=$files item=file}
+        {if $file->alt != ""}
+            {$alt = $file->alt}
+        {elseif $file->title!=""}
+            {$alt = $file->title}
+        {else}
+            {$alt = $file->filename}
+        {/if}
+        {if (($file->title != "") && !$config.usefilename)}
+            {$title = $file->title}
+        {else}
+            {$title = $file->filename}
+        {/if}
         <li>
-            <a class="downloadfile" href="{link action="downloadfile" id=$file->id}" title="{if $file->alt!=""}{$file->alt}{elseif $file->title!=""}{$file->title}{else}{$file->filename}{/if}">{if $file->title!=""}{$file->title}{else}{$file->filename}{/if}</a>
+            <a class="downloadfile" href="{link action="downloadfile" id=$file->id}" title="{$alt}">{$title}</a>
         </li>
     {/foreach}
 </ul>
