@@ -39,10 +39,11 @@ class container2 extends expRecord {
 
             // set the location data for the new module/controller
             $newInternal = expCore::makeLocation($params['modcntrol'],$src);
-            $this->internal = serialize($newInternal);
+            $params['internal'] = serialize($newInternal);
             // make sure we're not in the recycle bin
             recyclebin::restoreFromRecycleBin($newInternal,intval($params['current_section']));
         }
+        $this->grouping_sql = " AND external='".$params['external']."'";
         parent::update($params);
     }
 

@@ -23,9 +23,11 @@
 </div>
 {control id="filedisplay" type='filedisplay-types' name=filedisplay label="Display Files as"|gettext value=$config.filedisplay}
 <div id="ff-options" style="display:none">
-    {control type="dropdown" name="ffloat" label="File Display Box Float"|gettext items="No Float,Left,Right"|gettxtlist values="No Float,Left,Right" value=$config.ffloat}
-    {control type="text" label="Width of File Display Box"|gettext name="fwidth" value=$config.fwidth size=5}
-    {control type="text" label="Width of Margin"|gettext name="fmargin" value=$config.fmargin size=5}
+    {group label="File Display Box"|gettext}
+        {control type="dropdown" name="ffloat" label="Placement in Relation to Content"|gettext items="Above,Left,Right,Below"|gettxtlist value=$config.ffloat}
+        {control type="text" label="Width of Box"|gettext name="fwidth" value=$config.fwidth size=5}
+        {control type="text" label="Width of Margin"|gettext name="fmargin" value=$config.fmargin size=5}
+    {/group}
 </div>
 <div id="fileViewConfig">
     {if $config.filedisplay != ""}

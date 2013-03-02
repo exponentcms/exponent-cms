@@ -13,11 +13,19 @@
  *
  *}
 
-<div class="navigation navbar navbar-fixed-top">
+{css unique="bootstrap-top-nav"}
+{if $smarty.const.MENU_LOCATION == 'static-top'}
+    .navbar-spacer {
+        height: 0;
+    }
+{/if}
+{/css}
+
+<div class="navigation navbar navbar-{if $smarty.const.MENU_LOCATION}{$smarty.const.MENU_LOCATION}{else}fixed-top{/if}">
     <div class="navbar-inner">
         <div class="container">
             <a class="brand" href="{$smarty.const.URL_FULL}">{$smarty.const.ORGANIZATION_NAME}</a>
-            <ul class="nav">
+            <ul class="nav{if $smarty.const.MENU_ALIGN == 'right'} pull-right{/if}">
                 {getnav type='hierarchy' assign=hierarchy}
                 {bootstrap_navbar menu=$hierarchy}
             </ul>
@@ -25,3 +33,4 @@
     </div>
 </div>
 <div class="navbar-spacer"></div>
+<div class="navbar-spacer-bottom"></div>

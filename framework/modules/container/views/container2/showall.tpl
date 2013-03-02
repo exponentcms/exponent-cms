@@ -25,10 +25,10 @@
             {script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_RELATIVE`exp-container.js"}
 
             {/script}
-            <div id="cont{$top->id}" class="exp-container-module-wrapper"{if $container->hasParent != 0} style="border: 1px dashed darkgray; padding: 1em;"{/if}>
+            <div id="cont{$top->id}" class="exp-container-module-wrapper">
         {/if}
         {*if $hasParent == 0 && ($permissions.edit || $permissions.create || $permissions.delete || $permissions.order_module || $permissions.manage)*}
-        {if $container->hasParent == 0 && ($permissions.configure == 1 || $container->permissions.configure == 1)}
+        {if empty($container->hasParent) && ($permissions.configure == 1 || $container->permissions.configure == 1)}
         {** top level container module **}
             <div class="container-chrome">
                 <a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
@@ -77,7 +77,7 @@
 
             	{/script}
 
-				<div id="module{$container->id}" class="exp-container-module-wrapper">
+				<div id="module{$container->id}" class="exp-container-module-wrapper"{if !empty($container->hasParent)} style="border: 1px dashed darkgray; padding: 0.25em;"{/if}>
                     {if $i == $containers|@count}
                         {$last=true}
                     {else}

@@ -9,7 +9,9 @@
             YUI3_RELATIVE."cssfonts/fonts-min.css",
             YUI3_RELATIVE."cssgrids/grids-min.css"
         ),
-    	"css_core"=>array("common"),
+    	"css_core"=>array(
+            "common"
+        ),
     	"css_links"=>true,
     	"css_theme"=>true
         )
@@ -48,7 +50,7 @@
 			</div>
 		</div>
 		<div id="ft">
-            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer")) ?>
+            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall_single","source"=>"@footer")) ?>
 		</div>
 	</div>
 <?php expTheme::foot(); ?>

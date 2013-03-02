@@ -14,5 +14,5 @@
  *}
 
 {group label="Downloadable Files Configuration"|gettext}
-{control type=text name="title" label="File list title"|gettext value=$config.title}
+    {control type=text name="title" label="File list title"|gettext value=$config.title}
 {/group}

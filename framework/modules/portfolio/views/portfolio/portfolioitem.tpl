@@ -34,7 +34,7 @@
 	{/permissions}
     {tags_assigned record=$record}
     <div class="bodycopy">
-        {if $config.filedisplay != "Downloadable Files"}
+        {if $config.ffloat != "Below"}
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}
         {/if}
         {if $config.usebody==1}
@@ -43,7 +43,7 @@
         {else}
             {$record->body}
         {/if}
-        {if $config.filedisplay == "Downloadable Files"}
+        {if $config.ffloat == "Below"}
             {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}
         {/if}
     </div>

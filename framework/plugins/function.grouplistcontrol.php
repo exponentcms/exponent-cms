@@ -34,27 +34,30 @@
  * @param \Smarty $smarty
  */
 function smarty_function_grouplistcontrol($params, &$smarty) {
-//    echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>';
+//    echo '<script type="text/javascript" src="' . PATH_RELATIVE . 'framework/core/forms/controls/listbuildercontrol.js"></script>';
 
     global $db;
     $groups = $db->selectObjects("group", null, "name");
+    if (!empty($groups)) {
+        $selected = isset($params['items']) ? $params['items'] : null;
+       foreach ($groups as $group) {
+           if (!in_array($group->id, $selected)) {
+               $allgroups[$group->id] = "$group->name";
+           } else {
+               $selectedgroups[$group->id] = "$group->name";
+           }
+       }
 
-    $selected = isset($params['items']) ? $params['items'] : null;
-    foreach ($groups as $group) {
-        if (!in_array($group->id, $selected)) {
-            $allgroups[$group->id] = "$group->name";
-        } else {
-            $selectedgroups[$group->id] = "$group->name";
-        }
+       $size = (isset($params['size'])) ? $params['size'] : 5;
+       $control = new listbuildercontrol($selectedgroups, $allgroups, $size);
+       if (!empty($params['class'])) $control->class = $params['class'];
+       $name    = isset($params['name']) ? $params['name'] : "grouplist";
+       $label   = isset($params['label']) ? $params['label'] : "";
+   //    echo $control->controlToHTML($name);
+       echo $control->ToHTML($label,$name);
+    } else {
+        echo '<div class="control"><label class="label">'.$params['label'].'</label><strong>'.gt('No User Group Accounts have been created!').'</strong></div>';
     }
-
-    $size = (isset($params['size'])) ? $params['size'] : 5;
-    $control = new listbuildercontrol($selectedgroups, $allgroups, $size);
-    if (!empty($params['class'])) $control->class = $params['class'];
-    $name    = isset($params['name']) ? $params['name'] : "grouplist";
-    $label   = isset($params['label']) ? $params['label'] : "";
-//    echo $control->controlToHTML($name);
-    echo $control->ToHTML($label,$name);
 }
 
 ?>

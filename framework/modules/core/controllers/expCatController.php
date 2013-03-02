@@ -96,7 +96,7 @@ class expCatController extends expController {
             'columns'=>array(
                 gt('ID#')=>'id',
                 gt('Title')=>'title',
-                gt('Body')=>'body'
+//                gt('Body')=>'body'
             ),
         ));
 

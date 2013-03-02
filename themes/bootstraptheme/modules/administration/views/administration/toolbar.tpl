@@ -15,12 +15,37 @@
 
 {css unique="slingbar" link="`$asset_path`css/slingbar.css" corecss="admin-global"}
 {if $top}
-    .navbar-fixed-top {
-        margin-top: 30px;
-    }
-    .navbar-spacer {
-        height: 75px;
-    }
+    {if (!$smarty.const.MENU_LOCATION || $smarty.const.MENU_LOCATION == 'fixed-top')}
+        .navbar-fixed-top {
+            margin-top: 30px;
+        }
+        .navbar-spacer {
+            height: 75px;
+        }
+    {elseif $smarty.const.MENU_LOCATION == 'static-top'}
+        .navbar-static-top {
+            margin-top: 30px;
+        }
+        .navbar-spacer {
+            height: 0;
+        }
+    {elseif $smarty.const.MENU_LOCATION == 'fixed-bottom'}
+        .navbar-spacer {
+            height: 30px;
+        }
+    {/if}
+{else}
+    {if $smarty.const.MENU_LOCATION == 'fixed-bottom'}
+        .navbar-fixed-bottom {
+            bottom: 30px;
+        }
+        .navbar-spacer {
+            height: 0;
+        }
+        .navbar-spacer-bottom {
+            height: 30px;
+        }
+    {/if}
 {/if}
 {/css}
 

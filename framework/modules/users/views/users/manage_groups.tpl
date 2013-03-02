@@ -42,22 +42,22 @@
 		</thead>
 		<tbody>
 			{foreach from=$page->records item=group name=listings}
-			<tr class="{cycle values="odd,even"}">
-				<td>{$group->name}</td>
-				<td>{$group->description}</td>
-				<td>{if $group->inclusive}<strong>{'Default'|gettext}</strong>{else}{'Normal'|gettext}{/if}</td>
-			    <td>
-			        {permissions}
-						<div class="item-actions">
-							{icon img="groupperms.png" controller=users action="manage_group_memberships" record=$group title="Add/Remove Members to Group"|gettext|cat:" "|cat:$group->name}
-							{icon img="edit.png" controller=users action=edit_group record=$group title="Edit this group"|gettext}
-							{icon img="delete.png" controller=users action=delete_group record=$group title="Delete this group"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this group?"|gettext)|cat:"');"}
-						</div>
-                    {/permissions}
-			    </td>
-			</tr>
+                <tr class="{cycle values="odd,even"}">
+                    <td>{$group->name}</td>
+                    <td>{$group->description}</td>
+                    <td>{if $group->inclusive}<strong>{'Default'|gettext}</strong>{else}{'Normal'|gettext}{/if}</td>
+                    <td>
+                        {permissions}
+                            <div class="item-actions">
+                                {icon img="groupperms.png" controller=users action="manage_group_memberships" record=$group title="Add/Remove Members to Group"|gettext|cat:" "|cat:$group->name}
+                                {icon img="edit.png" controller=users action=edit_group record=$group title="Edit this group"|gettext}
+                                {icon img="delete.png" controller=users action=delete_group record=$group title="Delete this group"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this group?"|gettext)|cat:"');"}
+                            </div>
+                        {/permissions}
+                    </td>
+                </tr>
 			{foreachelse}
-			    <td colspan="{$page->columns|count}">{'No Data'|gettext}.</td>
+			    <tr><td colspan="{$page->columns|count}">{'No User Groups Available'|gettext}.</td></tr>
 			{/foreach}
 		</tbody>
 	</table>

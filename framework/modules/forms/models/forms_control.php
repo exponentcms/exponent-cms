@@ -28,6 +28,7 @@ class forms_control extends expRecord {
 //    );
     public $default_sort_field = 'rank';
 
+
 //    protected $attachable_item_types = array(
 //        'content_expFiles'=>'expFile'
 //    );
@@ -36,6 +37,29 @@ class forms_control extends expRecord {
 #		'presence_of'=>array(
 #			'body'=>array('message'=>'Body is a required field.'),
 #		));
+
+    /**
+     * __construct forms_control item...needs special grouping we can have duplicates across modules
+
+     * @param array $params
+     */
+    public function __construct($params=array()) {
+        parent::__construct($params);
+        $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+    }
+
+    /**
+     * beforeValidation we can have duplicate forms_control across modules
+     */
+    public function beforeValidation() {
+        $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        parent::beforeValidation();
+    }
+
+    public function beforeSave() {
+        $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        parent::beforeSave();
+    }
 
 }
 

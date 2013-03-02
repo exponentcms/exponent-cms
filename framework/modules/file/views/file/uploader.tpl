@@ -67,7 +67,9 @@
         </div>
     </div>
     <div id="uploaderContainer">
-        <div id="overallProgress"></div>
+        <span id="btnProgress"></span>
+        <span id="btnStop"></span>
+        <span id="overallProgress"></span>
     </div>
 
 {script unique="uploader2" yui3="1"}
@@ -77,6 +79,8 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
     var usr = {/literal}{obj2json obj=$user}{literal}; //user
     var uploadBtn = Y.one("#uploadLink");
     var createBtn = Y.one("#createLink");
+    var simLimit = '{/literal}{$smarty.const.FM_SIMLIMIT}{literal}';
+    if (simLimit == 0) simLimit = 3;
 
     if (Y.Uploader.TYPE != "none" && !Y.UA.ios) {
         var uploader = new Y.Uploader({
@@ -86,7 +90,7 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
 //                                      swfURL: EXPONENT.YUI3_RELATIVE + "uploader/assets/flashuploader.swf?t=" + Math.random(),
                                       swfURL: EXPONENT.YUI3_URL + "uploader/assets/flashuploader.swf",
                                       uploadURL: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=upload&ajax_action=1",
-                                      simLimit: 3,
+                                      simLimit: simLimit,
                                       withCredentials: false,
                                       selectFilesButton: Y.one("#selectLink")
                                      });
@@ -165,20 +169,24 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
             var prog = Math.round(100 * (event.bytesLoaded / event.bytesTotal));
             var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:"+((prog>90)?'#fad00e':'#b30c0c')+";width:" + prog + "%;'>" + prog + "%</div></div>";
             fileRow.one(".percentdone").setHTML(progbar);
+            fileRow.one(".serverdata").setHTML('');
         });
 
         uploader.on("uploadstart", function (event) {
             uploader.set("enabled", false);
             uploadBtn.addClass("yui3-button-disabled");
             uploadBtn.detach("click");
+            Y.all("#filenames2 tbody .delete").remove();  // we can't use the remove file action at this point
+            Y.all("#filenames2 tbody .serverdata").setHTML("<a href='#' class='stop-one' id='stop-one' title='{/literal}{'Cancel File Uploading'|gettext}{literal}'>{/literal}{'Cancel'|gettext}{literal}</a>");
+            Y.one("#btnProgress").setHTML("<a href='#' class='pause' id='pause-upload' title='{/literal}{'Pause File Uploading'|gettext}{literal}'>{/literal}{'Pause'|gettext}{literal}</a>");
+            Y.one("#btnStop").setHTML("<a href='#' class='stop' id='stop-upload' title='{/literal}{'Cancel File Uploading'|gettext}{literal}'>{/literal}{'Cancel All'|gettext}{literal}</a>");
         });
 
         uploader.on("uploadcomplete", function (event) {
             var fileRow = Y.one("#" + event.file.get("id") + "_row");
-//            fileRow.one(".percentdone").set("text", "{/literal}{'Finished!'|gettext}{literal}");
-            fileRow.one(".serverdata").setHTML(event.data);
             var progbar = "<div style='width:90%;background-color:#CCC;'><div style='height:12px;padding:3px;font-size:10px;color:#fff;background-color:#2f840a;width:100%;'><img src='"+EXPONENT.PATH_RELATIVE+"framework/core/assets/images/accepted.png' style=\"float:right; margin:-3px -24px 0 0\">100%</div></div>";
             fileRow.one(".percentdone").setHTML(progbar);
+            fileRow.one(".serverdata").setHTML(event.data);
         });
 
         uploader.on("totaluploadprogress", function (event) {
@@ -195,6 +203,8 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
                 }
             });
             Y.one("#overallProgress").set("text", "{/literal}{'Uploads complete!'|gettext}{literal}");
+            Y.one("#btnProgress").setHTML("");
+            Y.one("#btnStop").setHTML("");
             uploadDone = true;
         });
 
@@ -208,6 +218,52 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
             e.halt();
             var fileRow = e.target.ancestor('tr').remove();
         },'.delete');
+
+        Y.one("#btnProgress").delegate('click', function(e) {
+            e.halt();
+            uploader.queue.pauseUpload();
+            Y.one("#btnProgress").setHTML("<a href='#' class='resume' id='resume-upload' title='{/literal}{'Resume File Uploading'|gettext}{literal}'>{/literal}{'Resume'|gettext}{literal}</a>");
+            Y.log('All File Uploading Paused');
+        },'a.pause');
+
+        Y.one("#filenames2 tbody").delegate('click', function(e) {
+            e.halt();
+            var fileRow = e.target.ancestor('tr');
+            theFilename = fileRow.one('.filename').get('text');
+            theQ = uploader.queue.queuedFiles;
+            if (theQ != null) {
+                for (i=0; i<theQ.length; i++) {
+                    if (theQ[i].get('name') == theFilename) {
+                        theFile = theQ[i];
+                        break;
+                    }
+                }
+            }
+            uploader.queue.cancelUpload(theFile);
+            fileRow.one(".percentdone").setHTML("");
+            fileRow.one(".serverdata").setHTML("{/literal}{'Cancelled'|gettext}{literal}");
+            Y.log('File Upload Cancelled');
+        },'a.stop-one');
+
+        Y.one("#btnProgress").delegate('click', function(e) {
+            e.halt();
+            uploader.queue.restartUpload();
+            Y.one("#btnProgress").setHTML("<a href='#' class='pause' id='pause-upload' title='{/literal}{'Pause File Uploading'|gettext}{literal}'>{/literal}{'Pause'|gettext}{literal}</a>");
+            Y.log('All File Uploading Resumed');
+        },'a.resume');
+
+        Y.one("#btnStop").delegate('click', function(e) {
+            e.halt();
+            uploadDone = true;
+            uploader.queue.cancelUpload();
+            uploader.set("enabled", true);
+            uploader.set("fileList", []);
+            uploadBtn.removeClass("yui3-button-disabled");
+            Y.one("#overallProgress").set("text", "{/literal}{'Uploading Cancelled!'|gettext}{literal}");
+            Y.one("#btnProgress").setHTML("");
+            Y.one("#btnStop").setHTML("");
+            Y.log('All File Uploading Cancelled');
+        },'a.stop');
 
     } else {
         Y.one("#uploaderContainer").set("text", "{/literal}{'We are sorry, but to use the uploader, you either need a browser that support HTML5 or have the Flash player installed on your computer.'|gettext}{literal}");

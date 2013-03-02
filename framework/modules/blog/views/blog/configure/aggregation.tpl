@@ -21,10 +21,11 @@
         <h2>{"Aggregate content from similar modules"|gettext}</h2>
 	</div>
 </div>
-{control type="checkbox" name="add_source" label='Separate this blog\'s content'|gettext|cat:"?" checked=$config.add_source value=1}
+{control type="checkbox" name="add_source" label='Segregate this blog\'s content'|gettext|cat:"?" checked=$config.add_source value=1 description='The default behavior is to aggregate all site blog posts into this module'|gettext}
 <hr />
 {control type="checkbox" name="noeditagg" label="Prevent editing aggregate items"|gettext value=1 checked=$config.noeditagg}
 <hr />
+<div id="aggregation-list">
 <table class="exp-skin-table">
     <thead>
         <tr>
@@ -56,6 +57,7 @@
 {/foreach}
     </tbody>
 </table>
+</div>
 
 {script unique="aggregation"}
     function selectAll(val) {
@@ -64,4 +66,18 @@
           checks[i].checked = val;
         }
     }
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+        var aggnodes = Y.one('#aggregation-list');
+        EXPONENT.handleClick = function(e) {
+            if (e.currentTarget.get('checked')) {
+                aggnodes.setStyle('display','block');
+            } else {
+                aggnodes.setStyle('display','none');
+            }
+        };
+        Y.one('#add_sourceControl').delegate('click', EXPONENT.handleClick, "#add_source");
+        if (!Y.one('#add_source').get('checked')) {
+            aggnodes.setStyle('display','none');
+        }
+    });
 {/script}

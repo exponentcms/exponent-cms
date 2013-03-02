@@ -16,31 +16,65 @@
 <div class="module search search-results">
 	
 	<h1>{'Search Results'|gettext}</h1>
-    {pagelinks paginate=$page top=1}
-	<span class="searched_for">
-	{'Your search for'|gettext} <span class="terms">"{$terms}"</span> {'returned'|gettext} <span class="result-count">{$page->total_records}</span> {'results'|gettext}<br />
-	</span>
-	{if $config->is_categorized == 0}
-		{foreach from=$page->records item=result}
-			{*if $result->canview == 1*}
-				<div class="item {cycle values="odd,even"}">
-					<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}</a> <span class="attribution">({$result->category})</span>
-					{if $result->body != ""}{br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
-					{clear}
-				</div>
-			{*/if*}
-		{/foreach}
-	{else}{* categorized, list of crap is two levels deep *}
-		{foreach from=$results key=category item=subresults}
-			<h2 id="#{$category}">{$category} {'matching'|gettext} "{$query}":</h2>
-			{foreach from=$subresults item=result}
-				<div class="item {cycle values="odd,even"}">
-					<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title}</a> (<span class="attribution">({$result->category})</span>
-					{if $result->sum != ""}<br /><span class="summary">{$result->sum}</span>{/if}
-					{*<br /><span class="search_result_item_link">{$result->view_link}</span>*}
-				</div>
-			{/foreach}
-		{/foreach}
-	{/if}
-    {pagelinks paginate=$page bottom=1}
+    <div id="searchlist">
+        {include 'searchlist.tpl'}
+    </div>
 </div>
+
+{script unique="searchlistajax" yui3mods="1"}
+{literal}
+
+YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+    var searchlist = Y.one('#searchlist');
+    var cfg = {
+    			method: "POST",
+    			headers: { 'X-Transaction': 'Load searchitems'},
+    			arguments : { 'X-Transaction': 'Load searchitems'}
+    		};
+
+    src = '{/literal}{$__loc->src}{literal}';
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=search&action=search&view=searchlist&ajax_action=1&src="+src + "&search_string={/literal}{$terms|urlencode}{literal}";
+
+	var handleSuccess = function(ioId, o){
+//		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "Searchitems nav");
+
+        if(o.responseText){
+            searchlist.setContent(o.responseText);
+            searchlist.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+                searchlist.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
+        } else {
+            Y.one('#searchlist.loadingdiv').remove();
+        }
+	};
+
+	//A function handler to use for failed requests:
+	var handleFailure = function(ioId, o){
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "Searchitems nav");
+	};
+
+	//Subscribe our handlers to IO's global custom events:
+	Y.on('io:success', handleSuccess);
+	Y.on('io:failure', handleFailure);
+
+    searchlist.delegate('click', function(e){
+        e.halt();
+        cfg.data = "page="+e.currentTarget.get('rel');
+        var request = Y.io(sUrl, cfg);
+        searchlist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Searching"|gettext}{literal}</div>'));
+    }, 'a.pager');
+});
+{/literal}
+{/script}

@@ -1,10 +1,25 @@
-#Exponent Content Management System..
+#Exponent Content Management System
 
-===============================================
+----------
 
 Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
+
+Added / Fixed / changed for 2.2.0 alpha 3
+-----------------------
+### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
+  - removes deprecated headline controller (converting them to text modules), suggest a custom text module 'headline' view be created if needed
+  - fixes migration to work w/ container2
+  - adds theme export feature
+  - adds new 'blog' site sample in addition to 'sample site' during installation
+  - adds category support to blog module
+    -- adds new comments and categories views to blog
+  - adds file upload pause, resume, & cancel feature
+  - adds normalize.css and Twitter Bootstrap as system (theme) features
+  - contains all the fixes in 2.1.3
+### Known Issues
+  - None
 
 Added / Fixed / changed for 2.2.0 alpha 2
 -----------------------
@@ -19,11 +34,19 @@ Added / Fixed / changed for 2.2.0 alpha 1
 -----------------------
 ### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
   - replaces the containermodule with container2 controller
-  - forces deprecation/removal of formmodule/formbuilder, headlineController
+  - forces deprecation/removal of formmodule/formbuilder
     -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
 ### Known Issues
   - This is the first release of the v2.2 code
+
+Added / Fixed / changed for 2.1.3
+-----------------------
+### This release only fixes bugs found in 2.1.2, everything else is destined for the v2.2 major version update
+ - fixes form copy feature
+ - fixes a 'file manager doesn't display files' issue on some servers
+ - makes blog aggregation configuration tab more intuitive
+ - fixes some migration issues with forms, events, & navigation
 
 Added / Fixed / changed for 2.1.2
 -----------------------

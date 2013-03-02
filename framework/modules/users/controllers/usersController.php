@@ -124,6 +124,27 @@ class usersController extends expController {
             'extensions' => $active_extensions,
             "userkey"    => expSession::get("userkey")
         ));
+
+        if ($user->isAdmin()) {
+            $page = new expPaginator(array(
+                'model'      => 'group',
+                'where'      => 1,
+                'limit'      => (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+                'order'      => empty($this->config['order']) ? 'name' : $this->config['order'],
+                'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
+                'columns'    => array(
+                    gt('Name')        => 'name',
+                    gt('Description') => 'description',
+                ),
+                'controller' => $this->baseclassname,
+                'action'     => $this->params['action'],
+            ));
+
+            assign_to_template(array(
+                'groups' => $page,
+                'mygroups' => $u->getGroupMemberships(),
+            ));
+        }
     }
 
     public function update() {
@@ -185,6 +206,25 @@ class usersController extends expController {
             }
         }
 
+        // update group membership assignment
+        if (!empty($this->params['member'])) {
+            $old_groups = $db->selectObjects('groupmembership', 'member_id=' . $u->id);
+//            $db->delete('groupmembership', 'member_id=' . $u->id);  // start from scratch
+            $memb = new stdClass();
+            $memb->member_id = $u->id;
+            foreach ($this->params['member'] as $grp) {
+                $memb->group_id = $grp;
+                $memb->is_admin = false;
+                foreach ($old_groups as $oldgroup) {
+                    if ($oldgroup->group_id == $grp) {
+                        if ($oldgroup->is_admin) $memb->is_admin = true;  // retain group admin setting
+                    }
+                }
+                $db->insertObject($memb, 'groupmembership');
+            }
+            if ($u->id == $user->id) expPermissions::triggerRefresh();
+        }
+
         // if this is a new account then we will check to see if we need to send 
         // a welcome message or admin notification of new accounts.
         if (empty($id)) {
@@ -195,12 +235,13 @@ class usersController extends expController {
             $memb = new stdClass();
             $memb->member_id = $u->id;
             // Also need to process the groupcodes, for promotional signup
-            $code_where = '';
-            if (isset($this->params['groupcode']) && $this->params['groupcode'] != '') {
-                $code_where = " OR code='" . $this->params['groupcode'] . "'";
-            }
+//            $code_where = '';
+//            if (isset($this->params['groupcode']) && $this->params['groupcode'] != '') {
+//                $code_where = " OR code='" . $this->params['groupcode'] . "'";
+//            }
             // Add to default plus any groupcode groups
-            foreach ($db->selectObjects('group', 'inclusive=1' . $code_where) as $g) {
+//            foreach ($db->selectObjects('group', 'inclusive=1' . $code_where) as $g) {
+            foreach ($db->selectObjects('group', 'inclusive=1') as $g) {
                 $memb->group_id = $g->id;
                 $db->insertObject($memb, 'groupmembership');
             }
@@ -1124,11 +1165,10 @@ class usersController extends expController {
     }
 
     public function import_users() {
-        global $template;
-
-  //FIXME we need a true tmp
         if (expFile::canCreate(BASE . "tmp/test") != SYS_FILES_SUCCESS) {
-            $template->assign("error", "The /tmp directory is not writable.  Please contact your administrator.");
+            assign_to_template(array(
+                "error" => "The /tmp directory is not writable.  Please contact your administrator.",
+            ));
         } else {
             //Setup the mete data (hidden values)
             $form = new form();
@@ -1146,15 +1186,16 @@ class usersController extends expController {
             $form->register("delimiter", gt('Delimiter Character'), New dropdowncontrol(",", $delimiterArray));
             $form->register("upload", gt('CSV File to Upload'), New uploadcontrol());
             $form->register("rowstart", gt('Row to Begin at'), New textcontrol("1", 1, 0, 6));
+            $form->register("use_header", gt('First Row is Header'), New checkboxcontrol(0, 0));
             $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
-            $template->assign("form_html", $form->tohtml());
+            assign_to_template(array(
+                "form_html" => $form->tohtml(),
+            ));
         }
     }
 
     public function import_users_mapper() {
-        global $template;
-
         //Get the post data for future massaging
         $post = $this->params;
 
@@ -1168,7 +1209,7 @@ class usersController extends expController {
         }
 
         //Get the temp directory to put the uploaded file
-        $directory = "tmp";  //FIXME we need a true tmp
+        $directory = "tmp";
 
         //Get the file save it to the temp directory
         if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
@@ -1205,9 +1246,11 @@ class usersController extends expController {
         */
 
         //split the line into its columns
+        $headerinfo = null;
         $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
         for ($x = 0; $x < $this->params["rowstart"]; $x++) {
             $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
+            if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
         }
 
         $colNames = array(
@@ -1226,6 +1269,10 @@ class usersController extends expController {
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit("");
         } else {
+            $headerbr = '';
+            if ($headerinfo != null) {
+                $headerbr = ':<br>';
+            }
             //Setup the mete data (hidden values)
             $form = new form();
             $form->meta("controller", "users");
@@ -1234,17 +1281,17 @@ class usersController extends expController {
             $form->meta("filename", $directory . "/" . $file->filename);
             $form->meta("delimiter", $this->params["delimiter"]);
             for ($i = 0; $i < count($lineInfo); $i++) {
-                $form->register("column[$i]", $lineInfo[$i], new dropdowncontrol("none", $colNames));
+                $form->register("column[$i]", $headerinfo[$i] . $headerbr . $lineInfo[$i], new dropdowncontrol("none", $colNames));
             }
             $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
-            $template->assign("form_html", $form->tohtml());
+            assign_to_template(array(
+                "form_html" => $form->tohtml(),
+            ));
         }
     }
 
     public function import_users_process() {
-        global $template;
-
         $form = new form();
         $form->meta("controller", "users");
         $form->meta("action", "import_users_display");
@@ -1283,12 +1330,12 @@ class usersController extends expController {
         $form->register("update", gt('Update users already in database'), New checkboxcontrol(0, 0));
         $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
-        $template->assign("form_html", $form->tohtml());
+        assign_to_template(array(
+            "form_html" => $form->tohtml(),
+        ));
     }
 
     public function import_users_display() {
-        global $template;
-
         $file = fopen(BASE . $this->params["filename"], "r");
         $post = null;
         $post = $this->params;
@@ -1309,7 +1356,7 @@ class usersController extends expController {
             if ($linenum >= $post["rowstart"]) {
                 $i = 0;
 
-                $userinfo = new stdClass();
+//                $userinfo = new stdClass();
                 $userinfo->changed = "";
 
                 foreach ($filedata as $field) {
@@ -1415,7 +1462,9 @@ class usersController extends expController {
             }
             $linenum++;
         }
-        $template->assign("userarray", $userarray);
+        assign_to_template(array(
+            "userarray" => $userarray,
+        ));
         unlink(BASE . $this->params["filename"]);
     }
 

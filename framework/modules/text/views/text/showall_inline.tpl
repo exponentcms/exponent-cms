@@ -65,15 +65,16 @@
                     </div>
                 {/permissions}
                 <div class="bodycopy">
-                    {if $config.filedisplay != "Downloadable Files"}
+                    {if $config.ffloat != "Below"}
                         {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
                     {/if}
                     <div id="body-{$text->id}"{$make_edit}>
                         {$text->body}
                     </div>
-                    {if $config.filedisplay == "Downloadable Files"}
+                    {if $config.ffloat == "Below"}
                         {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
                     {/if}
+                    {clear}
                 </div>
             </div>
         {/foreach}

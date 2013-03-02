@@ -25,41 +25,76 @@ global $user;
 /////////////////////////////////////////////////////////////////////////
 $level = 99;
 if (expSession::is_set('uilevel')) {
-	$level = expSession::get('uilevel');
-}	
+    $level = expSession::get('uilevel');
+}
 
 /////////////////////////////////////////////////////////////////////////
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
 
-return array(
-    'text'=>$user->firstname.' '.$user->lastname,
-    'classname'=>'quicklink user',
-    'submenu'=>array(
-        'id'=>'user',
-        'itemdata'=>array(
-            array(
-                'text'=>gt("Edit My Profile"),
-                'url'=>makeLink(array('controller'=>'users','action'=>'edituser','id'=>$user->id)),
-                'classname'=>'edit',
-            ),
-            array(
-                'text'=>gt("Change My Password"),
-                'url'=>makeLink(array('controller'=>'users','action'=>'change_password')),
-                'classname'=>'password',
-            ),
-            array(
-                'text'=>gt("Log Out"),
-                'url'=>makeLink(array('controller'=>'login','action'=>'logout')),
-                'classname'=>'logout',
-            ),
-            array(
-                'text' => ($level == UILEVEL_PREVIEW)?gt('Turn Preview Mode off'):gt('Turn Preview Mode on'),
-                'classname' => ($level == UILEVEL_PREVIEW)?'preview_on':'preview_off',
-				'url' => makeLink(array('controller' => 'administration','action' => 'toggle_preview'))
-            ),
-        ),
+$items = array(
+    array(
+        'text'      => gt("Edit My Profile"),
+        'url'       => makeLink(array('controller' => 'users', 'action' => 'edituser', 'id' => $user->id)),
+        'classname' => 'edit',
+    ),
+    array(
+        'text'      => gt("Change My Password"),
+        'url'       => makeLink(array('controller' => 'users', 'action' => 'change_password')),
+        'classname' => 'password',
+    ),
+    array(
+        'text'      => gt("Log Out"),
+        'url'       => makeLink(array('controller' => 'login', 'action' => 'logout')),
+        'classname' => 'logout',
     )
 );
+
+if ($user->isAdmin()) { // must be an admin user to use toggle_preview method
+    $items[] = array(
+        'text'      => ($level == UILEVEL_PREVIEW) ? gt('Turn Preview Mode off') : gt('Turn Preview Mode on'),
+        'classname' => ($level == UILEVEL_PREVIEW) ? 'preview_on' : 'preview_off',
+        'url'       => makeLink(array('controller' => 'administration', 'action' => 'toggle_preview'))
+    );
+}
+
+return array(
+    'text'      => $user->firstname . ' ' . $user->lastname,
+    'classname' => 'quicklink user',
+    'submenu'   => array(
+        'id'       => 'events',
+        'itemdata' => $items,
+    )
+);
+
+//return array(
+//    'text'=>$user->firstname.' '.$user->lastname,
+//    'classname'=>'quicklink user',
+//    'submenu'=>array(
+//        'id'=>'user',
+//        'itemdata'=>array(
+//            array(
+//                'text'=>gt("Edit My Profile"),
+//                'url'=>makeLink(array('controller'=>'users','action'=>'edituser','id'=>$user->id)),
+//                'classname'=>'edit',
+//            ),
+//            array(
+//                'text'=>gt("Change My Password"),
+//                'url'=>makeLink(array('controller'=>'users','action'=>'change_password')),
+//                'classname'=>'password',
+//            ),
+//            array(
+//                'text'=>gt("Log Out"),
+//                'url'=>makeLink(array('controller'=>'login','action'=>'logout')),
+//                'classname'=>'logout',
+//            ),
+//            array(
+//                'text' => ($level == UILEVEL_PREVIEW)?gt('Turn Preview Mode off'):gt('Turn Preview Mode on'),
+//                'classname' => ($level == UILEVEL_PREVIEW)?'preview_on':'preview_off',
+//				'url' => makeLink(array('controller' => 'administration','action' => 'toggle_preview'))
+//            ),
+//        ),
+//    )
+//);
 
 ?>

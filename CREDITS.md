@@ -1,7 +1,6 @@
 #Exponent Content Management System
 
-===============================================
-
+----------
 Copyright (c) 2004-2013 OIC Group, Inc.
 
 Exponent CMS, Credits
@@ -10,7 +9,7 @@ The Exponent team wants to recognize the following people for their contribution
 If you don't see your name in this list, but it should be here, please don't be shy - let us know and we will add you.
 Exponent wouldn't be where it is today without the help and support of these people.
 
-====================
+----------
 Project Owner and Core Developers
 ====================
 OIC Group, Inc. Team:
@@ -19,7 +18,7 @@ OIC Group, Inc. Team:
 -- Ron Miller
 -- Phillip Ball
 
-====================
+----------
 Special Thanks
 ====================
 Original Core Development Team:
@@ -28,7 +27,7 @@ Original Core Development Team:
 
 Gerrit Boerman - For help getting the project on track with management support, direction, testing, and 'herding of the cats'
 
-==================
+----------
 Code Contributions
 ==================
 Ignacio Ibeas - Calendar fixes and many other contributions
@@ -50,7 +49,7 @@ Imran Somji - Pagination bug fix
 Dave Leffler - Many code contributions
 
 
-=====================
+----------
 Testing / Bug Hunting
 =====================
 tipichris
@@ -63,7 +62,7 @@ dgharrison
 chris_meeder
 sanna
 
-=================================
+----------
 User Feedback / Community Support
 =================================
 David Andor

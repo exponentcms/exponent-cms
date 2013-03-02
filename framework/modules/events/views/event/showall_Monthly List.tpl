@@ -27,7 +27,8 @@
 	<div class="module-actions">
 		{icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
         {nbsp count=2}|{nbsp count=2}
-        <span class="listviewlink"></span>{'List View'|gettext}
+        {*<span class="listviewlink"></span>{'List View'|gettext}*}
+        {icon class="listviewlink" text='List View'|gettext}
 		{permissions}
 			{if $permissions.manage == 1}
                 {nbsp count=2}|{nbsp count=2}

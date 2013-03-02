@@ -37,7 +37,7 @@ class expVersion {
      *
      * @node Subsystems:expVersion
      */
-    public static function getVersion($full = false, $build = false, $type = true) {
+    public static function getVersion($full = false, $build = false, $type = false) {
         if (!defined('EXPONENT_VERSION_MAJOR')) include_once(BASE . "exponent_version.php");
         $vers = EXPONENT_VERSION_MAJOR . "." . EXPONENT_VERSION_MINOR; // can be used for numerical comparison
         if ($full) {
@@ -62,7 +62,7 @@ class expVersion {
      *
      * @node Subsystems:expVersion
      */
-    public static function getDBVersion($full = false, $build = false, $type = true) {
+    public static function getDBVersion($full = false, $type = false, $build = false) {
         $dbver = self::dbVersion();
         $vers = $dbver->major . "." . $dbver->minor; // can be used for numerical comparison
         if ($full) {
@@ -111,6 +111,7 @@ class expVersion {
             $dbversion->revision = 0;
             $dbversion->type = '';
             $dbversion->iteration = '';
+            $dbversion->builddate = 0;
         }
         return $dbversion;
     }
@@ -209,6 +210,7 @@ class expVersion {
                 $typenum = 2;
                 break;
             case 'release-candidate':
+            case 'rc':
                 $typenum = 3;
                 break;
             case 'develop': // code from the github develop branch

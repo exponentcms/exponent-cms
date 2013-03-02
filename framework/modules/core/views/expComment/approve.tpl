@@ -24,7 +24,7 @@
 		
 	    <strong>{'Poster\'s Name'|gettext}: {$user->firstname} {$user->lastname}</strong>{br}
 	    <strong>{'Poster\'s Email'|gettext}: {$user->email}{br}
-		{control type=textarea name=body label="Comment Body"|gettext rows=6 cols=35 value=$comment->body}
+		{control type=textarea name=body label="Comment"|gettext rows=6 cols=35 value=$comment->body}
 		{control type="checkbox" name="approved" label="Approve Comment"|gettext value=1 checked=$comment->approved}
 		{control type=buttongroup submit="Approve"|gettext}
 	{/form}

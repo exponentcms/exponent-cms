@@ -25,6 +25,16 @@
         {/css}
     {/if}
     <div class="module forms show">
+        {permissions}
+            <div class="item-actions">
+                {if $permissions.edit == 1}
+                    {icon class=edit action=enterdata forms_id=$f->id id=$record_id title='Edit this record'|gettext}
+                {/if}
+                {if $permissions.delete == 1}
+                    {icon class=delete action=delete forms_id=$f->id id=$record_id title='Delete this record'|gettext}
+                {/if}
+            </div>
+        {/permissions}
         <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
             <thead>
                 <tr>

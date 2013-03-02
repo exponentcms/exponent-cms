@@ -105,7 +105,7 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "filedisplay-types":
                 $control                = new dropdowncontrol();
-                $control->include_blank = gt('-- This modules does not use files --');
+                $control->include_blank = gt('-- This module does not use files --');
                 $control->items         = get_filedisplay_views();
                 break;
             case "dropdown":

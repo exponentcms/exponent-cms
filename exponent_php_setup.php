@@ -47,9 +47,9 @@ $auto_dirs = array(
     BASE.'framework/core/subsystems',
     BASE.'framework/core/controllers',
    	BASE.'framework/core/models',
-	BASE.'framework/core/subsystems/forms',
-	BASE.'framework/core/subsystems/forms/controls',
-    BASE.'framework/core/models-1',  // old 1.0 datatypes
+	BASE.'framework/core/forms',
+	BASE.'framework/core/forms/controls',
+//    BASE.'framework/core/models-1',  // old 1.0 datatypes
 	BASE.'framework/modules/ecommerce/billingcalculators',
 	BASE.'framework/modules/ecommerce/shippingcalculators',
 	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
@@ -88,7 +88,7 @@ function expLoadClasses($class) {
 			$dh = opendir($dir);
 			while (($file = readdir($dh)) !== false) {
 				if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
-					// load controllers
+					// look at controllers
 					$dirpath = $dir.'/'.$file.'/controllers';
 					if (file_exists($dirpath)) {
 						$controller_dir = opendir($dirpath);
@@ -99,7 +99,7 @@ function expLoadClasses($class) {
 							}
 						}
 					}
-					// load models
+					// look at models
 					$dirpath = $dir.'/'.$file.'/models';
 					if (file_exists($dirpath)) {
 						$controller_dir = opendir($dirpath);

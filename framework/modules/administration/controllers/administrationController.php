@@ -231,10 +231,10 @@ class administrationController extends expController {
 	}
 
     public function fix_tables() {
-   		$renamed = expDatabase::fix_table_names();
-           assign_to_template(array(
-               'tables'=>$renamed,
-           ));
+        $renamed = expDatabase::fix_table_names();
+        assign_to_template(array(
+            'tables'=>$renamed,
+        ));
    	}
 
     public function install_ecommerce_tables() {
@@ -257,7 +257,6 @@ class administrationController extends expController {
    	}
 
     public function toolbar() {
-        global $user;
         $menu = array();
 		$dirs = array(
 			BASE.'framework/modules/administration/menus',
@@ -274,12 +273,12 @@ class administrationController extends expController {
 		    }
 		}
 
-        // sort the menus alphabetically by filename
+        // sort the top level menus alphabetically by filename
 		ksort($menu);		
 		$sorted = array();
 		foreach($menu as $m) $sorted[] = $m;
         
-        //slingbar position
+        // slingbar position
         if (isset($_COOKIE['slingbar-top'])){
             $top = $_COOKIE['slingbar-top'];
         } else {
@@ -381,9 +380,6 @@ class administrationController extends expController {
     public function toggle_log() {
   	    $value = (LOGGER == 1) ? 0 : 1;
   	    expSettings::change('LOGGER', $value);
-//  	    expTheme::removeCss();
-//  		$message = (LOGGER != 1) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
-//  		flash('message',$message);
   		expHistory::back();
   	}
 
@@ -441,7 +437,7 @@ class administrationController extends expController {
 
 	public function clear_all_caches() {
 		expTheme::removeSmartyCache();
-        expSession::clearAllUsersSessionCache();
+        expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
 		expTheme::removeCss();
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
@@ -811,6 +807,7 @@ class administrationController extends expController {
     				$theme = new $file();
     				$t = new stdClass();
 				    $t->user_configured = isset($theme->user_configured) ? $theme->user_configured : '';
+                    $t->stock_theme = isset($theme->stock_theme) ? $theme->stock_theme : '';
     				$t->name = $theme->name();
     				$t->description = $theme->description();
     				$t->author = $theme->author();
@@ -895,6 +892,45 @@ class administrationController extends expController {
 			$theme->saveThemeConfig($this->params);
 		}
 	}
+
+    public function export_theme() {
+        include_once(BASE.'external/Tar.php');
+
+        $themeclass = $this->params['theme'];
+        $fname = tempnam(BASE.'/tmp','exporter_files_');
+        $tar = new Archive_Tar($fname,'gz');
+        $tar->createModify(BASE.'themes/'.$themeclass,'',BASE.'themes/');
+
+        $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$themeclass.'.tar.gz');
+
+        ob_end_clean();
+        // This code was lifted from phpMyAdmin, but this is Open Source, right?
+
+        // 'application/octet-stream' is the registered IANA type but
+        //        MSIE and Opera seems to prefer 'application/octetstream'
+        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+        header('Content-Type: ' . $mime_type);
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        // IE need specific headers
+        if (EXPONENT_USER_BROWSER == 'IE') {
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Pragma: no-cache');
+        }
+
+        $fh = fopen($fname,'rb');
+        while (!feof($fh)) {
+            echo fread($fh,8192);
+        }
+        fclose($fh);
+        unlink($fname);
+
+        exit(''); // Exit, since we are exporting.
+    }
 
 	public function togglemobile() {
 		if (!expSession::is_set('mobile')) {  // account for FORCE_MOBILE initial state
@@ -1077,6 +1113,7 @@ class administrationController extends expController {
  */
 class theme {
 	public $user_configured = false;
+    public $stock_theme = false;
 
 	function name() { return "theme"; }
 	function author() { return ""; }
@@ -1088,26 +1125,26 @@ class theme {
 	 * and presents the values as text boxes.
 	 */
 	function configureTheme () {
-		if (isset($this->params['sv']) && $this->params['sv'] != '') {
-			if (strtolower($this->params['sv'])=='default') {
-                $this->params['sv']='';
+		if (isset($this->params['sv']) && $_GET['sv'] != '') {
+			if (strtolower($_GET['sv'])=='default') {
+                $_GET['sv']='';
 			}
-			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config_".$this->params['sv'].".php");
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
 		} else {
-			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
 		}
 		$form = new form();
 		$form->meta('controller','administration');
 		$form->meta('action','update_theme');
-		$form->meta('theme',$this->params['theme']);
-		$form->meta('sv',isset($this->params['sv'])?$this->params['sv']:'');
+		$form->meta('theme',$_GET['theme']);
+		$form->meta('sv',isset($_GET['sv'])?$_GET['sv']:'');
 		foreach ($settings as $setting=>$key) {
 			$form->register($setting,$setting.': ',new textcontrol($key,20));
 		}
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		assign_to_template(array(
-            'name'=>self::name(),
+            'name'=>$this->name().(!empty($_GET['sv'])?' '.$_GET['sv']:''),
             'form_html'=>$form->toHTML()
         ));
 	}

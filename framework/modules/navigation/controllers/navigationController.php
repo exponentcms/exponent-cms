@@ -394,7 +394,8 @@ class navigationController extends expController {
 
         //global $sections;
         //		global $router;
-        $db->delete('search', "ref_module='navigation' AND ref_type='section'");
+//        $db->delete('search', "ref_module='navigation' AND ref_type='section'");
+        $db->delete('search', "ref_module='".$this->baseclassname."' AND ref_type='section'");
         // this now ensures we get internal pages, instead of relying on the global $sections, which does not.
         $sections = $db->selectObjects('section', 'active=1');
         foreach ($sections as $section) {
@@ -402,7 +403,8 @@ class navigationController extends expController {
 //            $search_record->category = 'Webpages';
 //            $search_record->ref_module = 'navigationController';
 //            $search_record->ref_type = 'section';
-            $search_record->ref_module  = $this->classname;
+//            $search_record->ref_module  = $this->classname;
+            $search_record->ref_module  = $this->baseclassname;
             $search_record->category    = $this->searchName();
             $search_record->ref_type    = $this->searchCategory();
             $search_record->original_id = $section->id;

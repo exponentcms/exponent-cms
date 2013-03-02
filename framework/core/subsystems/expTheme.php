@@ -26,7 +26,7 @@
 class expTheme {
 
 	public static function initialize() {
-		global $auto_dirs, $auto_dirs2;
+		global $auto_dirs2;
 //        global $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
 //		require_once(BASE.'framework/core/compat/theme.php');
@@ -69,10 +69,12 @@ class expTheme {
 		}
 		if (!defined('BTN_SIZE')) define('BTN_SIZE','medium');
 		if (!defined('BTN_COLOR')) define('BTN_COLOR','black');
-		// add our theme folder into autoload and place it first
+        if (!defined('SWATCH')) define('SWATCH',"''");  // Twitter Bootstrap theme
+        if (!defined('JQUERYUI_THEME')) define('JQUERYUI_THEME', 'exponent');
+        define('JQUERYUI_CSS', JQUERY_RELATIVE.'css/'.JQUERYUI_THEME.'/jquery-ui.min.css');
+
+		// add our theme folder into autoload to prioritize custom (theme) modules
 		array_unshift($auto_dirs2,BASE.'themes/'.DISPLAY_THEME.'/modules');
-        if (defined('JQUERY_THEME')) array_unshift($auto_dirs,BASE.'framework/core/subsystems/forms/controls/jquery');
-        array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 	}
 
     public static function head($config = array()){
@@ -81,8 +83,7 @@ class expTheme {
     }
 
 	public static function headerInfo($config) {
-		global $sectionObj, $validateTheme, $head_config;
-//        global $cur_lang;
+		global $sectionObj, $validateTheme, $head_config, $auto_dirs;
 
 		$validateTheme['headerinfo'] = true;
 		// end checking for headerInfo
@@ -97,12 +98,15 @@ class expTheme {
 			define('XHTML',0); define('XHTML_CLOSING',"");
 		}
 
-		// Load primer CSS files, or default to false if not set.
-		if(!empty($config['css_primer']) || !empty($config['lesscss'])){
+		// load primer, lesscss, & normalize CSS files
+		if(!empty($config['css_primer']) || !empty($config['lesscss']) || !empty($config['normalize'])){
 			expCSS::pushToHead($config);
 		};
+
+		// default primer CSS files to false if not set.
         if(empty($config['css_primer'])) $config['css_primer'] = false;
 
+        // parse & load core css files
 		if(isset($config['css_core'])) {
 			if (is_array($config['css_core'])) {
 				$corecss = implode(",",$config['css_core']);
@@ -114,7 +118,7 @@ class expTheme {
 			$config['css_core'] = false;
 		};
 
-		// Default the running of view based CSS inclusion to true
+		// default the running of view based CSS inclusion to true
 		if(empty($config['css_links'])){
 			$config['css_links'] = true;
 		}
@@ -124,15 +128,19 @@ class expTheme {
 			$config['css_theme'] = true;
 		}
 
-		//eDebug($config);
-
 		if (empty($sectionObj)) return false;
+
+        // set up controls search order based on framework
+        if (empty($head_config['framework'])) $head_config['framework'] = '';
+        if ($head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
+        if ($head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
+        array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 
 		$metainfo = self::pageMetaInfo();
 
 		$str = '<title>'.$metainfo['title']."</title>\n";
 		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
+		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true,true).'" '.XHTML_CLOSING.'>' . "\n";
 		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
         // favicon
@@ -352,7 +360,6 @@ class expTheme {
 				$theme =  BASE.'themes/'.DISPLAY_THEME.'/index.php';
 			}
 		}
-        //FIXME change this to a generic system theme
         if (!is_readable($theme)) {
             if (is_readable(BASE.'themes/basetheme/index.php')) {
                $theme =  BASE.'themes/basetheme/index.php';
@@ -578,12 +585,12 @@ class expTheme {
             } else {
                 self::mainContainer();
             }
-        } else {
-            if (isset($_REQUEST['module'])) {
-                include_once(BASE."framework/modules/container/orphans_content.php");  //FIXME not sure how to convert this yet
-            } else {
-                echo gt('Select a module');
-            }
+//        } else {
+//            if (isset($_REQUEST['module'])) {
+//                include_once(BASE."framework/modules/container/orphans_content.php");  //FIXME not sure how to convert this yet
+//            } else {
+//                echo gt('Select a module');
+//            }
         }
     }
 

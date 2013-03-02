@@ -13,5 +13,5 @@ Currently this action
 - passes "month's" events if a calendar src is passed with a time, defaults to now
 - three styles available using the 'style' parameter to better format line-endings
   -- no style = standard ics
-  -- style='g' will provide better formatting for google calendar
-  -- style='n' (or any letter besides g) provides better formatting for applications which don't like quoted-printable
+  -- style='g' will provide better formatting for display in Google calendar
+  -- style='n' (or any letter besides g) provides better formatting for display in calendar applications which don't like quoted-printable

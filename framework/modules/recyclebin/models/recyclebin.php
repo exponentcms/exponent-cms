@@ -96,6 +96,7 @@ class recyclebin extends expRecord {
             $db->updateObject($newSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
         } else {
             // New source for this section.  Populate reference
+            $newSecRef = new stdClass();
             $newSecRef->module   = $loc->mod;
             $newSecRef->source   = $loc->src;
             $newSecRef->internal = $loc->int;

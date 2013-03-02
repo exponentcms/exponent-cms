@@ -52,8 +52,8 @@ function smarty_function_filedisplayer($params,&$smarty) {
         $params['files'][] = $tmp;
     };
     
-    $float = $config['ffloat']=="No Float"?"":"float:".strtolower($config['ffloat']).";";
-    $width = !empty($config['fwidth'])?$config['fwidth']:"200";
+    $float = ($config['ffloat']=="Above" || $config['ffloat']=="Below") ? "" : "float:".strtolower($config['ffloat']).";";
+    $width = !empty($config['fwidth']) ? $config['fwidth'] : "200";
     
     switch ($config['ffloat']) {
         case 'Left':

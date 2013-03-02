@@ -30,7 +30,7 @@
 	</div>
 	{permissions}
 		{if $user->is_admin || $user->is_acting_admin}
-			<a class="add" href="{link action=add_section parent='0'}">{'Create a New Top Level Page'|gettext}</a>
+			{icon class="add" action=add_section parent='0' text='Create a New Top Level Page'|gettext}
 		{/if}
 	{/permissions}
 	{*<a id="expand" href="#">Expand all</a>*}

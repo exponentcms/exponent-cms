@@ -1,7 +1,7 @@
 <?php
 /*********************************************************************************/
 /**
- * iCalcreator v2.16.6
+ * iCalcreator v2.16.12
  * copyright (c) 2007-2013 Kjell-Inge Gustafsson kigkonsult
  * kigkonsult.se/iCalcreator/index.php
  * ical@kigkonsult.se
@@ -45,7 +45,7 @@ if ($pos   !== false) {
 */
 /*********************************************************************************/
 /*         version, do NOT remove!!                                              */
-define( 'ICALCREATOR_VERSION', 'iCalcreator 2.16.6' );
+define( 'ICALCREATOR_VERSION', 'iCalcreator 2.16.12' );
 /*********************************************************************************/
 /*********************************************************************************/
 /**
@@ -671,7 +671,7 @@ class vcalendar {
  * general vcalendar config setting
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.12.12 - 2012-05-13
+ * @since 2.16.7 - 2013-01-11
  * @param mixed  $config
  * @param string $value
  * @return void
@@ -799,14 +799,21 @@ class vcalendar {
         break;
       case 'URL':
             /* remote file - URL */
-        $value     = trim( $value );
-        $value     = str_replace( 'HTTP://',   'http://', $value );
-        $value     = str_replace( 'WEBCAL://', 'http://', $value );
-        $value     = str_replace( 'webcal://', 'http://', $value );
+        $value     = str_replace( array( 'HTTP://', 'WEBCAL://', 'webcal://' ), 'http://', trim( $value ));
+        if( 'http://' != substr( $value, 0, 7 ))
+          return FALSE;
+        $s1        = $this->url;
         $this->url = $value;
+        $s2        = $this->directory;
         $this->directory = null;
         $parts     = pathinfo( $value );
-        return $this->setConfig( 'filename',  $parts['basename'] );
+        if( FALSE === $this->setConfig( 'filename',  $parts['basename'] )) {
+          $this->url       = $s1;
+          $this->directory = $s2;
+          return FALSE;
+        }
+        else
+          return TRUE;
         break;
       default:  // any unvalid config key.. .
         return TRUE;
@@ -1044,7 +1051,7 @@ class vcalendar {
  * No date controls occurs.
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.16.4 - 2012-12-13
+ * @since 2.16.12 - 2013-02-10
  * @param mixed $startY optional, start Year,  default current Year ALT. array selecOptions ( *[ <propName> => <uniqueValue> ] )
  * @param int   $startM optional, start Month, default current Month
  * @param int   $startD optional, start Day,   default current Day
@@ -1182,9 +1189,8 @@ class vcalendar {
             $exdatelist[$exWdate] = TRUE;
         } // end - foreach( $exdate as $theExdate )
       }  // end - check exdate
-            /* check recurrence-id (with sequence), remove hit with reccurr-id date */
-      if(( FALSE !== ( $recurrid = $component->getProperty( 'recurrence-id' ))) &&
-         ( FALSE !== ( $sequence = $component->getProperty( 'sequence' )))   ) {
+            /* check recurrence-id (note, a missing sequence=0, don't test foer sequence), remove hit with reccurr-id date */
+      if( FALSE !== ( $recurrid = $component->getProperty( 'recurrence-id' ))) {
 // echo "adding ".$recurrid['year'].'-'.$recurrid['month'].'-'.$recurrid['day']." to recurridList<br>\n"; // test ###
         $recurrid = iCalUtilityFunctions::_date2timestamp( $recurrid );
         $recurrid = mktime( 0, 0, 0, date( 'm', $recurrid ), date( 'd', $recurrid ), date( 'Y', $recurrid )); // on a day-basis !!!
@@ -3440,15 +3446,14 @@ class calendarComponent {
  * creates formatted output for calendar component property rdate
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.14.1 - 2012-10-04
+ * @since 2.16.9 - 2013-01-09
  * @return string
  */
   function createRdate() {
     if( empty( $this->rdate )) return FALSE;
     $utctime = ( in_array( $this->objName, array( 'vtimezone', 'standard', 'daylight' ))) ? TRUE : FALSE;
     $output = null;
-    if( $utctime  )
-      unset( $this->rdate['params']['TZID'] );
+    $rdates = array();
     foreach( $this->rdate as $rpix => $theRdate ) {
       if( empty( $theRdate['value'] )) {
         if( $this->getConfig( 'allowEmpty' )) $output .= $this->_createElement( 'RDATE' );
@@ -3456,6 +3461,13 @@ class calendarComponent {
       }
       if( $utctime  )
         unset( $theRdate['params']['TZID'] );
+      if( 1 < count( $theRdate['value'] ))
+        usort( $theRdate['value'], array( 'iCalUtilityFunctions', '_sortRdate1' ));
+      $rdates[] = $theRdate;
+    }
+    if( 1 < count( $rdates ))
+      usort( $rdates, array( 'iCalUtilityFunctions', '_sortRdate2' ));
+    foreach( $rdates as $rpix => $theRdate ) {
       $attributes = $this->_createParams( $theRdate['params'] );
       $cnt = count( $theRdate['value'] );
       $content = null;
@@ -4414,13 +4426,20 @@ class calendarComponent {
  * set calendar component property url
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.4.8 - 2008-11-04
+ * @since 2.16.7 - 2013-01-11
  * @param string $value
  * @param string $params optional
  * @return bool
  */
   function setUrl( $value, $params=FALSE ) {
-    if( empty( $value )) if( $this->getConfig( 'allowEmpty' )) $value = null; else return FALSE;
+    if( !empty( $value )) {
+      if( !filter_var( $value, FILTER_VALIDATE_URL ) && ( 'urn' != strtolower( substr( $value, 0, 3 ))))
+        return FALSE;
+    }
+    elseif( $this->getConfig( 'allowEmpty' ))
+      $value = null;
+    else
+      return FALSE;
     $this->url = array( 'value' => $value, 'params' => iCalUtilityFunctions::_setParams( $params ));
     return TRUE;
   }
@@ -8764,35 +8783,53 @@ class iCalUtilityFunctions {
  * sort callback functions for exdate
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
- * @since 2.16.5 - 2012-12-28
+ * @since 2.16.11 - 2013-01-12
  * @param array $a
  * @param array $b
  * @return int
  */
   public static function _sortExdate1( $a, $b ) {
-    $sortkeys = array( 'year', 'month', 'day', 'hour', 'min', 'sec' );
-    for( $k = 0; $k < 4 ; $k++ ) {
-      foreach( $sortkeys as $key ) {
-        if    ( !isset( $a[$key] )) return -1;
-        elseif( !isset( $b[$key] )) return  1;
-        if    (         $a[$key] == $b[$key])
-                                    continue;
-        if    (( (int)  $a[$key] ) < ((int) $b[$key] ))
-                                    return -1;
-        elseif(( (int)  $a[$key] ) > ((int) $b[$key] ))
-                                    return  1;
-      }
-    }
-    return -1;
+    $as  = sprintf( '%04d%02d%02d', $a['year'], $a['month'], $a['day'] );
+    $as .= ( isset( $a['hour'] )) ? sprintf( '%02d%02d%02d', $a['hour'], $a['min'], $a['sec'] ) : '';
+    $bs  = sprintf( '%04d%02d%02d', $b['year'], $b['month'], $b['day'] );
+    $bs .= ( isset( $b['hour'] )) ? sprintf( '%02d%02d%02d', $b['hour'], $b['min'], $b['sec'] ) : '';
+    return strcmp( $as, $bs );
   }
   public static function _sortExdate2( $a, $b ) {
-    $val     = reset( $a['value'] );
-    $aValue  = sprintf( '%04d%02d%02d', $val['year'], $val['month'], $val['day'] );
-    $aValue .= ( isset( $val['hour'] )) ? sprintf( '%02d%02d%02d', $val['hour'], $val['min'], $val['sec'] ) : '000000';
-    $val     = reset( $b['value'] );
-    $bValue  = sprintf( '%04d%02d%02d', $val['year'], $val['month'], $val['day'] );
-    $bValue .= ( isset( $val['hour'] )) ? sprintf( '%02d%02d%02d', $val['hour'], $val['min'], $val['sec'] ) : '000000';
-    return ( $aValue < $bValue ) ? -1 : 1;
+    $val = reset( $a['value'] );
+    $as  = sprintf( '%04d%02d%02d', $val['year'], $val['month'], $val['day'] );
+    $as .= ( isset( $val['hour'] )) ? sprintf( '%02d%02d%02d', $val['hour'], $val['min'], $val['sec'] ) : '';
+    $val = reset( $b['value'] );
+    $bs  = sprintf( '%04d%02d%02d', $val['year'], $val['month'], $val['day'] );
+    $bs .= ( isset( $val['hour'] )) ? sprintf( '%02d%02d%02d', $val['hour'], $val['min'], $val['sec'] ) : '';
+    return strcmp( $as, $bs );
+  }
+/**
+ * sort callback functions for rdate
+ *
+ * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @since 2.16.9 - 2013-01-12
+ * @param array $a
+ * @param array $b
+ * @return int
+ */
+  public static function _sortRdate1( $a, $b ) {
+    $val = isset( $a['year'] ) ? $a : $a[0];
+    $as  = sprintf( '%04d%02d%02d', $val['year'], $val['month'], $val['day'] );
+    $as .= ( isset( $val['hour'] )) ? sprintf( '%02d%02d%02d', $val['hour'], $val['min'], $val['sec'] ) : '';
+    $val = isset( $b['year'] ) ? $b : $b[0];
+    $bs  = sprintf( '%04d%02d%02d', $val['year'], $val['month'], $val['day'] );
+    $bs .= ( isset( $val['hour'] )) ? sprintf( '%02d%02d%02d', $val['hour'], $val['min'], $val['sec'] ) : '';
+    return strcmp( $as, $bs );
+  }
+  public static function _sortRdate2( $a, $b ) {
+    $val = isset( $a['value'][0]['year'] ) ? $a['value'][0] : $a['value'][0][0];
+    $as  = sprintf( '%04d%02d%02d', $val['year'], $val['month'], $val['day'] );
+    $as .= ( isset( $val['hour'] )) ? sprintf( '%02d%02d%02d', $val['hour'], $val['min'], $val['sec'] ) : '';
+    $val = isset( $b['value'][0]['year'] ) ? $b['value'][0] : $b['value'][0][0];
+    $bs  = sprintf( '%04d%02d%02d', $val['year'], $val['month'], $val['day'] );
+    $bs .= ( isset( $val['hour'] )) ? sprintf( '%02d%02d%02d', $val['hour'], $val['min'], $val['sec'] ) : '';
+    return strcmp( $as, $bs );
   }
 /**
  * step date, return updated date, array and timpstamp
@@ -9157,7 +9194,7 @@ class iCalUtilityFunctions {
     return TRUE;
   }
 /**
- * convert offset, [+/-]HHmm[ss], to seconds used when correcting UTC to localtime or v.v.
+ * convert offset, [+/-]HHmm[ss], to seconds, used when correcting UTC to localtime or v.v.
  *
  * @author Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
  * @since 2.11.4 - 2012-01-11

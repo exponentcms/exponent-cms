@@ -59,15 +59,16 @@ class version_tracking extends upgradescript {
 		// version tracking
 		$db->delete('version',1);  // clear table of old accumulated entries
 		$vo = new stdClass();
-		$vo->major = EXPONENT_VERSION_MAJOR;
-		$vo->minor = EXPONENT_VERSION_MINOR;
-		$vo->revision = EXPONENT_VERSION_REVISION;
-		$vo->type = EXPONENT_VERSION_TYPE;
-		$vo->iteration = EXPONENT_VERSION_ITERATION;
-		$vo->builddate = EXPONENT_VERSION_BUILDDATE;
+//		$vo->major = EXPONENT_VERSION_MAJOR;
+//		$vo->minor = EXPONENT_VERSION_MINOR;
+//		$vo->revision = EXPONENT_VERSION_REVISION;
+//		$vo->type = EXPONENT_VERSION_TYPE;
+//		$vo->iteration = EXPONENT_VERSION_ITERATION;
+//		$vo->builddate = EXPONENT_VERSION_BUILDDATE;
+        $vo = expVersion::swVersion();
 		$vo->created_at = time();
 		$ins = $db->insertObject($vo,'version') or die($db->error());
-        return $ins ? gt('Database updated to version').' '.expVersion::getVersion(true) : gt('Failed');
+        return $ins ? gt('Database updated to version').' '.expVersion::getVersion(true,true) : gt('Failed');
 	}
 }
 

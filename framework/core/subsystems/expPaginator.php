@@ -305,6 +305,7 @@ class expPaginator {
 		//$page_params = $router->params; //from Current Trunk
 //		$page_params = $this->cleanParams($router->params); //From Merge
         $page_params = $router->params; //From Merge
+        if (!empty($page_params['search_string'])) $page_params['search_string'] = urlencode($page_params['search_string']);
 
 		//if (empty($page_params['module'])) $page_params['module'] = $this->controller;
 		//if (empty($page_params['action'])) $page_params['action'] = $this->action;

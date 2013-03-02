@@ -22,13 +22,15 @@
 
 class blogController extends expController {
     public $useractions = array(
-        'showall'=>'Show all', 
-        'tags'=>"Tags",
-        'authors'=>"Authors",
-        'dates'=>"Dates",
+        'showall'=>'Show All Posts',
+        'tags'=>"Show Post Tags",
+        'authors'=>"Show Post Authors",
+        'categories'=>"Show Post Categories",
+        'dates'=>"Show Post Dates",
+        'comments'=>"Show Recent Post Comments",
     );
     public $remove_configs = array(
-        'categories',
+//        'categories',
 //        'ealerts'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
     public $add_permissions = array(
@@ -49,6 +51,9 @@ class blogController extends expController {
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] :10,
             'order'=>'publish',
             'dir'=>empty($this->config['sort_dir']) ? 'DESC' : $this->config['sort_dir'],
+            'categorize'=> empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+            'groups'=>!isset($this->params['cat']) ? array() : array($this->params['cat']),
+            'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -59,11 +64,16 @@ class blogController extends expController {
         ));
 		            
 		assign_to_template(array(
-            'page'=>$page
+            'page'=>$page,
         ));
+        if (isset($this->params['cat'])) assign_to_template(array(
+            'moduletitle' => gt('Posts filed under') . ' ' . (empty($page->records[0]->expCat[0]->title) ? $this->config['uncat'] : $page->records[0]->expCat[0]->title),
+        ));
+
 	}
 
 	public function authors() {
+        expHistory::set('viewable', $this->params);
         $blogs = $this->blog->find('all');
         $users = array();
         foreach ($blogs as $blog) {
@@ -83,6 +93,7 @@ class blogController extends expController {
 	public function dates() {
 	    global $db;
 
+        expHistory::set('viewable', $this->params);
         $where = $this->aggregateWhereClause();
 	    $dates = $db->selectColumn('blog', 'publish', $where, 'publish DESC');
 	    $blog_date = array();
@@ -117,9 +128,8 @@ class blogController extends expController {
         ));
 	}
 	
-	public function showall_by_date() {
+    public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
-	    
 	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
 	    $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
 
@@ -169,7 +179,7 @@ class blogController extends expController {
 	}
 	
 	public function show() {
-	    global $db, $template;
+	    global $db;
 
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
@@ -262,7 +272,7 @@ class blogController extends expController {
             $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
             $rss_item->guid = expUnserialize($item->location_data)->src.'-id#'.$item->id;
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
-            $comment_count = expCommentController::findComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
+            $comment_count = expCommentController::countComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
             if ($comment_count) {
                 $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
 //                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';

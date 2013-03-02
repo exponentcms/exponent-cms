@@ -3,22 +3,11 @@ body { //    background-color: @special; /* here is a sample variable set exampl
 }
 
 .pagination {
-  float  : right;
   margin : 0;
 }
 
-.pagination .currentpage {
-  background-color  : whiteSmoke;
-  float             : left;
-  padding           : 0 14px;
-  line-height       : 18px;
-  text-decoration   : none;
-  border            : 1px solid #DDD;
-  border-left-width : 0;
-}
-
-.pagination a {
-  line-height : 18px;
+.pagination-links {
+  line-height: 1.8em;
 }
 
 .showall-accordion .dashboard .hd a.collapse {
@@ -61,53 +50,6 @@ li [class^="icon-"], li [class*=" icon-"], li .icon-large[class^="icon-"], li .i
   width : auto;
 }
 
-.nav li.dropdown ul.dropdown-menu li:HOVER ul.dropdown-menu li:HOVER.dropdown > ul.dropdown-menu,
-.nav li.dropdown ul.dropdown-menu li:HOVER ul.dropdown-menu {
-  display               : block;
-  position              : absolute;
-  left                  : 100%;
-  -webkit-border-radius : 3px;
-  -moz-border-radius    : 3px;
-  border-radius         : 3px;
-}
-
-.nav li.dropdown ul.dropdown-menu li:HOVER ul.dropdown-menu li.dropdown > ul.dropdown-menu,
-.nav li.dropdown ul.dropdown-menu ul.dropdown-menu {
-  display    : none;
-  float      : right;
-  position   : relative;
-  top        : auto;
-  margin-top : -30px;
-}
-
-.nav li.dropdown ul.dropdown-menu .dropdown-menu::before {
-  content            : '';
-  display            : inline-block;
-  border-top         : 7px solid transparent;
-  border-bottom      : 7px solid transparent;
-  border-right       : 7px solid #CCC;
-  border-right-color : rgba(0, 0, 0, 0.2);
-  position           : absolute;
-  top                : 9px;
-  left               : -14px;
-}
-
-.nav li.dropdown ul.dropdown-menu .dropdown-menu::after {
-  content       : '';
-  display       : inline-block;
-  border-top    : 6px solid transparent;
-  border-bottom : 6px solid transparent;
-  border-right  : 6px solid white;
-  position      : absolute;
-  top           : 10px;
-  left          : -12px;
-}
-
-.nav b.caret {
-  border-top-color    : black;
-  border-bottom-color : black;
-}
-
 #admintoolbar {
   z-index : 1031;
 }
@@ -116,7 +58,37 @@ li [class^="icon-"], li [class*=" icon-"], li .icon-large[class^="icon-"], li .i
   height : 45px;
 }
 
+.navbar-spacer-bottom {
+  position : fixed;
+  bottom: 0;
+}
+
+.menu-spacer-bottom {
+  height : 45px;
+}
+
 a.icon-sort, .container-chrome ul li a.icon-sort {
   background: url("../../../framework/core/assets/images/rerank.png") no-repeat scroll 0 50% transparent;
   background: none;
+}
+
+.awesome, .awesome:visited {
+  background: linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;
+  color: inherit;
+}
+
+.eql-tablelist .row:before, .eql-tablelist .row:after,
+.manage-questions .row:before, .manage-questions .row:after {
+    content: normal;
+}
+
+hr {
+  color: #696969;
+  background-color: #696969;
+  height: 3px;
+}
+
+
+#sidebar h2 {
+  font-size-adjust: 0.30;
 }

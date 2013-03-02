@@ -82,13 +82,12 @@ class upgrade_calendar extends upgradescript {
    		    $cloc = expUnserialize($cn->internal);
    	        $cloc->mod = 'event';
    		    $cn->internal = serialize($cloc);
-               if ($cn->view == 'Default') {
-                   $cn->action = 'showall';
-                   $cn->view = 'showall';
-               } else {
-                   $cn->action = 'showall';
+            $cn->action = 'showall';
+            if ($cn->view == 'Default') {
+                $cn->view = 'showall';
+            } else {
    		        $cn->view = 'showall_'.$cn->view;
-               }
+            }
    	        $db->updateObject($cn,'container');
 
             $newconfig = new expConfig();
@@ -96,7 +95,7 @@ class upgrade_calendar extends upgradescript {
                 if ($oldconfig->enable_ical == 1) {
                     $newconfig->config['enable_ical'] = true;
                     $newconfig->config['feed_title'] = $oldconfig->feed_title;
-                    $newconfig->config['feed_sef_url'] = $oldconfig->sef_url;
+                    $newconfig->config['feed_sef_url'] = !empty($oldconfig->sef_url) ? $oldconfig->sef_url : '';
                     $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
                     $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
                 }

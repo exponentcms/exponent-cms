@@ -28,6 +28,7 @@
     </h1>
     {form action=update_form}
     {control type=hidden name=id value=$form->id}
+    {control type=hidden name=old_id value=$form->old_id}
     <div id="editform-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
             <li class="selected"><a href="#tab1"><em>{'Form'|gettext}</em></a></li>

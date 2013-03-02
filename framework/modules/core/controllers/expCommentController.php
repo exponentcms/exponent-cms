@@ -105,7 +105,10 @@ class expCommentController extends expController {
         ));
 	}
 
-	function getComments() {
+    /**
+     * Displays comments attached to specified item
+     */
+	function showComments() {
 		global $user, $db;
 
         /* The global constants can be overridden by passing appropriate params */
@@ -124,7 +127,7 @@ class expCommentController extends expController {
         $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
-        if (!($user->is_admin || $user->is_acting_admin)) {
+        if (!$user->isAdmin()) {
             $sql .= 'AND c.approved=1';
         }
 
@@ -144,9 +147,10 @@ class expCommentController extends expController {
         // add username and avatar
         foreach ($comments->records as $key=>$record) {
             $commentor = new user($record->poster);
-            $comments->records[$key]->username = $commentor->username;
+            $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
             $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
         }
+
         if (empty($this->params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
         // eDebug($sql, true);
         
@@ -229,13 +233,13 @@ class expCommentController extends expController {
      * @param $params
      * @return int
      */
-    public static function findComments($params) {
+    public static function countComments($params) {
         global $user, $db;
 
         $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
         $sql .= 'WHERE cnt.content_id='.$params['content_id']." AND cnt.content_type='".$params['content_type']."' ";
-        if (!($user->is_admin || $user->is_acting_admin)) {
+        if (!$user->isAdmin()) {
             $sql .= 'AND c.approved=1';
         }
 
@@ -245,6 +249,63 @@ class expCommentController extends expController {
         return count($comments->records);
 //        return $count = $db->countObjectsBySql($sql);
 
+    }
+
+    /**
+     * Returns comments attached to specified item
+     *
+     * @static
+     * @param $params
+     * @return int
+     */
+    public static function getComments($params) {
+        global $user, $db;
+
+          $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
+          $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
+          $sql .= 'WHERE cnt.content_id='.$params['content_id']." AND cnt.content_type='".$params['content_type']."' ";
+          if (!$user->isAdmin()) {
+              $sql .= 'AND c.approved=1';
+          }
+
+          $comments = new expPaginator(array(
+              //'model'=>'expComment',
+              'sql'=>$sql,
+  //            'limit'=>999,
+              'order'=>'created_at',
+//              'page'=>(isset($params['page']) ? $params['page'] : 1),
+              'controller'=>'expComment',
+//              'action'=>$params['action'],
+//              'columns'=>array(
+//                  gt('Readable Column Name')=>'Column Name'
+//              ),
+          ));
+
+          // add username and avatar
+          foreach ($comments->records as $key=>$record) {
+              $commentor = new user($record->poster);
+              $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+              $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
+          }
+//          if (empty($params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
+          // eDebug($sql, true);
+
+          // count the unapproved comments
+          $unapproved = 0;
+
+//          assign_to_template(array(
+//            'comments'=>$comments,
+//            'config'=>$params['config'],
+//            'unapproved'=>$unapproved,
+//            'content_id'=>$params['content_id'],
+//            'content_type'=>$params['content_type'],
+//            'user'=>$user,
+//            'hideform'=>$params['hideform'],
+//            'hidecomments'=>$params['hidecomments'],
+//            'title'=>$params['title'],
+//            'formtitle'=>$params['formtitle'],
+//        ));
+        return $comments->records;
     }
 
     function update() {

@@ -13,6 +13,12 @@
  *
  *}
 
+{if $config.usecategories}
+{css unique="categories" corecss="categories"}
+
+{/css}
+{/if}
+
 <div class="module blog showall-headlines">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{/if}
     {rss_link}
@@ -26,6 +32,9 @@
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='blog' text="Manage Tags"|gettext}
                 {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='blog' text="Manage Categories"|gettext}
+                {/if}
             {/if}
 		</div>
     {/permissions}
@@ -38,6 +47,10 @@
         {if $smarty.foreach.blogs.iteration <= $config.headcount}
         <li class="item">
             <a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a>
+            {if !$config.displayauthor}
+                <span class="label posted"> {'by'|gettext} </span>
+                <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
+            {/if}
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit == 1}

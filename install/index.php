@@ -42,15 +42,13 @@ include_once('../exponent.php');
 if (isset($_POST['sc'])) {
     if (file_exists("../conf/config.php")) {
         // Update the config
-        $config = $_POST['sc'];
-        foreach ($config as $key => $value) {
-            expSettings::change($key, addslashes($value));
+        foreach ($_POST['sc'] as $key => $value) {
+            expSettings::change($key, $value);
         }
     } else {
         // Initialize /conf/config
-        $config = $_POST['sc'];
     	$values = array(
-    		'c'=>$config,
+    		'c'=>$_POST['sc'],
     		'opts'=>array(),
     		'configname'=>'Default',
     		'activate'=>1
@@ -61,20 +59,20 @@ if (isset($_POST['sc'])) {
 
 if (isset($_POST['install_sample'])) {
     // we still use $_POST['install_sample'] from install-5.php, even though the system samples are in a static location
-    $eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
-    if (!file_exists($eql)) $eql = BASE . $_POST['install_sample'] . ".eql";
+    $eql = BASE . "themes/".DISPLAY_THEME_REAL . "/" . $_POST['install_sample'] . ".eql";
+    if (!file_exists($eql)) $eql = BASE . "install/samples/" . $_POST['install_sample'] . ".eql";
 	if (file_exists($eql)) {
 		$errors = array();
 		expFile::restoreDatabase($db,$eql,$errors);
-        $files = BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz";
-        if (!file_exists($files)) $files = BASE . $_POST['install_sample'] . ".tar.gz";
+        $files = BASE . "themes/" . DISPLAY_THEME_REAL . "/" .  $_POST['install_sample'] . ".tar.gz";
+        if (!file_exists($files)) $files = BASE . "install/samples/" . $_POST['install_sample'] . ".tar.gz";
 		if (file_exists($files)) {  // only install if there was an eql file
 			include_once(BASE.'external/Tar.php');
 			$tar = new Archive_Tar($files);
 			$return = $tar->extract(BASE);
 		}
 	}
-    if (DEVELOPMENT && count($errors)) {
+    if (DEVELOPMENT && !empty($errors)) {
         echo '<h2>'.gt('Errors were encountered populating the site database.').'</h2><ul>';
         foreach ($errors as $e) echo '<li>'.$e.'</li>';
         echo '</ul>';
@@ -159,7 +157,7 @@ switch ($page) {
 <head>
 	<title><?php echo gt('Exponent Install Wizard'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
-    <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true); ?>" />
+    <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true,true); ?>" />
 	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssreset/reset.css" />
 	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssfonts/fonts.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />

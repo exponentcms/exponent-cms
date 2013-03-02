@@ -351,6 +351,72 @@ abstract class expController {
         ));
     }
 
+    public function categories() {
+
+        expHistory::set('viewable', $this->params);
+        $modelname = $this->basemodel_name;
+
+        $items = $this->$modelname->find('all', $this->aggregateWhereClause());
+        $used_cats = array();
+        $used_cats[0] = new stdClass();
+        $used_cats[0]->id = 0;
+        $used_cats[0]->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
+        foreach ($items as $item) {
+            if (!empty($item->expCat)) {
+                if (isset($used_cats[$item->expCat[0]->id])) {
+                    $used_cats[$item->expCat[0]->id]->count += 1;
+                } else {
+                    $expcat = new expCat($item->expCat[0]->id);
+                    $used_cats[$item->expCat[0]->id] = $expcat;
+                    $used_cats[$item->expCat[0]->id]->count = 1;
+                }
+            } else {
+                $used_cats[0]->count += 1;
+            }
+        }
+
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
+//        $used_cats = expSorter::sort(array('array'=>$used_cats,'sortby'=>'title', 'order'=>'ASC', 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+//        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+//        $used_cats = expSorter::sort(array('array'=>$used_cats, 'order'=>$order, 'ignore_case'=>true, 'rank'=>($order==='rank')?1:0));
+        $used_cats = expSorter::sort(array('array' => $used_cats, 'order' => 'count DESC', 'type' => 'a'));
+        if (!empty($this->config['limit'])) $used_cats = array_slice($used_cats, 0, $this->config['limit']);
+        $order = isset($this->config['order']) ? $this->config['order'] : 'title ASC';
+        if ($order != 'count') {
+            $used_cats = expSorter::sort(array('array' => $used_cats, 'order' => $order, 'ignore_case' => true, 'rank' => ($order === 'rank') ? 1 : 0));
+        }
+
+        assign_to_template(array(
+            'cats' => $used_cats
+        ));
+    }
+
+    public function comments() {
+	    expHistory::set('viewable', $this->params);
+        $modelname = $this->basemodel_name;
+
+        $items = $this->$modelname->find('all');
+        $all_comments = array();
+        // get all the blog comments
+        foreach ($items as $item) {
+            $more_comments = expCommentController::getComments(array('content_type'=>$modelname,'content_id'=>$item->id));
+            if (!empty($more_comments)) {
+                foreach ($more_comments as $next_comment) {
+                    $next_comment->ref = $item->title;
+                    $next_comment->sef_url = $item->sef_url;
+                }
+                $all_comments = array_merge($all_comments,$more_comments);
+            }
+        }
+        // sort then limit all the blog comments
+        $all_comments = expSorter::sort(array('array' => $all_comments, 'sortby' => 'created_at', 'order' => 'DESC', 'ignore_case' => true));
+        $limit = (isset($this->config['headcount']) && $this->config['headcount'] != '') ? $this->config['headcount'] : 10;
+        $comments = array_slice($all_comments,0,$limit);
+	    assign_to_template(array(
+            'comments'=>$comments,
+        ));
+	}
+
     /**
      * default view for individual item
      */
@@ -573,7 +639,8 @@ abstract class expController {
         // if this module is searchable lets delete spidered content
         if ($this->isSearchable()) {
             $search = new search();
-            $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->classname . "'");
+//            $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->classname . "'");
+            $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->baseclassname . "'");
             if (!empty($content->id)) $content->delete();
         }
 
@@ -644,7 +711,7 @@ abstract class expController {
         $views = get_config_templates($this, $this->loc);
 
         // needed for aggregation list
-        $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
+        $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
         $page = new expPaginator(array(
             'records' => $pullable_modules,
             'controller' => $this->loc->mod,
@@ -664,7 +731,12 @@ abstract class expController {
             $containerloc->src = $this->loc->src;
             $containerloc->int = '';
             $container = $db->selectObject('container', "internal='" . serialize($containerloc) . "'");
-            $container->internal = unserialize($container->internal);
+            if (empty($container)) {
+                $container = new stdClass();
+                $container->action = 'showall';
+            } else {
+                $container->internal = unserialize($container->internal);
+            }
 //            expSession::clearAllUsersSessionCache('containermodule');
 
 //            $modules_list = expModules::getActiveModulesAndControllersList();
@@ -696,12 +768,15 @@ abstract class expController {
 //        array_multisort(array_map('strtolower', $mods), $mods);
 
             $actions = $this->useractions;
-            // Language-ize the action names
-            foreach ($actions as $key => $value) {
-                $actions[$key] = gt($value);
+            $mod_views = array();
+            if (!empty($actions)) {
+                  // Language-ize the action names
+                foreach ($actions as $key => $value) {
+                    $actions[$key] = gt($value);
+                }
+                $mod_views = get_action_views($this->classname, $container->action, $actions[$container->action]);
+                if (count($mod_views) < 1) $mod_views[$container->action] = $actions[$container->action] . ' - Default View';
             }
-            $mod_views = get_action_views($this->classname, $container->action, $actions[$container->action]);
-            if (count($mod_views) < 1) $mod_views[$container->action] = $actions[$container->action] . ' - Default View';
 
             assign_to_template(array(
                 'container' => $container,
@@ -833,7 +908,7 @@ abstract class expController {
             $rss_item->authorEmail = user::getEmailById($item->poster);
             $rss_item->date = isset($item->publish_date) ? date('r', $item->publish_date) : date('r', $item->created_at);
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
-            $comment_count = expCommentController::findComments(array('content_id' => $item->id, 'content_type' => $this->basemodel_name));
+            $comment_count = expCommentController::countComments(array('content_id' => $item->id, 'content_type' => $this->basemodel_name));
             if ($comment_count) {
                 $rss_item->comments = makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $item->sef_url)) . '#exp-comments';
 //                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
@@ -1029,7 +1104,8 @@ abstract class expController {
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
-            $sql = "original_id=" . $origid . " AND ref_module='" . $this->classname . "'";
+//            $sql = "original_id=" . $origid . " AND ref_module='" . $this->classname . "'";
+            $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
             $oldindex = $db->selectObject('search', $sql);
             if (!empty($oldindex)) {
                 $search_record = new search($oldindex->id, false, false);
@@ -1051,7 +1127,8 @@ abstract class expController {
             }
 //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
             $search_record->view_link = $link;
-            $search_record->ref_module = $this->classname;
+//            $search_record->ref_module = $this->classname;
+            $search_record->ref_module = $this->baseclassname;
             $search_record->category = $this->searchName();
             $search_record->ref_type = $this->searchCategory();
             $search_record->save();
@@ -1068,7 +1145,8 @@ abstract class expController {
         global $db;
         // remove this modules entries from the search table.
         if ($this->isSearchable()) {
-            $where = "ref_module='" . $this->classname . "' AND location_data='" . serialize($this->loc) . "'";
+//            $where = "ref_module='" . $this->classname . "' AND location_data='" . serialize($this->loc) . "'";
+            $where = "ref_module='" . $this->baseclassname . "' AND location_data='" . serialize($this->loc) . "'";
 //            $test = $db->selectObjects('search', $where);
             $db->delete('search', $where);
         }

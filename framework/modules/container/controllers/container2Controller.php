@@ -129,7 +129,8 @@ class container2Controller extends expController {
                 $mod = new $modclass();
 
                 ob_start();
-                $mod->_hasParent = 1;
+//                $mod->_hasParent = 1;
+                if ($containers[$i]->external != 'N;' && $location->mod == 'container2') $containers[$i]->hasParent = 1;
                 if ($iscontroller) {
                     renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
                 } else {
@@ -214,13 +215,21 @@ class container2Controller extends expController {
 
         expSession::clearAllUsersSessionCache('containers');
 
-        global $template;
-        $template->assign('rerank', (isset($this->params['rerank']) ? $this->params['rerank'] : 0) );
-        $template->assign('container',$container);
-        $template->assign('locref',$secref);
-        $template->assign('is_edit', (isset($container->id) ? 1 : 0) );
-        $template->assign('can_activate_modules',$user->is_acting_admin);
-        $template->assign('current_section',expSession::get('last_section'));
+//        global $template;
+//        $template->assign('rerank', (isset($this->params['rerank']) ? $this->params['rerank'] : 0) );
+//        $template->assign('container',$container);
+//        $template->assign('locref',$secref);
+//        $template->assign('is_edit', (isset($container->id) ? 1 : 0) );
+//        $template->assign('can_activate_modules',$user->is_acting_admin);
+//        $template->assign('current_section',expSession::get('last_section'));
+        assign_to_template(array(
+            'rerank' => (isset($this->params['rerank']) ? $this->params['rerank'] : 0) ,
+            'container' => $container,
+            'locref' => $secref,
+            'is_edit' => (isset($container->id) ? 1 : 0) ,
+            'can_activate_modules' => $user->is_acting_admin,
+            'current_section' => expSession::get('last_section'),
+        ));
 
         $haveclass = false;
         $mods = array();
@@ -228,9 +237,15 @@ class container2Controller extends expController {
         $modules_list = expModules::getActiveModulesAndControllersList();
 
         if (!count($modules_list)) { // No active modules
-            $template->assign('nomodules',1);
+//            $template->assign('nomodules',1);
+            assign_to_template(array(
+                'nomodules' => 1,
+            ));
         } else {
-            $template->assign('nomodules',0);
+//            $template->assign('nomodules',0);
+            assign_to_template(array(
+                'nomodules' => 0,
+            ));
         }
 
         //sort($modules_list);
@@ -279,13 +294,23 @@ class container2Controller extends expController {
 
         array_multisort(array_map('strtolower', $mods), $mods);
         if (!array_key_exists($container->internal->mod, $mods) && !empty($container->id)) {
-            $template->assign('error',gt('The module you are trying to edit is inactive. Please contact your administrator to activate this module.'));
+//            $template->assign('error',gt('The module you are trying to edit is inactive. Please contact your administrator to activate this module.'));
+            assign_to_template(array(
+                'error' => gt('The module you are trying to edit is inactive. Please contact your administrator to activate this module.'),
+            ));
         }
-        $template->assign('user',$user);
-        $template->assign('json_obj',json_encode($modules));
-        $template->assign('modules',$mods);
-        $template->assign('loc',$loc);
-        $template->assign('back',expHistory::getLastNotEditable());
+//        $template->assign('user',$user);
+//        $template->assign('json_obj',json_encode($modules));
+//        $template->assign('modules',$mods);
+//        $template->assign('loc',$loc);
+//        $template->assign('back',expHistory::getLastNotEditable());
+        assign_to_template(array(
+            'user' => $user,
+            'json_obj' => json_encode($modules),
+            'modules' => $mods,
+            'loc' => $loc,
+            'back' => expHistory::getLastNotEditable(),
+        ));
     }
 
     public function update() {
