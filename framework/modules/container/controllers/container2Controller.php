@@ -27,7 +27,6 @@ class container2Controller extends expController {
 	public $useractions = array(
         'showall'=>'Group Other Modules',
 	);
-    public $codequality = 'alpha';
 	public $remove_configs = array(
         'aggregation',
         'categories',
@@ -38,6 +37,7 @@ class container2Controller extends expController {
         'rss',
 		'tags'
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    public $codequality = 'beta';
 
     static function displayname() { return gt("Container"); }
     static function description() { return gt("Encapsulates other modules within a styled container (e.g. columns, tabs, etc...)"); }

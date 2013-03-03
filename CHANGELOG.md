@@ -6,6 +6,15 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
+Added / Fixed / changed for 2.2.0 alpha 4
+-----------------------
+### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
+  - enhances attached file display features
+  - adds new html5 mediaplayer module for audio, video & youtube, which deprecates both flowplayer and youtube modules
+  - updates filedownload module media player to html5 (flash not required)
+### Known Issues
+  - None
+
 Added / Fixed / changed for 2.2.0 alpha 3
 -----------------------
 ### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery

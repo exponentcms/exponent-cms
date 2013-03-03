@@ -21,7 +21,7 @@
  * @package Modules
  */
 
-class flowplayerController extends expController {
+class mediaController extends expController {
     public $useractions = array(
         'showall'=>'Show all'
     );
@@ -34,10 +34,10 @@ class flowplayerController extends expController {
         'rss',
         'tags'
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
-    public $codequality = 'DEPRECATED';
+    public $codequality = 'beta';
 
-    static function displayname() { return gt("Flowplayer Media Player"); }
-    static function description() { return gt("Flowplayer is a media player for Web sites. Use it to embed video/audio streams into your HTML pages."); }
+    static function displayname() { return gt("Media Player"); }
+    static function description() { return gt("Display video files or YouTube links, or play audio streams on your site."); }
     static function isSearchable() { return true; }
     
     function showall() {

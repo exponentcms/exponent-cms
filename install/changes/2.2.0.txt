@@ -10,3 +10,6 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
     -- adds new comments and categories views to blog
   - adds file upload pause, resume, & cancel feature
   - adds normalize.css and Twitter Bootstrap as system (theme) features
+  - enhances attached file display features
+  - adds new html5 mediaplayer module for audio, video & youtube, which deprecates both flowplayer and youtube modules
+  - updates filedownload module media player to html5 (flash not required)
