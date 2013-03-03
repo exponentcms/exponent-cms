@@ -13,10 +13,6 @@
  *
  *}
 
-{*<script src="/exp2/external/jquery/js/jquery-1.8.3.js"></script>*}
-{*<script src="/exp2/external/mediaelement/build/mediaelement-and-player.js"></script>*}
-{*<link rel="stylesheet" href="/exp2/external/mediaelement/build/mediaelementplayer.css" />*}
-
 {uniqueid assign="id"}
 
 {if $config.usecategories}

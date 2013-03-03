@@ -111,13 +111,13 @@
 
     {if $config.show_player && !$file->ext_file}
         {if $filetype == "mp3"}
-            <audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile['downloadable'][0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">
+            <audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile.downloadable[0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">
             </audio>
         {elseif $filetype == "mp4" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
-            <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$file->expFile['downloadable'][0]->directory}{$file->expFile.downloadable[0]->filename}" type="{$file->expFile.downloadable[0]->mimetype}"
-            	id="player{$file->expFile['downloadable'][0]->id}"
-                {if $record->expFile.preview[0]->id}
-                poster="{$record->expFile.preview[0]->id}"
+            <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$file->expFile.downloadable[0]->directory}{$file->expFile.downloadable[0]->filename}" type="{$file->expFile.downloadable[0]->mimetype}"
+            	id="player{$file->expFile.downloadable[0]->id}"
+                {if $file->expFile.preview[0]->id}
+                    poster="{$file->expFile.preview[0]->id}"
                 {/if}
             	controls="controls" preload="none">
             </video>

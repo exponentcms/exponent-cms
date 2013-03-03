@@ -55,11 +55,14 @@
             <div class="video media">
                 {if $filetype == "mp3"}
                     <audio class="{$config.video_style}" id="{$media->expFile.media[0]->filename}" preload="none" controls="controls"
-                        src="{$smarty.const.PATH_RELATIVE}{$media->expFile.media[0]->directory}{$media->expFile.media[0]->filename}" type="audio/mp3">
+                        src="{$smarty.const.PATH_RELATIVE}{$media->expFile.media[0]->directory}{$media->expFile.media[0]->filename}" type="audio/mp3"{if $config.autoplay} autoplay="true" {/if}>
                     </audio>
                 {elseif $filetype == "mp4" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v" || $media->url != ""}
                     <video class="{$config.video_style}" width="{$media->width|default:$config.video_width}" height="{$media->height|default:$config.video_height}"
                         id="player{$media->expFile.media[0]->id}"
+                        {if $config.autoplay}
+                            autoplay="true"
+                        {/if}
                         {if $media->expFile.splash[0]->id}
                             poster="{$smarty.const.PATH_RELATIVE}{$media->expFile.splash[0]->directory}{$media->expFile.splash[0]->filename}"
                         {/if}
