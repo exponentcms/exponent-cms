@@ -39,7 +39,7 @@
                 {if $config.quality==100}
                     <img src="{$slide->url}" class="slide-image" title="{$title}" />
                 {else}
-                    {img title="{$title}" file_id=$slide->id w=$config.width|default:350 h=$config.height|default:200 class="slide-image" f=jpeg q=$quality|default:75 far=TL}
+                    {img title="{$title}" file_id=$slide->id w=$config.width|default:350 h=$config.height|default:200 class="slide-image" far=TL f=jpeg q=$quality|default:75}
                 {/if}
                 {if !$config.hidetext}
                     <div class="bodycopy">

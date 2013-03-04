@@ -51,14 +51,14 @@ margin:{$config.spacing}px;
     {if ($config.pio && $params.is_listing && $key==0) || !$params.is_listing || !$config.pio}
         {if $config.lightbox}<a href="{$img->url}" rel="lightbox['{$config.uniqueid}']" title="{$title}" class="image-link" style="margin:{$config.spacing}px;{if $config.floatthumb!="No Float"}float:{$config.floatthumb|lower};{/if}">{/if}
             {if $key==0 && $config.piwidth}
-                {img file_id=$img->id w=$config.piwidth|default:$config.thumb style="`$imgflot``$spacing`" alt="`$alt`" class="mainimg `$config.tclass`"}
+                {img file_id=$img->id w=$config.piwidth|default:$config.thumb style="`$imgflot``$spacing`" alt="`$alt`" title="`$alt`" class="mainimg `$config.tclass`" far=TL}
             {else}
-                {img file_id=$img->id w=$config.thumb h=$config.thumb f=jpeg q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$alt`" class="`$config.tclass`"}
+                {img file_id=$img->id w=$config.thumb h=$config.thumb far=TL f=jpeg q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$alt`" title="`$alt`" class="`$config.tclass`"}
             {/if}
         {if $config.lightbox}</a>{/if}
     {else}
         {if $config.lightbox}<a href="{$img->url}" rel="lightbox['{$config.uniqueid}']" title="{$title}" class="image-link" style="margin:{$config.spacing}px;{if $config.floatthumb!="No Float"}float:{$config.floatthumb|lower};{/if}">{/if}
-            {img file_id=$img->id w=$config.thumb h=$config.thumb f=jpeg q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$alt`" class="hide"}
+            {img file_id=$img->id w=$config.thumb h=$config.thumb far=TL f=jpeg q=$quality|default:75 style="`$imgflot``$spacing`" alt="`$alt`" title="`$alt`" class="hide"}
         {if $config.lightbox}</a>{/if}
 	{/if}
 {/foreach}

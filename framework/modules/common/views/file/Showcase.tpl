@@ -37,7 +37,7 @@ margin:{$config.spacing}px;
         {else}
             {$alt = $files[0]->filename}
         {/if}
-        {img file_id=$files[0]->id w=$miw h=$miw alt="`$alt`" class="mainimg `$config.tclass`"}
+        {img file_id=$files[0]->id w=$miw h=$miw alt="`$alt`" class="mainimg `$config.tclass`" far=TL title=$alt}
     </div>
     {if ($config.pio && !$params.is_listing) || !$config.pio}
         <div class="thumb-imgs">
@@ -54,7 +54,7 @@ margin:{$config.spacing}px;
                 {else}
                     {$title = $img->filename}
                 {/if}
-                <a href="{$img->url}" rel="showcase-{$img->id}" title="{$title}" class="image-link" style="margin:{$config.spacing}px;">{img file_id=$img->id w=$config.thumb h=$config.thumb f=jpeg q=$quality|default:75 style="`$spacing`" alt="`$alt`" class="`$config.tclass`"}</a>
+                <a href="{$img->url}" rel="showcase-{$img->id}" title="{$title}" class="image-link" style="margin:{$config.spacing}px;">{img file_id=$img->id w=$config.thumb h=$config.thumb far=TL f=jpeg q=$quality|default:75 style="`$spacing`" alt="`$alt`" class="`$config.tclass`"}</a>
             {/foreach}
         </div>
     {/if}
@@ -73,7 +73,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
         e.halt();
         var mainimg = e.currentTarget.ancestor('.showcase').one('.main-img img');
         var newid = e.currentTarget.getAttribute('rel').replace('showcase-','');
-        mainimg.setAttribute('src',EXPONENT.PATH_RELATIVE+"thumb.php?id="+newid+"&w={/literal}{$miw}{literal}&h={/literal}{$miw}{literal}&f=jpeg&q={/literal}{$quality|default:75}{literal}");
+        var newtitle = e.currentTarget.getAttribute('title');
+        mainimg.setAttribute('src',EXPONENT.PATH_RELATIVE+"thumb.php?id="+newid+"&w={/literal}{$miw}{literal}&h={/literal}{$miw}{literal}&far=TL&f=jpeg&q={/literal}{$quality|default:75}{literal}");
+        mainimg.setAttribute('title',newtitle);
     });
     //Y.Lightbox.init();    
 });
