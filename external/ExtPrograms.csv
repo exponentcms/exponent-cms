@@ -20,7 +20,7 @@ pixidou,0.1,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily mod
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module
 dompdf,6.0b3,code.google.com/p/dompdf,6.0b3,patched to display our images
 iCalCreator,2.16.12,kigkonsult.se/iCalcreator,2.16.12,
-lessphp,0.38,leafo.net/lessphp,0.38,includes github patches for bootstrap v2.3.0 compile
+lessphp,0.39,leafo.net/lessphp,0.39,
 jQuery,1.9.1,jquery.com,1.9.1,
 jQueryUI,1.10.1,jqueryui.com,1.10.1,
 Twitter-Bootstrap,2.3.0,twitter.github.com/bootstrap,2.3.0,"patched bootstrap.less for & includes swatches, fontawesome"

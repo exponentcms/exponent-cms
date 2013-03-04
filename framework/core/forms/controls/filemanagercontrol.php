@@ -271,7 +271,13 @@ class filemanagercontrol extends formcontrol {
                             html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
                             html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
                             html += filepic;
-                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
+                            if (obj.title) {
+                                filetitle = obj.title;
+                            } else {
+                                filetitle = obj.filename;
+                            }
+                            html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
+//                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                             html += '<\/li>';
                             
                             htmln = Y.Node.create(html);                        
@@ -335,7 +341,12 @@ class filemanagercontrol extends formcontrol {
                         html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
                         html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
                         html += filepic;
-                        html += '<span class=\"filename\">'+obj.filename+'<\/span>';
+                        if (obj.title) {
+                            filetitle = obj.title;
+                        } else {
+                            filetitle = obj.filename;
+                        }
+                        html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
                         html += '<\/li>';
                         htmln = Y.Node.create(html);
 
@@ -440,7 +451,8 @@ class filemanagercontrol extends formcontrol {
             //$html .= "<div class=\"fpdrag\"></div>";
             $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>Delete</a>";
             $html .= $filepic;
-            $html .= "<span class=\"filename\">".$val->filename."</span>";
+            $filetitle = !empty($val->title) ? $val->title : $val->filename;
+            $html .= "<span class=\"filename\" title=\"".$val->filename."\">".$filetitle."</span>";
             $html .= "</li>";
             //$cycle = $cycle=="odd" ? "even" : "odd";
         }
