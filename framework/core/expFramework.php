@@ -244,7 +244,7 @@ function renderAction(array $parms=array()) {
     global $user, $db;
     
     //Get some info about the controller
-    $baseControllerName = expModules::getControllerName($parms['controller']);
+//    $baseControllerName = expModules::getControllerName($parms['controller']);
     $fullControllerName = expModules::getControllerClassName($parms['controller']);
     $controllerClass = new ReflectionClass($fullControllerName);
     
@@ -281,7 +281,8 @@ function renderAction(array $parms=array()) {
         $template->assign('moduletitle', $parms['moduletitle']);
     } else {
         $title = new stdClass();
-        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
+//        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
+        $title->mod = $controller->loc->mod;
         $title->src = $controller->loc->src;
         $title->int = '';
         $template->assign('moduletitle', $db->selectValue('container', 'title', "internal='".serialize($title)."'"));
