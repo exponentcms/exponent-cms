@@ -13,6 +13,7 @@
  *
  *}
 
+<label class="label" for="recur">{'Recurrence'|gettext}:</label>
 <select id="recur" name="recur" onchange="showSubform(this)">
 	<option value="recur_none">{'None'|gettext}</option>
 	<option value="recur_daily">{'Daily'|gettext}</option>
@@ -26,9 +27,8 @@
 </div>
 
 <div id="recur_weekly" style="display: none">
-	{'Every'|gettext} <input type="text" size="2" name="recur_freq_recur_weekly" maxlength="2" value="1" /> {'week(s)'|gettext}
-	
-	<table cellspacing="0" cellpadding="0" border="0" style="border: 1px solid black" rules="all">
+	{'Every'|gettext} <input type="text" size="2" name="recur_freq_recur_weekly" maxlength="2" value="1" /> {'week(s) on'|gettext}
+	<table cellspacing="0" cellpadding="0" border="0" style="border: 1px solid black; display:inline;" rules="all">
 		<tr>
 			<td id="day_0" align="center">
 				S<br />
@@ -64,9 +64,9 @@
 
 <div id="recur_monthly" style="display: none">
 	{'Every'|gettext} <input type="text" size="2" name="recur_freq_recur_monthly" maxlength="2" value="1" /> {'month(s)'|gettext}
-	<br />
-	<input type="radio" name="month_type" value="1" /> {'By Day'|gettext}
-	<br />
+	{*<br />*}
+	<input type="radio" name="month_type" value="1" checked="1" /> {'By Day'|gettext}
+	{*<br />*}
 	<input type="radio" name="month_type" value="0" /> {'By Date'|gettext}
 </div>
 
@@ -75,13 +75,13 @@
 </div>
 
 <div id="until_date" style="display: none">
-    {'Until'|gettext}
+    {*{'Until'|gettext}*}
   {if empty($record->eventdate->date)}
         {$until = $smarty.now}
     {else}
         {$until = $record->eventdate->date}
     {/if}
-    {control type=yuicalendarcontrol name=untildate label='Recurrence'|gettext value=$until+365*86400 showtime=false}
+    {control type=yuicalendarcontrol name=untildate label='Until'|gettext value=$until+365*86400 showtime=false}
 </div>
 
 {script unique="recurring"}
