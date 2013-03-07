@@ -99,7 +99,8 @@ if (!function_exists('smarty_function_icon')) {
         if (empty($params['img']) && empty($params['text'])) {
             $img = gt(ucfirst($class));
         } else if (!empty($params['img'])) {
-            $class = explode('.',$params['img'])[0];
+            $imgtmp = explode('.',$params['img']);
+            $class = $imgtmp[0];
             $img = '';
 //	    $img 	= '<img class="'.$class.' btn" src="'.ICON_RELATIVE.$params['img'].'" title="'.$title.'" alt="'.$alt.'"'.XHTML_CLOSING.'>';
 //            $img = '<img class="' . $class . ' " src="' . ICON_RELATIVE . $params['img'] . '" title="' . $title . '" alt="' . $alt . '"' . XHTML_CLOSING . '>';
