@@ -20,7 +20,7 @@
 {uniqueid assign=tabs}
 
 <div class="containermodule tabbed"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
-    {viewcfile module=$singlemodule view=$singleview var=viewfile}
+    {viewfile module=$singlemodule view=$singleview var=viewfile}
     <div id="{$tabs}" class="yui-navset exp-skin-tabview">
         <ul class="yui-nav">
             {foreach from=$containers item=container key=tabnum name=contain}

@@ -18,7 +18,7 @@
 {/css}
  
 <div class="containermodule three-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
-    {viewcfile module=$singlemodule view=$singleview var=viewfile}
+    {viewfile module=$singlemodule view=$singleview var=viewfile}
     <div class="col1">
     	{$container=$containers.1}
     	{$i=0}
