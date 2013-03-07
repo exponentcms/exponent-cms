@@ -628,6 +628,7 @@ class usersController extends expController {
         expHistory::set('editable', $this->params);
         if (empty($this->params['id'])) {
             flash('error', gt('You must specify the user whose password you want to change'));
+            expHistory::back();
         }
 
         $u = new user($this->params['id']);
