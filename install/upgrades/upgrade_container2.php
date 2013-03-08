@@ -27,6 +27,7 @@
 class upgrade_container2 extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 	protected $to_version = '2.2.0';  // containermodule was upgraded to containerController in 2.2.0
+    public $priority = 1; // set this to the highest priority
 
 	/**
 	 * name/title of upgrade script
