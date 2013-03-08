@@ -127,7 +127,7 @@ class navigationController extends expController {
                 $obj->type = $sections[$i]->alias_type;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
-                    if ($obj->type == 1 && substr($obj->url, 4) != 'http') {
+                    if ($obj->type == 1 && substr($obj->url, 0, 4) != 'http') {
                         $obj->url = 'http://' . $obj->url;
                     }
                 } else {
@@ -184,7 +184,7 @@ class navigationController extends expController {
                 $obj->depth = $sections[$i]->depth;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
-                    if ($sections[$i]->alias_type == 1 && substr($obj->url, 4) != 'http') {
+                    if ($sections[$i]->alias_type == 1 && substr($obj->url, 0, 4) != 'http') {
                         $obj->url = 'http://' . $obj->url;
                     }
                 } else {
