@@ -25,8 +25,6 @@ if (!defined('EXPONENT')) exit('');
 		gt('We fervently hope that you will enjoy the power, flexibility, and ease-of-use that Exponent has to offer.') ?>
 </p>
 
-<!--<a class="awesome large green" href="?page=install-1">--><?php //echo gt('Begin Installation'); ?><!--</a>-->
-
 <h1 id="subtitle"><?php echo gt('Please select a language'); ?></h1>
 <p>
 <?php echo gt('This will set the default Language for the installation process as well as your new Exponent website.'); ?>
