@@ -37,7 +37,7 @@ class expVersion {
      *
      * @node Subsystems:expVersion
      */
-    public static function getVersion($full = false, $build = false, $type = false) {
+    public static function getVersion($full = false, $build = false, $type = true) {
         if (!defined('EXPONENT_VERSION_MAJOR')) include_once(BASE . "exponent_version.php");
         $vers = EXPONENT_VERSION_MAJOR . "." . EXPONENT_VERSION_MINOR; // can be used for numerical comparison
         if ($full) {
@@ -62,7 +62,7 @@ class expVersion {
      *
      * @node Subsystems:expVersion
      */
-    public static function getDBVersion($full = false, $type = false, $build = false) {
+    public static function getDBVersion($full = false, $type = false, $build = true) {
         $dbver = self::dbVersion();
         $vers = $dbver->major . "." . $dbver->minor; // can be used for numerical comparison
         if ($full) {
@@ -130,7 +130,7 @@ class expVersion {
                 $dbversion = self::dbVersion();
                 // check if software version is newer than database version
                 if (self::compareVersion($dbversion, $swversion)) {
-                    flash('message', gt('The database requires upgrading from') . ' v' . self::getDBVersion(true,false,true) . ' ' . gt('to') . ' v' . self::getVersion(true,false,true) .
+                    flash('message', gt('The database requires upgrading from') . ' v' . self::getDBVersion(true) . ' ' . gt('to') . ' v' . self::getVersion(true) .
                         '<br><a href="' . makelink(array("controller" => "administration", "action" => "install_exponent")) . '">' . gt('Click here to Upgrade your website') . '</a>');
                 }
             }

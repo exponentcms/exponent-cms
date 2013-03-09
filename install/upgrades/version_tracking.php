@@ -69,7 +69,7 @@ class version_tracking extends upgradescript {
         $vo = expVersion::swVersion();
 		$vo->created_at = time();
 		$ins = $db->insertObject($vo,'version') or die($db->error());
-        return $ins ? gt('Database updated to version').' '.expVersion::getVersion(true,true,true) : gt('Failed');
+        return $ins ? gt('Database updated to version').' '.expVersion::getVersion(true,true) : gt('Failed');
 	}
 }
 
