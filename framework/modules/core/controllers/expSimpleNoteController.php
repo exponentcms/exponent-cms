@@ -24,8 +24,13 @@
 
 class expSimpleNoteController extends expController {
     public $base_class = 'expSimpleNote';
-    protected $add_permissions = array('approve'=>"Approve Comments");
-    protected $remove_permissions = array('edit', 'create');
+    protected $add_permissions = array(
+        'approve'=>"Approve Comments"
+    );
+    protected $remove_permissions = array(
+        'edit',
+        'create'
+    );
 
     static function displayname() { return gt("Simple Notes"); }
     static function description() { return gt("Use this module to add Simple Notes attached to something (product, order, etc)"); }
