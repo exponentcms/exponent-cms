@@ -38,12 +38,21 @@
    		{$config.moduledescription}
    	{/if}
     {pagelinks paginate=$page top=1}
+    {$myloc=serialize($__loc)}
     {foreach from=$page->records item=media key=key}
         {$filetype=$media->expFile.media[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
         <div class="item">
             <h2>{$media->title}</h2>
+            {tags_assigned record=$media}
             {permissions}
                 <div class="item-actions">
+                    {if $myloc != $media->location_data}
+                        {if $permissions.manage == 1}
+                            {icon action=merge id=$media->id title="Merge Aggregated Content"|gettext}
+                        {else}
+                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                        {/if}
+                    {/if}
                     {if $permissions.edit == 1}
                         {icon action=edit record=$media title="Edit"|gettext|cat:" "|cat:$media->title|cat:" "|cat:("media piece"|gettext)}
                     {/if}
@@ -54,7 +63,7 @@
             {/permissions}
             <div class="video media">
                 {if $filetype == "mp3"}
-                    <audio class="{$config.video_style}" id="{$media->expFile.media[0]->filename}" preload="none" controls="controls"
+                    <audio class="{$config.video_style}" id="{$media->expFile.media[0]->filename}" controls="controls" preload="none"
                         src="{$smarty.const.PATH_RELATIVE}{$media->expFile.media[0]->directory}{$media->expFile.media[0]->filename}" type="audio/mp3"{if $config.autoplay} autoplay="true" {/if}>
                     </audio>
                 {elseif $filetype == "mp4" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v" || $media->url != ""}

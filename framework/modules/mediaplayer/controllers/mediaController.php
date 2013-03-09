@@ -26,13 +26,11 @@ class mediaController extends expController {
         'showall'=>'Show all'
     );
 	public $remove_configs = array(
-        'aggregation',
         'categories',
         'comments',
         'ealerts',
         'files',
         'rss',
-        'tags'
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
     public $codequality = 'beta';
 

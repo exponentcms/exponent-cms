@@ -25,7 +25,8 @@ class media extends expRecord {
 //    public $table = 'media';
 
     protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile'
+        'content_expFiles'=>'expFile',
+        'content_expTags'=>'expTag'
     );
 
     // public $validates = array(

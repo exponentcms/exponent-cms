@@ -109,7 +109,6 @@ class upgrade_container2 extends upgradescript {
             }
             $co->view_data = null;
             $db->updateObject($co,'container');
-            $count++;
 	    }
         foreach ($db->selectObjects('container',"internal LIKE '%Controller%'") as $co) {
             $loc = expUnserialize($co->internal);
@@ -117,7 +116,6 @@ class upgrade_container2 extends upgradescript {
             $co->internal = serialize($loc);
             $co->view_data = null;
             $db->updateObject($co,'container');
-            $count++;
 	    }
         // adjust container ranks
         $rank = 1; // 2.0 index starts at 1, not 0 like old school
