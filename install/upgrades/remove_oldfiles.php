@@ -313,6 +313,8 @@ class remove_oldfiles extends upgradescript {
             "conf/profiles/",
             "install/sitetypes/",
             "themes/common/",
+            "themes/bootstraptheme/controls/",
+            "themes/bootstraptheme/plugins/",
             "tmp/js/",
             "tmp/mail/",
             "tmp/pods/",
