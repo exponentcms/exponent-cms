@@ -22,28 +22,11 @@
     </transformations>
     <files>
         <directory>.</directory>
-        <ignore>bin/*</ignore>
-        <ignore>data/*</ignore>
-        <ignore>docs/*</ignore>
         <ignore>external/*</ignore>
-        <ignore>features/*</ignore>
-        <ignore>files/*</ignore>
-        <ignore>src/*</ignore>
-        <ignore>tests/*</ignore>
-        <ignore>vendor/*</ignore>
         <ignore>tmp/*</ignore>
         <ignore>conf/data/extra_phrases.php</ignore>
         <ignore>framework/core/lang/*</ignore>
         <ignore>framework/modules/pixidou/*</ignore>
         <ignore>framework/modules/news/models/SimplePie.php</ignore>
-        <ignore>.travis.yml</ignore>
-        <ignore>build.xml</ignore>
-        <ignore>compile</ignore>
-        <ignore>composer.*</ignore>
-        <ignore>CONTRIBUTING.md</ignore>
-        <ignore>installer.php</ignore>
-        <ignore>package.xml</ignore>
-        <ignore>phpdoc.dist.xml</ignore>
-        <ignore>phpunit.xml.dist</ignore>
     </files>
 </phpdoc>
