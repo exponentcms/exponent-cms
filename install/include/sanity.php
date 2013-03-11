@@ -106,13 +106,13 @@ function sanity_checkDirectory($dir,$flag) {
 
 function sanity_checkFiles() {
 	$status = array(
-		'framework/conf/config.php'=>sanity_checkFile(BASE.'conf/config.php',1,SANITY_CREATEFILE),
+		'framework/conf/config.php'=>sanity_checkFile(BASE.'framework/conf/config.php',1,SANITY_CREATEFILE),
 		'files/'=>sanity_checkDirectory('files',SANITY_READWRITE),
         'files/uploads/'=>sanity_checkDirectory('files',SANITY_READWRITE),
         'files/avatars/'=>sanity_checkDirectory('files',SANITY_READWRITE),
 		'install/'=>sanity_checkFile(BASE.'install',0,SANITY_READWRITE),
 		'framework/modules/'=>sanity_checkDirectory('framework/modules',SANITY_READWRITE),
-		//'framework/conf/profiles/'=>sanity_checkFile(BASE.'conf/profiles',0,SANITY_READWRITE),
+		//'framework/conf/profiles/'=>sanity_checkFile(BASE.'framework/conf/profiles',0,SANITY_READWRITE),
 		//'overrides.php'=>sanity_checkFile(BASE.'overrides.php',1,SANITY_READWRITE),
 		'tmp/'=>sanity_checkDirectory('tmp',SANITY_READWRITE),
 		'tmp/extensionuploads/'=>sanity_checkFile(BASE.'tmp/extensionuploads',0,SANITY_READWRITE),

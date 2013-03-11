@@ -1096,7 +1096,7 @@ class administrationController extends expController {
 //   			fclose($nc_file);
 //   		}
 //        $page = "";
-//        if (@file_exists(BASE.'conf/config.php')) {
+//        if (@file_exists(BASE.'framework/conf/config.php')) {
 //            $page = "?page=upgrade-1";
 //        }
    		header('Location: '.URL_FULL.'install/index.php');
