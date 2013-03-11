@@ -69,12 +69,12 @@ class upgrade_navigation extends upgradescript {
 	    $gps = $db->selectObjects('grouppermission',"module = 'navigationmodule'");
         foreach ($gps as $gp) {
 	        $gp->module = 'navigation';
-	        $db->updateObject($gp,'grouppermission',"module = 'navigationmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."' AND internal = '".$gp->internal."'",'gid');
+	        $db->updateObject($gp,'grouppermission',"module = 'navigationmodule' AND permission = '".$gp->permission."' AND internal = '".$gp->internal."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'navigationmodule'");
         foreach ($ups as $up) {
             $up->module = 'navigation';
-            $db->updateObject($up,'userpermission',"module = 'navigationmodule' AND source = '".$up->source."' AND permission = '".$up->permission."' AND internal = '".$up->internal."'",'uid');
+            $db->updateObject($up,'userpermission',"module = 'navigationmodule' AND permission = '".$up->permission."' AND internal = '".$up->internal."'",'uid');
         }
 
 //        // rename section table sef_name field to 2.0 standard of sef_url
