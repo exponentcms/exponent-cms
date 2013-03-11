@@ -10,8 +10,10 @@ Added / Fixed / changed for 2.2.0 alpha 4
 -----------------------
 ### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
   - enhances attached file display features
-  - adds new html5 mediaplayer module for audio, video & youtube, which deprecates both flowplayer and youtube modules
+  - adds new html5 media player module for audio, video & youtube, which deprecates both flowplayer and youtube modules
   - updates filedownload module media player to html5 (flash not required)
+  - moves /conf folder inside /framework to help streamline folder structure
+  - contains all the fixes in 2.1.4
 ### Known Issues
   - None
 

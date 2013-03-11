@@ -29,32 +29,32 @@
 <table cellspacing="0" cellpadding="3" rules="all" border="0" style="border:1px solid grey;" width="100%" class="exp-skin-table">
 <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('File and Directory Permission Tests'); ?></strong></td></tr>
 <tr>
-	<td id="fdp_conf-configphp" class="bodytext" style="font-weight: bold;" valign="top">conf/config.php</td>
+	<td id="fdp_conf-configphp" class="bodytext" style="font-weight: bold;" valign="top">framework/conf/config.php</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo gt('The conf/config.php file stores the active configuration for the site, including database connection settings and choice of theme.'); ?>
+		<?php echo gt('The framework/conf/config.php file stores the active configuration for the site, including database connection settings and choice of theme.'); ?>
 		<br />
 		<br />
 		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/<br />
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/config.php
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/framework/conf/<br />
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/framework/conf/config.php
 		</div>
 	</td>
 </tr>
 
 <!--<tr>-->
-<!--	<td id="fdp_conf-profiles" class="bodytext" style="font-weight: bold;" valign="top">conf/profiles</td>-->
+<!--	<td id="fdp_conf-profiles" class="bodytext" style="font-weight: bold;" valign="top">framework/conf/profiles</td>-->
 <!--	<td class="bodytext" valign="top">-->
 <!--		<div class="sanity_req">--><?php //echo gt('Must be readable and writable by web server'); ?><!--</div>-->
 <!--		<br />-->
-<!--		--><?php //echo gt('The conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory.'); ?>
+<!--		--><?php //echo gt('The framework/conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory.'); ?>
 <!--		<br />-->
 <!--		<br />-->
 <!--		<b>--><?php //echo gt('UNIX Solution'); ?><!--:</b>-->
 <!--		<div class="sanity_shell">-->
-<!--			chown -R <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/conf/profiles/-->
+<!--			chown -R <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/framework/conf/profiles/-->
 <!--		</div>-->
 <!--	</td>-->
 <!--</tr>-->

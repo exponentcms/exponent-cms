@@ -310,7 +310,7 @@ class remove_oldfiles extends upgradescript {
             "compat/",
             "views/",
             "subsystems/",
-            "conf/profiles/",
+            "conf/",
             "install/sitetypes/",
             "themes/common/",
             "themes/bootstraptheme/controls/",
