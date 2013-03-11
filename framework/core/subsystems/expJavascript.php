@@ -92,7 +92,10 @@ class expJavascript {
                             $srt[$i] = "";
                             $srt[$i] .= JQUERYUI_SCRIPT.",";
                         }
-                        expCSS::pushToHead(array("unique"=>'jqueryui','link'=>JQUERYUI_CSS));
+                        expCSS::pushToHead(array(
+                            "unique"=>'jqueryui',
+                            'link'=>JQUERYUI_CSS
+                        ));
                     } else {
                         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
                             if (strlen($srt[$i])+strlen(PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
@@ -102,7 +105,13 @@ class expJavascript {
                                 $srt[$i] = "";
                                 $srt[$i] .= PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
                             }
-                            if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
+                            if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less')) {
+                                expCSS::pushToHead(array(
+                           		    "unique"=>$mod,
+                           		    "lesscss"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less',
+                           		    )
+                           		);
+                            } elseif (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
                            		    "unique"=>$mod,
                            		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css',
@@ -118,7 +127,13 @@ class expJavascript {
                                 $srt[$i] = "";
                                 $srt[$i] .= JQUERY_RELATIVE.'addons/js/'.$mod.'.js'.",";
                             }
-                            if (file_exists(JQUERY_PATH.'addons/css/'.$mod.'.css')) {
+                            if (file_exists(JQUERY_PATH.'addons/less/'.$mod.'.less')) {
+                                expCSS::pushToHead(array(
+                           		    "unique"=>$mod,
+                           		    "lesscss"=>JQUERY_RELATIVE.'addons/less/'.$mod.'.less',
+                           		    )
+                           		);
+                            } elseif (file_exists(JQUERY_PATH.'addons/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
                            		    "unique"=>$mod,
                            		    "link"=>JQUERY_RELATIVE.'addons/css/'.$mod.'.css',
@@ -163,11 +178,20 @@ class expJavascript {
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $key=>$mod) {
                     if ($mod == 'jqueryui') {
                         $scripts .= "\t".'<script type="text/javascript" src="'.JQUERYUI_SCRIPT.'"></script>'."\r\n";
-                        expCSS::pushToHead(array("unique"=>'jqueryui','link'=>JQUERYUI_CSS));
+                        expCSS::pushToHead(array(
+                            "unique"=>'jqueryui',
+                            'link'=>JQUERYUI_CSS
+                        ));
                     } else {
                         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
                             $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js"></script>'."\r\n";
-                            if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
+                            if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less')) {
+                                expCSS::pushToHead(array(
+                           		    "unique"=>$mod,
+                           		    "lesscss"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less',
+                           		    )
+                           		);
+                            } elseif (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
                            		    "unique"=>$mod,
                            		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css',
@@ -176,7 +200,13 @@ class expJavascript {
                             }
                         } elseif (file_exists(JQUERY_PATH.'addons/js/'.$mod.'.js')) {
                             $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_RELATIVE.'addons/js/'.$mod.'.js"></script>'."\r\n";
-                            if (file_exists(JQUERY_PATH.'addons/css/'.$mod.'.css')) {
+                            if (file_exists(JQUERY_PATH.'addons/less/'.$mod.'.less')) {
+                                expCSS::pushToHead(array(
+                           		    "unique"=>$mod,
+                           		    "lesscss"=>JQUERY_RELATIVE.'addons/less/'.$mod.'.less',
+                           		    )
+                           		);
+                            } elseif (file_exists(JQUERY_PATH.'addons/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
                            		    "unique"=>$mod,
                            		    "link"=>JQUERY_RELATIVE.'addons/css/'.$mod.'.css',
