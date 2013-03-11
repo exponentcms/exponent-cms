@@ -81,7 +81,7 @@ class colorcontrol extends formcontrol {
             $html .= "<label for=\"" . $this->id . "\" style=\"display:inline\" class=\"label\">" . $label . "</label>";
             $html .= $this->controlToHTML($name, $label);
         } else {
-            $html .= "<label class=\"label spacer\" style=\"background: transparent;\";></label>";
+            $html .= "<label class=\"label spacer\" style=\"background: transparent;\"></label>";
             $html .= $this->controlToHTML($name, null);
             $html .= "<label" . $for . " style=\"display:inline\" class=\"label\">" . $label . "</label>";
         }

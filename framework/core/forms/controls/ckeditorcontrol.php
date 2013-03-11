@@ -130,10 +130,11 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkWindowHeight : 600,
                     filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "external/editors/connector/ckeditor_link.php',
                     extraPlugins : 'stylesheetparser,tableresize," . $plugins . "',
-                    height : 200,
                     autoGrow_minHeight : 200,
                     autoGrow_maxHeight : 400,
                     autoGrow_onStartup : false,
+//                    removePlugins : 'resize',
+                    height : 200,
                     toolbarCanCollapse : true,
                     entities_additional : '',
                     " . $contentCSS . "
