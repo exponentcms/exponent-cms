@@ -29,14 +29,14 @@ exec ('php ./lang_extract.php -r ..',$output);
 output($output);
 unset ($output);
 output("Now extracting phrases from the folders!\n");
-exec ('php ./lang_extract.php ../conf ../cron ../framework ../install ../themes/simpletheme', $output);
+exec ('php ./lang_extract.php ../conf ../cron ../framework ../install ../themes', $output);
 output($output);
 unset ($output);
 
 //Update each language file based on default language and then attempt to translate
 // Initialize the exponent environment and language subsystem
 include_once('../exponent_bootstrap.php');
-expLang::loadLang();
+expLang::initialize();
 global $default_lang, $cur_lang;
 if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
 $orig_lang = LANG;

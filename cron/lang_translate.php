@@ -39,7 +39,7 @@ if (!defined('THEME_ABSOLUTE')) {
 }
 
 // Initialize the language subsystem
-expLang::loadLang();
+expLang::initialize();
 global $default_lang, $cur_lang;
 if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
 

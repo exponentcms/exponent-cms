@@ -1091,15 +1091,15 @@ class administrationController extends expController {
    	 */
    	public static function install_exponent() {
    		// we'll need the not_configured file to exist for install routine to work
-   		if (!@file_exists(BASE.'install/not_configured')) {
-   			$nc_file = fopen(BASE.'install/not_configured', "w");
-   			fclose($nc_file);
-   		}
-        $page = "";
-        if (@file_exists(BASE.'conf/config.php')) {
-            $page = "?page=upgrade-1";
-        }
-   		header('Location: '.URL_FULL.'install/index.php'.$page);
+//   		if (!@file_exists(BASE.'install/not_configured')) {
+//   			$nc_file = fopen(BASE.'install/not_configured', "w");
+//   			fclose($nc_file);
+//   		}
+//        $page = "";
+//        if (@file_exists(BASE.'conf/config.php')) {
+//            $page = "?page=upgrade-1";
+//        }
+   		header('Location: '.URL_FULL.'install/index.php');
    		exit('Redirecting to the Exponent Install Wizard');
    	}
 
