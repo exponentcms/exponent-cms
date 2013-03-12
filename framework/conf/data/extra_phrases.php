@@ -26,6 +26,19 @@
     gt('Create');
     gt('Edit');
     gt('Delete');
+
+// module configuration titles
+    gt('Aggregation');
+    gt('Categories');
+    gt('Comments');
+    gt('Ealerts');
+    gt('Files');
+    gt('Module');
+    gt('Pagination');
+    gt('Rss');
+    gt('Tags');
+
+// action names
     gt('Activate Extensions');
     gt('End Sessions');
     gt('Boot Users');
@@ -119,8 +132,6 @@
     gt('Export Event Registrations');
     gt('View Admin Options');
     gt('Activate Payment Options');
-
-// action names
     gt('Display a YouTube Video');
     gt('Login');
     gt('Show all');
