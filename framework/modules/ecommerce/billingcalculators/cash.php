@@ -84,7 +84,7 @@ class cash extends billingcalculator {
 
         if (empty($opts)) return false;
 
-        return "Cash: $" . number_format($opts->cash_amount, 2, ".", ",");
+        return "Cash: ".expCore::getCurrencySymbol() . number_format($opts->cash_amount, 2, ".", ",");
     }
 
     function userFormUpdate($params) {

@@ -210,7 +210,7 @@ class orderitem extends expRecord {
     public function getShippingSurchargeMessage()
     {
         $sc = $this->product->getSurcharge();
-        if ($sc > 0) return "<span class='surcharge'>* ".gt('This item has an extra freight surcharge of')." $" . number_format($sc,2) .' '.gt('each').'.</span>';
+        if ($sc > 0) return "<span class='surcharge'>* ".gt('This item has an extra freight surcharge of')." ".expCore::getCurrencySymbol() . number_format($sc,2) .' '.gt('each').'.</span>';
         else return '';
     }
     

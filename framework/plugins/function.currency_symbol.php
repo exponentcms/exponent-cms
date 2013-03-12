@@ -33,25 +33,26 @@
  * @param \Smarty $smarty
  */
 function smarty_function_currency_symbol($params,&$smarty) {
-	global $db;
-	switch (ECOM_CURRENCY) {
-		case "USD":
-		case "CAD":
-		case "AUD":
-			echo "$";
-			break;
-		case "EUR":
-			echo "&euro;";
-			break;
-		case "GBP":
-			echo "&#163;";
-			break;
-		case "JPY":
-			echo "&#165;";
-			break;
-		default:
-			echo "$";
-	}
+//	global $db;
+//	switch (ECOM_CURRENCY) {
+//		case "USD":
+//		case "CAD":
+//		case "AUD":
+//			echo "$";
+//			break;
+//		case "EUR":
+//			echo "&euro;";
+//			break;
+//		case "GBP":
+//			echo "&#163;";
+//			break;
+//		case "JPY":
+//			echo "&#165;";
+//			break;
+//		default:
+//			echo "$";
+//	}
+    echo expCore::getCurrencySymbol();
 }
 
 ?>

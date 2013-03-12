@@ -150,7 +150,7 @@ class discounts extends expRecord {
         //5. check minimum order amount
         if ($order->subtotal < $this->minimum_order_amount) 
         {
-            $retMessage = gt("You must purchase a minimum of")." $" . /* number_format() */ $this->minimum_order_amount . " ".gt("to use this coupon code.");
+            $retMessage = gt("You must purchase a minimum of")." ".expCore::getCurrencySymbol() . /* number_format() */ $this->minimum_order_amount . " ".gt("to use this coupon code.");
         }
          
         //check rules of products in cart

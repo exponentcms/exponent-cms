@@ -28,7 +28,7 @@
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
 	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
 	            {control type="text" name="installationid" label="Installation ID"|gettext value=$calculator->configdata.installationid}
-				{control type="dropdown" name="authCurrency" label="Choose currency"|gettext includeblank="-- Select currency --"|gettext default=$calculator->configdata.authCurrency items="GBP (Pounds Sterling),USD (US Dollar)"|gettxtlist values="GBP, USD"}
+				{*{control type="dropdown" name="authCurrency" label="Choose currency"|gettext includeblank="-- Select currency --"|gettext default=$calculator->configdata.authCurrency items="GBP (Pounds Sterling),USD (US Dollar)"|gettxtlist values="GBP, USD"}*}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
 	        <div id="tab2">

@@ -987,6 +987,9 @@ class administrationController extends expController {
         // smtp protocol
         $protocol = array('ssl'=>'SSL','tls'=>'TLS');
 
+        // Currency Format
+        $currency = expSettings::dropdownData('currency');
+
         // attribution
         $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
         
@@ -1047,6 +1050,7 @@ class administrationController extends expController {
             'themes'=>$themes,
             'langs'=>$langs,
             'protocol'=>$protocol,
+            'currency'=>$currency,
             'attribution'=>$attribution,
             'datetime_format'=>$datetime_format,
             'date_format'=>$date_format,

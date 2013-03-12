@@ -70,7 +70,8 @@
 
     <div class="totals">
         <div class="details">
-        {"Subtotal"|gettext}{if $discounts} {"with discounts"|gettext}{/if}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
+        {*{"Subtotal"|gettext}{if $discounts} {"with discounts"|gettext}{/if}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>*}
+            {"Subtotal"|gettext}{if $discounts} {"with discounts"|gettext}{/if}: <span class="carttotal">{$order->total|currency}</span>
         </div>
     </div>
 

@@ -15,7 +15,7 @@
 
 <div class="module cart giftcard addToCart">
     <h1>{$moduletitle|default:"Gift Card - Add to Cart"|gettext}</h1>
-    <p>{'Gift Card amounts must be purchased in'|gettext} ${$product->base_price}.00 {'increments'|gettext}.</p>
+    <p>{'Gift Card amounts must be purchased in'|gettext} {currency_symbol}{$product->base_price}.00 {'increments'|gettext}.</p>
     {form action="addItem"}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}
@@ -35,7 +35,7 @@ YAHOO.util.Event.onDOMReady(function(){
     var da = YAHOO.util.Dom.get('dollar_amount');
     YAHOO.util.Event.on(da, 'blur', function(e,o){
         var newint = parseInt(this.value.replace('$',""));
-        this.value = "$"+Math.ceil(newint/bp)*bp+".00";
+        this.value = {/literal}{currency_symbol}{literal}+Math.ceil(newint/bp)*bp+".00";
     }, da, true);
     
     YAHOO.util.Event.on(['to','from'], 'keyup', function(e){

@@ -193,7 +193,8 @@ class paypalExpressCheckout extends billingcalculator {
 //                'ITEMAMT'           => number_format($order->total, 2, '.', ''),
 //                'SHIPPINGAMT'       => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
 //                'TAXAMT'            => number_format($order->tax, 2, '.', ''),
-                'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',  // currency code
+//                'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',  // currency code
+                'PAYMENTREQUEST_0_CURRENCYCODE' => ECOM_CURRENCY,  // currency code
                 'PAYMENTREQUEST_0_ITEMAMT' => number_format($order->total, 2, '.', ''),  // total item cost
                 'PAYMENTREQUEST_0_SHIPPINGAMT' => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),  // total shipping cost
                 'PAYMENTREQUEST_0_TAXAMT' => number_format($order->tax, 2, '.', ''),  // total tax cost
@@ -332,7 +333,8 @@ class paypalExpressCheckout extends billingcalculator {
 //            'ITEMAMT'       => number_format($order->total, 2, '.', ''),
 //            'SHIPPINGAMT'   => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
 //            'TAXAMT'        => number_format($order->tax, 2, '.', ''),
-            'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',
+//            'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',
+            'PAYMENTREQUEST_0_CURRENCYCODE' => ECOM_CURRENCY,
             'PAYMENTREQUEST_0_INVNUM' => $invoice_number,
             'PAYMENTREQUEST_0_CUSTOM' => 'Invoice #' . $invoice_number,
             'PAYMENTREQUEST_0_PAYMENTACTION' => $config['process_mode'],
@@ -668,7 +670,8 @@ class paypalExpressCheckout extends billingcalculator {
         $transactionID = urlencode($billing_options->result->transactionID);
         $refundType    = urlencode('Full'); // or 'Partial'
         $memo          = "Transaction Refunded"; // required if Partial.
-        $currencyID    = urlencode('USD'); // or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
+//        $currencyID    = urlencode('USD'); // or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
+        $currencyID    = urlencode(ECOM_CURRENCY); // or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
 
         // Add request-specific fields to the request string.
         $nvpStr = "&TRANSACTIONID=$transactionID&REFUNDTYPE=$refundType&CURRENCYCODE=$currencyID";

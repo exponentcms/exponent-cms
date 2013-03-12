@@ -104,7 +104,7 @@
 				{foreach from=$orders->records item=listing name=listings}
                     <tr class="{cycle values='odd,even'}">
                         <td><a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a></td>
-                        <td style="text-align:right;">${$listing->grand_total|number_format:2}</td>
+                        <td style="text-align:right;">{$listing->grand_total|currency}</td>
                         <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                         <td>{$listing->order_type}</td>
                         <td>{$listing->status}</td>

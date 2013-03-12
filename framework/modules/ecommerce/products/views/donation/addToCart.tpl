@@ -15,7 +15,7 @@
 
 <div class="module cart module addToCart">
     <h1>{$moduletitle|default:"Online Donation - Select Amount"|gettext}</h1>
-    <p>{'Minimum donation amount is'|gettext} ${$product->base_price}.00 {'increments'|gettext}.</p>
+    <p>{'Minimum donation amount is'|gettext} {currency_symbol}{$product->base_price}.00 {'increments'|gettext}.</p>
     {form name=donationamt controller=cart action="addItem"}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}
@@ -51,7 +51,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
             //Y.log(this.value);
             var newint = parseInt(this.value.replace('$',"").replace(',',""));
             if (newint < bp) {
-                this.value = "$"+bp+".00";
+                this.value = {/literal}{currency_symbol}{literal}+bp+".00";
             }
         }, da, true);
     });

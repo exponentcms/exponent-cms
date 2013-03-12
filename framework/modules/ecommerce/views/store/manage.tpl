@@ -65,7 +65,7 @@
                         {*</td>*}
                         <td>
                             {*{if $listing->product_type == "product"}*}
-                                ${$listing->base_price|number_format:2}
+                                {$listing->base_price|currency}
                             {*{/if}*}
                         </td>
                         <td>

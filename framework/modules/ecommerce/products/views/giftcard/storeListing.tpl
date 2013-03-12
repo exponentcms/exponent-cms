@@ -34,7 +34,7 @@
                 </a>
             </h2>
             <span class="description">{$listing->body|truncate:50:"..."}</span>
-            <span class="price">${$listing->base_price|number_format:2}</span>
+            <span class="price">{$listing->base_price|currency}</span>
 			<a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="fox-link addtocart" rel="nofollow"><em>Add to cart</em><span></span></a>
             
             {permissions}
