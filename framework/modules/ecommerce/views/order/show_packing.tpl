@@ -1,5 +1,6 @@
 {*
  * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -259,7 +260,7 @@
 
 
                         var onRequestData = function( oSelf , sQuery , oRequest) {
-                            tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
+                            tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/subsystems/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
                         }
                         
                         var onRGetDataBack = function( oSelf , sQuery , oRequest) {

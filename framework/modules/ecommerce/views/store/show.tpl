@@ -119,6 +119,15 @@
                            }
                         });
                     }
+                        Y.one('#enlarged-image-link').on('click',function(e){
+                           if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
+                              e.halt();
+                              e.currentTarget.removeAttribute('rel');
+                              Y.Lightbox.init();
+                              Y.one('.thumbnails ul li a').simulate('click');
+                           }
+                        });
+                    }
 
                     // Shadowbox.init({
                     //     modal: true,
@@ -246,13 +255,17 @@
                     {if $child_price > $chiprod->special_price}{$child_price = $chiprod->special_price}{/if}
                 {/if}
             {/foreach}
-            <span class="regular-price">{'Starting at'|gettext} {currency_symbol}{$child_price|number_format:2}</span>
+            {*<span class="regular-price">{'Starting at'|gettext} {currency_symbol}{$child_price|number_format:2}</span>*}
+            <span class="regular-price">{'Starting at'|gettext} {$child_price|currency}</span>
         {else}
             {if $product->use_special_price}                     
-                <span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>
-                <span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&#160;<sup>{"SALE!"|gettext}</sup></span>
+                {*<span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>*}
+                <span class="regular-price on-sale">{$product->base_price|currency}</span>
+                {*<span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&#160;<sup>{"SALE!"|gettext}</sup></span>*}
+                <span class="sale-price">{$product->special_price|currency}&#160;<sup>{"SALE!"|gettext}</sup></span>
             {else}
-                <span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>
+                {*<span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>*}
+                <span class="regular-price">{$product->base_price|currency}</span>
             {/if}
         {/if}
     </div>    
@@ -498,9 +511,11 @@
                                     {else}
                                         {if $chiprod->use_special_price}
                                             <span style="color:red; font-size: 8px; font-weight: bold;">{'SALE!'|gettext}</span>{br}
-                                            <span style="color:red; font-weight: bold;">{currency_symbol}{$chiprod->special_price|number_format:2}</span>
+                                            {*<span style="color:red; font-weight: bold;">{currency_symbol}{$chiprod->special_price|number_format:2}</span>*}
+                                            <span style="color:red; font-weight: bold;">{$chiprod->special_price|currency}</span>
                                         {else}
-                                            <span>{currency_symbol}{$chiprod->base_price|number_format:2}</span>
+                                            {*<span>{currency_symbol}{$chiprod->base_price|number_format:2}</span>*}
+                                            <span>{$chiprod->base_price|currency}</span>
                                         {/if}
                                     {/if}
                                 </td>
