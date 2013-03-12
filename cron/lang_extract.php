@@ -163,7 +163,7 @@ function do_dir($dir) {
 			if ($recur) do_dir($entry);
 		} else { // if file, parse only if extension is matched
 			$pi = pathinfo($entry);
-			
+			if (empty($pi['extension'])) $pi['extension'] = null;
 			if (isset($pi['extension']) && in_array($pi['extension'], $extensions)) {
 				do_file($entry,$pi['extension']);
 			}
@@ -181,6 +181,7 @@ for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
 		do_dir($_SERVER['argv'][$ac]);
 	} else { // do file
         $pi = pathinfo($_SERVER['argv'][$ac]);
+        if (empty($pi['extension'])) $pi['extension'] = null;
 		do_file($_SERVER['argv'][$ac],$pi['extension']);
 	}
     print "\nCompleted Extracting ".$total_new." Total Phrases!\n\n";
