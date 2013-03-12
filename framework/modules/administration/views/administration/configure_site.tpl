@@ -290,7 +290,7 @@
                 <div id="tab16">
                 <div class="info-header">
                     <div class="related-actions">
-                        {help text="Get Helpwith"|gettext|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
+                        {help text="Get Help with"|gettext|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
                     </div>
                     <h2>{"e-Commerce Configuration"|gettext}</h2>
                 </div>
