@@ -17,9 +17,9 @@
 
 {/css}
 
-<div class="importer usercsv-display-users">
+<div class="importer usercsv-display">
 	<div class="form_header">
-		<h2>{'Users to Import Into Database'|gettext}</h2>
+		<h2>{'Import Users - Available Users to Import'|gettext}</h2>
 		<p>{'The following users can be added to the database.'|gettext}</p>
 	</div>
     {form action="import_users_add"}

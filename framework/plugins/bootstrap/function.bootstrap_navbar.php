@@ -40,13 +40,13 @@ function smarty_function_bootstrap_navbar($params,&$smarty) {
         return $menu;
     } else {
         foreach ($params['menu'] as $key=>$page) {
-            $menu .= build_menu($page);
+            $menu .= build_menu($page,$params);
         }
         return $menu;
     }
 }
 
-function build_menu($page) {
+function build_menu($page,$params) {
     global $sectionObj;
 
 //    $menu = '';
@@ -70,15 +70,15 @@ function build_menu($page) {
             $topmenu->id = $page->id;
             $topmenu->text = $page->text;
             $topmenu->url = $page->url;
-            $menu .= build_menu($topmenu);
+            $menu .= build_menu($topmenu,$params);
         }
         if (!empty($page->itemdata)) {
             foreach ($page->itemdata as $subpage) {
-                $menu .= build_menu($subpage);
+                $menu .= build_menu($subpage,$params);
             }
         } elseif (!empty($page->submenu->itemdata)) {
             foreach ($page->submenu->itemdata as $subpage) {
-                $menu .= build_menu($subpage);
+                $menu .= build_menu($subpage,$params);
             }
         }
         $menu .= '</ul>'."\n".'</li>'."\n";
