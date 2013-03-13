@@ -1,4 +1,4 @@
-#Exponent Content Management System
+#Exponent Content Management System..
 
 ----------
 
@@ -50,6 +50,10 @@ Added / Fixed / changed for 2.2.0 alpha 1
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
 ### Known Issues
   - This is the first release of the v2.2 code
+
+Added / Fixed / changed for 2.1.4
+-----------------------
+### This release only fixes bugs found in 2.1.3, everything else is destined for the v2.2 major version update
 
 Added / Fixed / changed for 2.1.4
 -----------------------
