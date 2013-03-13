@@ -352,6 +352,14 @@ if ($user->isAdmin() || !empty($groups)) {
                         'controller' => 'users',
                         'action'     => 'manage_sessions'
                     )),
+                ),
+                array(
+                    'text' => gt('Import Users'),
+                    'url'  => makeLink(array(
+                        'controller' => 'users',
+                        'action'     => 'import_users'
+                    )),
+                    'classname' => 'import',
                 )
             )
         )
