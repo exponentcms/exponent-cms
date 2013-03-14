@@ -55,10 +55,6 @@ Added / Fixed / changed for 2.2.0 alpha 1
 Added / Fixed / changed for 2.1.4
 -----------------------
 ### This release only fixes bugs found in 2.1.3, everything else is destined for the v2.2 major version update
-
-Added / Fixed / changed for 2.1.4
------------------------
-### This release only fixes bugs found in 2.1.3, everything else is destined for the v2.2 major version update
  - updates EQL file export/import to also include table definition for future proofing backups
 
 Added / Fixed / changed for 2.1.3
