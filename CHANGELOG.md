@@ -12,6 +12,7 @@ Added / Fixed / changed for 2.2.0 alpha 4
   - enhances attached file display features
   - adds new html5 media player module for audio, video & youtube, which deprecates both flowplayer and youtube modules
   - updates filedownload module media player to html5 (flash not required)
+  - adds new import form data, or create a form from csv file feature
   - adds new import users from csv file feature
   - moves /conf folder inside /framework to help streamline folder structure
   - contains all the fixes in 2.1.4
