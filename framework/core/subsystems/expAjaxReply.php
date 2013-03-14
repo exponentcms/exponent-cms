@@ -39,8 +39,12 @@ class expAjaxReply {
 				redirect_to($this->redirecturl);	
 			}
 		} else {
-			if (expJavascript::requiresJSON()) {
-				echo json_encode($this->packet);
+			if ($p = expJavascript::requiresJSON()) {
+				if ($p==='jsonp') {
+					echo $_GET['callback'] . '(' . json_encode($this->packet) . ')';
+				} else {
+					echo json_encode($this->packet);
+				}
 			} else {
 				global $template;
 				echo $template->render();
@@ -52,18 +56,19 @@ class expAjaxReply {
 	public static function makePacket($replyCode=200, $replyText='Ok', $data) {
         $ajaxObj['replyCode'] = $replyCode;
     	$ajaxObj['replyText'] = $replyText;
-        if (isset($data)) {
-	        $ajaxObj['data'] = $data;
-        	if (is_array($data)) {
-            	$ajaxObj['replyCode'] = 201;
-            } elseif (is_string($data)) {
-                $ajaxObj['replyCode'] = 202;
-        	} elseif (is_bool($data)) {
-            	$ajaxObj['replyCode'] = 203;
-            } elseif (empty($data)) {
-                $ajaxObj['replyCode'] = 204;
-        	}
-        }
+    	$ajaxObj['data'] = $data;
+        // if (isset($data)) {
+	       //  $ajaxObj['data'] = $data;
+        // 	if (is_array($data)) {
+        //     	$ajaxObj['replyCode'] = 201;
+        //     } elseif (is_string($data)) {
+        //         $ajaxObj['replyCode'] = 202;
+        // 	} elseif (is_bool($data)) {
+        //     	$ajaxObj['replyCode'] = 203;
+        //     } elseif (empty($data)) {
+        //         $ajaxObj['replyCode'] = 204;
+        // 	}
+        // }
     	return $ajaxObj;
 	}
 }

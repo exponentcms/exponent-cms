@@ -75,7 +75,11 @@ if ($db->havedb) {
 if (ENABLE_TRACKING) $router->updateHistory($section);
 
 // set the output header
-header("Content-Type: text/html; charset=".LANG_CHARSET);
+if (expJavascript::requiresJSON()) {
+	header("Content-Type: application/json; charset=".LANG_CHARSET);
+} else {
+	header("Content-Type: text/html; charset=".LANG_CHARSET);
+}
 
 // Check to see if we are in maintenance mode.
 if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
