@@ -584,8 +584,13 @@ class fileController extends expController {
 
         $errors = array();
         expSession::clearAllUsersSessionCache();
+        expSession::clearCurrentUserSessionCache();
 
         expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
+
+        // check to see if we need to install or upgrade the restored database
+        expVersion::checkVersion();
+
         assign_to_template(array(
             'success' => !count($errors),
             'errors' => $errors,
