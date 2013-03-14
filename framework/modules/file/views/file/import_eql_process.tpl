@@ -13,6 +13,7 @@
  *
  *}
 
+{messagequeue}
 {if $success == 1}
 	<h2>{'Data was restored successfully from backup.'|gettext}</h2>
     <p>{'If an upgrade notice is displayed above, please upgrade your restored database.'|gettext}</p>
@@ -30,7 +31,7 @@
         <li>
             {'Download and extract the Exponent package corresponding to the \'from\' version in the upgrade notice above'|gettext}
             {br}
-            <a target="_blank" href="https://github.com/exponentcms/exponent-cms/downloads" class="download">{'Package Downloads'|gettext}</a>
+            <a target="_blank" href="https://sourceforge.net/projects/exponentcms/files/" class="download">{'Package Downloads'|gettext}</a>
         </li>
         <li>{'Run the installation/upgrade procedure'|gettext}</li>
         <li>{'Import the EQL file once again to restore the database'|gettext}</li>
