@@ -94,6 +94,12 @@ class expCat extends expRecord {
 //       }
 //    }
 
+    public function afterDelete() {
+        global $db;
+
+	    // get and delete all attachments to this object
+	    $db->delete('content_expCats','expcats_id='.$this->id);
+    }
 
 }
 
