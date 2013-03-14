@@ -117,14 +117,16 @@ class upgrade_mediaplayer extends upgradescript {
 		    $cn->action = 'showall';
 	        $db->updateObject($cn,'container');
 
-            $oldconfig = expUnserialize($config->config);
-            unset($oldconfig['autoplay']);
-            unset($oldconfig['control_mute']);
-            unset($oldconfig['video_style']);
-            if (!empty($oldconfig)) {
-                $config->config = serialize($oldconfig);
-                $config->location_data = $cn->internal;
-                $db->updateObject($config,'expConfigs',"location_data='".$old_internal."'");
+            if (!empty($config->config)) {
+                $oldconfig = expUnserialize($config->config);
+                unset($oldconfig['autoplay']);
+                unset($oldconfig['control_mute']);
+                unset($oldconfig['video_style']);
+                if (!empty($oldconfig)) {
+                    $config->config = serialize($oldconfig);
+                    $config->location_data = $cn->internal;
+                    $db->updateObject($config,'expConfigs',"location_data='".$old_internal."'");
+                }
             }
 
             $fp_modules_converted += 1;
@@ -143,21 +145,23 @@ class upgrade_mediaplayer extends upgradescript {
 		    $cn->action = 'showall';
 	        $db->updateObject($cn,'container');
 
-            $oldconfig = expUnserialize($config->config);
-            if (!empty($oldconfig['width'])) {
-                $oldconfig['video_width'] = $oldconfig['width'];
-                unset($oldconfig['width']);
-                $yt_width = $oldconfig['video_width'];
-            } else $yt_width = 200;
-            if (!empty($oldconfig['height'])) {
-                $oldconfig['video_height'] = $oldconfig['height'];
-                unset($oldconfig['height']);
-                $yt_height = $oldconfig['video_height'];
-            } else $yt_height = 143;
-            if (!empty($oldconfig)) {
-                $config->config = serialize($oldconfig);
-                $config->location_data = $cn->internal;
-                $db->updateObject($config,'expConfigs',"location_data='".$old_internal."'");
+            if (!empty($config->config)) {
+                $oldconfig = expUnserialize($config->config);
+                if (!empty($oldconfig['width'])) {
+                    $oldconfig['video_width'] = $oldconfig['width'];
+                    unset($oldconfig['width']);
+                    $yt_width = $oldconfig['video_width'];
+                } else $yt_width = 200;
+                if (!empty($oldconfig['height'])) {
+                    $oldconfig['video_height'] = $oldconfig['height'];
+                    unset($oldconfig['height']);
+                    $yt_height = $oldconfig['video_height'];
+                } else $yt_height = 143;
+                if (!empty($oldconfig)) {
+                    $config->config = serialize($oldconfig);
+                    $config->location_data = $cn->internal;
+                    $db->updateObject($config,'expConfigs',"location_data='".$old_internal."'");
+                }
             }
 
             $yt_modules_converted += 1;

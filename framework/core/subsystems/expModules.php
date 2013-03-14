@@ -243,9 +243,9 @@ class expModules {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? substr($modulename, 0, -6) : $modulename;
-        }
+        } else return $modulename;
    	}
 
     /**
@@ -260,9 +260,9 @@ class expModules {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? $modulename : $modulename.'Controller';
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
-        }
+        } else return $modulename;
    	}
 
     /**
@@ -278,9 +278,9 @@ class expModules {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
-        }
+        } else return $modulename;
    	}
 
     /**
