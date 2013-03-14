@@ -1566,7 +1566,7 @@ class expFile extends expRecord {
             $dump .= 'VERSION:' . $force_version . "\r\n\r\n";
         }
 
-        if (!is_array($tables)) {
+        if (!is_array($tables)) {  // dump all the tables
             $tables = $db->getTables();
             if (!function_exists('tmp_removePrefix')) {
                 function tmp_removePrefix($tbl) {
@@ -1579,7 +1579,10 @@ class expFile extends expRecord {
         }
         usort($tables, 'strnatcmp');
         foreach ($tables as $table) {
+            $tabledef = $db->getDataDefinition($table);
+
             $dump .= 'TABLE:' . $table . "\r\n";
+            $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
             foreach ($db->selectObjects($table) as $obj) {
                 $dump .= 'RECORD:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($obj)) . "\r\n";
             }
@@ -1626,7 +1629,7 @@ class expFile extends expRecord {
             }
             $current_version = EXPONENT + 0;
 
-            $clear_function = '';
+//            $clear_function = '';
             $fprefix = '';
             // Check version and include necessary converters
             //FIXME We reject v1.0 eql files
@@ -1658,10 +1661,10 @@ class expFile extends expRecord {
                             $table_function = $fprefix . $table;
                         }
                         if ($db->tableExists($table)) {
-                            $db->delete($table);
-                            if ($clear_function != '') {
-                                $clear_function($db, $table);
-                            }
+                            $db->delete($table);  // drop/empty table records
+//                            if ($clear_function != '') {
+//                                $clear_function($db, $table);
+//                            }
                         } else {
                             //						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
                             $errors[] = sprintf(gt('Table "%s" not found in the database (line %d)'), $table, $line_number);
@@ -1672,6 +1675,16 @@ class expFile extends expRecord {
                             //							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
                             //							$db->createTable($table,$dd,$info);
                             //						}
+                        }
+                    } else if ($pair[0] == 'TABLEDEF') {  // new in 2.1.4, re-create a missing table
+                        $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+//						$tabledef = expUnserialize($pair[1]);
+                        $tabledef = @unserialize($pair[1]);
+                        if (!$db->tableExists($table)) {
+                            $db->createTable($table,$tabledef,array());
+                            $errors[] = sprintf(gt('*  However...we successfully recreated Table "%s" from the EQL file'), $table);
+                        } else {
+                            $db->alterTable($table, $tabledef, array(), true);
                         }
                     } else if ($pair[0] == 'RECORD') {
                         // Here we need to check the conversion scripts.
