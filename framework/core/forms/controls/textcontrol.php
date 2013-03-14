@@ -117,10 +117,10 @@ class textcontrol extends formcontrol {
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
         $object->description = $values['description'];
-        $object->default = $values['default'];
-        $object->placeholder = $values['placeholder'];
-        $object->size = intval($values['size']);
-        $object->maxlength = intval($values['maxlength']);
+        if (isset($values['default'])) $object->default = $values['default'];
+        if (isset($values['placeholder'])) $object->placeholder = $values['placeholder'];
+        if (isset($values['size'])) $object->size = intval($values['size']);
+        if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
         $object->required = isset($values['required']);
         return $object;
     }

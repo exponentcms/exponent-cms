@@ -185,6 +185,14 @@ class checkboxcontrol extends formcontrol {
         return isset($values[$name]) ? 1 : 0;
     }
 
+    static function convertData($original_name,$formvalues) {
+        if (empty($formvalues[$original_name])) return false;
+        if (strtolower($formvalues[$original_name]) == 'no') return false;
+        if (strtolower($formvalues[$original_name]) == 'off') return false;
+        if (strtolower($formvalues[$original_name]) == 'false') return false;
+		return true;
+	}
+
     static function templateFormat($db_data, $ctl) {
         return ($db_data == 1) ? gt("Yes") : gt("No");
     }

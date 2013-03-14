@@ -142,8 +142,8 @@ class radiogroupcontrol extends formcontrol {
 		$object->default = $values['default'];
 		$object->items = listbuildercontrol::parseData($values,'items',true);
 		$object->flip = isset($values['flip']);
-		$object->cols = intval($values['cols']);
-		$object->spacing = intval($values['spacing']);
+        if (isset($values['cols'])) $object->cols = intval($values['cols']);
+        if (isset($values['spacing'])) $object->spacing = intval($values['spacing']);
 		$object->required = isset($values['required']);
 		
 		return $object;

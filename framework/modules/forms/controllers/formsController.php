@@ -166,6 +166,8 @@ class formsController extends expController {
             expHistory::set('viewable', $this->params);
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
+            } elseif (!empty($this->params['forms_id'])) {
+                $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
             } elseif (!empty($this->params['title'])) {
                 $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
                 redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
@@ -429,9 +431,8 @@ class formsController extends expController {
 
     public function submit_data() {
         // Check for form errors
-        $post = $this->params;
-        $post['manual_redirect'] = true;
-        if (!expValidator::check_antispam($post)) {
+        $this->params['manual_redirect'] = true;
+        if (!expValidator::check_antispam($this->params)) {
             flash('error', gt('Security Validation Failed'));
             expHistory::back();
         }
@@ -646,6 +647,7 @@ class formsController extends expController {
     public function manage() {
         global $db;
 
+        expHistory::set('manageable', $this->params);
         $forms = $this->forms->find('all', 1);
         foreach($forms as $key=>$f) {
             if (!empty($f->table_name) && $db->tableExists("forms_" . $f->table_name) ) {
@@ -863,7 +865,7 @@ class formsController extends expController {
                 $form = call_user_func(array($control_type, "form"), $ctl);
                 $form->location($this->loc);
                 if ($ctl) {
-                    $form->controls['identifier']->disabled = true;
+                    if (isset($form->controls['identifier']->disabled)) $form->controls['identifier']->disabled = true;
                     $form->meta("id", $ctl->id);
                     $form->meta("identifier", $ctl->identifier);
                 }
@@ -920,13 +922,12 @@ class formsController extends expController {
             if ($ctl != null) {
                 $name = substr(preg_replace('/[^A-Za-z0-9]/', '_', $ctl->identifier), 0, 20);
                 if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' and forms_id=" . $this->params['forms_id']) > 0) {
-                    $post = $this->params;
-                    $post['_formError'] = gt('Identifier must be unique.');
-                    expSession::set('last_POST', $post);
+                    $this->params['_formError'] = gt('Identifier must be unique.');
+                    expSession::set('last_POST', $this->params);
                 } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp') {
-                    $post = $this->params;
-                    $post['_formError'] = sprintf(gt('Identifier cannot be "%s".'), $name);
-                    expSession::set('last_POST', $post);
+                    $this->params = $this->params;
+                    $this->params['_formError'] = sprintf(gt('Identifier cannot be "%s".'), $name);
+                    expSession::set('last_POST', $this->params);
                 } else {
                     if (!isset($this->params['id'])) {
                         $control->name = $name;
@@ -1272,12 +1273,23 @@ class formsController extends expController {
                 ':' => gt('Colon'),
                 ' ' => gt('Space'));
 
+            $forms = $this->forms->find('all', 1);
+            $formslist = array();
+            $formslist[0] = gt('--Create a New Form--');
+            foreach ($forms as $aform) {
+                if ($aform->is_saved) {
+                    $formslist[$aform->id] = $aform->title;
+                    if (empty($formslist[$aform->id])) $formslist[$aform->id] = gt('Untitled');
+                }
+            }
+
             //Register the dropdown menus
-            $form->register("delimiter", gt('Delimiter Character'), New dropdowncontrol(",", $delimiterArray));
-            $form->register("upload", gt('CSV File to Upload'), New uploadcontrol());
-            $form->register("rowstart", gt('Row to Begin at'), New textcontrol("1", 1, 0, 6));
-            $form->register("use_header", gt('First Row is Header'), New checkboxcontrol(0, 0));
-            $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+            $form->register("delimiter", gt('Delimiter Character'), new dropdowncontrol(",", $delimiterArray));
+            $form->register("upload", gt('CSV File to Upload'), new uploadcontrol());
+            $form->register("use_header", gt('First Row is a Header'), new checkboxcontrol(0, 0));
+            $form->register("rowstart", gt('Forms Data begins in Row'), new textcontrol("1", 1, 0, 6));
+            $form->register("forms_id", gt('Target Form'), new dropdowncontrol("0", $formslist));
+            $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
             assign_to_template(array(
                 "form_html" => $form->tohtml(),
@@ -1286,18 +1298,188 @@ class formsController extends expController {
     }
 
     public function import_csv_mapper() {
-        //Get the post data for future massaging
-        $post = $this->params;
-
         //Check to make sure the user filled out the required input.
         if (!is_numeric($this->params["rowstart"])) {
-            unset($post['rowstart']);
-            $post['_formError'] = gt('The starting row must be a number.');
-            expSession::set("last_POST", $post);
+            unset($this->params['rowstart']);
+            $this->params['_formError'] = gt('The starting row must be a number.');
+            expSession::set("last_POST", $this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit('Redirecting...');
         }
 
+        if (!empty($this->params['forms_id'])) {
+            // if we are importing to an existing form, jump to that step
+            $this->import_csv_data_mapper();
+        } else {
+            //Get the temp directory to put the uploaded file
+            $directory = "tmp";
+
+            //Get the file save it to the temp directory
+            if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
+                //	$file = file::update("upload",$directory,null,time()."_".$_FILES['upload']['name']);
+                $file = expFile::fileUpload("upload", false, false, time() . "_" . $_FILES['upload']['name'], $directory.'/'); //FIXME quick hack to remove file model
+                if ($file == null) {
+                    switch ($_FILES["upload"]["error"]) {
+                        case UPLOAD_ERR_INI_SIZE:
+                        case UPLOAD_ERR_FORM_SIZE:
+                        $this->params['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
+                            break;
+                        case UPLOAD_ERR_PARTIAL:
+                            $this->params['_formError'] = gt('The file was only partially uploaded.');
+                            break;
+                        case UPLOAD_ERR_NO_FILE:
+                            $this->params['_formError'] = gt('No file was uploaded.');
+                            break;
+                        default:
+                            $this->params['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
+                            break;
+                    }
+                    expSession::set("last_POST", $this->params);
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    exit("");
+                }
+            }
+            /*
+            if (mime_content_type(BASE.$directory."/".$file->filename) != "text/plain"){
+                $this->params['_formError'] = "File is not a delimited text file.";
+                expSession::set("last_POST",$this->params);
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit("");
+            }
+            */
+
+            //split the line into its columns
+            $headerinfo = null;
+            $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
+            for ($x = 0; $x < $this->params["rowstart"]; $x++) {
+                $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
+                if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
+            }
+
+            // get list of simple controls if we are also creating a new form
+            $types = expTemplate::listControlTypes();
+            uasort($types, "strnatcmp");
+            $types = array_merge(array('none'=>gt('--Disregard this column--')),$types);
+
+            //Check to see if the line got split, otherwise throw an error
+            if ($lineInfo == null) {
+                $this->params['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
+                expSession::set("last_POST", $this->params);
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit("");
+            } else {
+                //Setup the meta data (hidden values)
+                $form = new form();
+                $form->meta("controller", "forms");
+                $form->meta("action", "import_csv_form_prep");  // we are creating a new form first
+    //            $form->meta("action", "import_csv_data");  // we are importing into an existing form  //FIXME
+                $form->meta("delimiter", $this->params["delimiter"]);
+                $form->meta("filename", $directory . "/" . $file->filename);
+                $form->meta("use_header", $this->params["use_header"]);
+                $form->meta("rowstart", $this->params["rowstart"]);
+                for ($i = 0; $i < count($lineInfo); $i++) {
+                    if ($headerinfo != null) {
+                        $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
+    //                    $label = str_replace('&', 'and', $headerinfo[$i]);
+    //                    $label = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $label))));
+    //                    $form->register("name[$i]", null, new genericcontrol('hidden',$label));
+                        $form->register("name[$i]", null, new genericcontrol('hidden',$headerinfo[$i]));
+                    } else {
+                        $form->register("name[$i]", null, new genericcontrol('hidden','Field'.$i));
+                        $title = $lineInfo[$i];
+                    }
+                    $form->register("data[$i]", null, new genericcontrol('hidden',$lineInfo[$i]));
+                    $form->register("control[$i]", $title, new dropdowncontrol("none", $types));
+                }
+                $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+
+                assign_to_template(array(
+                    "form_html" => $form->tohtml(),
+                ));
+            }
+        }
+    }
+
+    public function import_csv_form_prep() {
+        $form = new form();
+        $form->meta("controller", "forms");
+        $form->meta("action", "import_csv_form_add");
+        $form->meta("delimiter", $this->params["delimiter"]);
+        $form->meta("filename", $this->params["filename"]);
+        $form->meta("use_header", $this->params["use_header"]);
+        $form->meta("rowstart", $this->params["rowstart"]);
+
+         // condense our responses to present form shell for confirmation
+        $form->register("title", gt('Form Title'), new textcontrol(''));
+        $formcontrols = array();
+        foreach ($this->params['control'] as $key=>$control) {
+            if ($control != "none") {
+                $formcontrols[$key] = new stdClass();
+                $formcontrols[$key]->control = $control;
+                $label = str_replace('&', 'and', $this->params['name'][$key]);
+                $label = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $label))));
+                $formcontrols[$key]->name = $label;
+                $formcontrols[$key]->caption = $this->params['name'][$key];
+                $formcontrols[$key]->data = $this->params['data'][$key];
+            }
+        }
+
+        foreach ($formcontrols as $i=>$control) {
+            $form->register("column[$i]", ucfirst($control->control) . ' ' . gt('Field Identifier') . ' (' . $control->caption . ' - ' . $control->data . ')', new textcontrol($control->name));
+            $form->register("control[$i]", null, new genericcontrol('hidden',$control->control));
+            $form->register("caption[$i]", null, new genericcontrol('hidden',$control->caption));
+            $form->register("data[$i]", null, new genericcontrol('hidden',$control->data));
+        }
+
+        $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+
+        assign_to_template(array(
+            "form_html" => $form->tohtml(),
+        ));
+    }
+
+    public function import_csv_form_add() {
+
+        // create the form
+        $f = new forms();
+        $f->title = $this->params['title'];
+        $f->is_saved = true;
+        $f->update();
+
+        // create the form controls
+        foreach ($this->params['control'] as $key=>$control) {
+            $params = array();
+            $fc = new forms_control();
+            $this->params['column'][$key] = str_replace('&', 'and', $this->params['column'][$key]);
+            $this->params['column'][$key] = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $this->params['column'][$key]))));
+            $fc->name = $params['identifier'] = $this->params['column'][$key];
+            $fc->caption = $params['caption'] = $this->params['caption'][$key];
+            $params['description'] = '';
+            if ($control == 'datetimecontrol') {
+                $params['showdate'] = $params['showtime'] = true;
+            }
+            if ($control == 'htmlcontrol') {
+                $params['html'] = $this->params['data'][$key];
+            }
+            if ($control == 'radiogroupcontrol' || $control == 'dropdowncontrol') {
+                $params['default'] = $params['items'] = $this->params['data'][$key];
+            }
+            $fc->forms_id = $f->id;
+            $ctl = null;
+            $ctl = call_user_func(array($control, 'update'), $params, $ctl);
+            $fc->data = serialize($ctl);
+            $fc->update();
+        }
+
+        flash('notice', gt('New Form Created'));
+        $this->params['forms_id'] = $f->id;
+//        unset($this->params['caption']);
+        unset($this->params['control']);
+        $this->import_csv_data_display();
+    }
+
+    public function import_csv_data_mapper() {
+        global $template;
         //Get the temp directory to put the uploaded file
         $directory = "tmp";
 
@@ -1309,27 +1491,27 @@ class formsController extends expController {
                 switch ($_FILES["upload"]["error"]) {
                     case UPLOAD_ERR_INI_SIZE:
                     case UPLOAD_ERR_FORM_SIZE:
-                        $post['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
+                        $this->params['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
                         break;
                     case UPLOAD_ERR_PARTIAL:
-                        $post['_formError'] = gt('The file was only partially uploaded.');
+                        $this->params['_formError'] = gt('The file was only partially uploaded.');
                         break;
                     case UPLOAD_ERR_NO_FILE:
-                        $post['_formError'] = gt('No file was uploaded.');
+                        $this->params['_formError'] = gt('No file was uploaded.');
                         break;
                     default:
-                        $post['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
+                        $this->params['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
                         break;
                 }
-                expSession::set("last_POST", $post);
+                expSession::set("last_POST", $this->params);
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit("");
             }
         }
         /*
         if (mime_content_type(BASE.$directory."/".$file->filename) != "text/plain"){
-            $post['_formError'] = "File is not a delimited text file.";
-            expSession::set("last_POST",$post);
+            $this->params['_formError'] = "File is not a delimited text file.";
+            expSession::set("last_POST",$this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit("");
         }
@@ -1343,36 +1525,39 @@ class formsController extends expController {
             if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
         }
 
-        //FIXME we need the control names here
-        $colNames = array(
+        // pull in the form control definitions here
+        $f = new forms($this->params['forms_id']);
+        $fields = array(
             "none"      => gt('--Disregard this column--'),
-            "username"  => gt('Username'),
-            "password"  => gt('Password'),
-            "firstname" => gt('First Name'),
-            "lastname"  => gt('Last Name'),
-            "email"     => gt('Email Address')
         );
+        foreach ($f->forms_control as $control) {
+            $fields[$control->name] = $control->caption;
+        }
 
         //Check to see if the line got split, otherwise throw an error
         if ($lineInfo == null) {
-            $post['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
-            expSession::set("last_POST", $post);
+            $this->params['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
+            expSession::set("last_POST", $this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit("");
         } else {
-            $headerbr = '';
-            if ($headerinfo != null) {
-                $headerbr = ':<br>';
-            }
-            //Setup the mete data (hidden values)
+            //Setup the meta data (hidden values)
             $form = new form();
             $form->meta("controller", "forms");
-            $form->meta("action", "import_csv_process");
+            $form->meta("action", "import_csv_data_display");
             $form->meta("rowstart", $this->params["rowstart"]);
+            $form->meta("use_header", $this->params["use_header"]);
             $form->meta("filename", $directory . "/" . $file->filename);
             $form->meta("delimiter", $this->params["delimiter"]);
+            $form->meta("forms_id", $this->params["forms_id"]);
+
             for ($i = 0; $i < count($lineInfo); $i++) {
-                $form->register("column[$i]", $headerinfo[$i] . $headerbr . $lineInfo[$i], new dropdowncontrol("none", $colNames));
+                if ($headerinfo != null) {
+                    $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
+                } else {
+                    $title = $lineInfo[$i];
+                }
+                $form->register("column[$i]", $title, new dropdowncontrol("none", $fields));
             }
             $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
@@ -1382,181 +1567,88 @@ class formsController extends expController {
         }
     }
 
-    public function import_csv_process() {
-        $form = new form();
-        $form->meta("controller", "forms");
-        $form->meta("action", "import_csv_display");
-        $form->meta("column", $this->params["column"]);
-        $form->meta("delimiter", $this->params["delimiter"]);
-        $form->meta("filename", $this->params["filename"]);
-        $form->meta("rowstart", $this->params["rowstart"]);
-
-        if (in_array("username", $this->params["column"]) == false) {
-            $unameOptions = array(
-                "FILN"    => gt('First Initial / Last Name'),
-                "FILNNUM" => gt('First Initial / Last Name / Random Number'),
-                "EMAIL"   => gt('Email Address'),
-                "FNLN"    => gt('First Name / Last Name'));
-        } else {
-            $unameOptions = array("INFILE" => gt('Username Specified in CSV File'));
-        }
-
-        if (in_array("password", $this->params["column"]) == false) {
-            $pwordOptions = array(
-                "RAND"    => gt('Generate Random Passwords'),
-                "DEFPASS" => gt('Use the Default Password Supplied Below'));
-        } else {
-            $pwordOptions = array("INFILE" => gt('Password Specified in CSV File'));
-        }
-
-        if (count($pwordOptions) == 1) {
-            $disabled = true;
-        } else {
-            $disabled = false;
-        }
-
-        $form->register("unameOptions", gt('User Name Generations Options'), New dropdowncontrol("INFILE", $unameOptions));
-        $form->register("pwordOptions", gt('Password Generation Options'), New dropdowncontrol("defpass", $pwordOptions));
-        $form->register("pwordText", gt('Default Password'), New textcontrol("", 10, $disabled));
-        $form->register("update", gt('Update users already in database'), New checkboxcontrol(0, 0));
-        $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
-
-        assign_to_template(array(
-            "form_html" => $form->tohtml(),
-        ));
-    }
-
-    public function import_csv_display() {
+    public function import_csv_data_display() {
         $file = fopen(BASE . $this->params["filename"], "r");
-        $post = null;
-        $post = $this->params;
-        $userinfo = new stdClass();
-        $userinfo->username = "";
-        $userinfo->firstname = "";
-        $userinfo->lastname = "";
-        $userinfo->is_admin = 0;
-        $userinfo->is_acting_admin = 0;
-        $userinfo->is_locked = 0;
-        $userinfo->email = '';
-        $userarray = array();
-        $usersdone = array();
+        $record = array();
+        $records = array();
         $linenum = 1;
 
-        while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
+                // pull in the form control definitions here
+        $f = new forms($this->params['forms_id']);
+        $fields = array();
+        foreach ($f->forms_control as $control) {
+            $fields[$control->name] = $control->caption;
+        }
 
-            if ($linenum >= $post["rowstart"]) {
+        while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
+            if ($linenum >= $this->params["rowstart"]) {
                 $i = 0;
 
-                $userinfo = new stdClass();
-                $userinfo->changed = "";
-
                 foreach ($filedata as $field) {
-                    if ($post["column"][$i] != "none") {
-                        $colname = $post["column"][$i];
-                        $userinfo->$colname = trim($field);
+                    if (!empty($this->params["column"][$i]) && $this->params["column"][$i] != "none") {
+                        $colname = $this->params["column"][$i];
+                        $record[$colname] = trim($field);
+                        $this->params['caption'][$i] = $fields[$colname];
+                    } else {
+                        unset($this->params['column'][$i]);
                     }
                     $i++;
                 }
 
-                switch ($post["unameOptions"]) {
-
-                    case "FILN":
-                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
-                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname{0} . $userinfo->lastname));
-                        } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
-                        }
-                        break;
-                    case "FILNNUM":
-                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
-                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname{0} . $userinfo->lastname . rand(100, 999)));
-                        } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
-                        }
-                        break;
-                    case "EMAIL":
-                        if ($userinfo->email != "") {
-                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->email));
-                        } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
-                        }
-                        break;
-                    case "FNLN":
-                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
-                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname . $userinfo->lastname));
-                        } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
-                        }
-                        break;
-                    case "INFILE":
-                        if ($userinfo->username != "") {
-                            $userinfo->username = str_replace(" ", "", $userinfo->username);
-                        } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
-                        }
-                        break;
-                }
-
-                if ((!isset($userinfo->changed)) || ($userinfo->changed != "skipped")) {
-                    switch ($post["pwordOptions"]) {
-
-                        case "RAND":
-                            $newpass = "";
-                            for ($i = 0; $i < rand(12, 20); $i++) {
-                                $num = rand(48, 122);
-                                if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
-                                else $i--;
-                            }
-                            $userinfo->clearpassword = $newpass;
-                            break;
-                        case "DEFPASS":
-                            $userinfo->clearpassword = str_replace(" ", "", trim($this->params["pwordText"]));
-                            break;
-                    }
-
-                    $userinfo->password = md5($userinfo->clearpassword);
-
-                    $suffix = "";
-                    while (user::getUserByName($userinfo->username . $suffix) != null) { //username already exists
-                        if (isset($this->params["update"]) == 1) {
-                            if (in_array($userinfo->username, $usersdone)) {
-                                $suffix = rand(100, 999);
-                                $userinfo->changed = 1;
-                            } else {
-                                $tmp = user::getUserByName($userinfo->username . $suffix);
-                                $userinfo->id = $tmp->id;
-                                break;
-                            }
-                        } else {
-                            $suffix = rand(100, 999);
-                            $userinfo->changed = 1;
-                        }
-                    }
-
-                    $userinfo->username = $userinfo->username . $suffix;
-                    $userarray[] = exponent_users_saveUser($userinfo); //FIXME function was deprecated use $this->update()
-                    $usersdone[] = $userinfo->username;
-                } else {
-                    $userinfo->linenum = $linenum;
-                    $userarray[] = $userinfo;
-                }
+                $record['linenum'] = $linenum;
+                $records[] = $record;
             }
             $linenum++;
         }
         assign_to_template(array(
-            "userarray" => $userarray,
+            "records" => $records,
+            "params" => $this->params,
         ));
+    }
+
+    public function import_csv_data_add() {
+        global $user, $db;
+
+        $file = fopen(BASE . $this->params["filename"], "r");
+        $recordsdone = 0;
+        $linenum = 1;
+        $f = new forms($this->params['forms_id']);
+        $f->updateTable();
+
+        $fields = array();
+        foreach ($f->forms_control as $control) {
+            $fields[$control->name] = expUnserialize($control->data);
+        }
+
+        while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
+            if ($linenum >= $this->params["rowstart"] && in_array($linenum,$this->params['importrecord'])) {
+                $i = 0;
+
+                $db_data = new stdClass();
+                $db_data->ip = '';
+                $db_data->user_id = $user->id;
+                $db_data->timestamp = time();
+                $db_data->referrer = '';
+                foreach ($filedata as $field) {
+                    if (!empty($this->params["column"][$i]) && $this->params["column"][$i] != "none") {
+                        $colname = $this->params["column"][$i];
+                        $control_type = get_class($fields[$colname]);
+                        $params[$colname] = $field;
+                        $def = call_user_func(array($control_type, "getFieldDefinition"));
+                        if (!empty($def)) {
+                            $db_data->$colname = call_user_func(array($control_type, 'convertData'), $colname, $params);
+                        }
+                    }
+                    $i++;
+                }
+                $db->insertObject($db_data, 'forms_' . $f->table_name);
+                $recordsdone++;
+            }
+            $linenum++;
+        }
         unlink(BASE . $this->params["filename"]);
+        flash('notice', $recordsdone.' '.gt('Records Imported'));
+        expHistory::back();
     }
 
 }

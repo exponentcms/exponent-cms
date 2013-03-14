@@ -501,7 +501,7 @@ class expRouter {
 
     public static function encode($url) {
         $url = str_replace('&', 'and', $url);
-                return preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $url))));   
+        return preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $url))));
     }
     
     public static function decode($url) {

@@ -26,6 +26,7 @@
     </div>
     <div class="module-actions">
         {icon class="add" action="edit_form" text="Create a New Form"|gettext}
+        {icon class="import" action="import_csv" text="Import CSV File"|gettext}
     </div>
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>

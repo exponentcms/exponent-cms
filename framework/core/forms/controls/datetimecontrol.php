@@ -132,6 +132,11 @@ class datetimecontrol extends formcontrol {
         return $time;
     }
 
+    static function convertData($original_name,$formvalues) {
+        $tmp = strtotime($formvalues[$original_name]);
+		return (isset($formvalues[$original_name])?strtotime($formvalues[$original_name]):"");
+	}
+
     static function templateFormat($db_data, $ctl) {
         if ($ctl->showdate && $ctl->showtime) {
             return gmstrftime(DISPLAY_DATETIME_FORMAT, $db_data);

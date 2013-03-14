@@ -1580,7 +1580,6 @@ class expFile extends expRecord {
         usort($tables, 'strnatcmp');
         foreach ($tables as $table) {
             $tabledef = $db->getDataDefinition($table);
-
             $dump .= 'TABLE:' . $table . "\r\n";
             $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
             foreach ($db->selectObjects($table) as $obj) {
@@ -1708,10 +1707,10 @@ class expFile extends expRecord {
             }
             // rename mixed case tables if necessary
             expDatabase::fix_table_names();
-            if ($eql_version != $current_version) {
-                $errors[] = gt('EQL file was Not a valid EQL version');
-                return false;
-            }
+//            if ($eql_version != $current_version) {
+//                $errors[] = gt('EQL file was Not a valid EQL version');
+//                return false;
+//            }
             return true;
         } else {
             $errors[] = gt('Unable to read EQL file');

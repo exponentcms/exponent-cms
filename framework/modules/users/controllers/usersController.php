@@ -1184,11 +1184,11 @@ class usersController extends expController {
                 ' ' => gt('Space'));
 
             //Register the dropdown menus
-            $form->register("delimiter", gt('Delimiter Character'), New dropdowncontrol(",", $delimiterArray));
-            $form->register("upload", gt('CSV File to Upload'), New uploadcontrol());
-            $form->register("use_header", gt('First Row is a Header'), New checkboxcontrol(0, 0));
-            $form->register("rowstart", gt('User Data begins in Row'), New textcontrol("1", 1, 0, 6));
-            $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+            $form->register("delimiter", gt('Delimiter Character'), new dropdowncontrol(",", $delimiterArray));
+            $form->register("upload", gt('CSV File to Upload'), new uploadcontrol());
+            $form->register("use_header", gt('First Row is a Header'), new checkboxcontrol(0, 0));
+            $form->register("rowstart", gt('User Data begins in Row'), new textcontrol("1", 1, 0, 6));
+            $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
             assign_to_template(array(
                 "form_html" => $form->tohtml(),
@@ -1268,19 +1268,21 @@ class usersController extends expController {
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit("");
         } else {
-            $headerbr = '';
-            if ($headerinfo != null) {
-                $headerbr = ':<br>';
-            }
-            //Setup the mete data (hidden values)
+            //Setup the meta data (hidden values)
             $form = new form();
             $form->meta("controller", "users");
             $form->meta("action", "import_users_process");
             $form->meta("rowstart", $this->params["rowstart"]);
+            $form->meta("use_header", $this->params["use_header"]);
             $form->meta("filename", $directory . "/" . $file->filename);
             $form->meta("delimiter", $this->params["delimiter"]);
             for ($i = 0; $i < count($lineInfo); $i++) {
-                $form->register("column[$i]", $headerinfo[$i] . $headerbr . $lineInfo[$i], new dropdowncontrol("none", $colNames));
+                if ($headerinfo != null) {
+                    $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
+                } else {
+                    $title = $lineInfo[$i];
+                }
+                $form->register("column[$i]", $title, new dropdowncontrol("none", $colNames));
             }
             $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
@@ -1296,6 +1298,7 @@ class usersController extends expController {
         $form->meta("action", "import_users_display");
         $form->meta("column", $this->params["column"]);
         $form->meta("delimiter", $this->params["delimiter"]);
+        $form->meta("use_header", $this->params["use_header"]);
         $form->meta("filename", $this->params["filename"]);
         $form->meta("rowstart", $this->params["rowstart"]);
 
@@ -1316,18 +1319,17 @@ class usersController extends expController {
         } else {
             $pwordOptions = array("INFILE" => gt('Password Specified in CSV File'));
         }
-
         if (count($pwordOptions) == 1) {
             $disabled = true;
         } else {
             $disabled = false;
         }
 
-        $form->register("unameOptions", gt('User Name Generations Options'), New dropdowncontrol("INFILE", $unameOptions));
-        $form->register("pwordOptions", gt('Password Generation Options'), New dropdowncontrol("defpass", $pwordOptions));
-        $form->register("pwordText", gt('Default Password'), New textcontrol("", 10, $disabled));
-        $form->register("update", gt('Update users already in database, instead of creating new user?'), New checkboxcontrol(0, 0));
-        $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+        $form->register("unameOptions", gt('User Name Generations Options'), new dropdowncontrol("INFILE", $unameOptions));
+        $form->register("pwordOptions", gt('Password Generation Options'), new dropdowncontrol("defpass", $pwordOptions));
+        $form->register("pwordText", gt('Default Password'), new textcontrol("", 10, $disabled));
+        $form->register("update", gt('Update users already in database, instead of creating new user?'), new checkboxcontrol(0, 0));
+        $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
         assign_to_template(array(
             "form_html" => $form->tohtml(),
@@ -1359,6 +1361,8 @@ class usersController extends expController {
                     if ($this->params["column"][$i] != "none") {
                         $colname = $this->params["column"][$i];
                         $userinfo[$colname] = trim($field);
+                    } else {
+                        unset($this->params['column'][$i]);
                     }
                     $i++;
                 }
@@ -1603,7 +1607,7 @@ class usersController extends expController {
         assign_to_template(array(
             "userarray" => $userarray,
         ));
-//        unlink(BASE . $this->params["filename"]);  //FIXME uncomment
+        unlink(BASE . $this->params["filename"]);
     }
 
 }
