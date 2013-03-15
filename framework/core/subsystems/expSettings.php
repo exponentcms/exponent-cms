@@ -281,7 +281,7 @@ class expSettings {
 		if (isset($values['activate']) || $configname == "") {
 			if (
 				(file_exists($site_root."framework/conf/config.php") && expUtil::isReallyWritable($site_root."framework/conf/config.php")) ||
-				expUtil::isReallyWritable($site_root."conf")) {
+				expUtil::isReallyWritable($site_root."framework/conf")) {
 
 				$fh = fopen($site_root."framework/conf/config.php","w");
 				fwrite($fh,$str);
