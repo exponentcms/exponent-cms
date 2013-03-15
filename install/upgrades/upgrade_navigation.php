@@ -121,7 +121,7 @@ class upgrade_navigation extends upgradescript {
         $ms = $db->selectObject('modstate',"module='navigationmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='navigationController'")) {
             $ms->module = 'navigationController';
-            $db->insertObject($ms,'modstate',"module='navigationmodule'",'module');
+            $db->insertObject($ms,'modstate',"module='navigationmodule'");
         }
 
         // delete old navigationmodule assoc files (moved or deleted)
@@ -154,7 +154,7 @@ class upgrade_navigation extends upgradescript {
         // copy custom views to new location
         $src = THEME_ABSOLUTE."modules/navigationmodule/views";
         $dst = THEME_ABSOLUTE."modules/navigation/views/navigation";
-        if (expUtil::isReallyWritable($src)) {
+        if (is_dir($src) && expUtil::isReallyWritable($dst)) {
             $dir = opendir($src);
             if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
             while(false !== ( $file = readdir($dir)) ) {
