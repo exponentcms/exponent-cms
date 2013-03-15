@@ -104,7 +104,7 @@ class expModules {
 //                $mod = self::getController($module);
     			$modstate = $db->selectObject("modstate","module='". expModules::getControllerName($module) . "'");
     			$moduleInfo[$module] = new stdClass();
-    			$moduleInfo[$module]->class = $module;
+    			$moduleInfo[$module]->class = expModules::getControllerName($module);
     			$moduleInfo[$module]->name = $mod->name();
     			$moduleInfo[$module]->author = $mod->author();
     			$moduleInfo[$module]->description = $mod->description();

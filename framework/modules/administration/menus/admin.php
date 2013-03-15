@@ -447,13 +447,13 @@ if ($user->isSuperAdmin()) {
                                     'action'     => 'fix_tables'
                                 ))
                             ),
-                            array(
-                                'text' => gt('Reset Sessions Table'),
-                                'url'  => makeLink(array(
-                                    'controller' => 'administration',
-                                    'action'     => 'fix_sessions'
-                                ))
-                            ),
+//                            array(
+//                                'text' => gt('Reset Sessions Table'),
+//                                'url'  => makeLink(array(
+//                                    'controller' => 'administration',
+//                                    'action'     => 'fix_sessions'
+//                                ))
+//                            ),
                             array(
                                 'text'      => gt('Remove Unneeded Table Columns'),
                                 'classname' => 'remove',
