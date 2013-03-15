@@ -26,6 +26,26 @@ class simplepoll_question extends expRecord {
         'simplepoll_answer',
         'simplepoll_timeblock'
     );
+
+    public function afterDelete() {
+        $sa = new simplepoll_answer();
+        $answers = $sa->find('all','simplepoll_question_id='.$this->id);
+        foreach ($answers as $answer) {
+            $answer->delete();
+        }
+        $st = new simplepoll_timeblock();
+        $tbs = $st->find('all','simplepoll_question_id='.$this->id);
+        foreach ($tbs as $tb) {
+            $tb->delete();
+        }
+    }
+
+    public function toggle() {
+        global $db;
+
+        $db->toggle('simplepoll_question',"active",'active=1');
+    }
+
 }
 
 ?>
