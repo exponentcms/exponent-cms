@@ -64,7 +64,7 @@
                     if (list.children.length == 1) YAHOO.util.Dom.setStyle('noicalfeeds', 'display', '');;
                 } else return false;
             },newli,true);
-            var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&json=1&controller=event&action=buildControl&label="+feedtoadd.value+"&name=pull_ical_color[]&id=pull_ical_color"+list.children.length+"&hide=1&flip=1&value=000";
+            var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&json=1&controller=event&action=buildControl&label="+encodeURIComponent(feedtoadd.value)+"&name=pull_ical_color[]&id=pull_ical_color"+list.children.length+"&hide=1&flip=1&value=000";
             var callback = {
                 success: function(oResponse) {
                     placeholder = YAHOO.util.Dom.get("placeholder");
