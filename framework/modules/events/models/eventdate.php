@@ -28,8 +28,6 @@ class eventdate extends expRecord {
     public function afterDelete() {
         global $db;
 
-//        $db->delete('eventdate','event_id='.$this->id);
-        // if this is the last eventdate for event, we delete the event also
         if (!$db->countObjects('eventdate','event_id='.$this->event_id)) {
             $ev = new event($this->event_id);
             $ev->delete();

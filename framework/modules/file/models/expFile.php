@@ -1718,6 +1718,13 @@ class expFile extends expRecord {
         }
     }
 
+    public function afterDelete() {
+        global $db;
+
+	    // get and delete all attachments to this file
+	    $db->delete('content_expFiles','expfiles_id='.$this->id);
+    }
+
 }
 
 ?>

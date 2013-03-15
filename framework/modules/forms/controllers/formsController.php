@@ -624,7 +624,8 @@ class formsController extends expController {
     }
 
     /**
-     * delete item in module
+     * delete item in saved data
+     *
      */
     function delete() {
         global $db;
@@ -761,8 +762,6 @@ class formsController extends expController {
     }
 
     public function delete_form() {
-        global $db;
-
         expHistory::set('editable', $this->params);
         $modelname = $this->basemodel_name;
         if (empty($this->params['id'])) {
@@ -770,11 +769,6 @@ class formsController extends expController {
             expHistory::back();
         }
         $form = new $modelname($this->params['id']);
-
-        $db->delete("forms_control", "forms_id=" . $form->id);
-        if ($form->is_saved == 1) {
-            $db->dropTable("forms_" . $form->table_name);
-        }
 
         $form->delete();
         expHistory::returnTo('manageable');

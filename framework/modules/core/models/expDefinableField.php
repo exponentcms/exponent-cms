@@ -25,7 +25,15 @@ class expDefinableField extends expRecord {
 	public $table = 'expDefinableFields';
 	public $attachable_table = 'content_expDefinableFields';
     protected $attachable_item_types = array();
-	
+
+    public function afterDelete() {
+        global $db;
+
+	    // get and delete all attachments to this object
+	    $db->delete('content_expDefinableFields','expdefinablefields_id='.$this->id);
+        $db->delete('content_expDefinableFields_value','expdefinablefields_id='.$this->id);
+    }
+
 }
 
 ?>
