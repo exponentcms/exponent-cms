@@ -852,7 +852,11 @@ class administrationController extends expController {
      *
      */
     public function install_upgrades_run() {
-        //display the upgrade scripts
+
+        $tables = expDatabase::install_dbtables();
+        ksort($tables);
+
+        // locate the upgrade scripts
         $upgrade_dir = BASE.'install/upgrades';
         if (is_readable($upgrade_dir)) {
             $i = 0;
@@ -898,6 +902,7 @@ class administrationController extends expController {
         }
         assign_to_template(array(
             'scripts'=>$upgrade_scripts,
+            'tables'=>$tables,
         ));
     }
 
