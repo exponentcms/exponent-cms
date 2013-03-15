@@ -64,7 +64,11 @@ class clean_modstate extends upgradescript {
         foreach ($modstates as $ms) {
             if (expModules::controllerExists($ms->module)) {
                 $ms->module = expModules::getModuleName($ms->module);  // convert module name to 2.0 style
-                $db-insertObject($ms,'modstate');
+                if ($db->selectObject('modstate',"module='".$ms->module."'") == null) {
+                    $db->insertObject($ms,'modstate',"module='".$ms->module."'");
+//                } else {
+//                    $db->updateObject($ms,'modstate');
+                }
             }
 	    }
         $newcount = $db->countObjects('modstate');
