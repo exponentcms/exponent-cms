@@ -1173,7 +1173,7 @@ abstract class expController {
      *
      * @return string
      */
-    function aggregateWhereClause() {
+    function aggregateWhereClause($type='') {
         $sql = '';
 
         if (!$this->hasSources() && empty($this->config['add_source'])) {

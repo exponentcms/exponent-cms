@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -387,7 +387,7 @@ class eaasController extends expController {
         }
     }
 
-    function aggregateWhereClause($type) {
+    function aggregateWhereClause($type='') {
         $sql = '';
         $sql .= '(';
         $sql .= "location_data ='".serialize($this->loc)."'";

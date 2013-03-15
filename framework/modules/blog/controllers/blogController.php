@@ -278,7 +278,7 @@ class blogController extends expController {
    	 *
    	 * @return string
    	 */
-   	function aggregateWhereClause() {
+   	function aggregateWhereClause($type='') {
         $sql = parent::aggregateWhereClause();
         if (!expPermissions::check('edit',$this->loc)) {
             if (!empty($sql)) {
