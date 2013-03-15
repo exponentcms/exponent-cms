@@ -141,7 +141,7 @@ class administrationController extends expController {
         ));
 	}
 
-	public function fix_sessions() {
+	public function fixsessions() {
 	    global $db;
 
 //		$test = $db->sql('CHECK TABLE '.DB_TABLE_PREFIX.'sessionticket');
