@@ -14,6 +14,7 @@ Added / Fixed / changed for 2.2.0 alpha 4
   - updates filedownload module media player to html5 (flash not required)
   - adds new import form data, or create a form from csv file feature
   - adds new import users from csv file feature
+  - adds ability to optionally run selected 'upgrade scripts' outside of installation
   - moves /conf folder inside /framework to help streamline folder structure
   - contains all the fixes in 2.1.4
 ### Known Issues

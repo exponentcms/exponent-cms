@@ -102,7 +102,7 @@ class administrationController extends expController {
 
         foreach($tables as $table) {
             $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
-            if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {  //FIXME formbuilder will be deprecated in v212
+            if (!in_array($basename, $used_tables) && !stristr($basename, 'forms')) {
                 $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
@@ -794,6 +794,111 @@ class administrationController extends expController {
             flash('message',gt('Mass Email was sent'));
             expHistory::back();
         }
+    }
+
+    /**
+     * feature to run upgrade scripts outside of installation
+     *
+     */
+    public function install_upgrades() {
+        //display the upgrade scripts
+        $upgrade_dir = BASE.'install/upgrades';
+        if (is_readable($upgrade_dir)) {
+            $i = 0;
+            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            $dh = opendir($upgrade_dir);
+
+            // first build a list of valid upgrade scripts
+            $oldscripts = array(
+                'install_tables.php',
+                'convert_db_trim.php',
+                'remove_exp1_faqmodule.php',
+                'remove_locationref.php',
+                'upgrade_attachableitem_tables.php',
+            );
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
+                    include_once($upgrade_dir . '/' . $file);
+                    $classname     = substr($file, 0, -4);
+                    /**
+                     * Stores the upgradescript object
+                     * @var \upgradescript $upgradescripts
+                     * @name $upgradescripts
+                     */
+                    $upgradescripts[] = new $classname;
+                }
+            }
+            //  next sort the list by priority
+            usort($upgradescripts, array('upgradescript','prioritize'));
+
+            //  next run through the list
+            $db_version = expVersion::dbVersion();
+            $upgrade_scripts = array();
+            foreach ($upgradescripts as $upgradescript) {
+                if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
+                    $upgradescript->classname = get_class($upgradescript);
+                    $upgrade_scripts[] = $upgradescript;
+                    $i++;
+                }
+            }
+        }
+        assign_to_template(array(
+            'scripts'=>$upgrade_scripts,
+        ));
+    }
+
+    /**
+     * run selected upgrade scripts outside of installation
+     *
+     */
+    public function install_upgrades_run() {
+        //display the upgrade scripts
+        $upgrade_dir = BASE.'install/upgrades';
+        if (is_readable($upgrade_dir)) {
+            $i = 0;
+            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            $dh = opendir($upgrade_dir);
+
+            // first build a list of valid upgrade scripts
+            $oldscripts = array(
+                'install_tables.php',
+                'convert_db_trim.php',
+                'remove_exp1_faqmodule.php',
+                'remove_locationref.php',
+                'upgrade_attachableitem_tables.php',
+            );
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
+                    include_once($upgrade_dir . '/' . $file);
+                    $classname     = substr($file, 0, -4);
+                    /**
+                     * Stores the upgradescript object
+                     * @var \upgradescript $upgradescripts
+                     * @name $upgradescripts
+                     */
+                    $upgradescripts[] = new $classname;
+                }
+            }
+            //  next sort the list by priority
+            usort($upgradescripts, array('upgradescript','prioritize'));
+
+            //  next run through the list
+            $db_version = expVersion::dbVersion();
+            $upgrade_scripts = array();
+            foreach ($upgradescripts as $upgradescript) {
+                if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
+                    if (!empty($this->params[get_class($upgradescript)])) {
+                        $upgradescript->results = $upgradescript->upgrade();
+                    }
+                    $upgradescript->classname = get_class($upgradescript);
+                    $upgrade_scripts[] = $upgradescript;
+                    $i++;
+                }
+            }
+        }
+        assign_to_template(array(
+            'scripts'=>$upgrade_scripts,
+        ));
     }
 
     public function manage_themes() {

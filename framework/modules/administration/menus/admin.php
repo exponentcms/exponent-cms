@@ -525,6 +525,13 @@ if ($user->isSuperAdmin()) {
                                     'action'     => 'togglemobile'
                                 )),
                             ),
+                            array(
+                                'text'      => gt('Run Upgrade Scripts'),
+                                'url'       => makeLink(array(
+                                    'controller' => 'administration',
+                                    'action'     => 'install_upgrades'
+                                )),
+                            ),
                         )
                     )
                 ),
