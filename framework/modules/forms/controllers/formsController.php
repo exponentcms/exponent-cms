@@ -1024,6 +1024,9 @@ class formsController extends expController {
         if (empty($this->config)) { // NEVER overwrite an existing config
             $this->config = array();
             $config = get_object_vars($form);
+            if (!empty($config['column_names_list'])) {
+                $config['column_names_list'] = explode('|!|', $config['column_names_list']);
+            }
             unset ($config['forms_control']);
             $this->config = $config;
         }
