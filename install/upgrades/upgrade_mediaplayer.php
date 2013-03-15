@@ -132,7 +132,9 @@ class upgrade_mediaplayer extends upgradescript {
             $fp_modules_converted += 1;
 	    }
 
-        		// convert each YouTube module and config to a media one
+        // convert each YouTube module and config to a media one
+        $yt_width = 200;
+        $yt_height = 143;
 	    $yt_modules_converted = 0;
 	    $cns = $db->selectObjects('container',"internal LIKE '%youtube%'");
 	    foreach ($cns as $cn) {
@@ -151,12 +153,12 @@ class upgrade_mediaplayer extends upgradescript {
                     $oldconfig['video_width'] = $oldconfig['width'];
                     unset($oldconfig['width']);
                     $yt_width = $oldconfig['video_width'];
-                } else $yt_width = 200;
+                }
                 if (!empty($oldconfig['height'])) {
                     $oldconfig['video_height'] = $oldconfig['height'];
                     unset($oldconfig['height']);
                     $yt_height = $oldconfig['video_height'];
-                } else $yt_height = 143;
+                }
                 if (!empty($oldconfig)) {
                     $config->config = serialize($oldconfig);
                     $config->location_data = $cn->internal;

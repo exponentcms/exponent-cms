@@ -182,14 +182,9 @@ class upgrade_container2 extends upgradescript {
                 unlink(BASE.$file);
             }
         }
-		// delete old containermodule folders
-        $olddirs = array(
-            "framework/modules-1/container/",
-        );
-        foreach ($olddirs as $dir) {
-            if (expUtil::isReallyWritable(BASE.$dir)) {
-                expFile::removeDirectory(BASE.$dir);
-            }
+		// delete old containermodule folder
+        if (expUtil::isReallyWritable(BASE."framework/modules-1/container/")) {
+            expFile::removeDirectory(BASE."framework/modules-1/container/");
         }
 
         return ($count?$count:gt('No')).' '.gt('old containermodule type references updated to container2 type.');

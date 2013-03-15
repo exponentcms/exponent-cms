@@ -159,7 +159,7 @@ class upgrade_navigation extends upgradescript {
         // copy custom views to new location
         $src = THEME_ABSOLUTE."modules/navigationmodule/views";
         $dst = THEME_ABSOLUTE."modules/navigation/views/navigation";
-        if (expUtil::isReallyWritable($src)) {
+        if (is_dir($src) && expUtil::isReallyWritable($dst)) {
             $dir = opendir($src);
             if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
             while(false !== ( $file = readdir($dir)) ) {

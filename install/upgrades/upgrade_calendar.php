@@ -234,20 +234,15 @@ class upgrade_calendar extends upgradescript {
                 unlink(BASE.$file);
             }
         }
-		// delete old calendarmodule folders
-        $olddirs = array(
-            "framework/modules-1/calendarmodule/",
-        );
-        foreach ($olddirs as $dir) {
-            if (expUtil::isReallyWritable(BASE.$dir)) {
-                expFile::removeDirectory(BASE.$dir);
-            }
+		// delete old calendarmodule folder
+        if (expUtil::isReallyWritable(BASE."framework/modules-1/calendarmodule/")) {
+            expFile::removeDirectory(BASE."framework/modules-1/calendarmodule/");
         }
 
         // copy custom views to new location
         $src = THEME_ABSOLUTE."modules/calendarmodule/views";
         $dst = THEME_ABSOLUTE."modules/events/views/event";
-        if (expUtil::isReallyWritable($src)) {
+        if (is_dir($src) && expUtil::isReallyWritable($dst)) {
             $dir = opendir($src);
             if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
             while(false !== ( $file = readdir($dir)) ) {
