@@ -13,6 +13,7 @@
  *
  *}
 
+{messagequeue}
 {if $success == 1}
 	<h2>{'Data was restored successfully from backup.'|gettext}</h2>
     <p>{'If an upgrade notice is displayed above, please upgrade your restored database.'|gettext}</p>
