@@ -93,7 +93,7 @@ class upgrade_forms extends upgradescript {
                 if ($oldform->is_saved) {
                     $i = '';
                     $test_tablename = $oldform->table_name;
-                    while ($db->tableExists('formbuilder_'.$test_tablename)) {
+                    while ($db->tableExists('forms_'.$test_tablename)) {
                         $i++;
                         $test_tablename = $oldform->table_name . $i;
                     }
