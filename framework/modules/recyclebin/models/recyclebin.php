@@ -29,7 +29,7 @@ class recyclebin extends expRecord {
         if (empty($module)) {
             $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' ORDER BY module');
         } else {
-            $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' AND module=\''.$module.'\'');
+            $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' AND module=\''.expModules::getModuleName($module).'\'');
         }
         $loc =null;
 
