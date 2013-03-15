@@ -96,12 +96,13 @@ class expModules {
         global $db;
         
         $controllers = self::listUserRunnableControllers();
-        
+
+        $moduleInfo = array();
         foreach ($controllers as $module) {
     		if (class_exists($module)) {
-//    			$mod = new $module();
-                $mod = self::getController($module);
-    			$modstate = $db->selectObject("modstate","module='$module'");
+    			$mod = new $module();
+//                $mod = self::getController($module);
+    			$modstate = $db->selectObject("modstate","module='". expModules::getControllerName($module) . "'");
     			$moduleInfo[$module] = new stdClass();
     			$moduleInfo[$module]->class = $module;
     			$moduleInfo[$module]->name = $mod->name();
@@ -126,7 +127,7 @@ class expModules {
 	    $controllers = array();
 	    foreach($available_controllers as $name=>$path) {
 	        $controller = new $name();  // we want both models and controllers to filter out models
-	        if (!empty($controller->useractions)) $controllers[] = self::getControllerName($name);
+	        if (!empty($controller->useractions)) $controllers[] = self::getControllerClassName($name);
 	    }
 
 	    return $controllers;
