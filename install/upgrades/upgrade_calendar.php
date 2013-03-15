@@ -188,6 +188,7 @@ class upgrade_calendar extends upgradescript {
         // convert each calendar to an event
 	    $cals = $db->selectObjects('calendar',"1");
 	    foreach ($cals as $cal) {
+            unset($cal->id);
             unset($cal->approved);
             unset($cal->category_id);
             unset($cal->tags);

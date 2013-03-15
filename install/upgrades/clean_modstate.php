@@ -65,7 +65,7 @@ class clean_modstate extends upgradescript {
             if (expModules::controllerExists($ms->module)) {
                 $ms->module = expModules::getModuleName($ms->module);  // convert module name to 2.0 style
                 if ($db->selectObject('modstate',"module='".$ms->module."'") == null) {
-                    $db->insertObject($ms,'modstate',"module='".$ms->module."'");
+                    $db->insertObject($ms,'modstate');
 //                } else {
 //                    $db->updateObject($ms,'modstate');
                 }
