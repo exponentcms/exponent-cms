@@ -142,6 +142,11 @@ class remove_oldfiles extends upgradescript {
             'framework/core/definitions/bots.php',
             'framework/core/definitions/locationref.php',
             'framework/core/definitions/toolbar_FCKeditor.php',
+            'framework/core/definitions/calendar.php',
+            'framework/core/definitions/calendar_external.php',
+            'framework/core/definitions/calendar_reminder_address.php',
+            'framework/core/definitions/calendarmodule_config.php',
+            'framework/core/definitions/eventdate.php',
             'framework/modules/news/models/rssfeed.php',
             // moved definitions/models
             'framework/core/definitions/expFiles.php',
@@ -362,6 +367,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.1.6/",
             "external/Swift-4.1.7/",
             "external/Swift-4.2.1/",
+            "external/Swift-4.2.2/",
             "external/Swift-4.2.3/",
         );
         foreach ($olddirs as $dir) {
