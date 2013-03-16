@@ -1751,7 +1751,7 @@ class expFile extends expRecord {
                                 $db->insertObject($object, 'formbuilder_' . $table);
                             }
                         }
-                        $errors[] = sprintf(gt('*  However...we successfully recreated the "%s" Table from the EQL file'), $table);
+                        $errors[] = sprintf(gt('*  However...we successfully recreated the "formbuilder_%s" Table from the EQL file'), $table);
                     }
                 }
             }
@@ -1774,7 +1774,7 @@ class expFile extends expRecord {
                                 $db->insertObject($object, 'forms_' . $table);
                             }
                         }
-                        $errors[] = sprintf(gt('*  However...we successfully recreated the "%s" Table from the EQL file'), $table);
+                        $errors[] = sprintf(gt('*  However...we successfully recreated the "forms_%s" Table from the EQL file'), $table);
                     }
                 }
             }

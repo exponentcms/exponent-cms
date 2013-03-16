@@ -525,7 +525,7 @@ function get_config_templates($controller, $loc) {
     krsort($common_views);
     krsort($module_views);
 
-    if (!empty($moduleconfig)) $module_views = array_merge($common_views, $moduleconfig);
+    if (!empty($moduleconfig)) $common_views = array_merge($common_views, $moduleconfig);
     $views = array_merge($common_views, $module_views);
     $views = array_reverse($views);
 
