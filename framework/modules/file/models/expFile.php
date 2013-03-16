@@ -1647,6 +1647,8 @@ class expFile extends expRecord {
             $table = '';
             $oldformdata = array();
             $itsoldformdata = false;
+            $newformdata = array();
+            $itsnewformdata = false;
             for ($i = 2; $i < count($lines); $i++) {
                 $table_function = '';
                 $line_number = $i;
@@ -1657,6 +1659,8 @@ class expFile extends expRecord {
                     $pair = array_slice($pair, 0, 2);
 
                     if ($pair[0] == 'TABLE') {
+                        $itsoldformdata = false;  // we are on a new table set
+                        $itsnewformdata = false;
                         $table = $pair[1];
                         if ($fprefix != '') {
                             $table_function = $fprefix . $table;
@@ -1666,7 +1670,6 @@ class expFile extends expRecord {
 //                            if ($clear_function != '') {
 //                                $clear_function($db, $table);
 //                            }
-                            $itsoldformdata = false;
                         } else {
                             if (substr($table,0,12) == 'formbuilder_') {
                                 $formbuildertypes = array(
@@ -1679,6 +1682,8 @@ class expFile extends expRecord {
                                 if (!in_array($type,$formbuildertypes)) {
                                     $itsoldformdata = true;
                                 }
+                            } elseif (substr($table,0,6) == 'forms_' && $table != 'forms_control') {
+                                $itsnewformdata = true;
                             }
                             //						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
                             $errors[] = sprintf(gt('Table "%s" not found in the database (line %d)'), $table, $line_number);
@@ -1690,7 +1695,7 @@ class expFile extends expRecord {
                             //							$db->createTable($table,$dd,$info);
                             //						}
                         }
-                    } else if ($pair[0] == 'TABLEDEF') {  // new in 2.1.4, re-create a missing table
+                    } else if ($pair[0] == 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
                         $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
 //						$tabledef = expUnserialize($pair[1]);
                         $tabledef = @unserialize($pair[1]);
@@ -1700,6 +1705,8 @@ class expFile extends expRecord {
                         } else {
                             $db->alterTable($table, $tabledef, array(), true);
                         }
+                        $itsoldformdata = false;  // we've recreated the table using the tabledef
+                        $itsnewformdata = false;
                     } else if ($pair[0] == 'RECORD') {
                         if ($db->tableExists($table)) {
                             // Here we need to check the conversion scripts.
@@ -1717,7 +1724,9 @@ class expFile extends expRecord {
                                 }
                             }
                         } elseif ($itsoldformdata) {
-                            $oldformdata[$table][] = $pair[1];
+                            $oldformdata[$table][] = $pair[1];  // store for later
+                        } elseif ($itsnewformdata) {
+                            $newformdata[$table][] = $pair[1];  // store for later
                         }
                     } else {
                         $errors[] = sprintf(gt('Invalid specifier type "%s" (line %d)'), $pair[0], $line_number);
@@ -1725,7 +1734,7 @@ class expFile extends expRecord {
                 }
             }
 
-            // check for and process data for old formbuilder
+            // check for and process to rebuild old formbuilder module data table
             if (!empty($oldformdata)) {
                 foreach ($oldformdata as $tablename=>$tabledata) {
                     $oldform = $db->selectObject('formbuilder_form','table_name="'.substr($tablename,12).'"');
@@ -1740,6 +1749,29 @@ class expFile extends expRecord {
                             if (!$object) $object = unserialize(stripslashes($record));
                             if (is_object($object)) {
                                 $db->insertObject($object, 'formbuilder_' . $table);
+                            }
+                        }
+                        $errors[] = sprintf(gt('*  However...we successfully recreated the "%s" Table from the EQL file'), $table);
+                    }
+                }
+            }
+
+            // check for and process to rebuild new forms module data table
+            if (!empty($newformdata)) {
+                foreach ($newformdata as $tablename=>$tabledata) {
+                    $newform = $db->selectObject('forms','table_name="'.substr($tablename,6).'"');
+                    if (!empty($newform)) {
+                        // create the new table
+                        $form = new forms($newform->id);
+                        $table = $form->updateTable();
+
+                        // populate the table
+                        foreach ($tabledata as $record) {
+                            $record = str_replace('\r\n', "\r\n", $record);
+                            $object = @unserialize($record);
+                            if (!$object) $object = unserialize(stripslashes($record));
+                            if (is_object($object)) {
+                                $db->insertObject($object, 'forms_' . $table);
                             }
                         }
                         $errors[] = sprintf(gt('*  However...we successfully recreated the "%s" Table from the EQL file'), $table);
