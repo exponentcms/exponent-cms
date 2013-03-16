@@ -46,11 +46,11 @@ function smarty_function_filedisplayer($params,&$smarty) {
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $config['uniqueid'] = str_replace($badvals, "", $smarty->getTemplateVars('__loc')->src).$params['record']->id;
     // if we only want primary image on listing page and it's a listing set array to first item only
-    if ($config['pio'] && $params['is_listing']) {
-        $tmp = reset($params['files']);
-        unset($params['files']);
-        $params['files'][] = $tmp;
-    };
+//    if ($config['pio'] && $params['is_listing']) {
+//        $tmp = reset($params['files']);
+//        unset($params['files']);
+//        $params['files'][] = $tmp;
+//    };
     
     $float = ($config['ffloat']=="Above" || $config['ffloat']=="Below") ? "" : "float:".strtolower($config['ffloat']).";";
     $width = !empty($config['fwidth']) ? $config['fwidth'] : "200";

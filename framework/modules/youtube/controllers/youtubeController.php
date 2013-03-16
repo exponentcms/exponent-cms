@@ -33,6 +33,7 @@ class youtubeController extends expController {
         'rss',
         'tags'
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    public $codequality = 'DEPRECATED';
 
     static function displayname() { return gt("YouTube"); }
     static function description() { return gt("Display YouTube videos on your page."); }

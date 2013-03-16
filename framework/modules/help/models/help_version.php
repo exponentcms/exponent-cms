@@ -27,7 +27,16 @@ class help_version extends expRecord {
 		'uniqueness_of'=>array(
 			'version'=>array('message'=>'This version number is already in use.'),
 		));
-		
+
+    public function afterDelete() {
+	    // get and delete the docs for this version
+	    $help = new help();
+	    $docs = $help->find('all', 'help_version_id='.$this->id);
+	    foreach ($docs as $doc) {
+	        $doc->delete();
+	    }
+    }
+
 }
 
 ?>

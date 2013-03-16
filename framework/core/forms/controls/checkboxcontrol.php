@@ -78,7 +78,7 @@ class checkboxcontrol extends formcontrol {
         } else {
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
 //            $html .= "<td class=\"input\" nowrap>";
-            $html .= "<label class=\"label spacer\" style=\"background: transparent;\";></label>";
+            $html .= "<label class=\"label spacer\" style=\"background: transparent;\"></label>";
 //            $html .= "</td><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             if (!empty($label) && $label != ' ') {
@@ -184,6 +184,14 @@ class checkboxcontrol extends formcontrol {
     static function parseData($name, $values, $for_db = false) {
         return isset($values[$name]) ? 1 : 0;
     }
+
+    static function convertData($original_name,$formvalues) {
+        if (empty($formvalues[$original_name])) return false;
+        if (strtolower($formvalues[$original_name]) == 'no') return false;
+        if (strtolower($formvalues[$original_name]) == 'off') return false;
+        if (strtolower($formvalues[$original_name]) == 'false') return false;
+		return true;
+	}
 
     static function templateFormat($db_data, $ctl) {
         return ($db_data == 1) ? gt("Yes") : gt("No");

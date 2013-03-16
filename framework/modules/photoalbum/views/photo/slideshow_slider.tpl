@@ -103,7 +103,7 @@
                         </div>
                     {/permissions}
                     <a title="{$title}" href="{link action=show title=$slide->sef_url}">
-                        {img file_id=$slide->expFile[0]->id  title="View"|gettext|cat:" `$title`" w=$config.th_width|default:64 h=$config.th_height|default:40 class="slide-image" zc=1 q=$quality|default:75}
+                        {img file_id=$slide->expFile[0]->id  title="View"|gettext|cat:" `$title`" w=$config.th_width|default:64 h=$config.th_height|default:40 class="slide-image" far=TL f=jpeg q=$quality|default:75}
                     </a>
                     <div class="thumb-text">
                         {if !$config.hidetext}<strong>{$title}</strong>{/if}

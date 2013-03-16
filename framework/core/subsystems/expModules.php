@@ -96,14 +96,15 @@ class expModules {
         global $db;
         
         $controllers = self::listUserRunnableControllers();
-        
+
+        $moduleInfo = array();
         foreach ($controllers as $module) {
     		if (class_exists($module)) {
-//    			$mod = new $module();
-                $mod = self::getController($module);
-    			$modstate = $db->selectObject("modstate","module='$module'");
+    			$mod = new $module();
+//                $mod = self::getController($module);
+    			$modstate = $db->selectObject("modstate","module='". expModules::getControllerName($module) . "'");
     			$moduleInfo[$module] = new stdClass();
-    			$moduleInfo[$module]->class = $module;
+    			$moduleInfo[$module]->class = expModules::getControllerName($module);
     			$moduleInfo[$module]->name = $mod->name();
     			$moduleInfo[$module]->author = $mod->author();
     			$moduleInfo[$module]->description = $mod->description();
@@ -126,7 +127,7 @@ class expModules {
 	    $controllers = array();
 	    foreach($available_controllers as $name=>$path) {
 	        $controller = new $name();  // we want both models and controllers to filter out models
-	        if (!empty($controller->useractions)) $controllers[] = self::getControllerName($name);
+	        if (!empty($controller->useractions)) $controllers[] = self::getControllerClassName($name);
 	    }
 
 	    return $controllers;
@@ -243,9 +244,9 @@ class expModules {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? substr($modulename, 0, -6) : $modulename;
-        }
+        } else return $modulename;
    	}
 
     /**
@@ -260,9 +261,9 @@ class expModules {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? $modulename : $modulename.'Controller';
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
-        }
+        } else return $modulename;
    	}
 
     /**
@@ -278,9 +279,9 @@ class expModules {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
-        }
+        } else return $modulename;
    	}
 
     /**

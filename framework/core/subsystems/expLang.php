@@ -25,7 +25,7 @@
 
 class expLang {
 
-    public static function loadLang() {
+    public static function initialize() {
         global $cur_lang, $default_lang, $default_lang_file, $target_lang_file;
 
 	    if (!defined('LANGUAGE')) define('LANGUAGE', 'English - US');

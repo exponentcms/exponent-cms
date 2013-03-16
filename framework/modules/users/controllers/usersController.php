@@ -628,6 +628,7 @@ class usersController extends expController {
         expHistory::set('editable', $this->params);
         if (empty($this->params['id'])) {
             flash('error', gt('You must specify the user whose password you want to change'));
+            expHistory::back();
         }
 
         $u = new user($this->params['id']);
@@ -1183,11 +1184,11 @@ class usersController extends expController {
                 ' ' => gt('Space'));
 
             //Register the dropdown menus
-            $form->register("delimiter", gt('Delimiter Character'), New dropdowncontrol(",", $delimiterArray));
-            $form->register("upload", gt('CSV File to Upload'), New uploadcontrol());
-            $form->register("rowstart", gt('Row to Begin at'), New textcontrol("1", 1, 0, 6));
-            $form->register("use_header", gt('First Row is Header'), New checkboxcontrol(0, 0));
-            $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+            $form->register("delimiter", gt('Delimiter Character'), new dropdowncontrol(",", $delimiterArray));
+            $form->register("upload", gt('CSV File to Upload'), new uploadcontrol());
+            $form->register("use_header", gt('First Row is a Header'), new checkboxcontrol(0, 0));
+            $form->register("rowstart", gt('User Data begins in Row'), new textcontrol("1", 1, 0, 6));
+            $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
             assign_to_template(array(
                 "form_html" => $form->tohtml(),
@@ -1196,14 +1197,12 @@ class usersController extends expController {
     }
 
     public function import_users_mapper() {
-        //Get the post data for future massaging
-        $post = $this->params;
-
         //Check to make sure the user filled out the required input.
+        //FIXME needs to be the newer fail form
         if (!is_numeric($this->params["rowstart"])) {
-            unset($post['rowstart']);
-            $post['_formError'] = gt('The starting row must be a number.');
-            expSession::set("last_POST", $post);
+            unset($this->params['rowstart']);
+            $this->params['_formError'] = gt('The starting row must be a number.');
+            expSession::set("last_POST", $this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit('Redirecting...');
         }
@@ -1219,27 +1218,27 @@ class usersController extends expController {
                 switch ($_FILES["upload"]["error"]) {
                     case UPLOAD_ERR_INI_SIZE:
                     case UPLOAD_ERR_FORM_SIZE:
-                        $post['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
+                        $this->params['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
                         break;
                     case UPLOAD_ERR_PARTIAL:
-                        $post['_formError'] = gt('The file was only partially uploaded.');
+                        $this->params['_formError'] = gt('The file was only partially uploaded.');
                         break;
                     case UPLOAD_ERR_NO_FILE:
-                        $post['_formError'] = gt('No file was uploaded.');
+                        $this->params['_formError'] = gt('No file was uploaded.');
                         break;
                     default:
-                        $post['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
+                        $this->params['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
                         break;
                 }
-                expSession::set("last_POST", $post);
+                expSession::set("last_POST", $this->params);
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit("");
             }
         }
         /*
         if (mime_content_type(BASE.$directory."/".$file->filename) != "text/plain"){
-            $post['_formError'] = "File is not a delimited text file.";
-            expSession::set("last_POST",$post);
+            $this->params['_formError'] = "File is not a delimited text file.";
+            expSession::set("last_POST",$this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit("");
         }
@@ -1264,24 +1263,26 @@ class usersController extends expController {
 
         //Check to see if the line got split, otherwise throw an error
         if ($lineInfo == null) {
-            $post['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
-            expSession::set("last_POST", $post);
+            $this->params['_formError'] = sprintf(gt('This file does not appear to be delimited by "%s". <br />Please specify a different delimiter.<br /><br />'), $this->params["delimiter"]);
+            expSession::set("last_POST", $this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit("");
         } else {
-            $headerbr = '';
-            if ($headerinfo != null) {
-                $headerbr = ':<br>';
-            }
-            //Setup the mete data (hidden values)
+            //Setup the meta data (hidden values)
             $form = new form();
             $form->meta("controller", "users");
             $form->meta("action", "import_users_process");
             $form->meta("rowstart", $this->params["rowstart"]);
+            $form->meta("use_header", $this->params["use_header"]);
             $form->meta("filename", $directory . "/" . $file->filename);
             $form->meta("delimiter", $this->params["delimiter"]);
             for ($i = 0; $i < count($lineInfo); $i++) {
-                $form->register("column[$i]", $headerinfo[$i] . $headerbr . $lineInfo[$i], new dropdowncontrol("none", $colNames));
+                if ($headerinfo != null) {
+                    $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
+                } else {
+                    $title = $lineInfo[$i];
+                }
+                $form->register("column[$i]", $title, new dropdowncontrol("none", $colNames));
             }
             $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
@@ -1297,6 +1298,7 @@ class usersController extends expController {
         $form->meta("action", "import_users_display");
         $form->meta("column", $this->params["column"]);
         $form->meta("delimiter", $this->params["delimiter"]);
+        $form->meta("use_header", $this->params["use_header"]);
         $form->meta("filename", $this->params["filename"]);
         $form->meta("rowstart", $this->params["rowstart"]);
 
@@ -1317,18 +1319,17 @@ class usersController extends expController {
         } else {
             $pwordOptions = array("INFILE" => gt('Password Specified in CSV File'));
         }
-
         if (count($pwordOptions) == 1) {
             $disabled = true;
         } else {
             $disabled = false;
         }
 
-        $form->register("unameOptions", gt('User Name Generations Options'), New dropdowncontrol("INFILE", $unameOptions));
-        $form->register("pwordOptions", gt('Password Generation Options'), New dropdowncontrol("defpass", $pwordOptions));
-        $form->register("pwordText", gt('Default Password'), New textcontrol("", 10, $disabled));
-        $form->register("update", gt('Update users already in database'), New checkboxcontrol(0, 0));
-        $form->register("submit", "", New buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+        $form->register("unameOptions", gt('User Name Generations Options'), new dropdowncontrol("INFILE", $unameOptions));
+        $form->register("pwordOptions", gt('Password Generation Options'), new dropdowncontrol("defpass", $pwordOptions));
+        $form->register("pwordText", gt('Default Password'), new textcontrol("", 10, $disabled));
+        $form->register("update", gt('Update users already in database, instead of creating new user?'), new checkboxcontrol(0, 0));
+        $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
         assign_to_template(array(
             "form_html" => $form->tohtml(),
@@ -1337,88 +1338,214 @@ class usersController extends expController {
 
     public function import_users_display() {
         $file = fopen(BASE . $this->params["filename"], "r");
-        $post = null;
-        $post = $this->params;
-        $userinfo = new stdClass();
-        $userinfo->username = "";
-        $userinfo->firstname = "";
-        $userinfo->lastname = "";
-        $userinfo->is_admin = 0;
-        $userinfo->is_acting_admin = 0;
-        $userinfo->is_locked = 0;
-        $userinfo->email = '';
+        $userinfo = array();
         $userarray = array();
         $usersdone = array();
         $linenum = 1;
 
         while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
 
-            if ($linenum >= $post["rowstart"]) {
+            if ($linenum >= $this->params["rowstart"]) {
                 $i = 0;
 
-//                $userinfo = new stdClass();
-                $userinfo->changed = "";
+                $userinfo['username'] = "";
+                $userinfo['firstname'] = "";
+                $userinfo['lastname'] = "";
+                $userinfo['is_admin'] = 0;
+                $userinfo['is_acting_admin'] = 0;
+//                $userinfo['is_locked'] = 0;
+                $userinfo['email'] = '';
+                $userinfo['changed'] = "";
 
                 foreach ($filedata as $field) {
-                    if ($post["column"][$i] != "none") {
-                        $colname = $post["column"][$i];
-                        $userinfo->$colname = trim($field);
+                    if ($this->params["column"][$i] != "none") {
+                        $colname = $this->params["column"][$i];
+                        $userinfo[$colname] = trim($field);
+                    } else {
+                        unset($this->params['column'][$i]);
                     }
                     $i++;
                 }
 
-                switch ($post["unameOptions"]) {
-
+                switch ($this->params["unameOptions"]) {
                     case "FILN":
-                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
-                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname{0} . $userinfo->lastname));
+                        if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname']));
                         } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
+                            $userinfo['username'] = "";
+//                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
                         }
                         break;
                     case "FILNNUM":
-                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
-                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname{0} . $userinfo->lastname . rand(100, 999)));
+                        if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . rand(100, 999)));
                         } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
+                            $userinfo['username'] = "";
+//                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
                         }
                         break;
                     case "EMAIL":
-                        if ($userinfo->email != "") {
-                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->email));
+                        if ($userinfo['email'] != "") {
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['email']));
                         } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
+                            $userinfo['username'] = "";
+//                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
                         }
                         break;
                     case "FNLN":
-                        if (($userinfo->firstname != "") && ($userinfo->lastname != "")) {
-                            $userinfo->username = str_replace(" ", "", strtolower($userinfo->firstname . $userinfo->lastname));
+                        if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'] . $userinfo['lastname']));
                         } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
+                            $userinfo['username'] = "";
+//                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
                         }
                         break;
                     case "INFILE":
-                        if ($userinfo->username != "") {
-                            $userinfo->username = str_replace(" ", "", $userinfo->username);
+                        if ($userinfo['username'] != "") {
+                            $userinfo['username'] = str_replace(" ", "", $userinfo['username']);
                         } else {
-                            $userinfo->username = "";
-                            $userinfo->clearpassword = "";
-                            $userinfo->changed = "skipped";
+                            $userinfo['username'] = "";
+//                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
                         }
                         break;
                 }
 
-                if ((!isset($userinfo->changed)) || ($userinfo->changed != "skipped")) {
-                    switch ($post["pwordOptions"]) {
+                if ((!isset($userinfo['changed'])) || ($userinfo['changed'] != "skipped")) {
+//                    switch ($this->params["pwordOptions"]) {
+//                        case "RAND":
+//                            $newpass = "";
+//                            for ($i = 0; $i < rand(12, 20); $i++) {
+//                                $num = rand(48, 122);
+//                                if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
+//                                else $i--;
+//                            }
+//                            $userinfo['clearpassword'] = $newpass;
+//                            break;
+//                        case "DEFPASS":
+//                            $userinfo['clearpassword'] = str_replace(" ", "", trim($this->params["pwordText"]));
+//                            break;
+//                    }
+//
+//                    $userinfo['password'] = md5($userinfo['clearpassword']);
 
+                    $suffix = "";
+                    while (user::getUserByName($userinfo['username'] . $suffix) != null) { //username already exists
+                        if (!empty($this->params["update"])) {
+                            if (in_array($userinfo['username'], $usersdone)) {
+                                $suffix = '-rand-' . rand(100, 999);
+                            } else {
+                                $tmp = user::getUserByName($userinfo['username'] . $suffix);
+                                $userinfo['id'] = $tmp->id;
+                                $userinfo['changed'] = 1;
+                                break;
+                            }
+                        } else {
+                            $suffix = '-rand-' . rand(100, 999);
+                        }
+                    }
+
+                    $userinfo['username'] = $userinfo['username'] . $suffix;
+                    $userinfo['linenum'] = $linenum;
+                    $userarray[] = $userinfo;
+                    $usersdone[] = $userinfo['username'];
+                } else {
+                    $userinfo['linenum'] = $linenum;
+                    $userarray[] = $userinfo;
+                }
+            }
+            $linenum++;
+        }
+        assign_to_template(array(
+            "userarray" => $userarray,
+            "params" => $this->params,
+        ));
+//        unlink(BASE . $this->params["filename"]);
+    }
+
+    public function import_users_add() {
+        $file = fopen(BASE . $this->params["filename"], "r");
+        $userinfo = array();
+        $userarray = array();
+        $usersdone = array();
+        $linenum = 1;
+
+        while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
+
+            if ($linenum >= $this->params["rowstart"] && in_array($linenum,$this->params['importuser'])) {
+                $i = 0;
+
+                $userinfo['username'] = "";
+                $userinfo['firstname'] = "";
+                $userinfo['lastname'] = "";
+                $userinfo['is_admin'] = 0;
+                $userinfo['is_acting_admin'] = 0;
+//                $userinfo['is_locked'] = 0;
+                $userinfo['email'] = '';
+                $userinfo['changed'] = "";
+
+                foreach ($filedata as $field) {
+                    if ($this->params["column"][$i] != "none") {
+                        $colname = $this->params["column"][$i];
+                        $userinfo[$colname] = trim($field);
+                    }
+                    $i++;
+                }
+
+                switch ($this->params["unameOptions"]) {
+                    case "FILN":
+                        if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname']));
+                        } else {
+                            $userinfo['username'] = "";
+                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
+                        }
+                        break;
+                    case "FILNNUM":
+                        if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . rand(100, 999)));
+                        } else {
+                            $userinfo['username'] = "";
+                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
+                        }
+                        break;
+                    case "EMAIL":
+                        if ($userinfo['email'] != "") {
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['email']));
+                        } else {
+                            $userinfo['username'] = "";
+                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
+                        }
+                        break;
+                    case "FNLN":
+                        if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname'] . $userinfo['lastname']));
+                        } else {
+                            $userinfo['username'] = "";
+                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
+                        }
+                        break;
+                    case "INFILE":
+                        if ($userinfo['username'] != "") {
+                            $userinfo['username'] = str_replace(" ", "", $userinfo['username']);
+                        } else {
+                            $userinfo['username'] = "";
+                            $userinfo['clearpassword'] = "";
+                            $userinfo['changed'] = "skipped";
+                        }
+                        break;
+                }
+
+                if ((!isset($userinfo['changed'])) || ($userinfo['changed'] != "skipped")) {
+                    switch ($this->params["pwordOptions"]) {
                         case "RAND":
                             $newpass = "";
                             for ($i = 0; $i < rand(12, 20); $i++) {
@@ -1426,37 +1553,52 @@ class usersController extends expController {
                                 if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
                                 else $i--;
                             }
-                            $userinfo->clearpassword = $newpass;
+                            $userinfo['clearpassword'] = $newpass;
                             break;
                         case "DEFPASS":
-                            $userinfo->clearpassword = str_replace(" ", "", trim($this->params["pwordText"]));
+                            $userinfo['clearpassword'] = str_replace(" ", "", trim($this->params["pwordText"]));
                             break;
                     }
 
-                    $userinfo->password = md5($userinfo->clearpassword);
+                    $userinfo['password'] = md5($userinfo['clearpassword']);
 
                     $suffix = "";
-                    while (user::getUserByName($userinfo->username . $suffix) != null) { //username already exists
-                        if (isset($this->params["update"]) == 1) {
-                            if (in_array($userinfo->username, $usersdone)) {
+                    while (user::getUserByName($userinfo['username'] . $suffix) != null) { //username already exists
+                        if (!empty($this->params["update"])) {
+                            if (in_array($userinfo['username'], $usersdone)) {  // username exists because we already created it
                                 $suffix = rand(100, 999);
-                                $userinfo->changed = 1;
                             } else {
-                                $tmp = user::getUserByName($userinfo->username . $suffix);
-                                $userinfo->id = $tmp->id;
+                                $tmp = user::getUserByName($userinfo['username'] . $suffix);
+                                $userinfo['id'] = $tmp->id;
+                                $userinfo['changed'] = 1;
                                 break;
                             }
                         } else {
                             $suffix = rand(100, 999);
-                            $userinfo->changed = 1;
                         }
                     }
 
-                    $userinfo->username = $userinfo->username . $suffix;
-                    $userarray[] = exponent_users_saveUser($userinfo); //FIXME function was deprecated use $this->update()
-                    $usersdone[] = $userinfo->username;
+                    $userinfo['username'] = $userinfo['username'] . $suffix;
+                    $newuser = new user($userinfo);
+                    $newuser->update();
+                    $userinfo['linenum'] = $linenum;
+                    $userarray[] = $userinfo;
+                    $usersdone[] = $userinfo['username'];
+                    if (USER_REGISTRATION_SEND_WELCOME && $this->params['sendemail'] && !empty($newuser->email)) {
+                        $msg = $newuser->firstname . ", \n\n";
+                        $msg .= sprintf(USER_REGISTRATION_WELCOME_MSG, $newuser->firstname, $newuser->lastname, $newuser->username);
+                        $msg .= "/n/nYour new password is: ".$userinfo['clearpassword'];
+                        $mail = new expMail();
+                        $mail->quickSend(array(
+                            'text_message' => $msg,
+                            'to'           => trim($newuser->email),
+                            'from'         => SMTP_FROMADDRESS,
+                            //'from_name'=>ecomconfig::getConfig('from_name'),
+                            'subject'      => USER_REGISTRATION_WELCOME_SUBJECT,
+                        ));
+                    }
                 } else {
-                    $userinfo->linenum = $linenum;
+                    $userinfo['linenum'] = $linenum;
                     $userarray[] = $userinfo;
                 }
             }

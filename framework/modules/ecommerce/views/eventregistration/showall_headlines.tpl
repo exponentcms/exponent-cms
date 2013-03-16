@@ -45,7 +45,8 @@
                         <a href="{link action=show title=$item->sef_url}"></a>
                         - <em class="date">{$item->eventdate|date_format}</em>
                         - {$item->body|summarize:"text":"para"}
-                        {if $item->base_price}- {'Cost'|gettext}: {currency_symbol}{$item->base_price}{/if}
+                        {*{if $item->base_price}- {'Cost'|gettext}: {currency_symbol}{$item->base_price}{/if}*}
+                        {if $item->base_price}- {'Cost'|gettext}: {$item->base_price|currency}{/if}
                         {if $item->isRss != true}
                             {permissions}
                                 <div class="item-actions">

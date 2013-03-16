@@ -57,7 +57,7 @@
 	{/if}
 {/permissions}
 
-{viewcfile module=$singlemodule view=$singleview var=viewfile}
+{viewfile module=$singlemodule view=$singleview var=viewfile}
 
 {foreach key=key name=c from=$containers item=container}
     {$i=$smarty.foreach.c.iteration}

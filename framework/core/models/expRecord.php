@@ -358,7 +358,7 @@ class expRecord {
      *
      * @return bool
      */
-    public function attachItem($item, $subtype = '') { //FIXME only placed used is in helpController->copydocs
+    public function attachItem($item, $subtype = '') { //FIXME only placed used is in helpController->copydocs, & migration
         global $db;
 
         // make sure we have the info we need..otherwise return

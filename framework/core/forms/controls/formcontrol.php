@@ -123,6 +123,18 @@ class formcontrol {
 	}
 
     /**
+     * Convert a value to fit the control
+     *
+     * @static
+     * @param $original_name
+     * @param $formvalues
+     * @return string
+     */
+    static function convertData($original_name,$formvalues) {
+		return (isset($formvalues[$original_name])?trim($formvalues[$original_name]):"");
+	}
+
+    /**
      * Event hook for when control is un-registered (removed) on a form
      *
      * @param $form

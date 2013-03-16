@@ -58,12 +58,14 @@ class expQueue {
         $html = '';
         $queues = expSession::get('flash');
         if (empty($name)) {
-            $template = new template('common','_msg_queue',null,false,'globalviews');
+//            $template = new template('common','_msg_queue',null,false,'globalviews');
+            $template = new standalonetemplate('_msg_queue');
             $template->assign('queues', $queues);
             $html = $template->render();
             self::flushAllQueues();
         } elseif (!empty($queues[$name])) {
-            $template = new template('common','_msg_queue',null,false,'globalviews');
+//            $template = new template('common','_msg_queue',null,false,'globalviews');
+            $template = new standalonetemplate('_msg_queue');
             $template->assign('queues', array($name=>$queues[$name]));
             $html = $template->render();
             self::flushQueue($name);

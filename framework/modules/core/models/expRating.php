@@ -30,7 +30,14 @@ class expRating extends expRecord {
         //'content_expComments'=>'expComment',
         //'content_expSimpleNote'=>'expSimpleNote',
     );
-    
+
+    public function afterDelete() {
+        global $db;
+
+	    // get and delete all attachments to this object
+	    $db->delete('content_expRatings','expratings_id='.$this->id);
+    }
+
 }
 
 ?>

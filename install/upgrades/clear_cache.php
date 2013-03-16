@@ -29,6 +29,7 @@
 class clear_cache extends upgradescript {
 	protected $from_version = '0.0.0';
 //	protected $to_version = '1.99.2';
+    public $priority = 95; // set this to a very low priority
 
 	/**
 	 * name/title of upgrade script

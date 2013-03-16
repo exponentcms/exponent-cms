@@ -142,8 +142,8 @@ class cartController extends expController {
                         $updates->message = 'Only ' . $item->product->quantity . ' ' . $item->products_name . ' are currently in stock. Shipping may be delayed on the other ' . $diff;
                     } elseif ($item->product->availability_type == 2) {
                         $updates->message    = $item->products_name . ' only has ' . $item->product->quantity . ' on hand. You can not add any more than that to your cart.';
-                        $updates->cart_total = '$' . number_format($order->getCartTotal(), 2);
-                        $updates->item_total = '$' . number_format($item->getTotal(), 2);
+                        $updates->cart_total = expCore::getCurrencySymbol() . number_format($order->getCartTotal(), 2);
+                        $updates->item_total = expCore::getCurrencySymbol() . number_format($item->getTotal(), 2);
                         $updates->item_id    = $id;
                         $updates->quantity   = $item->product->quantity;
                         echo json_encode($updates);
@@ -153,8 +153,8 @@ class cartController extends expController {
                 $item->quantity = $newqty;
                 $item->save();
                 $order->refresh();
-                $updates->cart_total = '$' . number_format($order->getCartTotal(), 2);
-                $updates->item_total = '$' . number_format($item->getTotal(), 2);
+                $updates->cart_total = expCore::getCurrencySymbol() . number_format($order->getCartTotal(), 2);
+                $updates->item_total = expCore::getCurrencySymbol() . number_format($item->getTotal(), 2);
                 $updates->item_id    = $id;
                 $updates->quantity   = $item->quantity;
                 echo json_encode($updates);
@@ -331,7 +331,7 @@ class cartController extends expController {
         }
 
         if ($order->total < intval($config->config['min_order'])) {
-            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is $") . number_format($config->config['min_order'], 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
+            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format($config->config['min_order'], 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
         }
 
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));

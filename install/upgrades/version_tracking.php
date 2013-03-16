@@ -27,6 +27,7 @@
 class version_tracking extends upgradescript {
 	protected $from_version = '0.0.0';
 //	protected $to_version = '99';
+    public $priority = 100; // set this to the lowest priority
 
 	/**
 	 * name/title of upgrade script
@@ -38,7 +39,7 @@ class version_tracking extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return gt("The system keeps track of its version"); }
+	function description() { return gt("The system keeps track of its version."); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

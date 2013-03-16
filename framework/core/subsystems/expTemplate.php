@@ -50,11 +50,11 @@ class expTemplate {
 	}
 
 	//DEPRECATED: backward compatibility wrapper
-	public static function getModuleViewFile($name, $view, $recurse=true) {
+	public static function getModuleViewFile($name, $view, $recurse=true) {  //FIXME Not Used 2.2???
 		return self::getViewFile("modules", $name, $view);
 	}
 
-	public static function getViewConfigForm($module,$view,$form,$values) {
+	public static function getViewConfigForm($module,$view,$form,$values) {  //FIXME Not Used 2.2???
 		$form_file = "";
 		$resolved_path = null;
 		$resolved_path = expCore::resolveFilePaths("modules", $module , "form" , $view);
@@ -97,7 +97,7 @@ class expTemplate {
 		return $form;
 	}
 
-	public static function getViewConfigOptions($module,$view) {
+	public static function getViewConfigOptions($module,$view) {  //FIXME Not Used 2.2???
 		$form_file = "";
 		$filepath = array_shift(expCore::resolveFilePaths("modules", $module, "form", $view));
 		if ($filepath != false) {

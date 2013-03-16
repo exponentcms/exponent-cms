@@ -71,7 +71,8 @@
                         {foreach from=$payment_summary key=key item=item}
                             <tr>
                                 <th>{$key}</th>
-                                <td>{currency_symbol}{$item|number_format:2}</td>
+                                {*<td>{currency_symbol}{$item|number_format:2}</td>*}
+                                <td>{$item|currency}</td>
                             </tr>
                         {/foreach}
                     </tbody>
@@ -113,8 +114,9 @@
             <tbody>                  
                 <tr>
                     <th>{$tax_type}</th>
-                    <td>{currency_symbol}{$tax_total|number_format:2}</td>
-                </tr>               
+                    {*<td>{currency_symbol}{$tax_total|number_format:2}</td>*}
+                    <td>{$tax_total|currency}</td>
+                </tr>
                 
             </tbody>
         </table>                
@@ -171,7 +173,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
             boldTextBlock.style.fontWeight = "bold";
             underlinedTextBlock.appendChild(document.createTextNode("{/literal}{"Total"|gettext}{literal}: " +
                                             categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")])));
-            boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:"$", decimalPlaces:2}])));
+            boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:{/literal}{currency_symbol}{literal}, decimalPlaces:2}])));
             msg.appendChild(underlinedTextBlock);
             msg.appendChild(document.createElement("br"));
             msg.appendChild(boldTextBlock);

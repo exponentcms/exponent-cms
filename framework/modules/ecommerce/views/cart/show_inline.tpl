@@ -20,7 +20,8 @@
 <div class="module cart show-inline">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     <div class="total">
-        {"Total"|gettext}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>
+        {*{"Total"|gettext}: <span class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>*}
+        {"Total"|gettext}: <span class="carttotal">{$order->total|currency}</span>
     </div>
     <ul>
         {foreach from=$items item=item}
@@ -32,7 +33,8 @@
                     <a class="title" href="{link controller=store action=show id=$item->product_id}">
                     {$item->products_name}
                     </a>
-                    {$item->quantity} @ <span class="price">{currency_symbol}{$item->products_price|number_format:2}</span>
+                    {*{$item->quantity} @ <span class="price">{currency_symbol}{$item->products_price|number_format:2}</span>*}
+                    {$item->quantity} @ <span class="price">{$item->products_price|currency}</span>
                 </div>
                 <a href="{link action=removeItem id=$item->id}" class="delete" onclick="return confirm('{'Are you sure you want to remove this item?'|gettext}');">{'Remove from cart'|gettext}</a>
                 {clear}

@@ -38,7 +38,7 @@ class update_ecom extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.0.9, the e-Commerce header/footer configuration was revised.  This Script updates those entries"; }
+	function description() { return "In v2.0.9, the e-Commerce header/footer configuration was revised.  This Script updates those entries."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

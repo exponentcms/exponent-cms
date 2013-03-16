@@ -27,6 +27,7 @@
 class upgrade_container2 extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 	protected $to_version = '2.2.0';  // containermodule was upgraded to containerController in 2.2.0
+    public $priority = 1; // set this to the highest priority
 
 	/**
 	 * name/title of upgrade script
@@ -108,7 +109,6 @@ class upgrade_container2 extends upgradescript {
             }
             $co->view_data = null;
             $db->updateObject($co,'container');
-            $count++;
 	    }
         foreach ($db->selectObjects('container',"internal LIKE '%Controller%'") as $co) {
             $loc = expUnserialize($co->internal);
@@ -116,7 +116,6 @@ class upgrade_container2 extends upgradescript {
             $co->internal = serialize($loc);
             $co->view_data = null;
             $db->updateObject($co,'container');
-            $count++;
 	    }
         // adjust container ranks
         $rank = 1; // 2.0 index starts at 1, not 0 like old school
@@ -183,14 +182,9 @@ class upgrade_container2 extends upgradescript {
                 unlink(BASE.$file);
             }
         }
-		// delete old containermodule folders
-        $olddirs = array(
-            "framework/modules-1/container/",
-        );
-        foreach ($olddirs as $dir) {
-            if (expUtil::isReallyWritable(BASE.$dir)) {
-                expFile::removeDirectory(BASE.$dir);
-            }
+		// delete old containermodule folder
+        if (expUtil::isReallyWritable(BASE."framework/modules-1/container/")) {
+            expFile::removeDirectory(BASE."framework/modules-1/container/");
         }
 
         return ($count?$count:gt('No')).' '.gt('old containermodule type references updated to container2 type.');

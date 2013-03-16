@@ -39,7 +39,8 @@
         <strong class="date">{$listing->eventdate|date_format:"%a, %B %e"}</strong> -
         {$listing->body}
     </div>
-    <div class="price">{currency_symbol}{$listing->price|number_format:2}</div>
+    {*<div class="price">{currency_symbol}{$listing->price|number_format:2}</div>*}
+    <div class="price">{$listing->price|currency}</div>
     <a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="exp-ecom-link addtocart">{'Register Today'|gettext} <span></span></a>
     {clear}
 </div>

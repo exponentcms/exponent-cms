@@ -38,7 +38,7 @@ class fix_database extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return gt("Update cross-referenced entries in the containers and sectionref tables"); }
+	function description() { return gt("Update cross-referenced entries in the containers and sectionref tables."); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

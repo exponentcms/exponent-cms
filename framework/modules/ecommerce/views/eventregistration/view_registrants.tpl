@@ -54,7 +54,8 @@
             <span class="label">{'End Time'|gettext}: </span>
             <span class="value">{($event->eventdate+$event->event_endtime)|date_format:"%l:%M %p"}</span>{br}
             <span class="label">{'Price per person:'|gettext} </span>
-            <span class="value">{if $event->base_price}{currency_symbol}{$event->base_price|number_format:2}{else}{'No Cost'|gettext}{/if}</span>{br}
+            {*<span class="value">{if $event->base_price}{currency_symbol}{$event->base_price|number_format:2}{else}{'No Cost'|gettext}{/if}</span>{br}*}
+            <span class="value">{if $event->base_price}{$event->base_price|currency}{else}{'No Cost'|gettext}{/if}</span>{br}
             <span class="label">{'Seats Registered:'|gettext} </span>
             <span class="value">{$registrants|count} of {$event->quantity}</span>{br}
             <span class="label">{'Registration Closes:'|gettext} </span>

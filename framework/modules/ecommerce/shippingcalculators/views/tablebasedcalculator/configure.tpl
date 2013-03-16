@@ -64,17 +64,17 @@
                             <a href="#" class="delete">{'Remove'|gettext}</a>
                         </td>
                         <td class="from">
-                            <label for="from-{$smarty.section.i.index}">$</label><input type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">
+                            <label for="from-{$smarty.section.i.index}">{currency_symbol}</label><input type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">
                         </td>
                         <td>
                             {'to'|gettext}
                         </td>
                         <td class="to">
-                            <label for="to-{$smarty.section.i.index}">$</label><input type="text" size="10" id="to-{$smarty.section.i.index}" value="{$calculator->configdata.to[i]}" name="to[]">
+                            <label for="to-{$smarty.section.i.index}">{currency_symbol}</label><input type="text" size="10" id="to-{$smarty.section.i.index}" value="{$calculator->configdata.to[i]}" name="to[]">
                         </td>
                         {foreach from=$calculator->shippingspeeds item=calc}
                         <td>
-                            <label for="rate[{$shippingspeed}][]">$</label><input type="text" size="10" id="rate[{$shippingspeed}][]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$smarty.section.i.index}" name="{$calc->speed|remove_space}[]">
+                            <label for="rate[{$shippingspeed}][]">{currency_symbol}</label><input type="text" size="10" id="rate[{$shippingspeed}][]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$smarty.section.i.index}" name="{$calc->speed|remove_space}[]">
                         </td>
                         {/foreach}
                     </tr>
@@ -89,7 +89,7 @@
 
                     </td>
                     <td class="from">
-                        <label for="from-1">$</label><input type="text" name="from[]" value="{$calculator->configdata.from[$lastcharge]}" id="from-1" size="10">
+                        <label for="from-1">{currency_symbol}</label><input type="text" name="from[]" value="{$calculator->configdata.from[$lastcharge]}" id="from-1" size="10">
                     </td>
                     <td>
                         {'and up'|gettext}
@@ -100,7 +100,7 @@
                     {foreach from=$calculator->shippingspeeds item=calc}
 
                     <td>
-                        <label for="standard-1">$</label><input type="text" name="{$calc->speed|remove_space}[]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$lastcharge}" id="shipping_rate[1][]" size="10">
+                        <label for="standard-1">{currency_symbol}</label><input type="text" name="{$calc->speed|remove_space}[]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$lastcharge}" id="shipping_rate[1][]" size="10">
                     </td>
                     {/foreach}
                 </tr>
@@ -126,18 +126,18 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 '<a class="delete" href="#">remove</a>'+
             '</td>'+
             '<td class="from">'+
-                '<label for="from-'+i+'">$</label>'+
+                '<label for="from-'+i+'">{currency_symbol}</label>'+
                 '<input type="text" name="from[]" value="" id="from-'+i+'" size="10">'+
             '</td>'+
             '<td>to</td>'+
             '<td class="to">'+
-                '<label for="to-'+i+'">$</label>'+
+                '<label for="to-'+i+'">{currency_symbol}</label>'+
                 '<input type="text" name="to[]" value="" id="to-'+i+'" size="10">'+
             '</td>'+
 			{/literal}
 			{foreach from=$calculator->shippingspeeds item=calc}
 				{literal}
-					'<td><label for="{/literal}{$calc->speed}{literal}-1">$</label>'+
+					'<td><label for="{/literal}{$calc->speed}{literal}-1">{currency_symbol}</label>'+
 					'<input type="text" name="{/literal}{$calc->speed|remove_space}[]{literal}" value="" id="{$calc->speed}-' + i + '" size="10">' +
 					'</td>'+
 				{/literal}

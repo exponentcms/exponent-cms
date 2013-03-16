@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,10 +20,11 @@
 * It will send off the ealerts.
 */
 	//Initialized the exponent
-    require_once("bootstrap.php");    
+//    require_once("bootstrap.php");    
+    require_once('../exponent.php');
    
 	//Get the filename to be use
-    $filename = EXP_PATH . 'datafeed.xml';    
+    $filename = BASE . 'datafeed.xml';    
     
 	//Header of the xml file
     $content="<?xml version='1.0' encoding='UTF-8'?>".chr(13).chr(10);
@@ -95,9 +96,9 @@
 			
 		$count++;
 		//Get the google type categories, I used selectArraysBySql since a product can have more than 1 google taxonomy
-		/*$google_types_res = $db->selectArraysBySql("SELECT exponent_google_product_types.title FROM exponent_google_product_types, exponent_product, exponent_product_storeCategories, exponent_google_product_types_storeCategories 
-													WHERE exponent_google_product_types.id = google_product_types_id and exponent_google_product_types_storeCategories.storecategories_id = exponent_product_storeCategories.storecategories_id and 
-													exponent_product.id = exponent_product_storeCategories.product_id and exponent_product.id = {$prod->id}");
+		/*$google_types_res = $db->selectArraysBySql('SELECT '.DB_TABLE_PREFIX.'_google_product_types.title FROM '.DB_TABLE_PREFIX.'_google_product_types, '.DB_TABLE_PREFIX.'_product, '.DB_TABLE_PREFIX.'_product_storeCategories, '.DB_TABLE_PREFIX.'_google_product_types_storeCategories
+													WHERE '.DB_TABLE_PREFIX.'_google_product_types.id = google_product_types_id and '.DB_TABLE_PREFIX.'_google_product_types_storeCategories.storecategories_id = '.DB_TABLE_PREFIX.'_product_storeCategories.storecategories_id and
+													'.DB_TABLE_PREFIX.'_product.id = '.DB_TABLE_PREFIX.'_product_storeCategories.product_id and '.DB_TABLE_PREFIX.'_product.id = {$prod->id}');
                                                     */
 		$google_types = '';
 
@@ -229,7 +230,7 @@
     //Bing
            
     //Get the filename to be use
-    $filename = EXP_PATH . 'bingshopping.txt';    
+    $filename = BASE . 'bingshopping.txt';    
     
     //Header of the xml file
     $header="MPID".chr(9)."Title".chr(9)."ProductURL".chr(9)."Description".chr(9)."ImageURL".chr(9)."Brand".chr(9)."SKU".chr(9)."Price".chr(9);
@@ -324,7 +325,7 @@
             if($path_count == 0)
             {
                 //first one, so get the root b_category''
-                $sql = 'SELECT title FROM '.DB_TABLE_PREFIX.'_bing_product_types bpt
+                $sql = 'SELECT title FROM '.DB_TABLE_PREFIX.'t_bing_product_types bpt
                     INNER JOIN '.DB_TABLE_PREFIX.'_bing_product_types_storeCategories bptsc ON
                         bptsc.bing_product_types_id = bpt.id
                     WHERE bptsc.storecategories_id = ' . $cat->id;                     

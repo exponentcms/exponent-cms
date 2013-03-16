@@ -40,8 +40,8 @@ abstract class expController {
         'edit'      => 'Edit',
         'delete'    => 'Delete',
     );
-    protected $remove_permissions = array();  // $permissions not applicable for this module
-    protected $add_permissions = array();  // additional $permmissions for this module
+    protected $remove_permissions = array();  // $permissions not applicable for this module from above list
+    protected $add_permissions = array();  // additional $permissions for this module
 
     public $filepath = ''; // location of this controller's files
     public $viewpath = ''; // location of this controllers views
@@ -449,7 +449,7 @@ abstract class expController {
     function showByTitle() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
-        // first we'll check to see if this matches the sef_url field...if not then we'll look for the 
+        // first we'll check to see if this matches the sef_url field...if not then we'll look for the
         // title field
         $record = $this->$modelname->find('first', "sef_url='" . $this->params['title'] . "'");
         if (!is_object($record)) {
@@ -1242,7 +1242,7 @@ abstract class expController {
      *
      * @return string
      */
-    function aggregateWhereClause() {
+    function aggregateWhereClause($type='') {
         $sql = '';
 
         if (!$this->hasSources() && empty($this->config['add_source'])) {

@@ -101,10 +101,10 @@ class texteditorcontrol extends formcontrol {
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
         $object->description = $values['description'];
-		$object->default = $values['default'];
-		$object->rows = intval($values['rows']);
-		$object->cols = intval($values['cols']);
-		$object->maxchars = intval($values['maxchars']);
+        if (isset($values['default'])) $object->default = $values['default'];
+        if (isset($values['rows'])) $object->rows = intval($values['rows']);
+        if (isset($values['cols'])) $object->cols = intval($values['cols']);
+        if (isset($values['maxchars'])) $object->maxchars = intval($values['maxchars']);
 		$object->required = isset($values['required']);
 		
 		return $object;

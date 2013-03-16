@@ -21,6 +21,7 @@ if (!defined('EXPONENT')) exit('');
 ?>
 <h2><?php echo gt('Simple Site Upgrade'); ?></h2>
 <h3><?php echo gt('Upgrading to').' v'.expVersion::getVersion(true,true).' '.gt('from').' v'.expVersion::getDBVersion(true,true); ?></h3>
+<br>
 <p>
 <?php
     $upgradedb = 'upgrade-2';

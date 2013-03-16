@@ -33,20 +33,20 @@ if (isset($_POST['sc']['LANGUAGE'])) {
 
 include_once('../exponent.php');
 
-//if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
+//if (!file_exists('not_configured') && file_exists(BASE.'framework/conf/config.php')) {
 //	flash('notice',gt('This Exponent Site has already been configured.'));
 //	header('Location: ../index.php');
 //	exit(gt('This Exponent Site has already been configured.'));
 //}
 
 if (isset($_POST['sc'])) {
-    if (file_exists("../conf/config.php")) {
+    if (file_exists("../framework/conf/config.php")) {
         // Update the config
         foreach ($_POST['sc'] as $key => $value) {
             expSettings::change($key, $value);
         }
     } else {
-        // Initialize /conf/config
+        // Initialize /framework/conf/config
     	$values = array(
     		'c'=>$_POST['sc'],
     		'opts'=>array(),
@@ -81,11 +81,11 @@ if (isset($_POST['install_sample'])) {
     }
 }
 
-if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {
+if (file_exists("../framework/conf/config.php") && !isset($_REQUEST['page'])) {
 	$_REQUEST['page'] = 'upgrade-1';
 }
 		
-if (!isset($_REQUEST['page']) && !file_exists("../conf/config.php")) {
+if (!isset($_REQUEST['page']) && !file_exists("../framework/conf/config.php")) {
     $_REQUEST['page'] = '';
 }
 $page = $_REQUEST['page'];
@@ -157,7 +157,7 @@ switch ($page) {
 <head>
 	<title><?php echo gt('Exponent Install Wizard'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
-    <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true,true); ?>" />
+    <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true); ?>" />
 	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssreset/reset.css" />
 	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssfonts/fonts.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />

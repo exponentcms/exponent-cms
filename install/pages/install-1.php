@@ -124,7 +124,6 @@ if ($errcount > 0) {
     <a class="awesome large red" href="index.php?page=install-1"><?php echo gt('Re-run Environment Checks'); ?></a>
 	<?php
 } else if ($warncount > 0) {
-//} else if (true) {
 	?><p><?php
 	echo gt('The Exponent Install Wizard found some minor problems with the server environment, but you should be able to continue.');
 	?></p><?php

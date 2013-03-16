@@ -15,4 +15,5 @@
 
 {group label="Downloadable Files Configuration"|gettext}
     {control type=text name="title" label="File list title"|gettext value=$config.title}
+    {control type="checkbox" name="usefilename" label="Always use filename instead of title"|gettext value=1 checked=$config.usefilename}
 {/group}

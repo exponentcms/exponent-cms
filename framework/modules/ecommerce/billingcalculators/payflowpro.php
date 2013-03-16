@@ -112,7 +112,8 @@ class payflowpro extends creditcard {
             'NAME'      =>  $method->firstname.$method->lastname,
             'AMT'       =>  number_format($order->grand_total, 2, '.', ''),
             
-            'CURRENCY'  =>  'USD',
+//            'CURRENCY'  =>  'USD',
+            'CURRENCY'  =>  ECOM_CURRENCY,
             'FIRSTNAME' =>  $method->firstname,
             'LASTNAME'  =>  $method->lastname,
             'STREET'    =>  $method->address1,
@@ -262,7 +263,8 @@ class payflowpro extends creditcard {
             'NAME'      =>  $method->firstname.$method->lastname,
             'AMT'       =>  number_format($order->grand_total, 2, '.', ''),
             
-            'CURRENCY'  =>  'USD',
+//            'CURRENCY'  =>  'USD',
+            'CURRENCY'  =>  ECOM_CURRENCY,
             'FIRSTNAME' =>  $method->firstname,
             'LASTNAME'  =>  $method->lastname,
             'STREET'    =>  $method->address1,

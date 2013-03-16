@@ -43,7 +43,8 @@
 					</tr>
 					<tr class="even">
 						<td>{"Value of Products in the Carts"|gettext}</td>
-						<td>{currency_symbol}{$summary.valueproducts}</td>
+						{*<td>{currency_symbol}{$summary.valueproducts}</td>*}
+                        <td>{$summary.valueproducts|currency:0}</td>
 					</tr>
 					<tr class="odd">
 						<td>{"Active Carts w/out Products"|gettext}</td>

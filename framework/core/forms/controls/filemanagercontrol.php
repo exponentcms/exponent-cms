@@ -71,7 +71,15 @@ class filemanagercontrol extends formcontrol {
         if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">" . $this->description . "</div>";
         $html .= '</div>';
         $js = "
-            YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io', function(Y) {
+
+            EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
+                fullpath: EXPONENT.URL_FULL+'external/SimpleAjaxUploader.js'
+            };
+
+            YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io','SimpleAjaxUploader', function(Y) {
+
+                // console.log(ss);
+
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
                 var fl = Y.one('#filelist".$name."');
@@ -87,7 +95,7 @@ class filemanagercontrol extends formcontrol {
                 };
 
 //                  var quickUpload = new AjaxUpload($('#quickaddfiles-".$name."'), {
-                var quickUpload = new ss.SimpleUpload({
+                var quickUpload = new Y.ss.SimpleUpload({
                         button: '#quickaddfiles-".$name."',
                         action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
                         data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
@@ -271,7 +279,13 @@ class filemanagercontrol extends formcontrol {
                             html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
                             html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
                             html += filepic;
-                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
+                            if (obj.title) {
+                                filetitle = obj.title;
+                            } else {
+                                filetitle = obj.filename;
+                            }
+                            html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
+//                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                             html += '<\/li>';
                             
                             htmln = Y.Node.create(html);                        
@@ -335,7 +349,12 @@ class filemanagercontrol extends formcontrol {
                         html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
                         html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
                         html += filepic;
-                        html += '<span class=\"filename\">'+obj.filename+'<\/span>';
+                        if (obj.title) {
+                            filetitle = obj.title;
+                        } else {
+                            filetitle = obj.filename;
+                        }
+                        html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
                         html += '<\/li>';
                         htmln = Y.Node.create(html);
 
@@ -393,12 +412,12 @@ class filemanagercontrol extends formcontrol {
                 "yui3mods"=>"1",
                 "content"=>$js,
              ));
-            expJavascript::pushToFoot(array(
-                "unique"=>"quickupload",
-    //                "jquery"=>"1",
-    //                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
-                "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
-             ));
+    //         expJavascript::pushToFoot(array(
+    //             "unique"=>"quickupload",
+    // //                "jquery"=>"1",
+    // //                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
+    //             "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
+    //          ));
         return $html;
     }
     
@@ -440,7 +459,8 @@ class filemanagercontrol extends formcontrol {
             //$html .= "<div class=\"fpdrag\"></div>";
             $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>Delete</a>";
             $html .= $filepic;
-            $html .= "<span class=\"filename\">".$val->filename."</span>";
+            $filetitle = !empty($val->title) ? $val->title : $val->filename;
+            $html .= "<span class=\"filename\" title=\"".$val->filename."\">".$filetitle."</span>";
             $html .= "</li>";
             //$cycle = $cycle=="odd" ? "even" : "odd";
         }

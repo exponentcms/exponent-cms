@@ -29,14 +29,31 @@ exec ('php ./lang_extract.php -r ..',$output);
 output($output);
 unset ($output);
 output("Now extracting phrases from the folders!\n");
-exec ('php ./lang_extract.php ../conf ../cron ../framework ../install ../themes/simpletheme', $output);
+exec ('php ./lang_extract.php ../conf ../cron ../framework ../install ../themes', $output);
 output($output);
 unset ($output);
 
 //Update each language file based on default language and then attempt to translate
-// Initialize the exponent environment and language subsystem
+
+// Initialize the exponent environment
 include_once('../exponent_bootstrap.php');
-expLang::loadLang();
+if (!defined('DISPLAY_THEME')) {
+	/* exdoc
+	 * The directory and class name of the current active theme.  This may be different
+	 * than the configured theme (DISPLAY_THEME_REAL) due to previewing.
+	 */
+	define('DISPLAY_THEME',DISPLAY_THEME_REAL);
+}
+
+if (!defined('THEME_ABSOLUTE')) {
+	/* exdoc
+	 * The absolute path to the current active theme's files.  This is similar to the BASE constant
+	 */
+	define('THEME_ABSOLUTE',BASE.'themes/'.DISPLAY_THEME.'/'); // This is the recommended way
+}
+
+// Initialize the language subsystem
+expLang::initialize();
 global $default_lang, $cur_lang;
 if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
 $orig_lang = LANG;

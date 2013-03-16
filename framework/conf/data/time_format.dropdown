@@ -1,0 +1,27 @@
+# Date Format Drop Down File
+#
+# Comments start with a '#' sign,
+# and must be the only thing on the line.
+#
+# Note: the %l (lowercase L) option is one I stumbled
+# on by accident.
+#
+# Each entry in this file consists of two lines - the
+#   first line is the date formatting argument to the
+#   strftime function (http://php.net/strftime) and the
+#   second is the name of the format, which will be provided
+#   to the user when configuring.
+#
+# If you add entries to this file, I ask that you let me
+# know, through our Sourceforge page. If you want or need
+# a date format that isn't listed here, and you tell me, I
+# will put it in the standard distribution.
+
+%I:%M%p
+	6:45pm
+	
+%T
+	18:45:00
+	
+%H:%M
+	18:45

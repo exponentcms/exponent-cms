@@ -352,6 +352,14 @@ if ($user->isAdmin() || !empty($groups)) {
                         'controller' => 'users',
                         'action'     => 'manage_sessions'
                     )),
+                ),
+                array(
+                    'text' => gt('Import Users'),
+                    'url'  => makeLink(array(
+                        'controller' => 'users',
+                        'action'     => 'import_users'
+                    )),
+                    'classname' => 'import',
                 )
             )
         )
@@ -439,13 +447,13 @@ if ($user->isSuperAdmin()) {
                                     'action'     => 'fix_tables'
                                 ))
                             ),
-                            array(
-                                'text' => gt('Reset Sessions Table'),
-                                'url'  => makeLink(array(
-                                    'controller' => 'administration',
-                                    'action'     => 'fix_sessions'
-                                ))
-                            ),
+//                            array(
+//                                'text' => gt('Reset Sessions Table'),
+//                                'url'  => makeLink(array(
+//                                    'controller' => 'administration',
+//                                    'action'     => 'fix_sessions'
+//                                ))
+//                            ),
                             array(
                                 'text'      => gt('Remove Unneeded Table Columns'),
                                 'classname' => 'remove',
@@ -515,6 +523,13 @@ if ($user->isSuperAdmin()) {
                                 'url'       => makeLink(array(
                                     'controller' => 'administration',
                                     'action'     => 'togglemobile'
+                                )),
+                            ),
+                            array(
+                                'text'      => gt('Run Upgrade Scripts'),
+                                'url'       => makeLink(array(
+                                    'controller' => 'administration',
+                                    'action'     => 'install_upgrades'
                                 )),
                             ),
                         )

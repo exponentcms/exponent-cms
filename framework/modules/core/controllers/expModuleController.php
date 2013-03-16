@@ -45,12 +45,12 @@ class expModuleController extends expController {
         $aMods = $db->selectObjects('modstate',1);
         		        
         foreach ($aMods as $key => $value) {
-            if (!empty($this->params['mods']) && array_key_exists($value->module,$this->params['mods'])) {
+            if (!empty($this->params['mods']) && array_key_exists($value->module,expModules::getControllerName($this->params['mods']))) {
                 $aMods[$key]->active = $this->params['mods'][$value->module];
-                $db->updateObject($aMods[$key],'modstate',"module='".$value->module."'");
+                $db->updateObject($aMods[$key],'modstate',"module='".expModules::getControllerName($value->module)."'");
             } else {
                 $aMods[$key]->active = 0;
-                $db->updateObject($aMods[$key],'modstate',"module='".$value->module."'");
+                $db->updateObject($aMods[$key],'modstate',"module='".expModules::getControllerName($value->module)."'");
             }
             unset($this->params['mods'][$value->module]);
         }
@@ -58,7 +58,7 @@ class expModuleController extends expController {
         if (!empty($this->params['mods'])) {
             foreach ($this->params['mods'] as $key => $value) {
                 $aMod = new stdClass();
-                $aMod->module = $key;
+                $aMod->module = expModules::getControllerName($key);
                 $aMod->active = $value;
                 $db->insertObject($aMod,'modstate');
             }

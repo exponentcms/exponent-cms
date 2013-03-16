@@ -584,8 +584,39 @@ class fileController extends expController {
 
         $errors = array();
         expSession::clearAllUsersSessionCache();
+        expSession::clearCurrentUserSessionCache();
+
+        // copy in deprecated definitions files to aid in import
+        $src = BASE."install/old_definitions";
+        $dst = BASE."framework/core/definitions";
+        if (is_dir($src) && expUtil::isReallyWritable($dst)) {
+            $dir = opendir($src);
+            while(false !== ( $file = readdir($dir)) ) {
+                if (($file != '.') && ($file != '..')) {
+                    if (!file_exists($dst . '/' . $file)) copy($src . '/' . $file,$dst . '/' . $file);
+                }
+            }
+            closedir($dir);
+        }
 
         expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
+
+        // now remove deprecated definitions files
+        $src = BASE."install/old_definitions";
+        $dst = BASE."framework/core/definitions";
+        if (is_dir($src) && expUtil::isReallyWritable($dst)) {
+            $dir = opendir($src);
+            while(false !== ( $file = readdir($dir)) ) {
+                if (($file != '.') && ($file != '..')) {
+                    if (file_exists($dst . '/' . $file)) unlink($dst . '/' . $file);
+                }
+            }
+            closedir($dir);
+        }
+
+        // check to see if we need to install or upgrade the restored database
+        expVersion::checkVersion();
+
         assign_to_template(array(
             'success' => !count($errors),
             'errors' => $errors,

@@ -41,7 +41,7 @@
                             <div class="bd">
                                 <ul>
                                     {foreach key=key from=$options item=option}
-                                        <li>{$option[1]} {if $option[4]!=0}({$option[3]}${$option[4]}){/if}</li>
+                                        <li>{$option[1]} {if $option[4]!=0}({$option[3]}{currency_symbol}{$option[4]}){/if}</li>
                                     {/foreach}
                                 </ul> 
                             </div>

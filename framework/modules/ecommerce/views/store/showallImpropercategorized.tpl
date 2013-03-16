@@ -32,7 +32,7 @@
                 <td><a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}</a></td>
                 <td>{$listing->model|default:"N/A"}</td>
                 <td>{$listing->title}</td>
-                <td>${$listing->base_price|number_format:2}</td>
+                <td>{$listing->base_price|currency}</td>
                 <td>
                     {permissions}
                         {if $permissions.edit == 1}

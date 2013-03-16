@@ -244,7 +244,7 @@ function renderAction(array $parms=array()) {
     global $user, $db;
     
     //Get some info about the controller
-    $baseControllerName = expModules::getControllerName($parms['controller']);
+//    $baseControllerName = expModules::getControllerName($parms['controller']);
     $fullControllerName = expModules::getControllerClassName($parms['controller']);
     $controllerClass = new ReflectionClass($fullControllerName);
     
@@ -281,7 +281,8 @@ function renderAction(array $parms=array()) {
         $template->assign('moduletitle', $parms['moduletitle']);
     } else {
         $title = new stdClass();
-        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
+//        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
+        $title->mod = $controller->loc->mod;
         $title->src = $controller->loc->src;
         $title->int = '';
         $template->assign('moduletitle', $db->selectValue('container', 'title', "internal='".serialize($title)."'"));
@@ -489,6 +490,8 @@ function get_config_templates($controller, $loc) {
     foreach ($common_views as $key=>$value) {
         $common_views[$key]['name'] = gt($value['name']);
     }
+    $moduleconfig['module'] = $common_views['module'];
+    unset($common_views['module']);
 
     // get the config views for the module
     $module_views = find_config_views($modpaths);
@@ -521,7 +524,7 @@ function get_config_templates($controller, $loc) {
     krsort($common_views);
     krsort($module_views);
     
-    $views = array_merge($common_views, $module_views);
+    $views = array_merge($common_views, $moduleconfig, $module_views);
     $views = array_reverse($views);
 
     return $views;

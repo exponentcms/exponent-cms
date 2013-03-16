@@ -86,11 +86,12 @@ class worldpayCheckout extends billingcalculator {
 				$testmode = 0;
 			}
 			
-			if (isset($config['authCurrency'])) {
-				$authCurrency = $config['authCurrency'];
-			} else {
-				$authCurrency = "USD";
-			}
+//			if (isset($config['authCurrency'])) {
+//				$authCurrency = $config['authCurrency'];
+//			} else {
+//				$authCurrency = "USD";
+//			}
+            $authCurrency = ECOM_CURRENCY;
 
 			$data = array(
 				// required parameters
@@ -147,7 +148,8 @@ class worldpayCheckout extends billingcalculator {
 	 * @return array
 	 */
 	function parseConfig($values) {
-	    $config_vars = array('username', 'password', 'installationid', 'authCurrency', 'testmode', 'email_customer', 'email_admin', 'notification_addy');
+//	    $config_vars = array('username', 'password', 'installationid', 'authCurrency', 'testmode', 'email_customer', 'email_admin', 'notification_addy');
+        $config_vars = array('username', 'password', 'installationid', 'testmode', 'email_customer', 'email_admin', 'notification_addy');
 	    foreach ($config_vars as $varname) {
 	        $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	    }

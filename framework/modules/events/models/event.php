@@ -123,10 +123,6 @@ class event extends expRecord {
     }
 
     public function afterDelete() {
-//        global $db;
-//
-//        $db->delete('eventdate','event_id='.$this->id);
-        // if we delete the event, we must take ALL the eventdates with it!
         $ed = new eventdate();
         $dates = $ed->find('all','event_id='.$this->id);
         foreach ($dates as $date) {

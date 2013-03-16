@@ -67,7 +67,7 @@ class tagpickercontrol extends formcontrol {
 //        $html .= "<label>";
 //        if (empty($this->flip)) {
 //            $html .= "<span class=\"label\">" . $label . "</span>";
-            $html .= $this->controlToHTML($name, $label);
+            $html = $this->controlToHTML($name, $label);
 //        } else {
 //            $html .= $this->controlToHTML($name, $label);
 //            $html .= "<span class=\"label\">" . $label . "</span>";

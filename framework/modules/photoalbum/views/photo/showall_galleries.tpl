@@ -62,7 +62,7 @@
                     {$alt = ''}
                 {/if}
                 <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}">
-                    {img class="img-small" alt=$alt file_id=$cat->records[0]->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
+                    {img class="img-small" alt=$alt file_id=$cat->records[0]->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
                 </a>
                 {permissions}
                     <div class="item-actions">

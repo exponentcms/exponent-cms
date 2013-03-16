@@ -290,12 +290,13 @@
                 <div id="tab16">
                 <div class="info-header">
                     <div class="related-actions">
-                        {help text="Get Helpwith"|gettext|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
+                        {help text="Get Help with"|gettext|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
                     </div>
                     <h2>{"e-Commerce Configuration"|gettext}</h2>
                 </div>
                 {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
                 {control type="checkbox" postfalse=1 name="sc[DISABLE_SSL_WARNING]" label="Disable Unsecure Checkout Warning?"|gettext checked=$smarty.const.DISABLE_SSL_WARNING value=1 description='Normally a warning is displayed when attempting to checkout on an unsecured site.'|gettext}
+                {control type="dropdown" name="sc[ECOM_CURRENCY]" label="Default Currency"|gettext items=$currency default=$smarty.const.ECOM_CURRENCY}
                 <hr>
                 <h4>{'Getting e-Commerce up and running'|gettext}</h4>
                 <ol>

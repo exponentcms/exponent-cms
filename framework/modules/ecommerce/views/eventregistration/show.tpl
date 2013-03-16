@@ -71,7 +71,8 @@
                         </div>
                         <div class="seatAmount">
                             {if $product->base_price}
-                                <span class="seatCost">{currency_symbol}{$product->base_price}</span>{br}{'per seat'|gettext}
+                                {*<span class="seatCost">{currency_symbol}{$product->base_price}</span>{br}{'per seat'|gettext}*}
+                                <span class="seatCost">{$product->base_price|currency}</span>{br}{'per seat'|gettext}
                             {else}
                                 <span class="seatCost">{'No Cost'|gettext}</span>
                             {/if}

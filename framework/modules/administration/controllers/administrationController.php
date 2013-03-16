@@ -102,7 +102,7 @@ class administrationController extends expController {
 
         foreach($tables as $table) {
             $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
-            if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {  //FIXME formbuilder will be deprecated in v212
+            if (!in_array($basename, $used_tables) && !stristr($basename, 'forms')) {
                 $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
@@ -141,7 +141,7 @@ class administrationController extends expController {
         ));
 	}
 
-	public function fix_sessions() {
+	public function fixsessions() {
 	    global $db;
 
 //		$test = $db->sql('CHECK TABLE '.DB_TABLE_PREFIX.'sessionticket');
@@ -407,7 +407,9 @@ class administrationController extends expController {
 
     public function manage_version() {
         expSession::un_set('update-check');  // reset the already checked flag
-        expVersion::checkVersion();
+        if (!expVersion::checkVersion(true)) {
+            flash('message', gt('Your version of Exponent CMS is current.'));
+        }
    		expHistory::back();
    	}
 
@@ -796,6 +798,116 @@ class administrationController extends expController {
         }
     }
 
+    /**
+     * feature to run upgrade scripts outside of installation
+     *
+     */
+    public function install_upgrades() {
+        //display the upgrade scripts
+        $upgrade_dir = BASE.'install/upgrades';
+        if (is_readable($upgrade_dir)) {
+            $i = 0;
+            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            $dh = opendir($upgrade_dir);
+
+            // first build a list of valid upgrade scripts
+            $oldscripts = array(
+                'install_tables.php',
+                'convert_db_trim.php',
+                'remove_exp1_faqmodule.php',
+                'remove_locationref.php',
+                'upgrade_attachableitem_tables.php',
+            );
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
+                    include_once($upgrade_dir . '/' . $file);
+                    $classname     = substr($file, 0, -4);
+                    /**
+                     * Stores the upgradescript object
+                     * @var \upgradescript $upgradescripts
+                     * @name $upgradescripts
+                     */
+                    $upgradescripts[] = new $classname;
+                }
+            }
+            //  next sort the list by priority
+            usort($upgradescripts, array('upgradescript','prioritize'));
+
+            //  next run through the list
+            $db_version = expVersion::dbVersion();
+            $upgrade_scripts = array();
+            foreach ($upgradescripts as $upgradescript) {
+                if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
+                    $upgradescript->classname = get_class($upgradescript);
+                    $upgrade_scripts[] = $upgradescript;
+                    $i++;
+                }
+            }
+        }
+        assign_to_template(array(
+            'scripts'=>$upgrade_scripts,
+        ));
+    }
+
+    /**
+     * run selected upgrade scripts outside of installation
+     *
+     */
+    public function install_upgrades_run() {
+
+        $tables = expDatabase::install_dbtables();
+        ksort($tables);
+
+        // locate the upgrade scripts
+        $upgrade_dir = BASE.'install/upgrades';
+        if (is_readable($upgrade_dir)) {
+            $i = 0;
+            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            $dh = opendir($upgrade_dir);
+
+            // first build a list of valid upgrade scripts
+            $oldscripts = array(
+                'install_tables.php',
+                'convert_db_trim.php',
+                'remove_exp1_faqmodule.php',
+                'remove_locationref.php',
+                'upgrade_attachableitem_tables.php',
+            );
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
+                    include_once($upgrade_dir . '/' . $file);
+                    $classname     = substr($file, 0, -4);
+                    /**
+                     * Stores the upgradescript object
+                     * @var \upgradescript $upgradescripts
+                     * @name $upgradescripts
+                     */
+                    $upgradescripts[] = new $classname;
+                }
+            }
+            //  next sort the list by priority
+            usort($upgradescripts, array('upgradescript','prioritize'));
+
+            //  next run through the list
+            $db_version = expVersion::dbVersion();
+            $upgrade_scripts = array();
+            foreach ($upgradescripts as $upgradescript) {
+                if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
+                    if (!empty($this->params[get_class($upgradescript)])) {
+                        $upgradescript->results = $upgradescript->upgrade();
+                    }
+                    $upgradescript->classname = get_class($upgradescript);
+                    $upgrade_scripts[] = $upgradescript;
+                    $i++;
+                }
+            }
+        }
+        assign_to_template(array(
+            'scripts'=>$upgrade_scripts,
+            'tables'=>$tables,
+        ));
+    }
+
     public function manage_themes() {
         expHistory::set('manageable', $this->params);
     	$themes = array();
@@ -987,6 +1099,9 @@ class administrationController extends expController {
         // smtp protocol
         $protocol = array('ssl'=>'SSL','tls'=>'TLS');
 
+        // Currency Format
+        $currency = expSettings::dropdownData('currency');
+
         // attribution
         $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
         
@@ -1047,6 +1162,7 @@ class administrationController extends expController {
             'themes'=>$themes,
             'langs'=>$langs,
             'protocol'=>$protocol,
+            'currency'=>$currency,
             'attribution'=>$attribution,
             'datetime_format'=>$datetime_format,
             'date_format'=>$date_format,
@@ -1091,15 +1207,15 @@ class administrationController extends expController {
    	 */
    	public static function install_exponent() {
    		// we'll need the not_configured file to exist for install routine to work
-   		if (!@file_exists(BASE.'install/not_configured')) {
-   			$nc_file = fopen(BASE.'install/not_configured', "w");
-   			fclose($nc_file);
-   		}
-        $page = "";
-        if (@file_exists(BASE.'conf/config.php')) {
-            $page = "?page=upgrade-1";
-        }
-   		header('Location: '.URL_FULL.'install/index.php'.$page);
+//   		if (!@file_exists(BASE.'install/not_configured')) {
+//   			$nc_file = fopen(BASE.'install/not_configured', "w");
+//   			fclose($nc_file);
+//   		}
+//        $page = "";
+//        if (@file_exists(BASE.'framework/conf/config.php')) {
+//            $page = "?page=upgrade-1";
+//        }
+   		header('Location: '.URL_FULL.'install/index.php');
    		exit('Redirecting to the Exponent Install Wizard');
    	}
 

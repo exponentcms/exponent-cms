@@ -198,10 +198,10 @@ class eventregistration extends expRecord {
 
                             if ($display_price_as == 'total') {
                                 $newprice = ($option->updown == '+') ? ($this->getBasePrice() + $diff) : ($this->getBasePrice() - $diff);
-                                $price = ' ($' . number_format($newprice, 2) . ')';
+                                $price = ' (' . expCore::getCurrencySymbol() . number_format($newprice, 2) . ')';
                             } else {
                                 if ($diff > 0) {
-                                    $diff = '$' . number_format($diff, 2);
+                                    $diff = expCore::getCurrencySymbol() . number_format($diff, 2);
                                     $price = ' (' . $option->updown . $diff . ')';
                                 } else {
                                     $price = '';

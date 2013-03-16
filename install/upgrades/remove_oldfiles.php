@@ -27,6 +27,7 @@
 class remove_oldfiles extends upgradescript {
 	protected $from_version = '0.0.0';
 //	protected $to_version = '2.0.9';
+    public $priority = 90; // set this to a very low priority, since some scripts run based on existing files
 
 	/**
 	 * name/title of upgrade script
@@ -103,13 +104,14 @@ class remove_oldfiles extends upgradescript {
             'external/editors/connector/link.php',
             'external/editors/connector/popup.js',
             'external/editors/connector/section_linked.php',
-//            'framework/modules-1/containermodule/actions/copy_to_clipboard.php',
-//            'framework/modules-1/containermodule/actions/orphans_modules.php',
-//            'framework/modules-1/containermodule/actions/view_clipboard.php',
-//            'framework/modules-1/containermodule/actions/view-recycle-bin.php',
-//            'framework/modules-1/containermodule/views/_orphans_modules.tpl',
-//            'framework/modules-1/containermodule/views/_view_clipboard.tpl',
-//            'framework/modules-1/common//views/_msg_queue.tpl',
+            'external/jquery/js/jquery-1.8.3.js',
+            'external/jquery/js/jquery-1.8.3.min.js',
+            'external/jquery/js/jquery-1.9.0.js',
+            'external/jquery/js/jquery-1.9.0.min.js',
+            'external/jquery/js/jquery-ui-1.9.1.custom.js',
+            'external/jquery/js/jquery-ui-1.9.1.custom.min.js',
+            'external/jquery/js/jquery-ui-1.10.0.custom.js',
+            'external/jquery/js/jquery-ui-1.10.0.custom.min.js',
             'framework/modules/text//views//text/showall_merge.tpl',
             'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
             'framework/modules/common/views/configure/module_title.tpl',
@@ -132,14 +134,19 @@ class remove_oldfiles extends upgradescript {
             'install/pages/upgrade.php',
             'install/pages/upgrade_version.php',
             'install/upgrades/install_tables.php',
+            'install/upgrades/convert_db_trim.php',
+            'install/upgrades/remove_exp1_faqmodule.php',
+            'install/upgrades/remove_locationref.php',
+            'install/upgrades/upgrade_attachableitem_tables.php',
             // obsolete definitions/models
             'framework/core/definitions/bots.php',
             'framework/core/definitions/locationref.php',
             'framework/core/definitions/toolbar_FCKeditor.php',
-//            'framework/core/models-1/database_importer.php',
-//            'framework/core/models-1/file_collection.php',
-//            'framework/core/models-1/file.php',
-//            'framework/core/models-1/mimetype.php',
+            'framework/core/definitions/calendar.php',
+            'framework/core/definitions/calendar_external.php',
+            'framework/core/definitions/calendar_reminder_address.php',
+            'framework/core/definitions/calendarmodule_config.php',
+            'framework/core/definitions/eventdate.php',
             'framework/modules/news/models/rssfeed.php',
             // moved definitions/models
             'framework/core/definitions/expFiles.php',
@@ -302,9 +309,6 @@ class remove_oldfiles extends upgradescript {
             "framework/core/js/",
             "framework/core/subsystems-1/",
             "framework/core/subsystems/forms/",
-//            "framework/modules-1/administrationmodule/",
-//            "framework/modules-1/bots/",
-//            "framework/modules-1/loginmodule/",
             "framework/modules-1/",
             "framework/modules/photoalbum/views/photos/",
             "framework/modules/expEvent/",
@@ -319,9 +323,11 @@ class remove_oldfiles extends upgradescript {
             "compat/",
             "views/",
             "subsystems/",
-            "conf/profiles/",
+            "conf/",
             "install/sitetypes/",
             "themes/common/",
+            "themes/bootstraptheme/controls/",
+            "themes/bootstraptheme/plugins/",
             "tmp/js/",
             "tmp/mail/",
             "tmp/pods/",
@@ -343,6 +349,7 @@ class remove_oldfiles extends upgradescript {
             "external/yui/3.4.0/",
             "external/yui/3.7.2/",
             "external/yui/3.7.3/",
+            "external/yui/3.8.0/",
             "external/Smarty/",
             "external/Smarty-2/",
             "external/Smarty-3.1.4/",
@@ -360,6 +367,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.1.6/",
             "external/Swift-4.1.7/",
             "external/Swift-4.2.1/",
+            "external/Swift-4.2.2/",
             "external/Swift-4.2.3/",
         );
         foreach ($olddirs as $dir) {

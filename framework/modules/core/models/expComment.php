@@ -25,6 +25,14 @@
 class expComment extends expRecord {
 	public $table = 'expComments';
     public $attachable_table = 'content_expComments';
+
+    public function afterDelete() {
+        global $db;
+
+	    // get and delete all attachments to this object
+	    $db->delete('content_expComments','expcomments_id='.$this->id);
+    }
+
 }
 
 ?>

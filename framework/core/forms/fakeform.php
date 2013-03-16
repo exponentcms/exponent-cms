@@ -103,7 +103,7 @@ class fakeform extends form {
 			$html .= '</a>';
             $html .= "</div>";
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
-                $html .= "<label class=\"label\" style=\"background: transparent;\";></label>";
+                $html .= "<label class=\"label\" style=\"background: transparent;\"></label>";
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {

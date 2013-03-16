@@ -78,11 +78,11 @@ class expHTMLEditorController extends expController {
 
         expHistory::set('editable', $this->params);
         $tool = @$db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
-        $tool->data = @stripSlashes($tool->data);
-        $tool->plugins = @stripSlashes($tool->plugins);
-        $tool->stylesset = @stripSlashes($tool->stylesset);
-        $tool->formattags = @stripSlashes($tool->formattags);
-        $tool->fontnames = @stripSlashes($tool->fontnames);
+        $tool->data = !empty($tool->data) ? @stripSlashes($tool->data) : '';
+        $tool->plugins = !empty($tool->plugins) ? @stripSlashes($tool->plugins) : '';
+        $tool->stylesset = !empty($tool->stylesset) ? @stripSlashes($tool->stylesset) : '';
+        $tool->formattags = !empty($tool->formattags) ? @stripSlashes($tool->formattags) : '';
+        $tool->fontnames = !empty($tool->fontnames) ? @stripSlashes($tool->fontnames) : '';
         $skins_dir = opendir(BASE.'external/editors/ckeditor/skins');
         while (($skin = readdir($skins_dir)) !== false) {
             if ($skin != '.' && $skin != '..')
@@ -118,6 +118,7 @@ class expHTMLEditorController extends expController {
         global $db;
 
         if ($this->params['id']==0) {  // we want the default editor
+            $demo = new stdClass();
             $demo->id=0;
             $demo->name="Default";
 			$demo->skin='kama';

@@ -38,7 +38,7 @@ class update_ckeditorv4 extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.1.1, we began using CKEditor v4 which crashes if trying to use a missing skin.  This Script updates those entries"; }
+	function description() { return "In v2.1.1, we began using CKEditor v4 which crashes if trying to use a missing skin.  This Script updates those entries."; }
 
     /**
    	 * additional test(s) to see if upgrade script should be run

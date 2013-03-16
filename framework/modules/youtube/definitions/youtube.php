@@ -29,6 +29,12 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>250,
 		DB_INDEX=>10),
+	'created_at'=>array(
+		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+	'editor'=>array(
+		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+	'edited_at'=>array(
+		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'title'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150),
