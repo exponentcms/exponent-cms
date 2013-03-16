@@ -58,6 +58,7 @@ Added / Fixed / changed for 2.1.4
 -----------------------
 ### This release only fixes bugs found in 2.1.3, everything else is destined for the v2.2 major version update
  - updates EQL file export/import to also include table definition for future proofing backups
+ - adds new 'Exponent as a Service' module for JSON service calls
 
 Added / Fixed / changed for 2.1.3
 -----------------------

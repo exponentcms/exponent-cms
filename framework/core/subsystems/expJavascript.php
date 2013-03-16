@@ -26,10 +26,16 @@
 class expJavascript {
 
 	public static function inAjaxAction() {
+        if (!empty($_REQUEST['apikey'])) {
+            return true;
+        }
 		return empty($_REQUEST['ajax_action']) ? false : true;
 	}
 
 	public static function requiresJSON() {
+        if (!empty($_REQUEST['apikey'])||!empty($_REQUEST['jsonp'])) {
+            return 'jsonp';
+        }
 		return !empty($_REQUEST['json']) ? true : false;
 	}
 	

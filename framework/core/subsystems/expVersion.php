@@ -119,10 +119,11 @@ class expVersion {
     /**
      * Routine to check for installation or upgrade
      */
-    public static function checkVersion() {
+    public static function checkVersion($force=false) {
         global $db, $user;
 
         $swversion = self::swVersion();
+        $update = false;
 
         // check database version against installed software version
         if ($db->havedb) {
@@ -132,6 +133,7 @@ class expVersion {
                 if (self::compareVersion($dbversion, $swversion)) {
                     flash('message', gt('The database requires upgrading from') . ' v' . self::getDBVersion(true,false,true) . ' ' . gt('to') . ' v' . self::getVersion(true,false,true) .
                         '<br><a href="' . makelink(array("controller" => "administration", "action" => "install_exponent")) . '">' . gt('Click here to Upgrade your website') . '</a>');
+                    $update = true;
                 }
             }
         } else {
@@ -143,11 +145,10 @@ class expVersion {
         }
 
         // check if online version is newer than installed software version, but only once per session
-        if (!(defined('SKIP_VERSION_CHECK') ? SKIP_VERSION_CHECK : 0) && $user->isSuperAdmin()) {
+        if ((!(defined('SKIP_VERSION_CHECK') ? SKIP_VERSION_CHECK : 0) || $force) && $user->isSuperAdmin()) {
             if (!expSession::is_set('update-check')) {
                 //FIXME we need a good installation/server to place this on
-//                $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
-                $jsondata = json_decode(expCore::loadData('http://www.harrisonhills.org/' . 'getswversion.php'));
+                $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
                 expSession::set('update-check', '1');
                 if (!empty($jsondata->data)) {
                     $onlineVer = $jsondata->data;
@@ -157,6 +158,7 @@ class expVersion {
                             $newvers = $onlineVer->major . '.' . $onlineVer->minor . '.' . $onlineVer->revision . ($onlineVer->type ? $onlineVer->type : '') . ($onlineVer->iteration ? $onlineVer->iteration : '');
                             flash('message', $note . ' v' . $newvers . ' ' . gt('was released') . ' ' . expDateTime::format_date($onlineVer->builddate) .
                                 '<br><a href="https://sourceforge.net/projects/exponentcms/files/" target="_blank">' . gt('Click here to see available Downloads') . '</a>');
+                            $update = true;
                         }
                     }
                 } else {
@@ -164,6 +166,7 @@ class expVersion {
                 }
             }
         }
+        return $update;
     }
 
     /**

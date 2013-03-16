@@ -208,6 +208,21 @@ class upgrade_forms extends upgradescript {
             }
         }
 
+        //FIXME ???
+        // copy custom views to new location
+//        $src = THEME_ABSOLUTE."modules/formmodule/views";
+//        $dst = THEME_ABSOLUTE."modules/forms/views/forms";
+//        if (expUtil::isReallyWritable($src)) {
+//            $dir = opendir($src);
+//            if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
+//            while(false !== ( $file = readdir($dir)) ) {
+//                if (( $file != '.' ) && ( $file != '..' )) {
+//                    if (!file_exists($dst . '/showall_' . $file)) copy($src . '/' . $file,$dst . '/showall_' . $file);
+//                }
+//            }
+//            closedir($dir);
+//        }
+
 		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Form modules were upgraded.")."<br>".gt("and formmodule/formbuilder files were then deleted.");
 	}
 }

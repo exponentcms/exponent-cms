@@ -407,7 +407,9 @@ class administrationController extends expController {
 
     public function manage_version() {
         expSession::un_set('update-check');  // reset the already checked flag
-        expVersion::checkVersion();
+        if (!expVersion::checkVersion(true)) {
+            flash('message', gt('Your version of Exponent CMS is current.'));
+        }
    		expHistory::back();
    	}
 
