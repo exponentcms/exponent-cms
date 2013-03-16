@@ -22,7 +22,7 @@ dompdf,6.0b3,https://github.com/dompdf/dompdf,6.0b3,patched to display our image
 iCalCreator,2.16.12,kigkonsult.se/iCalcreator,2.16.12,
 lessphp,0.39,leafo.net/lessphp,0.39,
 jQuery,1.9.1,jquery.com,1.9.1,
-jQueryUI,1.10.1,jqueryui.com,1.10.1,
+jQueryUI,1.10.1,jqueryui.com,1.10.2,
 Twitter-Bootstrap,2.3.1,twitter.github.com/bootstrap,2.3.1,"patched bootstrap.less for & includes swatches, fontawesome"
 Bootswatch,2.3.1,bootswatch.com/,2.3.1,
 Font-Awesome,3.0.2,fortawesome.github.com/Font-Awesome,3.0.2,

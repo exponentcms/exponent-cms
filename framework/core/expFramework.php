@@ -490,7 +490,8 @@ function get_config_templates($controller, $loc) {
     foreach ($common_views as $key=>$value) {
         $common_views[$key]['name'] = gt($value['name']);
     }
-    $moduleconfig['module'] = $common_views['module'];
+    $moduleconfig = array();
+    if (!empty($common_views['module'])) $moduleconfig['module'] = $common_views['module'];
     unset($common_views['module']);
 
     // get the config views for the module
@@ -523,8 +524,9 @@ function get_config_templates($controller, $loc) {
     // when we're finished to get them back in the right order
     krsort($common_views);
     krsort($module_views);
-    
-    $views = array_merge($common_views, $moduleconfig, $module_views);
+
+    if (!empty($moduleconfig)) $module_views = array_merge($common_views, $moduleconfig);
+    $views = array_merge($common_views, $module_views);
     $views = array_reverse($views);
 
     return $views;
