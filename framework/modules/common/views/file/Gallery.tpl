@@ -13,6 +13,8 @@
  *
  *}
 
+{uniqueid prepend="gallery" assign="name"}
+
 {css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/filedisplayer.css"}
 
 {/css}
@@ -63,8 +65,8 @@ margin:{$config.spacing}px;
 	{/if}
 {/foreach}
 
-{if $config.lightbox}
-{script unique="shadowbox" yui3mods=1}
+{if $config.lightbox && !expJavascript::inAjaxAction()}
+{script unique="`$name`shadowbox" yui3mods=1}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
     'gallery-lightbox' : {

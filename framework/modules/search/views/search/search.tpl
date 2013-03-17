@@ -13,19 +13,21 @@
  *
  *}
 
+{uniqueid prepend="search" assign="name"}
+
 <div class="module search search-results">
 	
 	<h1>{'Search Results'|gettext}</h1>
-    <div id="searchlist">
+    <div id="{$name}list">
         {include 'searchlist.tpl'}
     </div>
 </div>
 
-{script unique="searchlistajax" yui3mods="1"}
+{script unique="`$name`listajax" yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var searchlist = Y.one('#searchlist');
+    var searchlist = Y.one('#{/literal}{$name}{literal}list');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load searchitems'},
@@ -56,7 +58,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#searchlist.loadingdiv').remove();
+            searchlist.one('.loadingdiv').remove();
         }
 	};
 

@@ -13,17 +13,19 @@
  *
  *}
 
+{uniqueid prepend="news" assign="name"}
+
 <div class="module news show">
-    <div id="newsitem">
+    <div id="{$name}item">
         {include 'newsitem.tpl'}
     </div>
 </div>
 
-{script unique="newsitemajax" yui3mods="1"}
+{script unique="`$name`itemajax" yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var newsitem = Y.one('#newsitem');
+    var newsitem = Y.one('#{/literal}{$name}{literal}item');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Newsitem'},
@@ -54,7 +56,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#newsitem.loadingdiv').remove();
+            newsitem.one('.loadingdiv').remove();
         }
 	};
 
