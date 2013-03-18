@@ -171,9 +171,9 @@ class eventregistrationController extends expController {
         return $metainfo;
     }
 
-    function index() {
-        redirect_to(array('controller'=> 'eventregistrations', 'action'=> 'showall'));
-    }
+//    function index() {
+//        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'showall'));
+//    }
 
     function show() {
         global $order, $template, $user;
@@ -339,7 +339,7 @@ class eventregistrationController extends expController {
     }
 
     function delete() {
-        redirect_to(array('controller'=> 'eventregistrations', 'action'=> 'showall'));
+        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'showall'));
     }
 
     public function delete_registrant() {

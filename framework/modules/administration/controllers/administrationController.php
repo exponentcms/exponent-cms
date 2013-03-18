@@ -291,10 +291,10 @@ class administrationController extends expController {
         ));
     }
     
-    public function index() {
-        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
-//        $this->toolbar();
-    }
+//    public function index() {
+//        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
+////        $this->toolbar();
+//    }
     
     public function update_SetSlingbarPosition() {
         expSession::set("slingbar_top",$this->params['top']);
