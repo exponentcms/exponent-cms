@@ -255,8 +255,8 @@ function renderAction(array $parms=array()) {
         /* TODO:  Not sure if this needs to be here. FJD
 		$meth = $controllerClass->getMethod($action);
         if ($meth->isPrivate()) expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));*/
-    } elseif ($controllerClass->hasMethod('index')) {
-        $action = 'index';
+//    } elseif ($controllerClass->hasMethod('index')) {
+//        $action = 'index';
     } elseif ($controllerClass->hasMethod('showall')) {
         $action = 'showall';
     } else {
