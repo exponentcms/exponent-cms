@@ -17,6 +17,15 @@
 
 {/css}
 
+{$orderarray = explode(' ',$config.order)}
+{$order = $orderarray[0]}
+{if $order == 'created_at' }
+    {$date = 'created_at'}
+{elseif $order == 'edited_at'}
+    {$date = 'edited_at'}
+{else}
+    {$date = 'publish_date'}
+{/if}
 <div class="module filedownload show">
 	<div class="item">
         {if $record->expFile.preview[0] != ""}
@@ -24,9 +33,9 @@
         {/if}
         {if $config.datetag}
             <p class="post-date">
-                <span class="month">{$record->publish_date|format_date:"%b"}</span>
-                <span class="day">{$record->publish_date|format_date:"%e"}</span>
-                <span class="year">{$record->publish_date|format_date:"%Y"}</span>
+                <span class="month">{$record->$date|format_date:"%b"}</span>
+                <span class="day">{$record->$date|format_date:"%e"}</span>
+                <span class="year">{$record->$date|format_date:"%Y"}</span>
             </p>
         {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
@@ -53,7 +62,7 @@
         <div class="attribution">
             {if !$config.datetag}
                 <span class="label dated">{'Dated'|gettext}:</span>
-                <span class="value">{$file->publish_date|format_date}</span>
+                <span class="value">{$file->$date|format_date}</span>
                 &#160;|&#160;
             {/if}
             <span class="label downloads"># {'Downloads'|gettext}:</span>
