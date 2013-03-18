@@ -26,33 +26,33 @@
 		</thead>
 		<tbody>
 			{foreach from=$page->records item=listing name=listings}
-			<tr class="{cycle values="odd,even"}">
-			    {foreach from=$page->columns item=col key=key}
-				    <td>
-				        {if $key=="actupon"}
-				            <input type=checkbox name=act-upon[] value={$listing->id} />
-				        {else}
-    			            {if $page->linkables[$key]}
-    				            <a href="{link parse_attrs=$page->linkables[$key] record=$listing}">{$listing->$col}</a>
+                <tr class="{cycle values="odd,even"}">
+                    {foreach from=$page->columns item=col key=key}
+                        <td>
+                            {if $key=="actupon"}
+                                <input type=checkbox name=act-upon[] value={$listing->id} />
                             {else}
-    				            {$listing->$col}
-				            {/if}
-				        {/if}
-				    </td>
-				{/foreach}
-			    <!--td>
-			        {permissions}
-                    <div class="item-actions">
-                    {if $permissions.edit == true}
-                        {icon controller=$page->controller action=edit record=$item}
-                    {/if}
-                    {if $permissions.delete == true}
-                        {icon controller=$page->controller action=delete record=$item}
-                    {/if}
-                    </div>
+                                {if $page->linkables[$key]}
+                                    <a href="{link parse_attrs=$page->linkables[$key] record=$listing}">{$listing->$col}</a>
+                                {else}
+                                    {$listing->$col}
+                                {/if}
+                            {/if}
+                        </td>
+                    {/foreach}
+                    <!--td>
+                    {permissions}
+                        <div class="item-actions">
+                        {if $permissions.edit == true}
+                            {icon controller=$page->controller action=edit record=$item}
+                        {/if}
+                        {if $permissions.delete == true}
+                            {icon controller=$page->controller action=delete record=$item}
+                        {/if}
+                        </div>
                     {/permissions}
-			    </td-->
-			</tr>
+                    </td-->
+                </tr>
 			{foreachelse}
 			    <td colspan="{$page->columns|count}">{'No Data'|gettext}</td>
 			{/foreach}

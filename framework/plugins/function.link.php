@@ -37,13 +37,13 @@ function smarty_function_link($params,&$smarty) {
 
 	if (!empty($params['parse_attrs'])) {
 	    $record = $params['record'];
-	   foreach ($params['parse_attrs'] as $key => $value) {
-	       $params[$key] = $value;
-	       if ($params['showby']) {
-	           $params[$params['showby']] = $record->$params['showby'];
-	           unset($params['showby']);
-	       }
-	   }
+	    foreach ($params['parse_attrs'] as $key => $value) {
+	        $params[$key] = $value;
+	        if ($params['showby']) {
+	            $params[$params['showby']] = $record->$params['showby'];
+	            unset($params['showby']);
+	        }
+	    }
 	   unset($params['parse_attrs']);
 	   unset($params['record']);
 	}
