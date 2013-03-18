@@ -13,7 +13,7 @@
  *
  *}
 
-    {if $record->prev || $record->next}
+    {if ($record->prev || $record->next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
         <div class="module-actions">
             {clear}
             <hr>
@@ -79,7 +79,7 @@
         {/if}
     </div>
     {clear}
-    {if $record->prev || $record->next}
+    {if ($record->prev || $record->next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Bottom Only")}
         <div class="module-actions">
             {clear}
             <hr>
