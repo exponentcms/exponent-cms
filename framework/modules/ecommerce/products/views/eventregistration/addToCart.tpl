@@ -28,7 +28,8 @@
                 {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"|gettext}
                 {*{control type="text" id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}*}
                 {control type=email id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}
-                {control type="text" id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}
+                {*{control type="text" id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}*}
+                {control type=tel id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}
                 <hr>
             </div>
             <a class="exp-ecom-link plus" id="newregistrant" href="#"><em>{'Add another registrant'|gettext}</em> <span></span></a>

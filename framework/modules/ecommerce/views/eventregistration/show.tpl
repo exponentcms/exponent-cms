@@ -131,10 +131,12 @@
                                         <input name="event[0][name]" type="text" required=1/>
                                     </td>
                                     <td>
-                                        <input name="event[0][phone]" type="text"/>
+                                        {*<input name="event[0][phone]" type="text"/>*}
+                                        <input name="event[0][phone]" type=tel/>
                                     </td>
                                     <td>
-                                        <input name="event[0][email]" type="text"/>
+                                        {*<input name="event[0][email]" type="text"/>*}
+                                        <input name="event[0][email]" type=email/>
                                     </td>
                                 </tr>
                             {else}
@@ -147,10 +149,12 @@
                                             <input name="event[{$registrant@iteration-1}][name]" type="text" required=1 value="{$registrant.name}"/>
                                         </td>
                                         <td>
-                                            <input name="event[{$registrant@iteration-1}][phone]" type="text" value="{$registrant.phone}"/>
+                                            {*<input name="event[{$registrant@iteration-1}][phone]" type="text" value="{$registrant.phone}"/>*}
+                                            <input name="event[{$registrant@iteration-1}][phone]" type=tel value="{$registrant.phone}"/>
                                         </td>
                                         <td>
-                                            <input name="event[{$registrant@iteration-1}][email]" type="text" value="{$registrant.email}"/>
+                                            {*<input name="event[{$registrant@iteration-1}][email]" type="text" value="{$registrant.email}"/>*}
+                                            <input name="event[{$registrant@iteration-1}][email]" type=email value="{$registrant.email}"/>
                                         </td>
                                     </tr>
                                 {/foreach}

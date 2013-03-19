@@ -22,7 +22,8 @@
             {control type=text name=name label="Your Name"|gettext}
             {*{control type=text name=email label="Your Email Address"|gettext}*}
             {control type=email name=email label="Your Email Address"|gettext}
-            {control type=text name=phone label="Your Phone"|gettext}
+            {*{control type=text name=phone label="Your Phone"|gettext}*}
+            {control type=tel name=phone label="Your Phone"|gettext}
             {control type=text name=attendees label="Number of Attendees"|gettext}
             {control type="textarea" name="comments" label='Comments'|gettext}
             {control type=buttongroup submit="Send"|gettext}

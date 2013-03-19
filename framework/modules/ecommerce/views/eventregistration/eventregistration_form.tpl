@@ -92,7 +92,8 @@
 		<tr>
 			<td>* Phone</td>
 			<td>
-				{control type="text" name="address[phone]" value="`$record.address.phone`" required=1}
+				{*{control type="text" name="address[phone]" value="`$record.address.phone`" required=1}*}
+                {control type=tel name="address[phone]" value="`$record.address.phone`" required=1}
 			</td>
 		</tr>
 		

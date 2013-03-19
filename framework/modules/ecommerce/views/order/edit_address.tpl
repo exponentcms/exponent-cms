@@ -49,7 +49,8 @@
         {control type=country name='address[country]' label="&#160;"|cat:("Country"|gettext) value=$record->country|default:223}
         
         {control type=text name='address[zip]' label="*"|cat:"Zip Code"|gettext value=$record->zip}
-        {control type="text" name="address[phone]" label="*"|cat:"Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$record->phone}
+        {*{control type="text" name="address[phone]" label="*"|cat:"Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$record->phone}*}
+        {control type=tel name="address[phone]" label="*"|cat:"Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$record->phone}
         {*{control type="text" name="address[email]" label="*"|cat:"Email Address"|gettext value=$record->email}*}
         {control type=email name="address[email]" label="*"|cat:"Email Address"|gettext value=$record->email}
 
