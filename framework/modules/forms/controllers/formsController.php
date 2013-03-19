@@ -82,7 +82,8 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->params['id']);
                 $this->get_defaults($f);
             }
-            $items = $db->selectObjects('forms_' . $f->table_name, 1);
+//            $items = $db->selectObjects('forms_' . $f->table_name, 1);
+            $items = $db->selectArrays('forms_' . $f->table_name, 1);
             $columns = array();
             $fc = new forms_control();
             if (empty($this->config['column_names_list'])) {
@@ -99,18 +100,23 @@ class formsController extends expController {
                     $columns[gt('IP Address')] = 'ip';
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
-                        if ($item->$column_name != 0) {
-                            $locUser = user::getUserById($item->$column_name);
-                            $item->$column_name = $locUser->username;
+//                        if ($item->$column_name != 0) {
+                        if ($item[$column_name] != 0) {
+//                            $locUser = user::getUserById($item->$column_name);
+                            $locUser = user::getUserById($item[$column_name]);
+//                            $item->$column_name = $locUser->username;
+                            $item[$column_name] = $locUser->username;
                         } else {
-                            $item->$column_name = '';
+//                            $item->$column_name = '';
+                            $item[$column_name] = '';
                         }
                         $items[$key] = $item;
                     }
                     $columns[gt('Posted by')] = 'user_id';
                 } elseif ($column_name == "timestamp") {
                     foreach ($items as $key => $item) {
-                        $item->$column_name = strftime(DISPLAY_DATETIME_FORMAT, $item->$column_name);
+//                        $item->$column_name = strftime(DISPLAY_DATETIME_FORMAT, $item->$column_name);
+                        $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
                         $items[$key] = $item;
                     }
                     $columns[gt('Timestamp')] = 'timestamp';
@@ -121,7 +127,8 @@ class formsController extends expController {
                         $control_type = get_class($ctl);
                         foreach ($items as $key => $item) {
                             //We have to add special sorting for date time columns!!!
-                            $item->$column_name = @call_user_func(array($control_type, 'templateFormat'), $item->$column_name, $ctl);
+//                            $item->$column_name = @call_user_func(array($control_type, 'templateFormat'), $item->$column_name, $ctl);
+                            $item[$column_name] = @call_user_func(array($control_type, 'templateFormat'), $item[$column_name], $ctl);
                             $items[$key] = $item;
                         }
                         $columns[$control->caption] = $column_name;
@@ -177,9 +184,9 @@ class formsController extends expController {
             $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0','rank');
             $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
 
+            $fields = array();
+            $captions = array();
             if ($controls && $data) {
-                $fields = array();
-                $captions = array();
                 foreach ($controls as $c) {
                     $ctl = unserialize($c->data);
                     $control_type = get_class($ctl);

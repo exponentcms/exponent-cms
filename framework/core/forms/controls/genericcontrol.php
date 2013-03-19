@@ -97,13 +97,13 @@ class genericcontrol extends formcontrol {
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->maxlength != "") $html .= ' maxlength="' . $this->maxlength . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
-        if ($this->placeholder != "") $html .= " placeholder=\"".$this->placeholder."\" ";
-        if ($this->pattern != "") $html .= " pattern=\"".$this->pattern."\" ";
+        if ($this->placeholder != "") $html .= " placeholder=\"".$this->placeholder."\"";
+        if ($this->pattern != "") $html .= " pattern=\"".$this->pattern."\"";
         if ($this->filter != "") {
-            $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\" ";
-            $html .= "onblur=\"".$this->filter."_filter.onblur(this);\" ";
-            $html .= "onfocus=\"".$this->filter."_filter.onfocus(this);\" ";
-            $html .= "onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\" ";
+            $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\"";
+            $html .= " onblur=\"".$this->filter."_filter.onblur(this);\"";
+            $html .= " onfocus=\"".$this->filter."_filter.onfocus(this);\"";
+            $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
         if ($this->disabled) $html .= ' disabled';
         foreach ($this->jsHooks as $type=>$val) {
@@ -113,9 +113,9 @@ class genericcontrol extends formcontrol {
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
         $caption = !empty($this->caption) ? $this->caption : '';
-        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'" ';
-        if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'" ';
-        if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
+        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
+        if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'"';
+        if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 
         $html .= ' />';
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";

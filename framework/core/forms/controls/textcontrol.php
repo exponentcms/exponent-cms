@@ -27,10 +27,11 @@ if (!defined('EXPONENT')) exit('');
  */
 class textcontrol extends formcontrol {
 
-    var $size = 40;
-    var $maxlength = "";
     var $caption = "";
     var $placeholder = "";
+    var $pattern = "";
+    var $size = 40;
+    var $maxlength = "";
 
     static function name() { return "Text Box"; }
     static function isSimpleControl() { return true; }
@@ -42,37 +43,37 @@ class textcontrol extends formcontrol {
     }
 
     function __construct($default = "", $size=40 , $disabled = false, $maxlength = 0, $filter = "", $required = false, $placeholder = "", $pattern="") {
-        $this->default = $default;
-        $this->size = $size;
         $this->disabled = $disabled;
+        $this->default = $default;
+        $this->placeholder = $placeholder;
+        $this->pattern = $pattern;
+        $this->size = $size;
         $this->maxlength = $maxlength;
         $this->filter = $filter;
         $this->required = $required;
-        $this->placeholder = $placeholder;
-        $this->pattern = $pattern;
     }
 
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 25;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-        $html  = '<input'.$inputID.' class="text" type="text" name="'.$name.'" ';
-        $html .= "value=\"" . str_replace('"',"&quot;",$this->default) . "\" ";
-        $html .= ($this->size?"size=\"".$this->size."\" ":"");
-        $html .= ($this->disabled?"disabled ":"");
-        $html .= ($this->maxlength?"maxlength=\"".$this->maxlength."\" ":"");
-        $html .= ($this->tabindex>=0?"tabindex=\"".$this->tabindex."\" ":"");
-        $html .= ($this->accesskey != ""?"accesskey=\"".$this->accesskey."\" ":"");
-        $html .= ($this->placeholder?"placeholder=\"".$this->placeholder."\" ":"");
-        if (!empty($this->pattern)) $html .= " pattern=\"".$this->pattern."\" ";
+        $html  = '<input'.$inputID.' class="text" type="text" name="'.$name.'"';
+        $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
+        $html .= ($this->size?" size=\"".$this->size."\"":"");
+        $html .= ($this->disabled?" disabled ":"");
+        $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
+        $html .= ($this->tabindex>=0?" tabindex=\"".$this->tabindex."\"":"");
+        $html .= ($this->accesskey != ""?" accesskey=\"".$this->accesskey."\"":"");
+        $html .= ($this->placeholder?" placeholder=\"".$this->placeholder."\"":"");
+        if (!empty($this->pattern)) $html .= " pattern=\"".$this->pattern."\"";
         if ($this->filter != "") {
-            $html .= "onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\" ";
-            $html .= "onblur=\"".$this->filter."_filter.onblur(this);\" ";
-            $html .= "onfocus=\"".$this->filter."_filter.onfocus(this);\" ";
-            $html .= "onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\" ";
+            $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\"";
+            $html .= " onblur=\"".$this->filter."_filter.onblur(this);\"";
+            $html .= " onfocus=\"".$this->filter."_filter.onfocus(this);\"";
+            $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
 
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'" ';
+        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
         $html .= "/>";
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
@@ -86,11 +87,11 @@ class textcontrol extends formcontrol {
             $object->caption = "";
             $object->description = "";
             $object->default = "";
+            $object->placeholder = "";
+            $object->pattern = "";
             $object->size = 0;
             $object->maxlength = 0;
             $object->required = false;
-            $object->placeholder = "";
-            $object->pattern = "";
         }
         if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
@@ -119,6 +120,7 @@ class textcontrol extends formcontrol {
         $object->description = $values['description'];
         if (isset($values['default'])) $object->default = $values['default'];
         if (isset($values['placeholder'])) $object->placeholder = $values['placeholder'];
+        if (isset($values['pattern'])) $object->pattern = $values['pattern'];
         if (isset($values['size'])) $object->size = intval($values['size']);
         if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
         $object->required = isset($values['required']);

@@ -35,23 +35,29 @@
                 {/if}
             </div>
         {/permissions}
-        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-            <thead>
-                <tr>
-                    <th colspan="2">
-                        <h2>{$title}</h2>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {foreach from=$fields key=fieldname item=value}
-                    <tr class="{cycle values="even,odd"}">
-                        <td>{$captions[$fieldname]}</td>
-                        <td>{$value}</td>
+        {if empty($config.report_def)}
+            <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <h2>{$title}</h2>
+                        </th>
                     </tr>
-                {/foreach}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {foreach from=$fields key=fieldname item=value}
+                        <tr class="{cycle values="even,odd"}">
+                            <td>{$captions[$fieldname]}</td>
+                            <td>{$value}</td>
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        {else}
+            <h2>{$title}</h2>
+            {eval var=$config.report_def}
+            {clear}{br}
+        {/if}
         {if !empty($referrer)}
             <p>{'Referrer'|gettext}: {$referrer}</p>
         {/if}
