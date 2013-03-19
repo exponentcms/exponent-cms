@@ -45,7 +45,8 @@
                         {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
                             {control type=text name=username label="Username"|gettext value=$edit_user->username required=1}
                         {else}
-                            {control type=text name=email label="Email Address"|gettext value=$edit_user->email required=1}
+                            {*{control type=text name=email label="Email Address"|gettext value=$edit_user->email required=1}*}
+                            {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1}
                         {/if}
                         {control type=password name=pass1 label="Password"|gettext required=1}
                         {control type=password name=pass2 label="Confirm Password"|gettext required=1}
@@ -54,7 +55,8 @@
 	                {/if}
 	                {control type="hidden" name="userkey" value=$userkey}
 	                {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
-                        {control type=text name=email label="Email Address"|gettext value=$edit_user->email}
+                        {*{control type=text name=email label="Email Address"|gettext value=$edit_user->email}*}
+                        {control type=email name=email label="Email Address"|gettext value=$edit_user->email}
                     {/if}
 	                {control type=text name=firstname label="First Name"|gettext value=$edit_user->firstname}
 	                {control type=text name=lastname label="Last Name"|gettext value=$edit_user->lastname}

@@ -24,7 +24,8 @@
     </p>
     {form action=signup}
         <strong>{'Step 1: Let us know your email address'|gettext}</strong>
-        {control type="text" name="email" label="Email Address"|gettext}
+        {*{control type="text" name="email" label="Email Address"|gettext}*}
+        {control type=email name="email" label="Email Address"|gettext}
 
         <strong>{'Step 2: Select your E-Alerts'|gettext}</strong>
         <table class="exp-skin-table">

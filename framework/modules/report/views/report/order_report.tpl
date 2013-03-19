@@ -129,7 +129,8 @@
             </tr>
             <tr class="odd">
                 <td>
-                    {control type="text" name="email" label="An Email Address Containing"|gettext value=$record->email}
+                    {*{control type="text" name="email" label="An Email Address Containing"|gettext value=$record->email}*}
+                    {control type=email name="email" label="An Email Address Containing"|gettext value=$record->email}
                 </td>
             </tr>
             <tr class="even">

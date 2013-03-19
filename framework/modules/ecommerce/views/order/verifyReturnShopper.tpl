@@ -29,7 +29,8 @@
         <h3>{'Verify the following information from your previous session to restore your shopping cart:'|gettext}{br}</h3>
         {form name="verifyAndRestoreCartForm" controller="order" action="verifyAndRestoreCart"}
            {control type="text" name="lastname" id="lastname" label="Last Name:"|gettext}
-           {control type="text" name="email" id="email" label="Email Address:"|gettext}
+           {*{control type="text" name="email" id="email" label="Email Address:"|gettext}*}
+            {control type=email name="email" id="email" label="Email Address:"|gettext}
            {control type="text" name="zip_code" id="zip_code" label="Zip Code:"|gettext}
            {control type="buttongroup" submit="Verify"|gettext}
         {/form}

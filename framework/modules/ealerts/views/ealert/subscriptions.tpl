@@ -26,7 +26,8 @@
         {control type="hidden" name="id" value=$subscriber->id}
         {control type="hidden" name="key" value=$subscriber->hash}
         <strong>{'Step 1: Let us know your email address'|gettext}</strong>
-        {control type="text" name="email" label="Email Address"|gettext value=$subscriber->email}
+        {*{control type="text" name="email" label="Email Address"|gettext value=$subscriber->email}*}
+        {control type=email name="email" label="Email Address"|gettext value=$subscriber->email}
 
         <strong>{'Step 2: Select your E-Alerts'|gettext}</strong>
         <table class="exp-skin-table">

@@ -75,12 +75,14 @@
                     <div id="tab4">
                         <h2>{'Notifications'|gettext}</h2>
                         {control type="checkbox" name="email_invoice" label="Send email notification of new orders?"|gettext value=1 checked=$config.email_invoice}
-                        {control type="text" name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}
+                        {*{control type="text" name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}*}
+                        {control type=email name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}
                     </div>
                     <div id="tab5">
                         <h2>{'Store Email Settings'|gettext}</h2>
                         {control type="text" name="from_name" label="Email From Name"|gettext value=$config.from_name}
-                        {control type="text" name="from_address" label="Email From Address"|gettext value=$config.from_address}
+                        {*{control type="text" name="from_address" label="Email From Address"|gettext value=$config.from_address}*}
+                        {control type=email name="from_address" label="Email From Address"|gettext value=$config.from_address}
                         {control type="checkbox" name="email_invoice_to_user" label="Email a copy of the invoice to the user after purchase?"|gettext value=1 checked=$config.email_invoice_to_user}
                         {control type="text" name="invoice_subject" label="Subject of invoice email"|gettext size="40" value=$config.invoice_subject}
                         {control type="textarea" name="invoice_msg" label="Message to put in invoice email:"|gettext rows=5 cols=45 value=$config.invoice_msg}

@@ -133,7 +133,8 @@
 		<tr>
 			<td>* Email Address</td>
 			<td>
-				{control type="text" name="address[email]" value=`$record.address.email` required=1}	
+				{*{control type="text" name="address[email]" value=`$record.address.email` required=1}	*}
+                {control type=email name="address[email]" value=`$record.address.email` required=1}
 			</td>
 		</tr>
 	</table>
