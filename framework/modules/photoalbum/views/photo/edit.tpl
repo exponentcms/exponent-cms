@@ -30,7 +30,8 @@
                     {control type="text" name="alt" label="'Alt' tag"|gettext value=$record->alt description='Overrides file manager \'alt\''|gettext}
                     {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
-                    {control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
+                    {*{control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}*}
+                    {control type=url name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
                     {/if}
