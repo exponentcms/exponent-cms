@@ -123,8 +123,9 @@ class formsController extends expController {
                 } else {
                     $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $f->id,'rank');
                     if ($control) {
-                        $ctl = unserialize($control->data);
+//                        $ctl = unserialize($control->data);
                         $control_type = get_class($ctl);
+                        $ctl = expUnserialize($control->data);
                         foreach ($items as $key => $item) {
                             //We have to add special sorting for date time columns!!!
 //                            $item->$column_name = @call_user_func(array($control_type, 'templateFormat'), $item->$column_name, $ctl);
@@ -188,7 +189,8 @@ class formsController extends expController {
             $captions = array();
             if ($controls && $data) {
                 foreach ($controls as $c) {
-                    $ctl = unserialize($c->data);
+//                    $ctl = unserialize($c->data);
+                    $ctl = expUnserialize($c->data);
                     $control_type = get_class($ctl);
                     $name = $c->name;
                     $fields[$name] = call_user_func(array($control_type, 'templateFormat'), $data->$name, $ctl);
@@ -292,7 +294,8 @@ class formsController extends expController {
                     $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
                 }
                 foreach ($controls as $c) {
-                    $ctl = unserialize($c->data);
+//                    $ctl = unserialize($c->data);
+                    $ctl = expUnserialize($c->data);
                     $ctl->_id = $c->id;
                     $ctl->_readonly = $c->is_readonly;
                     if (!empty($this->params['id'])) {
@@ -385,7 +388,8 @@ class formsController extends expController {
         $responses = array();
 
         foreach ($cols as $col) {
-            $coldef = unserialize($col->data);
+//            $coldef = unserialize($col->data);
+            $coldef = expUnserialize($col->data);
             $coldata = new ReflectionClass($coldef);
             $coltype = $coldata->getName();
             if ($coltype == 'uploadcontrol') {
@@ -455,7 +459,8 @@ class formsController extends expController {
         $captions = array();
         $attachments = array();
         foreach ($controls as $c) {
-            $ctl = unserialize($c->data);
+//            $ctl = unserialize($c->data);
+            $ctl = expUnserialize($c->data);
             $control_type = get_class($ctl);
             $def = call_user_func(array($control_type, "getFieldDefinition"));
             if ($def != null) {
@@ -708,7 +713,8 @@ class formsController extends expController {
         }
         $fc = new forms_control();
         foreach ($fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0','rank') as $control) {
-            $ctl = unserialize($control->data);
+//            $ctl = unserialize($control->data);
+            $ctl = expUnserialize($control->data);
             $control_type = get_class($ctl);
             $def = call_user_func(array($control_type, 'getFieldDefinition'));
             if ($def != null) {
@@ -789,7 +795,8 @@ class formsController extends expController {
 
             $form = new fakeform();
             foreach ($controls as $c) {
-                $ctl = unserialize($c->data);
+//                $ctl = unserialize($c->data);
+                $ctl = expUnserialize($c->data);
                 $ctl->_id = $c->id;
                 $ctl->_readonly = $c->is_readonly;
                 $ctl->_controltype = get_class($ctl);
@@ -854,7 +861,8 @@ class formsController extends expController {
                 if (isset($this->params['id'])) {
                     $control = new forms_control($this->params['id']);
                     if ($control) {
-                        $ctl = unserialize($control->data);
+//                        $ctl = unserialize($control->data);
+                        $ctl = expUnserialize($control->data);
                         $ctl->identifier = $control->name;
                         $ctl->caption = $control->caption;
                         $ctl->id = $control->id;
@@ -894,7 +902,8 @@ class formsController extends expController {
             if (isset($this->params['id'])) {
                 $control = new forms_control($this->params['id']);
                 if ($control) {
-                    $ctl = unserialize($control->data);
+//                    $ctl = unserialize($control->data);
+                    $ctl = expUnserialize($control->data);
                     $ctl->identifier = $control->name;
                     $ctl->caption = $control->caption;
                 }
@@ -987,7 +996,8 @@ class formsController extends expController {
         if (isset($this->config['forms_id'])) {
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' and is_readonly=0','rank') as $control) {
-                $ctl = unserialize($control->data);
+//                $ctl = unserialize($control->data);
+                $ctl = expUnserialize($control->data);
                 $control_type = get_class($ctl);
                 $def = call_user_func(array($control_type, 'getFieldDefinition'));
                 if ($def != null) {
@@ -1111,7 +1121,8 @@ class formsController extends expController {
                 } else {
                     $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $this->params['id'],'rank');
                     if ($control) {
-                        $ctl = unserialize($control->data);
+//                        $ctl = unserialize($control->data);
+                        $ctl = expUnserialize($control->data);
                         $control_type = get_class($ctl);
 //                        $srt = $column_name . "_srt";
 //                        $datadef = call_user_func(array($control_type, 'getFieldDefinition'));

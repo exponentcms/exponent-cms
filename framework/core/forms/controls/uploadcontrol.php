@@ -27,6 +27,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class uploadcontrol extends formcontrol {
 
+    var $accept = "";
+
 	static function name() { return "File Upload Field"; }
 	static function isSimpleControl() { return true; }
 	static function getFieldDefinition() {
@@ -66,6 +68,7 @@ class uploadcontrol extends formcontrol {
 			$object->caption = "";
             $object->description = "";
 			$object->default = "";
+            $object->accept = "";
 		}
         if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
