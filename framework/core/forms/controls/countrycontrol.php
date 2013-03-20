@@ -20,75 +20,65 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Dropdown Control
+ * Country Control
  *
  * @package Subsystems-Forms
  * @subpackage Control
  */
-class dropdowncontrol extends formcontrol {
+class countrycontrol extends dropdowncontrol {
 
-    var $items = array();
-    var $size = 1;
-    var $jsHooks = array();
-    var $include_blank = false;
-    var $type = 'select';
-    var $class = '';
-    
-    static function name() { return "Drop Down List"; }
-    static function isSimpleControl() { return true; }
-    static function getFieldDefinition() {
-        return array(
-            DB_FIELD_TYPE=>DB_DEF_STRING,
-            DB_FIELD_LEN=>255);
+    static function name() { return "Country Drop Down List"; }
+    static function isSimpleControl() {
+        global $db;
+
+        if ($db->tableExists('geo_country')) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
-    function __construct($default = "",$items = array(), $include_blank = false, $multiple=false) {
+
+    function __construct($default = "",$items = array(), $include_blank = false, $multiple=false, $abbv=false, $show_all=false) {
         $this->default = $default;
         $this->items = $items;
         $this->include_blank = $include_blank;
         $this->required = false;
         $this->multiple = $multiple;
+        $this->abbv = $abbv;
+        $this->show_all = $show_all;
     }
-    
+
     function controlToHTML($name,$label=null) {
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-        $disabled = $this->disabled != false ? "disabled" : "";
-        $html = '<select'.$inputID.' name="' . $name;
-        if ($this->multiple) $html.= '[]';
-        $html .= '" size="' . $this->size . '"';
-        $html .= ' class="'.$this->class.' select '.$disabled.'"';
-        if ($this->disabled) $html .= ' disabled';
-        if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
-        foreach ($this->jsHooks as $hook=>$action) {
-            $html .= " $hook=\"$action\"";
-        }
-        if (@$this->required) {
-            $html .= 'required="'.rawurlencode($this->default).'" caption="'.rawurlencode($this->caption).'" ';
-        }
-        if (!empty($this->multiple)) $html .= ' multiple';
-        if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
-        $html .= '>';
+        global $db;
 
-        if (is_bool($this->include_blank) && $this->include_blank == true) {
-            $html .= '<option value=""></option>';
-        } elseif (is_string($this->include_blank) && !empty($this->include_blank)) {
-            $html .= '<option value="">'.$this->include_blank.'</option>';
-        }
+        if ($db->tableExists('geo_country')) {
+//            $this->include_blank = isset($this->include_blank) ? $this->include_blank : false;
+//            if (isset($params['multiple'])) {
+//                $this->multiple = true;
+//                //$this->items[-1] = 'ALL United States';
+//            }
 
-        if (!empty($this->items)) foreach ($this->items as $value=>$caption) {
-            $html .= '<option value="' . $value . '"';
-            if (is_array($this->default)) {
-                if (in_array($value, $this->default)) $html .= " selected";
-            } else {
-                if (!empty($this->default) && $value == $this->default) $html .= " selected";
+            if ($this->show_all) $countries = $db->selectObjects('geo_country', null, 'name ASC');
+            else $countries = $db->selectObjects('geo_country', 'active=1', 'name ASC');
+
+            foreach ($countries as $country) {
+                //if (!in_array($country->id, $not_countries)) {
+                $this->items[$country->id] = !empty($this->abbv) ? $country->iso_code_3letter : $country->name;
+                //}
             }
-            $html .= '>' . $caption . '</option>';
+
+            // sanitize the default value. can accept as id, code abbrv or full name,
+            if (!empty($this->default) && !is_numeric($this->default) && !is_array($this->default)) {
+                $this->default = $db->selectValue('geo_country', 'id', 'name="' . $this->default . '" OR code="' . $this->default . '"');
+            }
+        } else {
+            echo "NO TABLE";
+            exit();
         }
-        $html .= '</select>';             
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
-        return $html;
+
+        return parent::controlToHTML($name,$label);
     }
-    
+
     static function form($object) {
         $form = new form();
         if (empty($object)) $object = new stdClass();
@@ -99,20 +89,23 @@ class dropdowncontrol extends formcontrol {
             $object->default = "";
             $object->size = 1;
             $object->items = array();
+            $object->abbv = false;
+            $object->show_all = false;
             $object->required = false;
         } 
         if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
-        $form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
+        $form->register("abbv", gt('Use abbreviations?'), new checkboxcontrol($object->abbv,true));
+        $form->register("show_all", gt('Show all countries?'), new checkboxcontrol($object->show_all,true));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
         $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }
-    
+
     static function update($values, $object) {
         if ($values['identifier'] == "") {
             $post = $_POST;
@@ -120,13 +113,14 @@ class dropdowncontrol extends formcontrol {
             expSession::set("last_POST",$post);
             return null;
         }
-        if ($object == null) $object = new dropdowncontrol();
+        if ($object == null) $object = new countrycontrol();
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->default = $values['default'];
-        $object->items = listbuildercontrol::parseData($values,'items',true);
         if (isset($values['size'])) $object->size = (intval($values['size']) <= 0)?1:intval($values['size']);
+        $object->abbv = isset($values['abbv']);
+        $object->show_all = isset($values['show_all']);
         $object->required = isset($values['required']);
         return $object;
     }

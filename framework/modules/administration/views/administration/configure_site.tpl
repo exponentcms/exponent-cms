@@ -301,63 +301,63 @@
                 {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
                 {control type="checkbox" postfalse=1 name="sc[DISABLE_SSL_WARNING]" label="Disable Unsecure Checkout Warning?"|gettext checked=$smarty.const.DISABLE_SSL_WARNING value=1 description='Normally a warning is displayed when attempting to checkout on an unsecured site.'|gettext}
                 {control type="dropdown" name="sc[ECOM_CURRENCY]" label="Default Currency"|gettext items=$currency default=$smarty.const.ECOM_CURRENCY}
-                <hr>
-                <h4>{'Getting e-Commerce up and running'|gettext}</h4>
-                <ol>
-                    <li><strong>{'Set up your site on a secure (SSL) server!'|gettext}</strong></li>
-                    <ul>
-                        <li>{'Enter appropriate settings under the Security tab above.'|gettext}</li>
-                    </ul>
-                    <li>{'Import default ecommerce information into the database'|gettext} <a href="{link action=install_ecommerce_tables}" title={'Install Default e-Commerce data'|gettext} onclick="return confirm('{'Are you sure you want to re-initialize e-Commerce data to default values?'|gettext}');">{'here'|gettext}</a></li>
-                    <ul>
-                        <li>geo_regions</li>
-                        <li>geo_countries</li>
-                        <li>order_status</li>
-                        <li>order_type</li>
-                        <li>product_status</li>
-                        <li>bing_product_types</li>
-                        <li>google_product_types</li>
-                        <li>nextag_product_types</li>
-                        <li>pricegrabber_product_types</li>
-                        <li>shopping_product_types</li>
-                        <li>shopzilla_product_types</li>
-                    </ul>
-                    <li>{'Activate e-Commerce using the above setting, or activate an e-Commerce module'|gettext}:</li>
-                    <ul>
-                        <li>{'e-Commerce Store Front'|gettext}</li>
-                        <li>{'Online Donations'|gettext}</li>
-                        <li>{'Online Event Registration'|gettext}</li>
-                    </ul>
-                    <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a></li>
-                    <ul>
-                        <li>{'Most Payment Options need configuration which requires establishing an account with a payment service'|gettext}</li>
-                        <li>{'\'Cash/Check\' is the easiest to set up'|gettext}</li>
-                    </ul>
-                    <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a></li>
-                    <ul>
-                        <li>{'Most Shipping Options need configuration which requires establishing an account with a shipping service'|gettext}</li>
-                        <li>{'\'In Store Pickup\' is the easiest to set up'|gettext}</li>
-                    </ul>
-                    <li>{'Optionally (to get better results)'|gettext}:</li>
-                    <ul>
-                        <li>{'Enter some \'General Store Settings\''|gettext} <a href="{link controller=ecomconfig action=configure}" title={'Configure Store Settings'|gettext}>{'here'|gettext}</a></li>
+                {group label="Getting e-Commerce up and running"|gettext}
+                    <ol>
+                        <li><strong>{'Set up your site on a secure (SSL) server!'|gettext}</strong></li>
                         <ul>
-                            <li>{'You should at least enter a Store Name and Starting Invoice Number'|gettext}</li>
+                            <li>{'Enter appropriate settings under the Security tab above.'|gettext}</li>
                         </ul>
-                        <li>{'Create a Product (with optional sub-steps)'|gettext}</li>
+                        <li>{'Import default ecommerce information into the database'|gettext} <a href="{link action=install_ecommerce_tables}" title={'Install Default e-Commerce data'|gettext} onclick="return confirm('{'Are you sure you want to re-initialize e-Commerce data to default values?'|gettext}');">{'here'|gettext}</a></li>
                         <ul>
-                            <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>
-                            <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
-                            <li>{'Create a Tax Class/Zone for applicable sales tax(es)'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Tax Classes'|gettext}>{'here'|gettext}</a></li>
-                            <li>{'Create the Product (product, donation, event, or gift card) and assign a category'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
+                            <li>geo_regions</li>
+                            <li>geo_countries</li>
+                            <li>order_status</li>
+                            <li>order_type</li>
+                            <li>product_status</li>
+                            <li>bing_product_types</li>
+                            <li>google_product_types</li>
+                            <li>nextag_product_types</li>
+                            <li>pricegrabber_product_types</li>
+                            <li>shopping_product_types</li>
+                            <li>shopzilla_product_types</li>
                         </ul>
-                    </ul>
-                    <li>{'Add an e-Commerce module to a page to allow user access to the \'store\'.'|gettext}</li>
-                    <ul>
-                        <li>{'Also add an \'e-Commerce Store Front\' module with the \'Links - Users Links\' action for easier user access to their store account and shopping cart'|gettext}</li>
-                    </ul>
-                    <li>{'e-Commerce Store Management is best handled through the e-Commerce menu or Dashboard'|gettext}</li>
-                </ol>
+                        <li>{'Activate e-Commerce using the above setting, or activate an e-Commerce module'|gettext}:</li>
+                        <ul>
+                            <li>{'e-Commerce Store Front'|gettext}</li>
+                            <li>{'Online Donations'|gettext}</li>
+                            <li>{'Online Event Registration'|gettext}</li>
+                        </ul>
+                        <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a></li>
+                        <ul>
+                            <li>{'Most Payment Options need configuration which requires establishing an account with a payment service'|gettext}</li>
+                            <li>{'\'Cash/Check\' is the easiest to set up'|gettext}</li>
+                        </ul>
+                        <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a></li>
+                        <ul>
+                            <li>{'Most Shipping Options need configuration which requires establishing an account with a shipping service'|gettext}</li>
+                            <li>{'\'In Store Pickup\' is the easiest to set up'|gettext}</li>
+                        </ul>
+                        <li>{'Optionally (to get better results)'|gettext}:</li>
+                        <ul>
+                            <li>{'Enter some \'General Store Settings\''|gettext} <a href="{link controller=ecomconfig action=configure}" title={'Configure Store Settings'|gettext}>{'here'|gettext}</a></li>
+                            <ul>
+                                <li>{'You should at least enter a Store Name and Starting Invoice Number'|gettext}</li>
+                            </ul>
+                            <li>{'Create a Product (with optional sub-steps)'|gettext}</li>
+                            <ul>
+                                <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>
+                                <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
+                                <li>{'Create a Tax Class/Zone for applicable sales tax(es)'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Tax Classes'|gettext}>{'here'|gettext}</a></li>
+                                <li>{'Create the Product (product, donation, event, or gift card) and assign a category'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
+                            </ul>
+                        </ul>
+                        <li>{'Add an e-Commerce module to a page to allow user access to the \'store\'.'|gettext}</li>
+                        <ul>
+                            <li>{'Also add an \'e-Commerce Store Front\' module with the \'Links - Users Links\' action for easier user access to their store account and shopping cart'|gettext}</li>
+                        </ul>
+                        <li>{'e-Commerce Store Management is best handled through the e-Commerce menu or Dashboard'|gettext}</li>
+                    </ol>
+                {/group}
             </div>
                 {/if}
             </div>

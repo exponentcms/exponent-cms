@@ -36,11 +36,11 @@ class calendarcontrol extends formcontrol {
     var $default_ampm = '';
 
     static function name() {
-        return "YAHOO! UI Calendar";
+        return "YUI Popup Date / Time Field";
     }
 
     static function isSimpleControl() {
-        return false;
+        return true;
     }
 
     static function getFieldDefinition() {
@@ -92,15 +92,18 @@ class calendarcontrol extends formcontrol {
         $html        = "
             <div id=\"calendar-container-" . $name . "\" class=\"yui3-skin-sam\"> </div>
             <div id=\"cal-container-" . $name . "\" class=\"control calendar-control\">
-            <label for=\"" . $name . "\" class=\"label\">" . $label . "</label><input size=10 type=\"text\" id=\"date-" . $name . "\" name=\"date-" . $name . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />
-            @ <input size=2 type=\"text\" id=\"time-h-" . $name . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
+            <label for=\"" . $name . "\" class=\"label\">" . $label . "</label><input size=10 type=\"text\" id=\"date-" . $name . "\" name=\"date-" . $name . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />";
+if ($this->showtime) {
+        $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $name . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
             : <input size=2 type=\"text\" id=\"time-m-" . $name . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>
             <select id=\"ampm-" . $name . "\" name=\"ampm-" . $name . "\">";
 
         if ($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
         else $html .= "<option>am</option><option selected>pm</option>";
         $html .= "
-            </select>
+            </select>";
+}
+        $html .= "
         </div>
         <div style=\"clear:both\"></div>
         ";
@@ -265,25 +268,25 @@ class calendarcontrol extends formcontrol {
         // }
     }
 
-    // function form($object) {
-    //  $form = new form();
-    //  if (!isset($object->identifier)) {
-    //      $object->identifier = "";
-    //      $object->caption = "";
-    //      $object->showtime = true;
-    //  }
-    // 
-    //  $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
-    //  $form->register("caption",gt('Caption'), new textcontrol($object->caption));
-    //  $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
-    // 
-    //  $form->register("submit","",new buttongroupcontrol(gt('Save'),"",bt'Cancel'),"",'editable'));
-    //  return $form;
-    // }
+     static function form($object) {
+      $form = new form();
+      if (!isset($object->identifier)) {
+          $object = new stdClass();
+          $object->identifier = "";
+          $object->caption = "";
+          $object->showtime = true;
+      }
+
+      $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+      $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+      $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
+      $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
+      return $form;
+     }
 
     static function update($values, $object) {
         if ($object == null) {
-            $object          = new popupdatetimecontrol();
+            $object          = new calendarcontrol();
             $object->default = 0;
         }
         if ($values['identifier'] == "") {

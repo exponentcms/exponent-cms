@@ -30,7 +30,7 @@ class listcontrol extends formcontrol {
     var $html;
     var $span;
     
-    static function name() { return "List Control"; }
+    static function name() { return "List"; }
     static function isSimpleControl() { return false; }
     
     function __construct() {

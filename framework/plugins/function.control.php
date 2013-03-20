@@ -342,7 +342,7 @@ function smarty_function_control($params, &$smarty) {
                     } else {
                         // include the library and show the form control
                         require_once(BASE . 'external/recaptchalib.php');
-                        echo recaptcha_get_html(RECAPTCHA_PUB_KEY, $error);
+                        echo recaptcha_get_html(RECAPTCHA_PUB_KEY);
                         echo '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
                     }
                     return;
