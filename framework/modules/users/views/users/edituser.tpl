@@ -29,7 +29,7 @@
 		    <ul class="yui-nav">
 		        <li class="selected"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
                 {foreach from=$extensions item=extension}
-		            <li><a href="#tab{$extension->id}"><em>{$extension->title}</em></a></li>
+		            <li><a href="#tab{$extension->id+1}"><em>{$extension->title}</em></a></li>
                 {/foreach}
 		    </ul>
 	        <div class="yui-content">
@@ -70,9 +70,9 @@
                     {/if}
 	            </div>
 	            {foreach from=$extensions item=extension}
-	            <div id="tab{$extension->id}" >
-	                {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl"}
-	            </div>
+                    <div id="tab{$extension->id+1}" >
+                        {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl"}
+                    </div>
 	            {/foreach}
 	        </div>
 	    </div>
