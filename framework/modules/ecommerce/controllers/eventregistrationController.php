@@ -458,7 +458,8 @@ class eventregistrationController extends expController {
         }
 
         // new method to check for guests/registrants
-        if (!empty($event->num_guest_allowed)) {
+//        if (!empty($event->num_guest_allowed)) {
+        if (!empty($event->quantity)) {
             $registered = array();
             if (!empty($order_ids)) foreach ($order_ids as $order_id) {
                 $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
@@ -621,7 +622,8 @@ class eventregistrationController extends expController {
         }
 
         // new method to check for guests/registrants
-        if (!empty($event->num_guest_allowed)) {
+//        if (!empty($event->num_guest_allowed)) {
+        if (!empty($event->quantity)) {
             $registered = array();
             if (!empty($order_ids)) foreach ($order_ids as $order_id) {
                 $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
