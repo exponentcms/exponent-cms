@@ -49,7 +49,7 @@ class cash extends billingcalculator {
     public $title = 'Cash/Check';
     public $payment_type = 'Cash';
 
-    //Called for billing medthod seletion screen, return true if it's a valid billing method.
+    //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($method, $opts, $params, $order) {
         //just save the opts
         $method->update(array('billing_options'=> serialize($opts)));
@@ -92,9 +92,8 @@ class cash extends billingcalculator {
         global $order;
 
         if ($order->grand_total > $params["cash_amount"]) {
-            expValidator::failAndReturnToForm(gt("The total amount of your order is greater than what the amount you have input.") . "<br />" . gt("Please enter exact or greater amount of your total."));
+            expValidator::failAndReturnToForm(gt("The total amount of your order is greater than the amount you have input.") . "<br />" . gt("Please enter exact or greater amount of your total."));
         }
-
         $this->opts = new stdClass();
         $this->opts->cash_amount = $params["cash_amount"];
         return $this->opts;

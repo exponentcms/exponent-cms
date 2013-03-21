@@ -431,7 +431,7 @@ class cartController extends expController {
         global $order, $user, $db;
 
         //eDebug($_POST, true);
-        // get the shippnig and billing objects, these objects handle the setting up the billing/shipping methods
+        // get the shipping and billing objects, these objects handle the setting up the billing/shipping methods
         // and their calculators
         $shipping = new shipping();
         $billing  = new billing();
@@ -445,7 +445,7 @@ class cartController extends expController {
             expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), true));
         }
 
-        // Make sure all the pertanent data is there...otherwise flash an error and redirect to the checkout form.
+        // Make sure all the pertinent data is there...otherwise flash an error and redirect to the checkout form.
         if (empty($order->orderitem)) {
             flash('error', gt('There are no items in your cart.'));
         }
@@ -479,6 +479,12 @@ class cartController extends expController {
             $this->checkout();
         }
 
+         // final the cart totals
+        $order->calculateGrandTotal();
+        $order->setOrderType($this->params);
+        $order->setOrderStatus($this->params);
+        //eDebug($order,true);
+
         // get the billing options..this is usually the credit card info entered by the user
         $opts = $billing->calculator->userFormUpdate($this->params);
         //$billing->calculator->preprocess($this->params);
@@ -489,15 +495,10 @@ class cartController extends expController {
         //eDebug($o,true);
         //eDebug($this->params,true);
 
-        //this should probably be genericized a bit more - currently assuming order_type parameter is present, or defaults
+        //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
         //eDebug($order->getDefaultOrderType(),true);
-        $order->setOrderType($this->params);
-        $order->setOrderStatus($this->params);
-        //eDebug($order,true);
-        // final the cart totals       
-        $order->calculateGrandTotal();
-        //eDebug($order,true);
-        // call the billing mehod's preprocess in case it needs to prepare things.
+
+        // call the billing method's preprocess in case it needs to prepare things.
         // eDebug($billing);
         $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
 

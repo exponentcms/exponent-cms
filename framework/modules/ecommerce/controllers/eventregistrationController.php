@@ -702,34 +702,53 @@ class eventregistrationController extends expController {
         }
 
         if (empty($this->params['email_subject'])) {
-            flash('error', gt('Please enter your email subject.'));
+            flash('error', gt('Nothing to Send! Please enter subject and message.'));
             expHistory::back();
         }
 
-        $email_arr     = explode("|!|", $this->params['email_addresses']);
-        $email_subject = $this->params['email_subject'];
-        $email_message = $this->params['email_message'];
+//        $email_arr     = explode("|!|", $this->params['email_addresses']);
+        $email_addy = array_flip(array_flip($this->params['email_addresses']));
+        $email_addy = array_map('trim', $email_addy);
+        $email_addy = array_filter($email_addy);
+
+        $headers = array(
+            "MIME-Version" => "1.0",
+            "Content-type" => "text/html; charset=" . LANG_CHARSET
+        );
 
         $mail = new expMail();
 
-        foreach ($this->params['expFile']['attachments'] as $attach) {
-            $expFile = new expFile($attach);
-            if (!empty($expFile->id)) {
-                $mail->attach_file_on_disk($expFile->path, $expFile->mimetype);
-            }
+//        foreach ($this->params['expFile']['attachments'] as $attach) {
+//            $expFile = new expFile($attach);
+//            if (!empty($expFile->id)) {
+//                $mail->attach_file_on_disk($expFile->path, $expFile->mimetype);
+//            }
+//        }
+        if (!empty($_FILES['attach']['size'])) {
+            $dir = 'tmp';
+            $filename = expFile::fixName(time().'_'.$_FILES['attach']['name']);
+            $dest = $dir.'/'.$filename;
+            //Check to see if the directory exists.  If not, create the directory structure.
+            if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
+            // Move the temporary uploaded file into the destination directory, and change the name.
+            expFile::moveUploadedFile($_FILES['attach']['tmp_name'],BASE.$dest);
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+//                $relpath = str_replace(PATH_RELATIVE, '', BASE);
+            $ftype = finfo_file($finfo, BASE.$dest);
+            finfo_close($finfo);
+            $mail->attach_file_on_disk(BASE.$dest,$ftype);
         }
 
-        foreach ($email_arr as $email_addy) {
-            $mail->quickSend(array(
-                'html_message'=> $email_message,
-                'text_message'=> str_replace("<br>", "\r\n", $email_message),
+        $mail->quickBatchSend(array(
+            	'headers'=>$headers,
+                'html_message'=> $this->params['email_message'],
+                'text_message'=> strip_tags(str_replace("<br>", "\r\n", $this->params['email_message'])),
                 'to'          => $email_addy,
                 'from'        => ecomconfig::getConfig('from_address'),
-                'subject'     => $email_subject
-            ));
-        }
+                'subject'     => $this->params['email_subject']
+        ));
 
-        flash('message', gt("You're email has been successfully sent."));
+        flash('message', gt("You're email to event registrants has been sent."));
         expHistory::back();
     }
 

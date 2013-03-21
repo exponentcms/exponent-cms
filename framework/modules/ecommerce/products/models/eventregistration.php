@@ -76,15 +76,15 @@ class eventregistration extends expRecord {
             #	    $event->tablename = 'eventregistration';
             $event = new stdClass();
             $event->eventdate = strtotime($params['eventdate']);
-//            $event->eventenddate = strtotime($params['eventenddate']);
+            $event->eventenddate = strtotime($params['eventenddate']);
             $event->event_starttime = datetimecontrol::parseData('event_starttime', $params);
             $event->event_endtime = datetimecontrol::parseData('event_endtime', $params);
             $event->signup_cutoff = strtotime($params['signup_cutoff']);
-//            $event->location = $params['location'];
-//            $event->terms_and_condition = $params['terms_and_condition'];
-//            $event->require_terms_and_condition = !empty($params['require_terms_and_condition']) ? $params['require_terms_and_condition'] : false;
-//            $event->terms_and_condition_toggle = $params['terms_and_condition_toggle'];
-//            $event->num_guest_allowed = !empty($params['quantity']) ? $params['quantity'] : 0;
+            $event->location = $params['location'];
+            $event->terms_and_condition = $params['terms_and_condition'];
+            $event->require_terms_and_condition = !empty($params['require_terms_and_condition']) ? $params['require_terms_and_condition'] : false;
+            $event->terms_and_condition_toggle = $params['terms_and_condition_toggle'];
+            $event->num_guest_allowed = !empty($params['quantity']) ? $params['quantity'] : 0;
             $event->id = empty($product->product_type_id) ? null : $product->product_type_id;
 
             //Option Group Tab
@@ -240,7 +240,7 @@ class eventregistration extends expRecord {
         foreach ($registrants as $reg) {
             $people .= $reg['name'] . ', ';
         }
-        $people = substr($people, 0, -1);
+        $people = substr($people, 0, -2);
         $view->assign('people', $people);
         return $view->render('cartSummary');
     }
