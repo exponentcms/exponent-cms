@@ -483,7 +483,7 @@ class paypalExpressCheckout extends billingcalculator {
     }
 
     //process user input. This function should return an object of the user input.
-    //the returnd object will be saved in the session and passed to post_process.
+    //the returned object will be saved in the session and passed to post_process.
     //If need be this could use another method of data storage, as long post_process can get the data.
     function userFormUpdate($params) {
 
