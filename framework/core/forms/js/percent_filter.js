@@ -31,7 +31,10 @@ function percent_filter_class() {
 	
 	this.onblur = function(ptObject) {
 		ptObject.value = this.FormatPercent(ptObject.value, true);
-		if (ptObject.value != ptObject.previousValue) ptObject.fireEvent("onchange");
+		if (ptObject.value != ptObject.previousValue) {
+//            ptObject.fireEvent("onchange");
+            fireEvent(ptObject,"change");
+        }
 	}
 	
 	this.onfocus = function(ptObject) {

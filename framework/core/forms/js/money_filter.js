@@ -35,10 +35,13 @@ function money_filter_class() {
 		return false;
 	}
 	
-	this.onblur = function(ptObject) {
-		ptObject.value = this.FormatUSCurrency(ptObject.value, true);
-		if (ptObject.value != ptObject.previousValue) ptObject.fireEvent("onchange");
-	}
+	this.onblur = function (ptObject) {
+        ptObject.value = this.FormatUSCurrency(ptObject.value, true);
+        if (ptObject.value != ptObject.previousValue) {
+//            ptObject.fireEvent("change");
+            fireEvent(ptObject, "change");
+        }
+    }
 	
 	this.onfocus = function(ptObject) {
 		this.previousValue = ptObject.value
