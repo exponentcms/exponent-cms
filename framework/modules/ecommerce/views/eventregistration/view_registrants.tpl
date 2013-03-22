@@ -71,6 +71,15 @@
     {br}
     {form action="emailRegistrants"}
         <div class="events">
+            {permissions}
+                {if $registrants|count < $event->quantity}
+                    <div class="module-actions">
+                        {if $permissions.create == true}
+                            {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
+                        {/if}
+                    </div>
+                {/if}
+            {/permissions}
             <table class="exp-skin-table">
                 <thead>
                     <tr>
@@ -105,13 +114,6 @@
                                 </td>
                             </tr>
                         {/foreach}
-                        {permissions}
-                            <div class="module-actions">
-                                {if $permissions.create == true}
-                                    {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
-                                {/if}
-                            </div>
-                        {/permissions}
                     {else}
                         <tr class="{cycle values="odd,even"}">
                             <td colspan="4">{'There is currently no one registered'|gettext}</td>
