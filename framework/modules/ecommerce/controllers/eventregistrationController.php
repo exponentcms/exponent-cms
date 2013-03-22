@@ -33,7 +33,9 @@ class eventregistrationController extends expController {
     public $basemodel_name = 'eventregistration';
 
     public $useractions = array(
-        'showall' => 'Show all events',
+        'showall'     => 'Show all events',
+        'eventsCalendar'                  => 'Calendar View',
+        'upcomingEvents'                  => 'Upcoming Events',
 //        'showByTitle' => "Show events by title",
     );
 
@@ -50,7 +52,7 @@ class eventregistrationController extends expController {
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     public $add_permissions = array(
-        'view_registrants' => 'View Registrants',
+        'view_registrants'=> 'View Registrants',
     );
 
     static function displayname() {
@@ -70,7 +72,7 @@ class eventregistrationController extends expController {
         if ($user->isAdmin()) {
             $pass_events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
         } else {
-            $events = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
+            $events      = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
             $pass_events = array();
 
             foreach ($events as $event) {
@@ -87,20 +89,156 @@ class eventregistrationController extends expController {
         // uasort($pass_events,'compare');
         //eDebug($this->config['limit'], true);
         $page = new expPaginator(array(
-            'records'    => $pass_events,
-            'limit'      => $limit,
-            'order'      => "title ASC",
-            'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-            'controller' => $this->params['controller'],
-            'action'     => $this->params['action'],
-            'src'        => $this->loc->src,
-            'view'       => empty($this->params['view']) ? null : $this->params['view'],
-            'columns'    => array(
-                gt('Event') => 'title',
-                gt('Date')  => 'eventdate',
-                gt('Seats') => 'quantity'
+            'records'=>$pass_events,
+            'limit'=>$limit,
+            'order'=>"title ASC",
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'view'=>empty($this->params['view']) ? null : $this->params['view'],
+            'columns'=>array(
+                gt('Event')=>'title',
+                gt('Date')=>'eventdate',
+                gt('Seats')=>'quantity'
             ),
         ));
+        assign_to_template(array(
+            'page'=> $page
+        ));
+    }
+
+    function eventsCalendar() {
+        global $db, $user;
+
+        expHistory::set('viewable', $this->params);
+
+        $time = isset($this->params['time']) ? $this->params['time'] : time();
+        assign_to_template(array(
+            'time' => $time
+        ));
+
+//        $monthly = array();
+//        $counts  = array();
+
+        $info = getdate($time);
+        $nowinfo = getdate(time());
+        if ($info['mon'] != $nowinfo['mon']) $nowinfo['mday'] = -10;
+        // Grab non-day numbers only (before end of month)
+//        $week        = 0;
+        $currentweek = -1;
+
+        $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
+        $week = intval(date('W', $timefirst));
+        if ($week >= 52 && $info['mon'] == 1) $week = 1;
+        $infofirst = getdate($timefirst);
+
+//        if ($infofirst['wday'] == 0) {
+//            $monthly[$week] = array(); // initialize for non days
+//            $counts[$week]  = array();
+//        }
+//        for ($i = 1 - $infofirst['wday']; $i < 1; $i++) {
+//            $monthly[$week][$i] = array();
+//            $counts[$week][$i]  = -1;
+//        }
+//        $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
+        $monthly[$week] = array(); // initialize for non days
+        $counts[$week] = array();
+        if (($infofirst['wday'] == 0) && (DISPLAY_START_OF_WEEK == 1)) {
+            for ($i = -6; $i < (1 - DISPLAY_START_OF_WEEK); $i++) {
+                $monthly[$week][$i] = array();
+                $counts[$week][$i] = -1;
+            }
+            $weekday = $infofirst['wday'] + 7; // day number in grid.  if 7+, switch weeks
+        } else {
+            for ($i = 1 - $infofirst['wday']; $i < (1 - DISPLAY_START_OF_WEEK); $i++) {
+                $monthly[$week][$i] = array();
+                $counts[$week][$i] = -1;
+            }
+            $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
+        }
+        // Grab day counts
+        $endofmonth = date('t', $time);
+
+        for ($i = 1; $i <= $endofmonth; $i++) {
+            $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
+            if ($i == $nowinfo['mday']) $currentweek = $week;
+
+//            $dates              = $db->selectObjects("eventregistration", "`eventdate` = $start");
+//            $dates = $db->selectObjects("eventregistration", "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
+            $er = new eventregistration();
+//            $dates = $er->find('all', "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
+
+            if ($user->isAdmin()) {
+                $events = $er->find('all', 'product_type="eventregistration"', "title ASC");
+            } else {
+                $events = $er->find('all', 'product_type="eventregistration" && active_type=0', "title ASC");
+            }
+            $dates = array();
+
+            foreach ($events as $event) {
+                // $this->signup_cutoff > time()
+                if ($event->eventdate >= expDateTime::startOfDayTimestamp($start) && $event->eventdate <= expDateTime::endOfDayTimestamp($start)) {
+                    $dates[] = $event;
+                }
+                // eDebug($event->signup_cutoff, true);
+            }
+
+            $monthly[$week][$i] = self::getEventsForDates($dates);
+            $counts[$week][$i] = count($monthly[$week][$i]);
+            if ($weekday >= (6 + DISPLAY_START_OF_WEEK)) {
+                $week++;
+                $monthly[$week] = array(); // allocate an array for the next week
+                $counts[$week] = array();
+                $weekday = DISPLAY_START_OF_WEEK;
+            } else $weekday++;
+        }
+        // Grab non-day numbers only (after end of month)
+        for ($i = 1; $weekday && $i < (8 + DISPLAY_START_OF_WEEK - $weekday); $i++) {
+            $monthly[$week][$i + $endofmonth] = array();
+            $counts[$week][$i + $endofmonth] = -1;
+        }
+
+        assign_to_template(array(
+            'currentweek' => $currentweek,
+            'monthly'     => $monthly,
+            'counts'      => $counts,
+            "prevmonth3"  => strtotime('-3 months', $timefirst),
+            "prevmonth2"  => strtotime('-2 months', $timefirst),
+            "prevmonth"   => strtotime('-1 months', $timefirst),
+            "nextmonth"   => strtotime('+1 months', $timefirst),
+            "nextmonth2"  => strtotime('+2 months', $timefirst),
+            "nextmonth3"  => strtotime('+3 months', $timefirst),
+            'now'         => $timefirst,
+            "today"       => expDateTime::startOfDayTimestamp(time())
+        ));
+    }
+
+    function upcomingEvents() {
+        $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
+        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
+        $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
+
+        $limit = empty($this->config['event_limit']) ? 10 : $this->config['event_limit'];
+        $order = 'event_starttime';
+        $dir = 'ASC';
+
+        $page = new expPaginator(array(
+            'model_field' => 'product_type',
+            'sql'         => $sql,
+            'limit'       => $limit,
+            'order'       => $order,
+            'dir'         => $dir,
+            'page'        => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'  => $this->params['controller'],
+            'action'      => $this->params['action'],
+            'columns'     => array(
+                gt('Model #')      => 'model',
+                gt('Product Name') => 'title',
+                gt('Price')        => 'base_price'
+            ),
+        ));
+
         assign_to_template(array(
             'page' => $page
         ));
@@ -115,7 +253,7 @@ class eventregistrationController extends expController {
         if ($user->isAdmin()) {
             $pass_events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
         } else {
-            $events = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
+            $events      = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
             $pass_events = array();
 
             foreach ($events as $event) {
@@ -132,22 +270,22 @@ class eventregistrationController extends expController {
         // uasort($pass_events,'compare');
         //eDebug($this->config['limit'], true);
         $page = new expPaginator(array(
-            'records'    => $pass_events,
-            'limit'      => $limit,
-            'order'      => "title ASC",
-            'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-            'controller' => $this->params['controller'],
-            'action'     => $this->params['action'],
-            'src'        => $this->loc->src,
-            'view'       => empty($this->params['view']) ? null : $this->params['view'],
-            'columns'    => array(
-                gt('Event') => 'title',
-                gt('Date')  => 'eventdate',
-                gt('Seats') => 'quantity'
+            'records'=>$pass_events,
+            'limit'=>$limit,
+            'order'=>"title ASC",
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->params['controller'],
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'view'=>empty($this->params['view']) ? null : $this->params['view'],
+            'columns'=>array(
+                gt('Event')=>'title',
+                gt('Date')=>'eventdate',
+                gt('Seats')=>'quantity'
             ),
         ));
         assign_to_template(array(
-            'page' => $page
+            'page'=> $page
         ));
     }
 
@@ -158,15 +296,15 @@ class eventregistrationController extends expController {
         // figure out what metadata to pass back based on the action we are in.
 //        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+        $metainfo = array('title'=> '', 'keywords'=> '', 'description'=> '');
         switch ($action) {
             case 'donate':
-                $metainfo['title'] = 'Make a eventregistration';
-                $metainfo['keywords'] = 'donate online';
+                $metainfo['title']       = 'Make a eventregistration';
+                $metainfo['keywords']    = 'donate online';
                 $metainfo['description'] = "Make a eventregistration";
                 break;
             default:
-                $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION);
+                $metainfo = array('title'=> $this->displayname() . " - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION);
         }
 
         return $metainfo;
@@ -189,27 +327,20 @@ class eventregistrationController extends expController {
         $product = new eventregistration($id);
 
         //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
-//        $product_type = new stdClass();
-//        if ($product->active_type == 1) {
-//            $product_type->user_message = "This product is temporarily unavailable for purchase.";
-//        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
-//            flash("error", $product->title . " " . gt("is currently unavailable."));
-//            expHistory::back();
-//        } elseif ($product->active_type == 2 && $user->isAdmin()) {
-//            $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
-//        }
-
-        $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $product->id);
-        $order_registrations = array();
-        if (!empty($registrants)) foreach ($registrants as $registrant) {
-            $order_registrations[] = expUnserialize($registrant->value);
+        $product_type = new stdClass();
+        if ($product->active_type == 1) {
+            $product_type->user_message = "This product is temporarily unavailable for purchase.";
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
+            flash("error", $product->title . " " . gt("is currently unavailable."));
+            expHistory::back();
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
+            $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
         }
 
         //eDebug($product, true);
         assign_to_template(array(
-            'product'    => $product,
-            'record'     => $record,
-            'registered' => $order_registrations,
+            'product'=> $product,
+            'record'=> $record
         ));
     }
 
@@ -236,8 +367,8 @@ class eventregistrationController extends expController {
 
         //eDebug($product, true);
         assign_to_template(array(
-            'product' => $product,
-            'record'  => $record
+            'product'=> $product,
+            'record'=> $record
         ));
     }
 
@@ -255,18 +386,18 @@ class eventregistrationController extends expController {
         expHistory::set('viewable', $this->params);
         expSession::set('last_POST_Paypal', $this->params);
         expSession::set('terms_and_conditions', $product->terms_and_condition); //FIXME $product doesn't exist
-        expSession::set('paypal_link', makeLink(array('controller' => 'eventregistration', 'action' => 'show', 'title' => $product->sef_url)));
+        expSession::set('paypal_link', makeLink(array('controller'=> 'eventregistration', 'action'=> 'show', 'title'=> $product->sef_url)));
 
         //Validation for customValidation
         foreach ($this->params['event'] as $key => $value) {
-            $expField = $db->selectObject("expDefinableFields", "name = '{$key}'");
+            $expField     = $db->selectObject("expDefinableFields", "name = '{$key}'");
             $expFieldData = expUnserialize($expField->data);
             if (!empty($expFieldData->customvalidation)) {
 
                 $customValidation = "is_valid_" . $expFieldData->customvalidation;
-                $fieldname = $expField->name;
-                $obj = new stdClass();
-                $obj->$fieldname = $value;
+                $fieldname        = $expField->name;
+                $obj              = new stdClass();
+                $obj->$fieldname  = $value;
                 if ($fieldname == "email") { //Change this to much more loose coding
                     $ret = expValidator::$customValidation($fieldname, $this->params['event']['email'], $this->params['event']['email_confirm']);
                 } else {
@@ -293,43 +424,43 @@ class eventregistrationController extends expController {
         }
 
 //        if (!empty($this->params['event'])) {
-        $sess_id = session_id();
+            $sess_id = session_id();
 //            $sess_id = expSession::getTicketString();
-        $data = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
-        if (!empty($data)) {
-            foreach ($data as $item) {
-                if (!empty($this->params['event'][$item->control_name])) {
-                    $item->value = $this->params['event'][$item->control_name];
-                    $db->updateObject($item, "eventregistration_registrants");
+            $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
+            if (!empty($data)) {
+                foreach ($data as $item) {
+                    if (!empty($this->params['event'][$item->control_name])) {
+                        $item->value = $this->params['event'][$item->control_name];
+                        $db->updateObject($item, "eventregistration_registrants");
+                    }
+                }
+            } else {
+                if (!empty($this->params['event'])) foreach ($this->params['event'] as $key => $value) {
+                    $obj                  = new stdClass();
+                    $obj->event_id        = $this->params['eventregistration']['product_id'];
+                    $obj->control_name    = $key;
+                    $obj->value           = $value;
+                    $obj->connector_id    = $order->id;
+                    $obj->registered_date = time();
+                    $db->insertObject($obj, "eventregistration_registrants");
+                } else {
+                    $obj                  = new stdClass();
+                    $obj->event_id        = $this->params['eventregistration']['product_id'];
+                    $obj->connector_id    = $order->id;
+                    $obj->registered_date = time();
+                    $db->insertObject($obj, "eventregistration_registrants");
                 }
             }
-        } else {
-            if (!empty($this->params['event'])) foreach ($this->params['event'] as $key => $value) {
-                $obj = new stdClass();
-                $obj->event_id = $this->params['eventregistration']['product_id'];
-                $obj->control_name = $key;
-                $obj->value = $value;
-                $obj->connector_id = $order->id;
-                $obj->registered_date = time();
-                $db->insertObject($obj, "eventregistration_registrants");
-            } else {
-                $obj = new stdClass();
-                $obj->event_id = $this->params['eventregistration']['product_id'];
-                $obj->connector_id = $order->id;
-                $obj->registered_date = time();
-                $db->insertObject($obj, "eventregistration_registrants");
-            }
-        }
-        expSession::set('session_id', $sess_id);
+            expSession::set('session_id', $sess_id);
 //        }
 
         //Add to Cart
-        $product_id = $this->params['eventregistration']['product_id'];
+        $product_id   = $this->params['eventregistration']['product_id'];
         $product_type = "eventregistration";
-        $product = new $product_type($product_id, true, true);
+        $product      = new $product_type($product_id, true, true);
 
         if ($this->params['options']) {
-            $this->params['eventregistration']['options'] = $this->params['options'];
+            $this->params['eventregistration']['options']          = $this->params['options'];
             $this->params['eventregistration']['options_quantity'] = $this->params['options_quantity'];
             $product->addToCart($this->params['eventregistration']);
         } else {
@@ -342,8 +473,8 @@ class eventregistrationController extends expController {
         $order->calculateGrandTotal();
 
         $billing = new billing();
-        $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order); //FIXME $opts doesn't exist
-        redirect_to(array('controller' => 'cart', 'action' => 'preprocess'));
+        $result  = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order); //FIXME $opts doesn't exist
+        redirect_to(array('controller'=> 'cart', 'action'=> 'preprocess'));
     }
 
     function delete() {
@@ -803,9 +934,9 @@ class eventregistrationController extends expController {
      *
      * @return array
      */
-    static function getEventsForDates($startdate, $enddate, $color = "#FFFFFF") {
+    static function getRegEventsForDates($startdate, $enddate, $color="#FFFFFF") {
         $er = new eventregistration();
-        $events = $er->find('all', 'product_type="eventregistration" && active_type=0');
+        $events      = $er->find('all', 'product_type="eventregistration" && active_type=0');
         $pass_events = array();
         foreach ($events as $event) {
             if ($event->eventdate >= $startdate && $event->eventdate <= $enddate) {
@@ -815,7 +946,7 @@ class eventregistrationController extends expController {
                 $newevent->eventstart = $event->event_starttime + $event->eventdate;
                 $newevent->eventend = $event->event_endtime + $event->eventdate;
                 $newevent->title = $event->title;
-                $newevent->body = $event->body;
+                $newevent->body  = $event->body;
                 $newevent->location_data = 'eventregistration';
                 $newevent->color = $color;
                 $newevent->expFile = $event->expFile['mainimage'];
@@ -825,13 +956,61 @@ class eventregistrationController extends expController {
         return $pass_events;
     }
 
+        /*
+    * Helper function for the Calendar view
+    */
+    function getEventsForDates($edates, $sort_asc = true) {
+        global $db;
+        $events = array();
+        foreach ($edates as $edate) {
+//            if (!isset($this->params['cat'])) {
+//                if (isset($this->params['title']) && is_string($this->params['title'])) {
+//                    $default_id = $db->selectValue('storeCategories', 'id', "sef_url='" . $this->params['title'] . "'");
+//                } elseif (!empty($this->config['category'])) {
+//                    $default_id = $this->config['category'];
+//                } elseif (ecomconfig::getConfig('show_first_category')) {
+//                    $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+//                } else {
+//                    $default_id = 0;
+//                }
+//            }
+//
+//            $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
+//
+//            $category = new storeCategory($parent);
+
+            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
+//            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
+            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
+            $sql .= 'WHERE 1 ';
+//            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
+//            if ($category->hide_closed_events) {
+//                $sql .= ' AND er.signup_cutoff > ' . time();
+//            }
+//            $sql .= ' AND er.id = ' . $edate->id;
+            $sql .= ' AND er.id = ' . $edate->product_type_id;
+
+            $order = 'event_starttime';
+            $dir = 'ASC';
+
+            $o = $db->selectObjectBySql($sql);
+            $o->eventdate = $edate->eventdate;
+            $o->eventstart = $edate->event_starttime + $edate->eventdate;
+            $o->eventend = $edate->event_endtime + $edate->eventdate;
+            $o->expFile = $edate->expFile;
+            $events[] = $o;
+        }
+        $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventstart', 'order' => $sort_asc ? 'ASC' : 'DESC'));
+        return $events;
+    }
+
     // create a pseudo global view_registrants permission
-    public static function checkPermissions($permission, $location) {
+    public static function checkPermissions($permission,$location) {
         global $exponent_permissions_r, $user, $db, $router;
 
         // only applies to the 'view_registrants' method
         if (empty($location->src) && empty($location->int) && $router->params['action'] == 'view_registrants') {
-            if (!empty($exponent_permissions_r['eventregistrationController'])) foreach ($exponent_permissions_r['eventregistrationController'] as $page) {
+            if (!empty($exponent_permissions_r['eventregistration'])) foreach ($exponent_permissions_r['eventregistration'] as $page) {
                 foreach ($page as $pageperm) {
                     if (!empty($pageperm['view_registrants']) || !empty($pageperm['manage'])) return true;
                 }

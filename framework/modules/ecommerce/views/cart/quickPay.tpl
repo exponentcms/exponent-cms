@@ -64,13 +64,6 @@
                    <div class="loadingdiv">{'Loading'|gettext}</div>
                </div>
             </div>
-                               </div>
-                           {/foreach}
-                       </div>
-                   </div>
-                   <div class="loadingdiv">{'Loading'|gettext}</div>
-               </div>
-            </div>
         {/if} {** END IF $product->requiredBilling **}
 
         {if $order->shipping_required == true}

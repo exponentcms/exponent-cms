@@ -28,7 +28,7 @@ class giftcard extends expRecord {
 
     public $product_name = 'Gift Card';
     public $product_type = 'giftcard';
-    public $requiresShipping = true;
+    public $requiresShipping =true; 
 	public $requiresBilling = true; 
     public $isQuantityAdjustable = true;
     

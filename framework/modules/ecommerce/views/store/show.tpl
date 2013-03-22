@@ -99,25 +99,25 @@
         {if $config.enable_lightbox}
             {script unique="thumbswap-shadowbox" yui3mods=1}
             {literal}
-                EXPONENT.YUI3_CONFIG.modules = {
-                           'gallery-lightbox' : {
-                               fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-                               requires : ['base','node','anim','selector-css3']
-                           }
-                     }
+            EXPONENT.YUI3_CONFIG.modules = {
+                       'gallery-lightbox' : {
+                           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+                           requires : ['base','node','anim','selector-css3']
+                       }
+                 }
 
-                YUI(EXPONENT.YUI3_CONFIG).use('node-event-simulate','gallery-lightbox', function(Y) {
-                    Y.Lightbox.init();
+            YUI(EXPONENT.YUI3_CONFIG).use('node-event-simulate','gallery-lightbox', function(Y) {
+                Y.Lightbox.init();
 
                     if (Y.one('#enlarged-image-link') != null) {
-                        Y.one('#enlarged-image-link').on('click',function(e){
-                           if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
-                              e.halt();
-                              e.currentTarget.removeAttribute('rel');
-                              Y.Lightbox.init();
-                              Y.one('.thumbnails ul li a').simulate('click');
-                           }
-                        });
+                Y.one('#enlarged-image-link').on('click',function(e){
+                   if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
+                      e.halt();
+                      e.currentTarget.removeAttribute('rel');
+                      Y.Lightbox.init();
+                      Y.one('.thumbnails ul li a').simulate('click');
+                   }
+                });
                     }
                         Y.one('#enlarged-image-link').on('click',function(e){
                            if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
@@ -129,30 +129,30 @@
                         });
                     }
 
-                    // Shadowbox.init({
-                    //     modal: true,
-                    //     overlayOpacity: 0.8,
-                    //     continuous: true
-                    // });
-                    //
-                    // var mainimg = Y.one('#main-image');
-                    // if (!Y.Lang.isNull(mainimg)) {
-                    //     mainimg.on('click',function(e){
-                    //         e.halt();
-                    //         var content = Shadowbox.cache[1].content;
-                    //         Shadowbox.open ({
-                    //                         content: content,
-                    //                         player: "img",
-                    //                         gallery: "images"
-                    //                         });
-                    //     })
-                    // };
-                });
+                // Shadowbox.init({
+                //     modal: true,
+                //     overlayOpacity: 0.8,
+                //     continuous: true
+                // });
+                //
+                // var mainimg = Y.one('#main-image');
+                // if (!Y.Lang.isNull(mainimg)) {
+                //     mainimg.on('click',function(e){
+                //         e.halt();
+                //         var content = Shadowbox.cache[1].content;
+                //         Shadowbox.open ({
+                //                         content: content,
+                //                         player: "img",
+                //                         gallery: "images"
+                //                         });
+                //     })
+                // };
+            });
             {/literal}
             {/script}
         {/if}
         {script unique="thumbswap-shadowbox2" yui3mods=1}
-        {literal}
+            {literal}
             YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 var thumbs = Y.all('.thumbnails li img.thumbnail');
                 var swatches = Y.all('.swatches li img.swatch');
@@ -171,8 +171,8 @@
                 swatches.on('click',swapimage);
 
             });
-        {/literal}
-        {/script}
+            {/literal}
+            {/script}
     </div>
     
     {*{if $product->childProduct|@count == 0}   *}
@@ -190,7 +190,7 @@
                                     {*<h4>{$og->title}</h4>*}
                                     {*{if $og->allow_multiple}*}
                                         {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}*}
-                                    {*{else}*}
+                                        {*{else}*}
                                         {*{if $og->required}*}
                                             {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}*}
                                         {*{else}*}
@@ -205,7 +205,7 @@
 
                 {*<div class="add-to-cart-btn">*}
                     {*{if $product->availability_type == 0 && $product->active_type == 0}*}
-                        {*<input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">*}
+                            {*<input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">*}
                         {*<button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" rel="nofollow">*}
                             {*{"Add to Cart"|gettext}*}
                         {*</button>*}
@@ -414,16 +414,16 @@
      {/if}   
 
     {clear}
-    {permissions}
+        {permissions}
         <div class="item-actions">
             {if $permissions.edit == 1}
                 <a href="{link controller=store action=edit parent_id=$product->id product_type='childProduct'}" class="add">{'Add Child Product'|gettext}</a>
             {/if}
             {if $product->childProduct|@count >= 1 && $permissions.delete == 1}
-               {icon class=delete action=deleteChildren record=$product text="Delete All Child Products"|gettext title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}
-           {/if}
+                {icon class=delete action=deleteChildren record=$product text="Delete All Child Products"|gettext title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}
+            {/if}
         </div>
-    {/permissions}
+        {/permissions}
     {if $product->childProduct|@count >= 1}
         <div id="child-products" class="exp-ecom-table">
             {form id="child-products-form" controller=cart action=addItem}

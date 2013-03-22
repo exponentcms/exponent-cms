@@ -114,17 +114,16 @@ class cartController extends expController {
                 } elseif (!$order->shipping_required) {
                     redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
                 } else {
-                    //expHistory::back();
-                    //eDebug(show_msg_queue(false),true);
-                    redirect_to(array('controller'=>'cart', 'action'=>'show'));
-                    //expHistory::lastNotEditable();
+                //expHistory::back();
+                //eDebug(show_msg_queue(false),true);
+                redirect_to(array('controller'=>'cart', 'action'=>'show'));
+                //expHistory::lastNotEditable();
                 }
             } else {
                 flash('message', gt("Added") . " " . $product->title . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
             }
-        } else {
-            //expHistory::back();
         }
+        expHistory::back();
     }
 
     function updateQuantity() {

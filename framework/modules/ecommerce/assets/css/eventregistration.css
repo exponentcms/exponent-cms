@@ -69,7 +69,7 @@ show view
 	padding-right: 5px;
     height: 80px;
     /*margin-bottom: 20px;*/
-    width: 360px;
+    width: 100%;
 }
 .seatStatus {
     clear: left;
@@ -78,7 +78,7 @@ show view
     line-height: 43px;
     padding: 10px;
     text-align: left;
-    width: 220px;
+    width: 60%;
     display: inline;
 }
 .seatAmount {
@@ -87,7 +87,7 @@ show view
     float: right;
     height: 60px;
     padding: 5px;
-    width: 100px;
+    width: 25%;
 }
 .seatCost {
     color: #CC0000;

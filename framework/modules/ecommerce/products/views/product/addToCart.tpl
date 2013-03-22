@@ -19,11 +19,11 @@
 {* eDebug var=$params *}
 {if isset($params.error)}
     <div id="msg-queue" class="common msg-queue">
-        <ul class="queue error"><li>{$params.error}</li></ul>
+    <ul class="queue error"><li>{$params.error}</li></ul>
     </div>
     {br}
     {/if}
-<div class="module cart add-to-cart">
+<div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
     {if $product->expFile.mainimage.0->id}
         {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
@@ -52,16 +52,16 @@
                     {if $og->hasEnabledOptions()}
                         <div class="option {cycle values="odd,even"}">
                             {if $og->allow_multiple}
-                                {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}
+                                {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
                             {else}
                                 {if $og->required}
                                     {*{$og->title}*}
-                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}
+                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}          
                                 {else}
-                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}
-                                {/if}
+                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}          
+                                {/if}                                           
                             {/if}
-                        </div>
+                        </div> 
                     {/if}
                 {/foreach}
                 <span style="font-variant:small-caps;">* {'Selection required'|gettext}.</span>

@@ -53,7 +53,7 @@
         {control type=tel name="address[phone]" label="*"|cat:"Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$record->phone}
         {*{control type="text" name="address[email]" label="*"|cat:"Email Address"|gettext value=$record->email}*}
         {control type=email name="address[email]" label="*"|cat:"Email Address"|gettext value=$record->email}
-
+       
         {control type=buttongroup submit="Save Address Change"|gettext cancel="Cancel"|gettext}
         
     {/form}

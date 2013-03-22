@@ -218,7 +218,7 @@ class eventController extends expController {
                 // added per Ignacio
                 //			$endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($this->loc, $startperiod, $next);
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($startperiod, $next, $regcolor);
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($startperiod, $next, $regcolor);
                 for ($i = 1; $i <= $totaldays; $i++) {
                     //                    $info = getdate($time);
                     //                    switch ($viewrange) {
@@ -284,7 +284,7 @@ class eventController extends expController {
                 // Grab day counts
                 $endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($this->loc, $timefirst, expDateTime::endOfMonthTimestamp($timefirst));
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $regcolor);
+                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $regcolor);
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
@@ -422,7 +422,7 @@ class eventController extends expController {
                         }
                     }
                     $items = array_merge($items, $extitem);
-                    if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getEventsForDates($begin, $end, $regcolor);
+                    if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
                     // we need to crunch these down
                     $regitem = array();
                     if (!empty($regitems)) foreach ($regitems as $key => $days) {

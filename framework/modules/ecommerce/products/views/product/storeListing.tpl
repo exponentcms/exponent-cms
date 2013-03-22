@@ -38,7 +38,7 @@
     <div class="prod-price"> 
         {if $listing->availability_type == 3}       
             {"Call for Price"|gettext}
-        {else}
+        {else}                   
             {if $listing->use_special_price}
                 {*<span class="regular-price on-sale">{currency_symbol}{$listing->base_price|number_format:2}</span>*}
                 <span class="regular-price on-sale">{$listing->base_price|currency}</span>

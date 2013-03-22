@@ -17,7 +17,7 @@
 {'To setup a PayPal Express Checkout account, visit'|gettext} <a href="https://www.paypal.com/webapps/mpp/merchant" target="_blank">https://www.paypal.com/webapps/mpp/merchant</a>
 </blockquote>
 <div id="paypal">
-    <div id="paypal-tabs" class="yui-navset exp-skin-tabview hide">
+    <div id="paypal-tabs" class="yui-navset exp-skin-tabview">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'PayPal Express Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
@@ -57,17 +57,24 @@
 	<div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="authtabs" yui3mods=1}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+{*{script unique="authtabs" yui3mods=1}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#paypal-tabs'});
-		Y.one('#paypal-tabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-    });
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#paypal-tabs'});*}
+		{*Y.one('#paypal-tabs').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+    {*});*}
+{*{/literal}*}
+{*{/script}*}
+
+{script unique="paypal-`$id`" jquery="jqueryui"}
+{literal}
+    $('#paypal-tabs').tabs().next().remove();
 {/literal}
 {/script}
+

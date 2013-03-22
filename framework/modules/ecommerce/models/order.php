@@ -128,8 +128,7 @@ class order extends expRecord {
 
         $sessAr = expSession::get('verify_shopper');
         // initialize this users cart if they have ecomm installed.
-//        $active = $db->selectValue('modstate', 'active', 'module="storeController"');
-        $active = $db->selectValue('modstate', 'active', 'module="store"');
+        $active = $db->selectValue('modstate', 'active', 'module="store"' || ECOM);
         if (!expModules::controllerExists('cart') || empty($active)) {
             // if ecomm is turned off, no cart.
             return null;
