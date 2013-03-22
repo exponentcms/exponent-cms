@@ -1244,7 +1244,9 @@ class eventController extends expController {
 
                             // dtstart required, one occurrence, (orig. start date)
                             $extevents[$eventdate][$dy]->title = $vevent->getProperty('summary');
-                            $body = nl2br(str_replace("\\n"," <br>\n",$vevent->getProperty('description')));
+                            $body = $vevent->getProperty('description');
+                            // convert end of lines
+                            $body = nl2br(str_replace("\\n"," <br>\n",$body));
                             $body = str_replace("\n"," <br>\n",$body);
                             $body = str_replace(array('==0A','=0A')," <br>\n",$body);
                             $extevents[$eventdate][$dy]->body = $body;
