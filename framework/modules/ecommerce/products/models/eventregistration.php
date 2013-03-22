@@ -38,6 +38,8 @@ class eventregistration extends expRecord {
     public $rank_by_field = 'rank';
     public $default_sort_direction = "asc";
 
+    public $early_discount_amount_modifiers = array('$'=>'$', '%'=>'%');
+
     protected $attachable_item_types = array(
 //        'content_expCats'=>'expCat',
 //        'content_expComments'=>'expComment',
@@ -85,6 +87,12 @@ class eventregistration extends expRecord {
             $event->require_terms_and_condition = !empty($params['require_terms_and_condition']) ? $params['require_terms_and_condition'] : false;
             $event->terms_and_condition_toggle = $params['terms_and_condition_toggle'];
             $event->num_guest_allowed = !empty($params['quantity']) ? $params['quantity'] : 0;
+
+//            $event->earlydiscountdate = datetimecontrol::parseData('earlydiscountdate', $params);
+//            $event->early_discount_amount = !empty($params['early_discount_amount']) ? $params['early_discount_amount'] : 0;
+//            $event->early_discount_amount_mod = $params['early_discount_amount_mod'];
+//            $event->use_early_price = !empty($params['use_early_price']) ? $params['use_early_price'] : false;
+
             $event->id = empty($product->product_type_id) ? null : $product->product_type_id;
 
             //Option Group Tab

@@ -21,7 +21,7 @@
 
 {/css}
 
-<div class="module store show event-registration">
+<div class="module store show event-registration product">
     <div class="image" style="padding:0px 10px 10px;float:left;overflow: hidden;">
     {if $product->expFile.mainimage[0]->url == ""}
         {img src="`$asset_path`images/no-image.jpg"}
@@ -33,7 +33,7 @@
 
     <div class="bd">
         <h2>{$product->eventdate|date_format:"%A, %B %e, %Y"}
-            {if (!empty($product->eventenddate) && $product->eventdate) != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|date_format:"%A, %B %e, %Y"}{/if}</h2>
+            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|date_format:"%A, %B %e, %Y"}{/if}</h2>
         <hr>
         <h3>{$product->title}</h3>
         {permissions}
@@ -76,10 +76,17 @@
                         {$seats = implode(',',range(1,$product->spacesLeft()))}
                             {control type=dropdown name=qtyr label="Select number of seats"|gettext items=$seats}
                     </div>
-                    <div class="seatAmount">
+                    <div class="seatAmount prod-price">
                         {if $product->base_price}
+                            {*{if $product->use_special_price}*}
+                                {*<span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>*}
+                                {*<span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&#160;<sup>{"SALE!"|gettext}</sup></span>*}
+                            {*{else}*}
+                                {*<span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>*}
+                            {*{/if}*}
                             <span class="seatCost">{currency_symbol}{$product->base_price}</span>{br}{'per seat'|gettext}
-                            {else}
+                            {*{br}{'per seat'|gettext}*}
+                        {else}
                             <span class="seatCost">{'No Cost'|gettext}</span>
                         {/if}
                     </div>

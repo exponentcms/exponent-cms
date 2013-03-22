@@ -73,14 +73,15 @@
             <table class="exp-skin-table">
                 <thead>
                     <tr>
-                        <th>{'Registrant Name:'|gettext}</th>
-                        <th>{'Registrant Email:'|gettext}</th>
-                        <th>{'Registrant Phone:'|gettext}</th>
+                        <th>{'Registrant Name'|gettext}</th>
+                        <th>{'Registrant Email'|gettext}</th>
+                        <th>{'Registrant Phone'|gettext}</th>
+                        <th>{'Actions'|gettext}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {if $registrants|count > 0}
-                        {foreach from=$registrants item=registrant}
+                        {foreach from=$registrants item=registrant key=id}
                             {*{get_user user=$user assign=registrant}*}
                             <tr class="{cycle values="odd,even"}">
                                 <td>{$registrant.name}</td>
@@ -89,11 +90,30 @@
                                     <a href="mailto:{$registrant.email}">{$registrant.email}</a>
                                 </td>
                                 <td>{$registrant.phone}</td>
+                                <td>
+                                    {permissions}
+                                        <div class="item-actions">
+                                            {if $permissions.edit == true}
+                                                {icon class=edit action=edit_registrant id=$id title='Edit this Registrant'|gettext}
+                                            {/if}
+                                            {if $permissions.delete == 1}
+                                                 {icon class="delete" action=delete_registrant id=$id title='Delete this Registrant'|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this registrant from the roster?"|gettext)|cat:"');"}
+                                            {/if}
+                                        </div>
+                                    {/permissions}
+                                </td>
                             </tr>
                         {/foreach}
+                        {permissions}
+                            <div class="module-actions">
+                                {if $permissions.create == true}
+                                    {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
+                                {/if}
+                            </div>
+                        {/permissions}
                     {else}
                         <tr class="{cycle values="odd,even"}">
-                            <td colspan="3">{'There is currently no one registered'|gettext}</td>
+                            <td colspan="4">{'There is currently no one registered'|gettext}</td>
                         </tr>
                     {/if}
                 </tbody>

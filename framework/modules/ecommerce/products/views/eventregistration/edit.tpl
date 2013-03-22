@@ -62,6 +62,54 @@
                 </div>
                 <div id="tab3">
                     {control type="text" name="base_price" label="Event Price"|gettext value=$record->base_price filter=money}
+                    {*{group label="General Pricing"|gettext}*}
+                        {*<table>*}
+                            {*<tr>*}
+                                {*<td>{control type="text" name="base_price" label="Base Price"|gettext value=$record->base_price filter=decimal}</td>*}
+                                {*<td>{control type="text" name="special_price" label="Special Price"|gettext value=$record->special_price filter=decimal}</td>*}
+                            {*</tr>*}
+                            {*<tr>*}
+                                {*<td colspan="2">{control type="checkbox" name="use_special_price" label="Use Special Price"|gettext value=1 checked=$record->use_special_price postfalse=1}</td>*}
+                            {*</tr>*}
+                        {*</table>*}
+                    {*{/group}*}
+                    {*{toggle unique="early-discount" title="Early Registration Discounts"|gettext collapsed=!$record->use_early_price}*}
+                        {*<blockquote>*}
+                            {*{'Early Registration discounts are discounts applied when a customer registers for this event before a specified date.'|gettext}*}
+                            {*{'You can configure how the discount works by setting the discount rules below.'|gettext}*}
+                        {*</blockquote>*}
+                        {*<table class="early-discount">*}
+                            {*<tr>*}
+                                {*<td colspan="3">{control type="checkbox" name="use_early_price" label="Use an Early Registration Discount"|gettext value=1 checked=$record->use_early_price postfalse=1}</td>*}
+                            {*</tr>*}
+                            {*<tr>*}
+                                {*<td colspan="3">{control type="yuicalendarcontrol" name="earlydiscountdate" label="If a customer registers before"|gettext value=$record->earlydiscountdate showtime = true}</td>*}
+                            {*<tr>*}
+                                {*<td>{'then discount the price by'|gettext}</td>*}
+                                {*<td>{control type="text" name="early_discount_amount" label=" " value=$record->early_discount_amount size=3 filter=decimal}</td>*}
+                                {*<td>{control type="dropdown" name="early_discount_amount_mod" label=" " items=$record->early_discount_amount_modifiers value=$record->early_discount_amount_mod}</td>*}
+                            {*</tr>*}
+                        {*</table>*}
+                    {*{/toggle}*}
+                    {*{toggle unique="quantity-discount" title="Quantity Discounts"|gettext collapsed=empty($record->quantity_discount_amount)}*}
+                        {*<blockquote>*}
+                            {*{'Quantity discounts are discounts applied when a customer registers a certain number of people for this event.'|gettext}{br}*}
+                            {*{'You can configure how the discounts work by setting the discount rules below.'|gettext}*}
+                        {*</blockquote>*}
+                        {*<table class="qty-discount">*}
+                            {*<tr>*}
+                                {*<td>{'If a customer registers more than'|gettext} </td>*}
+                                {*<!--td>{control type="dropdown" name="quantity_discount_num_items_mod" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->*}
+                                {*<td>{control type="text" name="quantity_discount_num_items" label=" " value=$record->quantity_discount_num_items size=3 filter=integer}</td>*}
+                                {*<td>{'people, then discount the price by'|gettext}</td>*}
+                                {*<td>{control type="text" name="quantity_discount_amount" label=" " value=$record->quantity_discount_amount size=3 filter=decimal}*}
+                                {*<td>{control type="dropdown" name="quantity_discount_amount_mod" label=" " items=$record->early_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>*}
+                            {*</tr>*}
+                            {*<tr>*}
+                                {*<td colspan="6">{control type="checkbox" name="quantity_discount_apply" label="Only apply discount to registrations over the discount limit"|gettext value=1 checked=$record->quantity_discount_apply postfalse=1}</td>*}
+                            {*</tr>*}
+                        {*</table>*}
+                    {*{/toggle}*}
                 </div>
                 <div id="tab4">
                     {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" value=$record->expFile description="Images to show for your event"|gettext}
