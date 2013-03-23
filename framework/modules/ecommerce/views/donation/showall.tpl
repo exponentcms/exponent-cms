@@ -26,6 +26,9 @@
    		{$config.moduledescription}
    	{/if}
     {$myloc=serialize($__loc)}
+    {if $config.quickadd}
+        {$quickadd = '1'}
+    {/if}
     <table>
         {foreach from=$causes item=cause}
             <tr>
@@ -35,7 +38,7 @@
                     {$cause->body}
                 </td>
                 <td>
-                    <a href="{link controller=cart action=addItem quick=1 product_type=$cause->product_type product_id=$cause->id}">{'Donate Now'|gettext}</a>
+                    <a href={link controller=cart action=addItem product_type=$cause->product_type product_id=$cause->id quick=$quickadd}>{'Donate'|gettext} {if $config.quickadd}{$cause->base_price|currency}{else}{'Now'|gettext}{/if}</a>
                 </td>
                 <td>
                     {permissions}

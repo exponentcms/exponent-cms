@@ -78,7 +78,7 @@ class filemanagercontrol extends formcontrol {
 
             YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io','SimpleAjaxUploader', function(Y) {
 
-                // console.log(ss);
+                // Y.log(ss);
 
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
@@ -320,7 +320,7 @@ class filemanagercontrol extends formcontrol {
                             j++;
                         }
                     })
-                    // console.log(ids);
+                    // Y.log(ids);
                 }
 
                 // callback function from open window

@@ -84,7 +84,7 @@ class cartController extends expController {
             }
         }
 
-        if ($product->product_type == "product" || $product->product_type == "childProduct") {
+        if (($product->product_type == "product" || $product->product_type == "childProduct"|| $product->product_type == "donation") && empty($this->params['quick'])) {
             if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown'] != $product->id)) {
 
                 // if we hit here it means this product type was missing some
@@ -109,16 +109,17 @@ class cartController extends expController {
         if ($product->addToCart($this->params)) {
             if (ecomconfig::getConfig('show_cart') || !empty($this->params['quick'])) {
                 global $order;
-                if (!$order->grand_total && !$order->shipping_required) {
-                    redirect_to(array('controller'=>'cart', 'action'=>'quickConfirm'));
-                } elseif (!$order->shipping_required) {
-                    redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
-                } else {
+//                $order->calculateGrandTotal();
+//                if (!$order->grand_total && !$order->shipping_required) {
+//                    redirect_to(array('controller'=>'cart', 'action'=>'quickConfirm'));
+//                } elseif (!$order->shipping_required) {
+//                    redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
+//                } else {
                 //expHistory::back();
                 //eDebug(show_msg_queue(false),true);
                 redirect_to(array('controller'=>'cart', 'action'=>'show'));
                 //expHistory::lastNotEditable();
-                }
+//                }
             } else {
                 flash('message', gt("Added") . " " . $product->title . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
             }

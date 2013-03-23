@@ -135,7 +135,6 @@ class giftcard extends expRecord {
 	}
 	
 	public function hasUserInputFields()  {
-      
 		return true;
     }
 	

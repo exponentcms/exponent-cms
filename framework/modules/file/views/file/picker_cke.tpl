@@ -70,7 +70,7 @@
     {/if}
 </div>
 
-    {*FIXME convert to yui3*}
+{*FIXME convert to yui3*}
 {script unique="picker"}
 {literal}
 // this.moveTo(1,1);

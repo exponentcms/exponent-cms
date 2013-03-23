@@ -33,7 +33,7 @@
             {$cartConfig.policy}
         </div>
     </div>
-    {*FIXME convert to yui3*}
+        {*FIXME convert to yui3*}
         {script unique="policypop" yui3mods=1}
             {literal}
             YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container', function(Y) {
@@ -110,9 +110,9 @@
                                 {if $discount->isShippingDiscount()}{$is_shipping_discount=true}{/if}
                             {/foreach}
                         </ul>
-                        {if $discounts|@count==1}{'This coupon is'|gettext} {else}{'These coupons are'|gettext} {/if} {'saving you'|gettext} {currency_symbol}
-                        {if $discounts[0]->isCartDiscount()}{$order->total_discounts|number_format:2}.
-                            {else} {$order->shippingDiscount|number_format:2}.
+                        {if $discounts|@count==1}{'This coupon is'|gettext} {else}{'These coupons are'|gettext} {/if} {'saving you'|gettext}
+                        {if $discounts[0]->isCartDiscount()}{$order->total_discounts|currency}.
+                            {else} {$order->shippingDiscount|currency}.
                         {/if}
                     </div>
                 {/if}

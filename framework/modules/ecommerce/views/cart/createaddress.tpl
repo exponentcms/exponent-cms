@@ -17,7 +17,7 @@
 	{form name=setaddy action="setAddress" ajax=true}
         {foreach from=$addresses item=addy name=addresses}
             <div class="address">
-     {*FIXME convert to yui3*}
+{*FIXME convert to yui3*}
                 <a href="javascript:void(0)" onclick="YAHOO.util.Connect.asyncRequest('GET', 'http://adam/core/cart/setAddress/1');">{'Make this my shipping address'|gettext}</a>
                 {control type=radio flip=true name=shipping label="Ship to this address"|gettext value=$address->id}
                 <strong>{$addy->firstname} {$addy->middlename} {$addy->lastname}</strong>{br}

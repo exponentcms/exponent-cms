@@ -79,12 +79,12 @@
                     <div class="seatAmount prod-price">
                         {if $product->base_price}
                             {*{if $product->use_special_price}*}
-                                {*<span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>*}
-                                {*<span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&#160;<sup>{"SALE!"|gettext}</sup></span>*}
+                                {*<span class="regular-price on-sale">{$product->base_price|currency}</span>*}
+                                {*<span class="sale-price">{$product->special_price|currency}&#160;<sup>{"SALE!"|gettext}</sup></span>*}
                             {*{else}*}
-                                {*<span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>*}
+                                {*<span class="regular-price">{$product->base_price|currency}</span>*}
                             {*{/if}*}
-                            <span class="seatCost">{currency_symbol}{$product->base_price}</span>{br}{'per seat'|gettext}
+                            <span class="seatCost">{$product->base_price|currency}</span>{br}{'per seat'|gettext}
                             {*{br}{'per seat'|gettext}*}
                         {else}
                             <span class="seatCost">{'No Cost'|gettext}</span>

@@ -75,6 +75,7 @@
     </div>
 </div>
 
+{*FIXME convert to yui3*}
 {script unique="discountedit" yui3mods=1}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
@@ -82,7 +83,6 @@
         requires: ['history','tabview','event-custom']
     };
 
-    {*FIXME convert to yui3*}
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element','exptabs', function(Y) {
         var YAHOO=Y.YUI2;
         Y.expTabs({srcNode: '#discounttabs'});

@@ -130,7 +130,7 @@ class product extends expRecord {
     }
         
     function getDefaultQuantity() {
-		//TMP: Make this actually do something.
+		//FIXME Make this actually do something.
 		return 1;
 	}
 

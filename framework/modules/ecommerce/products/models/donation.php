@@ -123,6 +123,11 @@ class donation extends product {
 		    return true;
 //	    }
 	}
+
+    public function hasUserInputFields()  {
+   	    return true;
+    }
+
 }
 
 ?>

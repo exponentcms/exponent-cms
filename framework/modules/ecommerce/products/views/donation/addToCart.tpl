@@ -15,10 +15,11 @@
 
 <div class="module cart module addToCart">
     <h1>{$moduletitle|default:"Online Donation - Select Amount"|gettext}</h1>
-    <p>{'Minimum donation amount is'|gettext} {currency_symbol}{$product->base_price}.00 {'increments'|gettext}.</p>
+    <p>{'Minimum donation amount is'|gettext} {$product->base_price|currency}.</p>
     {form name=donationamt controller=cart action="addItem"}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}
+        {control type="hidden" name="options_shown" value=$params.product_id}
         {control type="hidden" name="quick" value=1}
         {control type="text" name="dollar_amount" label="Dollar Amount:"|gettext value=$record->dollar_amount size=7 filter=money}
         {*control type="buttongroup" name="add2cart" submit="Pay now"*}
@@ -27,7 +28,7 @@
     <a id="continue" class="rc-link" href="{link controller=cart action=addItem}">{'Add to cart and continue shopping'|gettext}<span></span></a>
 </div>
 
-    {*FIXME convert to yui3*}
+{*FIXME convert to yui3*}
 {script unique="a2cgc" yui3mods=1}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
@@ -51,7 +52,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
             //Y.log(this.value);
             var newint = parseInt(this.value.replace('$',"").replace(',',""));
             if (newint < bp) {
-                this.value = {/literal}{currency_symbol}{literal}+bp+".00";
+                this.value = '{/literal}{currency_symbol}{literal}'+bp+".00";
             }
         }, da, true);
     });
