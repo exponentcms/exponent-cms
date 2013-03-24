@@ -191,15 +191,13 @@
                                 <div class="more-text" style="height: 0px;">
                                     {$product->terms_and_condition}
                                 </div>
-                                {else}
+                            {else}
                                 {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following Waiver"|gettext required=1}
                                 <div class="more-text" style="height: auto;">
                                     {$product->terms_and_condition}
                                 </div>
                             {/if}
                         </div>
-                        {else}
-                        <div class="more-text" style="height: 0px;"></div>
                     {/if}
                     <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
                             style="margin: 20px auto; display: block;" rel="nofollow">
@@ -222,17 +220,18 @@
 {literal}
     YUI().use("anim-easing","node","anim","io", function(Y) {
         // This is for the terms and condition toogle
-        var content = Y.one('.more-text').plug(Y.Plugin.NodeFX, {
-            to: { height: 0 },
-            from: {
-            height: function(node) { // dynamic in case of change
-                return node.get('scrollHeight'); // get expanded height (offsetHeight may be zero)
-            }
-        },
-
-        easing: Y.Easing.easeOut,
-        duration: 0.5
-    });
+        if (Y.one('.more-text') != null) {
+            var content = Y.one('.more-text').plug(Y.Plugin.NodeFX, {
+                    to: { height: 0 },
+                    from: {
+                    height: function(node) { // dynamic in case of change
+                        return node.get('scrollHeight'); // get expanded height (offsetHeight may be zero)
+                    }
+                },
+                easing: Y.Easing.easeOut,
+                duration: 0.5
+            });
+        }
 
         var onClick = function(e) {
             e.halt();
@@ -285,28 +284,30 @@
             }
         }
 
-        Y.one('#qtyr').on('change', function(e) {
-            var numAsked = e.target.get('value') * 1; // because it is a string and I want a number
-            var table = document.getElementById('reg');
-            var change = numAsked - table.rows.length + 1;
-            if (change == 0) {
-                return;
-            }
-            if (change < 0) {
-                // remove extra lines
-                for (var i=change; i<=-1; i++) {
-                    deleteRow('reg')
+        if (Y.one('#qtyr') != null) {
+            Y.one('#qtyr').on('change', function(e) {
+                var numAsked = e.target.get('value') * 1; // because it is a string and I want a number
+                var table = document.getElementById('reg');
+                var change = numAsked - table.rows.length + 1;
+                if (change == 0) {
+                    return;
                 }
-                return;
-            }
-            if (change > 0) {
-                // build new lines
-                for (var i=1; i<=change; i++) {
-                    addRow('reg');
+                if (change < 0) {
+                    // remove extra lines
+                    for (var i=change; i<=-1; i++) {
+                        deleteRow('reg')
+                    }
+                    return;
                 }
-                return;
-            }
-        });
+                if (change > 0) {
+                    // build new lines
+                    for (var i=1; i<=change; i++) {
+                        addRow('reg');
+                    }
+                    return;
+                }
+            });
+        }
     });
 {/literal}
 {/script}
