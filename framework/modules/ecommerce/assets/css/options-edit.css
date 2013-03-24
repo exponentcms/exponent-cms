@@ -45,7 +45,7 @@
 }
 
 .options-partial *:focus {
-    display:block;
+    /*display:block;*/
 }
 
 .options-partial .hd h2 {

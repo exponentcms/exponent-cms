@@ -337,10 +337,17 @@ class eventregistrationController extends expController {
             $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
         }
 
+        $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $product->id);
+        $order_registrations = array();
+        if (!empty($registrants)) foreach ($registrants as $registrant) {
+            $order_registrations[] = expUnserialize($registrant->value);
+        }
+
         //eDebug($product, true);
         assign_to_template(array(
             'product'=> $product,
-            'record'=> $record
+            'record'=> $record,
+            'registered' => $order_registrations,
         ));
     }
 

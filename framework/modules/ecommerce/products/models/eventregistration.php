@@ -168,6 +168,13 @@ class eventregistration extends expRecord {
         }
     }
 
+    public function getSEFURL()
+    {
+        if (!empty($this->sef_url)) return $this->sef_url;
+        $parent = new product($this->parent_id, false, false);
+        return $parent->sef_url;
+    }
+
     public function hasOptions() {
         // eDebug($this, true);
         foreach ($this->optiongroup as $og) {
@@ -235,21 +242,18 @@ class eventregistration extends expRecord {
         $view->assign('product', $this);
         $view->assign('item', $item);
 
+        // grab the options
+        $options = expUnserialize($item->options);
+	    $view->assign('options', $options);
+
         // grab all the registrants
         $registrants = expUnserialize($item->extra_data);
+        $view->assign('registrants', $registrants);
 
         //assign the number registered to the view
-//        $number = count($registrants);
-        $number = $item->quantity;
+        $number = count($registrants);
         $view->assign('number', $number);
 
-        // assign the list of names to the view.
-        $people = '';
-        foreach ($registrants as $reg) {
-            $people .= $reg['name'] . ', ';
-        }
-        $people = substr($people, 0, -2);
-        $view->assign('people', $people);
         return $view->render('cartSummary');
     }
 
@@ -407,14 +411,18 @@ class eventregistration extends expRecord {
         expSession::set('session_id', $sess_id);
 //        }
 
-        $item = new orderitem($params);
+//        $item = new orderitem($params);
+        // if the item is in the cart already use it, if not we'll create a new one
+        $item = $order->isItemInCart($params['product_id'], $params['product_type']);
+        if (empty($item->id)) $item = new orderitem($params);
         $item->extra_data = serialize($params['event']);
 
         $product = new eventregistration($params['product_id']);
         $item->products_name = $product->title . " - " . date("F d, Y", $product->eventdate);
 
         $options = array();
-        $price = 0;
+//        $price = 0;
+        $price = $product->base_price;
         foreach ($this->optiongroup as $og) {
             $isOptionEmpty = true;
             if (!empty($params['options'][$og->id])) {
@@ -443,12 +451,13 @@ class eventregistration extends expRecord {
         // eDebug($options, true);
         // we need to unset the orderitem's ID to force a new entry..other wise we will overwrite any
         // other giftcards in the cart already
-        $item->id = null;
+//        $item->id = null;
         if (!empty($params['options_quantity'])) {
-            $quantity = 1;
+//            $quantity = 1;
+            $quantity = $params['qtyr'];
             $item->quantity = $quantity;
             $item->products_price = $price;
-        } else {
+        } else {  // no options selected
             if (empty($params['qtyr'])) {
                 $params['qtyr'] = 1;
             }
@@ -506,6 +515,9 @@ class eventregistration extends expRecord {
     }
 
     public function removeItem($item) {
+        global $db;
+
+        $db->delete("eventregistration_registrants", "connector_id ='{$item->orders_id}' AND event_id =" . $item->product_id);
         return true;
     }
 

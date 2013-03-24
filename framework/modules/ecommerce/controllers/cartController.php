@@ -121,7 +121,14 @@ class cartController extends expController {
                 //expHistory::lastNotEditable();
 //                }
             } else {
-                flash('message', gt("Added") . " " . $product->title . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
+                if ($product->product_type == "donation") {
+                    $type = ' '.gt('Donation');
+                } elseif ($product->product_type == "eventregistration") {
+                    $type = ' '.gt('Event');
+                } else {
+                    $type = '';
+                }
+                flash('message', gt("Added") . " " . $product->title . $type . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
             }
         }
         expHistory::back();

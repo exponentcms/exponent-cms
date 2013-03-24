@@ -74,7 +74,7 @@
                 <div class="seatsContainer">
                     <div class="seatStatus">
                         {$seats = implode(',',range(1,$product->spacesLeft()))}
-                            {control type=dropdown name=qtyr label="Select number of seats"|gettext items=$seats}
+                            {control type=dropdown name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
                     </div>
                     <div class="seatAmount prod-price">
                         {if $product->base_price}
@@ -133,55 +133,76 @@
                         <th>
                             <span>{'Email'|gettext}</span>
                         </th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <span>{'Seat'|gettext} 1</span>
-                            </td>
-                            <td>
-                                <input name="event[0][name]" type="text" required=1/>
-                            </td>
-                            <td>
-                                <input name="event[0][phone]" type="text" />
-                            </td>
-                            <td>
-                                <input name="event[0][email]" type="text" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                {if $product->require_terms_and_condition}
-                    <div class="terms_and_conditions">
-                        {if $product->terms_and_condition_toggle}
+                        </thead>
+                        <tbody>
+                            {if empty($registered)}
+                                <tr>
+                                    <td>
+                                        <span>{'Seat'|gettext} 1</span>
+                                    </td>
+                                    <td>
+                                        <input name="event[0][name]" type="text" required=1/>
+                                    </td>
+                                    <td>
+                                        {*<input name="event[0][phone]" type="text"/>*}
+                                        <input name="event[0][phone]" type=tel/>
+                                    </td>
+                                    <td>
+                                        {*<input name="event[0][email]" type="text"/>*}
+                                        <input name="event[0][email]" type=email/>
+                                    </td>
+                                </tr>
+                            {else}
+                                {foreach $registered as $registrant}
+                                    <tr>
+                                        <td>
+                                            <span>{'Seat'|gettext} {$registrant@iteration}</span>
+                                        </td>
+                                        <td>
+                                            <input name="event[{$registrant@iteration-1}][name]" type="text" required=1 value="{$registrant.name}"/>
+                                        </td>
+                                        <td>
+                                            {*<input name="event[{$registrant@iteration-1}][phone]" type="text" value="{$registrant.phone}"/>*}
+                                            <input name="event[{$registrant@iteration-1}][phone]" type=tel value="{$registrant.phone}"/>
+                                        </td>
+                                        <td>
+                                            {*<input name="event[{$registrant@iteration-1}][email]" type="text" value="{$registrant.email}"/>*}
+                                            <input name="event[{$registrant@iteration-1}][email]" type=email value="{$registrant.email}"/>
+                                        </td>
+                                    </tr>
+                                {/foreach}
+                            {/if}
+                        </tbody>
+                    </table>
+                    {if $product->require_terms_and_condition}
+                        <div class="terms_and_conditions">
+                            {if $product->terms_and_condition_toggle}
                             {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following <a class='toggle' href='javascript:;'>Waiver</a>" required=1}
-                            <div class="more-text" style="height: 0px;">
-                                {$product->terms_and_condition}
-                            </div>
+                                <div class="more-text" style="height: 0px;">
+                                    {$product->terms_and_condition}
+                                </div>
+                                {else}
+                                {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following Waiver"|gettext required=1}
+                                <div class="more-text" style="height: auto;">
+                                    {$product->terms_and_condition}
+                                </div>
+                            {/if}
+                        </div>
                         {else}
-                            {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following Waiver"|gettext required=1}
-                            <div class="more-text" style="height: auto;">
-                                {$product->terms_and_condition}
-                            </div>
-                        {/if}
-                    </div>
+                        <div class="more-text" style="height: 0px;"></div>
+                    {/if}
+                    <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
+                            style="margin: 20px auto; display: block;" rel="nofollow">
+                        {"Register Now"|gettext}
+                    </button>
                 {else}
-                    <div class="more-text" style="height: 0px;"></div>
+                    {if $product->spacesLeft()}
+                        <span class="label">{'Seats Available:'|gettext} </span>
+                        <span class="value"> {'None'|gettext}</span>{br}
+                    {/if}
+                    <span class="label">{'Registration is Closed!'|gettext}</span>
                 {/if}
-
-                <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
-                        style="margin: 20px auto; display: block;" rel="nofollow">
-                    {"Register Now"|gettext}
-                </button>
-            {else}
-                {if $product->spacesLeft()}
-                    <span class="label">{'Seats Available:'|gettext} </span><span
-                        class="value"> {'None'|gettext}</span>{br}
-                {/if}
-                <span class="label">{'Registration is Closed!'|gettext}</span>
-            {/if}
-        {/form}
+            {/form}
         </div>
     </div>
 {clear}

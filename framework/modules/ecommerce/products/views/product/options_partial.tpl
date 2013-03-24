@@ -41,7 +41,7 @@
                         </tr>
                         <tr class="column-label">
                             <th>{'Label'|gettext}</th>
-                            <th>{'Adjustment'|gettext}</th>
+                            <th>{'Adjust'|gettext}</th>
                             <th>{'Modifier'|gettext}</th>
                             <th>{'Amount'|gettext}</th>
                             <th>{'Default'|gettext}</th>
@@ -106,7 +106,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         var targrel = e.target.get("rel");
         if (Y.one('#'+targrel).getStyle('display')=="none") {
             if (Y.UA.ie > 0) {
-                Y.one('#'+targrel).setStyle('display', 'block');
+//                Y.one('#'+targrel).setStyle('display', 'block');
             } else {
                 Y.one('#'+targrel).setStyle('display', 'table-row');
             }
@@ -121,6 +121,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         Y.all('a.togglelink').on('click', showit);
     });
 
+    Y.Global.fire('lazyload:cke');
 });
 {/literal}
 {/script}

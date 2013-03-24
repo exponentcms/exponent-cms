@@ -72,6 +72,7 @@ class cash extends billingcalculator {
         $form = '';
 
         $cash_amount     = new textcontrol("", 20, false, 20, "", true);
+        $cash_amount->filter = 'money';
         $cash_amount->id = "cash_amount";
 
         $form .= $cash_amount->toHTML("Cash Amount", "cash_amount");
@@ -88,10 +89,13 @@ class cash extends billingcalculator {
     }
 
     function userFormUpdate($params) {
-
         global $order;
 
-        if ($order->grand_total > $params["cash_amount"]) {
+        if (substr($params['cash_amount'],0,strlen(expCore::getCurrencySymbol())) == expCore::getCurrencySymbol()) {
+            $params['cash_amount'] = substr($params['cash_amount'],strlen(expCore::getCurrencySymbol()));
+        }
+//        if ($order->grand_total > $params["cash_amount"]) {
+        if (expUtil::isNumberGreaterThan($order->grand_total, floatval($params["cash_amount"]),2)) {
             expValidator::failAndReturnToForm(gt("The total amount of your order is greater than the amount you have input.") . "<br />" . gt("Please enter exact or greater amount of your total."));
         }
         $this->opts = new stdClass();

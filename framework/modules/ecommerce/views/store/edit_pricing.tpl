@@ -49,6 +49,6 @@
     {/group}
 </fieldset>                 
 {group label="Tax Class"|gettext}
-{control type="dropdown" name="pricing[tax_class_id]" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id|default:1}
-{icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
+    {control type="dropdown" name="pricing[tax_class_id]" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id|default:1}
+    {icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
 {/group}

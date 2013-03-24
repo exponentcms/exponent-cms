@@ -36,7 +36,7 @@
 	            <li><a href="#tab3"><em>{'Pricing'|gettext}</em></a></li>
 	            <li><a href="#tab4"><em>{'Files & Images'|gettext}</em></a></li>
 	            <li><a href="#tab5"><em>{'SEO'|gettext}</em></a></li>
-				<li><a href="#tab6"><em>{'Configure Fields'|gettext}</em></a></li>
+				{*<li><a href="#tab6"><em>{'Configure Fields'|gettext}</em></a></li>*}
 				<li><a href="#tab8"><em>{'Waiver'|gettext}</em></a></li>
 				<li><a href="#tab9"><em>{'Status'|gettext}</em></a></li>
 				<li><a href="#tab10"><em>{'Pricing Type'|gettext}</em></a></li>
@@ -125,12 +125,12 @@
                     {control type="textarea" name="meta_keywords" label="Meta Description"|gettext value=$record->meta_description}
                     {control type="textarea" name="meta_description" label="Meta Keywords"|gettext value=$record->meta_keywords}
                 </div>
-				<div id="tab6">
-				     <h2>{'Configure Fields'|gettext} | {icon class="manage" controller="expDefinableField" action="manage"}</h2>
-					{foreach from=$definablefields item=fields}
-						{control type="checkbox" name="expDefinableField[registrant][]" label="`$fields->name` - `$fields->type`" value="`$fields->id`" checked="`$record->expDefinableField.registrant`"}
-					{/foreach}
-                </div>
+				{*<div id="tab6">*}
+				     {*<h2>{'Configure Fields'|gettext} | {icon class="manage" controller="expDefinableField" action="manage"}</h2>*}
+					{*{foreach from=$definablefields item=fields}*}
+						{*{control type="checkbox" name="expDefinableField[registrant][]" label="`$fields->name` - `$fields->type`" value="`$fields->id`" checked="`$record->expDefinableField.registrant`"}*}
+					{*{/foreach}*}
+                {*</div>*}
 				<div id="tab8">
 					{control type="checkbox" name="require_terms_and_condition" label="Require Waiver"|gettext value=1 checked=$record->require_terms_and_condition}
 					{control type="editor" name="terms_and_condition" label="Waiver"|gettext rows=8 cols=55 value=$record->terms_and_condition}
