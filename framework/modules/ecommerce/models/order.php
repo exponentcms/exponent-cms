@@ -592,7 +592,8 @@ class order extends expRecord {
             $this->orderitem[$i]->products_price_adjusted = $this->orderitem[$i]->products_price;
 
             //$this->orderitem[$i]->products_price_original = $this->orderitem[$i]->product->getPrice();
-            $this->subtotal += $this->orderitem[$i]->products_price * $this->orderitem[$i]->quantity;
+//            $this->subtotal += $this->orderitem[$i]->products_price * $this->orderitem[$i]->quantity;
+            $this->subtotal += $this->orderitem[$i]->getTotal();
 
             $this->surcharge_total += ($this->orderitem[$i]->product->getSurcharge() * $this->orderitem[$i]->quantity);
 
@@ -602,7 +603,7 @@ class order extends expRecord {
             //only allowing one discount for now, but in future we'll need to process
             //multiple and accomdate the "weight" and 'allow other discounts' type settings
             //this foreach will only fire once as of now, and will only hit on one or the other
-            //TODO: We need to use produce_price_adjusted in the loops to accomodate for more than one disocunt
+            //TODO: We need to use produce_price_adjusted in the loops to accommodate for more than one discount
             //otherwise it's just resetting them now instead of adding them 
             foreach ($cartDiscounts as $od) {
                 //do not calculate invalid discounts, but don't remove either

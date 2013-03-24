@@ -95,6 +95,21 @@ show view
     font-weight: bold;
 }
 
+.product .prod-price .regular-price {
+    color:#395203;
+}
+
+.product .prod-price .regular-price.on-sale {
+    text-decoration: line-through;
+    color:#999;
+    font-size:90%;
+    font-weight:normal;
+}
+
+.product .prod-price .sale-price {
+    color:#f00;
+}
+
 #eventregform .text-control p.helper {
     text-align  : center;
     margin-left : 210px;

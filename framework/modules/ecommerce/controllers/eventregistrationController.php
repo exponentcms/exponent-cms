@@ -343,10 +343,14 @@ class eventregistrationController extends expController {
             $order_registrations[] = expUnserialize($registrant->value);
         }
 
+        $item = $order->isItemInCart($product->id, $product->product_type);
+        $params['options'] = $item->opts;
+
         //eDebug($product, true);
         assign_to_template(array(
             'product'=> $product,
-            'record'=> $record,
+//            'record'=> $record,
+            'params'=> $params,
             'registered' => $order_registrations,
         ));
     }

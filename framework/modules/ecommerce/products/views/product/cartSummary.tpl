@@ -59,7 +59,6 @@
                 </div>        
                 {script unique="z-index" }
                 {literal}
-                
                 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                     var opts = Y.all(".options");
                     opts.each(function(n,k){
@@ -67,7 +66,6 @@
                         n.one(".exp-dropmenu").setStyle('zIndex',opts.size()+1);
                     });
                 });
-                
                 {/literal}
                 {/script}
             {/if}

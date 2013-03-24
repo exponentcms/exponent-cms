@@ -9,6 +9,9 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.2.0 beta 2
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
+  - adds many features to online donations and event registrations making them more robust and polished
+    -- quick add donation at set amount or allow user to enter amount
+    -- event registrations now abide by 'options'
   - contains all the fixes in 2.1.4
 ### Known Issues
   - None

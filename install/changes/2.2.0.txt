@@ -17,3 +17,6 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
   - adds new import users from csv file feature
   - adds ability to optionally run selected 'upgrade scripts' outside of installation
   - moves /conf folder inside /framework to help streamline folder structure
+  - adds many features to online donations and event registrations making them more robust and polished
+    -- quick add donation at set amount or allow user to enter amount
+    -- event registrations now abide by 'options'

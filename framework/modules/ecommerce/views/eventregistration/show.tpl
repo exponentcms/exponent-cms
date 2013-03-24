@@ -65,7 +65,8 @@
         <div id="eventregform">
         {form id="addtocart`$product->id`" controller=cart action=addItem}
             {control type="hidden" name="product_id" value="`$product->id`"}
-            {control type="hidden" name="base_price" value="`$product->base_price`"}
+            {*{control type="hidden" name="base_price" value="`$product->base_price`"}*}
+            {control type="hidden" name="base_price" value="`$product->getBasePrice()`"}
             {control type="hidden" name="product_type" value="`$product->product_type`"}
             {*{control type="hidden" name="quick" value="1"}*}
             {if $product->spacesLeft() && $product->signup_cutoff >= time()}
@@ -78,19 +79,28 @@
                     </div>
                     <div class="seatAmount prod-price">
                         {if $product->base_price}
-                            {*{if $product->use_special_price}*}
-                                {*<span class="regular-price on-sale">{$product->base_price|currency}</span>*}
-                                {*<span class="sale-price">{$product->special_price|currency}&#160;<sup>{"SALE!"|gettext}</sup></span>*}
-                            {*{else}*}
-                                {*<span class="regular-price">{$product->base_price|currency}</span>*}
-                            {*{/if}*}
-                            <span class="seatCost">{$product->base_price|currency}</span>{br}{'per seat'|gettext}
-                            {*{br}{'per seat'|gettext}*}
+                            {if $product->use_special_price}
+                                <span class="regular-price on-sale">{$product->base_price|currency}</span>
+                                <span class="sale-price">{$product->special_price|currency}&#160;<sup>{"Early!"|gettext}</sup></span>
+                            {else}
+                                <span class="regular-price">{$product->base_price|currency}</span>
+                            {/if}
+                            {*<span class="seatCost">{$product->base_price|currency}</span>{br}{'per seat'|gettext}*}
+                            {br}{'per seat'|gettext}
                         {else}
                             <span class="seatCost">{'No Cost'|gettext}</span>
                         {/if}
                     </div>
                 </div>
+                {if $product->quantity_discount_num_items}
+                    <div class="label">
+                        {'There is a discount of'|gettext} {if ($product->quantity_discount_amount_mod == '%')}%{$product->quantity_discount_amount}{else}{$product->quantity_discount_amount|currency}{/if}
+                        {if ($product->quantity_discount_apply)}
+                            {'for additional registrations'|gettext}
+                        {/if}
+                        {'if more than'|gettext} {$product->quantity_discount_num_items} {'people are registered'|gettext}.
+                    </div>{br}{br}
+                {/if}
                 <span class="label">{'Registration Closes:'|gettext} </span>
                 <span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
                 {if $product->hasOptions()}
@@ -110,9 +120,9 @@
                     </div>
                 {/if}
 
-                {foreach from=$product->expDefinableField.registrant item=fields}
-                    {$product->getControl($fields)}
-                {/foreach}
+                {*{foreach from=$product->expDefinableField.registrant item=fields}*}
+                    {*{$product->getControl($fields)}*}
+                {*{/foreach}*}
 
                 <h2>{'Who\'s Coming?'|gettext}</h2>
                 {'Please provide the names of the people who will be attending this event'|gettext},

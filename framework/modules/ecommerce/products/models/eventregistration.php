@@ -62,6 +62,9 @@ class eventregistration extends expRecord {
         $this->id = $origid; // put the product table id back.
         $this->table = 'product';
         $this->tablename = 'product';
+        if (!empty($this->use_early_price) && !empty($this->earlydiscountdate) && ($this->earlydiscountdate > time())) {
+            $this->use_special_price = true;
+        }
     }
 
     public function update($params = array()) {
@@ -88,10 +91,10 @@ class eventregistration extends expRecord {
             $event->terms_and_condition_toggle = $params['terms_and_condition_toggle'];
             $event->num_guest_allowed = !empty($params['quantity']) ? $params['quantity'] : 0;
 
-//            $event->earlydiscountdate = datetimecontrol::parseData('earlydiscountdate', $params);
-//            $event->early_discount_amount = !empty($params['early_discount_amount']) ? $params['early_discount_amount'] : 0;
-//            $event->early_discount_amount_mod = $params['early_discount_amount_mod'];
-//            $event->use_early_price = !empty($params['use_early_price']) ? $params['use_early_price'] : false;
+            $event->earlydiscountdate = strtotime($params['earlydiscountdate']);
+            $event->early_discount_amount = !empty($params['early_discount_amount']) ? $params['early_discount_amount'] : 0;
+            $event->early_discount_amount_mod = $params['early_discount_amount_mod'];
+            $event->use_early_price = !empty($params['use_early_price']) ? $params['use_early_price'] : false;
 
             $event->id = empty($product->product_type_id) ? null : $product->product_type_id;
 
@@ -222,7 +225,6 @@ class eventregistration extends expRecord {
                                     $price = '';
                                 }
                             }
-
                         }
 
                         $items[$option->id] = $text . $price;
@@ -422,7 +424,8 @@ class eventregistration extends expRecord {
 
         $options = array();
 //        $price = 0;
-        $price = $product->base_price;
+//        $price = $product->base_price;
+        $price = $this->getBasePrice();
         foreach ($this->optiongroup as $og) {
             $isOptionEmpty = true;
             if (!empty($params['options'][$og->id])) {
@@ -443,7 +446,7 @@ class eventregistration extends expRecord {
                         $price += $cost * $params['options_quantity'][$opt_id];
                     }
                     // eDebug($price);
-                    $options[] = array($selected_option->id, $selected_option->title, $selected_option->modtype, $selected_option->updown, $selected_option->amount, $params['options_quantity'][$opt_id]);
+                    $options[$og->id] = array($selected_option->id, $selected_option->title, $selected_option->modtype, $selected_option->updown, $selected_option->amount, $params['options_quantity'][$opt_id]);
                 }
             }
         }
