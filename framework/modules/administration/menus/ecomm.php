@@ -172,7 +172,7 @@ $ecom = array(
                             'url'  => makeLink(array('controller' => 'address', 'action' => 'manage')),
                         ),
                         array(
-                            'text' => gt("Manage Up Charge Rate"),
+                            'text' => gt("Manage Geo Up Charge Rate"),
                             'url'  => makeLink(array('controller' => 'ecomconfig', 'action' => 'manage_upcharge')),
                         ),
                         array(

@@ -44,8 +44,7 @@
             <div class="yui-content">
                 <div id="tab1">
                     {control type="text" name="title" label="Event Title"|gettext value=$record->title}
-                    <h2>{'Number of Seats available'|gettext}</h2>
-                    {control type="text" name="quantity" label="Number of seats"|gettext filter=integer size=4 value=$record->quantity}
+                    {control type="text" name="quantity" label="Number of seats available"|gettext filter=integer size=4 value=$record->quantity}
 					{control type="text" name="location" label="Event Location"|gettext value=$record->location}
                     {*{control type="editor" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}
                     {control type="textarea" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}

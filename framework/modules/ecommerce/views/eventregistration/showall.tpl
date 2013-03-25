@@ -63,7 +63,7 @@
                         </div>
                         <div class="event-info">
                             <em class="date">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
-                            {if $item->base_price}<p>{'Cost'|gettext}: {$item->base_price|currency}</p>{/if}
+                            {if $item->getBasePrice()}<p>{'Cost'|gettext}: {$item->getBasePrice()|currency}</p>{/if}
                             <p>{$item->body|truncate:175:"..."}</p>
                             {*<a href="{link action=show title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}
                         </div>

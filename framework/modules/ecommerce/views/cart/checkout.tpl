@@ -35,7 +35,7 @@
         {*FIXME convert to yui3*}
         {script unique="policypop" yui3mods=1}
             {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-dragdrop','event', function(Y) {
                 var YAHOO=Y.YUI2;
 
                 var policies = new YAHOO.widget.Panel("storepolicies", {

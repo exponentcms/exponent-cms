@@ -143,8 +143,6 @@ class shippingController extends expController {
                 }
             }
         }
-        $scalc = new shippingcalculator();
-        $calculators = $scalc->find('all');
         assign_to_template(array(
             'calculators'=>$calculators
         ));

@@ -76,6 +76,7 @@
     </a>
     
     <p class="bodycopy">
-        {$listing->summary}
+        {*{$listing->summary}*}
+        {$listing->body}
     </p -->
 </div>

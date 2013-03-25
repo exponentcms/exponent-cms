@@ -47,7 +47,7 @@
             {/permissions}
             <p>
                 {$item->title}
-                {if $item->base_price}- {'Cost'|gettext}: {$item->base_price|currency}{/if}
+                {if $item->base_price}- {'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
             </p>
         </li>
     {/if}
