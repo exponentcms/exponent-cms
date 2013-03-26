@@ -48,6 +48,9 @@ class genericcontrol extends formcontrol {
         $this->onclick = $onclick;
         $this->maxlength = $maxlength;
         $this->size = '';
+        $this->min = '';
+        $this->max = '';
+        $this->step = '';
         $this->placeholder = $placeholder;
         $this->pattern = $pattern;
     }
@@ -97,6 +100,9 @@ class genericcontrol extends formcontrol {
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->maxlength != "") $html .= ' maxlength="' . $this->maxlength . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
+        if ($this->min != "") $html .= ' min="' . $this->min . '"';
+        if ($this->max != "") $html .= ' max="' . $this->max . '"';
+        if ($this->step != "") $html .= ' step="' . $this->step . '"';
         if ($this->placeholder != "") $html .= " placeholder=\"".$this->placeholder."\"";
         if ($this->pattern != "") $html .= " pattern=\"".$this->pattern."\"";
         if ($this->filter != "") {
