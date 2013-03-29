@@ -66,7 +66,7 @@ class form extends baseform {
      * @param string $tab
      * @return boolean Returns true if the new Control was registered.
      */
-	function register($name,$label,$control,$replace=true,$tab=null) {
+	function register($name,$label, $control,$replace=true,$tab=null) {
 		if ($name == null || $name == "") $name = uniqid("");
 		if (isset($this->controls[$name])) {
 			if (!$replace) return false;
@@ -74,7 +74,7 @@ class form extends baseform {
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = $label;
         $this->tabs[$name] = $tab;
-		if (method_exists($control,'onRegister')) $control->onRegister($this);
+        if (method_exists($control,'onRegister')) $control->onRegister($this);
 		return true;
 	}
 

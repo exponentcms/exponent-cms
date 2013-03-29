@@ -70,6 +70,7 @@ Added / Fixed / changed for 2.1.4
  - updates EQL file export/import to also include table definition for future proofing backups
  - adds new 'Exponent as a Service' module for JSON service calls
  - fixes Online Event Registrations activating many features, adds email registrants
+ - fixes over 3 dozen issues found in 2.1.3
 
 Added / Fixed / changed for 2.1.3
 -----------------------
