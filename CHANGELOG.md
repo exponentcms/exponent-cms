@@ -6,6 +6,12 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
+Added / Fixed / changed for 2.2.0 beta 3
+-----------------------
+### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
+### Known Issues
+  - None
+
 Added / Fixed / changed for 2.2.0 beta 2
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
@@ -13,7 +19,7 @@ Added / Fixed / changed for 2.2.0 beta 2
     -- quick add donation at set amount or allow user to enter amount
     -- event registrations now abide by 'options'
   - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
-  - implements broader use of ajax paging and use of new html5 input types, temporarily adds additonal date/time form designer controls
+  - implements broader use of ajax paging and use of new html5 input types, temporarily adds additional date/time form designer controls
   - contains all the fixes in 2.1.4, and many more fixes
 ### Known Issues
   - None
