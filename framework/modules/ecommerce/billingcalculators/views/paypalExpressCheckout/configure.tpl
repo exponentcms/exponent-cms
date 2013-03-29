@@ -17,11 +17,11 @@
 {'To setup a PayPal Express Checkout account, visit'|gettext} <a href="https://www.paypal.com/webapps/mpp/merchant" target="_blank">https://www.paypal.com/webapps/mpp/merchant</a>
 </blockquote>
 <div id="paypal">
-    <div id="paypal-tabs" class="yui-navset exp-skin-tabview hide">
+    <div id="paypal-tabs" class="yui-navset exp-skin-tabview">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'PayPal Express Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
-	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
-	        <li><a href="#tab4"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
+	        <li><a href="#tab2"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
+	        <li><a href="#tab3"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
@@ -49,24 +49,32 @@
 	        </div>
 	        <div id="tab3">
 	            {control type="checkbox" name="email_admin" label="Send a notification that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
-	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
+	            {*{control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}*}
+                {control type=email name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>
         </div>
     </div>
 	<div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="authtabs" yui3mods=1}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+{*{script unique="authtabs" yui3mods=1}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#paypal-tabs'});
-		Y.one('#paypal-tabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-    });
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#paypal-tabs'});*}
+		{*Y.one('#paypal-tabs').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+    {*});*}
+{*{/literal}*}
+{*{/script}*}
+
+{script unique="paypal-`$id`" jquery="jqueryui"}
+{literal}
+    $('#paypal-tabs').tabs().next().remove();
 {/literal}
 {/script}
+

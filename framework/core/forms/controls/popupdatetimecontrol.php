@@ -20,8 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Popup Date/Time Picker Control
- * uses jscalendar //FIXME we don't ship jscalendar files for this to work
+ * YUI Popup Date/Time Picker Control
  *
  * @package Subsystems-Forms
  * @subpackage Control
@@ -31,8 +30,8 @@ class popupdatetimecontrol extends formcontrol {
 	var $disable_text = "";
 	var $showtime = true;
 
-	static function name() { return "Popup Date/Time Selector"; }
-	static function isSimpleControl() { return false; }
+	static function name() { return "YAHOO! UI Popup Date / Time"; }
+	static function isSimpleControl() { return true; }
 	static function getFieldDefinition() {
 		return array(
 			DB_FIELD_TYPE=>DB_DEF_TIMESTAMP);
@@ -126,7 +125,11 @@ class popupdatetimecontrol extends formcontrol {
                 }).on('select',function(d){
                     var unixtime = parseInt(d / 1000);
                     Y.one('#".$name."').set('value',unixtime);
-                    Y.one('#".$name."_span').setHTML(Y.DataType.Date.format(d,{format:'".DISPLAY_DATE_FORMAT."'}));
+                    Y.one('#".$name."_span').setHTML(Y.DataType.Date.format(d,{format:'".DISPLAY_DATE_FORMAT.(!empty($this->showtime)?' '.DISPLAY_TIME_FORMAT:'')."'}));
+                }).on('timeselect',function(d){
+                    var unixtime = parseInt(d / 1000);
+                    Y.one('#".$name."').set('value',unixtime);
+                    Y.one('#".$name."_span').setHTML(Y.DataType.Date.format(d,{format:'".DISPLAY_DATE_FORMAT.(!empty($this->showtime)?' '.DISPLAY_TIME_FORMAT:'')."'}));
                 });
                 Y.one('#J_popup_closeable_".$name."').on('click',function(d){
                     cal.show();
@@ -180,6 +183,7 @@ class popupdatetimecontrol extends formcontrol {
 	static function form($object) {
 		$form = new form();
 		if (!isset($object->identifier)) {
+            $object = new stdClass();
 			$object->identifier = "";
 			$object->caption = "";
 			$object->showtime = true;

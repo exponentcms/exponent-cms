@@ -46,9 +46,11 @@
 	            {control type="text" name="shipfrom[address2]" label=" " value=$calculator->configdata.shipfrom.address2}
 	            {control type="text" name="shipfrom[address3]" label=" " value=$calculator->configdata.shipfrom.address3}
 	            {control type="text" name="shipfrom[City]" label="City"|gettext value=$calculator->configdata.shipfrom.City}
-	            {control type="text" name="shipfrom[StateOrProvinceCode]" label="2 Character State Code"|gettext size=2 value=$calculator->configdata.shipfrom.StateOrProvinceCode}
+	            {*{control type="text" name="shipfrom[StateOrProvinceCode]" label="2 Character State Code"|gettext size=2 value=$calculator->configdata.shipfrom.StateOrProvinceCode}*}
+                {control type="state" name="shipfrom[StateOrProvinceCode]" label="State"|gettext value=$calculator->configdata.shipfrom.StateOrProvinceCode}
 	            {control type="text" name="shipfrom[PostalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.PostalCode}
-	            {control type="text" name="shipfrom[CountryCode]" label="2 Character Country Code"|gettext size=2 value=$calculator->configdata.shipfrom.CountryCode}
+	            {*{control type="text" name="shipfrom[CountryCode]" label="2 Character Country Code"|gettext size=2 value=$calculator->configdata.shipfrom.CountryCode}*}
+                {control type="country" name="shipfrom[CountryCode]" label="Country"|gettext value=$calculator->configdata.shipfrom.CountryCode}
 	        </div>
 	        <div id="tab4">
 	            {control type="text" name="default_width" label="Standard Box Width (inches)"|gettext size=5 value=$calculator->configdata.default_width}

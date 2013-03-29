@@ -68,18 +68,18 @@ class quantitycontrol extends formcontrol {
                 if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
                 if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
                 if ($this->filter != "") {
-                        $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\" ";
-                        $html .= "onblur=\"".$this->filter."_filter.onblur(this);\" ";
-                        $html .= "onfocus=\"".$this->filter."_filter.onfocus(this);\" ";
-                        $html .= "onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\" ";
+                        $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\"";
+                        $html .= " onblur=\"".$this->filter."_filter.onblur(this);\"";
+                        $html .= " onfocus=\"".$this->filter."_filter.onfocus(this);\"";
+                        $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
                 }
                 if ($this->disabled) $html .= ' disabled';
                 if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
                 $caption = isset($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
-                if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'" ';
-                if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'" ';
-                if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
+                if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
+                if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'"';
+                if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 
                 $html .= ' /></td>';
         $html .= '<td width="14" style="padding:0;">

@@ -1,7 +1,7 @@
 YUI.add('exptabs', function(Y) {
 
     Y.expTabs = function(o) {
-        // console.log("expTabs");
+        // Y.log("expTabs");
         // set up history
         var history = new Y.HistoryHash();
         // Tab Navigation ul

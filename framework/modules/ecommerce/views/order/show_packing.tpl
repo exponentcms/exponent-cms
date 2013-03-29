@@ -16,7 +16,7 @@
 {if $printerfriendly==1}
     {$pf=1}
     {*{if $include_css == true}*}
-        {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}    
+        {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}
         {/css}
     {*{/if}*}
 {else}
@@ -116,13 +116,13 @@
                         {$shipping->shippingmethod->addresses_id|address}
                         {permissions}
                             <div class="item-permissions">
-                                {if $permissions.edit_address == 1 && !$pf}                                                                                        
-                                    {br}    
+                                {if $permissions.edit_address == 1 && !$pf}
+                                    {br}
                                     <a class="edit" href="{link action=edit_address id=$order->id type='s'}" title="{'Edit Shipping Address'|gettext}">{'Edit'|gettext}</a>
-                                    {br} 
+                                    {br}
                                 {/if}
                             </div>
-                        {/permissions}   
+                        {/permissions}
                         {br}
                         <table style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
                             <tr style="border: 0px; padding: 0px; margin:0px;">
@@ -145,7 +145,7 @@
                                     {/if}
                                 </td>
                             </tr>
-                        </table>                     
+                        </table>
                     </td>
                 </tr>
             </tbody>
@@ -193,8 +193,8 @@
                     </th>
                     {permissions}
                         <div class="item-permissions">
-                            {if $permissions.edit_order_item == 1 && !$pf}                                                                                                             
-                                <th style="text-align:right;"></th>     
+                            {if $permissions.edit_order_item == 1 && !$pf}
+                                <th style="text-align:right;"></th>
                             {/if}
                         </div>
                    {/permissions}
@@ -212,12 +212,12 @@
                     <td>
                         {$oi->getProductsName()}
                         {if $oi->opts[0]}
-                            {br}                             
+                            {br}
                             {foreach from=$oi->opts item=options}
                                 {$oi->getOption($options)}{br}
-                            {/foreach}                            
+                            {/foreach}
                         {/if}
-                        {$oi->getUserInputFields('br')} 
+                        {$oi->getUserInputFields('br')}
 						{if $oi->product_type == "product" || $oi->product_type == "childProduct"}
 							{$oi->getExtraData()}
 						{else}
@@ -232,7 +232,7 @@
                     </td>
                     {permissions}
                         <div class="item-permissions">
-                            {if $permissions.edit_order_item == 1 && !$pf}                                                                                                             
+                            {if $permissions.edit_order_item == 1 && !$pf}
                                 <td style="text-align:right;"><a class="edit" href="{link action=edit_order_item id=$oi->id orderid=$order->id}" title="{'Edit Invoice Item'|gettext}">{'Edit'|gettext}</a>&#160;<a class="delete" href="{link action=delete_order_item id=$oi->id orderid=$order->id}" onclick="return confirm('Are you sure you want to delete this item from this order?')" title="{'Delete Invoice Item'|gettext}">{'Delete'|gettext}</a></td>
                             {/if}
                         </div>
@@ -241,13 +241,13 @@
             {/foreach}
              {permissions}
                 <div class="item-permissions">
-                {if $permissions.add_order_item == 1 && !$pf} 
+                {if $permissions.add_order_item == 1 && !$pf}
                     <tr>
                         {*<td colspan="8" style='text-align: right;'><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->*}
                         <td colspan="8"><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->
                         {capture assign="callbacks"}
-                        {literal}                       
-                        
+                        {literal}
+
                         // the text box for the title
                         var tagInput = Y.one('#add_new_item');
 
@@ -261,22 +261,22 @@
                         var onRequestData = function( oSelf , sQuery , oRequest) {
                             tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/subsystems/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
                         }
-                        
+
                         var onRGetDataBack = function( oSelf , sQuery , oRequest) {
                             tagInput.setStyles({'border':'1px solid #000','backgroundImage':'none'});
                         }
-                        
+
                         var appendToList = function(e,args) {
                             tagUL.appendChild(createHTML(args[2]));
                             return true;
                         }
-                        
+
                         var removeLI = function(e) {
                             var t = e.target;
                             if (t.test('a')) tagUL.removeChild(t.get('parentNode'));
                         }
 
-                        var createHTML = function(val) {                        
+                        var createHTML = function(val) {
                             var f = '<form id=addItem method=post>';
                                 f += '<input type=hidden name=orderid id=orderid value={/literal}{$order->id}{literal}>';
                                 f += '<input type=hidden name=module id=module value=order>';
@@ -285,7 +285,7 @@
                                 f += '<input type=submit name=submit value="Add This Item">';
                                 f += '</form>';
                             var newLI = Y.Node.create(f);
-                            return newLI;   
+                            return newLI;
                         }
 
                         //tagAddToList.on('click',appendToList);
@@ -293,11 +293,11 @@
 
                         // makes formatResult work mo betta
                         oAC.resultTypeList = false;
-                        
+
                         //AC.useShadow = true;
                         //oAC.autoHighlight  = true;
                         //oAC.typeAhead = true;
-    
+
                         oAC.maxResultsDisplayed   = 30;
 
                         // when we start typing...?
@@ -315,7 +315,7 @@
                         {/literal}
                         {/capture}
                         {control type="autocomplete" controller="store" action="search" name="add_new_item" label="Add a new item"|gettext value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
-                        <div id="new_items">                        
+                        <div id="new_items">
                         </div>
                         </td>
                     </tr>
@@ -327,5 +327,5 @@
     </div>
     <div id="store-footer">
         {$storeConfig.ecomfooter}
-    </div>    
+    </div>
 </div>

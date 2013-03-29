@@ -113,7 +113,8 @@ class donation extends product {
 	        $item->products_price = preg_replace("/[^0-9.]/","",$params['dollar_amount']);
 	        
 	        $product = new product($params['product_id']);
-	        $item->products_name = $params['dollar_amount'].' '.$this->product_name.' to '.$product->title;
+//	        $item->products_name = $params['dollar_amount'].' '.$this->product_name.' to '.$product->title;
+            $item->products_name = $this->product_name.' to '.$product->title;
 
 	        // we need to unset the orderitem's ID to force a new entry..other wise we will overwrite any
 	        // other giftcards in the cart already
@@ -123,6 +124,18 @@ class donation extends product {
 		    return true;
 //	    }
 	}
+
+    public function hasUserInputFields()  {
+   	    return true;
+    }
+
+    public function getSEFURL()
+    {
+        if (!empty($this->sef_url)) return $this->sef_url;
+        $parent = new product($this->parent_id, false, false);
+        return $parent->sef_url;
+    }
+
 }
 
 ?>

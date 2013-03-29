@@ -41,16 +41,16 @@
             <div class="yui-content">
 	            <div id="tab1">
 	                {control type="text" name="model" label="Model #"|gettext value=$record->model}
-	                {control type="text" name="title" label="Title"|gettext value=$record->title}
-	                {control type="textarea" name="summary" label="Product Summary"|gettext rows=3 cols=45 value=$record->summary}
-	                {control type="editor" name="body" label="Product Description"|gettext height=250 value=$record->body}
+	                {control type="text" name="title" label="Donation Cause Title"|gettext value=$record->title}
+	                {control type="textarea" name="summary" label="Donation Cause Summary"|gettext rows=3 cols=45 value=$record->summary}
+	                {control type="editor" name="body" label="Donation Cause Description"|gettext height=250 value=$record->body}
 	            </div>
 	            <div id="tab2">
-	                {control type="text" name="base_price" label="Minimum dollar increment"|gettext value=$record->base_price filter=money}
+	                {control type="text" name="base_price" label="Minimum dollar amount"|gettext value=$record->base_price filter=money}
 	            </div>
 	            <div id="tab3">
 	                {*{control type=files name=files subtype=images value=$record->expFile}*}
-                    {control type=files label="Main Images"|gettext name=mainimages subtype="mainimage" value=$record->expFile}
+                    {control type=files label="Main Images"|gettext name=mainimages subtype="mainimage" value=$record->expFile limit=1}
 	            </div>
 	            <!--div id="tab4">
 	                {control type="text" name="quantity" label="Quantity"|gettext value=$record->quantity}

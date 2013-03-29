@@ -66,9 +66,10 @@ show view
     background: none repeat scroll 0 0 #EBD98E;
     border-bottom: 1px solid #CEBB6C;
     border-top: 1px solid #CEBB6C;
-    height: 63px;
+	padding-right: 5px;
+    height: 80px;
     /*margin-bottom: 20px;*/
-    width: 340px;
+    width: 100%;
 }
 .seatStatus {
     clear: left;
@@ -77,21 +78,36 @@ show view
     line-height: 43px;
     padding: 10px;
     text-align: left;
-    width: 220px;
+    width: 60%;
     display: inline;
 }
 .seatAmount {
     background: none repeat scroll 0 0 #DFCC7A;
     clear: right;
     float: right;
-    height: 43px;
-    padding: 10px;
-    width: 80px;
+    height: 60px;
+    padding: 5px;
+    width: 25%;
 }
 .seatCost {
     color: #CC0000;
     font-size: large;
     font-weight: bold;
+}
+
+.product .prod-price .regular-price {
+    color:#395203;
+}
+
+.product .prod-price .regular-price.on-sale {
+    text-decoration: line-through;
+    color:#999;
+    font-size:90%;
+    font-weight:normal;
+}
+
+.product .prod-price .sale-price {
+    color:#f00;
 }
 
 #eventregform .text-control p.helper {
@@ -135,6 +151,7 @@ show view
 #eventregform .terms_and_conditions #terms_and_conditionControl {
     width  : 270px;
     margin : auto;
+	display: inline;
 }
 
 .more-text {

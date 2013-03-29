@@ -68,7 +68,7 @@
                 </tbody>
             </table>
 
-     {*FIXME convert to yui3*}
+            {*FIXME convert to yui3*}
             {script unique="shippingopts`$shippingitem->method->id`"}
             {literal}
             YAHOO.util.Event.onDOMReady(function(){

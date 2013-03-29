@@ -342,7 +342,7 @@ function smarty_function_control($params, &$smarty) {
                     } else {
                         // include the library and show the form control
                         require_once(BASE . 'external/recaptchalib.php');
-                        echo recaptcha_get_html(RECAPTCHA_PUB_KEY, $error);
+                        echo recaptcha_get_html(RECAPTCHA_PUB_KEY);
                         echo '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
                     }
                     return;
@@ -455,6 +455,9 @@ function smarty_function_control($params, &$smarty) {
         if (isset($params['default_hour'])) $control->default_hour = $params['default_hour'];
         if (isset($params['default_min'])) $control->default_min = $params['default_min'];
         if (isset($params['default_ampm'])) $control->default_ampm = $params['default_ampm'];
+        if (isset($params['min'])) $control->min = $params['min'];
+        if (isset($params['max'])) $control->max = $params['max'];
+        if (isset($params['step'])) $control->step = $params['step'];
 
         $params['name'] = !empty($params['name']) ? $params['name'] : '';
         $control->name  = $params['name'];

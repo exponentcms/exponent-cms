@@ -17,7 +17,7 @@
 
 {control type="files" name="blog_image" subtype="blog_image" label="Blog Banner Image"|gettext value=$config['expFile'] limit='1'}
 
-{control type="editor" name="blog_body" label="blog HTML" value=$config.blog_body}
+{control type="editor" name="blog_body" label="Blog HTML"|gettext value=$config.blog_body}
 
 <table class="exp-skin-table">
     <thead>
@@ -50,7 +50,6 @@
 {/foreach}
     </tbody>
 </table>
-
 
 {script unique="aggregation-blg"}
     function blogSelectAll(val) {

@@ -611,21 +611,33 @@ class expPaginator {
 	}
 	
     /* exdoc
-     * Object sorting comparison function -- sorts by a specified column in ascending order.
+     * Object/Array sorting comparison function -- sorts by a specified column in ascending order.
      * @node Subsystems:expPaginator
      */
     public function asc($a,$b) {
         $col = $this->order;
-	    return ($a->$col < $b->$col ? -1 : 1);
+        if (is_object($a)) {
+            return ($a->$col < $b->$col ? -1 : 1);
+        } elseif (is_array($a)) {
+            return ($a[$col] < $b[$col] ? -1 : 1);
+        } else {
+            return ($a < $b ? -1 : 1);
+        }
     }
 
     /* exdoc
-     * Object sorting comparison function -- sorts by a specified column in descending order.
+     * Object/Array sorting comparison function -- sorts by a specified column in descending order.
      * @node Subsystems:expPaginator
      */
     public function desc($a,$b) {
         $col = $this->order;
-	    return ($a->$col > $b->$col ? -1 : 1);
+        if (is_object($a)) {
+            return ($a->$col > $b->$col ? -1 : 1);
+        } elseif (is_array($a)) {
+            return ($a[$col] > $b[$col] ? -1 : 1);
+        } else {
+            return ($a > $b ? -1 : 1);
+        }
     }
 }
 

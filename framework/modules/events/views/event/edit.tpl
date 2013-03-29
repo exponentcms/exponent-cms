@@ -70,7 +70,8 @@
                 {if $config.enable_feedback}
                     <div id="tab3">
                         {control type=dropdown name=feedback_form label="Feedback Form"|gettext items=$allforms items=$allforms value=$record->feedback_form}
-                        {control type=text name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
+                        {*{control type=text name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}*}
+                        {control type=email name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
                     </div>
                 {/if}
                 {if $config.enable_images}

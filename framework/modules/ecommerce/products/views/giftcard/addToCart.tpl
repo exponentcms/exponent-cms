@@ -27,7 +27,7 @@
     {/form}
 </div>
 
-    {*FIXME convert to yui3*}
+{*FIXME convert to yui3*}
 {script unique="a2cgc"}
 {literal}
 YAHOO.util.Event.onDOMReady(function(){
@@ -46,7 +46,6 @@ YAHOO.util.Event.onDOMReady(function(){
         }
         //Y.log(targ);
     });
-    
 });
 {/literal}
 {/script}

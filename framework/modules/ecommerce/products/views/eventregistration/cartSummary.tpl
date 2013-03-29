@@ -17,16 +17,58 @@
     <tr>
         <td class="cart-image">
             {if $item->product->expFile.mainimage[0]->id}
-                {img file_id=$item->product->expFile.mainimage[0]->id square=35}
+                <a style="margin: 0px; padding:0px" href="{link action=show controller=eventregistration title=$item->product->getSEFURL()}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
             {else}
                 {img src="`$asset_path`images/no-image.jpg"}
                 {'No Image Available'|gettext}
             {/if}
         </td>
         <td>
-            <span class="itemname">{$item->products_name}</span>{br}
-            {'Registering'|gettext} {$number} {'people'|gettext}:{br}
-            {$people|truncate:50:"..."}        
+            <span class="itemname"><strong><a style="margin: 0px; padding:0px" href="{link action=show controller=eventregistration title=$item->product->getSEFURL()}">{$item->products_name}</a></strong></span>
+            {if $number > 0 || $options|@count > 0}
+                <div class="options">
+                    <a href="javascript:void();" class="infoicon">{'Registering'|gettext} {$number} {'people'|gettext}:</a>
+                    <div class="exp-dropmenu">
+                        {if $options|@count > 0}
+                            <div class="hd" style="padding:0 5px">
+                                <span class="type-icon"></span><h6>{"Selected Event Options"|gettext}</h6>
+                            </div>
+                            <div class="bd">
+                                <ul>
+                                    {foreach key=key from=$options item=option}
+                                        <li>{$option[1]} {if $option[4]!=0}({$option[3]}{currency_symbol}{$option[4]}){/if}</li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        {/if}
+
+                        {if $number > 0}
+                            <div class="hd" style="padding:0 5px">
+                                {if $options|@count <= 0}<span class="type-icon"></span>{/if}<h6>{"Registered"|gettext}</h6>
+                            </div>
+                            <div class="bd">
+                                <ul>
+                                    {foreach key=key from=$registrants item=person}
+                                        <li>{$person.name}</li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        {/if}
+                    </div>
+                </div>
+                {script unique="z-index" }
+                {literal}
+                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                    var opts = Y.all(".options");
+                    opts.each(function(n,k){
+                        n.setStyle('zIndex',opts.size()-k);
+                        n.one(".exp-dropmenu").setStyle('zIndex',opts.size()+1);
+                    });
+                });
+                {/literal}
+                {/script}
+            {/if}
+
         </td>
     </tr>
 </table>

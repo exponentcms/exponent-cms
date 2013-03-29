@@ -43,7 +43,7 @@
                     </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">{'No status codes have been created yet.'|gettext}</td>
+				        <td colspan="4">{'No order status messages have been created yet.'|gettext}</td>
 				    </tr>
 				{/foreach}
             </tbody>

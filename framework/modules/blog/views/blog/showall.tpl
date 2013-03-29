@@ -13,6 +13,8 @@
  *
  *}
 
+{uniqueid prepend="blog" assign="name"}
+
 {css unique="blog" link="`$asset_path`css/blog.css"}
 
 {/css}
@@ -45,16 +47,16 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    <div id="bloglist">
+    <div id="{$name}list">
         {include 'bloglist.tpl'}
     </div>
 </div>
 
-{script unique="bloglistajax" yui3mods="1"}
+{script unique="`$name`listajax" yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var bloglist = Y.one('#bloglist');
+    var bloglist = Y.one('#{/literal}{$name}{literal}list');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Blogitems'},
@@ -85,7 +87,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#bloglist.loadingdiv').remove();
+            bloglist.one('.loadingdiv').remove();
         }
 	};
 

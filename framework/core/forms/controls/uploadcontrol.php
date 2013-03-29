@@ -27,6 +27,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class uploadcontrol extends formcontrol {
 
+    var $accept = "";
+
 	static function name() { return "File Upload Field"; }
 	static function isSimpleControl() { return true; }
 	static function getFieldDefinition() {
@@ -44,18 +46,21 @@ class uploadcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-		$html = "<input type=\"file\" name=\"$name\" ";
+        $html = '';
+        if (!empty($this->default)) $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
+		$html .= "<input type=\"file\" name=\"$name\" ";
 		if(isset($this->class)) $html .=  'class="' . $this->class . '"';
-		$html .= ($this->disabled?"disabled ":"");
-		$html .= ($this->tabindex>=0?"tabindex=\"".$this->tabindex."\" ":"");
-		$html .= ($this->accesskey != ""?"accesskey=\"".$this->accesskey."\" ":"");
+        if (!empty($this->accept)) $html .= ' accept="'.$this->accept.'"';
+		$html .= ($this->disabled?" disabled ":"");
+		$html .= ($this->tabindex>=0?" tabindex=\"".$this->tabindex."\" ":"");
+		$html .= ($this->accesskey != ""?" accesskey=\"".$this->accesskey."\" ":"");
 		$html .= "/>";
+        if (!empty($this->default)) $html .= ' ('.basename($this->default).')';
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
 	}
 
 	static function form($object) {
-
 		$form = new form();
         if (empty($object)) $object = new stdClass();
 		if (!isset($object->identifier)) {
@@ -63,12 +68,14 @@ class uploadcontrol extends formcontrol {
 			$object->caption = "";
             $object->description = "";
 			$object->default = "";
+            $object->accept = "";
 		}
         if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
+        $form->register("accept",gt('Accept'), new textcontrol($object->accept));
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
@@ -85,6 +92,7 @@ class uploadcontrol extends formcontrol {
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->default = $values['default'];
+        $object->accept = $values['accept'];
         return $object;
     }
 
@@ -107,11 +115,17 @@ class uploadcontrol extends formcontrol {
 	static function parseData($original_name,$formvalues) {
         if (is_array($formvalues[$original_name])) {
             $file = $formvalues[$original_name]['name'];
-            return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';
+//            return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';  //FIXME this shouldn't be a link
         } else {
-            $file = $formvalues[$original_name];
-            return '<a href="'.URL_BASE.$file.'">'.basename($file).'</a>';
+            if (!empty($formvalues['isedit']) && !empty($_FILES[$original_name]['name'])) {
+//                $file = $_FILES[$original_name]['name'];
+                $file = PATH_RELATIVE . self::moveFile($original_name, $_FILES, true);
+            } else {
+                $file = $formvalues[$original_name];
+   //            return '<a href="'.URL_BASE.$file.'">'.basename($file).'</a>';  //FIXME this shouldn't be a link
+            }
         }
+        return $file;
 	}
 }
 

@@ -57,16 +57,15 @@
                     {/if}
                     <div class="events">
                         <div class="event-image">
-                             <a href="{link action=show title=$item->sef_url}">
-                            {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                            <a href="{link action=show title=$item->sef_url}">
+                                {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
                             </a>
                         </div>
-
                         <div class="event-info">
                             <em class="date">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
+                            {if $item->getBasePrice()}<p>{'Cost'|gettext}: {$item->getBasePrice()|currency}</p>{/if}
                             <p>{$item->body|truncate:175:"..."}</p>
                             {*<a href="{link action=show title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}
-
                         </div>
                     </div>
                 </li>

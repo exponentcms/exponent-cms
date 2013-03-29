@@ -13,6 +13,16 @@
  *
  *}
 
+{$orderarray = explode(' ',$config.order)}
+{$order = $orderarray[0]}
+{if $order == 'created_at' }
+    {$date = 'created_at'}
+{elseif $order == 'edited_at'}
+    {$date = 'edited_at'}
+{else}
+    {$date = 'publish_date'}
+{/if}
+
 <div class="item">
     {$filetype=$file->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
     {if $file->expFile.preview[0] != "" && $config.show_icon}
@@ -20,9 +30,9 @@
     {/if}
     {if $config.datetag}
         <p class="post-date">
-            <span class="month">{$file->publish_date|format_date:"%b"}</span>
-            <span class="day">{$file->publish_date|format_date:"%e"}</span>
-            <span class="year">{$file->publish_date|format_date:"%Y"}</span>
+            <span class="month">{$file->$date|format_date:"%b"}</span>
+            <span class="day">{$file->$date|format_date:"%e"}</span>
+            <span class="year">{$file->$date|format_date:"%Y"}</span>
         </p>
     {/if}
     {if $config.quick_download}
@@ -46,7 +56,7 @@
         {if $config.show_info}
             {if !$config.datetag}
                 <span class="label dated">{'Dated'|gettext}:</span>
-                <span class="value">{$file->publish_date|format_date}</span>
+                <span class="value">{$file->$date|format_date}</span>
                 &#160;|&#160;
             {/if}
             {if $file->expFile.downloadable[0]->duration}

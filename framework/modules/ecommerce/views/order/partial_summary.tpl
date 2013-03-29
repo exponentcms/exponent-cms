@@ -57,7 +57,7 @@
                     </td>
                     <td>{$oi->quantity}</td>
                     {*<td>{currency_symbol}{$oi->products_price|number_format:2}</td>*}
-                    <td>{$oi->products_price|currenty}</td>
+                    <td>{$oi->products_price|currency}</td>
                     {*<td>{currency_symbol}{$oi->getTotal()|number_format:2}</td>*}
                     <td>{$oi->getTotal()|currency}</td>
                 </tr>

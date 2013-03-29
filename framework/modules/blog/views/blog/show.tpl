@@ -13,21 +13,23 @@
  *
  *}
 
+{uniqueid prepend="blog" assign="name"}
+
 {css unique="blog" link="`$asset_path`css/blog.css"}
 
 {/css}
 
 <div class="module blog show">
-    <div id="blogitem">
+    <div id="{$name}item">
         {include 'blogitem.tpl'}
     </div>
 </div>
 
-{script unique="blogitemajax" yui3mods="1"}
+{script unique="`$name`itemajax" yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var blogitem = Y.one('#blogitem');
+    var blogitem = Y.one('#{/literal}{$name}{literal}item');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Blogitem'},
@@ -58,7 +60,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#blogitem.loadingdiv').remove();
+            blogitem.one('.loadingdiv').remove();
         }
 	};
 

@@ -84,7 +84,7 @@ class cartController extends expController {
             }
         }
 
-        if ($product->product_type == "product" || $product->product_type == "childProduct") {
+        if (($product->product_type == "product" || $product->product_type == "childProduct"|| $product->product_type == "donation") && empty($this->params['quick'])) {
             if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown'] != $product->id)) {
 
                 // if we hit here it means this product type was missing some
@@ -109,22 +109,29 @@ class cartController extends expController {
         if ($product->addToCart($this->params)) {
             if (ecomconfig::getConfig('show_cart') || !empty($this->params['quick'])) {
                 global $order;
-                if (!$order->grand_total && !$order->shipping_required) {
-                    redirect_to(array('controller'=>'cart', 'action'=>'quickConfirm'));
-                } elseif (!$order->shipping_required) {
-                    redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
-                } else {
-                    //expHistory::back();
-                    //eDebug(show_msg_queue(false),true);
-                    redirect_to(array('controller'=>'cart', 'action'=>'show'));
-                    //expHistory::lastNotEditable();
-                }
+//                $order->calculateGrandTotal();
+//                if (!$order->grand_total && !$order->shipping_required) {
+//                    redirect_to(array('controller'=>'cart', 'action'=>'quickConfirm'));
+//                } elseif (!$order->shipping_required) {
+//                    redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
+//                } else {
+                //expHistory::back();
+                //eDebug(show_msg_queue(false),true);
+                redirect_to(array('controller'=>'cart', 'action'=>'show'));
+                //expHistory::lastNotEditable();
+//                }
             } else {
-                flash('message', gt("Added") . " " . $product->title . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
+                if ($product->product_type == "donation") {
+                    $type = ' '.gt('Donation');
+                } elseif ($product->product_type == "eventregistration") {
+                    $type = ' '.gt('Event');
+                } else {
+                    $type = '';
+                }
+                flash('message', gt("Added") . " " . $product->title . $type . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
             }
-        } else {
-            //expHistory::back();
         }
+        expHistory::back();
     }
 
     function updateQuantity() {
@@ -431,7 +438,7 @@ class cartController extends expController {
         global $order, $user, $db;
 
         //eDebug($_POST, true);
-        // get the shippnig and billing objects, these objects handle the setting up the billing/shipping methods
+        // get the shipping and billing objects, these objects handle the setting up the billing/shipping methods
         // and their calculators
         $shipping = new shipping();
         $billing  = new billing();
@@ -445,7 +452,7 @@ class cartController extends expController {
             expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), true));
         }
 
-        // Make sure all the pertanent data is there...otherwise flash an error and redirect to the checkout form.
+        // Make sure all the pertinent data is there...otherwise flash an error and redirect to the checkout form.
         if (empty($order->orderitem)) {
             flash('error', gt('There are no items in your cart.'));
         }
@@ -479,6 +486,12 @@ class cartController extends expController {
             $this->checkout();
         }
 
+         // final the cart totals
+        $order->calculateGrandTotal();
+        $order->setOrderType($this->params);
+        $order->setOrderStatus($this->params);
+        //eDebug($order,true);
+
         // get the billing options..this is usually the credit card info entered by the user
         $opts = $billing->calculator->userFormUpdate($this->params);
         //$billing->calculator->preprocess($this->params);
@@ -489,15 +502,10 @@ class cartController extends expController {
         //eDebug($o,true);
         //eDebug($this->params,true);
 
-        //this should probably be genericized a bit more - currently assuming order_type parameter is present, or defaults
+        //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
         //eDebug($order->getDefaultOrderType(),true);
-        $order->setOrderType($this->params);
-        $order->setOrderStatus($this->params);
-        //eDebug($order,true);
-        // final the cart totals       
-        $order->calculateGrandTotal();
-        //eDebug($order,true);
-        // call the billing mehod's preprocess in case it needs to prepare things.
+
+        // call the billing method's preprocess in case it needs to prepare things.
         // eDebug($billing);
         $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
 

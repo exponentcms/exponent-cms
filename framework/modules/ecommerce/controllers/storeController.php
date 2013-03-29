@@ -32,8 +32,8 @@ class storeController extends expController {
         'showTopLevel'                    => 'Categories - Show Top Level',
         'showFullTree'                    => 'Categories - Show Full Tree',
         'showallSubcategories'            => 'Categories - Subcategories of current category',
-        'upcomingEvents'                  => 'Event Registration - Upcoming Events',
-        'eventsCalendar'                  => 'Event Registration - Calendar View',
+//        'upcomingEvents'                  => 'Event Registration - Upcoming Events',
+//        'eventsCalendar'                  => 'Event Registration - Calendar View',
         'ecomSearch'                      => 'Search - Autocomplete',
         'searchByModelForm'               => 'Search - By Model',
         'quicklinks'                      => 'Links - Users Links',
@@ -104,7 +104,8 @@ class storeController extends expController {
 
     function __construct($src = null, $params = array()) {
         global $db, $router, $section, $user;
-        parent::__construct($src = null, $params);
+//        parent::__construct($src = null, $params);
+        parent::__construct($src, $params);
 
         // we're setting the config here globally
         $this->grabConfig();
@@ -145,6 +146,7 @@ class storeController extends expController {
         } else {
             $default_id = 0;
         }
+        if (empty($default_id)) $default_id = 0;
         expSession::set('catid', $default_id);
 
         // figure out if we need to show all categories and products or default to showing the first category.

@@ -46,7 +46,10 @@ function decimal_filter_class() {
 			bValueChanged = true;
 		}
 		
-		if (bValueChanged) ptObject.fireEvent("onchange");
+		if (bValueChanged) {
+//            ptObject.fireEvent("onchange");
+            fireEvent(ptObject,"change");
+        }
 	}
 	
 	this.onfocus = function(ptObject) {

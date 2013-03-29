@@ -1751,7 +1751,30 @@ class expFile extends expRecord {
                                 $db->insertObject($object, 'formbuilder_' . $table);
                             }
                         }
-                        $errors[] = sprintf(gt('*  However...we successfully recreated the "%s" Table from the EQL file'), $table);
+                        $errors[] = sprintf(gt('*  However...we successfully recreated the "formbuilder_%s" Table from the EQL file'), $table);
+                    }
+                }
+            }
+
+            // check for and process to rebuild new forms module data table
+            if (!empty($newformdata)) {
+                foreach ($newformdata as $tablename=>$tabledata) {
+                    $newform = $db->selectObject('forms','table_name="'.substr($tablename,6).'"');
+                    if (!empty($newform)) {
+                        // create the new table
+                        $form = new forms($newform->id);
+                        $table = $form->updateTable();
+
+                        // populate the table
+                        foreach ($tabledata as $record) {
+                            $record = str_replace('\r\n', "\r\n", $record);
+                            $object = @unserialize($record);
+                            if (!$object) $object = unserialize(stripslashes($record));
+                            if (is_object($object)) {
+                                $db->insertObject($object, 'forms_' . $table);
+                            }
+                        }
+                        $errors[] = sprintf(gt('*  However...we successfully recreated the "forms_%s" Table from the EQL file'), $table);
                     }
                 }
             }

@@ -30,15 +30,15 @@
 <fieldset>
     {group label="Quantity Discounts"|gettext}
     <blockquote>
-        {'Quantity discounts are discounts that get applied when a customer purchases a certain amount of this product.'|gettext}{br}
-        {'You can configure how the discounts work by setting the discount rules below.'|gettext}{br}
+        {'Quantity discounts are discounts that get applied when a customer purchases a certain amount of this product.'|gettext}
+        {'You can configure how the discount works by setting the discount rules below.'|gettext}{br}
     </blockquote>
     <table class="qty-discount">
         <tr>
             <td>{'If a customer purchases more than'|gettext} </td>
             <!--td>{control type="dropdown" name="pricing[quantity_discount_num_items_mod]" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->
             <td>{control type="text" name="pricing[quantity_discount_num_items]" label=" " value=$record->quantity_discount_num_items size=3 filter=integer}</td>
-            <td>{'items, than discount the price by'|gettext}</td>
+            <td>{'items, then discount the price by'|gettext}</td>
             <td>{control type="text" name="pricing[quantity_discount_amount]" label=" " value=$record->quantity_discount_amount size=3 filter=decimal}
             <td>{control type="dropdown" name="pricing[quantity_discount_amount_mod]" label=" " items=$record->quantity_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
         </tr>
@@ -49,6 +49,6 @@
     {/group}
 </fieldset>                 
 {group label="Tax Class"|gettext}
-{control type="dropdown" name="pricing[tax_class_id]" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id|default:1}
-{icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
+    {control type="dropdown" name="pricing[tax_class_id]" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id|default:1}
+    {icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
 {/group}

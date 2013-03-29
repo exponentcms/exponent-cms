@@ -13,8 +13,8 @@
  *
  *}
 
-<h2>About Us</h2>
+<h2>{'About Us'|gettext}</h2>
 
 {control type="files" name="aboutus_image" subtype="aboutus_image" label="Banner Image"|gettext value=$config['expFile'] limit='1'}
 
-{control type="editor" label="About Us HTML" name="aboutus_body" value=$config.aboutus_body}
+{control type="editor" label="About Us HTML"|gettext name="aboutus_body" value=$config.aboutus_body}

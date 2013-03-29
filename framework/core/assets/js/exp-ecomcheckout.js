@@ -25,7 +25,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-jso
             expanded:false,
             init: function(){
                 YAHOO.util.Event.on('expandcart', 'click', this.toggle,this,true);
-                YAHOO.util.Dom.setStyle(this.cartWrap, 'height', '0');
+//                YAHOO.util.Dom.setStyle(this.cartWrap, 'height', '0');
+                YAHOO.util.Dom.setStyle(this.cartWrap, 'overflow', 'hidden');
                 // var attributes = {
                 //     height: { to: 0 }
                 // };

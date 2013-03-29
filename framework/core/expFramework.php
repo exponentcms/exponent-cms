@@ -255,8 +255,8 @@ function renderAction(array $parms=array()) {
         /* TODO:  Not sure if this needs to be here. FJD
 		$meth = $controllerClass->getMethod($action);
         if ($meth->isPrivate()) expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));*/
-    } elseif ($controllerClass->hasMethod('index')) {
-        $action = 'index';
+//    } elseif ($controllerClass->hasMethod('index')) {
+//        $action = 'index';
     } elseif ($controllerClass->hasMethod('showall')) {
         $action = 'showall';
     } else {
@@ -490,7 +490,8 @@ function get_config_templates($controller, $loc) {
     foreach ($common_views as $key=>$value) {
         $common_views[$key]['name'] = gt($value['name']);
     }
-    $moduleconfig['module'] = $common_views['module'];
+    $moduleconfig = array();
+    if (!empty($common_views['module'])) $moduleconfig['module'] = $common_views['module'];
     unset($common_views['module']);
 
     // get the config views for the module
@@ -523,8 +524,9 @@ function get_config_templates($controller, $loc) {
     // when we're finished to get them back in the right order
     krsort($common_views);
     krsort($module_views);
-    
-    $views = array_merge($common_views, $moduleconfig, $module_views);
+
+    if (!empty($moduleconfig)) $common_views = array_merge($common_views, $moduleconfig);
+    $views = array_merge($common_views, $module_views);
     $views = array_reverse($views);
 
     return $views;
@@ -681,6 +683,8 @@ function expUnserialize($serial_str) {
     $out2 = unserialize($out);
     if (is_array($out2) && !empty($out2['moduledescription'])) {  // work-around for links in module descriptions
         $out2['moduledescription'] = stripslashes($out2['moduledescription']);
+    } elseif (is_object($out2) && get_class($out2) == 'htmlcontrol') {
+        $out2->html = stripslashes($out2->html);
     }
     return $out2;
 }

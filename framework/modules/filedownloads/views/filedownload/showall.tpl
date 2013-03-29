@@ -13,6 +13,8 @@
  *
  *}
 
+{uniqueid prepend="filedownload" assign="name"}
+
 {if $config.usecategories}
 {css unique="categories" corecss="categories"}
 
@@ -49,7 +51,7 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    <div id="filelist">
+    <div id="{$name}list">
         {include 'filelist.tpl'}
     </div>
 </div>
@@ -67,11 +69,11 @@
     {/script}
 {/if}
 
-{script unique="filedownload" yui3mods="1"}
+{script unique="`$name`listajax" yui3mods="1"}
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var filelist = Y.one('#filelist');
+    var filelist = Y.one('#{/literal}{$name}{literal}list');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Fileitems'},
@@ -102,7 +104,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#filelist.loadingdiv').remove();
+            filelist.one('.loadingdiv').remove();
         }
 	};
 

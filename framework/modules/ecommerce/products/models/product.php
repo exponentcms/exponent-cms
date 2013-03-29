@@ -130,7 +130,7 @@ class product extends expRecord {
     }
         
     function getDefaultQuantity() {
-		//TMP: Make this actually do something.
+		//FIXME Make this actually do something.
 		return 1;
 	}
 
@@ -196,7 +196,8 @@ class product extends expRecord {
                  $params['qty'] += $this->minimum_order_quantity - ($qty + $qCheck);
                  $qty = $params['qty'];                             
             }
-        } else {
+        }else
+        {
             foreach ($params['children'] as $idKey=>$childQty)
             {
                 $cprod = new childProduct($idKey);

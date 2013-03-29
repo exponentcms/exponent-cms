@@ -108,9 +108,7 @@ class dropdowncontrol extends formcontrol {
         $form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
-        $form->register(null, null, new htmlcontrol('<br />'));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
-        $form->register(null, null, new htmlcontrol('<br />'));
         $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }

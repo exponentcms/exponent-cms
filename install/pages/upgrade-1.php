@@ -43,6 +43,13 @@ if (!defined('EXPONENT')) exit('');
 ?>
     </p>
     <p>
+        <?php echo gt("We recommend having a recent database backup before performing an upgrade.") . '  ';
+            echo gt("If you do not have a recent backup, then first");
+            echo ' <a href="'.expCore::makeLink(array('controller'=>'file','action'=>'export_eql')).'">'. gt('Export Database').'</a> ';
+            echo gt("and then run the install/upgrade process again.");
+        ?>
+    </p>
+    <p>
     <?php echo gt("Next, we'll").' <a href="http://docs.exponentcms.org/docs/current/update-tables" target="_blank">'.
         gt('Install Tables').'</a>, '.gt("and then run through any upgrade scripts needed to bring your code and database up to date."); ?>
 <?php } ?>

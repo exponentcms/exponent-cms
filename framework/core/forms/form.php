@@ -66,7 +66,7 @@ class form extends baseform {
      * @param string $tab
      * @return boolean Returns true if the new Control was registered.
      */
-	function register($name,$label,$control,$replace=true,$tab=null) {
+	function register($name,$label, $control,$replace=true,$tab=null) {
 		if ($name == null || $name == "") $name = uniqid("");
 		if (isset($this->controls[$name])) {
 			if (!$replace) return false;
@@ -74,7 +74,7 @@ class form extends baseform {
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = $label;
         $this->tabs[$name] = $tab;
-		if (method_exists($control,'onRegister')) $control->onRegister($this);
+        if (method_exists($control,'onRegister')) $control->onRegister($this);
 		return true;
 	}
 
@@ -209,7 +209,7 @@ class form extends baseform {
             }
         }
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
-		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
+//		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
 		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';

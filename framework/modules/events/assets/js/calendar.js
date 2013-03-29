@@ -879,6 +879,11 @@ Y.mix(Y.Calendar,{
 				*/
 				//that.callback(d);
 				//datetime的date
+                if(cc.fathor.withtime){
+                    d.setHours(cc.timmer.get('h'));
+                    d.setMinutes(cc.timmer.get('m'));
+                    d.setSeconds(cc.timmer.get('s'));
+                }
 				cc.fathor.dt_date = d;
 				cc.fathor.EventCenter.fire('select',d);
 				if(cc.fathor.popup && cc.fathor.closeable){

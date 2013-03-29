@@ -24,18 +24,18 @@
             {control type="hidden" name="id" value=$record->id}
             <div id="childtabs" class="yui-navset exp-skin-tabview hide">
                 <ul class="yui-nav">
-                <li class="selected"><a href="#general"><em>{"General"|gettext}</em></a></li>
-                <li><a href="#pricing"><em>{"Pricing, Tax & Discounts"|gettext}</em></a></li>
-                <li><a href="#images"><em>{"Images & Files"|gettext}</em></a></li>
-                <li><a href="#quantity"><em>{"Quantity"|gettext}</em></a></li>
-                <li><a href="#shipping"><em>{"Shipping"|gettext}</em></a></li>
-                <li><a href="#categories"><em>{"Categories"|gettext}</em></a></li>
-                <li><a href="#options"><em>{"Options"|gettext}</em></a></li>
-                <li><a href="#uifld"><em>{"User Input Fields"|gettext}</em></a></li>
-                <li><a href="#active"><em>{"Active & Status Settings"|gettext}</em></a></li>
-                <li><a href="#notes"><em>{"Notes"|gettext}</em></a></li>
-                <li><a href="#xtrafields"><em>{"Extra Fields"|gettext}</em></a></li>
-                <li><a href="#misc"><em>{"Misc"|gettext}</em></a></li>
+                    <li class="selected"><a href="#general"><em>{"General"|gettext}</em></a></li>
+                    <li><a href="#pricing"><em>{"Pricing, Tax & Discounts"|gettext}</em></a></li>
+                    <li><a href="#images"><em>{"Images & Files"|gettext}</em></a></li>
+                    <li><a href="#quantity"><em>{"Quantity"|gettext}</em></a></li>
+                    <li><a href="#shipping"><em>{"Shipping"|gettext}</em></a></li>
+                    <li><a href="#categories"><em>{"Categories"|gettext}</em></a></li>
+                    <li><a href="#options"><em>{"Options"|gettext}</em></a></li>
+                    <li><a href="#uifld"><em>{"User Input Fields"|gettext}</em></a></li>
+                    <li><a href="#active"><em>{"Active & Status Settings"|gettext}</em></a></li>
+                    <li><a href="#notes"><em>{"Notes"|gettext}</em></a></li>
+                    <li><a href="#xtrafields"><em>{"Extra Fields"|gettext}</em></a></li>
+                    <li><a href="#misc"><em>{"Misc"|gettext}</em></a></li>
                 </ul>
                 <div class="yui-content">
                     <div id="general">
@@ -230,6 +230,7 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
+{*FIXME convert to yui3*}
 {script unique="editform" yui3mods=1}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
@@ -237,7 +238,6 @@
         requires: ['history','tabview','event-custom']
     };
 
-    {*FIXME convert to yui3*}
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element','exptabs', function(Y) {
         var YAHOO=Y.YUI2;
 

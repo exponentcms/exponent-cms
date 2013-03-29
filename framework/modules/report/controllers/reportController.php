@@ -1194,7 +1194,13 @@ class reportController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>'store',
             'action'=>$this->params['action'],
-            'columns'=>array('actupon'=>true,gt('ID')=>'id',gt('Product')=>'title|controller=store,action=show,showby=id',gt('SKU')=>'model',gt('Price')=>'base_price'),
+            'columns'=>array(
+                'actupon'=>true,
+                gt('ID')=>'id',
+                gt('Product')=>'title|controller=store,action=show,showby=id',
+                gt('SKU')=>'model',
+                gt('Price')=>'base_price'
+            ),
             //'columns'=>array('Product'=>'title','SKU'=>'model'),
         ));
         //eDebug($page,true);

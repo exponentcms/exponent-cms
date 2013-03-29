@@ -1,3 +1,17 @@
 # secure directory by disabling script execution
 AddHandler cgi-script .php .pl .py .jsp .asp .htm .shtml .sh .cgi
 Options -ExecCGI
+
+<Files *>
+    order deny,allow
+    deny from all
+</Files>
+
+<Files ^(*.jpeg|*.jpg|*.JPEG|*.JPG|*.png|*.gif)$>
+    order deny,allow
+    allow from all
+</Files>
+
+<FilesMatch "\.(php|phps|pl|py|jsp|asp|htm|shtml|sh|cgi)$">
+    ForceType text/plain
+</FilesMatch>

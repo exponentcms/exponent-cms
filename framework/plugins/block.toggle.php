@@ -36,6 +36,7 @@
  */
 function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
     if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {toggle} plugin.")."</strong>");
+    if (empty($params['title']) && !empty($params['label'])) $params['title'] = $params['label'];
     if (empty($params['title']) && empty($params['link'])) die("<strong style='color:red'>".gt("The 'title' parameter is required for the {toggle} plugin.")."</strong>");
     $summary = !empty($params['summary']) ? $params['summary'] : '';
 //    if ($summary) {

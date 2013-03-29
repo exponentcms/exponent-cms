@@ -285,7 +285,7 @@ class colorcontrol extends formcontrol {
 
     static function update($values, $object) {
         if ($object == null) {
-            $object          = new popupdatetimecontrol();
+            $object          = new colorcontrol();
             $object->default = 0;
         }
         if ($values['identifier'] == "") {

@@ -59,10 +59,6 @@ class yuicalendarcontrol extends formcontrol {
     }
 
     function onRegister(&$form) {
-        // $form->addScript("jscal-calendar",      PATH_RELATIVE."external/jscalendar/calendar.js");
-        // $form->addScript("jscal-calendar-lang", PATH_RELATIVE."external/jscalendar/lang/calendar-en.js");
-        // $form->addScript("jscal-calendar-setup",PATH_RELATIVE."external/jscalendar/calendar-setup.js");
-        // $form->addScript("popupdatetimecontrol",PATH_RELATIVE."js/PopupDateTimeControl.js");
     }
 
     function controlToHTML($name, $label = null) {
@@ -176,7 +172,7 @@ class yuicalendarcontrol extends formcontrol {
 
     static function update($values, $object) {
         if ($object == null) {
-            $object          = new popupdatetimecontrol();
+            $object          = new yuicalendarcontrol();
             $object->default = 0;
         }
         if ($values['identifier'] == "") {

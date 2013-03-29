@@ -7,7 +7,7 @@ DirectoryIndex index.php
 # Various rewrite rules.
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    
+
     # To redirect all users to access the site WITH the 'www.' prefix,
     # (http://example.com/... will be redirected to http://www.example.com/...)
     # adapt and uncomment the following:
@@ -33,4 +33,7 @@ DirectoryIndex index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [QSA,L]
+
+    RewriteRule ^login.php$ login/showlogin
+
 </IfModule>

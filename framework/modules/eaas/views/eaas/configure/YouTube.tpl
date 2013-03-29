@@ -15,9 +15,9 @@
 
 <h2>{"YouTube Videos"|gettext}</h2>
 
-{control type="files" name="youtube_image" subtype="youtube_image" label="youtube Banner Image"|gettext value=$config['expFile'] limit='1'}
+{control type="files" name="youtube_image" subtype="youtube_image" label="YouTube Banner Image"|gettext value=$config['expFile'] limit='1'}
 
-{control type="editor" name="youtube_body" label="youtube HTML" value=$config.youtube_body}
+{control type="editor" name="youtube_body" label="YouTube HTML"|gettext value=$config.youtube_body}
 
 <table class="exp-skin-table">
     <thead>
@@ -50,7 +50,6 @@
 {/foreach}
     </tbody>
 </table>
-
 
 {script unique="aggregation-yt"}
     function youtubeSelectAll(val) {

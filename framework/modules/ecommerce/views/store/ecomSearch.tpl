@@ -36,9 +36,9 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
             var template = (result.fileid != '') ? '<img width="30" height="30" class="srch-img" src="'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+result.fileid+'&w=30&h=30&zc=1" />' : '';
             
             // title
-            template += '<strong class="title">'+result.title+'</strong>';
+            template += ' <strong class="title">'+result.title+'</strong>';
             // model/SKU
-            template += '<em class="title">SKU: '+result.model+'</em>';
+            template += ' <em class="title">SKU: '+result.model+'</em>';
             template += '<div style="clear:both;"></div>';
 
             return template;
