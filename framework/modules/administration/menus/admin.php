@@ -21,7 +21,7 @@ if (!defined('EXPONENT')) exit('');
 global $user, $db;
 
 //$my_version = gt("Exponent Version") . " : " . EXPONENT_VERSION_MAJOR . "." . EXPONENT_VERSION_MINOR . "." . EXPONENT_VERSION_REVISION . "<br />";
-$my_version = gt("Exponent Version") . " : " . expVersion::getVersion(true) . "<br />";
+$my_version = gt("Exponent Version") . " : " . expVersion::getVersion(true,false,false) . "<br />";
 if (EXPONENT_VERSION_TYPE != '') {
     $my_type = gt("Release level") . " : " . EXPONENT_VERSION_TYPE . EXPONENT_VERSION_ITERATION . "<br />";
 } else {

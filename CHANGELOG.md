@@ -12,7 +12,9 @@ Added / Fixed / changed for 2.2.0 beta 2
   - adds many features to online donations and event registrations making them more robust and polished
     -- quick add donation at set amount or allow user to enter amount
     -- event registrations now abide by 'options'
-  - contains all the fixes in 2.1.4
+  - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
+  - implements broader use of ajax paging and use of new html5 input types, temporarily adds additonal date/time form designer controls
+  - contains all the fixes in 2.1.4, and many more fixes
 ### Known Issues
   - None
 

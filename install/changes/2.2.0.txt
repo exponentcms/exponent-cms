@@ -20,3 +20,5 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
   - adds many features to online donations and event registrations making them more robust and polished
     -- quick add donation at set amount or allow user to enter amount
     -- event registrations now abide by 'options'
+  - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
+  - implements broader use of ajax paging and use of new html5 input types, temporarily adds additonal date/time form designer controls
