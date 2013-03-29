@@ -683,6 +683,8 @@ function expUnserialize($serial_str) {
     $out2 = unserialize($out);
     if (is_array($out2) && !empty($out2['moduledescription'])) {  // work-around for links in module descriptions
         $out2['moduledescription'] = stripslashes($out2['moduledescription']);
+    } elseif (is_object($out2) && get_class($out2) == 'htmlcontrol') {
+        $out2->html = stripslashes($out2->html);
     }
     return $out2;
 }
