@@ -81,10 +81,12 @@ class checkboxcontrol extends formcontrol {
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             if (!empty($label) && $label != ' ') {
 //                $html .= "<label" . $for . " class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">" . $label . "</label>";
-                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
+//                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
+                $html .= "<label" . $for . " class=\"label\" style=\"width:auto; display:inline;\">";
                 if($this->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
                 $html .= $label;
-                $html .= "</div>";
+//                $html .= "</div>";
+                $html .= "</label>";
             }
 //            $html .= "</td>";
             $flip = ' style="position:absolute;"';

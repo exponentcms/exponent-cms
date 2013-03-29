@@ -30,8 +30,14 @@ class expTag extends expRecord {
         //'content_expComments'=>'expComment',
         //'content_expSimpleNote'=>'expSimpleNote',
     );
-    
-	
+
+    public function afterDelete() {
+        global $db;
+
+	    // get and delete all attachments to this object
+	    $db->delete('content_expTags','exptags_id='.$this->id);
+    }
+
 }
 
 ?>

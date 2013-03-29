@@ -79,10 +79,10 @@ class motdController extends expController {
         parent::update();
     }
     
-    function index() {
-        redirect_to(array('controller'=>'motd', 'action'=>'show'));
-//        $this->show();
-    }
+//    function index() {
+//        redirect_to(array('controller'=>'motd', 'action'=>'show'));
+////        $this->show();
+//    }
 
 }
 

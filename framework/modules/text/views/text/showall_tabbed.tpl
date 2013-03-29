@@ -19,9 +19,9 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == 1}
-                {icon class=add action=edit rank=1 text="Add Text Tab"|gettext}
-            {/if}
+            {*{if $permissions.create == 1}*}
+                {*{icon class=add action=edit rank=1 text="Add Text Tab"|gettext}*}
+            {*{/if}*}
             {if $permissions.manage == 1}
                 {ddrerank items=$items model="text" label="Text Items"|gettext}
             {/if}
@@ -31,16 +31,27 @@
         {$config.moduledescription}
     {/if}
     {$myloc=serialize($__loc)}
-    {if !count($items)}
-        {permissions}
-            <div class="msg-queue notice" style="text-align:center"><p>{'There are no text items/tabs in the module!'|gettext}</p></div>
-        {/permissions}
-    {else}
+    {*{if !count($items)}*}
+        {*{permissions}*}
+            {*<div class="msg-queue notice" style="text-align:center"><p>{'There are no text items/tabs in the module!'|gettext}</p></div>*}
+        {*{/permissions}*}
+    {*{/if}*}
+    {*{else}*}
     <div id="text-{$id}" class="yui-navset exp-skin-tabview">
         <ul class="yui-nav">
             {foreach from=$items item=tab name=tabs}
                 <li><a href="#tab{$smarty.foreach.tabs.iteration}">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
             {/foreach}
+            {permissions}
+                {if ($permissions.create == 1)}
+                    {if $smarty.foreach.tabs.iteration != 0}
+                        <li>
+                    {else}
+                        <li class="selected">
+                    {/if}
+                    <a href="#tab{$smarty.foreach.tabs.iteration+1}"><em>({'Add New'|gettext})</em></a></li>
+                {/if}
+            {/permissions}
         </ul>
         <div class="yui-content">
             {foreach from=$items item=text name=items}
@@ -72,15 +83,15 @@
                         {/if}
                     </div>
                     {clear}
-					{permissions}
-						<div class="module-actions">
-							{if $permissions.create == 1}
-								{icon class=add action=edit rank=$text->rank+1 text="Add another text tab after this one"|gettext}
-							{/if}
-						</div>
-					{/permissions}
                 </div>
             {/foreach}
+            {permissions}
+                {if $permissions.create == 1}
+                    <div id="tab{$smarty.foreach.tabs.iteration+1}">
+                        {icon class=add action=edit rank=$text->rank+1 text="Add more text here"|gettext}
+                    </div>
+                {/if}
+            {/permissions}
         </div>
     </div>
     <div class="loadingdiv">{'Loading'|gettext}</div>
@@ -106,4 +117,4 @@
         $('#text-{/literal}{$id}{literal}').tabs().next().remove();
     {/literal}
     {/script}
-{/if}
+{*{/if}*}

@@ -141,7 +141,7 @@ class administrationController extends expController {
         ));
 	}
 
-	public function fix_sessions() {
+	public function fixsessions() {
 	    global $db;
 
 //		$test = $db->sql('CHECK TABLE '.DB_TABLE_PREFIX.'sessionticket');
@@ -291,10 +291,10 @@ class administrationController extends expController {
         ));
     }
     
-    public function index() {
-        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
-//        $this->toolbar();
-    }
+//    public function index() {
+//        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
+////        $this->toolbar();
+//    }
     
     public function update_SetSlingbarPosition() {
         expSession::set("slingbar_top",$this->params['top']);
@@ -410,7 +410,9 @@ class administrationController extends expController {
 
     public function manage_version() {
         expSession::un_set('update-check');  // reset the already checked flag
-        expVersion::checkVersion();
+        if (!expVersion::checkVersion(true)) {
+            flash('message', gt('Your version of Exponent CMS is current.'));
+        }
    		expHistory::back();
    	}
 

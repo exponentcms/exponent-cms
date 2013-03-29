@@ -226,17 +226,13 @@ class expSettings {
 				$value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
 				$value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
 				$str .= "exponent_unhtmlentities('$value')";
-
 			} elseif (is_int($value)) {
 				$str .= $value;
-
 			} else {
-
 				if ($directive != 'SESSION_TIMEOUT')
 					$str .= "'".str_replace("'","\'",$value)."'";
 				else
 					$str .= str_replace("'",'', $value);
-
 			}
 			$str .= ");\n";
 		}
@@ -277,11 +273,9 @@ class expSettings {
 		// }
 
 		if (isset($values['activate']) || $configname == "") {
-
 			if (
 				(file_exists($site_root."conf/config.php") && expUtil::isReallyWritable($site_root."conf/config.php")) ||
 				expUtil::isReallyWritable($site_root."conf")) {
-
 
 				$fh = fopen($site_root."conf/config.php","w");
 				fwrite($fh,$str);

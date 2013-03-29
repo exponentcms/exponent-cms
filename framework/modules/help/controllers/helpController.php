@@ -321,16 +321,9 @@ class helpController extends expController {
 	    // delete the version
 	    $version->delete();
 	    
-	    // get and delete the docs for this version
-	    $help = new help();
-	    $docs = $help->find('all', 'help_version_id='.$version->id);
-	    $num_docs = count($docs);
-	    foreach ($docs as $doc) {
-	        $doc->delete();
-	    }
 	    expSession::un_set('help-version');
 
-	    flash('message', gt('Deleted version').' '.$version->version.' '.gt('and').' '.$num_docs.' '.gt('documents that were in that version.'));
+	    flash('message', gt('Deleted version').' '.$version->version.' '.gt('and all documents in that version.'));
 	    expHistory::back();	    
 	}
 

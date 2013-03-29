@@ -19,7 +19,9 @@
 if (!defined('EXPONENT')) exit('');
 
 //expSession::un_set('installer_config');
+expTheme::removeSmartyCache();
 expSession::clearAllSessionData();
+expTheme::removeCss();
 
 global $user;
 
@@ -28,7 +30,6 @@ if (!isset($_POST['username'])) searchController::spider();
 
 if (isset($_REQUEST['upgrade'])) {
 // upgrades hit this
-//    if (unlink(BASE.'install/not_configured')) {
     $leaveinstaller = (@unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
     if ($leaveinstaller) {
         echo '<h2>' . gt('You\'re all set!') ."</h2>";
@@ -47,7 +48,6 @@ if (isset($_REQUEST['upgrade'])) {
         user::login($_POST['username'],$_POST['password']);
         $leaveinstaller = (unlink(BASE.'install/not_configured')||!file_exists(BASE.'install/not_configured'));
         if ($leaveinstaller) { 
-//            if ($user->id!=0) {
             if ($user->is_system_user) {
                 switch ($_POST['next']) {
                     case 'migration':

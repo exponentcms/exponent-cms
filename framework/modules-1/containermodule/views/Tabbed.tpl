@@ -49,7 +49,7 @@
 			{/if}
 		{/section}	
 		{permissions}
-			{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delet == 1 || $permissions.create == 1 || $permissions.configure == 1)}
+			{if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1)}
 				{if $smarty.section.contain.total != 0}
 					<li>
 				{else}

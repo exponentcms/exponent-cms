@@ -6,6 +6,14 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
+Added / Fixed / changed for 2.1.4
+-----------------------
+### This release only fixes bugs found in 2.1.3, everything else is destined for the v2.2 major version update
+ - updates EQL file export/import to also include table definition for future proofing backups
+ - adds new 'Exponent as a Service' module for JSON service calls
+ - fixes Online Event Registrations activating many features, adds email registrants
+ - fixes over 3 dozen issues found in 2.1.3
+
 Added / Fixed / changed for 2.1.3
 -----------------------
 ### This release only fixes bugs found in 2.1.2, everything else is destined for the v2.2 major version update

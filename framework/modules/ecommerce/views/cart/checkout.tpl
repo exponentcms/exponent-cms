@@ -276,15 +276,15 @@
         <div class="separate">
             <h2>{"Payment Information"|gettext}</h2>
             <h3>{"Available Payment Methods"|gettext}</h3>
-            <div id="{$id}" class="yui-navset exp-skin-tabview hide">
-                <ul>
+            <div id="cart-{$id}" class="yui-navset exp-skin-tabview">
+                <ul class="yui-nav">
                     {foreach from=$billing->calculator_views item=cviews name=calcs}
-                        <li><a href="#tab{$smarty.foreach.items.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                        <li><a href="#tab{$smarty.foreach.calcs.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>
                     {/foreach}
                 </ul>
-                <div>
+                <div class="yui-content">
                     {foreach from=$billing->calculator_views item=cviews name=calcs}
-                        <div id="tab{$smarty.foreach.items.iteration}">
+                        <div id="tab{$smarty.foreach.calcs.iteration}">
                             {include file=$cviews.view calcid=$cviews.id}
                         </div>
                     {/foreach}
@@ -305,17 +305,23 @@
 //
 {/script*}
 
-{script unique="`$id`" yui3mods="1"}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+{*{script unique="cart-`$id`" yui3mods="1"}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-	});
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#cart-{/literal}{$id}{literal}'});*}
+		{*Y.one('#cart-{/literal}{$id}{literal}').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+	{*});*}
+{*{/literal}*}
+{*{/script}*}
+
+{script unique="cart-`$id`" jquery="jqueryui"}
+{literal}
+    $('#cart-{/literal}{$id}{literal}').tabs().next().remove();
 {/literal}
 {/script}

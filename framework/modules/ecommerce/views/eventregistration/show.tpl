@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2012 OIC Group, Inc.
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 
 {/css}
 
-<div class="module store show event-registration">
+<div class="module store show event-registration product">
     <div class="image" style="padding:0px 10px 10px;float:left;overflow: hidden;">
     {if $product->expFile.mainimage[0]->url == ""}
         {img src="`$asset_path`images/no-image.jpg"}
@@ -32,7 +32,8 @@
     </div>
 
     <div class="bd">
-        <h2>{$product->eventdate|date_format:"%A, %B %e, %Y"}</h2>
+        <h2>{$product->eventdate|date_format:"%A, %B %e, %Y"}
+            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|date_format:"%A, %B %e, %Y"}{/if}</h2>
         <hr>
         <h3>{$product->title}</h3>
         {permissions}
@@ -43,15 +44,21 @@
                 {/if}
             </div>
         {/permissions}
-        <h4>{($product->eventdate+$product->event_starttime)|expdate:"g:i a"}
-            - {($product->eventdate+$product->event_endtime)|expdate:"g:i a"}</h4>
-    {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
-        ({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if}
-        ){br}{br}
+        <span><h4>{($product->eventdate+$product->event_starttime)|expdate:"g:i a"}
+            - {($product->eventdate+$product->event_endtime)|expdate:"g:i a"}
+        {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
+        <em class="attribution">({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if})</em></span></h4>
+        {if !empty($product->location)}
+            {br}<h4>{'Location'|gettext}: {$product->location}</h4>
+        {/if}
+        {br}
         <div class="bodycopy">
-        {if $product->summary}
-                {$product->summary}
+            {if $product->body}
+                {$product->body}
             {/if}
+            {*{if $product->summary}*}
+                {*{$product->summary}*}
+            {*{/if}*}
         </div>
     {clear}
 
@@ -69,16 +76,23 @@
                         {$seats = implode(',',range(1,$product->spacesLeft()))}
                             {control type=dropdown name=qtyr label="Select number of seats"|gettext items=$seats}
                     </div>
-                    <div class="seatAmount">
+                    <div class="seatAmount prod-price">
                         {if $product->base_price}
+                            {*{if $product->use_special_price}*}
+                                {*<span class="regular-price on-sale">{currency_symbol}{$product->base_price|number_format:2}</span>*}
+                                {*<span class="sale-price">{currency_symbol}{$product->special_price|number_format:2}&#160;<sup>{"SALE!"|gettext}</sup></span>*}
+                            {*{else}*}
+                                {*<span class="regular-price">{currency_symbol}{$product->base_price|number_format:2}</span>*}
+                            {*{/if}*}
                             <span class="seatCost">{currency_symbol}{$product->base_price}</span>{br}{'per seat'|gettext}
-                            {else}
+                            {*{br}{'per seat'|gettext}*}
+                        {else}
                             <span class="seatCost">{'No Cost'|gettext}</span>
                         {/if}
                     </div>
                 </div>
                 <span class="label">{'Registration Closes:'|gettext} </span>
-                <span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}{br}
+                <span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
                 {if $product->hasOptions()}
                     <div class="product-options">
                         {control type="hidden" name="ticket_types" value="1"}
@@ -145,14 +159,14 @@
                             <div class="more-text" style="height: 0px;">
                                 {$product->terms_and_condition}
                             </div>
-                            {else}
+                        {else}
                             {control type=checkbox name=terms_and_condition value=1 label="I Agree To The Following Waiver"|gettext required=1}
                             <div class="more-text" style="height: auto;">
                                 {$product->terms_and_condition}
                             </div>
                         {/if}
                     </div>
-                    {else}
+                {else}
                     <div class="more-text" style="height: 0px;"></div>
                 {/if}
 

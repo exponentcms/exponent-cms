@@ -72,18 +72,18 @@ class donationController extends expController {
         return $metainfo;
     }
     
-    function index() {
-        redirect_to(array('controller'=>'donations', 'action'=>'showall'));
-//        $this->showall();
-    }
+//    function index() {
+//        redirect_to(array('controller'=>'donation', 'action'=>'showall'));
+////        $this->showall();
+//    }
     
     function show() {
-        redirect_to(array('controller'=>'donations', 'action'=>'showall'));
+        redirect_to(array('controller'=>'donation', 'action'=>'showall'));
 //        $this->showall();
     }
     
     function delete() {
-        redirect_to(array('controller'=>'donations', 'action'=>'showall'));
+        redirect_to(array('controller'=>'donation', 'action'=>'showall'));
 //        $this->showall();
     } 
 }

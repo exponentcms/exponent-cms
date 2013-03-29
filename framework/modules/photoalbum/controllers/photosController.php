@@ -222,7 +222,7 @@ class photosController extends expController {
                     $photo->location_data = serialize($loc);
     //                $photo->body = $gi['description'];
     //                $photo->alt = !empty($gi['alt']) ? $gi['alt'] : $photo->title;
-                    $filename = pathinfo($params['expFile']->filename);
+                    $filename = pathinfo($params['expFile'][0]->filename);
                     $photo->title = $prefix . $filename['filename'];
                     if (!empty($params['expTag'])) {
                         $photo->expTag = $params['expTag'];

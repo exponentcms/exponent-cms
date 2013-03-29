@@ -68,7 +68,8 @@ class importexportController extends expController {
     }
 
     function __construct($src = null, $params = array()) {
-        parent::__construct($src = null, $params);
+//        parent::__construct($src = null, $params);
+        parent::__construct($src, $params);
     }
 
     function import() {

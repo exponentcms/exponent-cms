@@ -42,15 +42,13 @@ include_once('../exponent.php');
 if (isset($_POST['sc'])) {
     if (file_exists("../conf/config.php")) {
         // Update the config
-        $config = $_POST['sc'];
-        foreach ($config as $key => $value) {
-            expSettings::change($key, addslashes($value));
+        foreach ($_POST['sc'] as $key => $value) {
+            expSettings::change($key, $value);
         }
     } else {
         // Initialize /conf/config
-        $config = $_POST['sc'];
     	$values = array(
-    		'c'=>$config,
+    		'c'=>$_POST['sc'],
     		'opts'=>array(),
     		'configname'=>'Default',
     		'activate'=>1

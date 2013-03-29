@@ -66,9 +66,10 @@ show view
     background: none repeat scroll 0 0 #EBD98E;
     border-bottom: 1px solid #CEBB6C;
     border-top: 1px solid #CEBB6C;
-    height: 63px;
+	padding-right: 5px;
+    height: 80px;
     /*margin-bottom: 20px;*/
-    width: 340px;
+    width: 360px;
 }
 .seatStatus {
     clear: left;
@@ -84,9 +85,9 @@ show view
     background: none repeat scroll 0 0 #DFCC7A;
     clear: right;
     float: right;
-    height: 43px;
-    padding: 10px;
-    width: 80px;
+    height: 60px;
+    padding: 5px;
+    width: 100px;
 }
 .seatCost {
     color: #CC0000;

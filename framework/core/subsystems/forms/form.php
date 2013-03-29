@@ -74,7 +74,7 @@ class form extends baseform {
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = $label;
         $this->tabs[$name] = $tab;
-		$control->onRegister($this);
+        if (method_exists($control,'onRegister')) $control->onRegister($this);
 		return true;
 	}
 
@@ -209,7 +209,7 @@ class form extends baseform {
             }
         }
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
-		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/required.js"></script>'."\r\n";
+//		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/subsystems/forms/js/inputfilters.js.php\"></script>\r\n";
 		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';

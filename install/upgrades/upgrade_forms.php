@@ -91,7 +91,15 @@ class upgrade_forms extends upgradescript {
             if (!empty($oldform->id)) {
                 // convert form data table by renaming it
                 if ($oldform->is_saved) {
-                    $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_formbuilder_'.$oldform->table_name.' TO '.DB_TABLE_PREFIX.'_forms_'.$oldform->table_name);
+                    $i = '';
+                    $test_tablename = $oldform->table_name;
+                    while ($db->tableExists('forms_'.$test_tablename)) {
+                        $i++;
+                        $test_tablename = $oldform->table_name . $i;
+                    }
+                    $oldform_table_name = $oldform->table_name;
+                    $oldform->table_name = $oldform_table_name . $i;
+                    $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_formbuilder_'.$oldform_table_name.' TO '.DB_TABLE_PREFIX.'_forms_'.$oldform->table_name);
                     //FIXME do we want to add a forms_id field?
                 }
 
@@ -111,6 +119,7 @@ class upgrade_forms extends upgradescript {
                 $fcs = $db->selectObjects('formbuilder_control',"form_id=".$oldform->id);
                 foreach ($fcs as $fc) {
                     $fc->forms_id = $newform->id;
+                    unset ($fc->id);
                     unset ($fc->form_id);
                     $db->insertObject($fc,'forms_control');
                 }
@@ -163,7 +172,7 @@ class upgrade_forms extends upgradescript {
         $ms = $db->selectObject('modstate',"module='formmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='formsController'")) {
             $ms->module = 'formsController';
-            $db->insertObject($ms,'modstate',"module='formmodule'",'module');
+            $db->insertObject($ms,'modstate',"module='formmodule'");
         }
 
  		// delete formmodule tables
@@ -197,21 +206,6 @@ class upgrade_forms extends upgradescript {
                 expFile::removeDirectory(BASE.$dir);
             }
         }
-
-        //FIXME ???
-        // copy custom views to new location
-//        $src = THEME_ABSOLUTE."modules/formmodule/views";
-//        $dst = THEME_ABSOLUTE."modules/forms/views/forms";
-//        if (expUtil::isReallyWritable($src)) {
-//            $dir = opendir($src);
-//            if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
-//            while(false !== ( $file = readdir($dir)) ) {
-//                if (( $file != '.' ) && ( $file != '..' )) {
-//                    if (!file_exists($dst . '/showall_' . $file)) copy($src . '/' . $file,$dst . '/showall_' . $file);
-//                }
-//            }
-//            closedir($dir);
-//        }
 
 		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Form modules were upgraded.")."<br>".gt("and formmodule/formbuilder files were then deleted.");
 	}

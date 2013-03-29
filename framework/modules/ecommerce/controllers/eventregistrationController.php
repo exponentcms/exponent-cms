@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2012 OIC Group, Inc.
+# Copyright (c) 2004-2013 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -171,9 +171,9 @@ class eventregistrationController extends expController {
         return $metainfo;
     }
 
-    function index() {
-        redirect_to(array('controller'=> 'eventregistrations', 'action'=> 'showall'));
-    }
+//    function index() {
+//        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'showall'));
+//    }
 
     function show() {
         global $order, $template, $user;
@@ -339,14 +339,17 @@ class eventregistrationController extends expController {
     }
 
     function delete() {
-        redirect_to(array('controller'=> 'eventregistrations', 'action'=> 'showall'));
+        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'showall'));
     }
 
     public function delete_registrant() {
         global $db;
-        $connector_id = $this->params['connector_id'];
 
-        $db->delete("eventregistration_registrants", "connector_id='{$connector_id}'");
+        $registrant = $db->selectObject("eventregistration_registrants", "id='{$this->params['id']}'");
+        $event = $db->selectObject("eventregistration", "id='{$registrant->event_id}'");
+        $db->delete("eventregistration_registrants", "id='{$this->params['id']}'");
+        $event->number_of_registrants = $db->countObjects("eventregistration_registrants", "event_id='{$event->id}'");
+        $db->updateObject($event,"eventregistration");
         flash('message', gt("Registrant successfully deleted."));
         expHistory::back();
     }
@@ -354,60 +357,91 @@ class eventregistrationController extends expController {
     public function edit_registrant() {
         global $db;
 
-        $event_id     = $this->params['event_id'];
-        $connector_id = @$this->params['connector_id'];
-        if (empty($connector_id)) {
-            $connector_id = "admin-created" . rand() . time(); //Meaning it is been added by admin
-        }
-        $reg_data   = $db->selectObjects("eventregistration_registrants", "connector_id ='{$connector_id}'");
+//        $event_id     = $this->params['event_id'];
+//        $connector_id = @$this->params['connector_id'];
+//        if (empty($connector_id)) {
+//            $connector_id = "admin-created" . rand() . time(); //Meaning it is been added by admin
+//        }
+//        $reg_data   = $db->selectObjects("eventregistration_registrants", "connector_id ='{$connector_id}'");
+
         $registrant = array();
-        foreach ($reg_data as $item) {
-            $registrant[$item->control_name] = $item->value;
+        if (!empty($this->params['id'])) {
+            $reg_data   = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+  //        foreach ($reg_data as $item) {
+  //            $registrant[$item->control_name] = $item->value;
+  //        }
+            $registrant = expUnserialize($reg_data->value);
+            $registrant['id'] = $reg_data->id;
+            $eventid = $reg_data->event_id;
+        } else {
+            $eventid = $this->params['event_id'];
         }
 
-        $event = new eventregistration($event_id);
+        $event = new eventregistration($eventid);
 
         // eDebug($registrant, true);
         assign_to_template(array(
             'registrant'=> $registrant,
             'event'=> $event,
-            'connector_id' => $connector_id
+//            'connector_id' => $connector_id
         ));
     }
 
     public function update_registrant() {
         global $db;
-        $event_id     = $this->params['event_id'];
-        $connector_id = $this->params['connector_id'];
-        $fields       = $this->params['event'];
-        $obj          = '';
-        // eDebug($fields);
-        foreach ($fields as $key => $value) {
-            $obj = $db->selectObject("eventregistration_registrants", "event_id = '{$event_id}' AND connector_id = '{$connector_id}' AND control_name='{$key}'");
 
-            if (!empty($obj)) {
-                $obj->value = $value;
-                if (!empty($value)) {
-                    $db->updateObject($obj, 'eventregistration_registrants');
-                } else {
-                    $db->delete('eventregistration_registrants', 'id=' . $obj->id);
-                }
-            } else {
-                if (!empty($value)) {
-                    $reg                  = '';
-                    $reg->event_id        = $event_id;
-                    $reg->control_name    = $key;
-                    $reg->value           = $value;
-                    $reg->connector_id    = $connector_id;
-                    $reg->registered_date = time();
+//        $event_id     = $this->params['event_id'];
+//        $connector_id = $this->params['connector_id'];
+//        $fields       = $this->params['event'];
+//        $obj          = '';
+//        // eDebug($fields);
+//        foreach ($fields as $key => $value) {
+//            $obj = $db->selectObject("eventregistration_registrants", "event_id = '{$event_id}' AND connector_id = '{$connector_id}' AND control_name='{$key}'");
+//
+//            if (!empty($obj)) {
+//                $obj->value = $value;
+//                if (!empty($value)) {
+//                    $db->updateObject($obj, 'eventregistration_registrants');
+//                } else {
+//                    $db->delete('eventregistration_registrants', 'id=' . $obj->id);
+//                }
+//            } else {
+//                if (!empty($value)) {
+//                    $reg                  = '';
+//                    $reg->event_id        = $event_id;
+//                    $reg->control_name    = $key;
+//                    $reg->value           = $value;
+//                    $reg->connector_id    = $connector_id;
+//                    $reg->registered_date = time();
+//
+//                    $db->insertObject($reg, 'eventregistration_registrants');
+//                }
+//
+//            }
+//        }
 
-                    $db->insertObject($reg, 'eventregistration_registrants');
-                }
-
-            }
+        $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+        $data = array();
+        $data['name'] = $this->params['name'];
+        $data['email'] = $this->params['email'];
+        $data['phone'] = $this->params['phone'];
+        if (empty($registrant->id)) {
+            $registrant = new stdClass();
+            $registrant->event_id = $this->params['event_id'];
+            $registrant->control_name = 0;
+            $registrant->value = serialize($data);
+            $registrant->connector_id = 'admin-created';
+            $registrant->registered_date = time();
+            $db->insertObject($registrant,"eventregistration_registrants");
+            $event = $db->selectObject("eventregistration", "id='{$registrant->event_id}'");
+            $event->number_of_registrants = $db->countObjects("eventregistration_registrants", "event_id='{$event->id}'");
+            $db->updateObject($event,"eventregistration");
+        } else {
+            $registrant->value = serialize($data);
+            $db->updateObject($registrant,"eventregistration_registrants");
         }
-        // exit();
-        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'view_registrants', 'id'=> $event_id));
+
+        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'view_registrants', 'id'=> $registrant->event_id));
     }
 
     public function export() {
@@ -458,7 +492,8 @@ class eventregistrationController extends expController {
         }
 
         // new method to check for guests/registrants
-        if (!empty($event->num_guest_allowed)) {
+//        if (!empty($event->num_guest_allowed)) {
+        if (!empty($event->quantity)) {
             $registered = array();
             if (!empty($order_ids)) foreach ($order_ids as $order_id) {
                 $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
@@ -621,15 +656,16 @@ class eventregistrationController extends expController {
         }
 
         // new method to check for guests/registrants
-        if (!empty($event->num_guest_allowed)) {
+//        if (!empty($event->num_guest_allowed)) {
+        $registrants = array();
+        if (!empty($event->quantity)) {
             $registered = array();
             if (!empty($order_ids)) foreach ($order_ids as $order_id) {
                 $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
                 $registered = array_merge($registered,$newregistrants);
             }
-            $registrants = array();
             foreach ($registered as $person) {
-                $registrants[] = expUnserialize($person->value);
+                $registrants[$person->id] = expUnserialize($person->value);
             }
         }
 
@@ -700,34 +736,53 @@ class eventregistrationController extends expController {
         }
 
         if (empty($this->params['email_subject'])) {
-            flash('error', gt('Please enter your email subject.'));
+            flash('error', gt('Nothing to Send! Please enter subject and message.'));
             expHistory::back();
         }
 
-        $email_arr     = explode("|!|", $this->params['email_addresses']);
-        $email_subject = $this->params['email_subject'];
-        $email_message = $this->params['email_message'];
+//        $email_arr     = explode("|!|", $this->params['email_addresses']);
+        $email_addy = array_flip(array_flip($this->params['email_addresses']));
+        $email_addy = array_map('trim', $email_addy);
+        $email_addy = array_filter($email_addy);
+
+        $headers = array(
+            "MIME-Version" => "1.0",
+            "Content-type" => "text/html; charset=" . LANG_CHARSET
+        );
 
         $mail = new expMail();
 
-        foreach ($this->params['expFile']['attachments'] as $attach) {
-            $expFile = new expFile($attach);
-            if (!empty($expFile->id)) {
-                $mail->attach_file_on_disk($expFile->path, $expFile->mimetype);
-            }
+//        foreach ($this->params['expFile']['attachments'] as $attach) {
+//            $expFile = new expFile($attach);
+//            if (!empty($expFile->id)) {
+//                $mail->attach_file_on_disk($expFile->path, $expFile->mimetype);
+//            }
+//        }
+        if (!empty($_FILES['attach']['size'])) {
+            $dir = 'tmp';
+            $filename = expFile::fixName(time().'_'.$_FILES['attach']['name']);
+            $dest = $dir.'/'.$filename;
+            //Check to see if the directory exists.  If not, create the directory structure.
+            if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
+            // Move the temporary uploaded file into the destination directory, and change the name.
+            expFile::moveUploadedFile($_FILES['attach']['tmp_name'],BASE.$dest);
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+//                $relpath = str_replace(PATH_RELATIVE, '', BASE);
+            $ftype = finfo_file($finfo, BASE.$dest);
+            finfo_close($finfo);
+            $mail->attach_file_on_disk(BASE.$dest,$ftype);
         }
 
-        foreach ($email_arr as $email_addy) {
-            $mail->quickSend(array(
-                'html_message'=> $email_message,
-                'text_message'=> str_replace("<br>", "\r\n", $email_message),
+        $mail->quickBatchSend(array(
+            	'headers'=>$headers,
+                'html_message'=> $this->params['email_message'],
+                'text_message'=> strip_tags(str_replace("<br>", "\r\n", $this->params['email_message'])),
                 'to'          => $email_addy,
                 'from'        => ecomconfig::getConfig('from_address'),
-                'subject'     => $email_subject
-            ));
-        }
+                'subject'     => $this->params['email_subject']
+        ));
 
-        flash('message', gt("You're email has been successfully sent."));
+        flash('message', gt("You're email to event registrants has been sent."));
         expHistory::back();
     }
 

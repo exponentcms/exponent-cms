@@ -116,6 +116,23 @@ class forms extends expRecord {
         }
         return $this->table_name;
     }
+
+    public function afterDelete() {
+        global $db;
+
+	    // get and delete the controls for this form
+	    $fc = new forms_control();
+	    $controls = $fc->find('all', 'forms_id='.$this->id);
+	    foreach ($controls as $control) {
+            $control->delete();
+	    }
+
+	    // delete the table for this form
+        if ($this->is_saved == 1) {
+            $db->dropTable("forms_" . $this->table_name);
+        }
+    }
+
 }
 
 ?>
