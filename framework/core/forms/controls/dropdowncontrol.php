@@ -51,7 +51,7 @@ class dropdowncontrol extends formcontrol {
     }
     
     function controlToHTML($name,$label=null) {
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
         $html = '<select'.$inputID.' name="' . $name;
         if ($this->multiple) $html.= '[]';

@@ -46,38 +46,38 @@ class countryregioncontrol extends formcontrol {
 		$c_dd = new dropdowncontrol($this->country_default,$countries);
 		$c_dd->jsHooks["onchange"] = "geo_rebuildRegions(this,'".$name."_region_id'," . (($this->allow_entire_country)?'true':'false') . ");";
 
-
 		if (!defined('GEO_JS_INCLUDED')) {
 			define('GEO_JS_INCLUDED',1);
-			$html .= "<script type='text/javascript' function geo_rebuildRegions(c_select,r_id,allow_all) {";
-			$html .= "	var r_select = document.getElementById(r_id);";
-			$html .= "	while (r_select.childNodes.length) r_select.removeChild(r_select.firstChild);";
+			$html .= "<script type='text/javascript'>\n";
+            $html .= " function geo_rebuildRegions(c_select,r_id,allow_all) {\n";
+			$html .= "	var r_select = document.getElementById(r_id);\n";
+			$html .= "	if (r_select.childNodes != null) while (r_select.childNodes.length) r_select.removeChild(r_select.firstChild);\n";
 
-			$html .= "	var country = c_select.options[c_select.selectedIndex].value;";
+			$html .= "	var country = c_select.options[c_select.selectedIndex].value;\n";
 			//alert(country);
-			$html .= "   if (allow_all) {";
-			$html .= "		var o = document.createElement('option');";
-			$html .= "		o.setAttribute('value',0);";
-			$html .= "		o.appendChild(document.createTextNode('[ Entire Country ]'));";
+			$html .= "   if (allow_all) {\n";
+			$html .= "		var o = document.createElement('option');\n";
+			$html .= "		o.setAttribute('value',0);\n";
+			$html .= "		o.appendChild(document.createTextNode('[ Entire Country ]'));\n";
 			$html .= "		r_select.appendChild(o);";
-			$html .= "	}";
-			$html .= "   var count = 0;";
-			$html .= "	for (i = 0; i < geo_regions.length; i++) {";
-			$html .= "		if (geo_regions[i].var_parent_id == country) {";
-			$html .= "			count++;";
-			$html .= "			var o = document.createElement('option');";
-			$html .= "			o.setAttribute('value',	geo_regions[i].var_id);";
-			$html .= "			o.appendChild(document.createTextNode(geo_regions[i].var_name));";
-			$html .= "			r_select.appendChild(o);";
-			$html .= "		}";
-			$html .= "	}";
-			$html .= "	if (!allow_all && count == 0) {";
-			$html .= " 		var o = document.createElement('option');";
-			$html .= "		o.setAttribute('value',0);";
-			$html .= "		o.appendChild(document.createTextNode('[ None Specified ]'));";
-			$html .= "		r_select.appendChild(o);";
-			$html .= "	}";
-			$html .= "}";
+			$html .= "	}\n";
+			$html .= "   var count = 0;\n";
+			$html .= "	for (i = 0; i < geo_regions.length; i++) {\n";
+			$html .= "		if (geo_regions[i].var_parent_id == country) {\n";
+			$html .= "			count++;\n";
+			$html .= "			var o = document.createElement('option');\n";
+			$html .= "			o.setAttribute('value',	geo_regions[i].var_id);\n";
+			$html .= "			o.appendChild(document.createTextNode(geo_regions[i].var_name));\n";
+			$html .= "			r_select.appendChild(o);\n";
+			$html .= "		}\n";
+			$html .= "	}\n";
+			$html .= "	if (!allow_all && count == 0) {\n";
+			$html .= " 		var o = document.createElement('option');\n";
+			$html .= "		o.setAttribute('value',0);\n";
+			$html .= "		o.appendChild(document.createTextNode('[ None Specified ]'));\n";
+			$html .= "		r_select.appendChild(o);\n";
+			$html .= "	}\n";
+			$html .= "}\n";
 
 			$region = new stdClass();
 			$region->parent_id = 0;

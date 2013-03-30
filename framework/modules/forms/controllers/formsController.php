@@ -124,8 +124,8 @@ class formsController extends expController {
                     $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $f->id,'rank');
                     if ($control) {
 //                        $ctl = unserialize($control->data);
-                        $control_type = get_class($ctl);
                         $ctl = expUnserialize($control->data);
+                        $control_type = get_class($ctl);
                         foreach ($items as $key => $item) {
                             //We have to add special sorting for date time columns!!!
 //                            $item->$column_name = @call_user_func(array($control_type, 'templateFormat'), $item->$column_name, $ctl);
