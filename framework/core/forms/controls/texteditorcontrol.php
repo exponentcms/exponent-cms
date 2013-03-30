@@ -27,9 +27,10 @@ if (!defined('EXPONENT')) exit('');
  */
 class texteditorcontrol extends formcontrol {
 
-	var $cols = 45;
-	var $rows = 5;
-	
+    var $rows = 5;
+	var $cols = 38;
+    var $maxlength = "";
+
 	static function name() { return "Text Area"; }
 	static function isSimpleControl() { return true; }
 	static function getFieldDefinition() {
@@ -49,6 +50,7 @@ class texteditorcontrol extends formcontrol {
 	function controlToHTML($name,$label) {
 		$html = "<textarea class=\"textarea\" id=\"$name\" name=\"$name\"";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
+        $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
 		if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";
 		if (!empty($this->class)) $html .= " class=\"" . $this->class . "\"";
 		if ($this->tabindex >= 0) $html .= " tabindex=\"" . $this->tabindex . "\"";
@@ -75,10 +77,11 @@ class texteditorcontrol extends formcontrol {
 			$object->caption = "";
             $object->description = "";
 			$object->default = "";
-			$object->rows = 20;
-			$object->cols = 60;
+			$object->rows = 5;
+			$object->cols = 38;
 			$object->maxchars = 0;
-		} 
+            $object->maxlength = 0;
+		}
         if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
@@ -86,6 +89,7 @@ class texteditorcontrol extends formcontrol {
 		$form->register("default",gt('Default'),  new texteditorcontrol($object->default));
 		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));
 		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4, false,3,"integer"));
+        $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
@@ -105,6 +109,7 @@ class texteditorcontrol extends formcontrol {
         if (isset($values['rows'])) $object->rows = intval($values['rows']);
         if (isset($values['cols'])) $object->cols = intval($values['cols']);
         if (isset($values['maxchars'])) $object->maxchars = intval($values['maxchars']);
+        if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
 		$object->required = isset($values['required']);
 		
 		return $object;

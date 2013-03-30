@@ -33,11 +33,11 @@ class yuicalendarcontrol extends formcontrol {
     var $showtime = true;
 
     static function name() {
-        return "YAHOO! UI Calendar";
+        return "Date / Time - YUI Calendar";
     }
 
     static function isSimpleControl() {
-        return false;
+        return true;
     }
 
     static function getFieldDefinition() {
@@ -48,7 +48,7 @@ class yuicalendarcontrol extends formcontrol {
     function __construct($default = null, $disable_text = "", $showtime = true) {
         $this->disable_text = $disable_text;
         $this->default      = $default;
-        $this->showtime     = $showtime;
+//        $this->showtime     = $showtime;
 
         if ($this->default == null) {
             if ($this->disable_text == "") $this->default = time();
@@ -155,20 +155,21 @@ class yuicalendarcontrol extends formcontrol {
         // }
     }
 
-    // function form($object) {
-    //  $form = new form();
-    //  if (!isset($object->identifier)) {
-    //      $object->identifier = "";
-    //      $object->caption = "";
-    //      $object->showtime = true;
-    //  }
-    //  $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
-    //  $form->register("caption",gt('Caption'), new textcontrol($object->caption));
-    //  $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
-    // 
-    //  $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
-    //  return $form;
-    // }
+     static function form($object) {
+      $form = new form();
+      if (!isset($object->identifier)) {
+          $object = new stdClass();
+          $object->identifier = "";
+          $object->caption = "";
+//          $object->showtime = true;
+      }
+      $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+      $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+//      $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
+
+      $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
+      return $form;
+     }
 
     static function update($values, $object) {
         if ($object == null) {
@@ -183,7 +184,7 @@ class yuicalendarcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
-        $object->showtime   = isset($values['showtime']);
+//        $object->showtime   = isset($values['showtime']);
         return $object;
     }
 

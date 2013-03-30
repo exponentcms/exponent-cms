@@ -32,7 +32,7 @@ class datetimecontrol extends formcontrol {
     var $showtime = true;
 
     static function name() {
-        return "Simple Date / Time Field";
+        return "Date / Time - Simple";
     }
 
     static function isSimpleControl() {

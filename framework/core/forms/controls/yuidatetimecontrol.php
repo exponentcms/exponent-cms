@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) exit('');
 /**
  * YUI Date/Time Control
  * uses/combines yuicalendarcontrol & datetimecontrol (w/o date)
- * places a checkbox to disable calendar
+ * places a checkbox to disable calendar input
  *
  * @package    Subsystems-Forms
  * @subpackage Control

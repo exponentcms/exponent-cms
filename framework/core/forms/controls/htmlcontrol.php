@@ -29,7 +29,7 @@ if (!defined('EXPONENT')) exit('');
 	var $html;
 	var $span;
 	
-	static function name() { return "Static Text"; }
+	static function name() { return "Static - WYSIWYG Text"; }
 	static function isSimpleControl() { return true; }
 	
 	function __construct($html = "",$span = true) {

@@ -33,7 +33,7 @@ class checkboxcontrol extends formcontrol {
     var $jsHooks = array();
 
     static function name() {
-        return "Checkbox";
+        return "Options - Checkbox";
     }
 
     static function isSimpleControl() {

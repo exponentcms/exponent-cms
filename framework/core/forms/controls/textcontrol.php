@@ -56,7 +56,12 @@ class textcontrol extends formcontrol {
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 25;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-        $html  = '<input'.$inputID.' class="text" type="text" name="'.$name.'"';
+        if ($this->type != 'text') {
+            $extra_class = ' ' . $this->type;
+        } else {
+            $extra_class = '';
+        }
+        $html  = '<input' . $inputID . ' class="text' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
         $html .= ($this->size?" size=\"".$this->size."\"":"");
         $html .= ($this->disabled?" disabled ":"");
@@ -108,7 +113,9 @@ class textcontrol extends formcontrol {
     }
 
     static function update($values, $object) {
-        if ($object == null) $object = new textcontrol();
+        $this_control = $values['control_type'];
+//        if ($object == null) $object = new textcontrol();
+        if ($object == null) $object = new $this_control();
         if ($values['identifier'] == "") {
             $post = $_POST;
             $post['_formError'] = gt('Identifier is required.');

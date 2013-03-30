@@ -804,8 +804,8 @@ class formsController extends expController {
             }
 
             $types = expTemplate::listControlTypes();
-            $types[".break"] = gt('Spacer');
-            $types[".line"] = gt('Horizontal Line');
+            $types[".break"] = gt('Static - Spacer');
+            $types[".line"] = gt('Static - Horizontal Line');
             uasort($types, "strnatcmp");
             array_unshift($types, '[' . gt('Please Select' . ']'));
 

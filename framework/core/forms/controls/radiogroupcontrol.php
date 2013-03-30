@@ -35,7 +35,7 @@ class radiogroupcontrol extends formcontrol {
 	var $cols = 1;
 	var $onclick = null;
 	
-	static function name() { return "Radio Button Group"; }
+	static function name() { return "Options - Radio Button Group"; }
 	static function isSimpleControl() { return true; }
 	static function getFieldDefinition() {
 		return array(

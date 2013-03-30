@@ -27,7 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class statescontrol extends dropdowncontrol {
 
-    static function name() { return "States Drop Down List"; }
+    static function name() { return "Drop Down List - States"; }
     static function isSimpleControl() {
         global $db;
 
