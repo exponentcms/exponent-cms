@@ -19,7 +19,7 @@
 
 <div class="module login vertical">
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-    <div class="box login-form one">
+    <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="box login-form one"{/if}>
         {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
             {$usertype="Customers"|gettext}
             {$label="Email Address"|gettext|cat:":"}
