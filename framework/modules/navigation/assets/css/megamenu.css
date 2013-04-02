@@ -81,7 +81,7 @@
     outline         : 0;
     text-decoration : none;
     text-shadow     : 1px 1px 1px #000;
-    overflow        : auto;
+    /*overflow        : auto;*/
 }
 
 #menu li:hover a {
