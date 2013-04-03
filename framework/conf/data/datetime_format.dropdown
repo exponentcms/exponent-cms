@@ -17,38 +17,38 @@
 # a date format that isn't listed here, and you tell me, I
 # will put it in the standard distribution.
 
-%A, %B %e, %l:%M%p
-	Monday, November 1, 2010, 6:45pm
+%A, %B %e, %I:%M%p
+	Monday, November 1, 2013, 6:45pm
 	
-%B %e, %l:%M%p
-	November 1, 2010, 6:45pm
+%B %e, %I:%M%p
+	November 1, 2013, 6:45pm
 
 %m/%d/%y %T
 	11/01/10 18:45:00
 	
-%m/%d/%y %l:%M%p
+%m/%d/%y %I:%M%p
 	11/01/10 6:45pm
 
 %b %d %Y %H:%M
-	Nov 01 2010 18:45
+	Nov 01 2013 18:45
 	
-%b %d %Y %l:%M%p
-	Nov 01 2010 6:45pm
+%b %d %Y %I:%M%p
+	Nov 01 2013 6:45pm
 
 %b %d, %Y %H:%M
-	Nov 01, 2010 18:45
+	Nov 01, 2013 18:45
 
-%b %d, %Y %l:%M%p
-	Nov 01, 2010 6:45pm
+%b %d, %Y %I:%M%p
+	Nov 01, 2013 6:45pm
 
 %a %b %d %Y %H:%M
-	Mon Nov 01 2010 18:45
+	Mon Nov 01 2013 18:45
 
-%a %b %d %Y %l:%M%p
-	Mon Nov 01 2010 6:45pm
+%a %b %d %Y %I:%M%p
+	Mon Nov 01 2013 6:45pm
 
 %a, %b %d, %Y %H:%M
-	Mon, Nov 01, 2010 18:45
+	Mon, Nov 01, 2013 18:45
 
-%a, %b %d, %Y %l:%M%p
-	Mon, Nov 01, 2010 6:45pm
+%a, %b %d, %Y %I:%M%p
+	Mon, Nov 01, 2013 6:45pm

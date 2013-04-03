@@ -254,18 +254,47 @@ if ($this->showtime) {
     }
 
     static function parseData($original_name, $formvalues) {
-        if (!empty($formvalues[$original_name])) {
-            return strtotime($formvalues[$original_name]);
+        if (!empty($formvalues['date-'.$original_name])) {
+            $date = strtotime($formvalues['date-'.$original_name]);
+            $time = 0;
+            if (isset($formvalues['time-h-'.$original_name])) {
+                if ($formvalues['time-h-'.$original_name] == 12 && $formvalues['ampm-'.$original_name] == 'am') {
+                    // 12 am (right after midnight) is 0:xx
+                    $formvalues['time-h-'.$original_name] = 0;
+                } else if ($formvalues['time-h-'.$original_name] != 12 && $formvalues['ampm-'.$original_name] == 'pm') {
+                    // 1:00 pm to 11:59 pm shifts 12 hours
+                    $formvalues['time-h-'.$original_name] += 12;
+                }
+
+                $time += $formvalues['time-h-'.$original_name] * 3600 + $formvalues['time-m-'.$original_name] * 60;
+            }
+
+            return $date + $time;
         } else return 0;
     }
 
+    /**
+     * Display the date data in human readable format
+     *
+     * @param $db_data
+     * @param $ctl
+     *
+     * @return string
+     */
     static function templateFormat($db_data, $ctl) {
-        // if ($ctl->showtime) {
-        //  return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
-        // }
-        // else {
-        //  return strftime(DISPLAY_DATE_FORMAT, $db_data);
-        // }
+        if ($ctl->showtime) {
+//            return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
+//            return gmstrftime(DISPLAY_DATETIME_FORMAT, $db_data);
+            $datetime = strftime(DISPLAY_DATETIME_FORMAT, $db_data);
+            if (!$datetime) $datetime = strftime('%m/%d/%y %I:%M%p', $db_data);
+            return $datetime;
+        } else {
+//            return strftime(DISPLAY_DATE_FORMAT, $db_data);
+//            return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
+            $date = strftime(DISPLAY_DATE_FORMAT, $db_data);
+            if (!$date) $date = strftime('%m/%d/%y', $db_data);
+            return $date;
+        }
     }
 
      static function form($object) {

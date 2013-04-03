@@ -167,16 +167,30 @@ class popupdatetimecontrol extends formcontrol {
 
 	static function parseData($original_name,$formvalues) {
 		if (!isset($formvalues[$original_name.'_disabled'])) {
-			return strtotime($formvalues[$original_name.'_hidden']);
-			//return $formvalues[$original_name.'_hidden'];
+//			return strtotime($formvalues[$original_name]);
+			return $formvalues[$original_name];
 		} else return 0;
 	}
 
+    /**
+     * Display the date data in human readable format
+     *
+     * @param $db_data
+     * @param $ctl
+     *
+     * @return string
+     */
     static function templateFormat($db_data, $ctl) {
 		if ($ctl->showtime) {
-			return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
+//			return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
+            $datetime = strftime(DISPLAY_DATETIME_FORMAT, $db_data);
+            if (!$datetime) $datetime = strftime('%m/%d/%y %I:%M%p', $db_data);
+            return $datetime;
 		} else {
-			return strftime(DISPLAY_DATE_FORMAT, $db_data);
+//			return strftime(DISPLAY_DATE_FORMAT, $db_data);
+            $date = strftime(DISPLAY_DATE_FORMAT, $db_data);
+            if (!$date) $date = strftime('%m/%d/%y', $db_data);
+            return $date;
 		}
 	}
 

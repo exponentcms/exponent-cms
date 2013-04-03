@@ -133,17 +133,33 @@ class datetimecontrol extends formcontrol {
     }
 
     static function convertData($original_name,$formvalues) {
-        $tmp = strtotime($formvalues[$original_name]);
 		return (isset($formvalues[$original_name])?strtotime($formvalues[$original_name]):"");
 	}
 
+    /**
+     * Display the date data in human readable format
+     *
+     * @param $db_data
+     * @param $ctl
+     *
+     * @return string
+     */
     static function templateFormat($db_data, $ctl) {
         if ($ctl->showdate && $ctl->showtime) {
-            return gmstrftime(DISPLAY_DATETIME_FORMAT, $db_data);
+//            return gmstrftime(DISPLAY_DATETIME_FORMAT, $db_data);
+            $datetime = strftime(DISPLAY_DATETIME_FORMAT, $db_data);
+            if (!$datetime) $datetime = strftime('%m/%d/%y %I:%M%p', $db_data);
+            return $datetime;
         } elseif ($ctl->showdate) {
-            return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
+//            return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
+            $date = strftime(DISPLAY_DATE_FORMAT, $db_data);
+            if (!$date) $date = strftime('%m/%d/%y', $db_data);
+            return $date;
         } elseif ($ctl->showtime) {
-            return gmstrftime(DISPLAY_TIME_FORMAT, $db_data);
+//            return gmstrftime(DISPLAY_TIME_FORMAT, $db_data);
+            $time = strftime(DISPLAY_TIME_FORMAT, $db_data);
+            if (!$time) $time = strftime('%I:%M%p', $db_data);
+            return $time;
         } else {
             return "";
         }

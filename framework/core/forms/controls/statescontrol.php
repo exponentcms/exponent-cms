@@ -138,6 +138,24 @@ class statescontrol extends dropdowncontrol {
         $object->required = isset($values['required']);
         return $object;
     }
+
+    /**
+     * Format the control's data for user display
+     *
+     * @param $db_data
+     * @param $ctl
+     * @return string
+     */
+    static function templateFormat($db_data, $ctl) {
+        global $db;
+
+        if (isset($db_data)) {
+            return $db->selectValue('geo_region', 'name', 'id="' . $db_data . '"');
+        } else {
+            return "";
+        }
+	}
+
 }
 
 ?>

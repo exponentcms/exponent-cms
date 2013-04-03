@@ -47,9 +47,9 @@ class rangecontrol extends textcontrol {
         $html .= ($this->size?" size=\"".$this->size."\"":"");
         $html .= ($this->disabled?" disabled ":"");
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
-        $html .= ($this->min?" min=\"".$this->min."\"":"");
-        $html .= ($this->max?" max=\"".$this->max."\"":"");
-        $html .= ($this->step?" step=\"".$this->step."\"":"");
+        $html .= ($this->min?" min=\"".$this->min."\"":" min=\"0\"");
+        $html .= ($this->max?" max=\"".$this->max."\"":" max=\"100\"");
+        $html .= ($this->step?" step=\"".$this->step."\"":" step=\"1\"");
         $html .= ($this->tabindex>=0?" tabindex=\"".$this->tabindex."\"":"");
         $html .= ($this->accesskey != ""?" accesskey=\"".$this->accesskey."\"":"");
         $html .= ($this->placeholder?" placeholder=\"".$this->placeholder."\"":"");

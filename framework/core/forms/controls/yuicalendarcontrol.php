@@ -62,11 +62,16 @@ class yuicalendarcontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label = null) {
+        if (is_integer($this->default)) {
+            $default = date('m/d/Y', $this->default);
+        } else {
+            $default = $this->default;
+        }
         $html = "
         <div class=\"yui3-skin-sam\">
             <div id=\"cal" . $name . "Container\"></div>
             <div id=\"calinput\">
-                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $name . "\" value=\"" . date('m/d/Y', $this->default) . "\"/>
+                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $name . "\" value=\"" . $default . "\"/>
                 <button class=\"button\" type=\"button\" id=\"update-" . $name . "\">" . gt('Update Calendar') . "</button>
             </div>
         </div>
@@ -93,7 +98,7 @@ class yuicalendarcontrol extends formcontrol {
 //                });
 
                 // Parsing the date string into JS Date value
-                var date = Y.DataType.Date.parse('" . date('m/d/Y', $this->default) . "');
+                var date = Y.DataType.Date.parse('" . $default . "');
                 if (date) {
                     // Highlighting the date stored in the text field
                     calendar.selectDates(date);
@@ -146,13 +151,24 @@ class yuicalendarcontrol extends formcontrol {
         } else return 0;
     }
 
+    /**
+     * Display the date data in human readable format
+     *
+     * @param $db_data
+     * @param $ctl
+     *
+     * @return string
+     */
     static function templateFormat($db_data, $ctl) {
-        // if ($ctl->showtime) {
-        //  return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
-        // }
-        // else {
-        //  return strftime(DISPLAY_DATE_FORMAT, $db_data);
-        // }
+//        if ($ctl->showtime) {
+//            return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
+//        } else {
+//            return strftime(DISPLAY_DATE_FORMAT, $db_data);
+//        return gmstrftime(DISPLAY_DATE_FORMAT, $db_data);
+        $date = strftime(DISPLAY_DATE_FORMAT, $db_data);
+        if (!$date) $date = strftime('%m/%d/%y', $db_data);
+        return $date;
+//        }
     }
 
      static function form($object) {
