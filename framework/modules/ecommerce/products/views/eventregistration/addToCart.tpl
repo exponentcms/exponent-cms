@@ -17,13 +17,11 @@
     <div class="module cart eventregistration addToCart">
         <h1>{'Register for'|gettext} {$product->title}</h1>
         <p>{'Please enter the name, email, and phone number of the person you would like to register for this event.  If you would like to add more registrants, simply click \'Add another registrant\'.'|gettext} </p><br/>
-
         {form name="evregfrm" action=addItem}
             {control type="hidden" name="controller" value=cart}
             {control type="hidden" name="product_type" value=$product->product_type}
             {control type="hidden" name="product_id" value=$product->id}
             {control type="hidden" name="quantity" value=$product->quantity}
-
             <div class="module cart eventregistration addToCart registration_div" id="regdiv">
                 {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"|gettext}
                 {*{control type="text" id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}*}
@@ -36,7 +34,6 @@
             &#160;&#160; {'OR'|gettext} &#160;
             <a class="exp-ecom-link addtocart" onclick="EXPONENT.validateReg()" href="#"><em>{'Add Registration to Cart'|gettext}</em><span></span></a>
         {/form}
-
     </div>
 
     {*FIXME convert to yui3*}
@@ -103,7 +100,6 @@
                 frm.registrations.focus();
             }
         }
-
     });
     {/literal}
     {/script}

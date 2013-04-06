@@ -88,18 +88,21 @@
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var action = function(e){
         e.halt();
-
         var pBody = e.target.ancestor('.panel').one('.bd');
+        var pWidgetE = e.target.ancestor('.panel').one('a.expand');
+        var pWidgetC = e.target.ancestor('.panel').one('a.collapse');
 
         if (e.target.getAttribute("class")=="collapse") {
             pBody.replaceClass('expanded','collapsed');
             e.target.replaceClass('collapse','expand');
+            if (pWidgetC != null) pWidgetC.replaceClass('collapse','expand');
         } else {
             pBody.replaceClass('collapsed','expanded');
             e.target.replaceClass('expand','collapse');
+            if (pWidgetE != null) pWidgetE.replaceClass('expand','collapse');
         }
     }
-    Y.all('.options-partial .panel .hd a').on('click',action);
+    Y.one('.options-partial').delegate('click',action,'div.hd');
 
     var showit = function(e){
         e.halt();
@@ -114,14 +117,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             Y.one('#'+targrel).setStyle('display',"none");
         }
     }
-    Y.all('a.togglelink').on('click', showit);
-
-    Y.Global.on('lazyload:cke', function() {
-        Y.all('.options-partial .panel .hd a').on('click',action);
-        Y.all('a.togglelink').on('click', showit);
-    });
-
-    Y.Global.fire('lazyload:cke');
+    Y.one('.options-partial').delegate('click', showit, 'a.togglelink');
 });
 {/literal}
 {/script}
