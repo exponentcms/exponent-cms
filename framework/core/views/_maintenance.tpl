@@ -15,29 +15,48 @@
 
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}" />
-		<title>{$smarty.const.SITE_TITLE} :: {'Down for Maintenance.'|gettext}</title>
-		{css unique="maintenance"}
-        {literal}
-			div {
-				font-size: 10pt;
-				font-family: Arial, sans-serif;
-				font-weight: normal;
-				color: #333;
-			}
-		{/literal}
-        {/css}
-	</head>
-	<body>
-	<div style="border: 1px solid black; margin: 15%; padding: 3em;">
-		{$smarty.const.MAINTENANCE_MSG_HTML}
-        {if $db_down}
-        <h3 style="color:red">{'Database is currently Off-line!'|gettext}</h3>
-        {/if}
-        <!--a href="login.php">{'Administrator Login'|gettext}</a-->
-		<h3>{'Administrator Login'|gettext}</h3>
-		{chain controller=login view=showlogin_stacked title="Administrators Login"|gettext}
-	</div>
-	</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}"/>
+        <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
+        <title>{$smarty.const.SITE_TITLE} :: {'Down for Maintenance.'|gettext}</title>
+        <style media="screen" type="text/css">
+            html {
+                background : #397993;
+                text-align : left;
+            }
+            body {
+                font-size   : 15px;
+                text-align  : left;
+                font-family : "Trebuchet MS", sans-serif;
+                color       : #333;
+            }
+            .box {
+                margin                : 15%;
+                padding               : 3em;
+                font-size             : 10pt;
+                font-family           : Arial, sans-serif;
+                font-weight           : normal;
+                color                 : #333;
+                background            : #fffae1;
+                border                : 2px solid black;
+                -moz-box-shadow       : inset 0 0 8px #dedede;
+                -webkit-box-shadow    : inset 0 0 8px #dedede;
+                box-shadow            : inset 0 0 8px #dedede;
+                -moz-border-radius    : 12px;
+                -webkit-border-radius : 12px;
+                border-radius         : 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            {$smarty.const.MAINTENANCE_MSG_HTML}
+            {if $db_down}
+                <h3 style="color:red">{'Database is currently Off-line!'|gettext}</h3>
+            {/if}
+            <h3>{'Administrator Login'|gettext}</h3>
+            {chain controller=login view=showlogin_stacked title="Administrators Login"|gettext}
+        </div>
+        <div style="float:right;">{'Powered by'|gettext} <a style="color:black;" href="http://www.exponentcms.org">ExponentCMS</a></div>
+    </body>
 </html>
