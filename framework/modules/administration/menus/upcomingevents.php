@@ -42,6 +42,11 @@ $items = array(
         'text'      => gt('View All Event Registrations'),
         'url'       => makeLink(array('controller' => 'eventregistration', 'action' => 'manage')),
         'classname' => 'events',
+    ),
+    array(
+        'text'      => gt('Add an event'),
+        'url'       => makeLink(array('controller' => 'store', 'action' => 'edit', 'product_type' => 'eventregistration')),
+        'classname' => 'add',
     )
 );
 //$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());

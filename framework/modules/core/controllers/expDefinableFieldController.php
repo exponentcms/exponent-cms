@@ -58,6 +58,7 @@ class expDefinableFieldController extends expController {
         expHistory::set('manageable', $this->params);
 		$fields = $db->selectObjects("expDefinableFields");
 		$types = expTemplate::listControlTypes();
+        uasort($types, "strnatcmp");
 		array_unshift($types,'['.gt('Please Select'.']'));
         assign_to_template(array('fields'=>$fields, 'types'=>$types));
     }

@@ -21,7 +21,7 @@ if (!defined('EXPONENT')) exit('');
 global $user, $db;
 
 //$my_version = gt("Exponent Version") . " : " . EXPONENT_VERSION_MAJOR . "." . EXPONENT_VERSION_MINOR . "." . EXPONENT_VERSION_REVISION . "<br />";
-$my_version = gt("Exponent Version") . " : " . expVersion::getVersion(true,false,false) . "<br />";
+$my_version = gt("Exponent Version") . " : " . expVersion::getVersion(true, false, false) . "<br />";
 if (EXPONENT_VERSION_TYPE != '') {
     $my_type = gt("Release level") . " : " . EXPONENT_VERSION_TYPE . EXPONENT_VERSION_ITERATION . "<br />";
 } else {
@@ -111,7 +111,7 @@ if ($user->isAdmin()) {
     if (SMTP_USE_PHP_MAIL) {
         $expAdminMenu['submenu']['itemdata'][] = array(
             'text'      => gt("Site Configuration"),
-            'classname' => 'config',
+            'classname' => 'configure',
             'submenu'   => array(
                 'id'       => 'configure',
                 'itemdata' => array(
@@ -128,7 +128,7 @@ if ($user->isAdmin()) {
     } else {
         $expAdminMenu['submenu']['itemdata'][] = array(
             'text'      => gt('Site Configuration'),
-            'classname' => 'config',
+            'classname' => 'configure',
             'submenu'   => array(
                 'id'       => 'configure',
                 'itemdata' => array(
@@ -153,165 +153,80 @@ if ($user->isAdmin()) {
 }
 
 if ($user->isAdmin()) {
-    if (SMTP_USE_PHP_MAIL) {
-        $expAdminMenu['submenu']['itemdata'][] = array(
-            'text'      => gt("Site Management"),
-            'classname' => 'manage',
-            'submenu'   => array(
-                'id'       => 'manage',
-                'itemdata' => array(
-                    array(
-                        'text'      => gt('Manage Site Comments'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expComment',
-                            'action'     => 'manage'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage Site Tags'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expTag',
-                            'action'     => 'manage'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage Site Categories'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expCat',
-                            'action'     => 'manage'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage File Folders'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expCat',
-                            'action'     => 'manage',
-                            'model'      => 'file'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage Site Forms'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'forms',
-                            'action'     => 'manage',
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('View Top Searches'),
-                        'classname' => 'search',
-                        'url'       => makeLink(array(
-                            'controller' => 'search',
-                            'action'     => 'topSearchReport'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('View Search Queries'),
-                        'classname' => 'search',
-                        'url'       => makeLink(array(
-                            'controller' => 'search',
-                            'action'     => 'searchQueryReport'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Regenerate Search Index'),
-                        'classname' => 'search',
-                        'url'       => makeLink(array(
-                            'controller' => 'search',
-                            'action'     => 'spider'
-                        ))
-                    ),
-                )
+    $expAdminMenu['submenu']['itemdata'][] = array(
+        'text'      => gt("Site Management"),
+        'classname' => 'manage',
+        'submenu'   => array(
+            'id'       => 'manage',
+            'itemdata' => array(
+                array(
+                    'text'      => gt('Manage Site Comments'),
+                    'classname' => 'manage',
+                    'url'       => makeLink(array(
+                        'controller' => 'expComment',
+                        'action'     => 'manage'
+                    ))
+                ),
+                array(
+                    'text'      => gt('Manage Site Tags'),
+                    'classname' => 'manage',
+                    'url'       => makeLink(array(
+                        'controller' => 'expTag',
+                        'action'     => 'manage'
+                    ))
+                ),
+                array(
+                    'text'      => gt('Manage Site Categories'),
+                    'classname' => 'manage',
+                    'url'       => makeLink(array(
+                        'controller' => 'expCat',
+                        'action'     => 'manage'
+                    ))
+                ),
+                array(
+                    'text'      => gt('Manage File Folders'),
+                    'classname' => 'manage',
+                    'url'       => makeLink(array(
+                        'controller' => 'expCat',
+                        'action'     => 'manage',
+                        'model'      => 'file'
+                    ))
+                ),
+                array(
+                    'text'      => gt('Manage Site Forms'),
+                    'classname' => 'manage',
+                    'url'       => makeLink(array(
+                        'controller' => 'forms',
+                        'action'     => 'manage',
+                    ))
+                ),
+                array(
+                    'text'      => gt('View Top Searches'),
+                    'classname' => 'search',
+                    'url'       => makeLink(array(
+                        'controller' => 'search',
+                        'action'     => 'topSearchReport'
+                    ))
+                ),
+                array(
+                    'text'      => gt('View Search Queries'),
+                    'classname' => 'search',
+                    'url'       => makeLink(array(
+                        'controller' => 'search',
+                        'action'     => 'searchQueryReport'
+                    ))
+                ),
+                array(
+                    'text'      => gt('Regenerate Search Index'),
+                    'classname' => 'search',
+                    'url'       => makeLink(array(
+                        'controller' => 'search',
+                        'action'     => 'spider'
+                    ))
+                ),
             )
-        );
-    } else {
-        $expAdminMenu['submenu']['itemdata'][] = array(
-            'text'      => gt('Site Management'),
-            'classname' => 'manage',
-            'submenu'   => array(
-                'id'       => 'manage',
-                'itemdata' => array(
-                    array(
-                        'text'      => gt('Manage Site Comments'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expComment',
-                            'action'     => 'manage'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage Site Tags'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expTag',
-                            'action'     => 'manage'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage Site Categories'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expCat',
-                            'action'     => 'manage'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage File Folders'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expCat',
-                            'action'     => 'manage',
-                            'model'      => 'file'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage Definable Fields'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'expDefinableField',
-                            'action'     => 'manage'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Manage Site Forms'),
-                        'classname' => 'manage',
-                        'url'       => makeLink(array(
-                            'controller' => 'forms',
-                            'action'     => 'manage',
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('View Top Searches'),
-                        'classname' => 'search',
-                        'url'       => makeLink(array(
-                            'controller' => 'search',
-                            'action'     => 'topSearchReport'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('View Search Queries'),
-                        'classname' => 'search',
-                        'url'       => makeLink(array(
-                            'controller' => 'search',
-                            'action'     => 'searchQueryReport'
-                        ))
-                    ),
-                    array(
-                        'text'      => gt('Regenerate Search Index'),
-                        'classname' => 'search',
-                        'url'       => makeLink(array(
-                            'controller' => 'search',
-                            'action'     => 'spider'
-                        ))
-                    ),
-                )
-            )
-        );
-    }
+        )
+    );
 }
 
 $groups = $db->selectObjects('groupmembership', 'member_id=' . $user->id . ' AND is_admin=1');
@@ -354,8 +269,8 @@ if ($user->isAdmin() || !empty($groups)) {
                     )),
                 ),
                 array(
-                    'text' => gt('Import Users'),
-                    'url'  => makeLink(array(
+                    'text'      => gt('Import Users'),
+                    'url'       => makeLink(array(
                         'controller' => 'users',
                         'action'     => 'import_users'
                     )),
@@ -526,8 +441,8 @@ if ($user->isSuperAdmin()) {
                                 )),
                             ),
                             array(
-                                'text'      => gt('Run Upgrade Scripts'),
-                                'url'       => makeLink(array(
+                                'text' => gt('Run Upgrade Scripts'),
+                                'url'  => makeLink(array(
                                     'controller' => 'administration',
                                     'action'     => 'install_upgrades'
                                 )),

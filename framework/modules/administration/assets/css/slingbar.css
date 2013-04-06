@@ -63,7 +63,6 @@
     border:1px solid #0D1740;
 }
 
-
 #admintoolbar li.files a.yuimenubaritemlabel {
     background:url(../images/admintoolbar/files.png) no-repeat 5px 40%;
 }
@@ -160,6 +159,9 @@
 }
 #admintoolbar li.edit a.yuimenuitemlabel {
     background:url(../images/admintoolbar/editpage.png) no-repeat 5px 50%;
+}
+#admintoolbar li.add a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/add.png) no-repeat 5px 50%;
 }
 #admintoolbar .thispage li.user a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -26px; 

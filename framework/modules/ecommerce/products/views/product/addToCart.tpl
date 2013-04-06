@@ -19,10 +19,10 @@
 {* eDebug var=$params *}
 {if isset($params.error)}
     <div id="msg-queue" class="common msg-queue">
-    <ul class="queue error"><li>{$params.error}</li></ul>
+        <ul class="queue error"><li>{$params.error}</li></ul>
     </div>
     {br}
-    {/if}
+{/if}
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
     {if $product->expFile.mainimage.0->id}
@@ -30,7 +30,7 @@
     {/if}
     <p>
         <strong>{'Additional information is required before we can add to your cart'|gettext}</strong>
-    {br}{br}
+        {br}{br}
         {'If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items.'|gettext}&#160;&#160;
         {'If you would like different options or personalized fields for each item, please add them one at a time to your cart.'|gettext}
     </p>
@@ -45,6 +45,7 @@
                 {control type=hidden name="children[`$child_id`]" value=$child}
             {/foreach}
         {/if}
+
         {if $product->hasOptions()}
             <div class="product-options">
                 <h2>{$product->title} {'Options'|gettext}</h2>
