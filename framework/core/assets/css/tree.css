@@ -84,8 +84,6 @@
 	z-index:-1;
 }
 
-
-
 /* The menu */
 #treecontext h6 {
 	font-size: 90%;
@@ -102,8 +100,6 @@
  	background-repeat:no-repeat;
 	background-position: 0px -548px; 
 }
-
-
 
 #treecontext.yuimenu.show-scrollbars {
 	overflow:visible;
@@ -123,14 +119,16 @@
 	color:#333333;
 }
 #treecontext .yuimenuitem-selected{
-	background-color:#445;
+	/*background-color:#445;*/
+	background-color:#b8d3d4;
 }
 #treecontext .yuimenuitemlabel-selected{
-	color:#ffffff;
+	/*color:#ffffff;*/
 	text-decoration:none;
 }
 #treecontext .bd{
-	background-color:#b8d3d4;
+	/*background-color:#b8d3d4;*/
+	background-color: #ffffff;
 	border:1px solid #333333;
 	padding-bottom:3px;
 }
@@ -139,13 +137,10 @@
 	font-family:"Trebuchet MS","Verdana";
 	font-size:12px;
 	padding:5px 5px 3px 20px;
+	text-decoration:none;
 }
 #treecontext .yuimenuitem .yuimenuitemlabel-selected {
-    color:#ffffff;
-}
-
-#treecontext .yuimenuitem .yuimenuitemlabel-selected {
-    color:#ffffff;
+    /*color:#ffffff;*/
 }
 
 #treecontext .yui-menu-shadow {
