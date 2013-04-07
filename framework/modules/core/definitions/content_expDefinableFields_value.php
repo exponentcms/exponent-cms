@@ -32,15 +32,15 @@ return array(
 	'content_type'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>50,
-		DB_PRIMARY=>false,
+		DB_PRIMARY=>true,
 		DB_INCREMENT=>false),
+    'connector_id'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER,
+        DB_PRIMARY=>true,
+        DB_INCREMENT=>false),
 	'value'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>10000 ,
-        DB_PRIMARY=>false,
-        DB_INCREMENT=>false),
-	'connector_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+        DB_FIELD_LEN=>10000),
 );
 
 ?>

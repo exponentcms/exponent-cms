@@ -18,33 +18,35 @@
 
 /**
  * @subpackage Definitions
- * @package Core
+ * @package    Core
  */
 return array(
-	'id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_PRIMARY=>true,
-        DB_INCREMENT=>false),
-	'expdefinablefields_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_PRIMARY=>false,
-        DB_INCREMENT=>false),
-	'content_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-        DB_PRIMARY=>false,
-        DB_INCREMENT=>false),
-	'content_type'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>50,
-		DB_PRIMARY=>false,
-		DB_INCREMENT=>false),
-	'subtype'=>array(
-        DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>50,
-        DB_PRIMARY=>false,
-        DB_INCREMENT=>false),
-	'rank'=>array(
-		DB_FIELD_TYPE=>DB_DEF_INTEGER),
+    'id'                    => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_PRIMARY    => true,
+        DB_INCREMENT  => false),
+    'expdefinablefields_id' => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_PRIMARY    => true,
+        DB_INCREMENT  => false),
+    'content_id'            => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_PRIMARY    => true,
+        DB_INCREMENT  => false),
+    'content_type'          => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 50,
+        DB_PRIMARY    => true,
+        DB_INCREMENT  => false),
+    'subtype'               => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 50,
+        DB_PRIMARY    => true,
+        DB_INCREMENT  => false),
+    'rank'                  => array(
+        DB_FIELD_TYPE => DB_DEF_INTEGER,
+        DB_PRIMARY    => true,
+        DB_INCREMENT  => false),
 );
 
 ?>

@@ -34,7 +34,7 @@ return array(
     'data'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000),
-'rank'=>array(
+    'rank'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );
 
