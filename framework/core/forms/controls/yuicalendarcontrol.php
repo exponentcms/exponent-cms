@@ -62,7 +62,7 @@ class yuicalendarcontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label = null) {
-        if (is_integer($this->default)) {
+        if (is_numeric($this->default)) {
             $default = date('m/d/Y', $this->default);
         } else {
             $default = $this->default;
