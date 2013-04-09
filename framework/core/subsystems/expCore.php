@@ -523,5 +523,20 @@ class expCore {
 //    	return $curl_scraped_data;
     }
 
+    /**
+     * Casts one object type to another object type
+     *
+     */
+    public static function cast($source, $destinationtype) {
+        $destination = new $destinationtype();
+        if (is_null($destination)) return $destination;
+        $sourceReflection = new \ReflectionObject($source);
+        $sourceProperties = $sourceReflection->getProperties();
+        foreach ($sourceProperties as $sourceProperty) {
+            $name = $sourceProperty->getName();
+            $destination->{$name} = $source->$name;
+        }
+        return $destination;
+    }
 }
 ?>

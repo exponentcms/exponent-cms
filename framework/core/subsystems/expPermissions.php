@@ -109,15 +109,15 @@ class expPermissions {
         }
         $permission = array_unique($permission);  // strip out duplicates
 
-		if (is_callable(array($ploc->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule, may not be needed if there is no 'int' property?
-			foreach (call_user_func(array($ploc->mod,"getLocationHierarchy"),$ploc) as $loc) {  //FIXME this is only available in calendarmodule
-				foreach ($permission as $perm) {
-					if (isset($exponent_permissions_r[$loc->mod][$loc->src][$loc->int][$perm])) {
-						return true;
-					}
-				}
-			}
-		}
+//		if (is_callable(array($ploc->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule, may not be needed if there is no 'int' property?
+//			foreach (call_user_func(array($ploc->mod,"getLocationHierarchy"),$ploc) as $loc) {  //FIXME this is only available in calendarmodule
+//				foreach ($permission as $perm) {
+//					if (isset($exponent_permissions_r[$loc->mod][$loc->src][$loc->int][$perm])) {
+//						return true;
+//					}
+//				}
+//			}
+//		}
         // check for explicit user (and implicit group/subscription) permission
         foreach ($permission as $perm) {
             if (isset($exponent_permissions_r[$ploc->mod][$ploc->src][$ploc->int][$perm])) {
@@ -226,13 +226,13 @@ class expPermissions {
 		if ($explicitOnly || $explicit) return !empty($explicit);
 
         // Calculate inherited permissions if we don't already have explicit/implicit perms
-        if (is_callable(array($ploc->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
-            foreach (call_user_func(array($ploc->mod,"getLocationHierarchy"),$ploc) as $loc) {  //FIXME this is only available in calendarmodule
-                if ($db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "' AND permission='$permission'")) {
-                    return true;
-                }
-            }
-        }
+//        if (is_callable(array($ploc->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule
+//            foreach (call_user_func(array($ploc->mod,"getLocationHierarchy"),$ploc) as $loc) {  //FIXME this is only available in calendarmodule
+//                if ($db->selectObject("userpermission","uid=" . $user->id . " AND module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "' AND permission='$permission'")) {
+//                    return true;
+//                }
+//            }
+//        }
 
         // check for implicit group permission
         $memberships = $db->selectObjects("groupmembership","member_id=".$user->id);

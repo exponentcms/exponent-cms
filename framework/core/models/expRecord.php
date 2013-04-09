@@ -330,7 +330,7 @@ class expRecord {
             }
 
             //if (isset($this->col)) {
-            $this->$col = stripslashes($this->$col);
+            if ($col != 'data') $this->$col = stripslashes($this->$col);
             //}
         }
     }

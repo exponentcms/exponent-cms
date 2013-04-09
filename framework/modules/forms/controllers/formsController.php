@@ -411,7 +411,7 @@ class formsController extends expController {
             } else {
                 if ($coltype == 'checkboxcontrol') {
                     $responses[$col->caption . $num] = 'No';
-                } elseif ($coltype == 'datetimecontrol') {
+                } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol') {
                     $responses[$col->name] = $value;
                 } elseif ($coltype == 'uploadcontrol') {
                     $this->params[$col->name] = PATH_RELATIVE . call_user_func(array($coltype, 'moveFile'), $col->name, $_FILES, true);
@@ -879,9 +879,12 @@ class formsController extends expController {
                     $form->meta("identifier", $ctl->identifier);
                 }
                 $form->meta("action", "save_control");
-                $form->meta('control_type', $control_type);
+//                $form->meta('control_type', $control_type);
                 $form->meta('forms_id', $f->id);
                 $types = expTemplate::listControlTypes();
+                $othertypes = expTemplate::listSimilarControlTypes($control_type);
+                $otherlist = new dropdowncontrol($control_type,$othertypes);
+                $form->registerBefore('identifier','control_type',gt('Control Type'),$otherlist);
                 assign_to_template(array(
                     'form_html' => $form->toHTML($f->id),
                     'type'      => $types[$control_type],
@@ -912,25 +915,28 @@ class formsController extends expController {
             }
 
             // update control with data from form
+//            $ctl1 = new $this->params['control_type']();
+//            $ctl1 = expCore::cast($ctl1,$ctl);
+            $ctl1 = expCore::cast($ctl,$this->params['control_type']);
             if (call_user_func(array($this->params['control_type'], 'useGeneric')) == true) {
-                $ctl = call_user_func(array('genericcontrol', 'update'), $this->params, $ctl);
+                $ctl1 = call_user_func(array('genericcontrol', 'update'), $this->params, $ctl1);
             } else {
-                $ctl = call_user_func(array($this->params['control_type'], 'update'), $this->params, $ctl);
+                $ctl1 = call_user_func(array($this->params['control_type'], 'update'), $this->params, $ctl1);
             }
 
             //lets make sure the name submitted by the user is not a duplicate. if so we will fail back to the form
             if (!empty($control->id)) {
                 //FIXME change this to an expValidator call
-                $check = $db->selectObject('forms_control', 'name="' . $ctl->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
+                $check = $db->selectObject('forms_control', 'name="' . $ctl1->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
                 if (!empty($check) && empty($this->params['id'])) {
                     //expValidator::failAndReturnToForm(gt('A field with the same name already exists for this form'), $_$this->params
-                    flash('error', gt('A field by the name")." "' . $ctl->identifier . '" ".gt("already exists on this form'));
+                    flash('error', gt('A field by the name")." "' . $ctl1->identifier . '" ".gt("already exists on this form'));
                     expHistory::returnTo('editable');
                 }
             }
 
-            if ($ctl != null) {
-                $name = substr(preg_replace('/[^A-Za-z0-9]/', '_', $ctl->identifier), 0, 20);
+            if ($ctl1 != null) {
+                $name = substr(preg_replace('/[^A-Za-z0-9]/', '_', $ctl1->identifier), 0, 20);
                 if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' and forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
@@ -942,10 +948,11 @@ class formsController extends expController {
                     if (!isset($this->params['id'])) {
                         $control->name = $name;
                     }
-                    $control->caption = $ctl->caption;
+                    $control->caption = $ctl1->caption;
                     $control->forms_id = $this->params['forms_id'];
-                    $control->is_static = (!empty($ctl->is_static) ? $ctl->is_static : 0);
-                    $control->data = serialize($ctl);
+                    $control->is_static = (!empty($ctl1->is_static) ? $ctl1->is_static : 0);
+                    if (!empty($ctl1->pattern)) $ctl1->pattern = addslashes($ctl1->pattern);
+                    $control->data = serialize($ctl1);
 
                     if (!empty($control->id)) {
                         $control->update();

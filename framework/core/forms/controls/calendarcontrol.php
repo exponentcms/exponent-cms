@@ -62,37 +62,38 @@ class calendarcontrol extends formcontrol {
     //     }
     // }
 
-    function toHTML($label, $name) {
-        if (!empty($this->id)) {
-            $divID = ' id="' . $this->id . 'Control"';
-            $for   = ' for="' . $this->id . '"';
-        } else {
-            $divID = '';
-            $for   = '';
-        }
-
-        $disabled = $this->disabled != 0 ? "disabled" : "";
-        $class    = empty($this->class) ? '' : $this->class;
-
-        $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . $class . $disabled . "\"";
-        $html .= (!empty($this->required)) ? ' required">' : '>';
-        //$html .= "<label>";
-        if (empty($this->flip)) {
-            $html .= $this->controlToHTML($name, $label);
-        } else {
-            $html .= "<label" . $for . " class=\"label\">" . $label . "</label>";
-        }
-        //$html .= "</label>";
-        $html .= "</div>";
-        return $html;
-    }
+//    function toHTML($label, $name) {
+//        if (!empty($this->id)) {
+//            $divID = ' id="' . $this->id . 'Control"';
+//            $for   = ' for="' . $this->id . '"';
+//        } else {
+//            $divID = '';
+//            $for   = '';
+//        }
+//
+//        $disabled = $this->disabled != 0 ? "disabled" : "";
+//        $class    = empty($this->class) ? '' : $this->class;
+//
+//        $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . $class . $disabled . "\"";
+//        $html .= (!empty($this->required)) ? ' required">' : '>';
+//        //$html .= "<label>";
+//        if (empty($this->flip)) {
+//            $html .= $this->controlToHTML($name, $label);
+//        } else {
+//            $html .= "<label" . $for . " class=\"label\">" . $label . "</label>";
+//        }
+//        //$html .= "</label>";
+//        $html .= "</div>";
+//        return $html;
+//    }
 
     function controlToHTML($name, $label = null) {
         $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
         $html        = "
             <div id=\"calendar-container-" . $name . "\" class=\"yui3-skin-sam\"> </div>
-            <div id=\"cal-container-" . $name . "\" class=\"control calendar-control\">
-            <label for=\"" . $name . "\" class=\"label\">" . $label . "</label><input size=10 type=\"text\" id=\"date-" . $name . "\" name=\"date-" . $name . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />";
+            <div id=\"cal-container-" . $name . "\" class=\"control calendar-control\">";
+//        $html        .= "    <label for=\"" . $name . "\" class=\"label\">" . $label . "</label>";
+        $html        .= "    <input size=10 type=\"text\" id=\"date-" . $name . "\" name=\"date-" . $name . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />";
 if ($this->showtime) {
         $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $name . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
             : <input size=2 type=\"text\" id=\"time-m-" . $name . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>

@@ -49,7 +49,6 @@ $auto_dirs = array(
    	BASE.'framework/core/models',
 	BASE.'framework/core/forms',
 	BASE.'framework/core/forms/controls',
-//    BASE.'framework/core/models-1',  // old 1.0 datatypes
 	BASE.'framework/modules/ecommerce/billingcalculators',
 	BASE.'framework/modules/ecommerce/shippingcalculators',
 	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
@@ -114,18 +113,6 @@ function expLoadClasses($class) {
 			}
 		}
 	}
-
-	// autoload the old school modules instead of using exponent_modules_initialize()
-//	if (is_readable(BASE.'framework/modules-1')) {
-//		$dh = opendir(BASE.'framework/modules-1');
-//		while (($file = readdir($dh)) !== false) {
-//			if ($file == $class && is_dir(BASE.'framework/modules-1/'.$file) && is_readable(BASE.'framework/modules-1/'.$file.'/class.php')) {
-//				include_once(BASE.'framework/modules-1/'.$file.'/class.php');
-//				return;
-//			}
-//		}
-//	}
-
 }
 
 spl_autoload_register('expLoadClasses');

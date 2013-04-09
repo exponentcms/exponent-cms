@@ -211,6 +211,37 @@ class form extends baseform {
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
+        expJavascript::pushToFoot(array(
+            "unique"  => 'html5forms1',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/Modernizr-2.5.3.forms.js',
+            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
+        ));
+        expJavascript::pushToFoot(array(
+            "unique"  => 'html5forms2',
+            "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
+        ));
+        expJavascript::pushToFoot(array(
+            "unique"  => 'html5forms3',
+            "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
+        ));
+        expJavascript::pushToFoot(array(
+            "unique"  => 'html5forms4',
+            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+            "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
+        ));
+//        expCSS::pushToHead(array(
+//    	    "unique"=>"h5form",
+//    	    "link"=>PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.css'
+//    	    )
+//    	);
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'h5form',
+//            "jquery"=> 'jqueryui',
+//            "src"=> PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.js',
+//            "content"=>"$(function() {
+//              $('#abc123').h5form();
+//            });"
+//        ));
 		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';
 		if (isset($this->ajax_updater)) {
