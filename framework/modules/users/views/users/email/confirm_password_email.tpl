@@ -18,7 +18,8 @@
     {$newpass}
 </p>
 <p>
-    {'To use the new password, return to'|gettext} <a href="http://{$smarty.const.URL_FULL}/login.php">{$smarty.const.HOSTNAME}</a> {'and log in using your username and this password.'|gettext}&#160;&#160;
+    {*{'To use the new password, return to'|gettext} <a href="http://{$smarty.const.URL_FULL}/login.php">{$smarty.const.HOSTNAME}</a> {'and log in using your username and this password.'|gettext}&#160;&#160;*}
+    {'To use the new password, return to'|gettext} <a href="{link controller=login action=showlogin}">{$smarty.const.HOSTNAME}</a> {'and log in using your username and this password.'|gettext}&#160;&#160;
     {'After you log in you can use the \'Change Password\' feature to set the password to one of your choosing.'|gettext}
 </p>
 
