@@ -23,7 +23,7 @@
     {else}
         <h1>{'New'|gettext} {$record->product_name}</h1>
     {/if}
-    {ddrerank model="expDefinableField" items=$definablefields label="Definable Fields"|gettext id="definable_field_registrant" sortfield="name"}
+    {ddrerank model="expDefinableField" items=$definablefields label="Input Fields"|gettext id="definable_field_registrant" sortfield="name"}
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="product_type" value=$record->product_type}
@@ -37,7 +37,7 @@
                 <li><a href="#tab4"><em>{'Options'|gettext}</em></a></li>
 	            <li><a href="#tab5"><em>{'Images & Files'|gettext}</em></a></li>
 	            <li><a href="#tab6"><em>{'SEO'|gettext}</em></a></li>
-				{*<li><a href="#tab7"><em>{'Configure Fields'|gettext}</em></a></li>*}
+				<li><a href="#tab7"><em>{'Configure Fields'|gettext}</em></a></li>
 				<li><a href="#tab8"><em>{'Waiver'|gettext}</em></a></li>
 				<li><a href="#tab9"><em>{'Status'|gettext}</em></a></li>
             </ul>
@@ -111,13 +111,13 @@
                 </div>
                 <div id="tab4">
                     <h2>{'Add options to your product.'|gettext}</h2>
-                       {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
-                       {'By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
-                       {'By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group.'|gettext} {br}
-                       {'Select Single presents the option group as a dropdown field where they may select one and only option.'|gettext}{br}
-                       {'Select Multiple presents the options as a checkbox group where the user may select multiple options'|gettext}.{br}
-                       {'Selecting the Default radio button for an option will cause that option to be selected by default.'|gettext} {br}{br}
-                       {include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
+                    {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
+                    {'By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
+                    {'By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group.'|gettext} {br}
+                    {'Select Single presents the option group as a dropdown field where they may select one and only option.'|gettext}{br}
+                    {'Select Multiple presents the options as a checkbox group where the user may select multiple options'|gettext}.{br}
+                    {'Selecting the Default radio button for an option will cause that option to be selected by default.'|gettext} {br}{br}
+                    {include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
                 </div>
                 <div id="tab5">
                     {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" value=$record->expFile description="Images to show for your event"|gettext}
@@ -133,12 +133,19 @@
                     {control type="textarea" name="meta_keywords" label="Meta Description"|gettext value=$record->meta_description}
                     {control type="textarea" name="meta_description" label="Meta Keywords"|gettext value=$record->meta_keywords}
                 </div>
-				{*<div id="tab7">*}
-				     {*<h2>{'Configure Fields'|gettext} | {icon class="manage" controller="expDefinableField" action="manage"}</h2>*}
-					{*{foreach from=$definablefields item=fields}*}
-						{*{control type="checkbox" name="expDefinableField[registrant][]" label="`$fields->name` - `$fields->type`" value="`$fields->id`" checked="`$record->expDefinableField.registrant`"}*}
-					{*{/foreach}*}
-                {*</div>*}
+				<div id="tab7">
+			        <h2>{'Input Fields'|gettext}</h2>
+                    {icon class="manage" controller="expDefinableField" action="manage"}
+					{foreach from=$definablefields item=fields}
+                        {$checked = false}
+                        {foreach from=$record->expDefinableField.registrant item=selected}
+                            {if $fields->id == $selected->id}
+                                {$checked = true}
+                            {/if}
+                        {/foreach}
+						{control type="checkbox" name="expDefinableField[registrant][]" label="`$fields->name` - `$fields->type`" value="`$fields->id`" checked="`$checked`"}
+					{/foreach}
+                </div>
 				<div id="tab8">
 					{control type="checkbox" name="require_terms_and_condition" label="Require Waiver"|gettext value=1 checked=$record->require_terms_and_condition}
 					{control type="editor" name="terms_and_condition" label="Waiver"|gettext rows=8 cols=55 value=$record->terms_and_condition}

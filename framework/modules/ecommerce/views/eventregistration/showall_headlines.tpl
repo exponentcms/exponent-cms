@@ -46,7 +46,7 @@
                         - <em class="date">{$item->eventdate|date_format}</em>
                         - {$item->body|summarize:"text":"para"}
                         {*{if $item->base_price}- {'Cost'|gettext}: {currency_symbol}{$item->base_price}{/if}*}
-                        {if $item->base_price}- {'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
+                        {if $item->getBasePrice()}- {'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
                         {if $item->isRss != true}
                             {permissions}
                                 <div class="item-actions">

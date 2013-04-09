@@ -157,7 +157,6 @@ $ecom = array(
             ),
             array(
                 'text'    => gt("Purchase Orders"),
-                'classname' => 'configure',
                 'submenu' => array(
                     'id'       => 'purchase-order',
                     'itemdata' => array(
@@ -181,6 +180,7 @@ $ecom = array(
             ),
             array(
                 'text'    => gt("Store Setup"),
+                'classname' => 'configure',
                 'submenu' => array(
                     'id'       => 'store',
                     'itemdata' => array(

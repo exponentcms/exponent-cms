@@ -51,41 +51,40 @@
                         {control type="editor" name="body" label="Product Description"|gettext height=250 value=$record->body}
                     </div>
                     <div id="pricing">
-                        <fieldset>
-                        <h2>{"General Pricing"|gettext}</h2>
+                        {group label="General Pricing"|gettext}
                             <table>
-                            <tr>
-                                <td>{control type="text" name="base_price" label="Base Price"|gettext value=$record->base_price filter=money}</td>
-                                <td>{control type="text" name="special_price" label="Special Price"|gettext value=$record->special_price filter=money}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">{control type="checkbox" name="use_special_price" label="Use Special Price"|gettext value=1 checked=$record->use_special_price}</td>
-                            </tr>
+                                <tr>
+                                    <td>{control type="text" name="base_price" label="Base Price"|gettext value=$record->base_price filter=money}</td>
+                                    <td>{control type="text" name="special_price" label="Special Price"|gettext value=$record->special_price filter=money}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">{control type="checkbox" name="use_special_price" label="Use Special Price"|gettext value=1 checked=$record->use_special_price}</td>
+                                </tr>
                             </table>
-                        </fieldset>
-                        <fieldset>
-                        <h2>{"Quantity Discounts"|gettext}</h2>
+                        {/group}
+                        {group label="Quantity Discounts"|gettext}
                             <p>
                                 {"Quantity discounts are discounts that get applied when a customer purchases a certain amount of this product."|gettext}&#160;&#160;
                                 {"You can configure how the discounts work by setting the discount rules below."|gettext}
                             </p>
                             <table class="qty-discount">
-                            <tr>
-                                <td>{"If a customer purchases more than"|gettext} </td>
-                                <!--td>{control type="dropdown" name="quantity_discount_num_items_mod" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->
-                                <td>{control type="text" name="quantity_discount_num_items" label=" " value=$record->quantity_discount_num_items size=3 filter=integer}</td>
-                                <td>items, than discount the price by</td>
-                                <td>{control type="text" name="quantity_discount_amount" label=" " value=$record->quantity_discount_amount size=3 filter=decimal}
-                                <td>{control type="dropdown" name="quantity_discount_amount_mod" label=" " items=$record->quantity_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="6">{control type="checkbox" name="quantity_discount_apply" label="Only apply discount to the items over the discount limit"|gettext value=1 checked=$record->quantity_discount_apply}</td>
-                            </tr>
+                                <tr>
+                                    <td>{"If a customer purchases more than"|gettext} </td>
+                                    <!--td>{control type="dropdown" name="quantity_discount_num_items_mod" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->
+                                    <td>{control type="text" name="quantity_discount_num_items" label=" " value=$record->quantity_discount_num_items size=3 filter=integer}</td>
+                                    <td>items, than discount the price by</td>
+                                    <td>{control type="text" name="quantity_discount_amount" label=" " value=$record->quantity_discount_amount size=3 filter=decimal}
+                                    <td>{control type="dropdown" name="quantity_discount_amount_mod" label=" " items=$record->quantity_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">{control type="checkbox" name="quantity_discount_apply" label="Only apply discount to the items over the discount limit"|gettext value=1 checked=$record->quantity_discount_apply}</td>
+                                </tr>
                             </table>
-                        </fieldset>
-                        <h2>{"Tax Class"|gettext}</h2>
-                        {control type="dropdown" name="tax_class_id" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id}
-                        {icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
+                        {/group}
+                        {group label="Tax Class"|gettext}
+                            {control type="dropdown" name="tax_class_id" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id}
+                            {icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
+                        {/group}
                     </div>
                     <div id="images">
                         <div id="imagefunctionality">

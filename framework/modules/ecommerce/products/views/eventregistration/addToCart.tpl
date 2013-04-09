@@ -39,68 +39,68 @@
     {*FIXME convert to yui3*}
     {script unique="eventreg" yui3mods="1"}
     {literal}
-    //YAHOO.util.Event.onDOMReady(function(){
-    YUI(EXPONENT.YUI3_CONFIG).use('yui2-yahoo-dom-event', function(Y) {
-        var YAHOO = Y.YUI2;
-        var addNewRegs = {
-            addcounter : 0,
-            refcontrl : YAHOO.util.Dom.get('regdiv'),
-            insertAfter : function (){
-                this.refcontrl.parentNode.insertBefore(this.newcontrl, this.refcontrl.nextSibling);
-            },
-            init : function () {
-                this.parent = this.refcontrl.parentNode;
-                YAHOO.util.Event.on("newregistrant", 'click',this.process,this,true);
-            },
-            process : function (e) {
-                YAHOO.util.Event.stopEvent(e);
-                if (this.addcounter!==0){
-                    this.refcontrl = this.newcontrl;
-                    this.addcounter++;
+        //YAHOO.util.Event.onDOMReady(function(){
+        YUI(EXPONENT.YUI3_CONFIG).use('yui2-yahoo-dom-event', function(Y) {
+            var YAHOO = Y.YUI2;
+            var addNewRegs = {
+                addcounter : 0,
+                refcontrl : YAHOO.util.Dom.get('regdiv'),
+                insertAfter : function (){
+                    this.refcontrl.parentNode.insertBefore(this.newcontrl, this.refcontrl.nextSibling);
+                },
+                init : function () {
+                    this.parent = this.refcontrl.parentNode;
+                    YAHOO.util.Event.on("newregistrant", 'click',this.process,this,true);
+                },
+                process : function (e) {
+                    YAHOO.util.Event.stopEvent(e);
+                    if (this.addcounter!==0){
+                        this.refcontrl = this.newcontrl;
+                        this.addcounter++;
+                    } else {
+                        this.addcounter = 1;
+                    }
+                    this.newcontrl = document.createElement('div');
+
+                    this.newcontrl.setAttribute("class",this.refcontrl.getAttribute("class"));
+                    this.newcontrl.innerHTML = this.refcontrl.innerHTML;
+
+                    this.insertAfter();
+
+                    document.getElementById('quantity').value = parseFloat(document.getElementById('quantity').value) + 1;
+                }
+            }
+            addNewRegs.init();
+
+            EXPONENT.validateReg = function() {
+                var frm  = YAHOO.util.Dom.get('evregfrm');
+                if (frm.registrations.value==undefined){
+                    for(i=0; i<frm.registrations.length; i++){
+                       if (frm.registrations[i].value==""){
+                        alert("{/literal}{"You must provide a name for each of your registrants."|gettext}{literal}");
+                        frm.registrations[i].focus();
+                        return;
+                       }
+                       if (frm.registrations_emails[i].value==""){
+                            alert("{/literal}{"You must provide an email for each of your registrants."|gettext}{literal}");
+                            frm.registrations_emails[i].focus();
+                            return;
+                       }
+                       if (frm.registrations_phones[i].value==""){
+                            alert("{/literal}{"You must provide a phone for each of your registrants."|gettext}{literal}");
+                            frm.registrations_phones[i].focus();
+                            return;
+                       }
+                    }
+                    YAHOO.util.Dom.get('evregfrm').submit();
+                } else if (frm.registrations.value!="" && frm.registrations_emails.value!="" && frm.registrations_phones.value!=""){
+                    YAHOO.util.Dom.get('evregfrm').submit();
                 } else {
-                    this.addcounter = 1;
+                    alert("{/literal}{"You must provide name, email, and phone information for your registrant."|gettext}{literal}");
+                    frm.registrations.focus();
                 }
-                this.newcontrl = document.createElement('div');
-
-                this.newcontrl.setAttribute("class",this.refcontrl.getAttribute("class"));
-                this.newcontrl.innerHTML = this.refcontrl.innerHTML;
-
-                this.insertAfter();
-
-                document.getElementById('quantity').value = parseFloat(document.getElementById('quantity').value) + 1;
             }
-        }
-        addNewRegs.init();
-
-        EXPONENT.validateReg = function() {
-            var frm  = YAHOO.util.Dom.get('evregfrm');
-            if (frm.registrations.value==undefined){
-                for(i=0; i<frm.registrations.length; i++){
-                   if (frm.registrations[i].value==""){
-                    alert("{/literal}{"You must provide a name for each of your registrants."|gettext}{literal}");
-                    frm.registrations[i].focus();
-                    return;
-                   }
-                   if (frm.registrations_emails[i].value==""){
-                        alert("{/literal}{"You must provide an email for each of your registrants."|gettext}{literal}");
-                        frm.registrations_emails[i].focus();
-                        return;
-                   }
-                   if (frm.registrations_phones[i].value==""){
-                        alert("{/literal}{"You must provide a phone for each of your registrants."|gettext}{literal}");
-                        frm.registrations_phones[i].focus();
-                        return;
-                   }
-                }
-                YAHOO.util.Dom.get('evregfrm').submit();
-            } else if (frm.registrations.value!="" && frm.registrations_emails.value!="" && frm.registrations_phones.value!=""){
-                YAHOO.util.Dom.get('evregfrm').submit();
-            } else {
-                alert("{/literal}{"You must provide name, email, and phone information for your registrant."|gettext}{literal}");
-                frm.registrations.focus();
-            }
-        }
-    });
+        });
     {/literal}
     {/script}
 {else}

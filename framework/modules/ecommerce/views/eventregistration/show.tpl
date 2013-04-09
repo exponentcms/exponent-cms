@@ -70,12 +70,12 @@
             {control type="hidden" name="product_type" value="`$product->product_type`"}
             {*{control type="hidden" name="quick" value="1"}*}
             {if $product->spacesLeft() && $product->signup_cutoff >= time()}
-                <span class="label">{'Seats Available:'|gettext} </span><span
-                    class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
+                <span class="label">{'Seats Available:'|gettext} </span>
+                <span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
                 <div class="seatsContainer">
                     <div class="seatStatus">
                         {$seats = implode(',',range(1,$product->spacesLeft()))}
-                            {control type=dropdown name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
+                        {control type=dropdown name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
                     </div>
                     <div class="seatAmount prod-price">
                         {if $product->base_price}
@@ -120,9 +120,9 @@
                     </div>
                 {/if}
 
-                {*{foreach from=$product->expDefinableField.registrant item=fields}*}
-                    {*{$product->getControl($fields)}*}
-                {*{/foreach}*}
+                {foreach from=$product->expDefinableField.registrant item=fields}
+                    {$product->getControl($fields)}
+                {/foreach}
 
                 <h2>{'Who\'s Coming?'|gettext}</h2>
                 {'Please provide the names of the people who will be attending this event'|gettext},

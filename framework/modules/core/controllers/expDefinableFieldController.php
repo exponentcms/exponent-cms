@@ -89,10 +89,8 @@ class expDefinableFieldController extends expController {
 		$form->meta('control_type',$control_type);
 		$form->meta("type", $control_type);
 		$types = expTemplate::listControlTypes();
-		
 
 		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));			
-		
 	}
 	
 	function save() {	
@@ -120,6 +118,7 @@ class expDefinableFieldController extends expController {
 				$control->name =  $name;
 			}
 	
+            if (!empty($ctl->pattern)) $ctl->pattern = addslashes($ctl->pattern);
 			$control->data = serialize($ctl);
 			$control->type = $this->params['type'];
 			

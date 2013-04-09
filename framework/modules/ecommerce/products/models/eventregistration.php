@@ -31,14 +31,14 @@ class eventregistration extends expRecord {
     public $product_name = 'Event Registration';
     public $product_type = 'eventregistration';
     public $requiresShipping = false;
-    public $requiresBilling = true;  //FIXME only if a cost is involved
+    public $requiresBilling = true; //FIXME only if a cost is involved
     public $isQuantityAdjustable = false;
 
     public $default_sort_field = 'rank';
     public $rank_by_field = 'rank';
     public $default_sort_direction = "asc";
 
-    public $early_discount_amount_modifiers = array('$'=>'$', '%'=>'%');
+    public $early_discount_amount_modifiers = array('$' => '$', '%' => '%');
 
     protected $attachable_item_types = array(
 //        'content_expCats'=>'expCat',
@@ -171,8 +171,7 @@ class eventregistration extends expRecord {
         }
     }
 
-    public function getSEFURL()
-    {
+    public function getSEFURL() {
         if (!empty($this->sef_url)) return $this->sef_url;
         $parent = new product($this->parent_id, false, false);
         return $parent->sef_url;
@@ -246,7 +245,7 @@ class eventregistration extends expRecord {
 
         // grab the options
         $options = expUnserialize($item->options);
-	    $view->assign('options', $options);
+        $view->assign('options', $options);
 
         // grab all the registrants
         $registrants = expUnserialize($item->extra_data);
@@ -323,7 +322,7 @@ class eventregistration extends expRecord {
         // eDebug(expSession::get('expDefinableField'), true);
         foreach (expSession::get('expDefinableField') as $key => $value) {
             $obj = new stdClass();
-            $obj->expDefinableFields_id = $key;
+            $obj->expdefinablefields_id = $key;
             $obj->content_id = $item->product_id;
             $obj->connector_id = $order->id;
             $obj->content_type = "eventregistration";
@@ -392,23 +391,23 @@ class eventregistration extends expRecord {
 //                }
 //            }
 //        } else {
-            // new reservation
-            $db->delete("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
-            if (!empty($params['event'])) foreach ($params['event'] as $key => $value) {
-                $obj = new stdClass();
-                $obj->event_id = $params['product_id'];
-                $obj->control_name = $key;
-                $obj->value = serialize($value);
-                $obj->connector_id = $order->id;
-                $obj->registered_date = time();
-                $db->insertObject($obj, "eventregistration_registrants");
-            } else {
-                $obj = new stdClass();
-                $obj->event_id = $params['product_id'];
-                $obj->connector_id = $order->id;
-                $obj->registered_date = time();
-                $db->insertObject($obj, "eventregistration_registrants");
-            }
+        // new reservation
+        $db->delete("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
+        if (!empty($params['event'])) foreach ($params['event'] as $key => $value) {
+            $obj = new stdClass();
+            $obj->event_id = $params['product_id'];
+            $obj->control_name = $key;
+            $obj->value = serialize($value);
+            $obj->connector_id = $order->id;
+            $obj->registered_date = time();
+            $db->insertObject($obj, "eventregistration_registrants");
+        } else {
+            $obj = new stdClass();
+            $obj->event_id = $params['product_id'];
+            $obj->connector_id = $order->id;
+            $obj->registered_date = time();
+            $db->insertObject($obj, "eventregistration_registrants");
+        }
 //        }
         expSession::set('session_id', $sess_id);
 //        }
@@ -460,7 +459,7 @@ class eventregistration extends expRecord {
             $quantity = $params['qtyr'];
             $item->quantity = $quantity;
             $item->products_price = $price;
-        } else {  // no options selected
+        } else { // no options selected
             if (empty($params['qtyr'])) {
                 $params['qtyr'] = 1;
             }
@@ -510,7 +509,6 @@ class eventregistration extends expRecord {
                 return $ctl->toHTML($ctl->caption, "event[$name]");
             }
         }
-
     }
 
     function checkout() {
@@ -526,7 +524,7 @@ class eventregistration extends expRecord {
 
     public function getForm($form) {
         $dirs = array(
-            BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/views/' . $this->product_type . '/',  // make sure we check the controller view first
+            BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/views/' . $this->product_type . '/', // make sure we check the controller view first
             BASE . 'framework/modules/ecommerce/views/' . $this->product_type . '/',
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/' . $this->product_type . '/',
             BASE . 'framework/modules/ecommerce/products/views/' . $this->product_type . '/',

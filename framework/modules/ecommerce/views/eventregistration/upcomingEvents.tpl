@@ -30,27 +30,27 @@
    	{/if}
     {$myloc=serialize($__loc)}
     <ul>
-    {foreach name=uce from=$page->records item=item}
-        {if $smarty.foreach.uce.iteration <= 3}
-        <li>
-            <a href="{link controller=eventregistration action=show title=$item->sef_url}" title={$item->body|summarize:"html":"para"}>{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
-            {*<p>{$item->summary|truncate:75:"..."}</p>*}
-            {permissions}
-                <div class="item-actions">
-                    {if $permissions.edit == true}
-                        {icon controller="store" action=edit record=$item}
-                    {/if}
-                    {if $permissions.delete == true}
-                        {icon controller="store" action=delete record=$item}
-                    {/if}
-                </div>
-            {/permissions}
-            <p>
-                {$item->title}
-                {if $item->base_price}- {'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
-            </p>
-        </li>
-    {/if}
-    {/foreach}
+        {foreach name=uce from=$page->records item=item}
+            {if $smarty.foreach.uce.iteration <= 3}
+                <li>
+                    <a href="{link controller=eventregistration action=show title=$item->sef_url}" title={$item->body|summarize:"html":"para"}>{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
+                    {*<p>{$item->summary|truncate:75:"..."}</p>*}
+                    {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit == true}
+                                {icon controller="store" action=edit record=$item}
+                            {/if}
+                            {if $permissions.delete == true}
+                                {icon controller="store" action=delete record=$item}
+                            {/if}
+                        </div>
+                    {/permissions}
+                    <p>
+                        {$item->title}
+                        {if $item->getBasePrice()}- {'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
+                    </p>
+                </li>
+            {/if}
+        {/foreach}
     </ul>
 </div>
