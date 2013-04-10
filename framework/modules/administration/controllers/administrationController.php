@@ -966,6 +966,7 @@ class administrationController extends expController {
 	    }
 	    flash('message',$message);
         expTheme::removeSmartyCache();
+        expSession::clearAllUsersSessionCache();
     	expHistory::returnTo('manageable');
     }	
     
@@ -984,6 +985,7 @@ class administrationController extends expController {
 			flash('notice',$message);
 		}
 		expTheme::removeSmartyCache();
+        expSession::clearAllUsersSessionCache();
 		expHistory::back();
 	}
 
