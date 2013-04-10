@@ -62,7 +62,7 @@
 		</div>
 	{/permissions}
     <div id="popup">
-        <a class="calpopup" href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
+        <a class="calpopup nav module-actions" href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="month-{$name}">
             {include 'monthlist.tpl'}
         </div>
