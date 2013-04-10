@@ -115,6 +115,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-ui-1.10.1.custom.js',
             'external/jquery/js/jquery-ui-1.10.1.custom.min.js',
             'framework/modules/text//views//text/showall_merge.tpl',
+            'framework/modules/text//views//text/showall_tabview.tpl',
             'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
             'framework/modules/common/views/configure/module_title.tpl',
             'framework/plugins/function.get_distance.php',
