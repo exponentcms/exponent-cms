@@ -65,8 +65,9 @@
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_invoice_id == 1 && !$pf}
-                                    {br}
-                                    <a class="edit" href="{link action=edit_invoice_id id=$order->id}" title="{'Edit Invoice Number'|gettext}">{'Edit'|gettext}</a>
+                                    {*{br}*}
+                                    {*<a class="edit" href="{link action=edit_invoice_id id=$order->id}" title="{'Edit Invoice Number'|gettext}">{'Edit'|gettext}</a>*}
+                                    {icon class="edit" action=edit_invoice_id id=$order->id title='Edit Invoice Number'|gettext}
                                 {/if}
                             </div>
                          {/permissions}
@@ -109,8 +110,9 @@
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}
-                                {br}
-                                <a class="edit" href="{link action=edit_address id=$order->id type='b'}" title="{'Edit Billing Address'|gettext}">{'Edit'|gettext}</a>
+                                    {*{br}*}
+                                    {*<a class="edit" href="{link action=edit_address id=$order->id type='b'}" title="{'Edit Billing Address'|gettext}">{'Edit'|gettext}</a>*}
+                                    {icon class="edit" action=edit_address id=$order->id type='b' title='Edit Billing Address'|gettext}
                                 {/if}
                             </div>
                         {/permissions}
@@ -120,9 +122,10 @@
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}                                                                                        
-                                    {br}    
-                                    <a class="edit" href="{link action=edit_address id=$order->id type='s'}" title="{'Edit Shipping Address'|gettext}">{'Edit'|gettext}</a>
-                                    {br} 
+                                    {*{br}    *}
+                                    {*<a class="edit" href="{link action=edit_address id=$order->id type='s'}" title="{'Edit Shipping Address'|gettext}">{'Edit'|gettext}</a>*}
+                                    {*{br} *}
+                                    {icon class="edit" action=edit_address id=$order->id type='s' title='Edit Shipping Address'|gettext}
                                 {/if}
                             </div>
                         {/permissions}   
@@ -135,8 +138,9 @@
                                     {permissions}
                                         <div class="item-permissions">
                                             {if $permissions.edit_shipping_method == 1 && !$pf}
-                                                {br}
-                                                <a class="edit" href="{link action=edit_shipping_method id=$order->id}" title="{'Edit Shipping Method'|gettext}">{'Edit'|gettext}</a>
+                                                {*{br}*}
+                                                {*<a class="edit" href="{link action=edit_shipping_method id=$order->id}" title="{'Edit Shipping Method'|gettext}">{'Edit'|gettext}</a>*}
+                                                {icon class="edit" action=edit_shipping_method id=$order->id title='Edit Shipping Method'|gettext}
                                             {/if}
                                         </div>
                                     {/permissions}
@@ -208,10 +212,12 @@
                             </span>
                         </div>
                          {permissions}
-                            {if $permissions.edit_shipping_method == 1 && !$pf}{br}
+                            {if $permissions.edit_shipping_method == 1 && !$pf}
+                                {*{br}*}
                                 <div class="item-permissions">
-                                    <a class="edit" href="{link action=edit_payment_info id=$order->id}" title="{'Edit Payment Method'|gettext}">{'Edit'|gettext}</a>
-                                    {br}{br}
+                                    {*<a class="edit" href="{link action=edit_payment_info id=$order->id}" title="{'Edit Payment Method'|gettext}">{'Edit'|gettext}</a>*}
+                                    {*{br}{br}*}
+                                    {icon class="edit" action=edit_payment_info id=$order->id title='Edit Payment Method'|gettext}
                                 </div>
                             {/if}
                         {/permissions}                                  
@@ -314,7 +320,12 @@
                     {permissions}
                         <div class="item-permissions">
                             {if $permissions.edit_order_item == 1 && !$pf}                                                                                                             
-                                <td style="text-align:right;"><a class="edit" href="{link action=edit_order_item id=$oi->id orderid=$order->id}" title="{'Edit Invoice Item'|gettext}">{'Edit'|gettext}</a>&#160;<a class="delete" href="{link action=delete_order_item id=$oi->id orderid=$order->id}" onclick="return confirm('Are you sure you want to delete this item from this order?')" title="{'Delete Invoice Item'|gettext}">{'Delete'|gettext}</a></td>
+                                <td style="text-align:right;">
+                                    {*<a class="edit" href="{link action=edit_order_item id=$oi->id orderid=$order->id}" title="{'Edit Invoice Item'|gettext}">{'Edit'|gettext}</a>&#160;*}
+                                    {*<a class="delete" href="{link action=delete_order_item id=$oi->id orderid=$order->id}" onclick="return confirm('Are you sure you want to delete this item from this order?')" title="{'Delete Invoice Item'|gettext}">{'Delete'|gettext}</a>*}
+                                    {icon class="edit" action=edit_order_item id=$oi->id orderid=$order->id title='Edit Invoice Item'|gettext}&#160;
+                                    {icon class="delete" action=delete_order_item id=$oi->id orderid=$order->id onclick="return confirm('Are you sure you want to delete this item from this order?')" title='Delete Invoice Item'|gettext}
+                                </td>
                             {/if}
                         </div>
                     {/permissions}
@@ -514,7 +525,9 @@
                     <div class="item-permissions">
                         {if $permissions.edit_totals == 1 && !$pf}                                                                                                             
                             <tr class="even">                   
-                                <td style="text-align:right; border-left:0px;" colspan='3'><a class="edit" href="{link action=edit_totals orderid=$order->id}" title="{'Edit Totals'|gettext}">{'Edit'|gettext}</a>
+                                <td style="text-align:right; border-left:0px;" colspan='3'>
+                                    {*<a class="edit" href="{link action=edit_totals orderid=$order->id}" title="{'Edit Totals'|gettext}">{'Edit'|gettext}</a>*}
+                                    {icon class="edit" action=edit_totals orderid=$order->id title='Edit Totals'|gettext}
                                 </td>
                             </tr>
                         {/if}

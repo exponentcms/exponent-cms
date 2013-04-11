@@ -26,21 +26,24 @@
         <strong>* {'If this item has product options and those options modify the price, YOU must adjust the price below manually if you change the options. This will NOT recalculate the option price modifiers automatically.'|gettext}</strong>{br}
         {br} 
         <table width='60%'>
-        <tr><td>
-        {'Item name:'|gettext}</td><td>{control type=textarea name=products_name cols=40 rows=3 label="" value=$oi->products_name}
-        </td></tr>
-        <tr><td> 
-        {'Item model:'|gettext}</td><td>{$oi->products_model}
-        </td></tr>
-        <tr><td> 
-        {'Item price:'|gettext}</td><td>{control type=text name=products_price label="" value=$oi->products_price}
-        </td></tr>
-        <tr><td> 
-        {'Item quantity:'|gettext}</td><td>{control type=text name=quantity label="" value=$oi->quantity}
-        </td></tr>
-        
+            <tr>
+                <td>{'Item name:'|gettext}</td>
+                <td>{control type=textarea name=products_name cols=40 rows=3 label="" value=$oi->products_name}</td>
+            </tr>
+            <tr>
+                <td>{'Item model:'|gettext}</td>
+                <td>{$oi->products_model}</td>
+            </tr>
+            <tr>
+                <td>{'Item price:'|gettext}</td>
+                <td>{control type=text name=products_price label="" value=$oi->products_price}</td>
+            </tr>
+            <tr>
+                <td>{'Item quantity:'|gettext}</td>
+                <td>{control type=text name=quantity label="" value=$oi->quantity}</td>
+            </tr>
         </table>
-      {if $oi->product->hasOptions()}
+        {if $oi->product->hasOptions()}
             <div class="product-options">
                 <h2>{$oi->products_name} {'Options'|gettext}</h2>
                 {foreach from=$oi->product->optiongroup item=og}
@@ -64,22 +67,21 @@
         
         {if !empty($oi->product->user_input_fields) && $oi->product->user_input_fields|@count>0 }
             <div class="user-input-fields">
-            <h2>{'User Input Fields'|gettext}</h2>
-            {foreach from=$oi->product->user_input_fields key=uifkey item=uif}  
-                <div class="user-input {cycle values="odd,even"}">
-                {if $uif.use}                   
-                         {if $uif.is_required}
-                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
-                         {else}
-                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
-                         {/if}
-                         {if $uif.description != ''}{$uif.description}{/if}
-                    {/if}
-                </div>
-            {/foreach}
+                <h2>{'User Input Fields'|gettext}</h2>
+                {foreach from=$oi->product->user_input_fields key=uifkey item=uif}
+                    <div class="user-input {cycle values="odd,even"}">
+                        {if $uif.use}
+                             {if $uif.is_required}
+                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
+                             {else}
+                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
+                             {/if}
+                             {if $uif.description != ''}{$uif.description}{/if}
+                        {/if}
+                    </div>
+                {/foreach}
             </div>
         {/if}
-         {control type=buttongroup submit="Save Order Item Change"|gettext cancel="Cancel"|gettext}
-        
+        {control type=buttongroup submit="Save Order Item Change"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

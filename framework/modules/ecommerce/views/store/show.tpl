@@ -43,7 +43,7 @@
         {if $permissions.edit == 1}
             {icon action=edit record=$product title="Edit `$product->title`"}
             {icon action=copyProduct class="copy" text="Copy Product"|gettext title="Copy `$product->title` " record=$product}
-            <a href="{link controller=store action=edit parent_id=$product->id product_type='childProduct'}" class="add">{'Add Child Product'|gettext}</a>
+            {icon class="add" action=edit parent_id=$product->id product_type='childProduct' text='Add Child Product'|gettext}
         {/if}
         {if $permissions.delete == 1}
             {icon action=delete record=$product title="Delete `$product->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
@@ -417,7 +417,7 @@
         {permissions}
         <div class="item-actions">
             {if $permissions.edit == 1}
-                <a href="{link controller=store action=edit parent_id=$product->id product_type='childProduct'}" class="add">{'Add Child Product'|gettext}</a>
+                {icon class="add" action=edit parent_id=$product->id product_type='childProduct' text='Add Child Product'|gettext}
             {/if}
             {if $product->childProduct|@count >= 1 && $permissions.delete == 1}
                 {icon class=delete action=deleteChildren record=$product text="Delete All Child Products"|gettext title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}

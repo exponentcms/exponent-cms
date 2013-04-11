@@ -155,11 +155,11 @@
                                     </td>
                                     <td>
                                         {*<input name="event[0][phone]" type="text"/>*}
-                                        <input name="event[0][phone]" type=tel/>
+                                        <input name="event[0][phone]" type=tel />
                                     </td>
                                     <td>
                                         {*<input name="event[0][email]" type="text"/>*}
-                                        <input name="event[0][email]" type=email/>
+                                        <input name="event[0][email]" type=email />
                                     </td>
                                 </tr>
                             {else}

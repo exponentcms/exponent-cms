@@ -832,8 +832,6 @@ class expRecord {
             if (!isset($this->id)) {
                 $this->$type = array();
             } else {
-                $order = ($type == 'expFile' || $type == 'expDefinableField') ? ' ORDER BY rank ASC' : null;
-
                 $sql = 'SELECT ef.*, cef.subtype AS subtype FROM ';
                 $sql .= DB_TABLE_PREFIX . '_' . $tablename . ' ef JOIN ' . DB_TABLE_PREFIX . '_' . $content_table . ' cef ';
                 $sql .= "ON ef.id = cef." . $tablename . "_id";
@@ -842,6 +840,8 @@ class expRecord {
                 if ($type == 'expComment') {
                     $sql .= " AND approved='1'";
                 }
+
+                $order = ($type == 'expFile' || $type == 'expDefinableField') ? ' ORDER BY rank ASC' : null;
                 $sql .= $order;
 
                 $items = $db->selectArraysBySql($sql);

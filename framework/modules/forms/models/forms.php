@@ -50,20 +50,24 @@ class forms extends expRecord {
 
         if ($this->is_saved == 1) {
             $datadef = array(
-                'id'        => array(
+                'id'            => array(
                     DB_FIELD_TYPE => DB_DEF_ID,
                     DB_PRIMARY    => true,
                     DB_INCREMENT  => true),
-                'ip'        => array(
+                'ip'            => array(
                     DB_FIELD_TYPE => DB_DEF_STRING,
                     DB_FIELD_LEN  => 25),
-                'referrer'  => array(
+                'referrer'      => array(
                     DB_FIELD_TYPE => DB_DEF_STRING,
                     DB_FIELD_LEN  => 1000),
-                'timestamp' => array(
+                'timestamp'     => array(
                     DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
-                'user_id'   => array(
-                    DB_FIELD_TYPE => DB_DEF_ID)
+                'user_id'       => array(
+                    DB_FIELD_TYPE => DB_DEF_ID),
+                'location_data' => array(
+                    DB_FIELD_TYPE => DB_DEF_STRING,
+                    DB_FIELD_LEN  => 250,
+                    DB_INDEX      => 10)
             );
 
             if (!isset($this->id)) {
@@ -84,7 +88,7 @@ class forms extends expRecord {
                         $index++;
                     }
                     $this->table_name = $tablename . $index;
-                    $this->update();  // save our table name to form
+                    $this->update(); // save our table name to form
                 }
 
                 $tablename = 'forms_' . $this->table_name;
@@ -120,14 +124,14 @@ class forms extends expRecord {
     public function afterDelete() {
         global $db;
 
-	    // get and delete the controls for this form
-	    $fc = new forms_control();
-	    $controls = $fc->find('all', 'forms_id='.$this->id);
-	    foreach ($controls as $control) {
+        // get and delete the controls for this form
+        $fc = new forms_control();
+        $controls = $fc->find('all', 'forms_id=' . $this->id);
+        foreach ($controls as $control) {
             $control->delete();
-	    }
+        }
 
-	    // delete the table for this form
+        // delete the table for this form
         if ($this->is_saved == 1) {
             $db->dropTable("forms_" . $this->table_name);
         }

@@ -36,7 +36,8 @@
 	{control type="hidden" name="general[product_type]" value='childProduct'}  
 	{control type="text" name="general[model]" label="Model # / SKU"|gettext value=$record->model}
 	{control type="text" class="title" name="general[title]" label="Product Name"|gettext value=$record->title}
-	{control type="dropdown" name="general[companies_id]" label="Manufacturer"|gettext includeblank=true frommodel=company value=$record->companies_id}<a href='{link controller="company" action="showall"}'>{'Manage Manufacturers'|gettext}</a>{br}
+	{control type="dropdown" name="general[companies_id]" label="Manufacturer"|gettext includeblank=true frommodel=company value=$record->companies_id}
+    {icon class="manage" controller="company" action="showall" text="Manage Manufacturers"|gettext}
 	{control type="textarea" name="general[summary]" label="Product Summary"|gettext rows=3 cols=45 value=$record->summary}
 	{control type="editor" name="general[body]" label="Product Description"|gettext height=250 value=$record->body}
 {/if}

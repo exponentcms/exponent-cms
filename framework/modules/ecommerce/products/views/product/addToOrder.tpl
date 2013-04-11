@@ -111,7 +111,7 @@
                                 {/if}
                                 <td style="text-align: right;">
                                     {if $chiprod->use_special_price}
-                                        <span style="color:red; font-size: 8px; font-weight: bold;">SALE</span>{br}
+                                        <span style="color:red; font-size: 8px; font-weight: bold;">{'SALE'|gettext}</span>{br}
                                         <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></span>
                                     {else}
                                         <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
@@ -153,20 +153,20 @@
         
         {if !empty($product->user_input_fields) && $product->user_input_fields|@count>0 }
             <div class="user-input-fields">
-            <h2>Additional Information for {$product->title}</h2>
-            <p>This item would like the following additional information. Items marked with an * are required:</p>
-            {foreach from=$product->user_input_fields key=uifkey item=uif}  
-                <div class="user-input {cycle values="odd,even"}">
-                    {if $uif.use}                   
-                         {if $uif.is_required}
-                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                         {else}
-                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                         {/if}
-                         {if $uif.description != ''}{$uif.description}{/if}
-                    {/if}
-                </div>
-            {/foreach}
+                <h2>Additional Information for {$product->title}</h2>
+                <p>This item would like the following additional information. Items marked with an * are required:</p>
+                {foreach from=$product->user_input_fields key=uifkey item=uif}
+                    <div class="user-input {cycle values="odd,even"}">
+                        {if $uif.use}
+                             {if $uif.is_required}
+                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                             {else}
+                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                             {/if}
+                             {if $uif.description != ''}{$uif.description}{/if}
+                        {/if}
+                    </div>
+                {/foreach}
             </div>
         {/if}
         {control type="buttongroup" submit="Add Item(s) to Order"|gettext}

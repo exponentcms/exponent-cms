@@ -136,8 +136,8 @@ show view
 }
 
 #eventregform .label {
-    display       : block;
-    display: inline;
+    /*display       : block;*/
+    /*display: inline;*/
     font-size     : 114%;
     font-weight   : bold;
     margin-bottom : 4px;

@@ -98,6 +98,10 @@ class formsController extends expController {
             foreach ($this->config['column_names_list'] as $column_name) {
                 if ($column_name == "ip") {
                     $columns[gt('IP Address')] = 'ip';
+                } elseif ($column_name == "referrer") {
+                    $columns[gt('Referrer')] = 'referrer';
+                } elseif ($column_name == "location_data") {
+                    $columns[gt('Entry Point')] = 'location_data';
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
 //                        if ($item->$column_name != 0) {
@@ -198,13 +202,13 @@ class formsController extends expController {
                 }
 
                 // system added fields
-                $captions['user_id'] = gt('Posted by');
                 $captions['ip'] = gt('IP Address');
                 $captions['timestamp'] = gt('Timestamp');
+                $captions['user_id'] = gt('Posted by');
                 $fields['ip'] = $data->ip;
+                $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
                 $locUser = user::getUserById($data->user_id);
                 $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
-                $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
             }
 
             assign_to_template(array(
@@ -494,6 +498,7 @@ class formsController extends expController {
                     $db_data->user_id = $olddata->user_id;
                     $db_data->timestamp = $olddata->timestamp;
                     $db_data->referrer = $olddata->referrer;
+                    $db_data->location_data = $olddata->location_data;
                     $db->delete('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
                 } else {
                     $db_data->ip = $_SERVER['REMOTE_ADDR'];
@@ -507,6 +512,11 @@ class formsController extends expController {
                     $db_data->timestamp = time();
                     $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" . expSession::getTicketString() . "'");
                     $db_data->referrer = $referrer;
+                    $location_data = null;
+                    if (!empty($this->params['src'])) {
+                        expCore::makeLocation($this->params['mod'],$this->params['src'],$this->params['int']);
+                    }
+                    $db_data->location_data = $location_data;
                 }
                 $db->insertObject($db_data, 'forms_' . $f->table_name);
             } else {
@@ -727,12 +737,13 @@ class formsController extends expController {
         $fields['ip'] = gt('IP Address');
         if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
 
-        if (isset($field['field_user_id']))
-            $fields['user_id'] = $field['field_user_id'];
+//        if (isset($field['field_user_id']))
+//            $fields['user_id'] = $field['field_user_id'];
 
         if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
         $fields['timestamp'] = gt('Timestamp');
         if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
+//        if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
 
         if (!empty($this->params['copy'])) {
             $f->old_id = $f->id;
@@ -940,7 +951,7 @@ class formsController extends expController {
                 if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' and forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
-                } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp') {
+                } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
                     $this->params = $this->params;
                     $this->params['_formError'] = sprintf(gt('Identifier cannot be "%s".'), $name);
                     expSession::set('last_POST', $this->params);
@@ -1017,12 +1028,13 @@ class formsController extends expController {
             $fields['ip'] = gt('IP Address');
             if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
 
-            if (isset($field['field_user_id']))
-                $fields['user_id'] = $field['field_user_id'];
+//            if (isset($field['field_user_id']))
+//                $fields['user_id'] = $field['field_user_id'];
 
             if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
             $fields['timestamp'] = gt('Timestamp');
             if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
+//            if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
         }
         $title = gt('No Form Assigned Yet!');
         if (!empty($this->config['forms_id'])) {
@@ -1107,7 +1119,7 @@ class formsController extends expController {
 
             $rpt_columns = explode("|!|", $f->column_names_list);
             foreach ($rpt_columns as $column_name) {
-                if ($column_name == "ip") {
+                if ($column_name == "ip" || $column_name == "referrer" || $column_name == "location_data") {
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
                         if ($item->$column_name != 0) {
@@ -1651,6 +1663,7 @@ class formsController extends expController {
                 $db_data->user_id = $user->id;
                 $db_data->timestamp = time();
                 $db_data->referrer = '';
+                $db_data->location_data = '';
                 foreach ($filedata as $field) {
                     if (!empty($this->params["column"][$i]) && $this->params["column"][$i] != "none") {
                         $colname = $this->params["column"][$i];

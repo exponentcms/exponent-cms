@@ -23,7 +23,7 @@
     {else}
         <h1>{'New'|gettext} {$record->product_name}</h1>
     {/if}
-    {ddrerank model="expDefinableField" items=$definablefields label="Input Fields"|gettext id="definable_field_registrant" sortfield="name"}
+    {ddrerank model="expDefinableField" items=$definablefields label="User Input Fields"|gettext id="definable_field_registrant" sortfield="name"}
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="product_type" value=$record->product_type}
@@ -37,7 +37,7 @@
                 <li><a href="#tab4"><em>{'Options'|gettext}</em></a></li>
 	            <li><a href="#tab5"><em>{'Images & Files'|gettext}</em></a></li>
 	            <li><a href="#tab6"><em>{'SEO'|gettext}</em></a></li>
-				<li><a href="#tab7"><em>{'Configure Fields'|gettext}</em></a></li>
+				<li><a href="#tab7"><em>{'User Input Fields'|gettext}</em></a></li>
 				<li><a href="#tab8"><em>{'Waiver'|gettext}</em></a></li>
 				<li><a href="#tab9"><em>{'Status'|gettext}</em></a></li>
             </ul>
@@ -108,6 +108,10 @@
                             </tr>
                         </table>
                     {/toggle}
+                    {group label="Tax Class"|gettext}
+                        {control type="dropdown" name="pricing[tax_class_id]" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id|default:1}
+                        {icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
+                    {/group}
                 </div>
                 <div id="tab4">
                     <h2>{'Add options to your product.'|gettext}</h2>
@@ -134,7 +138,7 @@
                     {control type="textarea" name="meta_description" label="Meta Keywords"|gettext value=$record->meta_keywords}
                 </div>
 				<div id="tab7">
-			        <h2>{'Input Fields'|gettext}</h2>
+			        <h2>{'User Input Fields'|gettext}</h2>
                     {icon class="manage" controller="expDefinableField" action="manage"}
 					{foreach from=$definablefields item=fields}
                         {$checked = false}
