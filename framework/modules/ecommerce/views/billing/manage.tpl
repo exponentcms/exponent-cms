@@ -42,9 +42,9 @@
 					<div class="item-actions">
                     {if $permissions.manage == 1}                        
 						{if $calc->enabled}
-							<a href="{link action=activate id=$calc->id enabled=0}">{icon img="toggle_on.png"}</a>
+							<a href="{link action=activate id=$calc->id enabled=0}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}></a>
 						{else}
-							<a href="{link action=activate id=$calc->id enabled=1}">{icon img="toggle_off.png"}</a>
+							<a href="{link action=activate id=$calc->id enabled=1}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
 						{/if}						
 					{/if}
 					</div>
