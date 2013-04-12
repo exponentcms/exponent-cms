@@ -38,7 +38,7 @@
                     {$cause->body}
                 </td>
                 <td>
-                    <a href={link controller=cart action=addItem product_type=$cause->product_type product_id=$cause->id quick=$quickadd}>{'Donate'|gettext} {if $config.quickadd}{$cause->base_price|currency}{else}{'Now'|gettext}{/if}</a>
+                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href={link controller=cart action=addItem product_type=$cause->product_type product_id=$cause->id quick=$quickadd}>{'Donate'|gettext} {if $config.quickadd}{$cause->base_price|currency}{else}{'Now'|gettext}{/if}</a>
                 </td>
                 <td>
                     {permissions}

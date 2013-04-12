@@ -41,6 +41,10 @@ class donation extends product {
 //        'content_expTags'=>'expTag',
     );
 
+    public function hasUserInputFields() {
+        return true;
+    }
+
     public function __construct($params = array(), $get_assoc = true, $get_attached = true) {
         parent::__construct($params, $get_assoc, $get_attached);
 //		$this->price = '';
@@ -123,10 +127,6 @@ class donation extends product {
         $item->save();
         return true;
 //	    }
-    }
-
-    public function hasUserInputFields() {
-        return true;
     }
 
     public function getSEFURL() {
