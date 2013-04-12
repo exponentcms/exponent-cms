@@ -15,14 +15,14 @@
 
 {include file='menu.inc'}
 
-{css unique="current_carts" link="`$asset_path`/css/accordion.css" corecss="tables"}
+{css unique="current_carts" link="`$asset_path`css/accordion.css" corecss="tables"}
 
 {/css}
 
 {*FIXME needs to be converted to yui3*}
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/utilities/utilities.js"></script>
-<script type="text/javascript" src="{$asset_path}/js/bubbling.js"></script>
-<script type="text/javascript" src="{$asset_path}/js/accordion.js"></script>
+<script type="text/javascript" src="{$asset_path}js/bubbling.js"></script>
+<script type="text/javascript" src="{$asset_path}js/accordion.js"></script>
 
 <div class="rightcol">
 	<div class="module report current_carts">
