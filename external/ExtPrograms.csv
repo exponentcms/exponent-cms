@@ -1,7 +1,7 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 CKEditor,4.1,ckeditor.com,4.1,
 FlowPlayer,3.2.16,flowplayer.org,3.2.16./5.3.2,
-Swift,4.3.0,swiftmailer.org,4.3.0,we add  eDebugLogger plugin
+Swift,4.3.0,swiftmailer.org,4.3.1,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 swfobject,2.2,code.google.com/p/swfobject,2.2,
@@ -30,4 +30,4 @@ Adminer,3.6.3,www.adminer.org,3.6.3,
 html5shiv,,code.google.com/p/html5shiv/,,
 SimpleAjaxUploader,12-Nov,https://github.com/LPology/Simple-Ajax-Uploader,12-Nov,
 normalize.css,2.1.1,necolas.github.com/normalize.css/,2.1.1,
-MediaElement.js,2.11.0,mediaelementjs.com/,2.11.0,
+MediaElement.js,2.11.0,mediaelementjs.com/,2.11.2,
