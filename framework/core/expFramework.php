@@ -242,7 +242,7 @@ $order = null;
  */
 function renderAction(array $parms=array()) {
     global $user, $db;
-    
+
     //Get some info about the controller
 //    $baseControllerName = expModules::getControllerName($parms['controller']);
     $fullControllerName = expModules::getControllerClassName($parms['controller']);

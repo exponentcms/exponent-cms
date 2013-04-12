@@ -115,6 +115,12 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 			include_once($page);
 			expTheme::satisfyThemeRequirements();
 		} else {
+            // set up controls search order based on framework
+            $framework = expSession::get('framework');
+            if ($framework == 'jquery' || $framework == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
+            if ($framework == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
+            array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
+
 			expTheme::runAction();
 		}
 	} else {

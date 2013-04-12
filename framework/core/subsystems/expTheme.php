@@ -135,6 +135,7 @@ class expTheme {
         if ($head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
         if ($head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
         array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
+        if (!expSession::is_set('framework')) expSession::set('framework',$head_config['framework']);
 
 		$metainfo = self::pageMetaInfo();
 
