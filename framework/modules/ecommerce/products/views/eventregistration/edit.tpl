@@ -156,10 +156,11 @@
 					{control type="radiogroup" name="terms_and_condition_toggle" label=" " items="Always Show,Toggle"|gettxtlist values="0,1" default=$record->terms_and_condition_toggle|default:0}
 				</div>
 				<div id="tab9">
-					<h2>{'Active/Inactive'|gettext}</h2>
-					{control type="radiogroup" name="active_type" label=" " items="Active,Inactive"|gettxtlist values="0,2" default=$record->active_type|default:0}
-					<h2>{'Status'|gettext}</h2>
-					{control type="checkbox" name="product_status_id" label="Open for Registration"|gettext value=1 checked=$record->product_status_id|default:1}
+					{*<h2>{'Active/Inactive'|gettext}</h2>*}
+					{*{control type="radiogroup" name="active_type" label=" " items="Active,Inactive"|gettxtlist values="0,2" default=$record->active_type|default:0}*}
+					{*<h2>{'Status'|gettext}</h2>*}
+					{*{control type="checkbox" name="product_status_id" label="Open for Registration"|gettext value=1 checked=$record->product_status_id|default:1}*}
+                    {control type="radiogroup" name="active_type" label="Status"|gettext items="Open for Registration,Closed for Registration"|gettxtlist values="0,2" default=$record->active_type|default:0}
 				</div>
             </div>
         </div>

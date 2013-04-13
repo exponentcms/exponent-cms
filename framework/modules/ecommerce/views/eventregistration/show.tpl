@@ -21,6 +21,12 @@
 
 {/css}
 
+{if $product->user_message != ''}
+    <div id="msg-queue" class="msg-queue notice">
+        <div class="msg">{$product->user_message}</div>
+    </div>
+{/if}
+
 <div class="module store show event-registration product">
     <div class="image" style="padding:0px 10px 10px;float:left;overflow: hidden;">
     {if $product->expFile.mainimage[0]->url == ""}
@@ -134,8 +140,8 @@
                             <span>&#160;</span>
                         </th>
                         <th>
+                            <span style="color:Red;" title="{'This entry is required'|gettext}">*</span>
                             <span>{'Name'|gettext}</span>
-                            <span style="color:Red;">*</span>
                         </th>
                         <th>
                             <span>{'Phone'|gettext}</span>

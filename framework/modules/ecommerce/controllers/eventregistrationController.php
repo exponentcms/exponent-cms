@@ -327,14 +327,15 @@ class eventregistrationController extends expController {
         $product = new eventregistration($id);
 
         //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
-        $product_type = new stdClass();
+        //FIXME we only have 0=active & 2=inactive ???
+//        $product_type = new stdClass();
         if ($product->active_type == 1) {
-            $product_type->user_message = "This product is temporarily unavailable for purchase.";
+            $product->user_message = "This event is temporarily unavailable for registration.";
         } elseif ($product->active_type == 2 && !$user->isAdmin()) {
-            flash("error", $product->title . " " . gt("is currently unavailable."));
+            flash("error", $product->title . " " . gt("registration is currently unavailable for registration."));
             expHistory::back();
         } elseif ($product->active_type == 2 && $user->isAdmin()) {
-            $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
+            $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
         }
 
         $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $product->id);
@@ -370,14 +371,15 @@ class eventregistrationController extends expController {
         $product = new eventregistration(addslashes($this->params['title']));
 
         //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
-        $product_type = new stdClass();
+         //FIXME we only have 0=active & 2=inactive ???
+//        $product_type = new stdClass();
         if ($product->active_type == 1) {
-            $product_type->user_message = "This product is temporarily unavailable for purchase.";
+            $product->user_message = "This event is temporarily unavailable for registration.";
         } elseif ($product->active_type == 2 && !$user->isAdmin()) {
-            flash("error", $product->title . " " . gt("is currently unavailable."));
+            flash("error", $product->title . " " . gt("registration is currently unavailable."));
             expHistory::back();
         } elseif ($product->active_type == 2 && $user->isAdmin()) {
-            $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
+            $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
         }
 
         //eDebug($product, true);

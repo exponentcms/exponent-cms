@@ -28,11 +28,9 @@
 {/if}
 
 {if $product->user_message != ''}
-<div id="msg-queue" class="common msg-queue">
-    <ul class="queue error">
-        <li>{$product->user_message}</li>
-    </ul>
-</div>
+    <div id="msg-queue" class="msg-queue notice">
+        <div class="msg">{$product->user_message}</div>
+    </div>
 {/if}
 
 <div class="module store show product">

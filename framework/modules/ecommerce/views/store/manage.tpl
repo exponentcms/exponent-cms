@@ -46,7 +46,7 @@
                 {foreach from=$page->records item=listing name=listings}
                     <tr class="{cycle values="odd,even"}">
                         {*<td>{img file_id=$listing->expFile.images[0]->id square=60}</td>*}
-                        <td>{$listing->product_type}</td>
+                        <td>{$listing->product_type|ucwords}</td>
                         <td>
                             {if $listing->product_type == "eventregistration"}
                                 <a href={link controller=eventregistration action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>

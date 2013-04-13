@@ -46,7 +46,7 @@
 	                {control type="editor" name="body" label="Donation Cause Description"|gettext height=250 value=$record->body}
 	            </div>
 	            <div id="tab2">
-	                {control type="text" name="base_price" label="Minimum dollar amount"|gettext value=$record->base_price filter=money}
+	                {control type="text" name="base_price" label="Minimum/Quick dollar amount"|gettext value=$record->base_price filter=money description='Amount of a \'Quick\' donation, or minimum amount for a standard donation'|gettext}
 	            </div>
 	            <div id="tab3">
 	                {*{control type=files name=files subtype=images value=$record->expFile}*}
