@@ -800,8 +800,8 @@ class cartController extends expController {
 
     public function customerSignup() {
         expSession::set('customer-signup', true);
-//        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-        $this->checkout();
+        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        $this->checkout();
     }
 
     public function saveShippingMethods() {
