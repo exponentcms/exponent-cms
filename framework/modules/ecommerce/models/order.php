@@ -253,7 +253,7 @@ class order extends expRecord {
                                         $cart = new order();
                                         $cart->update(array("sessionticket_ticket"=> $ticket, 'user_id'=> $user->id, 'orig_referrer'=> $orig_referrer));
                                         order::setCartCookie($cart);
-                                        flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('If you would like to pick up where you left off, click here to login and your previous shopping cart will be restored.'));
+                                        flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('If you would like to pick up where you left off, login and your previous shopping cart will be restored.'));
                                     }
                                 }
                             }

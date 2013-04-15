@@ -1276,13 +1276,13 @@ class storeController extends expController {
 
     function metainfo() {
         global $router;
+
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
         $action = $_REQUEST['action'];
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
         switch ($action) {
-            case 'show':
             case 'showall': //category page
                 //$cat = new storeCategory(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
                 $cat = $this->category;
@@ -1292,6 +1292,7 @@ class storeController extends expController {
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
                 }
                 break;
+            case 'show':
             case 'showByTitle':
                 $prod = new product(isset($_REQUEST['title']) ? expString::sanitize($_REQUEST['title']) : intval($_REQUEST['id']));
                 if (!empty($prod)) {

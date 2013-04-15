@@ -84,7 +84,9 @@ class cartController extends expController {
             }
         }
 
-        if (($product->product_type == "product" || $product->product_type == "childProduct"|| $product->product_type == "donation") && empty($this->params['quick'])) {
+        // should we through up a form to gather additional information before adding this item to the cart?
+//        if (($product->product_type == "product" || $product->product_type == "childProduct" || $product->product_type == "donation" || $product->product_type == "eventregistration") && empty($this->params['quick'])) {
+        if ($product->product_type != "giftcard" && empty($this->params['quick'])) {
             if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown'] != $product->id)) {
 
                 // if we hit here it means this product type was missing some
@@ -829,8 +831,8 @@ class cartController extends expController {
 
     public function customerSignup() {
         expSession::set('customer-signup', true);
-//        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-        $this->checkout();
+        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        $this->checkout();
     }
 
     public function saveShippingMethods() {

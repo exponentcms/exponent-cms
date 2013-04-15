@@ -81,7 +81,7 @@
                 <div class="seatsContainer">
                     <div class="seatStatus">
                         {$seats = implode(',',range(1,$product->spacesLeft()))}
-                        {control type=dropdown name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
+                        {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
                     </div>
                     <div class="seatAmount prod-price">
                         {if $product->base_price}
@@ -205,7 +205,7 @@
                             {/if}
                         </div>
                     {/if}
-                    <button type="submit" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
+                    <button type="submit" class="add-to-cart-btn awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
                             style="margin: 20px auto; display: block;" rel="nofollow">
                         {"Register Now"|gettext}
                     </button>
