@@ -319,7 +319,8 @@
                         {$oi->products_price|number_format:2}
                     </td>
                     <td style="text-align:right;">
-                        {$oi->getLineItemTotal()|number_format:2}
+                        {*{$oi->getLineItemTotal()|number_format:2}*}
+                        {$oi->getTotal()|number_format:2}
                     </td>
                     {permissions}
                         <div class="item-permissions">

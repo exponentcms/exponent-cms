@@ -112,6 +112,7 @@
                 {if $product->hasOptions()}
                     <div class="product-options">
                         {control type="hidden" name="ticket_types" value="1"}
+                        {control type=hidden name=options_shown value=$product->id}
                         {foreach from=$product->optiongroup item=og}
                             {if $og->hasEnabledOptions()}
                                 <div class="option {cycle values="odd,even"}">

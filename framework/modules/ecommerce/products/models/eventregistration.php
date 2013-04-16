@@ -313,7 +313,8 @@ class eventregistration extends expRecord {
 
             $value = expUnserialize($registrant->value);
             $billingstatus = expUnserialize($order->billingmethod[0]->billing_options);
-            $value['payment'] = !empty($billingstatus->payment_due) ? $billingstatus->payment_due : 'paid';
+//            $value['payment'] = !empty($billingstatus->payment_due) ? expCore::getCurrencySymbol() . number_format($billingstatus->payment_due, 2) . ' ' . gt('Due') : 'paid';
+            $value['payment'] = !empty($billingstatus->payment_due) ? gt('payment due') : gt('paid');
             $registrant->value = serialize($value);
             $db->updateObject($registrant,"eventregistration_registrants");
         }
