@@ -490,7 +490,6 @@ class paypalExpressCheckout extends billingcalculator {
     }
 
     function userView($opts) {
-
         return '';
     }
 

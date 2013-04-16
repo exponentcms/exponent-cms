@@ -17,8 +17,12 @@
 
 {/css}
 <div class="billing-method">
-    {form controller=cart action=preprocess}
-        {control type="hidden" name="billingcalculator_id" value=$calcid}
-        <input id="continue-checkout" type="image" name="submit" value="1" src="https://cms.paypal.com/cms_content/US/en_US/images/developer/US_AU_btn.gif">
-    {/form}
+    {if $order->total}
+        {form controller=cart action=preprocess}
+            {control type="hidden" name="billingcalculator_id" value=$calcid}
+            <input id="continue-checkout" type="image" name="submit" value="1" src="https://cms.paypal.com/cms_content/US/en_US/images/developer/US_AU_btn.gif">
+        {/form}
+    {else}
+        <h4>{'PayPal Express Checkout is unavailable for this transaction'|gettext}</h4>
+    {/if}
 </div>
