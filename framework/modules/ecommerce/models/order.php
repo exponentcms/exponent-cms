@@ -358,11 +358,13 @@ class order extends expRecord {
 
     public function getShippingMethods() {
         global $db;
+
         $ids = $db->selectColumn('orderitems', 'shippingmethods_id', 'shippingmethods_id!=0 AND orders_id=' . $this->id, null, true);
 
         //if we have no order items, then we'll set a 'default' shipping method to the order
         if (empty($ids)) {
-            if (isset($this->shippingmethod->id)) {
+//            if (isset($this->shippingmethod->id)) {
+            if (!empty($this->shippingmethod->id)) {
                 $ids = array($this->shippingmethod->id);
             } else {
                 $sm = new shippingmethod();

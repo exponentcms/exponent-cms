@@ -581,6 +581,7 @@ class eventregistrationController extends expController {
         $data['name'] = $this->params['name'];
         $data['email'] = $this->params['email'];
         $data['phone'] = $this->params['phone'];
+        $data['payment'] = $this->params['payment'];
         if (empty($registrant->id)) {
             $registrant = new stdClass();
             $registrant->event_id = $this->params['event_id'];
@@ -607,8 +608,10 @@ class eventregistrationController extends expController {
         $sql                = "SELECT connector_id FROM " . DB_TABLE_PREFIX . "_eventregistration_registrants GROUP BY connector_id";
         $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "registered_date", true);
 
+        $orders = new order();
         foreach ($order_ids_complete as $item) {
-            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
+//            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
+            $odr = $orders->find("first", "id ='{$item}' and invoice_id <> 0");
             if (!empty($odr) || strpos($item, "admin-created") !== false) {
                 $order_ids[] = $item;
             }
@@ -659,9 +662,12 @@ class eventregistrationController extends expController {
             foreach ($registered as $key=>$person) {
                 $registered[$key]->person = expUnserialize($person->value);
             }
+            $header   = array();  //FIXME reset & pulled from above
+            $header[] = '"Date Registered"';  //FIXME
             $header[] = '"Name"';
             $header[] = '"Phone"';
             $header[] = '"Email"';
+            $header[] = '"Paid"';
         }
 
         if (LANG_CHARSET == 'UTF-8') {
@@ -770,9 +776,11 @@ class eventregistrationController extends expController {
         //Get all the registrants in the event using order id
         $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "registered_date", true);
 
+        $orders = new order();
         foreach ($order_ids_complete as $item) {
 //            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
-            $odr = $db->selectObject("orders", "id ='{$item}' and invoice_id <> 0");
+//            $odr = $db->selectObject("orders", "id ='{$item}' and invoice_id <> 0");
+            $odr = $orders->find("first", "id ='{$item}' and invoice_id <> 0");
             if (!empty($odr) || strpos($item, "admin-created") !== false) {
                 $order_ids[] = $item;
             }
@@ -796,7 +804,7 @@ class eventregistrationController extends expController {
             $control_names[] = $field->name;
         }
 
-        //Check if there are guests
+        //Check if there are guests using expDefinableFields
         if (!empty($event->num_guest_allowed)) {
             for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
                 if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
@@ -811,7 +819,7 @@ class eventregistrationController extends expController {
             }
         }
 
-        // new method to check for guests/registrants
+        // new method to check for guests/registrants in eventregistration_registrants
 //        if (!empty($event->num_guest_allowed)) {
         $registrants = array();
         if (!empty($event->quantity)) {
@@ -854,9 +862,9 @@ class eventregistrationController extends expController {
             if (!empty($order_id)) {
                 $num_of_guest_total += $db->countObjects("eventregistration_registrants", "event_id ={$event->id} AND control_name LIKE 'guest_%' AND connector_id = '{$order_id}'");
             }
-
         } else $order_ids = array();
 
+        // check numbers based on expDefinableFields
         $num_of_guest_fields = $db->countObjects("content_expDefinableFields", "content_id ={$event->id} AND subtype='guest'");
         if ($num_of_guest_fields <> 0) {
             $num_of_guest = $num_of_guest_total / $num_of_guest_fields;

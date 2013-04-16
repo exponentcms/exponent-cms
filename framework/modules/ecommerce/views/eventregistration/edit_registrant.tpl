@@ -26,6 +26,7 @@
         {control type=text name=name label="Name"|gettext value=$registrant.name required=1}
         {control type=email name=email label="Email"|gettext value=$registrant.email}
         {control type=tel name=phone label="Phone"|gettext value=$registrant.phone}
+        {control type=text name=payment label="Paid"|gettext value=$registrant.payment}
         {control type=buttongroup submit="Save Registrant"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

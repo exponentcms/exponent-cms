@@ -15,7 +15,7 @@
 
 {if !empty($extra_data)}
     <div class="extra-data">
-        <h3>{'Registering the following people for this event'|gettext}</h3>
+        <strong>{'Registering the following people for this event'|gettext}</strong>
         <ul>
             {foreach from=$extra_data item=person}
                 <li>

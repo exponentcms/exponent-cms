@@ -23,11 +23,11 @@
 
 class cash extends billingcalculator {
     function name() {
-        return "Cash/Check";
+        return gt("Cash/Check");
     }
 
     function description() {
-        return "Enabling this payment option will allow your customers to pay by sending cash or check to you.";
+        return gt("Enabling this payment option will allow your customers to pay by sending cash or check.");
     }
 
     function hasConfig() {
@@ -51,19 +51,20 @@ class cash extends billingcalculator {
 
     //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($method, $opts, $params, $order) {
+        if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
         //just save the opts
-        $method->update(array('billing_options'=> serialize($opts)));
-
+        $method->update(array('billing_options' => serialize($opts)));
     }
 
     function process($method, $opts, $params, $invoice_number) {
         global $order, $db, $user;
-        $object            = new stdClass();
-        $object->errorCode = 0;
 
-        $opts->result                 = $object;
-        $opts->result->payment_status = "Pending";
-        $method->update(array('billing_options'=> serialize($opts)));
+        $object = new stdClass();
+        $object->errorCode = 0;
+        $opts->result = $object;
+//        $opts->result->payment_status = "Pending";
+        $opts->result->payment_status = gt("Payment Due");
+        $method->update(array('billing_options' => serialize($opts)));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, 'pending');
         return $object;
     }
@@ -71,40 +72,40 @@ class cash extends billingcalculator {
     function userForm($config_object = null, $user_data = null) {
         $form = '';
 
-        $cash_amount     = new textcontrol("", 20, false, 20, "", true);
+        $cash_amount = new textcontrol(0, 20, false, 20, "money", true);
         $cash_amount->filter = 'money';
         $cash_amount->id = "cash_amount";
 
-        $form .= $cash_amount->toHTML("Cash Amount", "cash_amount");
+        $form .= $cash_amount->toHTML(gt("Cash Amount"), "cash_amount");
 
         return $form;
     }
 
     //Should return html to display user data.
     function userView($opts) {
-
         if (empty($opts)) return false;
-
-        return "Cash: ".expCore::getCurrencySymbol() . number_format($opts->cash_amount, 2, ".", ",");
+        $billinginfo = gt("Cash"). ": " . expCore::getCurrencySymbol() . number_format($opts->cash_amount, 2, ".", ",");
+        if (!empty($opts->payment_due)) {
+            $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+        }
+        return $billinginfo;
     }
 
     function userFormUpdate($params) {
         global $order;
 
-        if (substr($params['cash_amount'],0,strlen(expCore::getCurrencySymbol())) == expCore::getCurrencySymbol()) {
-            $params['cash_amount'] = substr($params['cash_amount'],strlen(expCore::getCurrencySymbol()));
+        if (substr($params['cash_amount'], 0, strlen(expCore::getCurrencySymbol())) == expCore::getCurrencySymbol()) {
+            $params['cash_amount'] = substr($params['cash_amount'], strlen(expCore::getCurrencySymbol()));
         }
-//        if ($order->grand_total > $params["cash_amount"]) {
-        if (expUtil::isNumberGreaterThan($order->grand_total, floatval($params["cash_amount"]),2)) {
-            expValidator::failAndReturnToForm(gt("The total amount of your order is greater than the amount you have input.") . "<br />" . gt("Please enter exact or greater amount of your total."));
-        }
+//        if (expUtil::isNumberGreaterThan($order->grand_total, floatval($params["cash_amount"]), 2)) {
+//            expValidator::failAndReturnToForm(gt("The total amount of your order is greater than the amount you have input.") . "<br />" . gt("Please enter exact or greater amount of your total."));
+//        }
         $this->opts = new stdClass();
         $this->opts->cash_amount = $params["cash_amount"];
         return $this->opts;
     }
 
     function getPaymentAuthorizationNumber($billingmethod) {
-
         $ret = expUnserialize($billingmethod->billing_options);
         return $ret->result->token;
     }
@@ -120,33 +121,27 @@ class cash extends billingcalculator {
     }
 
     function getPaymentStatus($billingmethod) {
-
         $ret = expUnserialize($billingmethod->billing_options);
         return $ret->result->payment_status;
     }
 
     function getPaymentMethod($billingmethod) {
-
         return $this->title;
     }
 
     function showOptions() {
-
         return;
     }
 
     function getAVSAddressVerified($billingmethod) {
-
         return 'X';
     }
 
     function getAVSZipVerified($billingmethod) {
-
         return 'X';
     }
 
     function getCVVMatched($billingmethod) {
-
         return 'X';
     }
 }

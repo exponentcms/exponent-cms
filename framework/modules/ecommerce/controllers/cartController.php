@@ -439,6 +439,14 @@ class cartController extends expController {
         //eDebug($this->params,true);
         global $order, $user, $db;
 
+//        // check to see if this is a no cost/no shipping checkout
+//        if ($order->total == 0 && empty($order->shippingmethods) && $this->params['billingcalculator_id'] == 0) {
+//             // final the cart totals
+//            $order->calculateGrandTotal();
+//            $order->setOrderType($this->params);
+//            $order->setOrderStatus($this->params);
+//        } else {
+//
         //eDebug($_POST, true);
         // get the shipping and billing objects, these objects handle the setting up the billing/shipping methods
         // and their calculators
@@ -482,7 +490,7 @@ class cartController extends expController {
             }
         }
 
-        // if we encounterd any errors we will return to the checkout page and show the errors
+        // if we encountered any errors we will return to the checkout page and show the errors
         if (!expQueue::isQueueEmpty('error')) {
 //            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
             $this->checkout();
@@ -515,6 +523,8 @@ class cartController extends expController {
         // which the previous check takes as a TRUE, as 0, null, and empty will all equate out the same using the ==
         // adding the === will specifically test for a 0 and only a 0, which is what we want
 
+//        }
+
         if (empty($result->errorCode)) {  //if ($result->errorCode === "0" || $result->errorCode === 0)
 //			redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
             $this->confirm();
@@ -522,7 +532,6 @@ class cartController extends expController {
             flash('error', gt('An error was encountered while processing your transaction.') . '<br /><br />' . $result->message);
             expHistory::back();
         }
-
     }
 
     public function confirm() {
@@ -534,7 +543,7 @@ class cartController extends expController {
         $order->calculateGrandTotal();
 
         //eDebug($order);
-        // get the shippnig and billing objects, these objects handle the setting up the billing/shipping methods
+        // get the shipping and billing objects, these objects handle the setting up the billing/shipping methods
         // and their calculators
         $shipping = new shipping();
         $billing  = new billing();
@@ -578,7 +587,9 @@ class cartController extends expController {
         //eDebug($order,true);
         $invNum = $order->getInvoiceNumber();
         // call the billing calculators process method - this will handle saving the billing options to the database.
-        $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
+//        if (!($order->total == 0 && empty($order->shippingmethods))) {
+            $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
+//        }
 
         if (empty($result->errorCode)) {
             // if ($result->errorCode === "0" || $result->errorCode === 0)
@@ -592,6 +603,9 @@ class cartController extends expController {
 
             // get the first order status and set it for this order
             $order->update(array('invoice_id'=> $invNum, 'purchased'=> time(), 'updated'=> time(), 'comment'=> serialize($comment))); //FIXME $comment doesn't exist
+            if (!$order->shipping_required) {
+                $order->update(array('shipped'=> -1));
+            }
             //$order->setDefaultStatus(); --FJD?
             //$order->setDefaultOrderType(); --FJD?
             $order->refresh();

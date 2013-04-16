@@ -41,6 +41,10 @@ class donation extends product {
 //        'content_expTags'=>'expTag',
     );
 
+    public function hasOptions() {
+        return false;
+    }
+
     public function hasUserInputFields() {
         return true;
     }

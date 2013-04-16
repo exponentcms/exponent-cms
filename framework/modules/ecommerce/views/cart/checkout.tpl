@@ -273,23 +273,32 @@
             <div style="clear: both;"></div>
         </div>
         <div class="separate">
-            <h2>{"Payment Information"|gettext}</h2>
-            <h3>{"Available Payment Methods"|gettext}</h3>
-            <div id="cart-{$id}" class="yui-navset exp-skin-tabview">
-                <ul class="yui-nav">
-                    {foreach from=$billing->calculator_views item=cviews name=calcs}
-                        <li><a href="#tab{$smarty.foreach.calcs.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>
-                    {/foreach}
-                </ul>
-                <div class="yui-content">
-                    {foreach from=$billing->calculator_views item=cviews name=calcs}
-                        <div id="tab{$smarty.foreach.calcs.iteration}">
-                            {include file=$cviews.view calcid=$cviews.id}
-                        </div>
-                    {/foreach}
+            {*{if $order->total}*}
+                <h2>{"Payment Information"|gettext}</h2>
+                <h3>{"Available Payment Methods"|gettext}</h3>
+                <div id="cart-{$id}" class="yui-navset exp-skin-tabview">
+                    <ul class="yui-nav">
+                        {foreach from=$billing->calculator_views item=cviews name=calcs}
+                            <li><a href="#tab{$smarty.foreach.calcs.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                        {/foreach}
+                    </ul>
+                    <div class="yui-content">
+                        {foreach from=$billing->calculator_views item=cviews name=calcs}
+                            <div id="tab{$smarty.foreach.calcs.iteration}">
+                                {include file=$cviews.view calcid=$cviews.id}
+                            </div>
+                        {/foreach}
+                    </div>
                 </div>
-            </div>
-            <div class="loadingdiv">{'Loading'|gettext}</div>
+                <div class="loadingdiv">{'Loading'|gettext}</div>
+            {*{else}*}
+                {*<div class="billing-method">*}
+                    {*{form name="free" controller=cart action=preprocess}*}
+                        {*{control type="hidden" name="billingcalculator_id" value=0}*}
+                        {*<button id="continue-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Continue Checkout"|gettext}</button>*}
+                    {*{/form}*}
+                {*</div>*}
+            {*{/if}*}
         </div>
         <!--div class="separate">
                 <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}-dis continue" href="#" id="checkoutnow"><strong><em>Complete your checkout information to continue</em></strong></a>
@@ -319,8 +328,10 @@
 {*{/literal}*}
 {*{/script}*}
 
+{*{if $order->total}*}
 {script unique="cart-`$id`" jquery="jqueryui"}
 {literal}
     $('#cart-{/literal}{$id}{literal}').tabs().next().remove();
 {/literal}
 {/script}
+{*{/if}*}

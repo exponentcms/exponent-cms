@@ -189,6 +189,10 @@ class eventregistration extends expRecord {
         return false;
     }
 
+    public function hasUserInputFields() {
+        return false;  //FIXME not sure this accurate based on expDefinableFields & Forms
+    }
+
     public function hasRequiredOptions() {
         foreach ($this->optiongroup as $og) {
             if ($og->required) return true;
@@ -306,6 +310,12 @@ class eventregistration extends expRecord {
         $order_registrations = array();
         if (!empty($registrants)) foreach ($registrants as $registrant) {
             $order_registrations[] = expUnserialize($registrant->value);
+
+            $value = expUnserialize($registrant->value);
+            $billingstatus = expUnserialize($order->billingmethod[0]->billing_options);
+            $value['payment'] = !empty($billingstatus->payment_due) ? $billingstatus->payment_due : 'paid';
+            $registrant->value = serialize($value);
+            $db->updateObject($registrant,"eventregistration_registrants");
         }
 //        $product->registrants = is_array($registrants) ? array_merge($registrants, $order_registrations) : $order_registrations; //: array_merge($registrants, $order_registrations);
 

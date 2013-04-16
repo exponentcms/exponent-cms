@@ -86,6 +86,7 @@
                         <th>{'Registrant Name'|gettext}</th>
                         <th>{'Registrant Email'|gettext}</th>
                         <th>{'Registrant Phone'|gettext}</th>
+                        <th>{'Paid?'|gettext}</th>
                         <th>{'Actions'|gettext}</th>
                     </tr>
                 </thead>
@@ -100,6 +101,7 @@
                                     <a href="mailto:{$registrant.email}">{$registrant.email}</a>
                                 </td>
                                 <td>{$registrant.phone}</td>
+                                <td>{$registrant.payment}</td>
                                 <td>
                                     {permissions}
                                         <div class="item-actions">

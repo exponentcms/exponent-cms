@@ -121,12 +121,16 @@
                     <tbody>                         
                     {if $permissions.manage == 1}
                         <tr><td colspan="2">
-                        {form action=update_shipping}
-                            {control type="hidden" name="id" value=$order->id}
-                            {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
-                            {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped"|gettext value=$order->shipped}
-                            {control type="buttongroup" submit="Save Shipping Info"|gettext}
-                        {/form}
+                        {if $order->shipped == -1}
+                            {'No Shipping Required'|gettext}
+                        {else}
+                            {form action=update_shipping}
+                                {control type="hidden" name="id" value=$order->id}
+                                {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
+                                {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped"|gettext value=$order->shipped}
+                                {control type="buttongroup" submit="Save Shipping Info"|gettext}
+                            {/form}
+                        {/if}
                         </td>
                         </tr>
                     {else}
@@ -134,7 +138,12 @@
                             {'Tracking #'|gettext}:</td><td>{$order->shipping_tracking_number}{br}
                         </td></tr> 
                         <tr><td> 
-                            {'Date Shipped'|gettext}:</td><td>{if $order->shipped != 0}{$order->shipped|format_date}{else}{'This order has not been shipped yet'|gettext}{/if}
+                            {'Date Shipped'|gettext}:</td><td>
+                            {if $order->shipped != 0}
+                                {$order->shipped|format_date}
+                            {else}
+                                {'This order has not been shipped yet'|gettext}
+                            {/if}
                         </td></tr>
                     {/if}
                  </table>
