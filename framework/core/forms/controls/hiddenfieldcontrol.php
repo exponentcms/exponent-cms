@@ -36,16 +36,19 @@ class hiddenfieldcontrol extends formcontrol {
 		return array();
 	}
 
-	function __construct() {
+	function __construct($default = "") {
+        $this->default = $default;
 	}
 	
 	function toHTML($label,$name) {
-		$html = $this->controlToHTML();
+		$html = $this->controlToHTML($name,$label);
 		return $html;
 	}
 
 	function controlToHTML($name=null,$label=null) {
-		$html = '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="'.$this->default.'"';
+        $this->name = empty($this->name) ? $name : $this->name;
+        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->default.'"';
 		$html .= ' />';
 		return $html;
 	}

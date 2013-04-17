@@ -64,10 +64,10 @@ class genericcontrol extends formcontrol {
             $for = '';
         }
 //        if ($this->required) $label = "*" . $label;
-        $dissabled = $this->disabled == true ? "disabled" : "";
+        $disabled = $this->disabled == true ? "disabled" : "";
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
-            $html = '<div'.$divID.' class="'.$this->type.'-control control'." ".$class." ".$dissabled;
+            $html = '<div'.$divID.' class="'.$this->type.'-control control'." ".$class." ".$disabled;
             $html .= (!empty($this->required)) ? ' required">' : '">';
       		//$html .= "<label>";
             if($this->required) {
