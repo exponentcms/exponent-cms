@@ -18,15 +18,20 @@
 
 /**
  * @subpackage Controllers
- * @package Modules
+ * @package    Modules
  */
 
 class storeCategoryController extends expNestedNodeController {
-    static function displayname() { return gt("Store Category Manager"); }
-    static function description() { return gt("This module is for managing categories in your store."); }
+    static function displayname() {
+        return gt("Store Category Manager");
+    }
 
-	protected $add_permissions = array(
-        'fix_categories'=>'to run this action.'
+    static function description() {
+        return gt("This module is for managing categories in your store.");
+    }
+
+    protected $add_permissions = array(
+        'fix_categories' => 'to run this action.'
     );
 
     // hide the configs we don't need
@@ -36,99 +41,100 @@ class storeCategoryController extends expNestedNodeController {
         'comments',
         'ealerts',
         'files',
-//        'module_title',
+        'module',
+        'pagination',
         'rss',
         'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     public function edit() {
-		global $db;
+        global $db;
 
         $id = empty($this->params['id']) ? null : $this->params['id'];
-		$record = new storeCategoryFeeds($id);
+        $record = new storeCategoryFeeds($id);
         $site_page_default = ecomconfig::getConfig('pagination_default');
-		$product_types = ecomconfig::getConfig('product_types');
-	
-		//Declaration of array variables for product types bing and google
-		$arr_product_type = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
-		
-		if (!empty($product_types)) foreach($product_types as $key => $value) {
-		
-			$product_type = $value . 's';
-			$product_type_id = $value . 's_id';
-			$product_type_list = $value . 's_list';
-			$new_product_type = new $product_type;
-			$f_recorded_product_types = '';
-			$f_types = '';
-			//Import product type records if it is empty
-			if($db->tableIsEmpty($product_type)) {
-				$file = BASE."framework/modules/ecommerce/assets/sql/exponent_{$product_type}.sql";
-				if (is_readable($file)) {
-					$templine = '';
-					// Read in entire file
-					$lines = file($file);
-					// Loop through each line
-					foreach ($lines as $line_num => $line) {
-						// Only continue if it's not a comment
-						if (substr($line, 0, 2) != '--' && $line != '') {
-							// Add this line to the current segment
-							$templine .= $line;
-							// If it has a semicolon at the end, it's the end of the query
-							if (substr(trim($line), -1, 1) == ';') {
-								//Query the sql statement making sure that it will not be escape since we are dummping data
-								$db->sql($templine, false);
-								// Reset temp variable to empty
-								$templine = '';
-							}
-						}
-					}
-				}
-			}
-			
-			$recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . DB_TABLE_PREFIX . "_{$value}s_storeCategories, " . DB_TABLE_PREFIX . "_{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $this->params['id']);
-			
-			foreach ($db->selectFormattedNestedTree("{$product_type}") as $item) {
-				$f_types[$item->id] = $item->title;
-			}
-			
-			foreach ($recorded_product_type as $item) {
-				$f_recorded_product_types[$item->$product_type_id] = trim($item->title);
-			}
-			$control = new listbuildercontrol(@$f_recorded_product_types, $f_types);
-			$arr_product_type[$value] = $control->controlToHTML($product_type_list,"copy");
-		}
-		
+        $product_types = ecomconfig::getConfig('product_types');
+
+        //Declaration of array variables for product types bing and google
+        $arr_product_type = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
+
+        if (!empty($product_types)) foreach ($product_types as $key => $value) {
+
+            $product_type = $value . 's';
+            $product_type_id = $value . 's_id';
+            $product_type_list = $value . 's_list';
+            $new_product_type = new $product_type;
+            $f_recorded_product_types = '';
+            $f_types = '';
+            //Import product type records if it is empty
+            if ($db->tableIsEmpty($product_type)) {
+                $file = BASE . "framework/modules/ecommerce/assets/sql/exponent_{$product_type}.sql";
+                if (is_readable($file)) {
+                    $templine = '';
+                    // Read in entire file
+                    $lines = file($file);
+                    // Loop through each line
+                    foreach ($lines as $line_num => $line) {
+                        // Only continue if it's not a comment
+                        if (substr($line, 0, 2) != '--' && $line != '') {
+                            // Add this line to the current segment
+                            $templine .= $line;
+                            // If it has a semicolon at the end, it's the end of the query
+                            if (substr(trim($line), -1, 1) == ';') {
+                                //Query the sql statement making sure that it will not be escape since we are dummping data
+                                $db->sql($templine, false);
+                                // Reset temp variable to empty
+                                $templine = '';
+                            }
+                        }
+                    }
+                }
+            }
+
+            $recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . DB_TABLE_PREFIX . "_{$value}s_storeCategories, " . DB_TABLE_PREFIX . "_{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $this->params['id']);
+
+            foreach ($db->selectFormattedNestedTree("{$product_type}") as $item) {
+                $f_types[$item->id] = $item->title;
+            }
+
+            foreach ($recorded_product_type as $item) {
+                $f_recorded_product_types[$item->$product_type_id] = trim($item->title);
+            }
+            $control = new listbuildercontrol(@$f_recorded_product_types, $f_types);
+            $arr_product_type[$value] = $control->controlToHTML($product_type_list, "copy");
+        }
+
         assign_to_template(array(
-            'product_types'=>$product_types,
-            'site_page_default'=>$site_page_default,
-            'record'=>$record,
-            'product_type' => $arr_product_type
+            'product_types'     => $product_types,
+            'site_page_default' => $site_page_default,
+            'record'            => $record,
+            'product_type'      => $arr_product_type
         ));
-		
+
         parent::edit();
     }
-    
+
     function configure() {
         expHistory::set('editable', $this->params);
 
+        $cat = new storeCategoryFeeds($this->params['id']);
         // little bit of trickery so that that categories can have their own configs
-        
-        $this->loc->src = "@store-".$this->params['id'];
+        $this->loc->src = "@store-" . $this->params['id'];
         $config = new expConfig($this->loc);
         $this->config = $config->config;
         $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         assign_to_template(array(
-            'config'=>$this->config,
-            'pullable_modules'=>$pullable_modules,
-            'views'=>$views,
-            'title'=>$this->displayname()
+            'config'           => $this->config,
+            'pullable_modules' => $pullable_modules,
+            'views'            => $views,
+//            'title'=>$this->displayname()
+            'title'            => gt('Store Category named') . ' ' . $cat->title
         ));
     }
-    
 
     function saveconfig() {
-        
+
         // unset some unneeded params
         unset($this->params['module']);
         unset($this->params['controller']);
@@ -139,29 +145,30 @@ class storeCategoryController extends expNestedNodeController {
         unset($this->params['PHPSESSID']);
 
         // setup and save the config
-        $this->loc->src = "@store-".$this->params['cat-id'];
+        $this->loc->src = "@store-" . $this->params['cat-id'];
         $config = new expConfig($this->loc);
-        $config->update(array('config'=>$this->params));
+        $config->update(array('config' => $this->params));
         flash('message', gt('Configuration updated'));
         expHistory::back();
     }
 
     function manage_ranks() {
         global $db;
+
         $rank = 1;
         $category = new storeCategory($this->params['id']);
-        foreach($this->params['rerank'] as $key=>$id) {
-            $sql = "SELECT DISTINCT sc.* FROM ".DB_TABLE_PREFIX."_product_storeCategories sc JOIN ".DB_TABLE_PREFIX."_product p ON p.id = sc.product_id WHERE p.id=".$id." AND sc.storecategories_id IN (SELECT id FROM ".DB_TABLE_PREFIX."_storeCategories WHERE rgt BETWEEN ".$category->lft." AND ".$category->rgt.") ORDER BY rank ASC";
+        foreach ($this->params['rerank'] as $key => $id) {
+            $sql = "SELECT DISTINCT sc.* FROM " . DB_TABLE_PREFIX . "_product_storeCategories sc JOIN " . DB_TABLE_PREFIX . "_product p ON p.id = sc.product_id WHERE p.id=" . $id . " AND sc.storecategories_id IN (SELECT id FROM " . DB_TABLE_PREFIX . "_storeCategories WHERE rgt BETWEEN " . $category->lft . " AND " . $category->rgt . ") ORDER BY rank ASC";
             $prod = $db->selectObjectBySQL($sql);
             $prod->rank = $rank;
-            $db->updateObject($prod,"product_storeCategories","storecategories_id=".$prod->storecategories_id." AND product_id=".$id);
+            $db->updateObject($prod, "product_storeCategories", "storecategories_id=" . $prod->storecategories_id . " AND product_id=" . $id);
             $rank += 1;
         }
-        
+
         expHistory::back();
     }
-    
-    function manage () {
+
+    function manage() {
         //         $category = new storeCategory();
         //         $categories = $category->getFullTree();
         //         
@@ -177,100 +184,96 @@ class storeCategoryController extends expNestedNodeController {
         //
         // $obj = json_encode($categories);  
     }
-    
+
     public function update() {
-		$product_types = ecomconfig::getConfig('product_types');
-		
-		foreach($product_types as $key => $value) {
-			$this->params["{$value}s"] = listbuildercontrol::parseData($this->params,"{$value}s_list");
-		}
+        $product_types = ecomconfig::getConfig('product_types');
+
+        foreach ($product_types as $key => $value) {
+            $this->params["{$value}s"] = listbuildercontrol::parseData($this->params, "{$value}s_list");
+        }
 
         $curcat = new storeCategory($this->params);
         $children = $curcat->getChildren();
-        foreach ($children as $key=>$child) {
+        foreach ($children as $key => $child) {
             $chldcat = new storeCategory($child->id);
             $chldcat->is_active = $this->params['is_active'];
             $chldcat->save();
         }
-		
-		foreach($product_types as $key => $value) {
-			$type = $value . 's';
-			$product_type = new $type();
-			$product_type->saveCategories($this->params["{$type}"], $curcat->id, $type); 
-		}
-		
-         parent::update();
+
+        foreach ($product_types as $key => $value) {
+            $type = $value . 's';
+            $product_type = new $type();
+            $product_type->saveCategories($this->params["{$type}"], $curcat->id, $type);
+        }
+
+        parent::update();
     }
-    
+
     function fix_categories() {
         //--Flat Structure--//
         global $db;
+
         $baseCat = new storeCategory();
         //$Nodes = $db->selectObjects('storeCategories');
-        $Nodes = $baseCat->find('all','','lft ASC');
+        $Nodes = $baseCat->find('all', '', 'lft ASC');
 
         //--This function converts flat structure into an array--//
-        function BuildTree($TheNodes, $ID = 0, $depth=-1) {
+        function BuildTree($TheNodes, $ID = 0, $depth = -1) {
             $Tree = array();
-            if(is_array($TheNodes)) {                
-                foreach($TheNodes as $Node) {
-                    if($Node->parent_id == $ID) {
+            if (is_array($TheNodes)) {
+                foreach ($TheNodes as $Node) {
+                    if ($Node->parent_id == $ID) {
                         array_push($Tree, $Node);
                     }
                 }
                 $depth++;
-                for($x = 0; $x < count($Tree); $x++) {
+                for ($x = 0; $x < count($Tree); $x++) {
                     $Tree[$x]->depth = $depth;
                     $Tree[$x]->kids = BuildTree($TheNodes, $Tree[$x]->id, $depth);
                     //array_merge($test,$Tree[$x]["kids"]);
                 }
-                return($Tree);
+                return ($Tree);
             }
         }
 
         //--Call Build Tree (returns structured array)
         $TheTree = BuildTree($Nodes);
-        
+
         //eDebug($TheTree,true);
         // flattens a tree created by parent/child relationships
-        
-        function recurseBuild(&$thisNode, &$thisLeft, &$thisRight)
-        {
-           $thisNode->lft = $thisLeft;
-           if(count($thisNode->kids) > 0) 
-           {
-                $thisLeft = $thisNode->lft + 1;                 
-                foreach ($thisNode->kids as &$myKidNode)
-                {
-                    $thisRight = $thisLeft + 1;   
-                    recurseBuild($myKidNode,$thisLeft, $thisRight); 
-                    $myKidNode->save();                  
-                }    
+
+        function recurseBuild(&$thisNode, &$thisLeft, &$thisRight) {
+            $thisNode->lft = $thisLeft;
+            if (count($thisNode->kids) > 0) {
+                $thisLeft = $thisNode->lft + 1;
+                foreach ($thisNode->kids as &$myKidNode) {
+                    $thisRight = $thisLeft + 1;
+                    recurseBuild($myKidNode, $thisLeft, $thisRight);
+                    $myKidNode->save();
+                }
                 $thisNode->rgt = $thisLeft;
                 $thisLeft = $thisRight;
-           }else
-           {                  
-               $thisNode->rgt = $thisRight;               
-               
-               $thisLeft = $thisRight+1;
-           }                  
-           
-           $thisRight = $thisLeft+1;
-           $thisNode->save();
+            } else {
+                $thisNode->rgt = $thisRight;
+
+                $thisLeft = $thisRight + 1;
+            }
+
+            $thisRight = $thisLeft + 1;
+            $thisNode->save();
         }
-        
+
         //if kids, set lft, but not right
         //else set both and move down
         $newLeft = 1;
         $newRight = 2;
-        foreach ($TheTree as &$myNode)
-        {
-           recurseBuild($myNode,$newLeft, $newRight);
+        foreach ($TheTree as &$myNode) {
+            recurseBuild($myNode, $newLeft, $newRight);
         }
         //eDebug($TheTree,true);
-        
+
         echo "Done";
-        
+
         /*function flattenArray(array $array){
             $ret_array = array();
             $counter=0;
@@ -282,10 +285,10 @@ class storeCategoryController extends expNestedNodeController {
             }
             return $ret_array;
         }*/
-        
+
         // takes a flat array with propper parent/child relationships in propper order
         // and adds the lft and rgt extents correctly for a nested set
-        
+
         /*function nestify($categories) {
             // Trees mapped            
             $trees = array();
@@ -374,10 +377,10 @@ class storeCategoryController extends expNestedNodeController {
 
                 return $trees;
         }*/
-        
+
         // this will test our data manipulation
         // eDebug(toHierarchy(nestify(flattenArray($TheTree))),1);
-        
+
         /*$flat_fixed_cats = nestify(flattenArray($TheTree));
                 
         foreach ($flat_fixed_cats as $k=>$v) {

@@ -77,6 +77,10 @@ var buildContextMenu = function(div) {
         YAHOO.example.container.simpledialog1.show();
 
     }
+    function configNode (){
+        window.location = eXp.PATH_RELATIVE+"index.php?controller="+applicationModule+"&action=configure&id="+currentMenuNode.data.id;
+    }
+
 
     // function editUserPerms (){
     //  window.location="{/literal}{$smarty.const.PATH_RELATIVE}{literal}index.php?module=navigation&_common=1&action=userperms&int="+currentMenuNode.data.id;
@@ -101,7 +105,8 @@ var buildContextMenu = function(div) {
     var navoptions = [
             { classname:"addsubpage", text: "Add A Sub-Category", onclick: { fn: addSubNode } },
             { classname:"editpage", text: "Edit This Category", onclick: { fn: editNode } },
-            { classname:"deletepage", text: "Delete This Category", onclick: { fn: deleteNode } }
+            { classname:"deletepage", text: "Delete This Category", onclick: { fn: deleteNode } },
+            { classname:"configurepage", text: "Configure This Category", onclick: { fn: configNode } }
             // { classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
             // { classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
         ];                                                                  
