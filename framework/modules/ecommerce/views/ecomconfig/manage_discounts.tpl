@@ -31,7 +31,7 @@
         {icon class=add controller="ecomconfig" action="edit_discount" text="Create a New Store Discount"|gettext}
             
         {if $page|@count > 0}
-            <h2>{"Modify existing group discount"|gettext}</h2>
+            <h2>{"Modify existing discount"|gettext}</h2>
            {pagelinks paginate=$page top=1}
 			<table id="discounts" class="exp-skin-table">
 				<thead>

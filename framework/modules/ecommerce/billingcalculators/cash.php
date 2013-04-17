@@ -63,9 +63,10 @@ class cash extends billingcalculator {
         $object->errorCode = 0;
         $opts->result = $object;
 //        $opts->result->payment_status = "Pending";
-        $opts->result->payment_status = gt("Payment Due");
+        $opts->result->payment_status = gt("complete");
+        if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
         $method->update(array('billing_options' => serialize($opts)));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, 'pending');
+        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $object;
     }
 
@@ -135,15 +136,15 @@ class cash extends billingcalculator {
     }
 
     function getAVSAddressVerified($billingmethod) {
-        return 'X';
+        return '';
     }
 
     function getAVSZipVerified($billingmethod) {
-        return 'X';
+        return '';
     }
 
     function getCVVMatched($billingmethod) {
-        return 'X';
+        return '';
     }
 }
 

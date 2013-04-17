@@ -62,15 +62,15 @@ class paylater extends billingcalculator {
         $object = new stdClass();
         $object->errorCode = 0;
         $opts->result = $object;
-//        $opts->result->payment_status = "Pending";
-        $opts->result->payment_status = gt("Payment Due");
-        $method->update(array('billing_options' => serialize($opts)));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, 'pending');
+        $opts->result->payment_status = gt("complete");
+        if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
+        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result, $opts->result->payment_status));
+        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $object;
     }
 
     function userForm($config_object = null, $user_data = null) {
-        $form = '<h4>'.gt('I plan to pay for this purchase later.').'</h4>';
+        $form = '<h4>'.gt('I will pay for this purchase later.').'</h4>';
 
         $cash_amount = new hiddenfieldcontrol(0, 20, false, 20, "money", true);
         $cash_amount->filter = 'money';
@@ -135,15 +135,15 @@ class paylater extends billingcalculator {
     }
 
     function getAVSAddressVerified($billingmethod) {
-        return 'X';
+        return '';
     }
 
     function getAVSZipVerified($billingmethod) {
-        return 'X';
+        return '';
     }
 
     function getCVVMatched($billingmethod) {
-        return 'X';
+        return '';
     }
 }
 
