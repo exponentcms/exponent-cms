@@ -87,7 +87,7 @@
                         <input type="text" name="eta" value="" size="5">
                     </td>
                     <td>
-                        <a href="#" id="addPOItem">[ {"add"|gettext} ]</a>
+                        <a class="add" href="#" id="addPOItem">{"Add"|gettext}</a>
                     </td>
                 </form>
             </tr>

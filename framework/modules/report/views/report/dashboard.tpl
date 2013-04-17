@@ -13,7 +13,7 @@
  *
  *}
 
-{include file='menu.inc'}
+{include file='menu.tpl'}
 {css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css" corecss="forms"}
 
 {/css}

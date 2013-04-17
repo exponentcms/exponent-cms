@@ -14,7 +14,7 @@
  *}
 
  <div id="discountconfig" class="module discountconfig configure">
-    <h1>{'Manage Discounts'|gettext}</h1>
+    <h1>{'Edit Discount'|gettext}</h1>
     <div id="mainform">
         {form action=update_discount}
             {control type="hidden" name="id" value=$discount->id}

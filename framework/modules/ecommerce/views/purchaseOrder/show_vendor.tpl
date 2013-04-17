@@ -17,16 +17,16 @@
 
 {/css}
 <div class="vendor show">
-
+    <div class="module-actions">
+        {icon action=manage_vendors class=manage text="Manage Vendors"|gettext}
+   	</div>
 	<h2>
 		{$vendor_title}
 	</h2>
-	
 	{permissions}
 		{icon action=edit_vendor class="edit" id=$vendor->id}
 		{icon action=delete_vendor class="delete" id=$vendor->id}
 	{/permissions}
-	
 	<table class="exp-skin-table">
         <tbody>
 			{foreach from=$vendor item=item key=key name=item}
@@ -43,8 +43,4 @@
 			{/foreach}
         </tbody>
     </table>
-	
-	<div class="module-actions">
-        {icon action=manage_vendors class=manage text="Manage Vendors"|gettext}
-	</div>
 </div>

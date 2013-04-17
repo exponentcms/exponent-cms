@@ -1481,7 +1481,6 @@ class storeController extends expController {
     }
 
     function batch_process() {
-
         $os = new order_status();
         $oss = $os->find('all');
         $order_status = array();

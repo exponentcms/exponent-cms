@@ -13,7 +13,7 @@
  *
  *}
 
-{include file='menu.inc'}
+{include file='menu.tpl'}
 
 {css unique="current_carts" link="`$asset_path`css/accordion.css" corecss="tables"}
 
@@ -70,8 +70,7 @@
 			{if $cartsWithoutItems|@count gt 1}
 				{br}
 				{br}
-				
-			
+
 				<div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
 					<div class="yui-cms-item yui-panel">
 						<div class="hd"><h2>{"Abandoned Carts w/out Products and User Information"|gettext}</h2></div>

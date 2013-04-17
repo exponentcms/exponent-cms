@@ -23,7 +23,7 @@
 
     <div class="module-actions">
         {icon action=manage class=manage text="Manage Purchase Orders"|gettext}  |  
-        {icon action=create class=add text="Create new Purchase Order"|gettext}  |  
+        {icon action=create class=add text="Create new Purchase Order"|gettext}{br}{br}
         {icon action=edit_vendor class=add text="Add a new vendor"|gettext}
     </div>
 
