@@ -189,11 +189,11 @@ $ecom = array(
                             'classname' => 'configure',
                             'url'  => makeLink(array('controller' => 'ecomconfig', 'action' => 'configure')),
                         ),
-                        array(
-                            'text' => gt("General Cart Settings"),
-                            'classname' => 'configure',
-                            'url'  => makeLink(array('controller' => 'cart', 'action' => 'configure')),
-                        ),
+//                        array(
+//                            'text' => gt("General Cart Settings"),
+//                            'classname' => 'configure',
+//                            'url'  => makeLink(array('controller' => 'cart', 'action' => 'configure')),
+//                        ),
                         array(
                             'text' => gt("Address/Geo Settings"),
                             'classname' => 'configure',

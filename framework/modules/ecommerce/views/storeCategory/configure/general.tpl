@@ -18,10 +18,10 @@
 {group label="Global Override"|gettext}
     {control type="checkbox" name="use_global" label="Use the Global Store Settings instead?"|gettext value=1 checked=$config.use_global}
 {/group}
-{group label="Display"|gettext}
-    {control type="checkbox" name="show_cats" label="Show Categories on listing pages"|gettext value=1 checked=$config.show_cats|default:1}
-    {control type="checkbox" name="show_prods" label="Show Products on listing pages"|gettext value=1 checked=$config.show_prods|default:1}
-{/group}
+{*{group label="Display"|gettext}*}
+    {*{control type="checkbox" name="show_cats" label="Show Categories on listing pages"|gettext value=1 checked=$config.show_cats|default:1}*}
+    {*{control type="checkbox" name="show_prods" label="Show Products on listing pages"|gettext value=1 checked=$config.show_prods|default:1}*}
+{*{/group}*}
 {group label="Product Sorting"|gettext}
     {control type="dropdown" name="orderby" label="Default sort order"|gettext items="Name, Price, Rank"|gettxtlist values="title,base_price,rank" value=$config.orderby}
     {control type="dropdown" name="orderby_dir" label="Sort direction"|gettext items="Ascending, Descending"|gettxtlist values="ASC, DESC" value=$config.orderby_dir}

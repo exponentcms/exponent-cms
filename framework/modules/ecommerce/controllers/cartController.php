@@ -324,11 +324,11 @@ class cartController extends expController {
             expHistory::back();
         }
 
-        $cfg      = new stdClass();
-        $cfg->mod = "cart";
-        $cfg->src = "@globalcartsettings";
-        $cfg->int = "";
-        $config   = new expConfig($cfg);
+//        $cfg      = new stdClass();
+//        $cfg->mod = "cart";
+//        $cfg->src = "@globalcartsettings";
+//        $cfg->int = "";
+//        $config   = new expConfig($cfg);
 
         $order->calculateGrandTotal();
         $order->validateDiscounts(array('controller'=> 'cart', 'action'=> 'checkout'));
@@ -339,8 +339,11 @@ class cartController extends expController {
             expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), 'secure'),true);
         }
 
-        if ($order->total < intval($config->config['min_order'])) {
-            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format($config->config['min_order'], 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
+//        if ($order->total < intval($config->config['min_order'])) {
+//            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format($config->config['min_order'], 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
+//        }
+        if ($order->total < intval(ecomconfig::getConfig('min_order'))) {
+            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format(ecomconfig::getConfig('min_order'), 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
         }
 
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
@@ -414,7 +417,7 @@ class cartController extends expController {
         if ((!defined('ENABLE_SSL') || ENABLE_SSL==0) && (!defined('DISABLE_SSL_WARNING') || DISABLE_SSL_WARNING==0)) flash('error', gt('This page appears to be unsecured!  Personal information may become compromised!'));
 
         assign_to_template(array(
-            'cartConfig'          => $config->config,
+//            'cartConfig'          => $config->config,
             //'addresses_dd'=>$addresses_dd,
             //'addresses'=>$addresses,
             'shipping'            => $shipping,

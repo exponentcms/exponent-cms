@@ -22,14 +22,16 @@
 <div id="expresscheckout" class="cart checkout exp-skin">
     <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
 
-    {if $cartConfig.policy!=""}
+    {*{if $cartConfig.policy!=""}*}
+    {if ecomconfig::getConfig('policy')!=""}
         <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
         <div id="storepolicies" class="exp-form">
             <div class="hd">
                 {"Store Policies"|gettext}
             </div>
             <div class="bd" style="overflow-y:scroll">
-                {$cartConfig.policy}
+                {*{$cartConfig.policy}*}
+                {ecomconfig var='policy' default=""}
             </div>
         </div>
         {*FIXME convert to yui3*}
