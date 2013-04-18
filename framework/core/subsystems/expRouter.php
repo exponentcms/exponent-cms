@@ -550,7 +550,7 @@ class expRouter {
             }
 
             $url .= '&printerfriendly=1\' , \'mywindow\',\'menubar=1,resizable=1,scrollbars=1,width='.$width.',height='.$height.'\');"';
-            $url .= '>'.$link_text.'</a>';
+            $url .= '> '.$link_text.'</a>';
         }
         
         return $url; 
@@ -575,7 +575,7 @@ class expRouter {
                 $limit = '&limit='.$limit;
             }
             $url .= '&exportaspdf=1'.$orientation.$limit.'&\' , \'mywindow\',\'menubar=1,resizable=1,scrollbars=1,width='.$width.',height='.$height.'\');"';
-            $url .= '>'.$link_text.'</a>';
+            $url .= '> '.$link_text.'</a>';
         }
 
         return $url;

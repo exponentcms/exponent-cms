@@ -23,16 +23,16 @@
  */
 
 /**
- * Smarty {printer_friendly_link} function plugin
+ * Smarty {export_pdf_link} function plugin
  *
  * Type:     function<br>
- * Name:     printer_friendly_link<br>
- * Purpose:  format a link for displaying a printer friendly version of the page
+ * Name:     export_pdf_link<br>
+ * Purpose:  format a link for exporting a PDF version of the page
  *
  * @param         $params
  * @param \Smarty $smarty
  */
-function smarty_function_printer_friendly_link($params,&$smarty) {
+function smarty_function_export_pdf_link($params,&$smarty) {
 	global $router;
 
     $config = $smarty->getTemplateVars('config');
@@ -43,7 +43,7 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
     } elseif (isset($params['show'])) {  // force display of link
         $print = isset($params['show']) ? $params['show'] : null;
     }
-    if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF) {
+    if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF && file_exists(BASE.'external/dompdf/dompdf.php')) {
         // initialize a couple of variables
         if (BTN_SIZE == 'large') {
             $btn_size = 'btn-small';
@@ -53,13 +53,15 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
             $icon_size = '';
         }
 
-        $text = isset($params['text']) ? $params['text'] : gt('View Printer Friendly');
+        $text = isset($params['text']) ? $params['text'] : gt('Export as PDF');
         $view = isset($params['view']) ? $params['view'] : null;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
-        $class = isset($params['class']) ? $params['class'] : $icon_size.' icon-print btn '.$btn_size;
+        $orientation = isset($params['landscapepdf']) ? $params['landscapepdf'] : false;
+        $limit = isset($params['limit']) ? $params['limit'] : '';
+        $class = isset($params['class']) ? $params['class'] : $icon_size.' icon-book btn '.$btn_size;
 
         // spit out the link
-        echo $prepend.$router->printerFriendlyLink($text, $class, 800, 600, $view);
+        echo $prepend.$router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit).'<br>';
     }
 }
 
