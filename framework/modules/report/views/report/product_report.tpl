@@ -106,13 +106,15 @@
                     <tr class="odd">
                         <td>
                             {control type="dropdown" name="product-range-op" label="A Product ID..."|gettext items="Equal to,Less than,Greater than"|gettxtlist values="e,l,g"}
-                            {control type="text" name="product-range-num" label=" " value=$record->prn class="collapse prn"}
+                            {*{control type="text" name="product-range-num" label=" " value=$record->prn class="collapse prn"}*}
+                            {control type="text" name="product-range-num" size=8 value=$record->prn class=" prn"}
                         </td>
                     </tr>
                     <tr class="even">
                          <td>
                             {control type="dropdown" name="product-price-op" label="Product Price..."|gettext items="Equal to,Less than,Greater than"|gettxtlist values="e,l,g"}
-                            {control type="text" name="product-price-num" label=" " value=$record->ppn class="collapse ppn"}
+                            {*{control type="text" name="product-price-num" label=" " value=$record->ppn class="collapse ppn"}*}
+                             {control type="text" name="product-price-num" size=8 value=$record->ppn class=" ppn" filter=money}
                         </td>
                     </tr>
                     <tr class="odd">

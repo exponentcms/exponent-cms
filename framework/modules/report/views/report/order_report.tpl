@@ -85,13 +85,15 @@
                     <tr class="odd">
                         <td>
                             {control type="dropdown" name="order-range-op" label="An Order ID..."|gettext items="Equal to,Less than,Greater than"|gettxtlist values="e,l,g"}
-                            {control type="text" name="order-range-num" value=$record->orn class="collapse orn"}
+                            {*{control type="text" name="order-range-num" value=$record->orn class="collapse orn"}*}
+                            {control type="text" name="order-range-num" size=8 value=$record->orn class="orn"}
                         </td>
                     </tr>
                      <tr class="even">
                          <td>
                             {control type="dropdown" name="order-price-op" label="An Order Value..."|gettext items="Equal to,Less than,Greater than"|gettxtlist values="e,l,g"}
-                            {control type="text" name="order-price-num" value=$record->opn class="collapse orn"}
+                            {*{control type="text" name="order-price-num" value=$record->opn class="collapse orn"}*}
+                             {control type="text" name="order-price-num" size=8 value=$record->opn class="orn" filter=money}
                         </td>
                     </tr>
                     <tr class="odd">
@@ -135,15 +137,17 @@
                     </tr>
                     <tr class="even">
                         <td>
-                            {control type=radiogroup columns=2 name="bl-sp-zip" items="By Billing,or Shipping Zipcode:"|gettxtlist values="b,s"  default=$record->bl-sp-zip|default:"s"}
-                            {control type="text" name="zip" size=7 value=$record->zip class="collapse"}
+                            {control type=radiogroup label='By Zipcode:'|gettext columns=2 name="bl-sp-zip" items="Billing,or Shipping:"|gettxtlist values="b,s"  default=$record->bl-sp-zip|default:"s"}
+                            {*{control type="text" name="zip" size=7 value=$record->zip class="collapse"}*}
+                            {control type="text" name="zip" size=7 value=$record->zip class=""}
                         </td>
                     </tr>
                     <tr class="odd">
                         <td>
-                            {control type=radiogroup columns=2 name="bl-sp-state" items="By Billing,or Shipping State:"|gettxtlist values="b,s"  default=$record->bl-sp-zip|default:"s"}
+                            {control type=radiogroup label='By State:'|gettext columns=2 name="bl-sp-state" items="Billing,or Shipping:"|gettxtlist values="b,s" default=$record->bl-sp-zip|default:"s"}
                             {*control type="dropdown" name="state" size=4 multiple=true items=$states class="collapse" include_blank=true*}
-                            {control type="state" name="state" all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="collapse" includeblank=true}
+                            {*{control type="state" name="state" all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="collapse" includeblank=true}*}
+                            {control type="state" name="state" all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="" includeblank=true}
                         </td>
                     </tr>
 

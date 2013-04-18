@@ -18,17 +18,17 @@
     
     {form action=save_order_item}
         {control type=hidden name=id value=$oi->id}
-       
-        {'You may change the item quantity here, price, as well as edit the options and user input fields.'|gettext}{br}
-        {'If you would like to change the product, please delete it and add the correct item.'|gettext}{br}
-        {'Note'|gettext}:{br}
-        <strong>* {'If you edit, add, or remove order items, the order will automatically recalculate the order totals.'|gettext}</strong>{br}
-        <strong>* {'If this item has product options and those options modify the price, YOU must adjust the price below manually if you change the options. This will NOT recalculate the option price modifiers automatically.'|gettext}</strong>{br}
-        {br} 
+        <blockquote>
+            {'You may change the item quantity here, price, as well as edit the options and user input fields.'|gettext}{br}
+            {'If you would like to change the product, please delete it and add the correct item.'|gettext}{br}
+            {'Note'|gettext}:{br}
+            <strong>* {'If you edit, add, or remove order items, the order will automatically recalculate the order totals.'|gettext}</strong>{br}
+            <strong>* {'If this item has product options and those options modify the price, YOU must adjust the price below manually if you change the options. This will NOT recalculate the option price modifiers automatically.'|gettext}</strong>{br}
+        </blockquote>
         <table width='60%'>
             <tr>
                 <td>{'Item name:'|gettext}</td>
-                <td>{control type=textarea name=products_name cols=40 rows=3 label="" value=$oi->products_name}</td>
+                <td>{control type=textarea name=products_name cols=40 rows=2 label="" value=$oi->products_name}</td>
             </tr>
             <tr>
                 <td>{'Item model:'|gettext}</td>
@@ -36,7 +36,7 @@
             </tr>
             <tr>
                 <td>{'Item price:'|gettext}</td>
-                <td>{control type=text name=products_price label="" value=$oi->products_price}</td>
+                <td>{control type=text name=products_price label="" value=$oi->products_price filter=money}</td>
             </tr>
             <tr>
                 <td>{'Item quantity:'|gettext}</td>

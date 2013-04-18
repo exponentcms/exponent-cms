@@ -29,8 +29,8 @@
             <div class="bd {if $smarty.cookies.quickstats=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="{link action=dashboard}">{'View recent orders'|gettext}</a></strong>
-                        {'View and manage all new and existing orders.'|gettext}
+                        <strong><a href="{link action=dashboard}">{'Recent Order Stats'|gettext}</a></strong>
+                        {'View summary of recent orders.'|gettext}
                     </li>
                 </ul>
             </div>
@@ -40,18 +40,16 @@
             <div class="hd"><h2>{'Cart Stats'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.cartstats=='collapsed'}collapsed{/if}">
                 <ul>
+                    {*<li>*}
+                        {*<strong><a href="{link action=cart_summary}">{'Summary Stats'|gettext}</a></strong>*}
+                        {*{'Quick statistics on carts vs. orders.'|gettext}*}
+                    {*</li>*}
                     <li>
-                        <strong><a href="{link action=cart_summary}">{'Summary Stats'|gettext}</a></strong>
-                        {'Quick statistics on carts vr. orders.'|gettext}
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <strong><a href="{link action=abandoned_carts}">{'View Abandoned Carts'|gettext}</a></strong>
+                        <strong><a href="{link action=abandoned_carts}">{'Abandoned Carts'|gettext}</a></strong>
                         {'View and manage abandoned carts.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="{link action=current_carts}">{'View Current Carts'|gettext}</a></strong>
+                        <strong><a href="{link action=current_carts}">{'Current Carts'|gettext}</a></strong>
                         {'View and manage current carts.'|gettext}
                     </li>
                 </ul>
@@ -63,32 +61,20 @@
             <div class="bd {if $smarty.cookies.orders=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
-                        <strong><a href="{link controller=order action=showall}">{'View recent orders'|gettext}</a></strong>
+                        <strong><a href="{link controller=order action=showall}">{'Recent Orders'|gettext}</a></strong>
                         {'View and manage all new and existing orders.'|gettext}
                     </li>
                     <li>
                         <strong><a href="{link action=order_report}">{'Create a Report'|gettext}</a></strong>
                         {'Create reports based on orders, products, and other information user information on your site.'|gettext}
                     </li>
-                </ul>
-            </div>
-        </div>
-        
-        <div id="configuration" class="panel">
-            <div class="hd"><h2>{'Store Settings'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
-            <div class="bd {if $smarty.cookies.configuration=='collapsed'}collapsed{/if}">
-                <ul>
-                    <li>
-                        <strong><a href="{link controller=ecomconfig action=configure}">{'Configure General Store Settings'|gettext}</a></strong>
-                        {'Set up how your site will look and act, and notify you.'|gettext}
-                    </li>
                     <li>
                         <strong><a href="{link controller=order_status action=manage}">{'Manage Status Codes'|gettext}</a></strong>
-                        {'Manage the labeling of each phase a completed order goes through.'|gettext}
+                        {'Manage the labeling of each phase an  Order is processed through.'|gettext}
                     </li>
                     <li>
                         <strong><a href="{link controller=order_status action=manage_messages}">{'Manage Status Messages'|gettext}</a></strong>
-                        {'Create, edit, and delete Status Messages.'|gettext}
+                        {'Create, edit, and delete Order Status Messages.'|gettext}
                     </li>
                 </ul>
             </div>
@@ -121,22 +107,27 @@
                 </ul>
             </div>
         </div>
-        
-        <div id="shipping" class="panel">
-            <div class="hd"><h2>{'Billing and Shipping'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
-            <div class="bd {if $smarty.cookies.shipping=='collapsed'}collapsed{/if}">
+
+        <div id="configuration" class="panel">
+            <div class="hd"><h2>{'Store Settings'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
+            <div class="bd {if $smarty.cookies.configuration=='collapsed'}collapsed{/if}">
                 <ul>
+                    <li>
+                        <strong><a href="{link controller=ecomconfig action=configure}">{'Configure Store Settings'|gettext}</a></strong>
+                        {'Set up how your site will look and act, and notify you.'|gettext}
+                    </li>
                     <li>
                         <strong><a href="{link controller=billing action=manage}">{'Configure Billing Settings'|gettext}</a></strong>
                         {'Set up your store to use PayPal, Authorize.net, and other billing methods.'|gettext}
                     </li>
                     <li>
-                        <strong><a href="{link controller=shipping action=manage}">{'Configure Shipping Information'|gettext}</a></strong>
+                        <strong><a href="{link controller=shipping action=manage}">{'Configure Shipping Settings'|gettext}</a></strong>
                         {'Set up your site to use UPS, FedEx, in-store pickup and other shipping methods.'|gettext}
                     </li>
                 </ul>
             </div>
         </div>
+
     </div>
 
 {script unique="expand-panels"}

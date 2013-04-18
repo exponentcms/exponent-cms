@@ -28,21 +28,19 @@
 	
 		<div class="module report abandoned_carts myAccordion">
 			{form action="abandoned_carts"}
-			{"Abandoned Carts From:"|gettext}{br}
-			{control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}      
+                {"Abandoned Carts From:"|gettext}{br}
+                {control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}
 			{/form}
-			
-			{br}
 			<div class="exp-skin-table">
 				<table border="0" cellspacing="0" cellpadding="0" width="50%">
 					<thead>
-						<th colspan="2">
-							<h1 style="text-align: center;">{"Abandoned Cart Summary"|gettext}</h1>
-						</th>
+                        <tr>
+                            <th colspan="2">
+                                <h1 style="text-align: center;">{"Abandoned Cart Summary"|gettext}</h1>
+                            </th>
 						</tr>
 					</thead>
 					<tbody>
-
 						<tr class="odd">
 							<td>{"Total No. of Carts"|gettext}</td>
 							<td>{$summary.totalcarts}</td>
@@ -68,9 +66,7 @@
 			</div>
 			
 			{if $cartsWithoutItems|@count gt 1}
-				{br}
-				{br}
-
+				{br}{br}
 				<div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
 					<div class="yui-cms-item yui-panel">
 						<div class="hd"><h2>{"Abandoned Carts w/out Products and User Information"|gettext}</h2></div>
@@ -78,32 +74,28 @@
 							<table border="0" cellspacing="0" cellpadding="0" width="50%">
 								<thead>
 									<tr>
-										<th>Last Visit</th>
-										<th>Referring URL</th>
+										<th>{'Last Visit'|gettext}</th>
+										<th>{'Referring URL'|gettext}</th>
 									</tr>
 								</thead>
 								<tbody>
 								{foreach from=$cartsWithoutItems item=item} 
-								
 									{if is_object($item)}
 									<tr>
 										<td>{$item->last_visit}</td>
-									
 										<td>
 											{if $item->referrer}
 												{$item->referrer}
 											{else}
-												Direct
+                                                {'Direct'|gettext}
 											{/if}
 										</td>
 									</tr>
-								
 									{/if}
 								{/foreach}
 								</tbody>
 							</table>
 						</div>
-						
 						<div class="actions">
 							<a class="accordionToggleItem" href="#">&#160;</a>
 						</div>
@@ -112,8 +104,7 @@
 			{/if}
 			
 			{if $cartsWithItems|@count gt 1}
-				{br}
-				{br}
+				{br}{br}
 				<div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
 					<div class="yui-cms-item yui-panel">
 						<div class="hd"><h2>{"Abandoned Carts w/ Products"|gettext}</h2></div>
@@ -121,8 +112,8 @@
 							<table border="0" cellspacing="0" cellpadding="0" width="50%">
 								<thead>
 									<tr>
-										<th>Last Visit</th>
-										<th>Referring URL</th>
+										<th>{'Last Visit'|gettext}</th>
+										<th>{'Referring URL'|gettext}</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -135,7 +126,7 @@
 											{if $item->referrer}
 												{$item->referrer}
 											{else}
-												Direct
+                                                {'Direct'|gettext}
 											{/if}
 										</td>
 									</tr>
@@ -143,12 +134,12 @@
 										<table>
 											<thead>
 												<tr>
-													<td colspan="3"><h3 style="margin:0; padding: 0;">Products</h3></td>
+													<td colspan="3"><h3 style="margin:0; padding: 0;">{'Products'|gettext}</h3></td>
 												</tr>
 												<tr>
-													<td><strong>Product Title</strong></td>
-													<td><strong>Quantity</strong></td>
-													<td><strong>Price</strong></td>
+													<td><strong>{'Product Title'|gettext}</strong></td>
+													<td><strong>{'Quantity'|gettext}</strong></td>
+													<td><strong>{'Price'|gettext}</strong></td>
 												</tr>
 											</thead>
 											<tbody>
@@ -176,8 +167,7 @@
 				</div>
 			{/if}
         {if $cartsWithItemsAndInfo|@count gt 1}
-			{br}
-			{br}
+			{br}{br}
 			<div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
 				<div class="yui-cms-item yui-panel">
 					<div class="hd"><h2>{"Abandoned Carts w/ Products and User Information"|gettext}</h2></div>
@@ -185,10 +175,10 @@
 						<table border="0" cellspacing="0" cellpadding="0" width="50%">
 							<thead>
 								<tr>
-									<th>Name</th>
-									<th>Email</th>
-									<th>Last Visit</th>
-									<th>Referring URL</th>
+									<th>{'Name'|gettext}</th>
+									<th>{'Email'|gettext}</th>
+									<th>{'Last Visit'|gettext}</th>
+									<th>{'Referring URL'|gettext}</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -204,12 +194,12 @@
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <td colspan="3"><h3 style="margin:0; padding: 0;">Products</h3></td>
+                                                    <td colspan="3"><h3 style="margin:0; padding: 0;">{'Products'|gettext}</h3></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Product Title</strong></td>
-                                                    <td><strong>Quantity</strong></td>
-                                                    <td><strong>Price</strong></td>
+                                                    <td><strong>{'Product Title'|gettext}</strong></td>
+                                                    <td><strong>{'Quantity'|gettext}</strong></td>
+                                                    <td><strong>{'Price'|gettext}</strong></td>
                                                 </tr>
                                             </thead>
                                             <tbody>

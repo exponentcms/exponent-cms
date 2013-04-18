@@ -35,7 +35,8 @@ class billingmethod extends expRecord {
                 'paypalExpressCheckout' => 'PayPal', 
                 'passthru' => 'Passthru', 
                 'worldpayCheckout' => 'WorldPay',
-                'cash' => 'Cash'
+                'cash' => 'Cash',
+                'paylater' => 'Billed'
             );
 
     /*function __construct($params=null, $get_assoc=true, $get_attached=true) {

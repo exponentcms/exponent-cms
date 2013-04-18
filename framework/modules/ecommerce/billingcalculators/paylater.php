@@ -47,7 +47,7 @@ class paylater extends billingcalculator {
     }
 
     public $title = 'Pay Later';
-    public $payment_type = 'Cash';
+    public $payment_type = 'Billed';
 
     //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($method, $opts, $params, $order) {

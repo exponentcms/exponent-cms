@@ -136,6 +136,7 @@ var renderIntoTabview,
 
 YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
     mytab = Y.expTabs({srcNode: '#payments'});
+    var tabhistory = Y.expTabs({srcNode: '#payments'});
     Y.one('#payments').removeClass('hide');
     Y.one('.loadingdiv').remove();
 
@@ -173,7 +174,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
             boldTextBlock.style.fontWeight = "bold";
             underlinedTextBlock.appendChild(document.createTextNode("{/literal}{"Total"|gettext}{literal}: " +
                                             categoryItem.axis.get("labelFunction").apply(this, [categoryItem.value, categoryItem.axis.get("labelFormat")])));
-            boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:{/literal}{currency_symbol}{literal}, decimalPlaces:2}])));
+            boldTextBlock.appendChild(document.createTextNode(valueItem.axis.get("labelFunction").apply(this, [valueItem.value, {prefix:'{/literal}{currency_symbol}{literal}', decimalPlaces:2}])));
             msg.appendChild(underlinedTextBlock);
             msg.appendChild(document.createElement("br"));
             msg.appendChild(boldTextBlock);
@@ -187,18 +188,57 @@ YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
         type:"column",
         tooltip: myTooltip
     });
-    renderIntoTabview(columnchart, "#columnchart", 1);
-
     var areachart     = new Y.Chart({dataProvider:myDataValues, type:"area", tooltip: myTooltip});
-    renderIntoTabview(areachart, "#areachart", 2);
     var barchart      = new Y.Chart({dataProvider:myDataValues, type:"bar", tooltip: myTooltip});
-    renderIntoTabview(barchart, "#barchart", 3);
     var combochart    = new Y.Chart({dataProvider:myDataValues, type:"combo", tooltip: myTooltip});
-    renderIntoTabview(combochart, "#combochart", 4);
     var linechart     = new Y.Chart({dataProvider:myDataValues, type:"line", tooltip: myTooltip});
-    renderIntoTabview(linechart, "#linechart", 5);
     var piechart      = new Y.Chart({dataProvider:myDataValues, type:"pie", tooltip: myTooltip});
-    renderIntoTabview(piechart, "#piechart", 6);
+
+    Y.Global.on("exptab:switch", function(e){
+        if (tabhistory.tabs.indexOf(e.currentTarget)==1) {
+            columnchart.render('#columnchart');
+        };
+        if (tabhistory.tabs.indexOf(e.currentTarget)==2) {
+            areachart.render('#areachart');
+        };
+        if (tabhistory.tabs.indexOf(e.currentTarget)==3) {
+            barchart.render('#barchart');
+        };
+        if (tabhistory.tabs.indexOf(e.currentTarget)==4) {
+            combochart.render('#combochart');
+        };
+        if (tabhistory.tabs.indexOf(e.currentTarget)==5) {
+            linechart.render('#linechart');
+        };
+        if (tabhistory.tabs.indexOf(e.currentTarget)==6) {
+            piechart.render('#piechart');
+        };
+    });
+
+//    renderIntoTabview(columnchart, "#columnchart", 1);
+    if (tabhistory.history.get('tab')==1) {
+        columnchart.render('#columnchart');
+    };
+//    renderIntoTabview(areachart, "#areachart", 2);
+    if (tabhistory.history.get('tab')==2) {
+        areachart.render('#areachart');
+    };
+//    renderIntoTabview(barchart, "#barchart", 3);
+    if (tabhistory.history.get('tab')==3) {
+        barchart.render('#barchart');
+    };
+//    renderIntoTabview(combochart, "#combochart", 4);
+    if (tabhistory.history.get('tab')==4) {
+        combochart.render('#combochart');
+    };
+//    renderIntoTabview(linechart, "#linechart", 5);
+    if (tabhistory.history.get('tab')==5) {
+        linechart.render('#linechart');
+    };
+//    renderIntoTabview(piechart, "#piechart", 6);
+    if (tabhistory.history.get('tab')==6) {
+        piechart.render('#piechart');
+    };
 
 });
 {/literal}
