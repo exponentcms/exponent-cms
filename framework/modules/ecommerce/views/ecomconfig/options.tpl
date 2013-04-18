@@ -28,6 +28,7 @@
                 </div>
             {/permissions}
             {foreach from=$optiongroups item=group}
+                {br}
                 <table style="border:1px solid red;">
                     <thead><th>
                         <h2>

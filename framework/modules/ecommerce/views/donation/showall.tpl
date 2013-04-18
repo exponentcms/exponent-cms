@@ -25,7 +25,6 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {$myloc=serialize($__loc)}
     {if $config.quickadd}
         {$quickadd = '1'}
     {/if}
@@ -35,12 +34,6 @@
                 <td>{img file_id=$cause->expFile.mainimage[0]->id square=120}</td>
                 <td>
                     <h3>{$cause->title}</h3>
-                    {$cause->body}
-                </td>
-                <td>
-                    <a class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href={link controller=cart action=addItem product_type=$cause->product_type product_id=$cause->id quick=$quickadd}>{'Donate'|gettext} {if $config.quickadd}{$cause->base_price|currency}{else}{'Now'|gettext}{/if}</a>
-                </td>
-                <td>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit == 1}
@@ -51,10 +44,16 @@
                             {/if}
                         </div>
                     {/permissions}
+                    {$cause->body}
+                </td>
+                <td>
+                    <a class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href={link controller=cart action=addItem product_type=$cause->product_type product_id=$cause->id quick=$quickadd}>{'Donate'|gettext} {if $config.quickadd}{$cause->base_price|currency}{else}{'Now'|gettext}{/if}</a>
                 </td>
              </tr>
         {foreachelse}
-            <h2>{"No causes have been setup for donations."|gettext}</h2>
+            {if $permissions.create == 1}
+                <h2>{"No causes have been setup for donations."|gettext}</h2>
+            {/if}
         {/foreach}
     </table>
 </div>

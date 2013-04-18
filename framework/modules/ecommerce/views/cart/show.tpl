@@ -23,9 +23,9 @@
     <div style="padding:8px; 0">
         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Continue Shopping"|gettext}</a>
         {if $items|@count gt 0}
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>
+            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>
+            <a class="awesome small red" style="float:right; margin-left: 18px;" href="{link action=empty_cart}"  onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">Empty Cart</a>
         {/if}
-        <a class="awesome small red" style="float:right; margin-left: 18px;" href="{link action=empty_cart}"  onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">Empty Cart</a>
     </div>
 	<div id="cartbox">        
 		<div id="cart-top" width="100%" cellpadding="0" cellspacing="0">

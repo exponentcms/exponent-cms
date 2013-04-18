@@ -19,8 +19,7 @@
 
 <div class="modules order_status manage-messages">
 	<h1>{$moduletitle|default:"Manage Order Status Messages"|gettext}</h1>
-	
-	<a class="add" href="{link action=edit_message}">{'Add a new message'|gettext}</a>
+	{icon class="add" action=edit_message text='Add a new message'|gettext}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">

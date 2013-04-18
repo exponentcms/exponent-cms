@@ -79,7 +79,6 @@ class billing extends expRecord {
         $number_of_calculators = count($this->available_calculators);
         
         if ($number_of_calculators == 1 || empty($order->billingmethod[0]->billingcalculator_id)) {
-			
             reset($this->available_calculators);
             $calcid = key($this->available_calculators);
             $order->billingmethod[0]->update(array('billingcalculator_id'=>$calcid));
@@ -88,7 +87,11 @@ class billing extends expRecord {
 	    if ($number_of_calculators > 0) {
             $calcname = $this->available_calculators[$order->billingmethod[0]->billingcalculator_id];  
 		
-            $this->calculator = new $calcname($order->billingmethod[0]->billingcalculator_id);
+            if (!empty($calcname)) {
+                $this->calculator = new $calcname($order->billingmethod[0]->billingcalculator_id);
+            } else {
+                $this->calculator = null;
+            }
         } else {
             $this->calculator = null;
         }

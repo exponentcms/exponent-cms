@@ -30,7 +30,7 @@ class passthru extends billingcalculator {
 	function isSelectable() { return true; }
     function isRestricted() { return true; }
 	
-	public $title = 'Passthru Payment';
+	public $title = 'Pass-Thru';
 	public $payment_type = 'Passthru';
 	
 	//Called for billing medthod seletion screen, return true if it's a valid billing method.

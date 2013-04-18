@@ -20,7 +20,7 @@
 <div class="module shipping manage">
     <h1>{'Manage Shipping Options'|gettext}</h1>
     <blockquote>
-        {'This page allows you to turn different shipping options (known as shipping calculators) on and off for customers on your webstore.'|gettext}
+        {'This page allows you to enable different shipping options (known as shipping calculators) for customers on your webstore.'|gettext}
     </blockquote>
     <table class="exp-skin-table">
         <thead>
@@ -28,7 +28,7 @@
                 <th>{'Default'|gettext}</th>
                 <th>{'Name'|gettext}</th>
                 <th>{'Description'|gettext}</th>
-                <th>{'on/off'|gettext}</th>
+                <th>{'Enabled'|gettext}</th>
             </tr>
         </thead>
         <tbody>
@@ -49,16 +49,18 @@
                 <td>{$calc->body}</td>
                 <td>
                     {permissions}
-                        {if $permissions.toggle == 1}
-                        {if $calc->enabled}
-                            <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}></a>
-                        {else}
-                            <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
-                        {/if}
-                        {if $calc->hasConfig() == 1}
-                            {icon action=configure img='configure.png' record=$calc title="Configure `$calc->title`"}
-                        {/if}
-                    {/if}
+                        <div class="item-actions">
+                            {if $permissions.toggle == 1}
+                                {if $calc->enabled}
+                                    <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}></a>
+                                {else}
+                                    <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
+                                {/if}
+                                {if $calc->hasConfig() == 1}
+                                    {icon action=configure img='configure.png' record=$calc title="Configure `$calc->title`"}
+                                {/if}
+                            {/if}
+                        </div>
                     {/permissions}
                 </td>
             </tr>

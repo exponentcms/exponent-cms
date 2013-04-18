@@ -88,7 +88,7 @@ class paypalExpressCheckout extends billingcalculator {
         return true;
     }
 
-    public $title = 'PayPal Express Checkout';
+    public $title = 'PayPal';
     public $payment_type = 'PayPal';
 
     /**

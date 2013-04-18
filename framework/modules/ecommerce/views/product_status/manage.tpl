@@ -19,8 +19,7 @@
 
 <div class="modules order_type showall">
 	<h1>{$moduletitle|default:"Product Status Administration"|gettext}</h1>
-	
-	<a class="add" href="{link action=create}">{'Create a new product status'|gettext}</a>{br}{br}
+	{icon class="add" action=create text='Create a new product status'|gettext}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">

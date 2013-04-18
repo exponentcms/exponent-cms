@@ -36,7 +36,7 @@
             {control type="dropdown" name="sales_rep_3_id" label="Sales Rep 3 (Other)"|gettext includeblank=true items=$sales_reps value=$order->sales_rep_3_id}
         </td></tr></table>
         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" id="continue-passthru-checkout" class="exp-ecom-link"><strong><em>{'Continue To Last Step'|gettext}</em></strong></a>
-        <button id="continue-passthru-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Continue Checkout"|gettext}</button>   
+        <button id="continue-passthru-checkout" type="submit" class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Continue Checkout"|gettext}</button>
     {/form}
     <div style="clear:both;"></div>
 </div>

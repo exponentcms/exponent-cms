@@ -73,9 +73,23 @@ class tagtreecontrol extends formcontrol {
         $link = expCore::makeLink(array("module"=> $this->controller->baseclassname, "action"=> "edit", "parent"=> 0));
         $html = "";
         if ($this->menu == "true") {
-            if ($this->addable) $html = '<a class="add" href="' . $link . '">' . gt('Add a Category') . '</a> | ';
-            $html .= '<a href="#" id="expandall">' . gt('Expand All') . '</a> | ';
-            $html .= '<a href="#" id="collapseall">' . gt('Collapse All') . '</a>';
+            $framework = expSession::get('framework');
+            if ($framework == 'bootstrap') {
+                if (BTN_SIZE == 'large') {
+                    $btn_size = 'btn-small';
+                    $icon_size = 'icon-large';
+                } else {
+                    $btn_size = 'btn-mini';
+                    $icon_size = '';
+                }
+                if ($this->addable) $html = '<a class="'.$icon_size.' icon-plus-sign btn-success btn '.$btn_size.'" href="' . $link . '"> ' . gt('Add a Category') . '</a> ';
+                $html .= '<a class="'.$icon_size.' icon-resize-full btn '.$btn_size.'" href="#" id="expandall"> ' . gt('Expand All') . '</a> ';
+                $html .= '<a class="'.$icon_size.' icon-resize-small btn '.$btn_size.'" href="#" id="collapseall"> ' . gt('Collapse All') . '</a>';
+            } else {
+                if ($this->addable) $html = '<a class="add" href="' . $link . '">' . gt('Add a Category') . '</a> | ';
+                $html .= '<a href="#" id="expandall">' . gt('Expand All') . '</a> | ';
+                $html .= '<a href="#" id="collapseall">' . gt('Collapse All') . '</a>';
+            }
         }
 
         $html .= '

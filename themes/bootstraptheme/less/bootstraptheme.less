@@ -102,7 +102,7 @@ a.icon-sort, .container-chrome ul li a.icon-sort {
 }
 
 .awesome, .awesome:visited {
-	background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;
+//	background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;
 	color      : inherit;
 }
 
@@ -134,7 +134,15 @@ hr {
 	display : inline;
 }
 
-.report.dashboard .hd h2 {
+.report.dashboard .hd h2, .panel .hd h2 {
     padding: 0 0 0 33px;
 	line-height: 36px;
+}
+
+.panel .hd h2 {
+	line-height: 30px;
+}
+
+.panel .hd .collapse {
+	height: 30px;
 }

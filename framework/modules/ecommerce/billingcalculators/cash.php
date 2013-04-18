@@ -85,7 +85,8 @@ class cash extends billingcalculator {
     //Should return html to display user data.
     function userView($opts) {
         if (empty($opts)) return false;
-        $billinginfo = gt("Cash"). ": " . expCore::getCurrencySymbol() . number_format($opts->cash_amount, 2, ".", ",");
+        $cash = !empty($opts->cash_amount) ? $opts->cash_amount : 0 ;
+        $billinginfo = gt("Cash"). ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
         if (!empty($opts->payment_due)) {
             $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
         }

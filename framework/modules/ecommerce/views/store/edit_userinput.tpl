@@ -16,8 +16,11 @@
 {if $record->parent_id == 0}
 	<h2>{'User Input Fields'|gettext}</h2>
 	{control type="hidden" name="tab_loaded[userinput]" value=1} 
-	<blockquote>{'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}</blockquote>
-	{control class="userInputToggle" type="checkbox" name="user_input_use[0]"  label="Show User Field 1"|gettext value=1 checked=$record->user_input_fields.0.use}
+	<blockquote>
+        {'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}
+    </blockquote>
+    {group label="User Field 1"|gettext}
+	{control class="userInputToggle" type="checkbox" name="user_input_use[0]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.0.use}
 	<div>
 		<table>
 			<tr>
@@ -42,9 +45,10 @@
 				</td> 
 			</tr>
 		</table>
-		<hr>
 	</div>
-	{control class="userInputToggle" type="checkbox" name="user_input_use[1]"  label="Show User Field 2"|gettext value=1 checked=$record->user_input_fields.1.use}
+    {/group}
+    {group label="User Field 2"|gettext}
+	{control class="userInputToggle" type="checkbox" name="user_input_use[1]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.1.use}
 	<div>
 		<table>
 			<tr>
@@ -69,9 +73,10 @@
 				</td> 
 			</tr>
 		</table>
-		<hr>
 	</div>
-	{control class="userInputToggle" type="checkbox" name="user_input_use[2]"  label="Show User Field 3"|gettext value=1 checked=$record->user_input_fields.2.use}
+    {/group}
+    {group label="User Field 3"|gettext}
+	{control class="userInputToggle" type="checkbox" name="user_input_use[2]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.2.use}
 	<div>
 		<table>
 			<tr>
@@ -96,9 +101,10 @@
 				</td> 
 			</tr>
 		</table>
-		<hr>
 	</div>
-	{control class="userInputToggle" type="checkbox" name="user_input_use[3]"  label="Show User Field 4"|gettext value=1 checked=$record->user_input_fields.3.use}
+    {/group}
+    {group label="User Field 4"|gettext}
+	{control class="userInputToggle" type="checkbox" name="user_input_use[3]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.3.use}
 	<div>
 		<table>
 			<tr>
@@ -123,9 +129,10 @@
 				</td> 
 			</tr>
 		</table>
-		<hr>
 	</div>
-	{control class="userInputToggle" type="checkbox" name="user_input_use[4]"  label="Show User Field 5"|gettext value=1 checked=$record->user_input_fields.4.use}
+    {/group}
+    {group label="User Field 5"|gettext}
+	{control class="userInputToggle" type="checkbox" name="user_input_use[4]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.4.use}
 	<div>
 		<table>
 			<tr>
@@ -150,9 +157,10 @@
 				</td> 
 			</tr>
 		</table>
-		<hr>
 	</div>
-	{control class="userInputToggle" type="checkbox" name="user_input_use[5]"  label="Show User Field 6"|gettext value=1 checked=$record->user_input_fields.5.use}
+    {/group}
+    {group label="User Field 6"|gettext}
+	{control class="userInputToggle" type="checkbox" name="user_input_use[5]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.5.use}
 	<div>
 		<table>
 			<tr>
@@ -177,8 +185,8 @@
 				</td> 
 			</tr>
 		</table>
-		<hr>
 	</div>
+    {/group}
 {else}
 	<h2>{'User Input Fields are inherited from this item\'s parent.'|gettext}</h2>
 {/if}

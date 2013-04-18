@@ -152,6 +152,10 @@ class orderController extends expController {
         $order_type      = $order->getOrderType();
         //eDebug($order->billingmethod[0]->billingtransaction);
         $order->billingmethod[0]->billingtransaction = array_reverse($order->billingmethod[0]->billingtransaction);
+        if (empty($order->billingmethod[0]->billingtransaction[0]->billingcalculator_id)) {
+            $calc_name = $order->billingmethod[0]->billingcalculator->calculator_name;
+            $order->billingmethod[0]->billingtransaction[0]->billingcalculator = new $calc_name();
+        }
         //eDebug($order->billingmethod[0]->billingtransaction);
         if (isset($this->params['printerfriendly'])) $pf = $this->params['printerfriendly'];
         else $pf = 0;
@@ -371,6 +375,7 @@ class orderController extends expController {
         $html2pdf = new HTML2PDF('P', 'LETTER', substr(LOCALE,0,2));
         $html2pdf->writeHTML($invoice);
         $html2pdf->Output($org_name . "_Invoice" . ".pdf",HTML2PDF_OUTPUT?'D':'');
+        exit();
          */
         /**
          * to do this same thing as below using dompdf
@@ -381,12 +386,14 @@ class orderController extends expController {
         $dompdf->set_paper('letter','portrait');
         $dompdf->render();
         $dompdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
+        exit();
          */
         /**
          * to do this same thing as below using expHtmlToPDF2
          * //FIXME uncomment to implement, comment out above
-        $dompdf = new DOMPDF('letter','portrait',$invoice);
+        $dompdf = new HTML2PDF2('letter','portrait',$invoice);
         $dompdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$org_name . "_Invoice" . ".pdf");
+        exit();
          */
 
         if (stristr(PHP_OS, 'Win')) {
@@ -980,7 +987,8 @@ exit();
         $newBillingMethod->id                   = null;
         $newBillingMethod->orders_id            = $newOrder->id;
         $newBillingMethod->billing_cost         = 0;
-        $newBillingMethod->billingcalculator_id = 6;
+//        $newBillingMethod->billingcalculator_id = 6;
+        $newBillingMethod->billingcalculator_id = billingcalculator::getDefault();
         $newBillingMethod->transaction_state    = 'authorization pending';
         $newBillingMethod->billing_options      = serialize($tObj);
         $newBillingMethod->save();
@@ -989,7 +997,8 @@ exit();
         //eDebug(expUnserialize($order->billingmethod[0]->billingtransaction[0]->billing_options),true); 
 
         $newBillingTransaction                       = new billingtransaction();
-        $newBillingTransaction->billingcalculator_id = 6; ///setting to manual/passthru
+//        $newBillingTransaction->billingcalculator_id = 6; ///setting to manual/passthru
+        $newBillingTransaction->billingcalculator_id = billingcalculator::getDefault();
         $newBillingTransaction->billing_cost         = 0;
         $newBillingTransaction->billingmethods_id    = $newBillingMethod->id;
         $newBillingTransaction->transaction_state    = 'authorization pending';
@@ -1039,7 +1048,6 @@ exit();
         assign_to_template(array(
             'order'=> $order
         ));
-
     }
 
     function save_new_order() {
@@ -1112,7 +1120,8 @@ exit();
         $newBillingMethod->addresses_id         = $newAddy->id;
         $newBillingMethod->orders_id            = $newOrder->id;
         $newBillingMethod->billing_cost         = 0;
-        $newBillingMethod->billingcalculator_id = 6;
+//        $newBillingMethod->billingcalculator_id = 6;
+        $newBillingMethod->billingcalculator_id = billingcalculator::getDefault();
         $newBillingMethod->transaction_state    = 'authorization pending';
         $newBillingMethod->billing_options      = serialize($tObj);
         $newBillingMethod->firstname            = $newAddy->firstname;
@@ -1132,7 +1141,8 @@ exit();
         //eDebug(expUnserialize($order->billingmethod[0]->billingtransaction[0]->billing_options),true); 
 
         $newBillingTransaction                       = new billingtransaction();
-        $newBillingTransaction->billingcalculator_id = 6; ///setting to manual/passthru
+//        $newBillingTransaction->billingcalculator_id = 6; ///setting to manual/passthru
+        $newBillingTransaction->billingcalculator_id = billingcalculator::getDefault();
         $newBillingTransaction->billing_cost         = 0;
         $newBillingTransaction->billingmethods_id    = $newBillingMethod->id;
         $newBillingTransaction->transaction_state    = 'authorization pending';
@@ -1143,7 +1153,6 @@ exit();
         $newShippingMethod                        = new shippingmethod();
         $newShippingMethod->shipping_cost         = 0;
         $newShippingMethod->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
-        ;
         $newShippingMethod->addresses_id = $newAddy->id;
         $newShippingMethod->firstname    = $newAddy->firstname;
         $newShippingMethod->lastname     = $newAddy->lastname;
@@ -1167,6 +1176,9 @@ exit();
         $oi->products_price     = 0;
         $oi->shippingmethods_id = $newShippingMethod->id;
         $oi->save(false);
+
+        $newOrder->shippingmethod = $newShippingMethod;
+        $newOrder->billingmethod = $newBillingMethod;
 
         flash('message', gt('New Order #') . $newOrder->invoice_id . " " . gt("created successfully."));
         redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $newOrder->id));

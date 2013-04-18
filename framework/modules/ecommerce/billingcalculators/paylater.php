@@ -23,12 +23,15 @@
 
 class paylater extends billingcalculator {
     function name() {
-        return gt("Pay Later");
+        return gt("Bill Me");
     }
 
     function description() {
         return gt("Enabling this payment option will allow your customers to pay when picking up purchase.");
     }
+
+    public $title = 'Bill Me';
+    public $payment_type = 'Billed';
 
     function hasConfig() {
         return false;
@@ -45,9 +48,6 @@ class paylater extends billingcalculator {
     function isSelectable() {
         return true;
     }
-
-    public $title = 'Pay Later';
-    public $payment_type = 'Billed';
 
     //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($method, $opts, $params, $order) {
@@ -70,7 +70,7 @@ class paylater extends billingcalculator {
     }
 
     function userForm($config_object = null, $user_data = null) {
-        $form = '<h4>'.gt('I will pay for this purchase later.').'</h4>';
+        $form = '<h4>'.gt('Pay for this purchase later.').'</h4>';
 
         $cash_amount = new hiddenfieldcontrol(0, 20, false, 20, "money", true);
         $cash_amount->filter = 'money';

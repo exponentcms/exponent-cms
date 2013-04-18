@@ -9,9 +9,9 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.2.0 beta 3
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
-  - adds even more features to online donations and event registrations making them more robust and polished
+  - tweaks and more features to ecommerce (online donations and event registrations) making it more robust and polished
   - implements an html5 input fallback system to display html5  controls/features in older browsers
-  - adds more simple controls to forms designer (email, url, telephone, range, number, several date/time controls)
+    -- adds more simple controls to forms designer (email, url, telephone, range, number, several date/time controls)
     -- allows switching to similar type control after creation
   - updates style of maintenance/site-down page
   - includes fixes/tweaks from the 2.1.4+ branch, plus many more fixes

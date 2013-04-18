@@ -42,7 +42,8 @@ class billingtransaction extends expRecord {
     public function getRefNum()
     {
         //$opts = expUnserialize($this->billing_options);
-        //return $opts->PNREF; 
+        //return $opts->PNREF;
+        if (empty($this->billingcalculator->calculator)) $this->billingcalculator->calculator = new $this->billingcalculator->classname();
         return $this->billingcalculator->calculator->getPaymentReferenceNumber($this->billing_options);
     }
 }

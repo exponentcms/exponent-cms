@@ -53,6 +53,19 @@ class billingcalculator extends expRecord {
     {
          return true;
     }
+
+    /**
+     * Return default billing calculator
+     *
+     */
+    public static function getDefault() {
+        global $db;
+
+        $calc = $db->selectObject('billingcalculator','is_default=1');
+        if (empty($calc)) $calc = $db->selectObject('billingcalculator','enabled=1');
+        return $calc->ic;
+    }
+
 }
 
 ?>

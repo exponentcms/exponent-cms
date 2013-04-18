@@ -60,13 +60,17 @@
             <div class="hd"><h2>{'Orders'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.orders=='collapsed'}collapsed{/if}">
                 <ul>
+                    {*<li>*}
+                        {*<strong><a href="{link controller=order action=create_new_order}">{'Add an Order'|gettext}</a></strong>*}
+                        {*{'Create a new order.'|gettext}*}
+                    {*</li>*}
                     <li>
-                        <strong><a href="{link controller=order action=showall}">{'Recent Orders'|gettext}</a></strong>
+                        <strong><a href="{link controller=order action=showall}">{'Manage Orders'|gettext}</a></strong>
                         {'View and manage all new and existing orders.'|gettext}
                     </li>
                     <li>
                         <strong><a href="{link action=order_report}">{'Create a Report'|gettext}</a></strong>
-                        {'Create reports based on orders, products, and other information user information on your site.'|gettext}
+                        {'Create reports based on orders.'|gettext}
                     </li>
                     <li>
                         <strong><a href="{link controller=order_status action=manage}">{'Manage Status Codes'|gettext}</a></strong>
@@ -95,6 +99,10 @@
                     <li>
                         <strong><a href="{link controller=store action=manage}">{'Manage Products'|gettext}</a></strong>
                         {'List all products in your store and make it easy to manage them.'|gettext}
+                    </li>
+                    <li>
+                        <strong><a href="{link action=product_report}">{'Create a Report'|gettext}</a></strong>
+                        {'Create reports based on products.'|gettext}
                     </li>
                     <li>
                         <strong><a href="{link controller=ecomconfig action=options}">{'Manage Product Options'|gettext}</a></strong>
