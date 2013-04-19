@@ -23,16 +23,16 @@
             {control type="hidden" name="product_id" value=$product->id}
             {control type="hidden" name="quantity" value=$product->quantity}
             <div class="module cart eventregistration addToCart registration_div" id="regdiv">
-                {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"|gettext}
+                {control type="text" id="registrations" name="registrants[]" label="Registrant Name:"|gettext required=1}
                 {*{control type="text" id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}*}
-                {control type=email id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext}
+                {control type=email id="registrations_emails" name="registrant_emails[]" label="Registrant Email:"|gettext required=1}
                 {*{control type="text" id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}*}
                 {control type=tel id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}
                 <hr>
             </div>
-            <a class="exp-ecom-link plus" id="newregistrant" href="#"><em>{'Add another registrant'|gettext}</em> <span></span></a>
+            <a class="exp-ecom-link plus addtocart add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" id="newregistrant" href="#"><em>{'Add another registrant'|gettext}</em> <span></span></a>
             &#160;&#160; {'OR'|gettext} &#160;
-            <a class="exp-ecom-link addtocart" onclick="EXPONENT.validateReg()" href="#"><em>{'Add Registration to Cart'|gettext}</em><span></span></a>
+            <a class="exp-ecom-link addtocart add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" onclick="EXPONENT.validateReg()" href="#"><em>{'Add Registration to Cart'|gettext}</em><span></span></a>
         {/form}
     </div>
 

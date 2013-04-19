@@ -26,7 +26,7 @@
             {control type="dropdown" name="order_status_id" label="Order Status:"|gettext frommodel='order_status' orderby='rank'}
             {control type="hidden" id="addresses_id" name="addresses_id"}
             {br}
-            <input type="radio" id="customer_type1" name="customer_type" value="1" checked=""> New Customer{br}
+            <input type="radio" id="customer_type1" name="customer_type" value="1" checked=""> {'New Customer'|gettext}{br}
             <input type="radio" id="customer_type2" name="customer_type"  value="2"> {'Existing Customer - Internal'|gettext}{br}
             <input type="radio" id="customer_type3" name="customer_type"  value="3"> {'Existing Customer - External'|gettext}{br}
             {capture assign="callbacks"}

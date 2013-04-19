@@ -55,9 +55,8 @@
         {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
         <em class="attribution">({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if})</em></span></h4>
         {if !empty($product->location)}
-            {br}<h4>{'Location'|gettext}: {$product->location}</h4>
+            <h4>{'Location'|gettext}: {$product->location}</h4>
         {/if}
-        {br}
         <div class="bodycopy">
             {if $product->body}
                 {$product->body}
@@ -66,90 +65,90 @@
                 {*{$product->summary}*}
             {*{/if}*}
         </div>
-    {clear}
+        {clear}
 
         <div id="eventregform">
-        {form id="addtocart`$product->id`" controller=cart action=addItem}
-            {control type="hidden" name="product_id" value="`$product->id`"}
-            {*{control type="hidden" name="base_price" value="`$product->base_price`"}*}
-            {control type="hidden" name="base_price" value="`$product->getBasePrice()`"}
-            {control type="hidden" name="product_type" value="`$product->product_type`"}
-            {*{control type="hidden" name="quick" value="1"}*}
-            {if $product->spacesLeft() && $product->signup_cutoff >= time()}
-                <span class="label">{'Seats Available:'|gettext} </span>
-                <span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
-                <div class="seatsContainer">
-                    <div class="seatStatus">
-                        {$seats = implode(',',range(1,$product->spacesLeft()))}
-                        {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
-                    </div>
-                    <div class="seatAmount prod-price">
-                        {if $product->base_price}
-                            {if $product->use_special_price}
-                                <span class="regular-price on-sale">{$product->base_price|currency}</span>
-                                <span class="sale-price">{$product->special_price|currency}&#160;<sup>{"Early!"|gettext}</sup></span>
+            {form id="addtocart`$product->id`" controller=cart action=addItem}
+                {control type="hidden" name="product_id" value="`$product->id`"}
+                {*{control type="hidden" name="base_price" value="`$product->base_price`"}*}
+                {control type="hidden" name="base_price" value="`$product->getBasePrice()`"}
+                {control type="hidden" name="product_type" value="`$product->product_type`"}
+                {*{control type="hidden" name="quick" value="1"}*}
+                {if $product->spacesLeft() && $product->signup_cutoff >= time()}
+                    <span class="label">{'Registration Closes:'|gettext} </span>
+                    <span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
+                    <span class="label">{'Seats Available:'|gettext} </span>
+                    <span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
+                    <div class="seatsContainer">
+                        <div class="seatStatus">
+                            {$seats = implode(',',range(1,$product->spacesLeft()))}
+                            {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
+                        </div>
+                        <div class="seatAmount prod-price">
+                            {if $product->base_price}
+                                {if $product->use_special_price}
+                                    <span class="regular-price on-sale">{$product->base_price|currency}</span>
+                                    <span class="sale-price">{$product->special_price|currency}&#160;<sup>{"Early!"|gettext}</sup></span>
+                                {else}
+                                    <span class="regular-price">{$product->base_price|currency}</span>
+                                {/if}
+                                {*<span class="seatCost">{$product->base_price|currency}</span>{br}{'per seat'|gettext}*}
+                                {br}{'per seat'|gettext}
                             {else}
-                                <span class="regular-price">{$product->base_price|currency}</span>
+                                <span class="seatCost">{'No Cost'|gettext}</span>
                             {/if}
-                            {*<span class="seatCost">{$product->base_price|currency}</span>{br}{'per seat'|gettext}*}
-                            {br}{'per seat'|gettext}
-                        {else}
-                            <span class="seatCost">{'No Cost'|gettext}</span>
-                        {/if}
+                        </div>
                     </div>
-                </div>
-                {if $product->quantity_discount_num_items}
-                    <div class="label">
-                        {'There is a discount of'|gettext} {if ($product->quantity_discount_amount_mod == '%')}%{$product->quantity_discount_amount}{else}{$product->quantity_discount_amount|currency}{/if}
-                        {if ($product->quantity_discount_apply)}
-                            {'for additional registrations'|gettext}
-                        {/if}
-                        {'if more than'|gettext} {$product->quantity_discount_num_items} {'people are registered'|gettext}.
-                    </div>{br}{br}
-                {/if}
-                <span class="label">{'Registration Closes:'|gettext} </span>
-                <span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
-                {if $product->hasOptions()}
-                    <div class="product-options">
-                        {control type="hidden" name="ticket_types" value="1"}
-                        {control type=hidden name=options_shown value=$product->id}
-                        {foreach from=$product->optiongroup item=og}
-                            {if $og->hasEnabledOptions()}
-                                <div class="option {cycle values="odd,even"}">
-                                    {if $og->allow_multiple}
-                                        {optiondisplayer product=$product options=$og->title view=checkboxes_with_quantity display_price_as=total selected=$params.options}
-                                    {else}
-                                        {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}
-                                    {/if}
-                                </div>
+                    {if $product->quantity_discount_num_items}
+                        <div class="label">
+                            {'There is a discount of'|gettext} {if ($product->quantity_discount_amount_mod == '%')}%{$product->quantity_discount_amount}{else}{$product->quantity_discount_amount|currency}{/if}
+                            {if ($product->quantity_discount_apply)}
+                                {'for additional registrations'|gettext}
                             {/if}
-                        {/foreach}
-                    </div>
-                {/if}
+                            {'if more than'|gettext} {$product->quantity_discount_num_items} {'people are registered'|gettext}.
+                        </div>{br}{br}
+                    {/if}
+                    {if $product->hasOptions()}
+                        <div class="product-options">
+                            {control type="hidden" name="ticket_types" value="1"}
+                            {control type=hidden name=options_shown value=$product->id}
+                            {foreach from=$product->optiongroup item=og}
+                                {if $og->hasEnabledOptions()}
+                                    <div class="option {cycle values="odd,even"}">
+                                        {if $og->allow_multiple}
+                                            {optiondisplayer product=$product options=$og->title view=checkboxes_with_quantity display_price_as=total selected=$params.options}
+                                        {else}
+                                            {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}
+                                        {/if}
+                                    </div>
+                                {/if}
+                            {/foreach}
+                        </div>
+                    {/if}
 
-                {foreach from=$product->expDefinableField.registrant item=fields}
-                    {$product->getControl($fields)}
-                {/foreach}
+                    {foreach from=$product->expDefinableField.registrant item=fields}
+                        {$product->getControl($fields)}
+                    {/foreach}
 
-                <h2>{'Who\'s Coming?'|gettext}</h2>
-                {'Please provide the names of the people who will be attending this event'|gettext},
-                <strong>{'including yourself, if you are attending'|gettext}</strong>.
-                {'You don\'t have to provide the phone and email address, but it makes it easier to get in touch with those attending.'|gettext}
-                <table class="exp-skin-table" id="reg" border="0" cellpadding="3" cellspacing="0">
-                    <thead>
-                        <th>
-                            <span>&#160;</span>
-                        </th>
-                        <th>
-                            <span style="color:Red;" title="{'This entry is required'|gettext}">*</span>
-                            <span>{'Name'|gettext}</span>
-                        </th>
-                        <th>
-                            <span>{'Phone'|gettext}</span>
-                        </th>
-                        <th>
-                            <span>{'Email'|gettext}</span>
-                        </th>
+                    <h2>{'Who\'s Coming?'|gettext}</h2>
+                    {'Please provide the names of the people who will be attending this event'|gettext},
+                    <strong>{'including yourself, if you are attending'|gettext}</strong>.
+                    {'You don\'t have to provide the phone and email address, but it makes it easier to get in touch with those attending.'|gettext}
+                    <table class="exp-skin-table" id="reg" border="0" cellpadding="3" cellspacing="0">
+                        <thead>
+                            <th>
+                                <span>&#160;</span>
+                            </th>
+                            <th>
+                                <span style="color:Red;" title="{'This entry is required'|gettext}">*</span>
+                                <span>{'Name'|gettext}</span>
+                            </th>
+                            <th>
+                                <span>{'Phone'|gettext}</span>
+                            </th>
+                            <th>
+                                <span>{'Email'|gettext}</span>
+                            </th>
                         </thead>
                         <tbody>
                             {if empty($registered)}
@@ -208,7 +207,7 @@
                     {/if}
                     <button type="submit" class="add-to-cart-btn awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
                             style="margin: 20px auto; display: block;" rel="nofollow">
-                        {"Register Now"|gettext}
+                        {"Register for this Event"|gettext}
                     </button>
                 {else}
                     {if $product->spacesLeft()}

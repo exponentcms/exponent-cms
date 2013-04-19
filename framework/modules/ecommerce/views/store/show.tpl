@@ -180,6 +180,7 @@
                 {*{control type="hidden" name="product_type" value="`$product->product_type`"}*}
                 {*control name="qty" type="text" value="`$product->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"*}
 
+                {*FIXME we will display these in the addToCart view anyway*}
                 {*{if $product->hasOptions()}*}
                     {*<div class="product-options">*}
                         {*{foreach from=$product->optiongroup item=og}*}
@@ -281,7 +282,7 @@
             <strong>{$product->model}</strong>
         </p>
     {/if}
-    
+
     {if $product->warehouse_location}
         <p class="warehouse-location">
             LOC:{$product->warehouse_location}
@@ -356,26 +357,27 @@
                  {control type="hidden" name="product_type" value="`$product->product_type`"}
                  {*control name="qty" type="text" value="`$product->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"*}
 
-                 {if $product->hasOptions()}
-                     <div class="product-options">
-                         {foreach from=$product->optiongroup item=og}
-                             {if $og->hasEnabledOptions()}
-                                 <div class="option {cycle values="odd,even"}">
+                 {*FIXME we will display these in the addToCart view anyway*}
+                 {*{if $product->hasOptions()}*}
+                     {*<div class="product-options">*}
+                         {*{foreach from=$product->optiongroup item=og}*}
+                             {*{if $og->hasEnabledOptions()}*}
+                                 {*<div class="option {cycle values="odd,even"}">*}
                                      {*<h4>{$og->title}</h4>*}
-                                     {if $og->allow_multiple}
-                                         {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}
-                                     {else}
-                                         {if $og->required}
-                                             {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}
-                                         {else}
-                                             {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}
-                                         {/if}
-                                     {/if}
-                                 </div>
-                             {/if}
-                         {/foreach}
-                     </div>
-                 {/if}
+                                     {*{if $og->allow_multiple}*}
+                                         {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}*}
+                                     {*{else}*}
+                                         {*{if $og->required}*}
+                                             {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}*}
+                                         {*{else}*}
+                                             {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}*}
+                                         {*{/if}*}
+                                     {*{/if}*}
+                                 {*</div>*}
+                             {*{/if}*}
+                         {*{/foreach}*}
+                     {*</div>*}
+                 {*{/if}*}
 
                 <div class="add-to-cart-btn">
                     {if $product->availability_type == 0 && $product->active_type == 0}
@@ -425,6 +427,7 @@
     {if $product->childProduct|@count >= 1}
         <div id="child-products" class="exp-ecom-table">
             {form id="child-products-form" controller=cart action=addItem}
+                {*FIXME we will display these in the addToCart view anyway*}
                 {*{if $product->hasOptions()}*}
                     {*<div class="product-options">*}
                         {*{foreach from=$product->optiongroup item=og}*}
@@ -452,7 +455,7 @@
                             <th>&#160;</th>
                             <th><strong>{"QTY"|gettext}</strong></th>
                             <th><strong>{"SKU"|gettext}</strong></th>
-                            {if $product->extra_fields}
+                            {if !empty($product->extra_fields)}
                                 {foreach from=$product->extra_fields item=chiprodname}
                                     <th><span>{$chiprodname.name}</span></th>
                                 {/foreach}
@@ -496,7 +499,7 @@
                                 <td>
                                     <span>{$chiprod->model}</span>
                                 </td>
-                                {if $chiprod->extra_fields}
+                                {if !empty($chiprod->extra_fields)}
                                     {foreach from=$chiprod->extra_fields item=ef}
                                         <td>
                                             <span>{$ef.value|stripslashes}</span>

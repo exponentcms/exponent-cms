@@ -71,6 +71,11 @@ class eventregistration extends expRecord {
         global $db;
 
         if (!empty($params)) {
+            // handle definable fields
+            if (isset($params['id'])) {
+                $db->delete('content_expDefinableFields', 'content_type="' . $this->classname . '" AND content_id=' . $params['id']);
+            }
+
             // creating or editing the event reservation
             if (isset($params['id'])) {
                 $product = new product($params['id']);
@@ -331,15 +336,15 @@ class eventregistration extends expRecord {
 //        $product->registrants = serialize($order_registrations);
         $product->update();
         // eDebug(expSession::get('expDefinableField'), true);
-        foreach (expSession::get('expDefinableField') as $key => $value) {
-            $obj = new stdClass();
-            $obj->expdefinablefields_id = $key;
-            $obj->content_id = $item->product_id;
-            $obj->connector_id = $order->id;
-            $obj->content_type = "eventregistration";
-            $obj->value = $value;
-            $db->insertObject($obj, 'content_expDefinableFields_value');
-        }
+//        foreach (expSession::get('expDefinableField') as $key => $value) {
+//            $obj = new stdClass();
+//            $obj->expdefinablefields_id = $key;
+//            $obj->content_id = $item->product_id;
+//            $obj->connector_id = $order->id;
+//            $obj->content_type = "eventregistration";
+//            $obj->value = $value;
+//            $db->insertObject($obj, 'content_expDefinableFields_value');
+//        }
         //add unset here
 
         return true;

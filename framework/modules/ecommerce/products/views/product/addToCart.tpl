@@ -28,12 +28,12 @@
     {if $product->expFile.mainimage.0->id}
         {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
     {/if}
-    <p>
+    <blockquote>
         <strong>{'Additional information is required before we can add to your cart'|gettext}</strong>
         {br}{br}
         {'If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items.'|gettext}&#160;&#160;
         {'If you would like different options or personalized fields for each item, please add them one at a time to your cart.'|gettext}
-    </p>
+    </blockquote>
     {clear}
     {form controller=cart action=addItem id="options-uifields"}
         {control type=hidden name=product_id value=$product->id}

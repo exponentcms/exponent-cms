@@ -635,6 +635,7 @@ class eventregistrationController extends expController {
             $control_names[] = $field->name;
         }
 
+        //FIXME we don't have a 'guest' definable field type
         if ($event->num_guest_allowed > 0) {
             for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
                 if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {

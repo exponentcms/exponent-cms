@@ -15,6 +15,7 @@
 
 <div class="module cart module addToCart">
     <h1>{$moduletitle|default:"Online Donation - Select Amount"|gettext}</h1>
+    <h3>{$product->title}</h3>
     <p>{'Minimum donation amount is'|gettext} {$product->base_price|currency}.</p>
     {form name=donationamt controller=cart action="addItem"}
         {control type="hidden" name="product_type" value=$params.product_type}
@@ -24,7 +25,7 @@
         {control type="text" name="dollar_amount" label="Dollar Amount:"|gettext value=$product->base_price size=7 filter=money}
         {*control type="buttongroup" name="add2cart" submit="Pay now"*}
     {/form}
-    <a id="paynow" class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" href="">{'Pay now'|gettext}<span></span></a> or
+    <a id="paynow" class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" href="">{'Donate now'|gettext}<span></span></a> or
     <a id="continue" class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" href="{link controller=cart action=addItem}">{'Add to cart and continue shopping'|gettext}<span></span></a>
 </div>
 

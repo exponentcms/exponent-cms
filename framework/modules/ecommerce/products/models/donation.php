@@ -102,8 +102,8 @@ class donation extends product {
         $view->assign('item', $item);
 
         // grab all the registrants
-        $message = expUnserialize($item->extra_data);
-        $view->assign('message', $message);
+//        $message = expUnserialize($item->extra_data);
+//        $view->assign('message', $message);
 
         return $view->render('cartSummary');
     }

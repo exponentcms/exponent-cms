@@ -63,6 +63,7 @@ class update_ecom2 extends upgradescript {
         global $db;
 
         $fixed = 0;
+        // move cart settings into store settings
         $cartcfg = new stdClass();
         $this->loc->mod = "cart";
         $this->loc->src = "@globalcartsettings";
@@ -84,6 +85,7 @@ class update_ecom2 extends upgradescript {
         $config->update(array('config'=>$config->config));
         $cartconfig->delete();
 
+        // update the billing calculator details in the db
         $bcalc = new billingcalculator();
         $calcs = $bcalc->find('all',1);
         foreach ($calcs as $calc) {

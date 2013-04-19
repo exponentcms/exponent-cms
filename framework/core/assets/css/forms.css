@@ -314,9 +314,9 @@ select {
 	margin-bottom : 0;
 }
 
-input:focus, input:hover,
-textarea:focus, textarea:hover,
-select:focus, select:hover {
+input:focus, input:hover, input:hover:valid,
+textarea:focus, textarea:hover, textarea:hover:valid,
+select:focus, select:hover, select:hover:valid {
 	outline      : 0;
 	outline      : thin dotted  \9;
 	/* IE6-9 */

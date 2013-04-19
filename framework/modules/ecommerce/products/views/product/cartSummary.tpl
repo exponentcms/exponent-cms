@@ -46,7 +46,6 @@
                                 </ul> 
                             </div>
                         {/if}
-                        
                         {if $item->getUserInputFields() != ''}
                             <div class="hd" style="padding:0 5px">
                                 {if $options|@count <= 0}<span class="type-icon"></span>{/if}<h6>{"Additional Information"|gettext}</h6>
@@ -59,17 +58,16 @@
                 </div>        
                 {script unique="z-index" }
                 {literal}
-                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-                    var opts = Y.all(".options");
-                    opts.each(function(n,k){
-                        n.setStyle('zIndex',opts.size()-k);
-                        n.one(".exp-dropmenu").setStyle('zIndex',opts.size()+1);
+                    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                        var opts = Y.all(".options");
+                        opts.each(function(n,k){
+                            n.setStyle('zIndex',opts.size()-k);
+                            n.one(".exp-dropmenu").setStyle('zIndex',opts.size()+1);
+                        });
                     });
-                });
                 {/literal}
                 {/script}
             {/if}
-
         </td>
     </tr>
 </table>
