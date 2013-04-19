@@ -39,10 +39,12 @@ $ecom = array(
         'itemdata' => array(
             array(
                 'text' => gt("Dashboard"),
+                'classname' => 'dashboard',
                 'url'  => makeLink(array('controller' => 'report', 'action' => 'dashboard')),
             ),
             array(
                 'text'    => gt("Orders"),
+                'classname' => 'orders',
                 'submenu' => array(
                     'id'       => 'ordermenu',
                     'itemdata' => array(
@@ -81,6 +83,7 @@ $ecom = array(
             ),
             array(
                 'text'    => gt("Products"),
+                'classname' => 'products',
                 'submenu' => array(
                     'id'       => 'prodscats',
                     'itemdata' => array(
@@ -128,7 +131,7 @@ $ecom = array(
             ),
             array(
                 'text'    => gt("Reports"),
-                'classname' => 'search',
+                'classname' => 'reports',
                 'submenu' => array(
                     'id'       => 'reports',
                     'itemdata' => array(
@@ -146,10 +149,12 @@ $ecom = array(
                         ),
                         array(
                             'text' => gt("Build an Order Report"),
+                            'classname' => 'development',
                             'url'  => makeLink(array('controller' => 'report', 'action' => 'order_report')),
                         ),
                         array(
                             'text' => gt("Build a Product Report"),
+                            'classname' => 'development',
                             'url'  => makeLink(array('controller' => 'report', 'action' => 'product_report')),
                         ),
                     ),
@@ -157,6 +162,7 @@ $ecom = array(
             ),
             array(
                 'text'    => gt("Purchase Orders"),
+                'classname' => 'purchase',
                 'submenu' => array(
                     'id'       => 'purchase-order',
                     'itemdata' => array(

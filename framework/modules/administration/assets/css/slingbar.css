@@ -94,6 +94,21 @@
 
 /* Drop Menu Icons  */
 
+#admintoolbar li.dashboard a.yuimenuitemlabel {
+    background:url(../images/admintoolbar/layout_content.png) no-repeat 5px 50%;
+}
+#admintoolbar li.orders a.yuimenuitemlabel {
+    background:url(../images/admintoolbar/doc_page.png) no-repeat 5px 50%;
+}
+#admintoolbar li.products a.yuimenuitemlabel {
+    background:url(../images/admintoolbar/cart.png) no-repeat 5px 50%;
+}
+#admintoolbar li.reports a.yuimenuitemlabel {
+    background:url(../images/admintoolbar/report.png) no-repeat 5px 50%;
+}
+#admintoolbar li.purchase a.yuimenuitemlabel {
+    background:url(../images/admintoolbar/doc_page_previous.png) no-repeat 5px 50%;
+}
 #admintoolbar li.logout a.yuimenuitemlabel {
     background:url(../images/admintoolbar/logout.png) no-repeat 3px 50%;
 }
@@ -133,6 +148,9 @@
 #admintoolbar li.remove a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/delete.png) no-repeat 5px 50%;
 }
+#admintoolbar li.configure a.yuimenuitemlabel {
+    background:url(../../../../core/assets/images/configure.png) no-repeat 5px 50%;
+}
 #admintoolbar li.manage a.yuimenuitemlabel {
     background:url(../../../../core/assets/images/manage.png) no-repeat 5px 50%;
 }
@@ -150,9 +168,6 @@
 }
 #admintoolbar li.sitetree a.yuimenuitemlabel {
     background:url(../images/admintoolbar/sitetree.png) no-repeat 5px 50%;
-}
-#admintoolbar li.configure a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/configure.png) no-repeat 5px 50%;
 }
 #admintoolbar li.info a.yuimenuitemlabel {
     background:url(../images/admintoolbar/info.png) no-repeat 5px 2px;
