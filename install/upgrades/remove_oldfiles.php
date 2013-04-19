@@ -108,6 +108,8 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-1.8.3.min.js',
             'external/jquery/js/jquery-1.9.0.js',
             'external/jquery/js/jquery-1.9.0.min.js',
+            'external/jquery/js/jquery-migrate-1.1.0.js',
+            'external/jquery/js/jquery-migrate-1.1.0.min.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.0.custom.js',
@@ -379,6 +381,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.2.1/",
             "external/Swift-4.2.2/",
             "external/Swift-4.2.3/",
+            "external/Swift-4.3.0/",
         );
         foreach ($olddirs as $dir) {
             if (expUtil::isReallyWritable(BASE.$dir)) {
