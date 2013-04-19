@@ -461,7 +461,8 @@ if (!defined('YUI3_RELATIVE')) {
 	 * YUI 3 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('YUI3_VERSION', '3.9.1');
+//	define('YUI3_VERSION', '3.9.1');
+    define('YUI3_VERSION', '3.10.0pr1');
     define('YUI3_RELATIVE', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
 //	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
@@ -507,7 +508,7 @@ if (!defined('SWIFT_PATH')) {
 	 * Swift Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SWIFT_VERSION', '4.3.0');
+	define('SWIFT_VERSION', '4.3.1');
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 
