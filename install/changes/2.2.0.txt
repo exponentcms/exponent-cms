@@ -22,7 +22,7 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
     -- event registrations now abide by 'options'
   - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
   - implements broader use of ajax paging and use of new html5 input types, temporarily adds additional date/time form designer controls
-  - implements an html5 input fallback system to display html5  controls/features in older browsers
+  - implements an html5 input fallback system to display html5 controls/features in older browsers
     -- adds more simple controls to forms designer (email, url, telephone, range, number, several date/time controls)
     -- allows switching to similar type control after creation
   - updates style of maintenance/site-down page

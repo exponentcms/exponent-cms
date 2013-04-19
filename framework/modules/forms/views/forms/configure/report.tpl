@@ -29,5 +29,5 @@
 {/group}
 {group label='Single-Record View Configuration'|gettext}
     {*{control type=html name='report_def' label='Custom E-Mail Report and View Record Definition'|gettext value=$config.report_def description='Leave this custom definition blank to use the default \'all fields\' e-mail report and record view'|gettext}*}
-    {control type=textarea name='report_def' label='Custom E-Mail and View Record Template'|gettext value=$config.report_def rows=10 cols=60 description='Leave blank to display all fields.  Record fields are referenced by {$fields[\'fieldname\']}'|gettext}
+    {control type=textarea name='report_def' label='Custom E-Mail and View Record Template'|gettext value=$config.report_def rows=10 cols=60 description="Leave blank to display all fields.  Record fields are referenced by $fields['fieldname'] within curly braces"|gettext}
 {/group}
