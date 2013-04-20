@@ -682,10 +682,10 @@ function expUnserialize($serial_str) {
     $out1 = @preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
     $out = preg_replace_callback(
         '!s:(\d+):"(.*?)";!s',
-        function($m) {
-            $m_new = str_replace('"','\"',$m[2]);
-            return 's:'.strlen($m_new).':"'.$m_new.'";';
-        },
+        create_function ('$m',
+            '$m_new = str_replace(\'"\',\'\"\',$m[2]);
+            return "s:".strlen($m_new).\':"\'.$m_new.\'";\';'
+        ),
         $serial_str );
     if ($out1 !== $out) {
         eDebug('problem:<br>'.$out.'<br>'.$out1);

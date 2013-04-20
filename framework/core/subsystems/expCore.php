@@ -530,7 +530,7 @@ class expCore {
     public static function cast($source, $destinationtype) {
         $destination = new $destinationtype();
         if (is_null($destination)) return $destination;
-        $sourceReflection = new \ReflectionObject($source);
+        $sourceReflection = new ReflectionObject($source);
         $sourceProperties = $sourceReflection->getProperties();
         foreach ($sourceProperties as $sourceProperty) {
             $name = $sourceProperty->getName();
