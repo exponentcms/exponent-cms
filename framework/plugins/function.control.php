@@ -185,19 +185,6 @@ function smarty_function_control($params, &$smarty) {
                 if (!empty($params['value'])) $control->value = $params['value'];
                 $control->newschool = true;
                 break;
-            case "text":
-            case "search":
-            case "email":
-            case "url":
-            case "tel":
-            case "telephone":
-            case "number":
-            case "range":
-                $control       = new genericcontrol($params['type']);
-                $control->size = !empty($params['size']) ? $params['size'] : "40";
-                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
-                $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
-                break;
             case "textarea":
                 $control = new texteditorcontrol();
                 if (isset($params['module'])) $control->module = $params['module'];
@@ -371,8 +358,20 @@ function smarty_function_control($params, &$smarty) {
                 if (!empty($params['var'])) $control->type = 1;
                 if (!empty($params['default'])) $control->default = $params['default'];
                 break;
+            case "text":
+            case "search":
+            case "email":
+            case "url":
+            case "tel":
+            case "telephone":
+            case "number":
+            case "range":
             default:
-                $control = new genericcontrol($params['type']);
+                $control       = new genericcontrol($params['type']);
+                $control->size = !empty($params['size']) ? $params['size'] : "40";
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
+                $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
+                $control->prepend = !empty($params['prepend']) ? $params['prepend'] : "";
                 break;
         }
 

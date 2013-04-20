@@ -93,7 +93,15 @@ class genericcontrol extends formcontrol {
         $this->size = !empty($this->size) ? $this->size : 20;
         $this->name = empty($this->name) ? $name : $this->name;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-        $html = '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
+        $html = '';
+        $framework = expSession::get('framework');
+        if ($framework == 'bootstrap') {
+            if (!empty($this->prepend)) {
+                $html .= '<div class="input-prepend">';
+                $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
+            }
+        }
+        $html .= '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
         if ($this->checked) $html .= ' checked="checked"';
         $html .= ' class="'.$this->type. " " . $this->class . '"';
@@ -124,6 +132,9 @@ class genericcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 
         $html .= ' />';
+        if ($framework == 'bootstrap' && !empty($this->prepend)) {
+            $html .= '</div>';
+        }
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }

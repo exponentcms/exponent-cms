@@ -25,7 +25,7 @@
     <form id="form" name="form" method="POST" action="{$smarty.const.PATH_RELATIVE}index.php">
         <input type="hidden" name="action" id="action" value="search">
         <input type="hidden" name="module" id="module" value="search">
-        {control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext}
+        {control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}
         {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}
     </form>
 </div>

@@ -47,8 +47,8 @@
     {/if}
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
             {form action=login}
-                {control type="text" name="username" label='' placeholder='Username'|gettext size=15 required=1}
-                {control type="password" name="password" label='' placeholder='Password'|gettext size=15 required=1}
+                {control type="text" name="username" label='' placeholder='Username'|gettext size=15 required=1 prepend="user"}
+                {control type="password" name="password" label='' placeholder='Password'|gettext size=15 required=1 prepend="key"}
                 {control type="buttongroup" submit="Log In"|gettext}
             {/form}
             {if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
