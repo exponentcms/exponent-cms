@@ -118,13 +118,13 @@ $ecom = array(
                         array(
                             'text'      => gt("Manage Store Categories"),
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'storeCategoryController', 'action' => 'manage')),
+                            'url'       => makeLink(array('controller' => 'storeCategory', 'action' => 'manage')),
                         ),
                         array(
                             'text'      => gt("Manage Manufacturers"),
                             'classname' => 'manage',
-//                            'url'=>makeLink(array('controller'=>'companyController','action'=>'manage')),
-                            'url'       => makeLink(array('controller' => 'companyController', 'action' => 'showall')),
+//                            'url'=>makeLink(array('controller'=>'company','action'=>'manage')),
+                            'url'       => makeLink(array('controller' => 'company', 'action' => 'showall')),
                         ),
                     ),
                 ),

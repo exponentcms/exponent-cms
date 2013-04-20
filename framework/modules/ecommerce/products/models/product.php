@@ -71,6 +71,7 @@ class product extends expRecord {
 
     public function __construct($params = array(), $get_assoc = true, $get_attached = true) {
         global $db;
+
         parent::__construct($params, $get_assoc, $get_attached);
         $this->extra_fields = expUnserialize($this->extra_fields);
         $this->price = $this->getBasePrice();

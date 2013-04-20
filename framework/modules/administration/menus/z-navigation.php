@@ -85,7 +85,7 @@ if ($user->isAdmin()) {
     }
 }
 
-//if (expPermissions::check('manage',expCore::makeLocation('navigationController','',$section))) {
+//if (expPermissions::check('manage',expCore::makeLocation('navigation','',$section))) {
 if ($manageperms) {
     $info['itemdata'][] = array('text' => gt('Manage all pages'), 'classname' => 'sitetree', 'url' => makeLink(array('module' => 'navigation', 'action' => 'manage')));
 }

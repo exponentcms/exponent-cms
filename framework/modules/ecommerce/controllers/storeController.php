@@ -285,7 +285,7 @@ class storeController extends expController {
         }
     }
 
-    function upcomingEvents() {
+    function upcomingEvents() {  //FIXME Deprecated, moved to eventregistration
         $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
         $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
@@ -315,7 +315,7 @@ class storeController extends expController {
         ));
     }
 
-    function eventsCalendar() {
+    function eventsCalendar() {  //FIXME Deprecated, moved to eventregistration
         global $db, $user;
 
         expHistory::set('viewable', $this->params);
@@ -424,7 +424,7 @@ class storeController extends expController {
     /*
     * Helper function for the Calendar view
     */
-    function getEventsForDates($edates, $sort_asc = true) {
+    function getEventsForDates($edates, $sort_asc = true) {  //FIXME Deprecated, moved to eventregistration
         global $db;
         $events = array();
         foreach ($edates as $edate) {
@@ -587,12 +587,10 @@ class storeController extends expController {
     }
 
     function exportMe() {
-
         redirect_to(array('controller' => 'report', 'action' => 'batch_export', 'applytoall' => true));
-
     }
 
-    function showallByManufacturer() {
+    function showallByManufacturer() {  //FIXME Deprecated??, moved to company??
         expHistory::set('viewable', $this->params);
 
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
@@ -619,7 +617,7 @@ class storeController extends expController {
         ));
     }
 
-    function showallManufacturers() {
+    function showallManufacturers() {  //FIXME Deprecated??, moved to company??
         global $db;
         expHistory::set('viewable', $this->params);
         $sql = 'SELECT comp.* FROM ' . DB_TABLE_PREFIX . '_companies as comp JOIN ' . DB_TABLE_PREFIX . '_product AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';
@@ -680,6 +678,11 @@ class storeController extends expController {
             expHistory::back();
         } elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin)) {
             $product_type->user_message = $product->title . " is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
+        }
+
+        // pull in company attachable files
+        if (!empty($product_type->companies_id)) {
+            $product_type->company = new company($product_type->companies_id);
         }
 
         if (!empty($product->crosssellItem)) foreach ($product->crosssellItem as &$csi) {

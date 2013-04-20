@@ -23,6 +23,7 @@
     <table class="exp-skin-table">
     <thead>
         {$page->header_columns}
+        <th></th>
         <th>{'Actions'|gettext}</th>
     </thead>
     <tbody>
@@ -30,6 +31,11 @@
 		<tr class="{cycle values="odd,even"}">
             <td>{$company->title}</td>
             <td>{$company->website}</td>
+            <td width=64px>
+                {if $company->expFile.logo[0]->id}
+                    {img file_id=$company->expFile.logo[0]->id w=64 alt="Image of `$company->title`" title="`$company->title`" id="enlarged-image"}
+                {/if}
+            </td>
             <td>
                 {permissions}
 					<div class="item-actions">

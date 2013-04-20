@@ -12,54 +12,45 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
 
-{/css}
-
-{css unique="event-listings1" link="`$asset_path`css/eventregistration.css"}
-
-{/css}
-
-<div class="module events showall headlines">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
+<div class="module store upcoming-events">
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
-        <div class="module-actions">
-            {if $permissions.create == true || $permissions.edit == true}
-                {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
-            {/if}
-            {if $permissions.manage == 1}
-                 {icon action=manage text="Manage Events"|gettext}
-            {/if}
-        </div>
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+        {/if}
+        {if $permissions.manage == 1}
+             {icon controller=eventregistration action=manage text="Manage Events"|gettext}
+        {/if}
+    </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
     {$myloc=serialize($__loc)}
     <ul>
-        {foreach name=items from=$page->records item=item}
-            {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
+        {$limit = 5}
+        {if (!empty($config.headcount))}{$limit = $config.headcount}{/if}
+        {foreach name=uce from=$page->records item=item}
+            {if $smarty.foreach.uce.iteration <= $limit}
                 <li>
-                    <div class="events">
-                        <a class="link" href="{link action=show title=$item->sef_url}" title={$item->body|summarize:"html":"para"}>{$item->title}</a>
-                        <a href="{link action=show title=$item->sef_url}"></a>
-                        - <em class="date">{$item->eventdate|date_format}</em>
-                        - {$item->body|summarize:"text":"para"}
-                        {*{if $item->base_price}- {'Cost'|gettext}: {currency_symbol}{$item->base_price}{/if}*}
+                    <a href="{link controller=eventregistration action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
+                    {*<p>{$item->summary|truncate:75:"..."}</p>*}
+                    {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit == true}
+                                {icon controller="store" action=edit record=$item}
+                            {/if}
+                            {if $permissions.delete == true}
+                                {icon controller="store" action=delete record=$item}
+                            {/if}
+                        </div>
+                    {/permissions}
+                    <p>
+                        {$item->title}
                         {if $item->getBasePrice()}- {'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
-                        {if $item->isRss != true}
-                            {permissions}
-                                <div class="item-actions">
-                                    {if $permissions.edit == true}
-                                        {icon controller="store" action=edit record=$item}
-                                    {/if}
-                                    {if $permissions.delete == true}
-                                        {icon controller="store" action=delete record=$item}
-                                    {/if}
-                                </div>
-                            {/permissions}
-                        {/if}
-                    </div>
+                    </p>
                 </li>
             {/if}
         {/foreach}
