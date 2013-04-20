@@ -35,7 +35,6 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {$myloc=serialize($__loc)}
     <ul>
         {foreach name=items from=$page->records item=item}
             {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}

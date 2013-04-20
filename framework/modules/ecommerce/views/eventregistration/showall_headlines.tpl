@@ -28,12 +28,9 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {$myloc=serialize($__loc)}
     <ul>
-        {$limit = 5}
-        {if (!empty($config.headcount))}{$limit = $config.headcount}{/if}
         {foreach name=uce from=$page->records item=item}
-            {if $smarty.foreach.uce.iteration <= $limit}
+            {if $smarty.foreach.uce.iteration<=$config.headcount || !$config.headcount}
                 <li>
                     <a href="{link controller=eventregistration action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
                     {*<p>{$item->summary|truncate:75:"..."}</p>*}

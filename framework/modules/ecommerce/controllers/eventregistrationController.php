@@ -69,15 +69,14 @@ class eventregistrationController extends expController {
         expHistory::set('viewable', $this->params);
         $limit = (!empty($this->config['limit'])) ? $this->config['limit'] : 10;
 
+        $pass_events = array();
         if ($user->isAdmin()) {
             $pass_events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
         } else {
             $events      = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
-            $pass_events = array();
-
             foreach ($events as $event) {
                 // $this->signup_cutoff > time()
-                if ($event->signup_cutoff > time()) {
+                if ($event->eventdate > time() && $event->signup_cutoff > time()) {
                     $pass_events[] = $event;
                 }
                 // eDebug($event->signup_cutoff, true);
@@ -91,7 +90,7 @@ class eventregistrationController extends expController {
         $page = new expPaginator(array(
             'records'=>$pass_events,
             'limit'=>$limit,
-            'order'=>"title ASC",
+            'order'=>"eventdate ASC",
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
@@ -217,9 +216,9 @@ class eventregistrationController extends expController {
     function upcomingEvents() {
         $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
-        $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
+        $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time() . 'AND er.eventdate > ' . time();
 
-        $limit = empty($this->config['event_limit']) ? 10 : $this->config['event_limit'];
+        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = 'eventdate';
         $dir = 'ASC';
 
@@ -272,7 +271,7 @@ class eventregistrationController extends expController {
         $page = new expPaginator(array(
             'records'=>$pass_events,
             'limit'=>$limit,
-            'order'=>"title ASC",
+            'order'=>"eventdate ASC",
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
