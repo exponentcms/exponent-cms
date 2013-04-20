@@ -24,7 +24,6 @@
         {/if}
     {/permissions}
     {$page->links}
-
     {foreach from=$page->records item=result}
         {*if $result->canview == 1*}
         <div class="showwrapper">
