@@ -19,8 +19,9 @@
 
 <div class="module ecommerce ecom-search yui3-skin-sam yui-skin-sam">
     <div id="search-autocomplete" class="control">
-      {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<label class="label" for="ac-input">{$moduletitle}</label>{/if}
-      <input id="ac-input" type="text" class="text">
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<label class="label" for="ac-input">{$moduletitle}</label>{/if}
+        {*<input id="ac-input" type="text" class="text">*}
+        {control name="ac-input" type="search" class="text" prepend="search"}
     </div>
 </div>
 
@@ -29,21 +30,18 @@
 YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocomplete", "autocomplete-highlighters", "datasource-get", function (Y) {
     
     var formatResults = function (query, results) {
-
         return Y.Array.map(results, function (result) {
             var result = result.raw;
 
-            var template = (result.fileid != '') ? '<img width="30" height="30" class="srch-img" src="'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+result.fileid+'&w=30&h=30&zc=1" />' : '';
-            
+            var template = (result.fileid != '') ? '<pre><img width="30" height="30" class="srch-img" src="'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+result.fileid+'&w=30&h=30&zc=1" />' : '<pre>';
             // title
             template += ' <strong class="title">'+result.title+'</strong>';
             // model/SKU
-            template += ' <em class="title">SKU: '+result.model+'</em>';
-            template += '<div style="clear:both;"></div>';
+            template += ' <em class="title">SKU: '+result.model+'</em></div>';
+//            template += '<div style="clear:both;"></pre>';
 
             return template;
         });
-
      }
     
     var autocomplete = Y.one('#ac-input');

@@ -39,8 +39,16 @@ class autocompletecontrol extends formcontrol {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         $html = '<div class="text-control control exp-skin" id="search_stringControl">';
         $html .= empty($this->label) ? '' : '<label for="'.$name.'">'.$label.'</label>';
-        $html .= '<input type="text" class="text " size="20" value="'.$this->value.'" name="'.$name.'" id="'.$name.'"/>
-                <div id="results'.$name.'"></div>
+        $framework = expSession::get('framework');
+        if ($framework == 'bootstrap') {
+            $html .= '<div class="input-prepend">';
+            $html .= '<span class="add-on"><i class="icon-search"></i></span>';
+        }
+        $html .= '<input type="search" class="text " size="20" value="'.$this->value.'" name="'.$name.'" id="'.$name.'"/>';
+        if ($framework == 'bootstrap') {
+            $html .= '</div>';
+        }
+        $html .= '<div id="results'.$name.'"></div>
             </div>
         ';
         
