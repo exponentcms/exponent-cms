@@ -29,7 +29,7 @@ class company extends expRecord {
 			//'body'=>array('message'=>'Company Description is a required field.'),
 		));
      protected $attachable_item_types = array(
-        //'content_expFiles'=>'expFile', 
+        'content_expFiles'=>'expFile',
         //'content_expTags'=>'expTag', 
         //'content_expComments'=>'expComment',
         //'content_expSimpleNote'=>'expSimpleNote',

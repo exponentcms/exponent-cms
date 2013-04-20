@@ -14,7 +14,12 @@
  *}
 
 <div class="module company show">
-    <h1>{'Products from'|gettext} {$record->title}</h1>
+    <h1>
+        {if $record->expFile.logo[0]->id}
+            {img file_id=$record->expFile.logo[0]->id w=64 alt="Image of `$record->title`" title="`$record->title`" class="large-img" id="enlarged-image"}
+        {/if}
+        {'Products from'|gettext} {$record->title}
+    </h1>
     {permissions}
         {if $permissions.edit == 1}
             {icon img='edit.png' action=edit id=$record->id title="Edit"|gettext|cat:" `$record->title`"}
