@@ -82,9 +82,9 @@ class tagtreecontrol extends formcontrol {
                     $btn_size = 'btn-mini';
                     $icon_size = '';
                 }
-                if ($this->addable) $html = '<a class="'.$icon_size.' icon-plus-sign btn-success btn '.$btn_size.'" href="' . $link . '"> ' . gt('Add a Category') . '</a> ';
-                $html .= '<a class="'.$icon_size.' icon-resize-full btn '.$btn_size.'" href="#" id="expandall"> ' . gt('Expand All') . '</a> ';
-                $html .= '<a class="'.$icon_size.' icon-resize-small btn '.$btn_size.'" href="#" id="collapseall"> ' . gt('Collapse All') . '</a>';
+                if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="icon-plus-sign '.$icon_size.'"></i> ' . gt('Add a Category') . '</a> ';
+                $html .= '<a class="btn '.$btn_size.'" href="#" id="expandall"><i class="icon-resize-full '.$icon_size.'"></i> ' . gt('Expand All') . '</a> ';
+                $html .= '<a class="btn '.$btn_size.'" href="#" id="collapseall"><i class="icon-resize-small '.$icon_size.'"></i> ' . gt('Collapse All') . '</a>';
             } else {
                 if ($this->addable) $html = '<a class="add" href="' . $link . '">' . gt('Add a Category') . '</a> | ';
                 $html .= '<a href="#" id="expandall">' . gt('Expand All') . '</a> | ';

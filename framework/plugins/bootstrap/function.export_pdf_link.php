@@ -53,12 +53,12 @@ function smarty_function_export_pdf_link($params,&$smarty) {
             $icon_size = '';
         }
 
-        $text = isset($params['text']) ? $params['text'] : gt('Export as PDF');
         $view = isset($params['view']) ? $params['view'] : null;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
         $orientation = isset($params['landscapepdf']) ? $params['landscapepdf'] : false;
         $limit = isset($params['limit']) ? $params['limit'] : '';
-        $class = isset($params['class']) ? $params['class'] : $icon_size.' icon-book btn '.$btn_size;
+        $class = isset($params['class']) ? $params['class'] : 'btn '.$btn_size;
+        $text = '<i class="icon-book '.$icon_size.'"></i> ' . (isset($params['text']) ? $params['text'] : gt('Export as PDF'));
 
         // spit out the link
         echo $prepend.$router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit).'<br>';

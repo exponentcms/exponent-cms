@@ -53,10 +53,10 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
             $icon_size = '';
         }
 
-        $text = isset($params['text']) ? $params['text'] : gt('View Printer Friendly');
         $view = isset($params['view']) ? $params['view'] : null;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
-        $class = isset($params['class']) ? $params['class'] : $icon_size.' icon-print btn '.$btn_size;
+        $class = isset($params['class']) ? $params['class'] : 'btn '.$btn_size;
+        $text = '<i class="icon-print '.$icon_size.'"></i> ' . (isset($params['text']) ? $params['text'] : gt('View Printer Friendly'));
 
         // spit out the link
         echo $prepend.$router->printerFriendlyLink($text, $class, 800, 600, $view);

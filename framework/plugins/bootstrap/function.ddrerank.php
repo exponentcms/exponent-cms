@@ -102,7 +102,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                 $icon_size = '';
             }
             if (empty($params['uniqueid'])) {  // make a button
-                echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.' icon-sort ' . $icon_size . '" href="#"> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.'" href="#"><i class="icon-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             } else {  // make a menu item
                 echo '<a id="rerank' . $uniqueid . '" class="reranklink" href="#">' . gt("Order") . ' ' . $params['label'] . '</a>';
             }
@@ -151,8 +151,8 @@ if (!function_exists('smarty_function_ddrerank')) {
                 }
                 $html .= '</ul>
                     <div class="yui3-widget-ft">
-                    <a href="#" class="btn icon-sort" name=alpha' . $uniqueid . ' id=alpha' . $uniqueid . ' style="float:left;"> ' . gt('Sort List Alphabetically') . '</a>
-                    <button type="submit" class="btn">' . gt('Save') . '</button>
+                    <a href="#" class="btn '.$btn_size.'" name=alpha' . $uniqueid . ' id=alpha' . $uniqueid . ' style="float:left;"><i class="icon-sort '.$icon_size.'"></i> ' . gt('Sort List Alphabetically') . '</a>
+                    <button type="submit" class="btn btn-primary '.$btn_size.'"><i class="icon-save '.$icon_size.'"></i> ' . gt('Save') . '</button>
                     </div>
                     </form>
                     </div>
