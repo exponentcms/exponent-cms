@@ -31,8 +31,8 @@
     <table>
         {foreach from=$causes item=cause}
             <tr>
-                <td>{img file_id=$cause->expFile.mainimage[0]->id square=120}</td>
-                <td>
+                <td style="padding: 5px;">{img file_id=$cause->expFile.mainimage[0]->id square=120}</td>
+                <td style="padding: 5px;">
                     <h3>{$cause->title}</h3>
                     {permissions}
                         <div class="item-actions">
@@ -46,7 +46,7 @@
                     {/permissions}
                     {$cause->body}
                 </td>
-                <td>
+                <td style="padding: 5px;">
                     <a class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href={link controller=cart action=addItem product_type=$cause->product_type product_id=$cause->id quick=$quickadd}>{'Donate'|gettext} {if $config.quickadd}{$cause->base_price|currency}{/if}</a>
                 </td>
              </tr>

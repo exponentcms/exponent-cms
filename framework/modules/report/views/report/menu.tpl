@@ -23,7 +23,7 @@
 
 <div class="module report dashboard">
     <div class="leftcol">
-        
+
         <div id="quickstats" class="panel">
             <div class="hd"><h2>{'Quick Stats'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.quickstats=='collapsed'}collapsed{/if}">
@@ -35,14 +35,14 @@
                 </ul>
             </div>
         </div>
-        
+
         <div id="cartstats" class="panel">
             <div class="hd"><h2>{'Cart Stats'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.cartstats=='collapsed'}collapsed{/if}">
                 <ul>
                     {*<li>*}
-                        {*<strong><a href="{link action=cart_summary}">{'Summary Stats'|gettext}</a></strong>*}
-                        {*{'Quick statistics on carts vs. orders.'|gettext}*}
+                    {*<strong><a href="{link action=cart_summary}">{'Summary Stats'|gettext}</a></strong>*}
+                    {*{'Quick statistics on carts vs. orders.'|gettext}*}
                     {*</li>*}
                     <li>
                         <strong><a href="{link action=abandoned_carts}">{'Abandoned Carts'|gettext}</a></strong>
@@ -55,14 +55,14 @@
                 </ul>
             </div>
         </div>
-        
+
         <div id="orders" class="panel">
             <div class="hd"><h2>{'Orders'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.orders=='collapsed'}collapsed{/if}">
                 <ul>
                     {*<li>*}
-                        {*<strong><a href="{link controller=order action=create_new_order}">{'Add an Order'|gettext}</a></strong>*}
-                        {*{'Create a new order.'|gettext}*}
+                    {*<strong><a href="{link controller=order action=create_new_order}">{'Add an Order'|gettext}</a></strong>*}
+                    {*{'Create a new order.'|gettext}*}
                     {*</li>*}
                     <li>
                         <strong><a href="{link controller=order action=showall}">{'Manage Orders'|gettext}</a></strong>
@@ -83,17 +83,19 @@
                 </ul>
             </div>
         </div>
-        
+
         <div id="products" class="panel">
-            <div class="hd"><h2>{'Products and Categories'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
+            <div class="hd"><h2>{'Products'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.products=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
                         <strong><a href="{link controller=store action=picktype}">{'Add a Product'|gettext}</a></strong>
-                        {'Add a'|gettext} <a href="{link controller=store action=edit product_type=product}">{'Product'|gettext}</a>,
+                        {'Add a'|gettext} <a
+                                href="{link controller=store action=edit product_type=product}">{'Product'|gettext}</a>,
                         <a href="{link controller=store action=edit product_type=donation}">{'Donation'|gettext}</a>,
                         <a href="{link controller=store action=edit product_type=giftcard}">{'Gift Card'|gettext}</a>,
-                        {'or'|gettext} <a href="{link controller=store action=edit product_type=eventregistration}">{'Event Registration'|gettext}</a>
+                        {'or'|gettext} <a
+                                href="{link controller=store action=edit product_type=eventregistration}">{'Event Registration'|gettext}</a>
                         {'to your store.'|gettext}
                     </li>
                     <li>
@@ -117,7 +119,8 @@
         </div>
 
         <div id="configuration" class="panel">
-            <div class="hd"><h2>{'Store Settings'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
+            <div class="hd"><h2>{'Store Settings'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a>
+            </div>
             <div class="bd {if $smarty.cookies.configuration=='collapsed'}collapsed{/if}">
                 <ul>
                     <li>
@@ -138,49 +141,49 @@
 
     </div>
 
-{script unique="expand-panels"}
-{literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','cookie','anim', function(Y) {
+    {script unique="expand-panels"}
+    {literal}
+        YUI(EXPONENT.YUI3_CONFIG).use('node','cookie','anim', function(Y) {
         var panels = Y.all(".dashboard .panel");
         var expandHeight = [];
         var action = function(e){
-            e.halt();
+        e.halt();
 
-            var pBody = e.target.ancestor('.panel').one('.bd');
-            var pID = e.target.ancestor('.panel').getAttribute('id');
-            var cfg = {
-                node: pBody,
-                duration: 0.5,
-                easing: Y.Easing.easeOut
-            }
-            
-            if (e.target.getAttribute("class")=="collapse") {
-                cfg.to = { height: 0 };
-                cfg.from = { height: expandHeight[pID] };
-                pBody.setStyle('height',expandHeight[pID]+"px");
-                pBody.replaceClass('expanded','collapsed');
-                e.target.replaceClass('collapse','expand');
-                Y.Cookie.set(pID, "collapsed");
-            } else {
-                pBody.setStyle('height',0);
-                cfg.from = { height: 0 };
-                cfg.to = { height: expandHeight[pID] };
-                pBody.replaceClass('collapsed','expanded');
-                e.target.replaceClass('expand','collapse');
-                Y.Cookie.set(pID, "expanded");
-            }
-            var anim = new Y.Anim(cfg);
-            
-            anim.run();
+        var pBody = e.target.ancestor('.panel').one('.bd');
+        var pID = e.target.ancestor('.panel').getAttribute('id');
+        var cfg = {
+        node: pBody,
+        duration: 0.5,
+        easing: Y.Easing.easeOut
+        }
+
+        if (e.target.getAttribute("class")=="collapse") {
+        cfg.to = { height: 0 };
+        cfg.from = { height: expandHeight[pID] };
+        pBody.setStyle('height',expandHeight[pID]+"px");
+        pBody.replaceClass('expanded','collapsed');
+        e.target.replaceClass('collapse','expand');
+        Y.Cookie.set(pID, "collapsed");
+        } else {
+        pBody.setStyle('height',0);
+        cfg.from = { height: 0 };
+        cfg.to = { height: expandHeight[pID] };
+        pBody.replaceClass('collapsed','expanded');
+        e.target.replaceClass('expand','collapse');
+        Y.Cookie.set(pID, "expanded");
+        }
+        var anim = new Y.Anim(cfg);
+
+        anim.run();
         }
         panels.each(function(n,k){
-            n.delegate('click',action,'.hd a');
-            if (Y.Cookie.get(n.get('id'))==="collapsed") {
-                n.one('.hd a').replaceClass('collapse','expand');
-                n.one('.bd').addClass('collapsed');
-            };
-            expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
+        n.delegate('click',action,'.hd a');
+        if (Y.Cookie.get(n.get('id'))==="collapsed") {
+        n.one('.hd a').replaceClass('collapse','expand');
+        n.one('.bd').addClass('collapsed');
+        };
+        expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
         });
-    });
+        });
     {/literal}
 {/script}
