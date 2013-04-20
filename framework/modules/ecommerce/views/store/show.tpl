@@ -97,26 +97,17 @@
         {if $config.enable_lightbox}
             {script unique="thumbswap-shadowbox" yui3mods=1}
             {literal}
-            EXPONENT.YUI3_CONFIG.modules = {
-                       'gallery-lightbox' : {
-                           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-                           requires : ['base','node','anim','selector-css3']
-                       }
-                 }
+                EXPONENT.YUI3_CONFIG.modules = {
+                    'gallery-lightbox' : {
+                        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+                        requires : ['base','node','anim','selector-css3']
+                    }
+                }
 
-            YUI(EXPONENT.YUI3_CONFIG).use('node-event-simulate','gallery-lightbox', function(Y) {
-                Y.Lightbox.init();
+                YUI(EXPONENT.YUI3_CONFIG).use('node-event-simulate','gallery-lightbox', function(Y) {
+                    Y.Lightbox.init();
 
                     if (Y.one('#enlarged-image-link') != null) {
-                Y.one('#enlarged-image-link').on('click',function(e){
-                   if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
-                      e.halt();
-                      e.currentTarget.removeAttribute('rel');
-                      Y.Lightbox.init();
-                      Y.one('.thumbnails ul li a').simulate('click');
-                   }
-                });
-                    }
                         Y.one('#enlarged-image-link').on('click',function(e){
                            if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
                               e.halt();
@@ -126,6 +117,15 @@
                            }
                         });
                     }
+                    Y.one('#enlarged-image-link').on('click',function(e){
+                       if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
+                          e.halt();
+                          e.currentTarget.removeAttribute('rel');
+                          Y.Lightbox.init();
+                          Y.one('.thumbnails ul li a').simulate('click');
+                       }
+                    });
+                //}
 
                 // Shadowbox.init({
                 //     modal: true,
@@ -145,7 +145,7 @@
                 //                         });
                 //     })
                 // };
-            });
+                });
             {/literal}
             {/script}
         {/if}
