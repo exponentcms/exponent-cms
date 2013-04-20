@@ -67,6 +67,10 @@
 	border                : 1px solid #0D1740;
 }
 
+#admintoolbar input[type="text"] {
+	width: 140px;
+}
+
 #admintoolbar li.files a.yuimenubaritemlabel {
 	background : url(../images/admintoolbar/files.png) no-repeat 5px 40%;
 }

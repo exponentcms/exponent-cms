@@ -186,6 +186,7 @@ function smarty_function_control($params, &$smarty) {
                 $control->newschool = true;
                 break;
             case "text":
+            case "search":
             case "email":
             case "url":
             case "tel":
