@@ -214,9 +214,9 @@ class eventregistrationController extends expController {
     }
 
     function upcomingEvents() {
-        $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
+        $sql = 'SELECT DISTINCT p.*, er.eventdate, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
-        $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time() . 'AND er.eventdate > ' . time();
+        $sql .= 'WHERE er.signup_cutoff > ' . time() . ' AND er.eventdate > ' . time();
 
         $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
         $order = 'eventdate';
