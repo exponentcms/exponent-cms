@@ -54,19 +54,17 @@
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][id]" value=$option->id}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][title]" value=$option->title}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}
-
                                     {control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][enable]" label=$option->title value=1 checked=$option->enable}
-                                    <a rel="mo-{$key}-{$group->title}" class="togglelink" href="#">+{'More'|gettext}...</a>
+                                    <a rel="mo-{$key}-{$group->title|strip:'_'}" class="togglelink" href="#">+{'More'|gettext}...</a>
                                 </td>
-                                <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" label=" " value=$option->updown}</td>
-                                <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" label=" " value=$option->modtype}</td>
-                                <td>{control type="text" name="optiongroups[`$group->title`][options][`$option->title`][amount]" label=" " size=6 value=$option->amount}</td>
+                                <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" value=$option->updown}</td>
+                                <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" value=$option->modtype}</td>
+                                <td>{control type="text" name="optiongroups[`$group->title`][options][`$option->title`][amount]" size=6 value=$option->amount}</td>
                                 <td>{control type="radio" name="defaults[`$group->title`]" label="Default" value=$option->title checked=$option->is_default}</td>
                             </tr>
-                            <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->title}" style="display:none">
+                            <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->title|strip:'_'}" style="display:none">
                                 <td colspan=5>
                                     {control type="text" name="optiongroups[`$group->title`][options][`$option->title`][optionweight]" label="Option Weight"|gettext size=6 value=$option->amount}
-                                    <hr>
                                 </td>
                             </tr>
                         {foreachelse}
@@ -102,7 +100,7 @@
                 if (pWidgetE != null) pWidgetE.replaceClass('expand','collapse');
             }
         }
-        Y.one('.options-partial').delegate('click',action,'div.hd');
+        Y.one('.options-partial').delegate('click', action, 'div.hd');
 
         var showit = function(e){
             e.halt();

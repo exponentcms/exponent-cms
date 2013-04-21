@@ -42,7 +42,7 @@
 	            <div id="tab1">
 	                {control type="text" name="model" label="Model #"|gettext value=$record->model}
 	                {control type="text" name="title" label="Donation Cause Title"|gettext value=$record->title}
-	                {control type="textarea" name="summary" label="Donation Cause Summary"|gettext rows=3 cols=45 value=$record->summary}
+	                {*{control type="textarea" name="summary" label="Donation Cause Summary"|gettext rows=3 cols=45 value=$record->summary}*}
 	                {control type="editor" name="body" label="Donation Cause Description"|gettext height=250 value=$record->body}
 	            </div>
 	            <div id="tab2">

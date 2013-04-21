@@ -88,9 +88,9 @@ return array(
     "feed_body"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000),
-	"summary"=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>500),
+//	"summary"=>array(
+//		DB_FIELD_TYPE=>DB_DEF_STRING,
+//		DB_FIELD_LEN=>500),
 	"featured_body"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>1000),

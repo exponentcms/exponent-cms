@@ -100,6 +100,17 @@ class update_ecom2 extends upgradescript {
             }
         }
 
+        $prod = new product();
+        $prods = $prod->find('all',1);
+        foreach ($prods as $product) {
+            if (empty($product->body) && !empty($product->summary)) {
+                $product->body = $product->summary;
+                $product->update();
+                $fixed++;
+            }
+        }
+
+
         return ($fixed?$fixed:gt('No')).' '.gt('e-Commerce settings were corrected');
 	}
 

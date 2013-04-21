@@ -17,8 +17,10 @@
     <h1>{$moduletitle|default:"Gift Card - Add to Cart"|gettext}</h1>
     <p>{'Gift Card amounts must be purchased in'|gettext} {currency_symbol}{$product->base_price}.00 {'increments'|gettext}.</p>
     {form action="addItem"}
+        {control type="hidden" name="controller" value=cart}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}
+        {control type=hidden name=options_shown value=$product->id}
         {control type="text" id="dollar_amount" name="dollar_amount" label="Dollar Amount:"|gettext value=$record->dollar_amount size=7 filter=money}
         {control type="text" name="to" label="To:"|gettext value=$record->to}
         {control type="text" name="from" label="From:"|gettext value=$record->from}

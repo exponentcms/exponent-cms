@@ -33,11 +33,11 @@
     <table class="qty-discount">
         <tr>
             <td>{'If a customer purchases more than'|gettext} </td>
-            <!--td>{control type="dropdown" name="pricing[quantity_discount_num_items_mod]" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->
-            <td>{control type="text" name="pricing[quantity_discount_num_items]" label=" " value=$record->quantity_discount_num_items size=3 filter=integer}</td>
+            <!--td>{control type="dropdown" name="pricing[quantity_discount_num_items_mod]" items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->
+            <td>{control type="text" name="pricing[quantity_discount_num_items]" value=$record->quantity_discount_num_items size=3 filter=integer}</td>
             <td>{'items, then discount the price by'|gettext}</td>
-            <td>{control type="text" name="pricing[quantity_discount_amount]" label=" " value=$record->quantity_discount_amount size=3 filter=decimal}
-            <td>{control type="dropdown" name="pricing[quantity_discount_amount_mod]" label=" " items=$record->quantity_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
+            <td>{control type="text" name="pricing[quantity_discount_amount]" value=$record->quantity_discount_amount size=3 filter=decimal}
+            <td>{control type="dropdown" name="pricing[quantity_discount_amount_mod]" items=$record->quantity_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
         </tr>
         <tr>
             <td colspan="6">{control type="checkbox" name="pricing[quantity_discount_apply]" label="Only apply discount to the items over the discount limit"|gettext value=1 checked=$record->quantity_discount_apply postfalse=1}</td>

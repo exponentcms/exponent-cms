@@ -51,11 +51,12 @@
             </div>
         {/permissions}
         <span><h4>{($product->eventdate+$product->event_starttime)|expdate:"g:i a"}
-        {if $product->eventdate+$product->event_starttime != $product->eventdate+$product->event_endtime}
-            - {($product->eventdate+$product->event_endtime)|expdate:"g:i a"}
-            {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
-            <em class="attribution">({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if})</em></span></h4>
-        {/if}
+            {if $product->eventdate+$product->event_starttime != $product->eventdate+$product->event_endtime}
+                - {($product->eventdate+$product->event_endtime)|expdate:"g:i a"}
+                {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
+                <em class="attribution">({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if})</em>
+            {/if}
+            </h4></span>
         {if !empty($product->location)}
             <h4>{'Location'|gettext}: {$product->location}</h4>
         {/if}

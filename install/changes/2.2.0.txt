@@ -5,7 +5,7 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
     -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
   - adds theme export feature
-  - adds new 'blog' site sample in addition to 'sample site' during installation
+  - adds new 'blog' & 'ecommerce store' site sample in addition to 'sample site' during installation
   - adds category support to blog module
     -- adds new comments and categories views to blog
   - adds file upload pause, resume, & cancel feature

@@ -64,8 +64,8 @@ class giftcard extends expRecord {
     }
 
     function addToCart($params) {
-
         global $order;
+
         expSession::set('params', $params);
         //get the configuration
         $cfg = new stdClass();
@@ -132,6 +132,27 @@ class giftcard extends expRecord {
             $item->save();
             return true;
         }
+    }
+
+    function displayForm($form, $params) {
+        // eDebug($form, true);
+        //$product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
+        //$product = new $product_type($this->params['product_id'],true,true);
+        //eDebug($product);
+        //if (!empty($product->user_input_fields)) $product->user_input_fields = expUnserialize($product->user_input_fields);
+        //eDebug($product);
+        $form = new controllertemplate(new storeController(), $this->getForm($form));
+        $form->assign('params', $params);
+        $form->assign('product', $this);
+        if (!empty($params['children'])) {
+            $form->assign('children', $params['children']);
+        }
+
+        /*if (!empty($this->params['children']))
+        {
+            $form->assign('children', expUnserialize($this->params['children']));
+        }*/
+        echo $form->render();
     }
 
     public function hasUserInputFields() {

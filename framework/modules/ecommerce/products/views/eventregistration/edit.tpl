@@ -47,7 +47,7 @@
                     {control type="text" name="quantity" label="Number of seats available"|gettext filter=integer size=4 value=$record->quantity}
 					{control type="text" name="location" label="Event Location"|gettext value=$record->location}
                     {*{control type="editor" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}
-                    {control type="textarea" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}
+                    {*{control type="textarea" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}
                     {control type="editor" name="body" label="Event Description"|gettext height=250 value=$record->body}
                 </div>
                 <div id="tab2">

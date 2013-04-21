@@ -86,7 +86,7 @@ class datetimecontrol extends formcontrol {
             $html .= '<input class="text" type="text" id="' . $name . '_day" name="' . $name . '_day" size="3" maxlength="2" value="' . $default_date['mday'] . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<input class="text" id="' . $name . '_year" name="' . $name . '_year" size="5" maxlength="4" value="' . $default_date['year'] . '"';
+            $html .= '<input class="text" type="text" id="' . $name . '_year" name="' . $name . '_year" size="5" maxlength="4" value="' . $default_date['year'] . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
             $html .= '</div>';

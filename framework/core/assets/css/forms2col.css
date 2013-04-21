@@ -13,10 +13,13 @@
 }
 
 .control .spacer {
-  display: block;
+    display: block!important;
     background: transparent;
 }
 
+.control .label:empty {
+    display: block!important;
+}
 
 .control.radio .label {
     width: auto;  /* make radio buttons look normal */

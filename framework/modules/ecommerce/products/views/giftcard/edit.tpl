@@ -36,7 +36,7 @@
             <div class="yui-content">
 	            <div id="tab1">
 	                {control type="text" name="title" label="Title"|gettext value=$record->title}
-	                {control type="textarea" name="summary" label="Gift Card Summary"|gettext rows=3 cols=45 value=$record->summary}
+	                {*{control type="textarea" name="summary" label="Gift Card Summary"|gettext rows=3 cols=45 value=$record->summary}*}
 	                {control type="editor" name="body" label="Gift Card Description"|gettext height=250 value=$record->body}
 	            </div>
 	            <div id="tab2">

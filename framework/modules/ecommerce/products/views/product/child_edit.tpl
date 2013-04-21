@@ -47,7 +47,7 @@
                         {control type="text" class="title" name="title" label="Product Name"|gettext value=$record->title}
                         {control type="dropdown" name="companies_id" label="Manufacturer"|gettext includeblank=true frommodel=company value=$record->companies_id}
                         {icon class="manage" controller="company" action="showall" text="Manage Manufacturers"|gettext}
-                        {control type="textarea" name="summary" label="Product Summary"|gettext rows=3 cols=45 value=$record->summary}
+                        {*{control type="textarea" name="summary" label="Product Summary"|gettext rows=3 cols=45 value=$record->summary}*}
                         {control type="editor" name="body" label="Product Description"|gettext height=250 value=$record->body}
                     </div>
                     <div id="pricing">

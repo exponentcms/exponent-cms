@@ -140,6 +140,11 @@ input.radio {
 	padding-left : 5px;
 }
 
+.datetime.date .text {
+	width: 60px;
+	margin-left : 5px;
+}
+
 /****************  quick style helpers  ***********************/
 .control.thirds {
 	float        : left;

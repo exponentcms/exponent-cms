@@ -9,6 +9,7 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.2.0 release candidate 1
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
+  - adds an 'ecommerce store' sample database
 ### Known Issues
   - None
 

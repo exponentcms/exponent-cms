@@ -49,7 +49,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         echo '<div id="'.$params['unique'].'" class="yui3-module">
             <div id="head" class="yui3-hd">
-                <h3 id="h3-'.$params['unique'].'" title="'.gt('Click to Expand').'">'.$params['title'].'</h3>
+                <h4 id="h4-'.$params['unique'].'" title="'.gt('Click to Expand').'">'.$params['title'].'</h4>
                 <a id="a-'.$params['unique'].'" title="'.gt('Click to Expand').'" class="yui3-toggle"></a>
             </div>
         ';
@@ -140,10 +140,10 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             ";
         $script .= "
             if (module.hasClass('yui3-closed'))  {
-                Y.one('#h3-".$params['unique']."').set('title','".gt('Click to Expand')."');
+                Y.one('#h4-".$params['unique']."').set('title','".gt('Click to Expand')."');
                 Y.one('#a-".$params['unique']."').set('title','".gt('Click to Expand')."');
             } else {
-                Y.one('#h3-".$params['unique']."').set('title','".gt('Click to Collapse')."');
+                Y.one('#h4-".$params['unique']."').set('title','".gt('Click to Collapse')."');
                 Y.one('#a-".$params['unique']."').set('title','".gt('Click to Collapse')."');
             }
         };
@@ -173,7 +173,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
                 ";
             }
             $script .= "
-            Y.one('#h3-".$params['unique']."').set('title','".gt('Click to Expand')."');
+            Y.one('#h4-".$params['unique']."').set('title','".gt('Click to Expand')."');
             Y.one('#a-".$params['unique']."').set('title','".gt('Click to Expand')."');
             ";
         }

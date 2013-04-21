@@ -36,6 +36,7 @@
     </blockquote>
     {clear}
     {form controller=cart action=addItem id="options-uifields"}
+        {control type="hidden" name="controller" value=cart}
         {control type=hidden name=product_id value=$product->id}
         {control type=hidden name=product_type value=$product->classname}			        
         {control type=hidden name=options_shown value=$product->id}                    
