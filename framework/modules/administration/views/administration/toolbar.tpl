@@ -163,7 +163,7 @@
              // });
          });
 
-         Y.one('#ordernum').on('click',function(e){
+        if (document.getElementById("ordernum")) Y.one('#ordernum').on('click',function(e){
             Y.later(100, e, function(e) {
                 e.focus();
             }, e.currentTarget);
