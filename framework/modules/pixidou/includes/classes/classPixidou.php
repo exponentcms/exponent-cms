@@ -137,8 +137,11 @@
 		public function crop($width, $height, $xCoordinate, $yCoordinate){
 			// get extension
 			$extension = $this->uploadedFile->file_src_name_ext;
-			
-			// original image
+
+            // get original image width and height
+            list($originalWidth, $originalHeight) = getimagesize($this->destDirectory.'/'.$this->imageFile);
+
+            // original image
 			switch($extension){
 				case 'jpg':
 				case 'jpeg':
@@ -156,13 +159,17 @@
 				
 			// crop part
 			$cropImage = imagecreatetruecolor($width, $height);
-				
-			// get original image width and height
-			list($originalWidth, $originalHeight) = getimagesize($this->destDirectory.'/'.$this->imageFile);
-				
-			// do the cropping
-			imagecopyresized($cropImage, $originalImage, 0, 0, $xCoordinate, $yCoordinate, $width, $height, $width, $height);
-	
+
+            // compensate for image transparency
+            imagealphablending($cropImage, false);
+
+            // do the cropping
+//			imagecopyresized($cropImage, $originalImage, 0, 0, $xCoordinate, $yCoordinate, $width, $height, $width, $height);
+            imagecopyresampled($cropImage, $originalImage, 0, 0, $xCoordinate, $yCoordinate, $width, $height, $width, $height);
+
+            // add transparency to resized image
+            imagesavealpha($cropImage, true);
+
 			//get body part of file name to generate a new one
 			$bodyPart = $this->uploadedFile->file_src_name_body.'_1';
 			
