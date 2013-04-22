@@ -86,7 +86,9 @@ class expCSS {
                     echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
                 }
             }
-            echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+            if (!empty($params['link'])){
+                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+            }
 		    echo "</div>";
         }
     }    
