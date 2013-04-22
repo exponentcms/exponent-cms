@@ -20,14 +20,20 @@
 {script unique="hidePasswordFields" yui3mods=1}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-     // start coding
-     var checkbox = Y.one('#remember_me'); //the checkbox
-     if (checkbox){
-         checkbox.on('click',function(e){
-             var psswrd = Y.one("#passwordDiv .passwords");//div wrapping the password boxs
-             psswrd.toggleClass('hide');
-         });
-     }
+    // start coding
+    var checkbox = Y.one('#remember_me'); //the checkbox
+    if (checkbox){
+        checkbox.on('click',function(e){
+            var psswrd = Y.one("#passwordDiv .passwords");
+            psswrd.toggleClass('hide');
+    var tmp = Y.one("#passwordDiv .hide");
+            if (Y.one("#passwordDiv .hide") == null) {
+                psswrd.all('input').setAttribute('required','required');
+            } else {
+                psswrd.all('input').removeAttribute('required');
+            }
+        });
+    }
 })
 {/literal}
 {/script}
@@ -52,7 +58,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         {control type=text name=address1 label="Street Address"|gettext required=true value=$record->address1}
         {control type=text name=address2 label="Apt/Suite #"|gettext value=$record->address2}
         {control type=text name=city label="City"|gettext required=true value=$record->city}
-        
         {if ($user->is_admin || $user->is_acting_admin) && $admin_config == true}
             {control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext value=$record->state add_other=true}
             {control type=text name=non_us_state label="&#160;"|cat:"Non U.S. State/Province"|gettext value=$record->non_us_state}
@@ -61,13 +66,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             {control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext value=$record->state}
             {control type=country name=country label="&#160;"|cat:"Country"|gettext value=$record->country}
         {/if}
-        
         {control type=text name=zip label="Zip/Postal Code"|gettext required=true value=$record->zip}
         {control type="text" name="phone" label="Phone Number"|gettext|cat:" <span class=\"example\">ex: 480-555-4200</span>" required=true value=$record->phone}
         {control type="dropdown" name="address_type" label="Address Type"|gettext items="Business,Military,Residential"|gettxtlist values="Business,Military,Residential"|gettxtlist default=$record->address_type|default:"Residential"}
         {control type="text" name="email" label="Email Address"|gettext required=true value=$record->email}
         {if !$user->isLoggedIn()}
- 
             <div id="passwordDiv">
                 {control type="checkbox" flip=1 id="remember_me" name="remember_me" label="Remember Me"|gettext|cat:"?" value=1 checked=true}
                 <p>
@@ -80,10 +83,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 </div>
             </div>
             
-            <!--The following field is an anti-spam measure to prevent fradulent account creation. -->
+            <!--The following field is an anti-spam measure to prevent fraudulent account creation. -->
             {* control type="antispam" *}
         {/if}
         {control type=buttongroup submit="Save Address and Continue"|gettext cancel="Cancel"|gettext}
-        
     {/form}
 </div>
