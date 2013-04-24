@@ -20,7 +20,7 @@
                 <a style="margin: 0px; padding:0px" href="{link action=show controller=eventregistration title=$item->product->getSEFURL() orderitem_id=$item->id}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
             {else}
                 {img src="`$asset_path`images/no-image.jpg"}
-                {'No Image Available'|gettext}
+                {*{'No Image Available'|gettext}*}
             {/if}
         </td>
         <td>

@@ -252,6 +252,8 @@ class eventregistration extends expRecord {
         $view->assign('product', $this);
         $view->assign('item', $item);
 
+        $view->assign('asset_path', PATH_RELATIVE ."framework/modules/ecommerce/assets/");
+
         // grab the options
         $options = expUnserialize($item->options);
         $view->assign('options', $options);

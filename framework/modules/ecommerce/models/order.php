@@ -776,7 +776,7 @@ class order extends expRecord {
                 if (!empty($orderitem_id)) {  // does it need to be a specific order line item
                     if ($item->id == $orderitem_id) {
                         return $item;
-                    } else return false;  // didn't find it as a specific order line item
+                    }
                 } else return $item;
             }
         }
