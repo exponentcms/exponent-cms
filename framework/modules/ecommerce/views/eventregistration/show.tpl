@@ -76,6 +76,7 @@
                 {*{control type="hidden" name="base_price" value="`$product->base_price`"}*}
                 {control type="hidden" name="base_price" value="`$product->getBasePrice()`"}
                 {control type="hidden" name="product_type" value="`$product->product_type`"}
+                {control type="hidden" name="orderitem_id" value="`$orderitem_id`"}
                 {*{control type="hidden" name="quick" value="1"}*}
                 {if $product->spacesLeft() && $product->signup_cutoff >= time()}
                     <span class="label">{'Registration Closes:'|gettext} </span>
@@ -84,7 +85,7 @@
                     <span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
                     <div class="seatsContainer">
                         <div class="seatStatus">
-                            {$seats = implode(',',range(1,$product->spacesLeft()))}
+                            {$seats = implode(',',range(1,min($product->spacesLeft(),12)))}
                             {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
                         </div>
                         <div class="seatAmount prod-price">

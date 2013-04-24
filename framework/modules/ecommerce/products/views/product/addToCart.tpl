@@ -91,4 +91,3 @@
         {control type="buttongroup" submit="Add to cart"|gettext}
     {/form}
 </div>
-

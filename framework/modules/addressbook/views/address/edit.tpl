@@ -26,7 +26,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         checkbox.on('click',function(e){
             var psswrd = Y.one("#passwordDiv .passwords");
             psswrd.toggleClass('hide');
-    var tmp = Y.one("#passwordDiv .hide");
             if (Y.one("#passwordDiv .hide") == null) {
                 psswrd.all('input').setAttribute('required','required');
             } else {

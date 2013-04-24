@@ -1673,7 +1673,9 @@ exit();
         $sessAr = expSession::get('verify_shopper');
         if (isset($sessAr)) {
             assign_to_template(array(
-                'firstname'=> $sessAr['firstname']
+                'firstname'=> $sessAr['firstname'],
+                'cid'=> $sessAr['cid']
+
             ));
             /*eDebug(expSession::get('verify_shopper'));
             eDebug($this->params);

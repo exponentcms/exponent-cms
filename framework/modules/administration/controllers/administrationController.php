@@ -1004,6 +1004,8 @@ class administrationController extends expController {
             $themeclass = $this->params['theme'];
 			$theme = new $themeclass();
 			$theme->saveThemeConfig($this->params);
+            expTheme::removeSmartyCache();
+            expSession::clearAllUsersSessionCache();
 		}
 	}
 

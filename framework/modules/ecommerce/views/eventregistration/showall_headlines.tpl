@@ -13,6 +13,14 @@
  *
  *}
 
+{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="common"}
+
+{/css}
+
+{css unique="event-listings1" link="`$asset_path`css/eventregistration.css"}
+
+{/css}
+
 <div class="module store upcoming-events">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
@@ -32,7 +40,7 @@
         {foreach name=uce from=$page->records item=item}
             {if $smarty.foreach.uce.iteration<=$config.headcount || !$config.headcount}
                 <li>
-                    <a href="{link controller=eventregistration action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
+                    <a {if $item->eventdate < time()}class="date past" {/if}href="{link controller=eventregistration action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</a>
                     {*<p>{$item->summary|truncate:75:"..."}</p>*}
                     {permissions}
                         <div class="item-actions">

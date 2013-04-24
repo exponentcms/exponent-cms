@@ -462,12 +462,15 @@ class product extends expRecord {
         $viewname = $this->getForm('cartSummary');
         if (!$viewname) return null;
 
-        $options = expUnserialize($item->options);
         $view = new controllertemplate($this, $viewname);
         $view->assign('product', $this);
         $view->assign('item', $item);
+
+        // grab the options
+        $options = expUnserialize($item->options);
         $view->assign('options', $options);
-        return $view->render('cartSummary');
+
+        return $view->render();
     }
 
     public function getSEFURL() {

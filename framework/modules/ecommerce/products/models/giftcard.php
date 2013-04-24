@@ -52,11 +52,11 @@ class giftcard extends expRecord {
         $view->assign('product', $this);
         $view->assign('item', $item);
 
-        // grab all the registrants
+        // grab the message
         $message = expUnserialize($item->extra_data);
         $view->assign('message', $message);
 
-        return $view->render('cartSummary');
+        return $view->render();
     }
 
     function getPrice($orderitem = null) {

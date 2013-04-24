@@ -17,14 +17,14 @@
     <tr>
         <td class="cart-image">
             {if $item->product->expFile.mainimage[0]->id}
-                <a style="margin: 0px; padding:0px" href="{link action=show controller=eventregistration title=$item->product->getSEFURL()}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
+                <a style="margin: 0px; padding:0px" href="{link action=show controller=eventregistration title=$item->product->getSEFURL() orderitem_id=$item->id}">{img file_id=$item->product->expFile.mainimage[0]->id h=50 w=50 zc=1 class="border"}</a>
             {else}
                 {img src="`$asset_path`images/no-image.jpg"}
                 {'No Image Available'|gettext}
             {/if}
         </td>
         <td>
-            <span class="itemname"><strong><a style="margin: 0px; padding:0px" href="{link action=show controller=eventregistration title=$item->product->getSEFURL()}">{$item->products_name}</a></strong></span>
+            <span class="itemname"><strong><a style="margin: 0px; padding:0px" href="{link action=show controller=eventregistration title=$item->product->getSEFURL() orderitem_id=$item->id}">{$item->products_name}</a></strong></span>
             {if $number > 0 || $options|@count > 0}
                 <div class="options">
                     <a href="javascript:void();" class="infoicon">{'Registering'|gettext} {$number} {'people'|gettext}:</a>

@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
+{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="common"}
 
 {/css}
 
@@ -61,7 +61,7 @@
                             </a>
                         </div>
                         <div class="event-info">
-                            <em class="date">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
+                            <em class="date{if $item->eventdate < time()} past{/if}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
                             {if $item->getBasePrice()}<p>{'Cost'|gettext}: {$item->getBasePrice()|currency}</p>{/if}
                             <p>{$item->body|truncate:175:"..."}</p>
                             {*<a href="{link action=show title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}

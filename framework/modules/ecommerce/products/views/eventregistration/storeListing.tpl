@@ -24,8 +24,7 @@
             {/if}
         </a>
     </div>
-
-    {permissions}
+   {permissions}
     <div class="item-actions">
         {if $permissions.configure == 1 or $permissions.manage == 1}
             {icon action=edit id=$listing->id title="Edit this entry"|gettext}
@@ -33,7 +32,6 @@
         {/if}
     </div>
     {/permissions}
-
     <h3><a href="{link controller=store action=show title=$listing->sef_url}">{$listing->title}</a></h3>
     <div class="bodycopy">
         <strong class="date">{$listing->eventdate|date_format:"%a, %B %e"}</strong> -

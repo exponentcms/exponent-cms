@@ -325,7 +325,6 @@ class eventregistrationController extends expController {
         $id = isset($this->params['title']) ? addslashes($this->params['title']) : $this->params['id'];
         $product = new eventregistration($id);
 
-        //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
         //FIXME we only have 0=active & 2=inactive ???
 //        $product_type = new stdClass();
         if ($product->active_type == 1) {
@@ -337,18 +336,20 @@ class eventregistrationController extends expController {
             $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
         }
 
-        $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $product->id);
         $order_registrations = array();
-        if (!empty($registrants)) foreach ($registrants as $registrant) {
-            $order_registrations[] = expUnserialize($registrant->value);
-        }
-
-        $item = $order->isItemInCart($product->id, $product->product_type);
-        if (!empty($item)) {
-            $params['options'] = $item->opts;
-            assign_to_template(array(
-               'params'=> $params,
-           ));
+        if (!empty($this->params['orderitem_id'])) {  // editing an event already in the cart?
+            $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND orderitem_id =" . $this->params['orderitem_id'] . " AND event_id =" . $product->id);
+            if (!empty($registrants)) foreach ($registrants as $registrant) {
+                $order_registrations[] = expUnserialize($registrant->value);
+            }
+            $item = $order->isItemInCart($product->id, $product->product_type, $this->params['orderitem_id']);
+            if (!empty($item)) {
+                $params['options'] = $item->opts;
+                assign_to_template(array(
+                    'params'=> $params,
+                    'orderitem_id'=>$item->id
+               ));
+            }
         }
 
         //eDebug($product, true);

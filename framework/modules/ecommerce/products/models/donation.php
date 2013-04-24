@@ -105,7 +105,7 @@ class donation extends product {
 //        $message = expUnserialize($item->extra_data);
 //        $view->assign('message', $message);
 
-        return $view->render('cartSummary');
+        return $view->render();
     }
 
     function getPrice($orderitem = null) {

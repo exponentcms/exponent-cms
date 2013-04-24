@@ -35,11 +35,14 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000,
         DB_INDEX=>10), 
-     'connector_id'=>array(
-         DB_FIELD_TYPE=>DB_DEF_STRING,
-         DB_FIELD_LEN=>255),
-	 'registered_date'=>array(
-		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'connector_id'=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>255),
+    'orderitem_id'=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>255),
+	'registered_date'=>array(
+	    DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 );
 
 ?>

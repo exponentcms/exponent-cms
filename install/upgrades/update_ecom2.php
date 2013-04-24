@@ -45,14 +45,15 @@ class update_ecom2 extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-        $cfg = new stdClass();
-        $this->loc->mod = "cart";
-        $this->loc->src = "@globalcartsettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
-        if (!empty($config)) {
-            return true;
-        } else return false;
+//        $cfg = new stdClass();
+//        $cfg->mod = "cart";
+//        $cfg->src = "@globalcartsettings";
+//        $cfg->int = "";
+//        $config = new expConfig($cfg);
+//        if (!empty($config)) {
+//            return true;
+//        } else return false;
+        return true;
 	}
 
 	/**
@@ -65,8 +66,8 @@ class update_ecom2 extends upgradescript {
         $fixed = 0;
         // move cart settings into store settings
         $cartcfg = new stdClass();
-        $this->loc->mod = "cart";
-        $this->loc->src = "@globalcartsettings";
+        $cartcfg->mod = "cart";
+        $cartcfg->src = "@globalcartsettings";
         $cartcfg->int = "";
         $cartconfig = new expConfig($cartcfg);
         $cfg = new stdClass();

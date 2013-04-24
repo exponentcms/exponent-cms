@@ -11,7 +11,7 @@ Added / Fixed / changed for 2.2.0 release candidate 1
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
   - adds an 'ecommerce store' sample database
 ### Known Issues
-  - None
+  - There is no media player migration script, but you can migrate youtube/flowplayer modules, then run the media player upgrade script
 
 Added / Fixed / changed for 2.2.0 beta 3
 -----------------------
@@ -22,8 +22,6 @@ Added / Fixed / changed for 2.2.0 beta 3
     -- allows switching to similar type control after creation
   - updates style of maintenance/site-down page
   - includes fixes/tweaks from the unreleased 2.1.4+ branch, plus many more fixes
-### Known Issues
-  - None
 
 Added / Fixed / changed for 2.2.0 beta 2
 -----------------------
@@ -34,8 +32,6 @@ Added / Fixed / changed for 2.2.0 beta 2
   - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
   - implements broader use of ajax paging and use of new html5 input types, temporarily adds additional date/time form designer controls
   - contains all the fixes in 2.1.4, and many more fixes
-### Known Issues
-  - None
 
 Added / Fixed / changed for 2.2.0 beta 1
 -----------------------
@@ -48,8 +44,6 @@ Added / Fixed / changed for 2.2.0 beta 1
   - adds ability to optionally run selected 'upgrade scripts' outside of installation
   - moves /conf folder inside /framework to help streamline folder structure
   - contains all the fixes in 2.1.4
-### Known Issues
-  - None
 
 Added / Fixed / changed for 2.2.0 alpha 3
 -----------------------
@@ -63,8 +57,6 @@ Added / Fixed / changed for 2.2.0 alpha 3
   - adds file upload pause, resume, & cancel feature
   - adds normalize.css and Twitter Bootstrap as system (theme) features
   - contains all the fixes in 2.1.3
-### Known Issues
-  - None
 
 Added / Fixed / changed for 2.2.0 alpha 2
 -----------------------
@@ -72,8 +64,6 @@ Added / Fixed / changed for 2.2.0 alpha 2
   - Fixes the 'nested container not displayed' issue
   - Removes all the 'old school' files
   - Contains all the fixes from v2.1.2
-### Known Issues
-  - None
 
 Added / Fixed / changed for 2.2.0 alpha 1
 -----------------------

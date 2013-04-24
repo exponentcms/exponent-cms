@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
+{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="common"}
 
 {/css}
 

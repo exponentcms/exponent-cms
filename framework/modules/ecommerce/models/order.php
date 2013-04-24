@@ -767,12 +767,18 @@ class order extends expRecord {
         return $invoice_num;
     }
 
-    public function isItemInCart($id, $type) {
+    public function isItemInCart($id, $type, $orderitem_id=null) {
         if (empty($id) || empty($type)) return false;
 
         foreach ($this->orderitem as $item) {
             // return true if we find the item in the users cart
-            if ($item->product_type == $type && $item->product_id == $id) return $item;
+            if ($item->product_type == $type && $item->product_id == $id) {
+                if (!empty($orderitem_id)) {  // does it need to be a specific order line item
+                    if ($item->id == $orderitem_id) {
+                        return $item;
+                    } else return false;  // didn't find it as a specific order line item
+                } else return $item;
+            }
         }
 
         // if we make it here we didn't find the item

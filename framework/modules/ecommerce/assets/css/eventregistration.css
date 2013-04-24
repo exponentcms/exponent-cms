@@ -62,6 +62,10 @@ showall_headlines view
 show view
 */
 
+.showall .date.past {
+    text-decoration: line-through;
+}
+
 .seatsContainer {
     background: none repeat scroll 0 0 #EBD98E;
     border-bottom: 1px solid #CEBB6C;

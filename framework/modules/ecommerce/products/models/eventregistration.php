@@ -264,7 +264,7 @@ class eventregistration extends expRecord {
         $number = count($registrants);
         $view->assign('number', $number);
 
-        return $view->render('cartSummary');
+        return $view->render();
     }
 
     function getBasePrice($orderitem = null) {
@@ -395,6 +395,14 @@ class eventregistration extends expRecord {
 //        if (!empty($params['event'])) {
 //            $sess_id = session_id();
         $sess_id = expSession::getTicketString();
+        expSession::set('session_id', $sess_id);
+
+ //        $item = new orderitem($params);
+        // if the item is in the cart already use it, if not we'll create a new one
+        if (!empty($params['orderitem_id'])) $item = $order->isItemInCart($params['product_id'], $params['product_type'], $params['orderitem_id']);
+        if (empty($item->id)) $item = new orderitem($params);
+        $item->save();
+
         //FIXME for now we'll just add a new registration 'purchase' to the cart since that's the way the code flows.
 //        $data = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
 //        if (!empty($data)) {
@@ -407,31 +415,28 @@ class eventregistration extends expRecord {
 //                }
 //            }
 //        } else {
-        // new reservation
-        $db->delete("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
+        // we're replacing an existing registration based on updated input
+        if (!empty($params['orderitem_id'])) $db->delete("eventregistration_registrants", "connector_id ='{$order->id}' AND orderitem_id ='" . $params['orderitem_id'] . "' AND event_id ='" . $params['product_id'] ."'");
         if (!empty($params['event'])) foreach ($params['event'] as $key => $value) {
             $obj = new stdClass();
             $obj->event_id = $params['product_id'];
             $obj->control_name = $key;
             $obj->value = serialize($value);
             $obj->connector_id = $order->id;
+            $obj->orderitem_id = $item->id;
             $obj->registered_date = time();
             $db->insertObject($obj, "eventregistration_registrants");
         } else {
             $obj = new stdClass();
             $obj->event_id = $params['product_id'];
             $obj->connector_id = $order->id;
+            $obj->orderitem_id = $item->id;
             $obj->registered_date = time();
             $db->insertObject($obj, "eventregistration_registrants");
         }
 //        }
-        expSession::set('session_id', $sess_id);
 //        }
 
-//        $item = new orderitem($params);
-        // if the item is in the cart already use it, if not we'll create a new one
-        $item = $order->isItemInCart($params['product_id'], $params['product_type']);
-        if (empty($item->id)) $item = new orderitem($params);
         $item->extra_data = serialize($params['event']);
 
         $product = new eventregistration($params['product_id']);
