@@ -110,8 +110,8 @@ function smarty_function_ddrerank($params, &$smarty) {
             $odd = "even";
             $stringlen = 40;
             foreach ($params['items'] as $item) {
-                if (!empty($params['module'])) {
-                    if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control') {
+                if (!empty($params['module']) || $params['model'] == 'expDefinableField') {
+                    if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control' || $params['model'] == 'expDefinableField') {
                         $control = expUnserialize($item->data);
                         $ctrl = new $control();
                         $name = $ctrl->name();

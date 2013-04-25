@@ -125,15 +125,15 @@ if (!function_exists('smarty_function_ddrerank')) {
                 $odd = "even";
                 $stringlen = 40;
                 foreach ($params['items'] as $item) {
-                    if (!empty($params['module'])) {
-                    if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control') {
+                    if (!empty($params['module']) || $params['model'] == 'expDefinableField') {
+                        if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control' || $params['model'] == 'expDefinableField') {
                             $control = expUnserialize($item->data);
                             $ctrl = new $control();
                             $name = $ctrl->name();
 //                            $name = $control::name();
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
                             $stringlen = 65;
-                    } elseif ($params['module'] == 'container' || $params['module'] == 'container2') {
+                        } elseif ($params['module'] == 'container' || $params['module'] == 'container2') {
                             $mod = expUnserialize($item->internal);
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleBaseName($mod->mod)) . ')';
                             $stringlen = 65;
