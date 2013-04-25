@@ -928,7 +928,11 @@ class formsController extends expController {
             // update control with data from form
 //            $ctl1 = new $this->params['control_type']();
 //            $ctl1 = expCore::cast($ctl1,$ctl);
-            $ctl1 = expCore::cast($ctl,$this->params['control_type']);
+            if (!empty($ctl)) {
+                $ctl1 = expCore::cast($ctl,$this->params['control_type']);
+            } else {
+                $ctl1 = $ctl;
+            }
             if (call_user_func(array($this->params['control_type'], 'useGeneric')) == true) {
                 $ctl1 = call_user_func(array('genericcontrol', 'update'), $this->params, $ctl1);
             } else {
