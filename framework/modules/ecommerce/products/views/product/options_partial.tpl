@@ -33,10 +33,11 @@
                                 {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
                                 {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
                                 {control type="hidden" name="optiongroups[`$group->title`][optiongroup_master_id]" value=$group->optiongroup_master_id}
-                                {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}
+                                {control type="hidden" name="optiongroups[`$group->title`][rank]" value=$group->rank}
+                                {*{control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}*}
                                 {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required"|gettext value=1 checked=$group->required}
-                                {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple}
-                                {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Multiple"|gettext value=1 checked=$group->allow_multiple}
+                                {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple description='Displayed as a dropdown'|gettext}
+                                {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Multiple"|gettext value=1 checked=$group->allow_multiple description='Displayed as checkboxes'|gettext}
                             </th>
                         </tr>
                         <tr class="column-label">

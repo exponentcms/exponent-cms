@@ -12,6 +12,9 @@ function adminer_object() {
     
     $plugins = array(
         // specify enabled plugins here
+//        new AdminerDumpAlter,
+//        new AdminerDumpDate,
+        new AdminerDumpZip,
         new AdminerEditCalendar,
         new AdminerCKeditor,
 //        new AdminerEditTextarea,

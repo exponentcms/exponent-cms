@@ -22,7 +22,8 @@
  */
 class billingcalculator extends expRecord {
     public $table = 'billingcalculator';
-    public function isRestricted() { return false; }    
+    public function captureEnabled() {return false; }
+    public function isRestricted() { return false; }
     
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {        
         parent::__construct($params, $get_assoc, $get_attached);

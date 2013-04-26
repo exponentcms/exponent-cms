@@ -14,7 +14,7 @@
  *}
 
 {if $record->parent_id == 0}
-	<h2>{'User Input Fields'|gettext}</h2>
+	<h2>{'User Input'|gettext}</h2>
 	{control type="hidden" name="tab_loaded[userinput]" value=1} 
 	<blockquote>
         {'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}

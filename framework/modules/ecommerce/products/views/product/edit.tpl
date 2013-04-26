@@ -48,7 +48,7 @@
                     <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_featured"}">{'Featured'|gettext}</a></li>
                     <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_related"}">{'Related Products'|gettext}</a></li>
                 {/if}
-                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_userinput"}">{'User Input Fields'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_userinput"}">{'User Input'|gettext}</a></li>
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_status"}">{'Active'|gettext} &amp; {'Status Settings'|gettext}</a></li>
                 {if $record->parent_id == 0}
                     <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_meta"}">{'SEO'|gettext}</a></li>

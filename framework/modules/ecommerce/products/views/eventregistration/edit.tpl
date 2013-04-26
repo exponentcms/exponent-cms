@@ -23,7 +23,6 @@
     {else}
         <h1>{'New'|gettext} {$record->product_name}</h1>
     {/if}
-    {ddrerank model="expDefinableField" items=$definablefields label="User Input Fields"|gettext id="definable_field_registrant" sortfield="name"}
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="product_type" value=$record->product_type}
@@ -35,9 +34,9 @@
 	            <li><a href="#tab2"><em>{'Dates'|gettext}</em></a></li>
 	            <li><a href="#tab3"><em>{'Pricing'|gettext}</em></a></li>
                 <li><a href="#tab4"><em>{'Options'|gettext}</em></a></li>
-	            <li><a href="#tab5"><em>{'Images & Files'|gettext}</em></a></li>
-	            <li><a href="#tab6"><em>{'SEO'|gettext}</em></a></li>
-				<li><a href="#tab7"><em>{'User Input Fields'|gettext}</em></a></li>
+                <li><a href="#tab5"><em>{'User Input'|gettext}</em></a></li>
+	            <li><a href="#tab6"><em>{'Images & Files'|gettext}</em></a></li>
+	            <li><a href="#tab7"><em>{'SEO'|gettext}</em></a></li>
 				<li><a href="#tab8"><em>{'Waiver'|gettext}</em></a></li>
 				<li><a href="#tab9"><em>{'Status'|gettext}</em></a></li>
             </ul>
@@ -53,11 +52,11 @@
                 <div id="tab2">
                     <h2>{'Event Date/Time'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="eventdate" label="Start Date of Event"|gettext value=$record->eventdate}
-					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate}
+					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate description='Only used for display purposes'|gettext}
                     {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime+$record->eventdate showdate=false}
                     {control type="datetimecontrol" name="event_endtime" label="End Time"|gettext value=$record->event_endtime+$record->eventdate showdate=false}
                     <h2>{'Signup Cutoff'|gettext}</h2>
-					{control type="yuicalendarcontrol" name="signup_cutoff" label="No registrations after"|gettext value=$record->signup_cutoff showtime = true}
+					{control type="yuicalendarcontrol" name="signup_cutoff" label="Registrations is closed after"|gettext value=$record->signup_cutoff showtime = true}
                 </div>
                 <div id="tab3">
                     {control type="text" name="base_price" label="Event Price"|gettext value=$record->base_price filter=money}
@@ -116,40 +115,56 @@
                 <div id="tab4">
                     <h2>{'Add options to your product.'|gettext}</h2>
                     {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
-                    {'By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
-                    {'By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group.'|gettext} {br}
-                    {'Select Single presents the option group as a dropdown field where they may select one and only option.'|gettext}{br}
-                    {'Select Multiple presents the options as a checkbox group where the user may select multiple options'|gettext}.{br}
-                    {'Selecting the Default radio button for an option will cause that option to be selected by default.'|gettext} {br}{br}
+                    <blockquote>
+                        {'By selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
+                        <ul>
+                            <li><strong>{"Required"|gettext}</strong> - {'By default, the user is NOT required to make a selection.  However, selecting the Required checkbox will force the user to make a selection from that option group.'|gettext}</li>
+                            <li><strong>{"Select Single"|gettext}</strong> - {'Presents the option group as a dropdown field where the user may select one and only option.'|gettext}</li>
+                            <li><strong>{"Select Multiple"|gettext}</strong> - {'Presents the options as a checkbox group where the user may select multiple options'|gettext}</li>
+                            <li><strong>{"Default"|gettext}</strong> - {'Selecting the Default radio button for an option causes that option to become selected by default.'|gettext}</li>
+                        </ul>
+                        {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.  Click on the \'More\' link to enter the option\s weight.'|gettext}{br}
+                    </blockquote>
                     {include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
                 </div>
                 <div id="tab5">
+  			        <h2>{'User Input'|gettext}</h2>
+                      {*{ddrerank model="expDefinableField" items=$definablefields label="User Input Fields"|gettext id="definable_field_registrant" sortfield="name"}*}
+                      {*{icon class="manage" controller="expDefinableField" action="manage"}*}
+  					{*{foreach from=$definablefields item=fields}*}
+                          {*{$checked = false}*}
+                          {*{foreach from=$record->expDefinableField.registrant item=selected}*}
+                              {*{if $fields->id == $selected->id}*}
+                                  {*{$checked = true}*}
+                              {*{/if}*}
+                          {*{/foreach}*}
+  						{*{control type="checkbox" name="expDefinableField[registrant][]" label="`$fields->name` - `$fields->type`" value="`$fields->id`" checked="`$checked`"}*}
+  					{*{/foreach}*}
+                      <blockquote>
+                          {'Single Registration will display a single form with (all) form controls, but only allow for adding one registrant per purchase.'|gettext}
+                          {'It will allow for more complex data and options (cost) collection.'|gettext}
+                          {br}{br}
+                          {'Multiple Registration will lay out (all) form controls on a single row, but allow for multiple rows to add one or more registrants per purchase.'|gettext}
+                          {'It will allow for more people to be registered simultaneoudly without requiring much data, but all with the same options (cost).'|gettext}
+                      </blockquote>
+                      {control type="dropdown" name="forms_id" label="Registration Form"|gettext items=$forms value=$record->forms_id description='Used to collect user information'|gettext}
+                      {control type="radiogroup" name="multi_registrant" label="Simultaneous Registration"|gettext items="Single Registration,Multiple Registration"|gettxtlist values="0,1" default=$record->multi_registrant|default:0 description='Should we allow multiple similar (same basic cost) registrations at one time?'|gettext}
+                  </div>
+                <div id="tab6">
                     {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" value=$record->expFile description="Images to show for your event"|gettext}
                     <div class="additional-images">
                         {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile description="Additional images to show for your event"|gettext}
                     </div>
 					{control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
                 </div>
-                <div id="tab6">
+                <div id="tab7">
                     <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
                     {control type="textarea" name="meta_keywords" label="Meta Description"|gettext value=$record->meta_description}
                     {control type="textarea" name="meta_description" label="Meta Keywords"|gettext value=$record->meta_keywords}
                 </div>
-				<div id="tab7">
-			        <h2>{'User Input Fields'|gettext}</h2>
-                    {icon class="manage" controller="expDefinableField" action="manage"}
-					{foreach from=$definablefields item=fields}
-                        {$checked = false}
-                        {foreach from=$record->expDefinableField.registrant item=selected}
-                            {if $fields->id == $selected->id}
-                                {$checked = true}
-                            {/if}
-                        {/foreach}
-						{control type="checkbox" name="expDefinableField[registrant][]" label="`$fields->name` - `$fields->type`" value="`$fields->id`" checked="`$checked`"}
-					{/foreach}
-                </div>
+
 				<div id="tab8">
 					{control type="checkbox" name="require_terms_and_condition" label="Require Waiver"|gettext value=1 checked=$record->require_terms_and_condition}
 					{control type="editor" name="terms_and_condition" label="Waiver"|gettext rows=8 cols=55 value=$record->terms_and_condition}

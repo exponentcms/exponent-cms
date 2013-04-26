@@ -64,16 +64,12 @@
             {if $product->body}
                 {$product->body}
             {/if}
-            {*{if $product->summary}*}
-                {*{$product->summary}*}
-            {*{/if}*}
         </div>
         {clear}
 
         <div id="eventregform">
             {form id="addtocart`$product->id`" controller=cart action=addItem}
                 {control type="hidden" name="product_id" value="`$product->id`"}
-                {*{control type="hidden" name="base_price" value="`$product->base_price`"}*}
                 {control type="hidden" name="base_price" value="`$product->getBasePrice()`"}
                 {control type="hidden" name="product_type" value="`$product->product_type`"}
                 {control type="hidden" name="orderitem_id" value="`$orderitem_id`"}
@@ -83,12 +79,19 @@
                     <span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
                     <span class="label">{'Seats Available:'|gettext} </span>
                     <span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
-                    <div class="seatsContainer">
-                        <div class="seatStatus">
-                            {$seats = implode(',',range(1,min($product->spacesLeft(),12)))}
-                            {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
-                        </div>
+                    {if $product->multi_registrant && $product->forms_id}
+                        <div class="seatsContainer">
+                            <div class="seatStatus">
+                                {$seats = implode(',',range(1,min($product->spacesLeft(),12)))}
+                                {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
+                            </div>
+                    {else}
+                        {control type=hidden name=qtyr value=1}
+                    {/if}
                         <div class="seatAmount prod-price">
+                            {if $product->hasOptions()}
+                                <div class="attribution">{'Starting at'|gettext}:{br}</div>
+                            {/if}
                             {if $product->base_price}
                                 {if $product->use_special_price}
                                     <span class="regular-price on-sale">{$product->base_price|currency}</span>
@@ -102,8 +105,11 @@
                                 <span class="seatCost">{'No Cost'|gettext}</span>
                             {/if}
                         </div>
+                    {if $product->multi_registrant && $product->forms_id}
                     </div>
-                    {if $product->quantity_discount_num_items}
+                    {/if}
+                    {if $product->multi_registrant && $product->quantity_discount_num_items}
+                        {clear}
                         <div class="label">
                             {'There is a discount of'|gettext} {if ($product->quantity_discount_amount_mod == '%')}%{$product->quantity_discount_amount}{else}{$product->quantity_discount_amount|currency}{/if}
                             {if ($product->quantity_discount_apply)}
@@ -112,7 +118,10 @@
                             {'if more than'|gettext} {$product->quantity_discount_num_items} {'people are registered'|gettext}.
                         </div>{br}{br}
                     {/if}
+
                     {if $product->hasOptions()}
+                        {clear}
+                        <h4>{'Options'|gettext}</h4>
                         <div class="product-options">
                             {control type="hidden" name="ticket_types" value="1"}
                             {control type=hidden name=options_shown value=$product->id}
@@ -130,70 +139,58 @@
                         </div>
                     {/if}
 
-                    {foreach from=$product->expDefinableField.registrant item=fields}
-                        {$product->getControl($fields)}
-                    {/foreach}
-
-                    <h2>{'Who\'s Coming?'|gettext}</h2>
-                    {'Please provide the names of the people who will be attending this event'|gettext},
-                    <strong>{'including yourself, if you are attending'|gettext}</strong>.
-                    {'You don\'t have to provide the phone and email address, but it makes it easier to get in touch with those attending.'|gettext}
-                    <table class="exp-skin-table" id="reg" border="0" cellpadding="3" cellspacing="0">
-                        <thead>
-                            <th>
-                                <span>&#160;</span>
-                            </th>
-                            <th>
-                                <span style="color:Red;" title="{'This entry is required'|gettext}">*</span>
-                                <span>{'Name'|gettext}</span>
-                            </th>
-                            <th>
-                                <span>{'Phone'|gettext}</span>
-                            </th>
-                            <th>
-                                <span>{'Email'|gettext}</span>
-                            </th>
-                        </thead>
-                        <tbody>
-                            {if empty($registered)}
-                                <tr>
-                                    <td>
-                                        <span>{'Seat'|gettext} 1</span>
-                                    </td>
-                                    <td>
-                                        <input name="event[0][name]" type="text" required=1/>
-                                    </td>
-                                    <td>
-                                        {*<input name="event[0][phone]" type="text"/>*}
-                                        <input name="event[0][phone]" type=tel />
-                                    </td>
-                                    <td>
-                                        {*<input name="event[0][email]" type="text"/>*}
-                                        <input name="event[0][email]" type=email />
-                                    </td>
-                                </tr>
-                            {else}
-                                {foreach $registered as $registrant}
-                                    <tr>
-                                        <td>
-                                            <span>{'Seat'|gettext} {$registrant@iteration}</span>
-                                        </td>
-                                        <td>
-                                            <input name="event[{$registrant@iteration-1}][name]" type="text" required=1 value="{$registrant.name}"/>
-                                        </td>
-                                        <td>
-                                            {*<input name="event[{$registrant@iteration-1}][phone]" type="text" value="{$registrant.phone}"/>*}
-                                            <input name="event[{$registrant@iteration-1}][phone]" type=tel value="{$registrant.phone}"/>
-                                        </td>
-                                        <td>
-                                            {*<input name="event[{$registrant@iteration-1}][email]" type="text" value="{$registrant.email}"/>*}
-                                            <input name="event[{$registrant@iteration-1}][email]" type=email value="{$registrant.email}"/>
-                                        </td>
-                                    </tr>
-                                {/foreach}
-                            {/if}
-                        </tbody>
-                    </table>
+                    {$controls = $product->getAllControls()}
+                    {if !empty($controls)}
+                        {clear}
+                        {if $product->multi_registrant}
+                            <h2>{'Who\'s Coming?'|gettext}</h2>
+                            {'Please provide the list of the people who will be attending this event'|gettext},
+                            <strong>{'including yourself, if you are attending'|gettext}</strong>.
+                            <table class="exp-skin-table" id="reg" border="0" cellpadding="3" cellspacing="0">
+                                <thead>
+                                    {foreach $controls as $control}
+                                        <th>
+                                            {if $control->ctl->required}
+                                                <span style="color:Red;" title="{'This entry is required'|gettext}">*</span>
+                                            {/if}
+                                            <span>{$control->caption}</span>
+                                        </th>
+                                    {/foreach}
+                                </thead>
+                                <tbody>
+                                    {if empty($registered)}
+                                            <tr id="regform">
+                                                {foreach $controls as $control}
+                                                    <td>
+                                                        {$product->getControl($control,"registrant[`$control->name`][]",null,null,false,true)}
+                                                    </td>
+                                                {/foreach}
+                                            </tr>
+                                    {else}
+                                        {foreach $registered as $registrant}
+                                            <tr id="regform">
+                                                {foreach $controls as $control}
+                                                    {$ctlname = $control->name}
+                                                    <td>
+                                                        {$product->getControl($control,"registrant[`$ctlname`][]",null,$registrant->$ctlname,false,true)}
+                                                    </td>
+                                                {/foreach}
+                                            </tr>
+                                        {/foreach}
+                                    {/if}
+                                </tbody>
+                            </table>
+                        {else}
+                            <h3>{'Registration'|gettext}</h3>
+                            {'Please complete the following information to register'|gettext}
+                            {foreach $controls as $control}
+                                {$ctlname = $control->name}
+                                <td>
+                                    {$product->getControl($control,"registrant[`$ctlname`][]",null,$registrant->$ctlname)}
+                                </td>
+                            {/foreach}
+                        {/if}
+                    {/if}
                     {if $product->require_terms_and_condition}
                         <div class="terms_and_conditions">
                             {if $product->terms_and_condition_toggle}
@@ -209,6 +206,7 @@
                             {/if}
                         </div>
                     {/if}
+                    {clear}
                     <button type="submit" class="add-to-cart-btn awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
                             style="margin: 20px auto; display: block;" rel="nofollow">
                         {"Register for this Event"|gettext}
@@ -258,31 +256,21 @@
         }
         // End of script for terms and condition toogle
 
+        var addcounter = 0;
+
         function addRow(tableID) {
-            var table = document.getElementById(tableID);
-            var rowCount = table.rows.length;
-            var row = table.insertRow(rowCount);
-            var cell1 = row.insertCell(0);
-            cell1.innerHTML = "{/literal}{'Seat'|gettext}{literal} " + rowCount;
-
-            var cell2 = row.insertCell(1);
-            var element2 = document.createElement("input");
-            element2.type = "text";
-            element2.name = "event["+(rowCount-1)+"][name]";
-            element2.required = true;
-            cell2.appendChild(element2);
-
-            var cell3 = row.insertCell(2);
-            var element3 = document.createElement("input");
-            element3.type = "text";
-            element3.name = "event["+(rowCount-1)+"][phone]";
-            cell3.appendChild(element3);
-
-            var cell4 = row.insertCell(3);
-            var element4 = document.createElement("input");
-            element4.type = "text";
-            element4.name = "event["+(rowCount-1)+"][email]";
-            cell4.appendChild(element4);
+            var row = Y.one("#regform"); // find row to copy
+			var table = Y.one("#reg"); // find table to append to
+			var clone = row.cloneNode(true); // copy children too
+			clone.set('id', ""); // remove id to maintain row #1 as template
+            // remove current value(s) of cloned row
+            clone.all('input').each(function(ctrl) {
+                ctrl.set('value','');
+            });
+            clone.all('option').each(function(ctrl) {
+                ctrl.removeAttribute('selected');
+            });
+			table.appendChild(clone); // add new row to end of table
         }
 
         function deleteRow(tableID) {

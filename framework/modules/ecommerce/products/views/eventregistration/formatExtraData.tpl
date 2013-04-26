@@ -19,7 +19,11 @@
         <ul>
             {foreach from=$extra_data item=person}
                 <li>
-                    {$person.name}{if !empty({$person.phone})}, {$person.phone}{/if}{if !empty({$person.email})}, {$person.email}{/if}
+                    {if !empty($person.name)}
+                        {$person.name}
+                    {else}
+                        {$person[0]}
+                    {/if}
                 </li>
             {/foreach}
         </ul>

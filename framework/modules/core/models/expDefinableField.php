@@ -23,6 +23,7 @@
  */
 class expDefinableField extends expRecord {
 	public $table = 'expDefinableFields';
+    public $default_sort_field = 'rank';
 	public $attachable_table = 'content_expDefinableFields';
     protected $attachable_item_types = array();
 

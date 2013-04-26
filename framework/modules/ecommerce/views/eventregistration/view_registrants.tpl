@@ -80,12 +80,18 @@
                     </div>
                 {/if}
             {/permissions}
+            {$controls = $event->getAllControls()}
             <table class="exp-skin-table">
                 <thead>
                     <tr>
-                        <th>{'Registrant Name'|gettext}</th>
-                        <th>{'Registrant Email'|gettext}</th>
-                        <th>{'Registrant Phone'|gettext}</th>
+                        {*<th>{'Registrant Name'|gettext}</th>*}
+                        {*<th>{'Registrant Email'|gettext}</th>*}
+                        {*<th>{'Registrant Phone'|gettext}</th>*}
+                        {foreach $controls as $control}
+                            <th>
+                                <span>{$control->caption}</span>
+                            </th>
+                        {/foreach}
                         <th>{'Paid?'|gettext}</th>
                         <th>{'Actions'|gettext}</th>
                     </tr>
@@ -95,21 +101,34 @@
                         {foreach from=$registrants item=registrant key=id}
                             {*{get_user user=$user assign=registrant}*}
                             <tr class="{cycle values="odd,even"}">
-                                <td>{$registrant.name}</td>
-                                <td>
-                                    {if !empty($registrant.email)}{control type="hidden" name="email_addresses[]" value={$registrant.email}}{/if}
-                                    <a href="mailto:{$registrant.email}">{$registrant.email}</a>
-                                </td>
-                                <td>{$registrant.phone}</td>
-                                <td>{$registrant.payment}</td>
+                                {*<td>{$registrant->name}</td>*}
+                                {*<td>*}
+                                    {*{if !empty($registrant->email)}{control type="hidden" name="email_addresses[]" value={$registrant->email}}{/if}*}
+                                    {*<a href="mailto:{$registrant->email}">{$registrant->email}</a>*}
+                                {*</td>*}
+                                {*<td>{$registrant->phone} </td>*}
+                                {$is_email = false}
+                                {foreach $controls as $control}
+                                    {$ctlname = $control->name}
+                                    <td>
+                                       {if $ctlname == 'email'}
+                                           {$is_email = true}
+                                           {control type="hidden" name="email_addresses[]" value={$registrant->$ctlname}}
+                                           <a href="mailto:{$registrant->$ctlname}" title="{'Send them an email'|gettext}">{$registrant->$ctlname}</a>
+                                       {else}
+                                           {$registrant->$ctlname}
+                                       {/if}
+                                    </td>
+                                {/foreach}
+                                <td>{$registrant->payment} </td>
                                 <td>
                                     {permissions}
                                         <div class="item-actions">
                                             {if $permissions.edit == true}
-                                                {icon class=edit action=edit_registrant id=$id title='Edit this Registrant'|gettext}
+                                                {icon class=edit action=edit_registrant event_id=$event->id id=$registrant->id title='Edit this Registrant'|gettext}
                                             {/if}
                                             {if $permissions.delete == 1}
-                                                 {icon class="delete" action=delete_registrant id=$id title='Delete this Registrant'|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this registrant from the roster?"|gettext)|cat:"');"}
+                                                 {icon class="delete" action=delete_registrant event_id=$event->id id=$registrant->id title='Delete this Registrant'|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this registrant from the roster?"|gettext)|cat:"');"}
                                             {/if}
                                         </div>
                                     {/permissions}
@@ -124,7 +143,7 @@
                 </tbody>
             </table>
         </div>
-        {if $registrants|count > 0}
+        {if $registrants|count > 0 && $is_email}
             {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
             {group label='Send an Email to All Registrants'|gettext}
                 {control type="text" name="email_subject" label="Subject"|gettext}

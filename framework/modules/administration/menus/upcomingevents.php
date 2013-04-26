@@ -52,10 +52,11 @@ $items = array(
 //$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
 $events = $db->selectObjects('eventregistration', 'eventdate > ' . time());
 foreach ($events as $event) {
+    $f = new forms($event->forms_id);
     $prod = $db->selectObject('product', 'product_type="eventregistration" AND product_type_id=' . $event->id);
     if (!empty($prod->title)) {
         $thisitem = array();
-        $thisitem['text'] = $prod->title . ' (' . $event->number_of_registrants . '/' . $prod->quantity . ')';
+        $thisitem['text'] = $prod->title . ' (' . $db->countObjects('forms_' . $f->table_name, "referrer='" . $prod->id . "'") . '/' . $prod->quantity . ')';
         $thisitem['url'] = $router->makeLink(array('controller' => 'eventregistration', 'action' => 'view_registrants', 'id' => $prod->id));
         $thisitem['classname'] = 'event';
         $items[] = $thisitem;

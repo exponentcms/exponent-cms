@@ -22,8 +22,7 @@
                     {img class=listingimage file_id=$listing->expFile.mainimage[0]->id square=149 alt=$listing->title}
                     {br}
                 {else}
-                    {img src="`$asset_path`images/no-image.jpg"}
-                    {'No Image'|gettext}
+                    {img src="`$asset_path`images/no-image.jpg" alt="'No Image Available'|gettext"}
                 {/if}
             </a>                    
         </div>

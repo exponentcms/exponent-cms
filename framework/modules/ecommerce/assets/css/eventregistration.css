@@ -3,7 +3,7 @@
 /*}*/
 
 .required .label {
-    display : none;
+    /*display : none;*/
 }
 
 .state_field .label {
@@ -97,6 +97,10 @@ show view
     color: #CC0000;
     font-size: large;
     font-weight: bold;
+}
+
+.product .prod-price {
+    text-align: center;
 }
 
 .product .prod-price .regular-price {

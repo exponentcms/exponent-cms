@@ -961,7 +961,14 @@ class storeController extends expController {
         global $db;
         $expDefinableField = new expDefinableField();
 
-        $definablefields = $expDefinableField->find();
+        $definablefields = $expDefinableField->find('all','1','rank');
+        $f = new forms();
+        $forms_list = array();
+        $forms_list[0] = gt('No User Input Required');
+        $forms = $f->find('all', 'is_saved=1');
+        if (!empty($forms)) foreach ($forms as $frm) {
+            $forms_list[$frm->id] = $frm->title;
+        }
 
         //Make sure that the view is the edit.tpl and not any ajax views
         if (isset($this->params['view']) && $this->params['view'] == 'edit') {
@@ -1077,6 +1084,7 @@ class storeController extends expController {
             'form'              => $record->getForm($view),
             'optiongroups'      => $editable_options,
             'definablefields'   => isset($definablefields) ? $definablefields : '',
+            'forms'=> $forms_list,
             'shipping_services' => isset($shipping_services) ? $shipping_services : '', // Added implication since the shipping_services default value is a null
             'shipping_methods'  => isset($shipping_methods) ? $shipping_methods : '', // Added implication since the shipping_methods default value is a null
             'product_types'     => isset($this->config['product_types']) ? $this->config['product_types'] : ''
