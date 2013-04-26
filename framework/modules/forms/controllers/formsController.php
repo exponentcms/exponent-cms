@@ -88,7 +88,7 @@ class formsController extends expController {
             $fc = new forms_control();
             if (empty($this->config['column_names_list'])) {
                 //define some default columns...
-                $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0','rank');
+                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
                 foreach (array_slice($controls, 0, 5) as $control) {
                     $this->config['column_names_list'][] = $control->name;
                 }
@@ -125,7 +125,7 @@ class formsController extends expController {
                     }
                     $columns[gt('Timestamp')] = 'timestamp';
                 } else {
-                    $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $f->id,'rank');
+                    $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id,'rank');
                     if ($control) {
 //                        $ctl = unserialize($control->data);
                         $ctl = expUnserialize($control->data);
@@ -186,7 +186,7 @@ class formsController extends expController {
             }
 
             $fc = new forms_control();
-            $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0','rank');
+            $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
             $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
 
             $fields = array();
@@ -252,7 +252,7 @@ class formsController extends expController {
                 $form = new form();
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
-                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0 and is_static = 0','rank');
+                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
                     $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
                     //            $data = $forms_record->find('first','id='.$this->params['id']);
                 } else {
@@ -455,7 +455,7 @@ class formsController extends expController {
         global $db, $user;
         $f = new forms($this->params['id']);
         $fc = new forms_control();
-        $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0",'rank');
+        $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly=0",'rank');
         $this->get_defaults($f);
 
         $db_data = new stdClass();
@@ -722,7 +722,7 @@ class formsController extends expController {
             $cols = explode('|!|', $f->column_names_list);
         }
         $fc = new forms_control();
-        foreach ($fc->find('all', 'forms_id=' . $f->id . ' and is_readonly=0','rank') as $control) {
+        foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
 //            $ctl = unserialize($control->data);
             $ctl = expUnserialize($control->data);
             $control_type = get_class($ctl);
@@ -736,10 +736,7 @@ class formsController extends expController {
         }
         $fields['ip'] = gt('IP Address');
         if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
-
-//        if (isset($field['field_user_id']))
-//            $fields['user_id'] = $field['field_user_id'];
-
+        $fields['user_id'] = gt('Posted by');
         if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
         $fields['timestamp'] = gt('Timestamp');
         if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
@@ -952,7 +949,7 @@ class formsController extends expController {
 
             if ($ctl1 != null) {
                 $name = substr(preg_replace('/[^A-Za-z0-9]/', '_', $ctl1->identifier), 0, 20);
-                if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' and forms_id=" . $this->params['forms_id']) > 0) {
+                if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
                 } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
@@ -1017,7 +1014,7 @@ class formsController extends expController {
         }
         if (isset($this->config['forms_id'])) {
             $fc = new forms_control();
-            foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' and is_readonly=0','rank') as $control) {
+            foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' AND is_readonly=0','rank') as $control) {
 //                $ctl = unserialize($control->data);
                 $ctl = expUnserialize($control->data);
                 $control_type = get_class($ctl);
@@ -1031,10 +1028,7 @@ class formsController extends expController {
             }
             $fields['ip'] = gt('IP Address');
             if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
-
-//            if (isset($field['field_user_id']))
-//                $fields['user_id'] = $field['field_user_id'];
-
+            $fields['user_id'] = gt('Posted by');
             if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
             $fields['timestamp'] = gt('Timestamp');
             if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
@@ -1114,14 +1108,36 @@ class formsController extends expController {
             $fc = new forms_control();
             if ($f->column_names_list == '') {
                 //define some default columns...
-                $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly = 0 and is_static = 0", "rank");
+                $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");
                 foreach (array_slice($controls, 0, 5) as $control) {
                     if ($f->column_names_list != '') $f->column_names_list .= '|!|';
                     $f->column_names_list .= $control->name;
                 }
             }
 
-            $rpt_columns = explode("|!|", $f->column_names_list);
+            $rpt_columns2 = explode("|!|", $f->column_names_list);
+            foreach ($rpt_columns2 as $column) {
+                $control = $fc->find('first', "forms_id=" . $f->id . " AND name = '" . $column . "' AND is_readonly = 0 AND is_static = 0", "rank");
+                if (!empty($control)) {
+                    $rpt_columns[$control->name] = $control->caption;
+                } else {
+                    switch ($column) {
+                        case 'ip':
+                            $rpt_columns[$column] = gt('IP Address');
+                            break;
+                        case 'referrer':
+                            $rpt_columns[$column] = gt('Event ID');
+                            break;
+                        case 'user_id':
+                            $rpt_columns[$column] = gt('Posted by');
+                            break;
+                        case 'timestamp':
+                            $rpt_columns[$column] = gt('Timestamp');
+                            break;
+                    }
+                }
+            }
+
             foreach ($rpt_columns as $column_name) {
                 if ($column_name == "ip" || $column_name == "referrer" || $column_name == "location_data") {
                 } elseif ($column_name == "user_id") {
@@ -1142,7 +1158,7 @@ class formsController extends expController {
                         $items[$key] = $item;
                     }
                 } else {
-                    $control = $fc->find('first', "name='" . $column_name . "' and forms_id=" . $this->params['id'],'rank');
+                    $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $this->params['id'],'rank');
                     if ($control) {
 //                        $ctl = unserialize($control->data);
                         $ctl = expUnserialize($control->data);
@@ -1240,17 +1256,14 @@ class formsController extends expController {
      */
     public static function  sql2csv($items, $rptcols = null) {
         $str = "";
+        foreach ($rptcols as $individual_Header) {
+            if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";
+        }
+        $str .= "\r\n";
         foreach ($items as $key => $item) {
-            if ($str == "") {
-                $header_Keys = array_keys((array)$item);
-                foreach ($header_Keys as $individual_Header) {
-                    if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";
-                }
-                $str .= "\r\n";
-            }
-            foreach ($item as $key => $rowitem) {
-                if (!is_array($rptcols) || in_array($key, $rptcols)) {
-                    $rowitem = str_replace(",", " ", $rowitem);
+            foreach ($rptcols as $key => $rowitem) {
+                if (!is_array($rptcols) || array_key_exists($key, $rptcols)) {
+                    $rowitem = str_replace(",", " ", $item->$key);
                     $str .= $rowitem . ",";
                 }
             } //foreach rowitem
