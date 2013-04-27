@@ -45,7 +45,6 @@
 
 {script unique="fileviewconfig" yui3mods="1"}
 {literal}
-
 YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
     var cfg = {
     			method: "POST",

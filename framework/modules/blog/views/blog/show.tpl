@@ -25,9 +25,9 @@
     </div>
 </div>
 
+{if $config.ajax_paging}
 {script unique="`$name`itemajax" yui3mods="1"}
 {literal}
-
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
     var blogitem = Y.one('#{/literal}{$name}{literal}item');
     var cfg = {
@@ -82,3 +82,4 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 });
 {/literal}
 {/script}
+{/if}

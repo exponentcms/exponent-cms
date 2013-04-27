@@ -76,7 +76,6 @@
 {*FIXME convert to yui3*}
 {script unique="edit-module" yui3mods=1}
 {literal}
-
     YUI(EXPONENT.YUI_CONFIG).use("node", "event", "node-event-delegate", "io", "yui2-yahoo-dom-event", "yui2-connection", "yui2-json", function (Y) {
         var YAHOO = Y.YUI2;
 //        var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)

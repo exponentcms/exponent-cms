@@ -23,9 +23,9 @@
     </div>
 </div>
 
+{if $config.ajax_paging}
 {script unique="`$name`listajax" yui3mods="1"}
 {literal}
-
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
     var searchlist = Y.one('#{/literal}{$name}{literal}list');
     var cfg = {
@@ -80,3 +80,4 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 });
 {/literal}
 {/script}
+{/if}
