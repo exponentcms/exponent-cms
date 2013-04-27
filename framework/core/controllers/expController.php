@@ -1188,6 +1188,7 @@ abstract class expController {
         $action = $router->params['action'];
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
         $modelname = $this->basemodel_name;
+
         switch ($action) {
             case 'showall':
                 $metainfo = array('title' => gt("Showing all") . " - " . $this->displayname(), 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => '');
@@ -1205,7 +1206,7 @@ abstract class expController {
                         $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
                         $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL : $object->canonical;
+                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
                     }
                 }
                 break;
@@ -1217,27 +1218,27 @@ abstract class expController {
 //                    $metainfo = $mod->$functionName($_REQUEST);
                     $metainfo = $mod->$functionName($router->params);
                 } else {
-                    $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => '');
+                    $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => URL_FULL.substr($router->sefPath, 1));
                 }
         }
 
         return $metainfo;
     }
 
-    function showall_by_tags_meta($request) {
-        // look up the record.
-        if (isset($request['tag'])) {
-            $object = new expTag(expString::sanitize($request['tag']));
-            // set the meta info
-            if (!empty($object)) {
-                $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
-                $metainfo['title'] = gt('Showing all Items tagged with') . " \"" . $object->title . "\"";
-                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
-                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-                return $metainfo;
-            }
-        }
-    }
+    // function showall_by_tags_meta($request) {
+    //     // look up the record.
+    //     if (isset($request['tag'])) {
+    //         $object = new expTag(expString::sanitize($request['tag']));
+    //         // set the meta info
+    //         if (!empty($object)) {
+    //             $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+    //             $metainfo['title'] = gt('Showing all Items tagged with') . " \"" . $object->title . "\"";
+    //             $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+    //             $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+    //             return $metainfo;
+    //         }
+    //     }
+    // }
 
     /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
