@@ -136,7 +136,7 @@ class blogController extends expController {
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
             'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
-            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 1,
             'order'=>'publish',
             'dir'=>'desc',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
@@ -300,6 +300,8 @@ class blogController extends expController {
     }
 
     function showall_by_author_meta($request) {
+        global $router;
+
         // look up the record.
         if (isset($request['author'])) {
             // set the meta info
@@ -322,25 +324,46 @@ class blogController extends expController {
             }
 
             if (!empty($str)) {
-                $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
                 $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
                 $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+
                 return $metainfo;
             }
         }
     }
 
     function showall_by_date_meta($request) {
+        global $router;
+
         // look up the record.
         if (isset($request['month'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
             $ts = strftime('%B, %Y',$mk);
             // set the meta info
             $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts ;
             $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
             $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+            return $metainfo;
+        }
+    }
+
+    function showall_by_tags_meta($request) {
+        global $router;
+
+        // look up the record.
+        if (isset($request['tag'])) {
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+            $tag = $request['tag'];
+            // set the meta info
+            $metainfo['title'] = gt('Showing all Blog Posts tagged as') . ' ' . $tag ;
+            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
+            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
             return $metainfo;
         }
     }
