@@ -1292,7 +1292,7 @@ class storeController extends expController {
 
         // figure out what metadata to pass back based on the action we are in.
         $action = $_REQUEST['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
         switch ($action) {
             case 'showall': //category page
                 //$cat = new storeCategory(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
@@ -1301,6 +1301,7 @@ class storeController extends expController {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title : $cat->meta_title;
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
+                    $metainfo['canonical']   = '';
                 }
                 break;
             case 'show':
@@ -1310,16 +1311,18 @@ class storeController extends expController {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
+                    $metainfo['canonical']   = '';
                 }
                 break;
             default:
-                $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION);
+                $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical'=> '');
         }
 
         // Remove any quotes if there are any.
         $metainfo['title'] = expString::parseAndTrim($metainfo['title'], true);
         $metainfo['description'] = expString::parseAndTrim($metainfo['description'], true);
         $metainfo['keywords'] = expString::parseAndTrim($metainfo['keywords'], true);
+        $metainfo['canonical'] = expString::parseAndTrim($metainfo['canonical'], true);
 
         return $metainfo;
     }

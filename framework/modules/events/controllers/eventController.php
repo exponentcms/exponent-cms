@@ -551,7 +551,7 @@ class eventController extends expController {
    	function metainfo() {
        global $router;
 
-       $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+       $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '');
        // look for event date_id which expController::metainfo won't detect
 //       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
        if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($router->params['id']) && isset($router->params['date_id'])) {
@@ -563,6 +563,7 @@ class eventController extends expController {
                $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
                $metainfo['keywords'] = empty($object->event->meta_keywords) ? SITE_KEYWORDS : $object->event->meta_keywords;
                $metainfo['description'] = empty($object->event->meta_description) ? SITE_DESCRIPTION : $object->event->meta_description;
+               $metainfo['canonical']   = '';
            }
            return $metainfo;
        } else {

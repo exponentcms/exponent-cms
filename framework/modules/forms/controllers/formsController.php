@@ -1075,6 +1075,7 @@ class formsController extends expController {
         global $router;
 
         if (empty($router->params['action'])) return false;
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
 
         // figure out what metadata to pass back based on the action we are in.
         switch ($router->params['action']) {
@@ -1082,14 +1083,16 @@ class formsController extends expController {
                 $metainfo = array(
                     'title'       => gt("Showing all Form Records"),
                     'keywords'    => SITE_KEYWORDS,
-                    'description' => SITE_DESCRIPTION
+                    'description' => SITE_DESCRIPTION,
+                    'canonical'   => ''
                 );
                 break;
             case 'show':
                 $metainfo = array(
                     'title'       => gt("Showing Form Record"),
                     'keywords'    => SITE_KEYWORDS,
-                    'description' => SITE_DESCRIPTION
+                    'description' => SITE_DESCRIPTION,
+                    'canonical'   => ''
                 );
                 break;
             default:

@@ -818,19 +818,20 @@ exit();
         // we are in.
 //        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
-        $metainfo = array('title'=> '', 'keywords'=> '', 'description'=> '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
         switch ($action) {
             case 'showall':
-                $metainfo = array('title'=> "Managing Invoices", 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION);
+                $metainfo = array('title'=> "Managing Invoices", 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
                 break;
             case 'show':
             case 'showByTitle':
                 $metainfo['title']       = 'Viewing Invoice';
                 $metainfo['keywords']    = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object doesn't exist
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object doesn't exist
+                $metainfo['canonical']   = '';
                 break;
             default:
-                $metainfo = array('title'=> "Order Management - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION);
+                $metainfo = array('title'=> "Order Management - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
         }
 
         return $metainfo;
