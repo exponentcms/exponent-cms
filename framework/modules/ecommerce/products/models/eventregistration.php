@@ -339,52 +339,47 @@ class eventregistration extends expRecord {
 //                }
 //            }
 //        } else {
-        if (!empty($params['registrant'])) {
-            $registrants = array();
+        $f = new forms($this->forms_id);
+        $registrants = array();
+        if (!empty($params['registrant']) && !empty($f->is_saved)) {  // is there user input data
             // first invert the key sequence by registrant index instead of by field name
             foreach ($params['registrant'] as $key => $value) {
                 foreach ($value as $key1 => $value1) {
                     $registrants[$key1][$key] = $value1;
                 }
             }
-
-            $f = new forms($this->forms_id);
-            if ($f->is_saved == 1) {  // is there user input data
-                $loc_data = new stdClass();
-                $loc_data->order_id = $order->id;
-                $loc_data->orderitem_id = strval($item->id);
-                $loc_data->event_id = $params['product_id'];
-                $locdata = serialize($loc_data);
-                if (!empty($params['orderitem_id'])) $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration
-                $fc = new forms_control();
-                $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0",'rank');
-                foreach ($registrants as $registrant) {
-                    $db_data = new stdClass();
-                    foreach ($controls as $c) {
-                        $ctl = expUnserialize($c->data);
-                        $control_type = get_class($ctl);
-                        $def = call_user_func(array($control_type, "getFieldDefinition"));
-                        if ($def != null) {
-                            $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $registrant, true));
-                            $value = stripslashes($db->escapeString($emailValue));
-                            $varname = $c->name;
-                            $db_data->$varname = $value;
-                        }
+            $loc_data = new stdClass();
+            $loc_data->order_id = $order->id;
+            $loc_data->orderitem_id = strval($item->id);
+            $loc_data->event_id = $params['product_id'];
+            $locdata = serialize($loc_data);
+            if (!empty($params['orderitem_id'])) $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration
+            $fc = new forms_control();
+            $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0",'rank');
+            foreach ($registrants as $registrant) {
+                $db_data = new stdClass();
+                foreach ($controls as $c) {
+                    $ctl = expUnserialize($c->data);
+                    $control_type = get_class($ctl);
+                    $def = call_user_func(array($control_type, "getFieldDefinition"));
+                    if ($def != null) {
+                        $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $registrant, true));
+                        $value = stripslashes($db->escapeString($emailValue));
+                        $varname = $c->name;
+                        $db_data->$varname = $value;
                     }
-                    $db_data->ip = $_SERVER['REMOTE_ADDR'];
-                    $db_data->referrer = $params['product_id'];
-                    $db_data->timestamp = time();
-                    if (expSession::loggedIn()) {
-                        $db_data->user_id = $user->id;
-                    } else {
-                        $db_data->user_id = 0;
-                    }
-                    $db_data->location_data = $locdata;
-                    $db->insertObject($db_data, 'forms_' . $f->table_name);
                 }
+                $db_data->ip = $_SERVER['REMOTE_ADDR'];
+                $db_data->referrer = $params['product_id'];
+                $db_data->timestamp = time();
+                if (expSession::loggedIn()) {
+                    $db_data->user_id = $user->id;
+                } else {
+                    $db_data->user_id = 0;
+                }
+                $db_data->location_data = $locdata;
+                $db->insertObject($db_data, 'forms_' . $f->table_name);
             }
-
-
 
         // we're replacing an existing registration based on updated input
 //        if (!empty($params['orderitem_id'])) $db->delete("eventregistration_registrants", "connector_id ='{$order->id}' AND orderitem_id ='" . $params['orderitem_id'] . "' AND event_id ='" . $params['product_id'] ."'");
@@ -410,13 +405,17 @@ class eventregistration extends expRecord {
 //                $obj->registered_date = time();
 //                $db->insertObject($obj, "eventregistration_registrants");
 //            }
-        } else {  //FIXME how do we handle registration with NO user input?
+        } else {  // handle registration with NO user input?
             $obj = new stdClass();
             $obj->event_id = $params['product_id'];
             $obj->connector_id = $order->id;
             $obj->orderitem_id = $item->id;
             $obj->registered_date = time();
-            $db->insertObject($obj, "eventregistration_registrants");  //FIXME we are deprecating this table
+            $obj->control_name = $user->firstname . ' ' . $user->lastname;
+            $obj->value = $params['qtyr'];
+            $db->insertObject($obj, "eventregistration_registrants");
+            $registrants[0]['name'] = $user->firstname . ' ' . $user->lastname;
+            $registrants[0]['qty'] = $params['qtyr'];
         }
 //        }
 //        }
@@ -527,15 +526,15 @@ class eventregistration extends expRecord {
         $product = new eventregistration($item->product_id);
 //        $registrants = expUnserialize($product->registrants);
 //        $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $item->product_id);
-        $f = new forms($this->forms_id);
-        if ($f->is_saved == 1) {  // is there user input data
-            $loc_data = new stdClass();
-            $loc_data->order_id =$item->orders_id;
-            $loc_data->orderitem_id = strval($item->id);
-            $loc_data->event_id = $item->product_id;
-            $locdata = serialize($loc_data);
-            $order_registrations = $db->selectObjects('forms_' . $f->table_name, "location_data='" . $locdata . "'");
-        }
+//        $f = new forms($this->forms_id);
+//        if ($f->is_saved == 1) {  // is there user input data
+//            $loc_data = new stdClass();
+//            $loc_data->order_id =$item->orders_id;
+//            $loc_data->orderitem_id = strval($item->id);
+//            $loc_data->event_id = $item->product_id;
+//            $locdata = serialize($loc_data);
+//            $order_registrations = $db->selectObjects('forms_' . $f->table_name, "location_data='" . $locdata . "'");
+//        }
 //        $order_registrations  = expUnserialize($item->extra_data);
 //        $order_registrations = array($item->user_id);
         // update paid status
@@ -592,7 +591,7 @@ class eventregistration extends expRecord {
         return $controls;
     }
 
-    public function getControl($field, $name, $escape = '', $value = '', $adminedit = false, $hidecaption = false) {
+    public function showControl($field, $name, $escape = '', $value = '', $adminedit = false, $hidecaption = false) {
         $id = $field->id;
         $control = $field->data;
         $type = $field->type;
@@ -638,13 +637,15 @@ class eventregistration extends expRecord {
 
 //        $db->delete("eventregistration_registrants", "connector_id ='{$item->orders_id}' AND event_id =" . $item->product_id);
         $f = new forms($this->forms_id);
-        if ($f->is_saved == 1) {  // is there user input data
+        if (!empty($f->is_saved)) {  // is there user input data
             $loc_data = new stdClass();
             $loc_data->order_id =$item->orders_id;
             $loc_data->orderitem_id = strval($item->id);
             $loc_data->event_id = $item->product_id;
             $locdata = serialize($loc_data);
             $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration
+        } else {
+            $db->delete('eventregistration_registrants', "connector_id ='{$item->orders_id}' AND event_id =" . $item->product_id);  // remove existing entries for this registration
         }
         return true;
     }
@@ -664,6 +665,101 @@ class eventregistration extends expRecord {
         }
 
         return false;
+    }
+
+    /**
+     * Return list of all confirmed registrants for the event
+     *   confirmation is invoice # set on order
+     *   searches form table and/or non-form table
+     *   assigns 'payment' property based on billingtransaction
+     */
+    public function getRegistrants() {
+        global $db;
+
+        $f = new forms($this->forms_id);
+        // get list of all orders for this event
+        $order_ids_complete = array();
+        if (!empty($f->is_saved)) {  // is there user input data
+            $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$this->id}", "timestamp");
+            foreach ($registrants as $key=>$registrant) {
+                $order_data = expUnserialize($registrant->location_data);
+                $order_ids_complete[] = $order_data->order_id;
+            }
+        } else {
+            $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$this->id}", "registered_date", true);
+        }
+        // build list of completed orders
+        $orders = new order();
+        $order_ids = array();
+        foreach ($order_ids_complete as $item) {
+            $odr = $orders->find("first", "id ='{$item}' and invoice_id <> 0");
+            if (!empty($odr) || strpos($item, "admin-created") !== false) {
+                $order_ids[] = $item;
+            }
+        }
+        // build list of registrants with completed orders
+        $registered = array();
+        if (!empty($order_ids)) {
+            if (!empty($f->is_saved)) {  // is there user input data
+                $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$this->id}", "timestamp");
+                foreach ($registrants as $key=>$registrant) {
+                    $order_data = expUnserialize($registrant->location_data);
+                    if (in_array($order_data->order_id, $order_ids)) {
+                        $registered[$key] = $registrant;
+                        if (is_numeric($order_data->order_id)) {
+                            $registered[$key]->order_id = $order_data->order_id;
+                            $order = new order($order_data->order_id);
+                            $billingstatus = expUnserialize($order->billingmethod[0]->billing_options);
+                            $registered[$key]->payment = !empty($billingstatus->payment_due) ? gt('payment due') : gt('paid');
+                        } else {
+                            $registered[$key]->payment = '???';
+                        }
+                    }
+                }
+            } else {
+                foreach ($order_ids as $order_id) {
+                    $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
+                    foreach ($registrants as $person) {
+                        $new_registered = new stdClass();
+                        $new_registered->id = $person->id;
+                        $new_registered->user = $person->control_name;
+                        $new_registered->qty = $person->value;
+                        $new_registered->registered_date = $person->registered_date;
+                        if (is_numeric($person->connector_id)) {
+                            $new_registered->order_id = $order_id;
+                            $order = new order($person->connector_id);
+                            $billingstatus = expUnserialize($order->billingmethod[0]->billing_options);
+                            $new_registered->payment = !empty($billingstatus->payment_due) ? gt('payment due') : gt('paid');
+                        } else {
+                            $new_registered->payment = '???';
+                        }
+                        $registered[] = $new_registered;
+                    }
+                }
+            }
+        }
+        return $registered;
+    }
+
+    /**
+     * Return count of registrants confirmed for the event
+     *   confirmation is invoice # set on order
+     *   searches form table and/or non-form table
+     */
+    public function countRegistrants() {
+        global $db;
+
+        $f = new forms($this->forms_id);
+        if (!empty($f->is_saved)) {
+            $count = count($this->getRegistrants());
+        } else {
+            $blind_regs = $this->getRegistrants();
+            $count = 0;
+            foreach ($blind_regs as $blind_reg) {
+                $count += $blind_reg->qty;
+            }
+        }
+        return $count;
     }
 
 }

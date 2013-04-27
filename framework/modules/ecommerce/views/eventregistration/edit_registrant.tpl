@@ -24,10 +24,15 @@
         {control type=hidden name=id value=$registrant->id}
         {control type=hidden name=event_id value=$event->id}
         {$controls = $event->getAllControls()}
-        {foreach $controls as $control}
-            {$ctlname = $control->name}
-            {$event->getControl($control,"registrant[`$ctlname`]",null,$registrant->$ctlname)}
-        {/foreach}
+        {if $controls}
+            {foreach $controls as $control}
+                {$ctlname = $control->name}
+                {$event->showControl($control,"registrant[`$ctlname`]",null,$registrant->$ctlname)}
+            {/foreach}
+        {else}
+            {control type="text" name="control_name" label='Name'|gettext value="`$registrant->control_name`" required=1}
+            {control type="text" name="value" label='Quantity'|gettext value="`$registrant->value`" required=1}
+        {/if}
 
         {*FIXME no longer being stored in registrant record*}
         {*{control type=text name=payment label="Paid"|gettext value=$registrant->payment}*}

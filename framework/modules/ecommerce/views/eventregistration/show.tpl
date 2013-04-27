@@ -162,7 +162,7 @@
                                             <tr id="regform">
                                                 {foreach $controls as $control}
                                                     <td>
-                                                        {$product->getControl($control,"registrant[`$control->name`][]",null,null,false,true)}
+                                                        {$product->showControl($control,"registrant[`$control->name`][]",null,null,false,true)}
                                                     </td>
                                                 {/foreach}
                                             </tr>
@@ -172,7 +172,7 @@
                                                 {foreach $controls as $control}
                                                     {$ctlname = $control->name}
                                                     <td>
-                                                        {$product->getControl($control,"registrant[`$ctlname`][]",null,$registrant->$ctlname,false,true)}
+                                                        {$product->showControl($control,"registrant[`$ctlname`][]",null,$registrant->$ctlname,false,true)}
                                                     </td>
                                                 {/foreach}
                                             </tr>
@@ -186,7 +186,7 @@
                             {foreach $controls as $control}
                                 {$ctlname = $control->name}
                                 <td>
-                                    {$product->getControl($control,"registrant[`$ctlname`][]",null,$registrant->$ctlname)}
+                                    {$product->showControl($control,"registrant[`$ctlname`][]",null,$registrant->$ctlname)}
                                 </td>
                             {/foreach}
                         {/if}

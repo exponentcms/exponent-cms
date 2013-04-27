@@ -1301,7 +1301,7 @@ class storeController extends expController {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title : $cat->meta_title;
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
-                    $metainfo['canonical']   = '';
+                    $metainfo['canonical'] = empty($cat->canonical) ? '' : strip_tags($cat->canonical);
                 }
                 break;
             case 'show':
@@ -1311,7 +1311,7 @@ class storeController extends expController {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
-                    $metainfo['canonical']   = '';
+                    $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
                 }
                 break;
             default:

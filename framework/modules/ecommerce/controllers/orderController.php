@@ -828,7 +828,7 @@ exit();
                 $metainfo['title']       = 'Viewing Invoice';
                 $metainfo['keywords']    = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object doesn't exist
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object doesn't exist
-                $metainfo['canonical']   = '';
+                $metainfo['canonical'] = empty($object->canonical) ? '' : $object->canonical; //FIXME $object doesn't exist
                 break;
             default:
                 $metainfo = array('title'=> "Order Management - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');

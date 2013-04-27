@@ -81,6 +81,7 @@
                 {/if}
             {/permissions}
             {$controls = $event->getAllControls()}
+            <div style="overflow: auto; overflow-y: hidden;">
             <table class="exp-skin-table">
                 <thead>
                     <tr>
@@ -91,6 +92,9 @@
                             <th>
                                 <span>{$control->caption}</span>
                             </th>
+                        {foreachelse}
+                            <th>{'Name'|gettext}</th>
+                            <th>{'Quantity'|gettext}</th>
                         {/foreach}
                         <th>{'Paid?'|gettext}</th>
                         <th>{'Actions'|gettext}</th>
@@ -119,8 +123,17 @@
                                            {$registrant->$ctlname}
                                        {/if}
                                     </td>
+                                {foreachelse}
+                                    <th>{$registrant->user}</th>
+                                    <th>{$registrant->qty}</th>
                                 {/foreach}
-                                <td>{$registrant->payment} </td>
+                                <td>
+                                    {if $registrant->order_id}
+                                        <a href="{link controller="order" action="show" id=$registrant->order_id}" title="{'Edit this order'|gettext}">{$registrant->payment}</a>
+                                    {else}
+                                        {$registrant->payment}
+                                    {/if}
+                                </td>
                                 <td>
                                     {permissions}
                                         <div class="item-actions">
@@ -142,9 +155,10 @@
                     {/if}
                 </tbody>
             </table>
+            </div>
         </div>
+        {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
         {if $registrants|count > 0 && $is_email}
-            {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
             {group label='Send an Email to All Registrants'|gettext}
                 {control type="text" name="email_subject" label="Subject"|gettext}
                 {control type="editor" name="email_message" label="Message"|gettext}

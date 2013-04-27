@@ -49,26 +49,19 @@ $items = array(
         'classname' => 'add',
     )
 );
-//$events = $db->selectObjects('eventregistration', 'event_starttime > '.time());
-$events = $db->selectObjects('eventregistration', 'eventdate > ' . time());
-foreach ($events as $event) {
-    $f = new forms($event->forms_id);
-    $prod = $db->selectObject('product', 'product_type="eventregistration" AND product_type_id=' . $event->id);
-    if (!empty($f->is_saved)) {
-        //FIXME we're pulling in those still in the cart also
-        $count = $db->countObjects('forms_' . $f->table_name, "referrer='" . $prod->id . "'");
-    } else {
-        //FIXME we're pulling in those still in the cart also
-        $blind_regs = $db->selectObjects('eventregistration_registrants', "event_id='" . $prod->id . "'");
-        $count = 0;
-        foreach ($blind_regs as $blind_reg) {
-            $count += $blind_reg->value;
-        }
+$ev = new eventregistration();
+$allevents = $ev->find('all', 'product_type="eventregistration" && active_type=0');
+$events = array();
+foreach ($allevents as $event) {
+    if ($event->eventdate > time()) {
+        $events[] = $event;
     }
-    if (!empty($prod->title)) {
+}
+foreach ($events as $event) {
+    if (!empty($event->title)) {
         $thisitem = array();
-        $thisitem['text'] = $prod->title . ' (' . $count . '/' . $prod->quantity . ')';
-        $thisitem['url'] = $router->makeLink(array('controller' => 'eventregistration', 'action' => 'view_registrants', 'id' => $prod->id));
+        $thisitem['text'] = $event->title . ' (' . $event->countRegistrants() . '/' . $event->quantity . ')';
+        $thisitem['url'] = $router->makeLink(array('controller' => 'eventregistration', 'action' => 'view_registrants', 'id' => $event->id));
         $thisitem['classname'] = 'event';
         $items[] = $thisitem;
     }

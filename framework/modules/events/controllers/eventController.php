@@ -563,7 +563,7 @@ class eventController extends expController {
                $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
                $metainfo['keywords'] = empty($object->event->meta_keywords) ? SITE_KEYWORDS : $object->event->meta_keywords;
                $metainfo['description'] = empty($object->event->meta_description) ? SITE_DESCRIPTION : $object->event->meta_description;
-               $metainfo['canonical']   = '';
+               $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
            }
            return $metainfo;
        } else {
