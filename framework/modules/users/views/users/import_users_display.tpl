@@ -20,7 +20,7 @@
 <div class="importer usercsv-display">
 	<div class="form_header">
 		<h2>{'Import Users - Available Users to Import'|gettext}</h2>
-		<p>{'The following users can be added to the database.'|gettext}</p>
+		<blockquote>{'The following users can be added to the database.'|gettext}</blockquote>
 	</div>
     {form action="import_users_add"}
         {control type="hidden" name="filename" value=$params.filename}

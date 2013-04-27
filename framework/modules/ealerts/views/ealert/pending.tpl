@@ -15,11 +15,11 @@
 
 <div class="module ealerts pending">
     <h1>{'Account Settings Pending'|gettext}</h1>
-    <p>
+    <blockquote>
         {'Your request to modify your e-Alert settings has been received.'|gettext}&#160;&#160;
         {'A confirmation email has been sent to'|gettext} {$subscriber->email}.&#160;&#160;
         {'Once you have followed the instructions listed in the email you will start receiving email alerts for the following topics:'|gettext}
-    </p>
+    </blockquote>
     <ul>
         {foreach from=$ealerts item=ealert}
             <li>{$ealert->ealert_title}</li>

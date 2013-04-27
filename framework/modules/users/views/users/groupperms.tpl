@@ -21,7 +21,7 @@
 			</div>
 			<h1>{'Assign Group Permissions for this'|gettext} {$title}</h1>
 		</div>
-        <p>{'This form allows you to assign permissions to an entire group of users.'|gettext}</p>
+        <blockquote>{'This form allows you to assign permissions to an entire group of users.'|gettext}</blockquote>
     </div>
 	{capture assign="file"}_permissions.tpl{/capture}
 	{include file=$file}

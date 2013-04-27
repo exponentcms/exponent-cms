@@ -63,10 +63,10 @@
                             </table>
                         {/group}
                         {group label="Quantity Discounts"|gettext}
-                            <p>
+                            <blockquote>
                                 {"Quantity discounts are discounts that get applied when a customer purchases a certain amount of this product."|gettext}&#160;&#160;
                                 {"You can configure how the discounts work by setting the discount rules below."|gettext}
-                            </p>
+                            </blockquote>
                             <table class="qty-discount">
                                 <tr>
                                     <td>{"If a customer purchases more than"|gettext} </td>

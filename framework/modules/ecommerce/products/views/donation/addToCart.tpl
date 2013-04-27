@@ -16,7 +16,7 @@
 <div class="module cart module addToCart">
     <h1>{$moduletitle|default:"Online Donation - Select Amount"|gettext}</h1>
     <h3>{$product->title}</h3>
-    <p>{'Minimum donation amount is'|gettext} {$product->base_price|currency}.</p>
+    <blockquote>{'Minimum donation amount is'|gettext} {$product->base_price|currency}.</blockquote>
     {form name=donationamt controller=cart action="addItem"}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}

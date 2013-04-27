@@ -20,7 +20,7 @@
 <div class="exporter files-modlist">
 	<div class="form_header">
 		<h2>{'Export All Uploaded Files'|gettext}</h2>
-        <p>{'This will save all files listed within the File Manager.'|gettext}</p>
+        <blockquote>{'This will save all files listed within the File Manager.'|gettext}</blockquote>
 	</div>
 	<form method="post" action="">
 		<input type="hidden" name="controller" value="file" />

@@ -20,7 +20,7 @@
 <div class="importer usercsv-display-users">
 	<div class="form_header">
 		<h2>{'Import Form Data - Form Data Imported Into Database'|gettext}</h2>
-		<p>{'The following data was added to the database.  If the record is highlighted green, then the form record was added to the database with changes to the data.  If the record is highlighted in red, that record could not be added to the database due to errors.'|gettext}</p>
+		<blockquote>{'The following data was added to the database.  If the record is highlighted green, then the form record was added to the database with changes to the data.  If the record is highlighted in red, that record could not be added to the database due to errors.'|gettext}</blockquote>
 	</div>
 	<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>

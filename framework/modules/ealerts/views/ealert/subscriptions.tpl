@@ -19,9 +19,9 @@
 
 <div class="module ealerts showall">
     <h1>{$moduletitle|default:"Sign Up for E-Alerts"|gettext}</h1>
-    <p>
+    <blockquote>
         {'If you would like to stay up to date with email alerts, simply provide your email address and select what you would like to be alerted about.'|gettext}
-    </p>
+    </blockquote>
     {form action=subscription_update}
         {control type="hidden" name="id" value=$subscriber->id}
         {control type="hidden" name="key" value=$subscriber->hash}

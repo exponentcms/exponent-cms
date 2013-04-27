@@ -15,7 +15,7 @@
 
 <div class="module cart giftcard addToCart">
     <h1>{$moduletitle|default:"Gift Card - Add to Cart"|gettext}</h1>
-    <p>{'Gift Card amounts must be purchased in'|gettext} {currency_symbol}{$product->base_price}.00 {'increments'|gettext}.</p>
+    <blockquote>{'Gift Card amounts must be purchased in'|gettext} {currency_symbol}{$product->base_price}.00 {'increments'|gettext}.</blockquote>
     {form action="addItem"}
         {control type="hidden" name="controller" value=cart}
         {control type="hidden" name="product_type" value=$params.product_type}

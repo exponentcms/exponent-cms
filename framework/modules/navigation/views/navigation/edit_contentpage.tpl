@@ -24,7 +24,7 @@
         </div>
 		<h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext} {if $section->parent == -1}{'Standalone'|gettext}{elseif $section->parent == 0}{'Top Level'|gettext}{/if} {'Content Page'|gettext}{/if}</h1>
 	</div>
-    <p>{if $section->id}{'Use the form below to change the details of this content page.'|gettext}{else}{'Use the form below to enter the information about your new content page.'|gettext}{/if}</p>
+    <blockquote>{if $section->id}{'Use the form below to change the details of this content page.'|gettext}{else}{'Use the form below to enter the information about your new content page.'|gettext}{/if}</blockquote>
     {form action=update}
         {control type=hidden name=id value=$section->id}
         {control type=hidden name=rank value=$section->rank}

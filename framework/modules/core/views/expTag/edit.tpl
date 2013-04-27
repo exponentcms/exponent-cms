@@ -17,10 +17,10 @@
 	<div class="form_header">
         {if $record->id == ""}
             <h1>{'Create Tag'|gettext}</h1>
-            <p>{'Create a new tag to add to the list of available tags'|gettext}</p>
+            <blockquote>{'Create a new tag to add to the list of available tags'|gettext}</blockquote>
         {else}
             <h1>{'Edit Tag'|gettext}</h1>
-            <p>{'Edit this tag to update all associated tagged items'|gettext}</p>
+            <blockquote>{'Edit this tag to update all associated tagged items'|gettext}</blockquote>
         {/if}
     </div>
 	{form controller=expTag action=update}

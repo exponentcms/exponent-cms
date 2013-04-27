@@ -43,7 +43,7 @@ class eventregistration extends expRecord {
     protected $attachable_item_types = array(
 //        'content_expCats'=>'expCat',
 //        'content_expComments'=>'expComment',
-        'content_expDefinableFields' => 'expDefinableField',
+//        'content_expDefinableFields' => 'expDefinableField',
         'content_expFiles'           => 'expFile',
 //        'content_expRatings'=>'expRating',
 //        'content_expSimpleNote'=>'expSimpleNote',
@@ -72,9 +72,9 @@ class eventregistration extends expRecord {
 
         if (!empty($params)) {
             // handle definable fields
-            if (isset($params['id'])) {
-                $db->delete('content_expDefinableFields', 'content_type="' . $this->classname . '" AND content_id=' . $params['id']);
-            }
+//            if (isset($params['id'])) {
+//                $db->delete('content_expDefinableFields', 'content_type="' . $this->classname . '" AND content_id=' . $params['id']);
+//            }
 
             // creating or editing the event reservation
             if (isset($params['id'])) {

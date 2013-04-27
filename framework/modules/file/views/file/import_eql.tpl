@@ -16,7 +16,7 @@
 <div class="importer eql-restoreform">
 	<div class="form_header">
 		<h2>{'Restore Database from Archive'|gettext}</h2>
-		<p>{'This allows you upload/import a database backup (in EQL format) to the server.  Doing so will restore the database to the state saved in that backup file.'|gettext}</p>
+		<blockquote>{'This allows you upload/import a database backup (in EQL format) to the server.  Doing so will restore the database to the state saved in that backup file.'|gettext}</blockquote>
         <p style="color: red"><strong>{'Continuing will delete ALL existing data in any restored tables!'|gettext}</strong></p>
 	</div>
 	{$form_html}

@@ -28,10 +28,10 @@
         </div>
         <h1>{$moduletitle|default:"Manage Users"|gettext}</h1>
     </div>
-	<p>
+	<blockquote>
         {'From here, you can create, modify and remove normal user accounts.'|gettext}&#160;&#160;
         {'You will not be able to create, modify or remove administrator accounts (these options will be disabled).'|gettext}
-    </p>
+    </blockquote>
 	<div class="module-actions">
 		{icon class=add module=users action=create text="Create a New User"|gettext}
 	</div>

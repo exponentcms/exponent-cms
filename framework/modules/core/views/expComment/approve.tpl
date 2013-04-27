@@ -15,10 +15,10 @@
 
 <div class="module comment approve">
 	<h1>{'Edit & Approve Comment'|gettext}</h1>
-    <p>
+    <blockquote>
         {'To approve a comment just check the \'Approve Comment\' checkbox and click the approve button below.'|gettext}&#160;&#160;
         {'If you need to edit the comment before you approve it and let it go live, you can do that here as well.'|gettext}
-    </p>
+    </blockquote>
 	{form action=approve_submit}
 		{control type=hidden name=id value=$comment->id}
 		

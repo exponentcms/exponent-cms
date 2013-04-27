@@ -19,14 +19,14 @@
 
 <div class="module navigation manager-hierarchy">
 	<div class="form_header">
-		<p>
+		<blockquote>
             <strong>{'Drag and drop'|gettext}</strong> {'tree items using the 4-way arrows icon to re-order the site hierarchy (main menu).'|gettext}
             <ul>
                 <li>{'Dropping an item on a name (name grays out) places it within that menu.'|gettext}</li>
                 <li>{'Dropping an item between names (shows a line) places it next to that menu.'|gettext}</li>
             </ul>
             <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of options.'|gettext}
-        </p>
+        </blockquote>
 	</div>
 	{permissions}
 		{if $user->is_admin || $user->is_acting_admin}

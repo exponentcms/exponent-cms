@@ -24,11 +24,11 @@
         </div>
         <h1>{"Manage User Profile Extensions"|gettext}</h1>
     </div>
-	<p>
+	<blockquote>
         {"From here activate or deactivate user profile extensions."|gettext}&#160;&#160;
         {"User profile extensions are used to give users the ability to put in more information about themselves."|gettext}&#160;&#160;
         {"The active extensions will add fields to the form a user has to fill out to create an account."|gettext}
-    </p>
+    </blockquote>
     {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 	    <thead>

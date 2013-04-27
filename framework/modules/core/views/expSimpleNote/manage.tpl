@@ -24,7 +24,7 @@
         </div>
         <h1>{'Manage Notes'|gettext}</h1>
     </div>
-    <p>{'The table below shows notes have not yet been approved'|gettext}.</p>
+    <blockquote>{'The table below shows notes have not yet been approved'|gettext}.</blockquote>
     
     {$page->links}
     <table class="exp-skin-table">

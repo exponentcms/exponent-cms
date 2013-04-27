@@ -19,9 +19,9 @@
 
 <div class="module billing manage">
     <h1>{'Manage Payment Options'|gettext}</h1>
-    <p>
+    <blockquote>
         {'This page allows you to enable different payment options (known as billing calculators) for customers on your webstore.'|gettext}
-    </p>
+    </blockquote>
     
     <table class="exp-skin-table">
         <thead>

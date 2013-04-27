@@ -93,7 +93,7 @@
                             </tbody>
                         </table>
                         {$page->links}
-                        <p>{'Select the item(s) to change, then select the new'|gettext|cat:" `$catname`"}</p>
+                        <blockquote>{'Select the item(s) to change, then select the new'|gettext|cat:" `$catname`"}</blockquote>
                         {control type="dropdown" name=newcat label="Module"|gettext|cat:" `$catnames`" items=$catlist}
                         {control type=buttongroup submit="Change Selected Items"|gettext|cat:" `$catname`" cancel="Cancel"|gettext returntype="viewable"}
                     {/form}

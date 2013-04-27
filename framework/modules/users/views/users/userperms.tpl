@@ -21,7 +21,7 @@
 			</div>
         	<h1>{'Assign User Permissions for this'|gettext} {$title}</h1>
 		</div>
-		<p>{'This form allows you to assign permissions to a specific user.'|gettext}</p>
+		<blockquote>{'This form allows you to assign permissions to a specific user.'|gettext}</blockquote>
 	</div>
 	{capture assign="file"}_permissions.tpl{/capture}
 	{include file=$file}

@@ -19,7 +19,7 @@
 
 <h1>{'Fix Mixed Case Database Table Names'|gettext}</h1>
 {if $tables}
-    <p>{'The following tables were renamed to mixed case'|gettext}</p>
+    <blockquote>{'The following tables were renamed to mixed case'|gettext}</blockquote>
     <table  class="exp-skin-table" cellspacing="0" cellpadding="0" border="0" width="100%">
         <thead>
             <tr>

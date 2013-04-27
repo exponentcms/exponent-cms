@@ -61,7 +61,7 @@
         </tbody>
     </table>
     {$page->links}
-    <p>{'Select the item(s) to change, then enter the tags below'|gettext}</p>
+    <blockquote>{'Select the item(s) to change, then enter the tags below'|gettext}</blockquote>
     {control type="text" id="addTag" name="addTag" label="Add these Tags (comma separated)"|gettext size=45 value=''}
     {control type="text" id="removeTag" name="removeTag" label="Remove these Tags (comma separated)"|gettext size=45 value=''}
     {control type=buttongroup submit="Change Tags on Selected Items"|gettext cancel="Cancel"|gettext returntype="viewable"}

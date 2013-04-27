@@ -73,7 +73,7 @@
         {if !empty($product->user_input_fields) && $product->user_input_fields|@count>0 }
             <div class="user-input-fields">
             <h2>{'Additional Information for'|gettext} {$product->title}</h2>
-            <p>{'This item would like the following additional information. Items marked with an * are required:'|gettext}</p>
+            <blockquote>{'This item would like the following additional information. Items marked with an * are required:'|gettext}</blockquote>
             {foreach from=$product->user_input_fields key=uifkey item=uif}  
                 <div class="user-input {cycle values="odd,even"}">
                     {if $uif.use}                   

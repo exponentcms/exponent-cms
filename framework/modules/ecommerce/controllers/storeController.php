@@ -959,9 +959,9 @@ class storeController extends expController {
 
     function edit() {
         global $db;
-        $expDefinableField = new expDefinableField();
 
-        $definablefields = $expDefinableField->find('all','1','rank');
+//        $expDefinableField = new expDefinableField();
+//        $definablefields = $expDefinableField->find('all','1','rank');
         $f = new forms();
         $forms_list = array();
         $forms_list[0] = gt('No User Input Required');
@@ -1083,7 +1083,7 @@ class storeController extends expController {
             'parent'            => $parent,
             'form'              => $record->getForm($view),
             'optiongroups'      => $editable_options,
-            'definablefields'   => isset($definablefields) ? $definablefields : '',
+//            'definablefields'   => isset($definablefields) ? $definablefields : '',
             'forms'=> $forms_list,
             'shipping_services' => isset($shipping_services) ? $shipping_services : '', // Added implication since the shipping_services default value is a null
             'shipping_methods'  => isset($shipping_methods) ? $shipping_methods : '', // Added implication since the shipping_methods default value is a null

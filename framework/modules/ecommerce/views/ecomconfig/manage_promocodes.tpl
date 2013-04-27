@@ -20,7 +20,7 @@
 <div class="module ecomconfig promocodes">
 	<div class="form_header">
         <h1>{'Promotional Codes'|gettext}</h1>
-        <p>{'Here you can configure promotional codes to give to users.'|gettext}</p>
+        <blockquote>{'Here you can configure promotional codes to give to users.'|gettext}</blockquote>
 	</div>
 	
 	<h2>{'Add a new promo code'|gettext}</h2>

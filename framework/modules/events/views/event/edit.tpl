@@ -16,8 +16,8 @@
 <div id="editevent" class="events calendar edit">
     {if $record->id != ""}<h1>{'Editing'|gettext} '{$record->title}'</h1>{else}<h1>{'New'|gettext} {$modelname|capitalize}</h1>{/if}
     <div class="form_header">
-        <p>{'Enter the information about the calendar event (the date and times) below.'|gettext}</p>
-        <p>{'Note: multiple day events are not supported.'|gettext}</p>
+        <blockquote>{'Enter the information about the calendar event (the date and times) below.'|gettext}</blockquote>
+        <blockquote>{'Note: multiple day events are not supported.'|gettext}</blockquote>
     </div>
     {form action=update}
 	    {control type=hidden name=id value=$record->id}

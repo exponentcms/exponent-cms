@@ -21,8 +21,8 @@
 {if $permissions.manage == 1}
     <div class="module ecomconfig manage-discounts">
         <div class="form_header">
-                <h1>{"Manage Discounts"|gettext}</h1>
-                <p>{"Here you can configure discounts to be used in your store."|gettext}</p><p></p>
+            <h1>{"Manage Discounts"|gettext}</h1>
+            <blockquote>{"Here you can configure discounts to be used in your store."|gettext}</blockquote>
         </div>
         
         {*icon class=edit action=edit_optiongroup_master record=$group}

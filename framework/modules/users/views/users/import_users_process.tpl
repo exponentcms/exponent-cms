@@ -16,7 +16,7 @@
 <div class="importer usercsv-process">
 	<div class="form_header">
 		<h2>{'Import Users - Import Options'|gettext}</h2>
-		<p>{'Select the methods you would like to use to generate usernames and passwords.&#160;&#160;If you supply a default password, it will be used for all the users imported.  If you mapped username and password as a field in the mapping screen, you won\'t need to do anything here.'|gettext}</p>
+		<blockquote>{'Select the methods you would like to use to generate usernames and passwords.&#160;&#160;If you supply a default password, it will be used for all the users imported.  If you mapped username and password as a field in the mapping screen, you won\'t need to do anything here.'|gettext}</blockquote>
 	</div>
 	{$form_html}
 </div>

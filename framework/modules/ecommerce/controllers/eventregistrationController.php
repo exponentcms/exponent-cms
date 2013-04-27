@@ -519,6 +519,7 @@ class eventregistrationController extends expController {
         //Get all the registrants in the event using order id
 //        $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "registered_date", true);
         $f = new forms($event->forms_id);
+        $registrants = array();
         if ($f->is_saved == 1) {  // is there user input data
             $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$event->id}", "timestamp");
         }

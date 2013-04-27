@@ -27,10 +27,10 @@
 		<h1>{"Migrate Pages"|gettext}</h1>	    
     </div>
 
-    <p> 
+    <blockquote>
         {'The following is a list of pages we found in the database'|gettext} {$config.database}.
         {'Select the pages you would like to pull over from'|gettext} {$config.database}.
-    </p>
+    </blockquote>
     {form action="migrate_pages"}
         <table class="exp-skin-table">
         <thead>

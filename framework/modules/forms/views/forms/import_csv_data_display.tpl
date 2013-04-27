@@ -21,7 +21,7 @@
 <div class="importer usercsv-display">
 	<div class="form_header">
 		<h2>{'Import Form Data - Available Records to Import'|gettext}</h2>
-		<p>{'The following records can be added to the database.'|gettext}</p>
+		<blockquote>{'The following records can be added to the database.'|gettext}</blockquote>
 	</div>
     {form action="import_csv_data_add"}
         {control type="hidden" name="filename" value=$params.filename}

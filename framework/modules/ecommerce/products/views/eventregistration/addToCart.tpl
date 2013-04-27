@@ -16,7 +16,7 @@
 {if $product->isAvailable()}
     <div class="module cart eventregistration addToCart">
         <h1>{'Register for'|gettext} {$product->title}</h1>
-        <p>{'Please enter the name, email, and phone number of the person you would like to register for this event.  If you would like to add more registrants, simply click \'Add another registrant\'.'|gettext} </p><br/>
+        <blockquote>{'Please enter the name, email, and phone number of the person you would like to register for this event.  If you would like to add more registrants, simply click \'Add another registrant\'.'|gettext} </blockquote><br/>
         {form name="evregfrm" action=addItem}
             {control type="hidden" name="controller" value=cart}
             {control type="hidden" name="product_type" value=$product->product_type}
