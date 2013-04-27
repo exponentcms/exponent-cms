@@ -1186,11 +1186,11 @@ abstract class expController {
         // figure out what metadata to pass back based on the action we are in.
 //        $action = $_REQUEST['action'];
         $action = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
         $modelname = $this->basemodel_name;
         switch ($action) {
             case 'showall':
-                $metainfo = array('title' => gt("Showing all") . " - " . $this->displayname(), 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION);
+                $metainfo = array('title' => gt("Showing all") . " - " . $this->displayname(), 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => '');
                 break;
             case 'show':
             case 'showByTitle':
@@ -1205,6 +1205,7 @@ abstract class expController {
                         $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
                         $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL : $object->canonical;
                     }
                 }
                 break;
@@ -1216,7 +1217,7 @@ abstract class expController {
 //                    $metainfo = $mod->$functionName($_REQUEST);
                     $metainfo = $mod->$functionName($router->params);
                 } else {
-                    $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION);
+                    $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => '');
                 }
         }
 

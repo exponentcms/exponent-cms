@@ -173,6 +173,7 @@ class expRouter {
     public function routeRequest() {
         // start splitting the URL into it's different parts
         $this->splitURL();
+        // edebug($this,1);
 
         if ($this->url_style == 'sef') {
             if ($this->url_type == 'page' || $this->url_type == 'base') {
@@ -251,8 +252,11 @@ class expRouter {
     }
 
     public function splitURL() {
-        $this->url_parts = array();        
-        $this->buildSEFPath();        
+        global $db;
+
+        $this->url_parts = array();
+        $this->buildSEFPath();
+
         if (!empty($this->sefPath)) {
             $this->url_style = 'sef';
             $this->url_parts = explode('/', $this->sefPath);     
@@ -263,15 +267,15 @@ class expRouter {
             
             if (count($this->url_parts) < 1 || (empty($this->url_parts[0]) && count($this->url_parts) == 1) ) {
                 $this->url_type = 'base';
-            } elseif (count($this->url_parts) == 1) {
+            } elseif (count($this->url_parts) == 1 || $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
                 $this->url_type = 'page';
             } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $this->url_type = 'post';
             } else {
                 // take a peek and see if a page exists with the same name as the first value...if so we probably have a page with
                 // extra perms...like printerfriendly=1 or ajax=1;
-                global $db;
-                if ( ($db->selectObject('section', "sef_name='".$this->url_parts[0]."'") != null) && ((in_array('printerfriendly', $this->url_parts)) || (in_array('exportaspdf', $this->url_parts)))) {
+
+                if (($db->selectObject('section', "sef_name='" . $this->url_parts[0] . "'") != null) && ((in_array('printerfriendly', $this->url_parts)) || (in_array('exportaspdf', $this->url_parts)))) {
                     $this->url_type = 'page';
                 } else {
                     $this->url_type = 'action';
@@ -314,7 +318,7 @@ class expRouter {
             // Try to look up the page by sef_name first.  If that doesn't exist, strip out the dashes and
             // check the regular page names.  If that still doesn't work then we'll redirect them to the 
             // search module using the page name as the search string.
-            $section = $this->getPageByName($this->url_parts[0]);
+            $section = $this->getPageByName(substr($this->sefPath,1));
             ########################################################
             #FJD TODO:  this needs further refinement
             #currently this requires a matching routerMap as such to work properly:
@@ -591,7 +595,7 @@ class expRouter {
         if ($this->url_type == 'base') {
             $params['section'] = SITE_DEFAULT_SECTION;
         } elseif ($this->url_type == 'page') {
-            $section = $this->getPageByName($this->url_parts[0]);
+            $section = $this->getPageByName(substr($this->sefPath,1));
             $params['section'] = empty($section->id) ? null : $section->id;
         } elseif ($this->url_type == 'action') {
             $params['controller'] = $this->url_parts[0];

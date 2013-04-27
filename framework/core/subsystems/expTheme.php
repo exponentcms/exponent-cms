@@ -144,6 +144,7 @@ class expTheme {
 		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
 		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
+		$str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
         // favicon
         if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
             $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
@@ -200,6 +201,7 @@ class expTheme {
             $metainfo['title'] = empty($sectionObj->page_title) ? SITE_TITLE : $sectionObj->page_title;
 	        $metainfo['keywords'] = empty($sectionObj->keywords) ? SITE_KEYWORDS : $sectionObj->keywords;
 	        $metainfo['description'] = empty($sectionObj->description) ? SITE_DESCRIPTION : $sectionObj->description;
+	        $metainfo['canonical'] = empty($sectionObj->canonical) ? URL_FULL.$sectionObj->sef_name : $sectionObj->canonical;
         }
 
         return $metainfo;
