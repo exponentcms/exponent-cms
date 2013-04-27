@@ -1,6 +1,8 @@
 version 2.2.0
 The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
-  * replaces the containermodule with container2 controller
+  * requires update of hard-coded modules in themes to conform to 2.0 controller calls
+  * requires updating YUI3 CSS Reset links to use new name (e.g., grids-min.css became cssgrids-min.css)
+  - replaces the containermodule with container2 controller
   - forces deprecation/removal of formmodule/formbuilder, headlineController
     -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
@@ -20,6 +22,7 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
   - tweaks and more features to ecommerce (online donations and event registrations) making it more robust and polished
     -- quick add donation at set amount or allow user to enter amount
     -- event registrations now abide by 'options'
+    -- adds single or multi-person event registration using site forms to collect data
   - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
   - implements broader use of ajax paging and use of new html5 input types, temporarily adds additional date/time form designer controls
   - implements an html5 input fallback system to display html5 controls/features in older browsers

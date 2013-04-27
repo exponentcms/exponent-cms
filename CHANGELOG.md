@@ -10,8 +10,10 @@ Added / Fixed / changed for 2.2.0 release candidate 1
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
   - adds an 'ecommerce store' sample database
+  - adds single or multi-person event registration using site forms to collect data
 ### Known Issues
   - There is no media player migration script, but you can migrate youtube/flowplayer modules, then run the media player upgrade script
+  - There is no fallback for NOT assigning a form to an event registration
 
 Added / Fixed / changed for 2.2.0 beta 3
 -----------------------
