@@ -1834,7 +1834,7 @@ class expFile extends expRecord {
     static function updateFormbuilderTable($object) {
 		global $db;
 
-		if ($object->is_saved == 1) {
+		if (!empty($object->is_saved)) {
 			$datadef =  array(
 				'id'=>array(
 					DB_FIELD_TYPE=>DB_DEF_ID,

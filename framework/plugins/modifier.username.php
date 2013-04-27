@@ -32,9 +32,13 @@
  * @param array
  * @return array
  */
-function smarty_modifier_username($userid) {
+function smarty_modifier_username($userid,$type=null) {
 	global $db;
-	return $db->selectValue('user', 'username', 'id='.intval($userid));
+
+    if ($type) {
+        $user = $db->selectObject('user', 'id='.intval($userid));
+        return $user->firstname . ' ' . $user->lastname;
+    } else return $db->selectValue('user', 'username', 'id='.intval($userid));
 }
 
 ?>

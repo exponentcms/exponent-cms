@@ -48,7 +48,7 @@ class forms extends expRecord {
     public function updateTable() {
         global $db;
 
-        if ($this->is_saved == 1) {
+        if (!empty($this->is_saved)) {
             $datadef = array(
                 'id'            => array(
                     DB_FIELD_TYPE => DB_DEF_ID,
@@ -132,7 +132,7 @@ class forms extends expRecord {
         }
 
         // delete the table for this form
-        if ($this->is_saved == 1) {
+        if (!empty($this->is_saved)) {
             $db->dropTable("forms_" . $this->table_name);
         }
     }

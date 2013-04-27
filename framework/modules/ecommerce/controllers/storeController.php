@@ -964,7 +964,7 @@ class storeController extends expController {
 //        $definablefields = $expDefinableField->find('all','1','rank');
         $f = new forms();
         $forms_list = array();
-        $forms_list[0] = gt('No User Input Required');
+        $forms_list[0] = '- '.gt('No User Input Required').' -';
         $forms = $f->find('all', 'is_saved=1');
         if (!empty($forms)) foreach ($forms as $frm) {
             $forms_list[$frm->id] = $frm->title;

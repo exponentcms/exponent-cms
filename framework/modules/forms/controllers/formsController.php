@@ -490,7 +490,7 @@ class formsController extends expController {
         }
 
         if (!isset($this->params['data_id']) || (isset($this->params['data_id']) && expPermissions::check("editdata", $f->loc))) {
-            if ($f->is_saved == 1) {
+            if (!empty($f->is_saved)) {
                 if (isset($this->params['data_id'])) {
                     //if this is an edit we remove the record and insert a new one.
                     $olddata = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
@@ -1331,7 +1331,7 @@ class formsController extends expController {
             $formslist = array();
             $formslist[0] = gt('--Create a New Form--');
             foreach ($forms as $aform) {
-                if ($aform->is_saved) {
+                if (!empty($aform->is_saved)) {
                     $formslist[$aform->id] = $aform->title;
                     if (empty($formslist[$aform->id])) $formslist[$aform->id] = gt('Untitled');
                 }
