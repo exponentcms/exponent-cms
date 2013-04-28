@@ -580,13 +580,16 @@ class eventregistration extends expRecord {
         return (($this->spacesLeft() != 0 || $this->quantity == 0) && $this->signup_cutoff > time()) ? true : false;
     }
 
-    public function getAllControls() {
+    public function getAllControls($input_only = null) {
         $f = new forms($this->forms_id);
         if (empty($f->is_saved)) return null;  // useless unless the form data is being saved
         $fc = new forms_control();
         $controls = $fc->find('all','forms_id='.$this->forms_id);
         foreach ($controls as $key=>$control) {
             $controls[$key]->ctl = expUnserialize($control->data);
+            if ($input_only && get_class($control->ctl) == 'htmlcontrol') {
+                unset($controls[$key]);
+            }
         }
         return $controls;
     }

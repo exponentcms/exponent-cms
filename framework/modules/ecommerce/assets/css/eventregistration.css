@@ -116,6 +116,7 @@ show view
 
 .product .prod-price .sale-price {
     color:#f00;
+	vertical-align: sub;
 }
 
 #eventregform .text-control p.helper {

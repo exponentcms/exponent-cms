@@ -139,13 +139,14 @@
                         </div>
                     {/if}
 
-                    {$controls = $product->getAllControls()}
+                    {$controls = $product->getAllControls($product->multi_registrant)}
                     {if !empty($controls)}
                         {clear}
                         {if $product->multi_registrant}
                             <h2>{'Who\'s Coming?'|gettext}</h2>
                             {'Please provide the list of the people who will be attending this event'|gettext},
                             <strong>{'including yourself, if you are attending'|gettext}</strong>.
+                            <div  style="overflow: auto; overflow-y: hidden;">
                             <table class="exp-skin-table" id="reg" border="0" cellpadding="3" cellspacing="0">
                                 <thead>
                                     {foreach $controls as $control}
@@ -180,6 +181,7 @@
                                     {/if}
                                 </tbody>
                             </table>
+                            </div>
                         {else}
                             <h3>{'Registration'|gettext}</h3>
                             {'Please complete the following information to register'|gettext}
