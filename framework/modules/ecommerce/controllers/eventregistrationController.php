@@ -268,6 +268,7 @@ class eventregistrationController extends expController {
         }
 
         $order_registrations = array();
+        $count = 1;
         if (!empty($this->params['orderitem_id'])) {  // editing an event already in the cart?
             $f = new forms($product->forms_id);
             $loc_data = new stdClass();
@@ -287,7 +288,8 @@ class eventregistrationController extends expController {
                 assign_to_template(array(
                     'params'=> $params,
                     'orderitem_id'=>$item->id
-               ));
+                ));
+                $count = $item->quantity;
             }
         }
 
@@ -296,6 +298,7 @@ class eventregistrationController extends expController {
             'product'=> $product,
 //            'record'=> $record,
             'registered' => $order_registrations,
+            'count' => $count,
         ));
     }
 

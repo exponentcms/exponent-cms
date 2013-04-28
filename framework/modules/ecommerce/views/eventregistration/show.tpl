@@ -79,11 +79,11 @@
                     <span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
                     <span class="label">{'Seats Available:'|gettext} </span>
                     <span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
-                    {if $product->multi_registrant && $product->forms_id}
+                    {if $product->multi_registrant}
                         <div class="seatsContainer">
                             <div class="seatStatus">
                                 {$seats = implode(',',range(1,min($product->spacesLeft(),12)))}
-                                {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=count($registered)}
+                                {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=$count}
                             </div>
                     {else}
                         {control type=hidden name=qtyr value=1}
@@ -106,7 +106,7 @@
                             {/if}
                         </div>
                     {if $product->multi_registrant && $product->forms_id}
-                    </div>
+                        </div>
                     {/if}
                     {if $product->multi_registrant && $product->quantity_discount_num_items}
                         {clear}
@@ -226,6 +226,7 @@
 {clear}
 </div>
 
+{if $product->multi_registrant && $product->forms_id}
 {script unique="expanding-text" yui3mods="yui"}
 {literal}
     YUI().use("anim-easing","node","anim","io", function(Y) {
@@ -311,3 +312,4 @@
     });
 {/literal}
 {/script}
+{/if}

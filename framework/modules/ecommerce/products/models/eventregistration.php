@@ -517,7 +517,7 @@ class eventregistration extends expRecord {
      * @return bool
      */
     public function process($item) {
-        global $db, $order;
+        global $user, $db, $order;
 
         // save the names of the registrants to the eventregistration table too
         //FIXME we need to be dealing w/ eventregistration_registrants here also/primarily
@@ -572,7 +572,14 @@ class eventregistration extends expRecord {
 //            $db->insertObject($obj, 'content_expDefinableFields_value');
 //        }
         //add unset here
-
+        $f = new forms($product->forms_id);
+        if (empty($f->is_saved)) {
+            $registrant = $db->selectObject("eventregistration_registrants", "orderitem_id ='{$item->id}'");
+            if (empty($registrant->control_name) || $registrant->control_name == ' ') {
+                $registrant->control_name = $user->firstname . ' ' . $user->lastname;
+                $db->updateObject($registrant, "eventregistration_registrants");
+            }
+        }
         return true;
     }
 
