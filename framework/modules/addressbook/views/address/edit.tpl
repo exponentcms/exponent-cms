@@ -67,7 +67,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         {/if}
         {control type=text name=zip label="Zip/Postal Code"|gettext required=true value=$record->zip}
         {*{control type="text" name="phone" label="Phone Number"|gettext|cat:" <span class=\"example\">ex: 480-555-4200</span>" required=true value=$record->phone}*}
-        {control type=tel name="phone" label="Phone Number"|gettext|cat:" <span class=\"example\">ex: 480-555-4200</span>" required=true value=$record->phone}
+        {control type=tel name="phone" label="Phone Number"|gettext required=true value=$record->phone placeholder="ex: 480-555-4200"}
         {control type="dropdown" name="address_type" label="Address Type"|gettext items="Business,Military,Residential"|gettxtlist values="Business,Military,Residential"|gettxtlist default=$record->address_type|default:"Residential"}
         {*{control type="text" name="email" label="Email Address"|gettext required=true value=$record->email}*}
         {control type=email name="email" label="Email Address"|gettext required=true value=$record->email}

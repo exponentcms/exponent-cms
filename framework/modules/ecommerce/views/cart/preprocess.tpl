@@ -132,7 +132,7 @@
 
     <!--div {if $shipping->splitshipping == true}class="hide"{/if}>
     <h2>Are you sending this order as gift?:</h2>
-    <p>If you are send this order as a gift to someone you can put a note to the recipeint</p>
+    <p>If you are send this order as a gift to someone you can put a note to the recipient</p>
     </div-->
     {if $shipping->splitshipping == true}
         {foreach from=$shipping->splitmethods item=method}

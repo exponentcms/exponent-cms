@@ -46,6 +46,9 @@
 				<th>{'Last Login'|gettext}:</th>
 				<td>{$u->last_login|format_date}</td>
 			</tr>
+            <tr><td colspan=2>
+                <a class="manage" href="{link module=users action=edituser id=$u->id}">{'Update Profile'|gettext}</a>
+            </td></tr>
 		</table>
 	</div>
 	
@@ -83,7 +86,7 @@
 				</tr>
                 {*{if $billings[0]->id == '' || $shippings[0]->id == ''}*}
                     <tr><td colspan=2>
-                        <a class="manage" href="{link module=address action=myaddressbook}">{'Manage My Addresses'|gettext}</a>
+                        <a class="manage" href="{link module=address action=myaddressbook user_id=$u->id}">{'Manage My Addresses'|gettext}</a>
                     </td></tr>
                 {*{/if}*}
 			</tbody>

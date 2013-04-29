@@ -23,7 +23,7 @@
         {'Click the'|gettext} <strong>{'Add New Address'|gettext}</strong> {'link below if you\'d like to add a new address to use for either your billing or shipping address'|gettext}.{br}
         {'To change your billing or shipping address for this order, simply select the button next to the address you\'d like to set in either the billing or shipping address column'|gettext}.{br}
         {'A green button indicates your selection'|gettext}.{br}{br}
-        {'When you are done, simply click the <strong>Return to Checkout'|gettext}</strong> {'button below to go back to the checkout process'|gettext}.
+        {'When you are done, simply click the \'Done\' button below to go back to the checkout process'|gettext}.
     </blockquote>
     <p>
         {icon class=add action=edit text="Add New Address"|gettext}
