@@ -111,7 +111,6 @@
             </div>
             <div id="shipinfo">
                 <h2>{"Shipping and Tracking"|gettext}</h2>
-                
                  <table class="order-info">
                     <thead>
                         <tr>
@@ -160,7 +159,7 @@
                     </thead>
                     <tbody>     
                     <tr>
-                        <td>{'Ref #:'|gettext} {$bt->getRefNum()}
+                        <td>{'Ref #:'|gettext} {if $billing->calculator != null}{$bt->getRefNum()}{/if}
                         </td>
                     </tr> 
                     <tr>
@@ -193,7 +192,7 @@
                                 {/if}
                             {/if}                            
                             {if $bt->transaction_state == "complete"}
-                                {if $bt->creditEnabled() == true}
+                                {if $billing->calculator != null && $bt->creditEnabled() == true}
                                     {form action=creditTransaction}
                                         {control type="hidden" name="id" value=$order->id}
                                         {control type="text" name="capture_amt" label="Amount to Refund"|gettext value=$order->grand_total}
@@ -203,10 +202,8 @@
                             {/if}
                             </td>
                         </tr>
-                        
                     {/if}
-                    
-                    </tbody>  
+                    </tbody>
                     </table>
                 {/foreach}
             </div>

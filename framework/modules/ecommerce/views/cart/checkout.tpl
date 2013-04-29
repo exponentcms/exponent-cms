@@ -275,7 +275,7 @@
             <div style="clear: both;"></div>
         </div>
         <div class="separate">
-            {*{if $order->total}*}
+            {if $order->total}
                 <h2>{"Payment Information"|gettext}</h2>
                 <h3>{"Available Payment Methods"|gettext}</h3>
                 <div id="cart-{$id}" class="yui-navset exp-skin-tabview">
@@ -293,14 +293,15 @@
                     </div>
                 </div>
                 <div class="loadingdiv">{'Loading'|gettext}</div>
-            {*{else}*}
-                {*<div class="billing-method">*}
-                    {*{form name="free" controller=cart action=preprocess}*}
-                        {*{control type="hidden" name="billingcalculator_id" value=0}*}
-                        {*<button id="continue-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Continue Checkout"|gettext}</button>*}
-                    {*{/form}*}
-                {*</div>*}
-            {*{/if}*}
+            {else}
+                <div class="billing-method">
+                    {form name="free" controller=cart action=preprocess}
+                        {control type="hidden" name="billingcalculator_id" value=-1}
+                        {control type="hidden" name="cash_amount" value=0}
+                        <button id="continue-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Continue Checkout"|gettext}</button>
+                    {/form}
+                </div>
+            {/if}
         </div>
         <!--div class="separate">
                 <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}-dis continue" href="#" id="checkoutnow"><strong><em>Complete your checkout information to continue</em></strong></a>

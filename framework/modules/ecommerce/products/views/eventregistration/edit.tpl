@@ -97,9 +97,9 @@
                             <tr>
                                 <td>{'If a customer registers more than'|gettext} </td>
                                 <!--td>{control type="dropdown" name="quantity_discount_num_items_mod" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->
-                                <td>{control type="text" name="quantity_discount_num_items" label=" " value=$record->quantity_discount_num_items size=3 filter=integer}</td>
+                                <td>{control type="text" name="quantity_discount_num_items" value=$record->quantity_discount_num_items size=3 filter=integer}</td>
                                 <td>{'people, then discount the price by'|gettext}</td>
-                                <td>{control type="text" name="quantity_discount_amount" label=" " value=$record->quantity_discount_amount size=3 filter=decimal}
+                                <td>{control type="text" name="quantity_discount_amount" value=$record->quantity_discount_amount size=3 filter=decimal}
                                 <td>{control type="dropdown" name="quantity_discount_amount_mod" label=" " items=$record->early_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
                             </tr>
                             <tr>
@@ -147,6 +147,7 @@
                           {'Multiple Registration will lay out (all) form controls on a single row, but allow for multiple rows to add one or more registrants per purchase.'|gettext}
                           {'It will allow for more people to be registered simultaneoudly without requiring much data, but all with the same options (cost).'|gettext}
                       </blockquote>
+                      {icon controller=forms action=manage text="Manage Forms"|gettext}
                       {control type="dropdown" name="forms_id" label="Registration Form"|gettext items=$forms value=$record->forms_id description='Used to collect user information'|gettext}
                       {control type="radiogroup" name="multi_registrant" label="Simultaneous Registration"|gettext items="Single Registration,Multiple Registration"|gettxtlist values="0,1" default=$record->multi_registrant|default:0 description='Should we allow multiple similar (same basic cost) registrations at one time?'|gettext}
                   </div>

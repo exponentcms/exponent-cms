@@ -53,11 +53,11 @@ class splitcreditcard extends creditcard {
 		
 			
 		$this->opts->cc_number = 'XXXX-XXXX-XXXX-'.substr($this->opts->cc_number,-4);
-		$method->update(array('billing_options'=>serialize($this->opts)));
+		$method->update(array('billing_options'=>serialize($this->opts), 'transaction_state'=>"Pending"));
 
         $object = new stdClass();
 		$object->errorCode = 0;
-		$this->opts->result = $object;      
+		$this->opts->result = $object;
 		$this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''),$this->opts->result,"complete");
 		return true;
 	}	

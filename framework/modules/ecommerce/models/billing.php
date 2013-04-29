@@ -84,7 +84,7 @@ class billing extends expRecord {
             $order->billingmethod[0]->update(array('billingcalculator_id'=>$calcid));
         }           
 
-	    if ($number_of_calculators > 0) {
+	    if ($number_of_calculators > 0 && $order->billingmethod[0]->billingcalculator_id != -1) {
             $calcname = $this->available_calculators[$order->billingmethod[0]->billingcalculator_id];  
 		
             if (!empty($calcname)) {

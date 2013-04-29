@@ -64,13 +64,13 @@ class billingController extends expController {
                     if (empty($id)) {
 //                        $calobj = null;
                         $calcobj = new $classname();
-                        if ($calcobj->isSelectable() == true) {                            
+                        if ($calcobj->isSelectable() == true) {
                             $obj = new billingcalculator(array(
                                 'title'=>$calcobj->name(),
                                 'user_title'=>$calcobj->title,
                                 'body'=>$calcobj->description(), 
                                 'calculator_name'=>$classname,
-                                'enabled'=>false));                            
+                                'enabled'=>false));
                             $obj->save();
                         }
                     }

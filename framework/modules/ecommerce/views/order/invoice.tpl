@@ -26,10 +26,13 @@
 
 <div id="invoice">
     <div id="store-header">
-        <h1>{$storeConfig.storename} {'Invoice'|gettext}</h1>
-        {$storeConfig.ecomheader}
+        {*<h1>{$storeConfig.storename} {'Invoice'|gettext}</h1>*}
+        {*{$storeConfig.ecomheader}*}
+        <h1>{ecomconfig var=storename} {'Invoice'|gettext}</h1>
+        {ecomconfig var=ecomheader}
     </div>
-    {if $pf && $storeConfig.enable_barcode}
+    {*{if $pf && $storeConfig.enable_barcode}*}
+    {if $pf && ecomconfig::getConfig('enable_barcode')}
     <div id="barcode">
         <img style="margin:10px" src="{$smarty.const.PATH_RELATIVE}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="">
     </div>
@@ -58,7 +61,8 @@
             <tbody>
                 <tr>
                     <td>
-                        {$storeConfig.storename}
+                        {*{$storeConfig.storename}*}
+                        {ecomconfig var=storename}
                     </td>
                     <td>
                         {$order->invoice_id}
@@ -100,7 +104,9 @@
                         {"Billing Address"|gettext}
                     </th>
                     <th class="shipping-header" style="width:27%;">
+                        {if $order->shipping_required}
                         {"Shipping Address"|gettext}
+                        {/if}
                     </th>
                     <th class="payment-info-header" style="width:46%;">
                         {"Payment Info"|gettext}
@@ -122,6 +128,7 @@
                         {/permissions}
                     </td>
                     <td style="width:27%;">
+                        {if $order->shipping_required}
                         {$shipping->shippingmethod->addresses_id|address}
                         {permissions}
                             <div class="item-permissions">
@@ -156,7 +163,9 @@
                                     {/if}
                                 </td>
                             </tr>
-                        </table>                     
+                        </table>
+                        {else}
+                        {/if}
                     </td>
                     <td class="div-rows" style="width:46%;">
                         <div class="odd">
@@ -164,7 +173,11 @@
                                 {"Payment Method"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getPaymentMethod($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getPaymentMethod($billing->billingmethod)}
+                                {else}
+                                    {'No Cost'|gettext}
+                                {/if}
                             </span>
                         </div>
                         <div class="even">
@@ -172,7 +185,11 @@
                                 {"Payment Status"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getPaymentStatus($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getPaymentStatus($billing->billingmethod)}
+                                {else}
+                                    {'complete'|gettext}
+                                {/if}
                             </span>
                         </div>
                         <div class="odd">
@@ -180,7 +197,9 @@
                                 {"Payment Authorization #"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}
+                                {/if}
                             </span>
                         </div>
                         <div class="even">
@@ -188,7 +207,9 @@
                                 {"Payment Reference #"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                {/if}
                             </span>
                         </div>
                         <div class="odd">
@@ -196,7 +217,9 @@
                                 {"AVS Address Verified"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getAVSAddressVerified($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getAVSAddressVerified($billing->billingmethod)}
+                                {/if}
                             </span>
                         </div>
                         <div class="even">
@@ -204,7 +227,9 @@
                                 {"AVS ZIP Verified"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getAVSZipVerified($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getAVSZipVerified($billing->billingmethod)}
+                                {/if}
                             </span>
                         </div>
                         <div class="odd">
@@ -212,7 +237,9 @@
                                 {"CVV # Matched"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getCVVMatched($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getCVVMatched($billing->billingmethod)}
+                                {/if}
                             </span>
                         </div>
                          {permissions}
@@ -379,7 +406,7 @@
                                 f += '<input type=hidden name=module id=module value=order>';
                                 f += '<input type=hidden name=action id=action value=add_order_item>';
                                 f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';
-                                f += '<input type=submit name=submit value="Add This Item">';
+                                f += '<input type=submit class="add" name=submit value="Add This Item">';
                                 f += '</form>';
                             var newLI = Y.Node.create(f);
                             return newLI;   
@@ -542,6 +569,7 @@
         </table>
     </div>
     <div id="store-footer">
-        {$storeConfig.ecomfooter}
-    </div>    
+        {*{$storeConfig.ecomfooter}*}
+        {ecomconfig var=ecomfooter}
+    </div>
 </div>

@@ -369,7 +369,8 @@ class order extends expRecord {
             } else {
                 $sm = new shippingmethod();
                 //(eDebug($db->selectValue('shippingcalculator','id','is_default=1'),true));
-                $sm->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
+//                $sm->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
+                $sm->shippingcalculator_id = shippingcalculator::getDefault();
                 $sm->save();
                 //$this->setActiveShippingMethod($sm);
                 $this->shippingmethods_id = $sm->id;

@@ -64,7 +64,7 @@ class billingcalculator extends expRecord {
 
         $calc = $db->selectObject('billingcalculator','is_default=1');
         if (empty($calc)) $calc = $db->selectObject('billingcalculator','enabled=1');
-        return $calc->ic;
+        return $calc->id;
     }
 
 }

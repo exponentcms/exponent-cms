@@ -26,6 +26,7 @@
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
     {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
+    {$listing->body}
     <blockquote>
         <strong>{"Additional information is required before we can add to your cart"|gettext}</strong>
         {br}{br}
@@ -126,7 +127,7 @@
             </div>
         {else}
             {control type=text name=qty label="Quantity" value=1}
-            {control type=text name=products_price label="Products Price" value=$product->base_price}
+            {control type=text name=products_price label="Products Price" value=$product->base_price filter=money}
         {/if}
         
         {if $product->hasOptions()}

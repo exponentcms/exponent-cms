@@ -60,12 +60,12 @@ class cash extends billingcalculator {
         global $order, $db, $user;
 
         $object = new stdClass();
-        $object->errorCode = 0;
-        $opts->result = $object;
+        $object->errorCode = $opts->result->errorCode = 0;
+//        $opts->result = $object;
 //        $opts->result->payment_status = "Pending";
         $opts->result->payment_status = gt("complete");
         if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
-        $method->update(array('billing_options' => serialize($opts)));
+        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result->payment_status));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $object;
     }

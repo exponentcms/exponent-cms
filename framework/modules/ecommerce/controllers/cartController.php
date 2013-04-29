@@ -507,21 +507,30 @@ class cartController extends expController {
         //eDebug($order,true);
 
         // get the billing options..this is usually the credit card info entered by the user
-        $opts = $billing->calculator->userFormUpdate($this->params);
-        //$billing->calculator->preprocess($this->params);
+        if ($billing->calculator != null) {
+            $opts = $billing->calculator->userFormUpdate($this->params);
+            //$billing->calculator->preprocess($this->params);
+            //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
+            //eDebug($order->getDefaultOrderType(),true);
 
+            // call the billing method's preprocess in case it needs to prepare things.
+            // eDebug($billing);
+            $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
+        } else {  // no calculator, so we'll assume no cost checkout
+            if (substr($this->params['cash_amount'], 0, strlen(expCore::getCurrencySymbol())) == expCore::getCurrencySymbol()) {
+                $this->params['cash_amount'] = substr($this->params['cash_amount'], strlen(expCore::getCurrencySymbol()));
+            }
+            $opts = new stdClass();
+            $opts->cash_amount = $this->params["cash_amount"];
+
+            if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
+            $billing->billingmethod->update(array('billing_options' => serialize($opts)));
+        }
         //eDebug($opts);
         expSession::set('billing_options', $opts);
         //$o = expSession::get('billing_options');
         //eDebug($o,true);
         //eDebug($this->params,true);
-
-        //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
-        //eDebug($order->getDefaultOrderType(),true);
-
-        // call the billing method's preprocess in case it needs to prepare things.
-        // eDebug($billing);
-        $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
 
         // once in a while it appears the payment processor will return a nullo value in the errorCode field
         // which the previous check takes as a TRUE, as 0, null, and empty will all equate out the same using the ==
@@ -554,12 +563,25 @@ class cartController extends expController {
 
         $opts = expSession::get('billing_options');
         //eDebug($opts,true);
+        if ($billing->calculator != null) {
+            $view_opts = $billing->calculator->userView($opts);
+        } else {
+            if (empty($opts)) {
+                $view_opts = false;
+            } else {
+                $billinginfo = gt("No Cost");
+                if (!empty($opts->payment_due)) {
+                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+                }
+                $view_opts = $billinginfo;
+            }
+        }
         assign_to_template(array(
             'shipping'   => $shipping,
             'billing'    => $billing,
             'order'      => $order,
             'total'      => $order->total,
-            'billinginfo'=> $billing->calculator->userView($opts),
+            'billinginfo'=> $view_opts,
         ));
     }
 
@@ -592,7 +614,27 @@ class cartController extends expController {
         $invNum = $order->getInvoiceNumber();
         // call the billing calculators process method - this will handle saving the billing options to the database.
 //        if (!($order->total == 0 && empty($order->shippingmethods))) {
+        if ($billing->calculator != null) {
             $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
+        } else {
+            $opts = expSession::get('billing_options');
+            $object = new stdClass();
+            $object->errorCode = $opts->result->errorCode = 0;
+            $opts->result->payment_status = gt("complete");
+            if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
+            $billing->billingmethod->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result->payment_status));
+//            $this->createBillingTransaction($billing->billingmethod, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
+            $amount = number_format($order->grand_total, 2, '.', '');
+            $bt = new billingtransaction();
+            $bt->billingmethods_id = $billing->billingmethod->id;
+            $bt->billingcalculator_id = $billing->billingmethod->billingcalculator_id;
+            $bt->billing_cost = $amount;
+            $bt->billing_options  = serialize($opts->result);
+            $bt->extra_data = '';
+            $bt->transaction_state = $opts->result->payment_status;
+            $bt->save();
+            $result = $opts;
+        }
 //        }
 
         if (empty($result->errorCode)) {
@@ -620,7 +662,9 @@ class cartController extends expController {
                 $product->process($item, $order->order_type->affects_inventory);
             }
 
-            $billing->calculator->postProcess($order, $this->params);
+            if ($billing->calculator != null) {
+                $billing->calculator->postProcess($order, $this->params);
+            }
             orderController::clearCartCookie();
         } else {
             flash('error', gt('An error was encountered while processing your transaction.') . '<br /><br />' . $result->message);
@@ -629,12 +673,23 @@ class cartController extends expController {
             //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
         }
 
-        $billinginfo = $billing->calculator->userView(unserialize($billing->billingmethod->billing_options));
+        if ($billing->calculator != null) {
+            $billinginfo = $billing->calculator->userView(unserialize($billing->billingmethod->billing_options));
+        } else {
+            if (empty($opts)) {
+                $billinginfo = false;
+            } else {
+                $billinginfo = gt("No Cost");
+                if (!empty($opts->payment_due)) {
+                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+                }
+            }
+        }
 
         if (!DEVELOPMENT) {
             // send email invoices to the admins & users if needed
             if ($order->order_type->emails_customer) $invoice = renderAction(array('controller'=> 'order', 'action'=> 'email', 'id'=> $order->id));
-        } else {
+        } elseif ($user->isAdmin()) {
             flash('message', gt('Development on, skipping email sending.'));
         }
         expSession::un_set('record');

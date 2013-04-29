@@ -26,10 +26,13 @@
 
 <div id="invoice">
     <div id="store-header">
-        <h1>{$storeConfig.storename} {'Packing List'|gettext}</h1>
-        {$storeConfig.ecomheader}
+        {*<h1>{$storeConfig.storename} {'Packing List'|gettext}</h1>*}
+        {*{$storeConfig.ecomheader}*}
+        <h1>{ecomconfig var=storename} {'Packing List'|gettext}</h1>
+        {ecomconfig var=ecomheader}
     </div>
-    {if $pf && $storeConfig.enable_barcode}
+    {*{if $pf && $storeConfig.enable_barcode}*}
+    {if $pf && ecomconfig::getConfig('enable_barcode')}
     <div id="barcode">
         <img style="margin:10px" src="{$smarty.const.PATH_RELATIVE}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="">
     </div>
@@ -58,7 +61,8 @@
             <tbody>
                 <tr>
                     <td>
-                        {$storeConfig.storename}
+                        {*{$storeConfig.storename}*}
+                        {ecomconfig var=storename}
                     </td>
                     <td>
                         {$order->invoice_id}
@@ -332,6 +336,7 @@
         </table>
     </div>
     <div id="store-footer">
-        {$storeConfig.ecomfooter}
+        {*{$storeConfig.ecomfooter}*}
+        {ecomconfig var=ecomfooter}
     </div>
 </div>

@@ -60,13 +60,14 @@ class paylater extends billingcalculator {
         global $order, $db, $user;
 
         $object = new stdClass();
-        $object->errorCode = 0;
-        $opts->result = $object;
+        $object->errorCode = $opts->result->errorCode = 0;
+//        $opts->result = $object;
         $opts->result->payment_status = gt("complete");
         if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
-        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result, $opts->result->payment_status));
+//        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result, $opts->result->payment_status));
+        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result->payment_status));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
-        return $object;
+        return $opts;
     }
 
     function userForm($config_object = null, $user_data = null) {
@@ -84,7 +85,8 @@ class paylater extends billingcalculator {
     //Should return html to display user data.
     function userView($opts) {
         if (empty($opts)) return false;
-        $billinginfo = gt("Cash"). ": " . expCore::getCurrencySymbol() . number_format($opts->cash_amount, 2, ".", ",");
+        $cash = !empty($opts->cash_amount) ? $opts->cash_amount : 0 ;
+        $billinginfo = gt("Cash"). ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
         if (!empty($opts->payment_due)) {
             $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
         }
@@ -92,7 +94,7 @@ class paylater extends billingcalculator {
     }
 
     function userFormUpdate($params) {
-        global $order;
+//        global $order;
 
         if (substr($params['cash_amount'], 0, strlen(expCore::getCurrencySymbol())) == expCore::getCurrencySymbol()) {
             $params['cash_amount'] = substr($params['cash_amount'], strlen(expCore::getCurrencySymbol()));

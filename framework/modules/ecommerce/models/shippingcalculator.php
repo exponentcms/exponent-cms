@@ -50,6 +50,19 @@ class shippingcalculator extends expRecord {
     public function getHandling() {
         return 0;
     }
+
+    /**
+     * Return default shipping calculator
+     *
+     */
+    public static function getDefault() {
+        global $db;
+
+        $calc = $db->selectObject('shippingcalculator','is_default=1');
+        if (empty($calc)) $calc = $db->selectObject('shippingcalculator','enabled=1');
+        return $calc->id;
+    }
+
 }
 
 ?>
