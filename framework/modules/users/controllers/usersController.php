@@ -1054,13 +1054,10 @@ class usersController extends expController {
         global $user;
 
         $loc = expCore::makeLocation($this->params['mod'], isset($this->params['src']) ? $this->params['src'] : null, isset($this->params['int']) ? $this->params['int'] : null);
-        $users = user::getAllUsers();
-        foreach ($users as $u) {
-            expPermissions::revokeAll($u, $loc);
-        }
         foreach ($this->params['permdata'] as $k => $user_str) {
             $perms = array_keys($user_str);
             $u = user::getUserById($k);
+            expPermissions::revokeAll($u, $loc);
             for ($i = 0; $i < count($perms); $i++) {
                 expPermissions::grant($u, $perms[$i], $loc);
             }
@@ -1150,13 +1147,10 @@ class usersController extends expController {
 
     public function groupperms_save() {
         $loc = expCore::makeLocation($this->params['mod'], isset($this->params['src']) ? $this->params['src'] : null, isset($this->params['int']) ? $this->params['int'] : null);
-        $groups = group::getAllGroups();
-        foreach ($groups as $g) {
-            expPermissions::revokeAllGroup($g, $loc);
-        }
         foreach ($this->params['permdata'] as $k => $group_str) {
             $perms = array_keys($group_str);
             $g = group::getGroupById($k);
+            expPermissions::revokeAllGroup($g, $loc);
             for ($i = 0; $i < count($perms); $i++) {
                 expPermissions::grantGroup($g, $perms[$i], $loc);
             }
