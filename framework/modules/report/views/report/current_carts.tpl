@@ -63,7 +63,7 @@
             </div>
 
             {if $cartsWithoutItems|@count gt 1}
-                {br}{br}
+                {br}
                 <div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
                     <div class="yui-cms-item yui-panel">
                         <div class="hd"><h2>{"Active Carts w/out Products and User Information"|gettext}</h2></div>
@@ -97,7 +97,7 @@
             {/if}
 
             {if $cartsWithItems|@count gt 1}
-                {br}{br}
+                {br}
                 <div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
                     <div class="yui-cms-item yui-panel">
                         <div class="hd"><h2>{"Active Carts w/ Products"|gettext}</h2></div>
@@ -156,7 +156,7 @@
             {/if}
 
             {if $cartsWithItemsAndInfo|@count gt 1}
-                {br}{br}
+                {br}
                 <div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
                     <div class="yui-cms-item yui-panel">
                         <div class="hd"><h2>{"Active Carts w/ Products and User Information"|gettext}</h2></div>

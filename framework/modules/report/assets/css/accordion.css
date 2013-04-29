@@ -67,3 +67,7 @@ text-align: right;
 	/*background: none;*/
 	/*text-align: center;*/
 /*}*/
+
+.yui-cms-accordion.fade {
+	opacity : 100;
+}
