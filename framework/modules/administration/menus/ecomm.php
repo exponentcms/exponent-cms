@@ -160,30 +160,30 @@ $ecom = array(
                     ),
                 ),
             ),
-            array(
-                'text'    => gt("Purchase Orders"),
-                'classname' => 'purchase',
-                'submenu' => array(
-                    'id'       => 'purchase-order',
-                    'itemdata' => array(
-                        array(
-                            'text' => gt("Create Purchase Order"),
-                            'classname' => 'add',
-                            'url'  => makeLink(array('controller' => 'purchaseOrder', 'action' => 'edit')),
-                        ),
-                        array(
-                            'text'      => gt("Manage Purchase Orders"),
-                            'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'purchaseOrder', 'action' => 'manage')),
-                        ),
-                        array(
-                            'text'      => gt("Manage Vendors"),
-                            'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'purchaseOrder', 'action' => 'manage_vendors')),
-                        ),
-                    ),
-                ),
-            ),
+//            array(
+//                'text'    => gt("Purchase Orders"),
+//                'classname' => 'purchase',
+//                'submenu' => array(
+//                    'id'       => 'purchase-order',
+//                    'itemdata' => array(
+//                        array(
+//                            'text' => gt("Create Purchase Order"),
+//                            'classname' => 'add',
+//                            'url'  => makeLink(array('controller' => 'purchaseOrder', 'action' => 'edit')),
+//                        ),
+//                        array(
+//                            'text'      => gt("Manage Purchase Orders"),
+//                            'classname' => 'manage',
+//                            'url'       => makeLink(array('controller' => 'purchaseOrder', 'action' => 'manage')),
+//                        ),
+//                        array(
+//                            'text'      => gt("Manage Vendors"),
+//                            'classname' => 'manage',
+//                            'url'       => makeLink(array('controller' => 'purchaseOrder', 'action' => 'manage_vendors')),
+//                        ),
+//                    ),
+//                ),
+//            ),
             array(
                 'text'    => gt("Store Setup"),
                 'classname' => 'configure',
