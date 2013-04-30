@@ -1676,7 +1676,7 @@ class reportController extends expController {
         global $db;
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
             //eDebug($sql);
@@ -1705,6 +1705,7 @@ class reportController extends expController {
             $out .= $this->outputField($p->model);
             $out .= $this->outputField($p->warehouse_location);
             $out .= $this->outputField($p->sef_url);
+            $out .= $this->outputField($p->canonical);
             $out .= $this->outputField($p->meta_title);
             $out .= $this->outputField($p->meta_keywords);
             $out .= $this->outputField($p->meta_description);
@@ -1741,6 +1742,7 @@ class reportController extends expController {
                 $out .= $this->outputField($cp->model);
                 $out .= $this->outputField($cp->warehouse_location);
                 $out .= $this->outputField($cp->sef_url);
+                $out .= $this->outputField($cp->canonical);
                 $out .= $this->outputField($cp->meta_title);
                 $out .= $this->outputField($cp->meta_keywords);
                 $out .= $this->outputField($cp->meta_description);

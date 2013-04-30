@@ -31,6 +31,9 @@ return array(
     'sef_url'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>200),
+    'canonical'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>800),
     'meta_title'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>255),

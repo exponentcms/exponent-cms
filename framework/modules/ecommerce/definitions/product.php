@@ -73,6 +73,9 @@ return array(
 		DB_FIELD_LEN=>150,
 		DB_INDEX=>10,
 		DB_FULLTEXT=>true),
+    'canonical'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>800),
 	'meta_title'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>255),
