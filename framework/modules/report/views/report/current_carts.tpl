@@ -15,7 +15,10 @@
 
 {include file='menu.tpl'}
 
-{css unique="current_carts" link="`$asset_path`css/accordion.css" corecss="tables"}
+{css unique="carts_accordion" link="`$asset_path`css/accordion.css" corecss="tables"}
+
+{/css}
+{css unique="current_carts" link="`$asset_path`css/current_carts.css"}
 
 {/css}
 
@@ -27,12 +30,12 @@
     <div class="rightcol">
         <div class="module report current_carts">
             {br}
-            <div class="exp-skin-table">
+            <div class="exp-skin-table exp-ecom-table">
                 <table border="0" cellspacing="0" cellpadding="0" width="50%">
                     <thead>
                         <tr>
                             <th colspan="2">
-                                <h1 style="text-align: center;">{"Current Cart Summary"|gettext}</h1>
+                                <h2 style="text-align: center;">{"Current Cart Summary"|gettext}</h2>
                             </th>
                         </tr>
                     </thead>
@@ -64,7 +67,7 @@
 
             {if $cartsWithoutItems|@count gt 1}
                 {br}
-                <div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
+                <div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
                     <div class="yui-cms-item yui-panel">
                         <div class="hd"><h2>{"Active Carts w/out Products and User Information"|gettext}</h2></div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
@@ -79,7 +82,7 @@
                                 <tbody>
                                 {foreach from=$cartsWithoutItems item=item}
                                     {if is_object($item)}
-                                    <tr>
+                                    <tr class="{cycle values="odd,even"}">
                                         <td>{$item->length_of_time}</td>
                                         <td>{$item->ip_address}</td>
                                         <td>{$item->referrer}</td>
@@ -98,7 +101,7 @@
 
             {if $cartsWithItems|@count gt 1}
                 {br}
-                <div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
+                <div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
                     <div class="yui-cms-item yui-panel">
                         <div class="hd"><h2>{"Active Carts w/ Products"|gettext}</h2></div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
@@ -113,12 +116,14 @@
                                 <tbody>
                                 {foreach from=$cartsWithItems item=item}
                                     {if is_array($item)}
-                                    <tr>
+                                    {cycle values="odd,even" assign=row}
+                                    <tr class="{$row}">
                                         <td>{$item.length_of_time}</td>
                                         <td>{$item.ip_address}</td>
                                         <td>{$item.referrer}</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="{$row}">
+                                        <td colspan="3">
                                         <table>
                                             <thead>
                                                 <tr>
@@ -142,6 +147,7 @@
                                             {/foreach}
                                             </tbody>
                                         </table>
+                                        </td>
                                     </tr>
                                     {/if}
                                 {/foreach}
@@ -157,7 +163,7 @@
 
             {if $cartsWithItemsAndInfo|@count gt 1}
                 {br}
-                <div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
+                <div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
                     <div class="yui-cms-item yui-panel">
                         <div class="hd"><h2>{"Active Carts w/ Products and User Information"|gettext}</h2></div>
                         <div class="bd" id="yuievtautoid-0" style="height: 0px;">
@@ -174,14 +180,16 @@
                                 <tbody>
                                     {foreach from=$cartsWithItemsAndInfo item=item}
                                         {if is_array($item)}
-                                        <tr>
+                                        {cycle values="odd,even" assign=row}
+                                        <tr class="{$row}">
                                             <td>{$item.name}</td>
                                             <td>{$item.email}</td>
                                             <td>{$item.length_of_time}</td>
                                             <td>{$item.ip_address}</td>
                                             <td>{$item.referrer}</td>
                                         </tr>
-                                        <tr>
+                                        <tr class="{$row}">
+                                            <td colspan="5">
                                             <table>
                                                 <thead>
                                                     <tr>
@@ -205,6 +213,7 @@
                                                 {/foreach}
                                                 </tbody>
                                             </table>
+                                            </td>
                                         </tr>
                                         {/if}
                                     {/foreach}

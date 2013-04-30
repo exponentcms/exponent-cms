@@ -15,7 +15,10 @@
 
 {include file='menu.tpl'}
 
-{css unique="current_carts" link="`$asset_path`css/accordion.css" corecss="tables"}
+{css unique="carts_accordion" link="`$asset_path`css/accordion.css" corecss="tables"}
+
+{/css}
+{css unique="current_carts" link="`$asset_path`css/current_carts.css"}
 
 {/css}
 
@@ -31,12 +34,12 @@
                 {"Abandoned Carts From:"|gettext}{br}
                 {control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}
 			{/form}
-			<div class="exp-skin-table">
+			<div class="exp-skin-table exp-ecom-table">
 				<table border="0" cellspacing="0" cellpadding="0" width="50%">
 					<thead>
                         <tr>
                             <th colspan="2">
-                                <h1 style="text-align: center;">{"Abandoned Cart Summary"|gettext}</h1>
+                                <h2 style="text-align: center;">{"Abandoned Cart Summary"|gettext}</h2>
                             </th>
 						</tr>
 					</thead>
@@ -47,7 +50,7 @@
 						</tr>
 						<tr class="even">
 							<td>{"Value of Products in the Carts"|gettext}</td>
-							<td>{$summary.valueproducts}</td>
+							<td>{$summary.valueproducts|currency}</td>
 						</tr>
 						<tr class="odd">
 							<td>{"Active Carts w/out Products"|gettext}</td>
@@ -67,7 +70,7 @@
 			
 			{if $cartsWithoutItems|@count gt 1}
 				{br}
-				<div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
+				<div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
 					<div class="yui-cms-item yui-panel">
 						<div class="hd"><h2>{"Abandoned Carts w/out Products and User Information"|gettext}</h2></div>
 						<div class="bd" id="yuievtautoid-0" style="height: 0px;">
@@ -81,7 +84,7 @@
 								<tbody>
 								{foreach from=$cartsWithoutItems item=item} 
 									{if is_object($item)}
-									<tr>
+									<tr class="{cycle values="odd,even"}">
 										<td>{$item->last_visit}</td>
 										<td>
 											{if $item->referrer}
@@ -105,7 +108,7 @@
 			
 			{if $cartsWithItems|@count gt 1}
 				{br}
-				<div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
+				<div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
 					<div class="yui-cms-item yui-panel">
 						<div class="hd"><h2>{"Abandoned Carts w/ Products"|gettext}</h2></div>
 						<div class="bd" id="yuievtautoid-0" style="height: 0px;">
@@ -119,9 +122,9 @@
 								<tbody>
 								{foreach from=$cartsWithItems item=item} 
 									{if is_array($item)}
-									<tr>
+                                    {cycle values="odd,even" assign=row}
+									<tr class="{$row}">
 										<td>{$item.last_visit}</td>
-										
 										<td>
 											{if $item->referrer}
 												{$item->referrer}
@@ -130,7 +133,8 @@
 											{/if}
 										</td>
 									</tr>
-									<tr>
+									<tr class="{$row}">
+                                        <td colspan="2">
 										<table>
 											<thead>
 												<tr>
@@ -154,6 +158,7 @@
 											{/foreach}
 											</tbody>
 										</table>
+                                        </td>
 									</tr>
 									{/if}
 								{/foreach}
@@ -168,7 +173,7 @@
 			{/if}
         {if $cartsWithItemsAndInfo|@count gt 1}
 			{br}
-			<div class="exp-skin-table yui-cms-accordion multiple fade fixIE">
+			<div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
 				<div class="yui-cms-item yui-panel">
 					<div class="hd"><h2>{"Abandoned Carts w/ Products and User Information"|gettext}</h2></div>
 					<div class="bd" id="yuievtautoid-0" style="height: 0px;">
@@ -184,13 +189,15 @@
 							<tbody>
                                 {foreach from=$cartsWithItemsAndInfo item=item}
                                     {if is_array($item)}
-                                    <tr>
+                                    {cycle values="odd,even" assign=row}
+                                    <tr class="{$row}">
                                         <td>{$item.name}</td>
                                         <td>{$item.email}</td>
                                         <td>{$item.last_visit}</td>
                                         <td>{$item.referrer}</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="{$row}">
+                                        <td colspan="4">
                                         <table>
                                             <thead>
                                                 <tr>
@@ -214,6 +221,7 @@
                                             {/foreach}
                                             </tbody>
                                         </table>
+                                        </td>
                                     </tr>
                                     {/if}
                                 {/foreach}
