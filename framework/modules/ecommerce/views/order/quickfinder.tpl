@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="ecom-report1" link="`$asset_path`/css/ecom.css"}
+{css unique="ecom-report1" link="`$asset_path`/css/ecom.css" corecss="button,tables"}
 
 {/css} 
 {css unique="ecom-report2" link="`$asset_path`/css/generate-report.css"}

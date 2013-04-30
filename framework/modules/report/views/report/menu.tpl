@@ -41,8 +41,8 @@
             <div class="bd {if $smarty.cookies.cartstats=='collapsed'}collapsed{/if}">
                 <ul>
                     {*<li>*}
-                    {*<strong><a href="{link action=cart_summary}">{'Summary Stats'|gettext}</a></strong>*}
-                    {*{'Quick statistics on carts vs. orders.'|gettext}*}
+                        {*<strong><a href="{link action=cart_summary}">{'Cart Summary Stats'|gettext}</a></strong>*}
+                        {*{'Quick statistics on carts vs. orders.'|gettext}*}
                     {*</li>*}
                     <li>
                         <strong><a href="{link action=abandoned_carts}">{'Abandoned Carts'|gettext}</a></strong>
@@ -60,10 +60,10 @@
             <div class="hd"><h2>{'Orders'|gettext}</h2><a href="#" class="collapse">{'Collapse'|gettext}</a></div>
             <div class="bd {if $smarty.cookies.orders=='collapsed'}collapsed{/if}">
                 <ul>
-                    {*<li>*}
-                    {*<strong><a href="{link controller=order action=create_new_order}">{'Add an Order'|gettext}</a></strong>*}
-                    {*{'Create a new order.'|gettext}*}
-                    {*</li>*}
+                    <li>
+                        <strong><a href="{link controller=order action=create_new_order}">{'Add an Order'|gettext}</a></strong>
+                        {'Create a new order.'|gettext}
+                    </li>
                     <li>
                         <strong><a href="{link controller=order action=showall}">{'Manage Orders'|gettext}</a></strong>
                         {'View and manage all new and existing orders.'|gettext}

@@ -15,7 +15,11 @@
 
 {control type="hidden" name="tab_loaded[model]" value=1}
 <h2>{'Product SKUS / Model'|gettext}</h2>
-<a href='{link controller="store" action="edit_model_alias" product_id=$record->id}' class="add">{'Add Model Alias'|gettext}</a>
+{if !$record->id}
+    <h4>{'You must save this product before you may create model aliases'|gettext}</h4>
+{else}
+    {icon class="add" controller="store" action="edit_model_alias" product_id=$record->id text='Add Model Alias'|gettext}
+{/if}
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
 	<thead>
 		<tr>
@@ -35,7 +39,7 @@
                     {icon action=delete_model_alias record=$model_alias img="delete.png"}
                 </td>
                 <td>
-                {$model_alias->model}
+                    {$model_alias->model}
                 </td>
             </tr>
 		{/foreach}

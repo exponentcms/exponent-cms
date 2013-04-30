@@ -139,7 +139,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', function(Y) {
     var rowIOComplete = function(id, o, args) {
         var data = o.responseText; // Response data.
         ctrlRow.get('parentNode').one('tr.load').removeClass('load').addClass(rowColor()).setContent(data)
-            .one('a.remove').on('click',function(e){
+            .one('a.delete').on('click',function(e){
                 e.halt();
                 e.currentTarget.ancestor('tr').remove();
             });

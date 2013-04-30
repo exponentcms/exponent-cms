@@ -14,6 +14,7 @@ Added / Fixed / changed for 2.2.0 release candidate 1
 ### Known Issues
   - There is no media player migration script, but you can migrate youtube/flowplayer modules, then run the media player upgrade script
   - There is no fallback for NOT assigning a form to an event registration
+  - ecommerce gift card & purchase order functionality has not been tested
 
 Added / Fixed / changed for 2.2.0 beta 3
 -----------------------
