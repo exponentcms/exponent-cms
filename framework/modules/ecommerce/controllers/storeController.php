@@ -261,20 +261,12 @@ class storeController extends expController {
 
         // grab the configs for the category
         if (is_object($category)) {
-            $ctcfg = new stdClass();
-            $ctcfg->mod = "storeCategory";
-            $ctcfg->src = "@store-" . $category->id;
-            $ctcfg->int = "";
-            $catConfig = new expConfig($ctcfg);
+            $catConfig = new expConfig(expCore::makeLocation("storeCategory","@store-" . $category->id,""));
         }
 
         // since router maps strip off src and we need that to pull configs, we won't get the configs
         // of the page is router mapped. We'll ensure we do here:
-        $cfg = new stdClass();
-        $cfg->mod = "ecomconfig";
-        $cfg->src = "@globalstoresettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
+        $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 
         $this->config = @array_merge((empty($catConfig->config) || @$catConfig->config['use_global'] == 1) ? $config->config : $catConfig->config, $this->config);
 

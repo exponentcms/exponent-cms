@@ -325,11 +325,7 @@ class cartController extends expController {
             expHistory::back();
         }
 
-//        $cfg      = new stdClass();
-//        $cfg->mod = "cart";
-//        $cfg->src = "@globalcartsettings";
-//        $cfg->int = "";
-//        $config   = new expConfig($cfg);
+//        $config   = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 
         $order->calculateGrandTotal();
         $order->validateDiscounts(array('controller'=> 'cart', 'action'=> 'checkout'));

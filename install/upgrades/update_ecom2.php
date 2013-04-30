@@ -32,7 +32,7 @@ class update_ecom2 extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Updates e-Commerce settings"; }
+	static function name() { return "Update e-Commerce settings"; }
 
 	/**
 	 * generic description of upgrade script
@@ -65,16 +65,8 @@ class update_ecom2 extends upgradescript {
 
         $fixed = 0;
         // move cart settings into store settings
-        $cartcfg = new stdClass();
-        $cartcfg->mod = "cart";
-        $cartcfg->src = "@globalcartsettings";
-        $cartcfg->int = "";
-        $cartconfig = new expConfig($cartcfg);
-        $cfg = new stdClass();
-        $cfg->mod = "ecomconfig";
-        $cfg->src = "@globalstoresettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
+        $cartconfig = new expConfig(expCore::makeLocation("cart","@globalcartsettings",""));
+        $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
         if (!empty($cartconfig->config['min_order']) && empty($config->config['min_order'])) {
             $config->config['min_order'] = $cartconfig->config['min_order'];
             $fixed++;
@@ -101,6 +93,7 @@ class update_ecom2 extends upgradescript {
             }
         }
 
+        // copy product summary into body if no body exists, summary deprecated
         $prod = new product();
         $prods = $prod->find('all',1);
         foreach ($prods as $product) {

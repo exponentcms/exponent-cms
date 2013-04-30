@@ -68,11 +68,7 @@ class giftcard extends expRecord {
 
         expSession::set('params', $params);
         //get the configuration
-        $cfg = new stdClass();
-        $cfg->mod = "ecomconfig";
-        $cfg->src = "@globalstoresettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
+        $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
         $this->config = (empty($catConfig->config) || @$catConfig->config['use_global'] == 1) ? $config->config : $catConfig->config; //FIXME $catConfig doesn't exist
         $min_amount = $this->config['minimum_gift_card_purchase'];
         $custom_message_product = $this->config['custom_message_product'];

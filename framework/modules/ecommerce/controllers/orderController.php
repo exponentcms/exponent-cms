@@ -151,11 +151,7 @@ class orderController extends expController {
         $order = new order($this->params['id']);
 
         // We're forcing the location. Global store setting will always have this loc
-//        $cfg         = new stdClass();
-//        $cfg->mod    = "ecomconfig";
-//        $cfg->src    = "@globalstoresettings";
-//        $cfg->int    = "";
-//        $storeConfig = new expConfig($cfg);
+//        $storeConfig = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 
         $billing         = new billing($this->params['id']);
         $status_messages = $db->selectObjects('order_status_messages');
@@ -220,11 +216,7 @@ class orderController extends expController {
         $this->loc->src = "@globalstoresettings";
 
         // We're forcing the location. Global store setting will always have this loc
-//        $cfg         = new stdClass();
-//        $cfg->mod    = "ecomconfig";
-//        $cfg->src    = "@globalstoresettings";
-//        $cfg->int    = "";
-//        $storeConfig = new expConfig($cfg);
+//        $storeConfig = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 
         //check here for the hash in the params, or session set w/ perms to view...shs = xaf7y0s87d7elshd70 etc
         //if present, promt user for the order number and email address on the order
@@ -1618,7 +1610,7 @@ exit();
         $search    = $this->params['ordernum'];
         $searchInv = intval($search);
 
-        $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, o.grand_total, os.title as status_title, ot.title as order_type";
+        $sql = "SELECT DISTINCT(o.id), o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
         $sql .= " from " . $db->prefix . "orders as o ";
         $sql .= "INNER JOIN " . $db->prefix . "orderitems as oi ON oi.orders_id = o.id ";
         $sql .= "INNER JOIN " . $db->prefix . "order_type as ot ON ot.id = o.order_type_id ";

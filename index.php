@@ -58,11 +58,7 @@ if ($db->selectValue('modstate', 'active', 'module="store"') ||
     $order = order::getUserCart();
     // global store config
     // We're forcing the location. Global store setting will always have this loc
-//    $cfg = new stdClass();
-//    $cfg->mod = "ecomconfig";
-//    $cfg->src = "@globalstoresettings";
-//    $cfg->int = "";
-//    $storeConfig = new expConfig($cfg);
+//    $storeConfig = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 } else {
     define('ECOM',0);
 }
