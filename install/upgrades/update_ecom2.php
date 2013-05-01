@@ -22,7 +22,7 @@
  */
 
 /**
- * This is the class update_ecom
+ * This is the class update_ecom2
  */
 class update_ecom2 extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
@@ -45,15 +45,12 @@ class update_ecom2 extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-//        $cfg = new stdClass();
-//        $cfg->mod = "cart";
-//        $cfg->src = "@globalcartsettings";
-//        $cfg->int = "";
-//        $config = new expConfig($cfg);
+//        $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 //        if (!empty($config)) {
 //            return true;
 //        } else return false;
-        return true;
+        if (ECOM) return true;
+        else return false;
 	}
 
 	/**
@@ -75,8 +72,8 @@ class update_ecom2 extends upgradescript {
             $config->config['policy'] = $cartconfig->config['policy'];
             $fixed++;
         }
-        $config->update(array('config'=>$config->config));
-        $cartconfig->delete();
+        if ($fixed) $config->update(array('config'=>$config->config));
+        if (!empty($cartconfig)) $cartconfig->delete();
 
         // update the billing calculator details in the db
         $bcalc = new billingcalculator();
@@ -103,7 +100,6 @@ class update_ecom2 extends upgradescript {
                 $fixed++;
             }
         }
-
 
         return ($fixed?$fixed:gt('No')).' '.gt('e-Commerce settings were corrected');
 	}
