@@ -152,7 +152,7 @@
 													<tr>
 														<td>{$item2->products_name}</td>
 														<td>{$item2->quantity}</td>
-														<td>{$item2->products_price_adjusted}</td>
+														<td>{$item2->products_price_adjusted|currency}</td>
 													</tr>
 												{/if}
 											{/foreach}
@@ -215,7 +215,7 @@
                                                     <tr>
                                                         <td>{$item2->products_name}</td>
                                                         <td>{$item2->quantity}</td>
-                                                        <td>{$item2->products_price_adjusted}</td>
+                                                        <td>{$item2->products_price_adjusted|currency}</td>
                                                     </tr>
                                                 {/if}
                                             {/foreach}

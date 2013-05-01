@@ -89,3 +89,7 @@
 .store.editproduct div.collapsed {
 	height : 0;
 }
+
+div.nodetree {
+	margin-top: 5px;
+}
