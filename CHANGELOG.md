@@ -9,12 +9,12 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.2.0 release candidate 1
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
-  - adds an 'ecommerce store' sample database
-  - adds single or multi-person event registration using site forms to collect data
+  - adds an 'eCommerce store' sample database
+  - adds single or multi-person event registration using site forms to collect registration data
 ### Known Issues
-  - There is no media player migration script, but you can migrate youtube/flowplayer modules, then run the media player upgrade script
-  - There is no fallback for NOT assigning a form to an event registration
-  - ecommerce gift card & purchase order functionality has not been tested
+  - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
+    -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
+  - eCommerce gift card & purchase order functionality has not been tested/may not be complete
 
 Added / Fixed / changed for 2.2.0 beta 3
 -----------------------

@@ -965,6 +965,7 @@ class administrationController extends expController {
 		    $message .= ' '.gt('with').' '.$this->params['sv'].' '.gt('style variation');
 	    }
 	    flash('message',$message);
+        expSession::un_set('framework');
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
     	expHistory::returnTo('manageable');
@@ -984,6 +985,7 @@ class administrationController extends expController {
 		if ($this->params['theme'] != DISPLAY_THEME_REAL || $this->params['sv'] != THEME_STYLE_REAL) {
 			flash('notice',$message);
 		}
+        expSession::un_set('framework');
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
 		expHistory::back();
