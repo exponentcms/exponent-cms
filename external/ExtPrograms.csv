@@ -26,7 +26,7 @@ jQueryUI,1.10.2,jqueryui.com,1.10.2,
 Twitter-Bootstrap,2.3.1,twitter.github.com/bootstrap,2.3.1,"patched bootstrap.less for & includes swatches, fontawesome"
 Bootswatch,2.3.1,bootswatch.com/,2.3.1,
 Font-Awesome,3.0.2,fortawesome.github.com/Font-Awesome,3.0.2,
-Adminer,3.6.3,www.adminer.org,3.6.3,
+Adminer,3.6.4,www.adminer.org,3.6.4,
 html5shiv,,code.google.com/p/html5shiv/,,
 SimpleAjaxUploader,12-Nov,https://github.com/LPology/Simple-Ajax-Uploader,12-Nov,
 normalize.css,2.1.1,necolas.github.com/normalize.css/,2.1.1,
