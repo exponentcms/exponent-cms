@@ -58,7 +58,7 @@ if (is_readable(BASE.$page)) {
 		$source_select['module'] = $_REQUEST['vmod'];
 	} else if (!isset($source_select['module'])) {
 //		$source_select['module'] = 'containermodule';
-        $source_select['module'] = 'container2';
+        $source_select['module'] = 'container';
 	}
 	
 	if (isset($_REQUEST['showmodules'])) {

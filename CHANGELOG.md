@@ -9,12 +9,13 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.2.0 release candidate 1
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
+  - reverts container 2.0 from 'container2' back to simply 'container' to prevent mandatory custom theme updates
   - adds an 'eCommerce store' sample database
   - adds single or multi-person event registration using site forms to collect registration data
 ### Known Issues
   - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
     -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
-  - eCommerce gift card & purchase order functionality has not been tested/may not be complete
+  - eCommerce gift card & purchase order functionality have not been tested/may not be complete
 
 Added / Fixed / changed for 2.2.0 beta 3
 -----------------------
@@ -52,7 +53,7 @@ Added / Fixed / changed for 2.2.0 alpha 3
 -----------------------
 ### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
   - removes deprecated headline controller (converting them to text modules), suggest a custom text module 'headline' view be created if needed
-  - fixes migration to work w/ container2
+  - fixes migration to work w/ container 2.0
   - adds theme export feature
   - adds new 'blog' site sample in addition to 'sample site' during installation
   - adds category support to blog module
@@ -71,7 +72,7 @@ Added / Fixed / changed for 2.2.0 alpha 2
 Added / Fixed / changed for 2.2.0 alpha 1
 -----------------------
 ### The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
-  - replaces the containermodule with container2 controller
+  - replaces the containermodule with container 2.0 controller
   - forces deprecation/removal of formmodule/formbuilder
     -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
