@@ -67,7 +67,8 @@ function smarty_function_ddrerank($params, &$smarty) {
         $model = empty($params['model']) ? $params['module'] : $params['model'];
         $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
         if (!empty($uniqueloc->internal)) {
-            $uniqueloc2 = expUnserialize($uniqueloc->external);
+//            $uniqueloc2 = expUnserialize($uniqueloc->external);
+            $uniqueloc2 = expUnserialize($uniqueloc->internal);
             $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
         }
         $where = !empty($params['where']) ? $params['where'] : 1;
