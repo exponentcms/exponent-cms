@@ -36,8 +36,8 @@
                     {if $user->isAdmin()}
                         {*<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>*}
                         {*<li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>*}
-                        <li><a href="{link controller=users action=userperms mod=container2}" class="user">{"User Permissions"|gettext}</a></li>
-                        <li><a href="{link controller=users action=groupperms mod=container2}" class="group">{"Group Permissions"|gettext}</a></li>
+                        <li><a href="{link controller=users action=userperms mod=container}" class="user">{"User Permissions"|gettext}</a></li>
+                        <li><a href="{link controller=users action=groupperms mod=container}" class="group">{"Group Permissions"|gettext}</a></li>
                     {/if}
                     {foreach $containers as $container}
                         {if !empty($container->external)}
@@ -45,7 +45,7 @@
                             {break}
                         {/if}
                     {/foreach}
-                    {capture name=rerank}{ddrerank module="container2" model="container" uniqueid=$external where="external='`$external`'" label="Modules"|gettext}{/capture}
+                    {capture name=rerank}{ddrerank module="container" model="container" uniqueid=$external where="external='`$external`'" label="Modules"|gettext}{/capture}
                     {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
                     {if $smarty.const.HELP_ACTIVE}<li>{help text="Help with Containers"|gettext}</li>{/if}
                 </ul>

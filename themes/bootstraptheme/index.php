@@ -22,7 +22,7 @@
         </nav>
         <section id="main" class="row">
             <aside id="sidebar" class="span3">
-                <?php expTheme::module(array("controller"=>"container2","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
+                <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
             </aside>
             <section id="content" class="span9">
                 <?php expTheme::main(); ?>

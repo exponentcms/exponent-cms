@@ -2,8 +2,8 @@ version 2.2.0
 The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
   * requires update of hard-coded modules in themes to conform to 2.0 controller calls
   * requires updating YUI3 CSS Reset links to use new name (e.g., grids-min.css became cssgrids-min.css)
-  * Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
-  - replaces the containermodule with container2 controller
+  * Flowplayer & YouTube modules are deprecated but still present in this distribution, they will be removed in the future
+  - replaces the containermodule with container 2.0 controller
   - forces deprecation/removal of formmodule/formbuilder, headlineController
     -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
   - moves jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)

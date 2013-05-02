@@ -1043,7 +1043,7 @@ class usersController extends expController {
                 'perms'      => $perms,
                 'loc'        => $loc,
 //                'title'=>($modclass != 'navigationController' || ($modclass == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modclass != 'containermodule' ? gt('module') : '').' ' : gt('Page'),
-                'title'      => ($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name() . ' ' . ($loc->mod != 'container2' ? gt('module') : '') . ' ' : gt('Page'),
+                'title'      => ($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name() . ' ' . ($loc->mod != 'container' ? gt('module') : '') . ' ' : gt('Page'),
             ));
         } else {
             echo SITE_403_HTML;
@@ -1140,7 +1140,7 @@ class usersController extends expController {
                 'perms'      => $perms,
                 'loc'        => $loc,
 //                'title'=>($modclass != 'navigationController' || ($modclass == 'navigationController' && !empty($loc->src))) ? $mod->name().' '.($modclass != 'containermodule' ? gt('module') : '').' ' : gt('Page'),
-                'title'      => ($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name() . ' ' . ($loc->mod != 'container2' ? gt('module') : '') . ' ' : gt('Page'),
+                'title'      => ($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name() . ' ' . ($loc->mod != 'container' ? gt('module') : '') . ' ' : gt('Page'),
             ));
         } else {
             echo SITE_403_HTML;

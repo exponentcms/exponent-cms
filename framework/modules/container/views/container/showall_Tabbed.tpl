@@ -37,13 +37,13 @@
                     {$tabtitle=$container->title}
                 {/if}
                 {if $smarty.section.contain.first}
-                    <li class="selected"><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
+                    <li class="selected"><a href="#tab{$smarty.section.contain.index}"><em>{$tabtitle}</em></a></li>
                 {elseif $container != null}
-                    <li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
+                    <li><a href="#tab{$smarty.section.contain.index}"><em>{$tabtitle}</em></a></li>
                 {else}
                     {permissions}
                         {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1)}
-                            <li><a href="#tab{$smarty.section.contain.index+1}"><em>{$tabtitle}</em></a></li>
+                            <li><a href="#tab{$smarty.section.contain.index}"><em>{$tabtitle}</em></a></li>
                         {/if}
                     {/permissions}
                 {/if}
@@ -55,18 +55,18 @@
                     {else}
                         <li class="selected">
                     {/if}
-                    <a href="#tab{$smarty.section.contain.index+1}"><em>({'Add New'|gettext})</em></a></li>
+                    <a href="#tab{$smarty.section.contain.index}"><em>({'Add New'|gettext})</em></a></li>
                 {/if}
             {/permissions}
         </ul>
         <div class="yui-content">
-            {section name=contain loop=$numcontainers+1 start=1}
+            {section name=contain loop=$numcontainers start=1}
                 {$container=$containers[$smarty.section.contain.index]}
                 {$rank=$smarty.section.contain.index}
                 {$menurank=$rank+1}
                 {$index=$smarty.section.contain.index}
                 {if $container != null}
-                    <div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
+                    <div id="tab{$smarty.section.contain.index}"{if !$smarty.section.contain.first}{/if}>
                         {$container=$containers.$index}
                         {$i=$menurank}
                         {$rerank=0}
@@ -75,13 +75,20 @@
                 {else}
                     {permissions}
                         {if $permissions.create == 1 && $hidebox == 0}
-                            <div id="tab{$smarty.section.contain.index+1}"{if !$smarty.section.contain.first}{/if}>
+                            <div id="tab{$smarty.section.contain.index}">
                                 <a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>
                             </div>
                         {/if}
                     {/permissions}
                 {/if}
             {/section}
+            {permissions}
+                {if $permissions.create == 1 && $hidebox == 0}
+                    <div id="tab{$smarty.section.contain.index}">
+                        <a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>
+                    </div>
+                {/if}
+            {/permissions}
         </div>
     </div>
     <div class="loadingdiv">{'Loading'|gettext}</div>

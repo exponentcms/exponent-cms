@@ -319,6 +319,12 @@ if ($user->isSuperAdmin()) {
                         'id'       => 'database',
                         'itemdata' => array(
                             array(
+                                'text'      => gt("Manage Database"),
+                                'url'       => '#',
+                                'id'        => 'manage-db',
+                                'classname' => 'manage',
+                            ),
+                            array(
                                 'text'      => gt('Import Database'),
                                 'url'       => makeLink(array('controller' => 'file', 'action' => 'import_eql')),
                                 'classname' => 'import',
@@ -334,12 +340,6 @@ if ($user->isSuperAdmin()) {
                                     'controller' => 'administration',
                                     'action'     => 'install_tables'
                                 ))
-                            ),
-                            array(
-                                'text'      => gt("Manage Database"),
-                                'url'       => '#',
-                                'id'        => 'manage-db',
-                                'classname' => 'manage',
                             ),
                             array(
                                 'text' => gt('Optimize Database'),

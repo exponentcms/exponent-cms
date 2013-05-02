@@ -626,7 +626,7 @@ class expTheme {
    	#   if (expSession::is_set("themeopt_override")) {
    	#       $config = expSession::get("themeopt_override");
 //   			self::showSectionalModule("containermodule","Default","","@section",false,true);  //FIXME change to showModule call
-           self::module(array("controller"=>"container2","action"=>"showall","view"=>"showall","source"=>"@section","scope"=>"sectional"));
+           self::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@section","scope"=>"sectional"));
 
    	#   } else {
    	#       self::showSectionalModule("containermodule","Default","","@section");
@@ -927,7 +927,7 @@ class expTheme {
 
 		if (defined('SELECTOR') && call_user_func(array(expModules::getModuleClassName($module),"hasSources"))) {
 //			containermodule::wrapOutput($module,$view,$loc,$title);
-            container2Controller::wrapOutput($module,$view,$loc,$title);
+            containerController::wrapOutput($module,$view,$loc,$title);
 		} else {
 			if (is_callable(array($module,"show")) || $iscontroller) {
 				// FIXME: we are checking here for a new MVC style controller or an old school module. We only need to perform
@@ -951,8 +951,8 @@ class expTheme {
                             $container->info['scope'] = $module_scope[$source][$module]->scope;
 							$container->info['hasConfig'] = $db->tableExists($loc->mod."_config");
 //							$template = new template('containermodule','_hardcoded_module_menu',$loc);
-//                            $template = new template('container2Controller','_hardcoded_module_menu',$loc,false,'controllers');
-                            $c2 = new container2Controller();
+//                            $template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
+                            $c2 = new containerController();
                             $template = get_template_for_action($c2,'_hardcoded_module_menu');
 							$template->assign('container', $container);
 							$template->output();
@@ -960,7 +960,7 @@ class expTheme {
 					}
 				} else {
 					// if we hit here we're dealing with a controller...not a module
-					if (!$hide_menu && $loc->mod != "container2") {
+					if (!$hide_menu && $loc->mod != "container") {
 						$controller = expModules::getController($module);
 //                        $controller = expModules::getControllerClassName($module);
                         $container = new stdClass();  //php 5.4
@@ -980,8 +980,8 @@ class expTheme {
                             $container->info['scope'] = $module_scope[$source][$module]->scope;
 							$container->info['hasConfig'] = true;
 //							$template = new template('containermodule','_hardcoded_module_menu',$loc);
-//							$template = new template('container2Controller','_hardcoded_module_menu',$loc,false,'controllers');
-                            $c2 = new container2Controller();
+//							$template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
+                            $c2 = new containerController();
                             $template = get_template_for_action($c2,'_hardcoded_module_menu');
 							$template->assign('container', $container);
 							$template->output();

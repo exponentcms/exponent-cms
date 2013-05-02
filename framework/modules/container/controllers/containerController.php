@@ -23,7 +23,7 @@
  * @package Modules
  */
 
-class container2Controller extends expController {
+class containerController extends expController {
 	public $useractions = array(
         'showall'=>'Group Other Modules',
 	);
@@ -52,7 +52,7 @@ class container2Controller extends expController {
         $clickable_mods = null; // Show all
         $dest = null;
         $singleview = '_container';
-        $singlemodule = 'container2';
+        $singlemodule = 'container';
         if (expSession::is_set('source_select') && defined('SELECTOR')) {
             $source_select = expSession::get('source_select');
             $singleview = $source_select['view'];
@@ -69,7 +69,7 @@ class container2Controller extends expController {
             // Top level container.
 //        if (!isset($cache['top'][$container_key])) {
             $container = $db->selectObject('container', "internal='" . $container_key . "'");
-//            $container = new container2("internal='" . $container_key . "'");
+//            $container = new container("internal='" . $container_key . "'");
             //if container isn't here already, then create it.
             if ($container == null) {
                 $container = new stdClass();
@@ -88,7 +88,7 @@ class container2Controller extends expController {
         if (!defined('PREVIEW_READONLY') || defined('SELECTOR')) $view = empty($container->view) ? $view : $container->view;
 //			$title = $container->title;
 //        } else flash('error','container $this is set');
-        $container->scope = empty($module_scope[$loc->src]["container2"]->scope) ? '' : $module_scope[$loc->src]["container2"]->scope;
+        $container->scope = empty($module_scope[$loc->src]["container"]->scope) ? '' : $module_scope[$loc->src]["container"]->scope;
 
         if ($dest) {
             assign_to_template(array(
@@ -130,7 +130,7 @@ class container2Controller extends expController {
 
                 ob_start();
 //                $mod->_hasParent = 1;
-                if ($containers[$i]->external != 'N;' && $location->mod == 'container2') $containers[$i]->hasParent = 1;
+                if ($containers[$i]->external != 'N;' && $location->mod == 'container') $containers[$i]->hasParent = 1;
                 if ($iscontroller) {
                     renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
                 } else {
@@ -189,7 +189,7 @@ class container2Controller extends expController {
         global $db, $user;
 
         $loc = expCore::makeLocation($this->params['controller'],isset($this->params['src'])?$this->params['src']:null,isset($this->params['int'])?$this->params['int']:null);
-        expHistory::set('editable',array("module"=>"container2","action"=>"edit"));
+        expHistory::set('editable',array("module"=>"container","action"=>"edit"));
         $container = null;
         if (isset($this->params['id'])) {
         	$container = $db->selectObject('container','id=' . $this->params['id'] );
@@ -319,6 +319,7 @@ class container2Controller extends expController {
         $this->params['view'] = $this->params['views'];
         unset($this->params['views']);
         $this->params['external'] = serialize($this->loc);
+        unset($this->params['module']);
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
 
@@ -362,7 +363,7 @@ class container2Controller extends expController {
         global $db;
 
         $modclass = expModules::getModuleClassName($modclass);
-        if (defined('SOURCE_SELECTOR') && strtolower($modclass) != 'container2Controller') {
+        if (defined('SOURCE_SELECTOR') && strtolower($modclass) != 'containerController') {
             $mod = new $modclass();
 
             ob_start();

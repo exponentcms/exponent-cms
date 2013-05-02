@@ -172,6 +172,10 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/twitter/models/expTwitter.php',
             'framework/core/definitions/search_extension.php',
             'framework/core/definitions/search_queries.php',
+            'framework/core/definitions/container.php',
+            'framework/core/definitions/modstate.php',
+            'framework/modules/container/controllers/container2Controller.php',
+            'framework/modules/container/models/container2.php',
             // ecommerce definitions
             'framework/core/definitions/billingcalculator.php',
             'framework/core/definitions/billingmethods.php',
@@ -326,6 +330,7 @@ class remove_oldfiles extends upgradescript {
             "framework/modules/expEvent/",
             "framework/datatypes/",
             "framework/views/",
+            "framework/modules/container/views/container2/",
             "plugins/",
             "modules/",
             "js/",
@@ -335,7 +340,9 @@ class remove_oldfiles extends upgradescript {
             "compat/",
             "views/",
             "subsystems/",
-            "conf/",
+//            "conf/",  //FIXME until 2.2.1
+            "conf/data/",  //FIXME until 2.2.1
+            "conf/extensions/",  //FIXME until 2.2.1
             "install/sitetypes/",
             "themes/common/",
             "themes/bootstraptheme/controls/",
@@ -349,6 +356,7 @@ class remove_oldfiles extends upgradescript {
             "external/editors/ckeditor/images",
             "external/editors/ckeditor/skins/office2003",
             "external/editors/ckeditor/skins/v2",
+            "external/editors/ckeditor/ckeditor402",
             "external/editors/images/",
             "external/ckeditor/",
             "external/fedex-php/",

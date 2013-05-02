@@ -518,7 +518,7 @@ class navigationController extends expController {
             if (call_user_func(array($ref->module, 'hasContent'))) {
                 $oloc = expCore::makeLocation($ref->module, $ref->source);
                 $nloc = expCore::makeLocation($ref->module, $src);
-                if ($ref->module != "container2") {
+                if ($ref->module != "container") {
                     call_user_func(array($ref->module, 'copyContent'), $oloc, $nloc);
                 } else {
                     call_user_func(array($ref->module, 'copyContent'), $oloc, $nloc, $section->id);

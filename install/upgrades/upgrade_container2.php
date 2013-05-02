@@ -58,7 +58,7 @@ class upgrade_container2 extends upgradescript {
 
         $count = 0;
         foreach ($db->selectObjects('sectionref',"module='containermodule'") as $sr) {
-            $sr->module = 'container2';  // containermodule is now container2 controller
+            $sr->module = 'container';  // containermodule is now container 2.0 controller
             $db->updateObject($sr,'sectionref');
             $count++;
 	    }
@@ -67,9 +67,14 @@ class upgrade_container2 extends upgradescript {
             $db->updateObject($sr,'sectionref');
             $count++;
 	    }
+        foreach ($db->selectObjects('sectionref',"module LIKE '%container2%'") as $sr) {  // fix pre-release 2.2.0
+            $sr->module = 'container';  // container2 is now simply container 2.0 controller
+            $db->updateObject($sr,'sectionref');
+            $count++;
+	    }
         foreach ($db->selectObjects('container',"external LIKE '%containermodule%'") as $co) {
             $loc = expUnserialize($co->external);
-            $loc->mod = 'container2';  // containermodule is now container2 controller
+            $loc->mod = 'container';  // containermodule is now container 2.0 controller
             $co->external = serialize($loc);
             $co->view_data = null;
             $db->updateObject($co,'container');
@@ -83,9 +88,16 @@ class upgrade_container2 extends upgradescript {
             $db->updateObject($co,'container');
             $count++;
 	    }
+        foreach ($db->selectObjects('container',"external LIKE '%container2%'") as $co) {  // fix pre-release 2.2.0
+            $loc = expUnserialize($co->external);
+            $loc->mod = 'container';  // container2 is now simply container 2.0 controller
+            $co->external = serialize($loc);
+            $db->updateObject($co,'container');
+            $count++;
+	    }
         foreach ($db->selectObjects('container',"internal LIKE '%containermodule%'") as $co) {
             $loc = expUnserialize($co->internal);
-            $loc->mod = 'container2';  // containermodule is now container2 controller
+            $loc->mod = 'container';  // containermodule is now container 2.0 controller
             $co->internal = serialize($loc);
             $co->action = 'showall';
             if ($co->view == 'Default') {
@@ -97,9 +109,17 @@ class upgrade_container2 extends upgradescript {
             $db->updateObject($co,'container');
             $count++;
 	    }
-        // fix 2.2alpha1/2 not setting action/view
-        foreach ($db->selectObjects('container',"internal LIKE '%container2%'") as $co) {
-            $co->action = 'showall';
+        foreach ($db->selectObjects('container',"internal LIKE '%Controller%'") as $co) {
+            $loc = expUnserialize($co->internal);
+            $loc->mod = expModules::getModuleName($loc->mod);  // convert module name to 2.0 style
+            $co->internal = serialize($loc);
+            $db->updateObject($co,'container');
+	    }
+        foreach ($db->selectObjects('container',"internal LIKE '%container2%'") as $co) {  // fix pre-release 2.2.0
+            $loc = expUnserialize($co->internal);
+            $loc->mod = 'container';  // convert module name to 2.0 style
+            $co->internal = serialize($loc);
+            $co->action = 'showall';  // fix 2.2alpha1/2 not setting action/view
             if (strstr($co->view,'showall') === false) {
                 if ($co->view == 'Default') {
                     $co->view = 'showall';
@@ -107,13 +127,6 @@ class upgrade_container2 extends upgradescript {
                     $co->view = 'showall_'.$co->view;
                 }
             }
-            $co->view_data = null;
-            $db->updateObject($co,'container');
-	    }
-        foreach ($db->selectObjects('container',"internal LIKE '%Controller%'") as $co) {
-            $loc = expUnserialize($co->internal);
-            $loc->mod = expModules::getModuleName($loc->mod);  // convert module name to 2.0 style
-            $co->internal = serialize($loc);
             $co->view_data = null;
             $db->updateObject($co,'container');
 	    }
@@ -130,10 +143,12 @@ class upgrade_container2 extends upgradescript {
             } else {
                 $co->rank = 0;  // top level containers have a rank of 0
             }
+            $co->module = null;
             $db->updateObject($co,'container');
 	    }
+        // update permissions
         foreach ($db->selectObjects('grouppermission',"module = 'containermodule'") as $gp) {
-            $gp->module = 'container2';  // containermodule is now container2 controller
+            $gp->module = 'container';  // containermodule is now container 2.0 controller
             $db->updateObject($gp,'grouppermission',"module = 'containermodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
             $count++;
 	    }
@@ -143,8 +158,13 @@ class upgrade_container2 extends upgradescript {
             $db->updateObject($gp,'grouppermission',"module = '". $old_gp_mod . "' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
             $count++;
 	    }
-        foreach ($db->selectObjects('userpermission',"modul e= 'containermodule'") as $up) {
-            $up->module = 'container2';  // containermodule is now container2 controller
+        foreach ($db->selectObjects('grouppermission',"module = 'container2'") as $gp) {  // fix pre-release 2.2.0
+            $gp->module = 'container';  // containe2 is now simply container 2.0 controller
+            $db->updateObject($gp,'grouppermission',"module = 'container2' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
+            $count++;
+	    }
+        foreach ($db->selectObjects('userpermission',"module = 'containermodule'") as $up) {
+            $up->module = 'container';  // containermodule is now container 2.0 controller
             $db->updateObject($up,'userpermission',"module = 'containermodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
             $count++;
 	    }
@@ -154,9 +174,15 @@ class upgrade_container2 extends upgradescript {
             $db->updateObject($up,'userpermission',"module = '". $old_up_mod . "' AND source = '".$up->source."' AND permission = '".$up->permission."'",'gid');
             $count++;
 	    }
+        foreach ($db->selectObjects('userpermission',"module = 'container2'") as $up) {  // fix pre-release 2.2.0
+            $up->module = 'container';  // container2 is now simply container 2.0 controller
+            $db->updateObject($up,'userpermission',"module = 'container2' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
+            $count++;
+	    }
+        // update modstate table
         foreach ($db->selectObjects('modstate',"module = 'containermodule'") as $ms) {
             if (!empty($ms)) {
-                $ms->module = 'container2';  // containermodule is now container2 controller
+                $ms->module = 'container';  // containermodule is now container 2.0 controller
                 $db->updateObject($ms,'modstate',"module='containermodule'",'module');
                 $count++;
             }
@@ -169,12 +195,31 @@ class upgrade_container2 extends upgradescript {
                 $count++;
             }
 	    }
+        foreach ($db->selectObjects('modstate',"module = 'container2'") as $ms) {  // fix pre-release 2.2.0
+            if (!empty($ms)) {
+                $ms->module = 'container';  // container2 is now simply container 2.0 controller
+                $db->updateObject($ms,'modstate',"module='container2'",'module');
+                $count++;
+            }
+	    }
+        // update expConfigs table
+        foreach ($db->selectObjects('expConfigs',"location_data LIKE '%container2%'") as $cfg) {  // fix pre-release 2.2.0
+            if (!empty($cfg)) {
+                $loc = expUnserialize($cfg->location_data);
+                $loc->mod = 'container';  // container2 is now simply container 2.0 controller
+                $cfg->location_data = serialize($loc);
+                $db->updateObject($cfg,'expConfigs');
+                $count++;
+            }
+	    }
 
-        // delete old containermodule assoc files (moved or deleted)
+        // delete old containermodule & container2 assoc files (moved or deleted)
         $oldfiles = array (
             'framework/core/definitions/container.php',
             'framework/core/definitions/modstate.php',
             'framework/core/models-1/container.php',
+            'framework/modules/container/controllers/container2Controller.php',
+            'framework/modules/container/models/container2.php',
         );
 		// check if the old file exists and remove it
         foreach ($oldfiles as $file) {
@@ -182,12 +227,18 @@ class upgrade_container2 extends upgradescript {
                 unlink(BASE.$file);
             }
         }
-		// delete old containermodule folder
-        if (expUtil::isReallyWritable(BASE."framework/modules-1/container/")) {
-            expFile::removeDirectory(BASE."framework/modules-1/container/");
+        // delete old containermodule & container2 folders
+        $olddirs = array(
+            "framework/modules-1/container/",
+            "framework/modules/container/views/container2/"
+        );
+        foreach ($olddirs as $dir) {
+            if (expUtil::isReallyWritable(BASE.$dir)) {
+                expFile::removeDirectory(BASE.$dir);
+            }
         }
 
-        return ($count?$count:gt('No')).' '.gt('old containermodule type references updated to container2 type.');
+        return ($count?$count:gt('No')).' '.gt('old containermodule type references updated to container 2.0.');
 	}
 }
 

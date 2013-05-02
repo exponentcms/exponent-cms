@@ -118,7 +118,7 @@ function smarty_function_ddrerank($params, &$smarty) {
 //                            $name = $control::name();
                         $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
                         $stringlen = 65;
-                    } elseif ($params['module'] == 'container' || $params['module'] == 'container2') {
+                    } elseif ($params['module'] == 'container') {
                         $mod = expUnserialize($item->internal);
                         $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . ucfirst(expModules::getModuleBaseName($mod->mod)) . ')';
                         $stringlen = 65;

@@ -60,7 +60,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
     echo $list;
     $list = '';
     // does it need a reorder modules menu item?
-	if (!empty($params['rank']) && ($module->info['class'] == 'container2Controller') && expPermissions::check('configure', $cloc)) {
+	if (!empty($params['rank']) && ($module->info['class'] == 'containerController') && expPermissions::check('configure', $cloc)) {
         foreach ($smarty->smarty->plugins_dir as $value) {
             $filepath = $value ."/function.ddrerank.php";
             if (file_exists($filepath)) {
@@ -69,7 +69,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
             }
         }
         $reorder = array();
-        $reorder['module'] = "container2";
+        $reorder['module'] = "container";
         $reorder['model'] = "container";
         $reorder['where'] = "external='".$module->internal."'";
         $reorder['uniqueid'] = $module->internal;
@@ -85,7 +85,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	if (!empty($module->id) && expPermissions::check('edit', $cloc) && $module->permissions['manage'] == 1) {
         if (!expModules::controllerExists($module->info['class'])) {
 //            $editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
-            $editlink = $router->makeLink(array('controller'=>'container2', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
+            $editlink = $router->makeLink(array('controller'=>'container', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
             $list .= '<li><a href="'.$editlink.'" class="config-view">'.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
         }
 	}
@@ -109,7 +109,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
     // does it need a delete module menu item?
 	if (!empty($module->id) && expPermissions::check('delete', $cloc)) {
 //		$deletelink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
-        $deletelink = $router->makeLink(array('controller'=>'container2', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
+        $deletelink = $router->makeLink(array('controller'=>'container', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
 		$list .= '<li><a href="'.$deletelink.'" class="delete" onclick="alert(\''.gt("This content is being sent to the Recycle Bin to be recovered later if you wish.").'\')">'.gt("Remove Module").'</a></li>';
 	}
 	

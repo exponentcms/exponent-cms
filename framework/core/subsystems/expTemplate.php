@@ -156,7 +156,7 @@ class expTemplate {
 	 * @return array
 	 * @node Subsystems:Template
 	 */
-	public static function listModuleViews($module) {  //FIXME only used by container2 edit action for OS modules
+	public static function listModuleViews($module) {  //FIXME only used by container 2.0 edit action for OS modules
 		return expCore::buildNameList("modules", $module, "tpl", "[!_]*");
 	}
 

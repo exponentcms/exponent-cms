@@ -58,7 +58,7 @@ class keywords {
 //			$loc->int = $ref->internal;
             $loc = expCore::makeLocation($ref->module,$ref->source,$ref->internal);
 			if (!empty($loc->src)) {
-				if ($ref->module == 'container2') {
+				if ($ref->module == 'container') {
 					foreach($db->selectObjects('container', "external='".serialize($loc)."'") as $mod) {
 						$mods[] = $mod;
 						$modloc = unserialize($mod->internal);

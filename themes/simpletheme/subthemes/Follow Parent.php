@@ -39,7 +39,7 @@
 			<div id="leftcol" class="yui3-u-1-4">
 			    <div class="content">
     			    <?php //expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left","scope"=>"top-sectional")); ?>
-                    <?php expTheme::module(array("controller"=>"container2","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"top-sectional")); ?>
+                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"top-sectional")); ?>
 			    </div>
 			</div>
 			<div id="centercol" class="yui3-u-3-4">

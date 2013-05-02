@@ -168,7 +168,7 @@
 //                    EXPONENT.handleViewChange();
 
 //                }}, 'module=containermodule&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
-                }}, 'controller=container2&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
+                }}, 'controller=container&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
             );
         }
 

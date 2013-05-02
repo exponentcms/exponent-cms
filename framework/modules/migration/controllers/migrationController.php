@@ -54,7 +54,7 @@ class migrationController extends expController {
         'calendarmodule'=>'event',
         'formmodule'=>'forms',
         'contactmodule'=>'forms',  // this module is converted to a functionally similar form
-        'containermodule'=>'container2',
+        'containermodule'=>'container',
     );
 
     // these are modules that have either been deprecated or have no content to migrate
@@ -522,7 +522,7 @@ class migrationController extends expController {
         $containers = $old_db->selectObjects('container', 'external="N;"');
         foreach ($containers as $cont) {
             $oldint = expUnserialize($cont->internal);
-            $newint = expCore::makeLocation('container2',$oldint->src);
+            $newint = expCore::makeLocation('container',$oldint->src);
             if (!$db->selectObject('container',"internal='".serialize($newint)."'")) {
                 unset($cont->id);
                 $cont->internal = serialize($newint);
@@ -2472,7 +2472,7 @@ class migrationController extends expController {
 //        $section = $old_db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND is_original='0'");
 //        unset($m->id);
 //        $oldext = expUnserialize($m->external);
-//        $m->external = serialize(expCore::makeLocation('container2',$oldext->src));
+//        $m->external = serialize(expCore::makeLocation('container',$oldext->src));
 ////		if ($iloc->mod != 'contactmodule') {
 //			$iloc->mod = $this->new_modules[$iloc->mod];
 ////			$m->internal = (isset($m->internal) && strstr($m->internal,"Controller")) ? $m->internal : serialize($iloc);
@@ -2493,7 +2493,7 @@ class migrationController extends expController {
         $section = $old_db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."' AND is_original='0'");
         $params['current_section'] = empty($section->section) ? 1 : $section->section;
         $oldext = expUnserialize($params['external']);
-        $params['external'] = serialize(expCore::makeLocation('container2',$oldext->src));
+        $params['external'] = serialize(expCore::makeLocation('container',$oldext->src));
         $iloc->mod = $this->new_modules[$iloc->mod];
         $params['modcntrol'] = $iloc->mod;
         $params['internal'] = serialize($iloc);
@@ -2504,7 +2504,7 @@ class migrationController extends expController {
             $params['view'] = 'showall';
         }
 
-        $m = new container2();
+        $m = new container();
         if (!$linked) {
             $params['existing_source'] = $iloc->src;
         }

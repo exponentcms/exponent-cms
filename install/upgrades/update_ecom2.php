@@ -49,7 +49,7 @@ class update_ecom2 extends upgradescript {
 //        if (!empty($config)) {
 //            return true;
 //        } else return false;
-        if (ECOM) return true;
+        if (defined('ECOM')) return true;
         else return false;
 	}
 

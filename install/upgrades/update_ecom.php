@@ -46,7 +46,7 @@ class update_ecom extends upgradescript {
 	 */
 	function needed() {
         $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
-        if (ECOM && (!empty($config->config['header']) || !empty($config->config['footer']))) {
+        if (defined('ECOM') && (!empty($config->config['header']) || !empty($config->config['footer']))) {
             return true;
         } else return false;
 	}

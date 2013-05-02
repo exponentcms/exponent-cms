@@ -334,7 +334,7 @@
                             EXPONENT.handleActionChange();
                         }
 //                    }}, 'module=containermodule&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod
-                    }}, 'controller=container2&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod
+                    }}, 'controller=container&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod
                 );
             } else {
                 actionpicker.set('disabled',1).set('innerHTML','<option value="0">{/literal}{"No actions for this module..."|gettext}{literal}</option>');
@@ -365,7 +365,7 @@
                         }
 
 //                    }}, 'module=containermodule&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
-                    }}, 'controller=container2&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
+                    }}, 'controller=container&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
                 );
 
             } else {

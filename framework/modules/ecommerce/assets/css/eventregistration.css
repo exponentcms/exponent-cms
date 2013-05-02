@@ -146,11 +146,15 @@ show view
 
 #eventregform .label {
     /*display       : block;*/
-    display: inline;
+    /*display: inline;*/
     font-size     : 114%;
     font-weight   : bold;
     margin-bottom : 4px;
     margin-right  : 5px;
+}
+
+#eventregform .seatStatus .label {
+    display: inline;
 }
 
 #eventregform .p_addElement {
