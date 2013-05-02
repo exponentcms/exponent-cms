@@ -725,7 +725,7 @@ abstract class expController {
             ),
         ));
 
-        if (empty($this->params['hcview'])) {
+//        if (empty($this->params['hcview'])) {
             $containerloc = new stdClass();
 //            $containerloc->mod = expModules::getControllerClassName($this->loc->mod);  //FIXME long controller name
             $containerloc->mod = expModules::getModuleName($this->loc->mod);
@@ -737,6 +737,9 @@ abstract class expController {
                 $container->action = 'showall';
             } else {
                 $container->internal = unserialize($container->internal);
+            }
+            if (empty($container->action)) {
+                $container->action = 'showall';
             }
 //            expSession::clearAllUsersSessionCache('containermodule');
 
@@ -784,7 +787,8 @@ abstract class expController {
                 'actions'   => $actions,
                 'mod_views' => $mod_views,
             ));
-        } else {
+//        } else {
+        if (!empty($this->params['hcview'])) {
             // this must be a hard-coded module?
             assign_to_template(array(
                 'hcview' => $this->params['hcview'],

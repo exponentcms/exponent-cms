@@ -34,8 +34,6 @@
                 <a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
                 <ul class="container-menu">
                     {if $user->isAdmin()}
-                        {*<li><a href="{link _common=1 action=userperms}" class="user">{"User Permissions"|gettext}</a></li>*}
-                        {*<li><a href="{link _common=1 action=groupperms}" class="group">{"Group Permissions"|gettext}</a></li>*}
                         <li><a href="{link controller=users action=userperms mod=container}" class="user">{"User Permissions"|gettext}</a></li>
                         <li><a href="{link controller=users action=groupperms mod=container}" class="group">{"Group Permissions"|gettext}</a></li>
                     {/if}
@@ -47,6 +45,9 @@
                     {/foreach}
                     {capture name=rerank}{ddrerank module="container" model="container" uniqueid=$external where="external='`$external`'" label="Modules"|gettext}{/capture}
                     {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
+                    {if ($permissions.configure == 1 || $container->permissions.configure == 1)}
+                   		<li><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod">{"Configure Settings"|gettext}</a></li>
+                   	{/if}
                     {if $smarty.const.HELP_ACTIVE}<li>{help text="Help with Containers"|gettext}</li>{/if}
                 </ul>
             </div>

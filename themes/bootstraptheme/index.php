@@ -5,7 +5,7 @@
 	    expTheme::head(array(
 	        "xhtml"=>false,
             "normalize"=>true,
-            'framework'=>'bootstrap',
+            "framework"=>"bootstrap",
 	        "css_core"=>array(
                 "common"
             ),
