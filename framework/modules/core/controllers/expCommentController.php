@@ -457,7 +457,7 @@ class expCommentController extends expController {
                 }
             }
         }
-        expHistory::returnTo('viewable');
+        expHistory::returnTo('manageable');
     }
 
 	public function delete() {
