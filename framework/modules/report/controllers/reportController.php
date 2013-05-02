@@ -23,7 +23,18 @@
 
 class reportController extends expController {
     //public $useractions = array('showall'=>'Show all');
-    protected $add_permissions = array('build_report' => 'Manage', 'cart_summary' => 'View Cart Summary Report', 'dashboard' => 'View the e-Commerce Dashboard', 'order_report' => 'Generate Order Report', 'product_report' => 'Generate Product Report', 'generateOrderReport' => 'View Order Report', 'generateProductReport' => 'View Product Report', 'print_orders' => 'Print Orders', 'batch_export' => 'Export Products', 'show_payment_summary' => 'Show Payment Summary', 'export_order_items' => 'Export Order Items File');
+    protected $add_permissions = array(
+        'build_report' => 'Manage',
+        'cart_summary' => 'View Cart Summary Report',
+        'dashboard' => 'View the e-Commerce Dashboard',
+        'order_report' => 'Generate Order Report',
+        'product_report' => 'Generate Product Report',
+        'generateOrderReport' => 'View Order Report',
+        'generateProductReport' => 'View Product Report',
+        'print_orders' => 'Print Orders',
+        'batch_export' => 'Export Products',
+        'show_payment_summary' => 'Show Payment Summary',
+        'export_order_items' => 'Export Order Items File');
 
     static function displayname() {
         return gt("Ecom Report Builder");
@@ -966,13 +977,18 @@ class reportController extends expController {
         $p = $this->params;
         $sqlids = "SELECT DISTINCT(p.id) from ";
         $sqlcount = "SELECT COUNT(DISTINCT(p.id)) from ";
-        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, p.base_price, ps.title as status from ";
+        $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, concat('".expCore::getCurrencySymbol()."',format(p.base_price,2)) as base_price";//, ps.title as status from ";
         $sql = $db->prefix . "product as p ";
-        $sql .= "INNER JOIN " . $db->prefix . "product_status as ps ON p.product_status_id = ps.id ";
-        //if (!isset($p['uncategorized'])){
-        $sql .= "INNER JOIN " . $db->prefix . "product_storeCategories as psc ON p.id = psc.product_id ";
-        //}
-        //$sqlidsjoin = "INNER JOIN " . $db->prefix . "product as childp ON p.id = childp.parent_id "; 
+        if (!isset($p['allproducts'])){
+            $sql .= "INNER JOIN " . $db->prefix . "product_status as ps ON p.product_status_id = ps.id ";
+            $sqlstart .= ", ps.title as status from ";
+            if (!isset($p['uncategorized'])){
+                $sql .= "INNER JOIN " . $db->prefix . "product_storeCategories as psc ON p.id = psc.product_id ";
+            }
+        } else {
+            $sqlstart .= " from ";
+        }
+        //$sqlidsjoin = "INNER JOIN " . $db->prefix . "product as childp ON p.id = childp.parent_id ";
         $sqlwhere = 'WHERE (1=1 ';
 
         $inc = 0;
@@ -1005,22 +1021,24 @@ class reportController extends expController {
         }
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
 
-        if (!isset($p['uncategorized'])) {
-            $inc = 0;
-            $sqltmp = '';
-            if (!empty($p['storeCategory'])) foreach ($p['storeCategory'] as $ot) {
-                if ($ot == '') continue;
-                else if ($inc == 0) {
-                    $inc++;
-                    $sqltmp .= " AND (psc.storecategories_id = " . $ot;
-                } else {
-                    $sqltmp .= " OR psc.storecategories_id = " . $ot;
-                }
+        if (!isset($p['allproducts'])) {
+            if (!isset($p['uncategorized'])) {
+                $inc = 0;
+                $sqltmp = '';
+                if (!empty($p['storeCategory'])) foreach ($p['storeCategory'] as $ot) {
+                    if ($ot == '') continue;
+                    else if ($inc == 0) {
+                        $inc++;
+                        $sqltmp .= " AND (psc.storecategories_id = " . $ot;
+                    } else {
+                        $sqltmp .= " OR psc.storecategories_id = " . $ot;
+                    }
 
+                }
+                if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
+            } else {
+                $sqlwhere .= " AND psc.storecategories_id = 0 AND p.parent_id = 0";
             }
-            if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
-        } else {
-            $sqlwhere .= " AND psc.storecategories_id = 0 AND p.parent_id = 0";
         }
 
         if (!empty($p['product-range-num'])) {
@@ -1094,7 +1112,7 @@ class reportController extends expController {
         //$page = new expPaginator();   
         //eDebug($page,true);   
         $page = new expPaginator(array(
-            'model'      => 'product',
+//            'model'      => 'product',
             //'records'=>$items,
             // 'where'=>$where,
             'sql'        => $sqlstart . $sql . $sqlwhere,
@@ -1111,7 +1129,8 @@ class reportController extends expController {
                 gt('ID')      => 'id',
                 gt('Product') => 'title|controller=store,action=show,showby=id',
                 gt('SKU')     => 'model',
-                gt('Price')   => 'base_price'
+                gt('Price')   => 'base_price',
+                gt('Status')   => 'status'
             ),
             //'columns'=>array('Product'=>'title','SKU'=>'model'),
         ));

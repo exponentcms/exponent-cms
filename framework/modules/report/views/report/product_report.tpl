@@ -44,9 +44,9 @@
                     </tr>
                     <tr class="even">
                         <td>
-                        <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only"|gettext value=1}  </div>{br}
+                        <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only"|gettext value=1}  </div>
                             <div class="control">
-                                <a href="#showcats" id="showcats"class=" awesome small black">{'Show Categories'|gettext}</a>
+                                <a href="#showcats" id="showcats"class=" awesome small black">{'Select Categories'|gettext}</a>
                             </div>
                             <div>
                                 <div id="catpicker" class="exp-skin-panel hide">
@@ -96,7 +96,7 @@
                         </td>
                     </tr>
                     <tr class="odd">
-                        <td>&#160;</td>
+                        <td>{control type="checkbox" name="allproducts" flip=true label="Show All Products Types and Categories"|gettext value=1}</td>
                     </tr>
                     <tr class="even">
                         <td>
