@@ -152,6 +152,7 @@
                     {control type="text" name="sc[FM_SIMLIMIT]" label="Number of Simultaneous Uploads" value=$smarty.const.FM_SIMLIMIT|default:3 size="2"}
                     {control type="checkbox" postfalse=1 name="sc[FM_THUMBNAILS]" label="Show Image Thumbnails?"|gettext checked=$smarty.const.FM_THUMBNAILS value=1}
                     {control type="text" name="sc[FM_THUMB_SIZE]" label="Thumbnail Size"|gettext value=$smarty.const.FM_THUMB_SIZE|default:48 size="4"}
+                    {control type="text" name="sc[UPLOAD_WIDTH]" label="Uploader Default Max Width/Height to Downsize Graphics"|gettext value=$smarty.const.UPLOAD_WIDTH|default:400 size="4"}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab7">

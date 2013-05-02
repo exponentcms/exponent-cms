@@ -47,7 +47,7 @@
             <div id="resizeControl" class="control checkbox">
                 <input id="resize" type="checkbox" name="resize" value="1" class="checkbox" />
                 <div class="label" style="width:auto; display:inline;">{'Downsize Images to a Max Height or Width of'|gettext}:</div>
-                <input id="max_width" type="text" name="max_width" value="" size="4" class="text " />
+                <input id="max_width" type="text" name="max_width" size="4" class="text " value="{$smarty.const.UPLOAD_WIDTH}" />
             </div>
         </div>
         {messagequeue}
