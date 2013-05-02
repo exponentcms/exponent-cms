@@ -698,7 +698,7 @@ class fileController extends expController {
 
     public function import_files() {
         $form = new form();
-        $form->meta('controller','files');
+        $form->meta('controller','file');
         $form->meta('action','import_files_process');
         $form->register('file',gt('Files Archive'),new uploadcontrol());
         $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
@@ -799,8 +799,8 @@ class fileController extends expController {
         }
 
         $filecount = 0;
+        expFile::copyDirectoryStructure($dest_dir.'/files',BASE.'files');
         foreach (array_keys($files) as $file) {
-        	expFile::copyDirectoryStructure($dest_dir.'/files/'.$file,BASE.'files/'.$file);
         	copy($dest_dir.'/files/'.$file,BASE.'files/'.$file);
         	$filecount += 1;
         }

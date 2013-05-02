@@ -37,7 +37,6 @@
 		<input type="hidden" name="controller" value="file" />
 		<input type="hidden" name="action" value="import_files_extract" />
 		<input type="hidden" name="dest_dir" value="{$dest_dir}" />
-
 		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="exp-skin-table">
 			<thead>
 				<th colspan="2">{'Files found in this Archive'|gettext}</th>
