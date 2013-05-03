@@ -30,7 +30,7 @@ class migrationController extends expController {
 
     // this is a list of modules that we can convert to exp2 type modules.
     public $new_modules = array(
-        'addressbookmodule'=>'address',
+//        'addressbookmodule'=>'address',
         'imagegallerymodule'=>'photo',
         'linklistmodule'=>'links',
         'newsmodule'=>'news',
@@ -77,6 +77,7 @@ class migrationController extends expController {
         'tasklistmodule',
         'wizardmodule',
 // other older or user-contributed modules we don't want to deal with
+        'addressbookmodule',    // moved to deprecated list since this is NOT the type of address we use in 2.x
         'cataloguemodule',
         'codemapmodule',
         'extendedlistingmodule',
@@ -1888,48 +1889,48 @@ class migrationController extends expController {
 					}
 				}
 				break;
-            case 'addressbookmodule':  // user mod, not widely distributed
-
-				@$module->view = 'myaddressbook';
-				@$module->action = 'myaddressbook';
-
-				//check to see if it's already pulled in (circumvent !is_original)
-				// $ploc = $iloc;
-				// $ploc->mod = "addresses";
-				// if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
-					// $iloc->mod = 'addressbookmodule';
-					// $linked = true;
-					// break;
-				// }
-
-//                $iloc->mod = 'addressbookmodule';
-                $addresses = $old_db->selectArrays('addressbook_contact', "location_data='".serialize($iloc)."'");
-				if ($addresses) {
-					foreach ($addresses as $address) {
-//						unset($address['id']);
-						$addr = new address();
-						$addr->user_id = 1;
-						$addr->is_default = 1;
-						$addr->is_billing = 1;
-						$addr->is_shipping = 1;
-						$addr->firstname = (!empty($address['firstname'])) ? $address['firstname'] : 'blank'; 
-						$addr->lastname = (!empty($address['lastname'])) ? $address['lastname'] : 'blank'; 
-						$addr->address1 = (!empty($address['address1'])) ? $address['address1'] : 'blank'; 
-						$addr->city = (!empty($address['city'])) ? $address['city'] : 'blank'; 
-						$address['state'] = (!empty($address['state'])) ? $address['state'] : 'CA'; 
-						$state = $db->selectObject('geo_region', 'code="'.strtoupper($address['state']).'"');
-						$addr->state = empty($state->id) ? 0 : $state->id;
-						$addr->zip = (!empty($address['zip'])) ? $address['zip'] : '99999';
-						$addr->phone = (!empty($address['phone'])) ? $address['phone'] : '800-555-1212'; 
-						$addr->email = (!empty($address['email'])) ? $address['email'] : 'address@website.com'; 
-						$addr->organization = $address['business'];
-						$addr->phone2 = $address['cell'];
-						$addr->save();
-						@$this->msg['migrated'][$iloc->mod]['count']++;
-						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
-					}
-				}
-				break;
+//            case 'addressbookmodule':  // user mod, not widely distributed
+//
+//				@$module->view = 'myaddressbook';
+//				@$module->action = 'myaddressbook';
+//
+//				//check to see if it's already pulled in (circumvent !is_original)
+//				// $ploc = $iloc;
+//				// $ploc->mod = "addresses";
+//				// if ($db->countObjects($ploc->mod, "location_data='".serialize($ploc)."'")) {
+//					// $iloc->mod = 'addressbookmodule';
+//					// $linked = true;
+//					// break;
+//				// }
+//
+////                $iloc->mod = 'addressbookmodule';
+//                $addresses = $old_db->selectArrays('addressbook_contact', "location_data='".serialize($iloc)."'");
+//				if ($addresses) {
+//					foreach ($addresses as $address) {
+////						unset($address['id']);
+//						$addr = new address();
+//						$addr->user_id = 1;
+//						$addr->is_default = 1;
+//						$addr->is_billing = 1;
+//						$addr->is_shipping = 1;
+//						$addr->firstname = (!empty($address['firstname'])) ? $address['firstname'] : 'blank';
+//						$addr->lastname = (!empty($address['lastname'])) ? $address['lastname'] : 'blank';
+//						$addr->address1 = (!empty($address['address1'])) ? $address['address1'] : 'blank';
+//						$addr->city = (!empty($address['city'])) ? $address['city'] : 'blank';
+//						$address['state'] = (!empty($address['state'])) ? $address['state'] : 'CA';
+//						$state = $db->selectObject('geo_region', 'code="'.strtoupper($address['state']).'"');
+//						$addr->state = empty($state->id) ? 0 : $state->id;
+//						$addr->zip = (!empty($address['zip'])) ? $address['zip'] : '99999';
+//						$addr->phone = (!empty($address['phone'])) ? $address['phone'] : '800-555-1212';
+//						$addr->email = (!empty($address['email'])) ? $address['email'] : 'address@website.com';
+//						$addr->organization = $address['business'];
+//						$addr->phone2 = $address['cell'];
+//						$addr->save();
+//						@$this->msg['migrated'][$iloc->mod]['count']++;
+//						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
+//					}
+//				}
+//				break;
             case 'feedlistmodule':
 				@$module->view = 'showall';
 
