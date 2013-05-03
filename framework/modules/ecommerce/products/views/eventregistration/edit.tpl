@@ -145,7 +145,7 @@
                           {'It will allow for more complex data and options (cost) collection.'|gettext}
                           {br}{br}
                           {'Multiple Registration will lay out (all) form controls on a single row, but allow for multiple rows to add one or more registrants per purchase.'|gettext}
-                          {'It will allow for more people to be registered simultaneoudly without requiring much data, but all with the same options (cost).'|gettext}
+                          {'It will allow for more people to be registered simultaneously without requiring much data, but all with the same options (cost).'|gettext}
                       </blockquote>
                       {icon controller=forms action=manage text="Manage Forms"|gettext}
                       {control type="dropdown" name="forms_id" label="Registration Form"|gettext items=$forms value=$record->forms_id description='Used to collect user information'|gettext}
