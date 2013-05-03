@@ -609,7 +609,7 @@ class expRouter {
             }
         }
         //TODO: fully sanitize all params values here for 
-        if (isset($params['src'])) $params['src'] = htmlspecialchars($params['src']);
+        if (isset($params['src'])) $params['src'] = expString::sanitize(htmlspecialchars($params['src']));
         return $params;
     }
 
