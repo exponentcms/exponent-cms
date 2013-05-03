@@ -35,11 +35,11 @@
  */
 function smarty_function_ddrerank($params, &$smarty) {
     global $db;
-    $loc = $smarty->getTemplateVars('__loc');
 
+    $loc = $smarty->getTemplateVars('__loc');
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $params_id = !empty($params['id']) ? $params['id'] : '';
-    $uniqueid = str_replace($badvals, "", $loc->src) . $params_id;
+    $uniqueid = str_replace($badvals, "", $loc->src) . str_replace($badvals, "", $params_id);
     $controller = !empty($params['controller']) ? $params['controller'] : $loc->mod;
 
     if (!empty($params['sql'])) {
@@ -55,7 +55,8 @@ function smarty_function_ddrerank($params, &$smarty) {
             } else {
                 $locsql = "module='" . $params['module'] . "'";
             }
-        } elseif (isset($obj->location_data)) {
+//        } elseif (isset($obj->location_data)) {
+        } elseif (property_exists($obj, 'location_data')) {
             $locsql = "location_data='" . serialize($loc) . "'";
         } else {
             $locsql = null;
@@ -65,15 +66,15 @@ function smarty_function_ddrerank($params, &$smarty) {
         $params['items'] = expSorter::sort(array('array' => $params['items'], 'sortby' => 'rank', 'order' => 'ASC'));
     } elseif (!empty($params['module'])) {
         $model = empty($params['model']) ? $params['module'] : $params['model'];
-        $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
-        if (!empty($uniqueloc->internal)) {
-//            $uniqueloc2 = expUnserialize($uniqueloc->external);
-            $uniqueloc2 = expUnserialize($uniqueloc->internal);
-            $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
-        }
         $where = !empty($params['where']) ? $params['where'] : 1;
         $only = !empty($params['only']) ? ' AND ' . $params['only'] : '';
         $params['items'] = $db->selectObjects($model, $where . $only, "rank");
+//        $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
+//        if (!empty($uniqueloc->internal)) {
+////            $uniqueloc2 = expUnserialize($uniqueloc->external);
+//            $uniqueloc2 = expUnserialize($uniqueloc->internal);
+//            $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
+//        }
     } else {
         $params['items'] = array();
     }
@@ -111,7 +112,7 @@ function smarty_function_ddrerank($params, &$smarty) {
             $odd = "even";
             $stringlen = 40;
             foreach ($params['items'] as $item) {
-                if (!empty($params['module']) || $params['model'] == 'expDefinableField') {
+                if (!empty($params['module']) || $params['model'] == 'expDefinableField') {  // we want to embellish the title used
                     if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control' || $params['model'] == 'expDefinableField') {
                         $control = expUnserialize($item->data);
                         $ctrl = new $control();
@@ -154,7 +155,7 @@ function smarty_function_ddrerank($params, &$smarty) {
         echo $html;
 
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','panel','dd','dd-plugin', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','dd-scroll','panel', function(Y) {
             var panel = new Y.Panel({
                 srcNode      : '#panel" . $uniqueid . "',
                 width        : 500,
@@ -188,7 +189,6 @@ function smarty_function_ddrerank($params, &$smarty) {
             function ddinit() {
                 //Get the list of li's in the lists and make them draggable
                 var lis = Y.Node.all('#listToOrder" . $uniqueid . " li');
-
     //            lis.each(function(v, k) {
                     // var dragItem = new Y.DD.Drag({
                     //     node: v,
@@ -314,7 +314,6 @@ function smarty_function_ddrerank($params, &$smarty) {
                 "content"  => $script,
             ));
         }
-
     }
 }
 

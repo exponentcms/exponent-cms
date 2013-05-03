@@ -43,7 +43,7 @@
                             {break}
                         {/if}
                     {/foreach}
-                    {capture name=rerank}{ddrerank module="container" model="container" uniqueid=$external where="external='`$external`'" label="Modules"|gettext}{/capture}
+                    {capture name=rerank}{ddrerank module=container model=container where="external='`$top->internal`'" label="Modules"|gettext}{/capture}
                     {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
                     {if ($permissions.configure == 1 || $container->permissions.configure == 1)}
                    		<li><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod">{"Configure Settings"|gettext}</a></li>

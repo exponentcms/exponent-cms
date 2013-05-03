@@ -16,6 +16,7 @@ Added / Fixed / changed for 2.2.0 release candidate 1
   - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
     -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
 
 Added / Fixed / changed for 2.2.0 beta 3
 -----------------------

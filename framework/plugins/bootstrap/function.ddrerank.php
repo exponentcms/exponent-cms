@@ -36,11 +36,11 @@
 if (!function_exists('smarty_function_ddrerank')) {
     function smarty_function_ddrerank($params, &$smarty) {
         global $db;
-        $loc = $smarty->getTemplateVars('__loc');
 
+        $loc = $smarty->getTemplateVars('__loc');
         $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
         $params_id = !empty($params['id']) ? $params['id'] : '';
-        $uniqueid = str_replace($badvals, "", $loc->src) . $params_id;
+        $uniqueid = str_replace($badvals, "", $loc->src) . str_replace($badvals, "", $params_id);
         $controller = !empty($params['controller']) ? $params['controller'] : $loc->mod;
 
         if (!empty($params['sql'])) {
@@ -56,11 +56,12 @@ if (!function_exists('smarty_function_ddrerank')) {
                 } else {
                     $locsql = "module='" . $params['module'] . "'";
                 }
-            } elseif (isset($obj->location_data)) {
-                $locsql = "location_data='" . serialize($loc) . "'";
-            } else {
-                $locsql = null;
-            }
+//        } elseif (isset($obj->location_data)) {
+        } elseif (property_exists($obj, 'location_data')) {
+            $locsql = "location_data='" . serialize($loc) . "'";
+        } else {
+            $locsql = null;
+        }
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
             $params['items'] = $obj->find('all', $locsql . $only, "rank"); // we MUST re-pull since we only received one page of $items
             $params['items'] = expSorter::sort(array('array' => $params['items'], 'sortby' => 'rank', 'order' => 'ASC'));
@@ -72,11 +73,11 @@ if (!function_exists('smarty_function_ddrerank')) {
             // we need a good uniqueid since we get both internal and external calls from the same container template
 //            $uniqueloc = $smarty->getTemplateVars('container');  //FIXME we don't seem to get a container var
 //            if (!empty($uniqueloc->external)) {
-            if (!empty($params['uniqueid'])) {
-//                $uniqueloc2 = expUnserialize($uniqueloc->external);
-                $uniqueloc2 = expUnserialize($params['uniqueid']);
-                $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
-            }
+//            if (!empty($params['uniqueid'])) {
+////                $uniqueloc2 = expUnserialize($uniqueloc->external);
+//                $uniqueloc2 = expUnserialize($params['uniqueid']);
+//                $uniqueid = str_replace($badvals, "", $uniqueloc2->src) . $params['id'];
+//            }
         } else {
             $params['items'] = array();
         }
@@ -101,7 +102,8 @@ if (!function_exists('smarty_function_ddrerank')) {
                 $btn_size = 'btn-mini';
                 $icon_size = '';
             }
-            if (empty($params['uniqueid'])) {  // make a button
+//            if (empty($params['uniqueid'])) {  // make a button
+            if ($model != 'container') {  // make a button
                 echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.'" href="#"><i class="icon-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             } else {  // make a menu item
                 echo '<a id="rerank' . $uniqueid . '" class="reranklink" href="#">' . gt("Order") . ' ' . $params['label'] . '</a>';
@@ -125,7 +127,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                 $odd = "even";
                 $stringlen = 40;
                 foreach ($params['items'] as $item) {
-                    if (!empty($params['module']) || $params['model'] == 'expDefinableField') {
+                if (!empty($params['module']) || $params['model'] == 'expDefinableField') {  // we want to embellish the title used
                         if ($params['module'] == 'formbuilder_control' || $params['module'] == 'forms_control' || $params['model'] == 'expDefinableField') {
                             $control = expUnserialize($item->data);
                             $ctrl = new $control();
@@ -368,7 +370,6 @@ if (!function_exists('smarty_function_ddrerank')) {
                     "content"  => $script,
                 ));
             }
-
         }
     }
 }

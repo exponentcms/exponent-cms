@@ -69,10 +69,11 @@ function smarty_function_getchromemenu($params,&$smarty) {
             }
         }
         $reorder = array();
+        $loc = expUnserialize($module->internal);
+        $reorder['id'] = $loc->src;
         $reorder['module'] = "container";
         $reorder['model'] = "container";
         $reorder['where'] = "external='".$module->internal."'";
-        $reorder['uniqueid'] = $module->internal;
         $reorder['label'] = gt("Modules");
         echo '
         <li>';
