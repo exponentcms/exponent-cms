@@ -39,7 +39,7 @@ include_once('../exponent.php');
 	<div class="popup_content_area">
 		<?php
 		
-		$page = (isset($_REQUEST['page']) ? $_REQUEST['page'] : '');
+		$page = (isset($_REQUEST['page']) ? expString::sanitize($_REQUEST['page']) : '');
 		if (is_readable('popups/'.$page.'.php')) include('popups/'.$page.'.php');
 		
 		?>
