@@ -1224,9 +1224,9 @@ class formsController extends expController {
                 //Read the file out directly
                 readfile($tmpfname);
 
-                if (DEVELOPMENT == 0) exit();
+//                if (DEVELOPMENT == 0) exit();
                 unlink($tmpfname);
-
+                exit();
             } else {
                 error_log("error file doesn't exist", 0);
             }
