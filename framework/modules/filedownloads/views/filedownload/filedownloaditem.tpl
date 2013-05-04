@@ -22,7 +22,6 @@
 {else}
     {$date = 'publish_date'}
 {/if}
-
 <div class="item">
     {$filetype=$file->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
     {if $file->expFile.preview[0] != "" && $config.show_icon}
@@ -123,7 +122,7 @@
         {if $filetype == "mp3"}
             <audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile.downloadable[0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">
             </audio>
-        {elseif $filetype == "mp4" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
+        {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
             <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$file->expFile.downloadable[0]->directory}{$file->expFile.downloadable[0]->filename}" type="{$file->expFile.downloadable[0]->mimetype}"
             	id="player{$file->expFile.downloadable[0]->id}"
                 {if $file->expFile.preview[0]->id}

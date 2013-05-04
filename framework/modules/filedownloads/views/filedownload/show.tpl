@@ -62,7 +62,7 @@
         <div class="attribution">
             {if !$config.datetag}
                 <span class="label dated">{'Dated'|gettext}:</span>
-                <span class="value">{$file->$date|format_date}</span>
+                <span class="value">{$record->$date|format_date}</span>
                 &#160;|&#160;
             {/if}
             <span class="label downloads"># {'Downloads'|gettext}:</span>
@@ -113,7 +113,7 @@
                             {if $filetype == "mp3"}
                                 <audio id="{$record->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$record->expFile.downloadable[0]->directory}{$record->expFile.downloadable[0]->filename}" type="audio/mp3">
                                 </audio>
-                            {elseif $filetype == "mp4" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
+                            {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
                                 <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$record->expFile.downloadable[0]->directory}{$record->expFile.downloadable[0]->filename}" type="{$record->expFile.downloadable[0]->mimetype}"
                                 	id="player{$record->expFile.downloadable[0]->id}"
                                     {if $record->expFile.preview[0]->id}
