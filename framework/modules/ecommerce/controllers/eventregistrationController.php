@@ -988,9 +988,11 @@ class eventregistrationController extends expController {
             } else {
                 header('Pragma: no-cache');
             }
-
+            //Read the file out directly
             readfile($tmpfname);
-//            if (DEVELOPMENT == 0)
+
+//            if (DEVELOPMENT == 0) exit();
+            unlink($tmpfname);
             exit();
         }
     }
