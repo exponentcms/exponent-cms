@@ -482,6 +482,7 @@ class administrationController extends expController {
 		        $rssObject->publish_date = $rssItem->get_date('U');
 				foreach ($rssItem->get_enclosures() as $enclosure) {
 					$rssObject->enclosure = $enclosure->get_link();
+                    $rssObject->length = $enclosure->get_length();
 				}
 		        $items[$type][] = $rssObject;
 		    }

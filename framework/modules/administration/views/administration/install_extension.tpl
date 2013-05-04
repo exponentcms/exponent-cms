@@ -36,10 +36,15 @@
                             <div style="float: left;">{control type="checkbox" name="files['`$theme->title`']" label=" " value="`$theme->enclosure`"}</div>
                             <a href="{$theme->rss_link}" title="More Information"|gettext target="_blank"><h4>{$theme->title}</h4></a>
                             <em class="date">
-                                {$theme->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                                {'Dated'|gettext}: {$theme->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                            </em>
+                            {br}
+                            <em class="date">
+                                {'Size'|gettext}: {$theme->length|bytes}
                             </em>
                             <div class="bodycopy">
                                 {$theme->body|summarize:"html":"paralinks"}
+                                {br}
                                 <a href="{$theme->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
                         </div>
@@ -58,10 +63,15 @@
                             <div style="float: left;">{control type="checkbox" name="files['`$fix->title`']" label=" " value="`$fix->enclosure`"}</div>
                             <a href="{$fix->rss_link}" title="More Information"|gettext target="_blank"><h4>{$fix->title}</h4></a>
                             <em class="date">
-                                {$fix->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                                {'Dated'|gettext}: {$fix->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                            </em>
+                            {br}
+                            <em class="date">
+                                {'Size'|gettext}: {$fix->length|bytes}
                             </em>
                             <div class="bodycopy">
                                 {$fix->body|summarize:"html":"paralinks"}
+                                {br}
                                 <a href="{$fix->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
                         </div>
@@ -79,10 +89,15 @@
                             <div style="float: left;">{control type="checkbox" name="files['`$mod->title`']" label=" " value="`$mod->enclosure`"}</div>
                             <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank"><h4>{$mod->title}</h4></a>
                             <em class="date">
-                                {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                                {'Dated'|gettext}: {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                            </em>
+                            {br}
+                            <em class="date">
+                                {'Size'|gettext}: {$mod->length|bytes}
                             </em>
                             <div class="bodycopy">
                                 {$mod->body|summarize:"html":"paralinks"}
+                                {br}
                                 <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
                         </div>
