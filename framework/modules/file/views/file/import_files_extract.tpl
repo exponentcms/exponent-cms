@@ -26,13 +26,13 @@
     {$warn=0}
 	<table cellspacing="0" cellpadding="0" border="0" width="100%" class="exp-skin-table">
 		<thead>
-			<th>Filename</th>
+			<th>{'Filename'|gettext}</th>
 			<th></th>
 		</thead>
 		<tbody>
 			{foreach from=$files_data item=status key=filename }
                 {$haveFiles=1}
-				<tr class="row {cycle values='even_row,odd_row'}">
+				<tr class="{cycle values='even,odd'}">
 					<td>{$filename}</td>
 					<td>
 						{if $status == $smarty.const.SYS_FILES_SUCCESS}
