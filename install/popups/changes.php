@@ -32,7 +32,12 @@
                 <tr><td colspan="2">&#160;</td></tr>
                 <?php
             }
-            for ($swversion->revision; $swversion->revision >= 0; $swversion->revision--) {
+            for ($swversion->revision; $swversion->revision >= -1; $swversion->revision--) {
+                if ($swversion->revision == -1) {
+                    $swversion->revision = 9;
+                    $swversion->minor--;
+                    if ($swversion->minor == -1) break;
+                }
                 if (expVersion::compareVersion($dbversion,$swversion)) {
 //                    include('./changes/'.$swversion->major.'.'.$swversion->minor.'.'.$swversion->revision.'.php');
                     if (file_exists('./changes/'.$swversion->major.'.'.$swversion->minor.'.'.$swversion->revision.'.txt')) {
@@ -60,6 +65,6 @@
                 }
             }
         ?>
-        <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Older changes can be found in the \'CHANGELOG\' file'); ?></strong></td></tr>
+        <tr><td colspan="2" style="background-color: lightgrey;"><strong><?php echo gt('Older changes can be found in the \'CHANGELOG.md\' file'); ?></strong></td></tr>
     </table>
 </div>
