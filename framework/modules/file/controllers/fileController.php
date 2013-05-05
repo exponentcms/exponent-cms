@@ -799,8 +799,8 @@ class fileController extends expController {
         }
 
         $filecount = 0;
-        expFile::copyDirectoryStructure($dest_dir.'/files',BASE.'files');
         foreach (array_keys($files) as $file) {
+            expFile::copyDirectoryStructure($dest_dir.'/files/'.$file,BASE.'files/'.$file);
         	copy($dest_dir.'/files/'.$file,BASE.'files/'.$file);
         	$filecount += 1;
         }
