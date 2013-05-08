@@ -105,7 +105,7 @@ class expRouter {
                     for($i=0; $i < count($this->maps); $i++) {
                         $missing_params = array("dump");
 
-                        if(in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i]))) {
+                        if (!empty($params) && (in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i])))) {
                             $missing_params = array_diff_key($this->maps[$i]['url_parts'], $params);
                         }
 
