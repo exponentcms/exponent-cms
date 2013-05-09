@@ -68,15 +68,15 @@ class user extends expRecord {
         $user = new user($db->selectValue('user', 'id', "username='" . $username . "'"));
 
         // if the user object doesn't have an id then we didn't find a valid user account with this username
-        if (empty($user->id)) return false;
+        if (empty($user->id)) return false;  //FIXME will be empty for new ldap user
 
         // try to authenticate the user - use the authentication type specified in the site config
         if (USE_LDAP == 1 && (empty($user) || $user->is_ldap == 1)) {
             $ldap = new expLDAP();
             $ldap->connect();
             $authenticated = $ldap->authenticate($ldap->getLdapUserDN($username), $password);
-            if ($authenticated) {
-                if (empty($user)) $user = $ldap->addLdapUserToDatabase($username, $password);
+            if ($authenticated && empty($user)) {
+                $user = $ldap->addLdapUserToDatabase($username, $password);
             }
             $ldap->close();
         } else {
