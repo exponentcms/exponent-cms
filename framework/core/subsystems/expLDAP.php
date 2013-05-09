@@ -74,7 +74,7 @@ class expLDAP {
         // populate user data
         if (!empty($user)) {
             $userdata = array('username'  => $username,
-                              'pass1'     => $password,
+                              'password'  => $password,
                               'firstname' => $user['givenname'][0],
                               'lastname'  => $user['sn'][0],
                               'email'     => $user['mail'][0],
@@ -100,6 +100,8 @@ class expLDAP {
 
         $ldap_server = empty($server) ? LDAP_SERVER : $server;
         $this->connection = @ldap_connect($ldap_server);
+        ldap_set_option($this->connection, LDAP_OPT_REFERRALS, 0);
+        ldap_set_option($this->connection, LDAP_OPT_PROTOCOL_VERSION, 3);
     }
 
     public function bind($context = '', $password = "") {
