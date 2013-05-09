@@ -109,8 +109,8 @@
 			</div>
 			<div id="tab4">
                 <h2>{"Extension File Upload"|gettext}</h2>
-                <div class="form_header">{'This form allows you to upload modules, themes, plugins, and views to the website.  After you upload an archive containing an extension (or more) you will be shown a pre-installation summary page, outlining exactly what files will be installed where, and what each file contains (for security reasons)'|gettext}</div>
-                <p><h4>{'It is NOT intended to be used to perform a version upgrade!'|gettext}</h4></p>
+                <div class="form_header">{'This form allows you to upload custom modules, themes, and views to the website, or patch the installation.  After you upload an archive containing an extension you will be shown a pre-installation summary page outlining exactly what files will be installed where, and what each file contains (for security reasons)'|gettext}</div>
+                <p><h4>{'It is NOT intended to be used to perform a full version upgrade!'|gettext}</h4></p>
 				{$form_html}
 			</div>
 		</div>
