@@ -59,25 +59,25 @@ class remove_headlinecontroller extends upgradescript {
 	    global $db;
 
 		// convert each headline module reference to a text module reference
-	    $srs = $db->selectObjects('sectionref',"module = 'headlineController'");
+	    $srs = $db->selectObjects('sectionref',"module = 'headline'");
 	    foreach ($srs as $sr) {
 		    $sr->module = 'text';
 		    $db->updateObject($sr,'sectionref');
 	    }
-	    $gps = $db->selectObjects('grouppermission',"module = 'headlineController'");
+	    $gps = $db->selectObjects('grouppermission',"module = 'headline'");
         foreach ($gps as $gp) {
 	        $gp->module = 'text';
-	        $db->updateObject($gp,'grouppermission',"module = 'headlineController' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
+	        $db->updateObject($gp,'grouppermission',"module = 'headline' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
-        $ups = $db->selectObjects('userpermission',"module = 'headlineController'");
+        $ups = $db->selectObjects('userpermission',"module = 'headline'");
         foreach ($ups as $up) {
             $up->module = 'text';
-            $db->updateObject($up,'userpermission',"module = 'headlineController' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
+            $db->updateObject($up,'userpermission',"module = 'headline' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
 		// convert each headline module to a text module
 	    $modules_converted = 0;
-	    $cns = $db->selectObjects('container',"internal LIKE '%headlineController%'");
+	    $cns = $db->selectObjects('container',"internal LIKE '%headline%'");
 	    foreach ($cns as $cn) {
 		    $cloc = expUnserialize($cn->internal);
 	        $cloc->mod = 'text';
