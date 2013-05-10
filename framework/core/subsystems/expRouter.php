@@ -689,6 +689,7 @@ class expRouter {
                 }   
             }            
         }
+        if (substr($this->sefPath,-1) == "/") $this->sefPath = substr($this->sefPath,0,-1);
     }
 
     public function getSection() {
