@@ -40,7 +40,7 @@ class expLDAP {
 
     public function getLdapUser($username) {
         // figure out our context for searching
-        $search_context = empty($context) ? LDAP_BASE_DN : $context;
+        $search_context = empty($context) ? LDAP_BASE_CONTEXT : $context;
 
         // look up the LDAP user object
 //		$results = @ldap_search($this->connection,$search_context, "cn=".$username);
@@ -61,7 +61,6 @@ class expLDAP {
 
     public function getLdapUserDN($username) {
         if (empty($username)) return "";
-
         $user = self::getLdapUser($username);
         return empty($user['dn']) ? '' : $user['dn'];
     }

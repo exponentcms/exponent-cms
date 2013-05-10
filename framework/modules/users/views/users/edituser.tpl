@@ -49,15 +49,12 @@
                             {*{control type=text name=email label="Email Address"|gettext value=$edit_user->email required=1}*}
                             {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1}
                         {/if}
-                        {if $user->isAdmin() && $smarty.const.USE_LDAP}
-                            {control type=checkbox name=is_ldap value=1 label="Use LDAP Authentication?"|gettext checked=$edit_user->is_ldap}
-                        {/if}
                         {control type=password name=pass1 label="Password"|gettext required=1}
                         {control type=password name=pass2 label="Confirm Password"|gettext required=1}
                     {else}
                         {control type="hidden" name="id" value=$edit_user->id}
 	                {/if}
-	                {control type="hidden" name="userkey" value=$userkey}
+                    {control type="hidden" name="userkey" value=$userkey}
 	                {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
                         {*{control type=text name=email label="Email Address"|gettext value=$edit_user->email}*}
                         {control type=email name=email label="Email Address"|gettext value=$edit_user->email}
@@ -66,6 +63,9 @@
 	                {control type=text name=lastname label="Last Name"|gettext value=$edit_user->lastname}
 	                {*control type=checkbox name="recv_html" label="I prefer HTML Email" value=1 checked=$edit_user->recv_html*}
 	                {if $user->isAdmin()}
+                        {if $smarty.const.USE_LDAP}
+                            {control type=checkbox name=is_ldap value=1 label="Use LDAP Authentication?"|gettext checked=$edit_user->is_ldap}
+                        {/if}
                         {if $user->isSuperAdmin()} {* only super admins can create/change admins *}
                             {control type=checkbox name=is_acting_admin value=1 label="Make this user an Administrator?"|gettext checked=$edit_user->is_acting_admin}
                         {else}
