@@ -202,7 +202,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             panelContainer.addClass('exp-panel-container');
             Y.one('#panel" . $uniqueid . "').removeClass('hide');
                         
-            Y.one('#alpha" . $uniqueid . "').on('click',function(e){
+            if (Y.one('#alpha" . $uniqueid . "') != null) Y.one('#alpha" . $uniqueid . "').on('click',function(e){
                 // Get the list items and setup an array for sorting
                 var ul = document.getElementById('listToOrder" . $uniqueid . "');
                 var new_ul = ul.cloneNode(false);

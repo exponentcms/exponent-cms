@@ -195,7 +195,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-y
          // });
      });
 
-     Y.one('#ordernum').on('click',function(e){
+    if (document.getElementById("ordernum")) Y.one('#ordernum').on('click',function(e){
         Y.later(100, e, function(e) {
             e.focus();
         }, e.currentTarget);
