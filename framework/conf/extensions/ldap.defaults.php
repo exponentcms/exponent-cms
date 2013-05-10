@@ -18,6 +18,7 @@
 
 if (!defined('USE_LDAP')) define('USE_LDAP','0');
 if (!defined('LDAP_SERVER')) define('LDAP_SERVER','not_configured');
+if (!defined('LDAP_BASE_CONTEXT')) define('LDAP_BASE_CONTEXT','not_configured');
 if (!defined('LDAP_BASE_DN')) define('LDAP_BASE_DN','not_configured');
 if (!defined('LDAP_BIND_USER')) define('LDAP_BIND_USER','not_configured');
 if (!defined('LDAP_BIND_PASS')) define('LDAP_BIND_PASS','not_configured');

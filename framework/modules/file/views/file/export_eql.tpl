@@ -52,7 +52,7 @@
 		<input type="hidden" name="action" value="export_eql_process" />
 		<table cellspacing="0" cellpadding="2">
 			{section name=tid loop=$tables step=2}
-				<tr class="row {cycle values='even_row,odd_row'}">
+				<tr class="row {cycle values='even,odd'}">
 					<td>
 						<input type="checkbox" name="tables[{$tables[tid]}]" {if $tables[tid] != 'sessionticket' && $tables[tid] != 'search'}checked {/if}/>
 					</td>
@@ -69,6 +69,9 @@
 					<td>{$tables[$nextid]}</td>
 				</tr>
 			{/section}
+            <tr>
+                <td colspan="5">&#160;</td>
+            </tr>
 			<tr>
 				<td colspan="2">
 					<a href="#" onclick="selectAll(true); return false">{'Select All'|gettext}</a>

@@ -26,7 +26,7 @@
         {/foreach}
     </ul>
     <h3>{'Most likely those tables were deprecated and no longer exist'|gettext}</h3>
-    <blockquote>{'Here\'s what we recommend'|gettext}:</blockquote>
+    <blockquote>{'If we were unable to recreate them, here\'s what we recommend'|gettext}:</blockquote>
     <ol style="list-style:decimal;">
         <li>
             {'Download and extract the Exponent package corresponding to the \'from\' version in the upgrade notice above'|gettext}
@@ -40,3 +40,6 @@
         <li>{'Run the \'Export Data - EQL Database Exporter\' to save a copy of the freshly upgraded database'|gettext}</li>
     </ol>
 {/if}
+<hr>
+<blockquote>{'If you have not yet imported your saved files (graphics, etc...), you may do so now.'|gettext}</blockquote>
+<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=file action=import_files}">{'Import Files Archive'|gettext}</a>

@@ -45,7 +45,8 @@
 			</tr>
 			<tr>
 				<td>
-					<input class="downloadfile awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Files'|gettext}" />
+					{*<input class="downloadfile awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Files'|gettext}" />*}
+                    {control type=buttongroup class="downloadfile" submit='Export Files'|gettext}
 				</td>
 			</tr>
 		</table>

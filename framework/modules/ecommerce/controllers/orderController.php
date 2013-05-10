@@ -1649,7 +1649,8 @@ exit();
             ),
         ));
         assign_to_template(array(
-            'page'=> $page
+            'page'=> $page,
+            'term'=> $search
         ));
 
         //eDebug($this->params);

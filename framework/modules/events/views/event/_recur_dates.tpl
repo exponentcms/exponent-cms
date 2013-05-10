@@ -15,7 +15,7 @@
 
 <div class="module events recur-dates">
 	{foreach from=$dates item=d}
-		<tr class="row {cycle values='even_row,odd_row'}">
+		<tr class="{cycle values='even,odd'}">
 			<td width="10" style="border:none;">
 				<input type="checkbox" name="dates[{$d->id}]" {if $d->id == $checked_date}checked="checked" {/if}/>
 			</td>

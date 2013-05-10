@@ -491,7 +491,7 @@ class administrationController extends expController {
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
-        $form->register('patch',gt('Patch Exponent CMS?'),new checkboxcontrol(false,false));
+        $form->register('patch',gt('Patch Exponent CMS or Install Theme?'),new checkboxcontrol(false,false),null,null,gt('All extensions are normally placed within the CURRENT theme (folder)'));
         $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
 		$form->meta('action','install_extension_confirm');
@@ -1018,7 +1018,7 @@ class administrationController extends expController {
         $themeclass = $this->params['theme'];
         $fname = tempnam(BASE.'/tmp','exporter_files_');
         $tar = new Archive_Tar($fname,'gz');
-        $tar->createModify(BASE.'themes/'.$themeclass,'',BASE.'themes/');
+        $tar->createModify(BASE.'themes/'.$themeclass,'themes/',BASE.'themes/');
 
         $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$themeclass.'.tar.gz');
 

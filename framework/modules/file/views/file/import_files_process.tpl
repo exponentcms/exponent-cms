@@ -44,17 +44,20 @@
 			<tbody>
 				{foreach from=$file_data item=mod_data}
 					{foreach from=$mod_data[1] item=file}
-						<tr class="row {cycle values='even_row,odd_row'}">
+						<tr class="{cycle values='even,odd'}">
 							<td class="header" width="16"><input type="checkbox" checked="checked" name="mods[{$file}]" /></td>
 							<td>{$file}</td>
 						</tr>
 					{/foreach}
 				{/foreach}
-			<tr><td colspan="2">
-				<a href="#" onclick="mods_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>&#160;|&#160;<a href="#" onclick="mods_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
-			</td></tr>
+                <tr><td colspan="2">
+                    <a href="#" onclick="mods_selectUnselectAll(true); return false;">{'Select All'|gettext}</a>&#160;|&#160;<a href="#" onclick="mods_selectUnselectAll(false); return false;">{'Unselect All'|gettext}</a>
+                </td></tr>
 				<tr>
-					<td colspan="2"><input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Process'|gettext}" /></td>
+					<td colspan="2">
+                        {*<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Process'|gettext}" />*}
+                        {control type=buttongroup submit='Process'|gettext}
+                    </td>
 				</tr>
 			</tbody>
 		</table>

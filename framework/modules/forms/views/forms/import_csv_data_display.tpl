@@ -41,7 +41,7 @@
             </thead>
             <tbody>
                 {foreach from=$records item=record}
-                    <tr class="row {cycle values='even_row,odd_row'}">
+                    <tr class="{cycle values='even,odd'}">
                         <td>
                             {if $record.changed == "skipped"}
                                 {control type="checkbox" name="importrecord[]" label=" " disabled=true}

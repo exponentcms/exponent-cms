@@ -1529,13 +1529,21 @@ class expFile extends expRecord {
      */
     public static function copyDirectoryStructure($src, $dest, $exclude_dirs = array()) {
         $__oldumask = umask(0);
+        if (!is_dir($dest)) {
+            $file_path = pathinfo($dest);
+            $dest = $file_path['dirname'];
+        }
+        if (!is_dir($src)) {
+            $file_path = pathinfo($src);
+            $src = $file_path['dirname'];
+        }
         if (!file_exists($dest)) mkdir($dest, fileperms($src));
         $dh = opendir($src);
         while (($file = readdir($dh)) !== false) {
             if (is_dir("$src/$file") && !in_array($file, $exclude_dirs) && substr($file, 0, 1) != "." && $file != "CVS") {
-                if (!file_exists("$dest/$file")) mkdir("$dest/$file", fileperms("$src/$file"));
-                if (is_dir("$dest/$file")) {
-                    self::copyDirectoryStructure("$src/$file", "$dest/$file");
+                if (!file_exists($dest."/".$file)) mkdir($dest."/".$file, fileperms($src."/".$file));
+                if (is_dir($dest."/".$file)) {
+                    self::copyDirectoryStructure($src."/".$file, $dest."/".$file);
                 }
             }
         }

@@ -44,7 +44,7 @@
             </thead>
             <tbody>
                 {foreach from=$userarray item=user}
-                    <tr class="row {cycle values='even_row,odd_row'}">
+                    <tr class="{cycle values='even,odd'}">
                         <td>
                             {if $user.changed == "skipped"}
                                 {control type="checkbox" name="importuser[]" label=" " disabled=true}
