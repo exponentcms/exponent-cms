@@ -152,8 +152,9 @@ if (!function_exists('smarty_function_ddrerank')) {
                     $odd = $odd == "even" ? "odd" : "even";
                 }
                 $html .= '</ul>
-                    <div class="yui3-widget-ft">
-                    <a href="#" class="btn '.$btn_size.'" name=alpha' . $uniqueid . ' id=alpha' . $uniqueid . ' style="float:left;"><i class="icon-sort '.$icon_size.'"></i> ' . gt('Sort List Alphabetically') . '</a>
+                    <div class="yui3-widget-ft">';
+//                    <a href="#" class="btn '.$btn_size.'" name=alpha' . $uniqueid . ' id=alpha' . $uniqueid . ' style="float:left;"><i class="icon-sort '.$icon_size.'"></i> ' . gt('Sort List Alphabetically') . '</a>
+                $html .= '
                     <button type="submit" class="btn btn-primary '.$btn_size.'"><i class="icon-save '.$icon_size.'"></i> ' . gt('Save') . '</button>
                     </div>
                     </form>

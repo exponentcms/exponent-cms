@@ -21,6 +21,7 @@
 {/css}
 
 <div class="module report generate-report">
+    <h2>{'Orders Found'|gettext}: '{$term}'</h2>
     {$page->links}
     {form id="batch" controller=report}
         <div class="exp-ecom-table">
