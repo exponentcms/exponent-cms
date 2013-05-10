@@ -50,12 +50,12 @@ function build_menu($page,$params) {
     global $sectionObj;
 
 //    $menu = '';
-    if (empty($page->itemdata) && empty($page->submenu)) {  // this is a menu item
+    if (empty($page->itemdata) && empty($page->submenu) && $page->type != 3) {  // this is a menu item
         $menu = '<li tabindex="-1"';
         if ($sectionObj->id == $page->id) $menu .= ' class="active"';
         if ($page->url == "#") $menu .= ' class="disabled"';
         $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>'.$page->text.'</a></li>'."\n";
-    } else {                                                // this is a submenu item
+    } elseif ($page->type != 3) {                                                // this is a submenu item
         if ($page->depth) {
             $menu = '<li class="dropdown-submenu';
         } else {
