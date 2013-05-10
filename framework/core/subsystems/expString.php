@@ -228,9 +228,29 @@ class expString {
         }
 
         // a mySQL connection is required before using this function
-        $data = $db->escapeString($data);
+        if ($db->havedb) {
+            $data = $db->escapeString($data);
+        } else {
+            $data = self::escape($data);
+        }
 
         return $data;
+    }
+
+    /**\
+     * Replace any non-ascii character with its hex code with NO active db connection
+     */
+    function escape($value) {
+        $return = '';
+        for($i = 0; $i < strlen($value); ++$i) {
+            $char = $value[$i];
+            $ord = ord($char);
+            if($char !== "'" && $char !== "\"" && $char !== '\\' && $ord >= 32 && $ord <= 126)
+                $return .= $char;
+            else
+                $return .= '\\x' . dechex($ord);
+        }
+        return $return;
     }
 
 }
