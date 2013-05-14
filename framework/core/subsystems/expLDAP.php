@@ -45,6 +45,9 @@ class expLDAP {
         // look up the LDAP user object
 //		$results = @ldap_search($this->connection,$search_context, "cn=".$username);
         $results = @ldap_search($this->connection, $search_context, "sAMAccountName=" . $username);
+        if ($this->errno() && DEVELOPMENT) {
+           flash('error', $this->error());
+       }
         $info = @ldap_get_entries($this->connection, $results);
 
         return ($info['count'] > 0) ? $info[0] : array();
@@ -113,6 +116,15 @@ class expLDAP {
     public function close() {
         if (!empty($this->connection)) @ldap_close($this->connection);
     }
+
+    public function errno() {
+        return ldap_errno($this->connection);
+    }
+
+    public function error() {
+        return ldap_error($this->connection);
+    }
+
 }
 
 ?>

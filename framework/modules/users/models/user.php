@@ -76,6 +76,9 @@ class user extends expRecord {
             $ldap->connect();
 //            $authenticated = $ldap->authenticate($ldap->getLdapUserDN($username), $password);
             $authenticated = $ldap->authenticate($username.'@'.LDAP_BASE_DN, $password);
+            if ($ldap->errno() && DEVELOPMENT) {
+                flash('error', $ldap->error());
+            }
             if ($authenticated && empty($user->id)) {
                 $user = $ldap->addLdapUserToDatabase($username, $password);
             }
