@@ -60,7 +60,6 @@ class help extends expRecord {
     /**
      * Save help item...we MUST also save the current section assigned
      *
-     * @param bool $validate
      */
     public function beforeSave() {
         global $db;
@@ -226,10 +225,12 @@ class help extends expRecord {
 //    }
 
     /**
-   	 * delete item
-   	 * @param string $where
-   	 * @return bool
-   	 */
+     * delete item
+     *
+     * @param $module
+     *
+     * @return bool
+     */
 //   	public function delete($where = '') {
 //       global $db;
 //       if (empty($this->id)) return false;

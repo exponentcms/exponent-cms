@@ -1247,6 +1247,8 @@ abstract class expController {
     /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
      *
+     * @param string $type
+     *
      * @return string
      */
     function aggregateWhereClause($type='') {
@@ -1271,6 +1273,7 @@ abstract class expController {
 
         return $sql;
     }
+
 }
 
 ?>

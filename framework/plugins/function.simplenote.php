@@ -33,6 +33,7 @@
  * 
  * @param array $params
  * @param mixed $smarty
+ * @return string
  */
 function smarty_function_simplenote($params,&$smarty) {
     if (!empty($params['content_id'])) {

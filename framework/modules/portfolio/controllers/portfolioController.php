@@ -81,10 +81,12 @@ class portfolioController extends expController {
     }
 
     /**
-   	 * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
-   	 *
-   	 * @return string
-   	 */
+     * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
+     *
+     * @param string $type
+     *
+     * @return string
+     */
    	function aggregateWhereClause($type='') {
         $sql = parent::aggregateWhereClause();
         $sql .= (!empty($this->config['only_featured']))?"AND featured=1":"";

@@ -233,10 +233,12 @@ class newsController extends expController {
     }
 
     /**
-   	 * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
-   	 *
-   	 * @return string
-   	 */
+     * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
+     *
+     * @param string $type
+     *
+     * @return string
+     */
    	function aggregateWhereClause($type='') {
         $sql = parent::aggregateWhereClause();
         $sql = "(publish = 0 or publish <= " . time() . ") AND (unpublish=0 OR unpublish > ".time().") AND ".$sql;
