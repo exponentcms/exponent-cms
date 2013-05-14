@@ -71,7 +71,10 @@ class user extends expRecord {
 //        if (empty($user->id)) return false;  //FIXME will be empty for new ldap user
 
         // try to authenticate the user - use the authentication type specified in the site config
-        if (USE_LDAP == 1 && (empty($user->id) || $user->is_ldap == 1)) {
+        if (USE_LDAP == 1 && !function_exists('ldap_connect') && DEVELOPMENT) {
+            flash('error', gt('LDAP support is not enabled for PHP!'));
+        }
+        if (USE_LDAP == 1 && (empty($user->id) || $user->is_ldap == 1) && function_exists('ldap_connect')) {
             $ldap = new expLDAP();
             $ldap->connect();
 //            $authenticated = $ldap->authenticate($ldap->getLdapUserDN($username), $password);

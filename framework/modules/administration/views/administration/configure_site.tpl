@@ -102,6 +102,7 @@
                     {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="Welcome Email Subject"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
                     {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="Welcome Email Content"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                     {/group}
+                    {if function_exists('ldap_connect')}
                     {group label="LDAP Authentication"|gettext}
                     {control type="checkbox" postfalse=1 name="sc[USE_LDAP]" label="Turn on LDAP Authentication?"|gettext checked=$smarty.const.USE_LDAP value=1 description=gt('Checking this option will cause Exponent to try to authenticate to the ldap server listed below.')}
                     {control type="text" name="sc[LDAP_SERVER]" label="LDAP Server"|gettext value=$smarty.const.LDAP_SERVER description=gt('Enter the hostname or IP of the LDAP server.')}
@@ -110,6 +111,7 @@
                     {*{control type="text" name="sc[LDAP_BIND_USER]" label="LDAP Bind User"|gettext value=$smarty.const.LDAP_BIND_USER description=gt('The username or context for the binding to the LDAP Server to perform administration tasks (This currently doesn\'t do anything).')}*}
                     {*{control type="password" name="sc[LDAP_BIND_PASS]" label="LDAP Bind Password"|gettext value=$smarty.const.LDAP_BIND_PASS description=gt('Enter the password for the username/context listed above.')}*}
                     {/group}
+                    {/if}
                 </div>
                 <div id="tab4">
 	                <div class="info-header">
