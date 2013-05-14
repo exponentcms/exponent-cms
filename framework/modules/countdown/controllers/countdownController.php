@@ -31,6 +31,7 @@ class countdownController extends expController {
         'comments',
         'ealerts',
         'files',
+        'pagination',
         'rss',
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
