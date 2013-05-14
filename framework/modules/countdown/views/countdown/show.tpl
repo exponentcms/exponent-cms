@@ -38,7 +38,7 @@
             {*FinishMessage = "{$config.message}";*}
         {*</script>*}
         {*<script type="text/javascript" src="{$asset_path}/js/countdown.js"></script>*}
-        <div id="countdown"></div>
+        <div id="countdown"{if $config.light} class="light"{/if}></div>
         <p id="note"></p>
         {*<div class="bodycopy">*}
             {*{$config.body}*}
@@ -65,10 +65,18 @@
     		timestamp	: ts,
     		callback	: function(days, hours, minutes, seconds){
     			var message = "";
+                {/literal}{if $config.displaytext}{literal}
     			message += days + " day" + ( days==1 ? '':'s' ) + ", ";
     			message += hours + " hour" + ( hours==1 ? '':'s' ) + ", ";
     			message += minutes + " minute" + ( minutes==1 ? '':'s' ) + " and ";
     			message += seconds + " second" + ( seconds==1 ? '':'s' ) + " <br />";
+                {/literal}{/if}{literal}
+                {/literal}{if $config.displaydate}{literal}
+                message += "{/literal}{'Until'|gettext} {literal}";
+                message += ts.toLocaleString() + " <br />";
+//                message += "{/literal}{$config['date-count']} "{literal};
+//                message += "{/literal}{$config['time-h-count']}:{$config['time-m-count']} {$config['ampm-count']}{literal}" + " <br />";
+                {/literal}{/if}{literal}
                 message += "{/literal}{$config.body|trim}{literal}";
     			note.html(message);
     		},
