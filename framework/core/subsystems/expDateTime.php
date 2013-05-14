@@ -491,11 +491,13 @@ class expDateTime {
 		return $dates;
 	}
 
-	/** exdoc
-	 * Adapted from calendar module's minical view to be more modular.
-	 *
-	 * @return array
-	 */
+    /** exdoc
+     * Adapted from calendar module's minical view to be more modular.
+     *
+     * @param null $time
+     *
+     * @return array
+     */
 	public static function monthlyDaysTimestamp($time=null) {
 //		global $db;
 		$monthly = array();

@@ -63,15 +63,16 @@ class group extends expRecord {
 	   return $db->selectObject('group','id='.$gid);
 	}
 
-	/** exdoc
-	 * This function consults the group membership data and returns a
-	 * list of all users that belong to the specified group.  Returns
-	 * an array of all user objects that belong to the specified group.
-	 *
-	 * @param Object $g The group object to obtain a member list for.
-	 * @return array
-	 * @node Model:Group
-	 */
+    /** exdoc
+     * This function consults the group membership data and returns a
+     * list of all users that belong to the specified group.  Returns
+     * an array of all user objects that belong to the specified group.
+     *
+     * @param $gid
+     *
+     * @return array
+     * @node     Model:Group
+     */
 	public static function getUsersInGroup($gid) {
 		global $db;
 		if ($gid == null || !intval($gid)) {

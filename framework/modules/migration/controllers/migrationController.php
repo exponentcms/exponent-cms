@@ -408,9 +408,6 @@ class migrationController extends expController {
 					case 'linkmodule':
 						$db->delete('links');
 						break;
-					case 'linkmodule':
-						$db->delete('links');
-						break;
 					case 'newsmodule':
 						$db->delete('news');
 						break;

@@ -40,9 +40,6 @@ class forms extends expRecord {
      * Transfers form entries to database
      *
      * @static
-     *
-     * @param $object
-     *
      * @return mixed
      */
     public function updateTable() {

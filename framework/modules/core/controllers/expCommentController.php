@@ -256,7 +256,7 @@ class expCommentController extends expController {
      *
      * @static
      * @param $params
-     * @return int
+     * @return array
      */
     public static function getComments($params) {
         global $user, $db;

@@ -953,7 +953,7 @@ class formsController extends expController {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
                 } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
-                    $this->params = $this->params;
+//                    $this->params = $this->params;
                     $this->params['_formError'] = sprintf(gt('Identifier cannot be "%s".'), $name);
                     expSession::set('last_POST', $this->params);
                 } else {

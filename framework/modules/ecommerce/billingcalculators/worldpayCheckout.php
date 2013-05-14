@@ -156,11 +156,12 @@ class worldpayCheckout extends billingcalculator {
 	    
 		return $config;
 	}
-	
-	/**
-    * This is called when a billing method is deleted. It can be used to clean up if you have any custom user_data storage.
-    * 
-    * @param mixed $config_object
+
+    /**
+     * This is called when a billing method is deleted. It can be used to clean up if you have any custom user_data storage.
+     *
+     * @param string $where
+     *
      * @return bool
      */
 	function delete($where = '') {

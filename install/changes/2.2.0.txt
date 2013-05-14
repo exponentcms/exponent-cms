@@ -16,7 +16,6 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
   - enhances attached file display features
   - adds new html5 media player module for audio, video & youtube, which deprecates both flowplayer and youtube modules
   - updates filedownload module media player to html5 (flash not required)
-  - adds new import form data, or create a form from csv file feature
   - adds new import users from csv file feature
   - adds ability to optionally run selected 'upgrade scripts' outside of installation
   - moves /conf folder inside /framework to help streamline folder structure
@@ -25,6 +24,7 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
     -- event registrations now abide by 'options'
     -- adds single or multi-person event registration using site forms to collect registration data
   - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
+    -- adds new import form data, or create a form from csv file feature
   - implements broader use of optional ajax paging and use of new html5 input types, temporarily adds additional date/time form designer controls
   - implements an html5 input fallback system to display html5 controls/features in older browsers
     -- adds more simple controls to forms designer (email, url, telephone, range, number, several date/time controls)

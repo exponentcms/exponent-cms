@@ -24,13 +24,11 @@
 
 /**
  * Smarty {relative_date} modifier plugin
- *
  * Type:     modifier<br>
  * Name:     relative_date<br>
  * Purpose:  convert a date in a relative format
  *
  * @param        array
- * @param string $format
  *
  * @return array
  */

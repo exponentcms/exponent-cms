@@ -24,12 +24,13 @@
 
 /**
  * Smarty {username} modifier plugin
- *
  * Type:     modifier<br>
  * Name:     username<br>
  * Purpose:  return the username for a user id
  *
- * @param array
+ * @param      $userid
+ * @param null $type
+ *
  * @return array
  */
 function smarty_modifier_username($userid,$type=null) {

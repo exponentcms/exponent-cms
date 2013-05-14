@@ -103,15 +103,16 @@ class Smarty_Compiler_Switch extends Smarty_Internal_CompileBase {
     public $optional_attributes = array();
     public $shorttag_order = array('var');
 
-/**
- * Start a new switch statement.
- *    A variable must be passed to switch on.
- *  Also, the switch can only directly contain {case} and {default} tags.
- *
- * @param string $tag_arg
- * @param Smarty_Compiler $smarty
- * @return string
- */
+    /**
+     * Start a new switch statement.
+     *    A variable must be passed to switch on.
+     *  Also, the switch can only directly contain {case} and {default} tags.
+     *
+     * @param $args
+     * @param $compiler
+     *
+     * @return string
+     */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
         $attr = $this->getAttributes($compiler, $args);
@@ -134,16 +135,17 @@ class Smarty_Compiler_Case extends Smarty_Internal_CompileBase {
     public $optional_attributes = array('break');
     public $shorttag_order = array('value', 'break');
 
-/**
- * Print out a case line for this switch.
- *    A condition must be passed to match on.
- *    This can only go in {switch} tags.
- *    If break is passed, a {break} will be rendered before the next case.
- *
- * @param string $tag_arg
- * @param Smarty_Compiler $smarty
- * @return string
- */
+    /**
+     * Print out a case line for this switch.
+     *    A condition must be passed to match on.
+     *    This can only go in {switch} tags.
+     *    If break is passed, a {break} will be rendered before the next case.
+     *
+     * @param $args
+     * @param $compiler
+     *
+     * @return string
+     */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
         $attr = $this->getAttributes($compiler, $args);
@@ -174,15 +176,16 @@ class Smarty_Compiler_Default extends Smarty_Internal_CompileBase {
     public $optional_attributes = array('break');
     public $shorttag_order = array('break');
 
-/**
- * Print out a default line for this switch.
- *    This can only go in {switch} tags.
- *    If break is passed, a {break} will be rendered before the next case.
- *
- * @param string $tag_arg
- * @param Smarty_Compiler $smarty
- * @return string
- */
+    /**
+     * Print out a default line for this switch.
+     *    This can only go in {switch} tags.
+     *    If break is passed, a {break} will be rendered before the next case.
+     *
+     * @param $args
+     * @param $compiler
+     *
+     * @return string
+     */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
         $attr = $this->getAttributes($compiler, $args);
@@ -209,15 +212,15 @@ class Smarty_Compiler_Break extends Smarty_Internal_CompileBase {
     public $optional_attributes = array();
     public $shorttag_order = array();
 
-/**
- * Print out a break command for the switch.
- *    This can only go inside of {case} tags.
- *
- * @param string $tag_arg
- * @param Smarty_Compiler $smarty
- * @return string
- */
-
+    /**
+     * Print out a break command for the switch.
+     *    This can only go inside of {case} tags.
+     *
+     * @param $args
+     * @param $compiler
+     *
+     * @return string
+     */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
         $attr = $this->getAttributes($compiler, $args);
@@ -233,15 +236,15 @@ class Smarty_Compiler_Caseclose extends Smarty_Internal_CompileBase {
     public $optional_attributes = array();
     public $shorttag_order = array();
 
-/**
- * Print out a break command for the switch.
- *    This can only go inside of {case} tags.
- *
- * @param string $tag_arg
- * @param Smarty_Compiler $smarty
- * @return string
- */
-
+    /**
+     * Print out a break command for the switch.
+     *    This can only go inside of {case} tags.
+     *
+     * @param $args
+     * @param $compiler
+     *
+     * @return string
+     */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
         $attr = $this->getAttributes($compiler, $args);
@@ -257,14 +260,14 @@ class Smarty_Compiler_Switchclose extends Smarty_Internal_CompileBase {
     public $optional_attributes = array();
     public $shorttag_order = array();
 
-/**
- * End a switch statement.
- *
- * @param string $tag_arg
- * @param Smarty_Compiler $smarty
- * @return string
- */
-
+    /**
+     * End a switch statement.
+     *
+     * @param $args
+     * @param $compiler
+     *
+     * @return string
+     */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
         $attr = $this->getAttributes($compiler, $args);
