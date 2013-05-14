@@ -1356,7 +1356,7 @@ class usersController extends expController {
                 $userinfo['changed'] = "";
 
                 foreach ($filedata as $field) {
-                    if ($this->params["column"][$i] != "none") {
+                    if (!empty($this->params["column"][$i]) && $this->params["column"][$i] != "none") {
                         $colname = $this->params["column"][$i];
                         $userinfo[$colname] = trim($field);
                     } else {
