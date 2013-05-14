@@ -34,11 +34,11 @@ class countdownController extends expController {
         'pagination',
         'rss',
         'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Countdown"); }
     static function description() { return gt("Displays a timer counting down to a specified date/time."); }
-    static function author() { return "Ported to Exponent by Phillip Ball. JS written by http://www.hashemian.com/tools/javascript-countdown.htm"; }
+    static function author() { return "Ported to Exponent by Phillip Ball. Original JS at http://tutorialzine.com/2011/12/countdown-jquery/"; }
 
     /**
    	 * default view for individual item
