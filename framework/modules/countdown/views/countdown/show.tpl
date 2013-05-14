@@ -37,7 +37,6 @@
             {$config.body}
         </div>
     {/if}
-
 </div>
 
 {*
