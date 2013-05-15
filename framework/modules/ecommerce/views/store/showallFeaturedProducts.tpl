@@ -41,7 +41,7 @@
                         {elseif $listing->expFile.images[0]->id != ""}
                             {img file_id=$listing->expFile.images[0]->id constraint=1 w=165 alt=$listing->title}
                         {else}
-                            {'No Image'|gettext}
+                            {img src="`$asset_path`images/no-image.jpg" constraint=1 w=165 alt=$listing->title}
                         {/if}
                         {br}{$listing->title}
                     </a>

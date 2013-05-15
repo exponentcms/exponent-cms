@@ -105,6 +105,9 @@ class storeController extends expController {
     function __construct($src = null, $params = array()) {
         global $db, $router, $section, $user;
 //        parent::__construct($src = null, $params);
+        if (empty($params)) {
+            $params = $router->params;
+        }
         parent::__construct($src, $params);
 
         // we're setting the config here globally

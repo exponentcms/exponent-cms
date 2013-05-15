@@ -17,9 +17,9 @@
     <div class="image">
         <a href="{link controller=store action=show title=$listing->sef_url}">
             {if $listing->expFile.mainimage[0]->id != ""}
-                {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=165 alt=$listing->title}
+                {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=$config.listingwidth|default:140 h=$config.listingheight|default:150 alt=$listing->title}
             {else}
-                {img src="`$asset_path`images/no-image.jpg" constraint=1 w=165 alt="'No Image Available'|gettext"}
+                {img src="`$asset_path`images/no-image.jpg" constraint=1 w=$config.listingwidth|default:140 h=$config.listingheight|default:150 alt="'No Image Available'|gettext"}
             {/if}
         </a>
     </div>
