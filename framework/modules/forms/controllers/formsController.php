@@ -514,7 +514,7 @@ class formsController extends expController {
                     $db_data->referrer = $referrer;
                     $location_data = null;
                     if (!empty($this->params['src'])) {
-                        expCore::makeLocation($this->params['mod'],$this->params['src'],$this->params['int']);
+                        expCore::makeLocation($this->params['module'],$this->params['src'],$this->params['int']);
                     }
                     $db_data->location_data = $location_data;
                 }
@@ -556,7 +556,7 @@ class formsController extends expController {
                 $emaillist = array_flip(array_flip($emaillist));
                 $emaillist = array_map('trim', $emaillist);
 
-                if ($this->config['report_def'] == "") {
+                if (empty($this->config['report_def'])) {
                     $msgtemplate = get_template_for_action($this, 'email/default_report', $this->loc);
 
                 } else {
