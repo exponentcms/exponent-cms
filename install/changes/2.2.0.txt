@@ -31,3 +31,4 @@ The first version of Exponent w/o any 1.0 modules, etc..., primarily implements 
     -- allows switching to similar type control after creation
   - updates style of maintenance/site-down page
   - enables user authentication via an LDAP server (requires php ldap module)
+  - updates look of countdown module to be more professional looking with new display options

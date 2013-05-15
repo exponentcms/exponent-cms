@@ -19,10 +19,10 @@
             <a href="{link action=show title=$listing->sef_url}" title="{$listing->body|format_tooltip}">
                 {if $listing->expFile.mainimage[0]->id != ""}
                     {*img class=listingimage file_id=$listing->expFile[0]->id constraint=1 width=150 height=550 alt=$listing->title*}
-                    {img class=listingimage file_id=$listing->expFile.mainimage[0]->id square=149 alt=$listing->title}
+                    {img class=listingimage file_id=$listing->expFile.mainimage[0]->id constraint=1 w=$config.listingwidth|default:140 h=$config.listingheighth|default:150 alt=$listing->title}
                     {br}
                 {else}
-                    {img src="`$asset_path`images/no-image.jpg" alt="'No Image Available'|gettext"}
+                    {img src="`$asset_path`images/no-image.jpg" constraint=1 w=$config.listingwidth|default:140 h=$config.listingheighth|default:150 alt="'No Image Available'|gettext"}
                 {/if}
             </a>                    
         </div>
@@ -34,7 +34,7 @@
             </h2>
             <span class="description">{$listing->body|truncate:50:"..."}</span>
             <span class="price">{$listing->base_price|currency}</span>
-			<a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="fox-link addtocart" rel="nofollow"><em>Add to cart</em><span></span></a>
+			<a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="fox-link addtocart" rel="nofollow"><em>{'Add to cart'|gettext}</em><span></span></a>
             
             {permissions}
             <div class="item-actions">

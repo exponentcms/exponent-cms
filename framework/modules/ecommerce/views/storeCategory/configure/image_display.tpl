@@ -14,8 +14,8 @@
  *}
 
 {group label="Product Listing Pages"|gettext}
-    {control type="text" name="imagesperrow" label="Products per Row (also determines product width if not set below)"|gettext value=$config.imagesperrow|default:1}
-    {control type="text" name="productheight" label="Product Height (0 will not set a height)"|gettext value=$config.productheight|default:200}
+    {*{control type="text" name="imagesperrow" label="Products per Row (also determines product width if not set below)"|gettext value=$config.imagesperrow|default:1}*}
+    {*{control type="text" name="productheight" label="Product Height (0 will not set a height)"|gettext value=$config.productheight|default:200}*}
     {control type="text" name="listingwidth" label="Maximum image width"|gettext value=$config.listingwidth|default:150}
     {control type="text" name="listingheight" label="Maximum image height"|gettext value=$config.listingheight|default:0}
 {/group}

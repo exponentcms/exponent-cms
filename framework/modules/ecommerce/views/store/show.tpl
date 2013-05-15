@@ -53,13 +53,21 @@
     <div class="large-ecom-image">
         {if $product->main_image_functionality=="iws"}
             {* Image with swatches *}
-            {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+            {if $product->expFile.imagesforswatches[0]->id != ""}
+                {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+            {else}
+                {img src="`$asset_path`images/no-image.jpg" w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+            {/if}
             {$mainimg=$product->expFile.imagesforswatches.0}
         {else}
             {if $config.enable_lightbox}
                 <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
             {/if}
-            {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
+            {if $product->expFile.mainimage[0]->id != ""}
+                {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
+            {else}
+                {img src="`$asset_path`images/no-image.jpg" w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+            {/if}
             {if $config.enable_lightbox}
                 </a>
             {/if}

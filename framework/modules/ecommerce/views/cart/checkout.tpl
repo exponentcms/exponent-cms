@@ -76,7 +76,7 @@
 
     <div class="cartitems separate">
 
-        <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="ecom-link">[Click here to show your cart]<span></span></a></p -->
+        <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="exp-ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
             {chain controller=cart action=show view=show_cart_only}
         </div>
@@ -149,7 +149,7 @@
                     {/if}
 
                     {*if $order->orderitem|@count>1 && $shipping->splitshipping == false && $order->forced_shipping == false}
-                        <a id="miltiaddresslink" class="ecom-link {if hideMultiShip == 1}hide{/if}" href="{link action=splitShipping}">Ship to multiple addresses</a>
+                        <a id="miltiaddresslink" class="exp-ecom-link {if hideMultiShip == 1}hide{/if}" href="{link action=splitShipping}">Ship to multiple addresses</a>
                     {/if*}
 
                     {if $shipping->selectable_calculators|@count > 1}{$multicalc=1}{/if}

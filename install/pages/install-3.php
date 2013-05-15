@@ -50,6 +50,8 @@ function echoWarning($msg = "") {
 }
 
 function echoFailure($msg = "") {
+    global $passed;
+
     $passed = false;
 	echo '<span class="failed">'.gt('Failed').'</span>';
 	if ($msg != "") echo ' : ' . $msg;
@@ -83,12 +85,14 @@ if ($passed) {
 
 	if ($db->connection == null) {
 		echoFailure(gt("Trying to Connect to Database")." (".$db->error().")");
-		// FIXME:BETTER ERROR CHECKING
-	}
+	} else {
+        echoSuccess();
+    }
 }
 
 if ($passed) {
-	$tables = $db->getTables();
+    echoStart(gt('Getting Tables').':');
+	$tables = @$db->getTables();
 	if ($db->inError()) {
 		echoFailure(gt("Trying to Get Tables")." (".$db->error().")");
 	} else {
@@ -110,7 +114,7 @@ if ($passed) {
 
 if ($passed) {
    	echoStart(gt('Not a 0.9x database').':');
-   	if (!$db->tableExists('textitem')) {
+   	if (!@$db->tableExists('textitem')) {
    		echoSuccess();
    	} else {
    		echoFailure(gt("This is a 0.9x database.").' '.gt("Create a new database, then MIGRATE from the 0.9x database after installation."));
@@ -130,10 +134,10 @@ $dd = array(
 );
 
 if ($passed) {
-	$db->createTable($tablename,$dd,array());
+	@$db->createTable($tablename,$dd,array());
 
 	echoStart(gt('Checking CREATE TABLE privilege').':');
-	if ($db->tableExists($tablename)) {
+	if (@$db->tableExists($tablename)) {
 		echoSuccess();
 	} else {
 		echoFailure(gt("Trying to Create Tables"));
@@ -146,7 +150,7 @@ $obj = new stdClass();
 if ($passed) {
 	echoStart(gt('Checking INSERT privilege').':');
 	$obj->installer_test = "Exponent Installer Wizard";
-	$insert_id = $db->insertObject($obj,$tablename);
+	$insert_id = @$db->insertObject($obj,$tablename);
 	if ($insert_id == 0) {
 		echoFailure(gt("Trying to Insert Items")." (".$db->error().")");
 	} else {
@@ -156,7 +160,7 @@ if ($passed) {
 
 if ($passed) {
 	echoStart(gt('Checking SELECT privilege').':');
-	$obj = $db->selectObject($tablename,"id=".$insert_id);
+	$obj = @$db->selectObject($tablename,"id=".$insert_id);
 	if ($obj == null || $obj->installer_test != "Exponent Installer Wizard") {
 		echoFailure(gt("Trying to Select Items")." (".$db->error().")");
 	} else {
@@ -166,8 +170,9 @@ if ($passed) {
 
 if ($passed) {
 	echoStart(gt('Checking UPDATE privilege').':');
+    if (empty($obj)) $obj = new stdClass();
 	$obj->installer_test = "Exponent 2";
-	if (!$db->updateObject($obj,$tablename)) {
+	if (!@$db->updateObject($obj,$tablename)) {
 		echoFailure(gt("Trying to Update Items")." (".$db->error().")");
 	} else {
 		echoSuccess();
@@ -176,9 +181,9 @@ if ($passed) {
 
 if ($passed) {
 	echoStart(gt('Checking DELETE privilege').':');
-	$db->delete($tablename,"id=".$insert_id);
+	@$db->delete($tablename,"id=".$insert_id);
 	$error = $db->error();
-	$obj = $db->selectObject($tablename,"id=".$insert_id);
+	$obj = @$db->selectObject($tablename,"id=".$insert_id);
 	if ($obj != null) {
 		echoFailure(gt("Trying to Delete Items")." (".$error.")");
 	} else {
@@ -192,14 +197,14 @@ if ($passed) {
 		DB_FIELD_LEN=>8);
 
 	echoStart(gt('Checking ALTER TABLE privilege').':');
-	$db->alterTable($tablename,$dd,array());
+	@$db->alterTable($tablename,$dd,array());
 	$error = $db->error();
 
 	$obj = new stdClass();
 	$obj->installer_test = "Exponent Installer ALTER test";
 	$obj->exponent = "Exponent";
 
-	if (!$db->insertObject($obj,$tablename)) {
+	if (!@$db->insertObject($obj,$tablename)) {
 		echoFailure(gt("Trying to Alter Tables")." (".$error.")");
 	} else {
 		echoSuccess();
@@ -208,9 +213,9 @@ if ($passed) {
 
 if ($passed) {
 	echoStart(gt('Checking DROP TABLE privilege').':');
-	$db->dropTable($tablename);
+	@$db->dropTable($tablename);
 	$error = $db->error();
-	if ($db->tableExists($tablename)) {
+	if (@$db->tableExists($tablename)) {
 		echoFailure(gt("Trying to Drop Tables")." (".$error.")");
 	} else {
 		echoSuccess();
@@ -222,34 +227,34 @@ if ($passed) {
 
 	$tables = expDatabase::install_dbtables();
 
-	if ($db->tableIsEmpty('user')) {
+	if (@$db->tableIsEmpty('user')) {
 		$user = new stdClass();
 		$user->username = 'admin';
 		$user->password = md5('admin');
 		$user->is_admin = 1;
 		$user->is_acting_admin = 1;
         $user->is_system_user = 1;
-		$db->insertObject($user,'user');
+		@$db->insertObject($user,'user');
 	}
 
-	if ($db->tableIsEmpty('modstate')) {
+	if (@$db->tableIsEmpty('modstate')) {
 		$modstate[0] = new stdClass();
 //		$modstate[0]->module = 'textController';  //FIXME long controller name
         $modstate[0]->module = 'text';
 		$modstate[0]->active = 1;
 		foreach($modstate as $key=>$val){
-    		$db->insertObject($modstate[$key],'modstate');
+    		@$db->insertObject($modstate[$key],'modstate');
 		}
 	}
 
-	if ($db->tableIsEmpty('section')) {
+	if (@$db->tableIsEmpty('section')) {
 		$section = new stdClass();
 		$section->name = gt('Home');  //FIXME not sure if we should do this?
 		$section->public = 1;
 		$section->active = 1;
 		$section->rank = 0;
 		$section->parent = 0;
-		$sid = $db->insertObject($section,'section');
+		$sid = @$db->insertObject($section,'section');
 	}
 
 	echoSuccess();
@@ -264,14 +269,17 @@ if ($passed) {
     }
 
     // version tracking
-	$db->delete('version',1);  // clear table of old accumulated entries
+	@$db->delete('version',1);  // clear table of old accumulated entries
 //	$vo = new stdClass();
     $vo = expVersion::swVersion();
     $vo->created_at = time();
-    $ins = $db->insertObject($vo,'version') or die($db->error());
+//    $ins = @$db->insertObject($vo,'version') or die($db->error());
+    if (!@$db->insertObject($vo,'version')) {
+   		echoFailure(gt("Trying to Add Version to DB")." (".$db->error().")");
+   	} else {
+   		echoSuccess();
+   	}
 
-	// ERROR CHECKING
-	echoSuccess();
 }
 
 ?>
@@ -281,10 +289,10 @@ if ($passed) {
 
 if ($passed) {
 	// Do some final cleanup
-	foreach ($db->getTables() as $t) {
+	foreach (@$db->getTables() as $t) {
 		// FIX table prefix problem
 		if (substr($t,0,14+strlen($db->prefix)) == $db->prefix.'installer_test') {
-			$db->dropTable(str_replace($db->prefix,'',$t));
+			@$db->dropTable(str_replace($db->prefix,'',$t));
 		}
 	}
 	echo '<p>';

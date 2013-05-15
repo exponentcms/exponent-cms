@@ -92,7 +92,7 @@
                 </div>
                 {if $smarty.foreach.cats.last || $ipcr%2==0}
                     </div>
-                    {$var=open_c_row=1}
+                    {$open_c_row=1}
                 {/if}
                 {counter name="ipcr"}
             {/if}

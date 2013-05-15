@@ -29,10 +29,10 @@
 
 <div class="module store show event-registration product">
     <div class="image" style="padding:0px 10px 10px;float:left;overflow: hidden;">
-    {if $product->expFile.mainimage[0]->url == ""}
-        {img src="`$asset_path`images/no-image.jpg"}
-    {else}
+    {if $product->expFile.mainimage[0]->url != ""}
         {img file_id=$product->expFile.mainimage[0]->id alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+    {else}
+        {img src="`$asset_path`images/no-image.jpg" alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
     {/if}
         {clear}
     </div>

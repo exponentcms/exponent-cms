@@ -41,6 +41,12 @@ function smarty_function_img($params,&$smarty) {
     $class = (isset($params['class'])) ? ' class="'.$params['class'].'"' : '';
     $style = (isset($params['style'])) ? ' style="'.$params['style'].'"' : '';
     $rel = (isset($params['rel'])) ? ' rel="'.$params['rel'].'"' : '';
+    if (isset($params['square']) && (!isset($params['w']) && !isset($params['h']))) {
+        $params['w'] = $params['square'];
+        $params['h'] = $params['square'];
+    } elseif (isset($params['square']) && $params['square'] == 'true' && !isset($params['w'])) {
+        $params['w'] = $params['h'];
+    }
     $dims = (isset($params['w']) && isset($params['h']) && isset($params['zc'])) ? ' height="'.$params['h'].'" width="'.$params['w'].'"' : '';
         
 	if (!isset($params['q']) && defined('THUMB_QUALITY')) $params['q'] = THUMB_QUALITY;
@@ -56,7 +62,7 @@ function smarty_function_img($params,&$smarty) {
 	    $src .= '&amp;lgcy=1';
 	    
 		// get the image dimensions
-		if (isset($params['constrain'])) $src .= '&amp;constraint=1';
+		if (isset($params['constraint'])) $src .= '&amp;constraint=1';
 		if (isset($params['square'])) $src .= '&amp;square='.$params['square'];
 		if (isset($params['width'])) $src .= '&amp;width='.$params['width'];
 		if (isset($params['height'])) $src .= '&amp;height='.$params['height'];
