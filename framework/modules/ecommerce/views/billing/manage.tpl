@@ -66,5 +66,4 @@
         {/foreach}
         </tbody>
     </table>
-        
 </div>

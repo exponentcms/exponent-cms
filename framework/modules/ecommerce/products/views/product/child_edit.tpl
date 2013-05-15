@@ -132,7 +132,6 @@
                                     node.simulate('click');
                                 }
                             });
-
                         });
                         {/literal}
                         {/script}

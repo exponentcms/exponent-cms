@@ -33,7 +33,6 @@
 
                             <ul class="items">
                             {foreach from=$shippingitem->orderitem item=product}
-                                {*<li>{$product->products_name} - {currency_symbol}{$product->products_price}*}
                                 <li>{$product->products_name} - {$product->products_price|currency}
                                     {if $product->opts[0]}
                                     <h4>{'Selected Options'|gettext}</h4>
@@ -108,7 +107,6 @@ YAHOO.util.Event.onDOMReady(function(){
         YAHOO.util.Dom.setStyle(vals, 'display', 'table-row');
     }
     //YAHOO.util.Dom.setStyle(vals, 'display', 'block');
-    
 });
 {/literal}
 {/script}

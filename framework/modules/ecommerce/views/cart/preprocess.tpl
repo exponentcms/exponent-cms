@@ -171,30 +171,25 @@
                 <tbody>
                     <tr class="even">
                         <td class="right">{'Subtotal'|gettext}:</td>
-                        {*<td class="totals subtotal">{currency_symbol}{$order->subtotal|number_format:2}</td>*}
                         <td class="totals subtotal">{$order->subtotal|currency}</td>
                     </tr>
                         {if $order->total_discounts > 0}
                         <tr class="odd">
                             <td class="right">{'Discounts'|gettext}:</td>
-                            {*<td class="totals discounts">-{currency_symbol}{$order->total_discounts|number_format:2}</td>*}
                             <td class="totals discounts">-{$order->total_discounts|currency}</td>
                         </tr>
                         <tr class="even">
                             <td class="right">{'Total'|gettext}:</td>
-                            {*<td class="totals subtotal">{currency_symbol}{$order->total|number_format:2}</td>*}
                             <td class="totals subtotal">{$order->total|currency}</td>
                         </tr>
                         {/if}
                     <tr class="odd">
                         <td class="right">{'Tax'|gettext}:</td>
-                        {*<td class="totals tax">{currency_symbol}{$order->tax|number_format:2}</td>*}
                         <td class="totals tax">{$order->tax|currency}</td>
                     </tr>
                         {if $order->shipping_required == true}
                         <tr class="even">
                             <td class="right">{'Shipping'|gettext}:</td>
-                            {*<td class="totals shipping">{currency_symbol}{$order->shipping_total_before_discounts|number_format:2}</td>*}
                             <td class="totals shipping">{$order->shipping_total_before_discounts|currency}</td>
                         </tr>
                             {if $order->shippingDiscount > 0}
@@ -204,7 +199,6 @@
                             </tr>
                             <tr class="even">
                                 <td class="right">{'Total Shipping'|gettext}:</td>
-                                {*<td class="totals shipping">{currency_symbol}{$order->shipping_total|number_format:2}</td>*}
                                 <td class="totals shipping">{$order->shipping_total|currency}</td>
                             </tr>
                             {/if}
@@ -212,13 +206,11 @@
                         {if $order->surcharge_total != 0}
                         <tr class="even">
                             <td class="right">{'Freight Surcharge'|gettext}:</td>
-                            {*<td class="totals shipping">{currency_symbol}{$order->surcharge_total|number_format:2}</td>*}
                             <td class="totals shipping">{$order->surcharge_total|currency}</td>
                         </tr>
                         {/if}
                     <tr class="odd">
                         <td class="right">{'Final Total'|gettext}:</td>
-                        {*<td class="totals total">{currency_symbol}{$order->grand_total|number_format:2}</td>*}
                         <td class="totals total">{$order->grand_total|currency}</td>
                     </tr>
                     {*</tr>*}

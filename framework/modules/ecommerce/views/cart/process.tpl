@@ -76,7 +76,6 @@
                             {/foreach}
                             </ul>
                         {else}
-                            {*{$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}*}
                             {$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {$shipping->shippingmethod->shipping_cost|currency}
                         {/if}
                     {else}

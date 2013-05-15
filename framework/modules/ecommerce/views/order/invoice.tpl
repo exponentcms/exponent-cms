@@ -26,12 +26,9 @@
 
 <div id="invoice">
     <div id="store-header">
-        {*<h1>{$storeConfig.storename} {'Invoice'|gettext}</h1>*}
-        {*{$storeConfig.ecomheader}*}
         <h1>{ecomconfig var=storename} {'Invoice'|gettext}</h1>
         {ecomconfig var=ecomheader}
     </div>
-    {*{if $pf && $storeConfig.enable_barcode}*}
     {if $pf && ecomconfig::getConfig('enable_barcode')}
     <div id="barcode">
         <img style="margin:10px" src="{$smarty.const.PATH_RELATIVE}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="">
@@ -61,7 +58,6 @@
             <tbody>
                 <tr>
                     <td>
-                        {*{$storeConfig.storename}*}
                         {ecomconfig var=storename}
                     </td>
                     <td>
@@ -69,8 +65,6 @@
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_invoice_id == 1 && !$pf}
-                                    {*{br}*}
-                                    {*<a class="edit" href="{link action=edit_invoice_id id=$order->id}" title="{'Edit Invoice Number'|gettext}">{'Edit'|gettext}</a>*}
                                     {icon class="edit" action=edit_invoice_id id=$order->id title='Edit Invoice Number'|gettext}
                                 {/if}
                             </div>
@@ -120,8 +114,6 @@
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}
-                                    {*{br}*}
-                                    {*<a class="edit" href="{link action=edit_address id=$order->id type='b'}" title="{'Edit Billing Address'|gettext}">{'Edit'|gettext}</a>*}
                                     {icon class="edit" action=edit_address id=$order->id type='b' title='Edit Billing Address'|gettext}
                                 {/if}
                             </div>
@@ -133,9 +125,6 @@
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}                                                                                        
-                                    {*{br}    *}
-                                    {*<a class="edit" href="{link action=edit_address id=$order->id type='s'}" title="{'Edit Shipping Address'|gettext}">{'Edit'|gettext}</a>*}
-                                    {*{br} *}
                                     {icon class="edit" action=edit_address id=$order->id type='s' title='Edit Shipping Address'|gettext}
                                 {/if}
                             </div>
@@ -149,8 +138,6 @@
                                     {permissions}
                                         <div class="item-permissions">
                                             {if $permissions.edit_shipping_method == 1 && !$pf}
-                                                {*{br}*}
-                                                {*<a class="edit" href="{link action=edit_shipping_method id=$order->id}" title="{'Edit Shipping Method'|gettext}">{'Edit'|gettext}</a>*}
                                                 {icon class="edit" action=edit_shipping_method id=$order->id title='Edit Shipping Method'|gettext}
                                             {/if}
                                         </div>
@@ -244,10 +231,7 @@
                         </div>
                          {permissions}
                             {if $permissions.edit_shipping_method == 1 && !$pf}
-                                {*{br}*}
                                 <div class="item-permissions">
-                                    {*<a class="edit" href="{link action=edit_payment_info id=$order->id}" title="{'Edit Payment Method'|gettext}">{'Edit'|gettext}</a>*}
-                                    {*{br}{br}*}
                                     {icon class="edit" action=edit_payment_info id=$order->id title='Edit Payment Method'|gettext}
                                 </div>
                             {/if}
@@ -346,15 +330,12 @@
                         {$oi->products_price|number_format:2}
                     </td>
                     <td style="text-align:right;">
-                        {*{$oi->getLineItemTotal()|number_format:2}*}
                         {$oi->getTotal()|number_format:2}
                     </td>
                     {permissions}
                         <div class="item-permissions">
                             {if $permissions.edit_order_item == 1 && !$pf}                                                                                                             
                                 <td style="text-align:right;">
-                                    {*<a class="edit" href="{link action=edit_order_item id=$oi->id orderid=$order->id}" title="{'Edit Invoice Item'|gettext}">{'Edit'|gettext}</a>&#160;*}
-                                    {*<a class="delete" href="{link action=delete_order_item id=$oi->id orderid=$order->id}" onclick="return confirm('Are you sure you want to delete this item from this order?')" title="{'Delete Invoice Item'|gettext}">{'Delete'|gettext}</a>*}
                                     {icon class="edit" action=edit_order_item id=$oi->id orderid=$order->id title='Edit Invoice Item'|gettext}&#160;
                                     {icon class="delete" action=delete_order_item id=$oi->id orderid=$order->id onclick="return confirm('Are you sure you want to delete this item from this order?')" title='Delete Invoice Item'|gettext}
                                 </td>
@@ -367,7 +348,6 @@
                 <div class="item-permissions">
                 {if $permissions.add_order_item == 1 && !$pf} 
                     <tr>
-                        {*<td colspan="8" style='text-align: right;'><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->*}
                         <td colspan="8"><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->
                         {capture assign="callbacks"}
                         {literal}                       
@@ -558,7 +538,6 @@
                         {if $permissions.edit_totals == 1 && !$pf}                                                                                                             
                             <tr class="even">                   
                                 <td style="text-align:right; border-left:0px;" colspan='3'>
-                                    {*<a class="edit" href="{link action=edit_totals orderid=$order->id}" title="{'Edit Totals'|gettext}">{'Edit'|gettext}</a>*}
                                     {icon class="edit" action=edit_totals orderid=$order->id title='Edit Totals'|gettext}
                                 </td>
                             </tr>
@@ -569,7 +548,6 @@
         </table>
     </div>
     <div id="store-footer">
-        {*{$storeConfig.ecomfooter}*}
         {ecomconfig var=ecomfooter}
     </div>
 </div>

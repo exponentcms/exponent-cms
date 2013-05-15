@@ -32,7 +32,6 @@
                         <thead>
                             <tr>
                                 <th class="product-name" colspan="2">
-                                    {*<h2>{$orderitem->products_name} - <span class=price>{currency_symbol}{$orderitem->products_price|number_format:2}</span></h2>*}
                                     <h2>{$orderitem->products_name} - <span class=price>{$orderitem->products_price|currency}</span></h2>
                                 </th>
                             </tr>
