@@ -217,7 +217,6 @@ YUI(EXPONENT.YUI3_CONFIG).use("anim-easing","node","anim", function(Y) {
         //n.one('.more-text .close').on('click', onClick);
         };
     });
-    
 });
 {/literal}
 {/script}

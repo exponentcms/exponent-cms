@@ -163,7 +163,6 @@
                         </td>
                     </tr> 
                     <tr>
-                        {*<td>{'Amount:'|gettext} {currency_symbol}{$bt->billing_cost|number_format:2}*}
                         <td>{'Amount:'|gettext} {$bt->billing_cost|currency}
                         </td>
                     </tr>

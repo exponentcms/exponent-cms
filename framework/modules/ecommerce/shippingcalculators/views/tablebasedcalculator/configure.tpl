@@ -187,7 +187,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     addrange.on({'click':addNewRow});
     Y.one('#tablebasedcalculator').removeClass('hide');
     Y.one('.loadingdiv').remove();
-    
 });
 {/literal}
 {/script}

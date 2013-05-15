@@ -18,7 +18,6 @@
         <img class="shippingmethodimg" src="{$shipping->calculator->icon}">
         <div class="sm-info">
             <strong class="selected-info">{$shipping->shippingmethod->option_title}
-                {*<em>{currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}</em></strong>*}
                 <em>{$shipping->shippingmethod->shipping_cost|currency}</em></strong>
             {if $shipping->pricelist|@count >1}
                 {group label="Available Options"|gettext}

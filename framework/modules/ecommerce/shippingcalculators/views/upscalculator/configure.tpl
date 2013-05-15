@@ -51,7 +51,6 @@
 	        </div>
 	        <div id="tab3">
 	            {control type="text" name="shipfrom[name]" label="Company Name"|gettext value=$calculator->configdata.shipfrom.name}
-	            {*{control type="text" name="shipfrom[phone]" label="Phone Number"|gettext value=$calculator->configdata.shipfrom.phone}*}
                 {control type=tel name="shipfrom[phone]" label="Phone Number"|gettext value=$calculator->configdata.shipfrom.phone}
 	            {control type="text" name="shipfrom[address1]" label="Address"|gettext value=$calculator->configdata.shipfrom.address1 required=1}
 	            {control type="text" name="shipfrom[address2]" label=" " value=$calculator->configdata.shipfrom.address2}

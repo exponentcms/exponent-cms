@@ -18,10 +18,6 @@
 {group label="Global Override"|gettext}
     {control type="checkbox" name="use_global" label="Use the Global Store Settings instead?"|gettext value=1 checked=$config.use_global}
 {/group}
-{*{group label="Display"|gettext}*}
-    {*{control type="checkbox" name="show_cats" label="Show Categories on listing pages"|gettext value=1 checked=$config.show_cats|default:1}*}
-    {*{control type="checkbox" name="show_prods" label="Show Products on listing pages"|gettext value=1 checked=$config.show_prods|default:1}*}
-{*{/group}*}
 {group label='Product Display'|gettext}
     {control type="text" name="imagesperrow" label="Products per Row (also determines product width if not set below)"|gettext value=$config.imagesperrow|default:1}
     {control type="text" name="productheight" label="Product Height (0 will not set a height)"|gettext value=$config.productheight|default:200}

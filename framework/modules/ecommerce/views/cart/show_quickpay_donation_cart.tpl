@@ -33,7 +33,6 @@
                  {get_cart_summary item=$item}
             </td>
             <td class="prodrow price" id="price-{$item->id}">{$item->products_price*$item->quantity|currency}</td>
-            <!--<td class="prodrow price" id="price-{$item->id}">${$item->getTotal()|number_format:2}</td>-->
             <td class="prodrow">{icon img="../../../modules/ecommerce/assets/images/delete-from-cart.png" action=removeItem record=$item title="Remove from cart"|gettext onclick="return confirm('"|cat:("Are you sure you want to remove this item?"|gettext)|cat:"');"}</td>
         </tr>
     {/foreach}

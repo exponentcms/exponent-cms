@@ -71,7 +71,6 @@
                         {foreach from=$payment_summary key=key item=item}
                             <tr>
                                 <th>{$key}</th>
-                                {*<td>{currency_symbol}{$item|number_format:2}</td>*}
                                 <td>{$item|currency}</td>
                             </tr>
                         {/foreach}
@@ -114,7 +113,6 @@
             <tbody>                  
                 <tr>
                     <th>{$tax_type}</th>
-                    {*<td>{currency_symbol}{$tax_total|number_format:2}</td>*}
                     <td>{$tax_total|currency}</td>
                 </tr>
                 

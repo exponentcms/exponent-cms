@@ -58,7 +58,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
             node.simulate('click');
         }
     });
-    
 });
 {/literal}
 {/script}

@@ -62,7 +62,6 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
         window.location = EXPONENT.PATH_RELATIVE+"store/show/title/"+e.result.raw.sef_url;
         return e.result.raw.title;
     });
-    
 });
 
 {/literal}

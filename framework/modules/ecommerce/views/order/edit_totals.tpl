@@ -39,7 +39,6 @@
                 {control type=text name=surcharge_total label="Surcharge Total"|gettext value=$order->surcharge_total} </td><td>* {'Total of per-product shipping surcharges.'|gettext}
             </td></tr>
             <tr><td>
-
                 {'You may enter the grand total manually, or select the checkbox below to auto calculate the grand total based on the other fields.'|gettext}
                 {control type=text name=grand_total label="Grand Total"|gettext value=$order->grand_total}</td><td> * {'Grand total of the order'|gettext}
             </td></tr>

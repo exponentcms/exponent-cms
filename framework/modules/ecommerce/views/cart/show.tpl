@@ -35,7 +35,6 @@
                 {else}
                     <span class="total-label">{"Cart Items Total"|gettext}:</span>
                 {/if}
-				{*<span id="cart-total" class="carttotal">{currency_symbol}{$order->total|number_format:2}</span>*}
                 <span id="cart-total" class="carttotal">{$order->total|currency}</span>
 			</div>
 		</div>

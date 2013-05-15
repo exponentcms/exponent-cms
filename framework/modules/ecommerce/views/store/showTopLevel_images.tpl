@@ -122,7 +122,6 @@
         Y.all('select[name="sortme"]').on('change',function(e){
             window.location = e.target.get('value');
         });
-
     });
     {/literal}
     {/script}

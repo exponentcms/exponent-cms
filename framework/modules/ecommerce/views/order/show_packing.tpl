@@ -61,7 +61,6 @@
             <tbody>
                 <tr>
                     <td>
-                        {*{$storeConfig.storename}*}
                         {ecomconfig var=storename}
                     </td>
                     <td>
@@ -336,7 +335,6 @@
         </table>
     </div>
     <div id="store-footer">
-        {*{$storeConfig.ecomfooter}*}
         {ecomconfig var=ecomfooter}
     </div>
 </div>

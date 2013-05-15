@@ -56,27 +56,22 @@
                         {if $oi->product->model != ""}{$oi->product->model}{else}N/A{/if}
                     </td>
                     <td>{$oi->quantity}</td>
-                    {*<td>{currency_symbol}{$oi->products_price|number_format:2}</td>*}
                     <td>{$oi->products_price|currency}</td>
-                    {*<td>{currency_symbol}{$oi->getTotal()|number_format:2}</td>*}
                     <td>{$oi->getTotal()|currency}</td>
                 </tr>
             {/foreach}
             {if $show_totals == 1}
                 <tr>
                     <td colspan="4" class="totals top-brdr">{'Subtotal'|gettext}</td>
-                    {*<td class="top-brdr">{currency_symbol}{$order->subtotal|number_format:2}</td>*}
                     <td class="top-brdr">{$order->subtotal|currency}</td>
                 </tr>
                 {if $order->total_discounts > 0}
                     <tr>
                         <td colspan="4" class="totals">{'Discounts'|gettext}</td>
-                        {*<td align="right">{currency_symbol}-{$order->total_discounts|number_format:2}</td>*}
                         <td align="right">-{$order->total_discounts|currency}</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="totals">{'Total'|gettext}</td>
-                        {*<td align="right">{currency_symbol}{$order->total|number_format:2}</td>*}
                         <td align="right">{$order->total|currency}</td>
                     </tr>
                 {/if}
@@ -89,17 +84,14 @@
                             ({'Not Required'|gettext})
                         {/foreach}
                     </td>
-                    {*<td>{currency_symbol}{$order->tax|number_format:2}</td>*}
                     <td>{$order->tax|currency}</td>
                 </tr>
                 <tr>
                     <td colspan="4" class="totals">{'Shipping'|gettext}</td>
-                    {*<td>{currency_symbol}{$order->shipping_total|number_format:2}</td>*}
                     <td>{$order->shipping_total|currency}</td>
                 </tr>
                 <tr>
                     <td colspan="4" class="totals">{'Order Total'|gettext}</td>
-                    {*<td>{currency_symbol}{$order->grand_total|number_format:2}</td>*}
                     <td>{$order->grand_total|currency}</td>
                 </tr>
                 </tr>

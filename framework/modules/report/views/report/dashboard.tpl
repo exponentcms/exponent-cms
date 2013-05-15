@@ -58,7 +58,6 @@
                             <td>&#160;</td>
                             <td>{$order.num_orders}</td>
                             <td>{$order.num_items}</td>
-                            {*<td style="text-align:right;">${$order.grand_total|number_format:2}</td>*}
                             <td style="text-align:right;">{$order.grand_total|currency}</td>
                         </tr>
                         {foreach from=$order item=stat key=skey name=typeloop}

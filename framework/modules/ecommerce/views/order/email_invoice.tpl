@@ -43,8 +43,6 @@
             <tbody>
                 <tr>
                     <td style="border:1px solid #DEDEDE;">
-                        {*{$storeConfig.storename}*}
-                        {*{$storeConfig.ecomheader}*}
                         {ecomconfig var=storename}
                         {ecomconfig var=ecomheader}
                     </td>
@@ -323,7 +321,6 @@
         </table>
     </div>
     <div id="store-footer">
-        {*{$storeConfig.ecomfooter}*}
         {ecomconfig var=ecomfooter}
     </div>
 </div>

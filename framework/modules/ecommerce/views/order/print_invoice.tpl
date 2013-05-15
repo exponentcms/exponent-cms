@@ -86,7 +86,6 @@
                     <h2>{'Shipping Method'|gettext}</h2>
                     {if $order->shipping_required == true}
                         {if $order->shippingmethods|@count <= 1}
-                            {*{$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}*}
                             {$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {$shipping->shippingmethod->shipping_cost|currency}
                             <br><br><br><br>
                          {else}

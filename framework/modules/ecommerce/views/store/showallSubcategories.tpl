@@ -15,22 +15,22 @@
 
 <div class="module store showall-subcategories">
     {$depth=0}
-        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
-        {permissions}
-        <div class="module-actions">
-            {if $permissions.create == true || $permissions.edit == true}
-                {icon class="add" action=create text="Add a Product"|gettext}
-            {/if}
-            {if $permissions.manage == 1}
-                {icon action=manage text="Manage Products"|gettext}
-                {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
-            {/if}
-        </div>
-        {/permissions}
-        {if $config.moduledescription != ""}
-            {$config.moduledescription}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {permissions}
+    <div class="module-actions">
+        {if $permissions.create == true || $permissions.edit == true}
+            {icon class="add" action=create text="Add a Product"|gettext}
         {/if}
-        {$myloc=serialize($__loc)}
+        {if $permissions.manage == 1}
+            {icon action=manage text="Manage Products"|gettext}
+            {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
+        {/if}
+    </div>
+    {/permissions}
+    {if $config.moduledescription != ""}
+        {$config.moduledescription}
+    {/if}
+    {$myloc=serialize($__loc)}
 
     <div id="catnav">
         <ul>
