@@ -30,14 +30,14 @@ class storeController extends expController {
         'showallFeaturedProducts'         => 'Products - Only show Featured',
         'showallManufacturers'            => 'Products - By Manufacturer',
         'showTopLevel'                    => 'Categories - Show Top Level',
-        'showFullTree'                    => 'Categories - Show Full Tree',
+        'showFullTree'                    => 'Categories - Show Full Tree',  //FIXME image variant needs separate method
         'showallSubcategories'            => 'Categories - Subcategories of current category',
 //        'upcomingEvents'                  => 'Event Registration - Upcoming Events',
 //        'eventsCalendar'                  => 'Event Registration - Calendar View',
         'ecomSearch'                      => 'Search - Autocomplete',
-        'searchByModelForm'               => 'Search - By Model',
+        'searchByModelForm'               => 'Search - By Model',  //FIXME broken? doesn't work as initial view
         'quicklinks'                      => 'Links - Users Links',
-        'showallCategoryFeaturedProducts' => 'Show Featured Products under the current category',
+        'showallCategoryFeaturedProducts' => 'Show Featured Products under the current category',  //FIXME broken? doesn't work as initial view
         'showGiftCards'                   => 'Gift Cards UI',
     );
 
@@ -769,7 +769,7 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
         $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : expSession::get('last_ecomm_category');
         $category = new storeCategory($parent);
-        $categories = $category->getEcomSubcategories();
+        $categories = $category->getEcomSubcategories();  //FIXME returns a product count of 0
         $ancestors = $category->pathToNode();
         assign_to_template(array(
             'categories' => $categories,
@@ -892,7 +892,7 @@ class storeController extends expController {
         ));
     }
 
-    function showFullTree() {
+    function showFullTree() {  //FIXME we also need a showFullTree_images method like above
         $category = new storeCategory(null, false, false);
         //$categories = $category->getEcomSubcategories();
         $categories = $category->getFullTree();

@@ -56,7 +56,7 @@ class storeCategory extends expNestedNode {
           	$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$children[$i]->lft.' AND '.$children[$i]->rgt.")";
 
             //TODO: Category count update
-          	//$count = $db->selectObjectBySql($sql);
+          	//$count = $db->selectObjectBySql($sql);  //FIXME we need a count
           	$children[$i]->product_count = 0;//$count->count;
 		}
 
