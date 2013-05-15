@@ -652,7 +652,7 @@ class product extends expRecord {
     }
 
     /**
-     * FIXME this is a controller method never called in the model???
+     * Called when updating product
      * @return bool
      */
     public function addContentToSearch() {
@@ -664,9 +664,14 @@ class product extends expRecord {
         $exists = $db->selectObject('search', "category='Products' AND ref_module='store' AND original_id = " . $this->id);
 
         $search = new stdClass();
-        $search->category = 'Products';
-        $search->ref_module = 'store';
-        $search->ref_type = 'product';
+//        $search->category = 'Products';
+//        $search->ref_module = 'store';
+//        $search->ref_type = 'product';
+        $search->ref_module  = $this->classname;
+        $search->ref_type = $this->product_type;
+        $prod = new $search->ref_type();
+        $search->category = $prod->product_name;
+
         $search->original_id = $this->id;
         $search->title = $this->title . " SKU: " . $this->model;
         //$search->view_link = $router->buildUrlByPageId($section->id);
