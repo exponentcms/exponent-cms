@@ -481,6 +481,8 @@ class product extends expRecord {
 
     public function getForm($form) {
         $dirs = array(
+            BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/views/' . $this->product_type . '/', // make sure we check the controller view first
+            BASE . 'framework/modules/ecommerce/views/' . $this->product_type . '/',
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/' . $this->product_type . '/',
             BASE . 'framework/modules/ecommerce/products/views/' . $this->product_type . '/',
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/product/',
@@ -649,6 +651,10 @@ class product extends expRecord {
         }
     }
 
+    /**
+     * FIXME this is a controller method never called in the model???
+     * @return bool
+     */
     public function addContentToSearch() {
         global $db, $router;
 
@@ -664,7 +670,7 @@ class product extends expRecord {
         $search->original_id = $this->id;
         $search->title = $this->title . " SKU: " . $this->model;
         //$search->view_link = $router->buildUrlByPageId($section->id);
-        $link = $router->makeLink(array('controller' => 'store', 'action' => 'show', 'title' => $this->sef_url));
+        $link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => 'store', 'action' => 'show', 'title' => $this->sef_url)));
         $search->view_link = $link;
         $search->body = $this->body;
         $search->keywords = $this->keywords;

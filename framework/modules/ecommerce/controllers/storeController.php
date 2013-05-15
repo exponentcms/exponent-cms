@@ -916,13 +916,14 @@ class storeController extends expController {
 
     function addContentToSearch() {
         global $db, $router;
+
         $model = new $this->basemodel_name();
 
         $total = $db->countObjects($model->table);
 
-        $count = 1;
+        $count = 0;
         for ($i = 0; $i < $total; $i += 100) {
-            $orderby = 'id LIMIT ' . ($i + 1) . ', 100';
+            $orderby = 'id LIMIT ' . ($i) . ', 100';
             $content = $db->selectArrays($model->table, 'parent_id=0', $orderby);
 
             foreach ($content as $cnt) {
@@ -933,11 +934,14 @@ class storeController extends expController {
                 $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $prod->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $cnt['title'] . (!empty($cnt['model']) ? ' - SKU#: ' . $cnt['model'] : '');
                 $search_record = new search($cnt, false, false);
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-                $search_record->view_link = $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url']));
+                $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
 //                $search_record->ref_module = 'store';
                 $search_record->ref_module  = $this->baseclassname;
-                $search_record->category = 'Products';
-                $search_record->ref_type = $this->basemodel_name;
+//                $search_record->ref_type = $this->basemodel_name;
+                $search_record->ref_type = $cnt['product_type'];
+//                $search_record->category = 'Products';
+                $prod = new $search_record->ref_type();
+                $search_record->category = $prod->product_name;
 
                 $search_record->original_id = $origid;
                 //$search_record->location_data = serialize($this->loc);

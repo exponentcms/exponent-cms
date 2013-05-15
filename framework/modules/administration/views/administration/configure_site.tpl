@@ -341,7 +341,7 @@
                         <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a></li>
                         <ul>
                             <li>{'Most Payment Options need configuration which requires establishing an account with a payment service'|gettext}</li>
-                            <li>{'\'Cash/Check\' is the easiest to set up'|gettext}</li>
+                            <li>{'\'Bill Me\' is the easiest to set up'|gettext}</li>
                         </ul>
                         <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a></li>
                         <ul>

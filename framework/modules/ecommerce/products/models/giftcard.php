@@ -161,6 +161,8 @@ class giftcard extends expRecord {
 
     public function getForm($form) {
         $dirs = array(
+            BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/views/' . $this->product_type . '/', // make sure we check the controller view first
+            BASE . 'framework/modules/ecommerce/views/' . $this->product_type . '/',
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/' . $this->product_type . '/',
             BASE . 'framework/modules/ecommerce/products/views/' . $this->product_type . '/',
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/product/',
