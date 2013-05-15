@@ -57,7 +57,11 @@
                     <div class="events">
                         <div class="event-image">
                             <a href="{link action=show title=$item->sef_url}">
-                                {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                                {if $item->expFile.mainimage[0]->id != ""}
+                                    {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                                {else}
+                                    {img src="`$asset_path`images/no-image.jpg" w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                                {/if}
                             </a>
                         </div>
                         <div class="event-info">
