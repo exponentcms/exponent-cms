@@ -13,14 +13,16 @@
  *
  *}
 
-<h1>{'Editing Invoice Number'|gettext}</h1>
-<blockquote>
-    {'Invoice #\'s should be numeric and although you may select any number you\'d like, ideally it should fall in line with the current sequence of invoice #\'s.'|gettext}
-</blockquote>
-<div id="edit_shipping_method">
-    {form action=save_invoice_id}
-        {control type="hidden" name="id" value=$orderid}                     
-        {control type="text" name="invoice_id" label='Invoice #:'|gettext value=$invoice_id}
-        {control type="buttongroup" submit="Save Invoice Id"|gettext cancel="Cancel"|gettext}
-    {/form}
+<div class="module order edit">
+    <h1>{'Editing Invoice Number'|gettext}</h1>
+    <blockquote>
+        {'Invoice #\'s should be numeric and although you may select any number you\'d like, ideally it should fall in line with the current sequence of invoice #\'s.'|gettext}
+    </blockquote>
+    <div id="edit_shipping_method">
+        {form action=save_invoice_id}
+            {control type="hidden" name="id" value=$orderid}
+            {control type="text" name="invoice_id" label='Invoice #:'|gettext value=$invoice_id}
+            {control type="buttongroup" submit="Save Invoice Id"|gettext cancel="Cancel"|gettext}
+        {/form}
+    </div>
 </div>

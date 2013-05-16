@@ -227,6 +227,12 @@ class expUtil {
 		return $db->selectValue('sessionticket', 'referrer', "ticket='".$ticket."'" );
 	}
 
+    /*
+     * Converts a currency amount to the floating point value
+     */
+    public static function currency_to_float($amount) {
+        return preg_replace("/[^0-9.]/", "", $amount);
+    }
 }
 
 ?>

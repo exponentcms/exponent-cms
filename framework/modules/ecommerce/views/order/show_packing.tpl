@@ -83,7 +83,8 @@
                     <td>
                         {if $order->shipped}
                             {if $order->shipped}
-                                {if $order->shipped == -1}
+                                {*{if $order->shipped == -1}*}
+                                {if !$order->shipping_required}
                                     {'No Shipping Required'|gettext}
                                 {else}
                                     {$order->shipped|date_format:"%A, %B %e, %Y":"Not Shipped Yet"}

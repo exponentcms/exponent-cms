@@ -68,7 +68,7 @@
 #invoice .div-rows div span.pmt-label {
     display:inline-block;
     text-align:right;
-    width:50%;
+    /*width:50%;*/
     padding:5px;
     font-weight:bold;
     color:#555555;

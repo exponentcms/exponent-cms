@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="module address edit address-form">
+<div class="module order edit">
     <h1>{'Editing order totals'|gettext}</h1>
     
     {form action=save_order_item}

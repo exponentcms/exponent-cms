@@ -118,7 +118,7 @@ class donation extends product {
 //	    } else {
         $item = new orderitem($params);
         if (empty($params['dollar_amount'])) $params['dollar_amount'] = $this->price;
-        $item->products_price = preg_replace("/[^0-9.]/", "", $params['dollar_amount']);
+        $item->products_price = expUtil::currency_to_float($params['dollar_amount']);
 
         $product = new product($params['product_id']);
 //	        $item->products_name = $params['dollar_amount'].' '.$this->product_name.' to '.$product->title;

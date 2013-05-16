@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="module address edit address-form">
+<div class="module order address edit address-form">
     <h1>{'Editing address'|gettext}</h1>
     <blockquote>
         <em>{'Fields marked with an * are required.'|gettext}</em>

@@ -469,7 +469,7 @@ class eventregistration extends expRecord {
             if (empty($params['qtyr'])) {
                 $params['qtyr'] = 1;
             }
-            if (!empty($params['base_price'])) $item->products_price = preg_replace("/[^0-9.]/", "", $params['base_price']);
+            if (!empty($params['base_price'])) $item->products_price = expUtil::currency_to_float($params['base_price']);
             else $item->products_price = $product->base_price;
             $item->quantity = $params['qtyr'];
         }
