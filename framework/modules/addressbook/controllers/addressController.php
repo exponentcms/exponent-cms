@@ -23,7 +23,7 @@
 
 class addressController extends expController {
 	public $useractions = array(
-        'myaddressbook'=>'Show my addressbook'
+//        'myaddressbook'=>'Show my addressbook'
     );
     public $remove_permissions = array(
         'create',
