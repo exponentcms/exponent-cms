@@ -345,6 +345,13 @@ class cartController extends expController {
 
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
 
+        if (!$order->getDefaultOrderType()) {
+            flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Create a Default Order Type').' <a href="'.expCore::makeLink(array('controller'=>'order_type','action'=>'manage')).'">'.gt('Here').'</a>');
+        }
+        if (!$order->getDefaultOrderStatus()) {
+            flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Create a Default Order Status').' <a href="'.expCore::makeLink(array('controller'=>'order_status','action'=>'manage')).'">'.gt('Here').'</a>');
+        }
+
         $billing = new billing();
         //eDebug($billing,true);
         if (count($billing->available_calculators) < 1) {
