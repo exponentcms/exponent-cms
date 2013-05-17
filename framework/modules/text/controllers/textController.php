@@ -55,7 +55,7 @@ class textController extends expController {
         if (empty($settings->name)) $settings = new stdClass();
         if (empty($settings->data)) {
             $settings->data = "
-                ['Source','-','Preview','-','Templates'],
+                ['htmlsource','Source','-','Preview','-','Templates'],
                 ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
                 ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
                 ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],

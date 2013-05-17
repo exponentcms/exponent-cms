@@ -166,7 +166,7 @@
             filebrowserLinkWindowWidth : 320,
             filebrowserLinkWindowHeight : 600,
             filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'external/editors/connector/ckeditor_link.php',
-            extraPlugins : 'stylesheetparser,tableresize',
+            extraPlugins : 'stylesheetparser,tableresize,htmlsource',
             height : 200,
             autoGrow_minHeight : 200,
             autoGrow_maxHeight : 400,
