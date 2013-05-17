@@ -44,12 +44,46 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		$enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
 
 		echo "<!-- Form Object 'form' -->\r\n";
-		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/inputfilters.js.php"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/controls/listbuildercontrol.js"></script>'."\r\n";
-		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/subsystems/forms/js/required.js"></script>'."\r\n";
+		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/inputfilters.js.php"></script>'."\r\n";
+		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/controls/listbuildercontrol.js"></script>'."\r\n";
+		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
-		expCSS::pushToHead(array("corecss"=>"forms"));
+		
+		if(expSession::get('framework')!='bootstrap'){
+			expCSS::pushToHead(array("corecss"=>"forms"));
+		};
+        expJavascript::pushToFoot(array(
+            "unique"  => 'html5forms1',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/Modernizr-2.5.3.forms.js',
+            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
+        ));
+        expJavascript::pushToFoot(array(
+            "unique"  => 'html5forms2',
+            "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
+        ));
+        expJavascript::pushToFoot(array(
+            "unique"  => 'html5forms3',
+            "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
+        ));
+        expJavascript::pushToFoot(array(
+            "unique"  => 'html5forms4',
+            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+            "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
+        ));
+//        expCSS::pushToHead(array(
+//    	    "unique"=>"h5form",
+//    	    "link"=>PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.css'
+//    	    )
+//    	);
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'h5form',
+//            "jquery"=> 'jqueryui',
+//            "src"=> PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.js',
+//            "content"=>"$(function() {
+//              $('#abc123').h5form();
+//            });"
+//        ));
 
 		echo '<form id="'.$id.'" name="'.$name.'" class="'.$params['class'].'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {

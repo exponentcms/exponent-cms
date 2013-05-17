@@ -4,10 +4,14 @@
 	<?php 
     expTheme::head(array(
     	"xhtml"=>false,
-        "css_primer"=>array(YUI3_RELATIVE."cssreset/reset-min.css",
-            YUI3_RELATIVE."cssfonts/fonts-min.css",
-            YUI3_RELATIVE."cssgrids/grids-min.css"),
-    	"css_core"=>array("common"),
+        "css_primer"=>array(
+            YUI3_RELATIVE."cssreset/cssreset-min.css",
+            YUI3_RELATIVE."cssfonts/cssfonts-min.css",
+            YUI3_RELATIVE."cssgrids/cssgrids-min.css"
+        ),
+    	"css_core"=>array(
+            "common"
+        ),
     	"css_links"=>true,
     	"css_theme"=>true
         )

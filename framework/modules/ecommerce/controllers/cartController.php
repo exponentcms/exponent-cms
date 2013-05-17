@@ -70,7 +70,6 @@ class cartController extends expController {
                 }
                 if (isset($child)) $this->params['product_id'] = $child->parent_id;
             }
-
         }
 
         $product = new $product_type($this->params['product_id'], true, true); //need true here?
@@ -85,8 +84,10 @@ class cartController extends expController {
             }
         }
 
-        if ($product->product_type == "product" || $product->product_type == "childProduct" || $product->product_type == "donation") {
-
+        // should we through up a form to gather additional information before adding this item to the cart?
+//        if (($product->product_type == "product" || $product->product_type == "childProduct" || $product->product_type == "donation" || $product->product_type == "eventregistration") && empty($this->params['quick'])) {
+//        if ($product->product_type != "giftcard" && empty($this->params['quick'])) {
+        if (empty($this->params['quick'])) {
             if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown'] != $product->id)) {
 
                 // if we hit here it means this product type was missing some
@@ -109,22 +110,31 @@ class cartController extends expController {
         //eDebug($this->params, true);
         //$this->params['qty'] = 1; //REMOVE ME
         if ($product->addToCart($this->params)) {
-
-            if (empty($this->params['quick'])) {
-                //FIXME, why do we give them a link to the cart and also display it?
-                flash('message', gt("Added") . " " . $product->title . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
+            if (ecomconfig::getConfig('show_cart') || !empty($this->params['quick'])) {
+                global $order;
+//                $order->calculateGrandTotal();
+//                if (!$order->grand_total && !$order->shipping_required) {
+//                    redirect_to(array('controller'=>'cart', 'action'=>'quickConfirm'));
+//                } elseif (!$order->shipping_required) {
+//                    redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
+//                } else {
                 //expHistory::back();
                 //eDebug(show_msg_queue(false),true);
                 redirect_to(array('controller'=>'cart', 'action'=>'show'));
-//                $this->show();
                 //expHistory::lastNotEditable();
+//                }
             } else {
-                redirect_to(array('controller'=>'cart', 'action'=>'quickPay'));
-//                $this->quickPay();
+                if ($product->product_type == "donation") {
+                    $type = ' '.gt('Donation');
+                } elseif ($product->product_type == "eventregistration") {
+                    $type = ' '.gt('Event');
+                } else {
+                    $type = '';
+                }
+                flash('message', gt("Added") . " " . $product->title . $type . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
             }
-        } else {
-            //expHistory::back();
         }
+        expHistory::back();
     }
 
     function updateQuantity() {
@@ -142,8 +152,8 @@ class cartController extends expController {
                         $updates->message = 'Only ' . $item->product->quantity . ' ' . $item->products_name . ' are currently in stock. Shipping may be delayed on the other ' . $diff;
                     } elseif ($item->product->availability_type == 2) {
                         $updates->message    = $item->products_name . ' only has ' . $item->product->quantity . ' on hand. You can not add any more than that to your cart.';
-                        $updates->cart_total = '$' . number_format($order->getCartTotal(), 2);
-                        $updates->item_total = '$' . number_format($item->getTotal(), 2);
+                        $updates->cart_total = expCore::getCurrencySymbol() . number_format($order->getCartTotal(), 2);
+                        $updates->item_total = expCore::getCurrencySymbol() . number_format($item->getTotal(), 2);
                         $updates->item_id    = $id;
                         $updates->quantity   = $item->product->quantity;
                         echo json_encode($updates);
@@ -153,14 +163,14 @@ class cartController extends expController {
                 $item->quantity = $newqty;
                 $item->save();
                 $order->refresh();
-                $updates->cart_total = '$' . number_format($order->getCartTotal(), 2);
-                $updates->item_total = '$' . number_format($item->getTotal(), 2);
+                $updates->cart_total = expCore::getCurrencySymbol() . number_format($order->getCartTotal(), 2);
+                $updates->item_total = expCore::getCurrencySymbol() . number_format($item->getTotal(), 2);
                 $updates->item_id    = $id;
                 $updates->quantity   = $item->quantity;
                 echo json_encode($updates);
             }
         } else {
-
+            if (empty($this->params['quantity']) && !empty($this->params['qtyr'])) $this->params['quantity'] = $this->params['qtyr'];
             if (!is_numeric($this->params['quantity'])) {
                 flash('error', gt('Please enter a valid quantity.'));
                 expHistory::back();
@@ -311,15 +321,11 @@ class cartController extends expController {
         global $user, $order;
 
         if (empty($order)) {
-            flash('error', gt('There is an error with your shopping card.'));
+            flash('error', gt('There is an error with your shopping cart.'));
             expHistory::back();
         }
 
-        $cfg      = new stdClass();
-        $cfg->mod = "cart";
-        $cfg->src = "@globalcartsettings";
-        $cfg->int = "";
-        $config   = new expConfig($cfg);
+//        $config   = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 
         $order->calculateGrandTotal();
         $order->validateDiscounts(array('controller'=> 'cart', 'action'=> 'checkout'));
@@ -330,11 +336,21 @@ class cartController extends expController {
             expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), 'secure'),true);
         }
 
-        if ($order->total < intval($config->config['min_order'])) {
-            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is $") . number_format($config->config['min_order'], 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
+//        if ($order->total < intval($config->config['min_order'])) {
+//            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format($config->config['min_order'], 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
+//        }
+        if ($order->total < intval(ecomconfig::getConfig('min_order'))) {
+            flashAndFlow('error',gt("Note: Thank you for your decision to purchase. However, our minimum order for merchandise is ").expCore::getCurrencySymbol() . number_format(ecomconfig::getConfig('min_order'), 2, ".", ",") . ". ".gt("Please increase your quantity or continue shopping."));
         }
 
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
+
+        if (!$order->getDefaultOrderType()) {
+            flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Create a Default Order Type').' <a href="'.expCore::makeLink(array('controller'=>'order_type','action'=>'manage')).'">'.gt('Here').'</a>');
+        }
+        if (!$order->getDefaultOrderStatus()) {
+            flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Create a Default Order Status').' <a href="'.expCore::makeLink(array('controller'=>'order_status','action'=>'manage')).'">'.gt('Here').'</a>');
+        }
 
         $billing = new billing();
         //eDebug($billing,true);
@@ -405,7 +421,7 @@ class cartController extends expController {
         if ((!defined('ENABLE_SSL') || ENABLE_SSL==0) && (!defined('DISABLE_SSL_WARNING') || DISABLE_SSL_WARNING==0)) flash('error', gt('This page appears to be unsecured!  Personal information may become compromised!'));
 
         assign_to_template(array(
-            'cartConfig'          => $config->config,
+//            'cartConfig'          => $config->config,
             //'addresses_dd'=>$addresses_dd,
             //'addresses'=>$addresses,
             'shipping'            => $shipping,
@@ -430,6 +446,14 @@ class cartController extends expController {
         //eDebug($this->params,true);
         global $order, $user, $db;
 
+//        // check to see if this is a no cost/no shipping checkout
+//        if ($order->total == 0 && empty($order->shippingmethods) && $this->params['billingcalculator_id'] == 0) {
+//             // final the cart totals
+//            $order->calculateGrandTotal();
+//            $order->setOrderType($this->params);
+//            $order->setOrderStatus($this->params);
+//        } else {
+//
         //eDebug($_POST, true);
         // get the shipping and billing objects, these objects handle the setting up the billing/shipping methods
         // and their calculators
@@ -473,7 +497,7 @@ class cartController extends expController {
             }
         }
 
-        // if we encounterd any errors we will return to the checkout page and show the errors
+        // if we encountered any errors we will return to the checkout page and show the errors
         if (!expQueue::isQueueEmpty('error')) {
 //            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
             $this->checkout();
@@ -486,25 +510,36 @@ class cartController extends expController {
         //eDebug($order,true);
 
         // get the billing options..this is usually the credit card info entered by the user
-        $opts = $billing->calculator->userFormUpdate($this->params);
-        //$billing->calculator->preprocess($this->params);
+        if ($billing->calculator != null) {
+            $opts = $billing->calculator->userFormUpdate($this->params);
+            //$billing->calculator->preprocess($this->params);
+            //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
+            //eDebug($order->getDefaultOrderType(),true);
 
+            // call the billing method's preprocess in case it needs to prepare things.
+            // eDebug($billing);
+            $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
+        } else {  // no calculator, so we'll assume no cost checkout
+            if (substr($this->params['cash_amount'], 0, strlen(expCore::getCurrencySymbol())) == expCore::getCurrencySymbol()) {
+                $this->params['cash_amount'] = substr($this->params['cash_amount'], strlen(expCore::getCurrencySymbol()));
+            }
+            $opts = new stdClass();
+            $opts->cash_amount = $this->params["cash_amount"];
+
+            if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
+            $billing->billingmethod->update(array('billing_options' => serialize($opts)));
+        }
         //eDebug($opts);
         expSession::set('billing_options', $opts);
         //$o = expSession::get('billing_options');
         //eDebug($o,true);
         //eDebug($this->params,true);
 
-        //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
-        //eDebug($order->getDefaultOrderType(),true);
-
-        // call the billing method's preprocess in case it needs to prepare things.
-        // eDebug($billing);
-        $result = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order);
-
         // once in a while it appears the payment processor will return a nullo value in the errorCode field
         // which the previous check takes as a TRUE, as 0, null, and empty will all equate out the same using the ==
         // adding the === will specifically test for a 0 and only a 0, which is what we want
+
+//        }
 
         if (empty($result->errorCode)) {  //if ($result->errorCode === "0" || $result->errorCode === 0)
 //			redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
@@ -513,7 +548,6 @@ class cartController extends expController {
             flash('error', gt('An error was encountered while processing your transaction.') . '<br /><br />' . $result->message);
             expHistory::back();
         }
-
     }
 
     public function confirm() {
@@ -525,19 +559,32 @@ class cartController extends expController {
         $order->calculateGrandTotal();
 
         //eDebug($order);
-        // get the shippnig and billing objects, these objects handle the setting up the billing/shipping methods
+        // get the shipping and billing objects, these objects handle the setting up the billing/shipping methods
         // and their calculators
         $shipping = new shipping();
         $billing  = new billing();
 
         $opts = expSession::get('billing_options');
         //eDebug($opts,true);
+        if ($billing->calculator != null) {
+            $view_opts = $billing->calculator->userView($opts);
+        } else {
+            if (empty($opts)) {
+                $view_opts = false;
+            } else {
+                $billinginfo = gt("No Cost");
+                if (!empty($opts->payment_due)) {
+                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+                }
+                $view_opts = $billinginfo;
+            }
+        }
         assign_to_template(array(
             'shipping'   => $shipping,
             'billing'    => $billing,
             'order'      => $order,
             'total'      => $order->total,
-            'billinginfo'=> $billing->calculator->userView($opts),
+            'billinginfo'=> $view_opts,
         ));
     }
 
@@ -569,7 +616,29 @@ class cartController extends expController {
         //eDebug($order,true);
         $invNum = $order->getInvoiceNumber();
         // call the billing calculators process method - this will handle saving the billing options to the database.
-        $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
+//        if (!($order->total == 0 && empty($order->shippingmethods))) {
+        if ($billing->calculator != null) {
+            $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
+        } else {
+            $opts = expSession::get('billing_options');
+            $object = new stdClass();
+            $object->errorCode = $opts->result->errorCode = 0;
+            $opts->result->payment_status = gt("complete");
+            if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
+            $billing->billingmethod->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result->payment_status));
+//            $this->createBillingTransaction($billing->billingmethod, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
+            $amount = number_format($order->grand_total, 2, '.', '');
+            $bt = new billingtransaction();
+            $bt->billingmethods_id = $billing->billingmethod->id;
+            $bt->billingcalculator_id = $billing->billingmethod->billingcalculator_id;
+            $bt->billing_cost = $amount;
+            $bt->billing_options  = serialize($opts->result);
+            $bt->extra_data = '';
+            $bt->transaction_state = $opts->result->payment_status;
+            $bt->save();
+            $result = $opts;
+        }
+//        }
 
         if (empty($result->errorCode)) {
             // if ($result->errorCode === "0" || $result->errorCode === 0)
@@ -583,6 +652,9 @@ class cartController extends expController {
 
             // get the first order status and set it for this order
             $order->update(array('invoice_id'=> $invNum, 'purchased'=> time(), 'updated'=> time(), 'comment'=> serialize($comment))); //FIXME $comment doesn't exist
+            if (!$order->shipping_required) {
+                $order->update(array('shipped'=> -1));
+            }
             //$order->setDefaultStatus(); --FJD?
             //$order->setDefaultOrderType(); --FJD?
             $order->refresh();
@@ -593,7 +665,9 @@ class cartController extends expController {
                 $product->process($item, $order->order_type->affects_inventory);
             }
 
-            $billing->calculator->postProcess($order, $this->params);
+            if ($billing->calculator != null) {
+                $billing->calculator->postProcess($order, $this->params);
+            }
             orderController::clearCartCookie();
         } else {
             flash('error', gt('An error was encountered while processing your transaction.') . '<br /><br />' . $result->message);
@@ -602,12 +676,23 @@ class cartController extends expController {
             //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
         }
 
-        $billinginfo = $billing->calculator->userView(unserialize($billing->billingmethod->billing_options));
+        if ($billing->calculator != null) {
+            $billinginfo = $billing->calculator->userView(unserialize($billing->billingmethod->billing_options));
+        } else {
+            if (empty($opts)) {
+                $billinginfo = false;
+            } else {
+                $billinginfo = gt("No Cost");
+                if (!empty($opts->payment_due)) {
+                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+                }
+            }
+        }
 
         if (!DEVELOPMENT) {
             // send email invoices to the admins & users if needed
             if ($order->order_type->emails_customer) $invoice = renderAction(array('controller'=> 'order', 'action'=> 'email', 'id'=> $order->id));
-        } else {
+        } elseif ($user->isAdmin()) {
             flash('message', gt('Development on, skipping email sending.'));
         }
         expSession::un_set('record');
@@ -647,6 +732,28 @@ class cartController extends expController {
             assign_to_template(array(
                 'shipping'=> $shipping
             ));
+        }
+
+        assign_to_template(array(
+            'product'=> $product,
+            'user'   => $user,
+            'order'  => $order
+        ));
+    }
+
+    function quickConfirm() {
+        global $order, $user;
+
+        if ($order->shipping_required || $order->grand_total) redirect_to(array('controller'=> 'cart', 'action'=> 'checkout'),true);
+        if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
+
+        // if we made it here it means that the item was add to the cart.
+        expHistory::set('viewable', $this->params);
+
+        // call each products checkout() callback & calculate total
+        foreach ($order->orderitem as $item) {
+            $product = new $item->product_type($item->product_id);
+            $product->checkout();
         }
 
         assign_to_template(array(

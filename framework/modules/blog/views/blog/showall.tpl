@@ -13,9 +13,16 @@
  *
  *}
 
+{uniqueid prepend="blog" assign="name"}
+
 {css unique="blog" link="`$asset_path`css/blog.css"}
 
 {/css}
+{if $config.usecategories}
+{css unique="categories" corecss="categories"}
+
+{/css}
+{/if}
 
 <div class="module blog showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
@@ -30,6 +37,9 @@
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='blog' text="Manage Tags"|gettext}
                 {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='blog' text="Manage Categories"|gettext}
+                {/if}
             {/if}
 		</div>
     {/permissions}
@@ -37,16 +47,16 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    <div id="bloglist">
+    <div id="{$name}list">
         {include 'bloglist.tpl'}
     </div>
 </div>
 
-{script unique="bloglistajax" yui3mods="1"}
+{if $config.ajax_paging}
+{script unique="`$name`listajax" yui3mods="1"}
 {literal}
-
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var bloglist = Y.one('#bloglist');
+    var bloglist = Y.one('#{/literal}{$name}{literal}list');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Blogitems'},
@@ -77,7 +87,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#bloglist.loadingdiv').remove();
+            bloglist.one('.loadingdiv').remove();
         }
 	};
 
@@ -99,3 +109,4 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 });
 {/literal}
 {/script}
+{/if}

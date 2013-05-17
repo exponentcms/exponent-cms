@@ -15,8 +15,6 @@
 
 <div class="module user manage-user-password">
     <h1>{'Change Password for'|gettext} {$u->username}</h1>
-    <p></p>
-    
     {form action=update_userpassword}
         {control type="hidden" name="id" value=$u->id}
         {control type="password" name="new_password1" label="Type New Password"|gettext}

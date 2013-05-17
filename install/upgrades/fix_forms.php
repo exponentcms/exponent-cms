@@ -26,7 +26,7 @@
  */
 class fix_forms extends upgradescript {
 	protected $from_version = '2.1.1';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.1.2';  // formsController default action name was changed in 2.1.2
+	protected $to_version = '2.2.0';  // formsController default action name was changed in 2.1.2/2.2.0alpha2
 
 	/**
 	 * name/title of upgrade script

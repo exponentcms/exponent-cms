@@ -35,6 +35,9 @@
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
                     {/if}
+                    {if $config.usecategories}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                    {/if}
                     {if $config.enable_ealerts}
                    	    {control type="checkbox" name="send_ealerts" label="Send E-Alert?"|gettext value=1}
                    	{/if}
@@ -55,6 +58,7 @@
                 <div id="tab4">
                     <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                    {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical}
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
                     {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
                     {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}

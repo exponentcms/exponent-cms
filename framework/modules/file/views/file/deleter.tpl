@@ -34,7 +34,7 @@
 		<div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Deleting Files"|gettext) module="delete-files"}
 		</div>
-        <p>{"Select the following non-existent files to remove them from the File Manager."|gettext}</p>
+        <blockquote>{"Select the following non-existent files to remove them from the File Manager."|gettext}</blockquote>
 	</div>
     {messagequeue}
 

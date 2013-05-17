@@ -76,7 +76,7 @@
                             {/foreach}
                             </ul>
                         {else}
-                            {$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}
+                            {$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {$shipping->shippingmethod->shipping_cost|currency}
                         {/if}
                     {else}
                         {'No shipping required for this order.'|gettext}
@@ -95,7 +95,7 @@
 	<ul>
         {foreach from=$order->orderitem item=oi}
             <li>
-                <a href="{link action=show controller=store title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} at ${$oi->products_price|number_format:2} each
+                <a href="{link action=show controller=store title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} at {$oi->products_price|currency} each
                 {$oi->getExtraData()}
             </li>
         {/foreach}

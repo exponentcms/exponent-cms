@@ -111,7 +111,6 @@
             </div>
             <div id="shipinfo">
                 <h2>{"Shipping and Tracking"|gettext}</h2>
-                
                  <table class="order-info">
                     <thead>
                         <tr>
@@ -121,12 +120,16 @@
                     <tbody>                         
                     {if $permissions.manage == 1}
                         <tr><td colspan="2">
-                        {form action=update_shipping}
-                            {control type="hidden" name="id" value=$order->id}
-                            {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
-                            {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped"|gettext value=$order->shipped}
-                            {control type="buttongroup" submit="Save Shipping Info"|gettext}
-                        {/form}
+                        {if $order->shipped == -1}
+                            {'No Shipping Required'|gettext}
+                        {else}
+                            {form action=update_shipping}
+                                {control type="hidden" name="id" value=$order->id}
+                                {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
+                                {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped"|gettext value=$order->shipped}
+                                {control type="buttongroup" submit="Save Shipping Info"|gettext}
+                            {/form}
+                        {/if}
                         </td>
                         </tr>
                     {else}
@@ -134,7 +137,12 @@
                             {'Tracking #'|gettext}:</td><td>{$order->shipping_tracking_number}{br}
                         </td></tr> 
                         <tr><td> 
-                            {'Date Shipped'|gettext}:</td><td>{if $order->shipped != 0}{$order->shipped|format_date}{else}{'This order has not been shipped yet'|gettext}{/if}
+                            {'Date Shipped'|gettext}:</td><td>
+                            {if $order->shipped != 0}
+                                {$order->shipped|format_date}
+                            {else}
+                                {'This order has not been shipped yet'|gettext}
+                            {/if}
                         </td></tr>
                     {/if}
                  </table>
@@ -151,11 +159,11 @@
                     </thead>
                     <tbody>     
                     <tr>
-                        <td>{'Ref #:'|gettext} {$bt->getRefNum()}
+                        <td>{'Ref #:'|gettext} {if $billing->calculator != null}{$bt->getRefNum()}{/if}
                         </td>
                     </tr> 
                     <tr>
-                        <td>{'Amount:'|gettext} {currency_symbol}{$bt->billing_cost|number_format:2}
+                        <td>{'Amount:'|gettext} {$bt->billing_cost|currency}
                         </td>
                     </tr>
                     {if $permissions.manage == 1}
@@ -183,7 +191,7 @@
                                 {/if}
                             {/if}                            
                             {if $bt->transaction_state == "complete"}
-                                {if $bt->creditEnabled() == true}
+                                {if $billing->calculator != null && $bt->creditEnabled() == true}
                                     {form action=creditTransaction}
                                         {control type="hidden" name="id" value=$order->id}
                                         {control type="text" name="capture_amt" label="Amount to Refund"|gettext value=$order->grand_total}
@@ -193,10 +201,8 @@
                             {/if}
                             </td>
                         </tr>
-                        
                     {/if}
-                    
-                    </tbody>  
+                    </tbody>
                     </table>
                 {/foreach}
             </div>

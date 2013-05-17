@@ -3,7 +3,7 @@
 /*}*/
 
 .required .label {
-    display : none;
+    /*display : none;*/
 }
 
 .state_field .label {
@@ -62,6 +62,10 @@ showall_headlines view
 show view
 */
 
+.showall .date.past {
+    text-decoration: line-through;
+}
+
 .seatsContainer {
     background: none repeat scroll 0 0 #EBD98E;
     border-bottom: 1px solid #CEBB6C;
@@ -69,7 +73,7 @@ show view
 	padding-right: 5px;
     height: 80px;
     /*margin-bottom: 20px;*/
-    width: 360px;
+    width: 100%;
 }
 .seatStatus {
     clear: left;
@@ -78,7 +82,7 @@ show view
     line-height: 43px;
     padding: 10px;
     text-align: left;
-    width: 220px;
+    width: 60%;
     display: inline;
 }
 .seatAmount {
@@ -87,12 +91,32 @@ show view
     float: right;
     height: 60px;
     padding: 5px;
-    width: 100px;
+    width: 25%;
 }
 .seatCost {
     color: #CC0000;
     font-size: large;
     font-weight: bold;
+}
+
+.product .prod-price {
+    text-align: center;
+}
+
+.product .prod-price .regular-price {
+    color:#395203;
+}
+
+.product .prod-price .regular-price.on-sale {
+    text-decoration: line-through;
+    color:#999;
+    font-size:90%;
+    font-weight:normal;
+}
+
+.product .prod-price .sale-price {
+    color:#f00;
+	vertical-align: sub;
 }
 
 #eventregform .text-control p.helper {
@@ -102,7 +126,7 @@ show view
 }
 
 #eventregform .control .text {
-    width : 230px;
+    /*width : 230px;*/
 }
 
 #eventregform .text-control p.helper span {
@@ -117,16 +141,20 @@ show view
 }
 
 #eventregform .checkbox  label {
-    padding-top : 10px;
+    /*padding-top : 10px;*/
 }
 
 #eventregform .label {
-    display       : block;
-    display: inline;
+    /*display       : block;*/
+    /*display: inline;*/
     font-size     : 114%;
     font-weight   : bold;
     margin-bottom : 4px;
     margin-right  : 5px;
+}
+
+#eventregform .seatStatus .label {
+    display: inline;
 }
 
 #eventregform .p_addElement {
@@ -136,6 +164,7 @@ show view
 #eventregform .terms_and_conditions #terms_and_conditionControl {
     width  : 270px;
     margin : auto;
+	display: inline;
 }
 
 .more-text {

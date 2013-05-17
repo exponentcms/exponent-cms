@@ -19,8 +19,8 @@
 
 <div class="module navigation manager-standalone">
 	<div class="form_header">
-		<p>{'Standalone pages do not appear in the site hierarchy, but still have their own content and act just like other pages.'|gettext}</p>
-		<a class="add" href="{link action=edit_contentpage parent=-1}">{'Create a New Standalone Page'|gettext}</a>
+		<blockquote>{'Standalone pages do not appear in the site hierarchy, but still have their own content and act just like other pages.'|gettext}</blockquote>
+		{icon class="add" action=edit_contentpage parent=-1 text='Create a New Standalone Page'|gettext}
 	</div>
 
     {form action=delete_standalones}

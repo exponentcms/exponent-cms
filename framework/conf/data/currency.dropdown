@@ -1,0 +1,31 @@
+# Currency Drop Down File
+#
+# Comments start with a '#' sign,
+# and must be the only thing on the line.
+#
+# Each entry in this file consists of two lines - the
+#   first line is the 3-letter currency code and
+#   the second is the currency symbol.
+#
+# If you add entries to this file, I ask that you let me
+# know, through our Sourceforge page. If you want or need
+# a mode that isn't listed here, and you tell me, I
+# will put it in the standard distribution.
+
+USD
+	US Dollars
+ 
+CAD
+	Canadian Dollars
+ 
+AUD
+	Australian Dollars
+ 
+EUR
+	Euro
+ 
+GBP
+	Great Britain Pounds
+	
+JPY
+	Japanese Yen

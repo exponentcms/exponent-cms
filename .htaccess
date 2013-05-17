@@ -34,6 +34,6 @@ DirectoryIndex index.php
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [QSA,L]
 
-    RewriteRule ^login.php$ login/showlogin
+    # RewriteRule ^login.php$ login/showlogin
 
 </IfModule>

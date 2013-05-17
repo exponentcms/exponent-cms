@@ -26,8 +26,8 @@
  */
 class remove_headlinecontroller extends upgradescript {
 	protected $from_version = '0.0.0';
-//	protected $to_version = '2.1.2';
-    public $optional = true;
+	protected $to_version = '2.2.0';  // headline controller fully deprecated in v2.2.0
+//    public $optional = true;
 
 	/**
 	 * name/title of upgrade script
@@ -39,7 +39,7 @@ class remove_headlinecontroller extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "The Headline Controller has been replaced by the Text Controller.  This Script converts Headline modules to Text modules and then deletes the Headline module files"; }
+	function description() { return "The Headline Controller has been replaced by the Text Controller.  This Script converts Headline modules to Text modules and then deletes the Headline module files."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
@@ -59,30 +59,30 @@ class remove_headlinecontroller extends upgradescript {
 	    global $db;
 
 		// convert each headline module reference to a text module reference
-	    $srs = $db->selectObjects('sectionref',"module = 'headlineController'");
+	    $srs = $db->selectObjects('sectionref',"module = 'headline'");
 	    foreach ($srs as $sr) {
-		    $sr->module = 'textController';
+		    $sr->module = 'text';
 		    $db->updateObject($sr,'sectionref');
 	    }
-	    $gps = $db->selectObjects('grouppermission',"module = 'headlineController'");
+	    $gps = $db->selectObjects('grouppermission',"module = 'headline'");
         foreach ($gps as $gp) {
-	        $gp->module = 'textController';
-	        $db->updateObject($gp,'grouppermission',"module = 'headlineController' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
+	        $gp->module = 'text';
+	        $db->updateObject($gp,'grouppermission',"module = 'headline' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
-        $ups = $db->selectObjects('userpermission',"module = 'headlineController'");
+        $ups = $db->selectObjects('userpermission',"module = 'headline'");
         foreach ($ups as $up) {
-            $up->module = 'textController';
-            $db->updateObject($up,'userpermission',"module = 'headlineController' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
+            $up->module = 'text';
+            $db->updateObject($up,'userpermission',"module = 'headline' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
 		// convert each headline module to a text module
 	    $modules_converted = 0;
-	    $cns = $db->selectObjects('container',"internal LIKE '%headlineController%'");
+	    $cns = $db->selectObjects('container',"internal LIKE '%headline%'");
 	    foreach ($cns as $cn) {
 		    $cloc = expUnserialize($cn->internal);
-	        $cloc->mod = 'textController';
+	        $cloc->mod = 'text';
 		    $cn->internal = serialize($cloc);
-		    $cn->view = 'showall';
+		    $cn->view = 'showall_headline';
 		    $cn->action = 'showall';
 	        $db->updateObject($cn,'container');
 	        $modules_converted += 1;

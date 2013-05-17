@@ -18,16 +18,16 @@
 {/css}
 
 <div class="module store quick-links">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
     {if $user->id != '' && $user->id != 0}
-        <strong class="attribution">Welcome {attribution user=$user display=firstlast}</strong>
+        <strong class="attribution">{'Welcome'|gettext} {attribution user=$user display=firstlast}</strong>
     {/if}
     <ul>
-        <li><a class="viewcart" href="{link controller=cart action=show}" rel="nofollow">{'View My Cart'|gettext}</a></li>
-        {if $itemcount > 0}
+        <li><a class="viewcart" href="{link controller=cart action=show}" rel="nofollow">{'View My Cart'|gettext} ({if $oicount}{$oicount} {'item'|plural:$oicount}{else}{'Empty'|gettext}{/if})</a></li>
+        {if $oicount > 0}
             <li>
                 <a class="checkoutnow" href="{securelink controller=cart action=checkout}" rel="nofollow">{'Checkout Now'|gettext}</a>
             </li>

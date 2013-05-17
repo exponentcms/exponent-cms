@@ -105,7 +105,7 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "filedisplay-types":
                 $control                = new dropdowncontrol();
-                $control->include_blank = gt('-- This modules does not use files --');
+                $control->include_blank = gt('-- This module does not use files --');
                 $control->items         = get_filedisplay_views();
                 break;
             case "dropdown":
@@ -184,11 +184,6 @@ function smarty_function_control($params, &$smarty) {
                 $control            = new radiocontrol();
                 if (!empty($params['value'])) $control->value = $params['value'];
                 $control->newschool = true;
-                break;
-            case "text":
-                $control       = new genericcontrol($params['type']);
-                $control->size = !empty($params['size']) ? $params['size'] : "40";
-                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
                 break;
             case "textarea":
                 $control = new texteditorcontrol();
@@ -335,7 +330,7 @@ function smarty_function_control($params, &$smarty) {
                     } else {
                         // include the library and show the form control
                         require_once(BASE . 'external/recaptchalib.php');
-                        echo recaptcha_get_html(RECAPTCHA_PUB_KEY, $error);
+                        echo recaptcha_get_html(RECAPTCHA_PUB_KEY);
                         echo '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
                     }
                     return;
@@ -363,8 +358,20 @@ function smarty_function_control($params, &$smarty) {
                 if (!empty($params['var'])) $control->type = 1;
                 if (!empty($params['default'])) $control->default = $params['default'];
                 break;
+            case "text":
+            case "search":
+            case "email":
+            case "url":
+            case "tel":
+            case "telephone":
+            case "number":
+            case "range":
             default:
-                $control = new genericcontrol($params['type']);
+                $control       = new genericcontrol($params['type']);
+                $control->size = !empty($params['size']) ? $params['size'] : "40";
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
+                $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
+                $control->prepend = !empty($params['prepend']) ? $params['prepend'] : "";
                 break;
         }
 
@@ -421,7 +428,7 @@ function smarty_function_control($params, &$smarty) {
         } elseif (isset($params['value'])) {
             // if this field is filtered than lets go ahead and format the data before we stick it in the field.
             if (!empty($params['filter']) && $params['filter'] == 'money') {
-                $params['value'] = expCore::getCurrencySymbol('USD') . number_format($params['value'], 2, '.', ',');
+                $params['value'] = expCore::getCurrencySymbol() . number_format($params['value'], 2, '.', ',');
             } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
                 $params['value'] = number_format($params['value'], 0, '.', ',');
             }
@@ -448,6 +455,9 @@ function smarty_function_control($params, &$smarty) {
         if (isset($params['default_hour'])) $control->default_hour = $params['default_hour'];
         if (isset($params['default_min'])) $control->default_min = $params['default_min'];
         if (isset($params['default_ampm'])) $control->default_ampm = $params['default_ampm'];
+        if (isset($params['min'])) $control->min = $params['min'];
+        if (isset($params['max'])) $control->max = $params['max'];
+        if (isset($params['step'])) $control->step = $params['step'];
 
         $params['name'] = !empty($params['name']) ? $params['name'] : '';
         $control->name  = $params['name'];

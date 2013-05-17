@@ -15,11 +15,11 @@
 
 <div class="module help manage">
     <h1>{'Manage Help Documents'|gettext}</h1>
-    <p>
+    <blockquote>
         {'This page allows you to manage help documents for Exponent CMS'|gettext}.
         {br}
         <em>{'The current version is'|gettext} {$current_version->version}</em>
-    </p>
+    </blockquote>
     
     {icon class=add action=edit_version text="Add a New Help Version"|gettext}{br}
     {icon class=add action=edit text="Add a New Help Document"|gettext}{br}

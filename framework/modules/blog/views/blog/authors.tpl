@@ -21,7 +21,7 @@
     <ul>
         {foreach from=$authors item=author}
             <li>
-                <a href="{link action=showall_by_author author=$author->username}">{$author->firstname} {$author->lastname} ({$author->count})</a>
+                <a href="{link action=showall_by_author author=$author->username}" title='{"View all posts by"|gettext} {$author->firstname} {$author->lastname}'>{$author->firstname} {$author->lastname} ({$author->count})</a>
             </li>
         {/foreach}
     </ul>

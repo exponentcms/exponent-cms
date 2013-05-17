@@ -44,5 +44,5 @@
         </tbody>
 	</table>
 	{br}
-	<a href={link controller=store action=cleanNonUnicodeProducts} onclick="return confirm('{"Are you sure you want to clean all of the products shown above?"|gettext}');">{'Clean Data'|gettext}</a>
+	<a href="{link controller=store action=cleanNonUnicodeProducts}" onclick="return confirm('{"Are you sure you want to clean all of the products shown above?"|gettext}');">{'Clean Data'|gettext}</a>
 </div>

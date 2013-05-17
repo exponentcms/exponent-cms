@@ -55,11 +55,11 @@
         {*{toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}*}
         {toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$summary}
             <div class="bodycopy">
-                {if $config.filedisplay != "Downloadable Files"}
+                {if $config.ffloat != "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
                 {/if}
                 {$text->body}
-                {if $config.filedisplay == "Downloadable Files"}
+                {if $config.ffloat == "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
                 {/if}
             </div>

@@ -34,7 +34,7 @@
 		<div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Adding Files"|gettext) module="add-files"}
 		</div>
-        <p>{"Select the following files found on the server to add them to the File Manager."|gettext}</p>
+        <blockquote>{"Select the following files found on the server to add them to the File Manager."|gettext}</blockquote>
 	</div>
     {messagequeue}
 

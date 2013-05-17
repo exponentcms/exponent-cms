@@ -40,7 +40,7 @@ if (isset($_REQUEST['upgrade'])) {
     }
 ?>
     <p><?php echo gt('Log back in to start using the new enhancements!'); ?></p>
-<!--    <a class="awesome large green" href="--><?php //echo PATH_RELATIVE; ?><!--login.php">--><?php //echo gt("Log In Screen"); ?><!--</a>-->
+    <a class="awesome large green" href="<?php echo expCore::makeLink(array("controller"=>"login","action"=>"showlogin")); ?>"><?php echo gt("Log In Screen"); ?></a>
     <a class="awesome large green" href="<?php echo expCore::makeLink(array("controller"=>"login","action"=>"showlogin")); ?>"><?php echo gt("Log In Screen"); ?></a>
 <?php
 
@@ -51,19 +51,14 @@ if (isset($_REQUEST['upgrade'])) {
         if ($leaveinstaller) { 
             if ($user->is_system_user) {
                 switch ($_POST['next']) {
-                    case 'migration':
-                        if (SEF_URLS) {
-                    	    header('Location: '.URL_FULL."migration/configure/");
-                        } else {
-                    	    header('Location: '.URL_FULL."index.php?controller=migration&action=configure");
-                        }
-                        break;
                     case 'configsite':
-                        if (SEF_URLS) {
-                    	    header('Location: '.URL_FULL."administration/configure_site/");
-                        } else {
-                    	    header('Location: '.URL_FULL."index.php?controller=administration&action=configure_site");
-                        }
+                        header('Location: '. expCore::makeLink(array("controller"=>"administration","action"=>"configure_site")));
+                        break;
+                    case 'importeql':
+                        header('Location: '. expCore::makeLink(array("controller"=>"file","action"=>"import_eql")));
+                        break;
+                    case 'migration':
+                        header('Location: '. expCore::makeLink(array("controller"=>"migration","action"=>"configure")));
                         break;
                     default:
                     	    header('Location: '.URL_FULL);
@@ -92,16 +87,20 @@ if (isset($_REQUEST['upgrade'])) {
         <div class="formcontrol radiogroup">
             <span class="label"><?php echo gt('And'); ?>:</span>
             <div class="formcontrol radiobutton">
-                <input type="radio" id="radiocontrol-1" class="radiobutton" value="migration" name="next">
-				<label for="radiocontrol-1"><?php echo gt("I want to transfer an existing Exponent v0.9x site"); ?></label>
+                <input type="radio" id="radiocontrol-1" class="radiobutton" value="configsite" name="next">
+				<label for="radiocontrol-1"><?php echo gt("I want to configure my new site"); ?></label>
             </div>
             <div class="formcontrol radiobutton">
-                <input type="radio" id="radiocontrol-2" class="radiobutton" value="configsite" name="next">
-				<label for="radiocontrol-2"><?php echo gt("I want to configure my new site"); ?></label>
+                <input type="radio" id="radiocontrol-2" class="radiobutton" value="importeql" name="next">
+				<label for="radiocontrol-2"><?php echo gt("I want to import a saved database (eql) file"); ?></label>
             </div>
             <div class="formcontrol radiobutton">
-                <input type="radio" id="radiocontrol-3" class="radiobutton" value="homepage" name="next">
-				<label for="radiocontrol-3"><?php echo gt("Just take me to my home page"); ?></label>
+                <input type="radio" id="radiocontrol-3" class="radiobutton" value="migration" name="next">
+				<label for="radiocontrol-3"><?php echo gt("I want to transfer an existing Exponent v0.9x site"); ?></label>
+            </div>
+            <div class="formcontrol radiobutton">
+                <input type="radio" id="radiocontrol-4" class="radiobutton" value="homepage" name="next">
+				<label for="radiocontrol-4"><?php echo gt("Just take me to my home page"); ?></label>
             </div>
         </div>
 		<div class="control buttongroup">

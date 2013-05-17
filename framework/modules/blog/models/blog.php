@@ -24,6 +24,7 @@
 class blog extends expRecord {
 
     protected $attachable_item_types = array(
+        'content_expCats'=>'expCat',
         'content_expFiles'=>'expFile',
         'content_expTags'=>'expTag',
         'content_expComments'=>'expComment'
@@ -32,7 +33,7 @@ class blog extends expRecord {
     public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'Title is a required field.'),
-            'body'=>array('message'=>'Body is a required field.'),
+            'body'=>array('message'=>'Post Content is a required field.'),
         )
     );
 

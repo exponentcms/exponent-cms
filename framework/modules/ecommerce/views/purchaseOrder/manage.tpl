@@ -21,11 +21,6 @@
 
     <h1>{"Viewing Purchase Order"|gettext}</h1>
 
-    <div class="module-actions">
-        {icon action=create class=add text="Create new Purchase Order"|gettext}  |  
-        {icon action=manage_vendors class=manage text="Manage Vendors"|gettext}  |
-        {icon action=edit_vendor class=add text="Add a new vendor"|gettext}
-    </div>
 	<!--
     <div class="filters">
         {control type="text" name="dynamicfilter" id="dynamicfilter" label="Filter By Order ID"|gettext}
@@ -35,6 +30,10 @@
     </div>
 	-->
 	<div class="leftcol">
+        <div class="module-actions">
+            {icon action=manage_vendors class=manage text="Manage Vendors"|gettext}
+            {icon action=edit_vendor class=add text="Add a new vendor"|gettext}
+        </div>
 		<h2>{'Select a Vendor'|gettext}</h2>
 		<ul>
             <li {if !$vendor_id}class="current"{/if}><a href="{link action='getPurchaseOrderByJSON' ajax_action=1}">{'All Vendors'|gettext}</a></li>
@@ -47,6 +46,9 @@
 	</div>
 	
 	<div class="rightcol">
+        <div class="module-actions">
+            {icon action=create class=add text="Create new Purchase Order"|gettext}
+        </div>
 		<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
 			<thead>
 				<tr>

@@ -15,9 +15,9 @@
 
 <div class="module ealerts pending">
     <h1>{'Subscriptions Activated'|gettext}</h1>
-    <p>
+    <blockquote>
         {'Thank you for confirming your subscriptions.  You are now subscribed to receive email alerts for the following topics.'|gettext}
-    </p>
+    </blockquote>
     
     <ul>
         {foreach from=$ealerts item=ealert}

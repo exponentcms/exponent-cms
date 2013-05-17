@@ -16,5 +16,5 @@
 <div class="msg-queue error">
     <ul>
         <li>{"The view you are trying to use"|gettext} ({$badview}) {"was not found for this module"|gettext} ({$__loc->mod})</li>
-</ul>
+    </ul>
 </div>

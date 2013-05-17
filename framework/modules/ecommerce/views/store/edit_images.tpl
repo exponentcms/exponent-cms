@@ -40,6 +40,7 @@
     <div class="additional-images">
         {control type=files name=images label="Additional Images"|gettext subtype="images" value=$record->expFile description="Additional images to show for your product"|gettext}
     </div>
+    {control type=files name="featured_image" label="Featured Product Images"|gettext subtype="featured_image" value=$record->expFile description="Images to use if this item is a featured product"|gettext}
     {control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
 </div>
 
@@ -58,7 +59,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
             node.simulate('click');
         }
     });
-    
 });
 {/literal}
 {/script}

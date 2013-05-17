@@ -19,15 +19,15 @@
 
 <div class="module banner manage">
 	<h1>{$moduletitle|default:"Manage Banners"|gettext}</h1>
-	<p>
+	<blockquote>
         {'You can manage the banners for your site\'s banner modules here.'|gettext}&#160;&#160;
         {'The banners you create and configure here will be available to all the banner modules you have on your site.'|gettext}
-    </p>
-	{icon class=add action=create text="Create a new banner"|gettext}{br}
-	{icon class="downloadfile" action=export text="Export banner data"|gettext}{br}
-    {icon action=reset_stats text="Reset banner stats"|gettext onclick="return confirm('Are you sure you want to reset the Impression and Click statistics of your banners?');"}{br}
+    </blockquote>
+	{icon class=add action=create text="Create a new banner"|gettext}
+	{icon class="downloadfile" action=export text="Export banner data"|gettext}
+    {icon action=reset_stats text="Reset banner stats"|gettext onclick="return confirm('Are you sure you want to reset the Impression and Click statistics of your banners?');"}
 	{*{icon class=add module=company action=create text="Create a new company"|gettext}{br}*}
-	{icon class=manage module=company action=showall text="Manage companies"|gettext}{br}
+	{icon class=manage module=company action=showall text="Manage companies"|gettext}
     {pagelinks paginate=$page top=1}
 	<table class="exp-skin-table">
 	    <thead>

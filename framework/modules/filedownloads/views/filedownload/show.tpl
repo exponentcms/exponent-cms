@@ -13,6 +13,19 @@
  *
  *}
 
+{css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
+
+{/css}
+
+{$orderarray = explode(' ',$config.order)}
+{$order = $orderarray[0]}
+{if $order == 'created_at' }
+    {$date = 'created_at'}
+{elseif $order == 'edited_at'}
+    {$date = 'edited_at'}
+{else}
+    {$date = 'publish_date'}
+{/if}
 <div class="module filedownload show">
 	<div class="item">
         {if $record->expFile.preview[0] != ""}
@@ -20,9 +33,9 @@
         {/if}
         {if $config.datetag}
             <p class="post-date">
-                <span class="month">{$record->publish_date|format_date:"%b"}</span>
-                <span class="day">{$record->publish_date|format_date:"%e"}</span>
-                <span class="year">{$record->publish_date|format_date:"%Y"}</span>
+                <span class="month">{$record->$date|format_date:"%b"}</span>
+                <span class="day">{$record->$date|format_date:"%e"}</span>
+                <span class="year">{$record->$date|format_date:"%Y"}</span>
             </p>
         {/if}
         {if $record->title}<h2>{$record->title}</h2>{/if}
@@ -49,7 +62,7 @@
         <div class="attribution">
             {if !$config.datetag}
                 <span class="label dated">{'Dated'|gettext}:</span>
-                <span class="value">{$file->publish_date|format_date}</span>
+                <span class="value">{$record->$date|format_date}</span>
                 &#160;|&#160;
             {/if}
             <span class="label downloads"># {'Downloads'|gettext}:</span>
@@ -88,13 +101,29 @@
                                 <span class="value">{$record->expFile.downloadable[$filenum]->filesize|bytes}</span>
                             {/if}
                         </div>
-                        {if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-                            <a href="{$record->expFile.downloadable[$filenum]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
-                                {if $record->expFile.preview[0] != ""}
-                                    {img class="preview-img" file_id=$record->expFile.preview[0]->id w=360 h=240 zc=1}
-                                {/if}
-                            </a>
+                        {*{if $config.show_player && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}*}
+                            {*<a href="{$record->expFile.downloadable[$filenum]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">*}
+                                {*{if $record->expFile.preview[0] != ""}*}
+                                    {*{img class="preview-img" file_id=$record->expFile.preview[0]->id w=360 h=240 zc=1}*}
+                                {*{/if}*}
+                            {*</a>*}
+                        {*{/if}*}
+
+                        {if $config.show_player && !$record->ext_file}
+                            {if $filetype == "mp3"}
+                                <audio id="{$record->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$record->expFile.downloadable[0]->directory}{$record->expFile.downloadable[0]->filename}" type="audio/mp3">
+                                </audio>
+                            {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
+                                <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$record->expFile.downloadable[0]->directory}{$record->expFile.downloadable[0]->filename}" type="{$record->expFile.downloadable[0]->mimetype}"
+                                	id="player{$record->expFile.downloadable[0]->id}"
+                                    {if $record->expFile.preview[0]->id}
+                                    poster="{$record->expFile.preview[0]->id}"
+                                    {/if}
+                                	controls="controls" preload="none">
+                                </video>
+                            {/if}
                         {/if}
+
                     </li>
                 {/foreach}
             </ul>
@@ -105,27 +134,37 @@
 </div>
 
 {if $config.show_player}
-    {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
-    {/script}
-
-    {script unique="filedownload"}
-    {literal}
-    flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
-        {
-    		wmode: 'transparent',
-    		clip: {
-    			autoPlay: false,
-    			},
-            plugins:  {
-                controls: {
-                    play: true,
-                    scrubber: true,
-                    fullscreen: false,
-                    autoHide: false
-                }
-            }
-        }
-    );
-    {/literal}
+    {script unique="mediaelement" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+        $('audio,video').mediaelementplayer({
+        	success: function(player, node) {
+        		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+        	}
+        });
     {/script}
 {/if}
+
+{*{if $config.show_player}*}
+    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
+    {*{/script}*}
+
+    {*{script unique="filedownload"}*}
+    {*{literal}*}
+    {*flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",*}
+        {*{*}
+    		{*wmode: 'transparent',*}
+    		{*clip: {*}
+    			{*autoPlay: false,*}
+    			{*},*}
+            {*plugins:  {*}
+                {*controls: {*}
+                    {*play: true,*}
+                    {*scrubber: true,*}
+                    {*fullscreen: false,*}
+                    {*autoHide: false*}
+                {*}*}
+            {*}*}
+        {*}*}
+    {*);*}
+    {*{/literal}*}
+    {*{/script}*}
+{*{/if}*}

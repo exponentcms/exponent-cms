@@ -18,6 +18,19 @@
 
 {/css}
 {/if}
+{css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
+
+{/css}
+
+{$orderarray = explode(' ',$config.order)}
+{$order = $orderarray[0]}
+{if $order == 'created_at' }
+    {$date = 'created_at'}
+{elseif $order == 'edited_at'}
+    {$date = 'edited_at'}
+{else}
+    {$date = 'publish_date'}
+{/if}
 
 <div class="module filedownload showall headlines">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{/if}
@@ -60,9 +73,9 @@
                 {/if}
                 {if $config.datetag}
                     <p class="post-date">
-                        <span class="month">{$file->publish_date|format_date:"%b"}</span>
-                        <span class="day">{$file->publish_date|format_date:"%e"}</span>
-                        <span class="year">{$file->publish_date|format_date:"%Y"}</span>
+                        <span class="month">{$file->$date|format_date:"%b"}</span>
+                        <span class="day">{$file->$date|format_date:"%e"}</span>
+                        <span class="year">{$file->$date|format_date:"%Y"}</span>
                     </p>
                 {/if}
                 <span{if $config.usecategories} class="{$cat->color}"{/if}>
@@ -85,7 +98,7 @@
                     {if $config.show_info}
                         {if !$config.datetag}
                             <span class="label dated">{'Dated'|gettext}:</span>
-                            <span class="value">{$file->publish_date|format_date}</span>
+                            <span class="value">{$file->$date|format_date}</span>
                             &#160;|&#160;
                         {/if}
                         {if $file->expFile.downloadable[0]->duration}
@@ -145,28 +158,41 @@
     {/if}
 </div>
 
-{if $config.show_player}
-    {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
-    {/script}
+{*{if $config.show_player}*}
+    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
+    {*{/script}*}
 
-    {script unique="flowplayer"}
-    {literal}
-    flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
-        {
-    		wmode: 'transparent',
-    		clip: {
-    			autoPlay: false,
-    			},
-            plugins:  {
-                controls: {
-                    play: true,
-                    scrubber: true,
-                    fullscreen: false,
-                    autoHide: false
-                }
-            }
-        }
-    );
-    {/literal}
+    {*{script unique="flowplayer"}*}
+    {*{literal}*}
+    {*flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",*}
+        {*{*}
+    		{*wmode: 'transparent',*}
+    		{*clip: {*}
+    			{*autoPlay: false,*}
+    			{*},*}
+            {*plugins:  {*}
+                {*controls: {*}
+                    {*play: true,*}
+                    {*scrubber: true,*}
+                    {*fullscreen: false,*}
+                    {*autoHide: false*}
+                {*}*}
+            {*}*}
+        {*}*}
+    {*);*}
+    {*{/literal}*}
+    {*{/script}*}
+{*{/if}*}
+
+{if $config.show_player}
+    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
+    {*{/script}*}
+
+    {script unique="mediaelement" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+        $('audio,video').mediaelementplayer({
+        	success: function(player, node) {
+        		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+        	}
+        });
     {/script}
 {/if}

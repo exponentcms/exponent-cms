@@ -28,35 +28,30 @@
 }
 #dropindicator.dropattop{
 	background-image:url(../images/exp1icons.png);  
-	_background-image:url(../images/exp1icons.gif);  
-	background-repeat:no-repeat; 
+	background-repeat:no-repeat;
 	background-position:0 -643px; 
 }
 
 #dropindicator.dropatbottom{
 	background-image:url(../images/exp1icons.png);  
-	_background-image:url(../images/exp1icons.gif);  
-	background-repeat:no-repeat; 
+	background-repeat:no-repeat;
 	background-position:0 -665px; 
 }
 #dropindicator.putinbetween{
 	background-image:url(../images/exp1icons.png);  
-	_background-image:url(../images/exp1icons.gif);  
-	background-repeat:no-repeat; 
+	background-repeat:no-repeat;
 	background-position:0 -685px; 
 }
 
 #dropindicator.addtome{
 	background-image:url(../images/exp1icons.png);  
-	_background-image:url(../images/exp1icons.gif);  
-	background-repeat:no-repeat; 
+	background-repeat:no-repeat;
 	background-position:0 -703px; 
 }
 
 #dropindicator.nodrop{
 	background-image:url(../images/exp1icons.png);  
-	_background-image:url(../images/exp1icons.gif);  
-	background-repeat:no-repeat; 
+	background-repeat:no-repeat;
 	background-position:0 -722px; 
 }
 
@@ -84,8 +79,6 @@
 	z-index:-1;
 }
 
-
-
 /* The menu */
 #treecontext h6 {
 	font-size: 90%;
@@ -98,12 +91,9 @@
 	margin:0px;
 	border-bottom:1px dotted #888;
     background-image:url(../images/exp1icons.png);  
-	_background-image:url(../images/exp1icons.gif);  
  	background-repeat:no-repeat;
 	background-position: 0px -548px; 
 }
-
-
 
 #treecontext.yuimenu.show-scrollbars {
 	overflow:visible;
@@ -123,14 +113,16 @@
 	color:#333333;
 }
 #treecontext .yuimenuitem-selected{
-	background-color:#445;
+	/*background-color:#445;*/
+	background-color:#b8d3d4;
 }
 #treecontext .yuimenuitemlabel-selected{
-	color:#ffffff;
+	/*color:#ffffff;*/
 	text-decoration:none;
 }
 #treecontext .bd{
-	background-color:#b8d3d4;
+	/*background-color:#b8d3d4;*/
+	background-color: #ffffff;
 	border:1px solid #333333;
 	padding-bottom:3px;
 }
@@ -139,13 +131,10 @@
 	font-family:"Trebuchet MS","Verdana";
 	font-size:12px;
 	padding:5px 5px 3px 20px;
+	text-decoration:none;
 }
 #treecontext .yuimenuitem .yuimenuitemlabel-selected {
-    color:#ffffff;
-}
-
-#treecontext .yuimenuitem .yuimenuitemlabel-selected {
-    color:#ffffff;
+    /*color:#ffffff;*/
 }
 
 #treecontext .yui-menu-shadow {
@@ -168,7 +157,6 @@
 	background-repeat: no-repeat;
 	background-position:0 -495px;
 }
-
 #treecontext .editpage {
 	background-image:url(../images/exp1icons.png);
 	background-repeat: no-repeat;
@@ -178,6 +166,11 @@
 	background-image:url(../images/exp1icons.png);
 	background-repeat: no-repeat;
 	background-position:0 -70px;
+}
+#treecontext .configurepage {
+	background-image:url(../images/exp1icons.png);
+	background-repeat: no-repeat;
+	background-position:0 -356px;
 }
 #treecontext .userperms {
 	background-image:url(../images/exp1icons.png);

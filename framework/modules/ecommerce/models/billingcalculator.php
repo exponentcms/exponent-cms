@@ -22,7 +22,8 @@
  */
 class billingcalculator extends expRecord {
     public $table = 'billingcalculator';
-    public function isRestricted() { return false; }    
+    public function captureEnabled() {return false; }
+    public function isRestricted() { return false; }
     
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {        
         parent::__construct($params, $get_assoc, $get_attached);
@@ -53,6 +54,20 @@ class billingcalculator extends expRecord {
     {
          return true;
     }
+
+    /**
+     * Return default billing calculator
+     *
+     */
+    public static function getDefault() {
+        global $db;
+
+        $calc = $db->selectObject('billingcalculator','is_default=1');
+        if (empty($calc)) $calc = $db->selectObject('billingcalculator','enabled=1');
+        if ($calc->id) return $calc->id;
+        else return false;
+    }
+
 }
 
 ?>

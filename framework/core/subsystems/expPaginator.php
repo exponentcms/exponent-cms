@@ -305,13 +305,14 @@ class expPaginator {
 		//$page_params = $router->params; //from Current Trunk
 //		$page_params = $this->cleanParams($router->params); //From Merge
         $page_params = $router->params; //From Merge
+        if (!empty($page_params['search_string'])) $page_params['search_string'] = urlencode($page_params['search_string']);
 
 		//if (empty($page_params['module'])) $page_params['module'] = $this->controller;
 		//if (empty($page_params['action'])) $page_params['action'] = $this->action;
 		//if (empty($page_params['src']) && isset($params['src'])) $page_params['src'] = $params['src'];
 		if (!empty($this->controller)) {
 		    unset($page_params['module']);
-		    $page_params['controller'] = str_replace("Controller","",$this->controller);
+		    $page_params['controller'] = expModules::getModuleName($this->controller);
 		} else {
             if (expTheme::inAction() && empty($params)) {
                 //FIXME: module/controller glue code
@@ -610,21 +611,33 @@ class expPaginator {
 	}
 	
     /* exdoc
-     * Object sorting comparison function -- sorts by a specified column in ascending order.
+     * Object/Array sorting comparison function -- sorts by a specified column in ascending order.
      * @node Subsystems:expPaginator
      */
     public function asc($a,$b) {
         $col = $this->order;
-	    return ($a->$col < $b->$col ? -1 : 1);
+        if (is_object($a)) {
+            return ($a->$col < $b->$col ? -1 : 1);
+        } elseif (is_array($a)) {
+            return ($a[$col] < $b[$col] ? -1 : 1);
+        } else {
+            return ($a < $b ? -1 : 1);
+        }
     }
 
     /* exdoc
-     * Object sorting comparison function -- sorts by a specified column in descending order.
+     * Object/Array sorting comparison function -- sorts by a specified column in descending order.
      * @node Subsystems:expPaginator
      */
     public function desc($a,$b) {
         $col = $this->order;
-	    return ($a->$col > $b->$col ? -1 : 1);
+        if (is_object($a)) {
+            return ($a->$col > $b->$col ? -1 : 1);
+        } elseif (is_array($a)) {
+            return ($a[$col] > $b[$col] ? -1 : 1);
+        } else {
+            return ($a > $b ? -1 : 1);
+        }
     }
 }
 

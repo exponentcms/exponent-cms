@@ -32,7 +32,7 @@
         </thead>
         <tbody>
             {foreach from=$questions item=question}
-                <tr class="row {cycle values='odd_row,even_row'}"><td>
+                <tr class="{cycle values='odd,even'}"><td>
                     {$question->question}
                     {*({$question->answer_count} {plural plural=answers singular=answer count=$question->answer_count})*}
                     <a href="{link action=manage_question id=$question->id}" title="{'Manage Answers'|gettext}">

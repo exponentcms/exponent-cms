@@ -16,8 +16,8 @@
 <div id="editevent" class="events calendar edit">
     {if $record->id != ""}<h1>{'Editing'|gettext} '{$record->title}'</h1>{else}<h1>{'New'|gettext} {$modelname|capitalize}</h1>{/if}
     <div class="form_header">
-        <p>{'Enter the information about the calendar event (the date and times) below.'|gettext}</p>
-        <p>{'Note: multiple day events are not supported.'|gettext}</p>
+        <blockquote>{'Enter the information about the calendar event (the date and times) below.'|gettext}</blockquote>
+        <blockquote>{'Note: multiple day events are not supported.'|gettext}</blockquote>
     </div>
     {form action=update}
 	    {control type=hidden name=id value=$record->id}
@@ -36,7 +36,7 @@
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     {control type=text name=title label="Title"|gettext value=$record->title}
-                	{control type="editor" name="body" label="Body"|gettext value=$record->body}
+                	{control type="editor" name="body" label="Event Details"|gettext value=$record->body}
                 	{control type="checkbox" name="is_featured" label="Feature this Event?"|gettext value=1 checked=$record->is_featured}
                     {control type="checkbox" name="is_cancelled" label="Cancel this Event?"|gettext value=1 checked=$record->is_cancelled}
                     {if !$config.disabletags}
@@ -70,7 +70,8 @@
                 {if $config.enable_feedback}
                     <div id="tab3">
                         {control type=dropdown name=feedback_form label="Feedback Form"|gettext items=$allforms items=$allforms value=$record->feedback_form}
-                        {control type=text name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
+                        {*{control type=text name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}*}
+                        {control type=email name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
                     </div>
                 {/if}
                 {if $config.enable_images}

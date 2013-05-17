@@ -103,8 +103,10 @@
                         <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
                             {if $cat->expFile[0]->id}
                                 {img file_id=$cat->expFile[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
-                            {else}
+                            {elseif $page->records[0]->expFile.mainimage[0]->id}
                                 {img file_id=$page->records[0]->expFile.mainimage[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
+                            {else}
+                                {img src="`$asset_path`images/no-image.jpg" w=$config.category_thumbnail|default:100 class="cat-image" alt="'No Image Available'|gettext"}
                             {/if}
                         </a>
 
@@ -215,7 +217,6 @@ YUI(EXPONENT.YUI3_CONFIG).use("anim-easing","node","anim", function(Y) {
         //n.one('.more-text .close').on('click', onClick);
         };
     });
-    
 });
 {/literal}
 {/script}

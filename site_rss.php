@@ -18,7 +18,7 @@
 
 require_once('exponent.php');
 
-// for backwards compatability, use the new method
+// for backwards compatibility, use the new method
 redirect_to(array('controller'=>'rss','action'=>'feed','module'=>$_REQUEST['module'],'src'=>$_REQUEST['src']));
 
 //FIXME this is the old, deprecated method

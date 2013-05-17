@@ -128,7 +128,7 @@ class order extends expRecord {
 
         $sessAr = expSession::get('verify_shopper');
         // initialize this users cart if they have ecomm installed.
-        $active = $db->selectValue('modstate', 'active', 'module="storeController"' | ECOM);
+        $active = $db->selectValue('modstate', 'active', 'module="store"' || ECOM);
         if (!expModules::controllerExists('cart') || empty($active)) {
             // if ecomm is turned off, no cart.
             return null;
@@ -358,16 +358,19 @@ class order extends expRecord {
 
     public function getShippingMethods() {
         global $db;
+
         $ids = $db->selectColumn('orderitems', 'shippingmethods_id', 'shippingmethods_id!=0 AND orders_id=' . $this->id, null, true);
 
         //if we have no order items, then we'll set a 'default' shipping method to the order
         if (empty($ids)) {
-            if (isset($this->shippingmethod->id)) {
+//            if (isset($this->shippingmethod->id)) {
+            if (!empty($this->shippingmethod->id)) {
                 $ids = array($this->shippingmethod->id);
             } else {
                 $sm = new shippingmethod();
                 //(eDebug($db->selectValue('shippingcalculator','id','is_default=1'),true));
-                $sm->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
+//                $sm->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
+                $sm->shippingcalculator_id = shippingcalculator::getDefault();
                 $sm->save();
                 //$this->setActiveShippingMethod($sm);
                 $this->shippingmethods_id = $sm->id;
@@ -592,7 +595,8 @@ class order extends expRecord {
             $this->orderitem[$i]->products_price_adjusted = $this->orderitem[$i]->products_price;
 
             //$this->orderitem[$i]->products_price_original = $this->orderitem[$i]->product->getPrice();
-            $this->subtotal += $this->orderitem[$i]->products_price * $this->orderitem[$i]->quantity;
+//            $this->subtotal += $this->orderitem[$i]->products_price * $this->orderitem[$i]->quantity;
+            $this->subtotal += $this->orderitem[$i]->getTotal();
 
             $this->surcharge_total += ($this->orderitem[$i]->product->getSurcharge() * $this->orderitem[$i]->quantity);
 
@@ -602,7 +606,7 @@ class order extends expRecord {
             //only allowing one discount for now, but in future we'll need to process
             //multiple and accomdate the "weight" and 'allow other discounts' type settings
             //this foreach will only fire once as of now, and will only hit on one or the other
-            //TODO: We need to use produce_price_adjusted in the loops to accomodate for more than one disocunt
+            //TODO: We need to use produce_price_adjusted in the loops to accommodate for more than one discount
             //otherwise it's just resetting them now instead of adding them 
             foreach ($cartDiscounts as $od) {
                 //do not calculate invalid discounts, but don't remove either
@@ -764,12 +768,18 @@ class order extends expRecord {
         return $invoice_num;
     }
 
-    public function isItemInCart($id, $type) {
+    public function isItemInCart($id, $type, $orderitem_id=null) {
         if (empty($id) || empty($type)) return false;
 
         foreach ($this->orderitem as $item) {
             // return true if we find the item in the users cart
-            if ($item->product_type == $type && $item->product_id == $id) return $item;
+            if ($item->product_type == $type && $item->product_id == $id) {
+                if (!empty($orderitem_id)) {  // does it need to be a specific order line item
+                    if ($item->id == $orderitem_id) {
+                        return $item;
+                    }
+                } else return $item;
+            }
         }
 
         // if we make it here we didn't find the item

@@ -43,8 +43,8 @@
             <tbody>
                 <tr>
                     <td style="border:1px solid #DEDEDE;">
-                        {$storeConfig.storename}
-                        {$storeConfig.ecomheader}
+                        {ecomconfig var=storename}
+                        {ecomconfig var=ecomheader}
                     </td>
                     <td style="border:1px solid #DEDEDE;">
                         {$order->invoice_id}
@@ -321,6 +321,6 @@
         </table>
     </div>
     <div id="store-footer">
-        {$storeConfig.ecomfooter}
+        {ecomconfig var=ecomfooter}
     </div>
 </div>

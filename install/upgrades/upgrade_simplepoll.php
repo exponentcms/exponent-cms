@@ -39,7 +39,7 @@ class upgrade_simplepoll extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "The Simple Poll module was upgraded to a Controller in v2.0.9.  This Script converts Simple Poll modules to the new format and then deletes old simplepollmodule files"; }
+	function description() { return "The Simple Poll module was upgraded to a Controller in v2.0.9.  This Script converts Simple Poll modules to the new format and then deletes old simplepollmodule files."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
@@ -62,17 +62,17 @@ class upgrade_simplepoll extends upgradescript {
 		// convert each simplepollmodule reference to a simplePoll Controller reference
 	    $srs = $db->selectObjects('sectionref',"module = 'simplepollmodule'");
 	    foreach ($srs as $sr) {
-		    $sr->module = 'simplePollController';
+		    $sr->module = 'simplePoll';
 		    $db->updateObject($sr,'sectionref');
 	    }
 	    $gps = $db->selectObjects('grouppermission',"module = 'simplepollmodule'");
         foreach ($gps as $gp) {
-	        $gp->module = 'simplePollController';
+	        $gp->module = 'simplePoll';
 	        $db->updateObject($gp,'grouppermission',"module = 'simplepollmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'simplepollmodule'");
         foreach ($ups as $up) {
-            $up->module = 'simplePollController';
+            $up->module = 'simplePoll';
             $db->updateObject($up,'userpermission',"module = 'simplepollmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
@@ -82,7 +82,7 @@ class upgrade_simplepoll extends upgradescript {
 	    foreach ($cns as $cn) {
             $oldconfig = $db->selectObject('simplepollmodule_config', "location_data='".$cn->internal."'");
 		    $cloc = expUnserialize($cn->internal);
-	        $cloc->mod = 'simplePollController';
+	        $cloc->mod = 'simplePoll';
 		    $cn->internal = serialize($cloc);
 		    $cn->view = 'showall';
 		    $cn->action = 'showall';
@@ -105,8 +105,9 @@ class upgrade_simplepoll extends upgradescript {
             }
             if ($newconfig->config != null) {
                 $newmodinternal = expUnserialize($cn->internal);
-                $newmod = explode("Controller",$newmodinternal->mod);
-                $newmodinternal->mod = $newmod[0];
+//                $newmod = explode("Controller",$newmodinternal->mod);
+//                $newmodinternal->mod = $newmod[0];
+                $newmodinternal->mod = expModules::getModuleName($newmodinternal->mod);
                 $newconfig->location_data = $newmodinternal;
                 $newconfig->save();
             }
@@ -117,7 +118,7 @@ class upgrade_simplepoll extends upgradescript {
         // need to replace old module modstate with new SimplePoll module
         $ms = $db->selectObject('modstate',"module='simplepollmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='simplePollController'")) {
-            $ms->module = 'simplePollController';
+            $ms->module = 'simplePoll';
             $db->updateObject($ms,'modstate',"module='simplepollmodule'",'module');
         }
 

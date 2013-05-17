@@ -30,14 +30,14 @@ class storeController extends expController {
         'showallFeaturedProducts'         => 'Products - Only show Featured',
         'showallManufacturers'            => 'Products - By Manufacturer',
         'showTopLevel'                    => 'Categories - Show Top Level',
-        'showFullTree'                    => 'Categories - Show Full Tree',
+        'showFullTree'                    => 'Categories - Show Full Tree',  //FIXME image variant needs separate method
         'showallSubcategories'            => 'Categories - Subcategories of current category',
-        'upcomingEvents'                  => 'Event Registration - Upcoming Events',
-        'eventsCalendar'                  => 'Event Registration - Calendar View',
+//        'upcomingEvents'                  => 'Event Registration - Upcoming Events',
+//        'eventsCalendar'                  => 'Event Registration - Calendar View',
         'ecomSearch'                      => 'Search - Autocomplete',
-        'searchByModelForm'               => 'Search - By Model',
+        'searchByModelForm'               => 'Search - By Model',  //FIXME broken? doesn't work as initial view
         'quicklinks'                      => 'Links - Users Links',
-        'showallCategoryFeaturedProducts' => 'Show Featured Products under the current category',
+        'showallCategoryFeaturedProducts' => 'Show Featured Products under the current category',  //FIXME broken? doesn't work as initial view
         'showGiftCards'                   => 'Gift Cards UI',
     );
 
@@ -48,10 +48,10 @@ class storeController extends expController {
         'comments',
         'ealerts',
         'files',
-        'module_title',
+//        'module_title',
         'rss',
         'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array(
@@ -83,7 +83,7 @@ class storeController extends expController {
     }
 
     static function description() {
-        return gt("Use this module to display products and categories of you e-Commerce store");
+        return gt("Displays products and categories from your e-Commerce store");
     }
 
     static function author() {
@@ -105,6 +105,9 @@ class storeController extends expController {
     function __construct($src = null, $params = array()) {
         global $db, $router, $section, $user;
 //        parent::__construct($src = null, $params);
+        if (empty($params)) {
+            $params = $router->params;
+        }
         parent::__construct($src, $params);
 
         // we're setting the config here globally
@@ -146,6 +149,7 @@ class storeController extends expController {
         } else {
             $default_id = 0;
         }
+        if (empty($default_id)) $default_id = 0;
         expSession::set('catid', $default_id);
 
         // figure out if we need to show all categories and products or default to showing the first category.
@@ -260,20 +264,12 @@ class storeController extends expController {
 
         // grab the configs for the category
         if (is_object($category)) {
-            $ctcfg = new stdClass();
-            $ctcfg->mod = "storeCategory";
-            $ctcfg->src = "@store-" . $category->id;
-            $ctcfg->int = "";
-            $catConfig = new expConfig($ctcfg);
+            $catConfig = new expConfig(expCore::makeLocation("storeCategory","@store-" . $category->id,""));
         }
 
         // since router maps strip off src and we need that to pull configs, we won't get the configs
         // of the page is router mapped. We'll ensure we do here:
-        $cfg = new stdClass();
-        $cfg->mod = "ecomconfig";
-        $cfg->src = "@globalstoresettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
+        $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 
         $this->config = @array_merge((empty($catConfig->config) || @$catConfig->config['use_global'] == 1) ? $config->config : $catConfig->config, $this->config);
 
@@ -284,7 +280,7 @@ class storeController extends expController {
         }
     }
 
-    function upcomingEvents() {
+    function upcomingEvents() {  //FIXME Deprecated, moved to eventregistration
         $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
         $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
@@ -314,7 +310,7 @@ class storeController extends expController {
         ));
     }
 
-    function eventsCalendar() {
+    function eventsCalendar() {  //FIXME Deprecated, moved to eventregistration
         global $db, $user;
 
         expHistory::set('viewable', $this->params);
@@ -423,7 +419,7 @@ class storeController extends expController {
     /*
     * Helper function for the Calendar view
     */
-    function getEventsForDates($edates, $sort_asc = true) {
+    function getEventsForDates($edates, $sort_asc = true) {  //FIXME Deprecated, moved to eventregistration
         global $db;
         $events = array();
         foreach ($edates as $edate) {
@@ -586,14 +582,10 @@ class storeController extends expController {
     }
 
     function exportMe() {
-
         redirect_to(array('controller' => 'report', 'action' => 'batch_export', 'applytoall' => true));
-
     }
 
-    function showallByManufacturer() {
-        global $template;
-
+    function showallByManufacturer() {  //FIXME Deprecated??, moved to company??
         expHistory::set('viewable', $this->params);
 
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
@@ -620,7 +612,7 @@ class storeController extends expController {
         ));
     }
 
-    function showallManufacturers() {
+    function showallManufacturers() {  //FIXME Deprecated??, moved to company??
         global $db;
         expHistory::set('viewable', $this->params);
         $sql = 'SELECT comp.* FROM ' . DB_TABLE_PREFIX . '_companies as comp JOIN ' . DB_TABLE_PREFIX . '_product AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';
@@ -681,6 +673,11 @@ class storeController extends expController {
             expHistory::back();
         } elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin)) {
             $product_type->user_message = $product->title . " is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
+        }
+
+        // pull in company attachable files
+        if (!empty($product_type->companies_id)) {
+            $product_type->company = new company($product_type->companies_id);
         }
 
         if (!empty($product->crosssellItem)) foreach ($product->crosssellItem as &$csi) {
@@ -772,7 +769,7 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
         $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : expSession::get('last_ecomm_category');
         $category = new storeCategory($parent);
-        $categories = $category->getEcomSubcategories();
+        $categories = $category->getEcomSubcategories();  //FIXME returns a product count of 0
         $ancestors = $category->pathToNode();
         assign_to_template(array(
             'categories' => $categories,
@@ -895,7 +892,7 @@ class storeController extends expController {
         ));
     }
 
-    function showFullTree() {
+    function showFullTree() {  //FIXME we also need a showFullTree_images method like above
         $category = new storeCategory(null, false, false);
         //$categories = $category->getEcomSubcategories();
         $categories = $category->getFullTree();
@@ -919,13 +916,14 @@ class storeController extends expController {
 
     function addContentToSearch() {
         global $db, $router;
+
         $model = new $this->basemodel_name();
 
         $total = $db->countObjects($model->table);
 
-        $count = 1;
+        $count = 0;
         for ($i = 0; $i < $total; $i += 100) {
-            $orderby = 'id LIMIT ' . ($i + 1) . ', 100';
+            $orderby = 'id LIMIT ' . ($i) . ', 100';
             $content = $db->selectArrays($model->table, 'parent_id=0', $orderby);
 
             foreach ($content as $cnt) {
@@ -936,10 +934,14 @@ class storeController extends expController {
                 $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $prod->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $cnt['title'] . (!empty($cnt['model']) ? ' - SKU#: ' . $cnt['model'] : '');
                 $search_record = new search($cnt, false, false);
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-                $search_record->view_link = $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url']));
-                $search_record->ref_type = $this->basemodel_name;
-                $search_record->ref_module = 'store';
-                $search_record->category = 'Products';
+                $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
+//                $search_record->ref_module = 'store';
+                $search_record->ref_module  = $this->baseclassname;
+//                $search_record->ref_type = $this->basemodel_name;
+                $search_record->ref_type = $cnt['product_type'];
+//                $search_record->category = 'Products';
+                $prod = new $search_record->ref_type();
+                $search_record->category = $prod->product_name;
 
                 $search_record->original_id = $origid;
                 //$search_record->location_data = serialize($this->loc);
@@ -956,9 +958,16 @@ class storeController extends expController {
 
     function edit() {
         global $db;
-        $expDefinableField = new expDefinableField();
 
-        $definablefields = $expDefinableField->find();
+//        $expDefinableField = new expDefinableField();
+//        $definablefields = $expDefinableField->find('all','1','rank');
+        $f = new forms();
+        $forms_list = array();
+        $forms_list[0] = '- '.gt('No User Input Required').' -';
+        $forms = $f->find('all', 'is_saved=1');
+        if (!empty($forms)) foreach ($forms as $frm) {
+            $forms_list[$frm->id] = $frm->title;
+        }
 
         //Make sure that the view is the edit.tpl and not any ajax views
         if (isset($this->params['view']) && $this->params['view'] == 'edit') {
@@ -1073,7 +1082,8 @@ class storeController extends expController {
             'parent'            => $parent,
             'form'              => $record->getForm($view),
             'optiongroups'      => $editable_options,
-            'definablefields'   => isset($definablefields) ? $definablefields : '',
+//            'definablefields'   => isset($definablefields) ? $definablefields : '',
+            'forms'=> $forms_list,
             'shipping_services' => isset($shipping_services) ? $shipping_services : '', // Added implication since the shipping_services default value is a null
             'shipping_methods'  => isset($shipping_methods) ? $shipping_methods : '', // Added implication since the shipping_methods default value is a null
             'product_types'     => isset($this->config['product_types']) ? $this->config['product_types'] : ''
@@ -1244,12 +1254,12 @@ class storeController extends expController {
     }
 
     function quicklinks() {
-        //we need to get the total items in the cart so that if the user at least 1 item in order to check out.
+        global $order;
 
-        $itemcount = 1;
+        $oicount = !empty($order->item_count) ? $order->item_count : 0;
         //eDebug($itemcount);
         assign_to_template(array(
-            "itemcount" => $itemcount
+            "oicount" => $oicount,
         ));
     }
 
@@ -1276,13 +1286,13 @@ class storeController extends expController {
 
     function metainfo() {
         global $router;
+
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
         $action = $_REQUEST['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
         switch ($action) {
-            case 'show':
             case 'showall': //category page
                 //$cat = new storeCategory(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
                 $cat = $this->category;
@@ -1290,24 +1300,28 @@ class storeController extends expController {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title : $cat->meta_title;
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
+                    $metainfo['canonical'] = empty($cat->canonical) ? '' : strip_tags($cat->canonical);
                 }
                 break;
+            case 'show':
             case 'showByTitle':
                 $prod = new product(isset($_REQUEST['title']) ? expString::sanitize($_REQUEST['title']) : intval($_REQUEST['id']));
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
+                    $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
                 }
                 break;
             default:
-                $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION);
+                $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical'=> '');
         }
 
         // Remove any quotes if there are any.
         $metainfo['title'] = expString::parseAndTrim($metainfo['title'], true);
         $metainfo['description'] = expString::parseAndTrim($metainfo['description'], true);
         $metainfo['keywords'] = expString::parseAndTrim($metainfo['keywords'], true);
+        $metainfo['canonical'] = expString::parseAndTrim($metainfo['canonical'], true);
 
         return $metainfo;
     }
@@ -1480,7 +1494,6 @@ class storeController extends expController {
     }
 
     function batch_process() {
-
         $os = new order_status();
         $oss = $os->find('all');
         $order_status = array();
@@ -1723,8 +1736,8 @@ class storeController extends expController {
                     if (!empty($email_addy)) {
                         $from_status = $db->selectValue('order_status', 'title', 'id=' . $change->from_status_id);
                         $to_status = $db->selectValue('order_status', 'title', 'id=' . $change->to_status_id);
-                        $template->assign(
-                        //assign_to_template(
+//                        $template->assign(
+                        assign_to_template(
                             array(
                                 'comment'          => $change->comment,
                                 'to_status'        => $to_status,

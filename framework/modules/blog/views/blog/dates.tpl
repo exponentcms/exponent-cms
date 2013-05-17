@@ -23,7 +23,7 @@
         <ul>
             {foreach from=$ydate item=mdate key=month}
                 <li>
-                    <a href="{link action=showall_by_date month=$month year=$year}">{$mdate->name} ({$mdate->count})</a>
+                    <a href="{link action=showall_by_date month=$month year=$year}" title='{"View all posts from"|gettext} {$mdate->name} {$year}'>{$mdate->name} ({$mdate->count})</a>
                 </li>
             {/foreach}
         </ul>

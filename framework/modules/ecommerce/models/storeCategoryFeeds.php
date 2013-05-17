@@ -30,7 +30,7 @@ class storeCategoryFeeds extends storeCategory {
         'shopping_product_types'
     );
 	
-	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
+	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 		parent::__construct($params, $get_assoc, $get_attached);
 	}
 

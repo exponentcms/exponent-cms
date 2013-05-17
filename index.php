@@ -48,18 +48,17 @@ $router->routeRequest();
 
 // initialize this users cart if they have ecom installed.
 // define whether or not ecom is enabled
-if ($db->selectValue('modstate', 'active', 'module="storeController"') ||
-  $db->selectValue('modstate', 'active', 'module="eventregistrationController"') ||
-  $db->selectValue('modstate', 'active', 'module="donationController"') || FORCE_ECOM) {
+//if ($db->selectValue('modstate', 'active', 'module="storeController"') ||
+//  $db->selectValue('modstate', 'active', 'module="eventregistrationController"') ||
+//  $db->selectValue('modstate', 'active', 'module="donationController"') || FORCE_ECOM) {
+if ($db->selectValue('modstate', 'active', 'module="store"') ||
+  $db->selectValue('modstate', 'active', 'module="eventregistration"') ||
+  $db->selectValue('modstate', 'active', 'module="donation"') || FORCE_ECOM) {
     define('ECOM',1);
     $order = order::getUserCart();
     // global store config
     // We're forcing the location. Global store setting will always have this loc
-    $cfg = new stdClass();
-    $cfg->mod = "ecomconfig";
-    $cfg->src = "@globalstoresettings";
-    $cfg->int = "";
-    $storeConfig = new expConfig($cfg);
+//    $storeConfig = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 } else {
     define('ECOM',0);
 }
@@ -112,6 +111,12 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 			include_once($page);
 			expTheme::satisfyThemeRequirements();
 		} else {
+            // set up controls search order based on framework
+            $framework = expSession::get('framework');
+            if ($framework == 'jquery' || $framework == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
+            if ($framework == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
+            array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
+
 			expTheme::runAction();
 		}
 	} else {

@@ -38,5 +38,5 @@
         {$record.eta}
     </td>
     <td>
-        <a href="#" class="remove">[ {'remove'|gettext} ]</a>
+        <a class="delete" href="#" class="remove">{'Remove'|gettext}</a>
     </td>

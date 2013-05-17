@@ -147,6 +147,7 @@ class ecomconfigController extends expController {
 			'limit'=> 10,
 			'order'=>isset($this->params['order']) ? $this->params['order'] : null,
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'  => $this->params['controller'],
 			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
         ));
 
@@ -311,7 +312,7 @@ class ecomconfigController extends expController {
         $this->loc->src = "@globalstoresettings";
         $config = new expConfig($this->loc);
         $this->config = $config->config;
-        $pullable_modules = expModules::listInstalledControllers($this->classname, $this->loc);
+        $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
         $views = get_config_templates($this, $this->loc);
         
         $gc = new geoCountry();             

@@ -28,6 +28,7 @@
 {control type="text" name="shipping[length]" label="Length (in inches)"|gettext size=4 filter=decimal value=$record->length}
 {control type="text" name="shipping[surcharge]" label="Surcharge"|gettext size=4 filter=decimal value=$record->surcharge}
 
+{*FIXME convert to yui3*}
 {script unique="prodedit" yui3mods=1}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('yui2-yahoo-dom-event', function(Y) {

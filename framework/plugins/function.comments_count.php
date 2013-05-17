@@ -56,7 +56,7 @@ function smarty_function_comments_count($params,&$smarty) {
     $class = isset($params['class']) ? $params['class'] : 'comments';
 
     // spit out the link
-    echo $prepend.'<a class="'.$class.'" href="'.$link.'">'.count($item->expComment).' '.(count($item->expComment)==1?gt("Comment"):gt("Comments")).'</a>';
+    echo $prepend.'<a class="'.$class.'" href="'.$link.'" title="'.gt('View Comments').'">'.count($item->expComment).' '.(count($item->expComment)==1?gt("Comment"):gt("Comments")).'</a>';
 }
 
 ?>

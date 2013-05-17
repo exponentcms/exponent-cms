@@ -33,7 +33,7 @@
     <ul>
         {foreach from=$tags item=tag}
             <li>
-                <a href="{link action=showall_by_tags tag=$tag->sef_url}" style="font-size:1.{if $tag->count<10}0{$tag->count}{else}{$tag->count}{/if}em;">{$tag->title}</a>
+                <a href="{link action=showall_by_tags tag=$tag->sef_url}" style="font-size:1.{if $tag->count<10}0{$tag->count}{else}{$tag->count}{/if}em;" title="{'View all posts tagged with'|gettext} '{$tag->title}'">{$tag->title}</a>
             </li>
         {/foreach}
     </ul>

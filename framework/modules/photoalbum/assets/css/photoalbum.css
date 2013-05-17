@@ -5,7 +5,7 @@
     margin:0;
 }
 
-.photoalbum.showall ul li {
+.photoalbum.showall ul.image-list li {
     display:inline-block;
     zoom:1;
     *display:inline;

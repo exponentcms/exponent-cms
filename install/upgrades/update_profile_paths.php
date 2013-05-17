@@ -39,7 +39,7 @@ class update_profile_paths extends upgradescript {
 	 * @return string
 	 */
 	function description() { return "Prior to v2.0.4, the User profile extension table contained full paths which prevented moving Exponent to a new folder after a test install.
-	   There was also an issue with the default user avatar path entry.  This Script replaces bad entries with correct ones"; }
+	   There was also an issue with the default user avatar path entry.  This Script replaces bad entries with correct ones."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

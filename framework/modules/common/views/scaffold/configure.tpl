@@ -21,7 +21,7 @@
     		</div>
             <h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
     	</div>
-    	<p>{'Use this form to configure the behavior of the module.'|gettext}</p>
+    	<blockquote>{'Use this form to configure the behavior of the module.'|gettext}</blockquote>
     </div>
 	{form action=saveconfig}
 		<div id="config-tabs" class="yui-navset exp-skin-tabview hide">
@@ -41,7 +41,7 @@
 			</div>
 		</div>
 		<div class="loadingdiv">{"Loading Settings"|gettext}</div>
-		{control type=buttongroup submit="Save Config"|gettext cancel="Cancel"|gettext}
+		{control type=buttongroup submit="Save Configuration"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>
 

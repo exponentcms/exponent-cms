@@ -22,11 +22,13 @@
 	</div>
 </div>
 <blockquote>
-    {"This is where you can configure the settings used by this Countdown module."|gettext}&#160;&#160;
+    {"This is where you configure the settings used by this Countdown module."|gettext}&#160;&#160;
     {"These settings only apply to this particular module."|gettext}
 </blockquote>
 {control type="text" name="title" label="Title"|gettext value=$config.title}
-{control type="text" name="count" label="Countdown Date"|gettext value=$config.count}
-<em>{'NOTE: date must follow this format'|gettext}: 12/31/2020 5:00 AM</em>
-{control type="text" name="message" label="Countdown Finish Message"|gettext value=$config.message}
-{control type="editor" name="body" label="Message on clock"|gettext value=$config.body}
+{control type="calendar" name="count" label="Countdown to Date"|gettext value=$config.count default_date=$config['date-count'] default_hour=$config['time-h-count'] default_min=$config['time-m-count'] default_ampm=$config['ampm-count']}
+{control type="editor" name="message" label="Countdown Completed Message"|gettext value=$config.message}
+{control type="editor" name="body" label="Message below clock"|gettext value=$config.body}
+{control type="checkbox" name="light" label="Use light background for digits"|gettext description="Makes clock discernable on a theme with a dark background"|gettext value=1 checked=$config.light}
+{control type="checkbox" name="displaytext" label="Display remaining time text below clock"|gettext value=1 checked=$config.displaytext}
+{control type="checkbox" name="displaydate" label="Display countdown to date below clock"|gettext value=1 checked=$config.displaydate}

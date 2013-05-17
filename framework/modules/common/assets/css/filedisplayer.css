@@ -20,4 +20,30 @@
     list-style:none;
 }
 
+.slideshow-frame .slide .bodycopy {
+    margin-left: 0!important;
+}
 
+.slideshow h4 {
+    padding-left: 10px!important;
+    background-color: white;
+    color: black;
+    opacity: 0.2;
+    z-index: 2;
+}
+
+.slideshow h4:hover {
+    opacity: 1;
+}
+
+.slideshow .slideshow-buttons {
+    opacity: 0.3;
+    bottom: 5px!important;
+    position: absolute;
+    left: 5px;
+    right: auto!important;
+}
+
+.slideshow .slideshow-buttons:hover {
+    opacity: 1;
+}

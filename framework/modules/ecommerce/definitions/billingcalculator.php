@@ -39,6 +39,8 @@ return array(
 		DB_FIELD_LEN=>100),
 	'enabled'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'is_default'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'config'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),

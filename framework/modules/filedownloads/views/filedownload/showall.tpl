@@ -13,11 +13,16 @@
  *
  *}
 
+{uniqueid prepend="filedownload" assign="name"}
+
 {if $config.usecategories}
 {css unique="categories" corecss="categories"}
 
 {/css}
 {/if}
+{css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
+
+{/css}
 
 <div class="module filedownload showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
@@ -46,21 +51,29 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    <div id="filelist">
+    <div id="{$name}list">
         {include 'filelist.tpl'}
     </div>
 </div>
 
 {if $config.show_player}
-    {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
+    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
+    {*{/script}*}
+
+    {script unique="mediaelement" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+        $('audio,video').mediaelementplayer({
+        	success: function(player, node) {
+        		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+        	}
+        });
     {/script}
 {/if}
 
-{script unique="filedownload" yui3mods="1"}
+{if $config.ajax_paging}
+{script unique="`$name`listajax" yui3mods="1"}
 {literal}
-
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var filelist = Y.one('#filelist');
+    var filelist = Y.one('#{/literal}{$name}{literal}list');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Fileitems'},
@@ -91,7 +104,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#filelist.loadingdiv').remove();
+            filelist.one('.loadingdiv').remove();
         }
 	};
 
@@ -113,3 +126,4 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 });
 {/literal}
 {/script}
+{/if}

@@ -33,7 +33,7 @@
                 <ul class="yui-nav">
                     <li class="selected"><a href="#general"><em>{'General'|gettext}</em></a></li>
                     <li><a href="#seo"><em>{'SEO'|gettext}</em></a></li>
-                    <li><a href="#events1"><em>{'Events'|gettext}</em></a></li>
+                    {*<li><a href="#events1"><em>{'Events'|gettext}</em></a></li>*}
                     {if $product_types}
                         {foreach from=$product_types key=key item=item}
                             <li><a href="#{$item}"><em>{$key} {'Product Types'|gettext}</em></a></li>
@@ -49,14 +49,15 @@
                     </div>
                     <div id="seo">
                         {control type=text name=sef_url label="SEF URL"|gettext value=$node->sef_url}
+                        {control type=text name=canonical label="Canonical URL"|gettext value=$node->canonical}
                         {control type=text name=meta_title label="Meta Title"|gettext value=$node->meta_title}
-                        {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords}
                         {control type=text name=meta_description label="Meta Description"|gettext value=$node->meta_description}
+                        {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords}
                     </div>
-                     <div id="events1">
-                        {control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}
-                        {control type="checkbox" name="hide_closed_events" label='Don\'t Show Closed Events'|gettext value=1 checked=$node->hide_closed_events}
-                    </div>
+                     {*<div id="events1">*}
+                        {*{control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}*}
+                        {*{control type="checkbox" name="hide_closed_events" label='Don\'t Show Closed Events'|gettext value=1 checked=$node->hide_closed_events}*}
+                    {*</div>*}
                     {if $product_types}
                         {foreach from=$product_types key=key item=item}
                             <div id="{$item}">
@@ -73,7 +74,7 @@
     </div>
 </div>
 
-{script unique="cat-tabs" src="`$smarty.const.PATH_RELATIVE`framework/core/subsystems/forms/controls/listbuildercontrol.js" yui3mods=1}
+{script unique="cat-tabs" src="`$smarty.const.PATH_RELATIVE`framework/core/forms/controls/listbuildercontrol.js" yui3mods=1}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',

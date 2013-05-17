@@ -13,24 +13,24 @@
  *
  *}
 
-{css unique="nav-manager" link="`$asset_path`css/nav-manager.css" corecss="forms,panels,tree"}
+{css unique="nav-manager" link="`$asset_path`css/nav-manager.css" corecss="panels,tree"}
 
 {/css}
 
 <div class="module navigation manager-hierarchy">
 	<div class="form_header">
-		<p>
+		<blockquote>
             <strong>{'Drag and drop'|gettext}</strong> {'tree items using the 4-way arrows icon to re-order the site hierarchy (main menu).'|gettext}
             <ul>
                 <li>{'Dropping an item on a name (name grays out) places it within that menu.'|gettext}</li>
                 <li>{'Dropping an item between names (shows a line) places it next to that menu.'|gettext}</li>
             </ul>
             <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of options.'|gettext}
-        </p>
+        </blockquote>
 	</div>
 	{permissions}
 		{if $user->is_admin || $user->is_acting_admin}
-			<a class="add" href="{link action=add_section parent='0'}">{'Create a New Top Level Page'|gettext}</a>
+			{icon class="add" action=add_section parent='0' text='Create a New Top Level Page'|gettext}
 		{/if}
 	{/permissions}
 	{*<a id="expand" href="#">Expand all</a>*}
@@ -40,7 +40,7 @@
 	</div>
 </div>
 
-    {*FIXME convert to yui3*}
+{*FIXME convert to yui3*}
 {script yui3mods="1" unique="DDTreeNav" }
 {literal} 
 

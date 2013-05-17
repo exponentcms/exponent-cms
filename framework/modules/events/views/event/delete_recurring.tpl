@@ -20,7 +20,7 @@
 <div class="module events delete">
     <h1>{'Delete Event'|gettext}</h1>
     <h3>{$event->title}</h3>
-    <p>{'The event you have opted to delete is a recurring event.  You can decide to delete just this instance of it, or all instances, below.'|gettext}</p>
+    <blockquote>{'The event you have opted to delete is a recurring event.  You can decide to delete just this instance of it, or all instances, below.'|gettext}</blockquote>
     {form action=delete_selected}
         {control type=hidden name=id value=$event->id}
         {$dates = $event->eventdate}

@@ -279,7 +279,8 @@ class faqController extends expController {
 
                 $origid = $cnt['id'];
                 unset($cnt['id']);
-                $sql = "original_id=".$origid." AND ref_module='".$this->classname."'";
+//                $sql = "original_id=".$origid." AND ref_module='".$this->classname."'";
+                $sql = "original_id=".$origid." AND ref_module='".$this->baseclassname."'";
                 $oldindex = $db->selectObject('search',$sql);
                 if (!empty($oldindex)) {
                     $search_record = new search($oldindex->id, false, false);
@@ -297,7 +298,8 @@ class faqController extends expController {
                 $link = str_replace(URL_FULL,'', makeLink(array('controller'=>$this->baseclassname, 'action'=>'showall', 'src'=>$src)));
     //	        if (empty($search_record->title)) $search_record->title = 'Untitled';
                 $search_record->view_link = $link;
-                $search_record->ref_module = $this->classname;
+//                $search_record->ref_module = $this->classname;
+                $search_record->ref_module = $this->baseclassname;
                 $search_record->category = $this->searchName();
                 $search_record->ref_type = $this->searchCategory();
                 $search_record->save();

@@ -45,18 +45,18 @@
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_categories"}">{'Categories'|gettext}</a></li>
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_options"}">{'Options'|gettext}</a></li>
                 {if $record->parent_id == 0}
-                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_featured"}">{'Featured'|gettext}</a></li>
-                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_related"}">{'Related Products'|gettext}</a></li>
+                    <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_featured"}">{'Featured'|gettext}</a></li>
+                    <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_related"}">{'Related Products'|gettext}</a></li>
                 {/if}
-                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_userinput"}">{'User Input Fields'|gettext}</a></li>
+                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_userinput"}">{'User Input'|gettext}</a></li>
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_status"}">{'Active'|gettext} &amp; {'Status Settings'|gettext}</a></li>
                 {if $record->parent_id == 0}
-                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_meta"}">{'SEO'|gettext}</a></li>
+                    <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_meta"}">{'SEO'|gettext}</a></li>
                 {/if}
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_notes"}">{'Notes'|gettext}</a></li>
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_extrafields"}">{'Extra Fields'|gettext}</a></li>
                 {if $record->parent_id == 0}
-                <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_model"}">{'SKUS/Model'|gettext}</a></li>
+                    <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_model"}">{'SKUS/Model'|gettext}</a></li>
                 {/if}
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_misc"}">{'Misc'|gettext}</a></li>
             </ul>
@@ -85,7 +85,7 @@
 
     YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs",'tabview',"node-load","event-simulate",'cookie', function(Y) {
        
-       var lastTab = !Y.Lang.isNull(Y.Cookie.get("edit-tab")) ? Y.Cookie.get("edit-tab") : 0;
+//       var lastTab = !Y.Lang.isNull(Y.Cookie.get("edit-tab")) ? Y.Cookie.get("edit-tab") : 0;
        var tabs = Y.all('#dynamicload li a');
        var cdiv = Y.one('#loadcontent');
        
@@ -102,7 +102,7 @@
            var cTab = cTabs.item(tIndex);
            var puri =  tab.getAttribute('href');
 
-           Y.Cookie.set("edit-tab", tIndex);
+//           Y.Cookie.set("edit-tab", tIndex);
            
            tabs.removeClass('current');
            tab.addClass('current');
@@ -134,8 +134,9 @@
        
        tabs.on('click',loadTab);
 
-       tabs.item(lastTab).simulate('click');
-       
+//       tabs.item(lastTab).simulate('click');
+       tabs.item(0).simulate('click');
+
        Y.one('#editproduct-tabs').removeClass('hide');
        Y.one('.loadingdiv').remove();
     });

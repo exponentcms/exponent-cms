@@ -26,6 +26,7 @@
     </div>
     <div class="module-actions">
         {icon class="add" action="edit_form" text="Create a New Form"|gettext}
+        {icon class="import" action="import_csv" text="Import CSV File"|gettext}
     </div>
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
@@ -65,6 +66,7 @@
                         {if $form->is_saved}
                             {icon class="view" action=showall id=$form->id text='View Data'|gettext|cat:" (`$form->count`)"}
                             {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}
+                            {icon class="downloadfile" action=export_eql id=$form->id text="Export EQL"|gettext}
                         {else}
                             {'Data Not Saved'|gettext}
                         {/if}

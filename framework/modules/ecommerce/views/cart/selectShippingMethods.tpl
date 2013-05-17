@@ -33,7 +33,7 @@
 
                             <ul class="items">
                             {foreach from=$shippingitem->orderitem item=product}
-                                <li>{$product->products_name} - {currency_symbol}{$product->products_price}
+                                <li>{$product->products_name} - {$product->products_price|currency}
                                     {if $product->opts[0]}
                                     <h4>{'Selected Options'|gettext}</h4>
                                     <ul style="padding:0 0 0 15px;margin:0 0 5px 0;">
@@ -57,7 +57,7 @@
                                 <div>
                                     {control type=hidden name="cost[`$option.id`]" value=$option.cost}
                                     {control type=hidden name="title[`$option.id`]" value=$option.title}
-                                    {control type="radio" name="methods[`$shippingitem->method->id`]" label="`$option.title` ($`$option.cost`)" value=$option.id}
+                                    {control type="radio" name="methods[`$shippingitem->method->id`]" label="`$option.title` (`$option.cost|currency`)" value=$option.id}
                                 </div>
 
                                 </td?
@@ -67,6 +67,7 @@
                 </tbody>
             </table>
 
+            {*FIXME convert to yui3*}
             {script unique="shippingopts`$shippingitem->method->id`"}
             {literal}
             YAHOO.util.Event.onDOMReady(function(){
@@ -106,7 +107,6 @@ YAHOO.util.Event.onDOMReady(function(){
         YAHOO.util.Dom.setStyle(vals, 'display', 'table-row');
     }
     //YAHOO.util.Dom.setStyle(vals, 'display', 'block');
-    
 });
 {/literal}
 {/script}

@@ -14,6 +14,12 @@
  *}
 
 <div id="fedex">
+    <blockquote>
+        {'To setup a FEDEX account, visit this page'|gettext} <a href="https://www.fedex.com/login/web/jsp/logon.jsp" target="_blank">https://www.fedex.com/login/web/jsp/logon.jsp</a>
+        <ul>
+            <li>{'You will also need to obtain a Developer Test Key'|gettext} <a href="https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/develop.html" target="_blank">https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/develop.html</a></li>
+        </ul>
+    </blockquote>
     <div id="fedex-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'FedEx Settings'|gettext}</em></a></li>
@@ -23,10 +29,10 @@
         </ul>
         <div class="yui-content">
 	        <div id="tab1">
-	            {control type="text" name="fedex_account_number" label="FedEx Account Number"|gettext value=$calculator->configdata.fedex_account_number}
-	            {control type="text" name="fedex_meter_number" label="Meter Number"|gettext value=$calculator->configdata.fedex_meter_number}
-	            {control type="text" name="fedex_key" label="Key"|gettext value=$calculator->configdata.fedex_key}
-	            {control type="text" name="fedex_password" label="Password"|gettext value=$calculator->configdata.fedex_password}
+	            {control type="text" name="fedex_account_number" label="FedEx Account Number"|gettext value=$calculator->configdata.fedex_account_number required=1}
+	            {control type="text" name="fedex_meter_number" label="Meter Number"|gettext value=$calculator->configdata.fedex_meter_number required=1}
+	            {control type="text" name="fedex_key" label="Key"|gettext value=$calculator->configdata.fedex_key required=1}
+	            {control type="text" name="fedex_password" label="Password"|gettext value=$calculator->configdata.fedex_password required=1}
 	            {*control type="text" name="shipfrom[shipperNumber]" label="Account #" value=$calculator->configdata.shipfrom.shipperNumber*}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
@@ -42,13 +48,13 @@
 	        <div id="tab3">
 	            {*control type="text" name="shipfrom[name]" label="Company Name" value=$calculator->configdata.shipfrom.name}
 	            {control type="text" name="shipfrom[phone]" label="Phone Number" value=$calculator->configdata.shipfrom.phone*}
-	            {control type="text" name="shipfrom[address1]" label="Address"|gettext value=$calculator->configdata.shipfrom.address1}
+	            {control type="text" name="shipfrom[address1]" label="Address"|gettext value=$calculator->configdata.shipfrom.address1 required=1}
 	            {control type="text" name="shipfrom[address2]" label=" " value=$calculator->configdata.shipfrom.address2}
 	            {control type="text" name="shipfrom[address3]" label=" " value=$calculator->configdata.shipfrom.address3}
-	            {control type="text" name="shipfrom[City]" label="City"|gettext value=$calculator->configdata.shipfrom.City}
-	            {control type="text" name="shipfrom[StateOrProvinceCode]" label="2 Character State Code"|gettext size=2 value=$calculator->configdata.shipfrom.StateOrProvinceCode}
-	            {control type="text" name="shipfrom[PostalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.PostalCode}
-	            {control type="text" name="shipfrom[CountryCode]" label="2 Character Country Code"|gettext size=2 value=$calculator->configdata.shipfrom.CountryCode}
+	            {control type="text" name="shipfrom[City]" label="City"|gettext value=$calculator->configdata.shipfrom.City required=1}
+                {control type="state" name="shipfrom[StateOrProvinceCode]" label="State"|gettext value=$calculator->configdata.shipfrom.StateOrProvinceCode required=1}
+	            {control type="text" name="shipfrom[PostalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.PostalCode required=1}
+                {control type="country" name="shipfrom[CountryCode]" label="Country"|gettext value=$calculator->configdata.shipfrom.CountryCode required=1}
 	        </div>
 	        <div id="tab4">
 	            {control type="text" name="default_width" label="Standard Box Width (inches)"|gettext size=5 value=$calculator->configdata.default_width}

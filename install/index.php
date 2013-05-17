@@ -33,20 +33,20 @@ if (isset($_POST['sc']['LANGUAGE'])) {
 
 include_once('../exponent.php');
 
-//if (!file_exists('not_configured') && file_exists(BASE.'conf/config.php')) {
+//if (!file_exists('not_configured') && file_exists(BASE.'framework/conf/config.php')) {
 //	flash('notice',gt('This Exponent Site has already been configured.'));
 //	header('Location: ../index.php');
 //	exit(gt('This Exponent Site has already been configured.'));
 //}
 
 if (isset($_POST['sc'])) {
-    if (file_exists("../conf/config.php")) {
+    if (file_exists("../framework/conf/config.php")) {
         // Update the config
         foreach ($_POST['sc'] as $key => $value) {
             expSettings::change($key, $value);
         }
     } else {
-        // Initialize /conf/config
+        // Initialize /framework/conf/config
     	$values = array(
     		'c'=>$_POST['sc'],
     		'opts'=>array(),
@@ -58,21 +58,20 @@ if (isset($_POST['sc'])) {
 }
 
 if (isset($_POST['install_sample'])) {
-    // we still use $_POST['install_sample'] from install-5.php, even though the system samples are in a static location
-    $eql = BASE . "themes/".DISPLAY_THEME_REAL."/sample.eql";
-    if (!file_exists($eql)) $eql = BASE . $_POST['install_sample'] . ".eql";
+    $eql = BASE . "themes/".DISPLAY_THEME_REAL . "/" . $_POST['install_sample'] . ".eql";
+    if (!file_exists($eql)) $eql = BASE . "install/samples/" . $_POST['install_sample'] . ".eql";
 	if (file_exists($eql)) {
 		$errors = array();
 		expFile::restoreDatabase($db,$eql,$errors);
-        $files = BASE . "themes/".DISPLAY_THEME_REAL."/sample.tar.gz";
-        if (!file_exists($files)) $files = BASE . $_POST['install_sample'] . ".tar.gz";
-		if (file_exists($files)) {  // only install if there was an eql file
+        $files = BASE . "themes/" . DISPLAY_THEME_REAL . "/" .  $_POST['install_sample'] . ".tar.gz";
+        if (!file_exists($files)) $files = BASE . "install/samples/" . $_POST['install_sample'] . ".tar.gz";
+		if (file_exists($files)) {  // only install if there was an archive
 			include_once(BASE.'external/Tar.php');
 			$tar = new Archive_Tar($files);
 			$return = $tar->extract(BASE);
 		}
 	}
-    if (DEVELOPMENT && count($errors)) {
+    if (DEVELOPMENT && !empty($errors)) {
         echo '<h2>'.gt('Errors were encountered populating the site database.').'</h2><ul>';
         foreach ($errors as $e) echo '<li>'.$e.'</li>';
         echo '</ul>';
@@ -81,11 +80,11 @@ if (isset($_POST['install_sample'])) {
     }
 }
 
-if (file_exists("../conf/config.php") && !isset($_REQUEST['page'])) {
+if (file_exists("../framework/conf/config.php") && !isset($_REQUEST['page'])) {
 	$_REQUEST['page'] = 'upgrade-1';
 }
 		
-if (!isset($_REQUEST['page']) && !file_exists("../conf/config.php")) {
+if (!isset($_REQUEST['page']) && !file_exists("../framework/conf/config.php")) {
     $_REQUEST['page'] = '';
 }
 $page = $_REQUEST['page'];
@@ -158,8 +157,8 @@ switch ($page) {
 	<title><?php echo gt('Exponent Install Wizard'); ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo LANG_CHARSET; ?>" />
     <meta name="Generator" content="Exponent Content Management System - <?php echo expVersion::getVersion(true); ?>" />
-	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssreset/reset.css" />
-	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssfonts/fonts.css" />
+	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssreset/cssreset.css" />
+	<link rel="stylesheet" href="<?php echo YUI3_RELATIVE; ?>cssfonts/cssfonts.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/forms.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/button.css" />
 	<link rel="stylesheet" href="<?php echo PATH_RELATIVE; ?>framework/core/assets/css/tables.css" />

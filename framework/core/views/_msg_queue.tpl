@@ -19,22 +19,22 @@
 
 {if $queues|@count!=0} 
 {foreach from=$queues item=queue key=qname}
-<div class="msg-queue {$qname}">
-    <a class="close" href="#">{'Close'|gettext}</a>
-    {foreach from=$queue item=msg} 
-    	<div class="msg">{$msg}</div>
-    {/foreach}
-</div>
+    <div class="msg-queue {$qname}">
+        <a class="close" href="#">{'Close'|gettext}</a>
+        {foreach from=$queue item=msg}
+            <div class="msg">{$msg}</div>
+        {/foreach}
+    </div>
 {/foreach}
 
 {script unique="closequeue" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-    Y.all('.msg-queue .close').on('click',function(e){
-        e.halt();
-        e.target.get('parentNode').remove();
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+        Y.all('.msg-queue .close').on('click',function(e){
+            e.halt();
+            e.target.get('parentNode').remove();
+        });
     });
-});
 {/literal}
 {/script}
 {/if}

@@ -1,10 +1,52 @@
 #Exponent Content Management System..
 
-===============================================
+----------
 
 Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
+
+Added / Fixed / changed for 2.2.0
+-----------------------
+### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
+  - Removes all the 'old school' 1.x files
+    -- removes deprecated headline controller (converting them to text modules), suggest a custom text module 'headline' view be created if needed
+    -- forces deprecation/removal of formmodule/formbuilder
+    -- replaces the containermodule with container 2.0 controller
+    -- also fully deprecates/removes calendarmodule, simplepollmodule, & navigationmodule if they still exist
+  - moves to jQuery/Twitter-Bootstrap as primary libraries over YUI2/3 (which are still backwards compatible)
+    -- adds normalize.css and Twitter Bootstrap as system (theme) features
+  - implements an html5 input fallback system to display html5 controls/features in older browsers
+    -- adds more simple controls to forms designer (email, url, telephone, range, number, several date/time controls)
+    -- allows switching to similar type control after creation
+  - updates style of maintenance/site-down page
+  - tweaks and more features to ecommerce (esp. online donations and event registrations) making it more robust and polished
+    -- adds single or multi-person event registration using site forms to collect registration data
+    -- quick add donation at set amount or allow user to enter amount
+    -- event registrations now abide by 'options'
+  - adds new forms showall portfolio view for multi-record custom view (fixes custom single record view)
+    -- adds new import form data, or create a form from csv file feature
+  - implements broader use of ajax paging and use of new html5 input types, temporarily adds additional date/time form designer controls
+  - enhances attached file display features
+  - adds new html5 media player module for audio, video & youtube, which deprecates both flowplayer and youtube modules
+    -- updates filedownload module media player to html5 (flash not required)
+  - adds new import users from csv file feature
+  - adds ability to optionally run selected 'upgrade scripts' outside of installation
+  - moves /conf folder inside /framework to help streamline folder structure
+  - adds theme export feature
+  - adds new 'blog' and 'eCommerce store'site sample database in addition to 'sample site' during installation
+  - adds category support to blog module
+    -- adds new comments and categories views to blog
+  - adds file upload pause, resume, & cancel feature
+  - enables user authentication via an LDAP server (requires php ldap module)
+  - updates look of countdown module to be more professional looking with new display options
+  - removes addressbook module from list of available modules since it's not designed to be placed on a page
+### Known Issues
+  - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
+    -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
+  - eCommerce gift card & purchase order functionality have not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
 
 Added / Fixed / changed for 2.1.4
 -----------------------

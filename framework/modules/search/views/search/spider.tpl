@@ -28,7 +28,7 @@
         </thead>
         <tbody>
             {foreach from=$mods key=name item=status}
-            <tr class="row {cycle values="odd_row,even_row"}">
+            <tr class="{cycle values="odd,even"}">
         	    <td>{$name}</td>
         	    <td>
         	        {$status}

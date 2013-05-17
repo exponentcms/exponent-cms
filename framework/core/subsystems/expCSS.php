@@ -27,6 +27,11 @@ class expCSS {
     public static function pushToHead($params) {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline;
         
+        // normalize.css is always at the top
+        if (!empty($params['normalize'])){
+            $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
+        }
+
         // primer css
         if (!empty($params['css_primer'])){
             $primer_array = $params['css_primer'];
@@ -81,7 +86,9 @@ class expCSS {
                     echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
                 }
             }
-            echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+            if (!empty($params['link'])){
+                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+            }
 		    echo "</div>";
         }
     }    
@@ -97,6 +104,8 @@ class expCSS {
         unset($head_config['xhtml']);
         unset($head_config['lesscss']);
         unset($head_config['lessvars']);
+        unset($head_config['normalize']);
+        unset($head_config['framework']);
 
         $css_files = array();
         foreach($head_config as $key=>$value) {

@@ -36,10 +36,15 @@
                             <div style="float: left;">{control type="checkbox" name="files['`$theme->title`']" label=" " value="`$theme->enclosure`"}</div>
                             <a href="{$theme->rss_link}" title="More Information"|gettext target="_blank"><h4>{$theme->title}</h4></a>
                             <em class="date">
-                                {$theme->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                                {'Dated'|gettext}: {$theme->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                            </em>
+                            {br}
+                            <em class="date">
+                                {'Size'|gettext}: {$theme->length|bytes}
                             </em>
                             <div class="bodycopy">
                                 {$theme->body|summarize:"html":"paralinks"}
+                                {br}
                                 <a href="{$theme->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
                         </div>
@@ -58,10 +63,15 @@
                             <div style="float: left;">{control type="checkbox" name="files['`$fix->title`']" label=" " value="`$fix->enclosure`"}</div>
                             <a href="{$fix->rss_link}" title="More Information"|gettext target="_blank"><h4>{$fix->title}</h4></a>
                             <em class="date">
-                                {$fix->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                                {'Dated'|gettext}: {$fix->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                            </em>
+                            {br}
+                            <em class="date">
+                                {'Size'|gettext}: {$fix->length|bytes}
                             </em>
                             <div class="bodycopy">
                                 {$fix->body|summarize:"html":"paralinks"}
+                                {br}
                                 <a href="{$fix->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
                         </div>
@@ -79,10 +89,15 @@
                             <div style="float: left;">{control type="checkbox" name="files['`$mod->title`']" label=" " value="`$mod->enclosure`"}</div>
                             <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank"><h4>{$mod->title}</h4></a>
                             <em class="date">
-                                {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                                {'Dated'|gettext}: {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
+                            </em>
+                            {br}
+                            <em class="date">
+                                {'Size'|gettext}: {$mod->length|bytes}
                             </em>
                             <div class="bodycopy">
                                 {$mod->body|summarize:"html":"paralinks"}
+                                {br}
                                 <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
                         </div>
@@ -94,8 +109,8 @@
 			</div>
 			<div id="tab4">
                 <h2>{"Extension File Upload"|gettext}</h2>
-                <div class="form_header">{'This form allows you to upload modules, themes, plugins, and views to the website.  After you upload an archive containing an extension (or more) you will be shown a pre-installation summary page, outlining exactly what files will be installed where, and what each file contains (for security reasons)'|gettext}</div>
-                <p><h4>{'It is NOT intended to be used to perform a version upgrade!'|gettext}</h4></p>
+                <div class="form_header">{'This form allows you to upload custom modules, themes, and views to the website, or patch the installation.  After you upload an archive containing an extension you will be shown a pre-installation summary page outlining exactly what files will be installed where, and what each file contains (for security reasons)'|gettext}</div>
+                <p><h4>{'It is NOT intended to be used to perform a full version upgrade!'|gettext}</h4></p>
 				{$form_html}
 			</div>
 		</div>

@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="showlogin" link="`$asset_path`css/login.css" corecss="button, forms"}
+{css unique="showlogin" link="`$asset_path`css/login.css" corecss="button"}
 
 {/css}
 
@@ -23,7 +23,7 @@
 
 <div class="module login flyout" style="display: none;">
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-    <div class="box login-form one">
+    <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="box login-form one"{/if}>
         {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
             {$usertype="Customers"|gettext}
             {$label="Email Address"|gettext|cat:":"}
@@ -35,8 +35,8 @@
         <h2>{"Existing"|gettext} {$usertype}</h2>
         <!--p>If you are an existing customer please log-in below to continue in the checkout process.</p-->
         {form action=login}
-            {control type="text" name="username" label=$label size=25 required=1}
-            {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1}
+            {control type="text" name="username" label=$label size=25 required=1 prepend="user"}
+            {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
             {control type="buttongroup" submit="Log In"|gettext}
         {/form}
         {br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>

@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="blog" link="`$asset_path`css/blog.css"}
+{css unique="blog" link="`$asset_path`../../blog/assets/css/blog.css"}
 
 {/css}
 
@@ -28,7 +28,7 @@
 
 		</div>
     {/permissions}
-    <h2>API Key</h2>
+    <h2>{'API Key'|gettext}</h2>
     <textarea style="width:100%; height:200px;">{$info.apikey}</textarea>
     {*edebug var=$info*}
 

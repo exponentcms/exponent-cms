@@ -12,6 +12,9 @@ function adminer_object() {
     
     $plugins = array(
         // specify enabled plugins here
+//        new AdminerDumpAlter,
+//        new AdminerDumpDate,
+        new AdminerDumpZip,
         new AdminerEditCalendar,
         new AdminerCKeditor,
 //        new AdminerEditTextarea,
@@ -27,7 +30,7 @@ function adminer_object() {
     /* It is possible to combine customization and plugins: */
     class AdminerCustomization extends AdminerPlugin { 
 		function name() { // custom name in title and heading 
-			return gt('Exponent Database');
+			return gt('Exponent CMS Database');
 		} 
 		function permanentLogin() { // key used for permanent login 
 			return ""; 
@@ -69,5 +72,5 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-3.6.3-mysql.php";
+include "./adminer-3.6.4-mysql.php";
 ?>

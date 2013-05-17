@@ -16,6 +16,11 @@
 {css unique="blog" link="`$asset_path`css/blog.css"}
 
 {/css}
+{if $config.usecategories}
+{css unique="categories" corecss="categories"}
+
+{/css}
+{/if}
 
 <div class="module blog showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
@@ -29,6 +34,9 @@
             {if $permissions.manage == 1}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='blog' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {icon controller=expCat action=manage model='blog' text="Manage Categories"|gettext}
                 {/if}
             {/if}
 		</div>
@@ -94,7 +102,7 @@
             {/permissions}
             {if $config.usebody!=2}
                 <div class="bodycopy">
-                    {if $config.filedisplay != "Downloadable Files"}
+                    {if $config.ffloat != "Below"}
                         {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                     {/if}
                     {if $config.usebody==1}
@@ -103,16 +111,16 @@
                     {else}
                         {$item->body}
                     {/if}
-                    {if $config.filedisplay == "Downloadable Files"}
+                    {if $config.ffloat == "Below"}
                         {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                     {/if}
                 </div>
+                {clear}
             {/if}
         </div>
         {/if}
     {/foreach}    
     {if $page->total_records > $config.headcount}
-        {*{icon action="showall" text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}*}
         {pagelinks paginate=$page more=1 text="More Items in"|gettext|cat:' '|cat:$moduletitle|cat:' ...'}
     {/if}
 </div>

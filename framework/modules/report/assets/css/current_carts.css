@@ -70,12 +70,12 @@
 
 .exp-ecom-table .div-rows div.even,
 .exp-ecom-table tr.even td {
-    background:#dfffc6;
+    background:#dfffc6!important;
 }
 
 .exp-ecom-table .div-rows div.odd,
 .exp-ecom-table tr.odd td {
-    background:#cce9b5;
+    background:#cce9b5!important;
 }
 
 .exp-ecom-table .payment-info th,
@@ -99,8 +99,6 @@
 .exp-ecom-table .div-rows div span.pmt-value {
     font-style:italic;
 }
-
-
 
 .report.generate-report .actions-to-apply {
     position:relative;

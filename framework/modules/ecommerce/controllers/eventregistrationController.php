@@ -34,6 +34,8 @@ class eventregistrationController extends expController {
 
     public $useractions = array(
         'showall'     => 'Show all events',
+        'eventsCalendar'                  => 'Calendar View',
+        'upcomingEvents'                  => 'Upcoming Events',
 //        'showByTitle' => "Show events by title",
     );
 
@@ -44,10 +46,10 @@ class eventregistrationController extends expController {
         'comments',
         'ealerts',
         'files',
-        'module_title',
+//        'module_title',
         'rss',
         'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     public $add_permissions = array(
         'view_registrants'=> 'View Registrants',
@@ -58,7 +60,7 @@ class eventregistrationController extends expController {
     }
 
     static function description() {
-        return gt("Use this module to manage event registrations on your website");
+        return gt("Manage event registrations on your website");
     }
 
     function showall() {
@@ -67,15 +69,14 @@ class eventregistrationController extends expController {
         expHistory::set('viewable', $this->params);
         $limit = (!empty($this->config['limit'])) ? $this->config['limit'] : 10;
 
+        $pass_events = array();
         if ($user->isAdmin()) {
             $pass_events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
         } else {
             $events      = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
-            $pass_events = array();
-
             foreach ($events as $event) {
                 // $this->signup_cutoff > time()
-                if ($event->signup_cutoff > time()) {
+                if ($event->eventdate > time() && $event->signup_cutoff > time()) {
                     $pass_events[] = $event;
                 }
                 // eDebug($event->signup_cutoff, true);
@@ -89,7 +90,7 @@ class eventregistrationController extends expController {
         $page = new expPaginator(array(
             'records'=>$pass_events,
             'limit'=>$limit,
-            'order'=>"title ASC",
+            'order'=>"eventdate ASC",
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
@@ -106,8 +107,232 @@ class eventregistrationController extends expController {
         ));
     }
 
+    function eventsCalendar() {
+        global $db, $user;
+
+        expHistory::set('viewable', $this->params);
+
+        $time = isset($this->params['time']) ? $this->params['time'] : time();
+        assign_to_template(array(
+            'time' => $time
+        ));
+
+//        $monthly = array();
+//        $counts  = array();
+
+        $info = getdate($time);
+        $nowinfo = getdate(time());
+        if ($info['mon'] != $nowinfo['mon']) $nowinfo['mday'] = -10;
+        // Grab non-day numbers only (before end of month)
+//        $week        = 0;
+        $currentweek = -1;
+
+        $timefirst = mktime(0, 0, 0, $info['mon'], 1, $info['year']);
+        $week = intval(date('W', $timefirst));
+        if ($week >= 52 && $info['mon'] == 1) $week = 1;
+        $infofirst = getdate($timefirst);
+
+//        if ($infofirst['wday'] == 0) {
+//            $monthly[$week] = array(); // initialize for non days
+//            $counts[$week]  = array();
+//        }
+//        for ($i = 1 - $infofirst['wday']; $i < 1; $i++) {
+//            $monthly[$week][$i] = array();
+//            $counts[$week][$i]  = -1;
+//        }
+//        $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
+        $monthly[$week] = array(); // initialize for non days
+        $counts[$week] = array();
+        if (($infofirst['wday'] == 0) && (DISPLAY_START_OF_WEEK == 1)) {
+            for ($i = -6; $i < (1 - DISPLAY_START_OF_WEEK); $i++) {
+                $monthly[$week][$i] = array();
+                $counts[$week][$i] = -1;
+            }
+            $weekday = $infofirst['wday'] + 7; // day number in grid.  if 7+, switch weeks
+        } else {
+            for ($i = 1 - $infofirst['wday']; $i < (1 - DISPLAY_START_OF_WEEK); $i++) {
+                $monthly[$week][$i] = array();
+                $counts[$week][$i] = -1;
+            }
+            $weekday = $infofirst['wday']; // day number in grid.  if 7+, switch weeks
+        }
+        // Grab day counts
+        $endofmonth = date('t', $time);
+
+        for ($i = 1; $i <= $endofmonth; $i++) {
+            $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
+            if ($i == $nowinfo['mday']) $currentweek = $week;
+
+//            $dates              = $db->selectObjects("eventregistration", "`eventdate` = $start");
+//            $dates = $db->selectObjects("eventregistration", "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
+            $er = new eventregistration();
+//            $dates = $er->find('all', "(eventdate >= " . expDateTime::startOfDayTimestamp($start) . " AND eventdate <= " . expDateTime::endOfDayTimestamp($start) . ")");
+
+            if ($user->isAdmin()) {
+                $events = $er->find('all', 'product_type="eventregistration"', "title ASC");
+            } else {
+                $events = $er->find('all', 'product_type="eventregistration" && active_type=0', "title ASC");
+            }
+            $dates = array();
+
+            foreach ($events as $event) {
+                // $this->signup_cutoff > time()
+                if ($event->eventdate >= expDateTime::startOfDayTimestamp($start) && $event->eventdate <= expDateTime::endOfDayTimestamp($start)) {
+                    $dates[] = $event;
+                }
+                // eDebug($event->signup_cutoff, true);
+            }
+
+            $monthly[$week][$i] = self::getEventsForDates($dates);
+            $counts[$week][$i] = count($monthly[$week][$i]);
+            if ($weekday >= (6 + DISPLAY_START_OF_WEEK)) {
+                $week++;
+                $monthly[$week] = array(); // allocate an array for the next week
+                $counts[$week] = array();
+                $weekday = DISPLAY_START_OF_WEEK;
+            } else $weekday++;
+        }
+        // Grab non-day numbers only (after end of month)
+        for ($i = 1; $weekday && $i < (8 + DISPLAY_START_OF_WEEK - $weekday); $i++) {
+            $monthly[$week][$i + $endofmonth] = array();
+            $counts[$week][$i + $endofmonth] = -1;
+        }
+
+        assign_to_template(array(
+            'currentweek' => $currentweek,
+            'monthly'     => $monthly,
+            'counts'      => $counts,
+            "prevmonth3"  => strtotime('-3 months', $timefirst),
+            "prevmonth2"  => strtotime('-2 months', $timefirst),
+            "prevmonth"   => strtotime('-1 months', $timefirst),
+            "nextmonth"   => strtotime('+1 months', $timefirst),
+            "nextmonth2"  => strtotime('+2 months', $timefirst),
+            "nextmonth3"  => strtotime('+3 months', $timefirst),
+            'now'         => $timefirst,
+            "today"       => expDateTime::startOfDayTimestamp(time())
+        ));
+    }
+
+    function upcomingEvents() {
+        global $db;
+
+        $sql = 'SELECT DISTINCT p.*, er.eventdate, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
+        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
+        $sql .= 'WHERE er.signup_cutoff > ' . time() . ' AND er.eventdate > ' . time();
+
+        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
+        $order = 'eventdate';
+        $dir = 'ASC';
+
+        $page = new expPaginator(array(
+            'model_field' => 'product_type',
+            'sql'         => $sql,
+            'limit'       => $limit,
+            'order'       => $order,
+            'dir'         => $dir,
+            'page'        => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'  => $this->params['controller'],
+            'action'      => $this->params['action'],
+            'columns'     => array(
+                gt('Model #')      => 'model',
+                gt('Product Name') => 'title',
+                gt('Price')        => 'base_price'
+            ),
+        ));
+        assign_to_template(array(
+            'page' => $page
+        ));
+    }
+
+    function show() {
+        global $order, $db, $template, $user;
+
+        expHistory::set('viewable', $this->params);
+        if (!empty($this->params['token'])) {
+            $record = expSession::get("last_POST_Paypal");
+        } else {
+            $record = expSession::get("last_POST");
+        }
+        $id = isset($this->params['title']) ? addslashes($this->params['title']) : $this->params['id'];
+        $product = new eventregistration($id);
+
+        //FIXME we only have 0=active & 2=inactive ???
+//        $product_type = new stdClass();
+        if ($product->active_type == 1) {
+            $product->user_message = "This event is temporarily unavailable for registration.";
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
+            flash("error", $product->title . " " . gt("registration is currently unavailable for registration."));
+            expHistory::back();
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
+            $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
+        }
+
+        $order_registrations = array();
+        $count = 1;
+        if (!empty($this->params['orderitem_id'])) {  // editing an event already in the cart?
+            $f = new forms($product->forms_id);
+            $loc_data = new stdClass();
+            $loc_data->order_id = $order->id;
+            $loc_data->orderitem_id = $this->params['orderitem_id'];
+            $loc_data->event_id = $product->id;
+            $locdata = serialize($loc_data);
+            $order_registrations = $db->selectObjects('forms_' . $f->table_name, "location_data='" . $locdata . "'");
+
+//            $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND orderitem_id =" . $this->params['orderitem_id'] . " AND event_id =" . $product->id);
+//            if (!empty($registrants)) foreach ($registrants as $registrant) {
+//                $order_registrations[] = expUnserialize($registrant->value);
+//            }
+            $item = $order->isItemInCart($product->id, $product->product_type, $this->params['orderitem_id']);
+            if (!empty($item)) {
+                $params['options'] = $item->opts;
+                assign_to_template(array(
+                    'params'=> $params,
+                    'orderitem_id'=>$item->id
+                ));
+                $count = $item->quantity;
+            }
+        }
+
+        //eDebug($product, true);
+        assign_to_template(array(
+            'product'=> $product,
+//            'record'=> $record,
+            'registered' => $order_registrations,
+            'count' => $count,
+        ));
+    }
+
+    function showByTitle() {
+        global $order, $template, $user;
+        expHistory::set('viewable', $this->params);
+        if (!empty($this->params['token'])) {
+            $record = expSession::get("last_POST_Paypal");
+        } else {
+            $record = expSession::get("last_POST");
+        }
+        $product = new eventregistration(addslashes($this->params['title']));
+
+        //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
+         //FIXME we only have 0=active & 2=inactive ???
+//        $product_type = new stdClass();
+        if ($product->active_type == 1) {
+            $product->user_message = "This event is temporarily unavailable for registration.";
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
+            flash("error", $product->title . " " . gt("registration is currently unavailable."));
+            expHistory::back();
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
+            $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
+        }
+
+        //eDebug($product, true);
+        assign_to_template(array(
+            'product'=> $product,
+            'record'=> $record
+        ));
+    }
+
     function manage() {
-        global $user;
+        global $db, $user;
 
         expHistory::set('viewable', $this->params);
         $limit = (!empty($this->config['limit'])) ? $this->config['limit'] : 10;
@@ -117,14 +342,14 @@ class eventregistrationController extends expController {
         } else {
             $events      = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
             $pass_events = array();
-
             foreach ($events as $event) {
-                // $this->signup_cutoff > time()
                 if ($event->signup_cutoff > time()) {
                     $pass_events[] = $event;
                 }
-                // eDebug($event->signup_cutoff, true);
             }
+        }
+        foreach ($pass_events as $key=>$pass_event) {
+            $pass_events[$key]->number_of_registrants = $pass_event->countRegistrants();
         }
         // echo "<pre>";
         // print_r($pass_events);
@@ -134,7 +359,7 @@ class eventregistrationController extends expController {
         $page = new expPaginator(array(
             'records'=>$pass_events,
             'limit'=>$limit,
-            'order'=>"title ASC",
+            'order'=>"eventdate ASC",
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
@@ -156,84 +381,24 @@ class eventregistrationController extends expController {
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
-        $action   = $_REQUEST['action'];
-        $metainfo = array('title'=> '', 'keywords'=> '', 'description'=> '');
+//        $action   = $_REQUEST['action'];
+        $action   = $router->params['action'];
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '');
         switch ($action) {
             case 'donate':
                 $metainfo['title']       = 'Make a eventregistration';
                 $metainfo['keywords']    = 'donate online';
                 $metainfo['description'] = "Make a eventregistration";
+                $metainfo['canonical']   = '';
                 break;
             default:
-                $metainfo = array('title'=> $this->displayname() . " - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION);
+                $metainfo = array('title'=> $this->displayname() . " - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
         }
 
         return $metainfo;
     }
 
-//    function index() {
-//        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'showall'));
-//    }
-
-    function show() {
-        global $order, $template, $user;
-
-        expHistory::set('viewable', $this->params);
-        if (!empty($this->params['token'])) {
-            $record = expSession::get("last_POST_Paypal");
-        } else {
-            $record = expSession::get("last_POST");
-        }
-        $id = isset($this->params['title']) ? addslashes($this->params['title']) : $this->params['id'];
-        $product = new eventregistration($id);
-
-        //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
-        $product_type = new stdClass();
-        if ($product->active_type == 1) {
-            $product_type->user_message = "This product is temporarily unavailable for purchase.";
-        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
-            flash("error", $product->title . " " . gt("is currently unavailable."));
-            expHistory::back();
-        } elseif ($product->active_type == 2 && $user->isAdmin()) {
-            $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
-        }
-
-        //eDebug($product, true);
-        assign_to_template(array(
-            'product'=> $product,
-            'record'=> $record
-        ));
-    }
-
-    function showByTitle() {
-        global $order, $template, $user;
-        expHistory::set('viewable', $this->params);
-        if (!empty($this->params['token'])) {
-            $record = expSession::get("last_POST_Paypal");
-        } else {
-            $record = expSession::get("last_POST");
-        }
-        $product = new eventregistration(addslashes($this->params['title']));
-
-        //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
-        $product_type = new stdClass();
-        if ($product->active_type == 1) {
-            $product_type->user_message = "This product is temporarily unavailable for purchase.";
-        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
-            flash("error", $product->title . " " . gt("is currently unavailable."));
-            expHistory::back();
-        } elseif ($product->active_type == 2 && $user->isAdmin()) {
-            $product_type->user_message = $product->title . " is currently marked as unavailable for registration or display.  Normal users will not see this product.";
-        }
-
-        //eDebug($product, true);
-        assign_to_template(array(
-            'product'=> $product,
-            'record'=> $record
-        ));
-    }
-
-    function eventregistration_process() {
+    function eventregistration_process() {  // FIXME only used by the eventregistration_form view (no method)
         global $db, $user, $order;
 
         //Clear the cart first
@@ -288,6 +453,7 @@ class eventregistrationController extends expController {
             $sess_id = session_id();
 //            $sess_id = expSession::getTicketString();
             $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
+         //FIXME change this to forms table
             if (!empty($data)) {
                 foreach ($data as $item) {
                     if (!empty($this->params['event'][$item->control_name])) {
@@ -342,14 +508,147 @@ class eventregistrationController extends expController {
         redirect_to(array('controller'=> 'eventregistration', 'action'=> 'showall'));
     }
 
+    function view_registrants() {
+        expHistory::set('viewable', $this->params);
+        $event = new eventregistration($this->params['id']);
+        //Get all the registrants in the event
+        $registrants = $event->getRegistrants();
+        assign_to_template(array(
+            'event'=> $event,
+            'registrants'=> $registrants,
+//            'header'=> $header,
+//            'body'=> $body,
+//            'email'=> $email
+        ));
+
+//        $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "registered_date", true);
+//        $orders = new order();
+//        foreach ($order_ids_complete as $item) {
+//            $connector = expUnserialize($item);
+////            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
+////            $odr = $db->selectObject("orders", "id ='{$item}' and invoice_id <> 0");
+//            $odr = $orders->find("first", "id ='{$connector->order_id}' and invoice_id <> 0");
+//            if (!empty($odr) || strpos($connector->order_id, "admin-created") !== false) {
+//                $order_ids[] = $connector->order_id;
+//            }
+//        }
+//
+//        $header        = array();
+//        $control_names = array();
+//        $header[]      = 'Date Registered';
+//        //Check if it has ticket types
+//        if ($event->hasOptions()) {
+//            $header[] = "Types"; //Add some configuration here
+//        }
+//        //Get the input labels as table headers
+//        if (!empty($event->expDefinableField['registrant'])) foreach ($event->expDefinableField['registrant'] as $field) {
+//            $data = expUnserialize($field->data);
+//            if (!empty($data->caption)) {
+//                $header[] = $data->caption;
+//            } else {
+//                $header[] = $field->name;
+//            }
+//            $control_names[] = $field->name;
+//        }
+//
+//        //Check if there are guests using expDefinableFields
+//        if (!empty($event->num_guest_allowed)) {
+//            for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
+//                if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
+//                    $data = expUnserialize($field->data);
+//                    if (!empty($data->caption)) {
+//                        $header[] = $data->caption . "_$i";
+//                    } else {
+//                        $header[] = $field->name . "_$i";
+//                    }
+//                    $control_names[] = $field->name . "_$i";
+//                }
+//            }
+//        }
+//
+//        // new method to check for guests/registrants in eventregistration_registrants
+////        if (!empty($event->num_guest_allowed)) {
+//        $registrants = array();
+//        if (!empty($event->quantity)) {
+//            $registered = array();
+//            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
+//                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
+//                $registered = array_merge($registered,$newregistrants);
+//            }
+//            foreach ($registered as $person) {
+//                $registrants[$person->id] = expUnserialize($person->value);
+//            }
+//        }
+//
+//        //Get the data and registrant emails
+//        $email               = array();
+//        $num_of_guest_fields = 0;
+//        $num_of_guest        = 0;
+//        $num_of_guest_total  = 0;
+//
+//        $body = array();
+//        if (!empty($order_ids)) foreach ($order_ids as $order_id) {
+//            $body[$order_id][] = date("M d, Y h:i a", $db->selectValue("eventregistration_registrants", "registered_date", "event_id = {$event->id} AND connector_id = '{$order_id}'"));
+//            if ($event->hasOptions()) {
+//                $or        = new order($order_id);
+//                $orderitem = new orderitem();
+//                if (isset($or->orderitem[0])) {
+//                    $body[$order_id][] = $orderitem->getOption($or->orderitem[0]->options);
+//                } else {
+//                    $body[$order_id][] = '';
+//                }
+//            }
+//            foreach ($control_names as $control_name) {
+//                $value             = $db->selectValue("eventregistration_registrants", "value", "event_id = {$event->id} AND control_name ='{$control_name}' AND connector_id = '{$order_id}'");
+//                $body[$order_id][] = $value;
+//                if (expValidator::isValidEmail($value) === true) {
+//                    $email[$value] = $value;
+//                }
+//            }
+//
+//            if (!empty($order_id)) {
+//                $num_of_guest_total += $db->countObjects("eventregistration_registrants", "event_id ={$event->id} AND control_name LIKE 'guest_%' AND connector_id = '{$order_id}'");
+//            }
+//        } else $order_ids = array();
+//
+//        // check numbers based on expDefinableFields
+//        $num_of_guest_fields = $db->countObjects("content_expDefinableFields", "content_id ={$event->id} AND subtype='guest'");
+//        if ($num_of_guest_fields <> 0) {
+//            $num_of_guest = $num_of_guest_total / $num_of_guest_fields;
+//        } else {
+//            $num_of_guest = 0;
+//        }
+//
+//        //Removed duplicate emails
+//        $email = array_unique($email);
+//
+//        $registered = count($order_ids) + $num_of_guest;
+//        if (!empty($event->registrants)) {
+//            $event->registrants = expUnserialize($event->registrants);
+//        } else {
+//            $event->registrants = array();
+//        }
+//
+//        $event->number_of_registrants = $registered;
+//        assign_to_template(array(
+//            'event'=> $event,
+//            'registrants'=> $registrants,
+////            'header'=> $header,
+////            'body'=> $body,
+////            'email'=> $email
+//        ));
+    }
+
     public function delete_registrant() {
         global $db;
 
-        $registrant = $db->selectObject("eventregistration_registrants", "id='{$this->params['id']}'");
-        $event = $db->selectObject("eventregistration", "id='{$registrant->event_id}'");
-        $db->delete("eventregistration_registrants", "id='{$this->params['id']}'");
-        $event->number_of_registrants = $db->countObjects("eventregistration_registrants", "event_id='{$event->id}'");
-        $db->updateObject($event,"eventregistration");
+        $event = new eventregistration($this->params['event_id']);
+        $f = new forms($event->forms_id);
+        if (!empty($f->is_saved)) {  // is there user input data
+            $db->delete('forms_' . $f->table_name, "id='{$this->params['id']}'");
+        } else {
+            $db->delete('eventregistration_registrants', "id ='{$this->params['id']}'");
+        }
         flash('message', gt("Registrant successfully deleted."));
         expHistory::back();
     }
@@ -365,19 +664,25 @@ class eventregistrationController extends expController {
 //        $reg_data   = $db->selectObjects("eventregistration_registrants", "connector_id ='{$connector_id}'");
 
         $registrant = array();
+        $event = new eventregistration($this->params['event_id']);
         if (!empty($this->params['id'])) {
-            $reg_data   = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+//            $reg_data   = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+            $f = new forms($event->forms_id);
+
   //        foreach ($reg_data as $item) {
   //            $registrant[$item->control_name] = $item->value;
   //        }
-            $registrant = expUnserialize($reg_data->value);
-            $registrant['id'] = $reg_data->id;
-            $eventid = $reg_data->event_id;
-        } else {
-            $eventid = $this->params['event_id'];
+//            $registrant = expUnserialize($reg_data->value);
+            if (!empty($f->is_saved)) {
+                $registrant = $db->selectObject('forms_' . $f->table_name, "id ='{$this->params['id']}'");
+//            $registrant['id'] = $reg_data->id;
+//            $eventid = $reg_data->event_id;
+//        } else {
+//            $eventid = $this->params['event_id'];
+            } else {
+                $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+            }
         }
-
-        $event = new eventregistration($eventid);
 
         // eDebug($registrant, true);
         assign_to_template(array(
@@ -388,124 +693,228 @@ class eventregistrationController extends expController {
     }
 
     public function update_registrant() {
-        global $db;
+        global $db, $user;
 
-//        $event_id     = $this->params['event_id'];
-//        $connector_id = $this->params['connector_id'];
-//        $fields       = $this->params['event'];
-//        $obj          = '';
-//        // eDebug($fields);
-//        foreach ($fields as $key => $value) {
-//            $obj = $db->selectObject("eventregistration_registrants", "event_id = '{$event_id}' AND connector_id = '{$connector_id}' AND control_name='{$key}'");
-//
-//            if (!empty($obj)) {
-//                $obj->value = $value;
-//                if (!empty($value)) {
-//                    $db->updateObject($obj, 'eventregistration_registrants');
-//                } else {
-//                    $db->delete('eventregistration_registrants', 'id=' . $obj->id);
-//                }
-//            } else {
-//                if (!empty($value)) {
-//                    $reg                  = '';
-//                    $reg->event_id        = $event_id;
-//                    $reg->control_name    = $key;
-//                    $reg->value           = $value;
-//                    $reg->connector_id    = $connector_id;
-//                    $reg->registered_date = time();
-//
-//                    $db->insertObject($reg, 'eventregistration_registrants');
-//                }
-//
-//            }
-//        }
-
-        $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
-        $data = array();
-        $data['name'] = $this->params['name'];
-        $data['email'] = $this->params['email'];
-        $data['phone'] = $this->params['phone'];
-        if (empty($registrant->id)) {
-            $registrant = new stdClass();
-            $registrant->event_id = $this->params['event_id'];
-            $registrant->control_name = 0;
-            $registrant->value = serialize($data);
-            $registrant->connector_id = 'admin-created';
-            $registrant->registered_date = time();
-            $db->insertObject($registrant,"eventregistration_registrants");
-            $event = $db->selectObject("eventregistration", "id='{$registrant->event_id}'");
-            $event->number_of_registrants = $db->countObjects("eventregistration_registrants", "event_id='{$event->id}'");
-            $db->updateObject($event,"eventregistration");
+        $event = new eventregistration($this->params['event_id']);
+        $f = new forms($event->forms_id);
+        $registrant = new stdClass();
+        if (!empty($this->params['id'])) $registrant = $db->selectObject('forms_' . $f->table_name, "id ='{$this->params['id']}'");
+        if (!empty($f->is_saved)) {
+            $fc = new forms_control();
+            $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly=0",'rank');
+            foreach ($controls as $c) {
+                $ctl = expUnserialize($c->data);
+                $control_type = get_class($ctl);
+                $def = call_user_func(array($control_type, "getFieldDefinition"));
+                if ($def != null) {
+                    $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params['registrant'], true));
+                    $value = stripslashes($db->escapeString($emailValue));
+                    $varname = $c->name;
+                    $registrant->$varname = $value;
+                }
+            }
+            if (!empty($registrant->id)) {
+                $db->updateObject($registrant, 'forms_' . $f->table_name);
+            } else {
+                $loc_data = new stdClass();
+                $loc_data->order_id = 'admin-created';
+                $loc_data->orderitem_id = 'admin-created';
+                $loc_data->event_id = $this->params['event_id'];
+                $locdata = serialize($loc_data);
+                $registrant->ip = $_SERVER['REMOTE_ADDR'];
+                $registrant->referrer = $this->params['event_id'];
+                $registrant->timestamp = time();
+                if (expSession::loggedIn()) {
+                    $registrant->user_id = $user->id;
+                } else {
+                    $registrant->user_id = 0;
+                }
+                $registrant->location_data = $locdata;
+                $db->insertObject($registrant, 'forms_' . $f->table_name);
+            }
         } else {
-            $registrant->value = serialize($data);
-            $db->updateObject($registrant,"eventregistration_registrants");
+            $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+            $registrant->control_name = $this->params['control_name'];
+            $registrant->value = $this->params['value'];
+            if (!empty($registrant->id)) {
+                $db->updateObject($registrant, "eventregistration_registrants");
+            } else {
+                $registrant->event_id = $this->params['event_id'];
+                $registrant->connector_id = 'admin-created';
+                $registrant->orderitem_id = 'admin-created';
+                $registrant->registered_date = time();
+                $db->insertObject($registrant, "eventregistration_registrants");
+            }
         }
-
-        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'view_registrants', 'id'=> $registrant->event_id));
+        redirect_to(array('controller'=> 'eventregistration', 'action'=> 'view_registrants', 'id'=> $this->params['event_id']));
     }
 
     public function export() {
         global $db;
 
         $event              = new eventregistration($this->params['id']);
-        $sql                = "SELECT connector_id FROM " . DB_TABLE_PREFIX . "_eventregistration_registrants GROUP BY connector_id";
-        $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "registered_date", true);
 
-        foreach ($order_ids_complete as $item) {
-            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
-            if (!empty($odr) || strpos($item, "admin-created") !== false) {
-                $order_ids[] = $item;
-            }
-        }
+        $registrants = $event->getRegistrants();
+        $f = new forms($event->forms_id);
+//        $registrants = array();
+//        if (!empty($f->is_saved)) {  // is there user input data
+//            $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$event->id}", "timestamp");
+//        } else {
+//            $registrants = $db->selectObjects('eventregistration_registrants', "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "timestamp");
+//        }
+//        foreach ($registrants as $key=>$registrant) {
+//            $order_data = expUnserialize($registrant->location_data);
+//            if (is_numeric($order_data->order_id)) {
+//                $order = new order($order_data->order_id);
+//                $billingstatus = expUnserialize($order->billingmethod[0]->billing_options);
+//                $registrants[$key]->payment = !empty($billingstatus->payment_due) ? gt('payment due') : gt('paid');
+//            } else {
+//                $registrants[$key]->payment = '???';
+//            }
+//        }
 
-        $header        = array();
-        $control_names = array();
-        $header[]      = '"Date Registered"';
-        //Check if it has ticket types
-        if ($event->hasOptions()) {
-            $header[] = '"Ticket Types"'; //Add some configuration here
-        }
+//        $sql                = "SELECT connector_id FROM " . DB_TABLE_PREFIX . "_eventregistration_registrants GROUP BY connector_id";
+//        $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "registered_date", true);
+//
+//        $orders = new order();
+//        foreach ($order_ids_complete as $item) {
+////            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
+//            $odr = $orders->find("first", "id ='{$item}' and invoice_id <> 0");
+//            if (!empty($odr) || strpos($item, "admin-created") !== false) {
+//                $order_ids[] = $item;
+//            }
+//        }
+//
+//        $header        = array();
+//        $control_names = array();
+//        $header[]      = '"Date Registered"';
+//        //Check if it has ticket types
+//        if ($event->hasOptions()) {
+//            $header[] = '"Ticket Types"'; //Add some configuration here
+//        }
+//
+//        if (!empty($event->expDefinableField['registrant'])) foreach ($event->expDefinableField['registrant'] as $field) {
+//            $data = expUnserialize($field->data);
+//            if (!empty($data->caption)) {
+//                $header[] = '"' . $data->caption . '"';
+//            } else {
+//                $header[] = '"' . $field->name . '"';
+//            }
+//            $control_names[] = $field->name;
+//        }
 
-        if (!empty($event->expDefinableField['registrant'])) foreach ($event->expDefinableField['registrant'] as $field) {
-            $data = expUnserialize($field->data);
-            if (!empty($data->caption)) {
-                $header[] = '"' . $data->caption . '"';
-            } else {
-                $header[] = '"' . $field->name . '"';
-            }
-            $control_names[] = $field->name;
-        }
-
-        if ($event->num_guest_allowed > 0) {
-            for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
-                if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
-                    $data = expUnserialize($field->data);
-                    if (!empty($data->caption)) {
-                        $header[] = $data->caption . "_$i";
-                    } else {
-                        $header[] = $field->name . "_$i";
-                    }
-                    $control_names[] = $field->name . "_$i";
-                }
-
-            }
-        }
+        //FIXME we don't have a 'guest' definable field type
+//        if ($event->num_guest_allowed > 0) {
+//            for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
+//                if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
+//                    $data = expUnserialize($field->data);
+//                    if (!empty($data->caption)) {
+//                        $header[] = $data->caption . "_$i";
+//                    } else {
+//                        $header[] = $field->name . "_$i";
+//                    }
+//                    $control_names[] = $field->name . "_$i";
+//                }
+//
+//            }
+//        }
 
         // new method to check for guests/registrants
 //        if (!empty($event->num_guest_allowed)) {
         if (!empty($event->quantity)) {
-            $registered = array();
-            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
-                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
-                $registered = array_merge($registered,$newregistrants);
+//            $registered = array();
+//            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
+//                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
+//                $registered = array_merge($registered,$newregistrants);
+//            }
+////            $registrants = array();
+//            foreach ($registered as $key=>$person) {
+//                $registered[$key]->person = expUnserialize($person->value);
+//            }
+            if (!empty($f->is_saved)) {
+                $controls = $event->getAllControls();
+                if ($f->column_names_list == '') {
+                    //define some default columns...
+                    foreach ($controls as $control) {
+                        $rpt_columns[$control->name] = $control->caption;
+                    }
+                } else {
+                    $rpt_columns2 = explode("|!|", $f->column_names_list);
+                    $fc = new forms_control();
+                    foreach ($rpt_columns2 as $column) {
+                        $control = $fc->find('first', "forms_id=" . $f->id . " AND name = '" . $column . "' AND is_readonly = 0 AND is_static = 0", "rank");
+                        if (!empty($control)) {
+                            $rpt_columns[$control->name] = $control->caption;
+                        } else {
+                            switch ($column) {
+                                case 'ip':
+                                    $rpt_columns[$column] = gt('IP Address');
+                                    break;
+                                case 'referrer':
+                                    $rpt_columns[$column] = gt('Event ID');
+                                    break;
+                                case 'user_id':
+                                    $rpt_columns[$column] = gt('Posted by');
+                                    break;
+                                case 'timestamp':
+                                    $rpt_columns[$column] = gt('Registered');
+                                    break;
+                            }
+                        }
+                    }
+                }
+                $rpt_columns['payment'] = gt('Paid?');
+                $fc = new forms_control();
+                foreach ($rpt_columns as $column_name=>$column_caption) {
+                    if ($column_name == "ip" || $column_name == "referrer" || $column_name == "location_data") {
+                    } elseif ($column_name == "user_id") {
+                        foreach ($registrants as $key => $item) {
+                            if ($item->$column_name != 0) {
+                                $locUser = user::getUserById($item->$column_name);
+                                $item->$column_name = $locUser->username;
+                            } else {
+                                $item->$column_name = '';
+                            }
+                            $registrants[$key] = $item;
+                        }
+                    } elseif ($column_name == "timestamp") {
+                        foreach ($registrants as $key => $item) {
+                            $item->$column_name = strftime(DISPLAY_DATETIME_FORMAT, $item->$column_name);
+                            $registrants[$key] = $item;
+                        }
+                    } else {
+                        $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $this->params['id'],'rank');
+                        if ($control) {
+                            $ctl = expUnserialize($control->data);
+                            $control_type = get_class($ctl);
+                            foreach ($registrants as $key => $item) {
+                                $item->$column_name = call_user_func(array($control_type, 'templateFormat'), $item->$column_name, $ctl);
+                                $registrants[$key] = $item;
+                            }
+                        }
+                    }
+                }
+            } else {
+                $rpt_columns = array(
+                    'user' => gt('Name'),
+                    'qty' => gt('Quantity'),
+                    'registered_date' => gt('Registered'),
+                    'payment' => gt('Paid?'),
+                );
+                foreach ($registrants as $key=>$registrant) {
+                    $registrants[$key]->registered_date = strftime(DISPLAY_DATETIME_FORMAT, $registrants[$key]->registered_date);
+                }
             }
-//            $registrants = array();
-            foreach ($registered as $key=>$person) {
-                $registered[$key]->person = expUnserialize($person->value);
-            }
-            $header[] = '"Name"';
-            $header[] = '"Phone"';
-            $header[] = '"Email"';
+//            $header   = array();  //FIXME reset & pulled from above
+//            $header[] = gt('IP Address');  //FIXME
+//            $header[] = gt('Event');
+//            $header[] = gt('Date Registered');
+//            $header[] = gt('User');
+//            $header[] = gt('Location');
+//            foreach ($controls as $control) {
+//                $header[] = $control->caption;
+//            }
+
         }
 
         if (LANG_CHARSET == 'UTF-8') {
@@ -513,9 +922,9 @@ class eventregistrationController extends expController {
         } else {
             $out = "";
         }
-        $out  .= implode(",", $header);
-        $out  .= "\n";
-        $body = '';
+//        $out  .= implode(",", $header);
+//        $out  .= "\n";
+//        $body = '';
 //        foreach ($order_ids as $order_id) {
 //            $body .= '"' . date("M d, Y h:i a", $db->selectValue("eventregistration_registrants", "registered_date", "event_id = {$event->id} AND connector_id = '{$order_id}'")) . '",';
 //
@@ -536,22 +945,18 @@ class eventregistrationController extends expController {
 //            }
 //            $body = substr($body, 0, -1) . "\n";
 //        }
-        foreach ($registered as $person) {
-            $body .= '"' . date("M d, Y h:i a", $person->registered_date) . '",';
-            foreach ($person->person as $value) {
-//                $body .= '"' . iconv("UTF-8", "ISO-8859-1", $value) . '",';
-                $body .= '"' . $value . '",';
-            }
-            $body = substr($body, 0, -1) . "\n";
-        }
-        $out .= $body;
+//        foreach ($registrants as $person) {
+//            $body .= '"' . date("M d, Y h:i a", $person->registered_date) . '",';
+//            foreach ($person->person as $value) {
+////                $body .= '"' . iconv("UTF-8", "ISO-8859-1", $value) . '",';
+//                $body .= '"' . $value . '",';
+//            }
+//            $body = substr($body, 0, -1) . "\n";
+//        }
+//        $out .= $body;
+        $out .= formsController::sql2csv($registrants, $rpt_columns);
 
-//        $fp = BASE . 'tmp/';
         $fn = str_replace(' ', '_', $event->title) . '_' . gt('Roster') . '.csv';
-//        $f  = fopen($fp . $fn, 'w');
-//        // Put all values from $out to export.csv.
-//        fputs($f, $out);
-//        fclose($f);
 
 		// CREATE A TEMP FILE
 		$tmpfname = tempnam(getcwd(), "rep"); // Rig
@@ -583,149 +988,27 @@ class eventregistrationController extends expController {
             } else {
                 header('Pragma: no-cache');
             }
-
+            //Read the file out directly
             readfile($tmpfname);
-            if (DEVELOPMENT == 0)
+
+//            if (DEVELOPMENT == 0) exit();
+            unlink($tmpfname);
             exit();
         }
     }
 
-    public function get_guest_controls($ajax = '') {
+    public function get_guest_controls($ajax = '') {  //FIXME this is never used
         $id    = $this->params['id'];
         $ctr   = $this->params['counter'];
         $event = new eventregistration($id);
 
         $str = "";
         foreach ($event->expDefinableField['guest'] as $field) {
-            $str = $str . $event->getControl($field, $field->name . "_" . $ctr);
+            $str = $str . $event->showControl($field, $field->name . "_" . $ctr);
         }
 
         echo $str;
         exit();
-    }
-
-    function view_registrants() {
-        global $db;
-
-        expHistory::set('viewable', $this->params);
-
-        $event = new eventregistration($this->params['id']);
-
-        //Get all the registrants in the event using order id
-        $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "registered_date", true);
-
-        foreach ($order_ids_complete as $item) {
-//            $odr = $db->selectObject("orders", "id = {$item} and invoice_id <> 0");
-            $odr = $db->selectObject("orders", "id ='{$item}' and invoice_id <> 0");
-            if (!empty($odr) || strpos($item, "admin-created") !== false) {
-                $order_ids[] = $item;
-            }
-        }
-
-        $header        = array();
-        $control_names = array();
-        $header[]      = 'Date Registered';
-        //Check if it has ticket types
-        if ($event->hasOptions()) {
-            $header[] = "Types"; //Add some configuration here
-        }
-        //Get the input labels as table headers
-        if (!empty($event->expDefinableField['registrant'])) foreach ($event->expDefinableField['registrant'] as $field) {
-            $data = expUnserialize($field->data);
-            if (!empty($data->caption)) {
-                $header[] = $data->caption;
-            } else {
-                $header[] = $field->name;
-            }
-            $control_names[] = $field->name;
-        }
-
-        //Check if there are guests
-        if (!empty($event->num_guest_allowed)) {
-            for ($i = 1; $i <= $event->num_guest_allowed; $i++) {
-                if (!empty($event->expDefinableField['guest'])) foreach ($event->expDefinableField['guest'] as $field) {
-                    $data = expUnserialize($field->data);
-                    if (!empty($data->caption)) {
-                        $header[] = $data->caption . "_$i";
-                    } else {
-                        $header[] = $field->name . "_$i";
-                    }
-                    $control_names[] = $field->name . "_$i";
-                }
-            }
-        }
-
-        // new method to check for guests/registrants
-//        if (!empty($event->num_guest_allowed)) {
-        $registrants = array();
-        if (!empty($event->quantity)) {
-            $registered = array();
-            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
-                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
-                $registered = array_merge($registered,$newregistrants);
-            }
-            foreach ($registered as $person) {
-                $registrants[$person->id] = expUnserialize($person->value);
-            }
-        }
-
-        //Get the data and registrant emails
-        $email               = array();
-        $num_of_guest_fields = 0;
-        $num_of_guest        = 0;
-        $num_of_guest_total  = 0;
-
-        $body = array();
-        if (!empty($order_ids)) foreach ($order_ids as $order_id) {
-            $body[$order_id][] = date("M d, Y h:i a", $db->selectValue("eventregistration_registrants", "registered_date", "event_id = {$event->id} AND connector_id = '{$order_id}'"));
-            if ($event->hasOptions()) {
-                $or        = new order($order_id);
-                $orderitem = new orderitem();
-                if (isset($or->orderitem[0])) {
-                    $body[$order_id][] = $orderitem->getOption($or->orderitem[0]->options);
-                } else {
-                    $body[$order_id][] = '';
-                }
-            }
-            foreach ($control_names as $control_name) {
-                $value             = $db->selectValue("eventregistration_registrants", "value", "event_id = {$event->id} AND control_name ='{$control_name}' AND connector_id = '{$order_id}'");
-                $body[$order_id][] = $value;
-                if (expValidator::isValidEmail($value) === true) {
-                    $email[$value] = $value;
-                }
-            }
-
-            if (!empty($order_id)) {
-                $num_of_guest_total += $db->countObjects("eventregistration_registrants", "event_id ={$event->id} AND control_name LIKE 'guest_%' AND connector_id = '{$order_id}'");
-            }
-
-        } else $order_ids = array();
-
-        $num_of_guest_fields = $db->countObjects("content_expDefinableFields", "content_id ={$event->id} AND subtype='guest'");
-        if ($num_of_guest_fields <> 0) {
-            $num_of_guest = $num_of_guest_total / $num_of_guest_fields;
-        } else {
-            $num_of_guest = 0;
-        }
-
-        //Removed duplicate emails
-        $email = array_unique($email);
-
-        $registered = count($order_ids) + $num_of_guest;
-        if (!empty($event->registrants)) {
-            $event->registrants = expUnserialize($event->registrants);
-        } else {
-            $event->registrants = array();
-        }
-
-        $event->number_of_registrants = $registered;
-        assign_to_template(array(
-            'event'=> $event,
-            'registrants'=> $registrants,
-//            'header'=> $header,
-//            'body'=> $body,
-//            'email'=> $email
-        ));
     }
 
     function emailRegistrants() {
@@ -735,7 +1018,7 @@ class eventregistrationController extends expController {
             expHistory::back();
         }
 
-        if (empty($this->params['email_subject'])) {
+        if (empty($this->params['email_subject']) || empty($this->params['email_message'])) {
             flash('error', gt('Nothing to Send! Please enter subject and message.'));
             expHistory::back();
         }
@@ -795,7 +1078,7 @@ class eventregistrationController extends expController {
      *
      * @return array
      */
-    static function getEventsForDates($startdate, $enddate, $color="#FFFFFF") {
+    static function getRegEventsForDates($startdate, $enddate, $color="#FFFFFF") {
         $er = new eventregistration();
         $events      = $er->find('all', 'product_type="eventregistration" && active_type=0');
         $pass_events = array();
@@ -817,13 +1100,61 @@ class eventregistrationController extends expController {
         return $pass_events;
     }
 
+        /*
+    * Helper function for the Calendar view
+    */
+    function getEventsForDates($edates, $sort_asc = true) {
+        global $db;
+        $events = array();
+        foreach ($edates as $edate) {
+//            if (!isset($this->params['cat'])) {
+//                if (isset($this->params['title']) && is_string($this->params['title'])) {
+//                    $default_id = $db->selectValue('storeCategories', 'id', "sef_url='" . $this->params['title'] . "'");
+//                } elseif (!empty($this->config['category'])) {
+//                    $default_id = $this->config['category'];
+//                } elseif (ecomconfig::getConfig('show_first_category')) {
+//                    $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
+//                } else {
+//                    $default_id = 0;
+//                }
+//            }
+//
+//            $parent = isset($this->params['cat']) ? intval($this->params['cat']) : $default_id;
+//
+//            $category = new storeCategory($parent);
+
+            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
+//            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
+            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
+            $sql .= 'WHERE 1 ';
+//            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
+//            if ($category->hide_closed_events) {
+//                $sql .= ' AND er.signup_cutoff > ' . time();
+//            }
+//            $sql .= ' AND er.id = ' . $edate->id;
+            $sql .= ' AND er.id = ' . $edate->product_type_id;
+
+            $order = 'event_starttime';
+            $dir = 'ASC';
+
+            $o = $db->selectObjectBySql($sql);
+            $o->eventdate = $edate->eventdate;
+            $o->eventstart = $edate->event_starttime + $edate->eventdate;
+            $o->eventend = $edate->event_endtime + $edate->eventdate;
+            $o->expFile = $edate->expFile;
+            $events[] = $o;
+        }
+        $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventstart', 'order' => $sort_asc ? 'ASC' : 'DESC'));
+        return $events;
+    }
+
     // create a pseudo global view_registrants permission
     public static function checkPermissions($permission,$location) {
         global $exponent_permissions_r, $user, $db, $router;
 
         // only applies to the 'view_registrants' method
         if (empty($location->src) && empty($location->int) && $router->params['action'] == 'view_registrants') {
-            if (!empty($exponent_permissions_r['eventregistrationController'])) foreach ($exponent_permissions_r['eventregistrationController'] as $page) {
+            if (!empty($exponent_permissions_r['eventregistration'])) foreach ($exponent_permissions_r['eventregistration'] as $page) {
                 foreach ($page as $pageperm) {
                     if (!empty($pageperm['view_registrants']) || !empty($pageperm['manage'])) return true;
                 }

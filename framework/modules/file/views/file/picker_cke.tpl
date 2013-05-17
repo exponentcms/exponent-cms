@@ -70,7 +70,7 @@
     {/if}
 </div>
 
-    {*FIXME convert to yui3*}
+{*FIXME convert to yui3*}
 {script unique="picker"}
 {literal}
 // this.moveTo(1,1);
@@ -113,6 +113,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             window.close();
         }
 
+        deleteOne = function(fileId) {
+            batchIDs[0] = {id: fileId};
+            batchDelete();
+        }
+
         batchDelete = function () {
             var query = Y.one('#dt_input');
             if (query.get('value') == null) {
@@ -134,9 +139,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                     alert(o.replyText);
                 }
                 batchIDs = {};
+                myDataTable.showTableMessage("Loading...");
                 var state = myDataTable.getState();
-                myDataSource.sendRequest('sort='+state.sortedBy.key+'&dir='+state.sortedBy.dir+'&startIndex=0&fck='+fck+'&results={/literal}{$smarty.const.FM_LIMIT}{literal}&query=' + queryvalue + '&cat=' + catvalue,myDataTable.onDataReturnInitializeTable, myDataTable);
-                myDatable.sortColumn(state.sortedBy.key,state.sortedBy.dir);
+                myDataTable.sortColumn(myDataTable.getColumn(state.sortedBy.key),state.sortedBy.dir);
             },this);
             et.fetch({action:"batchDelete",controller:"fileController",json:1,data:'&files=' + YAHOO.lang.JSON.stringify(batchIDs)});
         }
@@ -356,7 +361,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         }
 
         var formatactions = function(elCell, oRecord, oColumn, sData) {
-            var deletestring = '<a title="{/literal}{"Delete this File"|gettext}{literal}" href="{/literal}{link action=delete update=$smarty.get.update id="replacewithid" controller=file}{literal}" onclick="return confirm(\'{/literal}{"Are you sure you want to delete this file?"|gettext}{literal}\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /></a>';
+//            var deletestring = '<a title="{/literal}{"Delete this File"|gettext}{literal}" href="{/literal}{link action=delete update=$smarty.get.update id="replacewithid" controller=file}{literal}" onclick="return confirm(\'{/literal}{"Are you sure you want to delete this file?"|gettext}{literal}\');"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /></a>';
+            var deletestring = '<a title="{/literal}{"Delete this File"|gettext}{literal}" href="#" onclick="if (confirm(\'{/literal}{"Are you sure you want to delete this file?"|gettext}{literal}\'))deleteOne(replacewithid);"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /></a>';
             deletestring = deletestring.replace('replacewithid',oRecord._oData.id);
             if (oRecord._oData.is_image==1){
                 var editorstring = '<a title="{/literal}{"Edit Image"|gettext}{literal}" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}edit-image.png" /></a>&#160;&#160;&#160;';

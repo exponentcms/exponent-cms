@@ -34,12 +34,13 @@
 {*{control type=hidden name=int value=$loc->int}*}
 {*{control type=hidden name=current_section value=$current_section}*}
 
-{if $hcview}
+{if ($container->internal->mod != 'container')}
+{*{if $hcview}*}
     {*{control type=hidden name=hcview value=1}*}
     {*{control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$moduletitle caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}*}
-{else}
+{*{else}*}
     {control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
-{/if}
+{*{/if}*}
 {if $smarty.const.INVERT_HIDE_TITLE}
     {$title_str = 'Show Module Title?'|gettext}
     {$desc_str = 'The Module Title is hidden by default.'|gettext}
@@ -47,14 +48,17 @@
     {$title_str = 'Hide Module Title?'|gettext}
     {$desc_str = 'The Module Title is displayed by default.'|gettext}
 {/if}
-{control type="checkbox" name="hidemoduletitle" label=$title_str value=1 checked=$config.hidemoduletitle description=$desc_str}
+    {control type="checkbox" name="hidemoduletitle" label=$title_str value=1 checked=$config.hidemoduletitle description=$desc_str}
+{/if}
 {control type="checkbox" name="is_private" label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
-{if !$hcview}
 {control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}
-{control type=dropdown id="actions" name=actions items=$actions value=$container->action label="Content Action"|gettext}
-{control type=dropdown id="views" name=views items=$mod_views value=$container->view label="Content Display"|gettext}
-{$containerview = $container->view}
+{if !$hcview}
+    {control type=dropdown id="actions" name=actions items=$actions value=$container->action label="Content Action"|gettext}
+    {control type=dropdown id="views" name=views items=$mod_views value=$container->view label="Content Display"|gettext}
+    {$containerview = $container->view}
 {else}
+    {control type=hidden id="actions" name=actions value=$container->action}
+    {control type=hidden id="views" name=views value=$container->view}
     {$containerview = $hcview}
 {/if}
 {group label='Display Specific Configuration Settings'|gettext}
@@ -70,13 +74,14 @@
         {/if}
     </div>
 {/group}
-{control type="html" name="moduledescription" label="Module Description"|gettext value=$config.moduledescription}
+{if ($container->internal->mod != 'container')}
+    {control type="html" name="moduledescription" label="Module Description"|gettext value=$config.moduledescription}
+{/if}
 
 {if !$hcview}
 {*FIXME convert to yui3*}
 {script unique="edit-module" yui3mods=1}
 {literal}
-
     YUI(EXPONENT.YUI_CONFIG).use("node", "event", "node-event-delegate", "io", "yui2-yahoo-dom-event", "yui2-connection", "yui2-json", function (Y) {
         var YAHOO = Y.YUI2;
 //        var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
@@ -168,7 +173,8 @@
     Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
 //                    EXPONENT.handleViewChange();
 
-                }}, 'module=containermodule&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
+//                }}, 'module=containermodule&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
+                }}, 'controller=container&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
             );
         }
 

@@ -3,7 +3,7 @@
 #/files/*
 
 # Excludes the site's configuration file
-/conf/config.php
+/framework/conf/config.php
 
 # Excludes cache files
 /tmp/*

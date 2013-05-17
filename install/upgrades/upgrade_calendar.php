@@ -60,17 +60,17 @@ class upgrade_calendar extends upgradescript {
 		// convert each calendarmodule reference to an eventController reference
 	    $srs = $db->selectObjects('sectionref',"module = 'calendarmodule'");
 	    foreach ($srs as $sr) {
-		    $sr->module = 'eventController';
+		    $sr->module = 'event';
 		    $db->updateObject($sr,'sectionref');
 	    }
 	    $gps = $db->selectObjects('grouppermission',"module = 'calendarmodule'");
         foreach ($gps as $gp) {
-	        $gp->module = 'eventController';
+	        $gp->module = 'event';
 	        $db->updateObject($gp,'grouppermission',"module = 'calendarmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'calendarmodule'");
         foreach ($ups as $up) {
-            $up->module = 'eventController';
+            $up->module = 'event';
             $db->updateObject($up,'userpermission',"module = 'calendarmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
@@ -80,15 +80,14 @@ class upgrade_calendar extends upgradescript {
         foreach ($cns as $cn) {
             $oldconfig = $db->selectObject('calendarmodule_config', "location_data='".$cn->internal."'");
    		    $cloc = expUnserialize($cn->internal);
-   	        $cloc->mod = 'eventController';
+   	        $cloc->mod = 'event';
    		    $cn->internal = serialize($cloc);
-               if ($cn->view == 'Default') {
-                   $cn->action = 'showall';
-                   $cn->view = 'showall';
-               } else {
-                   $cn->action = 'showall';
+            $cn->action = 'showall';
+            if ($cn->view == 'Default') {
+                $cn->view = 'showall';
+            } else {
    		        $cn->view = 'showall_'.$cn->view;
-               }
+            }
    	        $db->updateObject($cn,'container');
 
             $newconfig = new expConfig();
@@ -96,7 +95,7 @@ class upgrade_calendar extends upgradescript {
                 if ($oldconfig->enable_ical == 1) {
                     $newconfig->config['enable_ical'] = true;
                     $newconfig->config['feed_title'] = $oldconfig->feed_title;
-                    $newconfig->config['feed_sef_url'] = $oldconfig->sef_url;
+                    $newconfig->config['feed_sef_url'] = !empty($oldconfig->sef_url) ? $oldconfig->sef_url : '';
                     $newconfig->config['rss_limit'] = isset($oldconfig->rss_limit) ? $oldconfig->rss_limit : 24;
                     $newconfig->config['rss_cachetime'] = isset($oldconfig->rss_cachetime) ? $oldconfig->rss_cachetime : 1440;
                 }
@@ -168,8 +167,9 @@ class upgrade_calendar extends upgradescript {
 
             if ($newconfig->config != null) {
                 $newmodinternal = expUnserialize($cn->internal);
-                $newmod = explode("Controller",$newmodinternal->mod);
-                $newmodinternal->mod = $newmod[0];
+//                $newmod = explode("Controller",$newmodinternal->mod);
+//                $newmodinternal->mod = $newmod[0];
+                $newmodinternal->mod = expModules::getModuleName($newmodinternal->mod);
                 $newconfig->location_data = $newmodinternal;
                 $newconfig->save();
             }
@@ -188,6 +188,7 @@ class upgrade_calendar extends upgradescript {
         // convert each calendar to an event
 	    $cals = $db->selectObjects('calendar',"1");
 	    foreach ($cals as $cal) {
+            unset($cal->id);
             unset($cal->approved);
             unset($cal->category_id);
             unset($cal->tags);
@@ -208,7 +209,7 @@ class upgrade_calendar extends upgradescript {
         $ms = $db->selectObject('modstate',"module='calendarmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='eventController'")) {
             $ms->module = 'eventController';
-            $db->insertObject($ms,'modstate',"module='calendarmodule'",'module');
+            $db->insertObject($ms,'modstate');
         }
 
  		// delete calendarmodule tables
@@ -216,7 +217,7 @@ class upgrade_calendar extends upgradescript {
         $db->dropTable('calendar_reminder_address');
         $db->dropTable('calendar_external');
         $db->dropTable('calendarmodule_config');
-        $dd = include(BASE."framework/core/definitions/expCats.php");
+        $dd = include(BASE."framework/modules/core/definitions/expCats.php");
         $db->alterTable('expCats',$dd,null,true);
         // delete old calendarmodule assoc files (moved or deleted)
         $oldfiles = array (

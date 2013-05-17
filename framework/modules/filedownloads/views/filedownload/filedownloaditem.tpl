@@ -13,6 +13,15 @@
  *
  *}
 
+{$orderarray = explode(' ',$config.order)}
+{$order = $orderarray[0]}
+{if $order == 'created_at' }
+    {$date = 'created_at'}
+{elseif $order == 'edited_at'}
+    {$date = 'edited_at'}
+{else}
+    {$date = 'publish_date'}
+{/if}
 <div class="item">
     {$filetype=$file->expFile.downloadable[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
     {if $file->expFile.preview[0] != "" && $config.show_icon}
@@ -20,9 +29,9 @@
     {/if}
     {if $config.datetag}
         <p class="post-date">
-            <span class="month">{$file->publish_date|format_date:"%b"}</span>
-            <span class="day">{$file->publish_date|format_date:"%e"}</span>
-            <span class="year">{$file->publish_date|format_date:"%Y"}</span>
+            <span class="month">{$file->$date|format_date:"%b"}</span>
+            <span class="day">{$file->$date|format_date:"%e"}</span>
+            <span class="year">{$file->$date|format_date:"%Y"}</span>
         </p>
     {/if}
     {if $config.quick_download}
@@ -46,7 +55,7 @@
         {if $config.show_info}
             {if !$config.datetag}
                 <span class="label dated">{'Dated'|gettext}:</span>
-                <span class="value">{$file->publish_date|format_date}</span>
+                <span class="value">{$file->$date|format_date}</span>
                 &#160;|&#160;
             {/if}
             {if $file->expFile.downloadable[0]->duration}
@@ -101,15 +110,29 @@
         {/if}
     {/if}
     {clear}
-    {if $config.show_player && !$file->ext_file && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}
-        <a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">
-            {if $file->expFile.preview[0] != ""}
-                {img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}
-            {/if}
-        </a>
-        {*<audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile['downloadable'][0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">*}
-        {*</audio>*}
+    {*{if $config.show_player && !$file->ext_file && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}*}
+        {*<a href="{$file->expFile.downloadable[0]->url}" style="display:block;width:360px;height:{if $filetype == "mp3"}26{else}240{/if}px;" class="filedownload-media">*}
+            {*{if $file->expFile.preview[0] != ""}*}
+                {*{img class="preview-img" file_id=$file->expFile.preview[0]->id w=360 h=240 zc=1}*}
+            {*{/if}*}
+        {*</a>*}
+    {*{/if}*}
+
+    {if $config.show_player && !$file->ext_file}
+        {if $filetype == "mp3"}
+            <audio id="{$file->expFile.downloadable[0]->filename}" preload="none" controls="controls" src="{$smarty.const.PATH_RELATIVE}{$file->expFile.downloadable[0]->directory}{$file->expFile.downloadable[0]->filename}" type="audio/mp3">
+            </audio>
+        {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v"}
+            <video width="360" height="240" src="{$smarty.const.PATH_RELATIVE}{$file->expFile.downloadable[0]->directory}{$file->expFile.downloadable[0]->filename}" type="{$file->expFile.downloadable[0]->mimetype}"
+            	id="player{$file->expFile.downloadable[0]->id}"
+                {if $file->expFile.preview[0]->id}
+                    poster="{$file->expFile.preview[0]->id}"
+                {/if}
+            	controls="controls" preload="none">
+            </video>
+        {/if}
     {/if}
+
     {clear}
     {permissions}
         <div class="module-actions">

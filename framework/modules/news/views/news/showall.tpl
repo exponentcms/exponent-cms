@@ -13,6 +13,8 @@
  *
  *}
 
+{uniqueid prepend="news" assign="name"}
+
 <div class="module news showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
     {rss_link}
@@ -41,15 +43,16 @@
    		{$config.moduledescription}
    	{/if}
     {subscribe_link}
-    <div id="newslist">
+    <div id="{$name}list">
         {include 'newslist.tpl'}
     </div>
 </div>
-{script unique="newslistajax" yui3mods="1"}
-{literal}
 
+{if $config.ajax_paging}
+{script unique="`$name`listajax" yui3mods="1"}
+{literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
-    var newslist = Y.one('#newslist');
+    var newslist = Y.one('#{/literal}{$name}{literal}list');
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Newsitems'},
@@ -80,7 +83,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                 Y.Get.css(url);
             });
         } else {
-            Y.one('#newslist.loadingdiv').remove();
+            newslist.one('.loadingdiv').remove();
         }
 	};
 
@@ -102,3 +105,4 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 });
 {/literal}
 {/script}
+{/if}

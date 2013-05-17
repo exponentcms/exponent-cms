@@ -40,10 +40,10 @@
             {"Call for Price"|gettext}
         {else}                   
             {if $listing->use_special_price}
-                <span class="regular-price on-sale">{currency_symbol}{$listing->base_price|number_format:2}</span>
-                <span class="sale-price">{currency_symbol}{$listing->special_price|number_format:2}&#160;<sup>{"SALE!"|gettext}</sup></span>
+                <span class="regular-price on-sale">{$listing->base_price|currency}</span>
+                <span class="sale-price">{$listing->special_price|currency}&#160;<sup>{"SALE!"|gettext}</sup></span>
             {else}
-                <span class="regular-price">{currency_symbol}{$listing->base_price|number_format:2}</span>
+                <span class="regular-price">{$listing->base_price|currency}</span>
             {/if}
         {/if}
     </div>
@@ -52,18 +52,20 @@
         <div class="item-actions">
             {if $permissions.edit == 1}
                 {icon action=edit record=$listing title="Edit `$listing->title`"}
+                {icon action=copyProduct class="copy" record=$listingtitle text="Copy" title="Copy `$listing->title` " record=$listing}
             {/if}
             {if $permissions.delete == 1}
                 {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this product?"|gettext)|cat:"');"}
-            {/if}
-            {if $permissions.edit == 1}
-                {icon action=copyProduct class="copy" record=$listingtitle text="Copy" title="Copy `$listing->title` " record=$listing}
             {/if}
         </div>
     {/permissions}
 
     <a href="{link controller=store action=show title=$listing->sef_url}" class="prod-img">
-        {img file_id=$listing->expFile.mainimage[0]->id w=140 h=150}
+        {if $listing->expFile.mainimage[0]->id != ""}
+            {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=$config.listingwidth|default:140 h=$config.listingheight|default:150 alt=$listing->title}
+        {else}
+            {img src="`$asset_path`images/no-image.jpg" constraint=1 w=$config.listingwidth|default:140 h=$config.listingheight|default:150 alt="'No Image Available'|gettext"}
+        {/if}
     </a>
 
     <h3>
@@ -75,6 +77,7 @@
     </a>
     
     <p class="bodycopy">
-        {$listing->summary}
+        {*{$listing->summary}*}
+        {$listing->body}
     </p -->
 </div>

@@ -21,8 +21,8 @@
 {if $permissions.manage == 1}
     <div class="module ecomconfig manage-discounts">
         <div class="form_header">
-                <h1>{"Manage Discounts"|gettext}</h1>
-                <p>{"Here you can configure discounts to be used in your store."|gettext}</p><p></p>
+            <h1>{"Manage Discounts"|gettext}</h1>
+            <blockquote>{"Here you can configure discounts to be used in your store."|gettext}</blockquote>
         </div>
         
         {*icon class=edit action=edit_optiongroup_master record=$group}
@@ -31,7 +31,7 @@
         {icon class=add controller="ecomconfig" action="edit_discount" text="Create a New Store Discount"|gettext}
             
         {if $page|@count > 0}
-            <h2>{"Modify existing group discount"|gettext}</h2>
+            <h2>{"Modify existing discount"|gettext}</h2>
            {pagelinks paginate=$page top=1}
 			<table id="discounts" class="exp-skin-table">
 				<thead>

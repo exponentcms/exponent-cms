@@ -17,7 +17,6 @@
     <h1>
         {if $record->id == ""}{'New Status'|gettext}{else}{'Editing'|gettext} {$record->title}{/if}
     </h1>
-    
     {form action=update_message}
         {control type="hidden" name="id" value=$record->id}
         {control type="html" name="body" label="Message"|gettext value=$record->body}

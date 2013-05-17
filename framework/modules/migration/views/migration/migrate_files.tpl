@@ -44,10 +44,10 @@
 				{'HOWEVER, you must manually copy the \'files\' directory over to this installation'|gettext}
 			</li>
         </ul>
-    <p> 
+    <blockquote>
 		{'The following is a list of all file records migrated into the database.'|gettext}&#160;&#160;
 		{'A checkmark indicates the file already resides in the destination \'files\' folder.'|gettext}
-    </p>		
+    </blockquote>
 	<table class="exp-skin-table">
 		<thead>
 			<tr>

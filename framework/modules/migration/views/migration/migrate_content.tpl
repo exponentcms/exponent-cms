@@ -28,9 +28,9 @@
     </div>
 
 	{if $msg.clearedcontent}
-	    <p> 
+	    <blockquote>
 			{br} {'After clearing the database of content'|gettext}:
-		</p>
+		</blockquote>
 	{/if}
 	<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
 		<tbody>

@@ -17,15 +17,13 @@
     <div class="image">
         <a href="{link controller=store action=show title=$listing->sef_url}">
             {if $listing->expFile.mainimage[0]->id != ""}
-                {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=165 alt=$listing->title}
+                {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=$config.listingwidth|default:140 h=$config.listingheight|default:150 alt=$listing->title}
             {else}
-                {img src="`$asset_path`images/no-image.jpg"}
-                {'No Image'|gettext}
+                {img src="`$asset_path`images/no-image.jpg" constraint=1 w=$config.listingwidth|default:140 h=$config.listingheight|default:150 alt="'No Image Available'|gettext"}
             {/if}
         </a>
     </div>
-
-    {permissions}
+   {permissions}
     <div class="item-actions">
         {if $permissions.configure == 1 or $permissions.manage == 1}
             {icon action=edit id=$listing->id title="Edit this entry"|gettext}
@@ -33,13 +31,12 @@
         {/if}
     </div>
     {/permissions}
-
     <h3><a href="{link controller=store action=show title=$listing->sef_url}">{$listing->title}</a></h3>
     <div class="bodycopy">
         <strong class="date">{$listing->eventdate|date_format:"%a, %B %e"}</strong> -
         {$listing->body}
     </div>
-    <div class="price">{currency_symbol}{$listing->price|number_format:2}</div>
-    <a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="exp-ecom-link addtocart">{'Register Today'|gettext} <span></span></a>
+    <div class="price">{$listing->price|currency}</div>
+    <a href="{link controller=cart action=addItem product_id=$listing->id product_type=$listing->product_type}" class="exp-ecom-link addtocart">{'Register for this Event'|gettext} <span></span></a>
     {clear}
 </div>

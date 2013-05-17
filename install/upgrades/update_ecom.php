@@ -38,19 +38,15 @@ class update_ecom extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.0.9, the e-Commerce header/footer configuration was revised.  This Script updates those entries"; }
+	function description() { return "In v2.0.9, the e-Commerce header/footer configuration was revised.  This Script updates those entries."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
 	 * @return bool
 	 */
 	function needed() {
-        $cfg = new stdClass();
-        $cfg->mod = "ecomconfig";
-        $cfg->src = "@globalstoresettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
-        if (!empty($config->config['header']) || !empty($config->config['footer'])) {
+        $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
+        if (defined('ECOM') && (!empty($config->config['header']) || !empty($config->config['footer']))) {
             return true;
         } else return false;
 	}
@@ -61,11 +57,7 @@ class update_ecom extends upgradescript {
 	 */
 	function upgrade() {
         $fixed = 0;
-        $cfg = new stdClass();
-        $cfg->mod = "ecomconfig";
-        $cfg->src = "@globalstoresettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
+        $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
         if (!empty($config->config['header'])) {
             $config->config['ecomheader'] = $config->config['header'];
             unset ($config->config['header']);

@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="button,tables"}
+{css unique="event-listings" link="`$asset_path`css/storefront.css" corecss="common"}
 
 {/css}
 
@@ -35,7 +35,6 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {$myloc=serialize($__loc)}
     <ul>
         {foreach name=items from=$page->records item=item}
             {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
@@ -57,16 +56,19 @@
                     {/if}
                     <div class="events">
                         <div class="event-image">
-                             <a href="{link action=show title=$item->sef_url}">
-                            {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                            <a href="{link action=show title=$item->sef_url}">
+                                {if $item->expFile.mainimage[0]->id != ""}
+                                    {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                                {else}
+                                    {img src="`$asset_path`images/no-image.jpg" w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                                {/if}
                             </a>
                         </div>
-
                         <div class="event-info">
-                            <em class="date">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
+                            <em class="date{if $item->eventdate < time()} past{/if}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
+                            {if $item->getBasePrice()}<p>{'Cost'|gettext}: {$item->getBasePrice()|currency}</p>{/if}
                             <p>{$item->body|truncate:175:"..."}</p>
                             {*<a href="{link action=show title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}
-
                         </div>
                     </div>
                 </li>

@@ -19,45 +19,51 @@
 
 <div class="module billing manage">
     <h1>{'Manage Payment Options'|gettext}</h1>
-    <p>
-        {'This page allows you to turn different payment options (known as billing calculators) on and off for customers on your webstore.'|gettext}
-    </p>
+    <blockquote>
+        {'This page allows you to enable different payment options (known as billing calculators) for customers on your webstore.'|gettext}
+    </blockquote>
     
     <table class="exp-skin-table">
         <thead>
         <tr>
+            <th>{'Default'|gettext}</th>
             <th>{'Name'|gettext}</th>
             <th>{'Description'|gettext}</th>
             <th>{'Enabled'|gettext}</th>
-            <th>{'Configure'|gettext}</th>
         </tr>
         </thead>
         <tbody>
         {foreach from=$calculators item=calc}
         <tr class="{cycle values="odd,even"}">
+            <td>
+                {permissions}
+                    {if $calc->is_default}
+                        <img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}>
+                    {else}
+                        <a href="{link action=toggle_default id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
+                    {/if}
+                {/permissions}
+            </td>
             <td>{$calc->title}</td>
             <td>{$calc->body}</td>
             <td>
                 {permissions}
 					<div class="item-actions">
-                    {if $permissions.manage == 1}                        
-						{if $calc->enabled}
-							<a href="{link action=activate id=$calc->id enabled=0}">{icon img="toggle_on.png"}</a>
-						{else}
-							<a href="{link action=activate id=$calc->id enabled=1}">{icon img="toggle_off.png"}</a>
-						{/if}						
-					{/if}
-					</div>
+                        {if $permissions.manage == 1}
+                            {if $calc->enabled}
+                                <a href="{link action=activate id=$calc->id enabled=0}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}></a>
+                            {else}
+                                <a href="{link action=activate id=$calc->id enabled=1}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}></a>
+                            {/if}
+                        {/if}
+                        {if $calc->calculator->hasConfig() == 1}
+                            {icon action=configure img='configure.png' record=$calc title="Configure"|gettext|cat:" `$calc->title`"}
+                        {/if}
+                    </div>
                 {/permissions}
-            </td>
-            <td>
-                {if $calc->calculator->hasConfig() == 1}
-                    {icon action=configure record=$calc title="Configure"|gettext|cat:" `$calc->title`"}
-                {/if}
             </td>
         </tr>
         {/foreach}
         </tbody>
     </table>
-        
 </div>

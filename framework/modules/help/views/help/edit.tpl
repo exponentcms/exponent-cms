@@ -30,7 +30,6 @@
             <div id="tab1">
                 <h2>{'Help Document'|gettext}</h2>
                 {control type=text name=title label="Title"|gettext value=$record->title}
-	            {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
                 {control type="dropdown" name="help_version_id" label="Version"|gettext frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
                 {*{control type=textarea name=summary label="Summary"|gettext value=$record->summary}*}
                 {control type=html name=body label="General Information"|gettext value=$record->body}
@@ -54,9 +53,11 @@
             </div>
             <div id="tab6">
                  <h2>{'SEO Settings'|gettext}</h2>
+                {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical}
                 {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
-                {control type="textarea" name="meta_keywords" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
-                {control type="textarea" name="meta_description" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
+                {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
+                {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
             </div>
             </div>
         </div>

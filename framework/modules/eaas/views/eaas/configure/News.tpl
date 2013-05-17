@@ -16,8 +16,7 @@
 <h2>{"News"|gettext}</h2>
 
 {control type="files" name="news_image" subtype="news_image" label="News Banner Image"|gettext value=$config['expFile'] limit='1'}
-
-{control type="editor" name="news_body" label="News HTML" value=$config.news_body}
+{control type="editor" name="news_body" label="News HTML"|gettext value=$config.news_body}
 
 <table class="exp-skin-table">
     <thead>
@@ -50,7 +49,6 @@
 {/foreach}
     </tbody>
 </table>
-
 
 {script unique="aggregation-nw"}
     function newsSelectAll(val) {

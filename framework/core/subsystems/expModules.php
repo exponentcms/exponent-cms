@@ -96,14 +96,15 @@ class expModules {
         global $db;
         
         $controllers = self::listUserRunnableControllers();
-        
+
+        $moduleInfo = array();
         foreach ($controllers as $module) {
     		if (class_exists($module)) {
     			$mod = new $module();
-    			$modstate = $db->selectObject("modstate","module='$module'");
-
+//                $mod = self::getController($module);
+    			$modstate = $db->selectObject("modstate","module='". expModules::getControllerName($module) . "'");
     			$moduleInfo[$module] = new stdClass();
-    			$moduleInfo[$module]->class = $module;
+    			$moduleInfo[$module]->class = expModules::getControllerName($module);
     			$moduleInfo[$module]->name = $mod->name();
     			$moduleInfo[$module]->author = $mod->author();
     			$moduleInfo[$module]->description = $mod->description();
@@ -125,8 +126,8 @@ class expModules {
 
 	    $controllers = array();
 	    foreach($available_controllers as $name=>$path) {
-	        $controller = new $name();
-	        if (!empty($controller->useractions)) $controllers[] = $name;
+	        $controller = new $name();  // we want both models and controllers to filter out models
+	        if (!empty($controller->useractions)) $controllers[] = self::getControllerClassName($name);
 	    }
 
 	    return $controllers;
@@ -239,13 +240,13 @@ class expModules {
      *
      * @return null|string
      */
-    public static function getModuleName($modulename) {
+    public static function getModuleBaseName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? substr($modulename, 0, -6) : $modulename;
-        }
+        } else return $modulename;
    	}
 
     /**
@@ -260,27 +261,27 @@ class expModules {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? $modulename : $modulename.'Controller';
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
-        }
+        } else return $modulename;
    	}
 
     /**
      * Returns the controller sans the 'Controller' or module name with 'module' suffix
      * this is how we store them in the db as 2.0/old school
-     * and in most cases is the name of the model/data
+     * and in most cases it is the name of the model/data
      *
      * @param $modulename
      *
      * @return null|string
      */
-    public static function getModuleName2($modulename) {
+    public static function getModuleName($modulename) {
    	    if (empty($modulename)) return null;
         if (self::controllerExists($modulename)) {
             return (substr($modulename, -10) == 'Controller') ? substr($modulename, 0, -10) : $modulename;
-        } else {
+        } elseif (substr($modulename, -10) != 'Controller') {
             return (substr($modulename, -6) == 'module') ? $modulename  : $modulename . 'module';
-        }
+        } else return $modulename;
    	}
 
     /**
@@ -320,7 +321,8 @@ class expModules {
 	    $ctls = array();  // 2.0 modules
 	    foreach($modulestates as $state) {
 	        if (self::controllerExists($state->module)) {
-	            $controller = new $state->module();
+//	            $controller = new $state->module();
+                $controller = self::getController($state->module);
 	            if (!empty($controller->useractions)) {
 		            $ctls[] = $state->module;
 	            }
@@ -337,12 +339,12 @@ class expModules {
      */
     public static function modules_list() {
     	$mods = array();
-    	if (is_readable(BASE."framework/modules-1")) {
-    		$dh = opendir(BASE."framework/modules-1");
-    		while (($file = readdir($dh)) !== false) {
-    			if (substr($file,-6,6) == "module") $mods[] = $file;
-    		}
-    	}
+//    	if (is_readable(BASE."framework/modules-1")) {
+//    		$dh = opendir(BASE."framework/modules-1");
+//    		while (($file = readdir($dh)) !== false) {
+//    			if (substr($file,-6,6) == "module") $mods[] = $file;
+//    		}
+//    	}
     	return $mods;
     }
 

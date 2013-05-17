@@ -16,6 +16,6 @@
 <h2>{'Configure this Module'|gettext}</h2>
 
 <blockquote>
-{'There is nothing to configure for this module'|gettext}.
+    {'There is nothing to configure for this module'|gettext}.
 </blockquote>
 

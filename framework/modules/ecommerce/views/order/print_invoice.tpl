@@ -86,7 +86,7 @@
                     <h2>{'Shipping Method'|gettext}</h2>
                     {if $order->shipping_required == true}
                         {if $order->shippingmethods|@count <= 1}
-                            {$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {currency_symbol}{$shipping->shippingmethod->shipping_cost|number_format:2}
+                            {$shipping->calculator->title} ({$shipping->shippingmethod->option_title}) - {$shipping->shippingmethod->shipping_cost|currency}
                             <br><br><br><br>
                          {else}
                             {'See shipping information below.'|gettext}
@@ -111,12 +111,12 @@
         {if $order->shippingmethods|@count > 1}
             {foreach from=$order->shippingmethods item=method}
                 <li>
-                    <h2>{$method->option_title} - ${$method->shipping_cost}</h2>
+                    <h2>{$method->option_title} - {$method->shipping_cost|currency}</h2>
                     <h6>{$method->firstname} {$method->lastname} {$method->address1} {$method->address2} {$method->city}, {$method->state|statename:abbv} {$method->zip}</h6>
                     <ul>
                         {foreach from=$method->orderitem item=oi}
                             <li>
-                                <a href="{link action=show controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} ${$oi->products_price|number_format:2} {'each'|gettext}
+                                <a href="{link action=show controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} {$oi->products_price|currency} {'each'|gettext}
                                 {$oi->getExtraData()}
                             </li>
                         {/foreach}
@@ -126,7 +126,7 @@
         {else}
             {foreach from=$order->orderitem item=oi}
                 <li>
-                    <a href="{link action=show controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} ${$oi->products_price|number_format:2} {'each'|gettext}
+                    <a href="{link action=show controller="storeController" title=$oi->products_name}">{$oi->products_name}</a> - {$oi->quantity} {'at'|gettext} {$oi->products_price|currency} {'each'|gettext}
                     {$oi->getExtraData()}
                 </li>
             {/foreach}

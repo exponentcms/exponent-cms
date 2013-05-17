@@ -50,6 +50,7 @@ class portfolioController extends expController {
             'order'=>$order,
             'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
             'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+            'groups'=>!isset($this->params['group']) ? array() : array($this->params['group']),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -80,10 +81,12 @@ class portfolioController extends expController {
     }
 
     /**
-   	 * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
-   	 *
-   	 * @return string
-   	 */
+     * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
+     *
+     * @param string $type
+     *
+     * @return string
+     */
    	function aggregateWhereClause($type='') {
         $sql = parent::aggregateWhereClause();
         $sql .= (!empty($this->config['only_featured']))?"AND featured=1":"";

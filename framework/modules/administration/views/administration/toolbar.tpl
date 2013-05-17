@@ -21,7 +21,7 @@
 
 </div>
 
-    {*FIXME convert to yui3*}
+{*FIXME convert to yui3*}
 {script unique="admin99" yui3mods="yui"}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-yahoo-dom-event','yui2-menu','yui2-connection','yui2-container', function(Y) {
@@ -161,6 +161,12 @@
              // Y.later(900,this,function(){
              //     tb.setStyles({'opacity':'0.3'});
              // });
+         });
+
+        if (document.getElementById("ordernum")) Y.one('#ordernum').on('click',function(e){
+            Y.later(100, e, function(e) {
+                e.focus();
+            }, e.currentTarget);
          });
 
          Y.fire('toolbar:loaded');

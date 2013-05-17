@@ -242,9 +242,9 @@ $order = null;
  */
 function renderAction(array $parms=array()) {
     global $user, $db;
-    
+
     //Get some info about the controller
-    $baseControllerName = expModules::getControllerName($parms['controller']);
+//    $baseControllerName = expModules::getControllerName($parms['controller']);
     $fullControllerName = expModules::getControllerClassName($parms['controller']);
     $controllerClass = new ReflectionClass($fullControllerName);
     
@@ -281,7 +281,8 @@ function renderAction(array $parms=array()) {
         $template->assign('moduletitle', $parms['moduletitle']);
     } else {
         $title = new stdClass();
-        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
+//        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
+        $title->mod = $controller->loc->mod;
         $title->src = $controller->loc->src;
         $title->int = '';
         $template->assign('moduletitle', $db->selectValue('container', 'title', "internal='".serialize($title)."'"));
@@ -448,7 +449,7 @@ function get_model_for_controller($controller_name) {
 function get_common_template($view, $loc, $controllername='') {
     $controller = new stdClass();
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
-    $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;
+    $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;  //FIXME this don't make sense?
     $controller->loc = $loc;
     
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
@@ -489,6 +490,9 @@ function get_config_templates($controller, $loc) {
     foreach ($common_views as $key=>$value) {
         $common_views[$key]['name'] = gt($value['name']);
     }
+    $moduleconfig = array();
+    if (!empty($common_views['module'])) $moduleconfig['module'] = $common_views['module'];
+    unset($common_views['module']);
 
     // get the config views for the module
     $module_views = find_config_views($modpaths);
@@ -520,7 +524,8 @@ function get_config_templates($controller, $loc) {
     // when we're finished to get them back in the right order
     krsort($common_views);
     krsort($module_views);
-    
+
+    if (!empty($moduleconfig)) $common_views = array_merge($common_views, $moduleconfig);
     $views = array_merge($common_views, $module_views);
     $views = array_reverse($views);
 
@@ -555,8 +560,12 @@ function find_config_views($paths=array(), $excludes=array()) {
 }
 
 function get_template_for_action($controller, $action, $loc=null) {
+    $framework = expSession::get('framework');
+
     // set paths we will search in for the view
+    $bstrapbasepath = $controller->viewpath.'/'.$action.'.bootstrap.tpl';
     $basepath = $controller->viewpath.'/'.$action.'.tpl';
+    $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.bootstrap.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
 
     // the root action will be used if we don't find a view for this action and it is a derivative of
@@ -566,18 +575,36 @@ function get_template_for_action($controller, $action, $loc=null) {
     $rootbasepath = $controller->viewpath.'/'.$root_action[0].'.tpl';
     $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
 
-    if (file_exists($themepath)) {
-        return new controllertemplate($controller, $themepath);
-    } elseif (file_exists($basepath)) {     
-        return new controllertemplate($controller, $basepath);
-    } elseif ($root_action[0] != $action) {
-        if (file_exists($rootthemepath)) {
-            return new controllertemplate($controller, $rootthemepath);
-        } elseif (file_exists($rootbasepath)) {
-            return new controllertemplate($controller, $rootbasepath);
+    if ($framework!="bootstrap") {
+        if (file_exists($themepath)) {
+            return new controllertemplate($controller, $themepath);
+        } elseif (file_exists($basepath)) {     
+            return new controllertemplate($controller, $basepath);
+        } elseif ($root_action[0] != $action) {
+            if (file_exists($rootthemepath)) {
+                return new controllertemplate($controller, $rootthemepath);
+            } elseif (file_exists($rootbasepath)) {
+                return new controllertemplate($controller, $rootbasepath);
+            }
+        }
+    } else {
+        if (file_exists($bstrapthemepath)) {
+            return new controllertemplate($controller, $bstrapthemepath);
+        } elseif (file_exists($themepath)) {   
+            return new controllertemplate($controller, $themepath);
+        } elseif (file_exists($bstrapbasepath)) {     
+            return new controllertemplate($controller, $bstrapbasepath);
+        } elseif (file_exists($basepath)) {     
+            return new controllertemplate($controller, $basepath);
+        } elseif ($root_action[0] != $action) {
+            if (file_exists($rootthemepath)) {
+                return new controllertemplate($controller, $rootthemepath);
+            } elseif (file_exists($rootbasepath)) {
+                return new controllertemplate($controller, $rootbasepath);
+            }
         }
     }
-    
+
     // if we get here it means there were no views for the this action to be found.
     // we will check to see if we have a scaffolded version or else just grab a blank template.
     if (file_exists(BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl')) {
@@ -674,10 +701,22 @@ function object2Array($object=null) {
 
 function expUnserialize($serial_str) {
     if ($serial_str === 'Array') return null;  // empty array string??
-    $out = preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
+    $out1 = @preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
+    $out = preg_replace_callback(
+        '!s:(\d+):"(.*?)";!s',
+        create_function ('$m',
+            '$m_new = str_replace(\'"\',\'\"\',$m[2]);
+            return "s:".strlen($m_new).\':"\'.$m_new.\'";\';'
+        ),
+        $serial_str );
+    if ($out1 !== $out) {
+        eDebug('problem:<br>'.$out.'<br>'.$out1);
+    }
     $out2 = unserialize($out);
     if (is_array($out2) && !empty($out2['moduledescription'])) {  // work-around for links in module descriptions
         $out2['moduledescription'] = stripslashes($out2['moduledescription']);
+    } elseif (is_object($out2) && get_class($out2) == 'htmlcontrol') {
+        $out2->html = stripslashes($out2->html);
     }
     return $out2;
 }

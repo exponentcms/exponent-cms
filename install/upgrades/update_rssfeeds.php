@@ -38,7 +38,7 @@ class update_rssfeeds extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.0.9, the RSS Feed feature was revised which requires additional entries in the database.  This Script updates those entries"; }
+	function description() { return "In v2.0.9, the RSS Feed feature was revised which requires additional entries in the database.  This Script updates those entries."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

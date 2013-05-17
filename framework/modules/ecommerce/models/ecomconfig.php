@@ -25,17 +25,12 @@ class ecomconfig extends expConfig {
         
         /**
          * this allows the sourcing on the store config to stay consistent.
-         * This way, when we call ecomconfig::getConfig('configwewant') we 
+         * This way, when we call ecomconfig::getConfig('config_we_want') we
          * don't get unexpected results
          *
          * @author Phillip Ball
          */
-        
-        $cfg = new stdClass();
-        $cfg->mod = "ecomconfig";
-        $cfg->src = "@globalstoresettings";
-        $cfg->int = "";
-        $config = new expConfig($cfg);
+        $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
         
         //$config = new expConfig(expCore::makeLocation('ecomconfig'));
         if (isset($config->config[$configname])) {

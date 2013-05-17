@@ -14,7 +14,7 @@
  *}
 
  <div id="discountconfig" class="module discountconfig configure">
-    <h1>{'Manage Discounts'|gettext}</h1>
+    <h1>{'Edit Discount'|gettext}</h1>
     <div id="mainform">
         {form action=update_discount}
             {control type="hidden" name="id" value=$discount->id}
@@ -75,6 +75,7 @@
     </div>
 </div>
 
+{*FIXME convert to yui3*}
 {script unique="discountedit" yui3mods=1}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {

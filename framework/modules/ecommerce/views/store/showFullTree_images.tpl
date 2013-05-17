@@ -82,7 +82,11 @@
                         </div>
                     {/permissions}
                     <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
-						{img file_id=$cat->getCategoryImage($cat->expFile[0]->id) w=100 class="cat-image"}
+                        {if $cat->getCategoryImage($cat->expFile[0]->id) != ""}
+                            {img file_id=$cat->getCategoryImage($cat->expFile[0]->id) w=100 class="cat-image"}
+                        {else}
+                            {img src="`$asset_path`images/no-image.jpg" w=100 class="cat-image"}
+                        {/if}
                     </a>
                     <h3>
                         <a href="{link controller=store action=showall title=$cat->sef_url}">
@@ -92,7 +96,7 @@
                 </div>
                 {if $smarty.foreach.cats.last || $ipcr%2==0}
                     </div>
-                    {$var=open_c_row=1}
+                    {$open_c_row=1}
                 {/if}
                 {counter name="ipcr"}
             {/if}

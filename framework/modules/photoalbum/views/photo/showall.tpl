@@ -49,63 +49,9 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {$myloc=serialize($__loc)}
-    {$cat="bad"}
-    {pagelinks paginate=$page top=1}
-    <ul class="image-list">
-    {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
-    {foreach from=$page->records item=record name=items}
-        {if !empty($record->title)}
-            {$title = $record->title}
-        {elseif !empty($record->expFile[0]->title)}
-            {$title = $record->expFile[0]->title}
-        {else}
-            {$title = ''}
-        {/if}
-        {if !empty($record->alt)}
-            {$alt = $record->alt}
-        {elseif !empty($record->expFile[0]->alt)}
-            {$alt = $record->expFile[0]->alt}
-        {else}
-            {$alt = $title}
-        {/if}
-        {if $cat !== $record->expCat[0]->id && $config.usecategories}
-            <a href="{link action=$config.landing|default:showall src=$page->src gallery=$record->expCat[0]->id}" title='View this gallery'|gettext><h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2></a>
-        {/if}
-        <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
-            {if $config.lightbox}
-                {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
-                <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$alt|default:$title}">
-            {else}
-                <a href="{link action=show title=$record->sef_url}" title="{$alt|default:$title}">
-            {/if}
-                {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" zc=1 q=$quality|default:75}
-            </a>
-            {permissions}
-                <div class="item-actions">
-                    {if $permissions.edit == 1}
-                        {if $myloc != $record->location_data}
-                            {if $permissions.manage == 1}
-                                {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
-                            {else}
-                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
-                            {/if}
-                        {/if}
-                        {icon action=edit record=$record title="Edit"|gettext|cat:" `$modelname`"}
-                    {/if}
-                    {if $permissions.delete == 1}
-                        {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
-                    {/if}
-                    {if $permissions.create == 1}
-                        {icon class=add action=edit rank=$slide->rank+1 title="Add another here"|gettext  text="Add After"|gettext}
-                    {/if}
-                </div>
-            {/permissions}
-        </li>
-        {$cat=$record->expCat[0]->id}
-    {/foreach}
-    </ul>
-    {pagelinks paginate=$page bottom=1}
+    <div id="{$name}list">
+        {include 'photolist.tpl'}
+    </div>
 </div>
 
 {if $config.lightbox}
@@ -121,6 +67,65 @@
     YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
         Y.Lightbox.init();
     });
+{/literal}
+{/script}
+{/if}
+
+{if $config.ajax_paging}
+{script unique="`$name`listajax" yui3mods="1"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+    var photolist = Y.one('#{/literal}{$name}{literal}list');
+    var cfg = {
+    			method: "POST",
+    			headers: { 'X-Transaction': 'Load Photoitems'},
+    			arguments : { 'X-Transaction': 'Load Photoitems'}
+    		};
+
+    src = '{/literal}{$__loc->src}{literal}';
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=photo&action=showall&view=photolist&ajax_action=1&src="+src;
+
+	var handleSuccess = function(ioId, o){
+//		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "photoitems nav");
+
+        if(o.responseText){
+                photolist.setContent(o.responseText);
+                photolist.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+            photolist.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
+        } else {
+            photolist.one('.loadingdiv').remove();
+        }
+	};
+
+	//A function handler to use for failed requests:
+	var handleFailure = function(ioId, o){
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "photoitems nav");
+	};
+
+	//Subscribe our handlers to IO's global custom events:
+	Y.on('io:success', handleSuccess);
+	Y.on('io:failure', handleFailure);
+
+    photolist.delegate('click', function(e){
+        e.halt();
+        cfg.data = "page="+e.currentTarget.get('rel');
+        var request = Y.io(sUrl, cfg);
+        photolist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Photos"|gettext}{literal}</div>'));
+    }, 'a.pager');
+});
 {/literal}
 {/script}
 {/if}

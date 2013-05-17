@@ -18,6 +18,8 @@
     padding:5px 10px;
     text-align:right;
     font-size:90%;
+	white-space: normal;
+    line-height: normal;
 }
 
 .build-report .control.radio .label {

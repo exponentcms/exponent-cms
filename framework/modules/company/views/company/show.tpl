@@ -14,7 +14,12 @@
  *}
 
 <div class="module company show">
-    <h1>{'Products from'|gettext} {$record->title}</h1>
+    <h1>
+        {if $record->expFile.logo[0]->id}
+            {img file_id=$record->expFile.logo[0]->id w=64 alt="Image of `$record->title`" title="`$record->title`" class="large-img" id="enlarged-image"}
+        {/if}
+        {'Products from'|gettext} {$record->title}
+    </h1>
     {permissions}
         {if $permissions.edit == 1}
             {icon img='edit.png' action=edit id=$record->id title="Edit"|gettext|cat:" `$record->title`"}
@@ -24,7 +29,6 @@
         {/if}
     {/permissions}
     {$page->links}
-
     {foreach from=$page->records item=result}
         {*if $result->canview == 1*}
         <div class="showwrapper">
@@ -41,10 +45,10 @@
                     {'Call for Price'|gettext}
                 {else}                   
                     {if $result->use_special_price}
-                        <span style="font-size:14px; text-decoration: line-through;">{currency_symbol}{$result->base_price|number_format:2}</span>
-                        <span style="color:red;">{currency_symbol}{$result->special_price|number_format:2}</span>
+                        <span style="font-size:14px; text-decoration: line-through;">{$result->base_price|currency}</span>
+                        <span style="color:red;">{$result->special_price|currency}</span>
                     {else}
-                        {currency_symbol}{$result->base_price|number_format:2}
+                        {$result->base_price|currency}
                     {/if}
                 {/if}
                 </div>

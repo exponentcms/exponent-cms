@@ -15,10 +15,12 @@
 
 <div class="module cart giftcard addToCart">
     <h1>{$moduletitle|default:"Gift Card - Add to Cart"|gettext}</h1>
-    <p>{'Gift Card amounts must be purchased in'|gettext} ${$product->base_price}.00 {'increments'|gettext}.</p>
+    <blockquote>{'Gift Card amounts must be purchased in'|gettext} {currency_symbol}{$product->base_price}.00 {'increments'|gettext}.</blockquote>
     {form action="addItem"}
+        {control type="hidden" name="controller" value=cart}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}
+        {control type=hidden name=options_shown value=$product->id}
         {control type="text" id="dollar_amount" name="dollar_amount" label="Dollar Amount:"|gettext value=$record->dollar_amount size=7 filter=money}
         {control type="text" name="to" label="To:"|gettext value=$record->to}
         {control type="text" name="from" label="From:"|gettext value=$record->from}
@@ -26,6 +28,8 @@
         {control type="buttongroup" name="add2cart" submit="Add to cart"|gettext}
     {/form}
 </div>
+
+{*FIXME convert to yui3*}
 {script unique="a2cgc"}
 {literal}
 YAHOO.util.Event.onDOMReady(function(){
@@ -33,7 +37,7 @@ YAHOO.util.Event.onDOMReady(function(){
     var da = YAHOO.util.Dom.get('dollar_amount');
     YAHOO.util.Event.on(da, 'blur', function(e,o){
         var newint = parseInt(this.value.replace('$',""));
-        this.value = "$"+Math.ceil(newint/bp)*bp+".00";
+        this.value = {/literal}{currency_symbol}{literal}+Math.ceil(newint/bp)*bp+".00";
     }, da, true);
     
     YAHOO.util.Event.on(['to','from'], 'keyup', function(e){
@@ -44,7 +48,6 @@ YAHOO.util.Event.onDOMReady(function(){
         }
         //Y.log(targ);
     });
-    
 });
 {/literal}
 {/script}

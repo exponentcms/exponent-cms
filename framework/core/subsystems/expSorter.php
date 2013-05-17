@@ -97,6 +97,7 @@ class expSorter {
         if (empty($params['array'])) return array();
         $sortby = empty($params['sortby']) ? NULL : $params['sortby']; 
         $order = empty($params['order']) ? NULL : $params['order'];
+        if (empty($sortby)) $sortby = $params['order'];
         if (strstr($order," ")) {
             $orderby = explode(" ",$order);
             $sortby = $orderby[0];

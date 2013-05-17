@@ -42,14 +42,21 @@ class expSettings {
 		}
 
 		// include global constants
-		@include_once(BASE."conf/config.php");
+		@include_once(BASE."framework/conf/config.php");
+        if (!defined('SITE_TITLE')) {  // check for upgrade from older installation
+            if (!file_exists(BASE."framework/conf/config.php") && file_exists(BASE."conf/config.php")) {
+//                rename(BASE."conf/config.php",BASE."framework/conf/config.php");  //FIXME until 2.2.1
+                copy(BASE."conf/config.php",BASE."framework/conf/config.php");
+                @include_once(BASE."framework/conf/config.php");
+            }
+        }
 
 		// include default constants, fill in missing pieces
-		if (is_readable(BASE."conf/extensions")) {
-			$dh = opendir(BASE."conf/extensions");
+		if (is_readable(BASE."framework/conf/extensions")) {
+			$dh = opendir(BASE."framework/conf/extensions");
 			while (($file = readdir($dh)) !== false) {
-				if (is_readable(BASE."conf/extensions/$file") && substr($file,-13,13) == ".defaults.php") {
-					@include_once(BASE."conf/extensions/$file");
+				if (is_readable(BASE."framework/conf/extensions/$file") && substr($file,-13,13) == ".defaults.php") {
+					@include_once(BASE."framework/conf/extensions/$file");
 				}
 			}
 		}
@@ -70,19 +77,19 @@ class expSettings {
 	public static function parse($configname,$site_root = null) {
 		if ($site_root == null) $site_root = BASE;
 
-		if ($configname == '') $file = $site_root.'conf/config.php';
-		else $file = $site_root."conf/profiles/$configname.php";
+		if ($configname == '') $file = $site_root.'framework/conf/config.php';
+		else $file = $site_root."framework/conf/profiles/$configname.php";
 		$options = array();
 //		$valid = array();
 		if (is_readable($file)) $options = self::parseFile($file);
-		if (is_readable($site_root.'conf/extensions')) {
-			$dh = opendir($site_root.'conf/extensions');
+		if (is_readable($site_root.'framework/conf/extensions')) {
+			$dh = opendir($site_root.'framework/conf/extensions');
 			while (($file = readdir($dh)) !== false) {
 				if (substr($file,-13,13) == '.defaults.php') {
-					$options = array_merge(self::parseFile($site_root.'conf/extensions/'.$file),$options);
+					$options = array_merge(self::parseFile($site_root.'framework/conf/extensions/'.$file),$options);
 				}
 //				else if (substr($file,-14,14) == '.structure.php') {
-//					$tmp = include($site_root.'conf/extensions/'.$file);
+//					$tmp = include($site_root.'framework/conf/extensions/'.$file);
 //					$valid = array_merge($valid,array_keys($tmp[1]));
 //				}
 			}
@@ -162,7 +169,7 @@ class expSettings {
 	}
 
 	public static function change($var, $val) {
-		$conf = self::parseFile(BASE.'conf/config.php');
+		$conf = self::parseFile(BASE.'framework/conf/config.php');
 		$conf[$var] = $val;
 		self::saveValues($conf);
 	}
@@ -170,10 +177,10 @@ class expSettings {
 	public static function writeFile($str, $configname='') {
 		// if ($configname != "") {
 	//                 // Wishing to save
-	//                 if ((file_exists(BASE."conf/profiles/$configname.php") && expUtil::isReallyWritable(BASE."conf/profiles/$configname.php")) ||
-	//                         expUtil::isReallyWritable($BASE."conf/profiles")) {
+	//                 if ((file_exists(BASE."framework/conf/profiles/$configname.php") && expUtil::isReallyWritable(BASE."framework/conf/profiles/$configname.php")) ||
+	//                         expUtil::isReallyWritable($BASE."framework/conf/profiles")) {
 	//
-	//                         $fh = fopen(BASE."conf/profiles/$configname.php","w");
+	//                         $fh = fopen(BASE."framework/conf/profiles/$configname.php","w");
 	//                          fwrite($fh,$str);
 	//                         fclose($fh);
 	//                 } else {
@@ -182,8 +189,8 @@ class expSettings {
 	//         }
 
 			//if (isset($values['activate']) || $configname == "") {
-		if ($configname == "") { $configname = BASE."conf/config.php"; }
-//		if ((file_exists(BASE."conf/config.php") && expUtil::isReallyWritable(BASE."conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
+		if ($configname == "") { $configname = BASE."framework/conf/config.php"; }
+//		if ((file_exists(BASE."framework/conf/config.php") && expUtil::isReallyWritable(BASE."framework/conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
 		if ((file_exists($configname) && expUtil::isReallyWritable($configname))) {
 			$fh = fopen($configname,"w");
 			fwrite($fh,$str);
@@ -261,10 +268,10 @@ class expSettings {
 
 		// if ($configname != "") {
 		//  // Wishing to save
-		//  if (    (file_exists($site_root."conf/profiles/$configname.php") && expUtil::isReallyWritable($site_root."conf/profiles/$configname.php")) ||
-		//      expUtil::isReallyWritable($site_root."conf/profiles")) {
+		//  if (    (file_exists($site_root."framework/conf/profiles/$configname.php") && expUtil::isReallyWritable($site_root."framework/conf/profiles/$configname.php")) ||
+		//      expUtil::isReallyWritable($site_root."framework/conf/profiles")) {
 		//
-		//      $fh = fopen($site_root."conf/profiles/$configname.php","w");
+		//      $fh = fopen($site_root."framework/conf/profiles/$configname.php","w");
 		//      fwrite($fh,$str);
 		//      fclose($fh);
 		//  } else {
@@ -274,10 +281,10 @@ class expSettings {
 
 		if (isset($values['activate']) || $configname == "") {
 			if (
-				(file_exists($site_root."conf/config.php") && expUtil::isReallyWritable($site_root."conf/config.php")) ||
-				expUtil::isReallyWritable($site_root."conf")) {
+				(file_exists($site_root."framework/conf/config.php") && expUtil::isReallyWritable($site_root."framework/conf/config.php")) ||
+				expUtil::isReallyWritable($site_root."framework/conf")) {
 
-				$fh = fopen($site_root."conf/config.php","w");
+				$fh = fopen($site_root."framework/conf/config.php","w");
 				fwrite($fh,$str);
 
 				/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
@@ -302,7 +309,7 @@ class expSettings {
      */
     public static function configurationForm($configname,$database=false) {  //FIXME this method is never used
         // $configname = "" for active config
-        if (is_readable(BASE."conf/extensions")) {
+        if (is_readable(BASE."framework/conf/extensions")) {
             global $user;
             $options = self::parse($configname);
 
@@ -314,10 +321,10 @@ class expSettings {
 
             $sections = array();
 
-            $dh = opendir(BASE.'conf/extensions');
+            $dh = opendir(BASE.'framework/conf/extensions');
             while (($file = readdir($dh)) !== false) {
-                if (is_readable(BASE.'conf/extensions/'.$file) && substr($file,-14,14) == '.structure.php') {
-                    $arr = include(BASE.'conf/extensions/'.$file);
+                if (is_readable(BASE.'framework/conf/extensions/'.$file) && substr($file,-14,14) == '.structure.php') {
+                    $arr = include(BASE.'framework/conf/extensions/'.$file);
                     // Check to see if the current user is a super admin, and only include database if so
                     if (substr($file,0,-14) != 'database' || $user->is_admin == 1) {
                         $form->register(null,'',new htmlcontrol('<div id="config_'.count($sections).'" style="font-weight: bold; margin-top: 1.5em; border-top: 1px solid black; border-bottom: 1px solid black; background-color: #ccc; font-size: 12pt;">' . $arr[0] . '</div><a href="#config_top">Top</a>'));
@@ -360,14 +367,14 @@ class expSettings {
 	 * @node Subsystems:Config
 	 */
 	public static function outputConfigurationTemplate($template,$configname) {  //FIXME this method is never used
-		if (is_readable(BASE."conf/extensions")) {
+		if (is_readable(BASE."framework/conf/extensions")) {
 			$categorized = array();
 			$options = self::parse($configname);
 
-			$dh = opendir(BASE."conf/extensions");
+			$dh = opendir(BASE."framework/conf/extensions");
 			while (($file = readdir($dh)) !== false) {
-				if (is_readable(BASE."conf/extensions/$file") && substr($file,-14,14) == ".structure.php") {
-					$arr = include(BASE."conf/extensions/$file");
+				if (is_readable(BASE."framework/conf/extensions/$file") && substr($file,-14,14) == ".structure.php") {
+					$arr = include(BASE."framework/conf/extensions/$file");
 					$categorized[$arr[0]] = array();
 					foreach ($arr[1] as $directive=>$info) {
 						if (is_a($info["control"],"passwordcontrol")) {
@@ -389,7 +396,7 @@ class expSettings {
 	}
 
 	/** exdoc
-	 * Looks through the conf/profiles directory, and finds all of
+	 * Looks through the framework/conf/profiles directory, and finds all of
 	 * the configuration profiles in existence.  This function also
 	 * performs some minor name-mangling, to make the Profile Names
 	 * more user friendly. Returns an array of Profile names.
@@ -399,10 +406,10 @@ class expSettings {
 	 */
 	public static function profiles() {  //FIXME this method is never used
 		$profiles = array();
-		if (is_readable(BASE."conf/profiles")) {
-			$dh = opendir(BASE."conf/profiles");
+		if (is_readable(BASE."framework/conf/profiles")) {
+			$dh = opendir(BASE."framework/conf/profiles");
 			while (($file = readdir($dh)) !== false) {
-				if (is_readable(BASE."conf/profiles/$file") && substr($file,-4,4) == ".php") {
+				if (is_readable(BASE."framework/conf/profiles/$file") && substr($file,-4,4) == ".php") {
 					$name = substr($file,0,-4);
 					$profiles[$name] = str_replace("_"," ",$name);
 				}
@@ -412,16 +419,16 @@ class expSettings {
 	}
 
 	/** exdoc
-	 * Deletes a configuration profile from the conf/profiles
+	 * Deletes a configuration profile from the framework/conf/profiles
 	 * directory.
 	 *
 	 * @param string $profile The name of the Profile to remove.
 	 * @node Subsystems:Config
 	 */
 	public static function deleteProfile($profile) {  //FIXME this method is never used
-		if (file_exists(BASE."conf/profiles/$profile.php")) {
+		if (file_exists(BASE."framework/conf/profiles/$profile.php")) {
 			// do checking with realpath
-			unlink(BASE."conf/profiles/$profile.php");
+			unlink(BASE."framework/conf/profiles/$profile.php");
 		}
 	}
 
@@ -432,9 +439,9 @@ class expSettings {
 	 * @node Subsystems:Config
 	 */
 	public static function activateProfile($profile) {  //FIXME this method is never used
-		if (is_readable(BASE."conf/profiles/$profile.php") && expUtil::isReallyWritable(BASE."conf/config.php")) {
-			copy(BASE."conf/profiles/$profile.php",BASE."conf/config.php");
-			$fh = fopen(BASE."conf/config.php","a");
+		if (is_readable(BASE."framework/conf/profiles/$profile.php") && expUtil::isReallyWritable(BASE."framework/conf/config.php")) {
+			copy(BASE."framework/conf/profiles/$profile.php",BASE."framework/conf/config.php");
+			$fh = fopen(BASE."framework/conf/config.php","a");
 			fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$profile\");\n?>");
 			fclose($fh);
 		}
@@ -443,15 +450,15 @@ class expSettings {
 	/** exdoc
 	 * Parse Drop Down options from a file.
 	 * @param string $dropdown_name The name of the dropdown type.  The name of the
-	 *   file will be retrieved by adding .dropdown as a suffix, and searching the conf/data directory.
+	 *   file will be retrieved by adding .dropdown as a suffix, and searching the framework/conf/data directory.
 	 * @return array
 	 * @node Subsystems:Config
 	 */
 	public static function dropdownData($dropdown_name) {
 		$array = array();
-		if (is_readable(BASE."conf/data/$dropdown_name.dropdown")) {
+		if (is_readable(BASE."framework/conf/data/$dropdown_name.dropdown")) {
 			$t = array();
-			foreach (file(BASE."conf/data/$dropdown_name.dropdown") as $l) {
+			foreach (file(BASE."framework/conf/data/$dropdown_name.dropdown") as $l) {
 				$l = trim($l);
 				if ($l != "" && substr($l,0,1) != "#") {
 					$go = count($t);
@@ -469,5 +476,7 @@ class expSettings {
 	}
 
 }
+
+expSettings::initialize();
 
 ?>

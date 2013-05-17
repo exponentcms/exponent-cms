@@ -18,11 +18,14 @@
 	{control type="hidden" name="tab_loaded[options]" value=1}
     {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
     <blockquote>
-	{'By simply selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
-	{'By default, the user is NOT required to make a selection.  However, if you select the Required checkbox, the user will be forced to make a selection from that option group.'|gettext} {br}
-	{'Select Single presents the option group as a dropdown field where they may select one and only option.'|gettext}{br}
-	{'Select Multiple presents the options as a checkbox group where the user may select multiple options'|gettext}.{br}
-	{'Selecting the Default radio button for an option will cause that option to be selected by default.'|gettext} {br}{br}
+        {'By selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
+        <ul>
+            <li><strong>{"Required"|gettext}</strong> - {'By default, the user is NOT required to make a selection.  However, selecting the Required checkbox will force the user to make a selection from that option group.'|gettext}</li>
+            <li><strong>{"Select Single"|gettext}</strong> - {'Presents the option group as a dropdown field where the user may select one and only option.'|gettext}</li>
+            <li><strong>{"Select Multiple"|gettext}</strong> - {'Presents the options as a checkbox group where the user may select multiple options'|gettext}</li>
+            <li><strong>{"Default"|gettext}</strong> - {'Selecting the Default radio button for an option causes that option to become selected by default.'|gettext}</li>
+        </ul>
+        {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.  Click on the \'More\' link to enter the option\s weight.'|gettext}{br}
     </blockquote>
 	{include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
 {else}

@@ -24,13 +24,13 @@
         </div>
         <h1>{"Manage User Sessions"|gettext}</h1>
     </div>
-    <p>
+    <blockquote>
         {'This page shows all of the active sessions, along with session information like login time, browser signature, etc.'|gettext}&#160;&#160;
         {'You can forcibly end either a specific session or all sessions for a user account.'|gettext}&#160;&#160;
         {'Ending a session will cause that user to be logged out of the site, and any content they were editing will be lost.'|gettext}
         {br}{br}
         <em>{'Administrator sessions cannot be forcibly ended'|gettext}.</em>
-    </p>
+    </blockquote>
     <p>
         <strong>{'Total active sessions'|gettext}: {$sessions|count}</strong>
     </p>

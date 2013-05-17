@@ -14,7 +14,7 @@
 .c-call.multi-1 {width:189px !important;}
 .c-call.multi-2 {width:380px !important;_width:373px}
 .c-call.multi-3 {width:568px !important;_width:560px}
-.c-call {-moz-box-shadow: 2px 2px 0px #ccc;-webkit-box-shadow:2px 2px 0px #ccc;-khtml-box-shadow:2px 2px 0px #ccc;-ms-box-shadow:2px 2px 0px #ccc;}
+.c-call {-moz-box-shadow: 2px 2px 0px #ccc;-webkit-box-shadow:2px 2px 0px #ccc;-khtml-box-shadow:2px 2px 0px #ccc;-ms-box-shadow:2px 2px 0px #ccc;box-shadow:2px 2px 0px #ccc;}
 .c-call .c-box {margin:4px;_margin:4px 2px;height:auto;width:auto;float:left;*padding-bottom:5px;_padding-bottom:3px;position:relative;}
 .c-call .c-hd {background:url('http://img04.taobaocdn.com/tps/i4/T1aqNrXbFvXXXXXXXX-10-100.gif') repeat-x 0 -41px; width:181px;height:24px;background-color:#40a6ff;position:relative;}
 .c-call .c-hd a {}
@@ -98,8 +98,9 @@
 
 /*--选择月份容器--*/
 .setime {position:absolute;left:0px;top:28px;right:0px;width:180px;background:#f2f2f2;border:1px solid #9bc0e0;text-align:center;vertical-align:middle;height:auto;padding-top:10px;padding-bottom:10px;}
-.setime p {height:30px;margin:0;padding:0;}
-.setime select,.setime input {width:80px;}
+.setime p {margin:0;padding:0;}
+/*.setime select,.setime input {width:80px;}*/
+.setime input[type="text"] {width:60px;}
 
 /*--选择时间的容器--*/
 .selectime {position:absolute;left:0px;bottom:28px;*bottom:32px;right:0px;width:180px;background:#f2f2f2;border:1px solid #9bc0e0;text-align:center;vertical-align:middle;height:auto;padding-top:10px;padding-bottom:10px;}

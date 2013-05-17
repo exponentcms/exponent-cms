@@ -37,7 +37,7 @@ expSession::initialize();
 expTheme::initialize();
 
 // Initialize the language subsystem
-expLang::loadLang();
+expLang::initialize();
 
 // Initialize the Database subsystem
 $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);

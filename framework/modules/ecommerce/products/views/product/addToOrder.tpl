@@ -26,12 +26,13 @@
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
     {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
-    <p>
+    {$listing->body}
+    <blockquote>
         <strong>{"Additional information is required before we can add to your cart"|gettext}</strong>
-    {br}{br}
+        {br}{br}
         {"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&#160;&#160;
         {"If you would like different options or personalized fields for each item, please add them one at a time to your cart."|gettext}
-    </p>
+    </blockquote>
     {clear}
     {script unique="children-submit"}
         {literal}
@@ -59,9 +60,7 @@
                 } else {
                     frm.submit();
                 };
-
             });
-            
         });
         {/literal}
     {/script}
@@ -87,54 +86,53 @@
                     </thead>
                     <tbody>
                         {foreach from=$product->childProduct item=chiprod}
+                            <tr class="{cycle values="odd,even"}">
 
-                                <tr class="{cycle values="odd,even"}">
+                                {* *}
+                                    {*[0] => Always available even if out of stock.*}
+                                    {*[1] => Available but shown as backordered if out of stock.*}
+                                    {*[2] => Unavailable if out of stock.*}
+                                    {*[3] => Show as &quot;Call for Price&quot;.*}
+                                {** }*}
 
-                                        {* *}
-                                            {*[0] => Always available even if out of stock.*}
-                                            {*[1] => Available but shown as backordered if out of stock.*}
-                                            {*[2] => Unavailable if out of stock.*}
-                                            {*[3] => Show as &quot;Call for Price&quot;.*}
-                                        {** }*}
+                                {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
+                                    <td><input name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
+                                    <td><input name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
+                                {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
+                                    <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Out Of Stock</a></span></td>
+                                {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
+                                     <td colspan="2" style="text-align:center; font-weight: bold;">N/A</td>
+                                {/if}
 
-                                        {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
-                                            <td><input name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
-                                            <td><input name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
-                                        {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
-                                            <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Out Of Stock</a></span></td>
-                                        {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
-                                             <td colspan="2" style="text-align:center; font-weight: bold;">N/A</td>
-                                        {/if}
-
-                                    <td><span>{$chiprod->model}</span></td>
-                                    {if $chiprod->extra_fields}
-                                        {foreach from=$chiprod->extra_fields item=ef}
-                                        <td><span>{$ef.value|stripslashes}</span></td>
-                                        {/foreach}
+                                <td><span>{$chiprod->model}</span></td>
+                                {if $chiprod->extra_fields}
+                                    {foreach from=$chiprod->extra_fields item=ef}
+                                    <td><span>{$ef.value|stripslashes}</span></td>
+                                    {/foreach}
+                                {/if}
+                                <td style="text-align: right;">
+                                    {if $chiprod->use_special_price}
+                                        <span style="color:red; font-size: 8px; font-weight: bold;">{'SALE'|gettext}</span>{br}
+                                        <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></span>
+                                    {else}
+                                        <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
                                     {/if}
-                                    <td style="text-align: right;">
-                                        {if $chiprod->use_special_price}
-                                            <span style="color:red; font-size: 8px; font-weight: bold;">SALE</span>{br}
-                                            <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></span>
-                                        {else}
-                                            <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
-                                        {/if}
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
                         {/foreach}
                     </tbody>
                 </table>
             </div>
         {else}
             {control type=text name=qty label="Quantity" value=1}
-            {control type=text name=products_price label="Products Price" value=$product->base_price}
+            {control type=text name=products_price label="Products Price" value=$product->base_price filter=money}
         {/if}
         
         {if $product->hasOptions()}
             <div class="product-options">
-                <h2>{$product->title} Options</h2>
+                <h2>{$product->title} {'Options'|gettext}</h2>
                 {foreach from=$product->optiongroup item=og}
                     {if $og->hasEnabledOptions()} 
                         <div class="option {cycle values="odd,even"}">
@@ -156,20 +154,20 @@
         
         {if !empty($product->user_input_fields) && $product->user_input_fields|@count>0 }
             <div class="user-input-fields">
-            <h2>Additional Information for {$product->title}</h2>
-            <p>This item would like the following additional information. Items marked with an * are required:</p>
-            {foreach from=$product->user_input_fields key=uifkey item=uif}  
-                <div class="user-input {cycle values="odd,even"}">
-                    {if $uif.use}                   
-                         {if $uif.is_required}
-                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                         {else}
-                             {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                         {/if}
-                         {if $uif.description != ''}{$uif.description}{/if}
-                    {/if}
-                </div>
-            {/foreach}
+                <h2>{'Additional Information for'|gettext} {$product->title}</h2>
+                <blockquote>{'This item would like the following additional information. Items marked with an * are required:'|gettext}</blockquote>
+                {foreach from=$product->user_input_fields key=uifkey item=uif}
+                    <div class="user-input {cycle values="odd,even"}">
+                        {if $uif.use}
+                             {if $uif.is_required}
+                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                             {else}
+                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                             {/if}
+                             {if $uif.description != ''}{$uif.description}{/if}
+                        {/if}
+                    </div>
+                {/foreach}
             </div>
         {/if}
         {control type="buttongroup" submit="Add Item(s) to Order"|gettext}

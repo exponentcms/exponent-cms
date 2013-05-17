@@ -34,6 +34,7 @@ class flowplayerController extends expController {
         'rss',
         'tags'
     );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    public $codequality = 'DEPRECATED';
 
     static function displayname() { return gt("Flowplayer Media Player"); }
     static function description() { return gt("Flowplayer is a media player for Web sites. Use it to embed video/audio streams into your HTML pages."); }
@@ -53,7 +54,7 @@ class flowplayerController extends expController {
             'columns'=>array(
                 gt('ID#')=>'id',
                 gt('Title')=>'title',
-                gt('Body')=>'body'
+                gt('Description')=>'body'
             ),
         ));
         

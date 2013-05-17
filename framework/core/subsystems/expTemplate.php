@@ -50,11 +50,11 @@ class expTemplate {
 	}
 
 	//DEPRECATED: backward compatibility wrapper
-	public static function getModuleViewFile($name, $view, $recurse=true) {
+	public static function getModuleViewFile($name, $view, $recurse=true) {  //FIXME Not Used 2.2???
 		return self::getViewFile("modules", $name, $view);
 	}
 
-	public static function getViewConfigForm($module,$view,$form,$values) {
+	public static function getViewConfigForm($module,$view,$form,$values) {  //FIXME Not Used 2.2???
 		$form_file = "";
 		$resolved_path = null;
 		$resolved_path = expCore::resolveFilePaths("modules", $module , "form" , $view);
@@ -97,7 +97,7 @@ class expTemplate {
 		return $form;
 	}
 
-	public static function getViewConfigOptions($module,$view) {
+	public static function getViewConfigOptions($module,$view) {  //FIXME Not Used 2.2???
 		$form_file = "";
 		$filepath = array_shift(expCore::resolveFilePaths("modules", $module, "form", $view));
 		if ($filepath != false) {
@@ -156,7 +156,7 @@ class expTemplate {
 	 * @return array
 	 * @node Subsystems:Template
 	 */
-	public static function listModuleViews($module) {  //FIXME only used by container2 edit action for OS modules
+	public static function listModuleViews($module) {  //FIXME only used by container 2.0 edit action for OS modules
 		return expCore::buildNameList("modules", $module, "tpl", "[!_]*");
 	}
 
@@ -176,11 +176,26 @@ class expTemplate {
 	 */
     //FIXME we need to also look for custom & jquery controls
 	public static function listControlTypes() {
-		$cdh = opendir(BASE."framework/core/subsystems/forms/controls");
+		$cdh = opendir(BASE."framework/core/forms/controls");
 		$list = array();
 		while (($ctl = readdir($cdh)) !== false) {
-			if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/subsystems/forms/controls/$ctl")) {
+			if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/forms/controls/$ctl")) {
 				if (call_user_func(array(substr($ctl,0,-4),"isSimpleControl"))) {
+					$list[substr($ctl,0,-4)] = call_user_func(array(substr($ctl,0,-4),"name"));
+				}
+			}
+		}
+		return $list;
+	}
+
+    //FIXME we need to also look for custom & jquery controls
+	public static function listSimilarControlTypes($type) {
+        $oldctl = new $type();
+		$cdh = opendir(BASE."framework/core/forms/controls");
+		$list = array();
+		while (($ctl = readdir($cdh)) !== false) {
+			if (substr($ctl,-4,4) == ".php" && is_readable(BASE."framework/core/forms/controls/$ctl")) {
+				if (call_user_func(array(substr($ctl,0,-4),"getFieldDefinition")) === $oldctl->getFieldDefinition() && call_user_func(array(substr($ctl,0,-4),"isSimpleControl"))) {
 					$list[substr($ctl,0,-4)] = call_user_func(array(substr($ctl,0,-4),"name"));
 				}
 			}
@@ -195,47 +210,48 @@ class expTemplate {
 			new $ddcol['FORM_FIELD_TYPE']($default_value);
 		} else {
 			if ($ddcol[DB_FIELD_TYPE] == DB_DEF_ID && $colname != 'id') {
-			        //If the id field is a foreign key reference than we need to try to scaffold
-		            /*$field_str = array();
-			        if (stristr($col->Field, '_')) $field_str = split("_id", $col->Field);
-			        if ( (count($field_str) > 0) && ($db->tableExists($field_str[0])) ) {
-		                    $foreign_table = $db->describeTable($field_str[0]);
-		                    $fcolname = "";
-			                foreach ($foreign_table as $forcol) {
-			                        if ($forcol->Field == "title" || $forcol->Field == "name") {
-		                                    $fcolname = $forcol->Field;
-		                                    break;
-		                            }
-		                    }
+                //If the id field is a foreign key reference than we need to try to scaffold
+                /*$field_str = array();
+                if (stristr($col->Field, '_')) $field_str = split("_id", $col->Field);
+                if ( (count($field_str) > 0) && ($db->tableExists($field_str[0])) ) {
+                    $foreign_table = $db->describeTable($field_str[0]);
+                    $fcolname = "";
+                    foreach ($foreign_table as $forcol) {
+                        if ($forcol->Field == "title" || $forcol->Field == "name") {
+                            $fcolname = $forcol->Field;
+                            break;
+                        }
+                    }
 
-			                if ($fcolname != "") {
-			                        $foreign_key = $db->selectDropdown($field_str[0],$col->Field, null,$fcolname);
-		                            eDebug($foreign_key);
-		                            $control = new dropdowncontrol("", $foreign_key, true);
-		                    }
-		            }*/
+                    if ($fcolname != "") {
+                        $foreign_key = $db->selectDropdown($field_str[0],$col->Field, null,$fcolname);
+                        eDebug($foreign_key);
+                        $control = new dropdowncontrol("", $foreign_key, true);
+                    }
+                }*/
 			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_ID && $colname == 'id' && $default_value != null) {
-			        //$control = new htmlcontrol('<input type="hidden" name="id" value="'.$default_value.'" />');
+                //$control = new htmlcontrol('<input type="hidden" name="id" value="'.$default_value.'" />');
 				return 'editor';
 			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_INTEGER) {
-			        //$control = new genericcontrol($default_value);
+                //$control = new genericcontrol($default_value);
 				return 'text';
 			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_BOOLEAN) {
-			        //$control = new genericcontrol($default_value);
+                //$control = new genericcontrol($default_value);
 				return 'radio';
 			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_TIMESTAMP) {
-
+                //$control = new calendarcontrol($default_value);
+                return 'calendar';
 			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_DECIMAL) {
-		            //$control = new genericcontrol($default_value);
+                //$control = new genericcontrol($default_value);
 				return 'text';
 			} elseif ($ddcol[DB_FIELD_TYPE] == DB_DEF_STRING) {
-			        if ($ddcol[DB_FIELD_LEN] > 255) {
-		                    //$control = new texteditorcontrol($default_value);
-					return 'html';
-			        } else {
-			                //$control = new genericcontrol($default_value);
-					return 'text';
-		            }
+                if ($ddcol[DB_FIELD_LEN] > 255) {
+                    //$control = new texteditorcontrol($default_value);
+                    return 'html';
+                } else {
+                    //$control = new genericcontrol($default_value);
+                    return 'text';
+                }
 			}
 		}
 		return 'text';

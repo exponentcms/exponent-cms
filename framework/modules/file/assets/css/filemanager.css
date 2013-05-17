@@ -801,7 +801,7 @@ a.fileinfo:hover {
     display : inline-table;
 }
 
-#overallProgress {
+#overallProgress, #btnProgress, #btnStop {
     float : right;
 }
 
@@ -835,4 +835,26 @@ input.text {
     margin-bottom:4px;
 	margin-right:5px;
     font-weight:bold;
+}
+
+a.pause,
+a.resume,
+a.stop,
+a.stop-one {
+    padding:3px 3px 3px 20px;
+    display:inline-block;
+    zoom:1;
+    text-transform:capitalize;
+}
+
+a.pause {
+    background: url(../images/pause.png) no-repeat 0 50%;
+}
+
+a.resume {
+    background: url(../images/start.png) no-repeat 0 50%;
+}
+
+a.stop, a.stop-one {
+    background: url(../images/stop.png) no-repeat 0 50%;
 }

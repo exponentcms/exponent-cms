@@ -29,7 +29,8 @@
                     <h2>{'File Download'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
                     {control id="downloadable" type="files" name="downloadable" label="Files for Download"|gettext subtype=downloadable value=$record->expFile description='First file is the primary download.'|gettext}
-                    {control type=text name=ext_file label="External File URL"|gettext value=$record->ext_file descripton='A download link on another server used instead of Files above.'|gettext}
+                    {*{control type=text name=ext_file label="External File URL"|gettext value=$record->ext_file description='A download link on another server used instead of Files above.'|gettext}*}
+                    {control type=url name=ext_file label="External File URL"|gettext value=$record->ext_file description='A download link on another server used instead of Files above.'|gettext}
                     {control id="preview" type="files" name="preview" label="Preview Image to display"|gettext subtype=preview value=$record->expFile limit=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {if !$config.disabletags}
@@ -51,6 +52,7 @@
                 <div id="tab3">
                      <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                    {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical}
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
                     {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
                     {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}

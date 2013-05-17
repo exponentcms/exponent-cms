@@ -26,11 +26,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         checkbox.on('click',function(e){
             var psswrd = Y.one("#passwordDiv .passwords");
             psswrd.toggleClass('hide');
-    var tmp = Y.one("#passwordDiv .hide");
             if (Y.one("#passwordDiv .hide") == null) {
                 psswrd.all('input').setAttribute('required','required');
             } else {
                 psswrd.all('input').removeAttribute('required');
+            }
             }
         });
     }
@@ -43,9 +43,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     {else}
         <h1>{'New'|gettext} {$modelname}</h1>
     {/if}
-    <p>
+    <blockquote>
         <em>{'Fields marked with an * are required'|gettext}.</em>
-    </p>
+    </blockquote>
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=is_default value=$record->is_default}
@@ -67,16 +67,18 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             {control type=country name=country label="&#160;"|cat:"Country"|gettext value=$record->country}
         {/if}
         {control type=text name=zip label="Zip/Postal Code"|gettext required=true value=$record->zip}
-        {control type="text" name="phone" label="Phone Number"|gettext|cat:" <span class=\"example\">ex: 480-555-4200</span>" required=true value=$record->phone}
+        {*{control type="text" name="phone" label="Phone Number"|gettext|cat:" <span class=\"example\">ex: 480-555-4200</span>" required=true value=$record->phone}*}
+        {control type=tel name="phone" label="Phone Number"|gettext required=true value=$record->phone placeholder="ex: 480-555-4200"}
         {control type="dropdown" name="address_type" label="Address Type"|gettext items="Business,Military,Residential"|gettxtlist values="Business,Military,Residential"|gettxtlist default=$record->address_type|default:"Residential"}
-        {control type="text" name="email" label="Email Address"|gettext required=true value=$record->email}
+        {*{control type="text" name="email" label="Email Address"|gettext required=true value=$record->email}*}
+        {control type=email name="email" label="Email Address"|gettext required=true value=$record->email}
         {if !$user->isLoggedIn()}
             <div id="passwordDiv">
                 {control type="checkbox" flip=1 id="remember_me" name="remember_me" label="Remember Me"|gettext|cat:"?" value=1 checked=true}
-                <p>
+                <blockquote>
                     {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."|gettext}&#160;&#160;
                     {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
-                </p>
+                </blockquote>
                 <div class="passwords">
                     {control type="password" name="password" label="Password"|gettext required=true}
                     {control type="password" name="password2" label="Confirm Password"|gettext required=true}

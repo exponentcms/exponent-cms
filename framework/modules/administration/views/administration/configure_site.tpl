@@ -94,13 +94,24 @@
                     {group label="New User Notification Email"|gettext}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_NOTIF]" label="Notify a site administrator when a new user registers on your website?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_NOTIF value=1}
                     {control type="text" name="sc[USER_REGISTRATION_NOTIF_SUBJECT]" label='Subject of the administrator\'s new user notification'|gettext value=$smarty.const.USER_REGISTRATION_NOTIF_SUBJECT}
-                    {control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="Email address of administrator that should be notified when a user signs up"|gettext value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
+                    {*{control type="text" name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="Email address of administrator that should be notified when a user signs up"|gettext value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}*}
+                    {control type=email name="sc[USER_REGISTRATION_ADMIN_EMAIL]" label="Email address of administrator that should be notified when a user signs up"|gettext value=$smarty.const.USER_REGISTRATION_ADMIN_EMAIL}
                     {/group}
                     {group label="New User Welcome Message"|gettext}
                     {control type="checkbox" postfalse=1 name="sc[USER_REGISTRATION_SEND_WELCOME]" label="Send an email to the user after registering?"|gettext checked=$smarty.const.USER_REGISTRATION_SEND_WELCOME value=1}
                     {control type="text" name="sc[USER_REGISTRATION_WELCOME_SUBJECT]" label="Welcome Email Subject"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_SUBJECT}
                     {control type="textarea" name="sc[USER_REGISTRATION_WELCOME_MSG]" label="Welcome Email Content"|gettext value=$smarty.const.USER_REGISTRATION_WELCOME_MSG}
                     {/group}
+                    {if function_exists('ldap_connect')}
+                    {group label="LDAP Authentication"|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[USE_LDAP]" label="Turn on LDAP Authentication?"|gettext checked=$smarty.const.USE_LDAP value=1 description=gt('Checking this option will cause Exponent to try to authenticate to the ldap server listed below.')}
+                    {control type="text" name="sc[LDAP_SERVER]" label="LDAP Server"|gettext value=$smarty.const.LDAP_SERVER description=gt('Enter the hostname or IP of the LDAP server.')}
+                    {control type="text" name="sc[LDAP_BASE_CONTEXT]" label="Base Context"|gettext value=$smarty.const.LDAP_BASE_CONTEXT description=gt('Enter the Base Context for this LDAP connection. (e.g., ou=users, dc=mycompanysite, dc=local)')}
+                    {control type="text" name="sc[LDAP_BASE_DN]" label="Base Domain"|gettext value=$smarty.const.LDAP_BASE_DN description=gt('Enter the Base Domain for this LDAP connection. (e.g., mycompanysite.local)')}
+                    {*{control type="text" name="sc[LDAP_BIND_USER]" label="LDAP Bind User"|gettext value=$smarty.const.LDAP_BIND_USER description=gt('The username or context for the binding to the LDAP Server to perform administration tasks (This currently doesn\'t do anything).')}*}
+                    {*{control type="password" name="sc[LDAP_BIND_PASS]" label="LDAP Bind Password"|gettext value=$smarty.const.LDAP_BIND_PASS description=gt('Enter the password for the username/context listed above.')}*}
+                    {/group}
+                    {/if}
                 </div>
                 <div id="tab4">
 	                <div class="info-header">
@@ -112,7 +123,8 @@
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_LOGIN]" label="Require User Login to Post Comments?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_LOGIN value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_APPROVAL]" label="All Comments Must be Approved?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_APPROVAL value=1}
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_NOTIFICATION]" label="Notify a site administrator of New Comments?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_NOTIFICATION value=1}
-                    {control type="text" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
+                    {*{control type="text" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}*}
+                    {control type=email multiple="1" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
                 </div>
                 <div id="tab5">
 	                <div class="info-header">
@@ -146,9 +158,11 @@
                     </div>
                     {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
                     {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
-                    {control type="text" name="sc[FM_LIMIT]" label="Number of Files per page" value=$smarty.const.FM_LIMIT|default:25 size="4"}
+                    {control type="text" name="sc[FM_LIMIT]" label="Number of Files per Page" value=$smarty.const.FM_LIMIT|default:25 size="4"}
+                    {control type="text" name="sc[FM_SIMLIMIT]" label="Number of Simultaneous Uploads" value=$smarty.const.FM_SIMLIMIT|default:3 size="2"}
                     {control type="checkbox" postfalse=1 name="sc[FM_THUMBNAILS]" label="Show Image Thumbnails?"|gettext checked=$smarty.const.FM_THUMBNAILS value=1}
                     {control type="text" name="sc[FM_THUMB_SIZE]" label="Thumbnail Size"|gettext value=$smarty.const.FM_THUMB_SIZE|default:48 size="4"}
+                    {control type="text" name="sc[UPLOAD_WIDTH]" label="Uploader Default Max Width/Height to Downsize Graphics"|gettext value=$smarty.const.UPLOAD_WIDTH|default:400 size="4"}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab7">
@@ -158,7 +172,8 @@
                         </div>
 		                <h2>{"Mail Server Settings"|gettext}</h2>
                     </div>
-	                {control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS description='This MUST be in a valid email address format or sending mail may fail!'|gettext}
+	                {*{control type="text" name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS description='This MUST be in a valid email address format or sending mail may fail!'|gettext}*}
+                    {control type=email name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS description='This MUST be in a valid email address format or sending mail may fail!'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
 	                ({"or"|gettext})
                     {group label="SMTP Server Settings"|gettext}
@@ -203,7 +218,8 @@
 		                <h2>{"Help Link Settings"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[HELP_ACTIVE]" label="Enable Help links to online documentation?"|gettext checked=$smarty.const.HELP_ACTIVE value=1}
-                    {control type="text" name="sc[HELP_URL]" label="URL for Help Documentation"|gettext value=$smarty.const.HELP_URL}
+                    {*{control type="text" name="sc[HELP_URL]" label="URL for Help Documentation"|gettext value=$smarty.const.HELP_URL}*}
+                    {control type=url name="sc[HELP_URL]" label="URL for Help Documentation"|gettext value=$smarty.const.HELP_URL}
                 </div>
                 <div id="tab11">
 	                <div class="info-header">
@@ -242,14 +258,14 @@
                     {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
                     {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
                     <blockquote>
-                    {'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate application from'|gettext} <a href="http://code.google.com/p/wkhtmltopdf/downloads/list" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
+                    {'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate binary application from'|gettext} <a href="http://code.google.com/p/wkhtmltopdf/downloads/list" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
                         {"and then install it on your server."|gettext}
                     </blockquote>
                     {/group}
                     {group label="DOMPDF - Export as PDF"|gettext}
-                    {control type="checkbox" postfalse=1 name="sc[HTML2PDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTML2PDF_OUTPUT value=1}
+                    {control type="checkbox" postfalse=1 name="sc[HTML2PDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTML2PDF_OUTPUT value=1 description='Force a file download instead of display in window'|gettext}
                     <blockquote>
-                    {'DOMPDF is an optional package.  To obtain it, you\'ll need to first download'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">dompdf.zip</a>.
+                    {'DOMPDF is an optional package.  To obtain it, you must first download'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">dompdf.zip</a>.
                         {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                     </blockquote>
                     {/group}
@@ -289,69 +305,70 @@
                 <div id="tab16">
                 <div class="info-header">
                     <div class="related-actions">
-                        {help text="Get Helpwith"|gettext|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
+                        {help text="Get Help with"|gettext|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
                     </div>
                     <h2>{"e-Commerce Configuration"|gettext}</h2>
                 </div>
                 {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
-                {control type="checkbox" postfalse=1 name="sc[DISABLE_SSL_WARNING]" label="Disable Checkout Unsecure Warning?"|gettext checked=$smarty.const.DISABLE_SSL_WARNING value=1 description='Normally a warning is displayed when attempting to checkout on an unsecured site.'|gettext}
-                <hr>
-                <h4>{'Getting e-Commerce up and running'|gettext}</h4>
-                <ol>
-                    <li><strong>{'Set up your site on a secure (SSL) server!'|gettext}</strong></li>
-                    <ul>
-                        <li>{'Enter appropriate settings under the Security tab above.'|gettext}</li>
-                    </ul>
-                    <li>{'Import default ecommerce information into the database'|gettext} <a href="{link action=install_ecommerce_tables}" title={'Install Default e-Commerce data'|gettext} onclick="return confirm('{'Are you sure you want to re-initialize e-Commerce data to default values?'|gettext}');">{'here'|gettext}</a></li>
-                    <ul>
-                        <li>geo_regions</li>
-                        <li>geo_countries</li>
-                        <li>order_status</li>
-                        <li>order_type</li>
-                        <li>product_status</li>
-                        <li>bing_product_types</li>
-                        <li>google_product_types</li>
-                        <li>nextag_product_types</li>
-                        <li>pricegrabber_product_types</li>
-                        <li>shopping_product_types</li>
-                        <li>shopzilla_product_types</li>
-                    </ul>
-                    <li>{'Activate e-Commerce using the above setting, or activate an e-Commerce module'|gettext}:</li>
-                    <ul>
-                        <li>{'e-Commerce Store Front'|gettext}</li>
-                        <li>{'Online Donations'|gettext}</li>
-                        <li>{'Online Event Registration'|gettext}</li>
-                    </ul>
-                    <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a></li>
-                    <ul>
-                        <li>{'Most Payment Options need configuration which requires establishing an account with a payment service'|gettext}</li>
-                        <li>{'\'Cash/Check\' is the easiest to set up'|gettext}</li>
-                    </ul>
-                    <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a></li>
-                    <ul>
-                        <li>{'Most Shipping Options need configuration which requires establishing an account with a shipping service'|gettext}</li>
-                        <li>{'\'In Store Pickup\' is the easiest to set up'|gettext}</li>
-                    </ul>
-                    <li>{'Optionally (to get better results)'|gettext}:</li>
-                    <ul>
-                        <li>{'Enter some \'General Store Settings\''|gettext} <a href="{link controller=ecomconfig action=configure}" title={'Configure Store Settings'|gettext}>{'here'|gettext}</a></li>
+                {control type="checkbox" postfalse=1 name="sc[DISABLE_SSL_WARNING]" label="Disable Unsecure Checkout Warning?"|gettext checked=$smarty.const.DISABLE_SSL_WARNING value=1 description='Normally a warning is displayed when attempting to checkout on an unsecured site.'|gettext}
+                {control type="dropdown" name="sc[ECOM_CURRENCY]" label="Default Currency"|gettext items=$currency default=$smarty.const.ECOM_CURRENCY}
+                {group label="Getting e-Commerce up and running"|gettext}
+                    <ol>
+                        <li><strong>{'Set up your site on a secure (SSL) server!'|gettext}</strong></li>
                         <ul>
-                            <li>{'You should at least enter a Store Name and Starting Invoice Number'|gettext}</li>
+                            <li>{'Enter appropriate settings under the Security tab above.'|gettext}</li>
                         </ul>
-                        <li>{'Create a Product (with optional sub-steps)'|gettext}</li>
+                        <li>{'Import default ecommerce information into the database'|gettext} <a href="{link action=install_ecommerce_tables}" title={'Install Default e-Commerce data'|gettext} onclick="return confirm('{'Are you sure you want to re-initialize e-Commerce data to default values?'|gettext}');">{'here'|gettext}</a></li>
                         <ul>
-                            <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>
-                            <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
-                            <li>{'Create a Tax Class/Zone for applicable sales tax(es)'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Tax Classes'|gettext}>{'here'|gettext}</a></li>
-                            <li>{'Create the Product (product, donation, event, or gift card) and assign a category'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
+                            <li>geo_regions</li>
+                            <li>geo_countries</li>
+                            <li>order_status</li>
+                            <li>order_type</li>
+                            <li>product_status</li>
+                            <li>bing_product_types</li>
+                            <li>google_product_types</li>
+                            <li>nextag_product_types</li>
+                            <li>pricegrabber_product_types</li>
+                            <li>shopping_product_types</li>
+                            <li>shopzilla_product_types</li>
                         </ul>
-                    </ul>
-                    <li>{'Add an e-Commerce module to a page to allow user access to the \'store\'.'|gettext}</li>
-                    <ul>
-                        <li>{'Also add an \'e-Commerce Store Front\' module with the \'Links - Users Links\' action for easier user access to their store account and shopping cart'|gettext}</li>
-                    </ul>
-                    <li>{'e-Commerce Store Management is best handled through the e-Commerce menu or Dashboard'|gettext}</li>
-                </ol>
+                        <li>{'Activate e-Commerce using the above setting, or activate an e-Commerce module'|gettext}:</li>
+                        <ul>
+                            <li>{'e-Commerce Store Front'|gettext}</li>
+                            <li>{'Online Donations'|gettext}</li>
+                            <li>{'Online Event Registration'|gettext}</li>
+                        </ul>
+                        <li>{'Activate a Payment Option'|gettext} <a href="{link controller=billing action=manage}" title={'Configure Billing Settings'|gettext}>{'here'|gettext}</a></li>
+                        <ul>
+                            <li>{'Most Payment Options need configuration which requires establishing an account with a payment service'|gettext}</li>
+                            <li>{'\'Bill Me\' is the easiest to set up'|gettext}</li>
+                        </ul>
+                        <li>{'Activate a Shipping Option'|gettext} <a href="{link controller=shipping action=manage}" title={'Configure Shipping Information'|gettext}>{'here'|gettext}</a></li>
+                        <ul>
+                            <li>{'Most Shipping Options need configuration which requires establishing an account with a shipping service'|gettext}</li>
+                            <li>{'\'In Store Pickup\' is the easiest to set up'|gettext}</li>
+                        </ul>
+                        <li>{'Optionally (to get better results)'|gettext}:</li>
+                        <ul>
+                            <li>{'Enter some \'General Store Settings\''|gettext} <a href="{link controller=ecomconfig action=configure}" title={'Configure Store Settings'|gettext}>{'here'|gettext}</a></li>
+                            <ul>
+                                <li>{'You should at least enter a Store Name and Starting Invoice Number'|gettext}</li>
+                            </ul>
+                            <li>{'Create a Product (with optional sub-steps)'|gettext}</li>
+                            <ul>
+                                <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>
+                                <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
+                                <li>{'Create a Tax Class/Zone for applicable sales tax(es)'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Tax Classes'|gettext}>{'here'|gettext}</a></li>
+                                <li>{'Create the Product (product, donation, event, or gift card) and assign a category'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
+                            </ul>
+                        </ul>
+                        <li>{'Add an e-Commerce module to a page to allow user access to the \'store\'.'|gettext}</li>
+                        <ul>
+                            <li>{'Also add an \'e-Commerce Store Front\' module with the \'Links - Users Links\' action for easier user access to their store account and shopping cart'|gettext}</li>
+                        </ul>
+                        <li>{'e-Commerce Store Management is best handled through the e-Commerce menu or Dashboard'|gettext}</li>
+                    </ol>
+                {/group}
             </div>
                 {/if}
             </div>

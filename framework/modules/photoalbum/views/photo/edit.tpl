@@ -30,7 +30,8 @@
                     {control type="text" name="alt" label="'Alt' tag"|gettext value=$record->alt description='Overrides file manager \'alt\''|gettext}
                     {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
-                    {control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
+                    {*{control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}*}
+                    {control type=url name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
                     {/if}
@@ -41,6 +42,7 @@
                 <div id="tab2">
                     <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
+                    {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical}
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
                     {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
                     {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}

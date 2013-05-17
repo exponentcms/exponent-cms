@@ -33,7 +33,7 @@
 		{control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck"|gettext checked=$record->scayt_on value=1 checked=1}
 		{control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word"|gettext checked=$record->paste_word value=1}
         <h4><em>({'Blank or empty entries in the following text boxes result in using the default setting'|gettext})</em></h4>
-        <p><em>({'Please visit the help page for entry format requirements!'|gettext})</em></p>
+        <blockquote><em>({'Please visit the help page for entry format requirements!'|gettext})</em></blockquote>
 		{control type=textarea cols=80 rows=20 name=data label="Toolbar Button Configuration"|gettext value=$record->data}
         {control type=textarea cols=80 rows=2 name=stylesset label="Styles List (plus style sheet styles)"|gettext value=$record->stylesset}
         {control type=textarea cols=80 rows=2 name=formattags label="Formats List"|gettext value=$record->formattags}

@@ -24,7 +24,8 @@
         {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
         {permissions}
             &#160;&#160;|&#160;&#160;
-            <span class="adminviewlink">{'Administration View'|gettext}</span>
+            {*<span class="adminviewlink">{'Administration View'|gettext}</span>*}
+            {icon class="adminviewlink" text='Administration View'|gettext}
             {if !$config.disabletags}
                 &#160;&#160;|&#160;&#160;
                 {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}

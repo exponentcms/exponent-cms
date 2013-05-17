@@ -22,7 +22,7 @@
 		<h1>{"Configure"|gettext} {$name}</h1>
 	</div>
 	<div class="form_header">
-		<p>{"Select the settings for the"|gettext} {$name}.</p>
+		<blockquote>{"Select the settings for the"|gettext} {$name}.</blockquote>
 	</div>
 	{$form_html}
 </div>

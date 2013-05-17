@@ -24,7 +24,7 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create == 1}
-                {icon class=add action=edit rank=1 text="Add Text Tab"|gettext}
+                {icon class=add action=edit rank=1 text="Add text at the top"|gettext}
             {/if}
             {if $permissions.manage == 1}
                 {ddrerank items=$items model="text" label="Text Items"|gettext}
@@ -69,17 +69,17 @@
                                 {/if}
                             </div>
                             {clear}
-        					{permissions}
-        						<div class="module-actions">
-        							{if $permissions.create == 1}
-        								{icon class=add action=edit rank=$text->rank+1 text="Add another text tab after this one"|gettext}
-        							{/if}
-        						</div>
-        					{/permissions}
                         </li>
                     </ul>
                 </div>
             </div>
+            {permissions}
+                <div class="module-actions">
+                    {if $permissions.create == 1}
+                        {icon class=add action=edit rank=$text->rank+1 text="Add more text here"|gettext}
+                    {/if}
+                </div>
+            {/permissions}
         {/foreach}
     </div>
 </div>

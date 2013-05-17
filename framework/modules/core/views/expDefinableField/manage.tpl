@@ -22,12 +22,12 @@
         </div>
         <h1>{"Manage Definable Fields"|gettext}</h1>
     </div>
-	{permissions}
-    	{if $permissions.create == 1}
+	{*{permissions}*}
+    	{*{if $permissions.create == 1}*}
     		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
-    	{/if}
-    {/permissions}
- 
+    	{*{/if}*}
+    {*{/permissions}*}
+    {ddrerank model="expDefinableField" items=$fields label="Definable Fields"|gettext id="definable_field" sortfield="name"}
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
             <tr>
@@ -71,7 +71,6 @@
         </tbody>
     </table>
 
-	<hr />
 	<table cellpadding="5" cellspacing="0" border="0">
         <tr>
             <td style="border:none;">

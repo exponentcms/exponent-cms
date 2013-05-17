@@ -14,10 +14,6 @@
  *}
 
 {if !$error}
-    {css unique="formmod" corecss="forms"}
-
-    {/css}
-
     {if $config.style}
         {css unique="formmod2" corecss="forms2col"}
 
@@ -27,7 +23,7 @@
         {messagequeue name='notice'}
         {permissions}
             <div class="module-actions">
-                {if $permissions.viewdata == 1 && $form->is_saved == 1}
+                {if $permissions.viewdata && $form->is_saved}
                     {icon class="view" action=showall id=$form->id text='View Data'|gettext|cat:" (`$count`)"}
                     &#160;&#160;|&#160;&#160;
                     {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}

@@ -20,7 +20,7 @@
         {if $order->forced_shipping != true}
             <span class="bracket">
                 {if $shipping->pricelist|@count > 1}
-                    <a id="shippingmethodoptionslink" class="ecom-link {$shpMthdOp.id} changeselection" href="#">{'Change Shipping Service Option'|gettext}</a>
+                    <a id="shippingmethodoptionslink" class="exp-ecom-link {$shpMthdOp.id} changeselection" href="#">{'Change Shipping Service Option'|gettext}</a>
                 {else}
                     <span>{'There are no options for'|gettext} {$shipping->shippingmethod->option_title}</span>
                 {/if}

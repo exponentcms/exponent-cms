@@ -58,8 +58,8 @@ class notfoundController extends expController {
         $search = new search();
 		$page = new expPaginator(array(
 			'model'=>'search',
-//			'controller'=>$this->params['controller'],
-//			'action'=>$this->params['action'],
+			'controller'=>$this->params['controller'],
+			'action'=>$this->params['action'],
 			'records'=>$search->getSearchResults($terms),
 			//'sql'=>$sql,
             'limit'=>10,

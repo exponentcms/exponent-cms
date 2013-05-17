@@ -1,11 +1,10 @@
-#Exponent Content Management System..
+#Exponent Content Management System
 
-===============================================
+----------
 
 Copyright (c) 2004-2013 OIC Group, Inc.
 
 ##Introduction
-============
 
 The Exponent Team is pleased to announce the release of Exponent Content Management System
 version 2.0 - Content Management Made Simple.

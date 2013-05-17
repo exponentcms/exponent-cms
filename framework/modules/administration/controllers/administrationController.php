@@ -102,7 +102,7 @@ class administrationController extends expController {
 
         foreach($tables as $table) {
             $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
-            if (!in_array($basename, $used_tables) && !stristr($basename, 'formbuilder')) {  //FIXME formbuilder will be deprecated in v212
+            if (!in_array($basename, $used_tables) && !stristr($basename, 'forms')) {
                 $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
@@ -154,22 +154,22 @@ class administrationController extends expController {
 	    global $db;
 
 	// upgrade sectionref's that have lost their originals
-        $no_origs = array();
-		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
-		if (count($sectionrefs)) {
-			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
-            foreach ($sectionrefs as $sectionref) {
-                if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
-                // There is no original for this sectionref so change it to the original
-                    $sectionref->is_original = 1;
-                    $db->updateObject($sectionref,"sectionref");
-                    $no_origs[] = gt("Fixed").": ".$sectionref->module." - ".$sectionref->source;
-                }
-            }
-		}
-        assign_to_template(array(
-            'no_origs'=>$no_origs,
-        ));
+//        $no_origs = array();
+//		$sectionrefs = $db->selectObjects('sectionref',"is_original=0");
+//		if (count($sectionrefs)) {
+//			print_r(gt("Found").": ".count($sectionrefs)." ".gt("copies (not originals)")."<br>");
+//            foreach ($sectionrefs as $sectionref) {
+//                if ($db->selectObject('sectionref',"module='".$sectionref->module."' AND source='".$sectionref->source."' AND is_original='1'") == null) {
+//                // There is no original for this sectionref so change it to the original
+//                    $sectionref->is_original = 1;
+//                    $db->updateObject($sectionref,"sectionref");
+//                    $no_origs[] = gt("Fixed").": ".$sectionref->module." - ".$sectionref->source;
+//                }
+//            }
+//		}
+//        assign_to_template(array(
+//            'no_origs'=>$no_origs,
+//        ));
 
 	// upgrade sectionref's that point to missing sections (pages)
 		$sectionrefs = $db->selectObjects('sectionref',"refcount!=0");
@@ -210,9 +210,10 @@ class administrationController extends expController {
                     $newSecRef->source   = $iloc->src;
                     $newSecRef->internal = '';
                     $newSecRef->refcount = 1;
-                    $newSecRef->is_original = 1;
+//                    $newSecRef->is_original = 1;
 					$eloc = expUnserialize($container->external);
-					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
+//					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
+                    $section = $db->selectObject('sectionref',"module='container' AND source='".$eloc->src."'");
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
 						$db->insertObject($newSecRef,"sectionref");
@@ -230,10 +231,10 @@ class administrationController extends expController {
 	}
 
     public function fix_tables() {
-   		$renamed = expDatabase::fix_table_names();
-           assign_to_template(array(
-               'tables'=>$renamed,
-           ));
+        $renamed = expDatabase::fix_table_names();
+        assign_to_template(array(
+            'tables'=>$renamed,
+        ));
    	}
 
     public function install_ecommerce_tables() {
@@ -256,7 +257,6 @@ class administrationController extends expController {
    	}
 
     public function toolbar() {
-        global $user;
         $menu = array();
 		$dirs = array(
 			BASE.'framework/modules/administration/menus',
@@ -273,12 +273,12 @@ class administrationController extends expController {
 		    }
 		}
 
-        // sort the menus alphabetically by filename
+        // sort the top level menus alphabetically by filename
 		ksort($menu);		
 		$sorted = array();
 		foreach($menu as $m) $sorted[] = $m;
         
-        //slingbar position
+        // slingbar position
         if (isset($_COOKIE['slingbar-top'])){
             $top = $_COOKIE['slingbar-top'];
         } else {
@@ -380,9 +380,6 @@ class administrationController extends expController {
     public function toggle_log() {
   	    $value = (LOGGER == 1) ? 0 : 1;
   	    expSettings::change('LOGGER', $value);
-//  	    expTheme::removeCss();
-//  		$message = (LOGGER != 1) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
-//  		flash('message',$message);
   		expHistory::back();
   	}
 
@@ -442,7 +439,7 @@ class administrationController extends expController {
 
 	public function clear_all_caches() {
 		expTheme::removeSmartyCache();
-        expSession::clearAllUsersSessionCache();
+        expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
 		expTheme::removeCss();
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
@@ -485,6 +482,7 @@ class administrationController extends expController {
 		        $rssObject->publish_date = $rssItem->get_date('U');
 				foreach ($rssItem->get_enclosures() as $enclosure) {
 					$rssObject->enclosure = $enclosure->get_link();
+                    $rssObject->length = $enclosure->get_length();
 				}
 		        $items[$type][] = $rssObject;
 		    }
@@ -493,7 +491,7 @@ class administrationController extends expController {
 		$form = new form();
 		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
 		$form->register('mod_archive','Extension Archive',new uploadcontrol());
-        $form->register('patch',gt('Patch Exponent CMS?'),new checkboxcontrol(false,false));
+        $form->register('patch',gt('Patch Exponent CMS or Install Theme?'),new checkboxcontrol(false,false),null,null,gt('All extensions are normally placed within the CURRENT theme (folder)'));
         $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 		$form->meta('module','administration');
 		$form->meta('action','install_extension_confirm');
@@ -801,6 +799,116 @@ class administrationController extends expController {
         }
     }
 
+    /**
+     * feature to run upgrade scripts outside of installation
+     *
+     */
+    public function install_upgrades() {
+        //display the upgrade scripts
+        $upgrade_dir = BASE.'install/upgrades';
+        if (is_readable($upgrade_dir)) {
+            $i = 0;
+            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            $dh = opendir($upgrade_dir);
+
+            // first build a list of valid upgrade scripts
+            $oldscripts = array(
+                'install_tables.php',
+                'convert_db_trim.php',
+                'remove_exp1_faqmodule.php',
+                'remove_locationref.php',
+                'upgrade_attachableitem_tables.php',
+            );
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
+                    include_once($upgrade_dir . '/' . $file);
+                    $classname     = substr($file, 0, -4);
+                    /**
+                     * Stores the upgradescript object
+                     * @var \upgradescript $upgradescripts
+                     * @name $upgradescripts
+                     */
+                    $upgradescripts[] = new $classname;
+                }
+            }
+            //  next sort the list by priority
+            usort($upgradescripts, array('upgradescript','prioritize'));
+
+            //  next run through the list
+            $db_version = expVersion::dbVersion();
+            $upgrade_scripts = array();
+            foreach ($upgradescripts as $upgradescript) {
+                if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
+                    $upgradescript->classname = get_class($upgradescript);
+                    $upgrade_scripts[] = $upgradescript;
+                    $i++;
+                }
+            }
+        }
+        assign_to_template(array(
+            'scripts'=>$upgrade_scripts,
+        ));
+    }
+
+    /**
+     * run selected upgrade scripts outside of installation
+     *
+     */
+    public function install_upgrades_run() {
+
+        $tables = expDatabase::install_dbtables();
+        ksort($tables);
+
+        // locate the upgrade scripts
+        $upgrade_dir = BASE.'install/upgrades';
+        if (is_readable($upgrade_dir)) {
+            $i = 0;
+            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            $dh = opendir($upgrade_dir);
+
+            // first build a list of valid upgrade scripts
+            $oldscripts = array(
+                'install_tables.php',
+                'convert_db_trim.php',
+                'remove_exp1_faqmodule.php',
+                'remove_locationref.php',
+                'upgrade_attachableitem_tables.php',
+            );
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
+                    include_once($upgrade_dir . '/' . $file);
+                    $classname     = substr($file, 0, -4);
+                    /**
+                     * Stores the upgradescript object
+                     * @var \upgradescript $upgradescripts
+                     * @name $upgradescripts
+                     */
+                    $upgradescripts[] = new $classname;
+                }
+            }
+            //  next sort the list by priority
+            usort($upgradescripts, array('upgradescript','prioritize'));
+
+            //  next run through the list
+            $db_version = expVersion::dbVersion();
+            $upgrade_scripts = array();
+            foreach ($upgradescripts as $upgradescript) {
+                if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
+                    if (!empty($this->params[get_class($upgradescript)])) {
+                        $upgradescript->results = $upgradescript->upgrade();
+                    }
+                    $upgradescript->classname = get_class($upgradescript);
+                    $upgrade_scripts[] = $upgradescript;
+                    $i++;
+                }
+            }
+        }
+        assign_to_template(array(
+            'scripts'=>$upgrade_scripts,
+            'tables'=>$tables,
+        ));
+    }
+
     public function manage_themes() {
         expHistory::set('manageable', $this->params);
     	$themes = array();
@@ -812,6 +920,7 @@ class administrationController extends expController {
     				$theme = new $file();
     				$t = new stdClass();
 				    $t->user_configured = isset($theme->user_configured) ? $theme->user_configured : '';
+                    $t->stock_theme = isset($theme->stock_theme) ? $theme->stock_theme : '';
     				$t->name = $theme->name();
     				$t->description = $theme->description();
     				$t->author = $theme->author();
@@ -857,7 +966,9 @@ class administrationController extends expController {
 		    $message .= ' '.gt('with').' '.$this->params['sv'].' '.gt('style variation');
 	    }
 	    flash('message',$message);
+        expSession::un_set('framework');
         expTheme::removeSmartyCache();
+        expSession::clearAllUsersSessionCache();
     	expHistory::returnTo('manageable');
     }	
     
@@ -875,7 +986,9 @@ class administrationController extends expController {
 		if ($this->params['theme'] != DISPLAY_THEME_REAL || $this->params['sv'] != THEME_STYLE_REAL) {
 			flash('notice',$message);
 		}
+        expSession::un_set('framework');
 		expTheme::removeSmartyCache();
+        expSession::clearAllUsersSessionCache();
 		expHistory::back();
 	}
 
@@ -894,8 +1007,49 @@ class administrationController extends expController {
             $themeclass = $this->params['theme'];
 			$theme = new $themeclass();
 			$theme->saveThemeConfig($this->params);
+            expTheme::removeSmartyCache();
+            expSession::clearAllUsersSessionCache();
 		}
 	}
+
+    public function export_theme() {
+        include_once(BASE.'external/Tar.php');
+
+        $themeclass = $this->params['theme'];
+        $fname = tempnam(BASE.'/tmp','exporter_files_');
+        $tar = new Archive_Tar($fname,'gz');
+        $tar->createModify(BASE.'themes/'.$themeclass,'themes/',BASE.'themes/');
+
+        $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$themeclass.'.tar.gz');
+
+        ob_end_clean();
+        // This code was lifted from phpMyAdmin, but this is Open Source, right?
+
+        // 'application/octet-stream' is the registered IANA type but
+        //        MSIE and Opera seems to prefer 'application/octetstream'
+        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+        header('Content-Type: ' . $mime_type);
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        // IE need specific headers
+        if (EXPONENT_USER_BROWSER == 'IE') {
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Pragma: no-cache');
+        }
+
+        $fh = fopen($fname,'rb');
+        while (!feof($fh)) {
+            echo fread($fh,8192);
+        }
+        fclose($fh);
+        unlink($fname);
+
+        exit(''); // Exit, since we are exporting.
+    }
 
 	public function togglemobile() {
 		if (!expSession::is_set('mobile')) {  // account for FORCE_MOBILE initial state
@@ -951,6 +1105,9 @@ class administrationController extends expController {
 
         // smtp protocol
         $protocol = array('ssl'=>'SSL','tls'=>'TLS');
+
+        // Currency Format
+        $currency = expSettings::dropdownData('currency');
 
         // attribution
         $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
@@ -1012,6 +1169,7 @@ class administrationController extends expController {
             'themes'=>$themes,
             'langs'=>$langs,
             'protocol'=>$protocol,
+            'currency'=>$currency,
             'attribution'=>$attribution,
             'datetime_format'=>$datetime_format,
             'date_format'=>$date_format,
@@ -1056,15 +1214,15 @@ class administrationController extends expController {
    	 */
    	public static function install_exponent() {
    		// we'll need the not_configured file to exist for install routine to work
-   		if (!@file_exists(BASE.'install/not_configured')) {
-   			$nc_file = fopen(BASE.'install/not_configured', "w");
-   			fclose($nc_file);
-   		}
-        $page = "";
-        if (@file_exists(BASE.'conf/config.php')) {
-            $page = "?page=upgrade-1";
-        }
-   		header('Location: '.URL_FULL.'install/index.php'.$page);
+//   		if (!@file_exists(BASE.'install/not_configured')) {
+//   			$nc_file = fopen(BASE.'install/not_configured', "w");
+//   			fclose($nc_file);
+//   		}
+//        $page = "";
+//        if (@file_exists(BASE.'framework/conf/config.php')) {
+//            $page = "?page=upgrade-1";
+//        }
+   		header('Location: '.URL_FULL.'install/index.php');
    		exit('Redirecting to the Exponent Install Wizard');
    	}
 
@@ -1078,6 +1236,7 @@ class administrationController extends expController {
  */
 class theme {
 	public $user_configured = false;
+    public $stock_theme = false;
 
 	function name() { return "theme"; }
 	function author() { return ""; }
@@ -1089,26 +1248,26 @@ class theme {
 	 * and presents the values as text boxes.
 	 */
 	function configureTheme () {
-		if (isset($this->params['sv']) && $this->params['sv'] != '') {
-			if (strtolower($this->params['sv'])=='default') {
-                $this->params['sv']='';
+		if (isset($this->params['sv']) && $_GET['sv'] != '') {
+			if (strtolower($_GET['sv'])=='default') {
+                $_GET['sv']='';
 			}
-			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config_".$this->params['sv'].".php");
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
 		} else {
-			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
+			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
 		}
 		$form = new form();
 		$form->meta('controller','administration');
 		$form->meta('action','update_theme');
-		$form->meta('theme',$this->params['theme']);
-		$form->meta('sv',isset($this->params['sv'])?$this->params['sv']:'');
+		$form->meta('theme',$_GET['theme']);
+		$form->meta('sv',isset($_GET['sv'])?$_GET['sv']:'');
 		foreach ($settings as $setting=>$key) {
 			$form->register($setting,$setting.': ',new textcontrol($key,20));
 		}
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		assign_to_template(array(
-            'name'=>self::name(),
+            'name'=>$this->name().(!empty($_GET['sv'])?' '.$_GET['sv']:''),
             'form_html'=>$form->toHTML()
         ));
 	}

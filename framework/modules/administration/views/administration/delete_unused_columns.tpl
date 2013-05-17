@@ -19,9 +19,9 @@
 
 <div class="form_header">
  	<h1>{'Deleting Unneeded Database Columns'|gettext}</h1>
- 	<p>
+ 	<blockquote>
  		{'Exponent has deleted unneeded database columns from existing tables.  Shown below is a summary of the actions that occurred.'|gettext}
-    </p>
+    </blockquote>
 </div>
 <table cellpadding="2" cellspacing="0" width="100%" border="0" class="exp-skin-table">
     <thead>

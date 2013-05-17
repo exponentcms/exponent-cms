@@ -27,6 +27,7 @@
 class version_tracking extends upgradescript {
 	protected $from_version = '0.0.0';
 //	protected $to_version = '99';
+    public $priority = 100; // set this to the lowest priority
 
 	/**
 	 * name/title of upgrade script
@@ -38,7 +39,7 @@ class version_tracking extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return gt("The system keeps track of its version"); }
+	function description() { return gt("The system keeps track of its version."); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -59,12 +60,13 @@ class version_tracking extends upgradescript {
 		// version tracking
 		$db->delete('version',1);  // clear table of old accumulated entries
 		$vo = new stdClass();
-		$vo->major = EXPONENT_VERSION_MAJOR;
-		$vo->minor = EXPONENT_VERSION_MINOR;
-		$vo->revision = EXPONENT_VERSION_REVISION;
-		$vo->type = EXPONENT_VERSION_TYPE;
-		$vo->iteration = EXPONENT_VERSION_ITERATION;
-		$vo->builddate = EXPONENT_VERSION_BUILDDATE;
+//		$vo->major = EXPONENT_VERSION_MAJOR;
+//		$vo->minor = EXPONENT_VERSION_MINOR;
+//		$vo->revision = EXPONENT_VERSION_REVISION;
+//		$vo->type = EXPONENT_VERSION_TYPE;
+//		$vo->iteration = EXPONENT_VERSION_ITERATION;
+//		$vo->builddate = EXPONENT_VERSION_BUILDDATE;
+        $vo = expVersion::swVersion();
 		$vo->created_at = time();
 		$ins = $db->insertObject($vo,'version') or die($db->error());
         return $ins ? gt('Database updated to version').' '.expVersion::getVersion(true,true) : gt('Failed');

@@ -20,7 +20,10 @@
 <div class="storeCategory manage-categories">
 	<div class="form_header">
         <h1>{'Manage Store Categories'|gettext}</h1>
-        <blockquote>{'This is where you can add, edit and rearrange categories.'|gettext}</blockquote>
+        <blockquote>
+            {'This is where you can add, edit and rearrange categories.'|gettext}
+            {'Right-click on the category to display the command menu.'|gettext}
+        </blockquote>
 	</div>	
 	{control type="tagtree" addable="true" id="managecats" name="managecats" controller=storeCategory draggable=true menu=true}
 </div>

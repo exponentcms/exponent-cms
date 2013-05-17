@@ -59,7 +59,7 @@ class fix_photo_module extends upgradescript {
 
         $count = 0;
         foreach ($db->selectObjects('sectionref',"module='photosController'") as $sr) {
-            $sr->module = 'photoController';
+            $sr->module = 'photo';
             $db->updateObject($sr,'sectionref');
             $count++;
 	    }
@@ -72,7 +72,7 @@ class fix_photo_module extends upgradescript {
 	    }
         foreach ($db->selectObjects('container',"internal LIKE '%photos%'") as $co) {
             $loc = expUnserialize($co->internal);
-            $loc->mod = 'photoController';
+            $loc->mod = 'photo';
             $co->internal = serialize($loc);
             $db->updateObject($co,'container');
             $count++;
@@ -85,18 +85,18 @@ class fix_photo_module extends upgradescript {
             $count++;
 	    }
         foreach ($db->selectObjects('grouppermission',"module='photosController'") as $gp) {
-            $gp->module = 'photoController';
+            $gp->module = 'photo';
             $db->updateObject($gp,'grouppermission',"module = 'photosController' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
             $count++;
 	    }
         foreach ($db->selectObjects('userpermission',"module='photosController'") as $up) {
-            $up->module = 'photoController';
+            $up->module = 'photo';
             $db->updateObject($up,'userpermission',"module = 'photosController' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
             $count++;
 	    }
         $ms = $db->selectObject('modstate',"module='photosController'");
         if (!empty($ms)) {
-            $ms->module = 'photoController';
+            $ms->module = 'photo';
             $db->updateObject($ms,'modstate',"module='photosController'",'module');
             $count++;
         }

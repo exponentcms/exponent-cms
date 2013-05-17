@@ -13,10 +13,10 @@
  *
  *}
 
+{control type="hidden" name="tab_loaded[extrafields]" value=1}
 {if $record->parent_id == 0}
-	{control type="hidden" name="tab_loaded[extrafields]" value=1} 
 	<h2>{'Extra Fields'|gettext}</h2>
-	<blockquote>{'You may add up to four extra fields to your product here.  These field names are also picked up by your child products where you can assign values to them.'|gettext}</blockquote>
+	<blockquote>{'You may add up to four extra fields of information to your product here.  These field names are also picked up by your child products where you can assign values to them.'|gettext}</blockquote>
 	<table> 
 		<tr>
 			<td>{control type="text" name="extra_fields_name[0]" label="Extra Field Name #1:" size=30 value=$record->extra_fields.0.name}</td>

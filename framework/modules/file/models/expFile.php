@@ -1529,13 +1529,21 @@ class expFile extends expRecord {
      */
     public static function copyDirectoryStructure($src, $dest, $exclude_dirs = array()) {
         $__oldumask = umask(0);
+        if (!is_dir($dest)) {
+            $file_path = pathinfo($dest);
+            $dest = $file_path['dirname'];
+        }
+        if (!is_dir($src)) {
+            $file_path = pathinfo($src);
+            $src = $file_path['dirname'];
+        }
         if (!file_exists($dest)) mkdir($dest, fileperms($src));
         $dh = opendir($src);
         while (($file = readdir($dh)) !== false) {
             if (is_dir("$src/$file") && !in_array($file, $exclude_dirs) && substr($file, 0, 1) != "." && $file != "CVS") {
-                if (!file_exists("$dest/$file")) mkdir("$dest/$file", fileperms("$src/$file"));
-                if (is_dir("$dest/$file")) {
-                    self::copyDirectoryStructure("$src/$file", "$dest/$file");
+                if (!file_exists($dest."/".$file)) mkdir($dest."/".$file, fileperms($src."/".$file));
+                if (is_dir($dest."/".$file)) {
+                    self::copyDirectoryStructure($src."/".$file, $dest."/".$file);
                 }
             }
         }
@@ -1580,7 +1588,6 @@ class expFile extends expRecord {
         usort($tables, 'strnatcmp');
         foreach ($tables as $table) {
             $tabledef = $db->getDataDefinition($table);
-
             $dump .= 'TABLE:' . $table . "\r\n";
             $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
             foreach ($db->selectObjects($table) as $obj) {
@@ -1752,7 +1759,30 @@ class expFile extends expRecord {
                                 $db->insertObject($object, 'formbuilder_' . $table);
                             }
                         }
-                        $errors[] = sprintf(gt('*  However...we successfully recreated the "%s" Table from the EQL file'), $table);
+                        $errors[] = sprintf(gt('*  However...we successfully recreated the "formbuilder_%s" Table from the EQL file'), $table);
+                    }
+                }
+            }
+
+            // check for and process to rebuild new forms module data table
+            if (!empty($newformdata)) {
+                foreach ($newformdata as $tablename=>$tabledata) {
+                    $newform = $db->selectObject('forms','table_name="'.substr($tablename,6).'"');
+                    if (!empty($newform)) {
+                        // create the new table
+                        $form = new forms($newform->id);
+                        $table = $form->updateTable();
+
+                        // populate the table
+                        foreach ($tabledata as $record) {
+                            $record = str_replace('\r\n', "\r\n", $record);
+                            $object = @unserialize($record);
+                            if (!$object) $object = unserialize(stripslashes($record));
+                            if (is_object($object)) {
+                                $db->insertObject($object, 'forms_' . $table);
+                            }
+                        }
+                        $errors[] = sprintf(gt('*  However...we successfully recreated the "forms_%s" Table from the EQL file'), $table);
                     }
                 }
             }
@@ -1782,10 +1812,10 @@ class expFile extends expRecord {
 
             // rename mixed case tables if necessary
             expDatabase::fix_table_names();
-            if ($eql_version != $current_version) {
-                $errors[] = gt('EQL file was Not a valid EQL version');
-                return false;
-            }
+//            if ($eql_version != $current_version) {
+//                $errors[] = gt('EQL file was Not a valid EQL version');
+//                return false;
+//            }
             return true;
         } else {
             $errors[] = gt('Unable to read EQL file');
@@ -1812,7 +1842,7 @@ class expFile extends expRecord {
     static function updateFormbuilderTable($object) {
 		global $db;
 
-		if ($object->is_saved == 1) {
+		if (!empty($object->is_saved)) {
 			$datadef =  array(
 				'id'=>array(
 					DB_FIELD_TYPE=>DB_DEF_ID,

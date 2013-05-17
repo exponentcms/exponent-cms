@@ -13,10 +13,6 @@
  *
  *}
 
-{css unique="formmod" corecss="forms"}
-
-{/css}
-
 <div id="editform" class="module forms edit edit-form">
     <h1>
         {if $form->id != ""}
@@ -81,7 +77,8 @@
                         {control type="listbuilder" name="column_names_list" label="Columns for View Data/Export CSV" values=$column_names source=$fields description='Selecting NO columns is equal to selecting first five columns'|gettext}
                     {/group}
                     {group label='Single-Record View Configuration'|gettext}
-                        {control type=html name='report_def' label='Custom E-Mail Report and View Record Definition'|gettext value=$form->report_def description='Leave this custom definition blank to use the default \'all fields\' e-mail report and record view'|gettext}
+                        {*{control type=html name='report_def' label='Custom E-Mail Report and View Record Definition'|gettext value=$form->report_def description='Leave this custom definition blank to use the default \'all fields\' e-mail report and record view'|gettext}*}
+                        {control type=textarea name='report_def' label='Custom E-Mail and View Record Template'|gettext value=$config.report_def rows=10 cols=60 description="Leave blank to display all fields.  Record fields are referenced within curly braces by"|gettext|cat:' $fields[\'fieldname\']'}
                     {/group}
                 </div>
             </div>

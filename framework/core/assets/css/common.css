@@ -25,6 +25,7 @@ a img {
 
 /****************  common visitor-facing styles  ***********************/
 
+a.ajax,
 a.rsslink,
 a.printer-friendly-link,
 a.export-pdf-link,
@@ -113,6 +114,10 @@ a.report {
 
 a.view {
     background: url(../images/view.png) no-repeat 0 50%;
+}
+
+a.ajax {
+    background: url(../images/ajax-loader.gif) no-repeat 0 50%;
 }
 
 /* other standard styling */

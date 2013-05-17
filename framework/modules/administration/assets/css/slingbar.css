@@ -1,25 +1,26 @@
 /****************  Admin slingbar styles  ***********************/
 #admintoolbar {
-    position:fixed;
-    left:0px;
-    right:0px;
-    z-index:50;
-    display:none;
-    
-    -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.5); 
-       -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.5); 
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.5); 
+	position           : fixed;
+	left               : 0px;
+	right              : 0px;
+	z-index            : 99999;
+	display            : none;
+
+	-webkit-box-shadow : 0px 0px 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow    : 0px 0px 10px rgba(0, 0, 0, 0.5);
+	box-shadow         : 0px 0px 10px rgba(0, 0, 0, 0.5);
 
 }
+
 #admintoolbar:hover {
-   cursor:move;
+	cursor : move;
 }
 
 #admintoolbar img {
-	background: none;
-	border: none;
-	padding: 0;
-	margin: 0;
+	background : none;
+	border     : none;
+	padding    : 0;
+	margin     : 0;
 }
 
 /**************** icon styles for slingbar  ***********************/
@@ -27,504 +28,574 @@
 /* menubar icons */
 
 #admintoolbar li a.yuimenubaritemlabel {
-    font-size:12px;
-    font-family:"Arial";
+	font-size   : 12px;
+	font-family : "Arial";
 }
+
 #admintoolbar li.site a.yuimenubaritemlabel {
-    padding:0;
-/*    height:29px;*/
+	padding : 0;
+	/*    height:29px;*/
 }
 
 #admintoolbar li.user a.yuimenubaritemlabel {
-    background:url(../images/admintoolbar/user.png) no-repeat 5px 40%;
+	background : url(../images/admintoolbar/user.png) no-repeat 5px 40%;
 }
 
 #admintoolbar li.ecom a.yuimenubaritemlabel {
-    background:url(../images/admintoolbar/ecom.png) no-repeat 5px 40%;
+	background : url(../images/admintoolbar/ecom.png) no-repeat 5px 40%;
 }
 
 #admintoolbar li.ecom form {
-    display:inline-block;
-    *display:inline;
-    zoom:1;
-    vertical-align:top;
+	display        : inline-block;
+	*display       : inline;
+	zoom           : 1;
+	vertical-align : top;
 }
 
 #admintoolbar li.ecom form input {
-    margin-left:5px;
-    font-size:10px;
-    height:10px;
-    padding:3px;
-    line-height:12px;
-    position:relative;
-    top:-4px;
-    background:#dde;
-    border-radius:3px;
-    border:1px solid #0D1740;
+	margin-left           : 5px;
+	font-size             : 10px;
+	/*height:10px;*/
+	padding               : 3px;
+	line-height           : 12px;
+	position              : relative;
+	top                   : -4px;
+	background            : #dde;
+	-moz-border-radius    : 3px; /* FF1+ */
+	-webkit-border-radius : 3px; /* Saf3+, Chrome */
+	border-radius         : 3px;
+	border                : 1px solid #0D1740;
 }
 
+#admintoolbar input[type="text"] {
+	width: 140px;
+}
 
 #admintoolbar li.files a.yuimenubaritemlabel {
-    background:url(../images/admintoolbar/files.png) no-repeat 5px 40%;
+	background : url(../images/admintoolbar/files.png) no-repeat 5px 40%;
 }
+
 #admintoolbar li.ecom a.yuimenubaritemlabel em.newalert {
-    position:relative;
-    top:-5px;
-    font-size:10px;
-    font-style:normal;
-/*    background:url(../images/admintoolbar/new.png) no-repeat 5px 40%;
-*/
-    padding:5px 0 2px 10px;
-    text-transform:capitalize;
+	position       : relative;
+	top            : -5px;
+	font-size      : 10px;
+	font-style     : normal;
+	/*    background:url(../images/admintoolbar/new.png) no-repeat 5px 40%;
+	*/
+	padding        : 5px 0 2px 10px;
+	text-transform : capitalize;
 }
+
 #admintoolbar li.events a.yuimenubaritemlabel, #admintoolbar li.events a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/calendar_1.png) no-repeat 5px 40%;
+	background : url(../images/admintoolbar/calendar_1.png) no-repeat 5px 40%;
 }
+
 #admintoolbar li.event a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/cal.png) no-repeat 5px 40%;
+	background : url(../images/admintoolbar/cal.png) no-repeat 5px 40%;
 }
+
 #admintoolbar li.ealerts a.yuimenubaritemlabel {
-    background:url(../images/admintoolbar/cal.png) no-repeat 5px 40%;
+	background : url(../images/admintoolbar/cal.png) no-repeat 5px 40%;
 }
+
 #admintoolbar li.thispage {
-    border-right:1px solid #141c3e;
+	border-right : 1px solid #141c3e;
 }
+
 #admintoolbar li.thispage a.yuimenubaritemlabel {
-    background:url(../images/admintoolbar/page.png) no-repeat 5px 40%;
+	background : url(../images/admintoolbar/page.png) no-repeat 5px 40%;
 }
 
 /* Drop Menu Icons  */
 
+#admintoolbar li.dashboard a.yuimenuitemlabel {
+	background : url(../images/admintoolbar/layout_content.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.orders a.yuimenuitemlabel {
+	background : url(../images/admintoolbar/doc_page.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.products a.yuimenuitemlabel {
+	background : url(../images/admintoolbar/cart.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.reports a.yuimenuitemlabel {
+	background : url(../images/admintoolbar/report.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.purchase a.yuimenuitemlabel {
+	background : url(../images/admintoolbar/doc_page_previous.png) no-repeat 5px 50%;
+}
+
 #admintoolbar li.logout a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/logout.png) no-repeat 3px 50%;
+	background : url(../images/admintoolbar/logout.png) no-repeat 3px 50%;
 }
+
 #admintoolbar li.password a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/change_password.png) no-repeat 3px 50%;
+	background : url(../../../../core/assets/images/change_password.png) no-repeat 3px 50%;
 }
+
 #admintoolbar li.preview_on a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.preview_off a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.config a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/config.png) no-repeat 5px 50%;
+	background : url(../images/admintoolbar/config.png) no-repeat 5px 50%;
 }
+
 #admintoolbar .info li.docs a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/document_info.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/document_info.png) no-repeat 5px 50%;
 }
+
 #admintoolbar .info li.forums a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/user_comment.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/user_comment.png) no-repeat 5px 50%;
 }
+
 #admintoolbar .info li.reportbug a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/bug.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/bug.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.development a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/development.png) no-repeat 5px 50%;
+	background : url(../images/admintoolbar/development.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.develop_on_red a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/toggle_red.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/toggle_red.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.develop_on_green a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/toggle_on.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.develop_off a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/toggle_off.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.remove a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/delete.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/delete.png) no-repeat 5px 50%;
 }
-#admintoolbar li.manage a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/manage.png) no-repeat 5px 50%;
-}
-#admintoolbar li.search a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/view.png) no-repeat 5px 50%;
-}
-#admintoolbar li.users a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/manage-users.png) no-repeat 5px 50%;
-}
-#admintoolbar li.euser a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -26px;
-}
-#admintoolbar li.egroup a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -56px;
-}
-#admintoolbar li.sitetree a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/sitetree.png) no-repeat 5px 50%;
-}
+
 #admintoolbar li.configure a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/configure.png) no-repeat 5px 50%;
+	background : url(../../../../core/assets/images/configure.png) no-repeat 5px 50%;
 }
+
+#admintoolbar li.manage a.yuimenuitemlabel {
+	background : url(../../../../core/assets/images/manage.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.search a.yuimenuitemlabel {
+	background : url(../../../../core/assets/images/view.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.users a.yuimenuitemlabel {
+	background : url(../images/admintoolbar/manage-users.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.euser a.yuimenuitemlabel {
+	background : url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -26px;
+}
+
+#admintoolbar li.egroup a.yuimenuitemlabel {
+	background : url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -56px;
+}
+
+#admintoolbar li.sitetree a.yuimenuitemlabel {
+	background : url(../images/admintoolbar/sitetree.png) no-repeat 5px 50%;
+}
+
 #admintoolbar li.info a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/info.png) no-repeat 5px 2px;
+	background : url(../images/admintoolbar/info.png) no-repeat 5px 2px;
 }
+
 #admintoolbar li.edit a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/editpage.png) no-repeat 5px 50%;
+	background : url(../images/admintoolbar/editpage.png) no-repeat 5px 50%;
 }
+
+#admintoolbar li.add a.yuimenuitemlabel {
+	background : url(../../../../core/assets/images/add.png) no-repeat 5px 50%;
+}
+
 #admintoolbar .thispage li.user a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -26px; 
+	background : url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -26px;
 }
+
 #admintoolbar .thispage li.group a.yuimenuitemlabel {
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -56px; 
+	background : url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 3px -56px;
 }
+
 #admintoolbar li.filemanager a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/filemanager.png) no-repeat 5px 50%;
+	background : url(../images/admintoolbar/filemanager.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.fileuploader a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/upload.png) no-repeat 5px 50%;
+	background : url(../images/admintoolbar/upload.png) no-repeat 5px 50%;
 }
+
 #admintoolbar li.email a.yuimenuitemlabel {
-    background:url(../images/admintoolbar/mail-reply-all.png) no-repeat 5px 50%;
+	background : url(../images/admintoolbar/mail-reply-all.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.import a.yuimenuitemlabel {
+	background : url(../../../../core/assets/images/upload.png) no-repeat 5px 50%;
+}
+
+#admintoolbar li.export a.yuimenuitemlabel {
+	background : url(../../../../core/assets/images/download.png) no-repeat 5px 50%;
 }
 
 #admintoolbar li.yuimenuitem-selected {
-    background-color:#0e1d3f;
+	background-color : #0e1d3f;
 }
 
 #admintoolbar li.yuimenuitem-selected a {
-    color:#ffffff;
+	color : #ffffff;
 }
 
 /****************  menu styles  ***********************/
 
 #admintoolbar .yuimenubar {
-    border:0;
+	border : 0;
 }
 
 #admintoolbar .yuimenubar .yuimenu .bd {
-    border-top-color:#333;
+	border-top-color : #333;
 }
 
 #admintoolbar .yuimenubar .yuimenu .bd {
-    border-top-color:#333;
+	border-top-color : #333;
 }
 
 #admintoolbar .yuimenubar .yuimenubaritemlabel {
-    border:0;
-    height:24px;
-    padding-left:30px;
+	border       : 0;
+	height       : 24px;
+	padding-left : 30px;
 }
 
 #admintoolbar .yuimenubar .quicklink {
-    float:right;
+	float : right;
 }
 
 #admintoolbar .yuimenubar .yuimenubaritemlabel {
-    border:0;
+	border : 0;
 }
 
 #admintoolbar .yuimenubar .yuimenuitemlabel {
-    padding:4px 15px 4px 30px!important;
-    background-position:3px 50%;
-    font-weight:bold;
-    line-height:16px;
+	padding             : 4px 15px 4px 30px !important;
+	background-position : 3px 50%;
+	font-weight         : bold;
+	line-height         : 16px;
 }
 
-#admintoolbar .yuimenu
-{
-	left: -999em;
-	top: -999em;
+#admintoolbar .yuimenu {
+	left : -999em;
+	top  : -999em;
 }
-#admintoolbar .yuimenubar
-{
-	position: static;
+
+#admintoolbar .yuimenubar {
+	position : static;
 }
+
 #admintoolbar .yuimenu .yuimenu,
-#admintoolbar .yuimenubar .yuimenu
-{
-	position: absolute;
+#admintoolbar .yuimenubar .yuimenu {
+	position : absolute;
 }
+
 #admintoolbar .yuimenubar li,
-#admintoolbar .yuimenu li
-{
-	list-style-type: none;
-    list-style-image: none;
+#admintoolbar .yuimenu li {
+	list-style-type  : none;
+	list-style-image : none;
 }
+
 #admintoolbar .yuimenubar ul,
 #admintoolbar .yuimenu ul,
 #admintoolbar .yuimenu li,
 #admintoolbar .yuimenu h6,
-#admintoolbar .yuimenubar h6
-{
-	margin: 0;
-	padding: 0;
+#admintoolbar .yuimenubar h6 {
+	margin  : 0;
+	padding : 0;
 }
+
 #admintoolbar .yuimenuitemlabel,
-#admintoolbar .yuimenubaritemlabel
-{
-	text-align: left;
-	white-space: nowrap;
+#admintoolbar .yuimenubaritemlabel {
+	text-align  : left;
+	white-space : nowrap;
 }
-#admintoolbar .yuimenubar ul
-{
-	zoom: 1;
+
+#admintoolbar .yuimenubar ul {
+	zoom : 1;
 }
-#admintoolbar .yuimenubar .yuimenu ul
-{
-	zoom: normal;
+
+#admintoolbar .yuimenubar .yuimenu ul {
+	zoom : normal;
 }
-#admintoolbar .yuimenubar>.bd>ul:after
-{
-	clear: both;
-	content: ".";
-	display: block;
-	height: 0;
-	line-height: 0;
-	visibility: hidden;
+
+#admintoolbar .yuimenubar>.bd>ul:after {
+	clear       : both;
+	content     : ".";
+	display     : block;
+	height      : 0;
+	line-height : 0;
+	visibility  : hidden;
 }
-#admintoolbar .yuimenubaritem
-{
-    border-left:1px solid #141c3e;
-	float: left;
+
+#admintoolbar .yuimenubaritem {
+	border-left : 1px solid #141c3e;
+	float       : left;
 }
+
 #admintoolbar .yuimenubaritemlabel,
-#admintoolbar .yuimenuitemlabel
-{
-	display: block;
+#admintoolbar .yuimenuitemlabel {
+	display : block;
 }
-#admintoolbar .yuimenuitemlabel .helptext
-{
-	display: block;
-	font-style: normal;
-	margin: -1em 0 0 10em;
+
+#admintoolbar .yuimenuitemlabel .helptext {
+	display    : block;
+	font-style : normal;
+	margin     : -1em 0 0 10em;
 }
-#admintoolbar .yui-menu-shadow
-{
-	position: absolute;
-	visibility: hidden;
-	z-index: -1;
+
+#admintoolbar .yui-menu-shadow {
+	position   : absolute;
+	visibility : hidden;
+	z-index    : -1;
 }
-#admintoolbar .yui-menu-shadow-visible
-{
-	bottom: -3px;
-	left: -3px;
-	right: -3px;
-	top: 2px;
-	visibility: visible;
+
+#admintoolbar .yui-menu-shadow-visible {
+	bottom     : -3px;
+	left       : -3px;
+	right      : -3px;
+	top        : 2px;
+	visibility : visible;
 }
-#admintoolbar .hide-scrollbars *
-{
-	overflow: hidden;
+
+#admintoolbar .hide-scrollbars * {
+	overflow : hidden;
 }
-#admintoolbar .hide-scrollbars select
-{
-	display: none;
+
+#admintoolbar .hide-scrollbars select {
+	display : none;
 }
-#admintoolbar .yuimenu.show-scrollbars,.yuimenubar.show-scrollbars
-{
-	overflow: visible;
+
+#admintoolbar .yuimenu.show-scrollbars, .yuimenubar.show-scrollbars {
+	overflow : visible;
 }
+
 #admintoolbar .yuimenu.hide-scrollbars .yui-menu-shadow,
-#admintoolbar .yuimenubar.hide-scrollbars .yui-menu-shadow
-{
-	overflow: hidden;
+#admintoolbar .yuimenubar.hide-scrollbars .yui-menu-shadow {
+	overflow : hidden;
 }
+
 #admintoolbar .yuimenu.show-scrollbars .yui-menu-shadow,
-#admintoolbar .yuimenubar.show-scrollbars .yui-menu-shadow
-{
-	overflow: auto;
+#admintoolbar .yuimenubar.show-scrollbars .yui-menu-shadow {
+	overflow : auto;
 }
-#admintoolbar .yui-overlay.yui-force-redraw
-{
-	margin-bottom: 1px;
-}
-#admintoolbar .yuimenubar
-{
-	background: url(../images/admintoolbar/bgrep.gif) repeat-x 0 0;
-	font-size: 93%;
-	line-height: 1.9;
-	line-height: 2;
-}
-#admintoolbar .yuimenubaritem
-{
-	background: url(../images/admintoolbar/linkback.gif) repeat-x 0 0;
-}
-#admintoolbar .yuimenubaritemlabel
-{
 
-	color: #ffffff;
-	cursor: default;
-	margin: -1px 0;
-	padding: 5px 10px 0 10px;
-	position: relative;
-	text-decoration: none;
+#admintoolbar .yui-overlay.yui-force-redraw {
+	margin-bottom : 1px;
 }
-#admintoolbar .yuimenubarnav .yuimenubaritemlabel
-{
-	display: inline-block;
-	padding-right: 20px;
+
+#admintoolbar .yuimenubar {
+	background  : url(../images/admintoolbar/bgrep.gif) repeat-x 0 0;
+	font-size   : 93%;
+	line-height : 1.9;
+	line-height : 2;
 }
-#admintoolbar .yuimenubarnav .yuimenubaritem-hassubmenu
-{
-	background: url(../images/admintoolbar/linkback.gif) repeat-x 0 0;
+
+#admintoolbar .yuimenubaritem {
+	background : url(../images/admintoolbar/linkback.gif) repeat-x 0 0;
+}
+
+#admintoolbar .yuimenubaritemlabel {
+
+	color           : #ffffff;
+	cursor          : default;
+	margin          : -1px 0;
+	padding         : 5px 10px 0 10px;
+	position        : relative;
+	text-decoration : none;
+}
+
+#admintoolbar .yuimenubarnav .yuimenubaritemlabel {
+	display       : inline-block;
+	padding-right : 20px;
+}
+
+#admintoolbar .yuimenubarnav .yuimenubaritem-hassubmenu {
+	background : url(../images/admintoolbar/linkback.gif) repeat-x 0 0;
 
 }
-#admintoolbar .yuimenubaritem-selected
-{
-	background: url(../images/admintoolbar/barhover.gif) repeat-x 0 0;
+
+#admintoolbar .yuimenubaritem-selected {
+	background : url(../images/admintoolbar/barhover.gif) repeat-x 0 0;
 }
-#admintoolbar .yuimenubaritemlabel-selected
-{
-	color:#ffffff;
+
+#admintoolbar .yuimenubaritemlabel-selected {
+	color : #ffffff;
 }
-#admintoolbar .yuimenubarnav .yuimenubaritemlabel-selected
-{
-	border-left-width: 1px;
-	left: -1px;
-	margin-left: -1px;
+
+#admintoolbar .yuimenubarnav .yuimenubaritemlabel-selected {
+	border-left-width : 1px;
+	left              : -1px;
+	margin-left       : -1px;
 }
-#admintoolbar .yuimenubaritemlabel-disabled
-{
-	color: #A6A6A6;
-	cursor: default;
+
+#admintoolbar .yuimenubaritemlabel-disabled {
+	color  : #A6A6A6;
+	cursor : default;
 }
-#admintoolbar .yuimenubarnav .yuimenubaritemlabel-hassubmenu-disabled
-{
-	background-image: url(../images/admintoolbar/menubaritem_submenuindicator_disabled.png);
+
+#admintoolbar .yuimenubarnav .yuimenubaritemlabel-hassubmenu-disabled {
+	background-image : url(../images/admintoolbar/menubaritem_submenuindicator_disabled.png);
 }
 
 #admintoolbar .yuimenubar .yuimenu,
-#admintoolbar .yuimenu .yuimenu
-{
-	font-size: 100%;
-}
-#admintoolbar .yuimenu .bd
-{
-	background-color: #112971;
-	border: solid 1px #808080;
-	zoom: 1;
+#admintoolbar .yuimenu .yuimenu {
+	font-size : 100%;
 }
 
-#admintoolbar .yuimenu ul
-{
-	border-color: #ccc;
-	border-style: solid;
-	border-width: 1px 0 0 0;
-	padding: 3px 0;
+#admintoolbar .yuimenu .bd {
+	background-color : #112971;
+	border           : solid 1px #808080;
+	zoom             : 1;
 }
-#admintoolbar .yuimenu ul.first-of-type
-{
-	border-width: 0;
+
+#admintoolbar .yuimenu ul {
+	border-color : #ccc;
+	border-style : solid;
+	border-width : 1px 0 0 0;
+	padding      : 3px 0;
 }
-#admintoolbar .yuimenu h6
-{
-	border-color: #ccc;
-	border-style: solid;
-	border-width: 1px 0 0 0;
-	color: #a4a4a4;
-	font-weight: bold;
-	padding: 3px 10px 0 10px;
+
+#admintoolbar .yuimenu ul.first-of-type {
+	border-width : 0;
 }
-#admintoolbar .yuimenu ul.hastitle,#admintoolbar .yuimenu h6.first-of-type
-{
-	border-width: 0;
+
+#admintoolbar .yuimenu h6 {
+	border-color : #ccc;
+	border-style : solid;
+	border-width : 1px 0 0 0;
+	color        : #a4a4a4;
+	font-weight  : bold;
+	padding      : 3px 10px 0 10px;
 }
-#admintoolbar .yuimenu .yui-menu-body-scrolled
-{
-	border-color: #ccc #808080;
-	overflow: hidden;
+
+#admintoolbar .yuimenu ul.hastitle, #admintoolbar .yuimenu h6.first-of-type {
+	border-width : 0;
 }
+
+#admintoolbar .yuimenu .yui-menu-body-scrolled {
+	border-color : #ccc #808080;
+	overflow     : hidden;
+}
+
 #admintoolbar .yuimenu .topscrollbar,
-#admintoolbar .yuimenu .bottomscrollbar
-{
-	background: #fff url(../images/admintoolbar/sprite.png) no-repeat 0 0;
-	border: solid 1px #808080;
-	height: 16px;
+#admintoolbar .yuimenu .bottomscrollbar {
+	background : #fff url(../images/admintoolbar/sprite.png) no-repeat 0 0;
+	border     : solid 1px #808080;
+	height     : 16px;
 }
-#admintoolbar .yuimenu .topscrollbar
-{
-	background-position: center -950px;
-	border-bottom-width: 0;
+
+#admintoolbar .yuimenu .topscrollbar {
+	background-position : center -950px;
+	border-bottom-width : 0;
 }
-#admintoolbar .yuimenu .topscrollbar_disabled
-{
-	background-position: center -975px;
+
+#admintoolbar .yuimenu .topscrollbar_disabled {
+	background-position : center -975px;
 }
-#admintoolbar .yuimenu .bottomscrollbar
-{
-	background-position: center -850px;
-	border-top-width: 0;
+
+#admintoolbar .yuimenu .bottomscrollbar {
+	background-position : center -850px;
+	border-top-width    : 0;
 }
-#admintoolbar .yuimenu .bottomscrollbar_disabled
-{
-	background-position: center -875px;
+
+#admintoolbar .yuimenu .bottomscrollbar_disabled {
+	background-position : center -875px;
 }
-#admintoolbar .yuimenuitem
-{
-	_border-bottom: solid 1px #fff;
+
+#admintoolbar .yuimenuitem {
+	_border-bottom : solid 1px #fff;
 }
-#admintoolbar .yuimenuitemlabel
-{
-	color: #ffffff;
-	cursor: default;
-	padding: 2px 20px;
-	text-decoration: none;
+
+#admintoolbar .yuimenuitemlabel {
+	color           : #ffffff;
+	cursor          : default;
+	padding         : 2px 20px;
+	text-decoration : none;
 }
-#admintoolbar .yuimenuitemlabel .helptext
-{
-	margin-top: -1.45em;
-	margin-top: -1.5em;
+
+#admintoolbar .yuimenuitemlabel .helptext {
+	margin-top : -1.45em;
+	margin-top : -1.5em;
 }
-#admintoolbar .yuimenuitem-hassubmenu
-{
-	background-image: url(../images/admintoolbar/submenuindicator.png);
-	background-position: right center;
-	background-repeat: no-repeat;
+
+#admintoolbar .yuimenuitem-hassubmenu {
+	background-image    : url(../images/admintoolbar/submenuindicator.png);
+	background-position : right center;
+	background-repeat   : no-repeat;
 }
-#admintoolbar .yuimenuitem-hassubmenu-selected
-{
-	background-image: url(../images/admintoolbar/submenuindicator.png);
+
+#admintoolbar .yuimenuitem-hassubmenu-selected {
+	background-image : url(../images/admintoolbar/submenuindicator.png);
 }
-#admintoolbar .yuimenuitem-checked
-{
-	background-image: url(../images/admintoolbar/menuitem_checkbox.png);
-	background-position: left center;
-	background-repeat: no-repeat;
+
+#admintoolbar .yuimenuitem-checked {
+	background-image    : url(../images/admintoolbar/menuitem_checkbox.png);
+	background-position : left center;
+	background-repeat   : no-repeat;
 }
-#admintoolbar .yui-menu-shadow-visible
-{
-	background-color: #000;
-	filter: alpha(opacity=12);
-	opacity: .12;
+
+#admintoolbar .yui-menu-shadow-visible {
+	background-color : #000;
+	filter           : alpha(opacity=12);
+	opacity          : .12;
 }
-#admintoolbar .yuimenuitem-selected
-{
+
+#admintoolbar .yuimenuitem-selected {
 
 }
-#admintoolbar .yuimenuitemlabel-selected
-{
-	color: #333333;
+
+#admintoolbar .yuimenuitemlabel-selected {
+	color : #333333;
 }
-#admintoolbar .yuimenuitemlabel-disabled
-{
-	color: #A6A6A6;
-	cursor: default;
+
+#admintoolbar .yuimenuitemlabel-disabled {
+	color  : #A6A6A6;
+	cursor : default;
 }
-#admintoolbar .yuimenuitem-hassubmenu-disabled
-{
-	background-image: url(../images/admintoolbar/menuitem_submenuindicator_disabled.png);
+
+#admintoolbar .yuimenuitem-hassubmenu-disabled {
+	background-image : url(../images/admintoolbar/menuitem_submenuindicator_disabled.png);
 }
-#admintoolbar .yuimenuitem-checked-disabled
-{
-	background-image: url(../images/admintoolbar/menuitem_checkbox_disabled.png);
+
+#admintoolbar .yuimenuitem-checked-disabled {
+	background-image : url(../images/admintoolbar/menuitem_checkbox_disabled.png);
 }
 
 /******** YUI Logger Styles **********/
 #yuilogger .yui3-console .yui3-console-title {
-    /*border: 0 none;*/
-    /*color: #000;*/
-    font-size: 12px;
-    font-weight: normal;
-    /*margin: 0;*/
-    /*text-transform: none;*/
+	/*border: 0 none;*/
+	/*color: #000;*/
+	font-size   : 12px;
+	font-weight : normal;
+	/*margin: 0;*/
+	/*text-transform: none;*/
 }
+
 #yuilogger .yui3-console-hd {
-    padding: 0;
+	padding : 0;
 }
+
 #yuilogger .yui3-console .yui3-console-entry-meta {
-    margin: 0;
+	margin : 0;
 }
+
 #yuilogger .yui3-console-separate {
-    top: 32px;
-    z-index:10;
+	top     : 32px;
+	z-index : 10;
 }

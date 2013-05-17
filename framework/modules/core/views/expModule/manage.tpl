@@ -62,11 +62,11 @@
         <h1>{"Module Manager"|gettext}</h1>
     </div>
     {form action="update"}
-    <div id="mod-manager-tabs" class="yui-navset exp-skin-tabview hide">
-        <ul class="yui-nav">
-            <li class="selected"><a href="#tab1"><em>Exponent 2</em></a></li>
-            <li><a href="#tab2"><em>{"Old School"|gettext}</em></a></li>
-        </ul>            
+    <div id="mod-manager-tabs" class="yui-navset exp-skin-tabview">
+        {*<ul class="yui-nav">*}
+            {*<li class="selected"><a href="#tab1"><em>Exponent 2</em></a></li>*}
+            {*<li><a href="#tab2"><em>{"Old School"|gettext}</em></a></li>*}
+        {*</ul>            *}
         <div class="yui-content">
             <div id="tab1">
                 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
@@ -100,50 +100,50 @@
                     </tbody>
                 </table>
             </div>
-            <div id="tab2">
-                <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-                    <thead>
-                        <tr>
-                            <th>
-                                <a class="selectall" href="#" id="sa_conts1" onclick="EXPONENT.selectAllCheckboxes('#tab2 input[type=checkbox]'); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sn_conts1" onclick="EXPONENT.unSelectAllCheckboxes('#tab2 input[type=checkbox]'); return false;">{"Select None"|gettext}</a>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {foreach from=$old_school_mods item=module}
-                        <tr class="{cycle values="odd,even"}">
-                            <td class="activate">
-                            <label>
-                            <input type="checkbox" name="mods[{$module->class}]"{if $module->active == 1} checked {/if}value=1>
-                            <strong>{$module->name}</strong>{br}
-                            <em>
-                            {$module->description}
-                            </em>
-                            </label>
-                            </td>
-                        </tr>
-                        {/foreach}
-                    </tbody>
-                </table>
-            </div>
+            {*<div id="tab2">*}
+                {*<table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">*}
+                    {*<thead>*}
+                        {*<tr>*}
+                            {*<th>*}
+                                {*<a class="selectall" href="#" id="sa_conts1" onclick="EXPONENT.selectAllCheckboxes('#tab2 input[type=checkbox]'); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sn_conts1" onclick="EXPONENT.unSelectAllCheckboxes('#tab2 input[type=checkbox]'); return false;">{"Select None"|gettext}</a>*}
+                            {*</th>*}
+                        {*</tr>*}
+                    {*</thead>*}
+                    {*<tbody>*}
+                        {*{foreach from=$old_school_mods item=module}*}
+                        {*<tr class="{cycle values="odd,even"}">*}
+                            {*<td class="activate">*}
+                            {*<label>*}
+                            {*<input type="checkbox" name="mods[{$module->class}]"{if $module->active == 1} checked {/if}value=1>*}
+                            {*<strong>{$module->name}</strong>{br}*}
+                            {*<em>*}
+                            {*{$module->description}*}
+                            {*</em>*}
+                            {*</label>*}
+                            {*</td>*}
+                        {*</tr>*}
+                        {*{/foreach}*}
+                    {*</tbody>*}
+                {*</table>*}
+            {*</div>*}
         </div>
     </div>
-    <div class="loadingdiv">{"Loading Modules"|gettext}</div>
+    {*<div class="loadingdiv">{"Loading Modules"|gettext}</div>*}
     {control type="buttongroup" submit="Update Active Modules"|gettext}
     {/form}
 </div>
 
 {script unique="filetabs" yui3mods=1}
 {literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+//    EXPONENT.YUI3_CONFIG.modules.exptabs = {
+//        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
+//        requires: ['history','tabview','event-custom']
+//    };
 
 	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#mod-manager-tabs'});
-		Y.one('#mod-manager-tabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
+//        Y.expTabs({srcNode: '#mod-manager-tabs'});
+//		Y.one('#mod-manager-tabs').removeClass('hide');
+//		Y.one('.loadingdiv').remove();
 
 		EXPONENT.selectAllCheckboxes = function (selector) {
 			Y.all(selector).each(function(n){

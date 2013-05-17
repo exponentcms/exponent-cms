@@ -68,7 +68,7 @@
                 {/permissions}
             {/if}
             <div class="bodycopy">
-                {if $config.filedisplay != "Downloadable Files"}
+                {if $config.ffloat != "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
                 {if $config.usebody==1}
@@ -77,7 +77,7 @@
 				{else}
                     {$item->body}
                 {/if}
-                {if $config.filedisplay == "Downloadable Files"}
+                {if $config.ffloat == "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
             </div>

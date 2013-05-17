@@ -31,19 +31,19 @@ class eventregistration extends expRecord {
     public $product_name = 'Event Registration';
     public $product_type = 'eventregistration';
     public $requiresShipping = false;
-    public $requiresBilling = true;
+    public $requiresBilling = true; //FIXME only if a cost is involved
     public $isQuantityAdjustable = false;
 
     public $default_sort_field = 'rank';
     public $rank_by_field = 'rank';
     public $default_sort_direction = "asc";
 
-    public $early_discount_amount_modifiers = array('$'=>'$', '%'=>'%');
+    public $early_discount_amount_modifiers = array('$' => '$', '%' => '%');
 
     protected $attachable_item_types = array(
 //        'content_expCats'=>'expCat',
 //        'content_expComments'=>'expComment',
-        'content_expDefinableFields' => 'expDefinableField',
+//        'content_expDefinableFields' => 'expDefinableField',
         'content_expFiles'           => 'expFile',
 //        'content_expRatings'=>'expRating',
 //        'content_expSimpleNote'=>'expSimpleNote',
@@ -62,12 +62,20 @@ class eventregistration extends expRecord {
         $this->id = $origid; // put the product table id back.
         $this->table = 'product';
         $this->tablename = 'product';
+        if (!empty($this->use_early_price) && !empty($this->earlydiscountdate) && ($this->earlydiscountdate > time())) {
+            $this->use_special_price = true;
+        }
     }
 
     public function update($params = array()) {
         global $db;
 
         if (!empty($params)) {
+            // handle definable fields
+//            if (isset($params['id'])) {
+//                $db->delete('content_expDefinableFields', 'content_type="' . $this->classname . '" AND content_id=' . $params['id']);
+//            }
+
             // creating or editing the event reservation
             if (isset($params['id'])) {
                 $product = new product($params['id']);
@@ -77,21 +85,27 @@ class eventregistration extends expRecord {
             #	    $event = new expRecord();
             #	    $event->tablename = 'eventregistration';
             $event = new stdClass();
+//            $event->num_guest_allowed = !empty($params['quantity']) ? $params['quantity'] : 0;
             $event->eventdate = strtotime($params['eventdate']);
-            $event->eventenddate = strtotime($params['eventenddate']);
+            $enddate = strtotime($params['eventenddate']);
+            if ($enddate == 0 || $enddate < $event->eventdate) $enddate = $event->eventdate;
+            $event->eventenddate = $enddate;
             $event->event_starttime = datetimecontrol::parseData('event_starttime', $params);
             $event->event_endtime = datetimecontrol::parseData('event_endtime', $params);
             $event->signup_cutoff = strtotime($params['signup_cutoff']);
+
+            $event->forms_id = $params['forms_id'];
+            $event->multi_registrant = $params['multi_registrant'];
+
             $event->location = $params['location'];
             $event->terms_and_condition = $params['terms_and_condition'];
             $event->require_terms_and_condition = !empty($params['require_terms_and_condition']) ? $params['require_terms_and_condition'] : false;
             $event->terms_and_condition_toggle = $params['terms_and_condition_toggle'];
-            $event->num_guest_allowed = !empty($params['quantity']) ? $params['quantity'] : 0;
 
-//            $event->earlydiscountdate = datetimecontrol::parseData('earlydiscountdate', $params);
-//            $event->early_discount_amount = !empty($params['early_discount_amount']) ? $params['early_discount_amount'] : 0;
-//            $event->early_discount_amount_mod = $params['early_discount_amount_mod'];
-//            $event->use_early_price = !empty($params['use_early_price']) ? $params['use_early_price'] : false;
+            $event->earlydiscountdate = strtotime($params['earlydiscountdate']);
+            $event->early_discount_amount = !empty($params['early_discount_amount']) ? $params['early_discount_amount'] : 0;
+            $event->early_discount_amount_mod = $params['early_discount_amount_mod'];
+            $event->use_early_price = !empty($params['use_early_price']) ? $params['use_early_price'] : false;
 
             $event->id = empty($product->product_type_id) ? null : $product->product_type_id;
 
@@ -131,7 +145,7 @@ class eventregistration extends expRecord {
         } else {
             // customer is completing the actual reservation
             $event = $db->selectObject('eventregistration', 'id=' . $this->product_type_id);
-            $event->number_of_registrants = $this->number_of_registrants;
+//            $event->number_of_registrants = $this->number_of_registrants;
 //            $event->registrants = $this->registrants;
             $db->updateObject($event, 'eventregistration');
         }
@@ -168,6 +182,12 @@ class eventregistration extends expRecord {
         }
     }
 
+    public function getSEFURL() {
+        if (!empty($this->sef_url)) return $this->sef_url;
+        $parent = new product($this->parent_id, false, false);
+        return $parent->sef_url;
+    }
+
     public function hasOptions() {
         // eDebug($this, true);
         foreach ($this->optiongroup as $og) {
@@ -178,6 +198,10 @@ class eventregistration extends expRecord {
             }
         }
         return false;
+    }
+
+    public function hasUserInputFields() {
+        return false;  //FIXME not sure this accurate based on expDefinableFields & Forms
     }
 
     public function hasRequiredOptions() {
@@ -206,16 +230,15 @@ class eventregistration extends expRecord {
 
                             if ($display_price_as == 'total') {
                                 $newprice = ($option->updown == '+') ? ($this->getBasePrice() + $diff) : ($this->getBasePrice() - $diff);
-                                $price = ' ($' . number_format($newprice, 2) . ')';
+                                $price = ' (' . expCore::getCurrencySymbol() . number_format($newprice, 2) . ')';
                             } else {
                                 if ($diff > 0) {
-                                    $diff = '$' . number_format($diff, 2);
+                                    $diff = expCore::getCurrencySymbol() . number_format($diff, 2);
                                     $price = ' (' . $option->updown . $diff . ')';
                                 } else {
                                     $price = '';
                                 }
                             }
-
                         }
 
                         $items[$option->id] = $text . $price;
@@ -227,7 +250,12 @@ class eventregistration extends expRecord {
     }
 
     public function spacesLeft() {
-        return $this->quantity - $this->number_of_registrants;
+        global $db;
+
+//        return $this->quantity - $this->number_of_registrants;
+//        $f = new forms($this->forms_id);
+//        return $this->quantity - $db->countObjects('forms_' . $f->table_name, "referrer='" . $this->id . "'");
+        return $this->quantity - $this->countRegistrants();
     }
 
     public function cartSummary($item) {
@@ -235,22 +263,21 @@ class eventregistration extends expRecord {
         $view->assign('product', $this);
         $view->assign('item', $item);
 
+        $view->assign('asset_path', PATH_RELATIVE ."framework/modules/ecommerce/assets/");
+
+        // grab the options
+        $options = expUnserialize($item->options);
+        $view->assign('options', $options);
+
         // grab all the registrants
         $registrants = expUnserialize($item->extra_data);
+        $view->assign('registrants', $registrants);
 
         //assign the number registered to the view
-//        $number = count($registrants);
-        $number = $item->quantity;
+        $number = count($registrants);
         $view->assign('number', $number);
 
-        // assign the list of names to the view.
-        $people = '';
-        foreach ($registrants as $reg) {
-            $people .= $reg['name'] . ', ';
-        }
-        $people = substr($people, 0, -2);
-        $view->assign('people', $people);
-        return $view->render('cartSummary');
+        return $view->render();
     }
 
     function getBasePrice($orderitem = null) {
@@ -280,56 +307,183 @@ class eventregistration extends expRecord {
     }
 
     /**
-     * process - here we are actually making a 'reservation' by completing the purchase
+     * addToCart - we are simply adding an event registration to our shopping cart
+     * this is where we create/update the eventregistration_registrants records
      *
-     * @param product $item the event registration product
+     * @param array $params
+     * @param null  $orderid
      *
      * @return bool
      */
-    public function process($item) {
-        global $db, $order;
+    function addToCart($params, $orderid = null) {
+        // eDebug($params, true);
+        global $db, $order, $user;
 
-        // save the names of the registrants to the eventregistration table too
-        //FIXME we need to be dealing w/ eventregistration_registrants here also/primarily
-        // eventregistration table is the product extension fields - 1 per event; but eventregistration_registrants are generated 1 per order
-        // if related order_id != 0, the order is completed based on eventregistration_registrants->connector_id == order->sessionticket_ticket
-        $product = new eventregistration($item->product_id);
-//        $registrants = expUnserialize($product->registrants);
-        $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $item->product_id);
-//        $order_registrations  = expUnserialize($item->extra_data);
-//        $order_registrations = array($item->user_id);
-        $order_registrations = array();
-        if (!empty($registrants)) foreach ($registrants as $registrant) {
-            $order_registrations[] = expUnserialize($registrant->value);
-        }
-//        $product->registrants = is_array($registrants) ? array_merge($registrants, $order_registrations) : $order_registrations; //: array_merge($registrants, $order_registrations);
+//        if (!empty($params['event'])) {
+//            $sess_id = session_id();
+        $sess_id = expSession::getTicketString();
+        expSession::set('session_id', $sess_id);
 
-        // create an object to update the event table.
-//        $event                        = new stdClass();
-//        $event->id                    = $product->product_type_id;
-//        $event->number_of_registrants += count($product->registrants);
-//        $event->registrants           = serialize($product->registrants);
-//        $db->updateObject($event, 'eventregistration');
+ //        $item = new orderitem($params);
+        // if the item is in the cart already use it, if not we'll create a new one
+        if (!empty($params['orderitem_id'])) $item = $order->isItemInCart($params['product_id'], $params['product_type'], $params['orderitem_id']);
+        if (empty($item->id)) $item = new orderitem($params);
+        $item->save();  // we need to get an orderitem->id even if it's a new order
 
-        $product->number_of_registrants += count($order_registrations);
-//        $product->registrants = serialize($order_registrations);
-        $product->update();
-        // eDebug(expSession::get('expDefinableField'), true);
-        foreach (expSession::get('expDefinableField') as $key => $value) {
+        //FIXME for now we'll just add a new registration 'purchase' to the cart since that's the way the code flows.
+//        $data = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
+//        if (!empty($data)) {
+//            //FIXME we are adding updating an existing item in the cart??
+//            // we're only updating the items that were already in the cart?  what if more or less were added.
+//            foreach ($data as $item) {
+//                if (!empty($params['event'][$item->control_name])) {
+//                    $item->value = serialize($params['event'][$item->control_name]);
+//                    $db->updateObject($item, "eventregistration_registrants");
+//                }
+//            }
+//        } else {
+        $f = new forms($this->forms_id);
+        $registrants = array();
+        if (!empty($params['registrant']) && !empty($f->is_saved)) {  // is there user input data
+            // first invert the key sequence by registrant index instead of by field name
+            foreach ($params['registrant'] as $key => $value) {
+                foreach ($value as $key1 => $value1) {
+                    $registrants[$key1][$key] = $value1;
+                }
+            }
+            $loc_data = new stdClass();
+            $loc_data->order_id = $order->id;
+            $loc_data->orderitem_id = strval($item->id);
+            $loc_data->event_id = $params['product_id'];
+            $locdata = serialize($loc_data);
+            if (!empty($params['orderitem_id'])) $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration
+            $fc = new forms_control();
+            $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0",'rank');
+            foreach ($registrants as $registrant) {
+                $db_data = new stdClass();
+                foreach ($controls as $c) {
+                    $ctl = expUnserialize($c->data);
+                    $control_type = get_class($ctl);
+                    $def = call_user_func(array($control_type, "getFieldDefinition"));
+                    if ($def != null) {
+                        $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $registrant, true));
+                        $value = stripslashes($db->escapeString($emailValue));
+                        $varname = $c->name;
+                        $db_data->$varname = $value;
+                    }
+                }
+                $db_data->ip = $_SERVER['REMOTE_ADDR'];
+                $db_data->referrer = $params['product_id'];
+                $db_data->timestamp = time();
+                if (expSession::loggedIn()) {
+                    $db_data->user_id = $user->id;
+                } else {
+                    $db_data->user_id = 0;
+                }
+                $db_data->location_data = $locdata;
+                $db->insertObject($db_data, 'forms_' . $f->table_name);
+            }
+
+        // we're replacing an existing registration based on updated input
+//        if (!empty($params['orderitem_id'])) $db->delete("eventregistration_registrants", "connector_id ='{$order->id}' AND orderitem_id ='" . $params['orderitem_id'] . "' AND event_id ='" . $params['product_id'] ."'");
+//            foreach ($registrants as $key => $value) {
+//                $obj = new stdClass();
+//                $obj->event_id = $params['product_id'];
+//                $obj->control_name = $key;
+//                $obj->value = serialize($value);
+//                $obj->connector_id = $order->id;
+//                $obj->orderitem_id = $item->id;
+//                $obj->registered_date = time();
+//                $db->insertObject($obj, "eventregistration_registrants");
+//            }
+//
+//
+//            foreach ($registrants as $key => $value) {
+//                $obj = new stdClass();
+//                $obj->event_id = $params['product_id'];
+//                $obj->control_name = $key;
+//                $obj->value = serialize($value);
+//                $obj->connector_id = $order->id;
+//                $obj->orderitem_id = $item->id;
+//                $obj->registered_date = time();
+//                $db->insertObject($obj, "eventregistration_registrants");
+//            }
+        } else {  // handle registration with NO user input?
             $obj = new stdClass();
-            $obj->expDefinableFields_id = $key;
-            $obj->content_id = $item->product_id;
+            $obj->event_id = $params['product_id'];
             $obj->connector_id = $order->id;
-            $obj->content_type = "eventregistration";
-            $obj->value = $value;
-            $db->insertObject($obj, 'content_expDefinableFields_value');
+            $obj->orderitem_id = $item->id;
+            $obj->registered_date = time();
+            $obj->control_name = $user->firstname . ' ' . $user->lastname;
+            $obj->value = $params['qtyr'];
+            $db->insertObject($obj, "eventregistration_registrants");
+            $registrants[0]['name'] = $user->firstname . ' ' . $user->lastname;
+            $registrants[0]['qty'] = $params['qtyr'];
         }
-        //add unset here
+//        }
+//        }
 
+//        $item->extra_data = serialize($params['registrant']);
+        $item->extra_data = serialize($registrants);  // we'll save this as extra_data, though it's really user input
+
+        $product = new eventregistration($params['product_id']);
+        $item->products_name = $product->title . " - " . date("F d, Y", $product->eventdate);
+
+        $options = array();
+//        $price = 0;
+//        $price = $product->base_price;
+        $price = $this->getBasePrice();
+        foreach ($this->optiongroup as $og) {
+            $isOptionEmpty = true;
+            if (!empty($params['options'][$og->id])) {
+                foreach ($params['options'][$og->id] as $opt) {
+                    if (!empty($opt)) $isOptionEmpty = false;
+                }
+            }
+            if (!$isOptionEmpty) {
+                foreach ($params['options'][$og->id] as $opt_id) {
+                    $selected_option = new option($opt_id);
+                    $cost = $selected_option->modtype == '$' ? $selected_option->amount : $this->getBasePrice() * ($selected_option->amount * .01);
+                    $cost = $selected_option->updown == '+' ? $cost : $cost * -1;
+                    if (@$params['options_quantity'][$opt_id] > 0) {
+                        $price += $cost * $params['options_quantity'][$opt_id];
+
+                    } else {
+                        $params['options_quantity'][$opt_id] = 1;
+                        $price += $cost * $params['options_quantity'][$opt_id];
+                    }
+                    // eDebug($price);
+                    $options[$og->id] = array($selected_option->id, $selected_option->title, $selected_option->modtype, $selected_option->updown, $selected_option->amount, $params['options_quantity'][$opt_id]);
+                }
+            }
+        }
+        // eDebug($price);
+        // eDebug($options, true);
+        // we need to unset the orderitem's ID to force a new entry..other wise we will overwrite any
+        // other giftcards in the cart already
+//        $item->id = null;
+        if (!empty($params['options_quantity'])) {
+//            $quantity = 1;
+            $quantity = $params['qtyr'];
+            $item->quantity = $quantity;
+            $item->products_price = $price;
+        } else { // no options selected
+            if (empty($params['qtyr'])) {
+                $params['qtyr'] = 1;
+            }
+            if (!empty($params['base_price'])) $item->products_price = preg_replace("/[^0-9.]/", "", $params['base_price']);
+            else $item->products_price = $product->base_price;
+            $item->quantity = $params['qtyr'];
+        }
+
+//        $this->displayForm('addToCart',$params);
+//        return false;
+        $item->options = serialize($options);
+        $item->save();
         return true;
     }
 
-    /*
+        /*
      function addToCart($params, $orderid = null) {
          global $db, $order;
          if (isset($params['registrants'])) {
@@ -359,107 +513,76 @@ class eventregistration extends expRecord {
      */
 
     /**
-     * addToCart - we are simply adding an event registration to our shopping cart
-     * this is where we create/update the eventregistration_registrants records
+     * process - here we are actually making a 'reservation' by submitting the purchase
      *
-     * @param array $params
-     * @param null  $orderid
+     * @param product $item the event registration product
      *
      * @return bool
      */
-    function addToCart($params, $orderid = null) {
-        // eDebug($params, true);
-        global $db, $order;
+    public function process($item) {
+        global $user, $db, $order;
 
-//        if (!empty($params['event'])) {
-//            $sess_id = session_id();
-        $sess_id = expSession::getTicketString();
-        //FIXME for now we'll just add a new registration 'purchase' to the cart since that's the way the code flows.
-//        $data = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $params['product_id']);
-//        if (!empty($data)) {
-//            //FIXME we are adding updating an existing item in the cart??
-//            // we're only updating the items that were already in the cart?  what if more or less were added.
-//            foreach ($data as $item) {
-//                if (!empty($params['event'][$item->control_name])) {
-//                    $item->value = serialize($params['event'][$item->control_name]);
-//                    $db->updateObject($item, "eventregistration_registrants");
-//                }
-//            }
-//        } else {
-            // new reservation
-            if (!empty($params['event'])) foreach ($params['event'] as $key => $value) {
-                $obj = new stdClass();
-                $obj->event_id = $params['product_id'];
-                $obj->control_name = $key;
-                $obj->value = serialize($value);
-                $obj->connector_id = $order->id;
-                $obj->registered_date = time();
-                $db->insertObject($obj, "eventregistration_registrants");
-            } else {
-                $obj = new stdClass();
-                $obj->event_id = $params['product_id'];
-                $obj->connector_id = $order->id;
-                $obj->registered_date = time();
-                $db->insertObject($obj, "eventregistration_registrants");
-            }
+        // save the names of the registrants to the eventregistration table too
+        //FIXME we need to be dealing w/ eventregistration_registrants here also/primarily
+        // eventregistration table is the product extension fields - 1 per event; but eventregistration_registrants are generated 1 per order
+        // if related order_id != 0, the order is completed based on eventregistration_registrants->connector_id == order->sessionticket_ticket
+        $product = new eventregistration($item->product_id);
+//        $registrants = expUnserialize($product->registrants);
+//        $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $item->product_id);
+//        $f = new forms($this->forms_id);
+//        if ($f->is_saved == 1) {  // is there user input data
+//            $loc_data = new stdClass();
+//            $loc_data->order_id =$item->orders_id;
+//            $loc_data->orderitem_id = strval($item->id);
+//            $loc_data->event_id = $item->product_id;
+//            $locdata = serialize($loc_data);
+//            $order_registrations = $db->selectObjects('forms_' . $f->table_name, "location_data='" . $locdata . "'");
 //        }
-        expSession::set('session_id', $sess_id);
+//        $order_registrations  = expUnserialize($item->extra_data);
+//        $order_registrations = array($item->user_id);
+        // update paid status
+//        $order_registrations = array();
+//        if (!empty($registrants)) foreach ($registrants as $registrant) {
+//            $order_registrations[] = expUnserialize($registrant->value);
+//
+//            $value = expUnserialize($registrant->value);
+//            $billingstatus = expUnserialize($order->billingmethod[0]->billing_options);
+////            $value['payment'] = !empty($billingstatus->payment_due) ? expCore::getCurrencySymbol() . number_format($billingstatus->payment_due, 2) . ' ' . gt('Due') : 'paid';
+//            $value['payment'] = !empty($billingstatus->payment_due) ? gt('payment due') : gt('paid');
+//            $registrant->value = serialize($value);
+//            $db->updateObject($registrant,"eventregistration_registrants");
 //        }
+//        $product->registrants = is_array($registrants) ? array_merge($registrants, $order_registrations) : $order_registrations; //: array_merge($registrants, $order_registrations);
 
-        $item = new orderitem($params);
-        $item->extra_data = serialize($params['event']);
+        // create an object to update the event table.
+//        $event                        = new stdClass();
+//        $event->id                    = $product->product_type_id;
+//        $event->number_of_registrants += count($product->registrants);
+//        $event->registrants           = serialize($product->registrants);
+//        $db->updateObject($event, 'eventregistration');
 
-        $product = new eventregistration($params['product_id']);
-        $item->products_name = $product->title . " - " . date("F d, Y", $product->eventdate);
-
-        $options = array();
-        $price = 0;
-        foreach ($this->optiongroup as $og) {
-            $isOptionEmpty = true;
-            if (!empty($params['options'][$og->id])) {
-                foreach ($params['options'][$og->id] as $opt) {
-                    if (!empty($opt)) $isOptionEmpty = false;
-                }
-            }
-            if (!$isOptionEmpty) {
-                foreach ($params['options'][$og->id] as $opt_id) {
-                    $selected_option = new option($opt_id);
-                    $cost = $selected_option->modtype == '$' ? $selected_option->amount : $this->getBasePrice() * ($selected_option->amount * .01);
-                    $cost = $selected_option->updown == '+' ? $cost : $cost * -1;
-                    if (@$params['options_quantity'][$opt_id] > 0) {
-                        $price += $cost * $params['options_quantity'][$opt_id];
-
-                    } else {
-                        $params['options_quantity'][$opt_id] = 1;
-                        $price += $cost * $params['options_quantity'][$opt_id];
-                    }
-                    // eDebug($price);
-                    $options[] = array($selected_option->id, $selected_option->title, $selected_option->modtype, $selected_option->updown, $selected_option->amount, $params['options_quantity'][$opt_id]);
-                }
+//        $product->number_of_registrants += count($order_registrations);
+//        $product->registrants = serialize($order_registrations);
+        $product->update();
+        // eDebug(expSession::get('expDefinableField'), true);
+//        foreach (expSession::get('expDefinableField') as $key => $value) {
+//            $obj = new stdClass();
+//            $obj->expdefinablefields_id = $key;
+//            $obj->content_id = $item->product_id;
+//            $obj->connector_id = $order->id;
+//            $obj->content_type = "eventregistration";
+//            $obj->value = $value;
+//            $db->insertObject($obj, 'content_expDefinableFields_value');
+//        }
+        //add unset here
+        $f = new forms($product->forms_id);
+        if (empty($f->is_saved)) {
+            $registrant = $db->selectObject("eventregistration_registrants", "orderitem_id ='{$item->id}'");
+            if (empty($registrant->control_name) || $registrant->control_name == ' ') {
+                $registrant->control_name = $user->firstname . ' ' . $user->lastname;
+                $db->updateObject($registrant, "eventregistration_registrants");
             }
         }
-        // eDebug($price);
-        // eDebug($options, true);
-        // we need to unset the orderitem's ID to force a new entry..other wise we will overwrite any
-        // other giftcards in the cart already
-        $item->id = null;
-        if (!empty($params['options_quantity'])) {
-            $quantity = 1;
-            $item->quantity = $quantity;
-            $item->products_price = $price;
-        } else {
-            if (empty($params['qtyr'])) {
-                $params['qtyr'] = 1;
-            }
-            if (!empty($params['base_price'])) $item->products_price = preg_replace("/[^0-9.]/", "", $params['base_price']);
-            else $item->products_price = $product->base_price;
-            $item->quantity = $params['qtyr'];
-        }
-
-//        $this->displayForm('addToCart',$params);
-//        return false;
-        $item->options = serialize($options);
-        $item->save();
         return true;
     }
 
@@ -467,12 +590,25 @@ class eventregistration extends expRecord {
         return (($this->spacesLeft() != 0 || $this->quantity == 0) && $this->signup_cutoff > time()) ? true : false;
     }
 
-    public function getControl($field, $name, $escape = '', $value = '', $adminedit = false) {
+    public function getAllControls($input_only = null) {
+        $f = new forms($this->forms_id);
+        if (empty($f->is_saved)) return null;  // useless unless the form data is being saved
+        $fc = new forms_control();
+        $controls = $fc->find('all','forms_id='.$this->forms_id);
+        foreach ($controls as $key=>$control) {
+            $controls[$key]->ctl = expUnserialize($control->data);
+            if ($input_only && get_class($control->ctl) == 'htmlcontrol') {
+                unset($controls[$key]);
+            }
+        }
+        return $controls;
+    }
 
+    public function showControl($field, $name, $escape = '', $value = '', $adminedit = false, $hidecaption = false) {
         $id = $field->id;
         $control = $field->data;
         $type = $field->type;
-        $ctl = unserialize($control);
+        $ctl = expUnserialize($control);
         if (empty($name)) {
             $name = $ctl->name;
         }
@@ -486,18 +622,23 @@ class eventregistration extends expRecord {
         if (!empty($value)) {
             $ctl->default = $value;
         } else {
-            $ctl->default = $record['event'][$name];
+            if (!empty($record['event'][$name])) $ctl->default = $record['event'][$name];
+        }
+        if ($hidecaption) {
+            $caption = '';
+        } else {
+            $caption = $ctl->caption;
+//            $caption = '';
         }
         if ($escape) {
-            return addslashes($ctl->toHTML($ctl->caption, "event[$name]"));
+            return addslashes($ctl->toHTML($caption, "$name"));
         } else {
             if ($name == "email" && $adminedit == true) {
-                return $ctl->toHTML($ctl->caption, "event[$name]", true);
+                return $ctl->toHTML($caption, "$name", true);  //FIXME there is no 3rd param for this
             } else {
-                return $ctl->toHTML($ctl->caption, "event[$name]");
+                return $ctl->toHTML($caption, "$name");
             }
         }
-
     }
 
     function checkout() {
@@ -505,12 +646,26 @@ class eventregistration extends expRecord {
     }
 
     public function removeItem($item) {
+        global $db;
+
+//        $db->delete("eventregistration_registrants", "connector_id ='{$item->orders_id}' AND event_id =" . $item->product_id);
+        $f = new forms($this->forms_id);
+        if (!empty($f->is_saved)) {  // is there user input data
+            $loc_data = new stdClass();
+            $loc_data->order_id =$item->orders_id;
+            $loc_data->orderitem_id = strval($item->id);
+            $loc_data->event_id = $item->product_id;
+            $locdata = serialize($loc_data);
+            $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration
+        } else {
+            $db->delete('eventregistration_registrants', "connector_id ='{$item->orders_id}' AND event_id =" . $item->product_id);  // remove existing entries for this registration
+        }
         return true;
     }
 
     public function getForm($form) {
         $dirs = array(
-            BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/views/' . $this->product_type . '/',  // make sure we check the controller view first
+            BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/views/' . $this->product_type . '/', // make sure we check the controller view first
             BASE . 'framework/modules/ecommerce/views/' . $this->product_type . '/',
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/' . $this->product_type . '/',
             BASE . 'framework/modules/ecommerce/products/views/' . $this->product_type . '/',
@@ -523,6 +678,107 @@ class eventregistration extends expRecord {
         }
 
         return false;
+    }
+
+    /**
+     * Return list of all confirmed registrants for the event
+     *   confirmation is invoice # set on order
+     *   searches form table and/or non-form table
+     *   assigns 'payment' property based on billingtransaction
+     */
+    public function getRegistrants() {
+        global $db;
+
+        $registered = array();
+        if (!empty($this->forms_id)) {
+            $f = new forms($this->forms_id);
+            // get list of all orders for this event
+            $order_ids_complete = array();
+            if (!empty($f->is_saved)) {  // is there user input data
+                $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$this->id}", "timestamp");
+                foreach ($registrants as $key=>$registrant) {
+                    $order_data = expUnserialize($registrant->location_data);
+                    $order_ids_complete[] = $order_data->order_id;
+                }
+            } else {
+                $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$this->id}", "registered_date", true);
+            }
+            // build list of completed orders
+            $orders = new order();
+            $order_ids = array();
+            foreach ($order_ids_complete as $item) {
+                $odr = $orders->find("first", "id ='{$item}' and invoice_id <> 0");
+                if (!empty($odr) || strpos($item, "admin-created") !== false) {
+                    $order_ids[] = $item;
+                }
+            }
+            // build list of registrants with completed orders
+            if (!empty($order_ids)) {
+                if (!empty($f->is_saved)) {  // is there user input data
+                    $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$this->id}", "timestamp");
+                    foreach ($registrants as $key=>$registrant) {
+                        $order_data = expUnserialize($registrant->location_data);
+                        if (in_array($order_data->order_id, $order_ids)) {
+                            $registered[$key] = $registrant;
+                            if (is_numeric($order_data->order_id)) {
+                                $registered[$key]->order_id = $order_data->order_id;
+                                $order = new order($order_data->order_id);
+    //                            $billingstatus = expUnserialize($order->billingmethod[0]->billing_options);
+    //                            $registered[$key]->payment = !empty($billingstatus->payment_due) ? gt('payment due') : gt('paid');
+                                $billingstatus = $order->billingmethod[0]->transaction_state;
+                                $registered[$key]->payment = !empty($billingstatus) ? $billingstatus : '???';
+                            } else {
+                                $registered[$key]->payment = '???';
+                            }
+                        }
+                    }
+                } else {
+                    foreach ($order_ids as $order_id) {
+                        $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
+                        foreach ($registrants as $person) {
+                            $new_registered = new stdClass();
+                            $new_registered->id = $person->id;
+                            $new_registered->user = $person->control_name;
+                            $new_registered->qty = $person->value;
+                            $new_registered->registered_date = $person->registered_date;
+                            if (is_numeric($person->connector_id)) {
+                                $new_registered->order_id = $order_id;
+                                $order = new order($person->connector_id);
+    //                            $billingstatus = expUnserialize($order->billingmethod[0]->billing_options);
+    //                            $new_registered->payment = !empty($billingstatus->payment_due) ? gt('payment due') : gt('paid');
+                                $billingstatus = $order->billingmethod[0]->transaction_state;
+                                $new_registered->payment = !empty($billingstatus) ? $billingstatus : '???';
+                            } else {
+                                $new_registered->payment = '???';
+                            }
+                            $registered[] = $new_registered;
+                        }
+                    }
+                }
+            }
+        }
+        return $registered;
+    }
+
+    /**
+     * Return count of registrants confirmed for the event
+     *   confirmation is invoice # set on order
+     *   searches form table and/or non-form table
+     */
+    public function countRegistrants() {
+        $count = 0;
+        if (!empty($this->forms_id)) {
+            $f = new forms($this->forms_id);
+            if (!empty($f->is_saved)) {
+                $count = count($this->getRegistrants());
+            } else {
+                $blind_regs = $this->getRegistrants();
+                foreach ($blind_regs as $blind_reg) {
+                    $count += $blind_reg->qty;
+                }
+            }
+        }
+        return $count;
     }
 
 }

@@ -155,6 +155,13 @@ class shippingController extends expController {
         if ($db->selectValue('shippingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('shippingcalculator', 'enabled', 'id='.$this->params['id'])) {
             $db->toggle('shippingcalculator', 'is_default', 'id='.$this->params['id']);
         }
+
+        $calc = new shippingcalculator($this->params['id']);
+        $calc_obj = new $calc->calculator_name();
+        if ($calc_obj->hasConfig() && empty($calc->config)) {
+            flash('message', $calc_obj->name().' '.gt('requires configuration. Please do so now.'));
+            redirect_to(array('controller'=>'shipping', 'action'=>'configure', 'id'=>$calc->id));
+        }
 	    expHistory::back();
 	}
 

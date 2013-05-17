@@ -13,10 +13,6 @@
  *
  *}
 
-{css unique="newpage" corecss="forms"}
-
-{/css}
-
 <div class="module navigation edit_contentpage">
     <div class="info-header">
         <div class="related-actions">
@@ -24,7 +20,7 @@
         </div>
 		<h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext} {if $section->parent == -1}{'Standalone'|gettext}{elseif $section->parent == 0}{'Top Level'|gettext}{/if} {'Content Page'|gettext}{/if}</h1>
 	</div>
-    <p>{if $section->id}{'Use the form below to change the details of this content page.'|gettext}{else}{'Use the form below to enter the information about your new content page.'|gettext}{/if}</p>
+    <blockquote>{if $section->id}{'Use the form below to change the details of this content page.'|gettext}{else}{'Use the form below to enter the information about your new content page.'|gettext}{/if}</blockquote>
     {form action=update}
         {control type=hidden name=id value=$section->id}
         {control type=hidden name=rank value=$section->rank}
@@ -38,7 +34,6 @@
             <div class="yui-content">
                 <div id="tab1">
                     {control type=text name=name label="Name"|gettext value=$section->name}
-                    {control type=text name=sef_name label="SEF Name"|gettext value=$section->sef_name description='If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.'|gettext}
                     {if $section->id == 0 || $section->parent == -1}
                         {control type=hidden name=parent value=$section->parent}
                     {else}
@@ -56,6 +51,8 @@
                 </div>
                 <div id="tab2">
                     <h2>{'SEO Information'|gettext}</h2>
+                    {control type=text name=sef_name label="SEF URL"|gettext value=$section->sef_name description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes,  and underscores.'|gettext}
+                    {control type=text name=canonical label="Canonical URL"|gettext value=$section->canonical|default description='Helps get rid of dupes'|gettext}
                     {control type=text name=page_title label="Page Title"|gettext value=$section->page_title}
                     {control type=textarea name=keywords label="Keywords"|gettext value=$section->keywords}
                     {control type=textarea name=description label="Page Description"|gettext value=$section->description}

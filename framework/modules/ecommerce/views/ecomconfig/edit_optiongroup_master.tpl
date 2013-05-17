@@ -18,9 +18,9 @@
     <div class="module storeadmin edit_optiongroup_master">
         <h1>{$moduletitle|default:"Edit Product Option Group"|gettext}</h1>
         {if $record->timesImplemented > 0}
-            <p>
+            <blockquote>
                 {'This option group is being used by'|gettext} {$record->timesImplemented} {'products on your site.  Changing the name will change it for all the products currently using it.'|gettext}
-            </p>
+            </blockquote>
         {/if}
 
         {form action=update_optiongroup_master}

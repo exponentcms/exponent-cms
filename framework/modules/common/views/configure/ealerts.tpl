@@ -22,7 +22,7 @@
 	</div>
 </div>
 <blockquote>
-    <p>{'E-Alerts allow users to sign up to receive email notification of new or updated content.'|gettext}</p>
+    {'E-Alerts allow users to sign up to receive email notification of new or updated content.'|gettext}
 </blockquote>
 {control type="checkbox" name="enable_ealerts" label="Enable E-Alerts"|gettext value=1 checked=$config.enable_ealerts}
 {control type="checkbox" name="autosend_ealerts" label="Automatically Send E-Alerts"|gettext value=1 checked=$config.autosend_ealerts}

@@ -13,11 +13,10 @@
  *
  *}
 
-<h2>{"filedownload Videos"|gettext}</h2>
+<h2>{"Filedownload Videos"|gettext}</h2>
 
-{control type="files" name="filedownload_image" subtype="filedownload_image" label="filedownload Banner Image"|gettext value=$config['expFile'] limit='1'}
-
-{control type="editor" name="filedownload_body" label="filedownload HTML" value=$config.filedownload_body}
+{control type="files" name="filedownload_image" subtype="filedownload_image" label="Filedownload Banner Image"|gettext value=$config['expFile'] limit='1'}
+{control type="editor" name="filedownload_body" label="Filedownload HTML"|gettext value=$config.filedownload_body}
 
 <table class="exp-skin-table">
     <thead>
@@ -50,7 +49,6 @@
 {/foreach}
     </tbody>
 </table>
-
 
 {script unique="aggregation-fd"}
     function filedownloadSelectAll(val) {

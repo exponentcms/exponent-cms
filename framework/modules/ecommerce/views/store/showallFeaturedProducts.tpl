@@ -34,15 +34,17 @@
     {foreach from=$page->records item=listing name=listings}
         {if $listing->is_featured}
             <div class="featured-product">
-                {if $listing->expFile.featured_image[0]->id != ""}
-                    {img file_id=$listing->expFile.featured_image[0]->id constraint=1 w=165 alt=$listing->title}
-                {elseif $listing->expFile.images[0]->id != ""}
-                    {img file_id=$listing->expFile.images[0]->id constraint=1 w=165 alt=$listing->title}
-                {else}
-                    {'No Image'|gettext}
-                {/if}
                 <div class="bodycopy">
-                    <a href="{link controller=store action=show title=$listing->title}">{$listing->title}</a>
+                    <a href="{link controller=store action=show title=$listing->title}">
+                        {if $listing->expFile.featured_image[0]->id != ""}
+                            {img file_id=$listing->expFile.featured_image[0]->id constraint=1 w=165 alt=$listing->title}
+                        {elseif $listing->expFile.images[0]->id != ""}
+                            {img file_id=$listing->expFile.images[0]->id constraint=1 w=165 alt=$listing->title}
+                        {else}
+                            {img src="`$asset_path`images/no-image.jpg" constraint=1 w=165 alt=$listing->title}
+                        {/if}
+                        {br}{$listing->title}
+                    </a>
                 </div>
             </div>
         {/if}

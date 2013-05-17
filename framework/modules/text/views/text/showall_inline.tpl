@@ -65,15 +65,16 @@
                     </div>
                 {/permissions}
                 <div class="bodycopy">
-                    {if $config.filedisplay != "Downloadable Files"}
+                    {if $config.ffloat != "Below"}
                         {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
                     {/if}
                     <div id="body-{$text->id}"{$make_edit}>
                         {$text->body}
                     </div>
-                    {if $config.filedisplay == "Downloadable Files"}
+                    {if $config.ffloat == "Below"}
                         {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
                     {/if}
+                    {clear}
                 </div>
             </div>
         {/foreach}
@@ -165,7 +166,7 @@
             filebrowserLinkWindowWidth : 320,
             filebrowserLinkWindowHeight : 600,
             filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'external/editors/connector/ckeditor_link.php',
-            extraPlugins : 'stylesheetparser,tableresize',
+            extraPlugins : 'stylesheetparser,tableresize,htmlsource',
             height : 200,
             autoGrow_minHeight : 200,
             autoGrow_maxHeight : 400,

@@ -46,21 +46,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {foreach from=$page->records item=user key=ukey name=user}
+                    {foreach from=$page->records item=fields key=ukey name=fields}
                         <tr class="{cycle values="even,odd"}">
                             {foreach from=$page->columns item=column name=column}
                                 <td>
-                                    {$user->$column}
+                                    {if $smarty.foreach.column.iteration == 1}
+                                        <a href={link action=show forms_id=$f->id id=$fields.id}>{$fields.$column}</a>
+                                    {else}
+                                        {$fields.$column}
+                                    {/if}
                                 </td>
                             {/foreach}
                             <div class="item-actions">
                                 <td>
-                                    {icon img="view.png" action=show forms_id=$f->id id=$user->id title='View all data fields for this record'|gettext}
+                                    {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
                                     {if $permissions.edit == 1}
-                                        {icon img="edit.png" action=enterdata forms_id=$f->id id=$user->id title='Edit this record'|gettext}
+                                        {icon img="edit.png" action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
                                     {/if}
                                     {if $permissions.delete == 1}
-                                        {icon img="delete.png" action=delete forms_id=$f->id id=$user->id title='Delete this record'|gettext}
+                                        {icon img="delete.png" action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
                                     {/if}
                                 </td>
                             </div>

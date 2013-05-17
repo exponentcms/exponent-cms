@@ -26,10 +26,10 @@
 
 <div id="invoice">
     <div id="store-header">
-        <h1>{$storeConfig.storename}</h1>
-        {$storeConfig.ecomheader}
+        <h1>{ecomconfig var=storename} {'Invoice'|gettext}</h1>
+        {ecomconfig var=ecomheader}
     </div>
-    {if $pf && $storeConfig.enable_barcode}
+    {if $pf && ecomconfig::getConfig('enable_barcode')}
     <div id="barcode">
         <img style="margin:10px" src="{$smarty.const.PATH_RELATIVE}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="">
     </div>
@@ -58,15 +58,14 @@
             <tbody>
                 <tr>
                     <td>
-                        {$storeConfig.storename}
+                        {ecomconfig var=storename}
                     </td>
                     <td>
                         {$order->invoice_id}
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_invoice_id == 1 && !$pf}
-                                    {br}
-                                    <a class="edit" href="{link action=edit_invoice_id id=$order->id}" title="{'Edit Invoice Number'|gettext}">{'Edit'|gettext}</a>
+                                    {icon class="edit" action=edit_invoice_id id=$order->id title='Edit Invoice Number'|gettext}
                                 {/if}
                             </div>
                          {/permissions}
@@ -79,7 +78,11 @@
                     </td>
                     <td>
                         {if $order->shipped}
-                            {$order->shipped|date_format:"%A, %B %e, %Y":"Not Shipped Yet"}
+                            {if $order->shipped == -1}
+                                {'No Shipping Required'|gettext}
+                            {else}
+                                {$order->shipped|date_format:"%A, %B %e, %Y":"Not Shipped Yet"}
+                            {/if}
                         {else}
                             {"Not Shipped Yet"|gettext}
                         {/if}
@@ -95,7 +98,9 @@
                         {"Billing Address"|gettext}
                     </th>
                     <th class="shipping-header" style="width:27%;">
+                        {if $order->shipping_required}
                         {"Shipping Address"|gettext}
+                        {/if}
                     </th>
                     <th class="payment-info-header" style="width:46%;">
                         {"Payment Info"|gettext}
@@ -109,20 +114,18 @@
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}
-                                {br}
-                                <a class="edit" href="{link action=edit_address id=$order->id type='b'}" title="{'Edit Billing Address'|gettext}">{'Edit'|gettext}</a>
+                                    {icon class="edit" action=edit_address id=$order->id type='b' title='Edit Billing Address'|gettext}
                                 {/if}
                             </div>
                         {/permissions}
                     </td>
                     <td style="width:27%;">
+                        {if $order->shipping_required}
                         {$shipping->shippingmethod->addresses_id|address}
                         {permissions}
                             <div class="item-permissions">
                                 {if $permissions.edit_address == 1 && !$pf}                                                                                        
-                                    {br}    
-                                    <a class="edit" href="{link action=edit_address id=$order->id type='s'}" title="{'Edit Shipping Address'|gettext}">{'Edit'|gettext}</a>
-                                    {br} 
+                                    {icon class="edit" action=edit_address id=$order->id type='s' title='Edit Shipping Address'|gettext}
                                 {/if}
                             </div>
                         {/permissions}   
@@ -135,8 +138,7 @@
                                     {permissions}
                                         <div class="item-permissions">
                                             {if $permissions.edit_shipping_method == 1 && !$pf}
-                                                {br}
-                                                <a class="edit" href="{link action=edit_shipping_method id=$order->id}" title="{'Edit Shipping Method'|gettext}">{'Edit'|gettext}</a>
+                                                {icon class="edit" action=edit_shipping_method id=$order->id title='Edit Shipping Method'|gettext}
                                             {/if}
                                         </div>
                                     {/permissions}
@@ -148,7 +150,9 @@
                                     {/if}
                                 </td>
                             </tr>
-                        </table>                     
+                        </table>
+                        {else}
+                        {/if}
                     </td>
                     <td class="div-rows" style="width:46%;">
                         <div class="odd">
@@ -156,7 +160,11 @@
                                 {"Payment Method"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getPaymentMethod($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getPaymentMethod($billing->billingmethod)}
+                                {else}
+                                    {'No Cost'|gettext}
+                                {/if}
                             </span>
                         </div>
                         <div class="even">
@@ -164,7 +172,11 @@
                                 {"Payment Status"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getPaymentStatus($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getPaymentStatus($billing->billingmethod)}
+                                {else}
+                                    {'complete'|gettext}
+                                {/if}
                             </span>
                         </div>
                         <div class="odd">
@@ -172,7 +184,9 @@
                                 {"Payment Authorization #"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}
+                                {/if}
                             </span>
                         </div>
                         <div class="even">
@@ -180,7 +194,9 @@
                                 {"Payment Reference #"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                {/if}
                             </span>
                         </div>
                         <div class="odd">
@@ -188,7 +204,9 @@
                                 {"AVS Address Verified"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getAVSAddressVerified($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getAVSAddressVerified($billing->billingmethod)}
+                                {/if}
                             </span>
                         </div>
                         <div class="even">
@@ -196,7 +214,9 @@
                                 {"AVS ZIP Verified"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getAVSZipVerified($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getAVSZipVerified($billing->billingmethod)}
+                                {/if}
                             </span>
                         </div>
                         <div class="odd">
@@ -204,14 +224,15 @@
                                 {"CVV # Matched"|gettext}
                             </span>
                             <span class="pmt-value">
-                                {$billing->calculator->getCVVMatched($billing->billingmethod)}
+                                {if $billing->calculator != null}
+                                    {$billing->calculator->getCVVMatched($billing->billingmethod)}
+                                {/if}
                             </span>
                         </div>
                          {permissions}
-                            {if $permissions.edit_shipping_method == 1 && !$pf}{br}
+                            {if $permissions.edit_shipping_method == 1 && !$pf}
                                 <div class="item-permissions">
-                                    <a class="edit" href="{link action=edit_payment_info id=$order->id}" title="{'Edit Payment Method'|gettext}">{'Edit'|gettext}</a>
-                                    {br}{br}
+                                    {icon class="edit" action=edit_payment_info id=$order->id title='Edit Payment Method'|gettext}
                                 </div>
                             {/if}
                         {/permissions}                                  
@@ -309,12 +330,15 @@
                         {$oi->products_price|number_format:2}
                     </td>
                     <td style="text-align:right;">
-                        {$oi->getLineItemTotal()|number_format:2}
+                        {$oi->getTotal()|number_format:2}
                     </td>
                     {permissions}
                         <div class="item-permissions">
                             {if $permissions.edit_order_item == 1 && !$pf}                                                                                                             
-                                <td style="text-align:right;"><a class="edit" href="{link action=edit_order_item id=$oi->id orderid=$order->id}" title="{'Edit Invoice Item'|gettext}">{'Edit'|gettext}</a>&#160;<a class="delete" href="{link action=delete_order_item id=$oi->id orderid=$order->id}" onclick="return confirm('Are you sure you want to delete this item from this order?')" title="{'Delete Invoice Item'|gettext}">{'Delete'|gettext}</a></td>
+                                <td style="text-align:right;">
+                                    {icon class="edit" action=edit_order_item id=$oi->id orderid=$order->id title='Edit Invoice Item'|gettext}&#160;
+                                    {icon class="delete" action=delete_order_item id=$oi->id orderid=$order->id onclick="return confirm('Are you sure you want to delete this item from this order?')" title='Delete Invoice Item'|gettext}
+                                </td>
                             {/if}
                         </div>
                     {/permissions}
@@ -324,7 +348,6 @@
                 <div class="item-permissions">
                 {if $permissions.add_order_item == 1 && !$pf} 
                     <tr>
-                        {*<td colspan="8" style='text-align: right;'><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->*}
                         <td colspan="8"><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->
                         {capture assign="callbacks"}
                         {literal}                       
@@ -340,7 +363,7 @@
 
 
                         var onRequestData = function( oSelf , sQuery , oRequest) {
-                            tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/subsystems/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
+                            tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
                         }
                         
                         var onRGetDataBack = function( oSelf , sQuery , oRequest) {
@@ -363,7 +386,7 @@
                                 f += '<input type=hidden name=module id=module value=order>';
                                 f += '<input type=hidden name=action id=action value=add_order_item>';
                                 f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';
-                                f += '<input type=submit name=submit value="Add This Item">';
+                                f += '<input type=submit class="add" name=submit value="Add This Item">';
                                 f += '</form>';
                             var newLI = Y.Node.create(f);
                             return newLI;   
@@ -514,7 +537,8 @@
                     <div class="item-permissions">
                         {if $permissions.edit_totals == 1 && !$pf}                                                                                                             
                             <tr class="even">                   
-                                <td style="text-align:right; border-left:0px;" colspan='3'><a class="edit" href="{link action=edit_totals orderid=$order->id}" title="{'Edit Totals'|gettext}">{'Edit'|gettext}</a>
+                                <td style="text-align:right; border-left:0px;" colspan='3'>
+                                    {icon class="edit" action=edit_totals orderid=$order->id title='Edit Totals'|gettext}
                                 </td>
                             </tr>
                         {/if}
@@ -524,6 +548,6 @@
         </table>
     </div>
     <div id="store-footer">
-        {$storeConfig.ecomfooter}
-    </div>    
+        {ecomconfig var=ecomfooter}
+    </div>
 </div>

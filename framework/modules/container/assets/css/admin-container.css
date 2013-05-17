@@ -1,218 +1,221 @@
 .container-chrome {
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -300px;
-    border:1px solid #0064A7;
-    border-top-color:#4396cd;
-    border-left-color:#4396cd;
-    -moz-border-radius: 3px; /* FF1+ */
-    -webkit-border-radius: 3px; /* Saf3+, Chrome */
-    border-radius: 3px; /* Opera 10.5, IE 9 */
-    position:relative;
-    height:16px;
-    z-index:5;
-    zoom:1;
-    font-size:12px;
-    line-height:13px!important;
+	background            : url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -300px;
+	border                : 1px solid #0064A7;
+	border-top-color      : #4396cd;
+	border-left-color     : #4396cd;
+	-moz-border-radius    : 3px; /* FF1+ */
+	-webkit-border-radius : 3px; /* Saf3+, Chrome */
+	border-radius         : 3px; /* Opera 10.5, IE 9 */
+	position              : relative;
+	height                : 16px;
+	z-index               : 5;
+	zoom                  : 1;
+	font-size             : 12px;
+	line-height           : 13px !important;
 }
 
 .container-chrome.module-chrome {
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -330px;
-    border:1px solid #296604;
-    border-top-color:#83b466;
-    border-left-color:#83b466;
-    z-index:1;
+	background        : url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -330px;
+	border            : 1px solid #296604;
+	border-top-color  : #83b466;
+	border-left-color : #83b466;
+	z-index           : 1;
 }
 
 .container-chrome.module-chrome.hardcoded-chrome {
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -360px;
-    border:1px solid #74151e;
-    border-top-color:#e27c86;
-    border-left-color:#e27c86;
-    z-index:1;
+	background        : url(../../../../core/assets/images/exp-admin-sprite.png) repeat-x 0 -360px;
+	border            : 1px solid #74151e;
+	border-top-color  : #e27c86;
+	border-left-color : #e27c86;
+	z-index           : 1;
 }
-
 
 .container-chrome ul,
 .container-chrome ul li {
-    padding:0;
-    margin:0;
-    list-style:none;
+	padding    : 0;
+	margin     : 0;
+	list-style : none;
 }
 
 /****************  pop-down menu  ***********************/
 
 .container-chrome ul {
-    display:none;
-    background:#abd1e3;
-    position:absolute;
-    top:16px;
-    border:2px solid #054b70;
-    -moz-box-shadow: 0px 2px 2px #555; /* FF3.5+ */
-    -webkit-box-shadow: 0px 2px 2px #555; /* Saf3.0+, Chrome */
-    box-shadow: 0px 0px 2px #555; /* Opera 10.5, IE 9.0 */
-    -moz-border-radius: 5px; /* FF1+ */
-    -webkit-border-radius: 5px; /* Saf3+, Chrome */
-    border-radius: 5px; /* Opera 10.5, IE 9 */
-    padding:6px 0;
-    z-index:26;
+	display               : none;
+	background            : #abd1e3;
+	position              : absolute;
+	top                   : 16px;
+	border                : 2px solid #054b70;
+	-moz-box-shadow       : 0px 2px 2px #555; /* FF3.5+ */
+	-webkit-box-shadow    : 0px 2px 2px #555; /* Saf3.0+, Chrome */
+	box-shadow            : 0px 0px 2px #555; /* Opera 10.5, IE 9.0 */
+	-moz-border-radius    : 5px; /* FF1+ */
+	-webkit-border-radius : 5px; /* Saf3+, Chrome */
+	border-radius         : 5px; /* Opera 10.5, IE 9 */
+	padding               : 6px 0;
+	z-index               : 26;
 }
 
 /* module chrome */
 .container-chrome.module-chrome.hardcoded-chrome ul {
-    border:2px solid #73292e;
-    background:#d5afb2;
+	border     : 2px solid #73292e;
+	background : #d5afb2;
 }
 
 /* hard-coded module chrome */
 .container-chrome.module-chrome ul {
-    border:2px solid #057005;
-    background:#b5e3ab;
+	border     : 2px solid #057005;
+	background : #b5e3ab;
 }
 
 .container-chrome.module-chrome ul li.container-info {
-    border-bottom:1px dotted #007800;
-    margin-top:-3px;
-    padding:2px 6px 6px 26px !important;
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 0 -116px;
-    color:#004277;
-    font-weight:bold;
+	border-bottom : 1px dotted #007800;
+	margin-top    : -3px;
+	padding       : 2px 6px 6px 26px !important;
+	background    : url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 0 -116px;
+	color         : #004277;
+	font-weight   : bold;
 }
 
 /* menu link colors*/
 .container-chrome ul li a {
-    display:block;
-    padding:4px 20px 4px 26px;
-    color:#054b70;
-    text-decoration:none;
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat; 
-    white-space:nowrap ;
+	display         : block;
+	padding         : 4px 20px 4px 26px;
+	color           : #054b70;
+	text-decoration : none;
+	background      : url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat;
+	white-space     : nowrap;
 }
 
 .container-chrome.module-chrome ul li a {
-    color:#057005;
+	color : #057005;
 }
 
 .container-chrome.module-chrome.hardcoded-chrome ul li a {
-    color:#73292e;
+	color : #73292e;
 }
 
 .container-chrome ul li a:hover {
-    background-color:#004773;
-    color:#fff;
+	background-color : #004773;
+	color            : #fff;
 }
 
 .container-chrome.module-chrome ul li a:hover {
-    background-color:#007800;
-    color:#fff;
+	background-color : #007800;
+	color            : #fff;
 }
 
 .container-chrome.module-chrome.hardcoded-chrome ul li a:hover {
-    background-color:#73292e;
-    color:#fff;
+	background-color : #73292e;
+	color            : #fff;
 }
 
 /* icon styles */
 .container-chrome ul li a.user {
-    background-position:0 -26px;  
+	background-position : 0 -26px;
 }
 
 .container-chrome ul li a.group {
-    background-position:0 -56px;  
+	background-position : 0 -56px;
 }
 
 .container-chrome ul li a.helplink {
-    background-position:0 -85px;  
+	background-position : 0 -85px;
 }
 
 .container-chrome ul li a.delete {
-    background-position:0 -145px;  
+	background-position : 0 -145px;
 }
 
 .container-chrome ul li a.config-view {
-    background-position:0 -175px;  
+	background-position : 0 -175px;
 }
 
 .container-chrome ul li a.config-mod {
-    background-position:0 -205px;  
+	background-position : 0 -205px;
 }
 
 .container-chrome ul li a.mod-up {
-    background-position:0 -237px;  
+	background-position : 0 -237px;
 }
 
 .container-chrome ul li a.mod-down {
-    background-position:0 -267px;  
+	background-position : 0 -267px;
 }
 
 /****************  What triggers the menu  ***********************/
 
 .container-chrome .trigger {
-    color:#fff;
-    text-decoration:none;
-    font-weight:bold;
-    text-transform:uppercase;
-    font-size:11px;
-    text-shadow: 0px -1px 0px #374683;
-    display:block;
-    padding:1px 15px 0 5px;
-    position:absolute;
-    top:0px;
-    left:5px;
-    line-height:15px;
-    background:url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 100% 0; 
+	color           : #fff;
+	text-decoration : none;
+	font-weight     : bold;
+	text-transform  : uppercase;
+	font-size       : 11px;
+	text-shadow     : 0px -1px 0px #374683;
+	display         : block;
+	padding         : 1px 15px 0 5px;
+	position        : absolute;
+	top             : 0px;
+	left            : 5px;
+	line-height     : 15px;
+	background      : url(../../../../core/assets/images/exp-admin-sprite.png) no-repeat 100% 0;
 }
 
 .container-chrome.module-chrome .trigger {
-    line-height:15px;
-    padding:2px 15px 0 5px;
+	line-height : 15px;
+	padding     : 2px 15px 0 5px;
 }
 
 .container-chrome .trigger.current-trigger {
-    line-height:15px;
-    background-color:#49A4DE;
-    outline:0;
-    border-left:1px solid #777;
+	line-height      : 15px;
+	background-color : #49A4DE;
+	outline          : 0;
+	border-left      : 1px solid #777;
 }
 
 .container-chrome.module-chrome .trigger.current-trigger {
-    background-color:#71B253;
+	background-color : #71B253;
 }
 
 .container-chrome.module-chrome.hardcoded-chrome .trigger.current-trigger {
-    background-color:#b73240;
+	background-color : #b73240;
 }
 
 /****************    ***********************/
 
-a.addmodule span.addtext{
-    padding:3px 0 3px 20px!important;
-    background-color:transparent;
-    background-image:url(../../../../core/assets/images/exp-admin-sprite.png);  
-    background-repeat:no-repeat;  
-    background-position: 8px -591px; 
-    font-size:10px;
-    text-transform:uppercase;
-    display:inline-block;
-    *display:inline;
-    zoom:1;
+a.addmodule span.addtext {
+	padding             : 3px 0 3px 20px !important;
+	background-color    : transparent;
+	background-image    : url(../../../../core/assets/images/exp-admin-sprite.png);
+	background-repeat   : no-repeat;
+	background-position : 8px -591px;
+	font-size           : 10px;
+	text-transform      : uppercase;
+	display             : inline-block;
+	*display            : inline;
+	zoom                : 1;
+	line-height:1em;
 }
-a.addmodule{
-    display:block!important;
-    background:#c1d9bf;
-    padding:0;
-    text-align:center;
-    text-decoration:none;
-    border:1px solid #64855f;
-    color:#3d5c39!important;
-    font-size:12px;
-    text-transform:capitalize;
-    font-weight:bold;
-    margin:2px 0px;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    text-decoration:none;
+
+a.addmodule {
+	display               : block !important;
+	background            : #c1d9bf;
+	padding               : 0;
+	text-align            : center;
+	text-decoration       : none;
+	border                : 1px solid #64855f;
+	color                 : #3d5c39 !important;
+	font-size             : 12px;
+	text-transform        : capitalize;
+	font-weight           : bold;
+	margin                : 2px 0px;
+	-moz-border-radius    : 3px;
+	-webkit-border-radius : 3px;
+	border-radius         : 3px; /* Opera 10.5, IE 9 */
+	text-decoration       : none;
 }
-a.addmodule:hover{
-    color:#64855f!important;
-    background:#d9f2d9;
-    text-decoration:none;
+
+a.addmodule:hover {
+	color           : #64855f !important;
+	background      : #d9f2d9;
+	text-decoration : none;
 }

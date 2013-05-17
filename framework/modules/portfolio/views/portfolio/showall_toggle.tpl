@@ -12,7 +12,9 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{uniqueid prepend="portfolio" assign="name"}
+
 {css unique="portfolio" link="`$asset_path`css/portfolio.css"}
 
 {/css}
@@ -47,65 +49,66 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {$myloc=serialize($__loc)}
-    {pagelinks paginate=$page top=1}
-    {$cat="bad"}
-    {foreach from=$page->records item=record}
-        {if $cat !== $record->expCat[0]->id && $config.usecategories}
-            <h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
-        {/if}
-        <div class="item">
-            {permissions}
-                <div class="item-actions">
-                    {if $permissions.edit == 1}
-                        {if $myloc != $record->location_data}
-                            {if $permissions.manage == 1}
-                                {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
-                            {else}
-                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
-                            {/if}
-                        {/if}
-                        {icon action=edit record=$record title="Edit `$record->title`"}
-                    {/if}
-                    {if $permissions.delete == 1}
-                        {icon action=delete record=$record title="Delete `$record->title`"}
-                    {/if}
-                </div>
-            {/permissions}
-            {tags_assigned record=$record}
-            {if $config.show_summary}
-                {$summary = $record->body|summarize:"html":"parahtml"}
-            {else}
-                {$summary = ''}
-            {/if}
-            {toggle unique="portfolio`$record->id`" title=$record->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height summary=$summary}
-                {*<h3{if $config.usecategories} class="{$cat->color}"{/if}><a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a></h3>*}
-                <div class="bodycopy">
-                    {if $config.filedisplay != "Downloadable Files"}
-                        {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}
-                    {/if}
-                    {if $config.usebody==1}
-                        <p>{$record->body|summarize:"html":"paralinks"}</p>
-                    {elseif $config.usebody==2}
-                    {else}
-                        {$record->body}
-                    {/if}
-                    {if $config.filedisplay == "Downloadable Files"}
-                        {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record is_listing=1}
-                    {/if}
-                </div>
-                {clear}
-            {/toggle}
-            {permissions}
-                {if $permissions.create == 1}
-                    <div class="module-actions">
-                        {icon class="add" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
-                    </div>
-                {/if}
-            {/permissions}
-        </div>
-        {$cat=$record->expCat[0]->id}
-    {/foreach}
-    {clear}
-    {pagelinks paginate=$page bottom=1}
+    <div id="{$name}list">
+        {include 'portfoliolist_toggle.tpl'}
+    </div>
 </div>
+
+{if $config.ajax_paging}
+{script unique="`$name`listajax" yui3mods="1"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+    var portfoliolist = Y.one('#{/literal}{$name}{literal}list');
+    var cfg = {
+    			method: "POST",
+    			headers: { 'X-Transaction': 'Load Portfolioitems'},
+    			arguments : { 'X-Transaction': 'Load Portfolioitems'}
+    		};
+
+    src = '{/literal}{$__loc->src}{literal}';
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=portfolio&action=showall&view=portfoliolist_toggle&ajax_action=1&src="+src;
+
+	var handleSuccess = function(ioId, o){
+//		Y.log(o.responseText);
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "portfolioitems nav");
+
+        if(o.responseText){
+                portfoliolist.setContent(o.responseText);
+                portfoliolist.all('script').each(function(n){
+                if(!n.get('src')){
+                    eval(n.get('innerHTML'));
+                } else {
+                    var url = n.get('src');
+                    if (url.indexOf("ckeditor")) {
+                        Y.Get.script(url);
+                    };
+                };
+            });
+            portfoliolist.all('link').each(function(n){
+                var url = n.get('href');
+                Y.Get.css(url);
+            });
+        } else {
+            portfoliolist.one('.loadingdiv').remove();
+        }
+	};
+
+	//A function handler to use for failed requests:
+	var handleFailure = function(ioId, o){
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "portfolioitems nav");
+	};
+
+	//Subscribe our handlers to IO's global custom events:
+	Y.on('io:success', handleSuccess);
+	Y.on('io:failure', handleFailure);
+
+    portfoliolist.delegate('click', function(e){
+        e.halt();
+        cfg.data = "page="+e.currentTarget.get('rel');
+        var request = Y.io(sUrl, cfg);
+        portfoliolist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Portfolios"|gettext}{literal}</div>'));
+    }, 'a.pager');
+});
+{/literal}
+{/script}
+{/if}

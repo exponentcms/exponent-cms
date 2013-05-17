@@ -25,23 +25,39 @@
         {/css}
     {/if}
     <div class="module forms show">
-        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
-            <thead>
-                <tr>
-                    <th colspan="2">
-                        <h2>{$title}</h2>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {foreach from=$fields key=fieldname item=value}
-                    <tr class="{cycle values="even,odd"}">
-                        <td>{$captions[$fieldname]}</td>
-                        <td>{$value}</td>
+        {permissions}
+            <div class="item-actions">
+                {if $permissions.edit == 1}
+                    {icon class=edit action=enterdata forms_id=$f->id id=$record_id title='Edit this record'|gettext}
+                {/if}
+                {if $permissions.delete == 1}
+                    {icon class=delete action=delete forms_id=$f->id id=$record_id title='Delete this record'|gettext}
+                {/if}
+            </div>
+        {/permissions}
+        {if empty($config.report_def)}
+            <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <h2>{$title}</h2>
+                        </th>
                     </tr>
-                {/foreach}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {foreach from=$fields key=fieldname item=value}
+                        <tr class="{cycle values="even,odd"}">
+                            <td>{$captions[$fieldname]}</td>
+                            <td>{$value}</td>
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+        {else}
+            <h2>{$title}</h2>
+            {eval var=$config.report_def}
+            {clear}{br}
+        {/if}
         {if !empty($referrer)}
             <p>{'Referrer'|gettext}: {$referrer}</p>
         {/if}

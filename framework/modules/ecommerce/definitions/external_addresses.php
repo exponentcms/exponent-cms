@@ -18,62 +18,62 @@
 
 /**
  * @subpackage Definitions
- * @package Core
+ * @package    Core
  */
 return array(
-	'id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
-     'source'=>array(
-        DB_FIELD_TYPE=>DB_DEF_ID),
-     'user_id'=>array(
-        DB_FIELD_TYPE=>DB_DEF_ID),
-	'is_default'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-    'is_shipping'=>array(
-        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-    'is_billing'=>array(
-        DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-	'firstname'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'middlename'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'lastname'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'organization'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'address1'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>150),
-	'address2'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>150),
-	'city'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'state'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>2),
-    'non_us_state'=>array(
-        DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>100),
-	'zip'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>10),
-	'country'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>50),
-	'phone'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>20),
-	'email'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>150),
+    'id'           => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_PRIMARY    => true,
+        DB_INCREMENT  => true),
+    'source'       => array(
+        DB_FIELD_TYPE => DB_DEF_ID),
+    'user_id'      => array(
+        DB_FIELD_TYPE => DB_DEF_ID),
+    'is_default'   => array(
+        DB_FIELD_TYPE => DB_DEF_BOOLEAN),
+    'is_shipping'  => array(
+        DB_FIELD_TYPE => DB_DEF_BOOLEAN),
+    'is_billing'   => array(
+        DB_FIELD_TYPE => DB_DEF_BOOLEAN),
+    'firstname'    => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 100),
+    'middlename'   => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 100),
+    'lastname'     => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 100),
+    'organization' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 100),
+    'address1'     => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 150),
+    'address2'     => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 150),
+    'city'         => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 100),
+    'state'        => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 2),
+    'non_us_state' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 100),
+    'zip'          => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 10),
+    'country'      => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 50),
+    'phone'        => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 20),
+    'email'        => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN  => 150),
 );
 
 ?>

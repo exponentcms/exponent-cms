@@ -40,9 +40,9 @@
     </div>
     {if $edit_mode != 1}
     <div style="border: 2px dashed lightgrey; padding: 1em;">
-        {/if}
+    {/if}
         {$form_html}
-        {if $edit_mode != 1}
+    {if $edit_mode != 1}
     </div>
     {/if}
     {if $edit_mode != 1}

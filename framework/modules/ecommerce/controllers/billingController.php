@@ -64,13 +64,13 @@ class billingController extends expController {
                     if (empty($id)) {
 //                        $calobj = null;
                         $calcobj = new $classname();
-                        if ($calcobj->isSelectable() == true) {                            
+                        if ($calcobj->isSelectable() == true) {
                             $obj = new billingcalculator(array(
                                 'title'=>$calcobj->name(),
                                 'user_title'=>$calcobj->title,
                                 'body'=>$calcobj->description(), 
                                 'calculator_name'=>$classname,
-                                'enabled'=>false));                            
+                                'enabled'=>false));
                             $obj->save();
                         }
                     }
@@ -94,9 +94,23 @@ class billingController extends expController {
 	            redirect_to(array('controller'=>'billing', 'action'=>'configure', 'id'=>$calc->id));
 	        }
 	    }
-	    
 	    expHistory::back();
 	}
+
+    public function toggle_default() {
+  	    global $db;
+
+        $db->toggle('billingcalculator',"is_default",'is_default=1');
+  	    if (isset($this->params['id'])) {
+            $active = $db->selectObject('billingcalculator',"id=".$this->params['id']);
+            $active->is_default = 1;
+            $db->updateObject($active,'billingcalculator',null,'id');
+        }
+        if ($db->selectValue('billingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('billingcalculator', 'enabled', 'id='.$this->params['id'])) {
+            $db->toggle('billingcalculator', 'enabled', 'id='.$this->params['id']);
+        }
+  	    expHistory::back();
+  	}
 
     public function configure() {
         if (empty($this->params['id'])) return false;

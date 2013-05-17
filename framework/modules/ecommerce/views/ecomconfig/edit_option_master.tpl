@@ -18,9 +18,9 @@
     <div class="module storeadmin edit_option_master">
         <h1>{$moduletitle|default:"Edit Product Options"|gettext}</h1>
         {if $record->timesImplemented > 0}
-            <p>
+            <blockquote>
                 {'This option is being used by'|gettext} {$record->timesImplemented} {'products on your site.  Changing the name will change it for all the products currently using it.'|gettext}
-            </p>
+            </blockquote>
         {/if}
         {form action=update_option_master}
             {control type="hidden" name=id value=$record->id}

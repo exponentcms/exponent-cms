@@ -28,7 +28,7 @@
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
 	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
 	            {control type="text" name="installationid" label="Installation ID"|gettext value=$calculator->configdata.installationid}
-				{control type="dropdown" name="authCurrency" label="Choose currency"|gettext includeblank="-- Select currency --"|gettext default=$calculator->configdata.authCurrency items="GBP (Pounds Sterling),USD (US Dollar)"|gettxtlist values="GBP, USD"}
+				{*{control type="dropdown" name="authCurrency" label="Choose currency"|gettext includeblank="-- Select currency --"|gettext default=$calculator->configdata.authCurrency items="GBP (Pounds Sterling),USD (US Dollar)"|gettxtlist values="GBP, USD"}*}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
 	        <div id="tab2">
@@ -36,7 +36,7 @@
 	        </div>
 	        <div id="tab3">
 	            {control type="checkbox" name="email_admin" label="Send a notification that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
-	            {control type="text" name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
+                {control type=email name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>
         </div>
     </div>

@@ -26,10 +26,12 @@
             <div id="commentinput"></div>
     		{if $user->id == 0 || $comment->id }
     	        {control type=text name=name label="Name"|gettext required=true value=$comment->name required=1}
-    		    {control type=text name=email label="Email"|gettext required=true value=$comment->email required=1}
+    		    {*{control type=text name=email label="Email"|gettext required=true value=$comment->email required=1}*}
+                {control type=email name=email label="Email"|gettext required=true value=$comment->email required=1}
     		{else}
                 {control type=text name=name disabled=1 label="Name"|gettext value="`$user->firstname` `$user->lastname`"}
-        	    {control type=text name=email disabled=1 label="Email"|gettext value=$user->email}
+        	    {*{control type=text name=email disabled=1 label="Email"|gettext value=$user->email}*}
+                {control type=email name=email disabled=1 label="Email"|gettext value=$user->email}
     		{/if}
     		{*control type=text name=website label="Website" value=$comment->website*}
     		{*{control type=textarea name=body label="Your Comment"|gettext rows=6 cols=35 value=$comment->body}*}
@@ -48,4 +50,3 @@
 		</p> 
 	{/if}
 </div>
-

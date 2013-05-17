@@ -38,7 +38,7 @@ class fix_database extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return gt("Update cross-referenced entries in the containers and sectionref tables"); }
+	function description() { return gt("Update cross-referenced entries in the containers and sectionref tables."); }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -123,7 +123,7 @@ class fix_database extends upgradescript {
 				$newSecRef->is_original = 1;
 				if ($container->external != "N;") {
 					$eloc = expUnserialize($container->external);
-					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
+					$section = $db->selectObject('sectionref',"module='container' AND source='".$eloc->src."'");
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
 						$db->insertObject($newSecRef,"sectionref");

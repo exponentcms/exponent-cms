@@ -13,10 +13,6 @@
  *
  *}
 
-{*<script src="/exp2/external/jquery/js/jquery-1.8.3.js"></script>*}
-{*<script src="/exp2/external/mediaelement/build/mediaelement-and-player.js"></script>*}
-{*<link rel="stylesheet" href="/exp2/external/mediaelement/build/mediaelementplayer.css" />*}
-
 {uniqueid assign="id"}
 
 {if $config.usecategories}
@@ -24,6 +20,9 @@
 
 {/css}
 {/if}
+{css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
+
+{/css}
 
 <div class="module filedownload showall showall-tabbed">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
@@ -87,12 +86,21 @@
 {*{/literal}*}
 {*{/script}*}
 
-{*<script>*}
-    {*$('audio,video').mediaelementplayer();*}
-{*</script>*}
-
 {script unique="`$id`" jquery="jqueryui"}
 {literal}
     $('#{/literal}{$id}{literal}').tabs().next().remove();
 {/literal}
 {/script}
+
+{if $config.show_player}
+    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
+    {*{/script}*}
+
+    {script unique="mediaelement" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+        $('audio,video').mediaelementplayer({
+        	success: function(player, node) {
+        		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+        	}
+        });
+    {/script}
+{/if}

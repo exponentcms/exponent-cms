@@ -26,8 +26,8 @@
  */
 class upgrade_forms extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.1.2';  // formmodule (formbuilder) will be fully deprecated in v2.1.2
-    public $optional = true;
+	protected $to_version = '2.2.0';  // formmodule (formbuilder) will be fully deprecated in v2.1.2
+//    public $optional = true;
 
 	/**
 	 * name/title of upgrade script
@@ -60,17 +60,17 @@ class upgrade_forms extends upgradescript {
 		// convert each formmodule reference to an formsController reference
 	    $srs = $db->selectObjects('sectionref',"module = 'formmodule'");
 	    foreach ($srs as $sr) {
-		    $sr->module = 'formsController';
+		    $sr->module = 'forms';
 		    $db->updateObject($sr,'sectionref');
 	    }
 	    $gps = $db->selectObjects('grouppermission',"module = 'formmodule'");
         foreach ($gps as $gp) {
-	        $gp->module = 'formsController';
+	        $gp->module = 'forms';
 	        $db->updateObject($gp,'grouppermission',"module = 'formmodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
         $ups = $db->selectObjects('userpermission',"module = 'formmodule'");
         foreach ($ups as $up) {
-            $up->module = 'formsController';
+            $up->module = 'forms';
             $db->updateObject($up,'userpermission',"module = 'formmodule' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
@@ -82,7 +82,7 @@ class upgrade_forms extends upgradescript {
             $oldreport = $db->selectObject('formbuilder_report', "location_data='".$cn->internal."'");
 
             $cloc = expUnserialize($cn->internal);
-      	    $cloc->mod = 'formsController';
+      	    $cloc->mod = 'forms';
       		$cn->internal = serialize($cloc);
             $cn->action = 'enterdata';
             $cn->view = 'enterdata';
@@ -159,8 +159,9 @@ class upgrade_forms extends upgradescript {
                 // now save/attach the expConfig
                 if ($newconfig->config != null) {
                     $newmodinternal = expUnserialize($cn->internal);
-                    $newmod = explode("Controller",$newmodinternal->mod);
-                    $newmodinternal->mod = $newmod[0];
+//                    $newmod = explode("Controller",$newmodinternal->mod);
+//                    $newmodinternal->mod = $newmod[0];
+                    $newmodinternal->mod = expModules::getModuleName($newmodinternal->mod);
                     $newconfig->location_data = $newmodinternal;
                     $newconfig->save();
                 }
@@ -171,7 +172,7 @@ class upgrade_forms extends upgradescript {
         // need to activate new forms module modstate if old one was active, leave old one intact
         $ms = $db->selectObject('modstate',"module='formmodule'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='formsController'")) {
-            $ms->module = 'formsController';
+            $ms->module = 'forms';
             $db->insertObject($ms,'modstate',"module='formmodule'");
         }
 
@@ -206,6 +207,21 @@ class upgrade_forms extends upgradescript {
                 expFile::removeDirectory(BASE.$dir);
             }
         }
+
+        //FIXME ???
+        // copy custom views to new location
+//        $src = THEME_ABSOLUTE."modules/formmodule/views";
+//        $dst = THEME_ABSOLUTE."modules/forms/views/forms";
+//        if (expUtil::isReallyWritable($src)) {
+//            $dir = opendir($src);
+//            if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
+//            while(false !== ( $file = readdir($dir)) ) {
+//                if (( $file != '.' ) && ( $file != '..' )) {
+//                    if (!file_exists($dst . '/showall_' . $file)) copy($src . '/' . $file,$dst . '/showall_' . $file);
+//                }
+//            }
+//            closedir($dir);
+//        }
 
 		return ($modules_converted?$modules_converted:gt('No'))." ".gt("Form modules were upgraded.")."<br>".gt("and formmodule/formbuilder files were then deleted.");
 	}

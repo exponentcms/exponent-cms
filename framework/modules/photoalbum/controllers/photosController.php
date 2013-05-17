@@ -54,7 +54,7 @@ class photosController extends expController {
             'order'=>$order,
             'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
             'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
-            'groups'=>empty($this->params['gallery']) ? array() : array($this->params['gallery']),
+            'groups'=>!isset($this->params['gallery']) ? array() : array($this->params['gallery']),
             'grouplimit'=>!empty($this->params['view']) && $this->params['view'] == 'showall_galleries' ? 1 : null,
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
