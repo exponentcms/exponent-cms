@@ -60,7 +60,7 @@
 		</div>
 	{/permissions}
     <div id="popup">
-        <a href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
+        <a href="javascript:void(0);" class="nav module-actions" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="day-{$name}">
             {include 'day.tpl'}
         </div>

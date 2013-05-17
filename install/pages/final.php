@@ -39,8 +39,9 @@ if (isset($_REQUEST['upgrade'])) {
         echo '<p>' . gt('We weren\'t able to remove /install/not_configured. Remove this file manually to complete your upgrade.') ."</p>";
     }
 ?>
-    <p><?php echo gt('Log back in to start using the new enhancements!') ?></p>
-    <a class="awesome large green" href="<?php echo PATH_RELATIVE; ?>login.php"><?php echo gt("Log In Screen"); ?></a>
+    <p><?php echo gt('Log back in to start using the new enhancements!'); ?></p>
+<!--    <a class="awesome large green" href="--><?php //echo PATH_RELATIVE; ?><!--login.php">--><?php //echo gt("Log In Screen"); ?><!--</a>-->
+    <a class="awesome large green" href="<?php echo expCore::makeLink(array("controller"=>"login","action"=>"showlogin")); ?>"><?php echo gt("Log In Screen"); ?></a>
 <?php
 
 } else {

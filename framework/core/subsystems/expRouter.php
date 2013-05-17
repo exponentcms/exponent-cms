@@ -609,7 +609,7 @@ class expRouter {
             }
         }
         //TODO: fully sanitize all params values here for 
-        if (isset($params['src'])) $params['src'] = htmlspecialchars($params['src']);
+        if (isset($params['src'])) $params['src'] = expString::sanitize(htmlspecialchars($params['src']));
         return $params;
     }
 
@@ -617,7 +617,10 @@ class expRouter {
         global $db;
 
         $section = null;
-        if ($this->url_type == 'base') {
+        if (is_numeric($url_name)) {
+            $section = $db->selectObject('section', 'id=' . $url_name);
+            if ($section == null) $section = $db->selectObject('section', "sef_name='" . $url_name . "'");
+        } elseif ($this->url_type == 'base') {
             // if we made it in here this is a request for http://www.baseurl.com
             $section = $db->selectObject('section', 'id=' . SITE_DEFAULT_SECTION);
         } else {

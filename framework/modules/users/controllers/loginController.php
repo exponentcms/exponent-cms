@@ -113,7 +113,7 @@ class loginController extends expController {
 	 * main login method
 	 */
 	public static function login() {
-		user::login($_POST['username'],$_POST['password']);
+		user::login(expString::sanitize($_POST['username']),expString::sanitize($_POST['password']));
 		if (!isset($_SESSION[SYS_SESSION_KEY]['user'])) {
 			flash('error', gt('Invalid Username / Password'));
 			if (expSession::is_set('redirecturl_error')) {
@@ -125,7 +125,7 @@ class loginController extends expController {
 			}
 		} else {
 			global $user;
-			if (!empty($_POST['username'])) flash('message', gt('Welcome back').' '.$_POST['username']);
+			if (!empty($_POST['username'])) flash('message', gt('Welcome back').' '.expString::sanitize($_POST['username']));
             if ($user->isAdmin()) {
                 expHistory::back();
             } else {

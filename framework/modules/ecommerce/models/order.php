@@ -128,7 +128,7 @@ class order extends expRecord {
 
         $sessAr = expSession::get('verify_shopper');
         // initialize this users cart if they have ecomm installed.
-        $active = $db->selectValue('modstate', 'active', 'module="storeController"');
+        $active = $db->selectValue('modstate', 'active', 'module="storeController"' | ECOM);
         if (!expModules::controllerExists('cart') || empty($active)) {
             // if ecomm is turned off, no cart.
             return null;
@@ -253,7 +253,7 @@ class order extends expRecord {
                                         $cart = new order();
                                         $cart->update(array("sessionticket_ticket"=> $ticket, 'user_id'=> $user->id, 'orig_referrer'=> $orig_referrer));
                                         order::setCartCookie($cart);
-                                        flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('If you would like to pick up where you left off, click here to login and your previous shopping cart will be restored.'));
+                                        flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('If you would like to pick up where you left off, login and your previous shopping cart will be restored.'));
                                     }
                                 }
                             }

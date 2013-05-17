@@ -35,7 +35,7 @@
                     {$cause->body}
                 </td>
                 <td>
-                    <a href="{link controller=cart action=addItem quick=1 product_type=$cause->product_type product_id=$cause->id}">{'Donate Now'|gettext}</a>
+                    <a href="{link controller=cart action=addItem product_type=$cause->product_type product_id=$cause->id}">{'Donate Now'|gettext}</a>
                 </td>
                 <td>
                     {permissions}

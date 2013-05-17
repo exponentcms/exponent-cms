@@ -23,6 +23,5 @@
 		</div>
         <p>{'This form allows you to assign permissions to an entire group of users.'|gettext}</p>
     </div>
-	{capture assign="file"}_permissions.tpl{/capture}
-	{include file=$file}
+    {include file="_permissions.tpl"}
 </div>

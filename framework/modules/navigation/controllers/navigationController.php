@@ -1011,7 +1011,7 @@ class navigationController extends expController {
 
         // only applies to the 'manage' method
         if (empty($location->src) && empty($location->int) && !empty($router->params['action']) && $router->params['action'] == 'manage') {
-            if (!empty($exponent_permissions_r['navigation'])) foreach ($exponent_permissions_r['navigation'] as $page) {
+            if (!empty($exponent_permissions_r['navigationController'])) foreach ($exponent_permissions_r['navigationController'] as $page) {
                 foreach ($page as $pageperm) {
                     if (!empty($pageperm['manage'])) return true;
                 }

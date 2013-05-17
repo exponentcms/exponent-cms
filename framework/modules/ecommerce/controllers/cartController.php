@@ -85,7 +85,7 @@ class cartController extends expController {
             }
         }
 
-        if ($product->product_type == "product" || $product->product_type == "childProduct") {
+        if ($product->product_type == "product" || $product->product_type == "childProduct" || $product->product_type == "donation") {
 
             if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown'] != $product->id)) {
 
@@ -800,8 +800,8 @@ class cartController extends expController {
 
     public function customerSignup() {
         expSession::set('customer-signup', true);
-//        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-        $this->checkout();
+        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        $this->checkout();
     }
 
     public function saveShippingMethods() {
