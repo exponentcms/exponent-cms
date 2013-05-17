@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="exporteql" corecss="forms,tables"}
+{css unique="exporteql" corecss="tables"}
 
 {/css}
 
