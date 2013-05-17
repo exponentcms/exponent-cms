@@ -49,7 +49,10 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
-		expCSS::pushToHead(array("corecss"=>"forms"));
+		
+		if(expSession::get('framework')!='bootstrap'){
+			expCSS::pushToHead(array("corecss"=>"forms"));
+		};
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
 //            "src"=> PATH_RELATIVE . 'external/html5forms/Modernizr-2.5.3.forms.js',
