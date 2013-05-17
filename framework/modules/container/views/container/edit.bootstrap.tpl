@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="container edit {if !$error}hide{/if}">
+<div class="exp-container edit {if !$error}hide{/if}">
     <div class="info-header">
         <div class="related-actions">
             {if $user->is_admin}
@@ -408,7 +408,7 @@
         };
 
         Y.one('.loadingdiv').setStyle('display','none');
-        Y.one('.container.hide').removeClass('hide');
+        Y.one('.exp-container.hide').removeClass('hide');
 
     });
 
