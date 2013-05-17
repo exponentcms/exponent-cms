@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="module container flyout_left" style="display: none;">
+<div class="module exp-container flyout_left" style="display: none;">
     {showmodule module='container' view="Default" source="@flyoutsidebar" chrome=true}
 </div>
 <a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">{'View Panel'|gettext}</a>

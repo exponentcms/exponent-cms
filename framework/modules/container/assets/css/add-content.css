@@ -1,69 +1,69 @@
-.container.edit form {
+.exp-container.edit form {
     position:relative;
 }
 
-.container.edit #recyclebin {
+.exp-container.edit #recyclebin {
     padding:5px;
     padding:3px 0 3px 5px;
     text-align:left;
 }
 
-.container.edit #recyclebin.disabled label {
+.exp-container.edit #recyclebin.disabled label {
     color:#777777;
 }
 
-.container.edit #recyclebin.disabled a {
+.exp-container.edit #recyclebin.disabled a {
     color:#777777;
 }
 
-.container.edit #browse-bin {
+.exp-container.edit #browse-bin {
     display:block;
     margin:3px 0 3px 170px;
     padding:4px 0 4px 28px;
     background:url(../images/trashcan_full.png) no-repeat;
 }
-.container.edit #recyclebin.disabled a {
+.exp-container.edit #recyclebin.disabled a {
     text-decoration:none;
     margin:3px 0 3px 170px;
     padding:4px 0 4px 28px;
     background:url(../images/trashcan_full_grey.png) no-repeat;
 }
 
-.container.edit .control label {
+.exp-container.edit .control label {
     display:block;
     font-weight:bold;
     margin:2px 0;
 }
 
-.container.edit .using-rb {
+.exp-container.edit .using-rb {
     background:url(../../../recyclebin/assets/images/usingrb-check.png) no-repeat 70px 0;
     padding-right:25px;
 }
-.container.edit .text {
+.exp-container.edit .text {
     width:250px;
     /*height:20px;*/
 }
-.container.edit .select {
+.exp-container.edit .select {
     /*width:255px;*/
     /*height:25px;*/
 }
 
-.container.edit option {
+.exp-container.edit option {
     /*padding:3px;*/
 }
 
-.container.edit .control.buttongroup {
+.exp-container.edit .control.buttongroup {
     padding-left:175px;
 }
 
-.container.edit .control label {
+.exp-container.edit .control label {
     float:left;
     text-align:right;
     width:140px;
     padding:0 15px;
 }
 
-.container.edit .control .control-desc {
+.exp-container.edit .control .control-desc {
     margin-left: 170px;
 }
 
