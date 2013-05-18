@@ -77,6 +77,7 @@ class remove_oldfiles extends upgradescript {
             'module_preview.php',
             'orphan_content_selector.php',
             'orphan_source_selector.php',
+            'phpdoc.ini',
             'podcast.php',
             'rss.php',
             'Makefile',
