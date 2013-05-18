@@ -1,0 +1,3 @@
+version 2.2.1
+Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
+  * requires update of hard-coded modules in themes to conform to 2.0 controller calls
