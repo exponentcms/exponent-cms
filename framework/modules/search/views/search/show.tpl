@@ -28,7 +28,7 @@
         {*{control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}*}
         {*{control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}*}
     {*</form>*}
-    {form action=search}>
+    {form action=search}
         {control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}
         {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}
     {/form}
