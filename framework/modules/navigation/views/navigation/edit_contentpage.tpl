@@ -13,10 +13,6 @@
  *
  *}
 
-{css unique="newpage" corecss="forms"}
-
-{/css}
-
 <div class="module navigation edit_contentpage">
     <div class="info-header">
         <div class="related-actions">

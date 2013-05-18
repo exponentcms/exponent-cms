@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="exportfiles" corecss="forms,tables"}
+{css unique="exportfiles" corecss="tables"}
 
 {/css}
 
@@ -22,9 +22,7 @@
 		<h2>{'Export All Uploaded Files'|gettext}</h2>
         <blockquote>{'This will save all files listed within the File Manager.'|gettext}</blockquote>
 	</div>
-	<form method="post" action="">
-		<input type="hidden" name="controller" value="file" />
-		<input type="hidden" name="action" value="export_files_process" />
+	{form action=export_files_process}
 		<table cellspacing="0" cellpadding="2" border="0">
 			{if $user->isAdmin()}
 			<tr>
@@ -50,5 +48,5 @@
 				</td>
 			</tr>
 		</table>
-	</form>
+	{/form}
 </div>

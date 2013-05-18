@@ -193,6 +193,7 @@ a.addmodule span.addtext {
 	display             : inline-block;
 	*display            : inline;
 	zoom                : 1;
+	line-height:1em;
 }
 
 a.addmodule {

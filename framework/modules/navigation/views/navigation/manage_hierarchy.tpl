@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="nav-manager" link="`$asset_path`css/nav-manager.css" corecss="forms,panels,tree"}
+{css unique="nav-manager" link="`$asset_path`css/nav-manager.css" corecss="panels,tree"}
 
 {/css}
 

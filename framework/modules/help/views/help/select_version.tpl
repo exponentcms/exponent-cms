@@ -19,6 +19,7 @@
         display: inline;
         font-size: 100%;
         font-weight: bold;
+        margin-right: 0;
     }
     .help.select-version select {
         width: auto;

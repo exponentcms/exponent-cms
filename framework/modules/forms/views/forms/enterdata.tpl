@@ -14,10 +14,6 @@
  *}
 
 {if !$error}
-    {css unique="formmod" corecss="forms"}
-
-    {/css}
-
     {if $config.style}
         {css unique="formmod2" corecss="forms2col"}
 

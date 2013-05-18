@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="exporteql" corecss="forms,tables"}
+{css unique="exporteql" corecss="tables"}
 
 {/css}
 
@@ -47,9 +47,7 @@
 	{/literal}
 	{/script}
 
-	<form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
-		<input type="hidden" name="controller" value="file" />
-		<input type="hidden" name="action" value="export_eql_process" />
+	{form action=export_eql_process}
 		<table cellspacing="0" cellpadding="2">
 			{section name=tid loop=$tables step=2}
 				<tr class="row {cycle values='even,odd'}">
@@ -112,5 +110,5 @@
 				</td>
 			</tr>
 		</table>
-	</form>
+	{form}
 </div>

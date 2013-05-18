@@ -87,7 +87,9 @@ class eventregistration extends expRecord {
             $event = new stdClass();
 //            $event->num_guest_allowed = !empty($params['quantity']) ? $params['quantity'] : 0;
             $event->eventdate = strtotime($params['eventdate']);
-            $event->eventenddate = strtotime($params['eventenddate']);
+            $enddate = strtotime($params['eventenddate']);
+            if ($enddate == 0 || $enddate < $event->eventdate) $enddate = $event->eventdate;
+            $event->eventenddate = $enddate;
             $event->event_starttime = datetimecontrol::parseData('event_starttime', $params);
             $event->event_endtime = datetimecontrol::parseData('event_endtime', $params);
             $event->signup_cutoff = strtotime($params['signup_cutoff']);

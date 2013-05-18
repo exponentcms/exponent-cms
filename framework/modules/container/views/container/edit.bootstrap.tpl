@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="edit-container" link="`$asset_path`css/add-content.css" corecss="admin-global"}
+{css unique="edit-container" corecss="admin-global"}
 
 {/css}
 
@@ -408,7 +408,7 @@
         };
 
         Y.one('.loadingdiv').setStyle('display','none');
-        Y.one('.container.hide').removeClass('hide');
+        Y.one('.exp-container.hide').removeClass('hide');
 
     });
 

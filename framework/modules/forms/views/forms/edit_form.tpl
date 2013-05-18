@@ -13,10 +13,6 @@
  *
  *}
 
-{css unique="formmod" corecss="forms"}
-
-{/css}
-
 <div id="editform" class="module forms edit edit-form">
     <h1>
         {if $form->id != ""}

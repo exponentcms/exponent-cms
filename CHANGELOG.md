@@ -6,6 +6,18 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
+
+Added / Fixed / changed for 2.2.1
+-----------------------
+### Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
+  - Removes all the 'old school' 1.x files
+### Known Issues
+  - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
+    -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
+  - eCommerce gift card & purchase order functionality have not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Added / Fixed / changed for 2.2.0
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
@@ -40,6 +52,7 @@ Added / Fixed / changed for 2.2.0
   - adds file upload pause, resume, & cancel feature
   - enables user authentication via an LDAP server (requires php ldap module)
   - updates look of countdown module to be more professional looking with new display options
+  - removes addressbook module from list of available modules since it's not designed to be placed on a page
 ### Known Issues
   - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
     -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script

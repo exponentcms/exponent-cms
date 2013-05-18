@@ -13,7 +13,7 @@
  *
  *}
  
-{css unique="searchform" corecss="forms" link="`$asset_path`css/show-form.css"}
+{css unique="searchform" link="`$asset_path`css/show-form.css"}
     
 {/css}
  
@@ -22,9 +22,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    <form id="form" name="form" method="POST" action="{$smarty.const.PATH_RELATIVE}index.php">
-        <input type="hidden" name="action" id="action" value="search">
-        <input type="hidden" name="module" id="module" value="search">
+    {form action=search}
         {*{control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}*}
         {*{control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}*}
         {*<div class="input-prepend input-append">*}
@@ -36,5 +34,5 @@
             <input type="search" name="search_string" id="search_string" type="text" placeholder="{$config.inputtext|default:"Keywords"|gettext}">
             <button type="submit" class="btn"><i class="icon-search"></i></button>
         </div>
-    </form>
+    {/form}
 </div>
