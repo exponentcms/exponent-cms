@@ -233,19 +233,6 @@ class form extends baseform {
             "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
-//        expCSS::pushToHead(array(
-//    	    "unique"=>"h5form",
-//    	    "link"=>PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.css'
-//    	    )
-//    	);
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'h5form',
-//            "jquery"=> 'jqueryui',
-//            "src"=> PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.js',
-//            "content"=>"$(function() {
-//              $('#abc123').h5form();
-//            });"
-//        ));
 		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';
 		if (isset($this->ajax_updater)) {

@@ -71,19 +71,6 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
-//        expCSS::pushToHead(array(
-//    	    "unique"=>"h5form",
-//    	    "link"=>PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.css'
-//    	    )
-//    	);
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'h5form',
-//            "jquery"=> 'jqueryui',
-//            "src"=> PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.js',
-//            "content"=>"$(function() {
-//              $('#abc123').h5form();
-//            });"
-//        ));
 
 		echo '<form id="'.$id.'" name="'.$name.'" class="'.$params['class'].'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {

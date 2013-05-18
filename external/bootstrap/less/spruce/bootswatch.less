@@ -8,15 +8,16 @@
 
 @import url(//fonts.googleapis.com/css?family=Crete+Round);
 
-h1 > small,
-h2 > small,
-h3 > small,
-h4 > small,
-h5 > small,
-h6 > small,
+h1, h2, h3, h4, h5, h6 {
+
+	small {
+		font-family: @baseFontFamily;
+		color: @headingsColor;
+	}
+}
+
 .muted {
-	color: @headingsColor;
-	font-family: @baseFontFamily;
+	color: @grayLight;
 }
 
 .jumbotron h1 {
@@ -616,17 +617,25 @@ input, textarea, select {
 	&-header {
 		padding: 12px 15px 6px;
 		background-color: @green;
+		color: @navbarLinkColor;
+
+		h1, h2, h3, h4, h5, h6 {
+			color: @navbarLinkColor;
+		}
 	}
 
 	&-body,
 	&-footer {
-		background-color: @headingsColor;
 		border: none;
 		.box-shadow(none);
 
 		label {
 			color: @textColor;
 		}
+	}
+
+	&-footer {
+		background-color: @wellBackground;
 	}
 }
 
