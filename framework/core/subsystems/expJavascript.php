@@ -125,7 +125,7 @@ class expJavascript {
                            		);
                             }
                         } elseif (file_exists(JQUERY_PATH.'addons/js/'.$mod.'.js')) {
-                            $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_RELATIVE.'addons/js/'.$mod.'.js"></script>'."\r\n";
+//                            $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_RELATIVE.'addons/js/'.$mod.'.js"></script>'."\r\n";
                             if (strlen($srt[$i])+strlen(JQUERY_RELATIVE.'addons/js/'.$mod.'.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
                                 $srt[$i] .= JQUERY_RELATIVE.'addons/js/'.$mod.'.js'.",";
                             } else {

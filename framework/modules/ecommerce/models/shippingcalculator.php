@@ -60,7 +60,7 @@ class shippingcalculator extends expRecord {
 
         $calc = $db->selectObject('shippingcalculator','is_default=1');
         if (empty($calc)) $calc = $db->selectObject('shippingcalculator','enabled=1');
-        if ($calc->id) return $calc->id;
+        if (!empty($calc->id)) return $calc->id;
         else return false;
     }
 
