@@ -97,7 +97,8 @@
 </div>
 
 {if $permissions.edit == 1 && !$preview}
-{script unique=$name jquery="jqueryui" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js" }
+<script src="{$smarty.const.PATH_RELATIVE}external/editors/ckeditor/ckeditor.js"></script>
+{script unique=$name jquery="jqueryui"}
 {literal}
     src = '{/literal}{$__loc->src}{literal}';
     CKEDITOR.disableAutoInline = true;
