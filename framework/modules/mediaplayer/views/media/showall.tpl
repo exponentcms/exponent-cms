@@ -50,7 +50,10 @@
 {if $config.control_volume}{$control = "`$control`'volume',"}{/if}
 {if $config.control_fullscreen}{{$control = "`$control`'fullscreen'"}}{/if}
 
-{script unique="mediaelement" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+{script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+{/script}
+
+{script unique="mediaplayer-`$name`"}
 {literal}
     $('audio,video').mediaelementplayer({
         success: function(player, node) {

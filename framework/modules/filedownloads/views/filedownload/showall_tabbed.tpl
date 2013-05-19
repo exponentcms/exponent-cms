@@ -96,7 +96,10 @@
     {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
     {*{/script}*}
 
-    {script unique="mediaelement" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+    {script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+    {/script}
+
+    {script unique="filedownload-`$id`"}
         $('audio,video').mediaelementplayer({
         	success: function(player, node) {
         		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
