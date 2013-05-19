@@ -408,7 +408,7 @@
         };
 
         Y.one('.loadingdiv').setStyle('display','none');
-        Y.one('.container.hide').removeClass('hide');
+        Y.one('.exp-container.hide').removeClass('hide');
 
     });
 
