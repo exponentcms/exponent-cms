@@ -43,7 +43,12 @@ class twitterController extends expController {
     public function showall() {
         if (!empty($this->config['consumer_key'])) {
             // create instance
-            set_exception_handler(array('twitterController', 'twitter_exception'));
+            if (expPermissions::check('manage',$this->loc)) {
+              $except_handler = 'twitter_exception_admin';
+            } else {
+                $except_handler = 'twitter_exception';
+            }
+            set_exception_handler(array('twitterController', $except_handler));
             $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
             // set tokens
             $twitter->setOAuthToken($this->config['oauth_token']);
@@ -141,15 +146,20 @@ class twitterController extends expController {
 	public function update() {
 		if (!empty($this->config['consumer_key']) && !empty($this->params['body'])) {
 		    // create instance
-            set_exception_handler(array('twitterController', 'twitter_exception'));
+            if (expPermissions::check('manage',$this->loc)) {
+              $except_handler = 'twitter_exception_admin';
+            } else {
+                $except_handler = 'twitter_exception';
+            }
+            set_exception_handler(array('twitterController', $except_handler));
 		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
 		    // set tokens
 		    $twitter->setOAuthToken($this->config['oauth_token']);
 		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
 
 			$twitter->statusesUpdate($this->params['body']);
+            restore_exception_handler();
 		}
-        restore_exception_handler();
 		expHistory::back();
 	}
 
@@ -159,7 +169,12 @@ class twitterController extends expController {
 	public function create_retweet() {
 		if (!empty($this->config['consumer_key']) && !empty($this->params['id'])) {
 		    // create instance
-            set_exception_handler(array('twitterController', 'twitter_exception'));
+            if (expPermissions::check('manage',$this->loc)) {
+              $except_handler = 'twitter_exception_admin';
+            } else {
+                $except_handler = 'twitter_exception';
+            }
+            set_exception_handler(array('twitterController', $except_handler));
 		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
             $twitter->timeOut = 60;
 
@@ -168,8 +183,8 @@ class twitterController extends expController {
 		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
 
 			$twitter->statusesRetweet($this->params['id']);
+            restore_exception_handler();
 		}
-        restore_exception_handler();
 		expHistory::back();
 	}
 
@@ -179,22 +194,29 @@ class twitterController extends expController {
 	public function delete_tweet() {
 		if (!empty($this->config['consumer_key']) && !empty($this->params['id'])) {
 		    // create instance
-            set_exception_handler(array('twitterController', 'twitter_exception'));
+            if (expPermissions::check('manage',$this->loc)) {
+              $except_handler = 'twitter_exception_admin';
+            } else {
+                $except_handler = 'twitter_exception';
+            }
+            set_exception_handler(array('twitterController', $except_handler));
 		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
 		    // set tokens
 		    $twitter->setOAuthToken($this->config['oauth_token']);
 		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
 
 			$twitter->statusesDestroy($this->params['id']);
+            restore_exception_handler();
 		}
-        restore_exception_handler();
 		expHistory::back();
 	}
 
     public static function twitter_exception(Exception $e) {
-        flash('error','Twitter: '.$e->getMessage());
     }
 
+    public static function twitter_exception_admin(Exception $e) {
+        flash('error','Twitter: '.$e->getMessage());
+    }
 
 }
 
