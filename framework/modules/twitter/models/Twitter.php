@@ -1,3134 +1,3281 @@
 <?php
-//namespace TijsVerkoyen\Twitter;
 
+##################################################
+#
+# Copyright (c) 2004-2013 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
+/**
+ * @subpackage Models
+ * @package Modules
+ */
 /**
  * Twitter class
  *
+ * This source file can be used to communicate with Twitter (http://twitter.com)
+ *
+ * The class is documented in the file itself. If you find any bugs help me out and report them. Reporting can be done by sending an email to php-twitter-bugs[at]verkoyen[dot]eu.
+ * If you report a bug, make sure you give me enough information (include your code).
+ *
+ * Changelog since 2.1.1
+ * - code styling
+ * - no more converting to integer for the cursor (thx to Jamaica)
+ *
+ * Changelog since 2.1.0
+ * - fixed issue with generation of basestring
+ * - added a new method: http://dev.twitter.com/doc/post/:user/:list_id/create_all
+ *
+ * Changelog since 2.0.3
+ * - made a lot of changes to reflect the current API, some of the methods aren't backwards compatible, so be carefull before upgrading
+ *
+ * Changelog since 2.0.2
+ * - tested geo*
+ * - implemented accountUpdateProfileImage
+ * - implemented accountUpdateProfileBackgroundImage
+ * - fixed issue with GET and POST (thx to Luiz Felipe)
+ * - added a way to detect open_basedir (thx to Lee Kindness)
+ *
+ * Changelog since 2.0.1
+ * - Fixed some documentation
+ * - Added a new method: usersProfileImage
+ * - Fixed trendsLocation
+ * - Added new GEO-methods: geoSearch, geoSimilarPlaces, geoPlaceCreate (not tested because geo-services were disabled.)
+ * - Added legalToS
+ * - Added legalPrivacy
+ * - Fixed helpTest
+ *
+ * Changelog since 2.0.0
+ * - no more fatal if twitter is over capacity
+ * - fix for calculating the header-string (thx to Dextro)
+ * - fix for userListsIdStatuses (thx to Josh)
+ *
+ * License
+ * Copyright (c) 2010, Tijs Verkoyen. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products derived from this software without specific prior written permission.
+ *
+ * This software is provided by the author "as is" and any express or implied warranties, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the author be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
+ *
  * @author		Tijs Verkoyen <php-twitter@verkoyen.eu>
- * @version		2.3.1
- * @copyright	Copyright (c), Tijs Verkoyen. All rights reserved.
+ * @version		2.1.2
+ *
+ * @copyright	Copyright (c) 2010, Tijs Verkoyen. All rights reserved.
  * @license		BSD License
  */
-class Twitter
+class Twitter extends expRecord
 {
-    // internal constant to enable/disable debugging
-    const DEBUG = false;
+	// internal constant to enable/disable debugging
+	const DEBUG = false;
 
-    // url for the twitter-api
-    const API_URL = 'https://api.twitter.com/1.1';
-    const SECURE_API_URL = 'https://api.twitter.com';
+	// url for the twitter-api
+	const API_URL = 'https://api.twitter.com/1';
+	const SEARCH_API_URL = 'https://search.twitter.com';
+	const SECURE_API_URL = 'https://api.twitter.com';
 
-    // port for the twitter-api
-    const API_PORT = 443;
-    const SECURE_API_PORT = 443;
+	// port for the twitter-api
+	const API_PORT = 443;
+	const SEARCH_API_PORT = 443;
+	const SECURE_API_PORT = 443;
 
-    // current version
-    const VERSION = '2.3.1';
+	// current version
+	const VERSION = '2.1.2';
 
-    /**
-     * A cURL instance
-     *
-     * @var	resource
-     */
-    private $curl;
 
-    /**
-     * The consumer key
-     *
-     * @var	string
-     */
-    private $consumerKey;
+	/**
+	 * A cURL instance
+	 *
+	 * @var	resource
+	 */
+	private $curl;
 
-    /**
-     * The consumer secret
-     *
-     * @var	string
-     */
-    private $consumerSecret;
 
-    /**
-     * The oAuth-token
-     *
-     * @var	string
-     */
-    private $oAuthToken = '';
+	/**
+	 * The consumer key
+	 *
+	 * @var	string
+	 */
+	private $consumerKey;
 
-    /**
-     * The oAuth-token-secret
-     *
-     * @var	string
-     */
-    private $oAuthTokenSecret = '';
 
-    /**
-     * The timeout
-     *
-     * @var	int
-     */
-    public $timeOut = 10;
+	/**
+	 * The consumer secret
+	 *
+	 * @var	string
+	 */
+	private $consumerSecret;
 
-    /**
-     * The user agent
-     *
-     * @var	string
-     */
-    private $userAgent;
+
+	/**
+	 * The oAuth-token
+	 *
+	 * @var	string
+	 */
+	private $oAuthToken = '';
+
+
+	/**
+	 * The oAuth-token-secret
+	 *
+	 * @var	string
+	 */
+	private $oAuthTokenSecret = '';
+
+
+	/**
+	 * The timeout
+	 *
+	 * @var	int
+	 */
+	private $timeOut = 60;
+
+
+	/**
+	 * The user agent
+	 *
+	 * @var	string
+	 */
+	private $userAgent;
+
 
 // class methods
-    /**
-     * Default constructor
-     *
-     * @param string $consumerKey    The consumer key to use.
-     * @param string $consumerSecret The consumer secret to use.
-     */
-    public function __construct($consumerKey="", $consumerSecret="")
-    {
-        $this->setConsumerKey($consumerKey);
-        $this->setConsumerSecret($consumerSecret);
-    }
+	/**
+	 * Default constructor
+	 *
+	 * @return \Twitter
+	 * @param	string $consumerKey		The consumer key to use.
+	 * @param	string $consumerSecret	The consumer secret to use.
+	 */
+	public function __construct($consumerKey='', $consumerSecret='')
+	{
+		$this->setConsumerKey($consumerKey);
+		$this->setConsumerSecret($consumerSecret);
+	}
 
-    /**
-     * Default destructor
-     */
-    public function __destruct()
-    {
-        if($this->curl != null) curl_close($this->curl);
-    }
+	/**
+	 * Default destructor
+	 *
+	 * @return	void
+	 */
+	public function __destruct()
+	{
+		if($this->curl != null) curl_close($this->curl);
+	}
 
-    /**
-     * Format the parameters as a querystring
-     *
-     * @param  array  $parameters The parameters.
-     * @return string
-     */
-    private function buildQuery(array $parameters)
-    {
-        // no parameters?
-        if(empty($parameters)) return '';
 
-        // encode the keys
-        $keys = self::urlencode_rfc3986(array_keys($parameters));
+	/**
+	 * Format the parameters as a querystring
+	 *
+	 * @return	string
+	 * @param	array $parameters	The parameters.
+	 */
+	private function buildQuery(array $parameters)
+	{
+		// no parameters?
+		if(empty($parameters)) return '';
 
-        // encode the values
-        $values = self::urlencode_rfc3986(array_values($parameters));
+		// encode the keys
+		$keys = self::urlencode_rfc3986(array_keys($parameters));
 
-        // reset the parameters
-        $parameters = array_combine($keys, $values);
+		// encode the values
+		$values = self::urlencode_rfc3986(array_values($parameters));
 
-        // sort parameters by key
-        uksort($parameters, 'strcmp');
+		// reset the parameters
+		$parameters = array_combine($keys, $values);
 
-        // loop parameters
-        foreach ($parameters as $key => $value) {
-            // sort by value
-            if(is_array($value)) $parameters[$key] = natsort($value);
-        }
+		// sort parameters by key
+		uksort($parameters, 'strcmp');
 
-        // process parameters
-        foreach ($parameters as $key => $value) {
-            $chunks[] = $key . '=' . str_replace('%25', '%', $value);
-        }
+		// loop parameters
+		foreach($parameters as $key => $value)
+		{
+			// sort by value
+			if(is_array($value)) $parameters[$key] = natsort($value);
+		}
 
-        // return
-        return implode('&', $chunks);
-    }
+		// process parameters
+		foreach($parameters as $key => $value) $chunks[] = $key . '=' . str_replace('%25', '%', $value);
 
-    /**
-     * All OAuth 1.0 requests use the same basic algorithm for creating a
-     * signature base string and a signature. The signature base string is
-     * composed of the HTTP method being used, followed by an ampersand ("&")
-     * and then the URL-encoded base URL being accessed, complete with path
-     * (but not query parameters), followed by an ampersand ("&"). Then, you
-     * take all query parameters and POST body parameters (when the POST body is
-     * of the URL-encoded type, otherwise the POST body is ignored), including
-     * the OAuth parameters necessary for negotiation with the request at hand,
-     * and sort them in lexicographical order by first parameter name and then
-     * parameter value (for duplicate parameters), all the while ensuring that
-     * both the key and the value for each parameter are URL encoded in
-     * isolation. Instead of using the equals ("=") sign to mark the key/value
-     * relationship, you use the URL-encoded form of "%3D". Each parameter is
-     * then joined by the URL-escaped ampersand sign, "%26".
-     *
-     * @param  string $url        The URL.
-     * @param  string $method     The method to use.
-     * @param  array  $parameters The parameters.
-     * @return string
-     */
-    private function calculateBaseString($url, $method, array $parameters)
-    {
-        // redefine
-        $url = (string) $url;
-        $parameters = (array) $parameters;
+		// return
+		return implode('&', $chunks);
+	}
 
-        // init var
-        $pairs = array();
-        $chunks = array();
 
-        // sort parameters by key
-        uksort($parameters, 'strcmp');
+	/**
+	 * All OAuth 1.0 requests use the same basic algorithm for creating a signature base string and a signature.
+	 * The signature base string is composed of the HTTP method being used, followed by an ampersand ("&") and then the URL-encoded base URL being accessed,
+	 * complete with path (but not query parameters), followed by an ampersand ("&").
+	 * Then, you take all query parameters and POST body parameters (when the POST body is of the URL-encoded type, otherwise the POST body is ignored),
+	 * including the OAuth parameters necessary for negotiation with the request at hand, and sort them in lexicographical order by first parameter name and
+	 * then parameter value (for duplicate parameters), all the while ensuring that both the key and the value for each parameter are URL encoded in isolation.
+	 * Instead of using the equals ("=") sign to mark the key/value relationship, you use the URL-encoded form of "%3D". Each parameter is then joined by the
+	 * URL-escaped ampersand sign, "%26".
+	 *
+	 * @return	string
+	 * @param	string $url			The URL.
+	 * @param	string $method		The method to use.
+	 * @param	array $parameters	The parameters.
+	 */
+	private function calculateBaseString($url, $method, array $parameters)
+	{
+		// redefine
+		$url = (string) $url;
+		$parameters = (array) $parameters;
 
-        // loop parameters
-        foreach ($parameters as $key => $value) {
-            // sort by value
-            if(is_array($value)) $parameters[$key] = natsort($value);
-        }
+		// init var
+		$pairs = array();
+		$chunks = array();
 
-        // process queries
-        foreach ($parameters as $key => $value) {
-            // only add if not already in the url
-            if (substr_count($url, $key . '=' . $value) == 0) {
-                $chunks[] = self::urlencode_rfc3986($key) . '%3D' .
-                            self::urlencode_rfc3986($value);
-            }
-        }
+		// sort parameters by key
+		uksort($parameters, 'strcmp');
 
-        // buils base
-        $base = $method . '&';
-        $base .= urlencode($url);
-        $base .= (substr_count($url, '?')) ? '%26' : '&';
-        $base .= implode('%26', $chunks);
-        $base = str_replace('%3F', '&', $base);
+		// loop parameters
+		foreach($parameters as $key => $value)
+		{
+			// sort by value
+			if(is_array($value)) $parameters[$key] = natsort($value);
+		}
 
-        // return
-        return $base;
-    }
+		// process queries
+		foreach($parameters as $key => $value)
+		{
+			// only add if not already in the url
+			if(substr_count($url, $key . '=' . $value) == 0) $chunks[] = self::urlencode_rfc3986($key) . '%3D' . self::urlencode_rfc3986($value);
+		}
 
-    /**
-     * Build the Authorization header
-     * @later: fix me
-     *
-     * @param  array  $parameters The parameters.
-     * @param  string $url        The URL.
-     * @return string
-     */
-    private function calculateHeader(array $parameters, $url)
-    {
-        // redefine
-        $url = (string) $url;
+		// buils base
+		$base = $method . '&';
+		$base .= urlencode($url);
+		$base .= (substr_count($url, '?')) ? '%26' : '&';
+		$base .= implode('%26', $chunks);
+		$base = str_replace('%3F', '&', $base);
 
-        // divide into parts
-        $parts = parse_url($url);
+		// return
+		return $base;
+	}
 
-        // init var
-        $chunks = array();
 
-        // process queries
-        foreach ($parameters as $key => $value) {
-            $chunks[] = str_replace(
-                '%25', '%',
-                self::urlencode_rfc3986($key) . '="' . self::urlencode_rfc3986($value) . '"'
-            );
-        }
+	/**
+	 * Build the Authorization header
+	 * @later: fix me
+	 *
+	 * @return	string
+	 * @param	array $parameters	The parameters.
+	 * @param	string $url			The URL.
+	 */
+	private function calculateHeader(array $parameters, $url)
+	{
+		// redefine
+		$url = (string) $url;
 
-        // build return
-        $return = 'Authorization: OAuth realm="' . $parts['scheme'] . '://' .
-                  $parts['host'] . $parts['path'] . '", ';
-        $return .= implode(',', $chunks);
+		// divide into parts
+		$parts = parse_url($url);
 
-        // prepend name and OAuth part
-        return $return;
-    }
+		// init var
+		$chunks = array();
+
+		// process queries
+		foreach($parameters as $key => $value) $chunks[] = str_replace('%25', '%', self::urlencode_rfc3986($key) . '="' . self::urlencode_rfc3986($value) . '"');
+
+		// build return
+		$return = 'Authorization: OAuth realm="' . $parts['scheme'] . '://' . $parts['host'] . $parts['path'] . '", ';
+		$return .= implode(',', $chunks);
+
+		// prepend name and OAuth part
+		return $return;
+	}
 
     /**
      * Make an call to the oAuth
-     * @todo	refactor me
+     * @todo    refactor me
      *
-     * @param  string          $method     The method.
-     * @param  array[optional] $parameters The parameters.
-     * @return array
+     * @return    array
+     * @param    string $method                    The method.
+     * @param array|null $parameters [optional] $parameters        The parameters.
+     * @throws TwitterException
      */
-    private function doOAuthCall($method, array $parameters = null)
-    {
-        // redefine
-        $method = (string) $method;
+	private function doOAuthCall($method, array $parameters = null)
+	{
+		try {
+		// redefine
+		$method = (string) $method;
 
-        // append default parameters
-        $parameters['oauth_consumer_key'] = $this->getConsumerKey();
-        $parameters['oauth_nonce'] = md5(microtime() . rand());
-        $parameters['oauth_timestamp'] = time();
-        $parameters['oauth_signature_method'] = 'HMAC-SHA1';
-        $parameters['oauth_version'] = '1.0';
+		// append default parameters
+		$parameters['oauth_consumer_key'] = $this->getConsumerKey();
+		$parameters['oauth_nonce'] = md5(microtime() . rand());
+		$parameters['oauth_timestamp'] = time();
+		$parameters['oauth_signature_method'] = 'HMAC-SHA1';
+		$parameters['oauth_version'] = '1.0';
 
-        // calculate the base string
-        $base = $this->calculateBaseString(
-            self::SECURE_API_URL . '/oauth/' . $method, 'POST', $parameters
-        );
+		// calculate the base string
+		$base = $this->calculateBaseString(self::SECURE_API_URL . '/oauth/' . $method, 'POST', $parameters);
 
-        // add sign into the parameters
-        $parameters['oauth_signature'] = $this->hmacsha1(
-            $this->getConsumerSecret() . '&' . $this->getOAuthTokenSecret(),
-            $base
-        );
+		// add sign into the parameters
+		$parameters['oauth_signature'] = $this->hmacsha1($this->getConsumerSecret() . '&' . $this->getOAuthTokenSecret(), $base);
 
-        // calculate header
-        $header = $this->calculateHeader(
-            $parameters,
-            self::SECURE_API_URL . '/oauth/' . $method
-        );
+		// calculate header
+		$header = $this->calculateHeader($parameters, self::SECURE_API_URL . '/oauth/' . $method);
 
-        // set options
-        $options[CURLOPT_URL] = self::SECURE_API_URL . '/oauth/' . $method;
-        $options[CURLOPT_PORT] = self::SECURE_API_PORT;
-        $options[CURLOPT_USERAGENT] = $this->getUserAgent();
-        if (ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off')) {
-            $options[CURLOPT_FOLLOWLOCATION] = true;
-        }
-        $options[CURLOPT_RETURNTRANSFER] = true;
-        $options[CURLOPT_TIMEOUT] = (int) $this->getTimeOut();
-        $options[CURLOPT_SSL_VERIFYPEER] = false;
-        $options[CURLOPT_SSL_VERIFYHOST] = false;
-        $options[CURLOPT_HTTPHEADER] = array('Expect:');
-        $options[CURLOPT_POST] = true;
-        $options[CURLOPT_POSTFIELDS] = $this->buildQuery($parameters);
+		// set options
+		$options[CURLOPT_URL] = self::SECURE_API_URL . '/oauth/' . $method;
+		$options[CURLOPT_PORT] = self::SECURE_API_PORT;
+		$options[CURLOPT_USERAGENT] = $this->getUserAgent();
+		if(ini_get('open_basedir') == '' && ini_get('safe_mode') == 'Off') $options[CURLOPT_FOLLOWLOCATION] = true;
+		$options[CURLOPT_RETURNTRANSFER] = true;
+		$options[CURLOPT_TIMEOUT] = (int) $this->getTimeOut();
+		$options[CURLOPT_SSL_VERIFYPEER] = false;
+		$options[CURLOPT_SSL_VERIFYHOST] = false;
+		$options[CURLOPT_HTTPHEADER] = array('Expect:');
+		$options[CURLOPT_POST] = true;
+		$options[CURLOPT_POSTFIELDS] = $this->buildQuery($parameters);
 
-        // init
-        $this->curl = curl_init();
+		// init
+		$this->curl = curl_init();
 
-        // set options
-        curl_setopt_array($this->curl, $options);
+		// set options
+		curl_setopt_array($this->curl, $options);
 
-        // execute
-        $response = curl_exec($this->curl);
-        $headers = curl_getinfo($this->curl);
+		// execute
+		$response = curl_exec($this->curl);
+		$headers = curl_getinfo($this->curl);
 
-        // fetch errors
-        $errorNumber = curl_errno($this->curl);
-        $errorMessage = curl_error($this->curl);
+		// fetch errors
+		$errorNumber = curl_errno($this->curl);
+		$errorMessage = curl_error($this->curl);
 
-        // error?
-        if ($errorNumber != '') {
-            throw new Exception($errorMessage, $errorNumber);
-        }
+		// error?
+		if($errorNumber != '') throw new TwitterException($errorMessage, $errorNumber);
 
-        // init var
-        $return = array();
+		// init var
+		$return = array();
 
-        // parse the string
-        parse_str($response, $return);
+		// parse the string
+		parse_str($response, $return);
 
-        // return
-        return $return;
-    }
+		// return
+		return $return;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
      * Make the call
      *
-     * @param  string           $url           The url to call.
-     * @param  array[optional]  $parameters    Optional parameters.
-     * @param  bool[optional]   $authenticate  Should we authenticate.
-     * @param  bool[optional]   $method        The method to use. Possible values are GET, POST.
-     * @param  string[optional] $filePath      The path to the file to upload.
-     * @param  bool[optional]   $expectJSON    Do we expect JSON.
-     * @param  bool[optional]   $returnHeaders Should the headers be returned?
-     * @return string
+     * @return    string
+     * @param    string $url                        The url to call.
+     * @param array|null $parameters
+     * @param bool $authenticate
+     * @param string $method
+     * @param null $filePath
+     * @param bool $expectJSON
+     * @param bool $returnHeaders
+     * @throws TwitterException* @internal param $array [optional] $parameters        Optional parameters.
+     * @internal param $bool [optional] $authenticate    Should we authenticate.
+     * @internal param $bool [optional] $method            The method to use. Possible values are GET, POST.
+     * @internal param $string [optional] $filePath        The path to the file to upload.
+     * @internal param $bool [optional] $expectJSON        Do we expect JSON.
+     * @internal param $bool [optional] $returnHeaders    Should the headers be returned?
      */
-    private function doCall(
-        $url, array $parameters = null, $authenticate = false, $method = 'GET',
-        $filePath = null, $expectJSON = true, $returnHeaders = false
-    )
-    {
-        // allowed methods
-        $allowedMethods = array('GET', 'POST');
+	private function doCall($url, array $parameters = null, $authenticate = false, $method = 'GET', $filePath = null, $expectJSON = true, $returnHeaders = false)
+	{
+		try {
+		// allowed methods
+		$allowedMethods = array('GET', 'POST');
 
-        // redefine
-        $url = (string) $url;
-        $parameters = (array) $parameters;
-        $authenticate = (bool) $authenticate;
-        $method = (string) $method;
-        $expectJSON = (bool) $expectJSON;
+		// redefine
+		$url = (string) $url;
+		$parameters = (array) $parameters;
+		$authenticate = (bool) $authenticate;
+		$method = (string) $method;
+		$expectJSON = (bool) $expectJSON;
 
-        // validate method
-        if (!in_array($method, $allowedMethods)) {
-            throw new Exception(
-                'Unknown method (' . $method . '). Allowed methods are: ' .
-                implode(', ', $allowedMethods)
-            );
-        }
+		// validate method
+		if(!in_array($method, $allowedMethods)) throw new TwitterException('Unknown method (' . $method . '). Allowed methods are: ' . implode(', ', $allowedMethods));
 
-        // append default parameters
-        $oauth['oauth_consumer_key'] = $this->getConsumerKey();
-        $oauth['oauth_nonce'] = md5(microtime() . rand());
-        $oauth['oauth_timestamp'] = time();
-        $oauth['oauth_token'] = $this->getOAuthToken();
-        $oauth['oauth_signature_method'] = 'HMAC-SHA1';
-        $oauth['oauth_version'] = '1.0';
+		// append default parameters
+		$oauth['oauth_consumer_key'] = $this->getConsumerKey();
+		$oauth['oauth_nonce'] = md5(microtime() . rand());
+		$oauth['oauth_timestamp'] = time();
+		$oauth['oauth_token'] = $this->getOAuthToken();
+		$oauth['oauth_signature_method'] = 'HMAC-SHA1';
+		$oauth['oauth_version'] = '1.0';
 
-        // set data
-        $data = $oauth;
-        if(!empty($parameters)) $data = array_merge($data, $parameters);
+		// set data
+		$data = $oauth;
+		if(!empty($parameters)) $data = array_merge($data, $parameters);
 
-        // calculate the base string
-        $base = $this->calculateBaseString(
-            self::API_URL . '/' . $url, $method, $data
-        );
+		// calculate the base string
+		$base = $this->calculateBaseString(self::API_URL . '/' . $url, $method, $data);
 
-        // based on the method, we should handle the parameters in a different way
-        if ($method == 'POST') {
-            // file provided?
-            if ($filePath != null) {
-                // build a boundary
-                $boundary = md5(time());
+		// based on the method, we should handle the parameters in a different way
+		if($method == 'POST')
+		{
+			// file provided?
+			if($filePath != null)
+			{
+				// build a boundary
+				$boundary = md5(time());
 
-                // process file
-                $fileInfo = pathinfo($filePath);
+				// process file
+				$fileInfo = pathinfo($filePath);
 
-                // set mimeType
-                $mimeType = 'application/octet-stream';
-                if ($fileInfo['extension'] == 'jpg' || $fileInfo['extension'] == 'jpeg') {
-                    $mimeType = 'image/jpeg';
-                } elseif($fileInfo['extension'] == 'gif') $mimeType = 'image/gif';
-                elseif($fileInfo['extension'] == 'png') $mimeType = 'image/png';
+				// set mimeType
+				$mimeType = 'application/octet-stream';
+				if($fileInfo['extension'] == 'jpg' || $fileInfo['extension'] == 'jpeg') $mimeType = 'image/jpeg';
+				elseif($fileInfo['extension'] == 'gif') $mimeType = 'image/gif';
+				elseif($fileInfo['extension'] == 'png') $mimeType = 'image/png';
 
-                // init var
-                $content = '--' . $boundary . "\r\n";
+				// init var
+				$content = '--' . $boundary . "\r\n";
 
-                // set file
-                $content .= 'Content-Disposition: form-data; name=image; filename="' .
-                            $fileInfo['basename'] . '"' . "\r\n";
-                $content .= 'Content-Type: ' . $mimeType . "\r\n";
-                $content .= "\r\n";
-                $content .= file_get_contents($filePath);
-                $content .= "\r\n";
-                $content .= "--" . $boundary . '--';
+				// set file
+				$content .= 'Content-Disposition: form-data; name=image; filename="' . $fileInfo['basename'] . '"' . "\r\n";
+				$content .= 'Content-Type: ' . $mimeType . "\r\n";
+				$content .= "\r\n";
+				$content .= file_get_contents($filePath);
+				$content .= "\r\n";
+				$content .= "--" . $boundary . '--';
 
-                // build headers
-                $headers[] = 'Content-Type: multipart/form-data; boundary=' . $boundary;
-                $headers[] = 'Content-Length: ' . strlen($content);
+				// build headers
+				$headers[] = 'Content-Type: multipart/form-data; boundary=' . $boundary;
+				$headers[] = 'Content-Length: ' . strlen($content);
 
-                // set content
-                $options[CURLOPT_POSTFIELDS] = $content;
-            }
+				// set content
+				$options[CURLOPT_POSTFIELDS] = $content;
+			}
 
-            // no file
-            else $options[CURLOPT_POSTFIELDS] = $this->buildQuery($parameters);
+			// no file
+			else $options[CURLOPT_POSTFIELDS] = $this->buildQuery($parameters);
 
-            // enable post
-            $options[CURLOPT_POST] = true;
-        } else {
-            // add the parameters into the querystring
-            if(!empty($parameters)) $url .= '?' . $this->buildQuery($parameters);
-            $options[CURLOPT_POST] = false;
-        }
+			// enable post
+			$options[CURLOPT_POST] = true;
+		}
 
-        // add sign into the parameters
-        $oauth['oauth_signature'] = $this->hmacsha1(
-            $this->getConsumerSecret() . '&' . $this->getOAuthTokenSecret(),
-            $base
-        );
+		else
+		{
+			// add the parameters into the querystring
+			if(!empty($parameters)) $url .= '?' . $this->buildQuery($parameters);
 
-        $headers[] = $this->calculateHeader($oauth, self::API_URL . '/' . $url);
-        $headers[] = 'Expect:';
+			$options[CURLOPT_POST] = false;
+		}
 
-        // set options
-        $options[CURLOPT_URL] = self::API_URL . '/' . $url;
-        $options[CURLOPT_PORT] = self::API_PORT;
-        $options[CURLOPT_USERAGENT] = $this->getUserAgent();
-        if (ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off')) {
-            $options[CURLOPT_FOLLOWLOCATION] = true;
-        }
-        $options[CURLOPT_RETURNTRANSFER] = true;
-        $options[CURLOPT_TIMEOUT] = (int) $this->getTimeOut();
-        $options[CURLOPT_SSL_VERIFYPEER] = false;
-        $options[CURLOPT_SSL_VERIFYHOST] = false;
-        $options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
-        $options[CURLOPT_HTTPHEADER] = $headers;
+		// add sign into the parameters
+		$oauth['oauth_signature'] = $this->hmacsha1($this->getConsumerSecret() . '&' . $this->getOAuthTokenSecret(), $base);
 
-        // init
-        if($this->curl == null) $this->curl = curl_init();
+		$headers[] = $this->calculateHeader($oauth, self::API_URL . '/' . $url);
+		$headers[] = 'Expect:';
 
-        // set options
-        curl_setopt_array($this->curl, $options);
+		// set options
+		$options[CURLOPT_URL] = self::API_URL . '/' . $url;
+		$options[CURLOPT_PORT] = self::API_PORT;
+		$options[CURLOPT_USERAGENT] = $this->getUserAgent();
+		if(ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off')) $options[CURLOPT_FOLLOWLOCATION] = true;
+		$options[CURLOPT_RETURNTRANSFER] = true;
+		$options[CURLOPT_TIMEOUT] = (int) $this->getTimeOut();
+		$options[CURLOPT_SSL_VERIFYPEER] = false;
+		$options[CURLOPT_SSL_VERIFYHOST] = false;
+		$options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
+		$options[CURLOPT_HTTPHEADER] = $headers;
 
-        // execute
-        $response = curl_exec($this->curl);
-        $headers = curl_getinfo($this->curl);
+		// init
+		if($this->curl == null) $this->curl = curl_init();
 
-        // fetch errors
-        $errorNumber = curl_errno($this->curl);
-        $errorMessage = curl_error($this->curl);
+		// set options
+		curl_setopt_array($this->curl, $options);
 
-        // return the headers
-        if($returnHeaders) return $headers;
+		// execute
+		$response = curl_exec($this->curl);
+		$headers = curl_getinfo($this->curl);
 
-        // we don't expext JSON, return the response
-        if(!$expectJSON) return $response;
+		// fetch errors
+		$errorNumber = curl_errno($this->curl);
+		$errorMessage = curl_error($this->curl);
 
-        // replace ids with their string values, added because of some
-        // PHP-version can't handle these large values
-        $response = preg_replace('/id":(\d+)/', 'id":"\1"', $response);
+		// return the headers
+		if($returnHeaders) return $headers;
 
-        // we expect JSON, so decode it
-        $json = @json_decode($response, true);
+		// we don't expext JSON, return the response
+		if(!$expectJSON) return $response;
 
-        // validate JSON
-        if ($json === null) {
-            // should we provide debug information
-            if (self::DEBUG) {
-                // make it output proper
-                echo '<pre>';
+		// replace ids with their string values, added because of some PHP-version can't handle these large values
+		$response = preg_replace('/id":(\d+)/', 'id":"\1"', $response);
 
-                // dump the header-information
-                var_dump($headers);
+		// we expect JSON, so decode it
+		$json = @json_decode($response, true);
 
-                // dump the error
-                var_dump($errorMessage);
+		// validate JSON
+		if($json === null)
+		{
+			// should we provide debug information
+			if(self::DEBUG)
+			{
+				// make it output proper
+				echo '<pre>';
 
-                // dump the raw response
-                var_dump($response);
+				// dump the header-information
+				var_dump($headers);
 
-                // end proper format
-                echo '</pre>';
-            }
+				// dump the error
+				var_dump($errorMessage);
 
-            // throw exception
-            throw new Exception('Invalid response.');
-        }
+				// dump the raw response
+				var_dump($response);
 
-        // any errors
-        if (isset($json['errors'])) {
-            // should we provide debug information
-            if (self::DEBUG) {
-                // make it output proper
-                echo '<pre>';
+				// end proper format
+				echo '</pre>';
+			}
 
-                // dump the header-information
-                var_dump($headers);
+			// throw exception
+			throw new TwitterException('Invalid response.');
+		}
 
-                // dump the error
-                var_dump($errorMessage);
 
-                // dump the raw response
-                var_dump($response);
+		// any errors
+		if(isset($json['errors']))
+		{
+			// should we provide debug information
+			if(self::DEBUG)
+			{
+				// make it output proper
+				echo '<pre>';
 
-                // end proper format
-                echo '</pre>';
-            }
+				// dump the header-information
+				var_dump($headers);
 
-            // throw exception
-            if (isset($json['errors'][0]['message'])) {
-                throw new Exception($json['errors'][0]['message']);
-            } elseif (isset($json['errors']) && is_string($json['errors'])) {
-                throw new Exception($json['errors']);
-            } else throw new Exception('Invalid response.');
-        }
+				// dump the error
+				var_dump($errorMessage);
 
-        // any error
-        if (isset($json['error'])) {
-            // should we provide debug information
-            if (self::DEBUG) {
-                // make it output proper
-                echo '<pre>';
+				// dump the raw response
+				var_dump($response);
 
-                // dump the header-information
-                var_dump($headers);
+				// end proper format
+				echo '</pre>';
+			}
 
-                // dump the raw response
-                var_dump($response);
+			// throw exception
+			if(isset($json['errors'][0]['message'])) throw new TwitterException($json['errors'][0]['message']);
+			elseif(isset($json['errors']) && is_string($json['errors'])) throw new TwitterException($json['errors']);
+			else throw new TwitterException('Invalid response.');
+		}
 
-                // end proper format
-                echo '</pre>';
-            }
 
-            // throw exception
-            throw new Exception($json['error']);
-        }
+		// any error
+		if(isset($json['error']))
+		{
+			// should we provide debug information
+			if(self::DEBUG)
+			{
+				// make it output proper
+				echo '<pre>';
 
-        // return
-        return $json;
-    }
+				// dump the header-information
+				var_dump($headers);
+
+				// dump the raw response
+				var_dump($response);
+
+				// end proper format
+				echo '</pre>';
+			}
+
+			// throw exception
+			throw new TwitterException($json['error']);
+		}
+
+		// return
+		return $json;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Get the consumer key
+     * Make the call
      *
-     * @return string
+     * @return    string
+     * @param    string $url                        The url to call.
+     * @param array|null $parameters [optional] $parameters        Optional parameters.
+     * @throws TwitterException
      */
-    private function getConsumerKey()
-    {
-        return $this->consumerKey;
-    }
+	private function doSearchCall($url, array $parameters = null)
+	{
+		try {
+		// redefine
+		$url = (string) $url;
+		$parameters = (array) $parameters;
 
-    /**
-     * Get the consumer secret
-     *
-     * @return string
-     */
-    private function getConsumerSecret()
-    {
-        return $this->consumerSecret;
-    }
+		// add the parameters into the querystring
+		if(!empty($parameters)) $url .= '?' . $this->buildQuery($parameters);
 
-    /**
-     * Get the oAuth-token
-     *
-     * @return string
-     */
-    private function getOAuthToken()
-    {
-        return $this->oAuthToken;
-    }
+		// set options
+		$options[CURLOPT_URL] = self::SEARCH_API_URL . '/' . $url;
+		$options[CURLOPT_PORT] = self::SEARCH_API_PORT;
+		$options[CURLOPT_USERAGENT] = $this->getUserAgent();
+		if(ini_get('open_basedir') == '' && ini_get('safe_mode' == 'Off')) $options[CURLOPT_FOLLOWLOCATION] = true;
+		$options[CURLOPT_RETURNTRANSFER] = true;
+		$options[CURLOPT_TIMEOUT] = (int) $this->getTimeOut();
+		$options[CURLOPT_SSL_VERIFYPEER] = false;
+		$options[CURLOPT_SSL_VERIFYHOST] = false;
+		$options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
 
-    /**
-     * Get the oAuth-token-secret
-     *
-     * @return string
-     */
-    private function getOAuthTokenSecret()
-    {
-        return $this->oAuthTokenSecret;
-    }
+		// init
+		if($this->curl == null) $this->curl = curl_init();
 
-    /**
-     * Get the timeout
-     *
-     * @return int
-     */
-    public function getTimeOut()
-    {
-        return (int) $this->timeOut;
-    }
+		// set options
+		curl_setopt_array($this->curl, $options);
 
-    /**
-     * Get the useragent that will be used. Our version will be prepended to yours.
-     * It will look like: "PHP Twitter/<version> <your-user-agent>"
-     *
-     * @return string
-     */
-    public function getUserAgent()
-    {
-        return (string) 'PHP Twitter/' . self::VERSION . ' ' . $this->userAgent;
-    }
+		// execute
+		$response = curl_exec($this->curl);
+		$headers = curl_getinfo($this->curl);
 
-    /**
-     * Set the consumer key
-     *
-     * @param string $key The consumer key to use.
-     */
-    private function setConsumerKey($key)
-    {
-        $this->consumerKey = (string) $key;
-    }
+		// fetch errors
+		$errorNumber = curl_errno($this->curl);
+		$errorMessage = curl_error($this->curl);
 
-    /**
-     * Set the consumer secret
-     *
-     * @param string $secret The consumer secret to use.
-     */
-    private function setConsumerSecret($secret)
-    {
-        $this->consumerSecret = (string) $secret;
-    }
+		// replace ids with their string values, added because of some PHP-version can't handle these large values
+		$response = preg_replace('/id":(\d+)/', 'id":"\1"', $response);
 
-    /**
-     * Set the oAuth-token
-     *
-     * @param string $token The token to use.
-     */
-    public function setOAuthToken($token)
-    {
-        $this->oAuthToken = (string) $token;
-    }
+		// we expect JSON, so decode it
+		$json = @json_decode($response, true);
 
-    /**
-     * Set the oAuth-secret
-     *
-     * @param string $secret The secret to use.
-     */
-    public function setOAuthTokenSecret($secret)
-    {
-        $this->oAuthTokenSecret = (string) $secret;
-    }
+		// validate JSON
+		if($json === null)
+		{
+			// should we provide debug information
+			if(self::DEBUG)
+			{
+				// make it output proper
+				echo '<pre>';
 
-    /**
-     * Set the timeout
-     *
-     * @param int $seconds The timeout in seconds.
-     */
-    public function setTimeOut($seconds)
-    {
-        $this->timeOut = (int) $seconds;
-    }
+				// dump the header-information
+				var_dump($headers);
 
-    /**
-     * Get the useragent that will be used. Our version will be prepended to yours.
-     * It will look like: "PHP Twitter/<version> <your-user-agent>"
-     *
-     * @param string $userAgent Your user-agent, it should look like <app-name>/<app-version>.
-     */
-    public function setUserAgent($userAgent)
-    {
-        $this->userAgent = (string) $userAgent;
-    }
+				// dump the error
+				var_dump($errorMessage);
 
-    /**
-     * Build the signature for the data
-     *
-     * @param  string $key  The key to use for signing.
-     * @param  string $data The data that has to be signed.
-     * @return string
-     */
-    private function hmacsha1($key, $data)
-    {
-        return base64_encode(hash_hmac('SHA1', $data, $key, true));
-    }
+				// dump the raw response
+				var_dump($response);
 
-    /**
-     * URL-encode method for internal use
-     *
-     * @param  mixed  $value The value to encode.
-     * @return string
-     */
-    private static function urlencode_rfc3986($value)
-    {
-        if (is_array($value)) {
-            return array_map(array(__CLASS__, 'urlencode_rfc3986'), $value);
-        } else {
-            $search = array('+', ' ', '%7E', '%');
-            $replace = array('%20', '%20', '~', '%25');
+				// end proper format
+				echo '</pre>';
+			}
 
-            return str_replace($search, $replace, urlencode($value));
-        }
-    }
+			// throw exception
+			throw new TwitterException('Invalid response.');
+		}
+
+
+		// any errors
+		if(isset($json['errors']))
+		{
+			// should we provide debug information
+			if(self::DEBUG)
+			{
+				// make it output proper
+				echo '<pre>';
+
+				// dump the header-information
+				var_dump($headers);
+
+				// dump the error
+				var_dump($errorMessage);
+
+				// dump the raw response
+				var_dump($response);
+
+				// end proper format
+				echo '</pre>';
+			}
+
+			// throw exception
+			if(isset($json['errors'][0]['message'])) throw new TwitterException($json['errors'][0]['message']);
+			else throw new TwitterException('Invalid response.');
+		}
+
+
+		// any error
+		if(isset($json['error']))
+		{
+			// should we provide debug information
+			if(self::DEBUG)
+			{
+				// make it output proper
+				echo '<pre>';
+
+				// dump the header-information
+				var_dump($headers);
+
+				// dump the raw response
+				var_dump($response);
+
+				// end proper format
+				echo '</pre>';
+			}
+
+			// throw exception
+			throw new TwitterException($json['error']);
+		}
+
+		// return
+		return $json;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Get the consumer key
+	 *
+	 * @return	string
+	 */
+	private function getConsumerKey()
+	{
+		return $this->consumerKey;
+	}
+
+
+	/**
+	 * Get the consumer secret
+	 *
+	 * @return	string
+	 */
+	private function getConsumerSecret()
+	{
+		return $this->consumerSecret;
+	}
+
+
+	/**
+	 * Get the oAuth-token
+	 *
+	 * @return	string
+	 */
+	private function getOAuthToken()
+	{
+		return $this->oAuthToken;
+	}
+
+
+	/**
+	 * Get the oAuth-token-secret
+	 *
+	 * @return	string
+	 */
+	private function getOAuthTokenSecret()
+	{
+		return $this->oAuthTokenSecret;
+	}
+
+
+	/**
+	 * Get the timeout
+	 *
+	 * @return	int
+	 */
+	public function getTimeOut()
+	{
+		return (int) $this->timeOut;
+	}
+
+
+	/**
+	 * Get the useragent that will be used. Our version will be prepended to yours.
+	 * It will look like: "PHP Twitter/<version> <your-user-agent>"
+	 *
+	 * @return	string
+	 */
+	public function getUserAgent()
+	{
+		return (string) 'PHP Twitter/' . self::VERSION . ' ' . $this->userAgent;
+	}
+
+
+	/**
+	 * Set the consumer key
+	 *
+	 * @return	void
+	 * @param	string $key		The consumer key to use.
+	 */
+	private function setConsumerKey($key)
+	{
+		$this->consumerKey = (string) $key;
+	}
+
+
+	/**
+	 * Set the consumer secret
+	 *
+	 * @return	void
+	 * @param	string $secret	The consumer secret to use.
+	 */
+	private function setConsumerSecret($secret)
+	{
+		$this->consumerSecret = (string) $secret;
+	}
+
+
+	/**
+	 * Set the oAuth-token
+	 *
+	 * @return	void
+	 * @param	string $token	The token to use.
+	 */
+	public function setOAuthToken($token)
+	{
+		$this->oAuthToken = (string) $token;
+	}
+
+
+	/**
+	 * Set the oAuth-secret
+	 *
+	 * @return	void
+	 * @param	string $secret	The secret to use.
+	 */
+	public function setOAuthTokenSecret($secret)
+	{
+		$this->oAuthTokenSecret = (string) $secret;
+	}
+
+
+	/**
+	 * Set the timeout
+	 *
+	 * @return	void
+	 * @param	int $seconds	The timeout in seconds.
+	 */
+	public function setTimeOut($seconds)
+	{
+		$this->timeOut = (int) $seconds;
+	}
+
+
+	/**
+	 * Get the useragent that will be used. Our version will be prepended to yours.
+	 * It will look like: "PHP Twitter/<version> <your-user-agent>"
+	 *
+	 * @return	void
+	 * @param	string $userAgent	Your user-agent, it should look like <app-name>/<app-version>.
+	 */
+	public function setUserAgent($userAgent)
+	{
+		$this->userAgent = (string) $userAgent;
+	}
+
+
+	/**
+	 * Build the signature for the data
+	 *
+	 * @return	string
+	 * @param	string $key		The key to use for signing.
+	 * @param	string $data	The data that has to be signed.
+	 */
+	private function hmacsha1($key, $data)
+	{
+		return base64_encode(hash_hmac('SHA1', $data, $key, true));
+	}
+
+
+	/**
+	 * URL-encode method for internal use
+	 *
+	 * @return	string
+	 * @param	mixed $value	The value to encode.
+	 */
+	private static function urlencode_rfc3986($value)
+	{
+		if(is_array($value)) return array_map(array('Twitter', 'urlencode_rfc3986'), $value);
+		else
+		{
+			$search = array('+', ' ', '%7E', '%');
+			$replace = array('%20', '%20', '~', '%25');
+
+			return str_replace($search, $replace, urlencode($value));
+		}
+	}
+
 
 // Timeline resources
+	/**
+	 * Returns the 20 most recent statuses from non-protected users who have set a custom user icon.
+	 * The public timeline is cached for 60 seconds and requesting it more often than that is unproductive and a waste of resources.
+	 *
+	 * @return	array
+	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesPublicTimeline($trimUser = false, $includeEntities = false)
+	{
+		// redefine
+		$trimUser = (bool) $trimUser;
+		$includeEntities = (bool) $includeEntities;
+
+		// build parameters
+		$parameters = array();
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/public_timeline.json', $parameters);
+	}
+
+
+	/**
+	 * Returns the 20 most recent statuses, including retweets if they exist, posted by the authenticating user and the user's they follow. This is the same timeline seen by a user when they login to twitter.com.
+	 * This method is identical to statusesFriendsTimeline, except that this method always includes retweets.
+	 *
+	 * @return	array
+	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
+	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
+	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
+	 * @param	int[optional] $page					Specifies the page of results to retrieve.
+	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesHomeTimeline($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/home_timeline.json', $parameters, true);
+	}
+
+
+	/**
+	 * Returns the 20 most recent statuses posted by the authenticating user and the user's they follow. This is the same timeline seen by a user when they login to twitter.com.
+	 * This method is identical to statuses/home_timeline, except that this method will only include retweets if the includeRts parameter is set.
+	 *
+	 * @return	array
+	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
+	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
+	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
+	 * @param	int[optional] $page					Specifies the page of results to retrieve.
+	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+	 * @param	bool[optional] $includeRts			When set to true the timeline will contain native retweets (if they exist) in addition to the standard stream of tweets. The output format of retweeted tweets is identical to the representation you see in home_timeline. Note: If you're using the trim_user parameter in conjunction with include_rts, the retweets will still contain a full user object.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesFriendsTimeline($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeRts = false, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeRts) $parameters['include_rts'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/friends_timeline.json', $parameters, true);
+	}
+
+
+	/**
+	 * Returns the 20 most recent statuses posted by the authenticating user. It is also possible to request another user's timeline by using the screen_name or user_id parameter. The other users timeline will only be visible if they are not protected, or if the authenticating user's follow request was accepted by the protected user.
+	 * The timeline returned is the equivalent of the one seen when you view a user's profile on twitter.com.
+	 *
+	 * @return	array
+	 * @param	string[optional] $userId			Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+	 * @param	string[optional] $screenName		Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+	 * @param	string[optional] $sinceId			Returns results with an ID greater than (that is, more recent than) the specified ID.
+	 * @param	string[optional] $maxId				Returns results with an ID less than (that is, older than) or equal to the specified ID.
+	 * @param	int[optional] $count				Specifies the number of records to retrieve. May not be greater than 200.
+	 * @param	int[optional] $page					Specifies the page of results to retrieve.
+	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+	 * @param	bool[optional] $includeRts			When set to true the timeline will contain native retweets (if they exist) in addition to the standard stream of tweets. The output format of retweeted tweets is identical to the representation you see in home_timeline. Note: If you're using the trim_user parameter in conjunction with include_rts, the retweets will still contain a full user object.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesUserTimeline($userId = null, $screenName = null, $sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeRts = false, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = array();
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeRts) $parameters['include_rts'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/user_timeline.json', $parameters);
+	}
+
     /**
-     * Returns the 20 most recent mentions (tweets containing a users's @screen_name) for the authenticating user.
+     * Returns the 20 most recent mentions (status containing @username) for the authenticating user.
      * The timeline returned is the equivalent of the one seen when you view your mentions on twitter.com.
-     * This method can only return up to 800 tweets.
      *
-     * @param  int[optional]    $count              Specifies the number of tweets to try and retrieve, up to a maximum of 200. The value of count is best thought of as a limit to the number of tweets to return because suspended or deleted content is removed after the count has been applied. We include retweets in the count, even if include_rts is not supplied.
-     * @param  string[optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.
-     * @param  string[optional] $maxId              Returns results with an ID less than (that is, older than) or equal to the specified ID.
-     * @param  bool[optional]   $trimUser           When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @param  bool[optional]   $contributorDetails This parameter enhances the contributors element of the status response to include the screen_name of the contributor. By default only the user_id of the contributor is included.
-     * @param  bool[optional]   $includeEntities    The entities node will be disincluded when set to false.
-     * @return array
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeRts
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to either true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeRts            When set to either true, the timeline will contain native retweets (if they exist) in addition to the standard stream of tweets. The output format of retweeted tweets is identical to the representation you see in home_timeline. Note: If you're using the trim_user parameter in conjunction with include_rts, the retweets will still contain a full user object.
+     * @internal param $bool [optional] $includeEntities        When set to either true, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future.
      */
-    public function statusesMentionsTimeline(
-        $count = null, $sinceId = null, $maxId = null,
-        $trimUser = null, $contributorDetails = null, $includeEntities = null
-    )
-    {
-        // build parameters
-        $parameters = null;
-        $parameters['include_rts'] = 'true';
-        if ($count != null) {
-            $parameters['count'] = (int) $count;
-        }
-        if ($sinceId != null) {
-            $parameters['since_id'] = (string) $sinceId;
-        }
-        if ($maxId != null) {
-            $parameters['max_id'] = (string) $maxId;
-        }
-        if ($trimUser != null) {
-            $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
-        }
-        if ($contributorDetails != null) {
-            $parameters['contributor_details'] = ($contributorDetails) ? 'true' : 'false';
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+	public function statusesMentions($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeRts = false, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
-        // make the call
-        return (array) $this->doCall(
-            'statuses/mentions_timeline.json',
-            $parameters, true
-        );
-    }
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeRts) $parameters['include_rts'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/mentions.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Returns a collection of the most recent Tweets posted by the user indicated by the screen_name or user_id parameters.
-     * User timelines belonging to protected users may only be requested when the authenticated user either "owns" the timeline or is an approved follower of the owner.
-     * The timeline returned is the equivalent of the one seen when you view a user's profile on twitter.com.
-     * This method can only return up to 3,200 of a user's most recent Tweets. Native retweets of other statuses by the user is included in this total, regardless of whether include_rts is set to false when requesting this resource.
+     * Returns the 20 most recent retweets posted by the authenticating user.
      *
-     * @param  string[optional] $userId             The ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-     * @param  string[optional] $screenName         The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-     * @param  string[optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.
-     * @param  int[optional]    $count              Specifies the number of tweets to try and retrieve, up to a maximum of 200 per distinct request. The value of count is best thought of as a limit to the number of tweets to return because suspended or deleted content is removed after the count has been applied. We include retweets in the count, even if include_rts is not supplied.
-     * @param  string[optional] $maxId              Returns results with an ID less than (that is, older than) or equal to the specified ID.
-     * @param  bool[optional]   $trimUser           When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @param  bool[optional]   $excludeReplies     This parameter will prevent replies from appearing in the returned timeline. Using exclude_replies with the count parameter will mean you will receive up-to count tweets — this is because the count parameter retrieves that many tweets before filtering out retweets and replies.
-     * @param  bool[optional]   $contributorDetails This parameter enhances the contributors element of the status response to include the screen_name of the contributor. By default only the user_id of the contributor is included.
-     * @param  bool[optional]   $includeRts         When set to false, the timeline will strip any native retweets (though they will still count toward both the maximal length of the timeline and the slice selected by the count parameter). Note: If you're using the trim_user parameter in conjunction with include_rts, the retweets will still contain a full user object.
-     * @return array
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function statusesUserTimeline(
-        $userId = null, $screenName = null, $sinceId = null, $count = null,
-        $maxId = null, $trimUser = null, $excludeReplies = null,
-        $contributorDetails = null, $includeRts = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
+	public function statusesRetweetedByMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
+	{
+		try{
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
-        // build parameters
-        $parameters = null;
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($sinceId != null) {
-            $parameters['since_id'] = (string) $sinceId;
-        }
-        if ($count != null) {
-            $parameters['count'] = (int) $count;
-        }
-        if ($maxId != null) {
-            $parameters['max_id'] = (string) $maxId;
-        }
-        if ($trimUser != null) {
-            $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
-        }
-        if ($excludeReplies != null) {
-            $parameters['exclude_replies'] = ($excludeReplies) ? 'true' : 'false';
-        }
-        if ($contributorDetails != null) {
-            $parameters['contributor_details'] = ($contributorDetails) ? 'true' : 'false';
-        }
-        if ($includeRts != null) {
-            $parameters['include_rts'] = ($includeRts) ? 'true' : 'false';
-        }
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-        // make the call
-        return (array) $this->doCall(
-            'statuses/user_timeline.json',
-            $parameters
-        );
-    }
+		// make the call
+		return (array) $this->doCall('statuses/retweeted_by_me.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Returns the 20 most recent statuses, including retweets if they exist, posted by the authenticating user and the user's they follow. This is the same timeline seen by a user when they login to twitter.com.
-     * This method is identical to statusesFriendsTimeline, except that this method always includes retweets.
+     * Returns the 20 most recent retweets posted by users the authenticating user follow.
      *
-     * @param  int[optional]    $count              Specifies the number of records to retrieve. Must be less than or equal to 200. Defaults to 20.
-     * @param  string[optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.
-     * @param  string[optional] $maxId              Returns results with an ID less than (that is, older than) or equal to the specified ID.
-     * @param  bool[optional]   $trimUser           When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @param  bool[optional]   $excludeReplies     This parameter will prevent replies from appearing in the returned timeline. Using exclude_replies with the count parameter will mean you will receive up-to count tweets — this is because the count parameter retrieves that many tweets before filtering out retweets and replies.
-     * @param  bool[optional]   $contributorDetails This parameter enhances the contributors element of the status response to include the screen_name of the contributor. By default only the user_id of the contributor is included.
-     * @param  bool[optional]   $includeEntities    The entities node will be disincluded when set to false.
-     * @return array
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function statusesHomeTimeline(
-        $count = null, $sinceId = null, $maxId = null, $trimUser = null,
-        $excludeReplies = null, $contributorDetails = null,
-        $includeEntities = null
-    )
-    {
-        // build parameters
-        $parameters = null;
-        if ($count != null) {
-            $parameters['count'] = (int) $count;
-        }
-        if ($sinceId != null) {
-            $parameters['since_id'] = (string) $sinceId;
-        }
-        if ($maxId != null) {
-            $parameters['max_id'] = (string) $maxId;
-        }
-        if ($trimUser != null) {
-            $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
-        }
-        if ($excludeReplies != null) {
-            $parameters['exclude_replies'] = ($excludeReplies) ? 'true' : 'false';
-        }
-        if ($contributorDetails != null) {
-            $parameters['contributor_details'] = ($contributorDetails) ? 'true' : 'false';
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+	public function statusesRetweetedToMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
+	{
+		try{
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
-        // make the call
-        return (array) $this->doCall(
-            'statuses/home_timeline.json',
-            $parameters, true
-        );
-    }
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/retweeted_by_me.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Returns the most recent tweets authored by the authenticating user that have recently been retweeted by others. This timeline is a subset of the user's GET statuses/user_timeline.
+     * Returns the 20 most recent tweets of the authenticated user that have been retweeted by others.
      *
-     * @param  int[optional]    $count               Specifies the number of records to retrieve. Must be less than or equal to 100. If omitted, 20 will be assumed.
-     * @param  string[optional] $sinceId             Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.
-     * @param  string[optional] $maxId               Returns results with an ID less than (that is, older than) or equal to the specified ID.
-     * @param  bool[optional]   $trimUser            When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @param  bool[optional]   $includeEntities     The tweet entities node will be disincluded when set to false.
-     * @param  bool[optional]   $includeUserEntities The user entities node will be disincluded when set to false.
-     * @return array
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function statusesRetweetsOfMe(
-        $count = null, $sinceId = null, $maxId = null,
-        $trimUser = null, $includeEntities = null, $includeUserEntities = null
-    )
-    {
-        // build parameters
-        $parameters = null;
-        if ($count != null) {
-            $parameters['count'] = (int) $count;
-        }
-        if ($sinceId != null) {
-            $parameters['since_id'] = (string) $sinceId;
-        }
-        if ($maxId != null) {
-            $parameters['max_id'] = (string) $maxId;
-        }
-        if ($trimUser != null) {
-            $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($includeUserEntities != null) {
-            $parameters['include_user_entities'] = ($includeUserEntities) ? 'true' : 'false';
-        }
+	public function statusesReweetsOfMe($sinceId = null, $maxId = null, $count = null, $page = null, $trimUser = false, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
-        // make the call
-        return (array) $this->doCall(
-            'statuses/retweets_of_me.json',
-            $parameters, true
-        );
-    }
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/retweets_of_me.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
 
 // Tweets resources
+	/**
+	 * Returns a single status, specified by the id parameter below. The status's author will be returned inline.
+	 *
+	 * @return	array
+	 * @param	string $id							The numerical ID of the desired status.
+	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesShow($id, $trimUser = false, $includeEntities = false)
+	{
+		// build parameters
+		$parameters['id'] = (string) $id;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/show.json', $parameters, true);
+	}
+
+
+	/**
+	 * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
+	 *
+	 * @return	array
+	 * @param	string $status							The text of your status update, up to 140 characters. URL encode as necessary.
+	 * @param	string[optional] $inReplyToStatusId		The ID of an existing status that the update is in reply to.
+	 * @param	float[optional] $lat					The location's latitude that this tweet refers to.
+	 * @param	float[optional] $long					The location's longitude that this tweet refers to.
+	 * @param	string[optional] $placeId				A place in the world. These IDs can be retrieved from geo/reverse_geocode.
+	 * @param	bool[optional] $displayCoordinates		Whether or not to put a pin on the exact coordinates a tweet has been sent from.
+	 * @param	bool[optional] $trimUser				When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+	 * @param	bool[optional] $includeEntities			When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesUpdate($status, $inReplyToStatusId = null, $lat = null, $long = null, $placeId = null, $displayCoordinates = false, $trimUser = false, $includeEntities = false)
+	{
+		// build parameters
+		$parameters['status'] = (string) $status;
+		if($inReplyToStatusId != null) $parameters['in_reply_to_status_id'] = (string) $inReplyToStatusId;
+		if($lat != null) $parameters['lat'] = (float) $lat;
+		if($long != null) $parameters['long'] = (float) $long;
+		if($placeId != null) $parameters['place_id'] = (string) $placeId;
+		if($displayCoordinates) $parameters['display_coordinates'] = 'true';
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/update.json', $parameters, true, 'POST');
+	}
+
+
+	/**
+	 * Destroys the status specified by the required ID parameter.
+	 * Usage note: The authenticating user must be the author of the specified status.
+	 *
+	 * @return	bool
+	 * @param	string $id							The numerical ID of the desired status.
+	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesDestroy($id, $trimUser = false, $includeEntities = false)
+	{
+		// build parameters
+		$parameters['id'] = (string) $id;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/destroy.json', $parameters, true, 'POST');
+	}
+
+
+	/**
+	 * Retweets a tweet. Returns the original tweet with retweet details embedded.
+	 *
+	 * @return	array
+	 * @param	string $id							The numerical ID of the desired status.
+	 * @param	bool[optional] $trimUser			When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesRetweet($id, $trimUser = false, $includeEntities = false)
+	{
+		$parameters = null;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/retweet/' . $id . '.json', $parameters, true, 'POST');
+	}
+
     /**
      * Returns up to 100 of the first retweets of a given tweet.
      *
-     * @param  string         $id       The numerical ID of the desired status.
-     * @param  int[optional]  $count    Specifies the number of records to retrieve. Must be less than or equal to 100.
-     * @param  bool[optional] $trimUser When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @return array
+     * @return    array
+     * @param    string $id                            The numerical ID of the desired status.
+     * @param    int[optional] $count                Specifies the number of records to retrieve. May not be greater than 100.
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function statusesRetweets($id, $count = null, $trimUser = null)
-    {
-        // build parameters
-        $parameters = null;
-        if ($count != null) {
-            $parameters['count'] = (int) $count;
-        }
-        if ($trimUser != null) {
-            $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
-        }
+	public function statusesRetweets($id, $count = null, $trimUser = false, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($count != null && $count > 100) throw new TwitterException('Count may not be greater than 100.');
 
-        // make the call
-        return (array) $this->doCall(
-            'statuses/retweets/' . (string) $id . '.json',
-            $parameters
-        );
-    }
+		// build parameters
+		$parameters = null;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/retweets/' . $id . '.json', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Returns a single Tweet, specified by the id parameter. The Tweet's author will also be embedded within the tweet.
+     * Show user objects of up to 100 members who retweeted the status.
      *
-     * @param  string         $id               The numerical ID of the desired Tweet.
-     * @param  bool[optional] $trimUser         When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @param  bool[optional] $includeMyRetweet When set to true, any Tweets returned that have been retweeted by the authenticating user will include an additional current_user_retweet node, containing the ID of the source status for the retweet.
-     * @param  bool[optional] $includeEntities  The entities node will be disincluded when set to false.
-     * @return array
+     * @return    array
+     * @param    string $id                            The numerical ID of the desired status.
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function statusesShow(
-        $id, $trimUser = null, $includeMyRetweet = null, $includeEntities = null
-    )
-    {
-        // build parameters
-        $parameters['id'] = (string) $id;
-        if ($trimUser != null) {
-            $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
-        }
-        if ($includeMyRetweet != null) {
-            $parameters['include_my_retweet'] = ($includeMyRetweet) ? 'true' : 'false';
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+	public function statusesIdRetweetedBy($id, $count = null, $page = null, $trimUser = false, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
-        // make the call
-        return (array) $this->doCall(
-            'statuses/show.json',
-            $parameters, true
-        );
-    }
+		// build parameters
+		$parameters = null;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/' . (string) $id . '/retweeted_by.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Destroys the status specified by the required ID parameter. The authenticating user must be the author of the specified status. Returns the destroyed status if successful.
+     * Show user ids of up to 100 users who retweeted the status.
      *
-     * @param  string         $id       The numerical ID of the desired status.
-     * @param  bool[optional] $trimUser When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @return array
+     * @return    array
+     * @param    string $id                            The numerical ID of the desired status.
+     * @param null $count
+     * @param null $page
+     * @param bool $trimUser
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $trimUser            When set to true each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function statusesDestroy($id, $trimUser = null)
-    {
-        // build parameters
-        $parameters = null;
-        if($trimUser != null) $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
+	public function statusesIdRetweetedByIds($id, $count = null, $page = null, $trimUser = false, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
-        // make the call
-        return (array) $this->doCall(
-            'statuses/destroy/' . (string) $id . '.json',
-            $parameters, true, 'POST'
-        );
-    }
+		// build parameters
+		$parameters = null;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($trimUser) $parameters['trim_user'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-    /**
-     * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
-     *
-     * @param  string           $status             The text of your status update, typically up to 140 characters. URL encode as necessary. t.co link wrapping may effect character counts. There are some special commands in this field to be aware of. For instance, preceding a message with "D " or "M " and following it with a screen name can create a direct message to that user if the relationship allows for it.
-     * @param  string[optional] $inReplyToStatusId  The ID of an existing status that the update is in reply to. Note: This parameter will be ignored unless the author of the tweet this parameter references is mentioned within the status text. Therefore, you must include @username, where username is the author of the referenced tweet, within the update.
-     * @param  float[optional]  $lat                The latitude of the location this tweet refers to. This parameter will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding long parameter.
-     * @param  float[optional]  $long               The longitude of the location this tweet refers to. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This parameter will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding lat parameter.
-     * @param  string[optional] $placeId            A place in the world. These IDs can be retrieved from GET geo/reverse_geocode.
-     * @param  bool[optional]   $displayCoordinates Whether or not to put a pin on the exact coordinates a tweet has been sent from.
-     * @param  bool[optional]   $trimUser           When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @return array
-     */
-    public function statusesUpdate(
-        $status, $inReplyToStatusId = null, $lat = null, $long = null,
-        $placeId = null, $displayCoordinates = null, $trimUser = null
-    )
-    {
-        // build parameters
-        $parameters['status'] = (string) $status;
-        if ($inReplyToStatusId != null) {
-            $parameters['in_reply_to_status_id'] = (string) $inReplyToStatusId;
-        }
-        if ($lat != null) {
-            $parameters['lat'] = (float) $lat;
-        }
-        if ($long != null) {
-            $parameters['long'] = (float) $long;
-        }
-        if ($placeId != null) {
-            $parameters['place_id'] = (string) $placeId;
-        }
-        if ($displayCoordinates != null) {
-            $parameters['display_coordinates'] = ($displayCoordinates) ? 'true' : 'false';
-        }
-        if ($trimUser) {
-            $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
-        }
+		// make the call
+		return (array) $this->doCall('statuses/' . (string) $id . '/retweeted_by/ids.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
-        // make the call
-        return (array) $this->doCall(
-            'statuses/update.json',
-            $parameters, true, 'POST'
-        );
-    }
-
-    /**
-     * Retweets a tweet. Returns the original tweet with retweet details embedded.
-     *
-     * @param  string         $id       The numerical ID of the desired status.
-     * @param  bool[optional] $trimUser When set to true, each tweet returned in a timeline will include a user object including only the status authors numerical ID. Omit this parameter to receive the complete user object.
-     * @return array
-     */
-    public function statusesRetweet($id, $trimUser = null)
-    {
-        $parameters = null;
-        if ($trimUser != null) {
-            $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'statuses/retweet/' . $id . '.json',
-            $parameters, true, 'POST'
-        );
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function statusesUpdateWithMedia()
-    {
-        throw new Exception('Not Implemented');
-    }
-
-    /**
-     * @param  string[optional] $id         The Tweet/status ID to return embed code for.
-     * @param  string[optional] $url        The URL of the Tweet/status to be embedded.
-     * @param  int[optional]    $maxwidth   The maximum width in pixels that the embed should be rendered at. This value is constrained to be between 250 and 550 pixels. Note that Twitter does not support the oEmbed maxheight parameter. Tweets are fundamentally text, and are therefore of unpredictable height that cannot be scaled like an image or video. Relatedly, the oEmbed response will not provide a value for height. Implementations that need consistent heights for Tweets should refer to the hide_thread and hide_media parameters below.
-     * @param  bool[optional]   $hideMedia  Specifies whether the embedded Tweet should automatically expand images which were uploaded via POST statuses/update_with_media. When set to true images will not be expanded. Defaults to false.
-     * @param  bool[optional]   $hideThread Specifies whether the embedded Tweet should automatically show the original message in the case that the embedded Tweet is a reply. When set to true the original Tweet will not be shown. Defaults to false.
-     * @param  bool[optional]   $omitScript Specifies whether the embedded Tweet HTML should include a <script> element pointing to widgets.js. In cases where a page already includes widgets.js, setting this value to true will prevent a redundant script element from being included. When set to true the <script> element will not be included in the embed HTML, meaning that pages must include a reference to widgets.js manually. Defaults to false.
-     * @param  string[optional] $align      Specifies whether the embedded Tweet should be left aligned, right aligned, or centered in the page. Valid values are left, right, center, and none. Defaults to none, meaning no alignment styles are specified for the Tweet.
-     * @param  string[optional] $related    A value for the TWT related parameter, as described in Web Intents. This value will be forwarded to all Web Intents calls.
-     * @param  string[optional] $lang       Language code for the rendered embed. This will affect the text and localization of the rendered HTML.
-     * @return array
-     */
-    public function statusesOEmbed(
-        $id = null, $url = null, $maxwidth = null, $hideMedia = null,
-        $hideThread = null, $omitScript = null, $align = null, $related = null,
-        $lang = null
-    )
-    {
-        if ($id == null && $url == null) {
-            throw new Exception('Either id or url should be specified.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if ($id != null) {
-            $parameters['id'] = (string) $id;
-        }
-        if ($url != null) {
-            $parameters['url'] = (string) $url;
-        }
-        if ($maxwidth != null) {
-            $parameters['maxwidth'] = (int) $maxwidth;
-        }
-        if ($hideMedia != null) {
-            $parameters['hide_media'] = ($hideMedia) ? 'true' : 'false';
-        }
-        if ($hideThread != null) {
-            $parameters['hide_thread'] = ($hideThread) ? 'true' : 'false';
-        }
-        if ($omitScript != null) {
-            $parameters['omit_script'] = ($omitScript) ? 'true' : 'false';
-        }
-        if ($align != null) {
-            $parameters['align'] = (string) $align;
-        }
-        if ($related != null) {
-            $parameters['related'] = (string) $related;
-        }
-        if ($lang != null) {
-            $parameters['lang'] = (string) $lang;
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'statuses/oembed.json',
-            $parameters
-        );
-    }
-
-// Search resources
-    /**
-     * Returns tweets that match a specified query.
-     *
-     * @param  string           $q               A UTF-8, URL-encoded search query of 1,000 characters maximum, including operators. Queries may additionally be limited by complexity.
-     * @param  string[optional] $geocode         Returns tweets by users located within a given radius of the given latitude/longitude. The location is preferentially taking from the Geotagging API, but will fall back to their Twitter profile. The parameter value is specified by "latitude,longitude,radius", where radius units must be specified as either "mi" (miles) or "km" (kilometers). Note that you cannot use the near operator via the API to geocode arbitrary locations; however you can use this geocode parameter to search near geocodes directly. A maximum of 1,000 distinct "sub-regions" will be considered when using the radius modifier.
-     * @param  string[optional] $lang            Restricts tweets to the given language, given by an ISO 639-1 code. Language detection is best-effort.
-     * @param  string[optional] $locale          Specify the language of the query you are sending (only ja is currently effective). This is intended for language-specific consumers and the default should work in the majority of cases.
-     * @param  string[optional] $resultType      Specifies what type of search results you would prefer to receive. The current default is "mixed." Valid values include: mixed: Include both popular and real time results in the response, recent: return only the most recent results in the response, popular: return only the most popular results in the response.
-     * @param  int[optional]    $count           The number of tweets to return per page, up to a maximum of 100. Defaults to 15. This was formerly the "rpp" parameter in the old Search API.
-     * @param  string[optional] $until           Returns tweets generated before the given date. Date should be formatted as YYYY-MM-DD. Keep in mind that the search index may not go back as far as the date you specify here.
-     * @param  string[optional] $sinceId         Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.
-     * @param  string[optional] $maxId           Returns results with an ID less than (that is, older than) or equal to the specified ID.
-     * @param  bool[optional]   $includeEntities The entities node will be disincluded when set to false.
-     * @return array
-     */
-    public function searchTweets(
-        $q, $geocode = null, $lang = null, $locale = null, $resultType= null,
-        $count = null, $until = null, $sinceId = null, $maxId = null,
-        $includeEntities = null
-    )
-    {
-        $parameters['q'] = (string) $q;
-        if ($geocode !== null) {
-            $parameters['geocode'] = (string) $geocode;
-        }
-        if ($lang !== null) {
-            $parameters['lang'] = (string) $lang;
-        }
-        if ($locale !== null) {
-            $parameters['locale'] = (string) $locale;
-        }
-        if ($resultType !== null) {
-            $parameters['result_type'] = (string) $resultType;
-        }
-        if ($count !== null) {
-            $parameters['count'] = (int) $count;
-        }
-        if ($until !== null) {
-            $parameters['until'] = (string) $until;
-        }
-        if ($sinceId !== null) {
-            $parameters['since_id'] = (string) $sinceId;
-        }
-        if ($maxId !== null) {
-            $parameters['max_id'] = (string) $maxId;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-
-        return (array) $this->doCall(
-            'search/tweets.json',
-            $parameters
-        );
-    }
-
-// Streaming resources
-    /**
-     * Not implemented yet
-     */
-    public function statusesFilter()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function statusesSample()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function statusesFirehose()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function user()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function site()
-    {
-        throw new Exception('Not implemented');
-    }
-
-// Direct Messages resources
-    /**
-     * Returns the 20 most recent direct messages sent to the authenticating user. Includes detailed information about the sender and recipient user. You can request up to 200 direct messages per call, up to a maximum of 800 incoming DMs.
-     * Important: This method requires an access token with RWD (read, write & direct message) permissions. Consult The Application Permission Model for more information.
-     *
-     * @param  string[optional] $sinceId         Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.
-     * @param  string[optional] $maxId           Returns results with an ID less than (that is, older than) or equal to the specified ID.
-     * @param  int[optional]    $count           Specifies the number of direct messages to try and retrieve, up to a maximum of 200. The value of count is best thought of as a limit to the number of Tweets to return because suspended or deleted content is removed after the count has been applied.
-     * @param  int[optional]    $page            Specifies the page of results to retrieve.
-     * @param  bool[optional]   $includeEntities The entities node will not be included when set to false.
-     * @param  bool[optional]   $skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
-     * @return array
-     */
-    public function directMessages(
-        $sinceId = null, $maxId = null, $count = null, $page = null,
-        $includeEntities = null, $skipStatus = null
-    )
-    {
-        // build parameters
-        $parameters = array();
-        if ($sinceId != null) {
-            $parameters['since_id'] = (string) $sinceId;
-        }
-        if ($maxId != null) {
-            $parameters['max_id'] = (string) $maxId;
-        }
-        if ($count != null) {
-            $parameters['count'] = (int) $count;
-        }
-        if ($page != null) {
-            $parameters['page'] = (int) $page;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'direct_messages.json',
-            $parameters, true
-        );
-    }
-
-    /**
-     * Returns the 20 most recent direct messages sent by the authenticating user. Includes detailed information about the sender and recipient user. You can request up to 200 direct messages per call, up to a maximum of 800 outgoing DMs.
-     * Important: This method requires an access token with RWD (read, write & direct message) permissions. Consult The Application Permission Model for more information.
-     *
-     * @param  string[optional] $sinceId         Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.
-     * @param  string[optional] $maxId           Returns results with an ID less than (that is, older than) or equal to the specified ID.
-     * @param  int[optional]    $count           Specifies the number of records to retrieve. Must be less than or equal to 200.
-     * @param  int[optional]    $page            Specifies the page of results to retrieve.
-     * @param  bool[optional]   $includeEntities The entities node will not be included when set to false.
-     * @return array
-     */
-    public function directMessagesSent(
-        $sinceId = null, $maxId = null, $count = null, $page = null,
-        $includeEntities = null
-    )
-    {
-        // build parameters
-        $parameters = array();
-        if ($sinceId != null) {
-            $parameters['since_id'] = (string) $sinceId;
-        }
-        if ($maxId != null) {
-            $parameters['max_id'] = (string) $maxId;
-        }
-        if ($count != null) {
-            $parameters['count'] = (int) $count;
-        }
-        if ($page != null) {
-            $parameters['page'] = (int) $page;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'direct_messages/sent.json',
-            $parameters, true
-        );
-    }
-
-    /**
-     *
-     * @param  string $id The ID of the direct message.
-     * @return array
-     */
-    public function directMessagesShow($id)
-    {
-        // build parameters
-        $parameters['id'] = (string) $id;
-
-        // make the call
-        return (array) $this->doCall(
-            'direct_messages/show.json',
-            $parameters, true
-        );
-    }
-
-    /**
-     * Destroys the direct message specified in the required ID parameter. The authenticating user must be the recipient of the specified direct message.
-     * Important: This method requires an access token with RWD (read, write & direct message) permissions. Consult The Application Permission Model for more information.
-     *
-     * @param  string         $id              The ID of the direct message to delete.
-     * @param  bool[optional] $includeEntities The entities node will not be included when set to false.
-     * @return array
-     */
-    public function directMessagesDestroy($id, $includeEntities = null)
-    {
-        // build parameters
-        $parameters['id'] = (string) $id;
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'direct_messages/destroy.json',
-            $parameters, true, 'POST'
-        );
-    }
-
-    /**
-     * Sends a new direct message to the specified user from the authenticating user. Requires both the user and text parameters and must be a POST. Returns the sent message in the requested format if successful.
-     *
-     * @param  string[optional] $userId     The ID of the user who should receive the direct message. Helpful for disambiguating when a valid user ID is also a valid screen name.
-     * @param  string[optional] $screenName The screen name of the user who should receive the direct message. Helpful for disambiguating when a valid screen name is also a user ID.
-     * @param  string           $text       The text of your direct message. Be sure to URL encode as necessary, and keep the message under 140 characters.
-     * @return array
-     */
-    public function directMessagesNew(
-        $userId = null, $screenName = null, $text
-    )
-    {
-        // validate
-        if ($userId == null && $screenName == null) {
-            throw new Exception('One of user_id or screen_name are required.');
-        }
-
-        // build parameters
-        $parameters['text'] = (string) $text;
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'direct_messages/new.json',
-            $parameters, true, 'POST'
-        );
-    }
-
-// Friends & Followers resources
-    /**
-     * Returns a cursored collection of user IDs for every user the specified user is following (otherwise known as their "friends").
-     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 5,000 user IDs and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See Using cursors to navigate collections for more information.
-     * This method is especially powerful when used in conjunction with GET users/lookup, a method that allows you to convert user IDs into full user objects in bulk.
-     *
-     * @param  string[optional] $userId       The ID of the user for whom to return results for.
-     * @param  string[optional] $screenName   The screen name of the user for whom to return results for.
-     * @param  string[optional] $cursor       Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page." The response from the API will include a previous_cursor and next_cursor to allow paging back and forth
-     * @param  bool[optional]   $stringifyIds Many programming environments will not consume our Tweet ids due to their size. Provide this option to have ids returned as strings instead.
-     * @return array
-     */
-    public function friendsIds(
-        $userId = null, $screenName = null, $cursor = null, $stringifyIds = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($cursor != null) {
-            $parameters['cursor'] = (string) $cursor;
-        }
-        if ($stringifyIds !== null) {
-            $parameters['stringify_ids'] = ((bool) $stringifyIds) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall('friends/ids.json', $parameters, true);
-    }
-
-    /**
-     * Returns a cursored collection of user IDs for every user following the specified user.
-     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 5,000 user IDs and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See Using cursors to navigate collections for more information.
-     * This method is especially powerful when used in conjunction with GET users/lookup, a method that allows you to convert user IDs into full user objects in bulk.
-     *
-     * @param  string[optional] $userId       The ID of the user for whom to return results for.
-     * @param  string[optional] $screenName   The screen name of the user for whom to return results for.
-     * @param  string[optional] $cursor       Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page." The response from the API will include a previous_cursor and next_cursor to allow paging back and forth
-     * @param  bool[optional]   $stringifyIds Many programming environments will not consume our Tweet ids due to their size. Provide this option to have ids returned as strings instead.
-     * @return array
-     */
-    public function followersIds(
-        $userId = null, $screenName = null, $cursor = null, $stringifyIds = true
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($cursor != null) {
-            $parameters['cursor'] = (string) $cursor;
-        }
-        $parameters['stringify_ids'] = ((bool) $stringifyIds) ? 'true' : 'false';
-
-        // make the call
-        return (array) $this->doCall('followers/ids.json', $parameters, true);
-    }
-
-    /**
-     * Returns the relationships of the authenticating user to the comma-separated list of up to 100 screen_names or user_ids provided.
-     * Values for connections can be: following, following_requested, followed_by, none.
-     *
-     * @param  mixed[optional] $userIds     An array of user IDs, up to 100 are allowed in a single request.
-     * @param  mixed[optional] $screenNames An array of screen names, up to 100 are allowed in a single request.
-     * @return array
-     */
-    public function friendshipsLookup($userIds = null, $screenNames = null)
-    {
-        // redefine
-        $userIds = (array) $userIds;
-        $screenNames = (array) $screenNames;
-
-        // validate
-        if (empty($userIds) && empty($screenNames)) {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if (!empty($userIds)) {
-            $parameters['user_id'] = implode(',', $userIds);
-        }
-        if (!empty($screenNames)) {
-            $parameters['screen_name'] = implode(',', $screenNames);
-        }
-
-        // make the call
-        return (array) $this->doCall('friendships/lookup.json', $parameters, true);
-    }
-
-    /**
-     * Returns a collection of numeric IDs for every user who has a pending request to follow the authenticating user.
-     *
-     * @param string[optional] $cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
-      * @param  bool[optional] 	$stringifyIds	Many programming environments will not consume our Tweet ids due to their size. Provide this option to have ids returned as strings instead.
-     * @return array
-     */
-    public function friendshipsIncoming($cursor = null, $stringifyIds = true)
-    {
-        // build parameters
-        $parameters = null;
-        if($cursor != null) $parameters['cursor'] = (string) $cursor;
-        $parameters['stringify_ids'] = ((bool) $stringifyIds) ? 'true' : 'false';
-
-        // make the call
-        return (array) $this->doCall(
-            'friendships/incoming.json', $parameters, true
-        );
-    }
-
-    /**
-     * Returns a collection of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
-     *
-     * @param  string[optional] $cursor       Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
-     * @param  bool[optional]   $stringifyIds Many programming environments will not consume our Tweet ids due to their size. Provide this option to have ids returned as strings instead.
-     * @return array
-     */
-    public function friendshipsOutgoing($cursor = null, $stringifyIds = true)
-    {
-        // build parameters
-        $parameters = null;
-        if($cursor != null) $parameters['cursor'] = (string) $cursor;
-        $parameters['stringify_ids'] = ((bool) $stringifyIds) ? 'true' : 'false';
-
-        // make the call
-        return (array) $this->doCall(
-            'friendships/outgoing.json', $parameters, true
-        );
-    }
-
-    /**
-     * Allows the authenticating users to follow the user specified in the ID parameter.
-     * Returns the befriended user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. If you are already friends with the user a HTTP 403 may be returned, though for performance reasons you may get a 200 OK message even if the friendship already exists.
-     * Actions taken in this method are asynchronous and changes will be eventually consistent.
-     *
-     * @param  string[optional] $userId     The ID of the user for whom to befriend.
-     * @param  string[optional] $screenName The screen name of the user for whom to befriend.
-     * @param  bool[optional]   $follow     Enable notifications for the target user.
-     * @return array
-     */
-    public function friendshipsCreate(
-        $userId = null, $screenName = null, $follow = false
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        $parameters['follow'] = ($follow) ? 'true' : 'false';
-
-        // make the call
-        return (array) $this->doCall(
-            'friendships/create.json', $parameters, true, 'POST'
-        );
-    }
-
-    /**
-     * Allows the authenticating user to unfollow the user specified in the ID parameter.
-     * Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful.
-     * Actions taken in this method are asynchronous and changes will be eventually consistent.
-     *
-     * @param  string[optional] $userId     The ID of the user for whom to unfollow.
-     * @param  string[optional] $screenName The screen name of the user for whom to unfollow.
-     * @return array
-     */
-    public function friendshipsDestroy($userId = null, $screenName = null)
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'friendships/destroy.json', $parameters, true, 'POST'
-        );
-    }
-
-    /**
-     * Allows one to enable or disable retweets and device notifications from the specified user.
-     *
-     * @param  string[optional] $userId     The ID of the user for whom to befriend.
-     * @param  string[optional] $screenName The screen name of the user for whom to befriend.
-     * @param  bool[optional]   $device     Enable/disable device notifications from the target user.
-     * @param  bool[optional]   $retweets   Enable/disable retweets from the target user.
-     * @return array
-     */
-    public function friendshipsUpdate(
-        $userId = null, $screenName = null, $device = null, $retweets = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($device !== null) {
-            $parameters['device'] = ((bool) $device) ? 'true' : 'false';
-        }
-        if ($retweets !== null) {
-            $parameters['retweets'] = ((bool) $retweets) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'friendships/update.json', $parameters, true, 'POST'
-        );
-    }
-
-    /**
-     * Returns detailed information about the relationship between two arbitrary users.
-     *
-     * @param  string[optional] $sourceId         The user_id of the subject user.
-     * @param  string[optional] $sourceScreenName The screen_name of the subject user.
-     * @param  string[optional] $targetId         The screen_name of the subject user.
-     * @param  string[optional] $targetScreenName The screen_name of the target user.
-     * @return array
-     */
-    public function friendshipsShow(
-        $sourceId = null, $sourceScreenName = null, $targetId = null,
-        $targetScreenName = null)
-    {
-        // validate
-        if ($sourceId == '' && $sourceScreenName == '') {
-            throw new Exception('Specify an sourceId or a sourceScreenName.');
-        }
-        if ($targetId == '' && $targetScreenName == '') {
-            throw new Exception('Specify an targetId or a targetScreenName.');
-        }
-
-        // build parameters
-        if ($sourceId != null) {
-            $parameters['source_id'] = (string) $sourceId;
-        }
-        if ($sourceScreenName != null) {
-            $parameters['source_screen_name'] = (string) $sourceScreenName;
-        }
-        if ($targetId != null) {
-            $parameters['target_id'] = (string) $targetId;
-        }
-        if ($targetScreenName != null) {
-            $parameters['target_screen_name'] = (string) $targetScreenName;
-        }
-
-        // make the call
-        return (array) $this->doCall('friendships/show.json', $parameters);
-    }
-
-    /**
-     * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").
-     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See Using cursors to navigate collections for more information.
-     *
-     * @param  string[optional] $userId          The ID of the user for whom to return results for.
-     * @param  string[optional] $screenName      The screen name of the user for whom to return results for.
-     * @param  int[optional]    $cursor          Causes the results to be broken into pages of no more than 20 records at a time. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
-     * @param  bool[optional]   $includeEntities The user object entities node will be disincluded when set to false.
-     * @param  bool[optional]   $skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
-     * @return array
-     */
-    public function friendsList(
-        $userId = null, $screenName = null, $cursor = null,
-        $includeEntities = null, $skipStatus = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($cursor !== null) {
-            $parameters['cursor'] = (int) $cursor;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_user_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'friends/list.json', $parameters, true
-        );
-    }
-
-    /**
-     * Returns a cursored collection of user objects for users following the specified user.
-     * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See Using cursors to navigate collections for more information.
-     *
-     * @param  string[optional] $userId          The ID of the user for whom to return results for.
-     * @param  string[optional] $screenName      The screen name of the user for whom to return results for.
-     * @param  int[optional]    $cursor          Causes the results to be broken into pages of no more than 20 records at a time. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
-     * @param  bool[optional]   $includeEntities The user object entities node will be disincluded when set to false.
-     * @param  bool[optional]   $skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
-     * @return array
-     */
-    public function followersList(
-        $userId = null, $screenName = null, $cursor = null,
-        $includeEntities = null, $skipStatus = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($cursor !== null) {
-            $parameters['cursor'] = (int) $cursor;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_user_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'followers/list.json', $parameters, true
-        );
-    }
 
 // User resources
     /**
-     * Returns settings (including current trend, geo and sleep time information) for the authenticating user.
+     * Returns extended information of a given user, specified by ID or screen name as per the required id parameter.
+     * The author's most recent status will be returned inline.
      *
-     * @return array
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $string [optional] $screenName        Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function accountSettings()
-    {
-        // make the call
-        return (array) $this->doCall(
-            'account/settings.json', null, true
-        );
-    }
+	public function usersShow($userId = null, $screenName = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
+
+		// build parameters
+		$parameters = null;
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('users/show.json', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not. Use this method to test if supplied user credentials are valid.
+     * Return up to 100 users worth of extended information, specified by either ID, screen name, or combination of the two.
+     * The author's most recent status (if the authenticating user has permission) will be returned inline.
      *
-     * @param  bool[optional] $includeEntities The entities node will not be included when set to false.
-     * @param  bool[optional] $skipStatus      When set to true, statuses will not be included in the returned user objects.
-     * @return array
+     * @return    array
+     * @param null $userIds
+     * @param null $screenNames
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $mixed [optional] $userIds            An array of user IDs, up to 100 in total.
+     * @internal param $mixed [optional] $screenNames        An array of screen names, up to 100 in total.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function accountVerifyCredentials(
-        $includeEntities = null, $skipStatus = null
-    )
-    {
-        // build parameters
-        $parameters = null;
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
+	public function usersLookup($userIds = null, $screenNames = null, $includeEntities = false)
+	{
+		try {
+		// redefine
+		$userIds = (array) $userIds;
+		$screenNames = (array) $screenNames;
 
-        // make the call
-        return (array) $this->doCall(
-            'account/verify_credentials.json', $parameters, true
-        );
-    }
+		// validate
+		if(empty($userIds) && empty($screenNames)) throw new TwitterException('Specify an userId or a screenName.');
+
+		// build parameters
+		$parameters = null;
+		if(!empty($userIds)) $parameters['user_id'] = implode(',', $userIds);
+		if(!empty($screenNames)) $parameters['screen_name'] = implode(',', $screenNames);
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('users/lookup.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Run a search for users similar to the Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API.
+	 * Usage note: It is only possible to retrieve the first 1000 matches from this API.
+	 *
+	 * @return	array
+	 * @param	string $q							The search query term.
+	 * @param	int[optional] $perPage				Specifies the number of results to retrieve.
+	 * @param	int[optional] $page					Specifies the page of results to retrieve.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function usersSearch($q, $perPage = null, $page = null, $includeEntities = false)
+	{
+		// build parameters
+		$parameters['q'] = (string) $q;
+		if($perPage != null) $parameters['per_page'] = (int) $perPage;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('users/search.json', $parameters, true);
+	}
+
+
+	/**
+	 * Access to Twitter's suggested user list. This returns the list of suggested user categories. The category can be used in the users/suggestions/category  endpoint to get the users in that category.
+	 *
+	 * @return	array
+	 */
+	public function usersSuggestions()
+	{
+		return (array) $this->doCall('users/suggestions.json');
+	}
+
+
+	/**
+	 * Access the users in a given category of the Twitter suggested user list.
+	 * It is recommended that end clients cache this data for no more than one hour.
+	 *
+	 * @return	array
+	 * @param	string $slug	The short name of list or a category.
+	 */
+	public function usersSuggestionsSlug($slug)
+	{
+		return (array) $this->doCall('users/suggestions/' . (string) $slug . '.json');
+	}
 
     /**
-     * Updates the authenticating user's settings.
+     * Access the profile image in various sizes for the user with the indicated screen_name. If no size is provided the normal image is returned.
+     * This method return an URL to the actual image resource.
+     * This method should only be used by application developers to lookup or check the profile image URL for a user.
+     * This method must not be used as the image source URL presented to users of your application.
      *
-     * @param  string[optional] $trendLocationWoeId The Yahoo! Where On Earth ID to use as the user's default trend location. Global information is available by using 1 as the WOEID. The woeid must be one of the locations returned by trendsAvailable.
-     * @param  bool[optional]   $sleepTimeEnabled   When set to true, will enable sleep time for the user. Sleep time is the time when push or SMS notifications should not be sent to the user.
-     * @param  string[optional] $startSleepTime     The hour that sleep time should begin if it is enabled. The value for this parameter should be provided in ISO8601 format (i.e. 00-23). The time is considered to be in the same timezone as the user's time_zone setting.
-     * @param  string[optional] $endSleepTime       The hour that sleep time should end if it is enabled. The value for this parameter should be provided in ISO8601 format (i.e. 00-23). The time is considered to be in the same timezone as the user's time_zone setting.
-     * @param  string[optional] $timeZone           The timezone dates and times should be displayed in for the user. The timezone must be one of the Rails TimeZone names.
-     * @param  string[optional] $lang               The language which Twitter should render in for this user. The language must be specified by the appropriate two letter ISO 639-1 representation. Currently supported languages are provided by helpLanguages.
-     * @return array
+     * @return    string
+     * @param    string $screenName            The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @param string $size
+     * @throws TwitterException
+     * @internal param $string [optional] $size        Specifies the size of image to fetch. Not specifying a size will give the default, normal size of 48px by 48px. Valid options include: bigger (73x73px), normal (48x48px), mini (24x24px).
      */
-    public function accountSettingsUpdate(
-        $trendLocationWoeId = null, $sleepTimeEnabled = null,
-        $startSleepTime = null, $endSleepTime = null, $timeZone = null,
-        $lang = null
-    )
-    {
-        // build parameters
-        if ($trendLocationWoeId !== null) {
-            $parameters['trend_location_woeid'] = (string) $trendLocationWoeId;
-        }
-        if ($sleepTimeEnabled !== null) {
-            if ((bool) $sleepTimeEnabled) {
-                $parameters['sleep_time_enabled'] = 'true';
-            } else {
-                $parameters['sleep_time_enabled'] = 'false';
-            }
-        }
-        if ($startSleepTime !== null) {
-            $parameters['start_sleep_time'] = (string) $startSleepTime;
-        }
-        if ($endSleepTime !== null) {
-            $parameters['end_sleep_time'] = (string) $endSleepTime;
-        }
-        if ($timeZone !== null) {
-            $parameters['time_zone'] = (string) $timeZone;
-        }
-        if ($lang !== null) {
-            $parameters['lang'] = (string) $lang;
-        }
+	public function usersProfileImage($screenName, $size = 'normal')
+	{
+		try {
+		// possible modes
+		$allowedSizes = array('normal', 'bigger', 'mini');
 
-        // make the call
-        return (array) $this->doCall(
-            'account/settings.json', $parameters, true, 'POST'
-        );
-    }
+		// validate
+		if($size != null && !in_array($size, $allowedSizes)) throw new TwitterException('Invalid size (' . $size . '), possible values are: ' . implode($allowedSizes) . '.');
+
+		// build parameters
+		$parameters['size'] = (string) $size;
+
+		$headers = $this->doCall('users/profile_image/' . (string) $screenName . '.json', $parameters, false, 'GET', null, false, true);
+
+		// return the URL
+		if(isset($headers['url'])) return $headers['url'];
+
+		// fallback
+		return false;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Returns a user's friends, each with current status inline. They are ordered by the order in which the user followed them, most recently followed first, 100 at a time.
+	 * (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
+	 *
+	 * Use the cursor option to access older friends.
+	 * With no user specified, request defaults to the authenticated user's friends.
+	 * It's also possible to request another user's friends list via the id, screen_name or user_id parameter.
+	 *
+	 * @return	array
+	 * @param	string[optional] $userId			Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+	 * @param	string[optional] $screenName		Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+	 * @param	int[optional] $cursor				Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesFriends($userId = null, $screenName = null, $cursor = null, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = array();
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($cursor != null) $parameters['cursor'] = $cursor;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/friends.json', $parameters, true);
+	}
+
+
+	/**
+	 * Returns the authenticating user's followers, each with current status inline. They are ordered by the order in which they followed the user, 100 at a time. (Please note that the result set isn't guaranteed to be 100 every time as suspended users will be filtered out.)
+	 * Use the cursor parameter to access earlier followers.
+	 *
+	 * @return	array
+	 * @param	string[optional] $userId			Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+	 * @param	string[optional] $screenName		Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+	 * @param	int[optional] $cursor				Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function statusesFollowers($userId = null, $screenName = null, $cursor = null, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = array();
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($cursor != null) $parameters['cursor'] = $cursor;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('statuses/followers.json', $parameters, true);
+	}
+
+
+// Trends resources
+	/**
+	 * Returns the top ten topics that are currently trending on Twitter.
+	 * The response includes the time of the request, the name of each trend, and the url to the Twitter Search results page for that topic.
+	 *
+	 * @return	array
+	 */
+	public function trends()
+	{
+		return (array) $this->doCall('trends.json');
+	}
+
+
+	/**
+	 * Returns the current top 10 trending topics on Twitter. The response includes the time of the request, the name of each trending topic, and query used on Twitter Search results page for that topic.
+	 *
+	 * @return	array
+	 * @param	string[optional] $exclude	Setting this equal to hashtags will remove all hashtags from the trends list.
+	 */
+	public function trendsCurrent($exclude = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($exclude != null) $parameters['exclude'] = (string) $exclude;
+
+		// make the call
+		return (array) $this->doCall('trends/current.json', $parameters);
+	}
+
+
+	/**
+	 * Returns the top 20 trending topics for each hour in a given day.
+	 *
+	 * @return	array
+	 * @param	string[optional] $date		Permits specifying a start date for the report. The date should be formatted YYYY-MM-DD.
+	 * @param	string[optional] $exclude	Setting this equal to hashtags will remove all hashtags from the trends list.
+	 */
+	public function trendsDaily($date = null, $exclude = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($date != null) $parameters['date'] = (string) $date;
+		if($exclude != null) $parameters['exclude'] = (string) $exclude;
+
+		// make the call
+		return (array) $this->doCall('trends/daily.json', $parameters);
+	}
+
+
+	/**
+	 * Returns the top 30 trending topics for each day in a given week.
+	 *
+	 * @return	array
+	 * @param	string[optional] $date		Permits specifying a start date for the report. The date should be formatted YYYY-MM-DD.
+	 * @param	string[optional] $exclude	Setting this equal to hashtags will remove all hashtags from the trends list.
+	 */
+	public function trendsWeekly($date = null, $exclude = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($date != null) $parameters['date'] = (string) $date;
+		if($exclude != null) $parameters['exclude'] = (string) $exclude;
+
+		// make the call
+		return (array) $this->doCall('trends/weekly.json', $parameters);
+	}
+
+
+// List resources
+    /**
+     * Creates a new list for the authenticated user. Accounts are limited to 20 lists.
+     *
+     * @return    array
+     * @param    string $user                    The user.
+     * @param    string $name                    The name of the list you are creating.
+     * @param null $mode
+     * @param null $description
+     * @throws TwitterException
+     * @internal param $string [optional] $mode            Whether your list is public or private. Values can be public or private. Lists are public by default if no mode is specified.
+     * @internal param $string [optional] $description    The description of the list you are creating.
+     */
+	public function userListsCreate($user, $name, $mode = null, $description = null)
+	{
+		try {
+		// possible modes
+		$allowedModes = array('public', 'private');
+
+		// validate
+		if($mode != null && !in_array($mode, $allowedModes)) throw new TwitterException('Invalid mode (), possible values are: ' . implode($allowedModes) . '.');
+
+		// build parameters
+		$parameters['name'] = (string) $name;
+		if($mode != null) $parameters['mode'] = (string) $mode;
+		if($description != null) $parameters['description'] = (string) $description;
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/lists.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user who's lists are being returned.
+	 *
+	 * @return	array
+	 * @param	string $user				The user.
+	 * @param	string[optional] $cursor	Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 */
+	public function userLists($user, $cursor = null)
+	{
+		$parameters = null;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/lists.json', $parameters, true);
+	}
+
+
+	/**
+	 * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
+	 *
+	 * @return	array
+	 * @param	string $user	The user.
+	 * @param	string $id		The id of the list.
+	 */
+	public function userListsId($user, $id)
+	{
+		// make the call
+		return (array) $this->doCall((string) $user . '/lists/' . (string) $id . '.json', null, true);
+	}
 
     /**
-     * Sets which device Twitter delivers updates to for the authenticating user. Sending none as the device parameter will disable SMS updates.
+     * Updates the specified list.
      *
-     * @return array
-     * @param  string         $device          Must be one of: sms, none.
-     * @param  bool[optional] $includeEntities When set to true, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags. While entities are opt-in on timelines at present, they will be made a default component of output in the future. See Tweet Entities for more detail on entities.
+     * @return    array
+     * @param    string $user                    The user.
+     * @param    string $id                        The id of the list.
+     * @param null $name
+     * @param null $mode
+     * @param null $description
+     * @throws TwitterException
+     * @internal param $string [optional] $name            The name of the list you are creating.
+     * @internal param $string [optional] $mode            Whether your list is public or private. Values can be public or private. Lists are public by default if no mode is specified.
+     * @internal param $string [optional] $description    The description of the list you are creating.
      */
-    public function accountUpdateDeliveryDevice(
-        $device, $includeEntities = null
-    )
-    {
-        // build parameters
-        $parameters['device'] = (string) $device;
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+	public function userListsIdUpdate($user, $id, $name = null, $mode = null, $description = null)
+	{
+		try {
+		// possible modes
+		$allowedModes = array('public', 'private');
 
-        // make the call
-        return (array) $this->doCall(
-            'account/update_delivery_device.json', $parameters, true, 'POST'
-        );
-    }
+		// validate
+		if($mode != null && !in_array($mode, $allowedModes)) throw new TwitterException('Invalid mode (), possible values are: ' . implode($allowedModes) . '.');
+
+		// build parameters
+		if($name != null) $parameters['name'] = (string) $name;
+		if($mode != null) $parameters['mode'] = (string) $mode;
+		if($description != null) $parameters['description'] = (string) $description;
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/lists/' . (string) $id . '.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified will be updated.
+     * Show tweet timeline for members of the specified list.
      *
-     * @return array
-     * @param  string[optional] $name            Full name associated with the profile. Maximum of 20 characters.
-     * @param  string[optional] $url             URL associated with the profile. Will be prepended with "http://" if not present. Maximum of 100 characters.
-     * @param  string[optional] $location        The city or country describing where the user of the account is located. The contents are not normalized or geocoded in any way. Maximum of 30 characters.
-     * @param  string[optional] $description     A description of the user owning the account. Maximum of 160 characters.
-     * @param  bool[optional]   $includeEntities The entities node will not be included when set to false.
-     * @param  bool[optional]   $skipStatus      When set to true, statuses will not be included in the returned user objects.
+     * @return    array
+     * @param    string $user                        The user.
+     * @param    string $id                            The id of the list.
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function accountUpdateProfile($name = null, $url = null, $location = null, $description = null, $includeEntities = null, $skipStatus = null)
-    {
-        // build parameters
-        $parameters = null;
-        if ($name != null) {
-            $parameters['name'] = (string) $name;
-        }
-        if ($url != null) {
-            $parameters['url'] = (string) $url;
-        }
-        if ($location != null) {
-            $parameters['location'] = (string) $location;
-        }
-        if ($description != null) {
-            $parameters['description'] = (string) $description;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
+	public function userListsIdStatuses($user, $id, $sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
 
-        // make the call
-        return (array) $this->doCall(
-            'account/update_profile.json', $parameters, true, 'POST'
-        );
-    }
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['per_page'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/lists/' . (string) $id . '/statuses.json', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * List the lists the specified user has been added to.
+	 *
+	 * @return	array
+	 * @param	string $user				The user.
+	 * @param	string[optional] $cursor	Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 */
+	public function userListsMemberships($user, $cursor = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/lists/memberships.json', $parameters, true);
+	}
+
+
+	/**
+	 * List the lists the specified user follows.
+	 *
+	 * @return	array
+	 * @param	string $user				The user.
+	 * @param	string[optional] $cursor	Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 */
+	public function userListsSubscriptions($user, $cursor = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/lists/subscriptions.json', $parameters, true);
+	}
+
+
+// List Members resources
+	/**
+	 * Returns the members of the specified list.
+	 *
+	 * @return	array
+	 * @param	string $user						The user.
+	 * @param	string $id							The id of the list.
+	 * @param	string[optional] $cursor			Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function userListMembers($user, $id, $cursor = null, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = null;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/' . (string) $id . '/members.json', $parameters, true);
+	}
+
+
+	/**
+	 * Add a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members.
+	 *
+	 * @return	array
+	 * @param	string $user	The user.
+	 * @param	string $id		The id of the list.
+	 * @param	string $userId	The id or screen name of the user to add as a member of the list.
+	 */
+	public function userListMembersCreate($user, $id, $userId)
+	{
+		// build parameters
+		$parameters['id'] = (string) $userId;
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/' . (string) $id . '/members.json', $parameters, true, 'POST');
+	}
 
     /**
-     * Updates the authenticating user's profile background image.
+     * Adds multiple members to a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to add members to it. Lists are limited to having 500 members, and you are limited to adding up to 100 members to a list at a time with this method.
      *
-     * @return array
-     * @param  string         $image           The path to the background image for the profile. Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size. Images with width larger than 2048 pixels will be forceably scaled down.
-     * @param  bool[optional] $tile            Whether or not to tile the background image. If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-     * @param  bool[optional] $includeEntities When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @return    array
+     * @param    string $user                    The user.
+     * @param    string $id                        The id of the list.
+     * @param null $userIds
+     * @param null $screenNames
+     * @throws TwitterException
+     * @internal param $mixed [optional] $userIds        An array of user IDs, up to 100 in total.
+     * @internal param $mixed [optional] $screenNames    An array of screen names, up to 100 in total.
      */
-    public function accountUpdateProfileBackgroundImage($image, $tile = false, $includeEntities = null)
-    {
-        // validate
-        if (!file_exists($image)) {
-            throw new Exception('Image (' . $image . ') doesn\'t exists.');
-        }
+	public function userListMembersCreateAll($user, $id, $userIds = null, $screenNames = null)
+	{
+		try {
+		// redefine
+		$userIds = (array) $userIds;
+		$screenNames = (array) $screenNames;
 
-        // build parameters
-        $parameters = null;
-        if($tile) $parameters['tile'] = 'true';
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+		// validate
+		if(empty($userIds) && empty($screenNames)) throw new TwitterException('Specify an userId or a screenName.');
 
-        // make the call
-        return (array) $this->doCall(
-            'account/update_profile_background_image.json',
-            $parameters, true, 'POST', $image
-        );
-    }
+		// build parameters
+		$parameters = null;
+		if(!empty($userIds)) $parameters['user_id'] = implode(',', $userIds);
+		if(!empty($screenNames)) $parameters['screen_name'] = implode(',', $screenNames);
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/' . (string) $id . '/create_all.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
+	 *
+	 * @return	mixed
+	 * @param	string $user	The user.
+	 * @param	string $id		The id of the list.
+	 * @param	string $userId	Specfies the ID of the user for whom to return results for.
+	 */
+	public function userListMembersDelete($user, $id, $userId)
+	{
+		// build parameters
+		$parameters['id'] = (string) $userId;
+		$parameters['_method'] = 'DELETE';
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/' . (string) $id . '/members.json', $parameters, true, 'POST');
+	}
+
+    /**
+     * Check if a user is a member of the specified list.
+     *
+     * @return    mixed
+     * @param    string $user                        The user.
+     * @param    string $id                            The id of the list.
+     * @param    string $userId                        Specfies the ID of the user for whom to return results for.
+     * @param bool $includeEntities [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @throws TwitterException
+     */
+	public function userListMembersId($user, $id, $userId, $includeEntities = false)
+	{
+		try
+		{
+			// build parameters
+			$parameters = null;
+			if($includeEntities) $parameters['include_entities'] = 'true';
+
+			// make the call
+			return (array) $this->doCall((string) $user . '/' . (string) $id . '/members/' . (string) $userId . '.json', $parameters, true);
+		}
+
+		// catch exceptions
+		catch(TwitterException $e)
+		{
+			if($e->getMessage() == 'The specified user is not a member of this list') return false;
+			else throw $e;
+		}
+	}
+
+
+// List Subscribers resources
+	/**
+	 * Returns the subscribers of the specified list.
+	 *
+	 * @return	array
+	 * @param	string $user						The user.
+	 * @param	string $id							The id of the list.
+	 * @param	string[optional] $cursor			Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function userListSubscribers($user, $id, $cursor = null, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = null;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/' . (string) $id . '/subscribers.json', $parameters, true);
+	}
+
+
+	/**
+	 * Make the authenticated user follow the specified list.
+	 *
+	 * @return	array
+	 * @param	string $user	The user.
+	 * @param	string $id		The id of the list.
+	 */
+	public function userListSubscribersCreate($user, $id)
+	{
+		// make the call
+		return (array) $this->doCall((string) $user . '/' . (string) $id . '/subscribers.json', null, true, 'POST');
+	}
+
+
+	/**
+	 * Unsubscribes the authenticated user form the specified list.
+	 *
+	 * @return	array
+	 * @param	string $user	The user.
+	 * @param	string $id		The id of the list.
+	 */
+	public function userListSubscribersDelete($user, $id)
+	{
+		// build parameters
+		$parameters['_method'] = 'DELETE';
+
+		// make the call
+		return (array) $this->doCall((string) $user . '/' . (string) $id . '/subscribers.json', $parameters, true, 'POST');
+	}
+
+    /**
+     * Check if the specified user is a subscriber of the specified list.
+     *
+     * @return    mixed
+     * @param    string $user                        The user.
+     * @param    string $id                            The id of the list.
+     * @param    string $userId                        Specfies the ID of the user for whom to return results for.
+     * @param bool $includeEntities [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @throws TwitterException
+     */
+	public function userListSubscribersId($user, $id, $userId, $includeEntities = false)
+	{
+		try
+		{
+			// build parameters
+			$parameters = null;
+			if($includeEntities) $parameters['include_entities'] = 'true';
+
+			// make the call
+			return (array) $this->doCall((string) $user . '/' . (string) $id . '/subscribers/' . (string) $userId . '.json', $parameters, true);
+		}
+
+		// catch exceptions
+		catch(TwitterException $e)
+		{
+			if($e->getMessage() == 'The specified user is not a subscriber of this list') return false;
+			else throw $e;
+		}
+
+	}
+
+
+// Direct Messages resources
+    /**
+     * Returns a list of the 20 most recent direct messages sent to the authenticating user.
+     *
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
+	public function directMessages($sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
+
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('direct_messages.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+    /**
+     * Returns a list of the 20 most recent direct messages sent by the authenticating user.
+     *
+     * @return    array
+     * @param null $sinceId
+     * @param null $maxId
+     * @param null $count
+     * @param null $page
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $sinceId            Returns results with an ID greater than (that is, more recent than) the specified ID.
+     * @internal param $string [optional] $maxId                Returns results with an ID less than (that is, older than) or equal to the specified ID.
+     * @internal param $int [optional] $count                Specifies the number of records to retrieve. May not be greater than 200.
+     * @internal param $int [optional] $page                    Specifies the page of results to retrieve.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
+	public function directMessagesSent($sinceId = null, $maxId = null, $count = null, $page = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($count != null && $count > 200) throw new TwitterException('Count may not be greater than 200.');
+
+		// build parameters
+		$parameters = array();
+		if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
+		if($maxId != null) $parameters['max_id'] = (string) $maxId;
+		if($count != null) $parameters['count'] = (int) $count;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('direct_messages/sent.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+    /**
+     * Sends a new direct message to the specified user from the authenticating user.
+     * Requires both the user and text parameters. Returns the sent message in the requested format when successful.
+     *
+     * @return    array
+     * @param    string $text                        The text of your direct message. Be sure to URL encode as necessary, and keep it under 140 characters.
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
+	public function directMessagesNew($text, $userId = null, $screenName = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
+
+		// build parameters
+		$parameters['text'] = (string) $text;
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('direct_messages/new.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Destroys the direct message specified in the required ID parameter. The authenticating user must be the recipient of the specified direct message.
+	 *
+	 * @return	array
+	 * @param	string $id							The ID of the desired direct message.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function directMessagesDestroy($id, $includeEntities = false)
+	{
+		// build parameters
+		$parameters['id'] = (string) $id;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('direct_messages/destroy.json', $parameters, true, 'POST');
+	}
+
+
+// Friendship resources
+    /**
+     * Allows the authenticating users to follow the user specified in the ID parameter.
+     * Returns the befriended user in the requested format when successful.
+     * Returns a string describing the failure condition when unsuccessful.
+     *
+     * @return    mixed
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $follow
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $follow                Returns public statuses that reference the given set of users.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
+	public function friendshipsCreate($userId = null, $screenName = null, $follow = false, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
+
+		// build parameters
+		$parameters = null;
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		$parameters['follow'] = ($follow) ? 'true' : 'false';
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('friendships/create.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+    /**
+     * Allows the authenticating users to unfollow the user specified in the ID parameter.
+     * Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     */
+	public function friendshipsDestroy($userId = null, $screenName = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
+
+		// build parameters
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('friendships/destroy.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Tests for the existence of friendship between two users. Will return true if user_a follows user_b, otherwise will return false.
+	 *
+	 * @return	bool
+	 * @param	string $userA	The ID or screen_name of the subject user.
+	 * @param	string $userB	The ID or screen_name of the user to test for following.
+	 */
+	public function friendshipsExists($userA, $userB)
+	{
+		// build parameters
+		$parameters['user_a'] = (string) $userA;
+		$parameters['user_b'] = (string) $userB;
+
+		// make the call
+		return (bool) $this->doCall('friendships/exists.json', $parameters);
+	}
+
+    /**
+     * Returns detailed information about the relationship between two users.
+     *
+     * @return    array
+     * @param null $sourceId
+     * @param null $sourceScreenName
+     * @param null $targetId
+     * @param null $targetScreenName
+     * @throws TwitterException
+     * @internal param $string [optional] $sourceId                The user_id of the subject user.
+     * @internal param $string [optional] $sourceScreenName        The screen_name of the subject user.
+     * @internal param $string [optional] $targetId                The screen_name of the subject user.
+     * @internal param $string [optional] $targetScreenName        The screen_name of the target user.
+     */
+	public function friendshipsShow($sourceId = null, $sourceScreenName = null, $targetId = null, $targetScreenName = null)
+	{
+		try {
+		// validate
+		if($sourceId == '' && $sourceScreenName == '') throw new TwitterException('Specify an sourceId or a sourceScreenName.');
+		if($targetId == '' && $targetScreenName == '') throw new TwitterException('Specify an targetId or a targetScreenName.');
+
+		// build parameters
+		if($sourceId != null) $parameters['source_id'] = (string) $sourceId;
+		if($sourceScreenName != null) $parameters['source_screen_name'] = (string) $sourceScreenName;
+		if($targetId != null) $parameters['target_id'] = (string) $targetId;
+		if($targetScreenName != null) $parameters['target_screen_name'] = (string) $targetScreenName;
+
+		// make the call
+		return (array) $this->doCall('friendships/show.json', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Returns an array of numeric IDs for every user who has a pending request to follow the authenticating user.
+	 *
+	 * @return	array
+	 * @param	string[optional] $cursor	Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 */
+	public function friendshipsIncoming($cursor = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+
+		// make the call
+		return (array) $this->doCall('friendships/incoming.json', $parameters, true);
+	}
+
+
+	/**
+	 * Returns an array of numeric IDs for every protected user for whom the authenticating user has a pending follow request.
+	 *
+	 * @return	array
+	 * @param	string[optional] $cursor	Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+	 */
+	public function friendshipsOutgoing($cursor = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+
+		// make the call
+		return (array) $this->doCall('friendships/outgoing.json', $parameters, true);
+	}
+
+
+// Friends and Followers resources
+    /**
+     * Returns an array of numeric IDs for every user the specified user is following.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param null $cursor
+     * @throws TwitterException
+     * @internal param $string [optional] $userId        Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName    Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $string [optional] $cursor    Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+     */
+	public function friendsIds($userId = null, $screenName = null, $cursor = null)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
+
+		// build parameters
+		$parameters = null;
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+
+		// make the call
+		return (array) $this->doCall('friends/ids.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+    /**
+     * Returns an array of numeric IDs for every user following the specified user.
+     *
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param null $cursor
+     * @throws TwitterException
+     * @internal param $string [optional] $userId        Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName    Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $string [optional] $cursor    Breaks the results into pages. This is recommended for users who are following many users. Provide a value of -1  to begin paging. Provide values as returned to in the response body's next_cursor  and previous_cursor attributes to page back and forth in the list.
+     */
+	public function followersIds($userId = null, $screenName = null, $cursor = null)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
+
+		// build parameters
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($cursor != null) $parameters['cursor'] = (string) $cursor;
+
+		// make the call
+		return (array) $this->doCall('followers/ids.json', $parameters, true);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+// Account resources
+	/**
+	 * Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not. Use this method to test if supplied user credentials are valid.
+	 *
+	 * @return	array
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function accountVerifyCredentials($includeEntities = false)
+	{
+		// build parameters
+		$parameters = null;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('account/verify_credentials.json', $parameters, true);
+	}
+
+
+	/**
+	 * Returns the remaining number of API requests available to the requesting user before the API limit is reached for the current hour. Calls to rate_limit_status do not count against the rate limit.
+	 * If authentication credentials are provided, the rate limit status for the authenticating user is returned. Otherwise, the rate limit status for the requester's IP address is returned.
+	 *
+	 * @return	array
+	 */
+	public function accountRateLimitStatus()
+	{
+		// make the call
+		return (array) $this->doCall('account/rate_limit_status.json', null);
+	}
+
+    /**
+     * Ends the session of the authenticating user, returning a null cookie. Use this method to sign users out of client-facing applications like widgets.
+     *
+     * @throws TwitterException
+     * @return    bool
+     */
+	public function accountEndSession()
+	{
+		try
+		{
+			// make the call
+			$this->doCall('account/end_session.json', null, true, 'POST');
+		}
+
+		// catch exceptions
+		catch(TwitterException $e)
+		{
+			if($e->getMessage() == 'Logged out.') return true;
+			else throw $e;
+		}
+	}
+
+
+	/**
+	 * Sets which device Twitter delivers updates to for the authenticating user. Sending none as the device parameter will disable IM or SMS updates.
+	 *
+	 * @return	array
+	 * @param	string $device						Delivery device type to send updates to.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function accountUpdateDeliveryDevices($device, $includeEntities = false)
+	{
+		// build parameters
+		$parameters['device'] = (string) $device;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('account/update_delivery_device.json', $parameters, true, 'POST');
+	}
 
     /**
      * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com.
      * Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).
      *
-     * @return array
-     * @param  string[optional] $profileBackgroundColor    Profile background color.
-     * @param  string[optional] $profileTextColor          Profile text color.
-     * @param  string[optional] $profileLinkColor          Profile link color.
-     * @param  string[optional] $profileSidebarFillColor   Profile sidebar's background color.
-     * @param  string[optional] $profileSidebarBorderColor Profile sidebar's border color.
-     * @param  bool[optional]   $includeEntities           When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @return    array
+     * @param null $profileBackgroundColor
+     * @param null $profileTextColor
+     * @param null $profileLinkColor
+     * @param null $profileSidebarFillColor
+     * @param null $profileSidebarBorderColor
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $profileBackgroundColor        Profile background color.
+     * @internal param $string [optional] $profileTextColor                Profile text color.
+     * @internal param $string [optional] $profileLinkColor                Profile link color.
+     * @internal param $string [optional] $profileSidebarFillColor        Profile sidebar's background color.
+     * @internal param $string [optional] $profileSidebarBorderColor        Profile sidebar's border color.
+     * @internal param $bool [optional] $includeEntities                    When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function accountUpdateProfileColors(
-        $profileBackgroundColor = null, $profileTextColor = null,
-        $profileLinkColor = null, $profileSidebarFillColor = null,
-        $profileSidebarBorderColor = null, $includeEntities = null
-    )
-    {
-        // validate
-        if ($profileBackgroundColor == '' && $profileTextColor == '' &&
-            $profileLinkColor == '' && $profileSidebarFillColor == '' &&
-            $profileSidebarBorderColor == ''
-        )
-        {
-            throw new Exception('Specify a profileBackgroundColor, profileTextColor, profileLinkColor, profileSidebarFillColor or a profileSidebarBorderColor.');
-        }
+	public function accountUpdateProfileColors($profileBackgroundColor = null, $profileTextColor = null, $profileLinkColor = null, $profileSidebarFillColor = null, $profileSidebarBorderColor = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($profileBackgroundColor == '' && $profileTextColor == '' && $profileLinkColor == '' && $profileSidebarFillColor == '' && $profileSidebarBorderColor == '') throw new TwitterException('Specify a profileBackgroundColor, profileTextColor, profileLinkColor, profileSidebarFillColor or a profileSidebarBorderColor.');
 
-        // build parameters
-        if ($profileBackgroundColor != null) {
-            $parameters['profile_background_color'] = (string) $profileBackgroundColor;
-        }
-        if ($profileTextColor != null) {
-            $parameters['profile_text_color'] = (string) $profileTextColor;
-        }
-        if ($profileLinkColor != null) {
-            $parameters['profile_link_color'] = (string) $profileLinkColor;
-        }
-        if ($profileSidebarFillColor != null) {
-            $parameters['profile_sidebar_fill_color'] = (string) $profileSidebarFillColor;
-        }
-        if ($profileSidebarBorderColor != null) {
-            $parameters['profile_sidebar_border_color'] = (string) $profileSidebarBorderColor;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+		// build parameters
+		if($profileBackgroundColor != null) $parameters['profile_background_color'] = (string) $profileBackgroundColor;
+		if($profileTextColor != null) $parameters['profile_text_color'] = (string) $profileTextColor;
+		if($profileLinkColor != null) $parameters['profile_link_color'] = (string) $profileLinkColor;
+		if($profileSidebarFillColor != null) $parameters['profile_sidebar_fill_color'] = (string) $profileSidebarFillColor;
+		if($profileSidebarBorderColor != null) $parameters['profile_sidebar_border_color'] = (string) $profileSidebarBorderColor;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-        // make the call
-        return (array) $this->doCall(
-            'account/update_profile_colors.json', $parameters, true, 'POST'
-        );
-    }
+		// make the call
+		return (array) $this->doCall('account/update_profile_colors.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
      * Updates the authenticating user's profile image.
      *
-     * @return array
-     * @param  string         $image           The path to the avatar image for the profile. Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size. Images with width larger than 500 pixels will be scaled down.
-     * @param  bool[optional] $includeEntities When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @return    array
+     * @param    string $image                        The path to the avatar image for the profile. Must be a valid GIF, JPG, or PNG image of less than 700 kilobytes in size. Images with width larger than 500 pixels will be scaled down.
+     * @param bool $includeEntities [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+     * @throws TwitterException
      */
-    public function accountUpdateProfileImage($image, $includeEntities = null)
-    {
-        // validate
-        if (!file_exists($image)) {
-            throw new Exception('Image (' . $image . ') doesn\'t exists.');
-        }
+	public function accountUpdateProfileImage($image, $includeEntities = false)
+	{
+		try {
+		// validate
+		if(!file_exists($image)) throw new TwitterException('Image (' . $image . ') doesn\'t exists.');
 
-        // build parameters
-        $parameters = null;
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+		// build parameters
+		$parameters = null;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-        // make the call
-        return (array) $this->doCall(
-            'account/update_profile_image.json',
-            $parameters, true, 'POST', $image
-        );
-    }
+		// make the call
+		return (array) $this->doCall('account/update_profile_image.json', $parameters, true, 'POST', $image);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Not implemented yet
-     * @param  int[optional]  $cursor          Causes the results to be broken into pages of no more than 20 records at a time. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
-     * @param  bool[optional] $includeEntities The user object entities node will be disincluded when set to false.
-     * @param  bool[optional] $skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
-     * @return array
-     */
-    public function blocksList(
-        $cursor = null, $includeEntities = null, $skipStatus = null
-    )
-    {
-        // build parameters
-        $parameters = null;
-        if ($cursor !== null) {
-            $parameters['cursor'] = (int) $cursor;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_user_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'blocks/list.json', $parameters, true
-        );
-    }
-
-    /**
-     * Returns an array of numeric user ids the authenticating user is blocking.
+     * Updates the authenticating user's profile background image.
      *
-     * @param  string[optional] $cursor       Causes the list of IDs to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. If no cursor is provided, a value of -1 will be assumed, which is the first "page."
-     * @param  bool[optional]   $stringifyIds Many programming environments will not consume our ids due to their size. Provide this option to have ids returned as strings instead.
-     * @return array
+     * @return    array
+     * @param    string $image                        The path to the background image for the profile. Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size. Images with width larger than 2048 pixels will be forceably scaled down.
+     * @param bool $tile
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $bool [optional] $tile                Whether or not to tile the background image. If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function blocksIds($cursor = null, $stringifyIds = null)
-    {
-        // build parameters
-        $parameters = null;
-        if ($cursor != null) {
-            $parameters['cursor'] = (string) $cursor;
-        }
-        if ($stringifyIds !== null) {
-            $parameters['stringify_ids'] = ((bool) $stringifyIds) ? 'true' : 'false';
-        }
+	public function accountUpdateProfileBackgroundImage($image, $tile = false, $includeEntities = false)
+	{
+		try {
+		// validate
+		if(!file_exists($image)) throw new TwitterException('Image (' . $image . ') doesn\'t exists.');
 
-        // make the call
-        return (array) $this->doCall(
-            'blocks/ids.json', $parameters, true
-        );
-    }
+		// build parameters
+		$parameters = null;
+		if($tile) $parameters['tile'] = 'true';
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-    /**
-     * Blocks the specified user from following the authenticating user. In addition the blocked user will not show in the authenticating users mentions or timeline (unless retweeted by another user). If a follow or friend relationship exists it is destroyed.
-     *
-     * @param  string[optional] $userId          The ID of the potentially blocked user. Helpful for disambiguating when a valid user ID is also a valid screen name.
-     * @param  string[optional] $screenName      The screen name of the potentially blocked user. Helpful for disambiguating when a valid screen name is also a user ID.
-     * @param  bool[optional]   $includeEntities The entities node will not be included when set to false.
-     * @param  bool[optional]   $skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
-     * @return array
-     */
-    public function blocksCreate(
-        $userId = null, $screenName = null,
-        $includeEntities = null, $skipStatus = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
+		// make the call
+		return (array) $this->doCall('account/update_profile_background_image.json', $parameters, true, 'POST', $image);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
-        // build parameters
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
 
-        // make the call
-        return (array) $this->doCall(
-            'blocks/create.json', $parameters, true, 'POST'
-        );
-    }
+	/**
+	 * Sets values that users are able to set under the "Account" tab of their settings page. Only the parameters specified will be updated.
+	 *
+	 * @return	array
+	 * @param	string[optional] $name			Full name associated with the profile. Maximum of 20 characters.
+	 * @param	string[optional] $url			URL associated with the profile. Will be prepended with "http://" if not present. Maximum of 100 characters.
+	 * @param	string[optional] $location		The city or country describing where the user of the account is located. The contents are not normalized or geocoded in any way. Maximum of 30 characters.
+	 * @param	string[optional] $description	A description of the user owning the account. Maximum of 160 characters.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function accountUpdateProfile($name = null, $url = null, $location = null, $description = null, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = null;
+		if($name != null) $parameters['name'] = (string) $name;
+		if($url != null) $parameters['url'] = (string) $url;
+		if($location != null) $parameters['location'] = (string) $location;
+		if($description != null) $parameters['description'] = (string) $description;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-    /**
-     * Un-blocks the user specified in the ID parameter for the authenticating user. Returns the un-blocked user in the requested format when successful. If relationships existed before the block was instated, they will not be restored.
-     *
-     * @param  string[optional] $userId          The ID of the potentially blocked user. Helpful for disambiguating when a valid user ID is also a valid screen name.
-     * @param  string[optional] $screenName      The screen name of the potentially blocked user. Helpful for disambiguating when a valid screen name is also a user ID.
-     * @param  bool[optional]   $includeEntities The entities node will not be included when set to false.
-     * @param  bool[optional]   $skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
-     * @return array
-     */
-    public function blocksDestroy(
-        $userId = null, $screenName = null,
-        $includeEntities = null, $skipStatus = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
+		// make the call
+		return (array) $this->doCall('account/update_profile.json', $parameters, true, 'POST');
+	}
 
-        // build parameters
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'blocks/destroy.json', $parameters, true, 'POST'
-        );
-    }
-
-    /**
-     * Returns fully-hydrated user objects for up to 100 users per request, as specified by comma-separated values passed to the user_id and/or screen_name parameters.
-     *
-     * @param  mixed[optional] $userIds         An array of user IDs, up to 100 are allowed in a single request.
-     * @param  mixed[optional] $screenNames     An array of screen names, up to 100 are allowed in a single request.
-     * @param  bool[optional]  $includeEntities The entities node that may appear within embedded statuses will be disincluded when set to false.
-     * @return array
-     */
-    public function usersLookup(
-        $userIds = null, $screenNames = null, $includeEntities = null
-    )
-    {
-        // redefine
-        $userIds = (array) $userIds;
-        $screenNames = (array) $screenNames;
-
-        // validate
-        if (empty($userIds) && empty($screenNames)) {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if (!empty($userIds)) {
-            $parameters['user_id'] = implode(',', $userIds);
-        }
-        if (!empty($screenNames)) {
-            $parameters['screen_name'] = implode(',', $screenNames);
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall('users/lookup.json', $parameters, true);
-
-    }
-
-    /**
-     * Returns a variety of information about the user specified by the required user_id or screen_name parameter.
-     * The author's most recent Tweet will be returned inline when possible.
-     *
-     * @param  string[optional] $userId          The screen name of the user for whom to return results for. Either a id or screen_name is required for this method.
-     * @param  string[optional] $screenName      The ID of the user for whom to return results for. Either an id or screen_name is required for this method.
-     * @param  bool[optional]   $includeEntities The entities node will not be included when set to false.
-     * @return array
-     */
-    public function usersShow(
-        $userId = null, $screenName = null, $includeEntities = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : '0';
-        }
-
-        // make the call
-        return (array) $this->doCall('users/show.json', $parameters);
-    }
-
-    /**
-     * Run a search for users similar to the Find People button on Twitter.com; the same results returned by people search on Twitter.com will be returned by using this API.
-     * Usage note: It is only possible to retrieve the first 1000 matches from this API.
-     *
-     * @param  string         $q               The search query to run against people search.
-     * @param  int[optional]  $page            Specifies the page of results to retrieve.
-     * @param  int[optional]  $count           The number of potential user results to retrieve per page. This value has a maximum of 20.
-     * @param  bool[optional] $includeEntities The entities node will be disincluded from embedded tweet objects when set to false.
-     * @return array
-     */
-    public function usersSearch(
-        $q, $page = null, $count = null, $includeEntities = null
-    )
-    {
-        // build parameters
-        $parameters['q'] = (string) $q;
-        if($page != null) $parameters['page'] = (int) $page;
-        if($count != null) $parameters['count'] = (int) $count;
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall('users/search.json', $parameters, true);
-    }
-
-    /**
-     * Returns a collection of users that the specified user can "contribute" to.
-     *
-     * @param  string[optional] $userId          The ID of the user for whom to return results for.
-     * @param  string[optional] $screenName      The screen name of the user for whom to return results for.
-     * @param  bool[optional]   $includeEntities The entities node will not be included when set to false.
-     * @param  bool[optional]   $skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
-     * @return array
-     */
-    public function usersContributees(
-        $userId = null, $screenName = null,
-        $includeEntities = null, $skipStatus = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'users/contributees.json', $parameters
-        );
-    }
-
-    /**
-     * Returns a collection of users who can contribute to the specified account.
-     *
-     * @param  string[optional] $userId          The ID of the user for whom to return results for.
-     * @param  string[optional] $screenName      The screen name of the user for whom to return results for.
-     * @param  bool[optional]   $includeEntities The entities node will not be included when set to false.
-     * @param  bool[optional]   $skipStatus      When set to either true, t or 1 statuses will not be included in the returned user objects.
-     * @return array
-     */
-    public function usersContributors(
-        $userId = null, $screenName = null,
-        $includeEntities = null, $skipStatus = null
-    )
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
-        if ($skipStatus !== null) {
-            $parameters['skip_status'] = ($skipStatus) ? 'true' : 'false';
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'users/contributors.json', $parameters
-        );
-    }
-
-    /**
-     * Removes the uploaded profile banner for the authenticating user.
-     *
-     * @return bool
-     */
-    public function accountRemoveProfileBanner()
-    {
-        $return = (array) $this->doCall(
-            'account/remove_profile_banner.json', null, true, 'POST',
-            null, false, true
-        );
-
-        return ($return['http_code'] == 200);
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function accountUpdateProfileBanner()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Returns a map of the available size variations of the specified user's profile banner. If the user has not uploaded a profile banner, a HTTP 404 will be served instead.
-     *
-     * @param  string[optional] $userId     The ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
-     * @param  string[optional] $screenName The screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
-     * @return array
-     */
-    public function usersProfileBanner($userId = null, $screenName = null)
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
-
-        // build parameters
-        $parameters = null;
-        if($userId != null) $parameters['user_id'] = (string) $userId;
-        if($screenName != null) $parameters['screen_name'] = (string) $screenName;
-
-        return (array) $this->doCall(
-            'users/profile_banner.json',
-            $parameters, true
-        );
-    }
-
-// Suggested users resources
-    /**
-     * Access the users in a given category of the Twitter suggested user list.
-     * It is recommended that applications cache this data for no more than one hour.
-     *
-     * @param  string           $slug The short name of list or a category.
-     * @param  string[optional] $lang Restricts the suggested categories to the requested language. The language must be specified by the appropriate two letter ISO 639-1 representation. Currently supported languages are provided by the helpLanguages API request. Unsupported language codes will receive English (en) results.
-     * @return array
-     */
-    public function usersSuggestionsSlug($slug, $lang = null)
-    {
-        $parameters = null;
-        if($lang != null) $parameters['lang'] = (string) $lang;
-
-        return (array) $this->doCall(
-            'users/suggestions/' . (string) $slug . '.json',
-            $parameters, true
-        );
-    }
-
-    /**
-     * Access to Twitter's suggested user list. This returns the list of suggested user categories. The category can be used in usersSuggestionsSlug to get the users in that category.
-     *
-     * @param  string[optional] $lang Restricts the suggested categories to the requested language. The language must be specified by the appropriate two letter ISO 639-1 representation. Currently supported languages are provided by the helpLanguages API request. Unsupported language codes will receive English (en) results.
-     * @return array
-     */
-    public function usersSuggestions($lang = null)
-    {
-        $parameters = null;
-        if($lang != null) $parameters['lang'] = (string) $lang;
-
-        return (array) $this->doCall(
-            'users/suggestions.json',
-            $parameters, true
-        );
-    }
-
-    /**
-     * Access the users in a given category of the Twitter suggested user list and return their most recent status if they are not a protected user.
-     *
-     * @param  string $slug The short name of list or a category
-     * @return array
-     */
-    public function usersSuggestionsSlugMembers($slug)
-    {
-        return (array) $this->doCall(
-            'users/suggestions/' . (string) $slug . '/members.json',
-            null, true
-        );
-    }
 
 // Favorites resources
+	/**
+	 * Returns the 20 most recent favorite statuses for the authenticating user or user specified by the ID parameter in the requested format.
+	 *
+	 * @return	array
+	 * @param	string[optional] $id				Specifies the ID or screen name of the user for whom to return results for.
+	 * @param	int[optional] $page					Specifies the page of results to retrieve.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function favorites($id = null, $page = null, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = null;
+		if($id != null) $parameters['id'] = (string) $id;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('favorites.json', $parameters, true);
+	}
+
+
+	/**
+	 * Favorites the status specified in the ID parameter as the authenticating user. Returns the favorite status when successful.
+	 *
+	 * @return	array
+	 * @param	string $id							The numerical ID of the desired status.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function favoritesCreate($id, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = null;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('favorites/create/' . $id . '.json', $parameters, true, 'POST');
+	}
+
+
+	/**
+	 * Un-favorites the status specified in the ID parameter as the authenticating user. Returns the un-favorited status in the requested format when successful.
+	 *
+	 * @return	array
+	 * @param	string $id							The numerical ID of the desired status.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function favoritesDestroy($id, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = null;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('favorites/destroy/' . $id . '.json', $parameters, true, 'POST');
+	}
+
+
+// Notification resources
     /**
-     * Returns the 20 most recent Tweets favorited by the authenticating or specified user.
+     * Enables device notifications for updates from the specified user. Returns the specified user when successful.
      *
-     * @param  string[otpional] $userId          The ID of the user for whom to return results for.
-     * @param  string[otpional] $screenName      The screen name of the user for whom to return results for.
-     * @param  int[optional]    $count           Specifies the number of records to retrieve. Must be less than or equal to 200. Defaults to 20.
-     * @param  string[otpional] $sinceId         Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.
-     * @param  string[otpional] $maxId           Returns results with an ID less than (that is, older than) or equal to the specified ID.
-     * @param  bool[optional]   $includeEntities The entities node will be omitted when set to false.
-     * @return array
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function favoritesList(
-        $userId = null, $screenName = null, $count = 20, $sinceId = null,
-        $maxId = null, $includeEntities = null)
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('Specify an userId or a screenName.');
-        }
+	public function notificationsFollow($userId = null, $screenName = null, $includeEntities = false)
+	{
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
-        // build parameters
-        $parameters = null;
-        if($userId != null) $parameters['user_id'] = (string) $userId;
-        if($screenName != null) $parameters['screen_name'] = (string) $screenName;
-        if($count != null) $parameters['count'] = (int) $count;
-        if($sinceId != null) $parameters['since_id'] = (string) $sinceId;
-        if($maxId != null) $parameters['max_id'] = (string) $maxId;
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+		// build parameters
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-        // make the call
-        return (array) $this->doCall('favorites/list.json', $parameters, true);
-    }
+		// make the call
+		return (array) $this->doCall('notifications/follow.json', $parameters, true, 'POST');
+	}
 
     /**
-     * Un-favorites the status specified in the ID parameter as the authenticating user. Returns the un-favorited status in the requested format when successful.
-     * This process invoked by this method is asynchronous. The immediately returned status may not indicate the resultant favorited status of the tweet. A 200 OK response from this method will indicate whether the intended action was successful or not.
+     * Disables notifications for updates from the specified user to the authenticating user. Returns the specified user when successful.
      *
-     * @return array
-     * @param  string         $id              The numerical ID of the desired status.
-     * @param  bool[optional] $includeEntities The entities node will be omitted when set to false.
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function favoritesDestroy($id, $includeEntities = null)
-    {
-        // build parameters
-        $parameters['id'] = (string) $id;
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+	public function notificationsLeave($userId = null, $screenName = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
-        // make the call
-        return (array) $this->doCall(
-            'favorites/destroy.json', $parameters, true, 'POST'
-        );
-    }
+		// build parameters
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
+		// make the call
+		return (array) $this->doCall('notifications/leave.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+// Block resources
     /**
-     * Favorites the status specified in the ID parameter as the authenticating user. Returns the favorite status when successful.
-     * This process invoked by this method is asynchronous. The immediately returned status may not indicate the resultant favorited status of the tweet. A 200 OK response from this method will indicate whether the intended action was successful or not.
+     * Blocks the user specified in the ID parameter as the authenticating user. Destroys a friendship to the blocked user if it exists. Returns the blocked user in the requested format when successful.
      *
-     * @param  string         $id              The numerical ID of the desired status.
-     * @param  bool[optional] $includeEntities The entities node will be omitted when set to false.
-     * @return array
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function favoritesCreate($id, $includeEntities = null)
-    {
-        // build parameters
-        $parameters['id'] = (string) $id;
-        if ($includeEntities !== null) {
-            $parameters['include_entities'] = ($includeEntities) ? 'true' : 'false';
-        }
+	public function blocksCreate($userId = null, $screenName = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
-        // make the call
-        return (array) $this->doCall(
-            'favorites/create.json', $parameters, true, 'POST'
-        );
-    }
+		// build parameters
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-// Lists resources
-    /**
-     * Not implemented yet
-     */
-    public function listsList()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsStatuses()
-    {
-        throw new Exception('Not implemented');
-    }
+		// make the call
+		return (array) $this->doCall('blocks/create.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Not implemented yet
-     */
-    public function listsMembersDestroy()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsMemberships()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsSubscribers()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsSubscribersCreate()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsSubscribersShow()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsSubscribersDestroy()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsMembersCreateAll()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsMembersShow()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsMembers()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsMembersCreate()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsDestroy()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsUpdate()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsCreate()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsShow()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listSubscriptions()
-    {
-        throw new Exception('Not implemented');
-    }
-
-    /**
-     * Not implemented yet
-     */
-    public function listsMembersDestroyAll()
-    {
-        throw new Exception('Not implemented');
-    }
-
-// Saved Searches resources
-    /**
-     * Returns the authenticated user's saved search queries.
+     * Un-blocks the user specified in the ID parameter for the authenticating user. Returns the un-blocked user in the requested format when successful.
      *
-     * @return array
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function savedSearchesList()
-    {
-        // make the call
-        return (array) $this->doCall('saved_searches/list.json', null, true);
-    }
+	public function blocksDestroy($userId = null, $screenName = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
+
+		// build parameters
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
+
+		// make the call
+		return (array) $this->doCall('blocks/destroy.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
 
     /**
-     * Retrieve the information for the saved search represented by the given id. The authenticating user must be the owner of saved search ID being requested.
+     * Un-blocks the user specified in the ID parameter for the authenticating user. Returns the un-blocked user in the requested format when successful.
      *
-     * @return array
-     * @param  string $id The ID of the saved search.
+     * @return    mixed
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId            Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName        Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function savedSearchesShow($id)
-    {
-        // make the call
-        return (array) $this->doCall(
-            'saved_searches/show/' . (string) $id . '.json', null, true
-        );
-    }
+	public function blocksExists($userId = null, $screenName = null, $includeEntities = false)
+	{
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
-    /**
-     * Create a new saved search for the authenticated user. A user may only have 25 saved searches.
-     *
-     * @return array
-     * @param  string $query The query of the search the user would like to save.
-     */
-    public function savedSearchesCreate($query)
-    {
-        // build parameters
-        $parameters['query'] = (string) $query;
+		// build parameters
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-        // make the call
-        return (array) $this->doCall(
-            'saved_searches/create.json', $parameters, true, 'POST'
-        );
-    }
+		try
+		{
+			// make the call
+			return (array) $this->doCall('blocks/exists.json', $parameters, true);
+		}
+		// catch exceptions
+		catch(TwitterException $e)
+		{
+			if($e->getMessage() == 'You are not blocking this user.') return false;
+			else throw $e;
+		}
+	}
 
-    /**
-     * Destroys a saved search for the authenticating user. The authenticating user must be the owner of saved search id being destroyed.
-     *
-     * @return array
-     * @param  string $id The ID of the saved search.
-     */
-    public function savedSearchesDestroy($id)
-    {
-        return (array) $this->doCall(
-            'saved_searches/destroy/' . (string) $id . '.json',
-            null, true, 'POST'
-        );
-    }
 
-// Geo resources
-    /**
-     * Returns all the information about a known place.
-     *
-     * @param  string $id A place in the world. These IDs can be retrieved from geo/reverse_geocode.
-     * @return array
-     */
-    public function geoId($id)
-    {
-        // build parameters
-        $parameters = null;
+	/**
+	 * Returns an array of user objects that the authenticating user is blocking.
+	 *
+	 * @return	array
+	 * @param	int[optional] $page					Specifies the page of results to retrieve. Note: there are pagination limits. See the FAQ for details.
+	 * @param	bool[optional] $includeEntities		When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
+	 */
+	public function blocksBlocking($page = null, $includeEntities = false)
+	{
+		// build parameters
+		$parameters = null;
+		if($page != null) $parameters['page'] = (int) $page;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-        // make the call
-        return (array) $this->doCall(
-            'geo/id/' . (string) $id . '.json', $parameters
-        );
-    }
+		// make the call
+		return (array) $this->doCall('blocks/blocking.json', $parameters, true);
+	}
 
-    /**
-     * Given a latitude and a longitude, searches for up to 20 places that can be used as a place_id when updating a status.
-     * This request is an informative call and will deliver generalized results about geography.
-     *
-     * @param  float            $lat         The latitude to search around. This parameter will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding long parameter.
-     * @param  float            $long        The longitude to search around. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This parameter will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding lat parameter.
-     * @param  string[optional] $accuracy    A hint on the "region" in which to search. If a number, then this is a radius in meters, but it can also take a string that is suffixed with ft to specify feet. If this is not passed in, then it is assumed to be 0m. If coming from a device, in practice, this value is whatever accuracy the device has measuring its location (whether it be coming from a GPS, WiFi triangulation, etc.).
-     * @param  string[optional] $granularity This is the minimal granularity of place types to return and must be one of: poi, neighborhood, city, admin or country. If no granularity is provided for the request neighborhood is assumed. Setting this to city, for example, will find places which have a type of city, admin or country.
-     * @param  int[optional]    $maxResults  A hint as to the number of results to return. This does not guarantee that the number of results returned will equal max_results, but instead informs how many "nearby" results to return. Ideally, only pass in the number of places you intend to display to the user here.
-     * @return array
-     */
-    public function geoReverseGeoCode(
-        $lat, $long, $accuracy = null, $granularity = null, $maxResults = null
-    )
-    {
-        // build parameters
-        $parameters['lat'] = (float) $lat;
-        $parameters['long'] = (float) $long;
-        if ($accuracy != null) {
-            $parameters['accuracy'] = (string) $accuracy;
-        }
-        if ($granularity != null) {
-            $parameters['granularity'] = (string) $granularity;
-        }
-        if ($maxResults != null) {
-            $parameters['max_results'] = (int) $maxResults;
-        }
 
-        // make the call
-        return (array) $this->doCall('geo/reverse_geocode.json', $parameters);
-    }
+	/**
+	 * Returns an array of numeric user ids the authenticating user is blocking.
+	 *
+	 * @return	array
+	 */
+	public function blocksBlockingIds()
+	{
+		// make the call
+		return (array) $this->doCall('blocks/blocking/ids.json', null, true);
+	}
 
-    /**
-     * Search for places that can be attached to a statuses/update. Given a latitude and a longitude pair, an IP address, or a name, this request will return a list of all the valid places that can be used as the place_id when updating a status.
-     * Conceptually, a query can be made from the user's location, retrieve a list of places, have the user validate the location he or she is at, and then send the ID of this location with a call to POST statuses/update.
-     * This is the recommended method to use find places that can be attached to statuses/update. Unlike GET geo/reverse_geocode which provides raw data access, this endpoint can potentially re-order places with regards to the user who is authenticated. This approach is also preferred for interactive place matching with the user.
-     *
-     * @param  float[optional]  $lat             The latitude to search around. This parameter will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding long parameter.
-     * @param  float[optional]  $long            The longitude to search around. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This parameter will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding lat parameter.
-     * @param  string[optional] $query           Free-form text to match against while executing a geo-based query, best suited for finding nearby locations by name. Remember to URL encode the query.
-     * @param  string[optional] $ip              An IP address. Used when attempting to fix geolocation based off of the user's IP address.
-     * @param  string[optional] $granularity     This is the minimal granularity of place types to return and must be one of: poi, neighborhood, city, admin or country. If no granularity is provided for the request neighborhood is assumed. Setting this to city, for example, will find places which have a type of city, admin or country.
-     * @param  string[optional] $accuracy        A hint on the "region" in which to search. If a number, then this is a radius in meters, but it can also take a string that is suffixed with ft to specify feet. If this is not passed in, then it is assumed to be 0m. If coming from a device, in practice, this value is whatever accuracy the device has measuring its location (whether it be coming from a GPS, WiFi triangulation, etc.).
-     * @param  int[optional]    $maxResults      A hint as to the number of results to return. This does not guarantee that the number of results returned will equal max_results, but instead informs how many "nearby" results to return. Ideally, only pass in the number of places you intend to display to the user here.
-     * @param  string[optional] $containedWithin This is the place_id which you would like to restrict the search results to. Setting this value means only places within the given place_id will be found. Specify a place_id. For example, to scope all results to places within "San Francisco, CA USA", you would specify a place_id of "5a110d312052166f"
-     * @param  array[optional]  $attributes      This parameter searches for places which have this given street address. There are other well-known, and application specific attributes available. Custom attributes are also permitted. This should be an key-value-pair-array.
-     * @return array
-     */
-    public function geoSearch(
-        $lat = null, $long = null, $query = null, $ip = null,
-        $granularity = null, $accuracy = null, $maxResults = null,
-        $containedWithin = null, array $attributes = null
-    )
-    {
-        // build parameters
-        $parameters = array();
-        if ($lat != null) {
-            $parameters['lat'] = (float) $lat;
-        }
-        if ($long != null) {
-            $parameters['long'] = (float) $long;
-        }
-        if ($query != null) {
-            $parameters['query'] = (string) $query;
-        }
-        if ($ip != null) {
-            $parameters['ip'] = (string) $ip;
-        }
-        if ($accuracy != null) {
-            $parameters['accuracy'] = (string) $accuracy;
-        }
-        if ($granularity != null) {
-            $parameters['granularity'] = (string) $granularity;
-        }
-        if ($maxResults != null) {
-            $parameters['max_results'] = (int) $maxResults;
-        }
-        if ($containedWithin != null) {
-            $parameters['contained_within'] = (string) $containedWithin;
-        }
-        if ($attributes != null) {
-            foreach ($attributes as $key => $value) {
-                $parameters['attribute:' . $key] = (string) $value;
-            }
-        }
-
-        // make the call
-        return (array) $this->doCall('geo/search.json', $parameters);
-    }
-
-    /**
-     * Locates places near the given coordinates which are similar in name.
-     * Conceptually you would use this method to get a list of known places to choose from first. Then, if the desired place doesn't exist, make a request to POST geo/place to create a new one.
-     * The token contained in the response is the token needed to be able to create a new place.
-     *
-     * @param  float            $lat             The latitude to search around. This parameter will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding long parameter.
-     * @param  float            $long            The longitude to search around. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This parameter will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding lat parameter.
-     * @param  string           $name            The name a place is known as.
-     * @param  string[optional] $containedWithin This is the place_id which you would like to restrict the search results to. Setting this value means only places within the given place_id will be found. Specify a place_id. For example, to scope all results to places within "San Francisco, CA USA", you would specify a place_id of "5a110d312052166f"
-     * @param  array[optional]  $attributes      This parameter searches for places which have this given street address. There are other well-known, and application specific attributes available. Custom attributes are also permitted.
-     * @return array
-     */
-    public function geoSimilarPlaces(
-        $lat, $long, $name, $containedWithin = null, array $attributes = null
-    )
-    {
-        // build parameters
-        $parameters['lat'] = (float) $lat;
-        $parameters['long'] = (float) $long;
-        $parameters['name'] = (string) $name;
-        if ($containedWithin != null) {
-            $parameters['contained_within'] = (string) $containedWithin;
-        }
-        if ($attributes != null) {
-            foreach ($attributes as $key => $value) {
-                $parameters['attribute:' . $key] = (string) $value;
-            }
-        }
-
-        // make the call
-        return (array) $this->doCall('geo/similar_places.json', $parameters);
-    }
-
-    /**
-     * Creates a new place at the given latitude and longitude.
-     *
-     * @param  string          $name            The name a place is known as.
-     * @param  string          $containedWithin The place_id within which the new place can be found. Try and be as close as possible with the containing place. For example, for a room in a building, set the contained_within as the building place_id.
-     * @param  string          $token           The token found in the response from geo/similar_places.
-     * @param  float           $lat             The latitude the place is located at. This parameter will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding long parameter.
-     * @param  float           $long            The longitude the place is located at. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This parameter will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding lat parameter.
-     * @param  array[optional] $attributes      This parameter searches for places which have this given street address. There are other well-known, and application specific attributes available. Custom attributes are also permitted. This should be an key-value-pair-array.
-     * @return array
-     */
-    public function geoPlace(
-        $name, $containedWithin, $token, $lat, $long, array $attributes = null
-    )
-    {
-        // build parameters
-        $parameters['name'] = (string) $name;
-        $parameters['contained_within'] = (string) $containedWithin;
-        $parameters['token'] = (string) $token;
-        $parameters['lat'] = (float) $lat;
-        $parameters['long'] = (float) $long;
-        if ($attributes != null) {
-            foreach ($attributes as $key => $value) {
-                $parameters['attribute:' . $key] = (string) $value;
-            }
-        }
-
-        // make the call
-        return (array) $this->doCall(
-            'geo/create.json', $parameters, true, 'POST'
-        );
-    }
-
-// Trends resources
-    /**
-     * Returns the top 10 trending topics for a specific WOEID, if trending information is available for it.
-     * The response is an array of "trend" objects that encode the name of the trending topic, the query parameter that can be used to search for the topic on Twitter Search, and the Twitter Search URL.
-     * This information is cached for 5 minutes. Requesting more frequently than that will not return any more data, and will count against your rate limit usage.
-     *
-     * @param  string           $id      The Yahoo! Where On Earth ID of the location to return trending information for. Global information is available by using 1 as the WOEID.
-     * @param  string[optional] $exclude Setting this equal to hashtags will remove all hashtags from the trends list.
-     * @return array
-     */
-    public function trendsPlace($id, $exclude = null)
-    {
-        // build parameters
-        $parameters['id'] = (string) $id;
-        if ($exclude != null) {
-            $parameters['exclude'] = (string) $exclude;
-        }
-
-        return (array) $this->doCall(
-            'trends/place.json',
-            $parameters
-        );
-    }
-
-    /**
-     * Returns the locations that Twitter has trending topic information for.
-     * The response is an array of "locations" that encode the location's WOEID (a Yahoo! Where On Earth ID) and some other human-readable information such as a canonical name and country the location belongs in.
-     * The WOEID that is returned in the location object is to be used when querying for a specific trend.
-     *
-     * @param  float[optional] $lat  If passed in conjunction with long, then the available trend locations will be sorted by distance to the lat  and long passed in. The sort is nearest to furthest.
-     * @param  float[optional] $long If passed in conjunction with lat, then the available trend locations will be sorted by distance to the lat  and long passed in. The sort is nearest to furthest.
-     * @return array
-     */
-    public function trendsAvailable($lat = null, $long = null)
-    {
-        // build parameters
-        $parameters = null;
-        if($lat != null) $parameters['lat_for_trends'] = (float) $lat;
-        if($long != null) $parameters['long_for_trends'] = (float) $long;
-
-        // make the call
-        return (array) $this->doCall('trends/available.json', $parameters);
-    }
-
-    /**
-     * Returns the locations that Twitter has trending topic information for, closest to a specified location.
-     * The response is an array of "locations" that encode the location's WOEID and some other human-readable information such as a canonical name and country the location belongs in.
-     *
-     * @param  float[optional] $lat  If provided with a long parameter the available trend locations will be sorted by distance, nearest to furthest, to the co-ordinate pair. The valid ranges for longitude is -180.0 to +180.0 (West is negative, East is positive) inclusive.
-     * @param  float[optional] $long If provided with a lat parameter the available trend locations will be sorted by distance, nearest to furthest, to the co-ordinate pair. The valid ranges for longitude is -180.0 to +180.0 (West is negative, East is positive) inclusive.
-     * @return array
-     */
-    public function trendsClosest($lat = null, $long = null)
-    {
-        // build parameters
-        $parameters = null;
-        if($lat != null) $parameters['lat'] = (float) $lat;
-        if($long != null) $parameters['long'] = (float) $long;
-
-        // make the call
-        return (array) $this->doCall('trends/closest.json', $parameters);
-    }
 
 // Spam Reporting resources
     /**
      * The user specified in the id is blocked by the authenticated user and reported as a spammer.
      *
-     * @param  string[optional] $screenName The ID or screen_name of the user you want to report as a spammer. Helpful for disambiguating when a valid screen name is also a user ID.
-     * @param  string[optional] $userId     The ID of the user you want to report as a spammer. Helpful for disambiguating when a valid user ID is also a valid screen name.
-     * @return array
+     * @return    array
+     * @param null $userId
+     * @param null $screenName
+     * @param bool $includeEntities
+     * @throws TwitterException
+     * @internal param $string [optional] $userId        Specfies the screen name of the user for whom to return results for. Helpful for disambiguating when a valid screen name is also a user ID.
+     * @internal param $string [optional] $screenName    Specfies the ID of the user for whom to return results for. Helpful for disambiguating when a valid user ID is also a valid screen name.
+     * @internal param $bool [optional] $includeEntities        When set to true each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discreet structure, including: user_mentions, urls, and hashtags.
      */
-    public function reportSpam($screenName = null, $userId = null)
-    {
-        // validate
-        if ($userId == '' && $screenName == '') {
-            throw new Exception('One of these parameters must be provided.');
-        }
+	public function reportSpam($userId = null, $screenName = null, $includeEntities = false)
+	{
+		try {
+		// validate
+		if($userId == '' && $screenName == '') throw new TwitterException('Specify an userId or a screenName.');
 
-        // build parameters
-        if ($userId != null) {
-            $parameters['user_id'] = (string) $userId;
-        }
-        if ($screenName != null) {
-            $parameters['screen_name'] = (string) $screenName;
-        }
+		// build parameters
+		if($userId != null) $parameters['user_id'] = (string) $userId;
+		if($screenName != null) $parameters['screen_name'] = (string) $screenName;
+		if($includeEntities) $parameters['include_entities'] = 'true';
 
-        // make the call
-        return (array) $this->doCall(
-            'users/report_spam.json',
-            $parameters, true, 'POST'
-        );
-    }
+		// make the call
+		return (array) $this->doCall('report_spam.json', $parameters, true, 'POST');
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+// Search resources
+	/**
+	 * Returns tweets that match a specified query.
+	 *
+	 * @return	array
+	 * @param	string $q						Search query. Should be URL encoded. Queries will be limited by complexity.
+	 * @param 	string[optional] $lang			Restricts tweets to the given language, given by an ISO 639-1 code.
+	 * @param 	string[optional] $locale		Specify the language of the query you are sending (only ja is currently effective). This is intended for language-specific clients and the default should work in the majority of cases.
+	 * @param 	int[optional] $rpp				The number of tweets to return per page, up to a max of 100.
+	 * @param 	int[optional] $page				The page number (starting at 1) to return, up to a max of roughly 1500 results (based on rpp * page).
+	 * @param 	string[optional] $sinceId		Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occurred since the since_id, the since_id will be forced to the oldest ID available.
+	 * @param 	string[optional] $until			Returns tweets generated before the given date. Date should be formatted as YYYY-MM-DD.
+	 * @param 	string[optional] $geocode		Returns tweets by users located within a given radius of the given latitude/longitude. The location is preferentially taking from the Geotagging API, but will fall back to their Twitter profile. The parameter value is specified by "latitude,longitude,radius", where radius units must be specified as either "mi" (miles) or "km" (kilometers). Note that you cannot use the near operator via the API to geocode arbitrary locations; however you can use this geocode parameter to search near geocodes directly.
+	 * @param 	bool[optional] $showUser		When true, prepends ":" to the beginning of the tweet. This is useful for readers that do not display Atom's author field. The default is false.
+	 * @param 	string[optional] $resultType	Specifies what type of search results you would prefer to receive. The current default is "mixed." Valid values include: mixed, recent, popular.
+	 */
+	public function search($q, $lang = null, $locale = null, $rpp = null, $page = null, $sinceId = null, $until = null, $geocode = null, $showUser = false, $resultType = null)
+	{
+		$parameters['q'] = (string) $q;
+		if($lang !== null) $parameters['lang'] = (string) $lang;
+		if($locale !== null) $parameters['locale'] = (string) $locale;
+		if($rpp !== null) $parameters['rpp'] = (int) $rpp;
+		if($page !== null) $parameters['page'] = (int) $page;
+		if($sinceId !== null) $parameters['since_id'] = (string) $sinceId;
+		if($until !== null) $parameters['until'] = (string) $until;
+		if($geocode !== null) $parameters['geocode'] = (string) $geocode;
+		if($showUser === true) $parameters['show_user'] = 'true';
+		if($resultType !== null) $parameters['result_type'] = (string) $resultType;
+
+		return (array) $this->doSearchCall('search.json', $parameters);
+	}
+
+
+// Saved Searches resources
+	/**
+	 * Returns the authenticated user's saved search queries.
+	 *
+	 * @return	array
+	 */
+	public function savedSearches()
+	{
+		// make the call
+		return (array) $this->doCall('saved_searches.json', null, true);
+	}
+
+
+	/**
+	 * Retrieve the data for a saved search owned by the authenticating user specified by the given id.
+	 *
+	 * @return	array
+	 * @param	string $id	The ID of the desired saved search.
+	 */
+	public function savedSearchesShow($id)
+	{
+		// make the call
+		return (array) $this->doCall('saved_searches/show/' . (string) $id . '.json', null, true);
+	}
+
+
+	/**
+	 * Creates a saved search for the authenticated user.
+	 *
+	 * @return	array
+	 * @param	string $query	The query of the search the user would like to save.
+	 */
+	public function savedSearchesCreate($query)
+	{
+		// build parameters
+		$parameters['query'] = (string) $query;
+
+		// make the call
+		return (array) $this->doCall('saved_searches/create.json', $parameters, true, 'POST');
+	}
+
+
+	/**
+	 * Destroys a saved search for the authenticated user. The search specified by id must be owned by the authenticating user.
+	 *
+	 * @return	array
+	 * @param	string $id	The ID of the desired saved search.
+	 */
+	public function savedSearchesDestroy($id)
+	{
+		return (array) $this->doCall('saved_searches/destroy/' . (string) $id . '.json', null, true, 'POST');
+	}
+
 
 // OAuth resources
-    /**
-     * Allows a Consumer application to use an OAuth request_token to request user authorization. This method is a replacement fulfills Secion 6.2 of the OAuth 1.0 authentication flow for applications using the Sign in with Twitter authentication flow. The method will use the currently logged in user as the account to for access authorization unless the force_login parameter is set to true
-     * REMARK: This method seems not to work	@later
-     *
-     * @param bool[optional] $force Force the authentication.
-     */
-    public function oAuthAuthenticate($force = false)
-    {
-        throw new Exception('Not implemented');
-
-        // build parameters
-        $parameters = null;
-        if((bool) $force) $parameters['force_login'] = 'true';
-
-        // make the call
-        return $this->doCall('/oauth/authenticate.oauth', $parameters);
-    }
-
-    /**
-     * Will redirect to the page to authorize the applicatione
-     *
-     * @param string $token The token.
-     */
-    public function oAuthAuthorize($token)
-    {
-        header('Location: ' . self::SECURE_API_URL .
-               '/oauth/authorize?oauth_token=' . $token);
-    }
-
-    /**
-     * Allows a Consumer application to exchange the OAuth Request Token for an OAuth Access Token.
-     * This method fulfills Secion 6.3 of the OAuth 1.0 authentication flow.
-     *
-     * @param  string $token    The token to use.
-     * @param  string $verifier The verifier.
-     * @return array
-     */
-    public function oAuthAccessToken($token, $verifier)
-    {
-        // init var
-        $parameters = array();
-        $parameters['oauth_token'] = (string) $token;
-        $parameters['oauth_verifier'] = (string) $verifier;
-
-        // make the call
-        $response = $this->doOAuthCall('access_token', $parameters);
-
-        // set some properties
-        if (isset($response['oauth_token'])) {
-            $this->setOAuthToken($response['oauth_token']);
-        }
-        if (isset($response['oauth_token_secret'])) {
-            $this->setOAuthTokenSecret($response['oauth_token_secret']);
-        }
-
-        // return
-        return $response;
-    }
-
     /**
      * Allows a Consumer application to obtain an OAuth Request Token to request user authorization.
      * This method fulfills Secion 6.1 of the OAuth 1.0 authentication flow.
      *
-     * @param  string[optional] $callbackURL The callback URL.
-     * @return array            An array containg the token and the secret
+     * @return    array                            An array containg the token and the secret
+     * @param    string[optional] $callbackURL    The callback URL.
+     * @throws TwitterException
      */
-    public function oAuthRequestToken($callbackURL = null)
-    {
-        // init var
-        $parameters = null;
+	public function oAuthRequestToken($callbackURL = null)
+	{
+		try {
+		// init var
+		$parameters = null;
 
-        // set callback
-        if ($callbackURL != null) {
-            $parameters['oauth_callback'] = (string) $callbackURL;
-        }
+		// set callback
+		if($callbackURL != null) $parameters['oauth_callback'] = (string) $callbackURL;
 
-        // make the call
-        $response = $this->doOAuthCall('request_token', $parameters);
+		// make the call
+		$response = $this->doOAuthCall('request_token', $parameters);
 
-        // validate
-        if (!isset($response['oauth_token'], $response['oauth_token_secret'])) {
-            throw new Exception(implode(', ', array_keys($response)));
-        }
+		// validate
+		if(!isset($response['oauth_token'], $response['oauth_token_secret'])) throw new TwitterException(implode(', ', array_keys($response)));
 
-        // set some properties
-        if (isset($response['oauth_token'])) {
-            $this->setOAuthToken($response['oauth_token']);
-        }
-        if (isset($response['oauth_token_secret'])) {
-            $this->setOAuthTokenSecret($response['oauth_token_secret']);
-        }
+		// set some properties
+		if(isset($response['oauth_token'])) $this->setOAuthToken($response['oauth_token']);
+		if(isset($response['oauth_token_secret'])) $this->setOAuthTokenSecret($response['oauth_token_secret']);
 
-        // return
-        return $response;
-    }
+		// return
+		return $response;
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+	/**
+	 * Allows a Consumer application to exchange the OAuth Request Token for an OAuth Access Token.
+	 * This method fulfills Secion 6.3 of the OAuth 1.0 authentication flow.
+	 *
+	 * @return	array
+	 * @param	string $token		The token to use.
+	 * @param	string $verifier	The verifier.
+	 */
+	public function oAuthAccessToken($token, $verifier)
+	{
+		// init var
+		$parameters = array();
+		$parameters['oauth_token'] = (string) $token;
+		$parameters['oauth_verifier'] = (string) $verifier;
+
+		// make the call
+		$response = $this->doOAuthCall('access_token', $parameters);
+
+		// set some properties
+		if(isset($response['oauth_token'])) $this->setOAuthToken($response['oauth_token']);
+		if(isset($response['oauth_token_secret'])) $this->setOAuthTokenSecret($response['oauth_token_secret']);
+
+		// return
+		return $response;
+	}
+
+
+	/**
+	 * Will redirect to the page to authorize the applicatione
+	 *
+	 * @return	void
+	 * @param	string	$token		The token.
+	 */
+	public function oAuthAuthorize($token)
+	{
+		header('Location: ' . self::SECURE_API_URL . '/oauth/authorize?oauth_token=' . $token);
+	}
+
+    /**
+     * Allows a Consumer application to use an OAuth request_token to request user authorization. This method is a replacement fulfills Secion 6.2 of the OAuth 1.0 authentication flow for applications using the Sign in with Twitter authentication flow. The method will use the currently logged in user as the account to for access authorization unless the force_login parameter is set to true
+     * REMARK: This method seems not to work    @later
+     *
+     * @return    void
+     * @param bool $force [optional] $force    Force the authentication.
+     * @throws TwitterException
+     */
+	public function oAuthAuthenticate($force = false)
+	{
+		try {
+		throw new TwitterException('Not implemented');
+
+		// build parameters
+		$parameters = null;
+		if((bool) $force) $parameters['force_login'] = 'true';
+
+		// make the call
+		return $this->doCall('/oauth/authenticate.oauth', $parameters);
+		} catch (TwitterException $e) {
+			flash('error','Twitter: '.$e->getMessage());
+		}
+	}
+
+
+// Local Trends resources
+	/**
+	 * Returns the locations that Twitter has trending topic information for.
+	 * The response is an array of "locations" that encode the location's WOEID (a Yahoo! Where On Earth ID) and some other human-readable information such as a canonical name and country the location belongs in.
+	 * The WOEID that is returned in the location object is to be used when querying for a specific trend.
+	 *
+	 * @return	array
+	 * @param	float[optional] $lat	If passed in conjunction with long, then the available trend locations will be sorted by distance to the lat  and long passed in. The sort is nearest to furthest.
+	 * @param	float[optional] $long	If passed in conjunction with lat, then the available trend locations will be sorted by distance to the lat  and long passed in. The sort is nearest to furthest.
+	 */
+	public function trendsAvailable($lat = null, $long = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($lat != null) $parameters['lat_for_trends'] = (float) $lat;
+		if($long != null) $parameters['long_for_trends'] = (float) $long;
+
+		// make the call
+		return (array) $this->doCall('trends/available.json', $parameters);
+	}
+
+
+	/**
+	 * Returns the top 10 trending topics for a specific location Twitter has trending topic information for.
+	 * The response is an array of "trend" objects that encode the name of the trending topic, the query parameter that can be used to search for the topic on Search, and the direct URL that can be issued against Search.
+	 * This information is cached for five minutes, and therefore users are discouraged from querying these endpoints faster than once every five minutes. Global trends information is also available from this API by using a WOEID of 1.
+	 *
+	 * @return	array
+	 * @param	string $woeid	The WOEID of the location to be querying for.
+	 */
+	public function trendsLocation($woeid)
+	{
+		// make the call
+		return (array) $this->doCall('trends/' . (string) $woeid . '.json');
+	}
+
+
+// Geo resources
+	/**
+	 * Search for places that can be attached to a statuses/update. Given a latitude and a longitude pair, an IP address, or a name, this request will return a list of all the valid places that can be used as the place_id when updating a status.
+	 * Conceptually, a query can be made from the user's location, retrieve a list of places, have the user validate the location he or she is at, and then send the ID of this location with a call to statuses/update.
+	 * This is the recommended method to use find places that can be attached to statuses/update. Unlike geo/reverse_geocode which provides raw data access, this endpoint can potentially re-order places with regards to the user who is authenticated. This approach is also preferred for interactive place matching with the user.
+	 *
+	 * @return	array
+	 * @param	float[optional] $lat				The latitude to search around. This parameter will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding long parameter.
+	 * @param	float[optional] $long				The longitude to search around. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This parameter will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding lat parameter.
+	 * @param	string[optional] $query				Free-form text to match against while executing a geo-based query, best suited for finding nearby locations by name.
+	 * @param	string[optional] $ip				An IP address. Used when attempting to fix geolocation based off of the user's IP address.
+	 * @param	string[optional] $accuracy			A hint on the "region" in which to search. If a number, then this is a radius in meters, but it can also take a string that is suffixed with ft to specify feet. If this is not passed in, then it is assumed to be 0m. If coming from a device, in practice, this value is whatever accuracy the device has measuring its location (whether it be coming from a GPS, WiFi triangulation, etc.).
+	 * @param	string[optional] $granularity		The minimal granularity of data to return. If this is not passed in, then neighborhood is assumed. city can also be passed.
+	 * @param	int[optional] $maxResults			A hint as to the number of results to return. This does not guarantee that the number of results returned will equal max_results, but instead informs how many "nearby" results to return. Ideally, only pass in the number of places you intend to display to the user here.
+	 * @param	string[optional] $containedWithin	This is the place_id which you would like to restrict the search results to. Setting this value means only places within the given place_id will be found.
+	 * @param	array[optional] $attributes			This parameter searches for places which have this given. This should be an key-value-pair-array.
+	 */
+	public function geoSearch($lat = null, $long = null, $query = null, $ip = null, $accuracy = null, $granularity = null, $maxResults = null, $containedWithin = null, array $attributes = null)
+	{
+		// build parameters
+		if($lat != null) $parameters['lat'] = (float) $lat;
+		if($long != null) $parameters['long'] = (float) $long;
+		if($query != null) $parameters['query'] = (string) $query;
+		if($ip != null) $parameters['ip'] = (string) $ip;
+		if($accuracy != null) $parameters['accuracy'] = (string) $accuracy;
+		if($granularity != null) $parameters['granularity'] = (string) $granularity;
+		if($maxResults != null) $parameters['max_results'] = (int) $maxResults;
+		if($containedWithin != null) $parameters['contained_within'] = (string) $containedWithin;
+		if($attributes != null)
+		{
+			// loop
+			foreach($attributes as $key => $value) $parameters['attribute:' . $key] = (string) $value;
+		}
+
+		// make the call
+		return (array) $this->doCall('geo/search.json', $parameters);
+	}
+
+
+	/**
+	 * Locates places near the given coordinates which are similar in name.
+	 * Conceptually you would use this method to get a list of known places to choose from first. Then, if the desired place doesn't exist, make a request to post/geo/place to create a new one.
+	 * The token contained in the response is the token needed to be able to create a new place.
+	 *
+	 * @return	array
+	 * @param	float $lat							The location's latitude that this tweet refers to.
+	 * @param	float $long							The location's longitude that this tweet refers to.
+	 * @param	string $name						The name a place is known as.
+	 * @param	string[optional] $containedWithin	This is the place_id which you would like to restrict the search results to. Setting this value means only places within the given place_id will be found.
+	 * @param	array[optional] $attributes			This parameter searches for places which have this given. This should be an key-value-pair-array.
+	 */
+	public function geoSimilarPlaces($lat, $long, $name, $containedWithin = null, array $attributes = null)
+	{
+		// build parameters
+		$parameters['lat'] = (float) $lat;
+		$parameters['long'] = (float) $long;
+		$parameters['name'] = (string) $name;
+		if($containedWithin != null) $parameters['contained_within'] = (string) $containedWithin;
+		if($attributes != null)
+		{
+			// loop
+			foreach($attributes as $key => $value) $parameters['attribute:' . $key] = (string) $value;
+		}
+
+		// make the call
+		return (array) $this->doCall('geo/similar_places.json', $parameters);
+	}
+
+
+	/**
+	 * Search for places (cities and neighborhoods) that can be attached to a statuses/update. Given a latitude and a longitude, return a list of all the valid places that can be used as a place_id when updating a status.
+	 * Conceptually, a query can be made from the user's location, retrieve a list of places, have the user validate the location he or she is at, and then send the ID of this location up with a call to statuses/update.
+	 * There are multiple granularities of places that can be returned -- "neighborhoods", "cities", etc. At this time, only United States data is available through this method.
+	 * This API call is meant to be an informative call and will deliver generalized results about geography.
+	 *
+	 * @return	array
+	 * @param	float $lat						The location's latitude that this tweet refers to.
+	 * @param	float $long						The location's longitude that this tweet refers to.
+	 * @param	string[optional] $accuracy		A hint on the "region" in which to search. If a number, then this is a radius in meters, but it can also take a string that is suffixed with ft to specify feet. If this is not passed in, then it is assumed to be 0m. If coming from a device, in practice, this value is whatever accuracy the device has measuring its location (whether it be coming from a GPS, WiFi triangulation, etc.).
+	 * @param	string[optional] $granularity	The minimal granularity of data to return. If this is not passed in, then neighborhood is assumed. city can also be passed.
+	 * @param	int[optional] $maxResults		A hint as to the number of results to return. This does not guarantee that the number of results returned will equal max_results, but instead informs how many "nearby" results to return. Ideally, only pass in the number of places you intend to display to the user here.
+	 */
+	public function geoReverseGeoCode($lat, $long, $accuracy = null, $granularity = null, $maxResults = null)
+	{
+		// build parameters
+		$parameters['lat'] = (float) $lat;
+		$parameters['long'] = (float) $long;
+		if($accuracy != null) $parameters['accuracy'] = (string) $accuracy;
+		if($granularity != null) $parameters['granularity'] = (string) $granularity;
+		if($maxResults != null) $parameters['max_results'] = (int) $maxResults;
+
+		// make the call
+		return (array) $this->doCall('geo/reverse_geocode.json', $parameters);
+	}
+
+
+	/**
+	 * Find out more details of a place that was returned from the geo/reverse_geocode method.
+	 *
+	 * @return	array
+	 * @param	string $id					The id of the place.
+	 * @param	string[optional] $placeId	A place in the world. These IDs can be retrieved from geo/reverse_geocode.
+	 */
+	public function geoId($id, $placeId = null)
+	{
+		// build parameters
+		$parameters = null;
+		if($placeId != null) $parameters['place_id'] = (string) $placeId;
+
+		// make the call
+		return (array) $this->doCall('geo/id/' . (string) $id . '.json', $parameters);
+	}
+
+
+	/**
+	 * Creates a new place at the given latitude and longitude.
+	 *
+	 * @return	array
+	 * @param	string $name					The name a place is known as.
+	 * @param	string $containedWithin			This is the place_id which you would like to restrict the search results to. Setting this value means only places within the given place_id will be found.
+	 * @param	string $token					The token found in the response from geo/similar_places.
+	 * @param	float $lat						The latitude the place is located at. This parameter will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding long parameter.
+	 * @param	float $long						The longitude the place is located at. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This parameter will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding lat parameter.
+	 * @param	array[optional] $attributes		This parameter searches for places which have this given. This should be an key-value-pair-array.
+	 */
+	public function geoPlaceCreate($name, $containedWithin, $token, $lat, $long, array $attributes = null)
+	{
+		// build parameters
+		$parameters['name'] = (string) $name;
+		$parameters['contained_within'] = (string) $containedWithin;
+		$parameters['token'] = (string) $token;
+		$parameters['lat'] = (float) $lat;
+		$parameters['long'] = (float) $long;
+		if($attributes != null)
+		{
+			// loop
+			foreach($attributes as $key => $value) $parameters['attribute:' . $key] = (string) $value;
+		}
+
+		// make the call
+		return (array) $this->doCall('geo/place.json', $parameters, true, 'POST');
+	}
+
+
+// legal resources
+	/**
+	 * Returns Twitter's' Terms of Service in the requested format. These are not the same as the Developer Terms of Service.
+	 *
+	 * @return	string
+	 */
+	public function legalToS()
+	{
+		// make the call
+		$response = $this->doCall('legal/tos.json');
+
+		// validate and return
+		if(isset($response['tos'])) return $response['tos'];
+
+		// fallback
+		return false;
+	}
+
+
+	/**
+	 * Returns Twitter's Privacy Policy
+	 *
+	 * @return	string
+	 */
+	public function legalPrivacy()
+	{
+		// make the call
+		$response = $this->doCall('legal/privacy.json');
+
+		// validate and return
+		if(isset($response['privacy'])) return $response['privacy'];
+
+		// fallback
+		return false;
+	}
+
 
 // Help resources
-    /**
-     * Returns the current configuration used by Twitter including twitter.com slugs which are not usernames, maximum photo resolutions, and t.co URL lengths.
-     * It is recommended applications request this endpoint when they are loaded, but no more than once a day.
-     *
-     * @return array
-     */
-    public function helpConfiguration()
-    {
-        // make the call
-        return $this->doCall(
-            'help/configuration.json'
-        );
-    }
-
-    /**
-     * Returns the list of languages supported by Twitter along with their ISO 639-1 code. The ISO 639-1 code is the two letter value to use if you include lang with any of your requests.
-     *
-     * @return array
-     */
-    public function helpLanguages()
-    {
-        // make the call
-        return $this->doCall(
-            'help/languages.json'
-        );
-    }
-
-    /**
-     * Returns Twitter's Privacy Policy
-     *
-     * @return array
-     */
-    public function helpPrivacy()
-    {
-        // make the call
-        return $this->doCall(
-            'help/privacy.json'
-        );
-    }
-
-    /**
-     * Returns the Twitter Terms of Service in the requested format. These are not the same as the Developer Rules of the Road.
-     *
-     * @return array
-     */
-    public function helpTos()
-    {
-        // make the call
-        return $this->doCall(
-            'help/tos.json'
-        );
-    }
-
-    /**
-     * Returns the current rate limits for methods belonging to the specified resource families.
-     * Each 1.1 API resource belongs to a "resource family" which is indicated in its method documentation. You can typically determine a method's resource family from the first component of the path after the resource version.
-     * This method responds with a map of methods belonging to the families specified by the resources parameter, the current remaining uses for each of those resources within the current rate limiting window, and its expiration time in epoch time. It also includes a rate_limit_context field that indicates the current access token context.
-     * You may also issue requests to this method without any parameters to receive a map of all rate limited GET methods. If your application only uses a few of methods, please explicitly provide a resources parameter with the specified resource families you work with.
-     *
-     * @param  array  $resources A comma-separated list of resource families you want to know the current rate limit disposition for. For best performance, only specify the resource families pertinent to your application.
-     * @return string
-     */
-    public function applicationRateLimitStatus(array $resources = null)
-    {
-        $parameters = null;
-        if (!empty($resources)) {
-            $parameters['resources'] = implode(',', $resources);
-        }
-
-        // make the call
-        return $this->doCall(
-            'application/rate_limit_status.json',
-            $parameters
-        );
-    }
+	/**
+	 * Test
+	 *
+	 * @return	bool
+	 */
+	public function helpTest()
+	{
+		// make the call
+		return ($this->doCall('help/test.json', null, null, 'GET', null, false) == '"ok"');
+	}
 }
+
+
+/**
+ * Twitter Exception class
+ *
+ * @author	Tijs Verkoyen <php-twitter@verkoyen.eu>
+ */
+class TwitterException extends Exception
+{
+}
+
+?>

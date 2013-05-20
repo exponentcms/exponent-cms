@@ -43,42 +43,36 @@ class twitterController extends expController {
     public function showall() {
         if (!empty($this->config['consumer_key'])) {
             // create instance
-            if (expPermissions::check('manage',$this->loc)) {
-              $except_handler = 'twitter_exception_admin';
-            } else {
-                $except_handler = 'twitter_exception';
-            }
-            set_exception_handler(array('twitterController', $except_handler));
             $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
+
             // set tokens
             $twitter->setOAuthToken($this->config['oauth_token']);
             $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
-
             $mytwitteracct =$twitter->accountVerifyCredentials();
 
 	        switch ($this->config['typestatus']) {
 		        case 1:  // get users timeline including retweets
-			        $tweets = $twitter->statusesUserTimeline($mytwitteracct['id'],null,null,$this->config['twlimit'],null,null,null,null,true);
+			        $tweets = $twitter->statusesUserTimeline(null,null,null,null,$this->config['twlimit'],null,false,true);
+			        break;
+		        case 2:  // get friends timeline
+					$tweets = $twitter->statusesFriendsTimeline(null,null,$this->config['twlimit']);
 			        break;
 		        case 3:  // get mentions
-					$tweets = $twitter->statusesMentionsTimeline($this->config['twlimit']);
+					$tweets = $twitter->statusesMentions(null,null,$this->config['twlimit']);
 			        break;
-                case 5:  // get retweets of me, new in v1.1
-      					$tweets = $twitter->statusesRetweetsOfMe($this->config['twlimit']);
-      			        break;
-                case 2:  // get friends timeline deprecated v1.0
-		        case 4:  // get public timeline deprecated v1.0
+		        case 4:  // get public timeline
+					$tweets = $twitter->statusesPublicTimeline();
+			        break;
 		        default:  // get home timeline
-                    $tweets = $twitter->statusesHomeTimeline($this->config['twlimit']);
+                    $tweets = $twitter->statusesHomeTimeline(null,null,$this->config['twlimit']);
 	                break;
 	        }
 
-    		if ($this->config['twlimit']) $tweets = array_slice($tweets,0,$this->config['twlimit'],true);  // not sure this is necessary??
-//		    $retweets = $twitter->statusesRetweetedByMe(null,null,$this->config['twlimit']);
+    		if ($this->config['twlimit']) $tweets = array_slice($tweets,0,$this->config['twlimit'],true);
+		    $retweets = $twitter->statusesRetweetedByMe(null,null,$this->config['twlimit']);
 
     		foreach ($tweets as $key => $value) {
 			    $tweets[$key]['retweetedbyme'] = false;
-//                $tweets[$key]['retweetedbyme'] = $value['retweeted'];
 			    if (strpos($value['text'],'RT ') === false) {
 				    $tweets[$key]['text'] = $this->twitterify($value['text']);
 				    $tweets[$key]['screen_name'] = $value['user']['screen_name'];
@@ -102,16 +96,15 @@ class twitterController extends expController {
 		        if (!isset($value['retweeted_status'])) {
 			        $tweets[$key]['retweeted_status'] = false;
 		        }
-//		        foreach ($retweets as $rekey => $revalue) {
-//			        if ($tweets[$key]['id'] == $retweets[$rekey]['retweeted_status']['id']) {
-//				        $tweets[$key]['retweetedbyme'] = true;
-//			            break;
-//			        }
-//		        }
+		        foreach ($retweets as $rekey => $revalue) {
+			        if ($tweets[$key]['id'] == $retweets[$rekey]['retweeted_status']['id']) {
+				        $tweets[$key]['retweetedbyme'] = true;
+			            break;
+			        }
+		        }
     		}
 
             assign_to_template(array('items'=>$tweets));
-            restore_exception_handler();
         }
     }
     
@@ -146,19 +139,11 @@ class twitterController extends expController {
 	public function update() {
 		if (!empty($this->config['consumer_key']) && !empty($this->params['body'])) {
 		    // create instance
-            if (expPermissions::check('manage',$this->loc)) {
-              $except_handler = 'twitter_exception_admin';
-            } else {
-                $except_handler = 'twitter_exception';
-            }
-            set_exception_handler(array('twitterController', $except_handler));
 		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
 		    // set tokens
 		    $twitter->setOAuthToken($this->config['oauth_token']);
 		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
-
 			$twitter->statusesUpdate($this->params['body']);
-            restore_exception_handler();
 		}
 		expHistory::back();
 	}
@@ -169,21 +154,11 @@ class twitterController extends expController {
 	public function create_retweet() {
 		if (!empty($this->config['consumer_key']) && !empty($this->params['id'])) {
 		    // create instance
-            if (expPermissions::check('manage',$this->loc)) {
-              $except_handler = 'twitter_exception_admin';
-            } else {
-                $except_handler = 'twitter_exception';
-            }
-            set_exception_handler(array('twitterController', $except_handler));
 		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
-            $twitter->timeOut = 60;
-
 		    // set tokens
 		    $twitter->setOAuthToken($this->config['oauth_token']);
 		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
-
 			$twitter->statusesRetweet($this->params['id']);
-            restore_exception_handler();
 		}
 		expHistory::back();
 	}
@@ -191,32 +166,17 @@ class twitterController extends expController {
 	/**
 	 * Delete the Tweet
 	 */
-	public function delete_tweet() {
+	public function delete_retweet() {
 		if (!empty($this->config['consumer_key']) && !empty($this->params['id'])) {
 		    // create instance
-            if (expPermissions::check('manage',$this->loc)) {
-              $except_handler = 'twitter_exception_admin';
-            } else {
-                $except_handler = 'twitter_exception';
-            }
-            set_exception_handler(array('twitterController', $except_handler));
 		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
 		    // set tokens
 		    $twitter->setOAuthToken($this->config['oauth_token']);
 		    $twitter->setOAuthTokenSecret($this->config['oauth_token_secret']);
-
 			$twitter->statusesDestroy($this->params['id']);
-            restore_exception_handler();
 		}
 		expHistory::back();
 	}
-
-    public static function twitter_exception(Exception $e) {
-    }
-
-    public static function twitter_exception_admin(Exception $e) {
-        flash('error','Twitter: '.$e->getMessage());
-    }
 
 }
 
