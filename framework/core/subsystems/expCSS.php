@@ -262,6 +262,8 @@ class expCSS {
         $new_cache = $less->cachedCompile($cache, false);
         if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
             $new_cache['vars'] = !empty($vars)?$vars:null;
+            $css_loc = pathinfo(BASE.$css_fname);
+            if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);
             file_put_contents(BASE.$css_fname, $new_cache['compiled']);
             file_put_contents($cache_fname, serialize($new_cache));
         }
