@@ -447,20 +447,38 @@ function get_model_for_controller($controller_name) {
 }
 
 function get_common_template($view, $loc, $controllername='') {
+    $framework = expSession::get('framework');
+
     $controller = new stdClass();
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
-    $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;  //FIXME this don't make sense?
+//    $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;  //FIXME this don't make sense?
     $controller->loc = $loc;
     
+    $bstrapbasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
+    $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
 
-    if (file_exists($themepath)) {
-        return new controllertemplate($controller,$themepath);
-    } elseif(file_exists($basepath)) {
-        return new controllertemplate($controller,$basepath);
+    if ($framework!="bootstrap") {
+        if (file_exists($themepath)) {
+            return new controllertemplate($controller,$themepath);
+        } elseif(file_exists($basepath)) {
+            return new controllertemplate($controller,$basepath);
+        } else {
+            return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+        }
     } else {
-        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+        if (file_exists($bstrapthemepath)) {
+            return new controllertemplate($controller, $bstrapthemepath);
+        } elseif (file_exists($themepath)) {
+            return new controllertemplate($controller, $themepath);
+        } elseif (file_exists($bstrapbasepath)) {
+            return new controllertemplate($controller, $bstrapbasepath);
+        } elseif (file_exists($basepath)) {
+            return new controllertemplate($controller, $basepath);
+        } else {
+            return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+        }
     }
 }
 
@@ -539,6 +557,7 @@ function get_config_templates($controller, $loc) {
  * @return array
  */
 function find_config_views($paths=array(), $excludes=array()) {
+    $framework = expSession::get('framework');
     $views = array();
     foreach ($paths as $path) {
         if (is_readable($path)) {
@@ -550,6 +569,9 @@ function find_config_views($paths=array(), $excludes=array()) {
                         $fileparts = explode('_', $filename);
                         $views[$filename]['name'] = ucwords(implode(' ', $fileparts));
                         $views[$filename]['file'] = $path.'/'.$file;
+                        if ($framework == 'bootstrap' && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
+                            $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap.tpl';
+                        }
                     }
                 }
             }
@@ -638,7 +660,7 @@ function get_action_views($ctl, $action, $human_readable) {
         if (is_readable($path)) {
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl') {
+                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl') {
                     $filename = substr($file, 0, -4);
                     $fileparts = explode('_', $filename);
                     if ($fileparts[0] == $action) {
@@ -677,7 +699,7 @@ function get_filedisplay_views() {
         if (is_readable($path)) {
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl') {
+                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl') {
                     $filename = substr($file, 0, -4);
                     $views[$filename] = gt($filename);
                 }

@@ -141,6 +141,7 @@ class fileController extends expController {
     public function get_module_view_config() {
         global $template;
 
+        $framework = expSession::get('framework');
         $controller = new $this->params['mod'];
         // set paths we will search in for the view
         $paths = array(
@@ -154,6 +155,12 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.config';
             if (is_readable($view)) {
+                if ($framework == 'bootstrap') {
+                    $bstrapview = substr($view,0,-6).'bootstrap.config';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
                 $template = new controllertemplate($this, $view);
                 $config_found = true;
             }
