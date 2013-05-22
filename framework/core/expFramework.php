@@ -563,7 +563,7 @@ function find_config_views($paths=array(), $excludes=array()) {
         if (is_readable($path)) {
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl') {
+                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl') {
                     $filename = substr($file, 0, -4);
                     if (!in_array($filename, $excludes)) {
                         $fileparts = explode('_', $filename);
