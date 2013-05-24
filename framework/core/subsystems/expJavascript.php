@@ -70,13 +70,13 @@ class expJavascript {
                     $srt[$i] = JQUERY_SCRIPT.",";
                 }
                 if ($head_config['framework'] == 'bootstrap') {
-                    if (strlen($srt[$i])+strlen(PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
-                        $srt[$i] .= PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js'.",";
-                    } else {
-                        $i++;
-//                        $srt[$i] = "";
-                        $srt[$i] = 'external/bootstrap/js/bootstrap.min.js'.",";
-                    }
+//                    if (strlen($srt[$i])+strlen(PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
+//                        $srt[$i] .= PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js'.",";
+//                    } else {
+//                        $i++;
+////                        $srt[$i] = "";
+//                        $srt[$i] = 'external/bootstrap/js/bootstrap.min.js'.",";
+//                    }
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap1',
                		    "lesscss"=>"external/bootstrap/less/bootstrap.less",
@@ -168,7 +168,7 @@ class expJavascript {
                 $scripts .= "\t"."<!-- jQuery Scripts -->"."\r\n";
                 $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
                 if ($head_config['framework'] == 'bootstrap') {
-                    $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js"></script>'."\r\n";
+//                    $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js"></script>'."\r\n";
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap1',
                		    "lesscss"=>"external/bootstrap/less/bootstrap.less",

@@ -20,7 +20,7 @@
             margin-top: 30px;
         }
         .navbar-spacer {
-            height: 75px;
+            height: 80px;
         }
     {elseif $smarty.const.MENU_LOCATION == 'static-top'}
         .navbar-static-top {
@@ -44,6 +44,9 @@
         }
         .navbar-spacer-bottom {
             height: 30px;
+        }
+        .menu-spacer-bottom {
+        	height : 75px;
         }
     {/if}
 {/if}

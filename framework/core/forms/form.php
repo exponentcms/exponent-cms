@@ -214,10 +214,11 @@ class form extends baseform {
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
         if(expSession::get('framework')!='bootstrap'){
             expCSS::pushToHead(array("corecss"=>"forms"));
+        } else {
+            expCSS::pushToHead(array("corecss"=>"forms-bootstrap"));
         };
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/Modernizr-2.5.3.forms.js',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
         ));
         expJavascript::pushToFoot(array(

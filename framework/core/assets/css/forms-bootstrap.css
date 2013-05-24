@@ -1,0 +1,79 @@
+/* forms controls */
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+/*input[type="number"],*/
+input[type="email"],
+input[type="url"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+	height : inherit;
+	width  : auto;
+}
+
+/*input[type="image"] {*/
+	/*width : 16px;*/
+/*}*/
+
+input[type="text"], textarea, input[type="password"] {
+	/*width : 300px;*/
+}
+
+input[type="search"] {
+	width : 160px;
+}
+
+input.text, input.password {
+	width          : 200px;
+	vertical-align : top;
+}
+
+.control.calendar-control input.text {
+	width          : 120px;
+}
+
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+	margin-left  : 0;
+	margin-right : 5px;
+}
+
+.radio, .checkbox {
+	padding-left : 0px;
+}
+
+input.radio, input.checkbox {
+	float        : none;
+	margin-right : 2px;
+}
+
+input[type="number"] {
+	margin-bottom : 2px!important;
+	width          : 60px;
+}
+
+.range-control.control {
+	width          : 214px;
+}
+
+li [class^="icon-"], li [class*=" icon-"], li .icon-large[class^="icon-"], li .icon-large[class*=" icon-"] {
+	width : auto;
+}
+
+/* buttons */
+a.icon-sort, .container-chrome ul li a.icon-sort {
+	background : url("../../../framework/core/assets/images/rerank.png") no-repeat scroll 0 50% transparent;
+	background : none;
+}
+
+.awesome, .awesome:visited {
+	/*background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;*/
+	color      : inherit;
+}

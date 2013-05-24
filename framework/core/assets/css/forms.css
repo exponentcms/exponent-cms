@@ -381,6 +381,14 @@ select[multiple] {
 	height : auto;
 }
 
+input[type="number"] {
+	width          : 60px;
+}
+
+.range-control.control {
+	width          : 214px;
+}
+
 label {
 	/*display: block;*/
 	padding        : 4px 0;

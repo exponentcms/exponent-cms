@@ -52,10 +52,11 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		
 		if(expSession::get('framework')!='bootstrap'){
 			expCSS::pushToHead(array("corecss"=>"forms"));
-		};
+		} else {
+            expCSS::pushToHead(array("corecss"=>"forms-bootstrap"));
+        }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/Modernizr-2.5.3.forms.js',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
         ));
         expJavascript::pushToFoot(array(
