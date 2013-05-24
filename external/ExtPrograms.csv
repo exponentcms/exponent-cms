@@ -20,14 +20,14 @@ pixidou,0.1,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily mod
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module
 dompdf,6.0b3,https://github.com/dompdf/dompdf,6.0b3,patched to display our images
 iCalCreator,2.16.12,kigkonsult.se/iCalcreator,2.16.12,
-lessphp,0.39,leafo.net/lessphp,0.39,
+lessphp,0.39,leafo.net/lessphp,0.39,latest development
 jQuery,1.9.1,jquery.com,1.9.1,
 jQueryUI,1.10.3,jqueryui.com,1.10.3,
 Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less for & includes swatches, fontawesome"
-Bootswatch,2.3.1+1,bootswatch.com/,2.3.1+1,
-Font-Awesome,3.1.1,fortawesome.github.com/Font-Awesome,3.1.1,
-Adminer,3.6.4,www.adminer.org,3.6.4,
+Bootswatch,2.3.2,bootswatch.com/,2.3.2,
+Font-Awesome,3.1.1,fortawesome.github.com/Font-Awesome,3.1.1,patched fonts location
+Adminer,3.6.4,www.adminer.org,3.7.0,
 html5shiv,,code.google.com/p/html5shiv/,,
-SimpleAjaxUploader,12-Nov,https://github.com/LPology/Simple-Ajax-Uploader,12-Nov,
+SimpleAjaxUploader,12-Nov,https://github.com/LPology/Simple-Ajax-Uploader,1.4.1,converted to yui module
 normalize.css,2.1.2,necolas.github.com/normalize.css/,2.1.2,
 MediaElement.js,2.11.3,mediaelementjs.com/,2.11.3,
