@@ -51,6 +51,7 @@ class upgrade_mediaplayer extends upgradescript {
 //        return true;
         $needed = $db->countObjects('container',"internal LIKE '%flowplayer%'");
         $needed += $db->countObjects('container',"internal LIKE '%youtube%'");
+        $needed += $db->countObjects('content_expFiles',"content_type = 'flowplayer'");
         $needed += $db->countObjects('flowplayer',1);
         $needed += $db->countObjects('youtube',1);
         if ($needed) {
@@ -182,11 +183,19 @@ class upgrade_mediaplayer extends upgradescript {
             $attached = $db->selectObjects('content_expFiles',"content_type = 'flowplayer' and content_id = ".$old_vid);
             foreach ($attached as $attach) {
                 $attach->content_type = 'media';
-                if ($attach->subtype = 'video') $attach->subtype = 'media';
+                if ($attach->subtype == 'video') $attach->subtype = 'media';
                 $attach->content_id = $media->id;
-                $db->updateObject($attach,'content_expFiles',"content_type = 'flowplayer' AND content_id = '".$old_vid);
+                $db->updateObject($attach,'content_expFiles',"content_type = 'flowplayer' AND content_id = ".$old_vid);
             }
 		}
+
+        // fix some incomplete upgrades
+        $attached = $db->selectObjects('content_expFiles',"content_type = 'flowplayer' AND subtype = 'video'");
+        foreach ($attached as $attach) {
+            $attach->content_type = 'media';
+            $attach->subtype = 'media';
+            $db->updateObject($attach,'content_expFiles',"content_type = 'flowplayer' AND content_id = ".$attach->content_id);
+        }
 
 		// convert youtube items
 		$videos = $db->selectArrays('youtube',"1");
