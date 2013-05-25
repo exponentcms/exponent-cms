@@ -55,6 +55,7 @@ var initSpinner = function() {
 		});
 	});
 };
+
 if(!Modernizr.inputtypes.number){		
 	$(document).ready(initSpinner);
 };
@@ -84,7 +85,7 @@ if(!Modernizr.inputtypes.date){
 /* ColorPicker
  * input[type=color] fallback
  *
- * using jQuery ColorPicker plugin by Stefan Petre(http://www.eyecon.ro/)
+ * using jQuery ColorPicker plugin by Stefan Petre (http://www.eyecon.ro/)
  * http://www.eyecon.ro/colorpicker/
  */
 var initColorpicker = function() {
@@ -106,9 +107,7 @@ if(!Modernizr.inputtypes.color){
 /* Placeholder
  * placeholder attribute fallback
  *
- * using jQuery Placehold plugin by Viget Inspire(http://www.viget.com/inspire/)
- * http://www.viget.com/inspire/a-jquery-placeholder-enabling-plugin/
- *
+ * using jQuery Placeholder plugin
  * http://andrew-jones.com/jquery-placeholder-plugin
  */
 var initPlaceholder = function() {

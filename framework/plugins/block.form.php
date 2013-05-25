@@ -51,9 +51,15 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 
 		
 		if(expSession::get('framework')!='bootstrap'){
-			expCSS::pushToHead(array("corecss"=>"forms"));
+			expCSS::pushToHead(array(
+                "unique"  => 'forms',
+                "corecss"=>"forms"
+            ));
 		} else {
-            expCSS::pushToHead(array("corecss"=>"forms-bootstrap"));
+            expCSS::pushToHead(array(
+                "unique"  => 'z-forms-bootstrap',
+                "corecss"=>"forms-bootstrap"
+            ));
         }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',

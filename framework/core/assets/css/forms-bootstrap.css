@@ -40,6 +40,10 @@ input.text, input.password {
 	width          : 120px;
 }
 
+.control.calendar-control select {
+	width          : 60px;
+}
+
 .radio input[type="radio"], .checkbox input[type="checkbox"] {
 	margin-left  : 0;
 	margin-right : 5px;

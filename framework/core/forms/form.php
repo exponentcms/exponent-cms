@@ -213,9 +213,15 @@ class form extends baseform {
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
         if(expSession::get('framework')!='bootstrap'){
-            expCSS::pushToHead(array("corecss"=>"forms"));
+            expCSS::pushToHead(array(
+                "unique"  => 'forms',
+                "corecss"=>"forms"
+            ));
         } else {
-            expCSS::pushToHead(array("corecss"=>"forms-bootstrap"));
+            expCSS::pushToHead(array(
+                "unique"  => 'z-forms-bootstrap',
+                "corecss"=>"forms-bootstrap"
+            ));
         };
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
