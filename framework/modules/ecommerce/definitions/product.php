@@ -160,7 +160,7 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	"companies_id"=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_INDEX=>1), 
+		DB_INDEX=>10),
 	"minimum_order_quantity"=>array(
     	DB_FIELD_TYPE=>DB_DEF_DECIMAL),
     'product_type'=>array(

@@ -26,7 +26,8 @@ return array(
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
 	'event_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10),
 	'date'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'location_data'=>array(
