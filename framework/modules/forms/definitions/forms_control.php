@@ -42,6 +42,8 @@ return array(
         DB_FIELD_TYPE => DB_DEF_BOOLEAN),
     'rank'        => array(
         DB_FIELD_TYPE => DB_DEF_INTEGER),
+    'page'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 );
 
 ?>
