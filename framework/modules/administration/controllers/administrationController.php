@@ -1163,6 +1163,17 @@ class administrationController extends expController {
                                             . ' ' . $row['timezone_id'];
         }
 
+        // profiles
+        $profiles = array(''=>'(current)');
+        if (is_readable(BASE."framework/conf/profiles")) {
+            $dh = opendir(BASE."framework/conf/profiles");
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable(BASE."framework/conf/profiles/$file") && substr($file,-4,4) == ".php") {
+                    $profiles[$file] = substr($file,0,-4);
+                }
+            }
+        }
+
         assign_to_template(array(
             'as_types'=>$as_types,
             'as_themes'=>$as_themes,
@@ -1178,7 +1189,8 @@ class administrationController extends expController {
             'timezones'=>$tzoptions,
             'file_permisions'=>$file_permisions,
             'dir_permissions'=>$dir_permissions,
-            'section_dropdown'=>$section_dropdown
+            'section_dropdown'=>$section_dropdown,
+            'profiles'=>$profiles
         ));
     }
 
@@ -1207,6 +1219,25 @@ class administrationController extends expController {
         flash('message', gt("Your Website Configuration has been updated"));
 //        expHistory::back();
 	    expHistory::returnTo('viewable');
+    }
+
+    public function change_profile() {
+        if (empty($this->params['profile'])) return;
+        //FIXME do we need to delete current config first??
+        copy(BASE."framework/conf/profiles/".$this->params['profile'],BASE."framework/conf/config.php");
+        expTheme::removeSmartyCache();
+        expSession::clearAllUsersSessionCache();
+        flash('message', gt("New Configuration Profile Loaded"));
+        redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
+    }
+
+    public function save_profile() {
+        if (empty($this->params['profile'])) return;
+        if (!file_exists(BASE."framework/conf/profiles")) @mkdir(BASE."framework/conf/profiles",DIR_DEFAULT_MODE_STR,true);
+        //FIXME do we need to delete an existing profile first??
+        copy(BASE."framework/conf/config.php",BASE."framework/conf/profiles/".$this->params['profile'].".php");
+        flash('message', gt("Configuration Profile Saved"));
+        redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
     }
 
     /**
