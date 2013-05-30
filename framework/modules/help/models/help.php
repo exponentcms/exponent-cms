@@ -57,6 +57,19 @@ class help extends expRecord {
         parent::beforeValidation();
     }
 
+    public function update($params = array()) {
+        global $db;
+
+        $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
+		if (isset($params['help_section'])) {
+			// manipulate section & source to correct values
+			$params['section'] = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $params['help_section'] .'"');
+			$params['src'] = $params['help_section'];
+            $params['rank'] = 0;
+		}
+        parent::update($params);
+    }
+
     /**
      * Save help item...we MUST also save the current section assigned
      *
@@ -65,16 +78,12 @@ class help extends expRecord {
         global $db;
 
         $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
-		if (isset($this->params['help_section'])) {
-			// manipulate section & location_data to correct values
-			$this->section = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $this->params['help_section'] .'"');
-//			$loc = new stdClass();
-//			$loc->mod = 'help';
-//			$loc->src = $this->params['help_section'];
-//			$loc->int = '';
-            $loc = expCore::makeLocation('help',$this->params['help_section']);
-			$this->location_data = serialize($loc);
-		}
+//		if (isset($this->params['help_section'])) {
+//			// manipulate section & location_data to correct values
+//			$this->section = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $this->params['help_section'] .'"');
+//            $loc = expCore::makeLocation('help',$this->params['help_section']);
+//			$this->location_data = serialize($loc);
+//		}
 
         parent::beforeSave();
 
