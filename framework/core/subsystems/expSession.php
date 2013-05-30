@@ -334,6 +334,7 @@ class expSession {
         $sessionticket = new stdClass();
 		$sessionticket->refresh = 1;
 		$db->updateObject($sessionticket, 'sessionticket', '1');
+        self::clearCurrentUserSessionCache();
 
 		/* Possible future code
 		if (isset($user)){

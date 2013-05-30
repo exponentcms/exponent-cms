@@ -591,7 +591,6 @@ class fileController extends expController {
 
         $errors = array();
         expSession::clearAllUsersSessionCache();
-        expSession::clearCurrentUserSessionCache();
 
         // copy in deprecated definitions files to aid in import
         $src = BASE."install/old_definitions";

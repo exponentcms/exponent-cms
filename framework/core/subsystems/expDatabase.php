@@ -130,7 +130,7 @@ class expDatabase {
     public static function install_dbtables($aggressive=false) {
    	    global $db;
 
-   		expSession::clearCurrentUserSessionCache();
+   		expSession::clearAllUsersSessionCache();
    		$tables = array();
 
    		// first the core and 1.0 definitions
