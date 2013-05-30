@@ -85,7 +85,7 @@
     {else}
         {foreach name=items from=$items item=item}
             <div class="item">
-                <h2><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}">{$item->title}</a></h2>
+                <h2><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></h2>
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit == 1}
