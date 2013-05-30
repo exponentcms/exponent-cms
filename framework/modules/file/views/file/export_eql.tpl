@@ -110,5 +110,5 @@
 				</td>
 			</tr>
 		</table>
-	{form}
+	{/form}
 </div>
