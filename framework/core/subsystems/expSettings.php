@@ -43,10 +43,10 @@ class expSettings {
 
 		// include global constants
 		@include_once(BASE."framework/conf/config.php");
-        if (!defined('SITE_TITLE')) {  // check for upgrade from older installation
+        if (!defined('SITE_TITLE')) {  // check for upgrade from older file structure
             if (!file_exists(BASE."framework/conf/config.php") && file_exists(BASE."conf/config.php")) {
 //                rename(BASE."conf/config.php",BASE."framework/conf/config.php");  //FIXME until 2.2.1
-                copy(BASE."conf/config.php",BASE."framework/conf/config.php");
+                copy(BASE."conf/config.php",BASE."framework/conf/config.php");      //FIXME remove in 2.2.1
                 @include_once(BASE."framework/conf/config.php");
             }
         }
@@ -141,7 +141,13 @@ class expSettings {
 		return $options;
 	}
 
-	public static function saveValues($values, $configname='') {
+    /**
+     * Saves values to config file
+     *
+     * @param        $values
+     * @param string $configname
+     */
+    public static function saveValues($values, $configname='') {  //FIXME only used with themes and self::change() method
 		$str = "<?php\n";
         foreach ($values as $directive=>$value) {
 			$directive = trim(strtoupper($directive));
@@ -190,8 +196,9 @@ class expSettings {
 
 			//if (isset($values['activate']) || $configname == "") {
 		if ($configname == "") { $configname = BASE."framework/conf/config.php"; }
-//		if ((file_exists(BASE."framework/conf/config.php") && expUtil::isReallyWritable(BASE."framework/conf/config.php")) || expUtil::isReallyWritable(BASE."conf")) {
-		if ((file_exists($configname) && expUtil::isReallyWritable($configname))) {
+//		if ((file_exists(BASE."framework/conf/config.php") && expUtil::isReallyWritable(BASE."framework/conf/config.php")) || expUtil::isReallyWritable(BASE."framework/conf")) {
+        $conffolder = pathinfo($configname);
+		if ((file_exists($configname) && expUtil::isReallyWritable($configname)) || expUtil::isReallyWritable($conffolder['dirname'])) {
 			$fh = fopen($configname,"w");
 			fwrite($fh,$str);
 			/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
@@ -211,14 +218,15 @@ class expSettings {
 	 * @param null $site_root
 	 * @node Subsystems:Config
 	 */
-	public static function saveConfiguration($values,$site_root=null) {  //FIXME this method is only used in install and doesn't deal with profiles
+	public static function saveConfiguration($values,$site_root=null) {  //FIXME this method is only used in install, and doesn't deal with profiles
 		if ($site_root == null) {
 			$site_root = BASE;
 		}
 
-		$configname = str_replace(" ","_",$values['configname']);
+//		$configname = str_replace(" ","_",$values['configname']);
+//        $configname = expFile::fixName($values['configname']);
 
-		$original_config = self::parse($configname,$site_root);
+//		$original_config = self::parse($configname,$site_root);
 
 		$str = "<?php\n\n";
 		foreach ($values['c'] as $directive=>$value) {
@@ -226,7 +234,7 @@ class expSettings {
 
 			// Because we may not have all config options in the POST,
 			// we need to unset the ones we do have from the original config.
-			unset($original_config[$directive]);
+//			unset($original_config[$directive]);
 
 			$str .= "define(\"$directive\",";
 			if (substr($directive,-5,5) == "_HTML") {
@@ -248,22 +256,22 @@ class expSettings {
 
 			// Because we may not have all config options in the POST,
 			// we need to unset the ones we do have from the original config.
-			unset($original_config[$directive]);
+//			unset($original_config[$directive]);
 
 			$str .= "define(\"$directive\"," . (isset($values['o'][$directive]) ? 1 : 0) . ");\n";
 		}
 		// Now pick up all of the unspecified values
 		// THIS MAY SCREW UP on checkboxes.
-		foreach ($original_config as $directive=>$value) {
-			$str .= "define(\"$directive\",";
-			if (substr($directive,-5,5) == "_HTML") {
-				$value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
-				$str .= "exponent_unhtmlentities('$value')";
-			}
-			else if (is_int($value)) $str .= $value;
-			else $str .= "'".str_replace("'","\'",$value)."'";
-			$str .= ");\n";
-		}
+//		foreach ($original_config as $directive=>$value) {
+//			$str .= "define(\"$directive\",";
+//			if (substr($directive,-5,5) == "_HTML") {
+//				$value = htmlentities(stripslashes($value),ENT_QUOTES,LANG_CHARSET); // slashes added by POST
+//				$str .= "exponent_unhtmlentities('$value')";
+//			}
+//			else if (is_int($value)) $str .= $value;
+//			else $str .= "'".str_replace("'","\'",$value)."'";
+//			$str .= ");\n";
+//		}
 		$str .= "\n?>";
 
 		// if ($configname != "") {
@@ -279,20 +287,19 @@ class expSettings {
 		//  }
 		// }
 
-		if (isset($values['activate']) || $configname == "") {
-			if (
-				(file_exists($site_root."framework/conf/config.php") && expUtil::isReallyWritable($site_root."framework/conf/config.php")) ||
-				expUtil::isReallyWritable($site_root."framework/conf")) {
-
-				$fh = fopen($site_root."framework/conf/config.php","w");
-				fwrite($fh,$str);
-
-				/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
-				fclose($fh);
-			} else {
-				echo gt('Unable to write profile configuration').'<br />';
-			}
-		}
+//		if (isset($values['activate']) || $configname == "") {
+//			if ((file_exists($site_root."framework/conf/config.php") && expUtil::isReallyWritable($site_root."framework/conf/config.php")) ||
+//				    expUtil::isReallyWritable($site_root."framework/conf")) {
+//				$fh = fopen($site_root."framework/conf/config.php","w");
+//				fwrite($fh,$str);
+//
+/*				/*fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$configname\");\n?>\n");*/
+//				fclose($fh);
+//			} else {
+//				echo gt('Unable to write profile configuration').'<br />';
+//			}
+//		}
+        self::writeFile($str);
 	}
 
     /** exdoc
@@ -427,7 +434,11 @@ class expSettings {
    	public static function createProfile($profile) {
         if (!file_exists(BASE."framework/conf/profiles")) @mkdir(BASE."framework/conf/profiles",DIR_DEFAULT_MODE_STR,true);
         //FIXME do we need to delete an existing profile first??
-        copy(BASE."framework/conf/config.php",BASE."framework/conf/profiles/".$profile.".php");
+        $profile = expFile::fixName($profile);
+//        copy(BASE."framework/conf/config.php",BASE."framework/conf/profiles/".$profile.".php");
+        $baseprofile = expSettings::parseFile(BASE."framework/conf/config.php");
+        unset($baseprofile['CURRENTCONFIGNAME']);
+        self::saveValues($baseprofile,BASE."framework/conf/profiles/".$profile.".php");
    	}
 
 	/** exdoc
@@ -439,7 +450,6 @@ class expSettings {
 	 */
 	public static function deleteProfile($profile) {  //FIXME this method is never used
 		if (file_exists(BASE."framework/conf/profiles/$profile.php")) {
-			// do checking with realpath
 			unlink(BASE."framework/conf/profiles/$profile.php");
 		}
 	}
@@ -454,6 +464,7 @@ class expSettings {
 		if (is_readable(BASE."framework/conf/profiles/$profile.php") && expUtil::isReallyWritable(BASE."framework/conf")) {
             //FIXME do we need to delete current config first??
 			copy(BASE."framework/conf/profiles/$profile.php",BASE."framework/conf/config.php");
+            // tag it with the profile name
 			$fh = fopen(BASE."framework/conf/config.php","a");
 			fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$profile\");\n?>");
 			fclose($fh);

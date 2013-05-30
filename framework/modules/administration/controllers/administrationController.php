@@ -1164,8 +1164,10 @@ class administrationController extends expController {
         }
 
         // profiles
-        $profiles = array(''=>'(current)');
-        $profiles = array_merge($profiles,expSettings::profiles());
+        $profiles = expSettings::profiles();
+        if (empty($profiles)) {
+            $profiles = array('' => '(default)');
+        }
 
         assign_to_template(array(
             'as_types'=>$as_types,

@@ -401,7 +401,7 @@ class expFile extends expRecord {
 
         // If $_destFile is defined, use that name as an override for the
         // uploaded file name
-        $_destFile = ($_destFile == null) ? self::fixFileName($_FILES[$_postName]['name']) : $_destFile;
+        $_destFile = ($_destFile == null) ? self::fixName($_FILES[$_postName]['name']) : $_destFile;
 
         // Fix the filename, so that we don't have funky characters screwing
         // with our attempt to create the destination file.
@@ -518,7 +518,7 @@ class expFile extends expRecord {
 
         // If $_destFile is defined, use that name as an override for the
         // uploaded file name
-        $_destFile = ($_destFile == null) ? self::fixFileName($fileName) : $_destFile;
+        $_destFile = ($_destFile == null) ? self::fixName($fileName) : $_destFile;
 
         // Fix the filename, so that we don't have funky characters screwing
         // with our attempt to create the destination file.
@@ -727,9 +727,9 @@ class expFile extends expRecord {
      * @throws void
      *
      */
-    public static function fixFileName($name) {
-//        return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
-        return preg_replace('/[^A-Za-z0-9\.]/', '-', $name);
+    public static function fixName($name) {
+        return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
+//        return preg_replace('/[^A-Za-z0-9\.]/', '-', $name);
     }
 
 // ==========================================================
@@ -1397,10 +1397,6 @@ class expFile extends expRecord {
         }
         closedir($dh);
         rmdir($dir);
-    }
-
-    public static function fixName($name) {
-        return preg_replace('/[^A-Za-z0-9\.]/', '_', $name);
     }
 
     /** exdoc

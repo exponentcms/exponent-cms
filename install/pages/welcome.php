@@ -57,7 +57,7 @@ if (!defined('LANGUAGE')) {
 // profiles
 $profiles = expSettings::profiles();
 if (!empty($profiles)) {
-    $profile = array('' => '(none)');
+    $profile = array('' => '(select a profile to abort install)');
     $profiles = array_merge($profile, $profiles);
     ?>
     <br><br>

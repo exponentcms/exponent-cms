@@ -374,8 +374,8 @@
                         </div>
                         <h2>{"Configuration Profiles"|gettext}</h2>
                     </div>
-                    {control type="dropdown" name="profiles" label="Load configuration profile"|gettext items=$profiles onchange="changeProfile(this.value)"}
-                    {control type="text" name="profile_name" label="New Profile Name"|gettext}
+                    {control type="dropdown" name="profiles" label="Load configuration profile"|gettext items=$profiles default=$smarty.const.CURRENTCONFIGNAME onchange="changeProfile(this.value)"}
+                    {control type="text" name="profile_name" label="New Profile Name"|gettext value=$smarty.const.CURRENTCONFIGNAME}
                     <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" onclick="saveProfile()"><strong>{'Save New Profile'|gettext}</strong></a>
                 </div>
                 {/if}
