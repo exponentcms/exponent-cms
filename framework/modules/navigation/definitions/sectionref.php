@@ -35,7 +35,8 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
 	'section'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10),
 	'refcount'=>array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'is_original'=>array(

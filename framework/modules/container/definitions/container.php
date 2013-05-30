@@ -27,10 +27,12 @@ return array(
 		DB_INCREMENT=>true),
 	'internal'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>250),
+		DB_FIELD_LEN=>250,
+        DB_INDEX=>10),
 	'external'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>250),
+		DB_FIELD_LEN=>250,
+        DB_INDEX=>10),
 	'module'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
