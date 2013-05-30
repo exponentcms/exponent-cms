@@ -38,6 +38,13 @@ include_once('../exponent.php');
 //	header('Location: ../index.php');
 //	exit(gt('This Exponent Site has already been configured.'));
 //}
+if (isset($_GET['profile'])) {
+    expSettings::activateProfile($_GET['profile']);
+    expTheme::removeSmartyCache();
+    expSession::clearAllUsersSessionCache();
+    flash('message', gt("New Configuration Profile Loaded"));
+    header('Location: ../index.php');
+}
 
 if (isset($_POST['sc'])) {
     if (file_exists("../framework/conf/config.php")) {

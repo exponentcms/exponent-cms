@@ -404,7 +404,7 @@ class expSettings {
 	 * @node Subsystems:Config
 	 * @return array
 	 */
-	public static function profiles() {  //FIXME this method is never used
+	public static function profiles() {
 		$profiles = array();
 		if (is_readable(BASE."framework/conf/profiles")) {
 			$dh = opendir(BASE."framework/conf/profiles");
@@ -417,6 +417,18 @@ class expSettings {
 		}
 		return $profiles;
 	}
+
+    /** exdoc
+   	 * Creates a configuration profile from the current configuration
+   	 *
+   	 * @param string $profile The name of the Profile to remove.
+   	 * @node Subsystems:Config
+   	 */
+   	public static function createProfile($profile) {
+        if (!file_exists(BASE."framework/conf/profiles")) @mkdir(BASE."framework/conf/profiles",DIR_DEFAULT_MODE_STR,true);
+        //FIXME do we need to delete an existing profile first??
+        copy(BASE."framework/conf/config.php",BASE."framework/conf/profiles/".$profile.".php");
+   	}
 
 	/** exdoc
 	 * Deletes a configuration profile from the framework/conf/profiles
@@ -438,8 +450,9 @@ class expSettings {
 	 * @param string $profile The name of the Profile to activate.
 	 * @node Subsystems:Config
 	 */
-	public static function activateProfile($profile) {  //FIXME this method is never used
-		if (is_readable(BASE."framework/conf/profiles/$profile.php") && expUtil::isReallyWritable(BASE."framework/conf/config.php")) {
+	public static function activateProfile($profile) {
+		if (is_readable(BASE."framework/conf/profiles/$profile.php") && expUtil::isReallyWritable(BASE."framework/conf")) {
+            //FIXME do we need to delete current config first??
 			copy(BASE."framework/conf/profiles/$profile.php",BASE."framework/conf/config.php");
 			$fh = fopen(BASE."framework/conf/config.php","a");
 			fwrite($fh,"\n<?php\ndefine(\"CURRENTCONFIGNAME\",\"$profile\");\n?>");

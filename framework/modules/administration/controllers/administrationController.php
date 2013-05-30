@@ -1165,14 +1165,7 @@ class administrationController extends expController {
 
         // profiles
         $profiles = array(''=>'(current)');
-        if (is_readable(BASE."framework/conf/profiles")) {
-            $dh = opendir(BASE."framework/conf/profiles");
-            while (($file = readdir($dh)) !== false) {
-                if (is_readable(BASE."framework/conf/profiles/$file") && substr($file,-4,4) == ".php") {
-                    $profiles[$file] = substr($file,0,-4);
-                }
-            }
-        }
+        $profiles = array_merge($profiles,expSettings::profiles());
 
         assign_to_template(array(
             'as_types'=>$as_types,
@@ -1223,8 +1216,7 @@ class administrationController extends expController {
 
     public function change_profile() {
         if (empty($this->params['profile'])) return;
-        //FIXME do we need to delete current config first??
-        copy(BASE."framework/conf/profiles/".$this->params['profile'],BASE."framework/conf/config.php");
+        expSettings::activateProfile($this->params['profile']);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
         flash('message', gt("New Configuration Profile Loaded"));
@@ -1233,9 +1225,7 @@ class administrationController extends expController {
 
     public function save_profile() {
         if (empty($this->params['profile'])) return;
-        if (!file_exists(BASE."framework/conf/profiles")) @mkdir(BASE."framework/conf/profiles",DIR_DEFAULT_MODE_STR,true);
-        //FIXME do we need to delete an existing profile first??
-        copy(BASE."framework/conf/config.php",BASE."framework/conf/profiles/".$this->params['profile'].".php");
+        expSettings::createProfile($this->params['profile']);
         flash('message', gt("Configuration Profile Saved"));
         redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
     }
