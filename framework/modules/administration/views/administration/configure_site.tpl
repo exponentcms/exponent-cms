@@ -375,7 +375,7 @@
                         <h2>{"Configuration Profiles"|gettext}</h2>
                     </div>
                     {control type="dropdown" name="profiles" label="Load configuration profile"|gettext items=$profiles onchange="changeProfile(this.value)"}
-                    {control type="text" name="profile_name" label="Profile Name"|gettext}
+                    {control type="text" name="profile_name" label="New Profile Name"|gettext}
                     <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" onclick="saveProfile()"><strong>{'Save New Profile'|gettext}</strong></a>
                 </div>
                 {/if}
@@ -408,8 +408,10 @@
     }
 
     function saveProfile() {
-        if (confirm('{/literal}{'Are you sure you want to save this configuration profile?'|gettext}{literal}')) {
-            window.location = EXPONENT.PATH_RELATIVE+"administration/save_profile/profile/" + document.getElementById("profile_name").value;
+        if (document.getElementById("profile_name").value != '') {
+            if (confirm('{/literal}{'Are you sure you want to save this configuration profile?'|gettext}{literal}')) {
+                window.location = EXPONENT.PATH_RELATIVE+"administration/save_profile/profile/" + document.getElementById("profile_name").value;
+            }
         }
     }
 {/literal}

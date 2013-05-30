@@ -33,7 +33,8 @@
                </li>
             {/if}
         {/foreach}
-        
+
+        {*FIXME revert to display siblings if no children exist?*}
         {if $islastdepth=="false"}
             {foreach from=$sections item=section}
                 {if $section->parent == $current->parent}
