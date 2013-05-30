@@ -30,6 +30,13 @@
             {if $permissions.manage == 1}
                  {icon action=manage text="Manage Events"|gettext}
             {/if}
+            {if $admin}
+                {if !$past}
+                    {icon class="view" action=showall past=1 text="View Past Events"|gettext}
+                {else}
+                    {icon class="view" action=showall text="View Active Events"|gettext}
+                {/if}
+            {/if}
         </div>
     {/permissions}
     {if $config.moduledescription != ""}

@@ -70,10 +70,21 @@ class eventregistrationController extends expController {
         $limit = (!empty($this->config['limit'])) ? $this->config['limit'] : 10;
 
         $pass_events = array();
-        if ($user->isAdmin()) {
-            $pass_events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+        if (!empty($this->params['past']) && $user->isAdmin()) {
+            $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+            foreach ($events as $event) {
+               // $this->signup_cutoff > time()
+               if ($event->eventdate <= time() && $event->signup_cutoff <= time()) {
+                   $pass_events[] = $event;
+               }
+               // eDebug($event->signup_cutoff, true);
+           }
         } else {
-            $events      = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
+            if ($user->isAdmin()) {
+                $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+            } else {
+                $events = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
+            }
             foreach ($events as $event) {
                 // $this->signup_cutoff > time()
                 if ($event->eventdate > time() && $event->signup_cutoff > time()) {
@@ -103,7 +114,9 @@ class eventregistrationController extends expController {
             ),
         ));
         assign_to_template(array(
-            'page'=> $page
+            'page'=> $page,
+            'admin'=> $user->isAdmin(),
+            'past'=> !empty($this->params['past'])
         ));
     }
 
@@ -257,14 +270,15 @@ class eventregistrationController extends expController {
         $product = new eventregistration($id);
 
         //FIXME we only have 0=active & 2=inactive ???
-//        $product_type = new stdClass();
         if ($product->active_type == 1) {
             $product->user_message = "This event is temporarily unavailable for registration.";
-        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
-            flash("error", $product->title . " " . gt("registration is currently unavailable for registration."));
-            expHistory::back();
-        } elseif ($product->active_type == 2 && $user->isAdmin()) {
-            $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
+        } elseif ($product->active_type == 2) {
+            if ($user->isAdmin()) {
+                $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
+            } else {
+                flash("error", $product->title . " " . gt("registration is currently unavailable for registration."));
+                expHistory::back();
+            }
         }
 
         $order_registrations = array();
@@ -314,14 +328,15 @@ class eventregistrationController extends expController {
 
         //TODO should we pull in an existing reservation already in the cart to edit? e.g., the registrants
          //FIXME we only have 0=active & 2=inactive ???
-//        $product_type = new stdClass();
         if ($product->active_type == 1) {
             $product->user_message = "This event is temporarily unavailable for registration.";
-        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
-            flash("error", $product->title . " " . gt("registration is currently unavailable."));
-            expHistory::back();
-        } elseif ($product->active_type == 2 && $user->isAdmin()) {
-            $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
+        } elseif ($product->active_type == 2) {
+            if ($user->isAdmin()) {
+                $product->user_message = $product->title . " is currently marked as unavailable for open registration or display.  Normal users will not see this event.";
+            } else {
+                flash("error", $product->title . " " . gt("registration is currently unavailable."));
+                expHistory::back();
+            }
         }
 
         //eDebug($product, true);
@@ -337,15 +352,28 @@ class eventregistrationController extends expController {
         expHistory::set('viewable', $this->params);
         $limit = (!empty($this->config['limit'])) ? $this->config['limit'] : 10;
 
-        if ($user->isAdmin()) {
-            $pass_events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
-        } else {
-            $events      = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
-            $pass_events = array();
+        $pass_events = array();
+        if (!empty($this->params['past']) && $user->isAdmin()) {
+            $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
             foreach ($events as $event) {
-                if ($event->signup_cutoff > time()) {
+               // $this->signup_cutoff > time()
+               if ($event->eventdate <= time() && $event->signup_cutoff <= time()) {
+                   $pass_events[] = $event;
+               }
+               // eDebug($event->signup_cutoff, true);
+           }
+        } else {
+            if ($user->isAdmin()) {
+                $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
+            } else {
+                $events = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
+            }
+            foreach ($events as $event) {
+                // $this->signup_cutoff > time()
+                if ($event->eventdate > time() && $event->signup_cutoff > time()) {
                     $pass_events[] = $event;
                 }
+                // eDebug($event->signup_cutoff, true);
             }
         }
         foreach ($pass_events as $key=>$pass_event) {
@@ -372,7 +400,9 @@ class eventregistrationController extends expController {
             ),
         ));
         assign_to_template(array(
-            'page'=> $page
+            'page'=> $page,
+            'admin'=> $user->isAdmin(),
+            'past'=> !empty($this->params['past'])
         ));
     }
 
