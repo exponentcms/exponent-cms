@@ -43,6 +43,16 @@ class expJavascript {
         global $userjsfiles,$expJS,$yui2js,$yui3js,$jqueryjs, $head_config;
 
         $scripts = '';
+        // remove duplicate scripts since it's inefficient and crashes minify
+        $newexpJS = array();
+        $usedJS = array();
+        foreach($expJS as $eJS) {
+            if (!in_array($eJS['fullpath'],$usedJS)) {
+                $usedJS[] = $eJS['fullpath'];
+                $newexpJS[$eJS['name']] = $eJS;
+            }
+        }
+        $expJS = $newexpJS;
         ob_start();
   		include(BASE.'exponent.js.php');
         $exponent_js = ob_get_clean();
