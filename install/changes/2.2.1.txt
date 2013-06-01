@@ -2,3 +2,4 @@ version 2.2.1
 Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
   - no longer automatically loads bootstrap.min.js file, explicit loading of individual scripts as required
   - adds a rudimentary site configuration profile feature
+  - adds optional author signature to blog posts, handled by user profile extension

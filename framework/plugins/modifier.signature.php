@@ -23,23 +23,22 @@
  */
 
 /**
- * Smarty {username} modifier plugin
+ * Smarty {signature} modifier plugin
  * Type:     modifier<br>
- * Name:     username<br>
- * Purpose:  return the username for a user id
+ * Name:     signature<br>
+ * Purpose:  return the stored signature for a user id if available
  *
- * @param         $userid
- * @param boolean $type if true return user name instead of record
+ * @param  integer $userid
  *
- * @return array
+ * @return string
  */
-function smarty_modifier_username($userid,$type=null) {
+function smarty_modifier_signature($userid) {
 	global $db;
 
-    if ($type) {
-        $user = $db->selectObject('user', 'id='.intval($userid));
-        return $user->firstname . ' ' . $user->lastname;
-    } else return $db->selectValue('user', 'username', 'id='.intval($userid));
+    $sig = $db->selectValue('user_signature','signature','user_id='.intval($userid));
+    if (!empty($sig)) {
+        return '<h3>'.gt('About the author').'</h3>'.$sig;
+    } return $sig;
 }
 
 ?>

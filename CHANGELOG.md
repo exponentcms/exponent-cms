@@ -12,6 +12,7 @@ Added / Fixed / changed for 2.2.1
 ### Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
   - no longer automatically loads bootstrap.min.js file, explicit loading of individual scripts as required
   - adds a rudimentary site configuration profile feature
+  - adds optional author signature to blog posts, handled by user profile extension
 ### Known Issues
   - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
     -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
