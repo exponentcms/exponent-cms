@@ -283,6 +283,15 @@ if ($user->isAdmin() || !empty($groups)) {
 
 if ($user->isSuperAdmin()) {
     $tmp = count($expAdminMenu['submenu']['itemdata']);
+    if (USE_LDAP) {
+        $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata']) - 1]['submenu']['itemdata'][] = array(
+            'text'      => gt('Sync LDAP Users'),
+            'url'       => makeLink(array(
+                'controller' => 'users',
+                'action'     => 'sync_LDAPUsers'
+            )),
+        );
+    }
     $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata']) - 1]['submenu']['itemdata'][] = array(
         'text'      => gt('Mass Mailer'),
         'url'       => makeLink(array(

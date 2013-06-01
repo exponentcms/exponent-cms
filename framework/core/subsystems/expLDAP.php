@@ -27,15 +27,21 @@ class expLDAP {
     public $connection = false;
 
     function __construct($server = '') {
+        if (!empty($this->connection)) self::close();
+        if (empty($server) && !defined(LDAP_SERVER)) $this->connection = false;
+        $ldap_server = empty($server) ? LDAP_SERVER : $server;
+        $this->connection = @ldap_connect($ldap_server);
+        ldap_set_option($this->connection, LDAP_OPT_REFERRALS, 0);
+        ldap_set_option($this->connection, LDAP_OPT_PROTOCOL_VERSION, 3);
     }
 
     function __destruct() {
         self::close();
     }
 
-    public function authenticate($context, $password) {
-        if (empty($password) || empty($context)) return false; //if the password isn't set, return false to safeguard against anon login
-        return self::bind($context, $password);
+    public function authenticate($username, $password) {
+        if (empty($password) || empty($username)) return false; //if the password isn't set, return false to safeguard against anon login
+        return self::bind($username, $password);
     }
 
     public function getLdapUser($username) {
@@ -46,8 +52,8 @@ class expLDAP {
 //		$results = @ldap_search($this->connection,$search_context, "cn=".$username);
         $results = @ldap_search($this->connection, $search_context, "sAMAccountName=" . $username);
         if ($this->errno() && DEVELOPMENT) {
-           flash('error', $this->error());
-       }
+            flash('error', $this->error());
+        }
         $info = @ldap_get_entries($this->connection, $results);
 
         return ($info['count'] > 0) ? $info[0] : array();
@@ -81,7 +87,6 @@ class expLDAP {
                               'lastname'  => $user['sn'][0],
                               'email'     => $user['mail'][0],
                               'is_ldap'   => 1);
-//			return exponent_users_create($userdata); //FIXME function was deprecated
             $newuser = new user($userdata);
             $newuser->update();
             return $newuser;
@@ -90,26 +95,25 @@ class expLDAP {
         }
     }
 
-    public function connectAndBind($server = '', $username = "", $password = "", $context = '') {
-        self::connect($server);
-        self::bind($username, $password, $context);
-    }
+//    public function connectAndBind($server = '', $username = "", $password = "", $context = '') {
+//        self::connect($server);
+//        self::bind($username, $password, $context);
+//    }
 
-    public function connect($server = '') {
-        if (!empty($this->connection)) self::close();
+//    public function connect($server = '') {
+//        if (!empty($this->connection)) self::close();
+//        if (empty($server) && !defined(LDAP_SERVER)) $this->connection = false;
+//        $ldap_server = empty($server) ? LDAP_SERVER : $server;
+//        $this->connection = @ldap_connect($ldap_server);
+//        ldap_set_option($this->connection, LDAP_OPT_REFERRALS, 0);
+//        ldap_set_option($this->connection, LDAP_OPT_PROTOCOL_VERSION, 3);
+//    }
 
-        if (empty($server) && !defined(LDAP_SERVER)) $this->connection = false;
-
-        $ldap_server = empty($server) ? LDAP_SERVER : $server;
-        $this->connection = @ldap_connect($ldap_server);
-        ldap_set_option($this->connection, LDAP_OPT_REFERRALS, 0);
-        ldap_set_option($this->connection, LDAP_OPT_PROTOCOL_VERSION, 3);
-    }
-
-    public function bind($context = '', $password = "") {
+    public function bind($username = '', $password = "") {
         if (!empty($this->connection)) {
-            $bind_context = empty($context) ? LDAP_BIND_USER : $context;
-            return @ldap_bind($this->connection, $bind_context, $password);
+            $bind_username = empty($username) ? LDAP_BIND_USER : $username;
+            $bind_password = empty($password) ? LDAP_BIND_PASS : $password;
+            return @ldap_bind($this->connection, $bind_username, $bind_password);
         }
     }
 
@@ -123,6 +127,28 @@ class expLDAP {
 
     public function error() {
         return ldap_error($this->connection);
+    }
+
+    /**
+     * Attempts to update Exponent 'ldap' user profiles using ldap server data
+     */
+    public function syncLDAPUsers() {
+        $usr = new user();
+        $ldap_users = $usr->find('all', 'is_ldap=1');
+        if (!empty($ldap_users)) {
+            self::bind();
+            foreach ($ldap_users as $ldap_user) {
+                $newuser = new user(array('username' => $ldap_user->username));
+                $user = self::getLdapUser($ldap_user->username);
+                $userdata = array(
+                    'firstname' => $user['givenname'][0],
+                    'lastname'  => $user['sn'][0],
+                    'email'     => $user['mail'][0]
+                );
+                $newuser->update($userdata);
+            }
+            return count($ldap_users);
+        }
     }
 
 }

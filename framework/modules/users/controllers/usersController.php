@@ -1608,6 +1608,15 @@ class usersController extends expController {
         unlink(BASE . $this->params["filename"]);
     }
 
+    public function sync_LDAPUsers() {
+        if (USE_LDAP == 1 && function_exists('ldap_connect')) {
+            $ldap = new expLDAP();
+            $updated = $ldap->syncLDAPUsers();
+            $ldap->close();
+            flash('message', $updated.' '.gt('LDAP Users Updated'));
+        }
+    }
+
 }
 
 ?>
