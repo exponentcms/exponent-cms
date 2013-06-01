@@ -3,3 +3,4 @@ Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQu
   - no longer automatically loads bootstrap.min.js file, explicit loading of individual scripts as required
   - adds a rudimentary site configuration profile feature
   - adds optional author signature to blog posts, handled by user profile extension
+  - adds ldap user sync to update all ldap users against ldap server data (email, first/last name)

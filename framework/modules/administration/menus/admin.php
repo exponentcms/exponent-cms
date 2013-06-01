@@ -283,7 +283,7 @@ if ($user->isAdmin() || !empty($groups)) {
 
 if ($user->isSuperAdmin()) {
     $tmp = count($expAdminMenu['submenu']['itemdata']);
-    if (USE_LDAP) {
+    if (USE_LDAP && function_exists('ldap_connect')) {
         $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata']) - 1]['submenu']['itemdata'][] = array(
             'text'      => gt('Sync LDAP Users'),
             'url'       => makeLink(array(

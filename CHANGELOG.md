@@ -13,6 +13,7 @@ Added / Fixed / changed for 2.2.1
   - no longer automatically loads bootstrap.min.js file, explicit loading of individual scripts as required
   - adds a rudimentary site configuration profile feature
   - adds optional author signature to blog posts, handled by user profile extension
+  - adds ldap user sync to update all ldap users against ldap server data (email, first/last name)
 ### Known Issues
   - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the future
     -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
