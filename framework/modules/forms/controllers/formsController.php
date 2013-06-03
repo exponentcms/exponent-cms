@@ -250,6 +250,7 @@ class formsController extends expController {
 
             if (!empty($f)) {
                 $form = new form();
+                $form->id = $f->sef_url;
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
@@ -297,6 +298,7 @@ class formsController extends expController {
                     $emaillist = array_reverse($emaillist, true);
                     $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
                 }
+                $paged = false;
                 foreach ($controls as $c) {
 //                    $ctl = unserialize($c->data);
                     $ctl = expUnserialize($c->data);
@@ -313,6 +315,7 @@ class formsController extends expController {
                         if (!empty($data[$c->name])) $ctl->default = $data[$c->name];
                     }
                     $form->register($c->name, $c->caption, $ctl);
+                    if (get_class($ctl) == 'pagecontrol') $paged = true;
                 }
 
                 // if we are editing an existing record we'll need to do recaptcha here since we won't call confirm_data
@@ -351,7 +354,7 @@ class formsController extends expController {
                 }
                 if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
                 if (empty($this->config['resetbtn'])) $this->config['resetbtn'] = '';
-                $form->register("submit", "", new buttongroupcontrol($this->config['submitbtn'], $this->config['resetbtn'], $cancel));
+                $form->register("submit", "", new buttongroupcontrol($this->config['submitbtn'], $this->config['resetbtn'], $cancel, 'finish stepy-finish'));
 
                 $form->meta("m", $this->loc->mod);
                 $form->meta("s", $this->loc->src);
@@ -376,6 +379,7 @@ class formsController extends expController {
                     "form_html"   => $form->toHTML($f->id),
                     "form"        => $f,
                     "count"       => $count,
+                    'paged'       => $paged,
                 ));
             }
         } else {
@@ -891,8 +895,12 @@ class formsController extends expController {
                 $form->meta('forms_id', $f->id);
                 $types = expTemplate::listControlTypes();
                 $othertypes = expTemplate::listSimilarControlTypes($control_type);
-                $otherlist = new dropdowncontrol($control_type,$othertypes);
-                $form->registerBefore('identifier','control_type',gt('Control Type'),$otherlist);
+                if (count($othertypes) > 1) {
+                    $otherlist = new dropdowncontrol($control_type,$othertypes);
+                    $form->registerBefore('identifier','control_type',gt('Control Type'),$otherlist);
+                } else {
+                    $form->registerBefore('identifier','control_type',gt('Control Type'),new genericcontrol('hidden',$control_type));
+                }
                 assign_to_template(array(
                     'form_html' => $form->toHTML($f->id),
                     'type'      => $types[$control_type],

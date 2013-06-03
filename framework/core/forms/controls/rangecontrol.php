@@ -36,7 +36,7 @@ class rangecontrol extends textcontrol {
 
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 25;
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$name.'"';
         if ($this->type != 'text') {
             $extra_class = ' ' . $this->type;
         } else {

@@ -132,7 +132,7 @@ class fakeform extends form {
                 if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
             }
 
-            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
+            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol') || $this->controls[$name]->_controltype == 'pagecontrol') {
             } elseif (!empty($this->controlLbl[$name])) {
                 if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
                     $html .= "<label ".$for." class=\"label\" style=\"display:inline;\">";
@@ -173,7 +173,6 @@ class fakeform extends form {
 			$html .= "</div>";
 			
 			$rank++;
-			
 		}
 	//	$html .= "<tr><td width='5%'></td><td wdith='90%'><td></td width='5%'></tr>\r\n";
 	//	$html .= "</table>\r\n";

@@ -13,6 +13,7 @@
  *
  *}
 
+{uniqueid prepend=$form->sef_url assign="name"}
 {if !$error}
     {if $config.style}
         {css unique="formmod2" corecss="forms2col"}
@@ -65,4 +66,31 @@
             {/if}
         </div>
     </div>
+{/if}
+
+{*{script unique=jWizard jquery='jqueryui,jquery.jWizard'}*}
+    {*$("#test").jWizard();*}
+{*{/script}*}
+
+{*{script unique=quickWizard jquery='jqueryui,jquery.validate,jquery.quickWizard'}*}
+    {*$(document).ready(function() {*}
+        {*$('#test').quickWizard();*}
+    {*});*}
+{*{/script}*}
+
+{if $paged}
+{script unique=$name jquery='jquery.validate,jquery.stepy'}
+{literal}
+    $("#{/literal}{$form->sef_url}{literal}").stepy({
+        validate: true,
+        block: true,
+        errorImage: true,
+        description: false,
+//        finishButton: false,  // otherwise crashes because we can't find submit button
+        btnClass: 'awesome {/literal}{$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}{literal}',
+        legend: false,
+        titleClick: true,
+    });
+{/literal}
+{/script}
 {/if}

@@ -60,7 +60,8 @@ class genericcontrol extends formcontrol {
             $divID  = ' id="'.$this->id.'Control"';
             $for = ' for="'.$this->id.'"';
         } else {
-            $divID  = '';
+//            $divID  = '';
+            $divID  = ' id="'.$name.'Control"';
             $for = '';
         }
 //        if ($this->required) $label = "*" . $label;
@@ -92,7 +93,7 @@ class genericcontrol extends formcontrol {
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 20;
         $this->name = empty($this->name) ? $name : $this->name;
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = '';
         $framework = expSession::get('framework');
         if ($framework == 'bootstrap') {
@@ -127,7 +128,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
         $caption = !empty($this->caption) ? $this->caption : '';
-        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
+        if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
         if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'"';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 

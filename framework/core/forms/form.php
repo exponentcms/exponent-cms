@@ -31,8 +31,9 @@ class form extends baseform {
 	var $controls   = array();
 	var $controlIdx = array();
 	var $controlLbl = array();
-    var $tabs       = array();
-    var $is_tabbed  = false;
+    var $id = null;
+//    var $tabs       = array();
+//    var $is_tabbed  = false;
 
 	var $validationScript = "";
 
@@ -202,13 +203,13 @@ class form extends baseform {
 			//expSession::un_set("last_POST");
 		}
         $num_tabs = array();
-		if ($this->is_tabbed) {
-            foreach ($this->tabs as $tab) {
-                if (!in_array($tab,$num_tabs) && $tab != 'base') {
-                    $num_tabs[]=$tab;
-                }
-            }
-        }
+//		if ($this->is_tabbed) {
+//            foreach ($this->tabs as $tab) {
+//                if (!in_array($tab,$num_tabs) && $tab != 'base') {
+//                    $num_tabs[]=$tab;
+//                }
+//            }
+//        }
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
@@ -248,29 +249,33 @@ class form extends baseform {
 			$html .= " onsubmit=\"new Ajax.Updater('".$this->div_to_update."', '".$this->action."', ";
 			$html .= "{asynchronous:true, parameters:Form.serialize(this)}); return false;\">\r\n";
 		} else {
-			$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+			$html .= "<form id='".$this->id."' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		}
 		//$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
-		$html .= "<div class=\"form_wrapper\">\r\n";
-        if ($this->is_tabbed) {
-            $html .= '<div id="configure-tabs" class="yui-navset exp-skin-tabview hide">'."\r\n";
-            $html .= '<ul class="yui-nav">'."\r\n";
-            foreach ($num_tabs as $key=>$tab_name) {
-                if (!empty($tab_name)) $html .= '<li'.($key==0?' class="selected"':'').'><a href="#tab'.($key+1).'"><em>'.gt($tab_name).'</em></a></li>'."\r\n";
-            }
-            $html .= '</ul>'."\r\n";
-            $html .= '<div class="yui-content">'."\r\n";
-        }
+//		$html .= "<div class=\"form_wrapper\">\r\n";
+//        if ($this->is_tabbed) {
+//            $html .= '<div id="configure-tabs" class="yui-navset exp-skin-tabview hide">'."\r\n";
+//            $html .= '<ul class="yui-nav">'."\r\n";
+//            foreach ($num_tabs as $key=>$tab_name) {
+//                if (!empty($tab_name)) $html .= '<li'.($key==0?' class="selected"':'').'><a href="#tab'.($key+1).'"><em>'.gt($tab_name).'</em></a></li>'."\r\n";
+//            }
+//            $html .= '</ul>'."\r\n";
+//            $html .= '<div class="yui-content">'."\r\n";
+//        }
 
         $oldname = 'oldname';
         $save = '';
+        $rank = 0;
 		foreach ($this->controlIdx as $name) {
-            if ($this->is_tabbed && !empty($this->tabs[$name]) && $this->tabs[$name] != $oldname && $this->tabs[$name] != 'base') {
-                if ($oldname != 'oldname') {
-                    $html .= '</div>'."\r\n";
-                }
-                $html .= '<div id="tab'.(array_search($this->tabs[$name],$num_tabs)+1).'">'."\r\n";
+//            if ($this->is_tabbed && !empty($this->tabs[$name]) && $this->tabs[$name] != $oldname && $this->tabs[$name] != 'base') {
+//                if ($oldname != 'oldname') {
+//                    $html .= '</div>'."\r\n";
+//                }
+//                $html .= '<div id="tab'.(array_search($this->tabs[$name],$num_tabs)+1).'">'."\r\n";
+//            }
+            if (get_class($this->controls[$name]) == 'pagecontrol' && $rank) {
+                $html .= '</fieldset>';
             }
             if ($this->tabs[$name] != 'base') {
     			$html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
@@ -278,12 +283,16 @@ class form extends baseform {
             } else {
                 $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
             }
+            $rank ++;
 		}
 
-        if ($this->is_tabbed) {
-            $html .= '</div></div></div>';
-        }
-		$html .= "</div>\r\n";
+//        if ($this->is_tabbed) {
+//            $html .= '</div></div></div>';
+//        }
+//        if (get_class($this->controls[$name]) == 'pagecontrol' && $rank || $rank == (count($this->controlIdx) - 1)) {
+            $html .= '</fieldset>';
+//        }
+//		$html .= "</div>\r\n";
         $html .= $save;
 		$html .= "</form>\r\n";
 		return $html;

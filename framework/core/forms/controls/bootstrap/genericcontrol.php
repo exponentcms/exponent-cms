@@ -60,7 +60,8 @@ class genericcontrol extends formcontrol {
             $divID  = ' id="'.$this->id.'Control"';
             $for = ' for="'.$this->id.'"';
         } else {
-            $divID  = '';
+//            $divID  = '';
+            $divID  = ' id="'.$name.'Control"';
             $for = '';
         }
 //        if ($this->required) $label = "*" . $label;
