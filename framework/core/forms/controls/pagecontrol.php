@@ -61,7 +61,8 @@ class pagecontrol extends formcontrol {
     function toHTML($label,$name) {
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         $description = !empty($this->description) ? $this->description : $caption;
-        $html  = '<fieldset title="'.$caption.'"><legend>'.$description.'</legend>';
+        $html  = '<fieldset title="'.$caption.'">
+                  <legend>'.$description.'</legend>';
         return $html;
 	}
 

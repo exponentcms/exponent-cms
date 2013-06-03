@@ -37,7 +37,7 @@ class forms extends expRecord {
 #		));
 
     /**
-     * Transfers form entries to database
+     * Transfers form fields to database table columns
      *
      * @static
      * @return mixed

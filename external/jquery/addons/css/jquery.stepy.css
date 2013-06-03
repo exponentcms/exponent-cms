@@ -30,7 +30,7 @@
 
 .stepy-header li span {
 	color : #CCC;
-	font  : 1.2em verdana
+	/*font  : 1.2em verdana*/
 }
 
 .stepy-header li.stepy-active span {
@@ -51,7 +51,7 @@
 
 .stepy-step legend {
 	color          : #4080BF;
-	font           : bold 1.0em arial;
+	font           : bold 1.2em arial;
 	letter-spacing : .7px;
 	padding        : 0 5px 5px;
 	width          : auto;

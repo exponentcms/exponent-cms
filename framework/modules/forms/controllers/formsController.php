@@ -354,7 +354,7 @@ class formsController extends expController {
                 }
                 if (empty($this->config['submitbtn'])) $this->config['submitbtn'] = gt('Submit');
                 if (empty($this->config['resetbtn'])) $this->config['resetbtn'] = '';
-                $form->register("submit", "", new buttongroupcontrol($this->config['submitbtn'], $this->config['resetbtn'], $cancel, 'finish stepy-finish'));
+                $form->register("submit", "", new buttongroupcontrol($this->config['submitbtn'], $this->config['resetbtn'], $cancel, 'finish'));
 
                 $form->meta("m", $this->loc->mod);
                 $form->meta("s", $this->loc->src);

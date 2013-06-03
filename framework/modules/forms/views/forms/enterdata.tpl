@@ -85,10 +85,10 @@
         validate: true,
         block: true,
         errorImage: true,
-        description: false,
 //        finishButton: false,  // otherwise crashes because we can't find submit button
         btnClass: 'awesome {/literal}{$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}{literal}',
-        legend: false,
+//        description: false,
+//        legend: false,
         titleClick: true,
     });
 {/literal}

@@ -132,7 +132,7 @@
                 that = $(this),
                 finish = $(':submit', that);
 
-            self.finish = (finish.length === 1) ? finish : that.children('.stepy-finish');
+            self.finish = (finish.length === 1) ? finish : $('.finish', that);
 
             if (self.finish.length) {
                 var isForm = that.is('form'),
@@ -164,7 +164,7 @@
 
                 self.steps.last().children('.stepy-navigator').append(self.finish);
             } else {
-                $.error('Submit button or element with class "stepy-finish" missing!');
+                $.error('Submit button or element with class "finish" missing!');
             }
         }, _createBackButton: function (nav, index) {
             var self = this,
