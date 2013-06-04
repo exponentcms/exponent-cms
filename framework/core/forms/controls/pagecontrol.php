@@ -119,6 +119,7 @@ class pagecontrol extends formcontrol {
 //        if (isset($values['size'])) $object->size = intval($values['size']);
 //        if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
 //        $object->required = isset($values['required']);
+        $object->is_static = 1;
         return $object;
     }
 
