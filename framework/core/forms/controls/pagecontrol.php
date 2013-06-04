@@ -72,6 +72,26 @@ class pagecontrol extends formcontrol {
         return $html . '</fieldset>';
     }
 
+    /**
+     * Event hook for when control is un-registered (removed) on a form
+     *
+     * @param $form
+     * @return bool
+     */
+    function onUnRegister(&$form) { // Do we need the explicit ref op??
+        if ($form->is_paged) $form->is_paged--;
+	}
+
+    /**
+     * Event hook for when control is registered on a form
+     *
+     * @param $form
+     * @return bool
+     */
+    function onRegister(&$form) { // Do we need the explicit ref op??
+        $form->is_paged++;
+	}
+
     static function form($object) {
         $form = new form();
         if (empty($object)) $object = new stdClass();

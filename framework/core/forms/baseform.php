@@ -25,7 +25,7 @@
  * @package Subsystems-Forms
  * @subpackage Form
  */
-class baseform {
+abstract class baseform {
 
 	var $meta    = array();
 	var $scripts = array();

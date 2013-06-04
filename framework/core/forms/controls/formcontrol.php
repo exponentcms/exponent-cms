@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
  * @package Subsystems-Forms
  * @subpackage Control
  */
-class formcontrol {
+abstract class formcontrol {
 
 	var $accesskey = "";
 	var $default = "";

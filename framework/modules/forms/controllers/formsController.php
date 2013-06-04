@@ -298,7 +298,7 @@ class formsController extends expController {
                     $emaillist = array_reverse($emaillist, true);
                     $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
                 }
-                $paged = false;
+//                $paged = false;
                 foreach ($controls as $c) {
 //                    $ctl = unserialize($c->data);
                     $ctl = expUnserialize($c->data);
@@ -315,7 +315,7 @@ class formsController extends expController {
                         if (!empty($data[$c->name])) $ctl->default = $data[$c->name];
                     }
                     $form->register($c->name, $c->caption, $ctl);
-                    if (get_class($ctl) == 'pagecontrol') $paged = true;
+//                    if (get_class($ctl) == 'pagecontrol') $paged = true;
                 }
 
                 // if we are editing an existing record we'll need to do recaptcha here since we won't call confirm_data
@@ -379,7 +379,7 @@ class formsController extends expController {
                     "form_html"   => $form->toHTML($f->id),
                     "form"        => $f,
                     "count"       => $count,
-                    'paged'       => $paged,
+//                    'paged'       => $paged,
                 ));
             }
         } else {

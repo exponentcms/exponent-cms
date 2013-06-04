@@ -34,6 +34,8 @@ class form extends baseform {
     var $id = null;
 //    var $tabs       = array();
 //    var $is_tabbed  = false;
+    var $div_to_update = null;
+    var $is_paged  = 0;
 
 	var $validationScript = "";
 
@@ -59,12 +61,13 @@ class form extends baseform {
     /**
      * Registers a new Control with the form.  This function will simply append the new Control to the end of the Form.
      *
-     * @param string $name The internal name of the control.  This is used for referring to the control later.  If this is a null string, the Control will not be registered, and this function will return false.
-     * @param string $label
+     * @param string       $name    The internal name of the control.  This is used for referring to the control later.  If this is a null string, the Control will not be registered, and this function will return false.
+     * @param string       $label
      * @param \formcontrol $control The Control object to register with the form.
-     * @param bool $replace boolean dictating what to do if a Control with the specified internal name already exists on the form.  If passed as true (default), the existing Control will be replaced.  Otherwise, the Control registration will fail and return false.
+     * @param bool         $replace boolean dictating what to do if a Control with the specified internal name already exists on the form.  If passed as true (default), the existing Control will be replaced.  Otherwise, the Control registration will fail and return false.
+     * @param string       $tab
+     * @param null         $desc
      *
-     * @param string $tab
      * @return boolean Returns true if the new Control was registered.
      */
 	function register($name,$label, $control,$replace=true,$tab=null,$desc=null) {
@@ -75,7 +78,7 @@ class form extends baseform {
 		$this->controls[$name] = $control;
         if (!empty($desc)) $this->controls[$name]->description = $desc;
 		$this->controlLbl[$name] = $label;
-        $this->tabs[$name] = $tab;
+//        $this->tabs[$name] = $tab;
         if (method_exists($control,'onRegister')) $control->onRegister($this);
 		return true;
 	}
@@ -92,7 +95,7 @@ class form extends baseform {
 			$control = $this->controls[$name];
 			unset($this->controls[$name]);
 			unset($this->controlLbl[$name]);
-            unset($this->tabs[$name]);
+//            unset($this->tabs[$name]);
 
 			$tmp = array_flip($this->controlIdx);
 			unset($tmp[$name]);
@@ -102,7 +105,7 @@ class form extends baseform {
 			foreach ($tmp as $name=>$rank) {
 				$this->controlIdx[] = $name;
 			}
-			$control->onUnregister($this);
+            if (method_exists($control,'onUnRegister')) $control->onUnregister($this);
 		}
 		return true;
 	}
@@ -124,7 +127,7 @@ class form extends baseform {
 		
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
-        $this->tabs[$name] = $tab;
+//        $this->tabs[$name] = $tab;
 		if (!in_array($afterName,$this->controlIdx)) {
 			$this->controlIdx[] = $name;
 			$control->onRegister($this);
@@ -155,7 +158,7 @@ class form extends baseform {
 		
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
-        $this->tabs[$name] = $tab;
+//        $this->tabs[$name] = $tab;
 
 		if (!in_array($beforeName,$this->controlIdx)) {
 			$this->controlIdx[] = $name;
@@ -202,7 +205,7 @@ class form extends baseform {
 			
 			//expSession::un_set("last_POST");
 		}
-        $num_tabs = array();
+//        $num_tabs = array();
 //		if ($this->is_tabbed) {
 //            foreach ($this->tabs as $tab) {
 //                if (!in_array($tab,$num_tabs) && $tab != 'base') {
@@ -241,7 +244,7 @@ class form extends baseform {
             "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
-		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
+		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';
 		if (isset($this->ajax_updater)) {
 			$html .= "<form name=\"" . $this->name . "\" method=\"" ;
@@ -264,8 +267,8 @@ class form extends baseform {
 //            $html .= '<div class="yui-content">'."\r\n";
 //        }
 
-        $oldname = 'oldname';
-        $save = '';
+//        $oldname = 'oldname';
+//        $save = '';
         $rank = 0;
 		foreach ($this->controlIdx as $name) {
 //            if ($this->is_tabbed && !empty($this->tabs[$name]) && $this->tabs[$name] != $oldname && $this->tabs[$name] != 'base') {
@@ -277,24 +280,40 @@ class form extends baseform {
             if (get_class($this->controls[$name]) == 'pagecontrol' && $rank) {
                 $html .= '</fieldset>';
             }
-            if ($this->tabs[$name] != 'base') {
+//            if ($this->tabs[$name] != 'base') {
     			$html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
-                $oldname = $this->tabs[$name];
-            } else {
-                $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
-            }
+//                $oldname = $this->tabs[$name];
+//            } else {
+//                $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
+//            }
             $rank ++;
 		}
 
 //        if ($this->is_tabbed) {
 //            $html .= '</div></div></div>';
 //        }
-//        if (get_class($this->controls[$name]) == 'pagecontrol' && $rank || $rank == (count($this->controlIdx) - 1)) {
-            $html .= '</fieldset>';
-//        }
+        if ($this->is_paged) $html .= '</fieldset>';
 //		$html .= "</div>\r\n";
-        $html .= $save;
+//        $html .= $save;
 		$html .= "</form>\r\n";
+        if ($this->is_paged) {
+            $content = "
+                $('#".$this->id."').stepy({
+                    validate: true,
+                    block: true,
+                    errorImage: true,
+                //    description: false,
+                //    legend: false,
+                    btnClass: 'awesome ".BTN_SIZE." ".BTN_COLOR."',
+                    titleClick: true,
+                });
+            ";
+            expJavascript::pushToFoot(array(
+                "unique"  => 'stepy-'.$this->id,
+                "jquery"  => 'jquery.validate,jquery.stepy',
+                "content" => $content,
+            ));
+        }
 		return $html;
 	}
 	
