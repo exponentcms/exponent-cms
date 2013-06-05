@@ -387,10 +387,15 @@ YUI.add('gallery-lightbox', function(Y) {
 				imageArray.push([selectedLink.get("href"), selectedLink.get("title")]);
 			} else {
 				// If image is part of a set...
-				Y.all(selectedLink.get("tagName") + '[href][rel="' + selectedLink.get("rel") + '"]').each(function () {
-					imageArray.push([this.get("href"), this.get("title")]);
-				});
-				
+//				Y.all(selectedLink.get("tagName") + '[href][rel="' + selectedLink.get("rel") + '"]').each(function () {
+//					imageArray.push([this.get("href"), this.get("title")]);
+//				});
+                Y.all(selectedLink.get("tagName") + '[href]').each(function (item) {
+                    if (selectedLink.get("rel") === item.get('rel')){
+                         imageArray.push([this.get("href"), this.get("title")]);
+                    }
+                });
+
 				while (imageArray[imageNum][0] !== selectedLink.get("href")) { imageNum++; }
 			}
 			
