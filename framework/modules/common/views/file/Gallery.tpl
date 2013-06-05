@@ -66,7 +66,7 @@ margin:{$config.spacing}px;
 {/foreach}
 
 {if $config.lightbox && !expJavascript::inAjaxAction()}
-{script unique="`$name`shadowbox" yui3mods=1}
+{script unique="shadowbox" yui3mods=1}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
     'gallery-lightbox' : {
