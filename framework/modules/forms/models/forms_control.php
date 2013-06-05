@@ -70,10 +70,10 @@ class forms_control extends expRecord {
         // if we have a pagecontrol and it's not rank=1, move it to the top
         if (!empty($pager) && $pager->rank != 1) {
             // increment everything below it.
-            $obj = $db->selectObject($this->tablename, 'rank<' . $pager->rank . $this->grouping_sql);
-            if (!empty($obj)) {
-                $db->increment($this->tablename, 'rank', 1, 'rank<' . $pager->rank . $this->grouping_sql);
-            }
+//            $obj = $db->selectObject($this->tablename, 'rank<' . $pager->rank . $this->grouping_sql);
+//            if (!empty($obj)) {
+            $db->increment($this->tablename, 'rank', 1, 'rank<' . $pager->rank . $this->grouping_sql);
+//            }
             $pager->rank = 1;
             $pager->save();
         }
