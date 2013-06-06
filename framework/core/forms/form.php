@@ -218,12 +218,12 @@ class form extends baseform {
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
         if(expSession::get('framework')!='bootstrap'){
             expCSS::pushToHead(array(
-                "unique"  => 'forms',
+//                "unique"  => 'forms',
                 "corecss"=>"forms"
             ));
         } else {
             expCSS::pushToHead(array(
-                "unique"  => 'z-forms-bootstrap',
+//                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap"
             ));
         };

@@ -239,7 +239,7 @@ class colorcontrol extends formcontrol {
 ////            "css"=>$css
 //        ));
         expCSS::pushToHead(array(
-    	    "unique"=>"colorpicker1",
+    	    "unique"=>"colorpicker",
     	    "link"=>$assets_path."colorpicker/colorpicker.css"
     	    )
     	);

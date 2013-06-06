@@ -841,7 +841,7 @@ class formsController extends expController {
         $f = new forms($this->params['forms_id']);
         if ($f) {
             expCSS::pushToHead(array(
-                    "unique"  => "forms",
+//                    "unique"  => "forms",
                     "corecss" => "forms",
                 )
             );
