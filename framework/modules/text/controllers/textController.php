@@ -53,22 +53,22 @@ class textController extends expController {
         }
         $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
         if (empty($settings->name)) $settings = new stdClass();
-        if (empty($settings->data)) {
-            $settings->data = "
-                ['htmlsource','Source','-','Preview','-','Templates'],
-                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
-                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-                ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
-                '/',
-                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-                ['Link','Unlink','Anchor'],
-                '/',
-                ['Styles','Format','Font','FontSize'],
-                ['TextColor','BGColor'],
-                ['Maximize', 'ShowBlocks','-','About']";
-        }
+//        if (empty($settings->data)) {
+//            $settings->data = "
+//                ['htmlsource','Source','-','Preview','-','Templates'],
+//                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
+//                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+//                ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+//                '/',
+//                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+//                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+//                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+//                ['Link','Unlink','Anchor'],
+//                '/',
+//                ['Styles','Format','Font','FontSize'],
+//                ['TextColor','BGColor'],
+//                ['Maximize', 'ShowBlocks','-','About']";
+//        }
         if (empty($settings->skin)) $settings->skin = 'kama';
         if (empty($settings->scayt_on)) $settings->scayt_on = 'true';
         if (empty($settings->paste_word)) {
