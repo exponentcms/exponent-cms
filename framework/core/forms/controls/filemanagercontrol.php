@@ -71,19 +71,15 @@ class filemanagercontrol extends formcontrol {
         if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">" . $this->description . "</div>";
         $html .= '</div>';
         $js = "
-
             EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
                 fullpath: EXPONENT.URL_FULL+'external/SimpleAjaxUploader.js'
             };
 
             YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io','SimpleAjaxUploader', function(Y) {
-
-                // Y.log(ss);
-
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
                 var fl = Y.one('#filelist".$name."');
-                
+
                 // file picker window opener
                 function openFilePickerWindow(e){
                     e.halt();
@@ -94,33 +90,39 @@ class filemanagercontrol extends formcontrol {
                     }
                 };
 
-//                  var quickUpload = new AjaxUpload($('#quickaddfiles-".$name."'), {
                 var quickUpload = new Y.ss.SimpleUpload({
-                        button: '#quickaddfiles-".$name."',
-                        action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
-                        data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
-                        responseType: 'json',
-                        name: 'uploadfile',
-                        disabledClass: 'quick-upload-disabled',
-//                        debug: true,
-                        onSubmit: function(file, ext){
-//                             if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
-//                                // extension is not allowed
-//                                return false;
-//                            }
-                            quickUpload.disable();
-                            Y.one('#quickaddfiles-".$name."').addClass('ajax');
-                        },
-                        onComplete: function(file, response){
-                            //Add uploaded file to list
-                            if(response.replyCode==200){
-                                EXPONENT.passBackFile".$name."(response.data);
-                            }
-                            quickUpload.enable();
+                    button: '#quickaddfiles-".$name."',
+                    action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
+                    data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
+                    responseType: 'json',
+                    name: 'uploadfile',
+                    disabledClass: 'quick-upload-disabled ajax',
+                    multiple: (limit-filesAdded > 1),
+                    maxUploads: limit,
+//                    debug: true,
+                    onSubmit: function(file, ext){
+//                        if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
+//                            // extension is not allowed
+//                            return false;
+//                        }
+//                        quickUpload.disable();
+                        if (quickUpload._activeUploads) {
+                           Y.one('#quickaddfiles-".$name."').addClass('ajax');
+                           Y.one('#quickaddfiles-".$name."').addClass('quick-upload-disabled');
+                        }
+                    },
+                    onComplete: function(file, response){
+                        //Add uploaded file to list
+                        if(response.replyCode==200){
+                            EXPONENT.passBackFile".$name."(response.data);
+                        }
+//                        quickUpload.enable();
+                        if (!quickUpload._activeUploads) {
                             Y.one('#quickaddfiles-".$name."').removeClass('ajax');
-                        },
-                    });
-//                );
+                            Y.one('#quickaddfiles-".$name."').removeClass('quick-upload-disabled');
+                        }
+                    },
+                });
 
                 var listenForAdder = function(){
                     var af = Y.one('#addfiles-".$name."');
@@ -145,9 +147,9 @@ class filemanagercontrol extends formcontrol {
                 },'.delete');
                 
                 var showFileAdder = function() {
-                    Y.one('#adders-".$name."').removeClass('hide');
                     listenForAdder();
                     filesAdded--;
+                    if (filesAdded < limit) Y.one('#adders-".$name."').removeClass('hide');
                     if (filesAdded == 0) showEmptyLI();
                 }
 
@@ -225,7 +227,6 @@ class filemanagercontrol extends formcontrol {
                 var goingUp = false, lastY = 0;
 
                 var initDragables =  function(){
-
                     //Get the list of li's in the lists and make them draggable
                     var lis = Y.Node.all('#filelist".$name." li');
                     if (lis){
@@ -313,7 +314,7 @@ class filemanagercontrol extends formcontrol {
 
                             filesAdded++
 
-                            if (limit==filesAdded) {
+                            if (limit>=filesAdded) {
                                 Y.one('#adders-".$name."').addClass('hide');
                             }
 
@@ -325,13 +326,13 @@ class filemanagercontrol extends formcontrol {
 
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
-
                     if (Y.Lang.isArray(id)) {
                         EXPONENT.batchAddFiles.".$name."();
                         return;
                     }
 
                     var complete = function (ioId, o) {
+                      if (filesAdded < limit) {
                         var df = Y.one('#filelist".$name."');
                         var objson = Y.JSON.parse(o.responseText);
                         var obj = objson.data;
@@ -381,11 +382,12 @@ class filemanagercontrol extends formcontrol {
 
                         filesAdded++
 
-                        if (limit==filesAdded) {
+                        if (limit>=filesAdded) {
                             Y.one('#adders-".$name."').addClass('hide');
                         }
 
                         //initDragables();
+                      }
                     };
                     
                     var cfg = {
@@ -401,7 +403,7 @@ class filemanagercontrol extends formcontrol {
             "; // END PHP STRING LITERAL
 
             expCSS::pushToHead(array(
-        	    "unique"=>"cal2",
+        	    "unique"=>"attachable-files",
         	    "link"=>$assets_path."files/attachable-files.css"
         	    )
         	);

@@ -13,6 +13,7 @@ Added / Fixed / changed for 2.2.1
   - adds paged form (wizard) feature
   - adds a rudimentary site configuration profile feature
   - adds optional author signature to blog posts, handled by user profile extension
+  - now supports multiple simultaneous file uploads for 'quick add' uploads
   - adds ldap user sync to update all ldap users against ldap server data (email, first/last name)
   - no longer automatically loads bootstrap.min.js file, explicit loading of individual scripts as required
 ### Known Issues

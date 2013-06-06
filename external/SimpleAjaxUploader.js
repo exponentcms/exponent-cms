@@ -1,787 +1,1214 @@
-YUI.add('SimpleAjaxUploader', function(Y) {
-
 /**
  * Simple Ajax Uploader
+ * Version 1.5
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
- * Copyright 2012 LPology, LLC  
- * Released under the MIT license 
- */ 
+ * Copyright 2012-2013 LPology, LLC
+ * Released under the MIT license
+ */
 
+YUI.add('SimpleAjaxUploader', function (Y) {
 
- 	Y.ss = Y.ss || {};
+    Y.ss = Y.ss || {};
 
- 	/**
- 	 * Converts object to query string
- 	 */ 
- 	Y.ss.obj2string = function(obj, prefix) {
- 	    var str = [],
- 			prop;
- 		if (typeof obj !== 'object') {
- 			return '';
- 		}
- 	    for (prop in obj) {
- 			if (obj.hasOwnProperty(prop)) {
- 				var k = prefix ? prefix + "[" + prop + "]" : prop, v = obj[prop];
- 				str.push(typeof v === 'object' ? 
- 					Y.ss.obj2string(v, k) :
- 					encodeURIComponent(k) + '=' + encodeURIComponent(v));
- 			}	
- 	    }
- 	    return str.join('&');
- 	};
+    /**
+     * Converts object to query string
+     */
+    Y.ss.obj2string = function (obj, prefix) {
+        var str = [],
+            prop;
+        if (typeof obj !== 'object') {
+            return '';
+        }
+        for (prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                var k = prefix ? prefix + "[" + prop + "]" : prop, v = obj[prop];
+                str.push(typeof v === 'object' ?
+                    Y.ss.obj2string(v, k) :
+                    encodeURIComponent(k) + '=' + encodeURIComponent(v));
+            }
+        }
+        return str.join('&');
+    };
 
- 	/**
- 	 * Copies all missing properties from second object to first object
- 	 */ 
- 	Y.ss.extendObj = function(first, second) {
- 		var prop;
- 		if (typeof first !== 'object' || typeof second !== 'object') {
- 			return false;
- 		}
- 		for (prop in second) {
- 			if (second.hasOwnProperty(prop)) {
- 				first[prop] = second[prop];
- 			}
- 		}
- 	};
+    /**
+     * Copies all missing properties from second object to first object
+     */
+    Y.ss.extendObj = function (first, second) {
+        var prop;
+        if (typeof first !== 'object' || typeof second !== 'object') {
+            return false;
+        }
+        for (prop in second) {
+            if (second.hasOwnProperty(prop)) {
+                first[prop] = second[prop];
+            }
+        }
+    };
 
- 	Y.ss.addEvent = function(elem, type, fn) {
- 		if (typeof elem === 'string') {
- 			elem = document.getElementById(elem);
- 		}	
- 		if (elem.attachEvent) {
- 			elem.attachEvent('on'+type, fn);
- 		} else {
- 			elem.addEventListener(type, fn, false);
- 		}
- 	};
+    /**
+     * Returns true if item is found in array
+     */
+    Y.ss.contains = function (array, item) {
+        var i = array.length;
+        while (i--) {
+            if (array[i] === item) {
+                return true;
+            }
+        }
+        return false;
+    };
 
- 	/**
- 	 * Parses a JSON string and returns a Javascript object
- 	 */
- 	 Y.ss.evalJSON = function(data) {
- 		var obj;
- 		if (!data || typeof data !== 'string') {
- 			return false;
- 		}		
- 		data = Y.ss.trim(data);
- 		
- 		if (window.JSON && window.JSON.parse) {
- 			try {
- 				obj = window.JSON.parse(data);
- 			}
- 			catch (e) {
- 				return false;
- 			}
- 		} else {
- 			try {
- 				obj = eval("(" + data + ")");
- 			}
- 			catch (e) {
- 				return false;
- 			}
- 		}
- 		return obj;
- 	};
+    /**
+     * Remove all instances of an item from an array
+     */
+    Y.ss.removeItem = function (array, item) {
+        for (var i in array) {
+            if (array[i] == item) {
+                array.splice(i, 1);
+                break;
+            }
+        }
+    };
 
- 	/**
- 	 * Calculates offsetTop/offsetLeft coordinates of parent 
- 	 * element if getBoundingClientRect is not supported
- 	 */
- 	Y.ss.getOffsetSum = function(elem) {
- 		var top = 0, 
- 			left = 0;
- 		while (elem) {
- 			top = top + parseInt(elem.offsetTop, 10);
- 			left = left + parseInt(elem.offsetLeft, 10);
- 			elem = elem.offsetParent;
- 		}
- 		return {top: top, left: left};
- 	};
+    Y.ss.addEvent = function (elem, type, fn) {
+        if (typeof elem === 'string') {
+            elem = document.getElementById(elem);
+        }
+        if (elem.attachEvent) {
+            elem.attachEvent('on' + type, fn);
+        } else {
+            elem.addEventListener(type, fn, false);
+        }
+    };
 
- 	/**
- 	 * Calculates offsetTop/offsetLeft coordinates of parent 
- 	 * element with getBoundingClientRect
- 	 */
- 	Y.ss.getOffsetRect = function(elem) {
- 		var box = elem.getBoundingClientRect(),
- 			body = document.body,
- 			docElem = document.documentElement,
- 			scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
- 			scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
- 			clientTop = docElem.clientTop || body.clientTop || 0,
- 			clientLeft = docElem.clientLeft || body.clientLeft || 0,
- 			top  = box.top +  scrollTop - clientTop,
- 			left = box.left + scrollLeft - clientLeft;
- 	    return { top: Math.round(top), left: Math.round(left) };
- 	};
+    Y.ss.removeEvent = function (elem, type, fn) {
+        if (typeof elem === 'string') {
+            elem = document.getElementById(elem);
+        }
+        if (elem.attachEvent) {
+            elem.detachEvent('on' + type, fn);
+        } else {
+            elem.removeEventListener(type, fn, false);
+        }
+    };
 
- 	/**
- 	 * Get offset with best available method
- 	 * Not sure where I came across this function. Thanks to whoever wrote it, though.
- 	 */
- 	Y.ss.getOffset = function(elem) {
- 		if (elem.getBoundingClientRect) {
- 			return Y.ss.getOffsetRect(elem);
- 	    } else {
- 			return Y.ss.getOffsetSum(elem);
- 		}
- 	};
+    Y.ss.newXHR = function () {
+        if (typeof(XMLHttpRequest) !== undefined) {
+            return new window.XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            try {
+                return new window.ActiveXObject('Microsoft.XMLHTTP');
+            } catch (err) {
+                return false;
+            }
+        }
+    };
 
- 	/**
- 	* Returns left, top, right and bottom properties describing the border-box,
- 	* in pixels, with the top-left relative to the body
- 	*/
- 	Y.ss.getBox = function(el) {
- 	    var left,
- 			right, 
- 			top, 
- 			bottom,
- 			offset = Y.ss.getOffset(el);
- 	    left = offset.left;
- 	    top = offset.top;
- 	    right = left + el.offsetWidth;
- 	    bottom = top + el.offsetHeight;
- 	    return {
- 	        left: left,
- 	        right: right,
- 	        top: top,
- 	        bottom: bottom
- 	    };
- 	};
+    /**
+     * Parses a JSON string and returns a Javascript object
+     * Parts borrowed from www.jquery.com
+     */
+    Y.ss.parseJSON = function (data) {
+        if (!data || typeof data !== 'string') {
+            return false;
+        }
+        data = Y.ss.trim(data);
+        if (window.JSON && window.JSON.parse) {
+            try {
+                return window.JSON.parse(data);
+            } catch (err) {
+                return false;
+            }
+        }
+        if (data) {
+            if (/^[\],:{}\s]*$/.test(data.replace(/\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g, "@")
+                .replace(/"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g, "]")
+                .replace(/(?:^|:|,)(?:\s*\[)+/g, ""))) {
+                return ( new Function("return " + data) )();
+            }
+        }
+        return false;
+    };
 
- 	/**
- 	* Helper that takes object literal
- 	* and add all properties to element.style
- 	* @param {Element} el
- 	* @param {Object} styles
- 	*/
- 	Y.ss.addStyles = function(el, styles) {
- 		var name;
- 	    for (name in styles) {
- 	        if (styles.hasOwnProperty(name)) {
- 	            el.style[name] = styles[name];
- 	        }
- 	    }
- 	};
+    /**
+     * Calculates offsetTop/offsetLeft coordinates of parent
+     * element if getBoundingClientRect is not supported
+     */
+    Y.ss.getOffsetSum = function (elem) {
+        var top = 0,
+            left = 0;
+        while (elem) {
+            top = top + parseInt(elem.offsetTop, 10);
+            left = left + parseInt(elem.offsetLeft, 10);
+            elem = elem.offsetParent;
+        }
+        return {top: top, left: left};
+    };
 
- 	/**
- 	* Function places an absolutely positioned
- 	* element on top of the specified element
- 	* copying position and dimentions.
- 	*/ 
- 	Y.ss.copyLayout = function(from, to) {
- 	    var box = Y.ss.getBox(from);
- 	    Y.ss.addStyles(to, {
- 	        position: 'absolute',                    
- 	        left : box.left + 'px',
- 	        top : box.top + 'px',
- 	        width : from.offsetWidth + 'px',
- 	        height : from.offsetHeight + 'px'
- 	    });        
- 	};
+    /**
+     * Calculates offsetTop/offsetLeft coordinates of parent
+     * element with getBoundingClientRect
+     */
+    Y.ss.getOffsetRect = function (elem) {
+        var box = elem.getBoundingClientRect(),
+            body = document.body,
+            docElem = document.documentElement,
+            scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop,
+            scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft,
+            clientTop = docElem.clientTop || body.clientTop || 0,
+            clientLeft = docElem.clientLeft || body.clientLeft || 0,
+            top = box.top + scrollTop - clientTop,
+            left = box.left + scrollLeft - clientLeft;
+        return { top: Math.round(top), left: Math.round(left) };
+    };
 
- 	/**
- 	* Creates and returns element from html chunk
- 	*/
- 	Y.ss.toElement = (function() {
- 	    var div = document.createElement('div');
- 	    return function(html){
- 	        div.innerHTML = html;
- 	        var element = div.firstChild;
- 	        div.removeChild(element);
- 	        return element;
- 	    };
- 	})();
+    /**
+     * Get offset with best available method
+     * Not sure where I came across this function. Thanks to whoever wrote it, though.
+     */
+    Y.ss.getOffset = function (elem) {
+        if (elem.getBoundingClientRect) {
+            return Y.ss.getOffsetRect(elem);
+        } else {
+            return Y.ss.getOffsetSum(elem);
+        }
+    };
 
- 	/**
- 	* Generates unique id
- 	*/
- 	Y.ss.getUID = (function() {
- 	    var id = 0;
- 	    return function(){ return id++; };
- 	})();
+    /**
+     * Returns left, top, right and bottom properties describing the border-box,
+     * in pixels, with the top-left relative to the body
+     */
+    Y.ss.getBox = function (el) {
+        var left,
+            right,
+            top,
+            bottom,
+            offset = Y.ss.getOffset(el);
+        left = offset.left;
+        top = offset.top;
+        right = left + el.offsetWidth;
+        bottom = top + el.offsetHeight;
+        return {
+            left: left,
+            right: right,
+            top: top,
+            bottom: bottom
+        };
+    };
 
- 	/**
- 	* Removes white space from left and right of string
- 	*/
- 	Y.ss.trim = function(text) {
- 		return text.toString().replace(/^\s+/, '').replace( /\s+$/, '');
- 	};
- 	    
- 	/**
- 	* Get file extension
- 	*/   
- 	Y.ss.getExt = function(file) {
- 	    return (-1 !== file.indexOf('.')) ? file.replace(/.*[.]/, '') : '';
- 	};
+    /**
+     * Helper that takes object literal
+     * and add all properties to element.style
+     * @param {Element} el
+     * @param {Object} styles
+     */
+    Y.ss.addStyles = function (el, styles) {
+        for (var name in styles) {
+            if (styles.hasOwnProperty(name)) {
+                el.style[name] = styles[name];
+            }
+        }
+    };
 
- 	/**
- 	* Check whether element has a particular CSS class
- 	*/   
- 	Y.ss.hasClass = function(element, name) {
- 	    var re = new RegExp('(^| )' + name + '( |$)');
- 	    return re.test(element.className);
- 	};
+    /**
+     * Function places an absolutely positioned
+     * element on top of the specified element
+     * copying position and dimensions.
+     */
+    Y.ss.copyLayout = function (from, to) {
+        var box = Y.ss.getBox(from);
+        Y.ss.addStyles(to, {
+            position: 'absolute',
+            left: box.left + 'px',
+            top: box.top + 'px',
+            width: from.offsetWidth + 'px',
+            height: from.offsetHeight + 'px'
+        });
+    };
 
- 	/**
- 	* Adds CSS class to an element
- 	*/  
- 	Y.ss.addClass = function(element, name) {
- 		if (!name || name === '') {
- 			return false;
- 		}
- 	    if (!Y.ss.hasClass(element, name)) {
- 	        element.className += ' ' + name;
- 	    }
- 	};
+    /**
+     * Creates and returns element from html chunk
+     */
+    Y.ss.toElement = (function () {
+        var div = document.createElement('div');
+        return function (html) {
+            div.innerHTML = html;
+            var element = div.firstChild;
+            div.removeChild(element);
+            return element;
+        };
+    })();
 
- 	/**
- 	* Removes CSS class from an element
- 	*/  
- 	Y.ss.removeClass = function(element, name) {
- 	    var re = new RegExp('(^| )' + name + '( |$)');
- 	    element.className = element.className.replace(re, ' ').replace(/^\s+|\s+$/g, '');
- 	};
+    /**
+     * Generates unique id
+     */
+    Y.ss.getUID = (function () {
+        var id = 0,
+            time = new Date().getTime();
+        return function () {
+            return time + id++;
+        };
+    })();
 
- 	/**
- 	* Removes element from the DOM
- 	*/  
- 	Y.ss.remove = function(elem) {
- 		if (elem.parentNode) {
- 			elem.parentNode.removeChild(elem);
- 		}
- 	};
+    /**
+     * Removes white space from left and right of string
+     */
+    Y.ss.trim = function (text) {
+        return text.toString().replace(/^\s+/, '').replace(/\s+$/, '');
+    };
 
- 	/**
- 	 * Accepts a jquery object, a string containing an element ID, or an element, 
- 	 * verifies that it exists, and returns the element.
- 	 * @param {Mixed} elem
- 	 * @return {Element} 
- 	 */
- 	Y.ss.verifyElem = function(elem) {
- 	    if (elem.jquery) {
- 	        elem = elem[0];
- 	    } else if (typeof elem === 'string') {
- 	        if (/^#.*/.test(elem)) {				
- 	            elem = elem.slice(1);                
- 	        }
- 	        elem = document.getElementById(elem);
- 	    }
- 	    if (!elem || elem.nodeType !== 1) {
- 			return false;
- 	    }
- 	    if (elem.nodeName.toUpperCase() == 'A') {                      
- 	        Y.ss.addEvent(elem, 'click', function(e) {
- 	            if (e && e.preventDefault) {
- 	                e.preventDefault();
- 	            } else if (window.event) {
- 	                window.event.returnValue = false;
- 	            }
- 	        });
- 	    }
- 		return elem;
- 	};
+    /**
+     * Get file extension
+     */
+    Y.ss.getExt = function (file) {
+        return (-1 !== file.indexOf('.')) ? file.replace(/.*[.]/, '') : '';
+    };
 
- 	/**
- 	* @constructor
- 	* @param button An element you want convert to upload button.
- 	* @param {Object} options
+    /**
+     * Check whether element has a particular CSS class
+     */
+    Y.ss.hasClass = function (element, name) {
+        var re = new RegExp('(^| )' + name + '( |$)');
+        return re.test(element.className);
+    };
 
- 	  View README.md for documentation
+    /**
+     * Adds CSS class to an element
+     */
+    Y.ss.addClass = function (element, name) {
+        if (!name || name === '') {
+            return false;
+        }
+        if (!Y.ss.hasClass(element, name)) {
+            element.className += ' ' + name;
+        }
+    };
 
- 	*/
- 	Y.ss.SimpleUpload = function(options) {
+    /**
+     * Removes CSS class from an element
+     */
+    Y.ss.removeClass = function (element, name) {
+        var re = new RegExp('(^| )' + name + '( |$)');
+        element.className = element.className.replace(re, ' ').replace(/^\s+|\s+$/g, '');
+    };
 
- 		var self = this;
+    /**
+     * Removes element from the DOM
+     */
+    Y.ss.remove = function (elem) {
+        if (elem.parentNode) {
+            elem.parentNode.removeChild(elem);
+        }
+    };
 
- 		self._settings = {
- 			button: '',				
- 			url: '',				
- 			name: '',				
- 			data: {},				
- 			autoSubmit: true,		
- 			responseType: 'text',	
- 			debug: false,			
- 			hoverClass: '',			
- 			focusClass: '',			
- 			disabledClass: '',		
- 			onChange: function(filename, extension) {},				
- 			onSubmit: function(filename, extension) {},				
- 			onProgress: function(pct) {},					
- 			onComplete: function(filename, response) {},			
- 			onError: function(filename, errorType, response) {},	
- 			startXHR: function(filename, fileSize) {},				
- 			endXHR: function(filename) {},							
- 			startNonXHR: function(filename) {},						
- 			endNonXHR: function(filename) {}						
- 		};
- 		
- 		Y.ss.extendObj(self._settings, options);
- 		self._button = Y.ss.verifyElem(self._settings.button);	
- 		
- 		if (self._button === false) {
- 			throw new Error("Invalid button. Make sure the element you're passing exists."); 
- 		}
- 	                            
- 		self._input = null;			// DOM element
- 		self._filename = null;
- 		self._disabled = false;		// If disabled clicking on button won't do anything
- 		self.enable();				// Enable uploading
- 		self._rerouteClicks();		// Route button click to us
- 	};
+    /**
+     * Accepts a jquery object, a string containing an element ID, or an element,
+     * verifies that it exists, and returns the element.
+     * @param {Mixed} elem
+     * @return {Element}
+     */
+    Y.ss.verifyElem = function (elem) {
+        if (elem instanceof jQuery) {
+            elem = elem[0];
+        } else if (typeof elem === 'string') {
+            if (/^#.*/.test(elem)) {
+                elem = elem.slice(1);
+            }
+            elem = document.getElementById(elem);
+        }
+        if (!elem || elem.nodeType !== 1) {
+            return false;
+        }
+        if (elem.nodeName.toUpperCase() == 'A') {
+            Y.ss.addEvent(elem, 'click', function (e) {
+                if (e && e.preventDefault) {
+                    e.preventDefault();
+                } else if (window.event) {
+                    window.event.returnValue = false;
+                }
+            });
+        }
+        return elem;
+    };
 
- 	Y.ss.SimpleUpload.prototype = {
+    /**
+     * @constructor
+     * @param {Object} options
 
- 		/**
- 		* Send data to browser console if debug is set to true
- 		*/ 
- 		log: function(str){
- 			if (this._settings.debug && window.console) { 
- 				console.log('[uploader] ' + str);        
- 			}
- 		},	
- 		
- 		/**
- 		* Replaces user data
- 		* Note that all previously set data is entirely removed and replaced
- 		*/
- 		setData: function(data) {
- 			if (typeof data === 'object') {
- 				this._settings.data = data;		
- 			} else {
- 				this._settings.data = {};
- 			}
- 		},
- 		
- 		/**
- 		* Disables upload functionality
- 		*/
- 		disable: function() {
- 			var self = this,
- 				nodeName = self._button.nodeName.toUpperCase();
- 			
- 			Y.ss.addClass(self._button, self._settings.disabledClass);
- 			self._disabled = true;
- 					
- 			if (nodeName == 'INPUT' || nodeName == 'BUTTON') {
- 				self._button.setAttribute('disabled', 'disabled');
- 			}            
- 			
- 			// hide input
- 			if (self._input) {
- 				if (self._input.parentNode) {
- 					// We use visibility instead of display to fix problem with Safari 4
- 					self._input.parentNode.style.visibility = 'hidden';
- 				}
- 			}
- 		},
- 		
- 		/**
- 		* Enables upload functionality
- 		*/
- 		enable: function() {
- 			var self = this;
- 			Y.ss.removeClass(self._button, self._settings.disabledClass);
- 			self._button.removeAttribute('disabled');
- 			self._disabled = false;
- 		},
- 		
- 		/**
- 		* Checks whether browser supports XHR uploads
- 		*/		
- 		_isXhrSupported: function() {
- 			var input = document.createElement('input');
- 			input.type = 'file';        
- 			return (
- 				'multiple' in input &&
- 				typeof File != 'undefined' &&
- 				typeof (new XMLHttpRequest()).upload != 'undefined'); 
- 		},
- 		
- 	    /**
- 	     * Creates invisible file input 
- 	     * that will hover above the button
- 	     * <div><input type='file' /></div>
- 	     */
- 		_createInput: function() { 
- 			var self = this,
- 				input = document.createElement('input'),
- 				div = document.createElement('div'),
- 				filename;
- 						
- 			input.setAttribute('type', 'file');
- 			input.setAttribute('name', self._settings.name);
- 					
- 			Y.ss.addStyles(input, {
- 				'position' : 'absolute',
- 				'right' : 0,
- 				'margin' : 0,
- 				'padding' : 0,
- 				'fontSize' : '480px',
- 				'fontFamily' : 'sans-serif',
- 				'cursor' : 'pointer'
- 			});            
- 							
- 			Y.ss.addStyles(div, {
- 				'display' : 'block',
- 				'position' : 'absolute',
- 				'overflow' : 'hidden',
- 				'margin' : 0,
- 				'padding' : 0,                
- 				'opacity' : 0,
- 				'direction' : 'ltr',
- 				'zIndex': 2147483583
- 			});
- 			
- 			// Make sure that element opacity exists. Otherwise use IE filter            
- 			if (div.style.opacity !== '0') {
- 				if (typeof(div.filters) == 'undefined'){
- 					throw new Error('Opacity not supported by the browser');
- 				}
- 				div.style.filter = 'alpha(opacity=0)';
- 			}            
- 			
- 			Y.ss.addEvent(input, 'change', function() { 
- 				if (!input || input.value === '') {                
- 					return;                
- 				}
- 							
- 				// Get filename        
- 				filename = input.value.replace(/.*(\/|\\)/, '');
- 				self._filename = filename;
- 								
- 				if (false === self._settings.onChange.call(self, filename, Y.ss.getExt(filename))) {
- 					self._clearInput();                
- 					return;
- 				}
- 				
- 				// Submit when file selected if autoSubmit option is set
- 				if (self._settings.autoSubmit) {
- 					self.submit();
- 				}
- 			});            
- 			
- 			Y.ss.addEvent(input, 'mouseover', function() {
- 				Y.ss.addClass(self._button, self._settings.hoverClass);
- 			});
- 			
- 			Y.ss.addEvent(input, 'mouseout', function() {
- 				Y.ss.removeClass(self._button, self._settings.hoverClass);
- 				Y.ss.removeClass(self._button, self._settings.focusClass);
- 				
- 				if (input.parentNode) {
- 					input.parentNode.style.visibility = 'hidden';
- 				}
- 			});   
- 						
- 			Y.ss.addEvent(input, 'focus', function() {
- 				Y.ss.addClass(self._button, self._settings.focusClass);
- 			});
- 			
- 			Y.ss.addEvent(input, 'blur', function() {
- 				Y.ss.removeClass(self._button, self._settings.focusClass);
- 			});
- 			
- 			div.appendChild(input);
- 			document.body.appendChild(div);
- 			self._input = input;
- 		},
- 		
- 		_clearInput : function() {
- 			var self = this;
- 			if (!self._input) {
- 				return;
- 			}                               
- 			Y.ss.remove(self._input.parentNode);                            
- 			Y.ss.removeClass(self._button, self._settings.hoverClass);
- 			Y.ss.removeClass(self._button, self._settings.focusClass);
- 			delete self._input;
- 			self._createInput();		
- 		},
- 		
- 		/**
- 		* Makes sure that when user clicks upload button,
- 		* the this._input is clicked instead
- 		*/
- 		_rerouteClicks: function() {
- 			var self = this,
- 				div;
- 		
- 			Y.ss.addEvent(self._button, 'mouseover', function() {
- 				if (self._disabled) {
- 					return;
- 				}
- 								
- 				if (!self._input) {
- 					self._createInput();
- 				}
- 				
- 				div = self._input.parentNode;                            
- 				Y.ss.copyLayout(self._button, div);
- 				div.style.visibility = 'visible';               
- 			});                
- 		},
- 		
- 		_handleJSON: function(data) {
- 			var obj;
- 			
- 			if (data.slice(0, 5).toLowerCase() == '<pre>' && data.slice(-6).toLowerCase() == '</pre>') {
- 				data = data.substr(0, data.length - 6).substr(5);
- 			}
- 			
- 			obj = Y.ss.evalJSON(data);	
- 			return obj;
- 		},	
- 		
- 		/**
- 		* Creates iframe with unique name
- 		* @return {Element} iframe
- 		*/
- 		_createIframe: function() {
- 			var id = Y.ss.getUID(),
- 				iframe = Y.ss.toElement('<iframe src="javascript:false;" name="' + id + '" />');           
- 				
- 			iframe.setAttribute('id', id);
- 			iframe.style.display = 'none';
- 			document.body.appendChild(iframe);
- 			return iframe;
- 		},
- 		
- 		/**
- 		* Creates form, that will be submitted to iframe
- 		* @param {Element} iframe Where to submit
- 		* @return {Element} form
- 		*/
- 		_createForm: function(iframe) {
- 			var settings = this._settings,
- 				form = Y.ss.toElement('<form method="post" enctype="multipart/form-data"></form>');
+     View README.md for documentation
+     */
+    Y.ss.SimpleUpload = function (options) {
 
- 			form.setAttribute('action', settings.url);		
- 			form.setAttribute('target', iframe.name);                                   
- 			form.style.display = 'none';
- 			document.body.appendChild(form);
- 			
- 			return form;
- 		},
- 				
- 		/**
- 		* Handles server response for XHR uploads
- 		*/		
- 		_handleXHRresponse: function(xhr, filename) {
- 			var self = this,
- 				settings = self._settings,
- 				response = Y.ss.trim(xhr.responseText);
- 			
- 			self.log('server response received');
- 			self.log('responseText = ' + response);
- 			
- 			if (xhr.status !== 200) {
- 				self.log('server error: status: '+xhr.status);
- 				settings.onError.call(self, filename, 'server error', xhr.responseText);
- 			} else {
- 				if (settings.responseType.toLowerCase() == 'json') {
- 					response = self._handleJSON(response);
- 				}
- 							
- 				if (response === false) {
- 					settings.onError.call(self, filename, 'parse error', xhr.responseText);
- 				} else {
- 					settings.onComplete.call(self, filename, response);
- 				}
- 			}
- 		
- 			self.enable();	
- 			self._clearInput(); // Get ready for next request
- 		},
- 		
- 		/**
- 		* Handles uploading with XHR
- 		*/		
- 		_uploadXhr: function() {
- 			var self = this,
- 				settings = self._settings,
- 				filename = self._filename,
- 				fileSize = Math.round(self._input.files[0].size / 1024),			
- 				params = {},			
- 				xhr = new XMLHttpRequest(),
- 				data,
- 				queryString,
- 				queryURL,
- 				progress_pct;
- 							
- 				settings.onProgress.call(self, 0);		
- 				
- 				if (false === settings.startXHR.call(self, filename, fileSize)) {
- 					self.enable();
- 					self._clearInput();                
- 					return;
- 				}			
+        this._settings = {
+            button: '',
+            url: '',
+            progressUrl: false,
+            multiple: false,
+            maxUploads: 3,
+            checkProgressInterval: 50,
+            keyParamName: 'APC_UPLOAD_PROGRESS',
+            allowedExtensions: [],
+            maxSize: false,
+            name: '',
+            data: {},
+            autoSubmit: true,
+            multipart: false,
+            responseType: '',
+            debug: false,
+            hoverClass: '',
+            focusClass: '',
+            disabledClass: '',
+            messages: {
+                extError: 'Invalid file type. Only {ext} files are permitted.',
+                sizeError: 'This file is larger than the {size} size limit.'
+            },
+            onChange: function (filename, extension) {
+            },
+            onSubmit: function (filename, extension) {
+            },
+            onProgress: function (pct) {
+            },
+            onUpdateFileSize: function (filesize) {
+            },
+            onComplete: function (filename, response) {
+            },
+            onError: function (filename, errorType, response) {
+            },
+            startXHR: function (filename, fileSize) {
+            },
+            endXHR: function (filename) {
+            },
+            startNonXHR: function (filename) {
+            },
+            endNonXHR: function (filename) {
+            }
+        };
 
- 				data = settings.data;
- 				
- 				// Add name property to query string
- 				params[settings.name] = filename;
- 				
- 				// Get any extra data from user
- 				Y.ss.extendObj(params, data);
- 				
- 				// Build query string
- 				queryString = Y.ss.obj2string(params);
- 				queryURL = settings.url + '?' + queryString;			
- 										
- 				Y.ss.addEvent(xhr.upload, 'progress', function(event) {
- 					if (event.lengthComputable) {
- 						progress_pct = Math.round( ( event.loaded / event.total ) * 100);			
- 						settings.onProgress.call(self, progress_pct);
- 					}
- 				});
- 				
- 				Y.ss.addEvent(xhr.upload, 'error', function() {
- 					self.log('transfer error during upload');
- 					settings.endXHR.call(self, filename, fileSize);
- 					settings.onError.call(self, filename, 'transfer error', 'none');				
- 				});			
- 							
- 				xhr.onreadystatechange = function() {
- 					if (xhr.readyState === 4) {
- 						settings.endXHR.call(self, filename, fileSize);				
- 						self._handleXHRresponse(xhr, filename);
- 					}
- 				};			
- 				
- 				xhr.open('POST', queryURL, true);
- 				xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
- 				xhr.setRequestHeader('X-File-Name', encodeURIComponent(filename));
- 				xhr.setRequestHeader('Cache-Control', 'no-cache');
- 				xhr.setRequestHeader('Content-Type', 'application/octet-stream');
- 				self.log('commencing upload');
- 				xhr.send(self._input.files[0]);				
- 		},
- 		
- 		_handleIframeResponse: function(iframe, file) {
- 			var self = this,
- 				settings = self._settings,
- 				filename = self._filename,
- 				doc,
- 				response,
- 				textResponse;
- 				
- 			if (!iframe.parentNode) {
- 				return;
- 			}
- 		
- 			if (iframe.contentWindow) {
- 				doc = iframe.contentWindow.document;
- 			} else {
- 				if (iframe.contentDocument && iframe.contentDocument.document) {
- 					doc = iframe.contentDocument.document;
- 				} else {
- 					doc = iframe.contentDocument;
- 				}
- 			}
- 			
- 			if (doc.body && doc.body.innerHTML === false) {
- 				return;
- 			}
- 				
- 			response = doc.body.innerHTML;
- 			textResponse = response.toString();
- 			self.log('response = ' + textResponse);
- 		
- 			if (settings.responseType.toLowerCase() == 'json') {
- 				response = self._handleJSON(textResponse);
- 			}
- 					
- 			if (response === false) {
- 				settings.onError.call(self, filename, 'parse error', textResponse);
- 			} else {
- 				settings.onComplete.call(self, filename, response);
- 			}
- 				
- 			// Get ready for next request
- 			Y.ss.remove(iframe);
- 			self.enable();		
- 			self._clearInput();				
- 		},	
- 		
- 		/**
- 		* Handles uploading with iFrame
- 		*/	
- 		_uploadIframe: function() {
- 			var self = this,
- 				settings = self._settings,
- 				data,
- 				filename = self._filename,
- 				iframe = self._createIframe(),
- 				form = self._createForm(iframe),
- 				prop;
- 			
- 			if (false === settings.startNonXHR.call(self, filename)) {
- 				self.enable();
- 				self._clearInput();                
- 				return;
- 			}		
+        Y.ss.extendObj(this._settings, options);
 
- 			data = settings.data;
- 				
- 			for (prop in data) {
- 				if (data.hasOwnProperty(prop)) {				
- 					var input = document.createElement('input');
- 					input.type = 'hidden';
- 					input.name = prop;
- 					input.value = data[prop];
- 					form.appendChild(input);				
- 				}
- 			}			
- 							
- 			form.appendChild(self._input);
- 					
- 			self.log('commencing upload');
- 			
- 			Y.ss.addEvent(iframe, 'load', function() {
- 				settings.endNonXHR.call(self, filename);
- 				Y.ss.remove(form);
- 				self._handleIframeResponse(iframe, filename);
- 			});		
- 			
- 			form.submit();
- 		},
- 		
- 		/**
- 		* Validates input and directs to either XHR method or iFrame method
- 		*/
- 		submit: function() {                        
- 			var self = this,
- 				settings = self._settings,
- 				filename;		
- 			
- 			if (self._disabled || !self._input || self._input.value === '') {                
- 				return;                
- 			}
- 			
- 			filename = self._filename;
- 		
- 			// User returned false to cancel upload
- 			if (false === settings.onSubmit.call(self, filename, Y.ss.getExt(filename))) {
- 				self._clearInput();                
- 				return;
- 			}
- 			
- 			self.disable();
- 					
- 			// Use XHR in browsers that support it
- 			if (self._isXhrSupported()) {
- 				self.log('XHR upload supported');
- 				self._uploadXhr();		
- 			} else {
- 				// Otherwise fall back to iFrame method
- 				self.log('XHR upload not supported, using iFrame method');
- 				self._uploadIframe();
- 			}			
- 		}	
- 	};
- }, '0.0.1', {
-     requires: []
- });
+        this._button = Y.ss.verifyElem(this._settings.button);
+
+        if (this._button === false) {
+            throw new Error("Invalid button. Make sure the element you're passing exists.");
+        }
+
+        this._input = null;
+        this._filename = null;
+        this._ext = null;  // file extension
+        this._size = null; // file size
+        this._file = null; // file record
+        this._progressBar = null;
+        this._progressContainer = null;
+        this._fileSizeBox = null;
+        this._activeUploads = 0;
+        this._disabled = false;		// If disabled, clicking on button won't do anything
+
+        // True in iframe uploads if _uploadProgressKey is not null and progressUrl set
+        this._doProgressUpdates = false;
+
+        // Contains the currently active upload progress server keys
+        this._activeProgressKeys = [];
+
+        // Unique key for tracking upload progress requests in iframe uploads
+        // Is reset to a unique value returned by a call to uploadProgress.php after every upload (if enabled)
+        this._uploadProgressKey = null;
+
+        // Max # of failed progress updates requests in iframe mode
+        // Safeguards against potential infinite loop which could result from server error
+        this._maxUpdateFails = 10;
+
+        if (this._isXhrUploadSupported()) {
+            this._XhrIsSupported = true;
+            this.log('XHR upload supported');
+        } else {
+            this._XhrIsSupported = false;
+            this.log('XHR upload not supported, using iFrame method');
+            // Retrieve first upload progress key
+            if (this._settings.progressUrl) {
+                this._getUploadProgressKey();
+            }
+        }
+
+        // These calls must always be last
+        this._createInput();
+        this.enable();
+        this._rerouteClicks();
+    };
+
+    Y.ss.SimpleUpload.prototype = {
+
+        /**
+         * Send data to browser console if debug is set to true
+         */
+        log: function (str) {
+            if (this._settings.debug && window.console) {
+                console.log('[uploader] ' + str);
+            }
+        },
+
+        /**
+         * Replaces user data
+         * Note that all previously set data is entirely removed and replaced
+         */
+        setData: function (data) {
+            if (typeof data === 'object') {
+                this._settings.data = data;
+            } else {
+                this._settings.data = {};
+            }
+        },
+
+        /**
+         * Designate an element as a progress bar
+         * The CSS width % of the element will be updated as the upload progresses
+         */
+        setProgressBar: function (elem) {
+            this._progressBar = Y.ss.verifyElem(elem);
+        },
+
+        /**
+         * Designate an element to receive a string containing file size at start of upload
+         * Note: Uses innerHTML so any existing child elements will be wiped out
+         */
+        setFileSizeBox: function (elem) {
+            this._fileSizeBox = Y.ss.verifyElem(elem);
+        },
+
+        /**
+         * Designate an element to be removed from DOM when upload is completed
+         * Useful for removing progress bar, file size, etc. after upload
+         */
+        setProgressContainer: function (elem) {
+            this._progressContainer = Y.ss.verifyElem(elem);
+        },
+
+        /**
+         * Disables upload functionality
+         */
+        disable: function () {
+            var nodeName = this._button.nodeName.toUpperCase();
+
+            Y.ss.addClass(this._button, this._settings.disabledClass);
+            this._disabled = true;
+
+            if (nodeName == 'INPUT' || nodeName == 'BUTTON') {
+                this._button.setAttribute('disabled', 'disabled');
+            }
+
+            // hide input
+            if (this._input) {
+                if (this._input.parentNode) {
+                    // We use visibility instead of display to fix problem with Safari 4
+                    this._input.parentNode.style.visibility = 'hidden';
+                }
+            }
+        },
+
+        /**
+         * Enables upload functionality
+         */
+        enable: function () {
+            Y.ss.removeClass(this._button, this._settings.disabledClass);
+            this._button.removeAttribute('disabled');
+            this._disabled = false;
+        },
+
+        /**
+         * Checks whether browser supports XHR uploads
+         */
+        _isXhrUploadSupported: function () {
+            var input = document.createElement('input');
+            input.type = 'file';
+            return (
+                'multiple' in input &&
+                    typeof File != 'undefined' &&
+                    typeof (new XMLHttpRequest()).upload != 'undefined');
+        },
+
+        /**
+         * Creates invisible file input
+         * that will hover above the button
+         * <div><input type='file' /></div>
+         */
+        _createInput: function () {
+            var self = this,
+                div = document.createElement('div'),
+                input = document.createElement('input');
+
+            input.setAttribute('type', 'file');
+            input.setAttribute('name', self._settings.name);
+            input.setAttribute('multiple', self._settings.multiple);
+
+            Y.ss.addStyles(div, {
+                'display': 'block',
+                'position': 'absolute',
+                'overflow': 'hidden',
+                'margin': 0,
+                'padding': 0,
+                'opacity': 0,
+                'direction': 'ltr',
+                'zIndex': 2147483583
+            });
+
+            Y.ss.addStyles(input, {
+                'position': 'absolute',
+                'right': 0,
+                'margin': 0,
+                'padding': 0,
+                'fontSize': '480px',
+                'fontFamily': 'sans-serif',
+                'cursor': 'pointer'
+            });
+
+            // Make sure that element opacity exists. Otherwise use IE filter
+            if (div.style.opacity !== '0') {
+                if (typeof(div.filters) == 'undefined') {
+                    throw new Error('Opacity not supported by the browser');
+                }
+                div.style.filter = 'alpha(opacity=0)';
+            }
+
+            Y.ss.addEvent(input, 'change', function () {
+                var fileinput = input,
+                    autoSubmit = self._settings.autoSubmit,
+                    filename,
+                    ext;
+
+                if (!fileinput || fileinput.value === '') {
+                    return;
+                }
+
+                for (i = 0; i < fileinput.files.length; i++) {
+                    // Get filename
+//                     filename = fileinput.value.replace(/.*(\/|\\)/, '');
+                    filename = fileinput.files[i].name.replace(/.*(\/|\\)/, '');
+                    ext = Y.ss.getExt(filename);
+                    self._filename = filename;
+                    self._ext = ext;
+                    self._size = fileinput.files[i].size;
+                    self._file = fileinput.files[i];
+
+                    if (false === self._settings.onChange.call(self, filename, ext)) {
+                        return;
+                    }
+                    // Submit when file selected if autoSubmit option is set
+                    if (autoSubmit) {
+                        self.submit();
+                    }
+                    filename = null;
+                    ext = null;
+                }
+                fileinput = null;
+                autoSubmit = null;
+
+            });
+
+            var btn = self._button,
+                hover = self._settings.hoverClass,
+                focus = self._settings.focusClass;
+
+            Y.ss.addEvent(input, 'mouseover', function () {
+                var button = btn,
+                    hoverClass = hover;
+                Y.ss.addClass(button, hoverClass);
+                button = null;
+                hoverClass = null;
+            });
+
+            Y.ss.addEvent(input, 'mouseout', function () {
+                var button = btn,
+                    fileinput = input,
+                    hoverClass = hover,
+                    focusClass = focus;
+                Y.ss.removeClass(button, hoverClass);
+                Y.ss.removeClass(button, focusClass);
+
+                if (fileinput.parentNode) {
+                    fileinput.parentNode.style.visibility = 'hidden';
+                }
+                button = null;
+                hoverClass = null;
+                focusClass = null;
+                fileinput = null;
+            });
+
+            Y.ss.addEvent(input, 'focus', function () {
+                var button = btn,
+                    focusClass = focus;
+                Y.ss.addClass(button, focusClass);
+                button = null;
+                focusClass = null;
+            });
+
+            Y.ss.addEvent(input, 'blur', function () {
+                var button = btn,
+                    focusClass = focus;
+                Y.ss.removeClass(button, focusClass);
+                button = null;
+                focusClass = null;
+            });
+
+            document.body.appendChild(div);
+            div.appendChild(input);
+            self._input = input;
+        },
+
+        _clearInput: function () {
+            if (!this._input) {
+                return;
+            }
+            this._filename = null;
+            this._ext = null;
+            this._fileSizeBox = null;
+            this._progressBar = null;
+            this._progressContainer = null;
+            Y.ss.remove(this._input.parentNode);
+            Y.ss.removeClass(this._button, this._settings.hoverClass);
+            Y.ss.removeClass(this._button, this._settings.focusClass);
+            this._input = null;
+            this._createInput();
+        },
+
+        /**
+         * Makes sure that when user clicks upload button,
+         * the this._input is clicked instead
+         */
+        _rerouteClicks: function () {
+            var self = this;
+
+            Y.ss.addEvent(self._button, 'mouseover', function () {
+                if (self._disabled) {
+                    return;
+                }
+                if (!self._input) {
+                    self._createInput();
+                }
+                var div = self._input.parentNode,
+                    button = self._button;
+                Y.ss.copyLayout(button, div);
+                div.style.visibility = 'visible';
+                div = null;
+                button = null;
+            });
+        },
+
+        /**
+         * Creates iframe with unique name
+         * @return {Element} iframe
+         */
+        _createIframe: function () {
+            var id = Y.ss.getUID(),
+                iframe = Y.ss.toElement('<iframe src="javascript:false;" name="' + id + '" />');
+
+            document.body.appendChild(iframe);
+            iframe.style.display = 'none';
+            iframe.setAttribute('id', id);
+            return iframe;
+        },
+
+        /**
+         * Creates form, that will be submitted to iframe
+         * @param {Element} iframe Where to submit
+         * @return {Element} form
+         */
+        _createForm: function (iframe) {
+            var form = Y.ss.toElement('<form method="post" enctype="multipart/form-data"></form>');
+
+            document.body.appendChild(form);
+            form.style.display = 'none';
+            form.setAttribute('action', this._settings.url);
+            form.setAttribute('target', iframe.name);
+            return form;
+        },
+
+        /**
+         * Creates hidden input fields for the form in iframe method
+         * @param {String} name Input field name
+         * @param {String} value Value assigned to the input
+         * @return {Element} input
+         */
+        _createHiddenInput: function (name, value) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('name', name);
+            input.setAttribute('value', value);
+            return input;
+        },
+
+        _finish: function (response, filename, progressBar, fileSizeBox, progressContainer) {
+            this.log('server response: ' + response);
+            this._activeUploads = this._activeUploads - 1;
+
+            if (this._settings.responseType.toLowerCase() == 'json') {
+                response = Y.ss.parseJSON(response);
+            }
+
+            if (response === false) {
+                this.log('bad server response');
+                this._settings.onError.call(this, filename, 'parseerror', response);
+            } else {
+                this._settings.onComplete.call(this, filename, response);
+            }
+
+            if (progressBar) {
+                Y.ss.remove(progressBar);
+            }
+            if (fileSizeBox) {
+                Y.ss.remove(fileSizeBox);
+            }
+            if (progressContainer) {
+                Y.ss.remove(progressContainer);
+            }
+
+            // Set to null to prevent memory leaks from circular reference
+            response = null;
+            filename = null;
+            progressBar = null;
+            fileSizeBox = null;
+            progressContainer = null;
+
+            if (this._disabled && !this._activeUploads) {
+                this.enable();
+            }
+        },
+
+        /**
+         * Handles uploading with XHR
+         */
+        _uploadXhr: function () {
+            var self = this,
+                settings = self._settings,
+                filename = self._filename,
+//                fileSize = Math.round(self._input.files[0].size / 1024),
+                fileSize = Math.round(self._size / 1024),
+                fileSizeBox = self._fileSizeBox,
+                progressBar = self._progressBar,
+                progressContainer = self._progressContainer,
+                xhr = Y.ss.newXHR(),
+                params = {},
+                queryURL;
+
+            if (false === settings.startXHR.call(self, filename, fileSize)) {
+                if (self._disabled) {
+                    self.enable();
+                }
+                return;
+            }
+
+            if (fileSizeBox) {
+                fileSizeBox.innerHTML = fileSize + 'K';
+            }
+
+            // Reset progress bars to 0%
+            settings.onProgress.call(self, 0);
+
+            if (progressBar) {
+                progressBar.style.width = '0%';
+            }
+
+            // Add name property to query string
+            params[settings.name] = filename;
+
+            // We get the any additional data here after startXHR()
+            // in case the data was changed using setData() prior to submitting
+            Y.ss.extendObj(params, settings.data);
+
+            // Build query string
+            queryURL = settings.url + '?' + Y.ss.obj2string(params);
+
+            Y.ss.addEvent(xhr.upload, 'progress', function (event) {
+                if (event.lengthComputable) {
+                    var progress_pct = Math.round(( event.loaded / event.total ) * 100);
+                    settings.onProgress.call(self, progress_pct);
+
+                    // Update progress bar width
+                    if (progressBar) {
+                        progressBar.style.width = progress_pct + '%';
+                    }
+                    progress_pct = null;
+                }
+            });
+
+            Y.ss.addEvent(xhr.upload, 'error', function () {
+                self.log('transfer error during upload');
+                settings.endXHR.call(self, filename, fileSize);
+                settings.onError.call(self, filename, 'transfer error', 'none');
+            });
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        settings.endXHR.call(self, filename, fileSize);
+                        self._finish(this.responseText, filename, progressBar, fileSizeBox, progressContainer);
+                    } else {
+                        self.log('Progress key error. Status: ' + this.status + ' Response: ' + this.responseText);
+                        settings.onError.call(self, filename, 'server error', this.responseText);
+                    }
+                }
+            };
+
+            xhr.open('POST', queryURL, true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.setRequestHeader('X-File-Name', encodeURIComponent(filename));
+
+            if (settings.responseType.toLowerCase() == 'json') {
+                xhr.setRequestHeader('Accept', 'application/json, text/javascript, */*; q=0.01');
+            }
+
+            if (settings.multipart === true) {
+                var formData = new FormData();
+//                formData.append(settings.name, self._input.files[0]);
+                formData.append(settings.name, self._file);
+                self.log('commencing upload using multipart form');
+                xhr.send(formData);
+            } else {
+                xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+                self.log('commencing upload using binary stream');
+//                xhr.send(self._input.files[0]);
+                xhr.send(self._file);
+            }
+
+            // Reset for the next request
+            self._clearInput();
+        },
+
+        /**
+         * Handles server response for iframe uploads
+         */
+        _handleIframeResponse: function (iframe, filename, progressBar, fileSizeBox, progressContainer) {
+            var doc,
+                response;
+
+            if (!iframe.parentNode) {
+                return;
+            }
+
+            if (iframe.contentWindow) {
+                doc = iframe.contentWindow.document;
+            } else {
+                if (iframe.contentDocument && iframe.contentDocument.document) {
+                    doc = iframe.contentDocument.document;
+                } else {
+                    doc = iframe.contentDocument;
+                }
+            }
+
+            if (doc.body && doc.body.innerHTML === false) {
+                return;
+            }
+
+            response = doc.body.innerHTML;
+            Y.ss.remove(iframe);
+            iframe = null;
+            this._finish(response, filename, progressBar, fileSizeBox, progressContainer);
+        },
+
+        /**
+         * Handles uploading with iFrame
+         */
+        _uploadIframe: function () {
+            var self = this,
+                settings = self._settings,
+                checkInterval = settings.checkProgressInterval,
+                key = self._uploadProgressKey,
+                progressBar = self._progressBar,
+                progressContainer = self._progressContainer,
+                fileSizeBox = self._fileSizeBox,
+                filename = self._filename,
+                iframe = self._createIframe(),
+                form = self._createForm(iframe),
+                data;
+
+            // Upload progress key field must come before the file field
+            if (self._doProgressUpdates) {
+                var keyField = self._createHiddenInput(settings.keyParamName, key);
+                form.appendChild(keyField);
+            }
+
+            if (false === settings.startNonXHR.call(self, filename)) {
+                if (self._disabled) {
+                    self.enable();
+                }
+                return;
+            }
+
+            // We get the any additional data here after startNonXHR()
+            // in case the data was changed using setData() prior to submitting
+            data = settings.data;
+
+            // Reset progress bars to 0%
+            settings.onProgress.call(self, 0);
+
+            if (progressBar) {
+                progressBar.style.width = '0%';
+            }
+
+            for (var prop in data) {
+                if (data.hasOwnProperty(prop)) {
+                    var input = self._createHiddenInput(prop, data[prop]);
+                    form.appendChild(input);
+                }
+            }
+
+            form.appendChild(self._input);
+
+            Y.ss.addEvent(iframe, 'load', function () {
+                // Remove key from active progress keys array
+                if (Y.ss.contains(self._activeProgressKeys, key)) {
+                    Y.ss.removeItem(self._activeProgressKeys, key);
+                }
+                Y.ss.removeEvent(iframe, 'load', arguments.callee);
+                settings.endNonXHR.call(self, filename);
+                self._handleIframeResponse(iframe, filename, progressBar, fileSizeBox, progressContainer);
+                key = null;
+            });
+
+            self.log('commencing upload using iframe');
+            form.submit();
+            Y.ss.remove(form);
+            form = null;
+
+            if (self._doProgressUpdates) {
+                // Add progress key to active key array
+                self._activeProgressKeys.push(key);
+
+                // Start timer for first progress update
+                window.setTimeout(function () {
+                    self.log('requesting first progress update');
+                    self._getUploadProgress(key, progressBar, fileSizeBox, 1);
+                }, checkInterval);
+
+                // Get new upload progress key
+                self._getUploadProgressKey();
+            }
+
+            // Reset for the next request
+            self._clearInput();
+        },
+
+        /**
+         * Retrieves upload progress updates from the server
+         * (for fallback upload progress support)
+         */
+        _getUploadProgress: function (key, progressBar, sizeBox, counter) {
+            if (!key) {
+                return;
+            }
+
+            var self = this,
+                settings = self._settings,
+                xhr = Y.ss.newXHR(),
+                time = new Date().getTime(),
+                url = settings.progressUrl + '?progresskey=' + encodeURIComponent(key) + '&_=' + time;
+
+            xhr.onreadystatechange = function () {
+                var response,
+                    checkInterval = settings.checkProgressInterval;
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        response = Y.ss.parseJSON(this.responseText);
+                        if (response && response.success === true) {
+
+                            counter++;
+                            settings.onUpdateFileSize.call(self, response.size);
+                            settings.onProgress.call(self, response.pct);
+
+                            // Update progress bar width
+                            if (progressBar) {
+                                progressBar.style.width = response.pct + '%';
+                            }
+                            if (sizeBox && response.size) {
+                                sizeBox.innerHTML = response.size + 'K';
+                            }
+
+                            if (response.pct < 100 && Y.ss.contains(self._activeProgressKeys, key)) {
+
+                                if (response.pct === 0 && response.size === 0 && counter >= self._maxUpdateFails) {
+                                    self.log('failed progress response limit reached');
+                                    return;
+                                }
+
+                                window.setTimeout(function () {
+                                    self._getUploadProgress(key, progressBar, sizeBox, counter);
+                                    key = null;
+                                    counter = null;
+                                }, checkInterval);
+                            }
+                            checkInterval = null;
+                        }
+                    } else {
+                        self.log('Progress error. Status: ' + this.status + ' Response: ' + this.responseText);
+                    }
+                }
+                response = null;
+            };
+
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.setRequestHeader('Accept', 'application/json, text/javascript, */*; q=0.01');
+            xhr.setRequestHeader('Cache-Control', 'no-cache');
+            xhr.send();
+            xhr = null;
+        },
+
+        /**
+         * Gets the unique key from the server used to identify which upload we want to know about.
+         * (for fallback upload progress support)
+         */
+        _getUploadProgressKey: function () {
+            var self = this,
+                xhr = Y.ss.newXHR(),
+                time = new Date().getTime(),
+                url = self._settings.progressUrl + '?getkey=' + time;
+
+            // Prevent a previous server key from allowing progress
+            // updates for another upload
+            self._uploadProgressKey = null;
+
+            xhr.onreadystatechange = function () {
+                var response;
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        response = Y.ss.parseJSON(this.responseText);
+                        if (response && response.key) {
+                            self._uploadProgressKey = response.key;
+                            self.log('upload progress key received. Key: ' + response.key);
+                        }
+                    } else {
+                        self.log('error retrieving progress key.  Status: ' + this.status + ' Server response: ' + this.responseText);
+                    }
+                }
+            };
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.setRequestHeader('Accept', 'application/json, text/javascript, */*; q=0.01');
+            xhr.setRequestHeader('Cache-Control', 'no-cache');
+            xhr.send();
+            xhr = null;
+        },
+
+        _errorMsg: function (type) {
+            var messages = this._settings.messages,
+                msg,
+                regex,
+                replace = '';
+
+            if (type == 'ext') {
+                var extensions = this._settings.allowedExtensions,
+                    num = extensions.length,
+                    item,
+                    i;
+                regex = new RegExp('{ext}', 'g');
+                for (i = 0; i < num; i++) {
+                    item = extensions[i].toUpperCase();
+                    if (i + 2 === num) {
+                        item = item + ' or ';
+                    } else if (num > 2 && i + 2 < num) {
+                        item = item + ', ';
+                    }
+                    replace += item;
+                }
+                msg = messages.extError.replace(regex, replace);
+                alert(msg);
+            }
+
+            if (type == 'size') {
+                replace = this._settings.maxSize + 'K';
+                regex = new RegExp('{size}', 'g');
+                msg = messages.sizeError.replace(regex, replace);
+                alert(msg);
+            }
+        },
+
+        _checkFile: function () {
+            var input = this._input,
+                size;
+
+//            if (!input || input.value === '') {
+            if (!this._filename || this._filename === '') {
+                this.log('no file to upload');
+                return false;
+            }
+
+            // File size is only available in browsers with HTML5 File API
+            if (this._XhrIsSupported) {
+//                size = (input.files !== null && input.files[0].size !== null && typeof input.files[0].size !== 'undefined') ? input.files[0].size : null;
+                size = this._size;
+            }
+
+            // Only check file type if allowedExtensions is set
+            if (this._settings.allowedExtensions.length > 0) {
+                if (!this._checkExtension(this._ext)) {
+                    this.log('File extension not permitted');
+                    this._errorMsg('ext');
+                    return false;
+                }
+            }
+
+            if (size !== null && this._settings.maxSize !== false && size / 1024 > this._settings.maxSize) {
+                this.log('file exceeds ' + this._settings.maxSize + 'K limit');
+                this._errorMsg('size');
+                return false;
+            }
+
+            this.log('pre-upload file check is successful');
+            return true;
+        },
+
+        _checkExtension: function (ext) {
+            var allowed = this._settings.allowedExtensions,
+                i = allowed.length;
+            ext = ext.toLowerCase();
+            while (i--) {
+                if (allowed[i].toLowerCase() == ext) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        /**
+         * Validates input and directs to either XHR method or iFrame method
+         */
+        submit: function () {
+            if (this._disabled) {
+                return;
+            }
+
+            if (!this._checkFile()) {
+                return;
+            }
+
+            // User returned false to cancel upload
+            if (false === this._settings.onSubmit.call(this, this._filename, this._ext)) {
+                return;
+            }
+
+            // Increment the active upload counter
+            this._activeUploads = this._activeUploads + 1;
+
+            // Disable uploading if we've reached max uploads
+            // or if multiple file uploads are not ebabled
+            if (this._activeUploads >= this._settings.maxUploads || this._settings.multiple === false) {
+                this.disable();
+            }
+
+            // Use XHR if supported by browser, otherwise use iframe method
+            if (this._XhrIsSupported) {
+                this._uploadXhr();
+            } else {
+                // Determine whether incremental progress updates will be retrieved from server
+                if (this._settings.progressUrl !== false && this._uploadProgressKey !== null) {
+                    this._doProgressUpdates = true;
+                } else {
+                    this._doProgressUpdates = false;
+                    this.log('progressUrl not defined or progress key not available - no upload progress');
+                }
+                this._uploadIframe();
+            }
+        }
+    };
+}, '0.0.1', {
+    requires: []
+});
