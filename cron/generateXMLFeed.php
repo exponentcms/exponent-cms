@@ -36,7 +36,7 @@
     
     //Check if the file exist
 	if (!$handle = fopen($filename, 'w')) {
-		echo "Cannot open file ($filename)";
+		echo "Cannot open file ($filename)<br>";
 		exit;
 	}
 	
@@ -65,22 +65,22 @@
 	$prodflipper[] = array();
 	$prodflipper2[] = array();
 	$prodflipper3[] = array();
-	echo "\r\nPre Count: " . count($products). "\r\n";;  
+	echo "\r\nPre Count: " . count($products). "<br>\r\n";;
 	
 	foreach ($products as $p1) {
-		@$prodflipper[$p1->id] = $p1;
+		if (!empty($p1)) @$prodflipper[$p1->id] = $p1;
 	}
-	echo "Flip Count 1: " . count($prodflipper). "\r\n";;  
+	echo "Flip Count 1: " . count($prodflipper). "<br>\r\n";;
 	
 	foreach ($prodflipper as $p2) {
-		@$prodflipper2[$p2->sef_url] = $p2;
+        if (!empty($p2)) @$prodflipper2[$p2->sef_url] = $p2;
 	}
-	echo "Flip Count 2: " . count($prodflipper2). "\r\n";;  
+	echo "Flip Count 2: " . count($prodflipper2). "<br>\r\n";;
 	
 	foreach ($prodflipper2 as $p3) {
-		@$prodflipper3[$p3->model] = $p3;
+        if (!empty($p3)) @$prodflipper3[$p3->model] = $p3;
 	}
-	echo "Flip Count 3: " . count($prodflipper3). "\r\n";;  
+	echo "Flip Count 3: " . count($prodflipper3). "<br>\r\n";;
 	
     //Google
 	foreach ($prodflipper3 as $prod) {
@@ -88,7 +88,7 @@
 		if (empty($prod->sef_url) || empty($prod->feed_title) || empty($prod->model) || empty($prod->feed_body)) continue;
 		
 		if(in_array($prod->sef_url,$counter) || isset($counter[$prod->id])) {
-			echo "No no..." . $prod->id . "\r\n";
+			echo "No no..." . $prod->id . "<br>\r\n";
 			continue;
 		}
 		else
@@ -223,7 +223,7 @@
     $action_msg = "SC";
     fclose($handle); 
     
-    echo "\r\nGenerated $count products in the Google feed.\r\n";       
+    echo "\r\nGenerated $count products in the Google feed.<br>\r\n";
     
     //end Google 
      
@@ -238,7 +238,7 @@
     
     //Check if the file exist
     if (!$handle = fopen($filename, 'w')) {
-        echo "Cannot open file ($filename)";
+        echo "Cannot open file ($filename)<br>";
         exit;
     }
     
@@ -256,7 +256,7 @@
         if (empty($prod->sef_url) || empty($prod->feed_title) || empty($prod->model) || empty($prod->feed_body)) continue;
         
         if(in_array($prod->sef_url,$counter) || isset($counter[$prod->id])) {
-            echo "No no..." . $prod->id . "\r\n";
+            echo "No no..." . $prod->id . "<br>\r\n";
             continue;
         }
         else
@@ -349,6 +349,6 @@
            
     //end Bing
     
-    echo "\r\nGenerated $count products in the Bing feed.\r\n";       
+    echo "\r\nGenerated $count products in the Bing feed.<br>\r\n";
          
 ?>
