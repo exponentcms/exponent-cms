@@ -49,7 +49,7 @@
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.=URL_FULL.$item->sef_name;
+		$columns.=URL_FULL.$item;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';
@@ -81,7 +81,7 @@
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.=URL_FULL.$item->sef_name;
+		$columns.=URL_FULL.$item;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';
@@ -113,7 +113,7 @@
 		$columns = '<url>'.chr(13).chr(10);
 	
 		$columns.='<loc>';
-		$columns.=URL_FULL.$item->sef_name;
+		$columns.=URL_FULL.$item;
 		$columns.='</loc>'.chr(13).chr(10);
 
 		$columns.='<lastmod>';
