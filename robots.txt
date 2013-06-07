@@ -7,6 +7,7 @@ Disallow: /exponent_bootstrap.php
 Disallow: /exponent_constants.php
 Disallow: /exponent_php_setup.php
 Disallow: /exponent_version.php
+Disallow: /getswversion.php
 Disallow: /login.php
 Disallow: /overrides.php
 Disallow: /popup.php
@@ -23,8 +24,6 @@ Disallow: /README.md
 Disallow: /RELEASE.md
 Disallow: /TODO.md
 Disallow: /cgi-bin/
-Disallow: /conf/
-Disallow: /cron/
-Disallow: /external/
-Disallow: /files/
-Disallow: /install/
+Disallow: /cart/
+Disallow: /login/
+Disallow: /users/
