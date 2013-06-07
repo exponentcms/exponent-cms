@@ -9,12 +9,12 @@ Smarty,3.1.13,smarty.net,3.1.13,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.1.5,github.com/mrclay/minify,2.1.5,
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.10.1,developer.yahoo.com/yui/3,3.10.1,
+YUI3,3.10.1,developer.yahoo.com/yui/3,3.10.3,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11,code.google.com/p/recaptcha,1.11,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80-exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
-Twitter model,2.3.1,classes.verkoyen.eu/twitter_oauth,2.3.1,placed in Twitter module with lots of added code to handle exceptions
+Twitter model,2.1.2,classes.verkoyen.eu/twitter_oauth,2.3.1,placed in Twitter module with lots of added code to handle exceptions
 SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
 pixidou,0.1,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module
@@ -28,6 +28,6 @@ Bootswatch,2.3.2,bootswatch.com/,2.3.2,
 Font-Awesome,3.1.1,fortawesome.github.com/Font-Awesome,3.1.1,patched fonts location
 Adminer,3.7.0,www.adminer.org,3.7.0,
 html5shiv,,code.google.com/p/html5shiv/,,
-SimpleAjaxUploader,12-Nov,https://github.com/LPology/Simple-Ajax-Uploader,1.4.2,converted to yui module
+SimpleAjaxUploader,1.5.0-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.5.0-exp,converted to yui module & loop added to process multiple files
 normalize.css,2.1.2,necolas.github.com/normalize.css/,2.1.2,
-MediaElement.js,2.11.3,mediaelementjs.com/,2.11.3,
+MediaElement.js,2.12.0,mediaelementjs.com/,2.12.0,
