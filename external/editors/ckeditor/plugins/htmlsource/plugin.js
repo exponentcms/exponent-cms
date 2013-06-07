@@ -7,7 +7,7 @@ CKEDITOR.plugins.add(plugInName,
             editor.addCommand('htmlDialog', new CKEDITOR.dialogCommand('htmlDialog'));
             editor.ui.addButton(plugInName, {
                 label: 'Html Source',
-                icon: 'http://www.example.com/images/btn_html.png',
+                icon: this.path + 'icons/source.png',
                 command: 'htmlDialog'
             });
 
