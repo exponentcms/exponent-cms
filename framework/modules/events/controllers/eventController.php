@@ -1006,7 +1006,14 @@ class eventController extends expController {
                     $evs[$key]->color = $catcolor;
                 }
             }
-            $events = array_merge($events, $evs);
+            if (count($events) < 500) {  // magic number to not crash loop?
+                $events = array_merge($events, $evs);
+            } else {
+//                $evs[$key]->title = gt('Too many events to list').', '.(count($edates)-count($events)).' '.gt('not displayed!');
+//                $events = array_merge($events, $evs);
+                flash('notice',gt('Too many events to list').', '.(count($edates)-count($events)).' '.gt('not displayed!'));
+                break; // keep from breaking system by too much data
+            }
         }
         $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventstart', 'order' => $sort_asc ? 'ASC' : 'DESC'));
         return $events;
