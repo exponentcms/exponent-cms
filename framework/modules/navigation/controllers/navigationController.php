@@ -565,6 +565,7 @@ class navigationController extends expController {
                 $modclass = $secref->module;
                 //FIXME: more module/controller glue code
                 if (expModules::controllerExists($modclass)) {
+                    $modclass = expModules::getControllerClassName($modclass);
                     $mod = new $modclass($loc->src);
                     $mod->delete_instance();
                 } else {
