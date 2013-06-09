@@ -27,6 +27,7 @@ class container extends expRecord {
 
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         parent::__construct($params, $get_assoc, $get_attached);
+        $this->grouping_sql = " AND external='".$params['external']."'";
     }
 
     public function update($params = array()) {

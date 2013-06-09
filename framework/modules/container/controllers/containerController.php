@@ -330,7 +330,7 @@ class containerController extends expController {
         expHistory::back();
     }
 
-    public function delete_instance() {
+    public function delete_instance($loc = false) {
         global $user;
 
         if ($user && $user->is_acting_admin == 1) {

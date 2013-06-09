@@ -301,6 +301,14 @@ class blogController extends expController {
         return $sql;
     }
 
+    /**
+     * delete module's items (all) by instance
+     */
+    function delete_instance($loc = false) {
+        parent::delete_instance(true);
+    }
+
+
     function showall_by_author_meta($request) {
         global $router;
 

@@ -1167,13 +1167,14 @@ abstract class expController {
     }
 
     /**
-     * delete an item by instance
+     * delete module's items (all) by instance
      */
-    function delete_instance() {
+    function delete_instance($loc = false) {
         global $db;
+
         $model = new $this->basemodel_name();
         $where = null;
-        if ($this->hasSources()) $where = "location_data='" . serialize($this->loc) . "'";
+        if ($this->hasSources() || $loc) $where = "location_data='" . serialize($this->loc) . "'";
         $db->delete($model->tablename, $where);
     }
 
