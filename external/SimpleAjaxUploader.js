@@ -309,7 +309,7 @@ YUI.add('SimpleAjaxUploader', function (Y) {
      * @return {Element}
      */
     Y.ss.verifyElem = function (elem) {
-        if (elem instanceof jQuery) {
+        if (typeof jQuery !== 'undefined' && elem instanceof jQuery) {
             elem = elem[0];
         } else if (typeof elem === 'string') {
             if (/^#.*/.test(elem)) {
