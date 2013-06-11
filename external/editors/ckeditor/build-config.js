@@ -1,4 +1,4 @@
-
+﻿
 /**
  * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -148,6 +148,7 @@ var CKBUILDER_CONFIG = {
 		'ru' : 1,
 		'sr' : 1,
 		'sr-latn' : 1,
+		'si' : 1,
 		'sk' : 1,
 		'sl' : 1,
 		'es' : 1,
