@@ -249,7 +249,7 @@ class expRecord {
     }
 
     /**
-     * re-construct the item
+     * re-construct the item from the database
      *
      * @return bool
      */

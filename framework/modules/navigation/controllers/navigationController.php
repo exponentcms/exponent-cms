@@ -551,7 +551,7 @@ class navigationController extends expController {
     }
 
     /**
-     * Delete page and its contents
+     * Delete page and send its contents to the recycle bin
      *
      * @param $parent
      */
@@ -566,25 +566,26 @@ class navigationController extends expController {
         foreach ($secrefs as $secref) {
             $loc = expCore::makeLocation($secref->module, $secref->source, $secref->internal);
             recyclebin::sendToRecycleBin($loc, $parent);
-            if (class_exists($secref->module)) {
-                $modclass = $secref->module;
-                //FIXME: more module/controller glue code
-                if (expModules::controllerExists($modclass)) {
-                    $modclass = expModules::getControllerClassName($modclass);
-                    $mod = new $modclass($loc->src);
-                    $mod->delete_instance();
-                } else {
-                    $mod = new $modclass();
-                    $mod->deleteIn($loc);
-                }
-            }
+            //FIXME if we delete the module & sectionref the module completely disappears
+//            if (class_exists($secref->module)) {
+//                $modclass = $secref->module;
+//                //FIXME: more module/controller glue code
+//                if (expModules::controllerExists($modclass)) {
+//                    $modclass = expModules::getControllerClassName($modclass);
+//                    $mod = new $modclass($loc->src);
+//                    $mod->delete_instance();
+//                } else {
+//                    $mod = new $modclass();
+//                    $mod->deleteIn($loc);
+//                }
+//            }
         }
-        $db->delete('sectionref', 'section=' . $parent);
+//        $db->delete('sectionref', 'section=' . $parent);
         $db->delete('section', 'parent=' . $parent);
     }
 
     /**
-     * Move content page children to standalones
+     * Move content page and its children to stand-alones
      *
      * @param $parent
      */

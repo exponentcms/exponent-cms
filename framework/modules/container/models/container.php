@@ -51,7 +51,9 @@ class container extends expRecord {
     // from container model delete
     public function delete($where = '') {
         $internal = unserialize($this->internal);
-        recyclebin::sendToRecycleBin($internal,expSession::get("last_section"));  // send it to recycle bin first
+        // send module to recycle bin first
+        recyclebin::sendToRecycleBin($internal,expSession::get("last_section"));
+        // delete the container table reference
         parent::delete("internal='" . $this->internal . "'");  // param is for reranking remaining objects
         expSession::clearAllUsersSessionCache('containers');
     }

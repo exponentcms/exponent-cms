@@ -398,7 +398,7 @@ class administrationController extends expController {
 		if ($level == UILEVEL_PREVIEW) {
 			expSession::un_set('uilevel');
 		} else { //edit mode
-			expSession::set("uilevel",0);
+			expSession::set("uilevel",UILEVEL_PREVIEW);
 		}
 		$message = ($level == UILEVEL_PREVIEW) ? gt("Exponent is no longer in 'Preview' mode") : gt("Exponent is now in 'Preview' mode") ;
 		flash('message',$message);

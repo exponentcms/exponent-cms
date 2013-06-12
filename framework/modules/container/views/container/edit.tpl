@@ -172,7 +172,11 @@
                 //set the current module
                 EXPONENT.setCurMod();
                 //enable recycle bin
-                EXPONENT.enableRecycleBin();
+                if (modpicker.get("value")!=-'' && modpicker.get("value")!='container') {
+                    EXPONENT.enableRecycleBin();
+                } else {
+                    EXPONENT.disableRecycleBin();
+                }
 
                 //decide what to do weather it's a controller or module
                 if (EXPONENT.isController()) {
@@ -273,7 +277,7 @@
         //makes the recycle bin link clickable
         EXPONENT.enableRecycleBin = function() {
             recyclebin.on('click',EXPONENT.recyclebin);
-            if ({/literal}{$user->is_acting_admin}{literal}) {
+            if ({/literal}{$user->is_acting_admin}{literal} && modpicker.get("value")!='container') {
                 recyclebinwrap.removeClass('disabled');
             } else {
                 recyclebin.detach('click');

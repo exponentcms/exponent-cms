@@ -68,7 +68,19 @@ class recyclebinController extends expController {
             'module'=>$this->params['recymod']
         ));
     }
-    
+
+    /**
+     * Permanently remove a module and all it's items from the system
+     *
+     */
+    public function remove() {
+        global $db;
+
+        $mod = expModules::getController($this->params['mod'],$this->params['src']);
+        $mod->delete_instance();  // delete all assoc items
+        $db->delete('sectionref', "source='" . $this->params['src'] . "' and module='".$this->params['mod']."'");  // delete recycle bin holder
+        expHistory::back();
+    }
 }
 
 ?>

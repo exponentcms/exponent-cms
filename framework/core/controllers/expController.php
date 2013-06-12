@@ -703,7 +703,7 @@ abstract class expController {
     }
 
     /**
-     * generic config action
+     * Configure the module
      */
     function configure() {
         global $db;
@@ -1158,7 +1158,7 @@ abstract class expController {
     }
 
     /**
-     * delete an item by instance for backwards compat with old modules
+     * delete module and all its items for backwards compat with old modules
      *
      * @param $loc
      */
@@ -1167,15 +1167,24 @@ abstract class expController {
     }
 
     /**
-     * delete module's items (all) by instance
+     * delete module, config, and all its items
      */
     function delete_instance($loc = false) {
         global $db;
 
         $model = new $this->basemodel_name();
-        $where = null;
+//        $where = null;
+        $where = 1;
         if ($this->hasSources() || $loc) $where = "location_data='" . serialize($this->loc) . "'";
-        $db->delete($model->tablename, $where);
+        //FIXME we are only delete base table items, not other items or assoc/attached items
+//        $db->delete($model->tablename, $where);
+
+        $items = $model->find('all',$where);
+        foreach ($items as $item) {
+            $item->delete();
+        }
+        $cfg = new expConfig($this->loc);
+        $cfg->delete();
     }
 
     /**
