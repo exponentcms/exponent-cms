@@ -176,7 +176,7 @@ class twitterController extends expController {
             }
             set_exception_handler(array('twitterController', $except_handler));
 		    $twitter = new Twitter($this->config['consumer_key'], $this->config['consumer_secret']);
-            $twitter->timeOut = 60;
+            $twitter->setTimeOut(60);
 
 		    // set tokens
 		    $twitter->setOAuthToken($this->config['oauth_token']);

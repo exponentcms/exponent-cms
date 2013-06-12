@@ -1,5 +1,5 @@
 <?php
-namespace TijsVerkoyen\Twitter;
+//namespace TijsVerkoyen\Twitter;
 
 /**
  * Twitter class
