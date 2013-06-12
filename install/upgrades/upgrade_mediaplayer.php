@@ -69,35 +69,35 @@ class upgrade_mediaplayer extends upgradescript {
 	    global $db;
 
 		// convert each Flowplayer and YouTube references to a Media Player
-	    $srs = $db->selectObjects('sectionref',"module = 'flowplayer' or module = 'youtube'");
+	    $srs = $db->selectObjects('sectionref',"module LIKE '%flowplayer%' or module LIKE '%youtube%'");
 	    foreach ($srs as $sr) {
 		    $sr->module = 'media';
 		    $db->updateObject($sr,'sectionref');
 	    }
-	    $gps = $db->selectObjects('grouppermission',"module = 'flowplayer'");
+	    $gps = $db->selectObjects('grouppermission',"module LIKE '%flowplayer%'");
         foreach ($gps as $gp) {
 	        $gp->module = 'media';
-	        $db->updateObject($gp,'grouppermission',"module = 'flowplayer' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
+	        $db->updateObject($gp,'grouppermission',"module LIKE '%flowplayer%' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
-        $gps = $db->selectObjects('grouppermission',"module = 'youtube'");
+        $gps = $db->selectObjects('grouppermission',"module LIKE '%youtube%'");
         foreach ($gps as $gp) {
    	        $gp->module = 'media';
-   	        $db->updateObject($gp,'grouppermission',"module = 'youtube' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
+   	        $db->updateObject($gp,'grouppermission',"module LIKE '%youtube%' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
         }
-        $ups = $db->selectObjects('userpermission',"module = 'flowplayer'");
+        $ups = $db->selectObjects('userpermission',"module LIKE '%flowplayer%'");
         foreach ($ups as $up) {
             $up->module = 'media';
-            $db->updateObject($up,'userpermission',"module = 'flowplayer' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
+            $db->updateObject($up,'userpermission',"module LIKE '%flowplayer%' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
-        $ups = $db->selectObjects('userpermission',"module = 'youtube'");
+        $ups = $db->selectObjects('userpermission',"module LIKE '%youtube%'");
         foreach ($ups as $up) {
             $up->module = 'media';
-            $db->updateObject($up,'userpermission',"module = 'youtube' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
+            $db->updateObject($up,'userpermission',"module LIKE '%youtube%' AND source = '".$up->source."' AND permission = '".$up->permission."'",'uid');
         }
 
         // need to replace old module modstate with new media module
-        $ms = $db->selectObjects('modstate',"(module = 'flowplayer' or module = 'youtube') and active = 1");
-        $db->delete('modstate',"module = 'flowplayer' or module = 'youtube'");
+        $ms = $db->selectObjects('modstate',"(module LIKE '%flowplayer%' or module LIKE '%youtube%') and active = 1");
+        $db->delete('modstate',"module LIKE '%flowplayer%' or module LIKE '%youtube%'");
         if (!empty($ms) && !$db->selectObject('modstate',"module='media'")) {
             $ms = new stdClass();
             $ms->module = 'media';
