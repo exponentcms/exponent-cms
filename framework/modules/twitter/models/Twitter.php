@@ -1,5 +1,5 @@
 <?php
-//namespace TijsVerkoyen\Twitter;
+namespace TijsVerkoyen\Twitter;
 
 /**
  * Twitter class
@@ -30,49 +30,49 @@ class Twitter
      *
      * @var	resource
      */
-    private $curl;
+    protected $curl;
 
     /**
      * The consumer key
      *
      * @var	string
      */
-    private $consumerKey;
+    protected $consumerKey;
 
     /**
      * The consumer secret
      *
      * @var	string
      */
-    private $consumerSecret;
+    protected $consumerSecret;
 
     /**
      * The oAuth-token
      *
      * @var	string
      */
-    private $oAuthToken = '';
+    protected $oAuthToken = '';
 
     /**
      * The oAuth-token-secret
      *
      * @var	string
      */
-    private $oAuthTokenSecret = '';
+    protected $oAuthTokenSecret = '';
 
     /**
      * The timeout
      *
      * @var	int
      */
-    public $timeOut = 10;
+    protected $timeOut = 10;
 
     /**
      * The user agent
      *
      * @var	string
      */
-    private $userAgent;
+    protected $userAgent;
 
 // class methods
     /**
@@ -81,7 +81,7 @@ class Twitter
      * @param string $consumerKey    The consumer key to use.
      * @param string $consumerSecret The consumer secret to use.
      */
-    public function __construct($consumerKey="", $consumerSecret="")
+    public function __construct($consumerKey, $consumerSecret)
     {
         $this->setConsumerKey($consumerKey);
         $this->setConsumerSecret($consumerSecret);
@@ -101,7 +101,7 @@ class Twitter
      * @param  array  $parameters The parameters.
      * @return string
      */
-    private function buildQuery(array $parameters)
+    protected function buildQuery(array $parameters)
     {
         // no parameters?
         if(empty($parameters)) return '';
@@ -154,7 +154,7 @@ class Twitter
      * @param  array  $parameters The parameters.
      * @return string
      */
-    private function calculateBaseString($url, $method, array $parameters)
+    protected function calculateBaseString($url, $method, array $parameters)
     {
         // redefine
         $url = (string) $url;
@@ -201,7 +201,7 @@ class Twitter
      * @param  string $url        The URL.
      * @return string
      */
-    private function calculateHeader(array $parameters, $url)
+    protected function calculateHeader(array $parameters, $url)
     {
         // redefine
         $url = (string) $url;
@@ -237,7 +237,7 @@ class Twitter
      * @param  array[optional] $parameters The parameters.
      * @return array
      */
-    private function doOAuthCall($method, array $parameters = null)
+    protected function doOAuthCall($method, array $parameters = null)
     {
         // redefine
         $method = (string) $method;
@@ -322,7 +322,7 @@ class Twitter
      * @param  bool[optional]   $returnHeaders Should the headers be returned?
      * @return string
      */
-    private function doCall(
+    protected function doCall(
         $url, array $parameters = null, $authenticate = false, $method = 'GET',
         $filePath = null, $expectJSON = true, $returnHeaders = false
     )
@@ -542,7 +542,7 @@ class Twitter
      *
      * @return string
      */
-    private function getConsumerKey()
+    protected function getConsumerKey()
     {
         return $this->consumerKey;
     }
@@ -552,7 +552,7 @@ class Twitter
      *
      * @return string
      */
-    private function getConsumerSecret()
+    protected function getConsumerSecret()
     {
         return $this->consumerSecret;
     }
@@ -562,7 +562,7 @@ class Twitter
      *
      * @return string
      */
-    private function getOAuthToken()
+    protected function getOAuthToken()
     {
         return $this->oAuthToken;
     }
@@ -572,7 +572,7 @@ class Twitter
      *
      * @return string
      */
-    private function getOAuthTokenSecret()
+    protected function getOAuthTokenSecret()
     {
         return $this->oAuthTokenSecret;
     }
@@ -603,7 +603,7 @@ class Twitter
      *
      * @param string $key The consumer key to use.
      */
-    private function setConsumerKey($key)
+    protected function setConsumerKey($key)
     {
         $this->consumerKey = (string) $key;
     }
@@ -613,7 +613,7 @@ class Twitter
      *
      * @param string $secret The consumer secret to use.
      */
-    private function setConsumerSecret($secret)
+    protected function setConsumerSecret($secret)
     {
         $this->consumerSecret = (string) $secret;
     }
@@ -666,7 +666,7 @@ class Twitter
      * @param  string $data The data that has to be signed.
      * @return string
      */
-    private function hmacsha1($key, $data)
+    protected function hmacsha1($key, $data)
     {
         return base64_encode(hash_hmac('SHA1', $data, $key, true));
     }
@@ -677,7 +677,7 @@ class Twitter
      * @param  mixed  $value The value to encode.
      * @return string
      */
-    private static function urlencode_rfc3986($value)
+    protected static function urlencode_rfc3986($value)
     {
         if (is_array($value)) {
             return array_map(array(__CLASS__, 'urlencode_rfc3986'), $value);
@@ -720,10 +720,10 @@ class Twitter
         if ($maxId != null) {
             $parameters['max_id'] = (string) $maxId;
         }
-        if ($trimUser != null) {
+        if ($trimUser !== null) {
             $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
         }
-        if ($contributorDetails != null) {
+        if ($contributorDetails !== null) {
             $parameters['contributor_details'] = ($contributorDetails) ? 'true' : 'false';
         }
         if ($includeEntities !== null) {
@@ -782,16 +782,16 @@ class Twitter
         if ($maxId != null) {
             $parameters['max_id'] = (string) $maxId;
         }
-        if ($trimUser != null) {
+        if ($trimUser !== null) {
             $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
         }
-        if ($excludeReplies != null) {
+        if ($excludeReplies !== null) {
             $parameters['exclude_replies'] = ($excludeReplies) ? 'true' : 'false';
         }
-        if ($contributorDetails != null) {
+        if ($contributorDetails !== null) {
             $parameters['contributor_details'] = ($contributorDetails) ? 'true' : 'false';
         }
-        if ($includeRts != null) {
+        if ($includeRts !== null) {
             $parameters['include_rts'] = ($includeRts) ? 'true' : 'false';
         }
 
@@ -832,13 +832,13 @@ class Twitter
         if ($maxId != null) {
             $parameters['max_id'] = (string) $maxId;
         }
-        if ($trimUser != null) {
+        if ($trimUser !== null) {
             $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
         }
-        if ($excludeReplies != null) {
+        if ($excludeReplies !== null) {
             $parameters['exclude_replies'] = ($excludeReplies) ? 'true' : 'false';
         }
-        if ($contributorDetails != null) {
+        if ($contributorDetails !== null) {
             $parameters['contributor_details'] = ($contributorDetails) ? 'true' : 'false';
         }
         if ($includeEntities !== null) {
@@ -879,7 +879,7 @@ class Twitter
         if ($maxId != null) {
             $parameters['max_id'] = (string) $maxId;
         }
-        if ($trimUser != null) {
+        if ($trimUser !== null) {
             $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
         }
         if ($includeEntities !== null) {
@@ -912,7 +912,7 @@ class Twitter
         if ($count != null) {
             $parameters['count'] = (int) $count;
         }
-        if ($trimUser != null) {
+        if ($trimUser !== null) {
             $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
         }
 
@@ -938,10 +938,10 @@ class Twitter
     {
         // build parameters
         $parameters['id'] = (string) $id;
-        if ($trimUser != null) {
+        if ($trimUser !== null) {
             $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
         }
-        if ($includeMyRetweet != null) {
+        if ($includeMyRetweet !== null) {
             $parameters['include_my_retweet'] = ($includeMyRetweet) ? 'true' : 'false';
         }
         if ($includeEntities !== null) {
@@ -966,7 +966,7 @@ class Twitter
     {
         // build parameters
         $parameters = null;
-        if($trimUser != null) $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
+        if($trimUser !== null) $parameters['trim_user'] = ($trimUser) ? 'true' : 'false';
 
         // make the call
         return (array) $this->doCall(
@@ -1006,7 +1006,7 @@ class Twitter
         if ($placeId != null) {
             $parameters['place_id'] = (string) $placeId;
         }
-        if ($displayCoordinates != null) {
+        if ($displayCoordinates !== null) {
             $parameters['display_coordinates'] = ($displayCoordinates) ? 'true' : 'false';
         }
         if ($trimUser) {
@@ -1082,13 +1082,13 @@ class Twitter
         if ($maxwidth != null) {
             $parameters['maxwidth'] = (int) $maxwidth;
         }
-        if ($hideMedia != null) {
+        if ($hideMedia !== null) {
             $parameters['hide_media'] = ($hideMedia) ? 'true' : 'false';
         }
-        if ($hideThread != null) {
+        if ($hideThread !== null) {
             $parameters['hide_thread'] = ($hideThread) ? 'true' : 'false';
         }
-        if ($omitScript != null) {
+        if ($omitScript !== null) {
             $parameters['omit_script'] = ($omitScript) ? 'true' : 'false';
         }
         if ($align != null) {
