@@ -784,7 +784,10 @@ class expTheme {
             unset($params['module']);
             if (!isset($params['action'])) $params['action'] = 'showall';
             if (isset($params['view'])) {
-                $params['view'] = $params['action'].'_'.$params['view'];
+                $test = explode('_',$params['view']);
+                if ($test[0] != $params['action']) {
+                    $params['view'] = $params['action'].'_'.$params['view'];
+                }
             } else {
                 $params['view'] = 'showall';
             }
