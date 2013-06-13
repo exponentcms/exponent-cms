@@ -314,7 +314,8 @@ class filemanagercontrol extends formcontrol {
 
                             filesAdded++
 
-                            if (limit>=filesAdded) {
+//                            if (limit>=filesAdded) {
+                            if (filesAdded>=limit) {
                                 Y.one('#adders-".$name."').addClass('hide');
                             }
 
@@ -382,7 +383,8 @@ class filemanagercontrol extends formcontrol {
 
                         filesAdded++
 
-                        if (limit>=filesAdded) {
+//                        if (limit>=filesAdded) {
+                        if (filesAdded>=limit) {
                             Y.one('#adders-".$name."').addClass('hide');
                         }
 
