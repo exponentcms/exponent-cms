@@ -173,7 +173,7 @@ class remove_oldfiles extends upgradescript {
             'framework/core/definitions/subscribers.php',
             'framework/core/models/subscribers.php',
             'framework/core/models/expTwitter.php',
-            'framework/modules/twitter/models/expTwitter.php',
+//            'framework/modules/twitter/models/expTwitter.php',
             'framework/core/definitions/search_extension.php',
             'framework/core/definitions/search_queries.php',
             'framework/core/definitions/container.php',
