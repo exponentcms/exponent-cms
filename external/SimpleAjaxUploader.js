@@ -1,6 +1,6 @@
-/**
+/**  
  * Simple Ajax Uploader
- * Version 1.5
+ * Version 1.5.2
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
  * Copyright 2012-2013 LPology, LLC  
@@ -352,6 +352,7 @@ Y.ss.SimpleUpload = function(options) {
     progressUrl: false,
     multiple: false,
     maxUploads: 3,
+    queue: true,
     checkProgressInterval: 50,
     keyParamName: 'APC_UPLOAD_PROGRESS',
     allowedExtensions: [],
@@ -366,8 +367,8 @@ Y.ss.SimpleUpload = function(options) {
     focusClass: '',			
     disabledClass: '',
     messages: {
-      extError: 'Invalid file type. Only {ext} files are permitted.',
-      sizeError: 'This file is larger than the {size} size limit.'
+      extError: '{name} is not a valid file type.'+"\n\n"+'Only {ext} files are permitted.',
+      sizeError: '{name} is larger than the {size} size limit.'
     },
     onChange: function(filename, extension) {},				
     onSubmit: function(filename, extension) {},				
@@ -387,6 +388,10 @@ Y.ss.SimpleUpload = function(options) {
   
   if (this._button === false) {
     throw new Error("Invalid button. Make sure the element you're passing exists."); 
+  }
+  
+  if (this._settings.multiple === false) {
+    this._settings.maxUploads = 1;
   }
                             
   this._input = null;
@@ -438,7 +443,7 @@ Y.ss.SimpleUpload.prototype = {
   /**
   * Send data to browser console if debug is set to true
   */ 
-  log: function(str){
+  log: function(str) {
     if (this._settings.debug && window.console) { 
       console.log('[uploader] ' + str);        
     }
@@ -551,7 +556,7 @@ Y.ss.SimpleUpload.prototype = {
     input.setAttribute('type', 'file');
     input.setAttribute('name', self._settings.name);
     
-    if (this._XhrIsSupported && this._settings.multiple) {
+    if (this._XhrIsSupported) {
       input.setAttribute('multiple', true);
     }
     
@@ -594,8 +599,7 @@ Y.ss.SimpleUpload.prototype = {
         return;                
       }
       
-      if (!self._settings.multiple || !self._XhrIsSupported) {
-        // Get filename        
+      if (!self._XhrIsSupported) {
         filename = Y.ss.getFilename(input.value);
         ext = Y.ss.getExt(filename);        
         if (false === self._settings.onChange.call(self, filename, ext)) {
@@ -603,13 +607,17 @@ Y.ss.SimpleUpload.prototype = {
         }      
         self._queue.push(input);            
       } else {
-        total = input.files.length;               
         filename = (input.files[0].fileName !== null && input.files[0].fileName !== undefined) ? input.files[0].fileName : input.files[0].name;
         filename = Y.ss.getFilename(filename);
         ext = Y.ss.getExt(filename);       
         if (false === self._settings.onChange.call(self, filename, ext)) {
           return;
-        } 
+        }
+        total = input.files.length;
+        // Only add first file if multiple uploads aren't allowed
+        if (!self._settings.multiple) {
+          total = 1;
+        }        
         for (i = 0; i < total; i++) {
           self._queue.push(input.files[i]);               
         }         
@@ -749,7 +757,7 @@ Y.ss.SimpleUpload.prototype = {
     return input;
   },
   
-  _finish: function(response, filename, progressBar, fileSizeBox, progressContainer) {       
+  _finish: function(response, filename, progressBar, fileSizeBox, progressContainer) {
     this.log('server response: '+response);        
     this._activeUploads--;
     
@@ -762,6 +770,10 @@ Y.ss.SimpleUpload.prototype = {
       this._settings.onError.call(this, filename, 'parseerror', response);
     } else {
       this._settings.onComplete.call(this, filename, response);
+    }
+    
+    if (fileSizeBox) {
+      fileSizeBox.innerHTML = '';
     }
     
     if (progressContainer) {
@@ -816,6 +828,7 @@ Y.ss.SimpleUpload.prototype = {
       if (self._disabled) {
         self.enable();
       }
+      this._activeUploads--;
       return;
     }
     
@@ -824,7 +837,7 @@ Y.ss.SimpleUpload.prototype = {
     }
     
     // Reset progress bars to 0%
-    settings.onProgress.call(self, 0);
+    settings.onProgress.call(self, 0);   
     
     if (progressBar) {
       progressBar.style.width = '0%';
@@ -951,6 +964,7 @@ Y.ss.SimpleUpload.prototype = {
       if (self._disabled) {
         self.enable();    
       }
+      this._activeUploads--;
       return;
     }
 
@@ -959,7 +973,7 @@ Y.ss.SimpleUpload.prototype = {
     data = settings.data;
     
     // Reset progress bars to 0%
-    settings.onProgress.call(self, 0);
+    settings.onProgress.call(self, 0);   
     
     if (progressBar) {
       progressBar.style.width = '0%';
@@ -1059,6 +1073,10 @@ Y.ss.SimpleUpload.prototype = {
             checkInterval = null;
           }
         } else {
+          key = null;
+          self._doProgressUpdates = false;
+          self._uploadProgressKey = null;
+          Y.ss.removeItem(self._activeProgressKeys, key);
           self.log('Progress error. Status: '+this.status+' Response: '+this.responseText);
         }
       }                 
@@ -1101,7 +1119,7 @@ Y.ss.SimpleUpload.prototype = {
             self.log('upload progress key received. Key: '+response.key);
           }
         } else {          
-          self.log('error retrieving progress key.  Status: '+this.status+' Server response: '+this.responseText);
+          self.log('error retrieving progress key. Status: '+this.status+' Server response: '+this.responseText);
         }
       }
     };        
@@ -1115,6 +1133,7 @@ Y.ss.SimpleUpload.prototype = {
   
   _errorMsg: function(type) {
     var messages = this._settings.messages,
+        nameRegex = new RegExp('{name}', 'g'),    
         msg,
         regex,
         replace = '';
@@ -1128,22 +1147,23 @@ Y.ss.SimpleUpload.prototype = {
       for (i = 0; i < num; i++) {
         item = extensions[i].toUpperCase();        
         if (i + 2 === num) {
-          item = item + ' or ';
+          item = item + ' and ';
         } else if (num > 2 && i + 2 < num) {
           item = item + ', ';
         }        
         replace += item;
       }
       msg = messages.extError.replace(regex, replace);
-      alert(msg);
     }
     
     if (type == 'size') {
       replace = this._settings.maxSize + 'K';
-      regex = new RegExp('{size}', 'g');      
+      regex = new RegExp('{size}', 'g');   
       msg = messages.sizeError.replace(regex, replace);
-      alert(msg);
     }
+    
+    msg = msg.replace(nameRegex, this._filename);
+    alert(msg);    
   },
 
   _checkFile: function() {
@@ -1186,19 +1206,15 @@ Y.ss.SimpleUpload.prototype = {
   /**
   * Validates input and directs to either XHR method or iFrame method
   */
-  submit: function() {
-    if (this._disabled) {
-      return;                  
-    }
-    
-    if (this._activeUploads >= this._settings.maxUploads) {
+  submit: function() {    
+    if (this._disabled || this._activeUploads >= this._settings.maxUploads) {
       return;
     }    
     
     // The next file in the queue will always be in the front of the array
     this._file = this._queue[0];    
     
-    if (this._XhrIsSupported && this._settings.multiple) {
+    if (this._XhrIsSupported) {
       this._filename = (this._queue[0].fileName !== null && this._queue[0].fileName !== undefined) ? this._queue[0].fileName : this._queue[0].name;
       this._filename = Y.ss.getFilename(this._filename);
       this._size = this._queue[0].size;
@@ -1206,7 +1222,7 @@ Y.ss.SimpleUpload.prototype = {
       this._filename = Y.ss.getFilename(this._queue[0].value);
     }
     
-    this._ext = Y.ss.getExt(this._filename);
+    this._ext = Y.ss.getExt(this._filename);   
 
     if (!this._checkFile()) {
       this.removeCurrent();
@@ -1221,9 +1237,9 @@ Y.ss.SimpleUpload.prototype = {
     // Increment the active upload counter
     this._activeUploads++;
     
-    // Disable uploading if we've reached max uploads 
-    // or if multiple file uploads are not ebabled
-    if (this._settings.multiple === false) {
+    // Disable uploading if multiple file uploads are not enabled
+    // or if queue is disabled and we've reached max uploads
+    if (this._settings.multiple === false || this._settings.queue === false && this._activeUploads >= this._settings.maxUploads) {
       this.disable();
     }
             
@@ -1236,7 +1252,7 @@ Y.ss.SimpleUpload.prototype = {
         this._doProgressUpdates = true;
       } else {
         this._doProgressUpdates = false;
-        this.log('progressUrl not defined or progress key not available - no upload progress');      
+        this.log('no upload progress - progressUrl not defined or progress key not available');      
       }            
       this._uploadIframe();
     }			

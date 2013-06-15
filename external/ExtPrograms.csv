@@ -28,7 +28,7 @@ Bootswatch,2.3.2,bootswatch.com/,2.3.2,
 Font-Awesome,3.2.0,fortawesome.github.com/Font-Awesome,3.2.0,updated FontAwesomePath in variables.less
 Adminer,3.7.0,www.adminer.org,3.7.0,
 html5shiv,,code.google.com/p/html5shiv/,,
-SimpleAjaxUploader,1.5.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.5.1-exp,converted to yui module & loop added to process multiple files
+SimpleAjaxUploader,1.5.2-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.5.2-exp,converted to yui module
 normalize.css,2.1.2,necolas.github.com/normalize.css/,2.1.2,
 MediaElement.js,2.12.0,mediaelementjs.com/,2.12.0,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
