@@ -70,19 +70,19 @@ class update_event_registration extends upgradescript {
         $control->name = 'name';
         $control->caption = 'Name';
         $control->forms_id = $newform->id;
-        $control->data = 'O:11:"textcontrol":14:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:4:"Name";s:11:"placeholder";s:8:"John Doe";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:4:"name";s:11:"description";s:22:"Please enter your name";}';
+        $control->data = 'O:11:"textcontrol":15:{s:7:"caption";s:4:"Name";s:11:"placeholder";s:8:"John Doe";s:7:"pattern";s:0:"";s:4:"size";i:0;s:9:"maxlength";i:0;s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:1;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:4:"name";s:11:"description";s:0:"";}';
         $control->rank = 1;
         $control->is_readonly = 0;
         $control->is_static = 0;
         $db->insertObject($control, 'forms_control');
         $control->name = 'phone';
         $control->caption = 'Phone';
-        $control->data = 'O:11:"textcontrol":14:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:5:"Phone";s:11:"placeholder";s:14:"(888) 555-1212";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:0;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:5:"phone";s:11:"description";s:30:"Please enter your phone number";}';
+        $control->data = 'O:11:"textcontrol":15:{s:7:"caption";s:5:"Phone";s:11:"placeholder";s:14:"(888) 555-1212";s:7:"pattern";s:0:"";s:4:"size";i:0;s:9:"maxlength";i:0;s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:0;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:5:"phone";s:11:"description";s:0:"";}';
         $control->rank = 2;
         $db->insertObject($control, 'forms_control');
         $control->name = 'email';
         $control->caption = 'Email';
-        $control->data = 'O:11:"textcontrol":14:{s:4:"size";i:0;s:9:"maxlength";i:0;s:7:"caption";s:5:"Email";s:11:"placeholder";s:18:"johndoe@mailer.org";s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:0;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:5:"email";s:11:"description";s:31:"Please enter your email address";}';
+        $control->data = 'O:11:"textcontrol":15:{s:7:"caption";s:5:"Email";s:11:"placeholder";s:18:"johndoe@mailer.org";s:7:"pattern";s:0:"";s:4:"size";i:0;s:9:"maxlength";i:0;s:9:"accesskey";s:0:"";s:7:"default";s:0:"";s:8:"disabled";b:0;s:8:"required";b:0;s:8:"tabindex";i:-1;s:7:"inError";i:0;s:4:"type";s:4:"text";s:6:"filter";s:0:"";s:10:"identifier";s:5:"email";s:11:"description";s:0:"";}';
         $control->rank = 3;
         $db->insertObject($control, 'forms_control');
 
