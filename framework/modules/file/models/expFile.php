@@ -1783,29 +1783,6 @@ class expFile extends expRecord {
                 }
             }
 
-            // check for and process to rebuild new forms module data table
-            if (!empty($newformdata)) {
-                foreach ($newformdata as $tablename=>$tabledata) {
-                    $newform = $db->selectObject('forms','table_name="'.substr($tablename,6).'"');
-                    if (!empty($newform)) {
-                        // create the new table
-                        $form = new forms($newform->id);
-                        $table = $form->updateTable();
-
-                        // populate the table
-                        foreach ($tabledata as $record) {
-                            $record = str_replace('\r\n', "\r\n", $record);
-                            $object = @unserialize($record);
-                            if (!$object) $object = unserialize(stripslashes($record));
-                            if (is_object($object)) {
-                                $db->insertObject($object, 'forms_' . $table);
-                            }
-                        }
-                        $errors[] = sprintf(gt('*  However...we successfully recreated the "%s" Table from the EQL file'), $table);
-                    }
-                }
-            }
-
             // rename mixed case tables if necessary
             expDatabase::fix_table_names();
 //            if ($eql_version != $current_version) {
@@ -1827,8 +1804,8 @@ class expFile extends expRecord {
     }
 
     /**
-     * recreates an deprecated formbuilder data table
-     * needed to import form data from eql file exported prior to v2.2.0
+     * recreates a deprecated formbuilder data table
+     * needed to import form data from eql file exported prior to v2.1.4
      * this is just the old formbuilder_form::updateTable method
      *
      * @static

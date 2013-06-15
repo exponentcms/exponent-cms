@@ -615,6 +615,11 @@ class fileController extends expController {
             while(false !== ( $file = readdir($dir)) ) {
                 if (($file != '.') && ($file != '..')) {
                     if (file_exists($dst . '/' . $file)) unlink($dst . '/' . $file);
+                    // remove empty deprecated tables
+                    $table = substr($file,0,-4);
+                    if ($db->tableIsEmpty($table)) {
+                        $db->dropTable($table);
+                    }
                 }
             }
             closedir($dir);
