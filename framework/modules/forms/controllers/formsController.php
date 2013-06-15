@@ -1473,8 +1473,8 @@ class formsController extends expController {
                 if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
             }
 
-            // get list of simple controls if we are also creating a new form
-            $types = expTemplate::listControlTypes();
+            // get list of simple non-static controls if we are also creating a new form
+            $types = expTemplate::listControlTypes(false);
             uasort($types, "strnatcmp");
             $types = array_merge(array('none'=>gt('--Disregard this column--')),$types);
 
@@ -1534,7 +1534,7 @@ class formsController extends expController {
                 $formcontrols[$key] = new stdClass();
                 $formcontrols[$key]->control = $control;
                 $label = str_replace('&', 'and', $this->params['name'][$key]);
-                $label = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $label))));
+                $label = preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '_', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '_', $label))));
                 $formcontrols[$key]->name = $label;
                 $formcontrols[$key]->caption = $this->params['name'][$key];
                 $formcontrols[$key]->data = $this->params['data'][$key];
@@ -1575,9 +1575,9 @@ class formsController extends expController {
             if ($control == 'datetimecontrol') {
                 $params['showdate'] = $params['showtime'] = true;
             }
-            if ($control == 'htmlcontrol') {
-                $params['html'] = $this->params['data'][$key];
-            }
+//            if ($control == 'htmlcontrol') {
+//                $params['html'] = $this->params['data'][$key];
+//            }
             if ($control == 'radiogroupcontrol' || $control == 'dropdowncontrol') {
                 $params['default'] = $params['items'] = $this->params['data'][$key];
             }
@@ -1690,7 +1690,7 @@ class formsController extends expController {
         $records = array();
         $linenum = 1;
 
-                // pull in the form control definitions here
+        // pull in the form control definitions here
         $f = new forms($this->params['forms_id']);
         $fields = array();
         foreach ($f->forms_control as $control) {
@@ -1700,7 +1700,6 @@ class formsController extends expController {
         while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
             if ($linenum >= $this->params["rowstart"]) {
                 $i = 0;
-
                 foreach ($filedata as $field) {
                     if (!empty($this->params["column"][$i]) && $this->params["column"][$i] != "none") {
                         $colname = $this->params["column"][$i];
@@ -1711,7 +1710,6 @@ class formsController extends expController {
                     }
                     $i++;
                 }
-
                 $record['linenum'] = $linenum;
                 $records[] = $record;
             }
@@ -1733,14 +1731,22 @@ class formsController extends expController {
         $f->updateTable();
 
         $fields = array();
+        $multi_item_control_items = array();
+        $multi_item_control_ids = array();
         foreach ($f->forms_control as $control) {
             $fields[$control->name] = expUnserialize($control->data);
+            $ctltype = get_class($fields[$control->name]);
+            if (in_array($ctltype,array('radiogroupcontrol','dropdowncontrol'))) {
+                if (!array_key_exists($control->id,$multi_item_control_items)) {
+                    $multi_item_control_items[$control->name] = null;
+                    $multi_item_control_ids[$control->name] = $control->id;
+                }
+            }
         }
 
         while (($filedata = fgetcsv($file, 2000, $this->params["delimiter"])) != false) {
             if ($linenum >= $this->params["rowstart"] && in_array($linenum,$this->params['importrecord'])) {
                 $i = 0;
-
                 $db_data = new stdClass();
                 $db_data->ip = '';
                 $db_data->user_id = $user->id;
@@ -1756,6 +1762,9 @@ class formsController extends expController {
                         if (!empty($def)) {
                             $db_data->$colname = call_user_func(array($control_type, 'convertData'), $colname, $params);
                         }
+                        if (!empty($db_data->$colname) && array_key_exists($colname,$multi_item_control_items) && !in_array($db_data->$colname,$multi_item_control_items[$colname])) {
+                            $multi_item_control_items[$colname][] = $db_data->$colname;
+                        }
                     }
                     $i++;
                 }
@@ -1763,6 +1772,16 @@ class formsController extends expController {
                 $recordsdone++;
             }
             $linenum++;
+        }
+        // update multi-item forms controls
+        if (!empty($multi_item_control_ids)) {
+            foreach ($multi_item_control_ids as $key=>$control_id) {
+                $fc = new forms_control($control_id);
+                $ctl = expUnserialize($fc->data);
+                $ctl->items = $multi_item_control_items[$key];
+                $fc->data = serialize($ctl);
+                $fc->update();
+            }
         }
         unlink(BASE . $this->params["filename"]);
         flash('notice', $recordsdone.' '.gt('Records Imported'));

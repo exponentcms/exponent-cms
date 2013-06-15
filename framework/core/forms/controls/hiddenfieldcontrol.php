@@ -31,10 +31,6 @@ class hiddenfieldcontrol extends formcontrol {
 	var $jsHooks = array();
 	
 	static function name() { return "generic"; }
-	static function isSimpleControl() { return false; }
-	static function getFieldDefinition() {
-		return array();
-	}
 
 	function __construct($default = "") {
         $this->default = $default;

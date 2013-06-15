@@ -34,8 +34,8 @@ class pagecontrol extends formcontrol {
 //    var $maxlength = "";
 
     static function name() { return "Form Page Break - Wizard"; }
+    static function isStatic() { return true; }
     static function isSimpleControl() { return true; }
-    static function useGeneric() { return false; }
     static function getFieldDefinition() {
         return null;
     }

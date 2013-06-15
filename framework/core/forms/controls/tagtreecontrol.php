@@ -32,10 +32,6 @@ class tagtreecontrol extends formcontrol {
         return "Nested Node Checkbox Dragdrop Tree";
     }
 
-    static function isSimpleControl() {
-        return false;
-    }
-
     static function getFieldDefinition() {
         return array();
     }

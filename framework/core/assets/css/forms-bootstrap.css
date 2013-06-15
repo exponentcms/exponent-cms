@@ -44,6 +44,18 @@ input.text, input.password {
 	width          : 60px;
 }
 
+.datetime.date input[type="text"] {
+	width: 60px!important;
+}
+
+.datetime.date select {
+	width: 120px!important;
+}
+
+.datetime.date.time select {
+	width: 80px!important;
+}
+
 .radio input[type="radio"], .checkbox input[type="checkbox"] {
 	margin-left  : 0;
 	margin-right : 5px;

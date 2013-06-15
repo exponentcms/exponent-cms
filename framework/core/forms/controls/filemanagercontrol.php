@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * File Manager Control
+ * File Manager Control - displays file picker widget
  *
  * @package Subsystems-Forms
  * @subpackage Control
@@ -32,8 +32,8 @@ class filemanagercontrol extends formcontrol {
     var $description = "";
     
     static function name() { return "Manage Files"; }
-    static function isSimpleControl() { return false; }
-    
+    static function isStatic() { return true; }
+
     function __construct($subtype=null, $html = "",$span = true) {
         $this->span = $span;
         $this->html = $html;

@@ -36,6 +36,14 @@ abstract class formcontrol {
 
 	static function name() { return "formcontrol"; }
 
+    /**
+   	 * Is this a Static Control?
+   	 * Used to determine if control has field data behind it
+        *
+   	 * @return bool
+   	 */
+    static function isStatic() { return false; }
+
 	/**
 	 * Is this a Simple Control?
 	 * Used to determine if control is available for the Forms (design) module

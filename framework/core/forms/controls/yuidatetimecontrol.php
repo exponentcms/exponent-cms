@@ -36,10 +36,6 @@ class yuidatetimecontrol extends formcontrol {
         return "YAHOO! UI Date / Time";
     }
 
-    static function isSimpleControl() {
-        return false;
-    }
-
     static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=> DB_DEF_TIMESTAMP);

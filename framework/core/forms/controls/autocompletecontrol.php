@@ -28,7 +28,6 @@ if (!defined('EXPONENT')) exit('');
 class autocompletecontrol extends formcontrol {
 
     static function name() { return "YAHOO! UI Autocomplete"; }
-    static function isSimpleControl() { return false; }
 
 	function toHTML($label,$name) {
 		$html = $this->controlToHTML($name, $label);
