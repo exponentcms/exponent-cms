@@ -108,7 +108,7 @@ function sanity_checkFiles() {
 	$status = array(
 //        'framework/modules/'=>sanity_checkDirectory('framework/modules',SANITY_READWRITE),
 		'framework/conf/config.php'=>sanity_checkFile(BASE.'framework/conf/config.php',1,SANITY_CREATEFILE),
-		'framework/conf/profiles/'=>sanity_checkDirectory(BASE.'framework/conf/profiles',SANITY_READWRITE),
+		'framework/conf/profiles/'=>sanity_checkFile(BASE.'framework/conf/profiles',0,SANITY_READWRITE),
 		'files/'=>sanity_checkDirectory('files',SANITY_READWRITE),
         'files/uploads/'=>sanity_checkDirectory('files/uploads',SANITY_READWRITE),
         'files/avatars/'=>sanity_checkDirectory('files/avatars',SANITY_READWRITE),
@@ -117,7 +117,7 @@ function sanity_checkFiles() {
 		'tmp/'=>sanity_checkDirectory('tmp',SANITY_READWRITE),
 		'tmp/cache'=>sanity_checkDirectory('tmp/cache',SANITY_READWRITE),
         'tmp/css'=>sanity_checkDirectory('tmp/css',SANITY_READWRITE),
-        'tmp/extensionuploads/'=>sanity_checkDirectory(BASE.'tmp/extensionuploads',SANITY_READWRITE),
+        'tmp/extensionuploads'=>sanity_checkFile(BASE.'tmp/extensionuploads',0,SANITY_READWRITE),
         'tmp/img_cache'=>sanity_checkDirectory('tmp/img_cache',SANITY_READWRITE),
 		'tmp/minify'=>sanity_checkDirectory('tmp/minify',SANITY_READWRITE),
         'tmp/pixidou'=>sanity_checkDirectory('tmp/pixidou',SANITY_READWRITE),

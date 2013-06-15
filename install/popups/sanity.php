@@ -261,7 +261,7 @@
 <tr>
     <td id="o_curl" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('cURL Library Support'); ?></td>
     <td class="bodytext" valign="top">
-        <?php echo gt('The cURL Library is required for several features which pull data from external sources.'); ?>
+        <?php echo gt('PHP cURL support is required for several features which pull data from external sources.'); ?>
     </td>
 </tr>
 <tr>
