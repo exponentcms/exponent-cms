@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="importer usercsv-form-starter">
+<div class="importer import_csv">
 	<div class="form_header">
 		<h2>{'Import Form Data - CSV Options'|gettext}</h2>
 		<blockquote>{'Please enter the delimiter character of the csv file, the csv file to be uploaded, and the row within the csv file to start at. The start row is for files that have column headers, or if you just want to skip records in the csv file.'|gettext}</blockquote>

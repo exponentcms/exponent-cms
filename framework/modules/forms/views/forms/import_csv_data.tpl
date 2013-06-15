@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="importer usercsv-display-users">
+<div class="importer import_csv">
 	<div class="form_header">
 		<h2>{'Import Form Data - Form Data Imported Into Database'|gettext}</h2>
 		<blockquote>{'The following data was added to the database.  If the record is highlighted green, then the form record was added to the database with changes to the data.  If the record is highlighted in red, that record could not be added to the database due to errors.'|gettext}</blockquote>

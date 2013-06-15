@@ -1268,7 +1268,7 @@ class formsController extends expController {
      *
      * @return string
      */
-    public static function  sql2csv($items, $rptcols = null) {
+    public static function sql2csv($items, $rptcols = null) {
         $str = "";
         foreach ($rptcols as $individual_Header) {
             if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";
@@ -1287,13 +1287,27 @@ class formsController extends expController {
         return $str;
     }
 
+    /**
+     * Export form, controls and optionally the data table
+     *
+     */
     public function export_eql() {
+        assign_to_template(array(
+            "id" => $this->params['id'],
+        ));
+    }
+
+    /**
+     * Export form, controls and optionally the data table
+     *
+     */
+    public function export_eql_process() {
         global $db;
 
         if (!empty($this->params['id'])) {
             $f = new forms($this->params['id']);
 
-            $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$f->table_name.'.eql');
+            $filename = preg_replace('/[^A-Za-z0-9_.-]/','-',$f->sef_url.'.eql');
 
             ob_end_clean();
             ob_start("ob_gzhandler");
@@ -1315,9 +1329,47 @@ class formsController extends expController {
                 header('Content-Disposition: attachment; filename="' . $filename . '"');
                 header('Pragma: no-cache');
             }
-            echo expFile::dumpDatabase($db,array('forms_'.$f->table_name));
+            $tables = array(
+                'forms',
+                'forms_control'
+            );
+            if (!empty($this->params['include_data'])) {
+                $tables[] = 'forms_'.$f->table_name;
+            }
+            echo expFile::dumpDatabase($db,$tables,'Form',$this->params['id']);
             exit; // Exit, since we are exporting
         }
+//        expHistory::back();
+    }
+
+    /**
+     * Import form, controls and optionally the data table
+     *
+     */
+    public function import_eql() {
+    }
+
+    /**
+     * Import form, controls and optionally the data table
+     *
+     */
+    public function import_eql_process() {
+        global $db;
+
+        $errors = array();
+
+        expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors,'Form');
+
+        if (empty($errors)) {
+            flash('message',gt('Form was sucessfuly imported'));
+        } else {
+            $message = gt('The Form import encountered the following errors') . ':<br>';
+            foreach ($errors as $error) {
+                $message .= '* ' . $error . '<br>';
+            }
+            flash('error', $message);
+        }
+        expHistory::back();
     }
 
     public function import_csv() {

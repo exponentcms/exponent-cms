@@ -1562,12 +1562,12 @@ class expFile extends expRecord {
      * @return string
      * @node Model:expFile
      */
-    public static function dumpDatabase($db, $tables = null, $force_version = null) {
+    public static function dumpDatabase($db, $tables = null, $type = null, $record = null) {
         $dump = EQL_HEADER . "\r\n";
-        if ($force_version == null) {
+        if ($type == null) {
             $dump .= 'VERSION:' . EXPONENT . "\r\n\r\n";
         } else {
-            $dump .= 'VERSION:' . $force_version . "\r\n\r\n";
+            $dump .= 'VERSION:' . EXPONENT . ':' . $type . "\r\n\r\n";
         }
 
         if (!is_array($tables)) {  // dump all the tables
@@ -1586,7 +1586,15 @@ class expFile extends expRecord {
             $tabledef = $db->getDataDefinition($table);
             $dump .= 'TABLE:' . $table . "\r\n";
             $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
-            foreach ($db->selectObjects($table) as $obj) {
+            $where = '1';
+            if ($type == 'Form') {
+                if ($table == 'forms') {
+                    $where = 'id=' . $record;
+                } elseif ($table == 'forms_control') {
+                    $where = 'forms_id=' . $record;
+                }
+            }
+            foreach ($db->selectObjects($table,$where) as $obj) {
                 $dump .= 'RECORD:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($obj)) . "\r\n";
             }
             $dump .= "\r\n";
@@ -1612,7 +1620,7 @@ class expFile extends expRecord {
      * @return bool
      * @node Model:expFile
      */
-    public static function restoreDatabase($db, $file, &$errors, $force_version = null) {
+    public static function restoreDatabase($db, $file, &$errors, $type = null) {
         $errors = array();
 
         if (is_readable($file)) {
@@ -1624,13 +1632,12 @@ class expFile extends expRecord {
                 return false;
             }
 
-            if ($force_version == null) {
-                $version = explode(':', trim($lines[1]));
-                $eql_version = $version[1] + 0;
-            } else {
-                $eql_version = $force_version;
-            }
+            $version = explode(':', trim($lines[1]));
+            $eql_version = $version[1] + 0;
             $current_version = EXPONENT + 0;
+            if ((!empty($version[2]) && $type == null) || $version[2] != $type) {
+                $eql_version = 0;  // trying to import wrong eql type
+            }
 
 //            $clear_function = '';
             $fprefix = '';
@@ -1670,7 +1677,9 @@ class expFile extends expRecord {
                             $table_function = $fprefix . $table;
                         }
                         if ($db->tableExists($table)) {
-                            $db->delete($table);  // drop/empty table records
+                            if ($type == null) {
+                                $db->delete($table);  // drop/empty table records
+                            }
 //                            if ($clear_function != '') {
 //                                $clear_function($db, $table);
 //                            }
@@ -1717,6 +1726,16 @@ class expFile extends expRecord {
                             $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
     //						$object = expUnserialize($pair[1]);
                             $object = @unserialize($pair[1]);
+                            if ($type == 'Form') {
+                                if ($table == 'forms') {
+                                    $forms_id = $object->id = $db->max($table,'id') + 1;  // create a new record
+                                } elseif ($table == 'forms_control') {
+                                    $object->id = null;  // create a new record
+                                    $object->forms_id = $forms_id;  // assign to new form record
+                                } elseif (substr($table,6) == 'forms_') {
+                                    $object->id = null;  // create a new record
+                                }
+                            }
                             if (!$object) $object = unserialize(stripslashes($pair[1]));
                             if (function_exists($table_function)) {
                                 $table_function($db, $object);
