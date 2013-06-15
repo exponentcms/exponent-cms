@@ -355,10 +355,10 @@ pixidou = {
 	*	Zoom in function
 	*/
 	zoomIn: function(){
-		if(pixidou.zoomLevel < 100){
-			// increments by 25% if we are less than 100%
+//		if(pixidou.zoomLevel < 100){
+			// increments by 25% if we are less than 100% -> Lwangaman removes if to let zoom more than 100%
 			pixidou.zoomLevel = pixidou.zoomLevel + 25;
-		}
+//		}
 		
 		// update our image
 		pixidou.updateZoom();
@@ -513,6 +513,8 @@ pixidou = {
 		
 //		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.PATH_RELATIVE+'framework/modules/pixidou/images/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
 		YAHOO.util.Dom.get('imageContainer').innerHTML = '<img id="yuiImg" src="'+EXPONENT.PATH_RELATIVE+'tmp/pixidou/' + image + '" width="' + width + '" height="' + height + '" alt="" style="width:' + width + 'px;height:' + height + 'px;" />';
+
+        var dd1 = new YAHOO.util.DD("yuiImg");
 
 		// add it to our history
 		var imageObject = new Object;
