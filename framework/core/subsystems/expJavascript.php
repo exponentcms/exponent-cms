@@ -70,6 +70,7 @@ class expJavascript {
             $strlen = (ini_get("suhosin.get.max_value_length")==0) ? MINIFY_URL_LENGTH : ini_get("suhosin.get.max_value_length");
             $i = 0;
             $srt = array();
+            $srt[$i] = '';
             if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
             if (!empty($jqueryjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') {
                 if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {

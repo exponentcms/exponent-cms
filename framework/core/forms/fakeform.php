@@ -123,8 +123,8 @@ class fakeform extends form {
                 $html .= "<label class=\"label\" style=\"background: transparent;\"></label>";
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
+            $for   = ' for="' . $name . '"';
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
-                $for   = ' for="' . $name . '"';
                 $html .= "<label ".$for." class=\"label\" style=\"width:auto; display:inline;\">";
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];

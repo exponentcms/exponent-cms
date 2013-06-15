@@ -776,7 +776,8 @@ class formsController extends expController {
                 $control->update();
             }
         }
-        if (!empty($this->params['is_saved']) && empty($this->params['table_name'])) {
+//        if (!empty($this->params['is_saved']) && empty($this->params['table_name'])) {
+        if (!empty($this->params['is_saved'])) {
             // we are now saving data to the database and need to create it first
 //            $form = new forms($this->params['id']);
             $this->params['table_name'] = $this->forms->updateTable();
