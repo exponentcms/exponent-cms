@@ -488,19 +488,19 @@ class administrationController extends expController {
 		    }
 		}
 
-		$form = new form();
-		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
-		$form->register('mod_archive','Extension Archive',new uploadcontrol());
-        $form->register('patch',gt('Patch Exponent CMS or Install Theme?'),new checkboxcontrol(false,false),null,null,gt('All extensions are normally placed within the CURRENT theme (folder)'));
-        $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
-		$form->meta('module','administration');
-		$form->meta('action','install_extension_confirm');
+//		$form = new form();
+//        $form->meta('module','administration');
+//        $form->meta('action','install_extension_confirm');
+//		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
+//		$form->register('mod_archive','Extension Archive',new uploadcontrol());
+//        $form->register('patch',gt('Patch Exponent CMS or Install Theme?'),new checkboxcontrol(false,false),null,null,gt('All extensions are normally placed within the CURRENT theme (folder)'));
+//        $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 
 		assign_to_template(array(
             'themes'=>$items['themes'],
             'fixes'=>$items['fixes'],
             'mods'=>$items['mods'],
-            'form_html'=>$form->toHTML()
+//            'form_html'=>$form->toHTML()
         ));
 	}
 

@@ -573,17 +573,6 @@ class fileController extends expController {
     }
 
     public function import_eql() {
-        $form = new form();
-        $form->meta('controller','file');
-        $form->meta('action','import_eql_process');
-
-        $form->register('file',gt('EQL File'),new uploadcontrol());
-        //$form->register('select_tables',gt('Select Specific Tables?'), new checkboxcontrol(false));
-        $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
-
-        assign_to_template(array(
-            'form_html' => $form->toHTML(),
-        ));
     }
 
     public  function import_eql_process() {
@@ -708,15 +697,6 @@ class fileController extends expController {
     }
 
     public function import_files() {
-        $form = new form();
-        $form->meta('controller','file');
-        $form->meta('action','import_files_process');
-        $form->register('file',gt('Files Archive'),new uploadcontrol());
-        $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
-
-        assign_to_template(array(
-            'form_html' => $form->toHTML(),
-        ));
     }
 
     public function import_files_process() {
@@ -748,7 +728,7 @@ class fileController extends expController {
         		if (!$return) {
         			echo '<br />'.gt('Error extracting TAR archive').'<br />';
         		} else if (!file_exists($dest_dir.'/files') || !is_dir($dest_dir.'/files')) {
-        			echo '<br />'.gt('Invalid archive format').'<br />';
+        			echo '<br />'.gt('Invalid archive format, no \'/files\' folder').'<br />';
         		} else {
         			// Show the form for specifying which mod types to 'extract'
 

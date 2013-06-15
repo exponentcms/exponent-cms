@@ -1363,7 +1363,7 @@ class formsController extends expController {
         if (empty($errors)) {
             flash('message',gt('Form was sucessfuly imported'));
         } else {
-            $message = gt('The Form import encountered the following errors') . ':<br>';
+            $message = gt('Form import encountered the following errors') . ':<br>';
             foreach ($errors as $error) {
                 $message .= '* ' . $error . '<br>';
             }
@@ -1378,11 +1378,6 @@ class formsController extends expController {
                 "error" => "The /tmp directory is not writable.  Please contact your administrator.",
             ));
         } else {
-            //Setup the meta data (hidden values)
-            $form = new form();
-            $form->meta("controller", "forms");
-            $form->meta("action", "import_csv_mapper");
-
             //Setup the arrays with the name/value pairs for the dropdown menus
             $delimiterArray = Array(
                 ',' => gt('Comma'),
@@ -1400,16 +1395,23 @@ class formsController extends expController {
                 }
             }
 
-            //Register the dropdown menus
-            $form->register("delimiter", gt('Delimiter Character'), new dropdowncontrol(",", $delimiterArray));
-            $form->register("upload", gt('CSV File to Upload'), new uploadcontrol());
-            $form->register("use_header", gt('First Row is a Header'), new checkboxcontrol(0, 0));
-            $form->register("rowstart", gt('Forms Data begins in Row'), new textcontrol("1", 1, 0, 6));
-            $form->register("forms_id", gt('Target Form'), new dropdowncontrol("0", $formslist));
-            $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+//            //Setup the meta data (hidden values)
+//            $form = new form();
+//            $form->meta("controller", "forms");
+//            $form->meta("action", "import_csv_mapper");
+//
+//            //Register the dropdown menus
+//            $form->register("delimiter", gt('Delimiter Character'), new dropdowncontrol(",", $delimiterArray));
+//            $form->register("upload", gt('CSV File to Upload'), new uploadcontrol());
+//            $form->register("use_header", gt('First Row is a Header'), new checkboxcontrol(0, 0));
+//            $form->register("rowstart", gt('Forms Data begins in Row'), new textcontrol("1", 1, 0, 6));
+//            $form->register("forms_id", gt('Target Form'), new dropdowncontrol("0", $formslist));
+//            $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
             assign_to_template(array(
-                "form_html" => $form->tohtml(),
+//                "form_html" => $form->tohtml(),
+                'delimiters' => $delimiterArray,
+                'forms_list' => $formslist,
             ));
         }
     }

@@ -21,7 +21,7 @@
         {form action=export_eql_process}
             {control type=hidden name=id value=$id}
             {control type="checkbox" name="include_data" label='Should stored form data also be included?' value=1 description='By default the form settings and controls are saved without including form data records'|gettext}
-            {control type=buttongroup submit="Export Form Design"|gettext cancel="Cancel"|gettext}
+            {control class=downloadfile type=buttongroup submit="Export Form Design"|gettext cancel="Cancel"|gettext}
         {/form}
     </div>
 </div>
