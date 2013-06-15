@@ -25,10 +25,10 @@ jQuery,1.10.1,jquery.com,1.10.1/2.0.2,
 jQueryUI,1.10.3,jqueryui.com,1.10.3,
 Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less for & includes swatches, fontawesome"
 Bootswatch,2.3.2,bootswatch.com/,2.3.2,
-Font-Awesome,3.1.1,fortawesome.github.com/Font-Awesome,3.1.1,patched fonts location
+Font-Awesome,3.2.0,fortawesome.github.com/Font-Awesome,3.2.0,updated FontAwesomePath in variables.less
 Adminer,3.7.0,www.adminer.org,3.7.0,
 html5shiv,,code.google.com/p/html5shiv/,,
-SimpleAjaxUploader,1.5.0-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.5.0-exp,converted to yui module & loop added to process multiple files
+SimpleAjaxUploader,1.5.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.5.1-exp,converted to yui module & loop added to process multiple files
 normalize.css,2.1.2,necolas.github.com/normalize.css/,2.1.2,
 MediaElement.js,2.12.0,mediaelementjs.com/,2.12.0,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
