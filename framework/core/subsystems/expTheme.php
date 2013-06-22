@@ -29,7 +29,7 @@ class expTheme {
 		global $auto_dirs2;
 //        global $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
-//		require_once(BASE.'framework/core/compat/theme.php');
+		require_once(BASE.'framework/core/compat/theme.php');
 
 		if (!defined('DISPLAY_THEME')) {
 			/* exdoc
