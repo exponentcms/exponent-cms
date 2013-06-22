@@ -650,7 +650,7 @@ class expTheme {
 //		global $db;
         global $module_scope;
 
-        self::deprecated('expTheme::module()');
+        self::deprecated('expTheme::module()',$module,$view);
         $module = expModules::getModuleName($module);  //FIXME patch to cleanup module name
 		if ($prefix == null) $prefix = "@section";
 
@@ -690,7 +690,7 @@ class expTheme {
 	public static function showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
 		global $db, $module_scope, $sectionObj;
 
-        self::deprecated('expTheme::module()');
+        self::deprecated('expTheme::module()',$module,$view);
         $module = expModules::getModuleName($module);  //FIXME patch to cleanup module name
 		if ($prefix == null) $prefix = "@section";
 //		$last_section = expSession::get("last_section");
@@ -722,16 +722,20 @@ class expTheme {
     public static function showSectionalController($params=array()) {  //FIXME not used in base system (custom themes?)
         global $sectionObj, $module_scope;
 
-        self::deprecated('expTheme::module()');
         $src = "@section" . $sectionObj->id;
         $params['source'] = $src;
 //        $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
         $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = 'sectional';
+        $module = !empty($params['module']) ? $params['module'] : $params['controller'];
+        $view = !empty($params['action']) ? $params['action'] : $params['view'];
+        self::deprecated('expTheme::module()',$module,$view);
         self::module($params);
     }
 
     public static function showController($params=array()) {
-        self::deprecated('expTheme::module()');
+        $module = !empty($params['module']) ? $params['module'] : $params['controller'];
+        $view = !empty($params['action']) ? $params['action'] : $params['view'];
+        self::deprecated('expTheme::module()',$module,$view);
         self::module($params);
 //        global $sectionObj, $db, $module_scope;
 //        if (empty($params)) {
@@ -1056,16 +1060,21 @@ class expTheme {
 
         if ($user->isAdmin() && DEVELOPMENT) {
             $trace=debug_backtrace();
-            $caller=$trace[1];
+            $caller = $trace[1];
+            $tmp = substr($caller['file'],-16,6);
+            if (substr($caller['file'],-16,6) == 'compat') {
+                $caller = $trace[2];
+            }
             $oldcall = $caller['function'];
             if ($caller['class'] == 'expTheme') {
-                $oldcall = 'expTheme::' . $oldcall;
+                $oldcall = $caller['class'] . '::' . $oldcall;
             }
-            $message = $oldcall . ' ' . gt('is deprecated and should be replaced by') . ' ' . $newcall;
+            $message = '<strong>' . $oldcall . '</strong> ' . gt('is deprecated and should be replaced by') . ' <strong>' . $newcall .'</strong>';
             if (!empty($controller)) {
-                $message .= ' ' . gt('for hard coded module') . ' ' . $controller . ' / ' . $actionview;
+                $message .= '<br>' . gt('for hard coded module') . ' <strong>' . $controller . ' / ' . $actionview . '</strong>';
             }
-            $message .= '<a class="helplink" '.gt('Get Theme Update Help').' href="'.HELP_URL.'theme_update'.'" target="_blank">'.gt('help').'</a>';
+            $message .= '<br>' . gt('line') . ' #' .  $caller['line'] . ' ' . gt('of') . $caller['file'];
+            $message .= ' <a class="helplink" title="'.gt('Get Theme Update Help').'" href="'.HELP_URL.'theme_update'.'" target="_blank">'.gt('Help').'</a>';
             flash('notice',$message);
         }
     }

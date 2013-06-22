@@ -56,22 +56,20 @@ function footerInfo($params) {
 }
 
 function exponent_theme_sourceSelectorInfo() {
-    expTheme::deprecated(gc('this call is deprecated'));
+    expTheme::deprecated(gt('this call is deprecated'));
 	return;
 }
 
 function exponent_theme_showSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-    expTheme::deprecated('expTheme::module()');
 	expTheme::showSectionalModule($module,$view,$title,$prefix, $pickable, $hide_menu);
 }
 
 function exponent_theme_showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
-    expTheme::deprecated('expTheme::module()');
 	expTheme::showTopSectionalModule($module,$view,$title,$prefix, $pickable, $hide_menu);
 }
 
 function exponent_theme_showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
-    expTheme::deprecated('expTheme::module()');
+    expTheme::deprecated('expTheme::module()',$module,$view);
 	expTheme::showModule($module,$view,$title,$source,$pickable,$section,$hide_menu,$params);
 }
 
