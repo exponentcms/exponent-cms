@@ -1,6 +1,6 @@
 /**  
  * Simple Ajax Uploader
- * Version 1.5.2
+ * Version 1.5.3
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
  * Copyright 2012-2013 LPology, LLC  
@@ -393,7 +393,8 @@ Y.ss.SimpleUpload = function(options) {
   if (this._settings.multiple === false) {
     this._settings.maxUploads = 1;
   }
-                            
+  
+  this._mouseOverButton = false;  
   this._input = null;
   this._filename = null;
   this._ext = null; // file extension
@@ -435,7 +436,7 @@ Y.ss.SimpleUpload = function(options) {
   // These calls must always be last
   this._createInput();    
   this.enable();
-  this._rerouteClicks();
+  this.rerouteClicks(this._button);
 };
 
 Y.ss.SimpleUpload.prototype = {
@@ -496,7 +497,9 @@ Y.ss.SimpleUpload.prototype = {
   * Remove the current file from the queue and cycle to the next
   */  
   removeCurrent: function() {
-    this._queue.splice(0, 1); // remove the offending file
+    if (this._queue.length > 0) {
+      this._queue.splice(0, 1); // remove the offending file
+    }
     this._cycleQueue();  
   },
   
@@ -550,14 +553,14 @@ Y.ss.SimpleUpload.prototype = {
   */
   _createInput: function() {
     var self = this,
-        div = document.createElement('div'),
-        input = document.createElement('input');                  
-          
-    input.setAttribute('type', 'file');
-    input.setAttribute('name', self._settings.name);
+        div = document.createElement('div');
+        
+    this._input = document.createElement('input');
+    this._input.setAttribute('type', 'file');
+    this._input.setAttribute('name', this._settings.name);
     
     if (this._XhrIsSupported) {
-      input.setAttribute('multiple', true);
+      this._input.setAttribute('multiple', true);
     }
     
     Y.ss.addStyles(div, {
@@ -571,7 +574,7 @@ Y.ss.SimpleUpload.prototype = {
       'zIndex': 2147483583
     });    
         
-    Y.ss.addStyles(input, {
+    Y.ss.addStyles(this._input, {
       'position' : 'absolute',
       'right' : 0,
       'margin' : 0,
@@ -589,37 +592,35 @@ Y.ss.SimpleUpload.prototype = {
       div.style.filter = 'alpha(opacity=0)';
     }      
     
-    Y.ss.addEvent(input, 'change', function() {
+    Y.ss.addEvent(this._input, 'change', function() {
       var filename,
           ext,
           total,
-          i;
-          
-      if (!input || input.value === '') {
+          i;          
+      if (!self._input || self._input.value === '') {
         return;                
       }
       
       if (!self._XhrIsSupported) {
-        filename = Y.ss.getFilename(input.value);
+        filename = Y.ss.getFilename(self._input.value);
         ext = Y.ss.getExt(filename);        
         if (false === self._settings.onChange.call(self, filename, ext)) {
           return;
         }      
-        self._queue.push(input);            
+        self._queue.push(self._input);            
       } else {
-        filename = (input.files[0].fileName !== null && input.files[0].fileName !== undefined) ? input.files[0].fileName : input.files[0].name;
-        filename = Y.ss.getFilename(filename);
+        filename = Y.ss.getFilename(self._input.files[0].name);
         ext = Y.ss.getExt(filename);       
         if (false === self._settings.onChange.call(self, filename, ext)) {
           return;
         }
-        total = input.files.length;
+        total = self._input.files.length;
         // Only add first file if multiple uploads aren't allowed
         if (!self._settings.multiple) {
           total = 1;
         }        
         for (i = 0; i < total; i++) {
-          self._queue.push(input.files[i]);               
+          self._queue.push(self._input.files[i]);               
         }         
       }
       
@@ -628,56 +629,43 @@ Y.ss.SimpleUpload.prototype = {
       // Submit when file selected if autoSubmit option is set
       if (self._settings.autoSubmit) {
         self.submit();
-      } 
-      
-      filename = null;
-      ext = null;
+      }       
     });                
     
-    Y.ss.addEvent(input, 'mouseover', function() {
-      var button = self._button,
-          hoverClass = self._settings.hoverClass;
-      Y.ss.addClass(button, hoverClass);
-      button = null;
-      hoverClass = null;
+    Y.ss.addEvent(this._input, 'mouseover', function() {
+      if (self._mouseOverButton !== true) {
+        return;
+      }    
+      Y.ss.addClass(self._button, self._settings.hoverClass);
     });
     
-    Y.ss.addEvent(input, 'mouseout', function() {
-      var button = self._button,
-          fileinput = input,
-          hoverClass = self._settings.hoverClass,
-          focusClass = self._settings.focusClass;
-      Y.ss.removeClass(button, hoverClass);
-      Y.ss.removeClass(button, focusClass);
-      
-      if (fileinput.parentNode) {
-        fileinput.parentNode.style.visibility = 'hidden';
+    Y.ss.addEvent(this._input, 'mouseout', function() {
+      if (self._mouseOverButton !== true) {
+        return;
+      }    
+      Y.ss.removeClass(self._button, self._settings.hoverClass);
+      Y.ss.removeClass(self._button, self._settings.focusClass);      
+      if (self._input.parentNode) {
+        self._input.parentNode.style.visibility = 'hidden';
       }
-      button = null;
-      hoverClass = null;
-      focusClass = null;
-      fileinput = null;
     });   
           
-    Y.ss.addEvent(input, 'focus', function() {
-      var button = self._button,
-          focusClass = self._settings.focusClass;      
-      Y.ss.addClass(button, focusClass);
-      button = null;
-      focusClass = null;
+    Y.ss.addEvent(this._input, 'focus', function() {
+      if (self._mouseOverButton !== true) {
+        return;
+      }    
+      Y.ss.addClass(self._button, self._settings.focusClass);
     });
     
-    Y.ss.addEvent(input, 'blur', function() {
-      var button = self._button,
-          focusClass = self._settings.focusClass;    
-      Y.ss.removeClass(button, focusClass);
-      button = null;
-      focusClass = null;
+    Y.ss.addEvent(this._input, 'blur', function() {
+      if (self._mouseOverButton !== true) {
+        return;
+      }    
+      Y.ss.removeClass(self._button, self._settings.focusClass);
     });
     
     document.body.appendChild(div);        
-    div.appendChild(input);
-    self._input = input; 
+    div.appendChild(this._input);
   },  
   
   _clearInput: function() {
@@ -695,22 +683,24 @@ Y.ss.SimpleUpload.prototype = {
   * Makes sure that when user clicks upload button,
   * the this._input is clicked instead
   */
-  _rerouteClicks: function() {
+  rerouteClicks: function(elem) {
     var self = this;
-  
-    Y.ss.addEvent(self._button, 'mouseover', function() {
+    elem = Y.ss.verifyElem(elem);
+    
+    Y.ss.addEvent(elem, 'mouseover', function() {
       if (self._disabled) {
         return;
       }							
       if (!self._input) {
         self._createInput();
-      }			
-      var div = self._input.parentNode,
-          button = self._button;
-      Y.ss.copyLayout(button, div);
-      div.style.visibility = 'visible';
-      div = null;
-      button = null;
+      }
+      if (elem == self._button) {
+        self._mouseOverButton = true;
+      } else {
+        self._mouseOverButton = false;
+      }
+      Y.ss.copyLayout(elem, self._input.parentNode);
+      self._input.parentNode.style.visibility = 'visible';
     });                
   },
 	
@@ -795,7 +785,7 @@ Y.ss.SimpleUpload.prototype = {
     this._cycleQueue();
   },  
 
-  _cycleQueue: function() {   
+  _cycleQueue: function() {
     this._size = null;
     this._file = null;  
     this._filename = null;
@@ -804,7 +794,7 @@ Y.ss.SimpleUpload.prototype = {
     this._progressBar = null;   
     this._progressContainer = null;
     
-    if (this._queue.length > 0) {
+    if (this._queue.length > 0 && this._settings.autoSubmit) {
       this.submit();
     }
   },	 
@@ -814,19 +804,19 @@ Y.ss.SimpleUpload.prototype = {
   */		
   _uploadXhr: function(id) {
     var self = this,
-        settings = self._settings,
-        filename = self._filename,
-        fileSize = Math.round(self._size / 1024),
-        fileSizeBox = self._fileSizeBox,
-        progressBar = self._progressBar,
-        progressContainer = self._progressContainer,
+        settings = this._settings,
+        filename = this._filename,
+        fileSize = Math.round(this._size / 1024),
+        fileSizeBox = this._fileSizeBox,
+        progressBar = this._progressBar,
+        progressContainer = this._progressContainer,
         xhr = Y.ss.newXHR(),
         params = {},			
         queryURL;
         
-    if (false === settings.startXHR.call(self, filename, fileSize)) {
-      if (self._disabled) {
-        self.enable();
+    if (false === settings.startXHR.call(this, filename, fileSize)) {
+      if (this._disabled) {
+        this.enable();
       }
       this._activeUploads--;
       return;
@@ -834,24 +824,24 @@ Y.ss.SimpleUpload.prototype = {
     
     if (fileSizeBox) {
       fileSizeBox.innerHTML = fileSize + 'K';
-    }
-    
-    // Reset progress bars to 0%
-    settings.onProgress.call(self, 0);   
-    
-    if (progressBar) {
-      progressBar.style.width = '0%';
-    }     
+    }    
     
     // Add name property to query string
     params[settings.name] = filename;
     
     // We get the any additional data here after startXHR()
-    // in case the data was changed using setData() prior to submitting 
+    // in case the data was changed with setData() prior to submitting 
     Y.ss.extendObj(params, settings.data);
     
     // Build query string
     queryURL = settings.url + '?' + Y.ss.obj2string(params);
+    
+    // Reset progress bars to 0%
+    settings.onProgress.call(this, 0);   
+    
+    if (progressBar) {
+      progressBar.style.width = '0%';
+    }     
                 
     Y.ss.addEvent(xhr.upload, 'progress', function(event) {
       if (event.lengthComputable) {
@@ -894,17 +884,17 @@ Y.ss.SimpleUpload.prototype = {
           
     if (settings.multipart === true) {
       var formData = new FormData();
-      formData.append(settings.name, self._file);
-      self.log('commencing upload using multipart form');
+      formData.append(settings.name, this._file);
+      this.log('commencing upload using multipart form');
       xhr.send(formData);
     } else {
       xhr.setRequestHeader('Content-Type', 'application/octet-stream');                 
-      self.log('commencing upload using binary stream');
-      xhr.send(self._file);
+      this.log('commencing upload using binary stream');
+      xhr.send(this._file);
     }
     
     // Remove this file from the queue and begin next upload
-    self.removeCurrent();   
+    this.removeCurrent();   
   },
 	
   /**
@@ -943,50 +933,50 @@ Y.ss.SimpleUpload.prototype = {
   */	
   _uploadIframe: function() {
     var self = this,
-        settings = self._settings,
+        settings = this._settings,
         checkInterval = settings.checkProgressInterval,
-        key = self._uploadProgressKey,
-        progressBar = self._progressBar,
-        progressContainer = self._progressContainer,
-        fileSizeBox = self._fileSizeBox,
-        filename = self._filename,
-        iframe = self._createIframe(),
-        form = self._createForm(iframe),
+        key = this._uploadProgressKey,
+        progressBar = this._progressBar,
+        progressContainer = this._progressContainer,
+        fileSizeBox = this._fileSizeBox,
+        filename = this._filename,
+        iframe = this._createIframe(),
+        form = this._createForm(iframe),
         data;
       
     // Upload progress key field must come before the file field
-    if (self._doProgressUpdates) {
-      var keyField = self._createHiddenInput(settings.keyParamName, key);
+    if (this._doProgressUpdates) {
+      var keyField = this._createHiddenInput(settings.keyParamName, key);
       form.appendChild(keyField);
     }      
       
-    if (false === settings.startNonXHR.call(self, filename)) {
-      if (self._disabled) {
-        self.enable();    
+    if (false === settings.startNonXHR.call(this, filename)) {
+      if (this._disabled) {
+        this.enable();    
       }
       this._activeUploads--;
       return;
     }
 
     // We get the any additional data here after startNonXHR()
-    // in case the data was changed using setData() prior to submitting  
-    data = settings.data;
-    
-    // Reset progress bars to 0%
-    settings.onProgress.call(self, 0);   
-    
-    if (progressBar) {
-      progressBar.style.width = '0%';
-    }    
+    // in case the data was changed with setData() prior to submitting  
+    data = settings.data;  
           
     for (var prop in data) {
       if (data.hasOwnProperty(prop)) {				
-        var input = self._createHiddenInput(prop, data[prop]);
+        var input = this._createHiddenInput(prop, data[prop]);
         form.appendChild(input);				
       }
     }			
             
-    form.appendChild(self._file);
+    form.appendChild(this._file);
+    
+    // Reset progress bars to 0%
+    settings.onProgress.call(this, 0);   
+    
+    if (progressBar) {
+      progressBar.style.width = '0%';
+    }     
             
     Y.ss.addEvent(iframe, 'load', function() {
       // Remove key from active progress keys array
@@ -997,7 +987,7 @@ Y.ss.SimpleUpload.prototype = {
       settings.endNonXHR.call(self, filename);
       self._handleIframeResponse(iframe, filename, progressBar, fileSizeBox, progressContainer);
       key = null;
-    });		
+    });
     
     self.log('commencing upload using iframe');    
     form.submit();
@@ -1006,7 +996,7 @@ Y.ss.SimpleUpload.prototype = {
     
     if (self._doProgressUpdates) {    
       // Add progress key to active key array
-      self._activeProgressKeys.push(key);
+      this._activeProgressKeys.push(key);
       
       // Start timer for first progress update
       window.setTimeout(function() {
@@ -1015,11 +1005,11 @@ Y.ss.SimpleUpload.prototype = {
       }, checkInterval);
 
       // Get new upload progress key          
-      self._alterProgressKey();             
+      this._alterProgressKey();             
     }    
     
     // Remove this file from the queue
-    self.removeCurrent();       
+    this.removeCurrent();       
   },  
 
   /**
@@ -1029,13 +1019,13 @@ Y.ss.SimpleUpload.prototype = {
   _getUploadProgress: function(key, progressBar, sizeBox, counter) {
     if (!key) {
       return;
-    } 
+    }    
     
     var self = this,
-        settings = self._settings,
+        settings = this._settings,
         xhr = Y.ss.newXHR(),
         time = new Date().getTime(),
-        url = settings.progressUrl + '?progresskey=' + encodeURIComponent(key) + '&_='+time;        
+        url = settings.progressUrl + '?progresskey=' + encodeURIComponent(key) + '&_='+time;                
         
     xhr.onreadystatechange = function() {
       var response,
@@ -1092,7 +1082,11 @@ Y.ss.SimpleUpload.prototype = {
   },
   
   _alterProgressKey: function() {
-    this._uploadProgressKey = this._uploadProgressKey + Y.ss.getUID();
+    this._uploadProgressKey = this._uploadProgressKey + Y.ss.getUID();  
+    // Maximum key length allowed by PHP is 57 characters
+    if (this._uploadProgressKey.length > 57) {
+      this._uploadProgressKey = Y.ss.getUID() + this._uploadProgressKey.substring(0, 15);
+    }  
   },
 
   /**
@@ -1182,7 +1176,7 @@ Y.ss.SimpleUpload.prototype = {
     }   
     
     if (this._size !== null && this._settings.maxSize !== false && this._size / 1024 > this._settings.maxSize) {
-      this.log('file exceeds ' + this._settings.maxSize + 'K limit');
+      this.log(this._filename + ' exceeds ' + this._settings.maxSize + 'K limit');
       this._errorMsg('size');
       return false;
     }
@@ -1207,7 +1201,7 @@ Y.ss.SimpleUpload.prototype = {
   * Validates input and directs to either XHR method or iFrame method
   */
   submit: function() {    
-    if (this._disabled || this._activeUploads >= this._settings.maxUploads) {
+    if (this._disabled || this._activeUploads >= this._settings.maxUploads || this._queue.length < 1) {
       return;
     }    
     
@@ -1215,8 +1209,7 @@ Y.ss.SimpleUpload.prototype = {
     this._file = this._queue[0];    
     
     if (this._XhrIsSupported) {
-      this._filename = (this._queue[0].fileName !== null && this._queue[0].fileName !== undefined) ? this._queue[0].fileName : this._queue[0].name;
-      this._filename = Y.ss.getFilename(this._filename);
+      this._filename = Y.ss.getFilename(this._queue[0].name);
       this._size = this._queue[0].size;
     } else {
       this._filename = Y.ss.getFilename(this._queue[0].value);
