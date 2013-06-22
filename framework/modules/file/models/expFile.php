@@ -1729,6 +1729,10 @@ class expFile extends expRecord {
                             if ($type == 'Form') {
                                 if ($table == 'forms') {
                                     $forms_id = $object->id = $db->max($table,'id') + 1;  // create a new record
+                                    $spare = new expRecord();
+                                    $spare->title = $object->title;
+                                    $spare->makeSefUrl();
+                                    $object->sef_url = $spare->sef_url;
                                 } elseif ($table == 'forms_control') {
                                     $object->id = null;  // create a new record
                                     $object->forms_id = $forms_id;  // assign to new form record
