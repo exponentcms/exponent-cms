@@ -261,7 +261,7 @@ class help extends expRecord {
         
         // figure out which version we're on
 //        $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
-        $full_version = expVersion::getVersion(true);
+        $full_version = expVersion::getVersion(true,false,false);
 
         $link  = HELP_URL;
         $link .= 'docs';
