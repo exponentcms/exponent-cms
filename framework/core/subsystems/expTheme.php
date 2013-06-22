@@ -1061,7 +1061,6 @@ class expTheme {
         if ($user->isAdmin() && DEVELOPMENT) {
             $trace=debug_backtrace();
             $caller = $trace[1];
-            $tmp = substr($caller['file'],-16,6);
             if (substr($caller['file'],-16,6) == 'compat') {
                 $caller = $trace[2];
             }
@@ -1071,10 +1070,10 @@ class expTheme {
             }
             $message = '<strong>' . $oldcall . '</strong> ' . gt('is deprecated and should be replaced by') . ' <strong>' . $newcall .'</strong>';
             if (!empty($controller)) {
-                $message .= '<br>' . gt('for hard coded module') . ' <strong>' . $controller . ' / ' . $actionview . '</strong>';
+                $message .= '<br>' . gt('for hard coded module') . ' - <strong>' . $controller . ' / ' . $actionview . '</strong>';
             }
             $message .= '<br>' . gt('line') . ' #' .  $caller['line'] . ' ' . gt('of') . $caller['file'];
-            $message .= ' <a class="helplink" title="'.gt('Get Theme Update Help').'" href="'.HELP_URL.'theme_update'.'" target="_blank">'.gt('Help').'</a>';
+            $message .= ' <a class="helplink" title="'.gt('Get Theme Update Help').'" href="'.help::makeHelpLink('theme_update').'" target="_blank">'.gt('Help').'</a>';
             flash('notice',$message);
         }
     }
