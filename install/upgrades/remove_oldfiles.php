@@ -405,6 +405,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.2.3/",
             "external/Swift-4.3.0/",
             "external/Swift-4.3.1/",
+            "external/Swift-5.0.0/",
         );
         foreach ($olddirs as $dir) {
             if (expUtil::isReallyWritable(BASE.$dir)) {
