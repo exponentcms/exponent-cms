@@ -1,7 +1,7 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 CKEditor,4.1.2,ckeditor.com,4.1.2,
 FlowPlayer,3.2.16,flash.flowplayer.org,3.2.16./5.4.2,
-Swift,5.0.0,swiftmailer.org,5.0.1,we add  eDebugLogger plugin
+Swift,5.0.1,swiftmailer.org,5.0.1,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 swfobject,2.2,code.google.com/p/swfobject,2.2,
@@ -25,10 +25,10 @@ jQuery,1.10.1,jquery.com,1.10.1/2.0.2,
 jQueryUI,1.10.3,jqueryui.com,1.10.3,
 Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less for & includes swatches, fontawesome"
 Bootswatch,2.3.2,bootswatch.com/,2.3.2,
-Font-Awesome,3.2.0,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
+Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Adminer,3.7.0,www.adminer.org,3.7.0,
 html5shiv,,code.google.com/p/html5shiv/,,
-SimpleAjaxUploader,1.5.2-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.5.2-exp,converted to yui module
+SimpleAjaxUploader,1.5.3-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.5.3-exp,converted to yui module
 normalize.css,2.1.2,necolas.github.com/normalize.css/,2.1.2,
 MediaElement.js,2.12.0,mediaelementjs.com/,2.12.0,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
