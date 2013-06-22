@@ -650,6 +650,7 @@ class expTheme {
 //		global $db;
         global $module_scope;
 
+        self::deprecated('expTheme::module()');
         $module = expModules::getModuleName($module);  //FIXME patch to cleanup module name
 		if ($prefix == null) $prefix = "@section";
 
@@ -689,6 +690,7 @@ class expTheme {
 	public static function showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
 		global $db, $module_scope, $sectionObj;
 
+        self::deprecated('expTheme::module()');
         $module = expModules::getModuleName($module);  //FIXME patch to cleanup module name
 		if ($prefix == null) $prefix = "@section";
 //		$last_section = expSession::get("last_section");
@@ -720,6 +722,7 @@ class expTheme {
     public static function showSectionalController($params=array()) {  //FIXME not used in base system (custom themes?)
         global $sectionObj, $module_scope;
 
+        self::deprecated('expTheme::module()');
         $src = "@section" . $sectionObj->id;
         $params['source'] = $src;
 //        $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
@@ -728,6 +731,7 @@ class expTheme {
     }
 
     public static function showController($params=array()) {
+        self::deprecated('expTheme::module()');
         self::module($params);
 //        global $sectionObj, $db, $module_scope;
 //        if (empty($params)) {
@@ -1046,6 +1050,25 @@ class expTheme {
 
 		return $mobile_browser;
 	}
+
+    public static function deprecated($newcall="expTheme::module()", $controller=null, $actionview=null) {
+        global $user;
+
+        if ($user->isAdmin() && DEVELOPMENT) {
+            $trace=debug_backtrace();
+            $caller=$trace[1];
+            $oldcall = $caller['function'];
+            if ($caller['class'] == 'expTheme') {
+                $oldcall = 'expTheme::' . $oldcall;
+            }
+            $message = $oldcall . ' ' . gt('is deprecated and should be replaced by') . ' ' . $newcall;
+            if (!empty($controller)) {
+                $message .= ' ' . gt('for hard coded module') . ' ' . $controller . ' / ' . $actionview;
+            }
+            $message .= '<a class="helplink" '.gt('Get Theme Update Help').' href="'.HELP_URL.'theme_update'.'" target="_blank">'.gt('help').'</a>';
+            flash('notice',$message);
+        }
+    }
 
 }
 
