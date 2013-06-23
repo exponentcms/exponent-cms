@@ -768,13 +768,11 @@ class administrationController extends expController {
                 if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
                 // Move the temporary uploaded file into the destination directory, and change the name.
                 expFile::moveUploadedFile($_FILES['attach']['tmp_name'],BASE.$dest);
-                if (function_exists('finfo_open')) {
-                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+//                $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                $relpath = str_replace(PATH_RELATIVE, '', BASE);
-                    $ftype = finfo_file($finfo, BASE.$dest);
-                    finfo_close($finfo);
-                } else $ftype = null;
-                $mail->attach_file_on_disk(BASE.$dest,$ftype);
+//                $ftype = finfo_file($finfo, BASE.$dest);
+//                finfo_close($finfo);
+                $mail->attach_file_on_disk(BASE.$dest, expFile::getMimeType(BASE.$dest));
             }
             if ($this->params['batchsend']) {
                 $mail->quickBatchSend(array(

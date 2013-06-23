@@ -591,13 +591,11 @@ class formsController extends expController {
                     $mail = new expMail();
                     if (!empty($attachments)) {
                         foreach ($attachments as $attachment) {
-                            if (function_exists('finfo_open')) {
-                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            //                $relpath = str_replace(PATH_RELATIVE, '', BASE);
-                                $ftype = finfo_file($finfo, BASE.$dest);
-                                finfo_close($finfo);
-                            } else $ftype = null;
-                            $mail->attach_file_on_disk($relpath . $attachment, $ftype);
+                            $relpath = str_replace(PATH_RELATIVE, '', BASE);
+//                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+//                            $ftype = finfo_file($finfo, $relpath . $attachment);
+//                            finfo_close($finfo);
+                            $mail->attach_file_on_disk($relpath . $attachment, expFile::getMimeType(BASE.$dest));
                         }
                     }
                     $mail->quickSend(array(
