@@ -776,42 +776,41 @@ class expFile extends expRecord {
 
         if ($_sizeinfo = @getimagesize($_path)) {
             $_sizeinfo['is_image'] = true;
-
-            if (!isset($_sizeinfo['mime'])) {
-                // In case this implementation of getimagesize doesn't discover
-                // the mime type
-                $_types = array(
-                    'jpg'  => 'image/jpeg',
-                    'jpeg' => 'image/jpeg',
-                    'gif'  => 'image/gif',
-                    'png'  => 'image/png'
-                );
-
-                $_fileData = pathinfo($_path);
-                if (array_key_exists($_fileData['extension'], $_types)) $_sizeinfo['mime'] = $_types[$_fileData['extension']];
-            }
+//            if (!isset($_sizeinfo['mime'])) {
+//                // In case this implementation of getimagesize doesn't discover
+//                // the mime type
+//                $_types = array(
+//                    'jpg'  => 'image/jpeg',
+//                    'jpeg' => 'image/jpeg',
+//                    'gif'  => 'image/gif',
+//                    'png'  => 'image/png'
+//                );
+//
+//                $_fileData = pathinfo($_path);
+//                if (array_key_exists($_fileData['extension'], $_types)) $_sizeinfo['mime'] = $_types[$_fileData['extension']];
+//            }
         } else {
             $_sizeinfo['is_image'] = false;
-            if (!isset($_sizeinfo['mime'])) {
-                // In case this implementation of getimagesize doesn't discover
-                // the mime type
-                $_types = array(
-                    'mp3'  => 'audio/mpeg',
-                    'ogg'  => 'audio/ogg',
-                    'flv'  => 'video/x-flv',
-                    'f4v'  => 'video/mp4',
-                    'mp4'  => 'video/mp4',
-                    'ogv'  => 'video/ogg',
-                    '3gp'  => 'video/3gpp',
-                    'webm' => 'video/webm',
-                    'pdf'  => 'application/pdf',
-                );
-
-                $_fileData = pathinfo($_path);
-                if (array_key_exists($_fileData['extension'], $_types)) $_sizeinfo['mime'] = $_types[$_fileData['extension']];
-            }
+//            if (!isset($_sizeinfo['mime'])) {
+//                // In case this implementation of getimagesize doesn't discover
+//                // the mime type
+//                $_types = array(
+//                    'mp3'  => 'audio/mpeg',
+//                    'ogg'  => 'audio/ogg',
+//                    'flv'  => 'video/x-flv',
+//                    'f4v'  => 'video/mp4',
+//                    'mp4'  => 'video/mp4',
+//                    'ogv'  => 'video/ogg',
+//                    '3gp'  => 'video/3gpp',
+//                    'webm' => 'video/webm',
+//                    'pdf'  => 'application/pdf',
+//                );
+//
+//                $_fileData = pathinfo($_path);
+//                if (array_key_exists($_fileData['extension'], $_types)) $_sizeinfo['mime'] = $_types[$_fileData['extension']];
+//            }
         }
-
+        $_sizeinfo['mime'] = self::getMimeType($_path);
         $_sizeinfo['fileSize'] = self::fileSize($_path);
 
         return $_sizeinfo;
