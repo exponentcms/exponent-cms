@@ -732,6 +732,18 @@ class expFile extends expRecord {
         return preg_replace('/[^A-Za-z0-9\.]/', '-', $name);
     }
 
+    /**
+     * Return the mimetype for the passed filename
+     *
+     * @param string $filename
+     * @return string
+     */
+    public static function getMimeType($filename) {
+        include_once(BASE.'external/class.mimeType.php');
+        $mime = new mimeType();
+        return $mime->getMimeType($filename);
+    }
+
 // ==========================================================
 // Class Image Processing Methods
 // @TODO  This collection of methods need to be placed in their own Class
