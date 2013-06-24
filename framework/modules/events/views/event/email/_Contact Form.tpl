@@ -13,6 +13,6 @@
  *
  *}
 
-{'Ref event:'|gettext} '{$event->event->title}' {'on'|gettext} {$event->date|date_format}
+{'Ref event:'|gettext} '{$event->event->title}' {'on'|gettext} {$event->date|format_date}
 
 {$params.message}

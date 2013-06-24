@@ -50,7 +50,7 @@
                     {foreach from=$page->records item=listing name=listings}
                         <tr class="{cycle values="odd,even"}">
                             <td><a href="{link controller=eventregistration action=show id=$listing->id}" title="View this event"|gettext>{$listing->title}</a></td>
-                            <td>{$listing->eventdate|date_format:"%b %d,'%y"} {($listing->eventdate+$listing->event_starttime)|date_format:"%l:%M %p"}</td>
+                            <td>{$listing->eventdate|format_date:"%b %d,'%y"} {($listing->eventdate+$listing->event_starttime)|format_date:"%l:%M %p"}</td>
                             <td>{$listing->number_of_registrants} {'of'|gettext} {$listing->quantity}</td>
                             <td>
                             {icon img='groupperms.png' action=view_registrants record=$listing title="View Registrants"|gettext}

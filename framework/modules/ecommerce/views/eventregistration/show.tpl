@@ -38,8 +38,8 @@
     </div>
 
     <div class="bd">
-        <h2>{$product->eventdate|date_format:"%A, %B %e, %Y"}
-            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|date_format:"%A, %B %e, %Y"}{/if}</h2>
+        <h2>{$product->eventdate|format_date:"%A, %B %e, %Y"}
+            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|format_date:"%A, %B %e, %Y"}{/if}</h2>
         <hr>
         <h3>{$product->title}</h3>
         {permissions}
@@ -50,9 +50,9 @@
                 {/if}
             </div>
         {/permissions}
-        <span><h4>{($product->eventdate+$product->event_starttime)|expdate:"g:i a"}
+        <span><h4>{($product->eventdate+$product->event_starttime)|format_date:"%l:%M %P"}
             {if $product->eventdate+$product->event_starttime != $product->eventdate+$product->event_endtime}
-                - {($product->eventdate+$product->event_endtime)|expdate:"g:i a"}
+                - {($product->eventdate+$product->event_endtime)|format_date:"%l:%M %P""}
                 {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
                 <em class="attribution">({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if})</em>
             {/if}
@@ -76,7 +76,7 @@
                 {*{control type="hidden" name="quick" value="1"}*}
                 {if $product->spacesLeft() && $product->signup_cutoff >= time()}
                     <span class="label">{'Registration Closes:'|gettext} </span>
-                    <span class="value">{$product->signup_cutoff|expdate:"l, F j, Y, g:i a"}</span>{br}
+                    <span class="value">{$product->signup_cutoff|format_date:"%A, %B %e, %Y, %l:%M %P"}</span>{br}
                     <span class="label">{'Seats Available:'|gettext} </span>
                     <span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
                     {if $product->multi_registrant}

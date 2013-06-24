@@ -41,7 +41,7 @@
                 <li>
                     <div class="events">
                         <a class="link" href="{link action=show title=$item->sef_url}">{$item->title}</a>
-                        {br}<em class="date">{$item->eventdate|date_format}</em>{br}
+                        {br}<em class="date">{$item->eventdate|format_date}</em>{br}
                         {$item->body|summarize:"text":"paralinks"}<span>
                         {if $item->getBasePrice()}{br}{'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
                         {if $item->isRss != true}
