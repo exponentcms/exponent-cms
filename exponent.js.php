@@ -25,6 +25,7 @@ EXPONENT.URL_FULL = "<?php echo URL_FULL; ?>";
 EXPONENT.BASE = "<?php echo BASE; ?>";
 EXPONENT.THEME_RELATIVE = "<?php echo THEME_RELATIVE; ?>";
 EXPONENT.ICON_RELATIVE = "<?php echo ICON_RELATIVE; ?>";
+EXPONENT.MIMEICON_RELATIVE = "<?php echo MIMEICON_RELATIVE; ?>";
 //EXPONENT.JS_FULL = '<?php echo JS_URL; ?>';  //TODO deprecated
 EXPONENT.JS_URL = '<?php echo JS_URL; ?>';
 //EXPONENT.JS_PATH = '<?php echo JS_RELATIVE; ?>';  //TODO deprecated

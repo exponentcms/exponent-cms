@@ -774,11 +774,12 @@ class expFile extends expRecord {
         'mp3' => 'audio/mpeg',
         'qt' => 'video/quicktime',
         'mov' => 'video/quicktime',
-        'ogg'  => 'audio/ogg',
-        'f4v'  => 'video/mp4',
-        'mp4'  => 'video/mp4',
-        'ogv'  => 'video/ogg',
-        '3gp'  => 'video/3gpp',
+        'ogg' => 'audio/ogg',
+        'f4v' => 'video/mp4',
+        'mp4' => 'video/mp4',
+        'm4v' => 'video/x-m4v',
+        'ogv' => 'video/ogg',
+        '3gp' => 'video/3gpp',
         'webm' => 'video/webm',
         'swf' => 'application/x-shockwave-flash',
         'flv' => 'video/x-flv',
@@ -804,15 +805,15 @@ class expFile extends expRecord {
          * FYI: this is *really* hax.
          */
         $extension = strtolower(array_pop(explode('.',$filename)));
-        if(function_exists('finfo_open')) {
+        if(array_key_exists($extension, $types)) {
+            /* If we can *guess* the mimetype based on the filename, do that for standardization */
+            return $types[$extension];
+        } elseif(function_exists('finfo_open')) {
             /* If we don't have to guess, do it the right way */
             $finfo = finfo_open(FILEINFO_MIME);
             $mimetype = finfo_file($finfo, $filename);
             finfo_close($finfo);
             return $mimetype;
-        } elseif(array_key_exists($extension, $types)) {
-            /* If we can *guess* the mimetype based on the filename, do that */
-            return $types[$extension];
         } else {
             /* Otherwise, let the browser guess */
             return 'application/octet-stream';

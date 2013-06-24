@@ -269,11 +269,11 @@ class filemanagercontrol extends formcontrol {
                             if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                                 var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
                             } else if (obj.mimetype=='audio/mpeg') {
-                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
-                            } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
-                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/video_22x22.png\">';
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'audio_22x22.png\">';
+                            } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4' || obj.mimetype=='video/x-m4v' || obj.mimetype=='video/webm' || obj.mimetype=='video/ogg') {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'video_22x22.png\">';
                             } else {
-                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/generic_22x22.png\">';
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'generic_22x22.png\">';
                             }
                             
                             var html = '<li>';
@@ -340,11 +340,11 @@ class filemanagercontrol extends formcontrol {
                         if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
                         } else if (obj.mimetype=='audio/mpeg') {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
-                        } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/video_22x22.png\">';
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'audio_22x22.png\">';
+                        } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4' || obj.mimetype=='video/x-m4v' || obj.mimetype=='video/webm' || obj.mimetype=='video/ogg') {
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'video_22x22.png\">';
                         } else {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/generic_22x22.png\">';
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'generic_22x22.png\">';
                         }
                     
                         var html = '<li>';
@@ -452,16 +452,16 @@ class filemanagercontrol extends formcontrol {
             if ($val->mimetype=="image/png" || $val->mimetype=="image/gif" || $val->mimetype=="image/jpeg" || $val->mimetype=="image/pjpeg" || $val->mimetype=="image/x-png") {
                 $filepic = "<img class=\"filepic\" src=\"".PATH_RELATIVE."thumb.php?id=".$val->id."&amp;w=24&amp;h=24&amp;zc=1\">";
             } elseif ($val->mimetype=="audio/mpeg") {
-                $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/audio_22x22.png'>";
-            } elseif ($val->mimetype=="video/x-flv" || $val->mimetype=="video/mp4") {
-                $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/video_22x22.png'>";
+                $filepic = "<img class=\"filepic\" src='".MIMEICON_RELATIVE."audio_22x22.png'>";
+            } elseif ($val->mimetype=="video/x-flv" || $val->mimetype=="video/mp4" || $val->mimetype=="video/x-m4v" || $val->mimetype=="video/webm" || $val->mimetype=="video/ogg") {
+                $filepic = "<img class=\"filepic\" src='".MIMEICON_RELATIVE."video_22x22.png'>";
             } else {
-                $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/generic_22x22.png'>";
+                $filepic = "<img class=\"filepic\" src='".MIMEICON_RELATIVE."generic_22x22.png'>";
             }
             $html .= "<li>";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             //$html .= "<div class=\"fpdrag\"></div>";
-            $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>Delete</a>";
+            $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>".gt('Delete')."</a>";
             $html .= $filepic;
             $filetitle = !empty($val->title) ? $val->title : $val->filename;
             $html .= "<span class=\"filename\" title=\"".$val->filename."\">".$filetitle."</span>";
