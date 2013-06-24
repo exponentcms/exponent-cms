@@ -13,7 +13,7 @@
  *
  *}
 
-{'RSVP for event:'|gettext} '{$event->event->title}' {'on'|gettext} {$event->date|date_format}
+{'RSVP for event:'|gettext} '{$event->event->title}' {'on'|gettext} {$event->date|format_date}
 
 {'Name'|gettext}:      {$params.name}
 {'Phone:'|gettext}     {$params.phone}

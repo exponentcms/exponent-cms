@@ -19,7 +19,7 @@
     {$myloc=serialize($__loc)}
     <div class="motd-message">
         <div class="motd-date">
-            <span class="date-header">{$smarty.now|expdate:"D, M j, Y"}</span>
+            <span class="date-header">{$smarty.now|format_date:"%a, %b %e, %Y"}</span>
             {clear}
         </div>
         <div class="bodycopy">

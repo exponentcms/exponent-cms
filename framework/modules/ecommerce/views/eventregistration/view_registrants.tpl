@@ -48,13 +48,13 @@
 
         <div id="eventregform">
             <span class="label">{'Event Date'|gettext}: </span>
-            <span class="value">{$event->eventdate|date_format:"%A, %B %e, %Y"}
-                {if (!empty($event->eventenddate) && $event->eventdate != $event->eventenddate)} {'to'|gettext} {$event->eventenddate|date_format:"%A, %B %e, %Y"}{/if}
+            <span class="value">{$event->eventdate|format_date:"%A, %B %e, %Y"}
+                {if (!empty($event->eventenddate) && $event->eventdate != $event->eventenddate)} {'to'|gettext} {$event->eventenddate|format_date:"%A, %B %e, %Y"}{/if}
             </span>{br}
             <span class="label">{'Start Time'|gettext}: </span>
-            <span class="value">{($event->eventdate+$event->event_starttime)|date_format:"%l:%M %p"}</span>{br}
+            <span class="value">{($event->eventdate+$event->event_starttime)|format_date:"%l:%M %p"}</span>{br}
             <span class="label">{'End Time'|gettext}: </span>
-            <span class="value">{($event->eventdate+$event->event_endtime)|date_format:"%l:%M %p"}</span>{br}
+            <span class="value">{($event->eventdate+$event->event_endtime)|format_date:"%l:%M %p"}</span>{br}
             {if !empty($event->location)}
                 <span class="label">{'Location:'|gettext} </span>
                 <span class="value">{$event->location}</span>{br}
@@ -64,7 +64,7 @@
             <span class="label">{'Seats Registered:'|gettext} </span>
             <span class="value">{$registrants|count} {'of'|gettext} {$event->quantity}</span>{br}
             <span class="label">{'Registration Closes:'|gettext} </span>
-            <span class="value">{$event->signup_cutoff|date_format:"%A, %B %e, %Y"}</span>
+            <span class="value">{$event->signup_cutoff|format_date:"%A, %B %e, %Y"}</span>
         </div>
     </div>
     {br}
