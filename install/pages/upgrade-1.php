@@ -25,7 +25,7 @@ if (!defined('EXPONENT')) exit('');
 <p>
 <?php
     $upgradedb = 'upgrade-2';
-    $upgradedbstr = gt('Continue to Install Tables');
+    $upgradedbstr = gt('Continue to Check System Requirements');
     if ($db->tableExists('textitem')) {
     	echo '<div style="color: red; font-weight: bold">';
     	echo gt("This is a 0.9x database.").' '.gt("Create a new database, then MIGRATE from the 0.9x database after installation.");
@@ -49,9 +49,5 @@ if (!defined('EXPONENT')) exit('');
             echo gt("and then run the install/upgrade process again.");
         ?>
     </p>
-    <p>
-    <?php echo gt("Next, we'll").' <a href="http://docs.exponentcms.org/docs/current/update-tables" target="_blank">'.
-        gt('Install Tables').'</a>, '.gt("and then run through any upgrade scripts needed to bring your code and database up to date."); ?>
 <?php } ?>
-</p>
 <a class="awesome large green" href="?page=<?php echo $upgradedb ?>"><?php echo $upgradedbstr ?></a>

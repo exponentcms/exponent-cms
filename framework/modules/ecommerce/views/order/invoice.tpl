@@ -71,17 +71,17 @@
                          {/permissions}
                     </td>
                     <td>
-                        {$order->purchased|date_format:"%A, %B %e, %Y"}
+                        {$order->purchased|format_date:"%A, %B %e, %Y"}
                     </td>
                     <td>
                         {$order->order_type->title}
                     </td>
                     <td>
                         {if $order->shipped}
-                            {if $order->shipped == -1}
+                            {if !$order->shipping_required}
                                 {'No Shipping Required'|gettext}
                             {else}
-                                {$order->shipped|date_format:"%A, %B %e, %Y":"Not Shipped Yet"}
+                                {$order->shipped|format_date:"%A, %B %e, %Y":"Not Shipped Yet"}
                             {/if}
                         {else}
                             {"Not Shipped Yet"|gettext}
@@ -199,6 +199,9 @@
                                 {/if}
                             </span>
                         </div>
+                        {if $billing->calculator != null}
+                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
+                        {if  !empty($data)}
                         <div class="odd">
                             <span class="pmt-label">
                                 {"AVS Address Verified"|gettext}
@@ -229,7 +232,9 @@
                                 {/if}
                             </span>
                         </div>
-                         {permissions}
+                        {/if}
+                        {/if}
+                        {permissions}
                             {if $permissions.edit_shipping_method == 1 && !$pf}
                                 <div class="item-permissions">
                                     {icon class="edit" action=edit_payment_info id=$order->id title='Edit Payment Method'|gettext}

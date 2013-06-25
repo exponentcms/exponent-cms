@@ -57,7 +57,6 @@ class fakeform extends form {
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/Modernizr-2.5.3.forms.js',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
         ));
         expJavascript::pushToFoot(array(
@@ -73,19 +72,6 @@ class fakeform extends form {
             "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
-//        expCSS::pushToHead(array(
-//    	    "unique"=>"h5form",
-//    	    "link"=>PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.css'
-//    	    )
-//    	);
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'h5form',
-//            "jquery"=> 'jqueryui',
-//            "src"=> PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.js',
-//            "content"=>"$(function() {
-//              $('#abc123').h5form();
-//            });"
-//        ));
 		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;
 		$html .= "<form id='abc123' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
@@ -137,8 +123,8 @@ class fakeform extends form {
                 $html .= "<label class=\"label\" style=\"background: transparent;\"></label>";
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
+            $for   = ' for="' . $name . '"';
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
-                $for   = ' for="' . $name . '"';
                 $html .= "<label ".$for." class=\"label\" style=\"width:auto; display:inline;\">";
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
@@ -146,7 +132,7 @@ class fakeform extends form {
                 if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
             }
 
-            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
+            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol') || $this->controls[$name]->_controltype == 'pagecontrol') {
             } elseif (!empty($this->controlLbl[$name])) {
                 if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
                     $html .= "<label ".$for." class=\"label\" style=\"display:inline;\">";
@@ -187,7 +173,6 @@ class fakeform extends form {
 			$html .= "</div>";
 			
 			$rank++;
-			
 		}
 	//	$html .= "<tr><td width='5%'></td><td wdith='90%'><td></td width='5%'></tr>\r\n";
 	//	$html .= "</table>\r\n";

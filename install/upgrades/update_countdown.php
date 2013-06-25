@@ -63,16 +63,18 @@ class update_countdown extends upgradescript {
         $fixed = 0;
         foreach ($db->selectObjects('expConfigs',"location_data LIKE '%countdown%'") as $config) {
             $cfg = expUnserialize($config->config);
-            $date = explode(' ',$cfg['count']);
-            $cfg['date-count'] = $date[0];
-            $time = explode(':',$date[1]);
-            $cfg['time-h-count'] = $time[0];
-            $cfg['time-m-count'] = $time[1];
-            $cfg['ampm-count'] = $date[2];
-            unset ($cfg['count']);
-            $config->config = serialize($cfg);
-            $db->updateObject($config,'expConfigs');
-            $fixed++;
+            if (!empty($cfg['count'])) {
+                $date = explode(' ',$cfg['count']);
+                $cfg['date-count'] = $date[0];
+                $time = explode(':',$date[1]);
+                $cfg['time-h-count'] = $time[0];
+                $cfg['time-m-count'] = $time[1];
+                $cfg['ampm-count'] = $date[2];
+                unset ($cfg['count']);
+                $config->config = serialize($cfg);
+                $db->updateObject($config,'expConfigs');
+                $fixed++;
+            }
         }
         return ($fixed?$fixed:gt('No')).' '.gt('Countdown modules settings were corrected');
 	}

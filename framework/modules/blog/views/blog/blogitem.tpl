@@ -46,7 +46,7 @@
             </p>
         {/if}
         <h1>{$record->title}</h1>
-        {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+        {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'}
         {subscribe_link prepend='<br/>'}
         {$myloc=serialize($__loc)}
         <div class="post-info">
@@ -96,6 +96,9 @@
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
             {/if}
             {$record->body}
+            {if !$config.displayauthor}
+                {$record->poster|signature}
+            {/if}
             {if $config.ffloat == "Below"}
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
             {/if}

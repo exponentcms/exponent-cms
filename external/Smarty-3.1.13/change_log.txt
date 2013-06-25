@@ -1,4 +1,4 @@
-﻿===== Smarty-3.1.13  =====
+===== Smarty-3.1.13  =====
 13.01.2013
 - enhancement allow to disable exception message escaping by SmartyException::$escape = false;  (Issue #130)
 

@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="importer usercsv-form-geninfo">
+<div class="importer import_csv">
 	<div class="form_header">
 		<h2>{'Import Form Data - Form Title and Control Names'|gettext}</h2>
 		<blockquote>{'Please enter a form title and verify the form control/field names.'|gettext}</blockquote>

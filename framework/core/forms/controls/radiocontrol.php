@@ -47,7 +47,8 @@ class radiocontrol extends formcontrol {
 		    $divID  = ' id="'.$this->id.'Control"';
 		    $for = ' for="'.$this->id.'"';
 		} else {
-		    $divID  = '';
+//		    $divID  = '';
+            $divID  = ' id="'.$name.'Control"';
 //		    $for = ' for="'.$name.'"';
             $for = ' for="'.$name.$this->value.'"';
 		}

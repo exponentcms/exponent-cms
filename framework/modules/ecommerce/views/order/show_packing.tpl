@@ -75,7 +75,7 @@
                          {/permissions}
                     </td>
                     <td>
-                        {$order->purchased|date_format:"%A, %B %e, %Y"}
+                        {$order->purchased|format_date:"%A, %B %e, %Y"}
                     </td>
                     <td>
                         {$order->order_type->title}
@@ -83,10 +83,11 @@
                     <td>
                         {if $order->shipped}
                             {if $order->shipped}
-                                {if $order->shipped == -1}
+                                {*{if $order->shipped == -1}*}
+                                {if !$order->shipping_required}
                                     {'No Shipping Required'|gettext}
                                 {else}
-                                    {$order->shipped|date_format:"%A, %B %e, %Y":"Not Shipped Yet"}
+                                    {$order->shipped|format_date:"%A, %B %e, %Y":"Not Shipped Yet"}
                                 {/if}
                             {else}
                                 {"Not Shipped Yet"|gettext}

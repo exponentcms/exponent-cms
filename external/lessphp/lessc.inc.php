@@ -633,6 +633,10 @@ class lessc {
 			}
 
 			foreach ($mixins as $mixin) {
+				if ($mixin === $block && !$args) {
+					continue;
+				}
+
 				$haveScope = false;
 				if (isset($mixin->parent->scope)) {
 					$haveScope = true;
@@ -2065,7 +2069,7 @@ class lessc_parser {
 	static protected $supressDivisionProps =
 		array('/border-radius$/i', '/^font$/i');
 
-	protected $blockDirectives = array("font-face", "keyframes", "page", "-moz-document");
+	protected $blockDirectives = array("font-face", "keyframes", "page", "-moz-document", "viewport", "-moz-viewport", "-o-viewport", "-ms-viewport");
 	protected $lineDirectives = array("charset");
 
 	/**
@@ -2653,7 +2657,6 @@ class lessc_parser {
 			}
 
 			if (!empty($rejectStrs) && in_array($tok, $rejectStrs)) {
-				$ount = null;
 				break;
 			}
 
@@ -3062,7 +3065,7 @@ class lessc_parser {
 	protected function end() {
 		if ($this->literal(';')) {
 			return true;
-		} elseif ($this->count == strlen($this->buffer) || $this->buffer{$this->count} == '}') {
+		} elseif ($this->count == strlen($this->buffer) || $this->buffer[$this->count] == '}') {
 			// if there is end of file or a closing block next then we don't need a ;
 			return true;
 		}

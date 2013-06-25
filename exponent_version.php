@@ -50,12 +50,12 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		// the info for the "next" version if we are a pre-release from the repository
 		define('EXPONENT_VERSION_MAJOR','2');
 		define('EXPONENT_VERSION_MINOR','2');
-		define('EXPONENT_VERSION_REVISION','0');
+		define('EXPONENT_VERSION_REVISION','1');
 		define('EXPONENT_VERSION_TYPE','develop');
 		define('EXPONENT_VERSION_ITERATION','');
 		define('EXPONENT_VERSION_BUILDDATE',time());
         // set DEVELOPMENT to 1 to debug the install process
-        define('DEVELOPMENT','1');
+//        define('DEVELOPMENT','1');
 	}
 }
 

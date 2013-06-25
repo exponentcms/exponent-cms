@@ -105,8 +105,7 @@ class paypalExpressCheckout extends billingcalculator {
      * @return mixed An object indicating pass of failure.
      */
     function preprocess($method, $opts, $params, $order) {
-
-        global $db, $user;
+//        global $db, $user;
 
         //eDebug($params);
         if (!isset($params['token'])) {
@@ -119,11 +118,11 @@ class paypalExpressCheckout extends billingcalculator {
             }
 
             // get a shipping address to display in the invoice email.
-            $shippingaddress  = $order->getCurrentShippingMethod();
-            $shipping_state   = new geoRegion($shippingaddress->state);
+            $shippingaddress = $order->getCurrentShippingMethod();
+            $shipping_state = new geoRegion($shippingaddress->state);
             $shipping_country = new geoCountry($shipping_state->country_id);
 
-            $state   = new geoRegion($method->state);
+            $state = new geoRegion($method->state);
             $country = new geoCountry($state->country_id);
 
             $config = unserialize($this->config);
@@ -145,15 +144,14 @@ class paypalExpressCheckout extends billingcalculator {
              *
              * @var string
              */
-            $returnURL = makeLink(array('controller'=> 'cart', 'action'=> 'preprocess'));
+            $returnURL = makeLink(array('controller' => 'cart', 'action' => 'preprocess'));
 
             /**
              * If the user cancels the transaction at PayPal, they are sent back to our site. This tells PayPal where to send them
              *
              * @var string
              */
-            $cancelURL = makeLink(array('controller'=> 'cart', 'action'=> 'checkout'),true);
-            ;
+            $cancelURL = makeLink(array('controller' => 'cart', 'action' => 'checkout'), true);;
 
             $shipname = $shippingaddress->firstname . ' ';
             $shipname .= empty($shippingaddress->middlename) ? $shippingaddress->lastname : $shippingaddress->middlename . ' ' . $shippingaddress->lastname;
@@ -163,12 +161,12 @@ class paypalExpressCheckout extends billingcalculator {
 
             if ($config['testmode']) {
                 $uname = $config['testusername'];
-                $pwd  = $config['testpassword'];
-                $sig  = $config['testsignature'];
+                $pwd = $config['testpassword'];
+                $sig = $config['testsignature'];
             } else {
                 $uname = $config['username'];
-                $pwd  = $config['password'];
-                $sig  = $config['signature'];
+                $pwd = $config['password'];
+                $sig = $config['signature'];
             }
             /**
              * An array of the data sent to PayPal. It will be transformend into Name=Value pairs later.
@@ -177,16 +175,16 @@ class paypalExpressCheckout extends billingcalculator {
              */
             $data = array(
                 // required parameters
-                'METHOD'            => 'SetExpressCheckout',
-                'USER'              => $uname,
-                'PWD'               => $pwd,
-                'SIGNATURE'         => $sig,
+                'METHOD'                             => 'SetExpressCheckout',
+                'USER'                               => $uname,
+                'PWD'                                => $pwd,
+                'SIGNATURE'                          => $sig,
 //                'VERSION'           => '59.0',
-                'VERSION'           => '95.0',
+                'VERSION'                            => '95.0',
 //                'ReturnUrl' => $returnURL,
-                'RETURNURL'         => $returnURL,
-                'CANCELURL'         => $cancelURL,
-                'ALLOWNOTE' => '1',  // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
+                'RETURNURL'                          => $returnURL,
+                'CANCELURL'                          => $cancelURL,
+                'ALLOWNOTE'                          => '1', // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
                 // TODO: build data from odrer
 //                'AMT'               => number_format($order->grand_total, 2, '.', ''), //FIXME deprecated in 63.0
 //                'CURRENCYCODE'      => 'USD',
@@ -194,24 +192,24 @@ class paypalExpressCheckout extends billingcalculator {
 //                'SHIPPINGAMT'       => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
 //                'TAXAMT'            => number_format($order->tax, 2, '.', ''),
 //                'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',  // currency code
-                'PAYMENTREQUEST_0_CURRENCYCODE' => ECOM_CURRENCY,  // currency code
-                'PAYMENTREQUEST_0_ITEMAMT' => number_format($order->total, 2, '.', ''),  // total item cost
-                'PAYMENTREQUEST_0_SHIPPINGAMT' => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),  // total shipping cost
-                'PAYMENTREQUEST_0_TAXAMT' => number_format($order->tax, 2, '.', ''),  // total tax cost
-                'PAYMENTREQUEST_0_AMT' => number_format($order->grand_total, 2, '.', ''),  // total amount
-                'ADDROVERRIDE'      => '1',
+                'PAYMENTREQUEST_0_CURRENCYCODE'      => ECOM_CURRENCY, // currency code
+                'PAYMENTREQUEST_0_ITEMAMT'           => number_format($order->total, 2, '.', ''), // total item cost
+                'PAYMENTREQUEST_0_SHIPPINGAMT'       => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''), // total shipping cost
+                'PAYMENTREQUEST_0_TAXAMT'            => number_format($order->tax, 2, '.', ''), // total tax cost
+                'PAYMENTREQUEST_0_AMT'               => number_format($order->grand_total, 2, '.', ''), // total amount
+                'ADDROVERRIDE'                       => '1',
 //                'SHIPTONAME'        => $shipname,
 //                'SHIPTOSTREET'      => $shipstreet,
 //                'SHIPTOCITY'        => $shippingaddress->city,
 //                'SHIPTOSTATE'       => $shipping_state->code,
 //                'SHIPTOCOUNTRYCODE' => $shipping_country->iso_code_2letter,
 //                'SHIPTOZIP'         => $shippingaddress->zip,
-                'PAYMENTREQUEST_0_SHIPTONAME' => $shipname,
-                'PAYMENTREQUEST_0_SHIPTOSTREET' => $shipstreet,
-                'PAYMENTREQUEST_0_SHIPTOCITY' => $shippingaddress->city,
-                'PAYMENTREQUEST_0_SHIPTOSTATE' => $shipping_state->code,
+                'PAYMENTREQUEST_0_SHIPTONAME'        => $shipname,
+                'PAYMENTREQUEST_0_SHIPTOSTREET'      => $shipstreet,
+                'PAYMENTREQUEST_0_SHIPTOCITY'        => $shippingaddress->city,
+                'PAYMENTREQUEST_0_SHIPTOSTATE'       => $shipping_state->code,
                 'PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE' => $shipping_country->iso_code_2letter,
-                'PAYMENTREQUEST_0_SHIPTOZIP' => $shippingaddress->zip
+                'PAYMENTREQUEST_0_SHIPTOZIP'         => $shippingaddress->zip
             );
 
             for ($n = 0; $n < count($order->orderitem); $n++) {
@@ -220,8 +218,8 @@ class paypalExpressCheckout extends billingcalculator {
 //                $data['L_QTY' . $n]    = $order->orderitem[$n]->quantity;
 //                $data['L_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
 //                $data['L_AMT' . $n]    = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
-                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name,0,124) . "..." : $order->orderitem[$n]->products_name ;
-                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model,0,124) . "..." : $order->orderitem[$n]->product->model;
+                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
+                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
                 $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
                 $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
                 $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
@@ -239,17 +237,17 @@ class paypalExpressCheckout extends billingcalculator {
             if (!empty($nvpResArray['curl_error'])) {
                 //curl error
                 $object->errorCode = $nvpResArray['curl_errno']; //Response reason code
-                $object->message   = $nvpResArray['curl_error'];
+                $object->message = $nvpResArray['curl_error'];
 
                 $opts->result = $object;
-                $method->update(array('billing_options'=> serialize($opts)));
+                $method->update(array('billing_options' => serialize($opts)));
             } elseif ($nvpResArray['ACK'] == 'Error' || $nvpResArray['ACK'] == 'Failure' || $nvpResArray['ACK'] == 'FailureWithWarning' || $nvpResArray['ACK'] == 'Warning') {
                 // paypal error
                 $object->errorCode = "";
-                $object->message   = "The following errors occurred: ";
+                $object->message = "The following errors occurred: ";
 
                 // its possible there are more than one error. 
-                foreach ($nvpResArray as $k=> $v) {
+                foreach ($nvpResArray as $k => $v) {
                     if (is_array($v)) {
                         $object->errorCode .= $v['ERRORCODE'] . ", ";
                         $object->message .= $v['LONGMESSAGE'] . ", ";
@@ -259,19 +257,19 @@ class paypalExpressCheckout extends billingcalculator {
                 }
                 // remove the trailing ", " (comma space)
                 $object->errorCode = preg_replace("/,\s$/", "", $object->errorCode);
-                $object->message   = preg_replace("/,\s$/", ".", $object->message);
+                $object->message = preg_replace("/,\s$/", ".", $object->message);
 
                 $opts->result = $object;
-                $method->update(array('billing_options'=> serialize($opts)));
+                $method->update(array('billing_options' => serialize($opts)));
             } else {
                 // Approved
-                $object->errorCode     = 0;
-                $object->message       = "SetExpressCheckout successfully returned token.";
-                $object->token         = $nvpResArray['TOKEN'];
+                $object->errorCode = 0;
+                $object->message = "SetExpressCheckout successfully returned token.";
+                $object->token = $nvpResArray['TOKEN'];
                 $object->correlationID = $nvpResArray['CORRELATIONID'];
 
                 $opts->result = $object;
-                $method->update(array('billing_options'=> serialize($opts)));
+                $method->update(array('billing_options' => serialize($opts)));
 
                 // redirect
                 redirect_to($paypal_url . $nvpResArray['TOKEN']);
@@ -283,48 +281,50 @@ class paypalExpressCheckout extends billingcalculator {
             //eDebug($object,true);
             if ($object->result->token == $params['token']) {
                 $object->result->errorCode = 0;
-                $object->result->message   = "User has approved the payment at PayPal";
-                $object->result->PayerID   = $params['PayerID'];
-                $method->update(array('billing_options'=> serialize($object)));
+                $object->result->message = "User has approved the payment at PayPal";
+                $object->result->PayerID = $params['PayerID'];
+                $method->update(array('billing_options' => serialize($object)));
                 return $object;
             } else {
                 $object->result->errorCode = 1;
-                $object->result->message   = "PayPal Token Mismatch";
-                $object->result->PayerID   = $params['PayerID'];
-                $method->update(array('billing_options'=> serialize($object)));
+                $object->result->message = "PayPal Token Mismatch";
+                $object->result->PayerID = $params['PayerID'];
+                $method->update(array('billing_options' => serialize($object)));
                 return $object;
             }
         }
         return $object;
     }
 
-    function process($method, $opts, $params, $invoice_number) {
-        global $order, $db, $user;
+//    function process($method, $opts, $params, $invoice_number) {
+    function process($method, $opts, $params, $order) {
+//        global $order, $db, $user;
+
         $billing_options = expUnserialize($method->billing_options);
-        $config          = expUnserialize($this->config);
+        $config = expUnserialize($this->config);
 
         if ($config['testmode']) {
             $uname = $config['testusername'];
-            $pwd  = $config['testpassword'];
-            $sig  = $config['testsignature'];
+            $pwd = $config['testpassword'];
+            $sig = $config['testsignature'];
         } else {
             $uname = $config['username'];
-            $pwd  = $config['password'];
-            $sig  = $config['signature'];
+            $pwd = $config['password'];
+            $sig = $config['signature'];
         }
         //eDebug($order);
         $data = array(
             // required parameters
-            'METHOD'        => 'DoExpressCheckoutPayment',
-            'USER'          => $uname,
-            'PWD'           => $pwd,
-            'SIGNATURE'     => $sig,
+            'METHOD'                         => 'DoExpressCheckoutPayment',
+            'USER'                           => $uname,
+            'PWD'                            => $pwd,
+            'SIGNATURE'                      => $sig,
 //            'VERSION'       => '59.0',
-            'VERSION'       => '95.0',
-            'SOLUTIONTYPE'  => 'Sole', //added per post
-            'LANDINGPAGE'   => 'Billing', //added per post
-            'TOKEN'         => $billing_options->result->token,
-            'PAYERID'       => $billing_options->result->PayerID,
+            'VERSION'                        => '95.0',
+            'SOLUTIONTYPE'                   => 'Sole', //added per post
+            'LANDINGPAGE'                    => 'Billing', //added per post
+            'TOKEN'                          => $billing_options->result->token,
+            'PAYERID'                        => $billing_options->result->PayerID,
 //            'AMT'           => number_format($order->grand_total, 2, '.', ''),
 //            'CURRENCYCODE'  => 'USD',
 //            'INVNUM'        => $invoice_number,
@@ -334,14 +334,16 @@ class paypalExpressCheckout extends billingcalculator {
 //            'SHIPPINGAMT'   => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
 //            'TAXAMT'        => number_format($order->tax, 2, '.', ''),
 //            'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',
-            'PAYMENTREQUEST_0_CURRENCYCODE' => ECOM_CURRENCY,
-            'PAYMENTREQUEST_0_INVNUM' => $invoice_number,
-            'PAYMENTREQUEST_0_CUSTOM' => 'Invoice #' . $invoice_number,
+            'PAYMENTREQUEST_0_CURRENCYCODE'  => ECOM_CURRENCY,
+//            'PAYMENTREQUEST_0_INVNUM'        => $invoice_number,
+//            'PAYMENTREQUEST_0_CUSTOM'        => 'Invoice #' . $invoice_number,
+            'PAYMENTREQUEST_0_INVNUM'        => $order->invoice_id,
+            'PAYMENTREQUEST_0_CUSTOM'        => 'Invoice #' . $order->invoice_id,
             'PAYMENTREQUEST_0_PAYMENTACTION' => $config['process_mode'],
-            'PAYMENTREQUEST_0_ITEMAMT' => number_format($order->total, 2, '.', ''),
-            'PAYMENTREQUEST_0_SHIPPINGAMT' => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
-            'PAYMENTREQUEST_0_TAXAMT' => number_format($order->tax, 2, '.', ''),
-            'PAYMENTREQUEST_0_AMT'       => number_format($order->grand_total, 2, '.', ''),
+            'PAYMENTREQUEST_0_ITEMAMT'       => number_format($order->total, 2, '.', ''),
+            'PAYMENTREQUEST_0_SHIPPINGAMT'   => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
+            'PAYMENTREQUEST_0_TAXAMT'        => number_format($order->tax, 2, '.', ''),
+            'PAYMENTREQUEST_0_AMT'           => number_format($order->grand_total, 2, '.', ''),
         );
 
         $it = 0;
@@ -352,11 +354,11 @@ class paypalExpressCheckout extends billingcalculator {
 //            $data['L_QTY' . $n]    = $order->orderitem[$n]->quantity;
 //            $data['L_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
 //            $data['L_AMT' . $n]    = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
-                $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name,0,124) . "..." : $order->orderitem[$n]->products_name ;
-                $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model,0,124) . "..." : $order->orderitem[$n]->product->model;
-                $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
-                $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
-                $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
+            $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
+            $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
+            $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
+            $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
+            $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
             //$it += number_format(($order->orderitem[$n]->products_tax), 2, '.', '') * $order->orderitem[$n]->quantity;
             //$tt += number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '') * $order->orderitem[$n]->quantity;
         }
@@ -376,11 +378,11 @@ class paypalExpressCheckout extends billingcalculator {
         if (!empty($nvpResArray['curl_error'])) {
             //curl error            
             $billing_options->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
-            $billing_options->result->message   = $nvpResArray['curl_error'];
+            $billing_options->result->message = $nvpResArray['curl_error'];
 
             //$opts->result = $object;                
             $transaction_state = "Temporary Failure";
-            $trax_state        = "error";
+            $trax_state = "error";
         } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
             /*
             [TOKEN] => EC-7YW97132PA0236148 [TIMESTAMP] => 2010-01-16T21:49:15Z [CORRELATIONID] => 7f49bba2eac7e 
@@ -389,7 +391,7 @@ class paypalExpressCheckout extends billingcalculator {
             [CURRENCYCODE] => USD [PAYMENTSTATUS] => Pending [PENDINGREASON] => paymentreview [REASONCODE] => None 
             [PROTECTIONELIGIBILITY] => Ineligible 
             */
-            $billing_options->result->status    = $nvpResArray['ACK'];
+            $billing_options->result->status = $nvpResArray['ACK'];
             $billing_options->result->errorCode = 0;
             if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
                 $billing_options->result->message = $nvpResArray['ACK'] . ":" . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
@@ -398,8 +400,8 @@ class paypalExpressCheckout extends billingcalculator {
                 $billing_options->result->message = $nvpResArray['ACK'];
             }
             $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
-            $billing_options->result->timestamp     = $nvpResArray['TIMESTAMP'];
-            $billing_options->result->note          = $nvpResArray['NOTE'];  //FIXME, what can we do with the note returned?
+            $billing_options->result->timestamp = $nvpResArray['TIMESTAMP'];
+            $billing_options->result->note = $nvpResArray['NOTE']; //FIXME, what can we do with the note returned?
 //            $billing_options->result->paymenttype   = $nvpResArray['PAYMENTTYPE'];
 //            $billing_options->result->fee_amt = $nvpResArray['FEEAMT'];
 //            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];
@@ -412,22 +414,23 @@ class paypalExpressCheckout extends billingcalculator {
             $billing_options->result->payment_status = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
             $billing_options->result->pending_reason = $nvpResArray['PAYMENTINFO_0_PENDINGREASON'];
             $billing_options->result->reason_code = $nvpResArray['PAYMENTINFO_0_REASONCODE'];
-            $billing_options->result->transactionID = $nvpResArray['PAYMENTINFO_0_TRANSACTIONID'];
+//            $billing_options->result->transactionID = $nvpResArray['PAYMENTINFO_0_TRANSACTIONID'];
+            $billing_options->result->transId = $nvpResArray['PAYMENTINFO_0_TRANSACTIONID'];
             $transaction_state = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
             $trax_state = "complete";
         } else {
-            $billing_options->result->status    = $nvpResArray['ACK'];
+            $billing_options->result->status = $nvpResArray['ACK'];
             $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
 //            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
             if (!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
             $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ":" . $nvpResArray[0]['LONGMESSAGE'];
 //            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ":" . $nvpResArray[0]['L_LONGMESSAGE0']; ;
             $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
-            $transaction_state                      = "Failure";
-            $trax_state                             = "error";
+            $transaction_state = "Failure";
+            $trax_state = "error";
         }
         //eDebug($billing_options,true);                                                               
-        $method->update(array('billing_options'=> serialize($billing_options), 'transaction_state'=> $transaction_state));
+        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $billing_options->result, $trax_state);
         return $billing_options->result;
 
@@ -443,7 +446,6 @@ class paypalExpressCheckout extends billingcalculator {
      * Point to the location of the config template.
      *
      * @return string The location of the config.tpl
-     *
      * TODO: this is hard coded. why? needs to pick up this like a controller does
      */
     function configForm() {
@@ -534,8 +536,8 @@ class paypalExpressCheckout extends billingcalculator {
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
         //turning off the server and peer verification(TrustManager Concept).
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -569,7 +571,7 @@ class paypalExpressCheckout extends billingcalculator {
      * @return array
      */
     function deformatNVP($nvpstr) {
-        $intial   = 0;
+        $intial = 0;
         $nvpArray = array();
 
         while (strlen($nvpstr)) {
@@ -583,20 +585,20 @@ class paypalExpressCheckout extends billingcalculator {
             $valval = substr($nvpstr, $keypos + 1, $valuepos - $keypos - 1);
             //decoding the respose
             $nvpArray[urldecode($keyval)] = urldecode($valval);
-            $nvpstr                       = substr($nvpstr, $valuepos + 1, strlen($nvpstr));
+            $nvpstr = substr($nvpstr, $valuepos + 1, strlen($nvpstr));
         }
 
         // now we'll group the related NVPs into their own arrays and make a multidimensional array out of the whole thing
         // Take note that the Key of the new array will be L_0, L_1... L_n The L_ forces the array to have a string index. 
         // If we let it have numeric indicies array_merge_recursive() wouldn't work as expected. Since "non-related data" is 
         // also in the multidimensional you'll be treating this thing as a associative array anyway so really this is easier 
-        foreach ($nvpArray as $k=> $v) {
+        foreach ($nvpArray as $k => $v) {
             // check if it has a number at the end of the key
             if (preg_match('/[0-9]+$/', $k, $matches)) {
                 // rip off the "L_" from the beginning of the key and the matched number from the end
                 // make a new array using "l_(matched number)" as the index.
                 // merge the new array to the multidimensional array
-                $multiArr = array_merge_recursive($multiArr, array("L_$matches[0]"=> array(preg_replace("/(L_)|$matches[0]/", "", $k)=> $v)));
+                $multiArr = array_merge_recursive($multiArr, array("L_$matches[0]" => array(preg_replace("/(L_)|$matches[0]/", "", $k) => $v)));
             } else {
                 // if the key doesn't have a number at the end we don't need to do anythin special to try to match up any related data as above. 
                 // Simply stick it on the multidimensional array
@@ -606,7 +608,7 @@ class paypalExpressCheckout extends billingcalculator {
         }
 
         // array_merge_recursive() needed a string index to work. now we don't actually want an array index of "L_0, L_1... L_n" we just wan the number
-        foreach ($multiArr as $k=> $v) {
+        foreach ($multiArr as $k => $v) {
             if (preg_match('/L_/', $k, $matches)) {
                 $multiArr[preg_replace('/L_/', "", $k)] = $v;
                 unset($multiArr[$k]);
@@ -625,10 +627,12 @@ class paypalExpressCheckout extends billingcalculator {
         $ret = expUnserialize($opts);
         if (isset($ret->result)) {
 //            return $ret->result->correlationID;
-            return $ret->result->transactionID;
+//            return $ret->result->transactionID;
+            return $ret->result->transId;
         } else {
 //            return $ret->correlationID;
-            return $ret->transactionID;
+//            return $ret->transactionID;
+            return $ret->transId;
         }
     }
 
@@ -658,19 +662,21 @@ class paypalExpressCheckout extends billingcalculator {
     }
 
     // credit transaction
-    function credit_transaction($method, $amount) {
-        global $order, $db;
+    function credit_transaction($method, $amount, $order) {
+//        global $order, $db;
+
         // eDebug($method, true);
-        $billing_options             = unserialize($method->billing_options);
+        $billing_options = unserialize($method->billing_options);
         $billing_transaction_options = unserialize($method->billingtransaction[0]->billing_options);
-        $config                      = unserialize($this->config);
+        $config = unserialize($this->config);
 
         // Set request-specific fields.
-        $transactionID = urlencode($billing_options->result->transactionID);
-        $refundType    = urlencode('Full'); // or 'Partial'
-        $memo          = "Transaction Refunded"; // required if Partial.
+//        $transactionID = urlencode($billing_options->result->transactionID);
+        $transactionID = urlencode($billing_options->result->transId);
+        $refundType = urlencode('Full'); // or 'Partial'
+        $memo = "Transaction Refunded"; // required if Partial.
 //        $currencyID    = urlencode('USD'); // or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
-        $currencyID    = urlencode(ECOM_CURRENCY); // or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
+        $currencyID = urlencode(ECOM_CURRENCY); // or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
 
         // Add request-specific fields to the request string.
         $nvpStr = "&TRANSACTIONID=$transactionID&REFUNDTYPE=$refundType&CURRENCYCODE=$currencyID";
@@ -702,12 +708,12 @@ class paypalExpressCheckout extends billingcalculator {
             //Create another billing transaction option
             $billing_transaction_options->result->payment_status = 'Refunded';
             unset($billing_transaction_options->result->pending_reason);
-            $method->update(array('billing_options'=> serialize($billing_options), 'transaction_state'=> 'refunded'));
+            $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => 'refunded'));
 
             $billing_options->result->correlationID = urldecode($httpParsedResponseAr['CORRELATIONID']);
             $this->createBillingTransaction($method, urldecode($httpParsedResponseAr['NETREFUNDAMT']), $billing_options->result, 'refunded');
             flash('message', gt('Refund Completed Successfully.'));
-            redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $method->orders_id));
+            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
         } else {
             exit('RefundTransaction failed: ' . $httpParsedResponseAr["L_LONGMESSAGE0"]);
         }
@@ -720,18 +726,17 @@ class paypalExpressCheckout extends billingcalculator {
      * @param $nvpStr_
      *
      * @internal param \The $string API method name
-     *
      * @internal param \The $string POST Message fields in &name=value pair format
      * @return    array    Parsed HTTP Response body
      */
     function PPHttpPost($methodName_, $nvpStr_) {
         $environment = 'sandbox';
-        $config      = unserialize($this->config);
+        $config = unserialize($this->config);
         // Set up your API credentials, PayPal end point, and API version.
-        $API_UserName  = urlencode($config['username']);
-        $API_Password  = urlencode($config['password']);
+        $API_UserName = urlencode($config['username']);
+        $API_Password = urlencode($config['password']);
         $API_Signature = urlencode($config['signature']);
-        $API_Endpoint  = "https://api-3t.paypal.com/nvp";
+        $API_Endpoint = "https://api-3t.paypal.com/nvp";
         if ("sandbox" === $environment || "beta-sandbox" === $environment) {
             $API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
         }
@@ -743,8 +748,8 @@ class paypalExpressCheckout extends billingcalculator {
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
         // Turn off the server and peer verification (TrustManager Concept).
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);

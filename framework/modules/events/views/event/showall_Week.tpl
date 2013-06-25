@@ -40,8 +40,8 @@
                 {/if}
             {/if}
         {/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
-        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+        {*{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}*}
+        {*{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}*}
 	</div>
 	<h1>
         {ical_link}

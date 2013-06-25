@@ -13,24 +13,31 @@
  *
  *}
 
-<div id="editpayment">
-    {form action=save_payment_info}
-        {control type="hidden" name="id" value=$orderid}    
-        <div id="editpayment-tabs" class="yui-navset exp-skin-tabview hide">
-            <ul class="yui-nav">
-            <li class="selected"><a href="#tab1"><em>{'Edit Payment Info'|gettext}</em></a></li>
-            </ul>            
-            <div class="yui-content">
-                <div id="tab1">
-                    {foreach from=$opts item=field key=key}
-                        {control type="text" name="result[`$key`]" label=$key value=$field}
-                    {/foreach}
-                    {control type="buttongroup" submit="Save Payment Info"|gettext cancel="Cancel"|gettext}
+<div class="module order edit">
+    <div id="editpayment">
+        {form action=save_payment_info}
+            {control type="hidden" name="id" value=$orderid}
+            <div id="editpayment-tabs" class="yui-navset exp-skin-tabview hide">
+                <ul class="yui-nav">
+                <li class="selected"><a href="#tab1"><em>{'Edit Payment Info'|gettext}</em></a></li>
+                </ul>
+                <div class="yui-content">
+                    <div id="tab1">
+                        {control type="text" name="result[transId]" label="Payment Reference #"|gettext value=$opts->transId}
+                        {group label="Payment Statuses"|gettext}
+                        {foreach from=$opts item=field key=key}
+                            {if $key != 'transId'}
+                                {control type="text" name="result[`$key`]" label=$key value=$field}
+                            {/if}
+                        {/foreach}
+                        {/group}
+                        {control type="buttongroup" submit="Save Payment Info"|gettext cancel="Cancel"|gettext}
+                    </div>
                 </div>
             </div>
-        </div>
-	    <div class="loadingdiv">{'Loading'|gettext}</div>
-    {/form}
+            <div class="loadingdiv">{'Loading'|gettext}</div>
+        {/form}
+    </div>
 </div>
 
 {script unique="editform" yui3mods=1}

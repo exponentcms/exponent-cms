@@ -38,6 +38,13 @@ include_once('../exponent.php');
 //	header('Location: ../index.php');
 //	exit(gt('This Exponent Site has already been configured.'));
 //}
+if (isset($_GET['profile'])) {
+    expSettings::activateProfile($_GET['profile']);
+    expTheme::removeSmartyCache();
+    expSession::clearAllUsersSessionCache();
+    flash('message', gt("New Configuration Profile Loaded"));
+    header('Location: ../index.php');
+}
 
 if (isset($_POST['sc'])) {
     if (file_exists("../framework/conf/config.php")) {
@@ -97,11 +104,18 @@ switch ($page) {
 	    $masthead = gt("Upgrade");
 		$page_text = gt("It appears you've upgraded your Exponent code.").'<br /><br />'.gt("Before you begin the upgrade you should").' <a href="javascript:void(0)" onclick="return pop(\'changes\');">'.gt('read about the changes!').'</a> ';
 		break;
-	case 'upgrade-2':
+    case 'upgrade-2':
+        $masthead = gt("Upgrade");
+   		$page_text = gt('Exponent requires that several file permissions be set correctly in order to operate.').' '.
+            gt('Sanity checks are being run right now to ensure that the web server directory you wish to upgrade Exponent in, is suitable.').'<br><br>'.
+   	        gt('If something fails, please').' <a href="javascript:void(0)" onclick="return pop(\'sanity\');">'.gt('read about each sanity check').'</a> '.
+            gt('for an explanation of what exactly the upgrade is checking for, and how to fix it.');
+   		break;
+	case 'upgrade-3':
 	    $masthead = gt("Upgrade");
 		$page_text = gt("Installing Tables adds any new fields to existing tables, and adds any additional tables Exponent needs to be awesome.");
 		break;
-	case 'upgrade-3':
+	case 'upgrade-4':
 	    $masthead = gt("Upgrade");
 		$page_text = gt("We'll now run any upgrade scripts needed for this version of Exponent.");
 		break;

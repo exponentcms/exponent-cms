@@ -18,8 +18,7 @@
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
-    <h2>{$current->name}</h2>
-    <ul>
+    {capture assign='display'}
         {$islastdepth="false"}
         {foreach from=$sections item=section}
             {if $section->parent == $current->id}
@@ -33,19 +32,26 @@
                </li>
             {/if}
         {/foreach}
-        
-        {if $islastdepth=="false"}
-            {foreach from=$sections item=section}
-                {if $section->parent == $current->parent}
-                    <li{if $section->id==$current->id || $isparent==1} class="current"{/if}>
-                        {if $section->active == 1}
-                            <a href="{$section->link}" class="navlink {if $section->id==$current->id || $isparent==1}current{/if}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>
-                        {else}
-                            <span class="navlink">{$section->name}</span>&#160;
-                        {/if}
-                    </li>
-                {/if}
-            {/foreach}
-        {/if}
+    {/capture}
+    {if $islastdepth == 'true'}
+        <h2>{$current->name}</h2>
+    {/if}
+    <ul>
+        {$display}
+
+        {*FIXME revert to display siblings if no children exist?*}
+        {*{if $islastdepth=="false"}*}
+           {*{foreach from=$sections item=section}*}
+                {*{if $section->parent == $current->parent}*}
+                    {*<li{if $section->id==$current->id || $isparent==1} class="current"{/if}>*}
+                        {*{if $section->active == 1}*}
+                            {*<a href="{$section->link}" class="navlink {if $section->id==$current->id || $isparent==1}current{/if}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>*}
+                        {*{else}*}
+                            {*<span class="navlink">{$section->name}</span>&#160;*}
+                        {*{/if}*}
+                    {*</li>*}
+                {*{/if}*}
+            {*{/foreach}*}
+        {*{/if}*}
     </ul>
 </div>

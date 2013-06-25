@@ -18,5 +18,10 @@
 		<h2>{'Restore Uploaded Files from Archive'|gettext}</h2>
 		<blockquote>{'To restore your uploaded files, simply select and upload the files archive.'|gettext}</blockquote>
 	</div>
-	{$form_html}
+    <div>
+        {form action=import_files_process}
+            {control type=uploader name=file label=gt('Files Archive')}
+            {control class=uploadfile type=buttongroup submit="Restore"|gettext}
+        {/form}
+    </div>
 </div>

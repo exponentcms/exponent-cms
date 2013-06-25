@@ -17,9 +17,7 @@
 
 {/css}
 
-{script unique="editor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
-
-{/script}
+<script src="{$smarty.const.PATH_RELATIVE}external/editors/ckeditor/ckeditor.js"></script>
 
 <div id="editproduct" class="module store edit yui-skin-sam exp-skin exp-admin-skin">
     {if $record->id != ""}

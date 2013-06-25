@@ -538,7 +538,7 @@ class navigationController extends expController {
         $section              = new stdClass();
         $section->parent      = $parent_section->id;
         $section->name        = $subtpl->name;
-        $section->sef_name     = $router->encode($section->name);
+        $section->sef_name    = $router->encode($section->name);
         $section->subtheme    = $subtpl->subtheme;
         $section->active      = $subtpl->active;
         $section->public      = $subtpl->public;
@@ -550,6 +550,11 @@ class navigationController extends expController {
         self::process_section($section, $subtpl);
     }
 
+    /**
+     * Delete page and send its contents to the recycle bin
+     *
+     * @param $parent
+     */
     public static function deleteLevel($parent) {
         global $db;
 
@@ -561,22 +566,29 @@ class navigationController extends expController {
         foreach ($secrefs as $secref) {
             $loc = expCore::makeLocation($secref->module, $secref->source, $secref->internal);
             recyclebin::sendToRecycleBin($loc, $parent);
-            if (class_exists($secref->module)) {
-                $modclass = $secref->module;
-                //FIXME: more module/controller glue code
-                if (expModules::controllerExists($modclass)) {
-                    $mod = new $modclass($loc->src);
-                    $mod->delete_instance();
-                } else {
-                    $mod = new $modclass();
-                    $mod->deleteIn($loc);
-                }
-            }
+            //FIXME if we delete the module & sectionref the module completely disappears
+//            if (class_exists($secref->module)) {
+//                $modclass = $secref->module;
+//                //FIXME: more module/controller glue code
+//                if (expModules::controllerExists($modclass)) {
+//                    $modclass = expModules::getControllerClassName($modclass);
+//                    $mod = new $modclass($loc->src);
+//                    $mod->delete_instance();
+//                } else {
+//                    $mod = new $modclass();
+//                    $mod->deleteIn($loc);
+//                }
+//            }
         }
-        $db->delete('sectionref', 'section=' . $parent);
+//        $db->delete('sectionref', 'section=' . $parent);
         $db->delete('section', 'parent=' . $parent);
     }
 
+    /**
+     * Move content page and its children to stand-alones
+     *
+     * @param $parent
+     */
     public static function removeLevel($parent) {
         global $db;
 
@@ -737,10 +749,10 @@ class navigationController extends expController {
             //assign the parent of the moving section to the ID of the target section
             $moveSec->parent = $targSec->id;
             //set the rank of the moving section to 0 since it will appear first in the new order
-            $moveSec->rank = 0;
+            $moveSec->rank = 1;
             //select all children currently of the parent we're about to append to
             $targSecChildren = $db->selectObjects("section", "parent=" . $targSec->id . " ORDER BY rank");
-            //update the ranks of the children to +1 higher to accomodate our new ranl 0 section being moved in.
+            //update the ranks of the children to +1 higher to accommodate our new rank 0 section being moved in.
             $newrank = 1;
             foreach ($targSecChildren as $value) {
                 if ($value->id != $moveSec->id) {
@@ -752,10 +764,10 @@ class navigationController extends expController {
             $db->updateObject($moveSec, 'section');
             if ($oldParent != $moveSec->parent) {
                 //we need to re-rank the children of the parent that the miving section has just left
-                $chilOfLastMove = $db->selectObjects("section", "parent=" . $oldParent . " ORDER BY rank");
-                for ($i = 0; $i < count($chilOfLastMove); $i++) {
-                    $chilOfLastMove[$i]->rank = $i;
-                    $db->updateObject($chilOfLastMove[$i], 'section');
+                $childOfLastMove = $db->selectObjects("section", "parent=" . $oldParent . " ORDER BY rank");
+                for ($i = 0; $i < count($childOfLastMove); $i++) {
+                    $childOfLastMove[$i]->rank = $i;
+                    $db->updateObject($childOfLastMove[$i], 'section');
                 }
 
             }
@@ -784,7 +796,7 @@ class navigationController extends expController {
                     $targSec->rank        = $targSec->rank - 1;
                     $moveSec->rank        = $targSec->rank + 1;
                     $movePreviousSiblings = $db->selectObjects("section", "id!=" . $moveSec->id . " AND parent=" . $targSec->parent . " AND rank<=" . $targSec->rank . " ORDER BY rank");
-                    $rerank               = 0;
+                    $rerank               = 1;
                     foreach ($movePreviousSiblings as $value) {
                         if ($value->id != $moveSec->id) {
                             $value->rank = $rerank;
@@ -814,7 +826,7 @@ class navigationController extends expController {
                 $db->updateObject($moveSec, 'section');
                 //handle re-ranking of previous parent
                 $oldSiblings = $db->selectObjects("section", "parent=" . $oldParent . " AND rank>" . $oldRank . " ORDER BY rank");
-                $rerank      = 0;
+                $rerank      = 1;
                 foreach ($oldSiblings as $value) {
                     if ($value->id != $moveSec->id) {
                         $value->rank = $rerank;
@@ -823,11 +835,11 @@ class navigationController extends expController {
                     }
                 }
                 if ($oldParent != $moveSec->parent) {
-                    //we need to re-rank the children of the parent that the miving section has just left
-                    $chilOfLastMove = $db->selectObjects("section", "parent=" . $oldParent . " ORDER BY rank");
-                    for ($i = 0; $i < count($chilOfLastMove); $i++) {
-                        $chilOfLastMove[$i]->rank = $i;
-                        $db->updateObject($chilOfLastMove[$i], 'section');
+                    //we need to re-rank the children of the parent that the moving section has just left
+                    $childOfLastMove = $db->selectObjects("section", "parent=" . $oldParent . " ORDER BY rank");
+                    for ($i = 0; $i < count($childOfLastMove); $i++) {
+                        $childOfLastMove[$i]->rank = $i;
+                        $db->updateObject($childOfLastMove[$i], 'section');
                     }
                 }
             }
@@ -965,6 +977,10 @@ class navigationController extends expController {
         ));
     }
 
+    /**
+     * Move standalone back to hierarchy
+     *
+     */
     function reparent_standalone() {
         $standalone = $this->section->find($this->params['page']);
         if ($standalone) {
@@ -977,6 +993,10 @@ class navigationController extends expController {
         }
     }
 
+    /**
+     * Move content page to standalones
+     *
+     */
     function remove() {
         global $db;
 
@@ -998,7 +1018,7 @@ class navigationController extends expController {
             foreach ($this->params['deleteit'] as $page) {
                 $section = new section(intval($page));
                 if ($section) {
-                    navigationController::deleteLevel($section->id);
+//                    navigationController::deleteLevel($section->id);
                     $section->delete();
                 }
             }

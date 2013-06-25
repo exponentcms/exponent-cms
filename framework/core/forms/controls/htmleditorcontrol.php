@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * HTML Editor Control
+ * HTML Editor Control - displays wysiwyg editor widget
  *
  * @package Subsystems-Forms
  * @subpackage Control
@@ -47,7 +47,6 @@ class htmleditorcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-
 			global $db;
 			
 			if($this->toolbar == "") {

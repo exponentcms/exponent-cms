@@ -92,7 +92,9 @@ class eventregistration extends expRecord {
             $event->eventenddate = $enddate;
             $event->event_starttime = datetimecontrol::parseData('event_starttime', $params);
             $event->event_endtime = datetimecontrol::parseData('event_endtime', $params);
-            $event->signup_cutoff = strtotime($params['signup_cutoff']);
+            $cutoffdate = strtotime($params['signup_cutoff']);
+            if ($cutoffdate == 0 || $cutoffdate > $event->eventenddate) $cutoffdate = $event->eventenddate;
+            $event->signup_cutoff = $cutoffdate;
 
             $event->forms_id = $params['forms_id'];
             $event->multi_registrant = $params['multi_registrant'];
@@ -471,7 +473,7 @@ class eventregistration extends expRecord {
             if (empty($params['qtyr'])) {
                 $params['qtyr'] = 1;
             }
-            if (!empty($params['base_price'])) $item->products_price = preg_replace("/[^0-9.]/", "", $params['base_price']);
+            if (!empty($params['base_price'])) $item->products_price = expUtil::currency_to_float($params['base_price']);
             else $item->products_price = $product->base_price;
             $item->quantity = $params['qtyr'];
         }

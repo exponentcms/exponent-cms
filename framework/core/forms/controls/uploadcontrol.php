@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Upload Control
+ * Upload Control - display file upload widget
  *
  * @package Subsystems-Forms
  * @subpackage Control

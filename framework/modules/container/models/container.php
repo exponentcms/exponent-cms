@@ -27,6 +27,7 @@ class container extends expRecord {
 
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         parent::__construct($params, $get_assoc, $get_attached);
+        $this->grouping_sql = " AND external='".$params['external']."'";
     }
 
     public function update($params = array()) {
@@ -50,7 +51,9 @@ class container extends expRecord {
     // from container model delete
     public function delete($where = '') {
         $internal = unserialize($this->internal);
-        recyclebin::sendToRecycleBin($internal,expSession::get("last_section"));  // send it to recycle bin first
+        // send module to recycle bin first
+        recyclebin::sendToRecycleBin($internal,expSession::get("last_section"));
+        // delete the container table reference
         parent::delete("internal='" . $this->internal . "'");  // param is for reranking remaining objects
         expSession::clearAllUsersSessionCache('containers');
     }

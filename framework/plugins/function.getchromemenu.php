@@ -123,7 +123,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	$list .= '</ul>';
 
     expCSS::pushToHead(array(
-	    "unique"=>"container-chrome",
+	    "unique"=>"admin-container",
 	    "link"=>PATH_RELATIVE."framework/modules/container/assets/css/admin-container.css",
 	    )
 	);

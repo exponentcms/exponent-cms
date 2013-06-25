@@ -40,10 +40,6 @@ class checkboxcontrol extends formcontrol {
         return true;
     }
 
-    static function useGeneric() {
-        return false;
-    }
-
     static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=> DB_DEF_BOOLEAN);

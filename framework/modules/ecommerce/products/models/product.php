@@ -881,7 +881,7 @@ class product extends expRecord {
 
         if (empty($id)) return false;
 
-        $expFilesObj = $db->selectObjects("content_expFiles", "content_id = {$id}");
+        $expFilesObj = $db->selectObjects("content_expFiles", "content_id = {$id} AND content_type = 'product'");
 
         $files = array();
         foreach ($expFilesObj as $item) {

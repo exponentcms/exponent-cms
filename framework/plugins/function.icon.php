@@ -120,7 +120,7 @@ function smarty_function_icon($params, &$smarty) {
             $params['action'] = 'edit';
         }
         echo '<a href="' . expCore::makeLink($params) . '" title="' . $title . '" class="' . $class . '"';
-        if (($params['action'] == "delete" || $params['action'] == "merge") && empty($onclick))
+        if (($params['action'] == "delete" || $params['action'] == "merge" || $class == "delete" || $class == "merge") && empty($onclick))
             echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
 //        if ($params['action']=="merge" && empty($onclick))
 //            echo ' onclick="return confirm(\''.gt('Are you sure you want to merge this').' '.$smarty->getTemplateVars('modelname').' '.gt('item').'?\');"';

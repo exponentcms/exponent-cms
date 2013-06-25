@@ -52,9 +52,9 @@ function smarty_function_help($params,&$smarty) {
 
         $link = help::makeHelpLink($module);
         if (!empty($params['page'])) {
-            echo '<a class="'.$class.'" '.$title.' href="'.HELP_URL.$params['page'].'" target="_blank">'.$text.'</a>';
+            echo '<a class="'.$class.'" title="'.$title.'" href="'.HELP_URL.$params['page'].'" target="_blank">'.$text.'</a>';
         } else {
-            echo '<a class="'.$class.'" '.$title.' href="'.$link.'" target="_blank">'.$text.'</a>';
+            echo '<a class="'.$class.'" title="'.$title.'" href="'.$link.'" target="_blank">'.$text.'</a>';
         }
         
         expCSS::pushToHead(array(

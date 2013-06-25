@@ -16,7 +16,6 @@
 {control type="hidden" name="tab_loaded[featured]" value=1}
 {control type="checkbox" name="featured[is_featured]" label="Feature this product?"|gettext value=1 checked=$record->is_featured postfalse=1}
 {control type="editor" name="featured[featured_body]" label="Featured Product Description"|gettext height=450 value=$record->featured_body}
-{control type=files name="featured_image" label="Featured Product Images"|gettext subtype="featured_image" value=$record->expFile description="Images to use if this item is a featured product"|gettext}
 
 {script unique="general" yui3mods=1}
 {literal}

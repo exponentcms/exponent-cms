@@ -30,6 +30,13 @@
             {if $permissions.manage == 1}
                  {icon action=manage text="Manage Events"|gettext}
             {/if}
+            {if $admin}
+                {if !$past}
+                    {icon class="view" action=showall past=1 text="View Past Events"|gettext}
+                {else}
+                    {icon class="view" action=showall text="View Active Events"|gettext}
+                {/if}
+            {/if}
         </div>
     {/permissions}
     {if $config.moduledescription != ""}
@@ -65,7 +72,7 @@
                             </a>
                         </div>
                         <div class="event-info">
-                            <em class="date{if $item->eventdate < time()} past{/if}">{$item->eventdate|date_format:"%A, %B %e, %Y"}</em>
+                            <em class="date{if $item->eventdate < time()} past{/if}">{$item->eventdate|format_date:"%A, %B %e, %Y"}</em>
                             {if $item->getBasePrice()}<p>{'Cost'|gettext}: {$item->getBasePrice()|currency}</p>{/if}
                             <p>{$item->body|truncate:175:"..."}</p>
                             {*<a href="{link action=show title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}

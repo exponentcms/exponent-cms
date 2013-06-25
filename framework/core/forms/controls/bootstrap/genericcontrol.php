@@ -31,10 +31,6 @@ class genericcontrol extends formcontrol {
     var $jsHooks = array();
     
     static function name() { return "generic"; }
-    static function isSimpleControl() { return false; }
-    static function getFieldDefinition() {
-        return array();
-    }
 
     function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="", $pattern="") {
         $this->type = (empty($type)) ? "text" : $type;
@@ -60,7 +56,8 @@ class genericcontrol extends formcontrol {
             $divID  = ' id="'.$this->id.'Control"';
             $for = ' for="'.$this->id.'"';
         } else {
-            $divID  = '';
+//            $divID  = '';
+            $divID  = ' id="'.$name.'Control"';
             $for = '';
         }
 //        if ($this->required) $label = "*" . $label;

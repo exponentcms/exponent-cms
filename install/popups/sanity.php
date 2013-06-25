@@ -43,21 +43,20 @@
 		</div>
 	</td>
 </tr>
-
-<!--<tr>-->
-<!--	<td id="fdp_conf-profiles" class="bodytext" style="font-weight: bold;" valign="top">framework/conf/profiles</td>-->
-<!--	<td class="bodytext" valign="top">-->
-<!--		<div class="sanity_req">--><?php //echo gt('Must be readable and writable by web server'); ?><!--</div>-->
-<!--		<br />-->
-<!--		--><?php //echo gt('The framework/conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory.'); ?>
-<!--		<br />-->
-<!--		<br />-->
-<!--		<b>--><?php //echo gt('UNIX Solution'); ?><!--:</b>-->
-<!--		<div class="sanity_shell">-->
-<!--			chown -R <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/framework/conf/profiles/-->
-<!--		</div>-->
-<!--	</td>-->
-<!--</tr>-->
+<tr>
+	<td id="fdp_conf-profiles" class="bodytext" style="font-weight: bold;" valign="top">framework/conf/profiles</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('The framework/conf/profiles directory stores the saved configurations for the site.  Even if you do not use more than one profile, the web server must be able to create files in this directory.'); ?>
+		<br />
+		<br />
+		<b><?php echo gt('UNIX Solution'); ?>:</b>
+		<div class="sanity_shell">
+			chown -R <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/framework/conf/profiles/
+		</div>
+	</td>
+</tr>
 <!--<tr>-->
 <!--	<td id="fdp_overridesphp" class="bodytext" style="font-weight: bold;" valign="top">overrides.php</td>-->
 <!--	<td class="bodytext" valign="top">-->
@@ -72,10 +71,8 @@
 <!--		</div>-->
 <!--	</td>-->
 <!--</tr>-->
-<!--	-->
-
 <tr>
-	<td id="fdp_files" class="bodytext" style="font-weight: bold;" valign="top">files/</td>
+	<td id="fdp_files" class="bodytext" style="font-weight: bold;" valign="top">files/ <br /> files/avatars/ <br /> files/uploads/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
@@ -85,6 +82,8 @@
 		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/files
+            chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/files/avatars
+            chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/files/uploads
 		</div>
 	</td>
 </tr>
@@ -130,35 +129,6 @@
 		</div>
 	</td>
 </tr>
-
-<tr>
-	<td id="fdp_extensionuploads" class="bodytext" style="font-weight: bold;" valign="top">tmp/extensionuploads/</td>
-	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
-		<br />
-		<?php echo gt('When you use the Upload Extension feature of the Administrator Control Panel, the uploaded archive is placed in tmp/extensionuploads directory temporarily.  Therefore, the web server needs full access to this.'); ?>
-		<br />
-		<br />
-		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
-		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/extensionuploads
-		</div>
-	</td>
-</tr>
-<tr>
-	<td id="fdp_views_c" class="bodytext" style="font-weight: bold;" valign="top">tmp/views_c/</td>
-	<td class="bodytext" valign="top">
-		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
-		<br />
-		<?php echo gt('Exponent uses Smarty to separate its data processing logic from its display logic.  Smarty templates are compiled from Smarty syntax into raw PHP for speed, and the compiled templates all go in the tmp/views_c directory, which must be writable by the web server.'); ?>
-		<br />
-		<br />
-		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
-		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/views_c
-		</div>
-	</td>
-</tr>
 <tr>
 	<td id="fdp_cache" class="bodytext" style="font-weight: bold;" valign="top">tmp/cache/</td>
 	<td class="bodytext" valign="top">
@@ -189,16 +159,16 @@
 	</td>
 </tr>
 <tr>
-	<td id="fdp_rss" class="bodytext" style="font-weight: bold;" valign="top">tmp/rsscache/</td>
+	<td id="fdp_extensionuploads" class="bodytext" style="font-weight: bold;" valign="top">tmp/extensionuploads/</td>
 	<td class="bodytext" valign="top">
 		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
 		<br />
-		<?php echo gt('Exponent can pull rss feeds into the news module.  These pulled feeds are cached in the tmp/rsscache directory, which must be writable by the web server.'); ?>
+		<?php echo gt('When you use the Upload Extension feature of the Administrator Control Panel, the uploaded archive is placed in tmp/extensionuploads directory temporarily.  Therefore, the web server needs full access to this.'); ?>
 		<br />
 		<br />
 		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
-			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/rsscache
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/extensionuploads
 		</div>
 	</td>
 </tr>
@@ -227,6 +197,34 @@
 		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
 		<div class="sanity_shell">
 			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/pixidou
+		</div>
+	</td>
+</tr>
+<tr>
+	<td id="fdp_rss" class="bodytext" style="font-weight: bold;" valign="top">tmp/rsscache/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('Exponent can pull rss feeds into the news module and twitter feeds.  These pulled feeds are cached in the tmp/rsscache directory, which must be writable by the web server.'); ?>
+		<br />
+		<br />
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/rsscache
+		</div>
+	</td>
+</tr>
+<tr>
+	<td id="fdp_views_c" class="bodytext" style="font-weight: bold;" valign="top">tmp/views_c/</td>
+	<td class="bodytext" valign="top">
+		<div class="sanity_req"><?php echo gt('Must be readable and writable by web server'); ?></div>
+		<br />
+		<?php echo gt('Exponent uses Smarty to separate its data processing logic from its display logic.  Smarty templates are compiled from Smarty syntax into raw PHP for speed, and the compiled templates all go in the tmp/views_c directory, which must be writable by the web server.'); ?>
+		<br />
+		<br />
+		<strong><?php echo gt('UNIX Solution'); ?>:</strong>
+		<div class="sanity_shell">
+			chown <span class="var">WEBUSER</span> <span class="var">EXPONENT</span>/tmp/views_c
 		</div>
 	</td>
 </tr>
@@ -263,7 +261,13 @@
 <tr>
     <td id="o_curl" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('cURL Library Support'); ?></td>
     <td class="bodytext" valign="top">
-        <?php echo gt('The cURL Library is required for several features which pull data from external sources.'); ?>
+        <?php echo gt('PHP cURL support is required for several features which pull data from external sources.'); ?>
+    </td>
+</tr>
+<tr>
+    <td id="o_curl" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('FileInfo Support'); ?></td>
+    <td class="bodytext" valign="top">
+        <?php echo gt('PHP FileInfo support is required for several features which need server file information.'); ?>
     </td>
 </tr>
 <tr>

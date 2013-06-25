@@ -33,7 +33,7 @@
     {/permissions}
     <h3><a href="{link controller=store action=show title=$listing->sef_url}">{$listing->title}</a></h3>
     <div class="bodycopy">
-        <strong class="date">{$listing->eventdate|date_format:"%a, %B %e"}</strong> -
+        <strong class="date">{$listing->eventdate|format_date:"%a, %B %e"}</strong> -
         {$listing->body}
     </div>
     <div class="price">{$listing->price|currency}</div>

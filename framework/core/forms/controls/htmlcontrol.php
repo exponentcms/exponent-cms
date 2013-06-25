@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * HTML Control
+ * HTML Control - displays static wysiwyg text
  *
  * @package Subsystems-Forms
  * @subpackage Control
@@ -30,6 +30,7 @@ if (!defined('EXPONENT')) exit('');
 	var $span;
 	
 	static function name() { return "Static - WYSIWYG Text"; }
+    static function isStatic() { return true; }
 	static function isSimpleControl() { return true; }
 	
 	function __construct($html = "",$span = true) {

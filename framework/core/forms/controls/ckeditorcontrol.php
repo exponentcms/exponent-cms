@@ -77,23 +77,31 @@ class ckeditorcontrol extends formcontrol {
         if (empty($tb)) {
             if ($this->toolbar == 'basic') {
                 $tb = "
-                    ['Bold','Italic','Underline','-','NumberedList','BulletedList','-','Link','Unlink','-','About']";
+                toolbar : [
+                    ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','About']
+                ],";
             } else {
-                $tb = "
-                    ['Source','-','Preview','-','Templates'],
-                    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
-                    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-                    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
-                    '/',
-                    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-                    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-                    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-                    ['Link','Unlink','Anchor'],
-                    '/',
-                    ['Styles','Format','Font','FontSize'],
-                    ['TextColor','BGColor'],
-                    ['Maximize', 'ShowBlocks','-','About']";
+//                $tb = "
+//                toolbarGroups : [
+//                    { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] },
+//                    { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+//                    { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+//                    { name: 'links' },
+//                    { name: 'insert' },
+//                    { name: 'forms' },
+//                    { name: 'tools' },
+//                    { name: 'others' },
+//                    '/',
+//                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+//                    { name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align' ] },
+//                    { name: 'styles' },
+//                    { name: 'colors' },
+//                    { name: 'about' }
+//                ],";
+                $tb = '';
             }
+        } else {
+            $tb = "toolbar : [".$tb."],";
         }
         if (empty($skin)) $skin = 'kama';
         if (empty($scayt_on)) $scayt_on = 'true';
@@ -118,7 +126,7 @@ class ckeditorcontrol extends formcontrol {
                 };
                 EXPONENT.editor" . createValidId($name) . " = CKEDITOR.replace('" . createValidId($name) . "', {
                     skin : '" . $skin . "',
-                    toolbar : [" . $tb . "],
+                    ".$tb."
                     " . $paste_word . "
                     scayt_autoStartup : " . $scayt_on . ",
                     filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "ck"=> 1, "update"=> "fck")) . "',

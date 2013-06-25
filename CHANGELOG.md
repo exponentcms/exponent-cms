@@ -6,6 +6,26 @@ Copyright (c) 2004-2013 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
+
+Added / Fixed / changed for 2.2.1
+-----------------------
+### Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
+  - adds paged form (wizard) feature
+  - adds form design export/import
+  - adds a rudimentary site configuration profile (backup/restore) feature
+  - adds optional author signature to blog posts, handled by user profile extension
+  - now supports multiple simultaneous file uploads for 'quick add' uploads (if browser supports)
+  - recycle bin is now more consistent...all removed modules sent to recycle bin, all modules removed from recycle bin have all items deleted
+  - adds ldap user sync to update all ldap users against ldap server data (email, first/last name)
+  - no longer automatically loads bootstrap.min.js file, explicit loading of individual scripts as required
+  - includes all fixes from v2.2.0 patches
+### Known Issues
+  - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the near future
+    -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
+  - eCommerce gift card & purchase order functionality have not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Added / Fixed / changed for 2.2.0
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery

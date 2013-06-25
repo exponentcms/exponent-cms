@@ -25,7 +25,7 @@
             <li>{$error}</li>
         {/foreach}
     </ul>
-    <h3>{'Most likely those tables were deprecated and no longer exist'|gettext}</h3>
+    <h3>{'If some tables were not restored, most likely those tables were deprecated and no longer exist'|gettext}</h3>
     <blockquote>{'If we were unable to recreate them, here\'s what we recommend'|gettext}:</blockquote>
     <ol style="list-style:decimal;">
         <li>

@@ -4,7 +4,7 @@
     margin-bottom: .5em;
 }
 
-.search.show-form input.text {
+.search.show-form input {
     width:60%;
     margin-top:0;
 }

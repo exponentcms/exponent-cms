@@ -56,8 +56,9 @@ class paylater extends billingcalculator {
         $method->update(array('billing_options' => serialize($opts)));
     }
 
-    function process($method, $opts, $params, $invoice_number) {
-        global $order, $db, $user;
+//    function process($method, $opts, $params, $invoice_number) {
+    function process($method, $opts, $params, $order) {
+//        global $order, $db, $user;
 
         $object = new stdClass();
         $object->errorCode = $opts->result->errorCode = 0;
@@ -65,13 +66,13 @@ class paylater extends billingcalculator {
         $opts->result->payment_status = gt("complete");
         if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
 //        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result, $opts->result->payment_status));
-        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result->payment_status));
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $opts;
     }
 
     function userForm($config_object = null, $user_data = null) {
-        $form = '<h4>'.gt('Pay for this purchase later.').'</h4>';
+        $form = '<h4>' . gt('Pay for this purchase later.') . '</h4>';
 
         $cash_amount = new hiddenfieldcontrol(0, 20, false, 20, "money", true);
         $cash_amount->filter = 'money';
@@ -85,10 +86,10 @@ class paylater extends billingcalculator {
     //Should return html to display user data.
     function userView($opts) {
         if (empty($opts)) return false;
-        $cash = !empty($opts->cash_amount) ? $opts->cash_amount : 0 ;
-        $billinginfo = gt("Cash"). ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
+        $cash = !empty($opts->cash_amount) ? $opts->cash_amount : 0;
+        $billinginfo = gt("Cash") . ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
         if (!empty($opts->payment_due)) {
-            $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+            $billinginfo .= '<br>' . gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
         }
         return $billinginfo;
     }

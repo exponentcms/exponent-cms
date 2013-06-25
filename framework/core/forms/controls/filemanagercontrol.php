@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * File Manager Control
+ * File Manager Control - displays file picker widget
  *
  * @package Subsystems-Forms
  * @subpackage Control
@@ -32,8 +32,8 @@ class filemanagercontrol extends formcontrol {
     var $description = "";
     
     static function name() { return "Manage Files"; }
-    static function isSimpleControl() { return false; }
-    
+    static function isStatic() { return true; }
+
     function __construct($subtype=null, $html = "",$span = true) {
         $this->span = $span;
         $this->html = $html;
@@ -71,19 +71,15 @@ class filemanagercontrol extends formcontrol {
         if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">" . $this->description . "</div>";
         $html .= '</div>';
         $js = "
-
             EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
                 fullpath: EXPONENT.URL_FULL+'external/SimpleAjaxUploader.js'
             };
 
             YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io','SimpleAjaxUploader', function(Y) {
-
-                // Y.log(ss);
-
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
                 var fl = Y.one('#filelist".$name."');
-                
+
                 // file picker window opener
                 function openFilePickerWindow(e){
                     e.halt();
@@ -94,33 +90,39 @@ class filemanagercontrol extends formcontrol {
                     }
                 };
 
-//                  var quickUpload = new AjaxUpload($('#quickaddfiles-".$name."'), {
                 var quickUpload = new Y.ss.SimpleUpload({
-                        button: '#quickaddfiles-".$name."',
-                        action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
-                        data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
-                        responseType: 'json',
-                        name: 'uploadfile',
-                        disabledClass: 'quick-upload-disabled',
-//                        debug: true,
-                        onSubmit: function(file, ext){
-//                             if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
-//                                // extension is not allowed
-//                                return false;
-//                            }
-                            quickUpload.disable();
-                            Y.one('#quickaddfiles-".$name."').addClass('ajax');
-                        },
-                        onComplete: function(file, response){
-                            //Add uploaded file to list
-                            if(response.replyCode==200){
-                                EXPONENT.passBackFile".$name."(response.data);
-                            }
-                            quickUpload.enable();
+                    button: '#quickaddfiles-".$name."',
+                    action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
+                    data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
+                    responseType: 'json',
+                    name: 'uploadfile',
+                    disabledClass: 'quick-upload-disabled ajax',
+                    multiple: (limit-filesAdded > 1),
+                    maxUploads: limit,
+//                    debug: true,
+                    onSubmit: function(file, ext){
+//                        if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
+//                            // extension is not allowed
+//                            return false;
+//                        }
+//                        quickUpload.disable();
+                        if (quickUpload._activeUploads) {
+                           Y.one('#quickaddfiles-".$name."').addClass('ajax');
+                           Y.one('#quickaddfiles-".$name."').addClass('quick-upload-disabled');
+                        }
+                    },
+                    onComplete: function(file, response){
+                        //Add uploaded file to list
+                        if(response.replyCode==200){
+                            EXPONENT.passBackFile".$name."(response.data);
+                        }
+//                        quickUpload.enable();
+                        if (!quickUpload._activeUploads) {
                             Y.one('#quickaddfiles-".$name."').removeClass('ajax');
-                        },
-                    });
-//                );
+                            Y.one('#quickaddfiles-".$name."').removeClass('quick-upload-disabled');
+                        }
+                    },
+                });
 
                 var listenForAdder = function(){
                     var af = Y.one('#addfiles-".$name."');
@@ -145,9 +147,9 @@ class filemanagercontrol extends formcontrol {
                 },'.delete');
                 
                 var showFileAdder = function() {
-                    Y.one('#adders-".$name."').removeClass('hide');
                     listenForAdder();
                     filesAdded--;
+                    if (filesAdded < limit) Y.one('#adders-".$name."').removeClass('hide');
                     if (filesAdded == 0) showEmptyLI();
                 }
 
@@ -225,7 +227,6 @@ class filemanagercontrol extends formcontrol {
                 var goingUp = false, lastY = 0;
 
                 var initDragables =  function(){
-
                     //Get the list of li's in the lists and make them draggable
                     var lis = Y.Node.all('#filelist".$name." li');
                     if (lis){
@@ -268,11 +269,11 @@ class filemanagercontrol extends formcontrol {
                             if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                                 var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
                             } else if (obj.mimetype=='audio/mpeg') {
-                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
-                            } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
-                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/video_22x22.png\">';
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'audio_22x22.png\">';
+                            } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4' || obj.mimetype=='video/x-m4v' || obj.mimetype=='video/webm' || obj.mimetype=='video/ogg') {
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'video_22x22.png\">';
                             } else {
-                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/generic_22x22.png\">';
+                                var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'generic_22x22.png\">';
                             }
                             
                             var html = '<li>';
@@ -313,7 +314,8 @@ class filemanagercontrol extends formcontrol {
 
                             filesAdded++
 
-                            if (limit==filesAdded) {
+//                            if (limit>=filesAdded) {
+                            if (filesAdded>=limit) {
                                 Y.one('#adders-".$name."').addClass('hide');
                             }
 
@@ -325,24 +327,24 @@ class filemanagercontrol extends formcontrol {
 
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
-
                     if (Y.Lang.isArray(id)) {
                         EXPONENT.batchAddFiles.".$name."();
                         return;
                     }
 
                     var complete = function (ioId, o) {
+                      if (filesAdded < limit) {
                         var df = Y.one('#filelist".$name."');
                         var objson = Y.JSON.parse(o.responseText);
                         var obj = objson.data;
                         if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
                         } else if (obj.mimetype=='audio/mpeg') {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/audio_22x22.png\">';
-                        } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4') {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/video_22x22.png\">';
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'audio_22x22.png\">';
+                        } else if (obj.mimetype=='video/x-flv' || obj.mimetype=='video/mp4' || obj.mimetype=='video/x-m4v' || obj.mimetype=='video/webm' || obj.mimetype=='video/ogg') {
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'video_22x22.png\">';
                         } else {
-                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.ICON_RELATIVE+'attachableitems/generic_22x22.png\">';
+                            var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.MIMEICON_RELATIVE+'generic_22x22.png\">';
                         }
                     
                         var html = '<li>';
@@ -381,11 +383,13 @@ class filemanagercontrol extends formcontrol {
 
                         filesAdded++
 
-                        if (limit==filesAdded) {
+//                        if (limit>=filesAdded) {
+                        if (filesAdded>=limit) {
                             Y.one('#adders-".$name."').addClass('hide');
                         }
 
                         //initDragables();
+                      }
                     };
                     
                     var cfg = {
@@ -401,7 +405,7 @@ class filemanagercontrol extends formcontrol {
             "; // END PHP STRING LITERAL
 
             expCSS::pushToHead(array(
-        	    "unique"=>"cal2",
+        	    "unique"=>"attachable-files",
         	    "link"=>$assets_path."files/attachable-files.css"
         	    )
         	);
@@ -448,16 +452,16 @@ class filemanagercontrol extends formcontrol {
             if ($val->mimetype=="image/png" || $val->mimetype=="image/gif" || $val->mimetype=="image/jpeg" || $val->mimetype=="image/pjpeg" || $val->mimetype=="image/x-png") {
                 $filepic = "<img class=\"filepic\" src=\"".PATH_RELATIVE."thumb.php?id=".$val->id."&amp;w=24&amp;h=24&amp;zc=1\">";
             } elseif ($val->mimetype=="audio/mpeg") {
-                $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/audio_22x22.png'>";
-            } elseif ($val->mimetype=="video/x-flv" || $val->mimetype=="video/mp4") {
-                $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/video_22x22.png'>";
+                $filepic = "<img class=\"filepic\" src='".MIMEICON_RELATIVE."audio_22x22.png'>";
+            } elseif ($val->mimetype=="video/x-flv" || $val->mimetype=="video/mp4" || $val->mimetype=="video/x-m4v" || $val->mimetype=="video/webm" || $val->mimetype=="video/ogg") {
+                $filepic = "<img class=\"filepic\" src='".MIMEICON_RELATIVE."video_22x22.png'>";
             } else {
-                $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/generic_22x22.png'>";
+                $filepic = "<img class=\"filepic\" src='".MIMEICON_RELATIVE."generic_22x22.png'>";
             }
             $html .= "<li>";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             //$html .= "<div class=\"fpdrag\"></div>";
-            $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>Delete</a>";
+            $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>".gt('Delete')."</a>";
             $html .= $filepic;
             $filetitle = !empty($val->title) ? $val->title : $val->filename;
             $html .= "<span class=\"filename\" title=\"".$val->filename."\">".$filetitle."</span>";

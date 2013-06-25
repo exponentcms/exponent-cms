@@ -23,7 +23,7 @@ global $user, $db;
 $active = ECOM;
 if (!$user->isAdmin() || empty($active)) return false;
 
-$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = 1');
+$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = 1');  //FIXME order_status_id of 1 isn't always true
 // $new_orders = 420; // for testing
 if ($new_orders > 0) {
     $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new') . '</em>';

@@ -24,7 +24,7 @@ if (!defined('EXPONENT')) exit('');
  * @package Subsystems-Forms
  * @subpackage Control
  */
-class formcontrol {
+abstract class formcontrol {
 
 	var $accesskey = "";
 	var $default = "";
@@ -35,6 +35,14 @@ class formcontrol {
 	var $type = 'text';
 
 	static function name() { return "formcontrol"; }
+
+    /**
+   	 * Is this a Static Control?
+   	 * Used to determine if control has field data behind it
+        *
+   	 * @return bool
+   	 */
+    static function isStatic() { return false; }
 
 	/**
 	 * Is this a Simple Control?
@@ -72,7 +80,8 @@ class formcontrol {
 		    $divID  = ' id="'.$this->id.'Control"';
 		    $for = ' for="'.$this->id.'"';
 		} else {
-		    $divID  = '';
+//		    $divID  = '';
+            $divID  = ' id="'.$name.'Control"';
 		    $for = '';
 		}
 		

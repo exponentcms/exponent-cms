@@ -62,7 +62,7 @@
                                     {if $listing->never_expires}
                                         {"Never Expires"|gettext}
                                     {else}
-                                        {$listing->enddate|date_format:"%m/%d/%y"} - {$listing->enddate_time|expdate:"g:i a"}
+                                        {$listing->enddate|format_date:"%m/%d/%y"} - {$listing->enddate_time|format_date:"%l:%M %P"}
                                     {/if}
                                 </td>
                                 <td>

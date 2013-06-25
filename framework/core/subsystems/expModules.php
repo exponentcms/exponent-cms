@@ -173,10 +173,10 @@ class expModules {
      *
      * @return null
      */
-    public static function getController($controllername='') {
+    public static function getController($controllername='',$param=null) {
 	    $fullname = self::getControllerClassName($controllername);
 	    if (self::controllerExists($controllername))  {
-	        $controller = new $fullname();
+	        $controller = new $fullname($param);
 	        return $controller;
 	    } else {
 	        return null;

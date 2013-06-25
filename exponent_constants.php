@@ -461,9 +461,10 @@ if (!defined('YUI3_RELATIVE')) {
 	 * YUI 3 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('YUI3_VERSION', '3.10.1');
+	define('YUI3_VERSION', '3.10.3');
+//    define('YUI3_VERSION', '3.11.0pr1');
     define('YUI3_RELATIVE', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
-//	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
+	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
 }
 
@@ -474,7 +475,7 @@ if (!defined('YUI2_RELATIVE')) {
 	 */
 	define('YUI2_VERSION', '2.9.0');
     define('YUI2_RELATIVE', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
-//	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');  //TODO deprecated
+	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');  //TODO deprecated
 	define('YUI2_URL', URL_FULL.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');
 }
 
@@ -483,13 +484,14 @@ if (!defined('JQUERY_RELATIVE')) {
 	 * jQuery/jQueryUI Version Constants
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('JQUERY_VERSION', '1.9.1');
-    define('JQUERYUI_VERSION', '1.10.2');
+	define('JQUERY_VERSION', '1.10.1');
+    define('JQUERYUI_VERSION', '1.10.3');
 	define('JQUERY_RELATIVE', PATH_RELATIVE.'external/jquery/');
     define('JQUERY_PATH', BASE.'external/jquery/');
 	define('JQUERY_URL', URL_FULL.'external/jquery/');
     define('JQUERY_SCRIPT', JQUERY_RELATIVE.'js/jquery-'.JQUERY_VERSION.'.min.js');
-    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
+//    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
+    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui.min.js');
 }
 
 if (!defined('SMARTY_PATH')) {
@@ -507,7 +509,7 @@ if (!defined('SWIFT_PATH')) {
 	 * Swift Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SWIFT_VERSION', '4.3.1');
+	define('SWIFT_VERSION', '5.0.1');
 	define('SWIFT_PATH', BASE.'external/Swift-'.SWIFT_VERSION.'/lib/');
 }
 

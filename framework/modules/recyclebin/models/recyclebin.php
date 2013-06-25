@@ -24,8 +24,24 @@
 class recyclebin extends expRecord {
     public $table = 'sectionref';
     //public $validates = '';
+
+    /**
+     * Return list of all modules in the recycle bin
+     *
+     * @param $module
+     *
+     * @return array
+     */
     public function moduleOrphans($module) {
         global $db;
+
+        // we only want a preview, not an admin view
+        $level = 99;
+        if (expSession::is_set('uilevel')) {
+            $level = expSession::get('uilevel');
+        }
+        expSession::set("uilevel",UILEVEL_PREVIEW);
+
         if (empty($module)) {
             $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' ORDER BY module');
         } else {
@@ -61,12 +77,13 @@ class recyclebin extends expRecord {
                 }
             }
         }
-        
+        expSession::set("uilevel",$level);
+
         return $orphans;
     }
 
     /** exdoc
-     * Decrement the reference count for a given location.  This is used by the Container Module,
+     * Decrement the reference count for a given sectionref location.  This is used by the Container and Navigation Modules,
      * and probably won't be needed by 95% of the code in Exponent.
      *
      * @param object $loc The location object to decrement references for.
@@ -74,13 +91,34 @@ class recyclebin extends expRecord {
      */
     public static function sendToRecycleBin($loc,$section) {
         global $db;
-        $oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-        $oldSecRef->refcount = 0;
-        $db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
+
+        //FIXME we should only send module with sources or configs to the recycle bin NOT things like navigation or rss
+        if ($loc->mod != 'container') {
+//            $oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
+            $oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+            $oldSecRef->refcount = 0;
+//            $db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
+            $db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+        } else {
+            // send contained modules to recycle bin
+            $modules = $db->selectObjects('container',"external='".serialize($loc)."'");
+            foreach ($modules as $module) {
+                $obj = new container($module->id);
+                $obj->delete();
+//                $modloc = expUnserialize($module->internal);
+//                self::sendToRecycleBin($modloc, $section);
+//                // then remove the container table reference
+//                $db->delete('container', "internal='".$module->internal."'");
+            }
+            // then remove the container table reference
+//            $db->delete('container', "internal='".serialize($loc)."'");
+//            $db->delete('sectionref', 'section=' . $section . ' AND source="' . $loc->src . '" and module="container"');
+            $db->delete('sectionref', "source='" . $loc->src . "' and module='container'");
+        }
     }
 
     /** exdoc
-     * Increment the reference count for a given location.  This is used by the Container Module,
+     * Increment the reference count for a given sectionref location.  This is used by the Container Module,
      * and probably won't be needed by 95% of the code in Exponent.
      *
      * @param object $loc The location object to increment references for.
@@ -92,7 +130,7 @@ class recyclebin extends expRecord {
         $newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
         if ($newSecRef != null) {
             // Pulled an existing source for this section.  Update refcount
-               $newSecRef->refcount = 1;  // we need to do this for pulling stuff from the recycle bin?
+            $newSecRef->refcount = 1;  // we need to do this for pulling stuff from the recycle bin
             $db->updateObject($newSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
         } else {
             // New source for this section.  Populate reference

@@ -56,7 +56,9 @@ function smarty_function_grouplistcontrol($params, &$smarty) {
    //    echo $control->controlToHTML($name);
        echo $control->ToHTML($label,$name);
     } else {
-        echo '<div class="control"><label class="label">'.$params['label'].'</label><strong>'.gt('No User Group Accounts have been created!').'</strong></div>';
+        $class = '';
+        if (!empty($params['class'])) $class = ' '.$params['class'];
+        echo '<div class="control'.$class.'"><label class="label">'.$params['label'].'</label><strong>'.gt('No User Group Accounts have been created!').'</strong></div>';
     }
 }
 

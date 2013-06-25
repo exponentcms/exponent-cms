@@ -1648,7 +1648,7 @@ class storeController extends expController {
                 $calc->config = $bm->billingcalculator->config;
                 if (method_exists($calc, 'delayed_capture')) {
                     //$result = $calc->delayed_capture($bm,$bm->billing_cost);
-                    $result = $calc->delayed_capture($bm, $order->grand_total);
+                    $result = $calc->delayed_capture($bm, $order->grand_total, $order);
                     if ($result->errorCode == 0) {
                         //we've succeeded.  transaction already created and billing info updated.
                         //just need to set the order shipping info, check and see if we send user an email, and set statuses.  

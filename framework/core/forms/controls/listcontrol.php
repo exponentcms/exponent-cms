@@ -31,8 +31,8 @@ class listcontrol extends formcontrol {
     var $span;
     
     static function name() { return "List"; }
-    static function isSimpleControl() { return false; }
-    
+    static function isStatic() { return true; }
+
     function __construct() {
     }
 
@@ -112,7 +112,7 @@ class listcontrol extends formcontrol {
         $cycle = "odd";
         foreach($filearray as $val) {
             if ($val->mimetype!="image/png" && $val->mimetype!="image/gif" && $val->mimetype!="image/jpeg"){
-                $filepic = "<img class=\"filepic\" src='".ICON_RELATIVE."attachableitems/generic_22x22.png'>";
+                $filepic = "<img class=\"filepic\" src='".MIMEICON_RELATIVE."generic_22x22.png'>";
             } else {
                 $filepic = "<img class=\"filepic\" src=".PATH_RELATIVE."thumb.php?id=".$val->id."&square=24\">";
             }

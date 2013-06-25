@@ -50,7 +50,7 @@ class instorepickupcalculator extends shippingcalculator {
 	    $config_vars = array('rate');
 	    foreach ($config_vars as $varname) {
 	        if ($varname == 'rate') {
-	            $config[$varname] = isset($values[$varname]) ? preg_replace("/[^0-9.]/","",$values[$varname]) : null;    
+	            $config[$varname] = isset($values[$varname]) ? expUtil::currency_to_float($values[$varname]) : null;
 	        } else {
 	            $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	        }

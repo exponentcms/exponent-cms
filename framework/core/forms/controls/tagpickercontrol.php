@@ -35,10 +35,6 @@ class tagpickercontrol extends formcontrol {
         return "Tag Picker";
     }
 
-    static function isSimpleControl() {
-        return false;
-    }
-
     static function getFieldDefinition() {
         return array();
     }

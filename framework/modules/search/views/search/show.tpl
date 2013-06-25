@@ -28,11 +28,11 @@
         {*{control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}*}
         {*{control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}*}
     {*</form>*}
+    {form action=search}
+        {control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}
+        {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}
+    {/form}
 </div>
-{form action=search}>
-    {control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}
-    {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}
-{/form}
 {*{script unique="search" yui3mods="yui"}*}
 {*{literal}*}
 {*YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {*}

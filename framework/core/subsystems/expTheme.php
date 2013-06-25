@@ -29,7 +29,7 @@ class expTheme {
 		global $auto_dirs2;
 //        global $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
-//		require_once(BASE.'framework/core/compat/theme.php');
+		require_once(BASE.'framework/core/compat/theme.php');
 
 		if (!defined('DISPLAY_THEME')) {
 			/* exdoc
@@ -650,6 +650,7 @@ class expTheme {
 //		global $db;
         global $module_scope;
 
+        self::deprecated('expTheme::module()',$module,$view);
         $module = expModules::getModuleName($module);  //FIXME patch to cleanup module name
 		if ($prefix == null) $prefix = "@section";
 
@@ -689,6 +690,7 @@ class expTheme {
 	public static function showTopSectionalModule($module,$view,$title,$prefix = null, $pickable = false, $hide_menu=false) {
 		global $db, $module_scope, $sectionObj;
 
+        self::deprecated('expTheme::module()',$module,$view);
         $module = expModules::getModuleName($module);  //FIXME patch to cleanup module name
 		if ($prefix == null) $prefix = "@section";
 //		$last_section = expSession::get("last_section");
@@ -724,10 +726,16 @@ class expTheme {
         $params['source'] = $src;
 //        $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])] = new stdClass();
         $module_scope[$params['source']][(isset($params['module'])?$params['module']:$params['controller'])]->scope = 'sectional';
+        $module = !empty($params['module']) ? $params['module'] : $params['controller'];
+        $view = !empty($params['action']) ? $params['action'] : $params['view'];
+        self::deprecated('expTheme::module()',$module,$view);
         self::module($params);
     }
 
     public static function showController($params=array()) {
+        $module = !empty($params['module']) ? $params['module'] : $params['controller'];
+        $view = !empty($params['action']) ? $params['action'] : $params['view'];
+        self::deprecated('expTheme::module()',$module,$view);
         self::module($params);
 //        global $sectionObj, $db, $module_scope;
 //        if (empty($params)) {
@@ -782,14 +790,19 @@ class expTheme {
             // hack to add compatibility for modules converted to controllers, but still hard-coded the old way
             $params['controller'] = $params['module'];
             unset($params['module']);
-            if (!isset($params['action'])) $params['action'] = 'showall';
-            if (isset($params['view'])) {
-                $params['view'] = $params['action'].'_'.$params['view'];
-            } else {
-                $params['view'] = 'showall';
-            }
         }
-	    if (isset($params['controller'])) {
+        if (!isset($params['action'])) $params['action'] = 'showall';
+        if (isset($params['view'])) {
+            $test = explode('_',$params['view']);
+            if ($test[0] != $params['action']) {
+                $params['view'] = $params['action'].'_'.$params['view'];
+            }
+        } elseif (!empty($params['action'])) {
+            $params['view'] = $params['action'];
+        } else {
+            $params['view'] = 'showall';
+        }
+//	    if (isset($params['controller'])) {
 //            $controller = expModules::getControllerClassName($params['controller']);  //FIXME long controller name
             $controller = expModules::getModuleName($params['controller']);
             $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
@@ -819,51 +832,51 @@ class expTheme {
             $module_scope[$params['source']][$controller]->scope = $params['scope'];
 //            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
             self::showModule($controller,$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
-        } elseif (isset($params['module'])) {
-            $module = expModules::getModuleClassName($params['module']);
-            $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
-            $source = (isset($params['source'])) ? $params['source'] : "";
-            $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
-            $scope = (isset($params['scope'])) ? $params['scope'] : "global";
-
-            if ($scope=="global") {
-                self::showModule($module,$params['view'],$moduletitle,$source,false,null,$chrome);
-            }
-            if ($scope=="top-sectional") {
-//                self::showTopSectionalModule($params['module']."module", //module
-//                                             $params['view'], //view
-//                                             $moduletitle, // Title
-//                                             $source, // source
-//                                             false, // used to apply to source picker. does nothing now.
-//                                             $chrome // Show chrome
-//                                            );
-                if ($source == null) $source = "@section";
-                //FIXME - $section might be empty!  We're getting it from last_section instead of sectionObj??
-//                $last_section = expSession::get("last_section");
-//                $section = $db->selectObject("section","id=".$last_section);
-                $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
-                // Loop until we find the top level parent.
-                while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
-                $module_scope[$source.$section->id][$module]= new stdClass();
-                $module_scope[$source.$section->id][$module]->scope = 'top-sectional';
-                self::showModule($module,$params['view'],$moduletitle,$source.$section->id,false,null,$chrome);
-            }
-            if ($scope=="sectional") {
-//                self::showSectionalModule($params['module']."module", //module
-//                                          $params['view'], //view
-//                                          $moduletitle, // title
-//                                          $source, // source/prefix
-//                                          false, // used to apply to source picker. does nothing now.
-//                                          $chrome // Show chrome
-//                                        );
-                if ($source == null) $source = "@section";
-                $src = $source;
-                $src .= $sectionObj->id;
-                $module_scope[$src][$module] = new stdClass();
-                $module_scope[$src][$module]->scope = 'sectional';
-                self::showModule($module,$params['view'],$moduletitle,$src,false,null,$chrome);
-            }
-        }
+//        } elseif (isset($params['module'])) {
+//            $module = expModules::getModuleClassName($params['module']);
+//            $moduletitle = (isset($params['moduletitle'])) ? $params['moduletitle'] : "";
+//            $source = (isset($params['source'])) ? $params['source'] : "";
+//            $chrome = (isset($params['chrome'])) ? $params['chrome'] : false;
+//            $scope = (isset($params['scope'])) ? $params['scope'] : "global";
+//
+//            if ($scope=="global") {
+//                self::showModule($module,$params['view'],$moduletitle,$source,false,null,$chrome);
+//            }
+//            if ($scope=="top-sectional") {
+////                self::showTopSectionalModule($params['module']."module", //module
+////                                             $params['view'], //view
+////                                             $moduletitle, // Title
+////                                             $source, // source
+////                                             false, // used to apply to source picker. does nothing now.
+////                                             $chrome // Show chrome
+////                                            );
+//                if ($source == null) $source = "@section";
+//                //FIXME - $section might be empty!  We're getting it from last_section instead of sectionObj??
+////                $last_section = expSession::get("last_section");
+////                $section = $db->selectObject("section","id=".$last_section);
+//                $section = $sectionObj;  //FIXME let's try $sectionObj instead of last_section
+//                // Loop until we find the top level parent.
+//                while ($section->parent != 0) $section = $db->selectObject("section","id=".$section->parent);
+//                $module_scope[$source.$section->id][$module]= new stdClass();
+//                $module_scope[$source.$section->id][$module]->scope = 'top-sectional';
+//                self::showModule($module,$params['view'],$moduletitle,$source.$section->id,false,null,$chrome);
+//            }
+//            if ($scope=="sectional") {
+////                self::showSectionalModule($params['module']."module", //module
+////                                          $params['view'], //view
+////                                          $moduletitle, // title
+////                                          $source, // source/prefix
+////                                          false, // used to apply to source picker. does nothing now.
+////                                          $chrome // Show chrome
+////                                        );
+//                if ($source == null) $source = "@section";
+//                $src = $source;
+//                $src .= $sectionObj->id;
+//                $module_scope[$src][$module] = new stdClass();
+//                $module_scope[$src][$module]->scope = 'sectional';
+//                self::showModule($module,$params['view'],$moduletitle,$src,false,null,$chrome);
+//            }
+//        }
         return false;
     }
 
@@ -933,32 +946,32 @@ class expTheme {
 				// FIXME: we are checking here for a new MVC style controller or an old school module. We only need to perform
 				// this check until we get the old modules all gone...until then we have the check and a lot of code duplication
 				// in the if blocks below...oh well, that's life.
-				if (!$iscontroller) {
-//					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
-                    if ((!$hide_menu && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
-                        $container = new stdClass();  //php 5.4
-						$container->permissions = array(
-							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
-							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
-						);
-
-						if ($container->permissions['manage'] || $container->permissions['configure']) {
-							$container->randomizer = mt_rand(1,ceil(microtime(1)));
-							$container->view = $view;
-							$container->info['class'] = expModules::getModuleClassName($loc->mod);
-							$container->info['module'] = call_user_func(array($module,"name"));
-							$container->info['source'] = $loc->src;
-                            $container->info['scope'] = $module_scope[$source][$module]->scope;
-							$container->info['hasConfig'] = $db->tableExists($loc->mod."_config");
-//							$template = new template('containermodule','_hardcoded_module_menu',$loc);
-//                            $template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
-                            $c2 = new containerController();
-                            $template = get_template_for_action($c2,'_hardcoded_module_menu');
-							$template->assign('container', $container);
-							$template->output();
-						}
-					}
-				} else {
+//				if (!$iscontroller) {
+////					if ((!$hide_menu && $loc->mod != "containermodule" && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
+//                    if ((!$hide_menu && (call_user_func(array($module,"hasSources")) || $db->tableExists($loc->mod."_config")))) {
+//                        $container = new stdClass();  //php 5.4
+//						$container->permissions = array(
+//							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
+//							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
+//						);
+//
+//						if ($container->permissions['manage'] || $container->permissions['configure']) {
+//							$container->randomizer = mt_rand(1,ceil(microtime(1)));
+//							$container->view = $view;
+//							$container->info['class'] = expModules::getModuleClassName($loc->mod);
+//							$container->info['module'] = call_user_func(array($module,"name"));
+//							$container->info['source'] = $loc->src;
+//                            $container->info['scope'] = $module_scope[$source][$module]->scope;
+//							$container->info['hasConfig'] = $db->tableExists($loc->mod."_config");
+////							$template = new template('containermodule','_hardcoded_module_menu',$loc);
+////                            $template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
+//                            $c2 = new containerController();
+//                            $template = get_template_for_action($c2,'_hardcoded_module_menu');
+//							$template->assign('container', $container);
+//							$template->output();
+//						}
+//					}
+//				} else {
 					// if we hit here we're dealing with a controller...not a module
 					if (!$hide_menu && $loc->mod != "container") {
 						$controller = expModules::getController($module);
@@ -987,7 +1000,7 @@ class expTheme {
 							$template->output();
 						}
 					}
-				}
+//				}
 
 				if ($iscontroller) {
 					$params['src'] = $loc->src;
@@ -996,8 +1009,8 @@ class expTheme {
 					$params['moduletitle'] = $title;
 					if (empty($params['action'])) $params['action'] = $view;
 					renderAction($params);
-				} else {
-					call_user_func(array($module,"show"),$view,$loc,$title);
+//				} else {
+//					call_user_func(array($module,"show"),$view,$loc,$title);
 				}
 			} else {
 				echo sprintf(gt('The module "%s" was not found in the system.'),$module);
@@ -1043,6 +1056,29 @@ class expTheme {
 
 		return $mobile_browser;
 	}
+
+    public static function deprecated($newcall="expTheme::module()", $controller=null, $actionview=null) {
+        global $user;
+
+        if ($user->isAdmin() && DEVELOPMENT) {
+            $trace=debug_backtrace();
+            $caller = $trace[1];
+            if (substr($caller['file'],-16,6) == 'compat') {
+                $caller = $trace[2];
+            }
+            $oldcall = $caller['function'];
+            if ($caller['class'] == 'expTheme') {
+                $oldcall = $caller['class'] . '::' . $oldcall;
+            }
+            $message = '<strong>' . $oldcall . '</strong> ' . gt('is deprecated and should be replaced by') . ' <strong>' . $newcall .'</strong>';
+            if (!empty($controller)) {
+                $message .= '<br>' . gt('for hard coded module') . ' - <strong>' . $controller . ' / ' . $actionview . '</strong>';
+            }
+            $message .= '<br>' . gt('line') . ' #' .  $caller['line'] . ' ' . gt('of') . $caller['file'];
+            $message .= ' <a class="helplink" title="'.gt('Get Theme Update Help').'" href="'.help::makeHelpLink('theme_update').'" target="_blank">'.gt('Help').'</a>';
+            flash('notice',$message);
+        }
+    }
 
 }
 

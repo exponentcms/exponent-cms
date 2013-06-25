@@ -20,7 +20,7 @@
 if (!defined('EXPONENT')) exit('');
 
 /**
- * Text Editor Control
+ * Text Editor Control - displays text area widget
  *
  * @package Subsystems-Forms
  * @subpackage Control
