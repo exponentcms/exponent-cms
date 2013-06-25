@@ -32,13 +32,13 @@ class update_page_ranks extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Update page ranks to conform to 2.0 sequence"; }
+	static function name() { return "Update page and form control ranks to conform to 2.0 sequence"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In old school code indexes began at 0, now begin at 1.  This script updates page ranks to the 2.0 format."; }
+	function description() { return "In old school code indexes began at 0, now begin at 1.  This script updates page and forms control ranks to the 2.0 format."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -48,11 +48,12 @@ class update_page_ranks extends upgradescript {
         global $db;
 
         $oldranks = $db->selectObject('section','rank=0 AND parent!=-1');
+        if (empty($oldranks)) $oldranks = $db->selectObject('forms_control','rank=0');
         return !empty($oldranks);
 	}
 
 	/**
-	 * Reranks pages with index start of 1
+	 * Reranks pages/form controls with index start of 1
      *
 	 * @return bool
 	 */
@@ -67,7 +68,16 @@ class update_page_ranks extends upgradescript {
             $db->updateObject($spg,'section');
         }
 
-        return gt('Page ranks were updated to 2.0 format.');
+        // adjust forms control ranks
+        foreach ($db->selectObjects('forms',1) as $form) {
+            $rank = 1; // 2.0 index starts at 1, not 0 like old school
+            foreach ($db->selectObjects('forms_control','forms_id='.$form->id,'rank') as $fc) {
+                $fc->rank = $rank++;
+                $db->updateObject($fc,'forms_control');
+            }
+        }
+
+        return gt('Page and Form Control ranks were updated to 2.0 format.');
 	}
 
     function re_rank($parent) {
