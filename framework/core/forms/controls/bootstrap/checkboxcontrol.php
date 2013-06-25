@@ -63,7 +63,7 @@ class checkboxcontrol extends formcontrol {
 //            $for   = '';
             $for   = ' for="' . $name . '"';
         }
-        $html = "<div" . $divID . " class=\"control checkbox";
+        $html = "<div" . $divID . " class=\"";
         $html .= (!empty($this->required)) ? ' required">' : '">';
         if (!empty($this->flip)) {
             $html .= "<label" . $for . " class=\"checkbox\" style=\"display:inline;\">".$label;
@@ -88,10 +88,10 @@ class checkboxcontrol extends formcontrol {
 //                 $html .= "</label>";
 //             }
 //            $html .= "</td>";
-            $flip = ' style="position:absolute;"';
+            // $flip = ' style="position:absolute;"';
         }
 //        $html .= "</tr></table>";
-        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\"".$flip.">" . $this->description . "</div><br>";
+        if (!empty($this->description)) $html .= "<span class=\"help-block\">" . $this->description . "</span>";
         $html .= "</div>";
         return $html;
     }
