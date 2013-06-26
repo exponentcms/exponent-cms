@@ -22,7 +22,7 @@
 {/css}
 
 {if $product->user_message != ''}
-    <div id="msg-queue" class="msg-queue notice">
+    <div id="msg-queue" class="msg-queue notice" xmlns="http://www.w3.org/1999/html">
         <div class="msg">{$product->user_message}</div>
     </div>
 {/if}
@@ -140,6 +140,7 @@
                     {/if}
 
                     {$controls = $product->getAllControls($product->multi_registrant)}
+                    {$paged = false}
                     {if !empty($controls)}
                         {clear}
                         {if $product->multi_registrant}
@@ -185,12 +186,32 @@
                         {else}
                             <h3>{'Registration'|gettext}</h3>
                             {'Please complete the following information to register'|gettext}
+                            <div id="form-pages"></div>
                             {foreach $controls as $control}
                                 {$ctlname = $control->name}
-                                <td>
-                                    {$product->showControl($control,"registrant[`$ctlname`][]",null,$registrant->$ctlname)}
-                                </td>
+                                {if !$control@first && get_class($control->ctl) == 'pagecontrol'}
+                                    {$paged = true}
+                                   </fieldset>
+                               {/if}
+                                {$product->showControl($control,"registrant[`$ctlname`][]",null,$registrant->$ctlname)}
                             {/foreach}
+                            {if get_class($controls[0]->ctl) == 'pagecontrol'}
+                                </fieldset>
+                            {/if}
+                            {if $paged}
+                                {script unique="paged_event" jquery='jquery.validate,jquery.stepy'}
+                                {literal}
+                                    $('#addtocart{/literal}{$product->id}{literal}').stepy({
+                                        validate: true,
+                                        block: true,
+                                        errorImage: true,
+                                        btnClass: 'awesome {/literal}$smarty.const.BTN_SIZE $smarty.const.BTN_COLOR{literal}',
+                                        titleClick: true,
+                                        titleTarget: '#form-pages',
+                                    });
+                                {/literal}
+                                {/script}
+                            {/if}
                         {/if}
                     {/if}
                     {if $product->require_terms_and_condition}

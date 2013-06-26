@@ -596,7 +596,7 @@ class eventregistration extends expRecord {
         $f = new forms($this->forms_id);
         if (empty($f->is_saved)) return null;  // useless unless the form data is being saved
         $fc = new forms_control();
-        $controls = $fc->find('all','forms_id='.$this->forms_id);
+        $controls = $fc->find('all','forms_id='.$this->forms_id,'rank');
         foreach ($controls as $key=>$control) {
             $controls[$key]->ctl = expUnserialize($control->data);
             if ($input_only && get_class($control->ctl) == 'htmlcontrol') {
