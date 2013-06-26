@@ -95,11 +95,15 @@ function smarty_function_icon($params, &$smarty) {
         unset($params['hash']);
     }
 
-    if (empty($params['img']) && empty($params['text'])) {
+    if (!empty($params['text']) && $params['text']=="notext") {
+        $text = '';
+    } elseif (empty($params['img']) && empty($params['text'])) {
         $img = gt(ucfirst($class));
     } else if (!empty($params['img'])) {
         $img = '<img class="' . $class . '" src="' . ICON_RELATIVE . $params['img'] . '" title="' . $title . '" alt="' . $alt . '"' . XHTML_CLOSING . '>';
-    } else $img = '';
+    } else {
+        $img = '';
+    }
 
     $linktext = $img . $text;
 
