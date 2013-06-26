@@ -52,7 +52,7 @@
         {/permissions}
         <span><h4>{($product->eventdate+$product->event_starttime)|format_date:"%l:%M %P"}
             {if $product->eventdate+$product->event_starttime != $product->eventdate+$product->event_endtime}
-                - {($product->eventdate+$product->event_endtime)|format_date:"%l:%M %P""}
+                - {($product->eventdate+$product->event_endtime)|format_date:"%l:%M %P"}
                 {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
                 <em class="attribution">({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if})</em>
             {/if}
