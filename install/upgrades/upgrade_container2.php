@@ -149,7 +149,7 @@ class upgrade_container2 extends upgradescript {
         // update permissions
         foreach ($db->selectObjects('grouppermission',"module = 'containermodule'") as $gp) {
             $gp->module = 'container';  // containermodule is now container 2.0 controller
-            $db->updateObject($gp,'grouppermission',"module = 'containermodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
+            $db->updateObject($gp,'grouppermission',"module = 'containermodule' AND source = '".$gp->source."' AND permission = '".$gp->permission."' AND internal = '".$gp->internal."'",'gid');
             $count++;
 	    }
         foreach ($db->selectObjects('grouppermission',"module LIKE '%Controller%'") as $gp) {
@@ -159,7 +159,7 @@ class upgrade_container2 extends upgradescript {
             $count++;
 	    }
         foreach ($db->selectObjects('grouppermission',"module = 'container2'") as $gp) {  // fix pre-release 2.2.0
-            $gp->module = 'container';  // containe2 is now simply container 2.0 controller
+            $gp->module = 'container';  // container2 is now simply container 2.0 controller
             $db->updateObject($gp,'grouppermission',"module = 'container2' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
             $count++;
 	    }
@@ -171,7 +171,7 @@ class upgrade_container2 extends upgradescript {
         foreach ($db->selectObjects('userpermission',"module LIKE '%Controller%'") as $up) {
             $old_up_mod = $up->module;
             $up->module = expModules::getModuleName($up->module);  // convert module name to 2.0 style
-            $db->updateObject($up,'userpermission',"module = '". $old_up_mod . "' AND source = '".$up->source."' AND permission = '".$up->permission."'",'gid');
+            $db->updateObject($up,'userpermission',"module = '". $old_up_mod . "' AND source = '".$up->source."' AND permission = '".$up->permission."' AND internal = '".$up->internal."'",'gid');
             $count++;
 	    }
         foreach ($db->selectObjects('userpermission',"module = 'container2'") as $up) {  // fix pre-release 2.2.0
