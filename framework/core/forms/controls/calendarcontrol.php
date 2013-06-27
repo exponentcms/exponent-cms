@@ -88,16 +88,17 @@ class calendarcontrol extends formcontrol {
 //    }
 
     function controlToHTML($name, $label = null) {
+        $idname = str_replace(array('[',']',']['),'_',$name);
         $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
         $html        = "
-            <div id=\"calendar-container-" . $name . "\" class=\"yui3-skin-sam\"> </div>
-            <div id=\"cal-container-" . $name . "\" class=\"control calendar-control\">";
+            <div id=\"calendar-container-" . $idname . "\" class=\"yui3-skin-sam\"> </div>
+            <div id=\"cal-container-" . $idname . "\" class=\"control calendar-control\">";
 //        $html        .= "    <label for=\"" . $name . "\" class=\"label\">" . $label . "</label>";
-        $html        .= "    <input size=10 type=\"text\" id=\"date-" . $name . "\" name=\"date-" . $name . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />";
+        $html        .= "    <input size=10 type=\"text\" id=\"date-" . $idname . "\" name=\"date-" . $name . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />";
 if ($this->showtime) {
-        $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $name . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
-            : <input size=2 type=\"text\" id=\"time-m-" . $name . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>
-            <select id=\"ampm-" . $name . "\" name=\"ampm-" . $name . "\">";
+        $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $idname . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
+            : <input size=2 type=\"text\" id=\"time-m-" . $idname . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>
+            <select id=\"ampm-" . $idname . "\" name=\"ampm-" . $name . "\">";
 
         if ($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
         else $html .= "<option>am</option><option selected>pm</option>";
@@ -113,7 +114,7 @@ if ($this->showtime) {
         YUI(EXPONENT.YUI3_CONFIG).use('node','calendar','datatype-date', function(Y) {
 //        YUI(EXPONENT.YUI3_CONFIG).use('node','calendar','datatype-date','panel','dd-plugin','gallery-calendar-jumpnav',function(Y) {
             // Our calendar bounding div id
-            var boundingBoxId = '#calendar-container-" . $name . "',
+            var boundingBoxId = '#calendar-container-" . $idname . "',
             // This flag used to track mouse position
             isMouseOverCalendar = false,
             // A text field element that stores the date chosen in calendar
@@ -126,7 +127,7 @@ if ($this->showtime) {
             });
 
             // These are text fields' ids to store dates in
-            var dateField = '#date-" . $name . "';
+            var dateField = '#date-" . $idname . "';
 
             // To show calendar when user clicks on text fields
             Y.on('focus', function(event) {
@@ -208,7 +209,7 @@ if ($this->showtime) {
                 if (e.target.get('value')<0) {
                     e.target.set('value',0);
                 }
-            }, '#time-h-" . $name . "');
+            }, '#time-h-" . $idname . "');
 
             // time input restriction to 12 hour
             Y.on('keyup',function(e){
@@ -218,11 +219,11 @@ if ($this->showtime) {
                 if (e.target.get('value')<0) {
                     e.target.set('value',0);
                 }
-            }, '#time-m-" . $name . "');
+            }, '#time-m-" . $idname . "');
         });
         "; // end JS
         expJavascript::pushToFoot(array(
-            "unique"  => 'zzcal' . $name,
+            "unique"  => 'zzcal' . $idname,
             "yui3mods"=> 1,
             "content" => $script,
         ));
@@ -247,7 +248,7 @@ if ($this->showtime) {
 //            }
 //        ";
 //        expCSS::pushToHead(array(
-//    	    "unique"=>"caljumpnav" . $name,
+//    	    "unique"=>"caljumpnav" . $idname,
 //            "css"=>$css
 //        ));
 

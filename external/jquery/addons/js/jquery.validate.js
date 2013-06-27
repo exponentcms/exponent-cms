@@ -1092,12 +1092,16 @@ $.extend($.validator, {
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/min
 		min: function( value, element, param ) {
-			return this.optional(element) || value >= param;
+            if (param != 'undefined') {
+			    return this.optional(element) || value >= param;
+            } else return true;
 		},
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/max
 		max: function( value, element, param ) {
-			return this.optional(element) || value <= param;
+            if (param != 'undefined') {
+			    return this.optional(element) || value <= param;
+            } else return true;
 		},
 
 		// http://docs.jquery.com/Plugins/Validation/Methods/range

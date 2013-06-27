@@ -75,18 +75,19 @@ class yuidatetimecontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label = null) {
+        $idname = str_replace(array('[',']',']['),'_',$name);
         $datectl  = new yuicalendarcontrol($this->default, '', false);
         $timectl  = new datetimecontrol($this->default, false);
         $datetime = date('l, F d, o g:i a', $this->default);
 
-        $html = '<span id="dtdisplay-' . $name . '">' . $datetime . '</span>';
+        $html = '<span id="dtdisplay-' . $idname . '">' . $datetime . '</span>';
         if (!$this->display_only) {
-            $html .= ' <input id="pub-' . $name . '" type="checkbox" name="' . $name . '"';
+            $html .= ' <input id="pub-' . $idname . '" type="checkbox" name="' . $name . '"';
             $html .= $this->checked ? ' checked> ' . $this->edit_text : '> ' . $this->edit_text;
             $html .= "<!-- cke lazy -->";
             $html .= '<div ';
             $html .= $this->checked ? 'style="display:none"' : 'style="display:block"';
-            $html .= ' id="datetime-' . $name . '">';
+            $html .= ' id="datetime-' . $idname . '">';
             $html .= ($this->showdate) ? $datectl->controlToHTML($name . "date") : "";
             $html .= '<div class="yuitime">';
             $html .= ($this->showtime) ? $timectl->controlToHTML($name . "time") : "";
@@ -96,8 +97,8 @@ class yuidatetimecontrol extends formcontrol {
 
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-            var handleCheck" . $name . " = function(e) {
-                var cal = Y.one('#datetime-" . $name . "');
+            var handleCheck" . $idname . " = function(e) {
+                var cal = Y.one('#datetime-" . $idname . "');
                 if (cal.getStyle('display')=='none') {
                     cal.setStyle('display','block');
                 } else {
@@ -106,14 +107,14 @@ class yuidatetimecontrol extends formcontrol {
             };
 
             Y.Global.on('lazyload:cke', function() {
-                Y.one('#pub-" . $name . "').detach('click',handleCheck" . $name . ");
-                Y.one('#pub-" . $name . "').on('click',handleCheck" . $name . ");
+                Y.one('#pub-" . $idname . "').detach('click',handleCheck" . $idname . ");
+                Y.one('#pub-" . $idname . "').on('click',handleCheck" . $idname . ");
             });
         });
         ";
 
         expJavascript::pushToFoot(array(
-            "unique"  => "000-datetime-" . $name,
+            "unique"  => "000-datetime-" . $idname,
             "yui3mods"=> "1",
             "content" => $script,
         ));
