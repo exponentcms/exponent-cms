@@ -426,7 +426,7 @@ class formsController extends expController {
         //            $value = call_user_func(array($coltype,'buildDownloadLink'),$this->params[$col->name],$_FILES[$col->name]['name'],true);
                     //eDebug($value);
                     $responses[$col->caption . $num] = $_FILES[$col->name]['name'];
-                } elseif ($coltype != 'htmlcontrol') {
+                } elseif ($coltype != 'htmlcontrol' && $coltype != 'pagecontrol') {
                     $responses[$col->caption . $num] = '';
                 }
             }
