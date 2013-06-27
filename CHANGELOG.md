@@ -20,7 +20,8 @@ Added / Fixed / changed for 2.2.1
   - no longer automatically loads bootstrap.min.js file, explicit loading of individual scripts as required
   - includes all fixes from v2.2.0 patches
 ### Known Issues
-  - Flowplayer & YouTube modules are deprecated, but still present in this distribution, they will be removed in the near future
+  - 0.9x theme support is deprecated but still present in this distribution, it will be removed in the near future
+  - Flowplayer & YouTube modules are deprecated but still present in this distribution, they will be removed in the near future
     -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
