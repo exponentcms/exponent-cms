@@ -461,8 +461,8 @@ if (!defined('YUI3_RELATIVE')) {
 	 * YUI 3 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-//	define('YUI3_VERSION', '3.10.3');
-    define('YUI3_VERSION', '3.11.0pr1');
+	define('YUI3_VERSION', '3.10.3');
+//    define('YUI3_VERSION', '3.11.0pr1');
     define('YUI3_RELATIVE', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
 	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
