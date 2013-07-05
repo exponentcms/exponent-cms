@@ -5,7 +5,7 @@ Swift,5.0.1,swiftmailer.org,5.0.1,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 swfobject,2.2,code.google.com/p/swfobject,2.2,
-Smarty,3.1.13,smarty.net,3.1.14,
+Smarty,3.1.14,smarty.net,3.1.14,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.1.5,github.com/mrclay/minify,2.1.5,
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -21,14 +21,14 @@ class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou modu
 dompdf,6.0b3,https://github.com/dompdf/dompdf,6.0b3,patched to display our images
 iCalCreator,2.16.12,kigkonsult.se/iCalcreator,2.16.12,
 lessphp,0.39,leafo.net/lessphp,0.39,latest development
-jQuery,1.10.1,jquery.com,1.10.2/2.0.3,
+jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
 jQueryUI,1.10.3,jqueryui.com,1.10.3,
 Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less for & includes swatches, fontawesome"
 Bootswatch,2.3.2,bootswatch.com/,2.3.2,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
-Adminer,3.7.0,www.adminer.org,3.7.1,
-html5shiv,,code.google.com/p/html5shiv/,,
-SimpleAjaxUploader,1.5.3-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.6,converted to yui module
+Adminer,3.7.1,www.adminer.org,3.7.1,
+html5shiv,v3.6.2,code.google.com/p/html5shiv/,v3.6.2,
+SimpleAjaxUploader,1.6.0-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.6.0-exp,converted to yui module
 normalize.css,2.1.2,necolas.github.com/normalize.css/,2.1.2,
 MediaElement.js,2.12.0,mediaelementjs.com/,2.12.0,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
