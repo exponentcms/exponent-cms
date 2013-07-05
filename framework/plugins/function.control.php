@@ -92,10 +92,12 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "uploader":
                 $control = new uploadcontrol();
+                if (!empty($params['accept'])) $control->accept = $params['accept'];
                 break;
             case "files":
                 if (!empty($params['olduploader'])) {
                     $control = new uploadcontrol();
+                    if (!empty($params['accept'])) $control->accept = $params['accept'];
                 } else {
                     $subtype        = isset($params['subtype']) ? $params['subtype'] : null;
                     $control        = new filemanagercontrol($subtype);
