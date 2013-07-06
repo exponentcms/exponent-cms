@@ -77,7 +77,6 @@
 	display:inline-block;
 }
 
-
 .filemanager.control .filelist li.blank {
     text-align:left;
     margin:0;
@@ -127,6 +126,16 @@
 a.quick-upload-disabled {
     color: #808080!important;
 }
+
+.filemanager.control .progressbox {
+    width: 200px;
+}
+
+.filemanager.control .progressbox .name, .filemanager.control .progressbox .size {
+    display: inline;
+	padding-right: 12px;
+}
+
 /*
 .filemanager.control .hd {
     height:24px;

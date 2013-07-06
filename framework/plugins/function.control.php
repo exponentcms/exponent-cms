@@ -97,13 +97,13 @@ function smarty_function_control($params, &$smarty) {
             case "files":
                 if (!empty($params['olduploader'])) {
                     $control = new uploadcontrol();
-                    if (!empty($params['accept'])) $control->accept = $params['accept'];
                 } else {
                     $subtype        = isset($params['subtype']) ? $params['subtype'] : null;
                     $control        = new filemanagercontrol($subtype);
                     $control->limit = isset($params['limit']) ? $params['limit'] : 10;
                     if (!empty($params['value'])) $control->value = $params['value'];
                 }
+                if (!empty($params['accept'])) $control->accept = $params['accept'];
                 break;
             case "filedisplay-types":
                 $control                = new dropdowncontrol();

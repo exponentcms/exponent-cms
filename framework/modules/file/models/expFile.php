@@ -764,6 +764,7 @@ class expFile extends expRecord {
         'svgz' => 'image/svg+xml',
 
         // archives
+        'gz' => 'application/x-gzip',
         'zip' => 'application/zip',
         'rar' => 'application/x-rar-compressed',
         'exe' => 'application/x-msdownload',
@@ -772,34 +773,35 @@ class expFile extends expRecord {
 
         // audio/video
         'mp3' => 'audio/mpeg',
+        'ogg' => 'audio/ogg',
         'qt' => 'video/quicktime',
         'mov' => 'video/quicktime',
-        'ogg' => 'audio/ogg',
         'f4v' => 'video/mp4',
         'mp4' => 'video/mp4',
         'm4v' => 'video/x-m4v',
         'ogv' => 'video/ogg',
         '3gp' => 'video/3gpp',
         'webm' => 'video/webm',
-        'swf' => 'application/x-shockwave-flash',
         'flv' => 'video/x-flv',
+        'swf' => 'application/x-shockwave-flash',
 
         // adobe
         'pdf' => 'application/pdf',
-        'psd' => 'image/vnd.adobe.photoshop',
-        'ai' => 'application/postscript',
-        'eps' => 'application/postscript',
-        'ps' => 'application/postscript',
+//        'psd' => 'image/vnd.adobe.photoshop',
+//        'ai' => 'application/postscript',
+//        'eps' => 'application/postscript',
+//        'ps' => 'application/postscript',
 
         // ms office
-        'doc' => 'application/msword',
-        'rtf' => 'application/rtf',
-        'xls' => 'application/vnd.ms-excel',
-        'ppt' => 'application/vnd.ms-powerpoint',
+//        'doc' => 'application/msword',
+//        'rtf' => 'application/rtf',
+//        'xls' => 'application/vnd.ms-excel',
+//        'ppt' => 'application/vnd.ms-powerpoint',
 
         // open office
-        'odt' => 'application/vnd.oasis.opendocument.text',
-        'ods' => 'application/vnd.oasis.opendocument.spreadsheet');
+//        'odt' => 'application/vnd.oasis.opendocument.text',
+//        'ods' => 'application/vnd.oasis.opendocument.spreadsheet'
+        );
 
         /* Get the file extension,
          * FYI: this is *really* hax.

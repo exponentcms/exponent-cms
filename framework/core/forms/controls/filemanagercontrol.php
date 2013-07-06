@@ -30,7 +30,8 @@ class filemanagercontrol extends formcontrol {
     var $html;
     var $span;
     var $description = "";
-    
+    var $accept = "";
+
     static function name() { return "Manage Files"; }
     static function isStatic() { return true; }
 
@@ -63,6 +64,7 @@ class filemanagercontrol extends formcontrol {
             $this->count = 0;
             $files = '<li class="blank">'.gt('You need to add some files').'</li>';
         }
+        $html .= '<div id="progressBox-'.$name.'" class="progressbox"></div>';
         $html .= '<ul id="filelist'.$name.'" class="filelist">';
         $html .= $files;
         $html .= '</ul>';
@@ -99,17 +101,46 @@ class filemanagercontrol extends formcontrol {
                     disabledClass: 'quick-upload-disabled ajax',
                     multiple: (limit-filesAdded > 1),
                     maxUploads: limit,
-//                    debug: true,
+//                    debug: true,";
+        if (!empty($this->accept)) {
+            $js .= '
+                    accept: "'.$this->accept.'",';
+        }
+        $js .= "
                     onSubmit: function(file, ext){
 //                        if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
 //                            // extension is not allowed
 //                            return false;
 //                        }
 //                        quickUpload.disable();
-                        if (quickUpload._activeUploads) {
+//                        if (quickUpload._activeUploads) {
                            Y.one('#quickaddfiles-".$name."').addClass('ajax');
                            Y.one('#quickaddfiles-".$name."').addClass('quick-upload-disabled');
-                        }
+//                        }
+                        // Create the elements of our progress bar
+                        var progress = document.createElement('div'), // container for progress bar
+                            bar = document.createElement('div'), // actual progress bar
+                            fileSize = document.createElement('div'), // container for upload file size
+                            wrapper = document.createElement('div'), // container for this progress bar
+                            progressBox = document.getElementById('progressBox-".$name."'); // on page container for progress bars
+
+                        // Assign each element its corresponding class
+                        progress.className = 'progress';
+                        bar.className = 'bar';
+                        fileSize.className = 'size';
+                        wrapper.className = 'wrapper';
+
+                        // Assemble the progress bar and add it to the page
+                        progress.appendChild(bar);
+                        wrapper.innerHTML = '<div class=\"name\">'+file+'</div>'; // filename is passed to onSubmit()
+                        wrapper.appendChild(fileSize);
+                        wrapper.appendChild(progress);
+                        progressBox.appendChild(wrapper); // just an element on the page to hold the progress bars
+
+                        // Assign roles to the elements of the progress bar
+                        this.setProgressBar(bar); // will serve as the actual progress bar
+                        this.setFileSizeBox(fileSize); // display file size beside progress bar
+                        this.setProgressContainer(wrapper); // designate the containing div to be removed after upload
                     },
                     onComplete: function(file, response){
                         //Add uploaded file to list
@@ -418,8 +449,7 @@ class filemanagercontrol extends formcontrol {
              ));
     //         expJavascript::pushToFoot(array(
     //             "unique"=>"quickupload",
-    // //                "jquery"=>"1",
-    // //                "src"=>PATH_RELATIVE."external/ajaxupload.3.5.js"
+    //             "jquery"=>"1",
     //             "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
     //          ));
         return $html;

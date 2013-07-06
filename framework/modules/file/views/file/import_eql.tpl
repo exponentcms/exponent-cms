@@ -21,7 +21,7 @@
 	</div>
     <div>
         {form action=import_eql_process}
-            {control type=uploader name=file label=gt('EQL File')}
+            {control type=uploader name=file accept=".eql" label=gt('EQL File')}
             {control class=uploadfile type=buttongroup submit="Restore"|gettext}
         {/form}
     </div>

@@ -20,7 +20,7 @@
 	</div>
     <div>
         {form action=import_files_process}
-            {control type=uploader name=file label=gt('Files Archive')}
+            {control type=uploader name=file accept="application/x-gzip" label=gt('Files Archive')}
             {control class=uploadfile type=buttongroup submit="Restore"|gettext}
         {/form}
     </div>
