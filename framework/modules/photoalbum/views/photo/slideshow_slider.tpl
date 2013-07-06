@@ -20,7 +20,8 @@
     {$sel_height = round($config.height/($slides|count+1))}
 {/if}
 
-{css unique="photoalbum`$name`" link="`$asset_path`css/slider.css"}
+{*{css unique="photoalbum`$name`" link="`$asset_path`css/slider.css"}*}
+{css unique="photoalbum`$name`"}
 {literal}
     .sliderlist {
         width : {/literal}{$config.sel_width|default:180}{literal}px;
@@ -137,8 +138,12 @@
 EXPONENT.YUI3_CONFIG.modules = {
 	'slide': {
 		fullpath: '{/literal}{$asset_path}js/slide.js{literal}',
-		requires: ['node','anim']
-	}
+		requires: ['node','anim','slider-css']
+	},
+    'slider-css': {
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/css/slider.css',
+        type: 'css'
+    }
 }
 
 YUI(EXPONENT.YUI3_CONFIG).use('slide',function(Y){

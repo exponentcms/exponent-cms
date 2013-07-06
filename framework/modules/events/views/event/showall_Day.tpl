@@ -19,9 +19,9 @@
 
 {/css}
 
-{css unique="calpopup" link="`$asset_path`css/default.css"}
+{*{css unique="calpopup" link="`$asset_path`css/default.css"}*}
 
-{/css}
+{*{/css}*}
 
 <div class="module events viewday">
 	<div class="module-actions">
@@ -73,7 +73,11 @@
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-calendar': {
 		fullpath: '{/literal}{$asset_path}js/calendar.js{literal}',
-		requires: ['node']
+        requires: ['node','calendar-css']
+    },
+    'calendar-css': {
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/default.css',
+        type: 'css'
 	}
 }
 

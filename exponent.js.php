@@ -69,7 +69,7 @@ EXPONENT.YUI3_CONFIG = {
                         }   
                     }   
                 }   
-            }   
+            }
         }
     }
 };

@@ -107,7 +107,11 @@ class popupdatetimecontrol extends formcontrol {
             EXPONENT.YUI3_CONFIG.modules = {
                 'gallery-calendar': {
                     fullpath: '".PATH_RELATIVE."framework/modules/events/assets/js/calendar.js',
-                    requires: ['node']
+                    requires: ['node','calendar-css']
+                },
+                'calendar-css': {
+                    fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/default.css',
+                    type: 'css'
                 }
             }
 
@@ -153,11 +157,11 @@ class popupdatetimecontrol extends formcontrol {
             });
         ";
 
-        expCSS::pushToHead(array(
-    	    "unique"=>"popcalcss" . $idname,
-    	    "link"=>PATH_RELATIVE.'framework/modules/events/assets/css/default.css',
-//            "css"=>$css
-        ));
+//        expCSS::pushToHead(array(
+//    	    "unique"=>"popcalcss" . $idname,
+//    	    "link"=>PATH_RELATIVE.'framework/modules/events/assets/css/default.css',
+////            "css"=>$css
+//        ));
         expJavascript::pushToFoot(array(
             "unique"  => 'popcal' . $idname,
             "yui3mods"=> 1,

@@ -163,9 +163,9 @@
 	</table>
 
 {if $config.lightbox}
-{css unique="cal-lightbox" link="`$asset_path`css/lightbox.css"}
+{*{css unique="cal-lightbox" link="`$asset_path`css/lightbox.css"}*}
 
-{/css}
+{*{/css}*}
 
 {*FIXME convert to yui3*}
 {script unique="shadowbox`$myloc`" yui3mods=1}
@@ -173,7 +173,11 @@
     EXPONENT.YUI3_CONFIG.modules = {
         'yui2-lightbox' : {
             fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/js/lightbox.js',
-            requires : ['yui2-dom','yui2-event','yui2-connectioncore','yui2-json','yui2-selector','yui2-animation']
+            requires : ['yui2-dom','yui2-event','yui2-connectioncore','yui2-json','yui2-selector','yui2-animation','yui2-lightbox-css']
+        },
+        'yui2-lightbox-css' : {
+            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/lightbox.css',
+            type: 'css'
         }
     }
     YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-container','yui2-yahoo-dom-event','yui2-lightbox', function(Y) {

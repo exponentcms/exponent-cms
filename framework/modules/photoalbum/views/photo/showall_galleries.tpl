@@ -103,7 +103,11 @@
     EXPONENT.YUI3_CONFIG.modules = {
        'gallery-lightbox' : {
            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-           requires : ['base','node','anim','selector-css3']
+           requires : ['base','node','anim','selector-css3','lightbox-css']
+       },
+       'lightbox-css': {
+           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/css/gallery-lightbox.css',
+           type: 'css'
        }
     }
 
