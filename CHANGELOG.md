@@ -14,7 +14,7 @@ Added / Fixed / changed for 2.2.1
   - adds form design export/import
   - adds a rudimentary site configuration profile (backup/restore) feature
   - adds optional author signature to blog posts, handled by user profile extension
-  - now supports multiple simultaneous file uploads for 'quick add' uploads (if browser supports)
+  - now supports multiple simultaneous file uploads for 'quick add' uploads w/ new progress indicator (if browser supports)
   - recycle bin is now more consistent...all removed modules sent to recycle bin, all modules removed from recycle bin have all items deleted
   - adds ldap user sync to update all ldap users against ldap server data (email, first/last name)
   - no longer automatically loads bootstrap.min.js file, explicit loading of individual scripts as required
