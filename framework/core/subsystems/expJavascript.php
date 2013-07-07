@@ -97,7 +97,7 @@ class expJavascript {
                     ));
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap2',
-               		    "lesscss"=>PATH_RELATIVE."external/bootstrap/less/responsive.less",
+               		    "lesscss"=>"external/bootstrap/less/responsive.less",
                     ));
                 }
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $key=>$mod) {
