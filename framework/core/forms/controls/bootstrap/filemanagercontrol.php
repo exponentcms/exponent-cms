@@ -64,13 +64,13 @@ class filemanagercontrol extends formcontrol {
             $this->count = 0;
             $files = '<li class="blank">'.gt('You need to add some files').'</li>';
         }
-        $html .= '<div id="progressBox-'.$name.'" class="progressbox"></div>';
-        $html .= '<ul id="filelist'.$name.'" class="filelist">';
+        $html .= '<div class="filembox"><div class="filebox"><ul id="filelist'.$name.'" class="filelist">';
         $html .= $files;
-        $html .= '</ul>';
+        $html .= '</ul></div>';
+        $html .= '<div id="progressBox-'.$name.'" class="progressbox"></div><div style="clear:both"></div></div>';
         $html .= '<input type="hidden" name="'.$subTypeName.'" value="'.$subTypeName.'">';
         if ($this->limit>1) $this->description .= " " . gt('Drag the files to change their sequence.');
-        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">" . $this->description . "</div>";
+        if (!empty($this->description)) $html .= "<div class=\"control-desc\">" . $this->description . "</div>";
         $html .= '</div>';
         $js = "
             EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
@@ -101,6 +101,7 @@ class filemanagercontrol extends formcontrol {
                     disabledClass: 'quick-upload-disabled ajax',
                     multiple: (limit-filesAdded > 1),
                     maxUploads: limit,
+                    maxSize: " . intval(ini_get('upload_max_filesize')*1024) . ",
 //                    debug: true,";
         if (!empty($this->accept)) {
             $js .= '
