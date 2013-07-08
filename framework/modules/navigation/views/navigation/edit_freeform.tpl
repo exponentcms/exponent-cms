@@ -44,7 +44,7 @@
                     {*{control type="dropdown" name="external_link" label="Dropdown Alignment"|gettext items="Left,Right"|gettxtlist values="left,right" value=$section->external_link}*}
                     {control type="radiogroup" name="external_link" label="Dropdown Alignment"|gettext items="Left,Right"|gettxtlist values="left,right" value=$section->external_link|default:"left"}
                     {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1 description='Should this page and menu item be visible to all users regardless of permissions?'|gettext}
-                    {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
+                    {control type="files" name="files" label="Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
                 </div>
             </div>
         </div>

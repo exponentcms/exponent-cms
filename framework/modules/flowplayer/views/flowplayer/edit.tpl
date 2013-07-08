@@ -35,8 +35,8 @@
         {control type="html" name="body" label="Video Description"|gettext value=$record->body}
         {control type="text" name="width" label="Width"|gettext filter=integer value=$record->width|default:$width}
         {control type="text" name="height" label="Height"|gettext filter=integer value=$record->height|default:$height}
-        {control type="files" name="files" label="Media File"|gettext|cat:" (.flv, .f4v, .mp4, or .mp3)" subtype=video value=$record->expFile limit=1}
-        {control type="files" name="splash" label="Splash Image"|gettext subtype=splash value=$record->expFile limit=1}
+        {control type="files" name="files" label="Media File"|gettext|cat:" (.flv, .f4v, .mp4, or .mp3)" subtype=video accept="audio/*,video/*" value=$record->expFile limit=1}
+        {control type="files" name="splash" label="Splash Image"|gettext subtype=splash accept="image/*" value=$record->expFile limit=1}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

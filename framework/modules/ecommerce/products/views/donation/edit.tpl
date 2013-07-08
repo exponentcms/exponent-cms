@@ -49,8 +49,8 @@
 	                {control type="text" name="base_price" label="Minimum/Quick dollar amount"|gettext value=$record->base_price filter=money description='Amount of a \'Quick\' donation, or minimum amount for a standard donation'|gettext}
 	            </div>
 	            <div id="tab3">
-	                {*{control type=files name=files subtype=images value=$record->expFile}*}
-                    {control type=files label="Main Images"|gettext name=mainimages subtype="mainimage" value=$record->expFile limit=1}
+	                {*{control type=files name=files subtype=images accept="image/*" value=$record->expFile}*}
+                    {control type=files label="Main Images"|gettext name=mainimages subtype="mainimage" accept="image/*" value=$record->expFile limit=1}
 	            </div>
 	            <!--div id="tab4">
 	                {control type="text" name="quantity" label="Quantity"|gettext value=$record->quantity}

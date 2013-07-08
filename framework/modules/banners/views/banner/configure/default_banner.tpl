@@ -17,4 +17,4 @@
 <blockquote>
     {'This is the banner that will be used if there are no banners available for this banner module.'|gettext}
 </blockquote>
-{control type="files" name="default" label="Default Banner Image"|gettext value=$config.defaultbanner}
+{control type="files" name="default" label="Default Banner Image"|gettext accept="image/*" value=$config.defaultbanner}

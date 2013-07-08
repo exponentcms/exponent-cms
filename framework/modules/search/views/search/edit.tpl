@@ -24,7 +24,7 @@
     {control type="text" name="title" label="Title"|gettext value=$record->title}
     {*{control type="text" name="url" label="URL"|gettext value=$record->url}*}
     {control type=url name="url" label="URL"|gettext value=$record->url}
-    {control type="files" name="image" label="Image"|gettext value=$record->expFile}
+    {control type="files" name="image" label="Image"|gettext accept="image/*" value=$record->expFile}
     {control type="editor" name="body" label="URL Description"|gettext value=$record->body}
     {control type="buttongroup" submit="Save"|gettext cancel="Uh.. Nevermind..."|gettext}
 {/form}

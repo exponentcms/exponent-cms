@@ -40,7 +40,7 @@
 	                {control type="editor" name="body" label="Gift Card Description"|gettext height=250 value=$record->body}
 	            </div>
 	            <div id="tab2">
-	                {control type=files label="Main Images"|gettext name=files subtype="mainimage" value=$record->expFile}
+	                {control type=files label="Main Images"|gettext name=files subtype="mainimage" accept="image/*" value=$record->expFile}
 	            </div>
             </div>
         </div>

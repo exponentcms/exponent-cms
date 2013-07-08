@@ -51,7 +51,7 @@
                         {*TODO we don't secure individual pages at this time*}
                         {*{control type="checkbox" name="secured" label="Secured"|gettext|cat:"?" checked=$section->secured value=1}*}
                     {/if}
-                    {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
+                    {control type="files" name="files" label="Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
                 </div>
                 <div id="tab2">
                     <h2>{'SEO Information'|gettext}</h2>

@@ -46,7 +46,7 @@
                     {*{control type=text name=external_link label="Page URL"|gettext value=$section->external_link description='Enter the URL to associate with this menu link'|gettext}*}
                     {control type=url name=external_link label="Page URL"|gettext value=$section->external_link description='Enter the URL to associate with this menu link'|gettext}
                     {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1 description='Should this page and menu item be visible to all users regardless of permissions?'|gettext}
-                    {control type="files" name="files" label="Icon"|gettext value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
+                    {control type="files" name="files" label="Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
                 </div>
             </div>
         </div>

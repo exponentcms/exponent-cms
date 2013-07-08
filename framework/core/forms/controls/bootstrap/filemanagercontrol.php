@@ -99,6 +99,7 @@ class filemanagercontrol extends formcontrol {
                     responseType: 'json',
                     name: 'uploadfile',
                     disabledClass: 'quick-upload-disabled ajax',
+//                    hoverClass: 'a:hover',
                     multiple: (limit-filesAdded > 1),
                     maxUploads: limit,
                     maxSize: " . intval(ini_get('upload_max_filesize')*1024) . ",
