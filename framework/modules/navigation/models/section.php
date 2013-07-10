@@ -41,7 +41,7 @@ class section extends expRecord {
 
     function update($params=array()) {
         $this->grouping_sql = " AND parent='".$this->parent."'";
-        if (empty($params['sef_name'])) $params['sef_name'] = expCore::makeSefUrl($params['name'],'section');
+        if (empty($this->sef_name) && empty($params['sef_name'])) $params['sef_name'] = expCore::makeSefUrl($params['name'],'section');
         parent::update($params);
         expSession::clearAllUsersSessionCache('navigation');
 //        expHistory::back();
