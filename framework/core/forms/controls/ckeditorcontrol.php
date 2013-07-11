@@ -72,6 +72,10 @@ class ckeditorcontrol extends formcontrol {
             $formattags = stripSlashes($settings->formattags);
             $fontnames  = stripSlashes($settings->fontnames);
         }
+        if (!empty($this->additionalConfig)) {
+            $additionalConfig = $this->additionalConfig;
+            $plugins .= ',fieldinsert';
+        }
 
         // set defaults
         if (empty($tb)) {
@@ -138,6 +142,7 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkWindowHeight : 600,
                     filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "external/editors/connector/ckeditor_link.php',
                     extraPlugins : 'stylesheetparser,tableresize," . $plugins . "',
+                    " . $additionalConfig . "
                     autoGrow_minHeight : 200,
                     autoGrow_maxHeight : 400,
                     autoGrow_onStartup : false,

@@ -1022,6 +1022,7 @@ class formsController extends expController {
             $cols = $this->config['column_names_list'];
         }
         if (isset($this->config['forms_id'])) {
+            $fieldlist = '[';
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' AND is_readonly=0','rank') as $control) {
 //                $ctl = unserialize($control->data);
@@ -1034,6 +1035,9 @@ class formsController extends expController {
                         $column_names[$control->name] = $control->caption;
                     }
                 }
+                if ($control_type != 'pagecontrol' && $control_type != 'htmlcontrol') {
+                    $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
+                }
             }
             $fields['ip'] = gt('IP Address');
             if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
@@ -1043,6 +1047,7 @@ class formsController extends expController {
             if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
 //            if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
         }
+        $fieldlist .= ']';
         $title = gt('No Form Assigned Yet!');
         if (!empty($this->config['forms_id'])) {
             $form = $this->forms->find('first', 'id=' . $this->config['forms_id']);
@@ -1055,6 +1060,7 @@ class formsController extends expController {
             'form_title'   => $title,
             'column_names' => $column_names,
             'fields'       => $fields,
+            'fieldlist'    => $fieldlist,
         ));
 
         parent::configure();

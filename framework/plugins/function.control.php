@@ -200,6 +200,7 @@ function smarty_function_control($params, &$smarty) {
                     $control           = new ckeditorcontrol();
                     $control->toolbar  = empty($params['toolbar']) ? '' : $params['toolbar'];
                     $control->lazyload = empty($params['lazyload']) ? 0 : 1;
+                    $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
                 } else {
                     $control = new htmleditorcontrol();
                     if (isset($params['module'])) $control->module = $params['module'];
