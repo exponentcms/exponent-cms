@@ -1,9 +1,15 @@
-/**
- * @license Copyright © 2013 Stuart Sillitoe <stuart@vericode.co.uk>
- * This work is mine, and yours. You can modify it as you wish.
+/*
+ * Copyright (c) 2004-2013 OIC Group, Inc.
  *
- * Stuart Sillitoe
- * stuartsillitoe.co.uk
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  */
 
@@ -19,7 +25,7 @@ CKEDITOR.plugins.add('fieldinsert' ,
                 {
                     label : 'Fields' ,
                     title : 'Fields' ,
-                    voiceLabel : 'ZFields' ,
+                    voiceLabel : 'Fields' ,
                     className : 'cke_format' ,
                     multiSelect : false ,
                     panel : {
@@ -48,14 +54,10 @@ CKEDITOR.plugins.add('fieldinsert' ,
 /**
  * List of fields available to insert.
  *
- * config.fieldinsert_list = array of fields;
- *  'value', 'drop_text', 'drop_label'
+ * fieldinsert_list = array of fields; 'value', 'drop_text', 'drop_label'
  *
  * @member CKEDITOR.config
  */
 CKEDITOR.config.fieldinsert_list = [
-    ['@@FAQ::displayList()4@@', 'FAQs5', 'FAQs6'],
-    ['@@Glossary::displayList()@@', 'Glossary', 'Glossary'],
-    ['@@CareerCourse::displayList()@@', 'Career Courses', 'Career Courses'],
-    ['@@CareerProfile::displayList()@@', 'Career Profiles', 'Career Profiles']
+    ['', 'No Fields', 'There are no fields']
 ];
