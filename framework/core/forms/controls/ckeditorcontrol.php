@@ -62,6 +62,7 @@ class ckeditorcontrol extends formcontrol {
         } elseif (intval($this->toolbar) != 0) {
             $settings = $db->selectObject('htmleditor_ckeditor', 'id=' . $this->toolbar);
         }
+        $plugins = '';
         if (!empty($settings)) {
             $tb         = stripSlashes($settings->data);
             $skin       = $settings->skin;
@@ -74,7 +75,10 @@ class ckeditorcontrol extends formcontrol {
         }
         if (!empty($this->additionalConfig)) {
             $additionalConfig = $this->additionalConfig;
-            $plugins .= ',fieldinsert';
+//            $plugins .= ',fieldinsert';
+        }
+        if (!empty($this->plugin)) {
+            $plugins .= ',' . $this->plugin;
         }
 
         // set defaults
@@ -110,7 +114,6 @@ class ckeditorcontrol extends formcontrol {
         if (empty($skin)) $skin = 'kama';
         if (empty($scayt_on)) $scayt_on = 'true';
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
-        if (empty($plugins)) $plugins = '';
         if (empty($stylesset)) $stylesset = "'default'";
         if (empty($formattags)) $formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
         if (empty($fontnames)) $fontnames = "'Arial/Arial, Helvetica, sans-serif;' +

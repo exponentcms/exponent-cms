@@ -30,7 +30,7 @@
 {group label='Custom View Configuration'|gettext}
     {*{control type=html name='report_def' label='Custom E-Mail Report and View Record Definition'|gettext value=$config.report_def description='Leave this custom definition blank to use the default \'all fields\' e-mail report and record view'|gettext}*}
     {control type=editor name='report_def' label='Custom E-Mail, Single and Multiple View Record Template'|gettext value=$config.report_def rows=10 cols=60
-        additionalConfig="fieldinsert_list : `$fieldlist`,"
+        plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`,"
         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
         {*description="Leave blank to display all fields.  Record fields are referenced within curly braces by"|gettext|cat:' $fields[\'fieldname\']'}*}
 {/group}
