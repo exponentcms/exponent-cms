@@ -26,6 +26,16 @@ class motdController extends expController {
     public $useractions = array(
         'show'=>'Show Todays Message'
     );
+    public $remove_configs = array(
+        'aggregation',
+        'categories',
+        'comments',
+        'ealerts',
+        'files',
+//        'pagination',
+        'rss',
+        'tags'
+    ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
 
     static function displayname() { return gt("Message of the Day"); }
     static function description() { return gt("Display a message for a given day of the year."); }
@@ -37,10 +47,12 @@ class motdController extends expController {
         $now = time();
         $month = date('n', $now);
         $day = date('j', $now);
-        $message = $this->motd->find('first', 'month='.$month.' AND day='.$day); 
-        
-        if (empty($message->id) && (!empty($this->config['userand']) && $this->config['userand']==true)) {
-            $message = $this->motd->find('first', null, 'RAND()');  
+        $message = $this->motd->find('first', 'month='.$month.' AND day='.$day);
+        if (empty($message->id)) {
+            $message = $this->motd->find('first', 'month=0 AND day='.$day);
+            if (empty($message->id) && (!empty($this->config['userand']) && $this->config['userand']==true)) {
+                $message = $this->motd->find('first', null, 'RAND()');
+            }
         }
         
         assign_to_template(array(
