@@ -29,7 +29,7 @@ exec ('php ./lang_extract.php -r ..',$output);
 output($output);
 unset ($output);
 output("Now extracting phrases from the folders!\n");
-exec ('php ./lang_extract.php ../conf ../cron ../framework ../install ../themes', $output);
+exec ('php ./lang_extract.php ../cron ../framework ../install ../themes', $output);
 output($output);
 unset ($output);
 

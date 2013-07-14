@@ -13,6 +13,7 @@ Added / Fixed / changed for 2.2.1
   - adds paged form (wizard) feature
   - adds form design export/import
   - adds form report designer insert field command to editor
+  - Message of the Day module now accepts WYSIWYG text and offers an 'every month' on this date option
   - adds a rudimentary site configuration profile (backup/restore) feature
   - adds optional author signature to blog posts, handled by user profile extension
   - now supports multiple simultaneous file uploads for 'quick add' uploads w/ new progress indicator (if browser supports)
