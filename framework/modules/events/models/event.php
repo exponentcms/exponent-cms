@@ -62,13 +62,15 @@ class event extends expRecord {
                         $eventdate = $calevent->find('first',"id=".$date_id);
                         $eventdate->event_id = $this->id;
                         unset($params['id']);
+                        $eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
                         $eventdate->update($params);
        				}
-       			}  // all existing event occurrences have changed
-//       			$eventdate = $db->selectObject('eventdate','id='.intval($params['date_id']));
-                $eventdate = $calevent->find('first','id='.intval($params['date_id']));
-                $eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
-                $eventdate->update();
+       			} else { // all existing event occurrences have changed
+//        			  $eventdate = $db->selectObject('eventdate','id='.intval($params['date_id']));
+                    $eventdate = $calevent->find('first','id='.intval($params['date_id']));
+                    $eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
+                    $eventdate->update();
+                }
        		} else {  // not recurring
 //                $calevent->update();
        			// There should be only one eventdate
