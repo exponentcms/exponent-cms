@@ -40,7 +40,7 @@ $items = array(
     ),
 );
 
-if (!($user->is_ldap || USER_NO_PASSWORD_CHANGE || !$user->isAdmin())) {
+if ((!USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap) {
     $items[] = array(
         'text'      => gt("Change My Password"),
         'url'       => makeLink(array('controller' => 'users', 'action' => 'change_password')),
