@@ -85,7 +85,7 @@
                             {if $permissions.edit == 1}
                                 {if $myloc != $item->location_data}
                                     {if $permissions.manage == 1}
-                                        {icon action=merge id=$item->id title="merge Aggregated Content"|gettext}
+                                        {icon img='arrow_merge.png' action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                     {/if}

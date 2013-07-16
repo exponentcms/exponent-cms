@@ -80,7 +80,15 @@ if (!function_exists('smarty_function_icon')) {
             $params['alt'] = gt($params['alt']);
         }
         if (!empty($params['text'])) {
-            $params['text'] = gt($params['text']);
+            if ($params['text'] == "notext") {
+                $params['text'] = '';
+                if (empty($params['img']) && !empty($params['action'])) {
+                    $params['img'] = $params['action'] . '.png';
+                }
+                if (empty($params['title'])) {
+                    $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') : $text);
+                }
+            } else $params['text'] = gt($params['text']);
         }
         if (!empty($params['title'])) {
             $params['title'] = gt($params['title']);
@@ -96,9 +104,7 @@ if (!function_exists('smarty_function_icon')) {
             unset($params['hash']);
         }
 
-        if (!empty($params['text']) && $params['text']=="notext") {
-            $text = '';
-        } elseif (empty($params['img']) && empty($params['text'])) {
+        if  (empty($params['img']) && empty($params['text'])) {
             $img = gt(ucfirst($class));
         } else if (!empty($params['img'])) {
             $imgtmp = explode('.',$params['img']);
@@ -201,7 +207,7 @@ if (!function_exists('smarty_function_icon')) {
         $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
         unset($params['onclick']);
         //eDebug($params);
-        if (!empty($params['action'])) {
+        if (!empty($params['action']) && $params['action'] != 'scriptaction') {
             if ($params['action'] == 'copy') {
                 $params['copy'] = true;
                 $params['action'] = 'edit';
@@ -214,6 +220,11 @@ if (!function_exists('smarty_function_icon')) {
             if (!empty($onclick))
                 echo ' onclick="' . $onclick . '"';
             echo '><i class="icon-'.$class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
+        } elseif(!empty($params['action']) && $params['action'] == 'scriptaction') {
+           echo '<a href="#" title="' . $title . '" class=" btn '.$btn_type.' '.$btn_size.'"';
+           if (!empty($onclick))
+               echo ' onclick="' . $onclick . '"';
+           echo '><i class="icon-'.$class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
         } else {
             echo '<div class=" btn disabled '.$btn_type.' '.$btn_size.'"><i class="icon-'.$class.' '.$icon_size.'"></i> ' .$linktext.'</div>';
         }
