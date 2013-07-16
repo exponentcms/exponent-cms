@@ -680,7 +680,7 @@ class storeController extends expController {
             $product_type->company = new company($product_type->companies_id);
         }
 
-        if (!empty($product->crosssellItem)) foreach ($product->crosssellItem as &$csi) {
+        if (!empty($product_type->crosssellItem)) foreach ($product_type->crosssellItem as &$csi) {
             $csi->getAttachableItems();
         }
 
