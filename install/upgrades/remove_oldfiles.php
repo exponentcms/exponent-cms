@@ -318,6 +318,13 @@ class remove_oldfiles extends upgradescript {
             'framework/core/models/expSimpleNote.php',
             'framework/core/models/expRating.php',
             'framework/core/models/expTag.php',
+            // obsolete scripts
+            'framework/core/assets/js/exp-attachableitems.js',
+            'framework/core/assets/js/exp-filepicker.js',
+            'framework/core/assets/js/exp-layout.js',
+            'framework/core/assets/js/exp-slideshow.js',
+            'framework/core/assets/js/exp-upload.js',
+            'framework/modules/photoalbum/assets/js/slideshow.js',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
