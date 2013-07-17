@@ -56,8 +56,15 @@ class filemanagercontrol extends formcontrol {
         } else {
             $hide = ' class="hide"';
         }
-        $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="add" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'">'.gt('Add Files').'</a>';
-        $html .= ' | <a class="add" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'">'.gt('Quick Add').'</a></span>';
+        if (BTN_SIZE == 'large') {
+            $btn_size = 'btn-small';
+            $icon_size = 'icon-large';
+        } else {
+            $btn_size = 'btn-mini';
+            $icon_size = '';
+        }
+        $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Add Files').'</a>';
+        $html .= ' | <a class="btn '. $btn_size.'" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Quick Add').'</a></span>';
         $html .= '</label></div>';
 
         if (empty($files)) {
