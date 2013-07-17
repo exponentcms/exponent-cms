@@ -145,7 +145,7 @@ class expCatController extends expController {
         $modules = expModules::listUserRunnableControllers();
         foreach ($modules as $modname) {
 //            $modname = expModules::getControllerName($modname);
-            $mod[$modname] = ucfirst($modname);
+            $mod[expModules::getControllerName($modname)] = ucfirst(expModules::getControllerDisplayName($modname));
         }
         $mod['expFile'] = 'File';
         asort($mod);
