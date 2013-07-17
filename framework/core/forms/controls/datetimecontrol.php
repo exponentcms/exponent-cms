@@ -92,7 +92,11 @@ class datetimecontrol extends formcontrol {
             $html .= '</div>';
         }
         if ($this->showtime) {
-            $html .= '<br /><label class="label spacer"> </label><div class="datetime date time"><label style="display:inline;">' . gt('Time') . ': </label>';
+            $framework = expSession::get('framework');
+            if ($framework != 'bootstrap') {
+                $html .= '<br /><label class="label spacer"> </label>';
+            }
+            $html .= '<div class="datetime date time"><label style="display:inline;">' . gt('Time') . ': </label>';
             $html .= '<input class="text" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
