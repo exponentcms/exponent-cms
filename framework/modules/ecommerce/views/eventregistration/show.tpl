@@ -38,7 +38,7 @@
     </div>
 
     <div class="bd">
-        <h2>{$product->eventdate|format_date:"%A, %B %e, %Y"}
+        <h2>{$product->eventdate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
             {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|format_date:"%A, %B %e, %Y"}{/if}</h2>
         <hr>
         <h3>{$product->title}</h3>
@@ -50,9 +50,9 @@
                 {/if}
             </div>
         {/permissions}
-        <span><h4>{($product->eventdate+$product->event_starttime)|format_date:"%l:%M %P"}
+        <span><h4>{($product->eventdate+$product->event_starttime)|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
             {if $product->eventdate+$product->event_starttime != $product->eventdate+$product->event_endtime}
-                - {($product->eventdate+$product->event_endtime)|format_date:"%l:%M %P"}
+                - {($product->eventdate+$product->event_endtime)|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
                 {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
                 <em class="attribution">({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if})</em>
             {/if}
