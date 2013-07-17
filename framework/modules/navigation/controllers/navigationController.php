@@ -345,15 +345,19 @@ class navigationController extends expController {
      *
      * @return array
      */
-    public static function levelDropDownControlArray($parent, $depth = 0, $ignore_ids = array(), $full = false, $perm = 'view', $addstandalones = false) {
+    public static function levelDropdownControlArray($parent, $depth = 0, $ignore_ids = array(), $full = false, $perm = 'view', $addstandalones = false, $addinternalalias = true) {
         global $db;
 
         $ar = array();
         if ($parent == 0 && $full) {
             $ar[0] = '&lt;' . gt('Top of Hierarchy') . '&gt;';
         }
-        $nodes = $db->selectObjects('section', 'parent=' . $parent, 'rank');
-//		$nodes = expSorter::sort(array('array'=>$nodes,'sortby'=>'rank', 'order'=>'ASC'));
+        if ($addinternalalias) {
+            $intalias = '';
+        } else {
+            $intalias = ' AND alias_type != 2';
+        }
+        $nodes = $db->selectObjects('section', 'parent=' . $parent . $intalias, 'rank');
         foreach ($nodes as $node) {
             if ((($perm == 'view' && $node->public == 1) || expPermissions::check($perm, expCore::makeLocation('navigation', '', $node->id))) && !in_array($node->id, $ignore_ids)) {
                 if ($node->active == 1) {
@@ -362,7 +366,7 @@ class navigationController extends expController {
                     $text = str_pad('', ($depth + ($full ? 1 : 0)) * 3, '.', STR_PAD_LEFT) . '(' . $node->name . ')';
                 }
                 $ar[$node->id] = $text;
-                foreach (self::levelDropdownControlArray($node->id, $depth + 1, $ignore_ids, $full, $perm) as $id => $text) {
+                foreach (self::levelDropdownControlArray($node->id, $depth + 1, $ignore_ids, $full, $perm, $addstandalones, $addinternalalias) as $id => $text) {
                     $ar[$id] = $text;
                 }
             }
