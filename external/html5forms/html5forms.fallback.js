@@ -101,7 +101,7 @@ var initColorpicker = function() {
 };
 
 if(!Modernizr.inputtypes.color){
-	$(document).ready(initColorpicker);
+//	$(document).ready(initColorpicker);
 };
 
 /* Placeholder

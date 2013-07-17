@@ -241,7 +241,8 @@ class form extends baseform {
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms4',
-            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+//            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+            "jquery"=> 'jqueryui,jquery.placeholder',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
 		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";

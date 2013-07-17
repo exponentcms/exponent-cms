@@ -74,7 +74,8 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms4',
-            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+//            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+            "jquery"=> 'jqueryui,jquery.placeholder',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
         if (!empty($params['paged'])) {
