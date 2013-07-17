@@ -403,7 +403,7 @@ YUI.add('gallery-lightbox', function(Y) {
 			
 			var lightboxTop = Y.DOM.docScrollY() + (Y.DOM.winHeight() / 10),
 				lightboxLeft = Y.DOM.docScrollX();
-			this.get(LIGHTBOX).setStyles({ display: "", top: lightboxTop + PX, left: lightboxLeft + PX });
+			this.get(LIGHTBOX).setStyles({ display: "block", top: lightboxTop + PX, left: lightboxLeft + PX });
 			
 			this._changeImage(imageNum);
 		},
