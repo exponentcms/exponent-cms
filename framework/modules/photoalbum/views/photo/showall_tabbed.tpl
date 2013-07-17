@@ -79,8 +79,15 @@
                             {/if}
                             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
                                 {if $config.lightbox}
+                                    {if $record->expCat[0]->title!= ""}
+                                        {$group = $record->expCat[0]->title}
+                                    {elseif $config.uncat!=''}
+                                        {$group = $config.uncat}
+                                    {else}
+                                        {$group = 'Uncategorized'|gettext}
+                                    {/if}
                                     {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
-                                    <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$alt|default:$title}">
+                                    <a rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$alt|default:$title}">
                                 {else}
                                     <a href="{link action=show title=$record->sef_url}" title="{$alt|default:$title}">
                                 {/if}
