@@ -99,3 +99,7 @@ a.icon-sort, .container-chrome ul li a.icon-sort {
 	/*background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;*/
 	color      : inherit;
 }
+
+.control .radio label, .control .checkbox label {
+	margin-bottom: 0px!important;
+}

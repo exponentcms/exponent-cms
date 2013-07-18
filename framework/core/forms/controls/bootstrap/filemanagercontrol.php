@@ -77,7 +77,7 @@ class filemanagercontrol extends formcontrol {
         $html .= '<div id="progressBox-'.$name.'" class="progressbox"></div><div style="clear:both"></div></div>';
         $html .= '<input type="hidden" name="'.$subTypeName.'" value="'.$subTypeName.'">';
         if ($this->limit>1) $this->description .= " " . gt('Drag the files to change their sequence.');
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">" . $this->description . "</div>";
+        if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
         $html .= '</div>';
         $js = "
             EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
