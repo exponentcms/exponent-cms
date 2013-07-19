@@ -30,12 +30,13 @@ class snippetController extends expController {
     public $remove_configs = array(
         'categories',
    		'comments',
-        'files',
         'ealerts',
+        'facebook',
+        'files',
         'pagination',
         'rss',
    		'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
 
     static function displayname() { return gt("Code Snippets"); }
     static function description() { return gt("Use this to easily place snippets of code, i.e. Javascript, embedded video, etc, on your site."); }

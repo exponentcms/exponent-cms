@@ -50,7 +50,7 @@ class eaasController extends expController {
     static function description() { return gt("This module allows you make service calls and return JSON for parts of Exponent"); }
     static function author() { return "Phillip Ball - OIC Group, Inc"; }
     static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
-    static function isSearchable() { return true; }
+//    static function isSearchable() { return true; }
 
     public function showall() {
         expHistory::set('viewable', $this->params);

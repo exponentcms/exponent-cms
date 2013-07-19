@@ -18,12 +18,12 @@
 
 /**
  * @subpackage Controllers
- * @package Modules
+ * @package    Modules
  */
 
-class countdownController extends expController {
-	public $useractions = array(
-        'show'=>'Show Clock'
+class facebookController extends expController {
+    public $useractions = array(
+        'showall' => 'Facebook Like'
     );
     public $remove_configs = array(
         'aggregation',
@@ -36,19 +36,23 @@ class countdownController extends expController {
         'rss',
         'tags'
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+    public $codequality = 'alpha';
 
-    static function displayname() { return gt("Countdown"); }
-    static function description() { return gt("Displays a timer counting down to a specified date/time."); }
-    static function author() { return "Ported to Exponent by Phillip Ball. Original JS at http://tutorialzine.com/2011/12/countdown-jquery/"; }
+    static function displayname() {
+        return gt("Facebook");
+    }
 
-    /**
-   	 * default view for individual item
-   	 */
-   	function show() {
-       assign_to_template(array(
-           'config'=>$this->config
-       ));
-   }
+    static function description() {
+        return gt("Display Facebook Widgets");
+    }
+
+    static function author() {
+        return "Dave Leffler";
+    }
+
+    public function showall() {
+        expHistory::set('viewable', $this->params);
+    }
 
 }
 

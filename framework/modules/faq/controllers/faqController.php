@@ -29,9 +29,10 @@ class faqController extends expController {
 	public $remove_configs = array(
         'comments',
         'ealerts',
+        'facebook',
         'files',
         'rss'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
 
     static function displayname() { return gt("Frequently Asked Questions"); }
     static function description() { return gt("Display frequently asked questions.  Users may also post new questions to be answered."); }

@@ -29,9 +29,10 @@ class filedownloadController extends expController {
 	public $remove_configs = array(
 //        'comments',
 //        'ealerts',
+        'facebook',
         'files',
         'rss', // because we do this as a custom tab within the module
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
 
     static function displayname() { return gt("File Downloads"); }
     static function description() { return gt("Place files on your website for users to download or use as a podcast."); }

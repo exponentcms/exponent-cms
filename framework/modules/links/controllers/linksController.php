@@ -28,13 +28,14 @@ class linksController extends expController {
     //public $add_permissions = array('show'=>'View Links');
     //public $remove_permissions = array('edit');
     public $remove_configs = array(
-           'comments',
-           'ealerts',
-           'files',
-           'pagination',
-           'rss',
-           'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+       'comments',
+       'ealerts',
+        'facebook',
+       'files',
+       'pagination',
+       'rss',
+       'tags'
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
 
     static function requiresConfiguration() { return true; }
     static function displayname() { return gt("Link Manager"); }
