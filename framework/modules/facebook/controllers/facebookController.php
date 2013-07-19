@@ -51,7 +51,20 @@ class facebookController extends expController {
     }
 
     public function showall() {
+        global $router;
+
         expHistory::set('viewable', $this->params);
+        if (!empty($this->config['url_type'])) {
+            if ($this->config['url_type'] == 1) {
+                $url = $router->current_url;
+            } else {
+                $url = $this->config['facebook_url'];
+            }
+        } else $url = URL_FULL;
+        assign_to_template(array(
+            'facebook_url'=>$url
+        ));
+
     }
 
 }
