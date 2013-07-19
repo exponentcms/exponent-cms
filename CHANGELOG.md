@@ -11,7 +11,7 @@ Added / Fixed / changed for 2.2.1
 -----------------------
 ### Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
   - new facebook module to display like buttons, like boxes, and optional like button to blog articles
-  - adds optional tweet button to blog articles
+  - adds optional tweet button to blog articles and optional twitter follow button to twitter view
   - adds paged form (wizard) feature
   - adds form design export/import
   - adds form report designer insert field command to editor
