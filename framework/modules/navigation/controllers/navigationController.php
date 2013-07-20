@@ -22,7 +22,7 @@
 class navigationController extends expController {
     public $basemodel_name = 'section';
     public $useractions = array(
-        'showall' => 'Show Menu',
+        'showall' => 'Show Navigation',
         'breadcrumb' => 'Breadcrumb',
     );
     public $remove_configs = array(
