@@ -321,8 +321,18 @@ class containerController extends expController {
         unset($this->params['views']);
         $this->params['external'] = serialize($this->loc);
         unset($this->params['module']);
+
+        $hidetitle = $this->params['hidemoduletitle'];
+        unset($this->params['hidemoduletitle']);
+
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
+
+        $modconfig = new expConfig(expUnserialize($this->$modelname->internal));
+        if ($modconfig->id || $hidetitle) {
+            $modconfig->config['hidemoduletitle'] = $hidetitle;
+            $modconfig->update();
+        }
 
         define('SOURCE_SELECTOR',0);
         define('PREVIEW_READONLY',0); // for mods

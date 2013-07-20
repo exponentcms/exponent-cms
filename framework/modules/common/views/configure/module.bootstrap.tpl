@@ -35,19 +35,19 @@
 {*{control type=hidden name=current_section value=$current_section}*}
 
 {if ($container->internal->mod != 'container')}
-{*{if $hcview}*}
-    {*{control type=hidden name=hcview value=1}*}
-    {*{control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$moduletitle caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}*}
-{*{else}*}
+    {*{if $hcview}*}
+        {*{control type=hidden name=hcview value=1}*}
+        {*{control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$moduletitle caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}*}
+    {*{else}*}
     {control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
-{*{/if}*}
-{if $smarty.const.INVERT_HIDE_TITLE}
-    {$title_str = 'Show Module Title?'|gettext}
-    {$desc_str = 'The Module Title is hidden by default.'|gettext}
-{else}
-    {$title_str = 'Hide Module Title?'|gettext}
-    {$desc_str = 'The Module Title is displayed by default.'|gettext}
-{/if}
+    {*{/if}*}
+    {if $smarty.const.INVERT_HIDE_TITLE}
+        {$title_str = 'Show Module Title?'|gettext}
+        {$desc_str = 'The Module Title is hidden by default.'|gettext}
+    {else}
+        {$title_str = 'Hide Module Title?'|gettext}
+        {$desc_str = 'The Module Title is displayed by default.'|gettext}
+    {/if}
     {control type="checkbox" name="hidemoduletitle" label=$title_str value=1 checked=$config.hidemoduletitle description=$desc_str}
 {/if}
 {control type="checkbox" name="is_private" label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
