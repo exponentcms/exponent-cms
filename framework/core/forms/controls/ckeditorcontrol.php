@@ -111,7 +111,7 @@ class ckeditorcontrol extends formcontrol {
         } else {
             $tb = "toolbar : [".$tb."],";
         }
-        if (empty($skin) || !is_file(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
+        if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
         if (empty($scayt_on)) $scayt_on = 'true';
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
         if (empty($stylesset)) $stylesset = "'default'";
