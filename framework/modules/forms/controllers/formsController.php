@@ -156,7 +156,8 @@ class formsController extends expController {
             ));
 
             assign_to_template(array(
-                "backlink"    => expHistory::getLastNotEditable(),
+//                "backlink"    => expHistory::getLastNotEditable(),
+                "backlink"    => expHistory::getLast('viewable'),
                 "f"           => $f,
                 "page"        => $page,
                 "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : '',
