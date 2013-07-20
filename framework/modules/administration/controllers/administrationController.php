@@ -1218,6 +1218,9 @@ class administrationController extends expController {
 
     public function change_profile() {
         if (empty($this->params['profile'])) return;
+        expSession::un_set('display_theme');
+        expSession::un_set('theme_style');
+        expSession::un_set('framework');
         expSettings::activateProfile($this->params['profile']);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
