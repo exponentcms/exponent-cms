@@ -9,6 +9,9 @@
             "css_core"=>array(
                 "common"
                 ),
+            "lessvars"=>array(
+                'menu_height'=>MENU_HEIGHT,
+            ),
             "css_links"=>true,
             "css_theme"=>true
             ));
