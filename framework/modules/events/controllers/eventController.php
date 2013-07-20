@@ -998,17 +998,12 @@ class eventController extends expController {
             $evs = $this->event->find('all', "id=" . $edate->event_id . $featuresql);
             foreach ($evs as $key=>$event) {
                 if ($condense) {
+                    global $eventid;
                     $eventid = $event->id;
-                    try {
-                        $multiday_event = array_filter($events, function($event) use ($eventid) {
-                            return $event->id === $eventid;
-                        });
-                        if (!empty($multiday_event)) {
-                            unset($evs[$key]);
-                            continue;
-                        }
-                    } catch(Exception $e) {
-
+                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+                    if (!empty($multiday_event)) {
+                        unset($evs[$key]);
+                        continue;
                     }
                 }
                 $evs[$key]->eventstart += $edate->date;
