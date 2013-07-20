@@ -67,7 +67,7 @@ class bootstraptheme extends theme {
    		$form->register('swatch',gt('Theme Style').': ',new dropdowncontrol($settings['SWATCH'],$swatches));
         $form->register('btn_size',gt('Button Size').': ',new dropdowncontrol($settings['BTN_SIZE'],$icon_sizes));
         $form->register('menu_location',gt('Menu Location').': ',new dropdowncontrol($settings['MENU_LOCATION'],$menu_locations));
-        if (empty($settings['MENU_HEIGHT'])) $settings['MENU_HEIGHT'] = 20;
+        if (empty($settings['MENU_HEIGHT'])) $settings['MENU_HEIGHT'] = 1;
         $form->register('menu_height',gt('Fixed Menu Height Adjustment').': ',new textcontrol($settings['MENU_HEIGHT'],3,false,'integer'));
         $form->register('menu_align',gt('Menu Alignment').': ',new dropdowncontrol($settings['MENU_ALIGN'],$menu_alignments));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
@@ -80,7 +80,7 @@ class bootstraptheme extends theme {
     function saveThemeConfig ($params) {
    		if (empty($params['swatch'])) $params['swatch'] = "''";
         if (empty($params['btn_size'])) $params['btn_size'] = "''";
-        if (empty($params['menu_height'])) $params['menu_height'] = "20";
+        if (empty($params['menu_height'])) $params['menu_height'] = "1";
         parent::saveThemeConfig($params);
    	}
 
