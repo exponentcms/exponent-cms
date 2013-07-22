@@ -70,6 +70,15 @@ if ($user->isAdmin()) {
             )
         )
     );
+
+    $expAdminMenu['submenu']['itemdata'][] = array(
+        'text' => gt("Configure Website"),
+        'classname' => 'configure',
+        'url'  => makeLink(array(
+            'controller' => 'administration',
+            'action'     => 'configure_site'
+        ))
+    );
 } else {
     $expAdminMenu = array(
         'text'      => '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">',
@@ -105,51 +114,6 @@ if ($user->isAdmin()) {
             )
         )
     );
-}
-
-if ($user->isAdmin()) {
-    if (SMTP_USE_PHP_MAIL) {
-        $expAdminMenu['submenu']['itemdata'][] = array(
-            'text'      => gt("Site Configuration"),
-            'classname' => 'configure',
-            'submenu'   => array(
-                'id'       => 'configure',
-                'itemdata' => array(
-                    array(
-                        'text' => gt("Configure Website"),
-                        'url'  => makeLink(array(
-                            'controller' => 'administration',
-                            'action'     => 'configure_site'
-                        ))
-                    ),
-                )
-            )
-        );
-    } else {
-        $expAdminMenu['submenu']['itemdata'][] = array(
-            'text'      => gt('Site Configuration'),
-            'classname' => 'configure',
-            'submenu'   => array(
-                'id'       => 'configure',
-                'itemdata' => array(
-                    array(
-                        'text' => gt("Configure Website"),
-                        'url'  => makeLink(array(
-                            'controller' => 'administration',
-                            'action'     => 'configure_site'
-                        ))
-                    ),
-                    array(
-                        'text' => gt('Test SMTP Mail Server Settings'),
-                        'url'  => makeLink(array(
-                            'controller' => 'administration',
-                            'action'     => 'test_smtp'
-                        ))
-                    ),
-                )
-            )
-        );
-    }
 }
 
 if ($user->isAdmin()) {
@@ -541,6 +505,18 @@ if ($user->isSuperAdmin()) {
             )
         )
     );
+
+    if (!SMTP_USE_PHP_MAIL) {
+        $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata']) - 1]['submenu']['itemdata'][] = array(
+            'text' => gt('Test SMTP Mail Server Settings'),
+            'classname' => 'configure',
+            'url'  => makeLink(array(
+                'controller' => 'administration',
+                'action'     => 'test_smtp'
+            )),
+        );
+    }
+
 }
 
 return $expAdminMenu;
