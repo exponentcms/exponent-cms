@@ -24,9 +24,7 @@
 
 class expRatingController extends expController {
     public $base_class = 'expRating';
-	//public $useractions = array('browse'=>'Browse content by tags');
-	public $useractions = array();
-	
+
     static function displayname() { return gt("Ratings Manager"); }
     static function description() { return gt("This module is for managing ratings on records"); }
     static function hasSources() { return false; }

@@ -29,8 +29,17 @@ class eaasController extends expController {
         // 'dates'=>"Dates",
     );
     public $remove_configs = array(
-        'module','aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+        'aggregation',
+        'categories',
+        'comments',
+        'ealerts',
+        'files',
+        'module',
+        'pagination',
+        'rss',
+        'tags',
+        'twitter',
+    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $add_permissions = array(
         // 'approve'=>"Approve Comments"
     );

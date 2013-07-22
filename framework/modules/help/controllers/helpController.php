@@ -34,8 +34,9 @@ class helpController extends expController {
         'files',
         'pagination',
         'rss',
-        'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Help"); }
     static function description() { return gt("Manage Exponent CMS help files."); }

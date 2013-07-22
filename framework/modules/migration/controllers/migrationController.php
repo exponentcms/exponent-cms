@@ -25,8 +25,6 @@ class migrationController extends expController {
         'analyze'=>'Analyze Data',
         'migrate'=>'Migrate Data'
     );
-    //public $useractions = array('showall'=>'Show all');
-	public $useractions = array();
 
     // this is a list of modules that we can convert to exp2 type modules.
     public $new_modules = array(

@@ -34,8 +34,9 @@ class navigationController extends expController {
         'files',
         'pagination',
         'rss',
-        'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $add_permissions = array(
         'view' => "View Page"
     );

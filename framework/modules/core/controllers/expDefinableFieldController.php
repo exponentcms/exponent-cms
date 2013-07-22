@@ -24,6 +24,7 @@
 
 class expDefinableFieldController extends expController {
 	public $basemodel_name = 'expDefinableField';
+
 	/**
 	 * name of module
 	 * @return string

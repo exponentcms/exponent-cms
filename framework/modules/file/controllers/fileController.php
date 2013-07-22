@@ -23,7 +23,6 @@
 
 class fileController extends expController {
     public $basemodel_name = "expFile";
-    //public $useractions = array('showall'=>'Show all');
     public $add_permissions = array(
 //        'picker'=>'Manage Files',
         'import'=>'Import',

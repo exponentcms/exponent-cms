@@ -25,8 +25,6 @@ class cartController extends expController {
     public $basemodel_name = 'order';
     private $checkout_steps = array('productinfo', 'specials', 'form', 'wizards', 'newsletter', 'confirmation', 'postprocess');
 
-    //public $useractions = array('show'=>'Display Cart');
-
     static function displayname() {
         return gt("e-Commerce Shopping Cart");
     }

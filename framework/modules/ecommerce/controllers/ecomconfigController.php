@@ -23,8 +23,6 @@
 /** @define "BASE" "../../../.." */
 
 class ecomconfigController extends expController {
-	//public $basemodel_name = 'expRecord';
-	//public $useractions = array('show'=>'Configuration Panel');
     public $add_permissions = array(
         'show'=>'View Admin Options'
     );

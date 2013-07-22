@@ -23,8 +23,6 @@
  */
 
 class expCatController extends expController {
-	//public $useractions = array('browse'=>'Browse content by categories');
-	public $useractions = array();
 
 	/**
 	 * name of module

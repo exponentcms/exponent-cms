@@ -22,7 +22,6 @@
  */
 
 class orderController extends expController {
-    //public $useractions = array('showall'=>'Show all');
     protected $add_permissions = array(
         'showall'             => 'Manage',
         'show'                => 'View Orders',

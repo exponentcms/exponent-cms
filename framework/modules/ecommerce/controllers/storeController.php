@@ -48,10 +48,10 @@ class storeController extends expController {
         'comments',
         'ealerts',
         'files',
-//        'module_title',
         'rss',
-        'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
 
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array(

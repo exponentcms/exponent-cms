@@ -44,8 +44,9 @@ class storeCategoryController extends expNestedNodeController {
         'module',
         'pagination',
         'rss',
-        'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
 
     public function edit() {
         global $db;

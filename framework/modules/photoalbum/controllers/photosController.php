@@ -34,8 +34,9 @@ class photosController extends expController {
         'facebook',
         'files',
         'pagination',  // we need to customize it in this module?
-        'rss'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+        'rss',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Photo Album"); }
     static function description() { return gt("Displays and manages images."); }

@@ -38,8 +38,6 @@ class usersController extends expController {
         'edit'
     );
 
-    //public $useractions = array('showall'=>'Show all');
-
     static function displayname() {
         return gt("User Manager");
     }

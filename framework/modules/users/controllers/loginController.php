@@ -32,8 +32,9 @@ class loginController extends expController {
         'files',
         'pagination',
         'rss',
-        'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $useractions = array(
 	    'showlogin'=>'Login',
     );

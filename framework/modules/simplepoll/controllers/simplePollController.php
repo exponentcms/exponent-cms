@@ -36,8 +36,9 @@ class simplePollController extends expController {
         'files',
         'pagination',
 		'rss',
-		'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+		'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 //    public $codequality = 'beta';
 
     static function displayname() { return gt("Simple Poll"); }

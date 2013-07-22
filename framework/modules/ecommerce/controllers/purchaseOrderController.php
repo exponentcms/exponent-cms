@@ -24,7 +24,6 @@
 class purchaseOrderController extends expController {
 
 	public $basemodel_name = 'purchase_order';
-	//public $useractions = array('showall'=>'Show all');
 	protected $add_permissions = array(
         'manage'=>'Manage Purchase Orders',
         'edit'=>'Edit Purchase Orders',

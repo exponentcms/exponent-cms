@@ -22,7 +22,6 @@
  */
 
 class recyclebinController extends expController {
-//    public $useractions = array('showall'=>'Show all');
     public $add_permissions = array('show'=>'View Recycle Bin');
     //public $remove_permissions = array('edit');
 

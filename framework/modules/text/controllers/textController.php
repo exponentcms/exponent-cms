@@ -33,8 +33,9 @@ class textController extends expController {
         'facebook',
         'pagination',
         'rss',
-		'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+		'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Text"); }
     static function description() { return gt("Places text on your web pages"); }

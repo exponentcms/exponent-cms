@@ -34,8 +34,9 @@ class rssController extends expController {
         'ealerts',
         'facebook',
         'files',
-        'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("RSS Syndication"); }
     static function description() { return gt("Displays a list of your syndicated RSS feeds on a web page"); }

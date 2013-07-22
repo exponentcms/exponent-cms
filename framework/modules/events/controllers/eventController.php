@@ -34,7 +34,8 @@ class eventController extends expController {
         'files',
         'pagination',
         'rss',
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
 
     static function displayname() {
         return "Events";

@@ -35,8 +35,9 @@ class motdController extends expController {
         'files',
 //        'pagination',
         'rss',
-        'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Message of the Day"); }
     static function description() { return gt("Display a message for a given day of the year."); }

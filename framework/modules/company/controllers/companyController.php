@@ -33,8 +33,9 @@ class companyController extends expController {
         'facebook',
         //'files',
         'rss',
-        'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags')
+        'tags',
+        'twitter',
+    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Company Listings"); }
     static function description() { return gt("Displays company listings"); }

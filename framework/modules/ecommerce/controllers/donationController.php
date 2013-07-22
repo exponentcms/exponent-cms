@@ -35,10 +35,10 @@ class donationController extends expController {
         'comments',
         'ealerts',
         'files',
-//        'module_title',
         'rss',
-        'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Online Donations"); }
     static function description() { return gt("Allows you to accept donations on your website"); }

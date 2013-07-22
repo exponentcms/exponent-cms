@@ -38,8 +38,9 @@ class searchController extends expController {
         'facebook',
         'files',
         'rss',
-        'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Search Form"); }
     static function description() { return gt("Add a form to allow users to search for content on your website."); }
