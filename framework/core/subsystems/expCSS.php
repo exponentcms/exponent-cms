@@ -182,11 +182,11 @@ class expCSS {
                 if (is_array($head_config['css_theme'])) {
                     foreach($head_config['css_theme'] as $lessfile){
                         $filename = $lessdir.$lessfile;
-//                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
+                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
                             $css_dir = str_replace("/less/","/css/",$lessdir);
                             $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
-//                        }
+                        }
                     }
                 } elseif (empty($head_config['css_theme'])) {
                     # do nothing. We're not including CSS from the theme
@@ -194,11 +194,11 @@ class expCSS {
                     $dh = opendir($lessdir);
                     while (($lessfile = readdir($dh)) !== false) {
                         $filename = $lessdir.$lessfile;
-//                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
+                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
                             $css_dir = str_replace("/less/","/css/",$lessdir);
                             $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
-//                        }
+                        }
                     }
                 }
             }
