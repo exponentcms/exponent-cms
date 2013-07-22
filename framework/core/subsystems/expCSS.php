@@ -47,11 +47,13 @@ class expCSS {
             $less_array = $params['lesscss'];
             if (!empty($less_array) && !is_array($less_array)) $less_array = array($less_array);
             foreach ($less_array as $less_path) {
-                $css_path = str_replace("/less/","/css/",$less_path);
-                $css_path = substr($css_path,0,strlen($css_path)-4)."css";
-                self::auto_compile_less($less_path,$css_path,$less_vars);
-                //indexing the array by the filename
-                $css_links[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
+//                if (is_file(BASE.$less_path)) {
+                    $css_path = str_replace("/less/","/css/",$less_path);
+                    $css_path = substr($css_path,0,strlen($css_path)-4)."css";
+                    if (self::auto_compile_less($less_path,$css_path,$less_vars))
+                        //indexing the array by the filename
+                        $css_links[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
+//                } else flash('notice',$less_path. ' ' . gt('does not exist!'));
             }
         }
 
@@ -180,11 +182,11 @@ class expCSS {
                 if (is_array($head_config['css_theme'])) {
                     foreach($head_config['css_theme'] as $lessfile){
                         $filename = $lessdir.$lessfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
+//                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
                             $css_dir = str_replace("/less/","/css/",$lessdir);
                             $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
-                        }
+//                        }
                     }
                 } elseif (empty($head_config['css_theme'])) {
                     # do nothing. We're not including CSS from the theme
@@ -192,11 +194,11 @@ class expCSS {
                     $dh = opendir($lessdir);
                     while (($lessfile = readdir($dh)) !== false) {
                         $filename = $lessdir.$lessfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
+//                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
                             $css_dir = str_replace("/less/","/css/",$lessdir);
                             $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
-                        }
+//                        }
                     }
                 }
             }
@@ -246,26 +248,32 @@ class expCSS {
      * @param array  $vars       array of variables to pass to parse()
      */
     public static function auto_compile_less($less_pname, $css_fname, $vars=array()) {
-        include_once(BASE.'external/lessphp/lessc.inc.php');
-        // load the cache
-        $less_cname = str_replace("/","_",$less_pname);
-        $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";
-        $cache = BASE.$less_pname;
-        if (file_exists($cache_fname)) {
-            $cache = unserialize(file_get_contents($cache_fname));
-            if (!empty($cache['vars']) && $vars != $cache['vars']) {
-                $cache = BASE.$less_pname;
+        if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
+            include_once(BASE.'external/lessphp/lessc.inc.php');
+            // load the cache
+            $less_cname = str_replace("/","_",$less_pname);
+            $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";
+            $cache = BASE.$less_pname;
+            if (file_exists($cache_fname)) {
+                $cache = unserialize(file_get_contents($cache_fname));
+                if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                    $cache = BASE.$less_pname;
+                }
             }
-        }
-        $less = new lessc;
-        $less->setVariables($vars);
-        $new_cache = $less->cachedCompile($cache, false);
-        if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
-            $new_cache['vars'] = !empty($vars)?$vars:null;
-            $css_loc = pathinfo(BASE.$css_fname);
-            if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);
-            file_put_contents(BASE.$css_fname, $new_cache['compiled']);
-            file_put_contents($cache_fname, serialize($new_cache));
+            $less = new lessc;
+            $less->setVariables($vars);
+            $new_cache = $less->cachedCompile($cache, false);
+            if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
+                $new_cache['vars'] = !empty($vars)?$vars:null;
+                $css_loc = pathinfo(BASE.$css_fname);
+                if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);
+                file_put_contents(BASE.$css_fname, $new_cache['compiled']);
+                file_put_contents($cache_fname, serialize($new_cache));
+            }
+            return true;
+        } else {
+            flash('notice',$less_pname. ' ' . gt('does not exist!'));
+            return false;
         }
     }
 

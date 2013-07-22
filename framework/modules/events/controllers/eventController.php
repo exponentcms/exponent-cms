@@ -991,6 +991,8 @@ class eventController extends expController {
     }
 
     function getEventsForDates($edates, $sort_asc = true, $featuredonly = false, $condense = false) {
+        global $eventid;
+
         $events = array();
         $featuresql = "";
         if ($featuredonly) $featuresql = " AND is_featured=1";
@@ -998,7 +1000,6 @@ class eventController extends expController {
             $evs = $this->event->find('all', "id=" . $edate->event_id . $featuresql);
             foreach ($evs as $key=>$event) {
                 if ($condense) {
-                    global $eventid;
                     $eventid = $event->id;
                     $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
                     if (!empty($multiday_event)) {
