@@ -21,10 +21,15 @@
     {css unique="picker" corecss="msgq,button,admin-global" link="`$asset_path`css/filemanager.css"}
 
     {/css}
+    {css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
+
+    {/css}
     <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    {script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}
-    {/script}
+    <script src="{$smarty.const.JQUERY_SCRIPT}">
+    </script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/mediaelement/build/mediaelement-and-player.min.js">
+    </script>
 </head>
 <body class=" exp-skin">
 <div id="filemanager">
@@ -197,14 +202,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         );
         infopanel.render();
         infopanel.subscribe('hide',function(event){
-            flowplayer("a.player", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
-         				{
-         					wmode: 'opaque',
-         					clip: {
-         						autoPlay: false
-                             }
-         				}
-         			).close();
+            $('video,audio').each(function() {
+                $(this)[0].pause();
+            });
         });
         // handler for showing file information
         var showFileInfo = function(oRecordData) {
@@ -212,13 +212,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
 
             infopanel.setHeader(oRecordData.filename+owner);
             filetype = oRecordData.filename.replace(/^\s|\s$/g, "");
-            ismedia = filetype.match(/([^\/\\]+)\.(mp3|flv|f4v)$/i)
+            isvideo = filetype.match(/([^\/\\]+)\.(mp4|m4v|webm|ogv|flv|f4v)$/i);
+            isaudio = filetype.match(/([^\/\\]+)\.(mp3)$/i);
             if (oRecordData.is_image==1) {
-    	        var oFile = '<img src="'+oRecordData.url+'" onError="this.src=\''+EXPONENT.PATH_RELATIVE+'/framework/core/assets/images/default_preview_notfound.gif\'">';
-            } else if (ismedia){
-                var oFile = '<a href="'+oRecordData.url+'" style="display:block;width:450px;height:360px;" class="player"></a>';
+    	        var oFile = '<div class="image"><img src="'+oRecordData.url+'" onError="this.src=\''+EXPONENT.PATH_RELATIVE+'/framework/core/assets/images/default_preview_notfound.gif\'"></div>';
+            } else if (isvideo){
+                var oFile = '<video id="mymedia" width="450" height="360" src="'+oRecordData.url+'" type="'+oRecordData.mimetype+'" controls="controls" preload="none"></video>';
+            } else if (isaudio){
+                var oFile = '<audio id="mymedia" src="'+oRecordData.url+'" type="audio/mp3" controls="controls" preload="none"></audio>';
             } else {
-                var oFile = '<img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/general.png">' ;
+                var oFile = '<div class="image"><img src="'+EXPONENT.PATH_RELATIVE+'framework/modules/file/assets/images/general.png"></div>' ;
             };
             if (oRecordData.cat==null) {
                 foldercat = 'Root';
@@ -253,22 +256,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
                 '</td></tr></table>'
             );
             infopanel.show();
-			flowplayer("a.player", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",
-				{
-					wmode: 'opaque',
-					clip: {
-						autoPlay: false
-                    },
-					plugins:  {
-						controls: {
-							play: true,
-							scrubber: true,
-							fullscreen: false,
-							autoHide: false
-						}
-					}
-				}
-			);
+            $('audio,video').mediaelementplayer({
+                success: function(player, node) {
+                    $('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+                }
+            });
         }
         
         //set up autocomplete
