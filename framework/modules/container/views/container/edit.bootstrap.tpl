@@ -23,7 +23,7 @@
             {if $user->is_admin}
                 <a class="managemodules" href="{link module=expModule action=manage}">{"Manage Active Modules"|gettext}</a>
             {/if}
-            {help text="Get Help with"|gettext|cat:" "|cat:("Adding Page Content"|gettext) module="how-to-add-modules-to-a-page"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Adding Page Content"|gettext) module="adding-modules-to-a-page"}
         </div>
         <h1>{if $is_edit}{'Edit Module'|gettext}{else}{'Add New Content'|gettext}{/if}</h1>
     </div>

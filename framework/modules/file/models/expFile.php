@@ -1724,7 +1724,7 @@ class expFile extends expRecord {
             $version = explode(':', trim($lines[1]));
             $eql_version = $version[1] + 0;
             $current_version = EXPONENT + 0;
-            if ((!empty($version[2]) && $type == null) || $version[2] != $type) {
+            if ((array_key_exists(2, $version) && $type == null) || $version[2] != $type) {
                 $eql_version = 0;  // trying to import wrong eql type
             }
 
