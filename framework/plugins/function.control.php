@@ -507,7 +507,7 @@ function smarty_function_control($params, &$smarty) {
         if($params['type']!='hidden'){ echo '</label>'; }
         */
     } else {
-        echo "Both the 'type' and 'name' parameters are required for the control plugin to function";
+        echo gt("Both the 'type' and 'name' parameters are required for the control plugin to function");
     }
 }
 

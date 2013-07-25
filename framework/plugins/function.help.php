@@ -36,27 +36,20 @@
 function smarty_function_help($params,&$smarty) {
 
     if (HELP_ACTIVE) {
-        if (empty($params['module'])) {
-            $module = $smarty->getTemplateVars('__loc')->mod;
-        } else {
-            $module = $params['module'];
-        }
-
         // figure out the params
+        $doc = !empty($params['doc']) ? $params['doc'] : (!empty($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod);
         $text = empty($params['text']) ? '&#160;' : $params['text'];
-
-        $title = empty($params['title']) ? gt('Get Help').' for '.$params['module'] : $params['title'];
-
+        $title = empty($params['title']) ? $text : (empty($params['text']) ? gt('Get Help with').' '.ucwords($doc) : $params['title']);
         $class  = 'helplink';
         $class .= empty($params['class']) ? '' : $params['class'];
 
-        $link = help::makeHelpLink($module);
         if (!empty($params['page'])) {
-            echo '<a class="'.$class.'" title="'.$title.'" href="'.HELP_URL.$params['page'].'" target="_blank">'.$text.'</a>';
+            $link = HELP_URL.$params['page'];
         } else {
-            echo '<a class="'.$class.'" title="'.$title.'" href="'.$link.'" target="_blank">'.$text.'</a>';
+            $link = help::makeHelpLink($doc);
         }
-        
+        echo '<a class="'.$class.'" title="'.$title.'" href="'.$link.'" target="_blank">'.$text.'</a>';
+
         expCSS::pushToHead(array(
 		    "csscore"=>"admin-global",
         ));
