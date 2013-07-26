@@ -30,8 +30,8 @@ if (php_sapi_name() == 'cli') {
  * find_help.php - attempts to auto-check all ExponentCMS help links
  * by collecting them and checking them against the doc.exponentcms.org db tables
  */
-print("Checking the Exponent Help System!" . $nl . $nl);
-print("Grabbing links from the folders!" . $nl);
+print $nl . "Checking the Exponent Help System!" . $nl . $nl;
+print "Grabbing links from the folders!" . $nl;
 parse_files('..', false);
 $filelist = array('../cron', '../framework', '../install', '../themes');
 foreach ($filelist as $file) {

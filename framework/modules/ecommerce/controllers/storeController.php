@@ -1216,6 +1216,7 @@ class storeController extends expController {
             flash("message", gt("Giftcard saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         } elseif ($product_type == "eventregistration") {
+            //FIXME shouldn't event registrations be added to search index?
             flash("message", gt("Event saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         } elseif ($product_type == "donation") {
