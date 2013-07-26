@@ -41,7 +41,6 @@ if (isset($_REQUEST['upgrade'])) {
 ?>
     <p><?php echo gt('Log back in to start using the new enhancements!'); ?></p>
     <a class="awesome large green" href="<?php echo expCore::makeLink(array("controller"=>"login","action"=>"showlogin")); ?>"><?php echo gt("Log In Screen"); ?></a>
-    <a class="awesome large green" href="<?php echo expCore::makeLink(array("controller"=>"login","action"=>"showlogin")); ?>"><?php echo gt("Log In Screen"); ?></a>
 <?php
 
 } else {

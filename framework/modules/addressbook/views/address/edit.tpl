@@ -31,7 +31,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             } else {
                 psswrd.all('input').removeAttribute('required');
             }
-            }
         });
     }
 })
