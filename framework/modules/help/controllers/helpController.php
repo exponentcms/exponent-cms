@@ -26,6 +26,17 @@ class helpController extends expController {
         'showall'=>'Show all',
         'select_version'=>'Select Help Version'
     );
+    public $remove_configs = array(
+        'categories',
+        'comments',
+        'ealerts',
+        'facebook',
+        'files',
+        'pagination',
+        'rss',
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Help"); }
     static function description() { return gt("Manage Exponent CMS help files."); }

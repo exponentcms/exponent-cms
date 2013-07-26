@@ -1,0 +1,16 @@
+/*.fixedmenu {*/
+/*//	margin-top:60px;*/
+/*}*/
+
+.navbar-spacer {
+	height : 44px;
+}
+
+.navbar-spacer-bottom {
+	position : fixed;
+	bottom   : 0;
+}
+
+.menu-spacer-bottom {
+	height : 45px;
+}

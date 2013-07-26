@@ -19,9 +19,9 @@
 
 {/css}
 
-{css unique="calpopup" link="`$asset_path`css/default.css"}
+{*{css unique="calpopup" link="`$asset_path`css/default.css"}*}
 
-{/css}
+{*{/css}*}
 
 <div class="module events monthly">
 	<div class="module-actions">
@@ -43,8 +43,8 @@
                 {/if}
 			{/if}
 		{/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
-        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+        {*{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}*}
+        {*{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}*}
         {br}
 	</div>
 	<h1>
@@ -75,7 +75,11 @@
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-calendar': {
 		fullpath: '{/literal}{$asset_path}js/calendar.js{literal}',
-		requires: ['node']
+        requires: ['node','calendar-css']
+    },
+    'calendar-css': {
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/default.css',
+        type: 'css'
 	}
 }
 

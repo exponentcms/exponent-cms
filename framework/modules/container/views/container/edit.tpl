@@ -23,7 +23,7 @@
             {if $user->is_admin}
                 <a class="managemodules" href="{link module=expModule action=manage}">{"Manage Active Modules"|gettext}</a>
             {/if}
-            {help text="Get Help"|gettext|cat:" "|cat:("Adding Page Content"|gettext) module="how-to-add-modules-to-a-page"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Adding Page Content"|gettext) module="adding-modules-to-a-page"}
         </div>
         <h1>{if $is_edit}{'Edit Module'|gettext}{else}{'Add New Content'|gettext}{/if}</h1>
     </div>
@@ -48,6 +48,15 @@
 
             {*{control type=text size=31 label="Module Title"|gettext name="title" value=$container->title}*}
             {control type=text size=31 label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
+
+            {if $smarty.const.INVERT_HIDE_TITLE}
+                {$title_str = 'Show Module Title?'|gettext}
+                {$desc_str = 'The Module Title is hidden by default.'|gettext}
+            {else}
+                {$title_str = 'Hide Module Title?'|gettext}
+                {$desc_str = 'The Module Title is displayed by default.'|gettext}
+            {/if}
+            {control type="checkbox" name="hidemoduletitle" label=$title_str value=1 checked=$config.hidemoduletitle description=$desc_str}
 
             {control type="checkbox" name="is_private" label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
 
@@ -172,7 +181,11 @@
                 //set the current module
                 EXPONENT.setCurMod();
                 //enable recycle bin
-                EXPONENT.enableRecycleBin();
+                if (modpicker.get("value")!=-'' && modpicker.get("value")!='container') {
+                    EXPONENT.enableRecycleBin();
+                } else {
+                    EXPONENT.disableRecycleBin();
+                }
 
                 //decide what to do weather it's a controller or module
                 if (EXPONENT.isController()) {
@@ -273,7 +286,7 @@
         //makes the recycle bin link clickable
         EXPONENT.enableRecycleBin = function() {
             recyclebin.on('click',EXPONENT.recyclebin);
-            if ({/literal}{$user->is_acting_admin}{literal}) {
+            if ({/literal}{$user->is_acting_admin}{literal} && modpicker.get("value")!='container') {
                 recyclebinwrap.removeClass('disabled');
             } else {
                 recyclebin.detach('click');

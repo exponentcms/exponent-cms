@@ -26,7 +26,7 @@
     <div class="info-header">
         <div class="related-actions">
             {if !empty($page)}
-                {help text="Get Help wiht"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-categories"}
+                {help text="Get Help with"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-categories"}
             {elseif $model == 'file'}
                 {help text="Get Help with"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-file-folders"}
             {else}

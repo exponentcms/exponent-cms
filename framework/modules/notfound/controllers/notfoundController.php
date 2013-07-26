@@ -22,7 +22,6 @@
  */
 
 class notfoundController extends expController {
-    //public $useractions = array('showall'=>'Show all');
     public $add_permissions = array('showall'=>'Showall', 'show'=>'Show');
 
     static function displayname() { return gt("Not Found Controller"); }

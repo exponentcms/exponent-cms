@@ -28,7 +28,6 @@ if (!defined('EXPONENT')) exit('');
 class antispamcontrol extends formcontrol {  //FIXME this is old tech and not-language-ized
 
 	static function name() { return "Anti-Spam Control"; }
-	static function isSimpleControl() { return false; }
 
 	function controlToHTML($name,$label) {
 		$html = '<div class="antispam">This question is being presented to you to try to differentiate between a human submission and

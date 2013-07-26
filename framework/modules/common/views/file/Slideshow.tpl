@@ -15,13 +15,13 @@
  
 {uniqueid prepend="slideshow`$params.record->id`" assign="name"}
 
-{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/filedisplayer.css"}
+{css unique="files-gallery" corecss="common" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/filedisplayer.css"}
 
 {/css}
 
-{css unique="photoalbum`$name`" corecss="common" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}
+{*{css unique="photoalbum`$name`" corecss="common" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}*}
 
-{/css}
+{*{/css}*}
 
 <div id="ss-{$name}" class="slideshow slideshow-container" style="width:{$config.width|default:350}px;">
     <ul class="slideshow-frame"{if $config.width} style="width:{$config.width}px;height:{$config.height}px;"{/if}>
@@ -80,7 +80,11 @@
 EXPONENT.YUI3_CONFIG.modules = {
     'gallery-yui-slideshow': {
         fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/js/yui3-slideshow.js',
-        requires: ['anim','node'],
+        requires: ['anim','node','slideshow-css'],
+    },
+    'slideshow-css': {
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/css/yui3-slideshow.css',
+        type: 'css'
     }
 }
 

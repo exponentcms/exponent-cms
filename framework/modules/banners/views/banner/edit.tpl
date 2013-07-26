@@ -27,7 +27,7 @@
     {control type="text" name="url" label="URL"|gettext value=$record->url}
     {control type="text" name="impression_limit" label="Impression Limit"|gettext size=5 filter=integer value=$record->impression_limit}
     {control type="text" name="click_limit" label="Click Limit"|gettext size=5 filter=integer value=$record->click_limit}
-    {control type="files" name="image" label="Banner Image"|gettext value=$record->expFile}
+    {control type="files" name="image" label="Banner Image"|gettext accept="image/*" value=$record->expFile}
     {control type="dropdown" name="companies_id" label="Company"|gettext frommodel=company key=id display=title value=$record->companies_id}
     {control type="editor" name="body" label="URL Description"|gettext value=$record->body}
     {control type="buttongroup" submit="Save"|gettext cancel="Cancel"|gettext}

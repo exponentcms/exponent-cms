@@ -24,6 +24,10 @@
         {/if}
         {permissions}
             <div class="module-actions">
+                {if $permissions.edit == 1}
+                    {icon class=add action=enterdata forms_id=$f->id text='Add record'|gettext}
+                    &#160;&#160;|&#160;&#160;
+                {/if}
                 {icon class="downloadfile" action=export_csv id=$f->id text="Export as CSV"|gettext}
                 {export_pdf_link landscapepdf=1 limit=999 prepend='&#160;&#160;|&#160;&#160;'}
                 {if $permissions.manage}
@@ -74,6 +78,6 @@
             </table>
         </div>
         {$page->links}
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>
+        {*<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>*}
     </div>
 {/if}

@@ -22,8 +22,6 @@
  */
 
 class order_statusController extends expController {
-    //public $useractions = array('manage'=>'Manage Status Codes');
-
     static function displayname() { return gt("e-Commerce Status Codes"); }
     static function description() { return gt("Manage e-Commerce status codes"); }
     static function hasSources() { return false; }

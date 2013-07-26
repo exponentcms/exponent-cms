@@ -32,7 +32,6 @@
 <div class="module forms design-form">
     <div class="form_title">
         {if $edit_mode != 1}
-            {'Use the drop down to add fields to this form.'|gettext}
             <div class="module-actions">
                 {ddrerank module="forms_control" model="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}
             </div>
@@ -71,6 +70,10 @@
     {*{rdelim}*}
     {*{/script}*}
     {*{if !empty($forms_list)}{control type="dropdown" name="forms_id" label="Append fields from an existing form"|gettext items=$forms_list}{/if}*}
+        <blockquote>
+            {'Use the drop down to add fields to this form.'|gettext}
+            <em>{'The first/top-most page break control will always be pushed to the top!'|gettext}</em>
+        </blockquote>
         <p>
             <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
                href="{$backlink}">{'Done'|gettext}</a>

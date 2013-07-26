@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="importer usercsv-form-mapping">
+<div class="importer import_csv">
 	<div class="form_header">
 		<h2>{'Import Form Data - Mapping CSV Columns'|gettext}</h2>
 		<blockquote>{'Below is some sample data from your csv file using the start row broken out by fields. Map the columns from the csv file to the corresponding form field/control.'|gettext}</blockquote>

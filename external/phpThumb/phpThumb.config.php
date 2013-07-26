@@ -127,7 +127,8 @@ $PHPTHUMB_CONFIG['prefer_imagemagick']        = true;  // If true, use ImageMagi
 $PHPTHUMB_CONFIG['imagemagick_use_thumbnail'] = true;  // If true, use ImageMagick's "-thumbnail" resizing parameter (if available) which removes extra non-image metadata (profiles, EXIF info, etc) resulting in much smaller filesize; if false, use "-resize" paramter which retains this info
 if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
 	// Windows: set absolute pathname
-	$PHPTHUMB_CONFIG['imagemagick_path'] = 'C:/ImageMagick/convert.exe';
+//	$PHPTHUMB_CONFIG['imagemagick_path'] = 'C:/ImageMagick/convert.exe';
+    $PHPTHUMB_CONFIG['imagemagick_path'] = null;
 } else {
 	// *nix: set absolute pathname to "convert", or leave as null if "convert" is in the path (location detected with `which`)
 	//$PHPTHUMB_CONFIG['imagemagick_path'] = '/usr/local/bin/convert';

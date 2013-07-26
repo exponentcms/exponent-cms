@@ -38,8 +38,6 @@ class usersController extends expController {
         'edit'
     );
 
-    //public $useractions = array('showall'=>'Show all');
-
     static function displayname() {
         return gt("User Manager");
     }
@@ -1169,11 +1167,6 @@ class usersController extends expController {
                 "error" => "The /tmp directory is not writable.  Please contact your administrator.",
             ));
         } else {
-            //Setup the mete data (hidden values)
-            $form = new form();
-            $form->meta("controller", "users");
-            $form->meta("action", "import_users_mapper");
-
             //Setup the arrays with the name/value pairs for the dropdown menus
             $delimiterArray = Array(
                 ',' => gt('Comma'),
@@ -1181,15 +1174,21 @@ class usersController extends expController {
                 ':' => gt('Colon'),
                 ' ' => gt('Space'));
 
-            //Register the dropdown menus
-            $form->register("delimiter", gt('Delimiter Character'), new dropdowncontrol(",", $delimiterArray));
-            $form->register("upload", gt('CSV File to Upload'), new uploadcontrol());
-            $form->register("use_header", gt('First Row is a Header'), new checkboxcontrol(0, 0));
-            $form->register("rowstart", gt('User Data begins in Row'), new textcontrol("1", 1, 0, 6));
-            $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+//            //Setup the mete data (hidden values)
+//            $form = new form();
+//            $form->meta("controller", "users");
+//            $form->meta("action", "import_users_mapper");
+//
+//            //Register the dropdown menus
+//            $form->register("delimiter", gt('Delimiter Character'), new dropdowncontrol(",", $delimiterArray));
+//            $form->register("upload", gt('CSV File to Upload'), new uploadcontrol());
+//            $form->register("use_header", gt('First Row is a Header'), new checkboxcontrol(0, 0));
+//            $form->register("rowstart", gt('User Data begins in Row'), new textcontrol("1", 1, 0, 6));
+//            $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
             assign_to_template(array(
-                "form_html" => $form->tohtml(),
+//                "form_html" => $form->tohtml(),
+                'delimiters' => $delimiterArray,
             ));
         }
     }
@@ -1291,15 +1290,6 @@ class usersController extends expController {
     }
 
     public function import_users_process() {
-        $form = new form();
-        $form->meta("controller", "users");
-        $form->meta("action", "import_users_display");
-        $form->meta("column", $this->params["column"]);
-        $form->meta("delimiter", $this->params["delimiter"]);
-        $form->meta("use_header", $this->params["use_header"]);
-        $form->meta("filename", $this->params["filename"]);
-        $form->meta("rowstart", $this->params["rowstart"]);
-
         if (in_array("username", $this->params["column"]) == false) {
             $unameOptions = array(
                 "FILN"    => gt('First Initial / Last Name'),
@@ -1323,14 +1313,26 @@ class usersController extends expController {
             $disabled = false;
         }
 
-        $form->register("unameOptions", gt('User Name Generations Options'), new dropdowncontrol("INFILE", $unameOptions));
-        $form->register("pwordOptions", gt('Password Generation Options'), new dropdowncontrol("defpass", $pwordOptions));
-        $form->register("pwordText", gt('Default Password'), new textcontrol("", 10, $disabled));
-        $form->register("update", gt('Update users already in database, instead of creating new user?'), new checkboxcontrol(0, 0));
-        $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
+//        $form = new form();
+//        $form->meta("controller", "users");
+//        $form->meta("action", "import_users_display");
+//        $form->meta("column", $this->params["column"]);
+//        $form->meta("delimiter", $this->params["delimiter"]);
+//        $form->meta("use_header", $this->params["use_header"]);
+//        $form->meta("filename", $this->params["filename"]);
+//        $form->meta("rowstart", $this->params["rowstart"]);
+//
+//        $form->register("unameOptions", gt('User Name Generations Options'), new dropdowncontrol("INFILE", $unameOptions));
+//        $form->register("pwordOptions", gt('Password Generation Options'), new dropdowncontrol("defpass", $pwordOptions));
+//        $form->register("pwordText", gt('Default Password'), new textcontrol("", 10, $disabled));
+//        $form->register("update", gt('Update users already in database, instead of creating new user?'), new checkboxcontrol(0, 0));
+//        $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
         assign_to_template(array(
-            "form_html" => $form->tohtml(),
+//            "form_html" => $form->tohtml(),
+            'uname_options' => $unameOptions,
+            'pword_options' => $pwordOptions,
+            'pword_disabled' => $disabled,
         ));
     }
 
@@ -1606,6 +1608,15 @@ class usersController extends expController {
             "userarray" => $userarray,
         ));
         unlink(BASE . $this->params["filename"]);
+    }
+
+    public function sync_LDAPUsers() {
+        if (USE_LDAP == 1 && function_exists('ldap_connect')) {
+            $ldap = new expLDAP();
+            $updated = $ldap->syncLDAPUsers();
+            $ldap->close();
+            flash('message', $updated.' '.gt('LDAP Users Updated'));
+        }
     }
 
 }

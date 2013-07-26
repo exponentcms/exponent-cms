@@ -48,7 +48,7 @@
                     {if ($permissions.configure == 1 || $container->permissions.configure == 1)}
                    		<li><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod">{"Configure Settings"|gettext}</a></li>
                    	{/if}
-                    {if $smarty.const.HELP_ACTIVE}<li>{help text="Help with Containers"|gettext}</li>{/if}
+                    {if $smarty.const.HELP_ACTIVE}<li>{help text="Get Help with"|gettext|cat:" "|cat:("Containers"|gettext)}</li>{/if}
                 </ul>
             </div>
         {/if}

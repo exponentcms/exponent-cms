@@ -44,7 +44,7 @@
                     <div id="general">
                         {control type=text name=title label="Category Name"|gettext value=$node->title}
                         {control type="checkbox" name="is_active" label="This category is active"|gettext value=1 checked=$node->is_active|default:1}
-                        {control type="files" name="image" label="Category Image"|gettext value=$node->expFile}
+                        {control type="files" name="image" label="Category Image"|gettext accept="image/*" value=$node->expFile}
                         {control type=editor name=body label="Category Description"|gettext value=$node->body}
                     </div>
                     <div id="seo">

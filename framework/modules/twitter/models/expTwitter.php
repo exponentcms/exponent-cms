@@ -23,6 +23,18 @@
 class expTwitter extends Twitter {
 
     /**
+     * Default constructor
+     *
+     * @param string $consumerKey    The consumer key to use.
+     * @param string $consumerSecret The consumer secret to use.
+     */
+	public function __construct($consumerKey='', $consumerSecret='')
+    {
+        $this->setConsumerKey($consumerKey);
+        $this->setConsumerSecret($consumerSecret);
+    }
+
+    /**
      * Make the call
      *
      * @param  string $url           The url to call.

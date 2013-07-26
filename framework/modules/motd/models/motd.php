@@ -31,6 +31,7 @@ class motd extends expRecord {
         ));
         
     public $months = array(
+        0=>"Every Month",
 		1=>"January",
 		2=>"February",
 		3=>"March",

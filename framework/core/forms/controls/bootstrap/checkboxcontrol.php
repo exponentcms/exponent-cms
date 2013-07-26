@@ -40,17 +40,12 @@ class checkboxcontrol extends formcontrol {
         return true;
     }
 
-    static function useGeneric() {
-        return false;
-    }
-
     static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=> DB_DEF_BOOLEAN);
     }
 
     function __construct($default = 1, $flip = false, $required = false) {
-
         $this->default  = $default;
         $this->flip     = $flip;
         $this->jsHooks  = array();
@@ -67,10 +62,10 @@ class checkboxcontrol extends formcontrol {
 //            $for   = '';
             $for   = ' for="' . $name . '"';
         }
-        $html = "<div" . $divID . " class=\"control checkbox";
+        $html = "<div" . $divID . " class=\"";
         $html .= (!empty($this->required)) ? ' required">' : '">';
         if (!empty($this->flip)) {
-            $html .= "<label" . $for . " class=\"checkbox\" style=\"display:inline;\">".$label;
+            $html .= "<label" . $for . " class=\"checkbox control\" style=\"display:inline;\">".$label;
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .= "</label>";
 
@@ -78,7 +73,7 @@ class checkboxcontrol extends formcontrol {
         } else {
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
 //            $html .= "<td class=\"input\" nowrap>";
-            $html .= "<label class=\"checkbox\">";
+            $html .= "<label class=\"checkbox control\">";
 //            $html .= "</td><td>";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .= $label."</label>";
@@ -92,10 +87,10 @@ class checkboxcontrol extends formcontrol {
 //                 $html .= "</label>";
 //             }
 //            $html .= "</td>";
-            $flip = ' style="position:absolute;"';
+            // $flip = ' style="position:absolute;"';
         }
 //        $html .= "</tr></table>";
-        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\"".$flip.">" . $this->description . "</div><br>";
+        if (!empty($this->description)) $html .= "<span class=\"help-block\">" . $this->description . "</span>";
         $html .= "</div>";
         return $html;
     }
@@ -121,7 +116,7 @@ class checkboxcontrol extends formcontrol {
         $this->value = isset($this->value) ? $this->value : 1;
 //        $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
         $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : ' id="' . $name . '"';
-        $html        = '<input' . $inputID . ' class="checkbox" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
+        $html        = '<input' . $inputID . ' class="checkbox control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         if (!$this->flip) $html .= ' style="float:left;"';
         if ($this->default) $html .= ' checked="checked"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
@@ -156,7 +151,7 @@ class checkboxcontrol extends formcontrol {
         $html .= '<input' . $inputID . ' type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
         if (!empty($this->size) && $this->size) $html .= ' size="' . $this->size . '"';
         if (!empty($this->checked) && $this->checked) $html .= ' checked="checked"';
-        $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox"' : ' class="checkbox"';
+        $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox control"' : ' class="checkbox control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
 //        if ($this->filter != "") {

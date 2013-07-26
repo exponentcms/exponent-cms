@@ -29,7 +29,7 @@
 			</h1>
             <?php //expTheme::module(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_flyoutYUI")); ?>
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
-            <?php //expTheme::module(array("module"=>"container","view"=>"flyoutsidebar","chrome"=>true,"source"=>"flyout")); ?>
+            <?php //expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall_flyoutsidebar","chrome"=>true,"source"=>"flyout")); ?>
             <?php //expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_YUI Top Nav")); ?>
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_mega","source"=>"mega","chrome"=>true)); ?>
 			<?php //expTheme::module(array("controller"=>"links","action"=>"showall","view"=>"showall_quicklinks")) ?>
@@ -38,7 +38,6 @@
 		<div id="bd" class="yui3-g">
 			<div id="leftcol" class="yui3-u-1-4">
 			    <div class="content">
-    			    <?php //expTheme::module(array("module"=>"container","view"=>"Default","source"=>"@left","scope"=>"sectional")); ?>
                     <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"sectional")); ?>
 			    </div>
 			</div>

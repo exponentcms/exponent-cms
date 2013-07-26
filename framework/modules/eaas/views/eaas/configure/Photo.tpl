@@ -15,7 +15,7 @@
 
 <h2>{"Photos"|gettext}</h2>
 
-{control type="files" name="photo_image" subtype="photo_image" label="Photo Banner Image"|gettext value=$config['expFile'] limit='1'}
+{control type="files" name="photo_image" subtype="photo_image" label="Photo Banner Image"|gettext accept="image/*" value=$config['expFile'] limit='1'}
 {control type="editor" name="photo_body" label="Photo HTML"|gettext value=$config.photo_body}
 
 <table class="exp-skin-table">

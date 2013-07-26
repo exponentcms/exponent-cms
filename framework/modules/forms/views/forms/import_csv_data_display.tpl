@@ -18,7 +18,7 @@
 {/css}
 
 {messagequeue}
-<div class="importer usercsv-display">
+<div class="importer import_csv">
 	<div class="form_header">
 		<h2>{'Import Form Data - Available Records to Import'|gettext}</h2>
 		<blockquote>{'The following records can be added to the database.'|gettext}</blockquote>

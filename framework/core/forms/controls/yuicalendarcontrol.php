@@ -62,6 +62,7 @@ class yuicalendarcontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label = null) {
+        $idname = str_replace(array('[',']',']['),'_',$name);
         if (is_numeric($this->default)) {
             $default = date('m/d/Y', $this->default);
         } else {
@@ -69,10 +70,10 @@ class yuicalendarcontrol extends formcontrol {
         }
         $html = "
         <div class=\"yui3-skin-sam\">
-            <div id=\"cal" . $name . "Container\"></div>
+            <div id=\"cal" . $idname . "Container\"></div>
             <div id=\"calinput\">
-                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $name . "\" value=\"" . $default . "\"/>
-                <button class=\"button\" type=\"button\" id=\"update-" . $name . "\">" . gt('Update Calendar') . "</button>
+                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $idname . "\" value=\"" . $default . "\"/>
+                <button class=\"button\" type=\"button\" id=\"update-" . $idname . "\">" . gt('Update Calendar') . "</button>
             </div>
         </div>
         <div style=\"clear:both\"></div>
@@ -87,13 +88,13 @@ class yuicalendarcontrol extends formcontrol {
                 // dates in available empty cells to true, and setting
                 // the date to today's date.
                 var calendar = new Y.Calendar({
-                  contentBox: '#cal" . $name . "Container',
+                  contentBox: '#cal" . $idname . "Container',
                   width:'340px',
                   showPrevMonth: true,
                   showNextMonth: true,
                 });
                 calendar.render();
-//                Y.one('#" . $name . "').plug(Y.Plugin.InputCalendarSync,{
+//                Y.one('#" . $idname . "').plug(Y.Plugin.InputCalendarSync,{
 //                    calendar: calendar
 //                });
 
@@ -115,11 +116,11 @@ class yuicalendarcontrol extends formcontrol {
                 // Listen to calendar's dateClick event.
                 calendar.on('dateClick', function (ev) {
                     // Format the date and output it to a DOM element.
-                    Y.one('#" . $name . "').set('value',dtdate.format(ev.date,{format:'%m/%d/%Y'}));
+                    Y.one('#" . $idname . "').set('value',dtdate.format(ev.date,{format:'%m/%d/%Y'}));
                 });
 
                 function updateCal() {
-                    var txtDate1 = document.getElementById('" . $name . "');
+                    var txtDate1 = document.getElementById('" . $idname . "');
                     if (txtDate1.value != '') {
                         var date = Y.DataType.Date.parse(txtDate1.value);
                         calendar.deselectDates();
@@ -133,12 +134,12 @@ class yuicalendarcontrol extends formcontrol {
                         calendar.set('date',date);
                     }
                 }
-                Y.on('click',updateCal,'#update-" . $name . "');
+                Y.on('click',updateCal,'#update-" . $idname . "');
             });
         ";
 
         expJavascript::pushToFoot(array(
-            "unique"  => 'zzyuical-' . $name,
+            "unique"  => 'zzyuical-' . $idname,
             "yui3mods"=> 1,
             "content" => $script,
         ));

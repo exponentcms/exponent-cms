@@ -92,6 +92,7 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "uploader":
                 $control = new uploadcontrol();
+                if (!empty($params['accept'])) $control->accept = $params['accept'];
                 break;
             case "files":
                 if (!empty($params['olduploader'])) {
@@ -102,6 +103,7 @@ function smarty_function_control($params, &$smarty) {
                     $control->limit = isset($params['limit']) ? $params['limit'] : 10;
                     if (!empty($params['value'])) $control->value = $params['value'];
                 }
+                if (!empty($params['accept'])) $control->accept = $params['accept'];
                 break;
             case "filedisplay-types":
                 $control                = new dropdowncontrol();
@@ -198,6 +200,8 @@ function smarty_function_control($params, &$smarty) {
                     $control           = new ckeditorcontrol();
                     $control->toolbar  = empty($params['toolbar']) ? '' : $params['toolbar'];
                     $control->lazyload = empty($params['lazyload']) ? 0 : 1;
+                    $control->plugin = empty($params['plugin']) ? '' : $params['plugin'];
+                    $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
                 } else {
                     $control = new htmleditorcontrol();
                     if (isset($params['module'])) $control->module = $params['module'];
@@ -503,7 +507,7 @@ function smarty_function_control($params, &$smarty) {
         if($params['type']!='hidden'){ echo '</label>'; }
         */
     } else {
-        echo "Both the 'type' and 'name' parameters are required for the control plugin to function";
+        echo gt("Both the 'type' and 'name' parameters are required for the control plugin to function");
     }
 }
 

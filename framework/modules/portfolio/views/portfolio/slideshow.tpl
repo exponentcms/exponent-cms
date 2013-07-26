@@ -15,9 +15,12 @@
 
 {uniqueid prepend="slideshow" assign="name"}
 
-{css unique="portfolio`$name`" corecss="common,pagination" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}
+{css unique="portfolio`$name`" corecss="common,pagination"}
 
 {/css}
+{*{css unique="portfolio`$name`" corecss="common,pagination" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}*}
+
+{*{/css}*}
 
 <div class="module photoalbum portfolio slideshow">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
@@ -121,8 +124,12 @@
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-yui-slideshow': {
         fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/js/yui3-slideshow.js',
-        requires: ['anim','node'],
-	}
+        requires: ['anim','node','slideshow-css'],
+	},
+    'slideshow-css': {
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/css/yui3-slideshow.css',
+        type: 'css'
+    }
 }
 
 YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {

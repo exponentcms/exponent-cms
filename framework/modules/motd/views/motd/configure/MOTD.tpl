@@ -22,7 +22,6 @@
 	</div>
 </div>
 <blockquote>
-    {'If no Message of the Day if found for the current day we can pull up a random previous Message of the Day.'|gettext}&#160;&#160;
-    {'If you would like to use this functionality check the box below.'|gettext}
+    {'If no Message of the Day is found for the current day, we can pull up a random Message of the Day.'|gettext}&#160;&#160;
 </blockquote>
-{control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand}
+{control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand description='Check this box to select random messages.'|gettext}

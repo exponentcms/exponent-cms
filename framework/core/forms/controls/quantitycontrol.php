@@ -31,7 +31,6 @@ class quantitycontrol extends formcontrol {
     public $max=99999;
 
     static function name() { return "Quantity Widget"; }
-    static function isSimpleControl() { return false; }
     static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_STRING,

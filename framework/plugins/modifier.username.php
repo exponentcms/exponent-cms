@@ -28,8 +28,8 @@
  * Name:     username<br>
  * Purpose:  return the username for a user id
  *
- * @param      $userid
- * @param null $type
+ * @param         $userid
+ * @param boolean $type if true return user name instead of record
  *
  * @return array
  */

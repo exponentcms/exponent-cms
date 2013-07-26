@@ -1,0 +1,134 @@
+.stepy-header {
+	margin      : 0;
+	padding     : 0;
+	width       : 724px;
+	margin-left : 0;
+}
+
+.stepy-header li {
+	color      : #DDDDDD;
+	list-style : none;
+	cursor     : pointer;
+	float      : left;
+	padding    : 10px
+}
+
+.stepy-header li.stepy-error {
+	background : url('images/error.png') no-repeat right top
+}
+
+.stepy-header li div {
+	color : #CCC;
+	font  : bold 1.5em verdana;
+	/*text-shadow : 1px 1px #F8F8F8*/
+}
+
+.stepy-header li.stepy-active div {
+	color  : #369;
+	cursor : auto
+}
+
+.stepy-header li span {
+	color : #CCC;
+	/*font  : 1.2em verdana*/
+}
+
+.stepy-header li.stepy-active span {
+	color : #BBB
+}
+
+.stepy-step {
+	border                : 1px solid #BBB;
+	clear                 : left;
+	padding               : 0 20px;
+	width                 : 600px;
+	-khtml-border-radius  : 3px;
+	-moz-border-radius    : 3px;
+	-opera-border-radius  : 3px;
+	-webkit-border-radius : 3px;
+	border-radius         : 3px
+}
+
+.stepy-step legend {
+	color          : #4080BF;
+	font           : bold 1.2em arial;
+	letter-spacing : .7px;
+	padding        : 0 5px 5px;
+	width          : auto;
+	margin-bottom  : 12px;
+	border-bottom  : 0;
+}
+
+.stepy-step label {
+	/*color          : #222;*/
+	display        : block;
+	/*font           : bold 1.5em arial;*/
+	letter-spacing : .7px;
+	margin         : 10px 0 3px 1px
+}
+
+.stepy-navigator {
+	height     : 33px;
+	margin-top : 20px
+}
+
+.button-back {
+	float : left
+}
+
+.finish,
+.button-next,
+.stepy-navigator input[type="submit"] {
+	float : right
+}
+
+.button-back,
+.button-next,
+.stepy-navigator input[type="submit"] {
+	border                : 1px solid #CCC;
+	color                 : #7F0055;
+	cursor                : pointer;
+	font                  : 1.2em verdana;
+	padding               : 7px 15px 8px;
+	text-decoration       : none;
+	-khtml-border-radius  : 3px;
+	-moz-border-radius    : 3px;
+	-opera-border-radius  : 3px;
+	-webkit-border-radius : 3px;
+	border-radius         : 3px
+}
+
+.stepy-navigator input[type="submit"] {
+	background-color : transparent;
+	border-color     : #CCC;
+	margin-bottom    : 0;
+	padding          : 7px 15px 24px;
+	width            : 90px
+}
+
+.button-back:hover,
+.button-next:hover,
+.stepy-navigator input[type="submit"]:hover {
+	border-color : #BBB;
+	color        : #B07
+}
+
+.error-image {
+	background : url("images/error.png") no-repeat scroll right top transparent;
+}
+
+.error {
+	background-color : #FAF4F4;
+}
+
+label.error {
+	background   : url("images/alert.png") no-repeat scroll 0 0 transparent;
+	color        : #DE5130;
+	display      : block;
+	float        : right;
+	font         : 10px verdana;
+	height       : 13px;
+	margin       : 3px 3px 0 10px;
+	padding-left : 21px;
+	padding-top  : 2px;
+}

@@ -35,7 +35,6 @@ class textcontrol extends formcontrol {
 
     static function name() { return "Text Box"; }
     static function isSimpleControl() { return true; }
-    static function useGeneric() { return false; }
     static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=>DB_DEF_STRING,
@@ -55,7 +54,7 @@ class textcontrol extends formcontrol {
 
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 25;
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$name.'"';
         if ($this->type != 'text') {
             $extra_class = ' ' . $this->type;
         } else {
@@ -78,7 +77,7 @@ class textcontrol extends formcontrol {
         }
 
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
+        if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
         $html .= "/>";
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
@@ -113,7 +112,7 @@ class textcontrol extends formcontrol {
     }
 
     static function update($values, $object) {
-        $this_control = $values['control_type'];
+        $this_control = !empty($values['control_type']) ? $values['control_type'] : 'textcontrol';
 //        if ($object == null) $object = new textcontrol();
         if ($object == null) $object = new $this_control();
         if ($values['identifier'] == "") {

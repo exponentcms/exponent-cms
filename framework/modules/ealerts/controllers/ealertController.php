@@ -23,8 +23,7 @@
 
 class ealertController extends expController {
     public $basemodel_name = 'expeAlerts';
-//    public $useractions = array('showall'=>'Show all modules available for signup');
-	
+
 	public $remove_configs = array(
         'aggregation',
         'categories',
@@ -33,8 +32,9 @@ class ealertController extends expController {
         'files',
         'pagination',
         'rss',
-        'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+        'tags',
+        'twitter',
+    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags','twitter',)
 	
     static function displayname() { return gt("E-Alerts"); }
     static function description() { return gt("This module will allow users to sign up for email alerts on a module by module basis."); }

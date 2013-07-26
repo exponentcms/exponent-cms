@@ -23,8 +23,6 @@
  */
 
 class expCatController extends expController {
-	//public $useractions = array('browse'=>'Browse content by categories');
-	public $useractions = array();
 
 	/**
 	 * name of module
@@ -145,7 +143,7 @@ class expCatController extends expController {
         $modules = expModules::listUserRunnableControllers();
         foreach ($modules as $modname) {
 //            $modname = expModules::getControllerName($modname);
-            $mod[$modname] = ucfirst($modname);
+            $mod[expModules::getControllerName($modname)] = ucfirst(expModules::getControllerDisplayName($modname));
         }
         $mod['expFile'] = 'File';
         asort($mod);

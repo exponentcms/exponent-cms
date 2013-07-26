@@ -29,8 +29,17 @@ class eaasController extends expController {
         // 'dates'=>"Dates",
     );
     public $remove_configs = array(
-        'module','aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+        'aggregation',
+        'categories',
+        'comments',
+        'ealerts',
+        'files',
+        'module',
+        'pagination',
+        'rss',
+        'tags',
+        'twitter',
+    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $add_permissions = array(
         // 'approve'=>"Approve Comments"
     );
@@ -50,7 +59,7 @@ class eaasController extends expController {
     static function description() { return gt("This module allows you make service calls and return JSON for parts of Exponent"); }
     static function author() { return "Phillip Ball - OIC Group, Inc"; }
     static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
-    static function isSearchable() { return true; }
+//    static function isSearchable() { return true; }
 
     public function showall() {
         expHistory::set('viewable', $this->params);

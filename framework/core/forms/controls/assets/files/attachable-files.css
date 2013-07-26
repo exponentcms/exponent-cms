@@ -77,7 +77,6 @@
 	display:inline-block;
 }
 
-
 .filemanager.control .filelist li.blank {
     text-align:left;
     margin:0;
@@ -127,6 +126,61 @@
 a.quick-upload-disabled {
     color: #808080!important;
 }
+
+.filemanager.control .filembox {
+	/*display: block;*/
+	overflow: hidden;
+	clear:    both;
+}
+
+.filemanager.control .filebox {
+	/*display: inline;*/
+	float: left;
+	padding-bottom: 1000px;
+    margin-bottom:  -1000px;
+}
+
+.filemanager.control .progressbox {
+    /*width: 200px;*/
+	/*display: inline;*/
+	float: left;
+	padding-bottom: 1000px;
+    margin-bottom:  -1000px;
+}
+
+.filemanager.control .progressbox .name, .filemanager.control .progressbox .size {
+    display: inline;
+	padding-right: 12px;
+}
+
+.filemanager.control .progress {
+    overflow: hidden;
+	background-color: #D5D5D5;
+	background-image: none;
+	background-repeat: repeat-x;
+	border-radius: 4px 4px 4px 4px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+	height: 21px;
+	margin-bottom: 21px;
+	overflow: hidden;
+}
+
+.filemanager.control .progress .bar {
+    -moz-box-sizing: border-box;
+    background-color: #0E90D2;
+    background-image: linear-gradient(to bottom, #149BDF, #0480BE);
+    background-repeat: repeat-x;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+    color: #FFFFFF;
+    float: left;
+    font-size: 12px;
+    height: 100%;
+    text-align: center;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    transition: width 0.6s ease 0s;
+    width: 0;
+}
+
 /*
 .filemanager.control .hd {
     height:24px;

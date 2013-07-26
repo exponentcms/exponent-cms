@@ -26,7 +26,9 @@
         {/if}
         <div class="rb-item">
             <div class="recycledcontent">
-                {icon action=delete id=$item->id mod=$item->module src=$item->source text='Remove this'|gettext|cat:' '|cat:$item->module|getcontrollername|capitalize|cat:' '|cat:'Module from Recycle Bin'|gettext onclick="return confirm('Are you sure you want to delete this recyclebin item?');window.close();"}
+                {*{icon action=delete id=$item->id mod=$item->module src=$item->source text='Remove this'|gettext|cat:' '|cat:$item->module|getcontrollername|capitalize|cat:' '|cat:'Module from Recycle Bin'|gettext onclick="return confirm('Are you sure you want to delete this recyclebin item?');window.close();"}*}
+                {icon class=delete action=remove mod=$item->module src=$item->source text='Remove this'|gettext|cat:' '|cat:$item->module|getcontrollername|capitalize|cat:' '|cat:'Module from Recycle Bin'|gettext onclick="return confirm('Are you sure you want to permanently delete this module and all it\'s items from the recyclebin?');window.close();"}
+                {*{icon controller=$item->module action=delete_instance src=$item->source text='Remove this'|gettext|cat:' '|cat:$item->module|getcontrollername|capitalize|cat:' '|cat:'Module from Recycle Bin'|gettext onclick="return confirm('Are you sure you want to delete this recyclebin item?');window.close();"}*}
                 {$item->html}
             </div>
         </div>

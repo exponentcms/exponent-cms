@@ -72,5 +72,5 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-3.6.4-mysql.php";
+include "./adminer-3.7.1-mysql.php";
 ?>

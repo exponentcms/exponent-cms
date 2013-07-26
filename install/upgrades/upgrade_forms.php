@@ -121,6 +121,7 @@ class upgrade_forms extends upgradescript {
                     $fc->forms_id = $newform->id;
                     unset ($fc->id);
                     unset ($fc->form_id);
+                    $fc->rank++;  // 2.0 index begins at 1
                     $db->insertObject($fc,'forms_control');
                 }
 

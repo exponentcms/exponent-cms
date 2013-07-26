@@ -23,9 +23,6 @@
  */
 
 class expTagController extends expController {
-	//public $useractions = array('browse'=>'Browse content by tags');
-	public $useractions = array();
-
 	/**
 	 * name of module
 	 * @return string

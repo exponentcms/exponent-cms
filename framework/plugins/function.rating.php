@@ -36,7 +36,7 @@ function smarty_function_rating($params,&$smarty) {
     global $user,$db;
     
     expCSS::pushToHead(array(
-	    "unique"=>'ratings',
+//	    "unique"=>'ratings',
         "corecss"=>"ratings",
 	    )
 	);

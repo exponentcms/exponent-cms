@@ -40,10 +40,12 @@ class importexportController extends expController {
         'categories',
         'comments',
         'ealerts',
+        'facebook',
         'files',
         'rss',
-        'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array(

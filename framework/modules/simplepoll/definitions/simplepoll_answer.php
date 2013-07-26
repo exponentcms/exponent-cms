@@ -26,7 +26,8 @@ return array(
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
 	'simplepoll_question_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
+		DB_FIELD_TYPE=>DB_DEF_ID,
+        DB_INDEX=>10),
 	'answer'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>4500),

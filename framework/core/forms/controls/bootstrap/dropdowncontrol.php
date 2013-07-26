@@ -56,7 +56,7 @@ class dropdowncontrol extends formcontrol {
         $html = '<select'.$inputID.' name="' . $name;
         if ($this->multiple) $html.= '[]';
         $html .= '" size="' . $this->size . '"';
-        $html .= ' class="'.$this->class.' select '.$disabled.'"';
+        $html .= ' class="'.$this->class.' select control '.$disabled.'"';
         if ($this->disabled) $html .= ' disabled';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         foreach ($this->jsHooks as $hook=>$action) {
@@ -85,7 +85,7 @@ class dropdowncontrol extends formcontrol {
             $html .= '>' . $caption . '</option>';
         }
         $html .= '</select>';             
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
         return $html;
     }
     

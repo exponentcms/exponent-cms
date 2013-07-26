@@ -23,9 +23,9 @@
 
 {/css}
 
-{css unique="eventreg2" link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/default.css"}
+{*{css unique="eventreg2" link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/default.css"}*}
 
-{/css}
+{*{/css}*}
 
 <div class="store events_calendar events default">
     <h1>{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}</h1>
@@ -56,7 +56,11 @@
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-calendar': {
 		fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/js/calendar.js',
-		requires: ['node']
+        requires: ['node','calendar-css']
+    },
+    'calendar-css': {
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/default.css',
+        type: 'css'
 	}
 }
 

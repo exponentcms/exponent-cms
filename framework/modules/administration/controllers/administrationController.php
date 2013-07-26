@@ -398,7 +398,7 @@ class administrationController extends expController {
 		if ($level == UILEVEL_PREVIEW) {
 			expSession::un_set('uilevel');
 		} else { //edit mode
-			expSession::set("uilevel",0);
+			expSession::set("uilevel",UILEVEL_PREVIEW);
 		}
 		$message = ($level == UILEVEL_PREVIEW) ? gt("Exponent is no longer in 'Preview' mode") : gt("Exponent is now in 'Preview' mode") ;
 		flash('message',$message);
@@ -488,19 +488,19 @@ class administrationController extends expController {
 		    }
 		}
 
-		$form = new form();
-		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
-		$form->register('mod_archive','Extension Archive',new uploadcontrol());
-        $form->register('patch',gt('Patch Exponent CMS or Install Theme?'),new checkboxcontrol(false,false),null,null,gt('All extensions are normally placed within the CURRENT theme (folder)'));
-        $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
-		$form->meta('module','administration');
-		$form->meta('action','install_extension_confirm');
+//		$form = new form();
+//        $form->meta('module','administration');
+//        $form->meta('action','install_extension_confirm');
+//		$form->register(null,'',new htmlcontrol(expCore::maxUploadSizeMessage()));
+//		$form->register('mod_archive','Extension Archive',new uploadcontrol());
+//        $form->register('patch',gt('Patch Exponent CMS or Install Theme?'),new checkboxcontrol(false,false),null,null,gt('All extensions are normally placed within the CURRENT theme (folder)'));
+//        $form->register('submit','',new buttongroupcontrol(gt('Upload Extension')));
 
 		assign_to_template(array(
             'themes'=>$items['themes'],
             'fixes'=>$items['fixes'],
             'mods'=>$items['mods'],
-            'form_html'=>$form->toHTML()
+//            'form_html'=>$form->toHTML()
         ));
 	}
 
@@ -1133,7 +1133,7 @@ class administrationController extends expController {
         $dir_permissions = glist(expSettings::dropdownData('dir_permissions'));
 
         // Homepage Dropdown
-        $section_dropdown = navigationController::levelDropDownControlArray(0);
+        $section_dropdown = navigationController::levelDropdownControlArray(0);
 
         // Timezone Dropdown
         $list = DateTimeZone::listAbbreviations();
@@ -1163,6 +1163,12 @@ class administrationController extends expController {
                                             . ' ' . $row['timezone_id'];
         }
 
+        // profiles
+        $profiles = expSettings::profiles();
+        if (empty($profiles)) {
+            $profiles = array('' => '(default)');
+        }
+
         assign_to_template(array(
             'as_types'=>$as_types,
             'as_themes'=>$as_themes,
@@ -1178,7 +1184,8 @@ class administrationController extends expController {
             'timezones'=>$tzoptions,
             'file_permisions'=>$file_permisions,
             'dir_permissions'=>$dir_permissions,
-            'section_dropdown'=>$section_dropdown
+            'section_dropdown'=>$section_dropdown,
+            'profiles'=>$profiles
         ));
     }
 
@@ -1207,6 +1214,25 @@ class administrationController extends expController {
         flash('message', gt("Your Website Configuration has been updated"));
 //        expHistory::back();
 	    expHistory::returnTo('viewable');
+    }
+
+    public function change_profile() {
+        if (empty($this->params['profile'])) return;
+        expSession::un_set('display_theme');
+        expSession::un_set('theme_style');
+        expSession::un_set('framework');
+        expSettings::activateProfile($this->params['profile']);
+        expTheme::removeSmartyCache();
+        expSession::clearAllUsersSessionCache();
+        flash('message', gt("New Configuration Profile Loaded"));
+        redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
+    }
+
+    public function save_profile() {
+        if (empty($this->params['profile'])) return;
+        expSettings::createProfile($this->params['profile']);
+        flash('message', gt("Configuration Profile Saved"));
+        redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
     }
 
     /**

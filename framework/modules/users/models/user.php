@@ -76,7 +76,7 @@ class user extends expRecord {
         }
         if (USE_LDAP == 1 && (empty($user->id) || $user->is_ldap == 1) && function_exists('ldap_connect')) {
             $ldap = new expLDAP();
-            $ldap->connect();
+//            $ldap->connect();
 //            $authenticated = $ldap->authenticate($ldap->getLdapUserDN($username), $password);
             $authenticated = $ldap->authenticate($username.'@'.LDAP_BASE_DN, $password);
             if ($ldap->errno() && DEVELOPMENT) {

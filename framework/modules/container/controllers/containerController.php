@@ -32,11 +32,12 @@ class containerController extends expController {
         'categories',
 		'comments',
         'ealerts',
+        'facebook',
         'files',
         'pagination',
         'rss',
 		'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
     public $codequality = 'beta';
 
     static function displayname() { return gt("Container"); }
@@ -320,8 +321,18 @@ class containerController extends expController {
         unset($this->params['views']);
         $this->params['external'] = serialize($this->loc);
         unset($this->params['module']);
+
+        $hidetitle = $this->params['hidemoduletitle'];
+        unset($this->params['hidemoduletitle']);
+
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
+
+        $modconfig = new expConfig(expUnserialize($this->$modelname->internal));
+        if ($modconfig->id || $hidetitle) {
+            $modconfig->config['hidemoduletitle'] = $hidetitle;
+            $modconfig->update();
+        }
 
         define('SOURCE_SELECTOR',0);
         define('PREVIEW_READONLY',0); // for mods
@@ -330,7 +341,7 @@ class containerController extends expController {
         expHistory::back();
     }
 
-    public function delete_instance() {
+    public function delete_instance($loc = false) {
         global $user;
 
         if ($user && $user->is_acting_admin == 1) {

@@ -34,7 +34,8 @@ class eventController extends expController {
         'files',
         'pagination',
         'rss',
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
 
     static function displayname() {
         return "Events";
@@ -409,7 +410,7 @@ class eventController extends expController {
                         $begin = null;
                         $end = null;
                 }
-                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false);
+                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, true);
                 if ($viewrange != 'past') {
                     $extitems = $this->getExternalEvents($this->loc, $begin, $end);
                     // we need to crunch these down
@@ -990,13 +991,23 @@ class eventController extends expController {
         }
     }
 
-    function getEventsForDates($edates, $sort_asc = true, $featuredonly = false) {
+    function getEventsForDates($edates, $sort_asc = true, $featuredonly = false, $condense = false) {
+        global $eventid;
+
         $events = array();
         $featuresql = "";
         if ($featuredonly) $featuresql = " AND is_featured=1";
         foreach ($edates as $edate) {
             $evs = $this->event->find('all', "id=" . $edate->event_id . $featuresql);
             foreach ($evs as $key=>$event) {
+                if ($condense) {
+                    $eventid = $event->id;
+                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+                    if (!empty($multiday_event)) {
+                        unset($evs[$key]);
+                        continue;
+                    }
+                }
                 $evs[$key]->eventstart += $edate->date;
                 $evs[$key]->eventend += $edate->date;
                 $evs[$key]->date_id = $edate->id;

@@ -49,13 +49,19 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
-		
 		if(expSession::get('framework')!='bootstrap'){
-			expCSS::pushToHead(array("corecss"=>"forms"));
-		};
+			expCSS::pushToHead(array(
+//                "unique"  => 'forms',
+                "corecss"=>"forms"
+            ));
+		} else {
+            expCSS::pushToHead(array(
+//                "unique"  => 'z-forms-bootstrap',
+                "corecss"=>"forms-bootstrap"
+            ));
+        }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/Modernizr-2.5.3.forms.js',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
         ));
         expJavascript::pushToFoot(array(
@@ -68,22 +74,29 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms4',
-            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+//            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+            "jquery"=> 'jqueryui,jquery.placeholder',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
-//        expCSS::pushToHead(array(
-//    	    "unique"=>"h5form",
-//    	    "link"=>PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.css'
-//    	    )
-//    	);
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'h5form',
-//            "jquery"=> 'jqueryui',
-//            "src"=> PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.js',
-//            "content"=>"$(function() {
-//              $('#abc123').h5form();
-//            });"
-//        ));
+        if (!empty($params['paged'])) {
+            if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>".gt("The 'name' or 'id parameter is required for the paged {form} plugin.")."</strong>");
+            $content = "
+                $('#".$id."').stepy({
+                    validate: true,
+                    block: true,
+                    errorImage: true,
+                //    description: false,
+                //    legend: false,
+                    btnClass: 'awesome ".BTN_SIZE." ".BTN_COLOR."',
+                    titleClick: true,
+                });
+            ";
+            expJavascript::pushToFoot(array(
+                "unique"  => 'stepy-'.$id,
+                "jquery"  => 'jquery.validate,jquery.stepy',
+                "content" => $content,
+            ));
+        }
 
 		echo '<form id="'.$id.'" name="'.$name.'" class="'.$params['class'].'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {
@@ -96,7 +109,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		if (isset($params['action']))  echo '<input type="hidden" name="action" id="action" value="'.$params['action'].'" />'."\r\n";
 
 		//echo the innards
-	}else{	
+	} else {
 		echo $content;	
 		echo '</form>';
 	}

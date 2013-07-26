@@ -1,13 +1,15 @@
-/* 2 column forms */
+/* 2 column forms...horizontal label - control */
+
 .control  {
     overflow: auto;
 }
 
-.control .label {
+.control .label, .control label {
     display: block;
     float: left;
     width: 150px;  /* non-flexible part truncates label */
     text-align: right;
+	padding-right: 5px;
     white-space: normal;
     line-height: normal;
 }

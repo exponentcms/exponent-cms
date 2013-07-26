@@ -24,7 +24,7 @@
 	{control type=text name=title label="Company Name"|gettext value=$record->title}
 	{control type=text name=website label="Company Website"|gettext value=$record->website}
 	{control type=html name=body label="Company Description"|gettext value=$record->body}
-	{control type=files name=logo label="Company Logo"|gettext subtype="logo" value=$record->expFile}
+	{control type=files name=logo label="Company Logo"|gettext subtype="logo" accept="image/*" value=$record->expFile}
 	{control type=files name=additional label="Additional Docs"|gettext subtype="additional" value=$record->expFile}
 	{control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
 {/form}

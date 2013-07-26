@@ -18,11 +18,22 @@
 {/css}
 
 <div class="store events manage">
-    <h1>{'Manage Event Registrations'|gettext}</h1>
+    {if !$past}
+        <h1>{'Manage Event Registrations'|gettext}</h1>
+    {else}
+        <h1>{'Manage Past Event Registrations'|gettext}</h1>
+    {/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create == true || $permissions.edit == true}
             {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
+        {/if}
+        {if $admin}
+            {if !$past}
+                {icon class="view" action=manage past=1 text="View Past Events"|gettext}
+            {else}
+                {icon class="view" action=manage text="View Active Events"|gettext}
+            {/if}
         {/if}
     </div>
     {/permissions}

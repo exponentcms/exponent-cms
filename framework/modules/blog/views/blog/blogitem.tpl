@@ -46,7 +46,7 @@
             </p>
         {/if}
         <h1>{$record->title}</h1>
-        {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+        {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'}
         {subscribe_link prepend='<br/>'}
         {$myloc=serialize($__loc)}
         <div class="post-info">
@@ -96,10 +96,44 @@
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
             {/if}
             {$record->body}
+            {if !$config.displayauthor}
+                {$record->poster|signature}
+            {/if}
             {if $config.ffloat == "Below"}
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
             {/if}
         </div>
+        {if $config.enable_facebook_like}
+            <div id="fb-root"></div>
+            <div class="fb-like" data-href="{$smarty.const.URL_FULL}{$record->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
+            {script unique='facebook_src'}
+            {literal}
+                (function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) return;
+                    js = d.createElement(s); js.id = id;
+                    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            {/literal}
+            {/script}
+        {/if}
+        {if $config.enable_tweet}
+            <a href="https://twitter.com/share" class="twitter-share-button" data-url="{$smarty.const.URL_FULL}{$record->sef_url}" data-text="{$record->title}"{if $config.layout} data-count="{$config.layout}"{/if}{if $config.size} data-size="{$config.size}"{/if} data-lang="en">{'Tweet'|gettext}</a>
+            {script unique='tweet_src'}
+            {literal}
+                !function(d,s,id){
+                    var js,fjs=d.getElementsByTagName(s)[0];
+                    if(!d.getElementById(id)){
+                        js=d.createElement(s);
+                        js.id=id;
+                        js.src="https://platform.twitter.com/widgets.js";
+                        fjs.parentNode.insertBefore(js,fjs);
+                    }
+                }(document,"script","twitter-wjs");
+            {/literal}
+            {/script}
+        {/if}
         {clear}
     </div>
     {if ($record->prev || $record->next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Bottom Only")}

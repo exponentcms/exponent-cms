@@ -30,8 +30,10 @@ class portfolioController extends expController {
     public $remove_configs = array(
         'comments',
         'ealerts',
-        'rss'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'facebook',
+        'rss',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Portfolio"); }
     static function description() { return gt("Display a portfolio or listing."); }

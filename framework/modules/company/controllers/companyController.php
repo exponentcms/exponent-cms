@@ -30,10 +30,12 @@ class companyController extends expController {
         'categories',
         'comments',
         'ealerts',
+        'facebook',
         //'files',
         'rss',
-        'tags'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags')
+        'tags',
+        'twitter',
+    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Company Listings"); }
     static function description() { return gt("Displays company listings"); }

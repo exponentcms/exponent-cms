@@ -48,10 +48,10 @@ class storeController extends expController {
         'comments',
         'ealerts',
         'files',
-//        'module_title',
         'rss',
-        'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
 
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array(
@@ -680,7 +680,7 @@ class storeController extends expController {
             $product_type->company = new company($product_type->companies_id);
         }
 
-        if (!empty($product->crosssellItem)) foreach ($product->crosssellItem as &$csi) {
+        if (!empty($product_type->crosssellItem)) foreach ($product_type->crosssellItem as &$csi) {
             $csi->getAttachableItems();
         }
 
@@ -1648,7 +1648,7 @@ class storeController extends expController {
                 $calc->config = $bm->billingcalculator->config;
                 if (method_exists($calc, 'delayed_capture')) {
                     //$result = $calc->delayed_capture($bm,$bm->billing_cost);
-                    $result = $calc->delayed_capture($bm, $order->grand_total);
+                    $result = $calc->delayed_capture($bm, $order->grand_total, $order);
                     if ($result->errorCode == 0) {
                         //we've succeeded.  transaction already created and billing info updated.
                         //just need to set the order shipping info, check and see if we send user an email, and set statuses.  

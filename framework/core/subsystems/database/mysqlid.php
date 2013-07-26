@@ -404,7 +404,7 @@ class mysqlid_database extends mysqli_database {
 	 * @return array
 	 */
 	function alterTable($tablename,$newdatadef,$info,$aggressive = false) {
-        expSession::clearCurrentUserSessionCache();
+        expSession::clearAllUsersSessionCache();
 		$dd = $this->getDataDefinition($tablename);
 		$modified = false;
 

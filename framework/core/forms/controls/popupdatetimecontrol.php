@@ -58,6 +58,7 @@ class popupdatetimecontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
+        $idname = str_replace(array('[',']',']['),'_',$name);
 		if ($this->default == 0) {
 			$this->default = time();
 		}
@@ -66,7 +67,7 @@ class popupdatetimecontrol extends formcontrol {
 			$imgsrc = THEME_RELATIVE."icons/calendar_trigger.gif";
 		}
 
-        $img = '<img align="texttop" src="'.$imgsrc.'" id="'.$name.'_trigger" ';
+        $img = '<img align="texttop" src="'.$imgsrc.'" id="'.$idname.'_trigger" ';
         if ($this->disabled) {
             $img .= 'style="visibility: hidden;" ';
         } else {
@@ -76,12 +77,12 @@ class popupdatetimecontrol extends formcontrol {
         $img .= "\n";
 
         $html = "";
-		$html .= '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.($this->default).'" />';
+		$html .= '<input type="hidden" name="'.$name.'" id="'.$idname.'" value="'.($this->default).'" />';
 		$html .= "\n";
 		$html .= '<span class="';
 		if ($this->disabled) $html .= 'datefield_disabled';
 		else $html .= 'datefield';
-		$html .= '" id="'.$name.'_span">';
+		$html .= '" id="'.$idname.'_span">';
 		# for testing
 		#$this->default = time();
 		if ($this->default == null) {
@@ -94,19 +95,23 @@ class popupdatetimecontrol extends formcontrol {
 		$html .= '</span>';
 		$html .= "\n";
 		if ($this->disable_text != "") {// popupdatetimecontrol_enable(this.form,\''.$name.'\');
-			$html .= '<input align="texttop" style="margin-top: -2px;" type="checkbox" name="'.$name.'_disabled" onchange="handleCheck' . $name.'(this.form,\''.$name.'\');" onclick="handleCheck' . $name.'(this.form,\''.$name.'\');" ';
+			$html .= '<input align="texttop" style="margin-top: -2px;" type="checkbox" name="'.$name.'_disabled" onchange="handleCheck' . $idname.'(this.form,\''.$idname.'\');" onclick="handleCheck' . $idname.'(this.form,\''.$idname.'\');" ';
 			if ($this->disabled) $html .= ' checked="checked"';
 			$html .= '/>'.$this->disable_text;
 		} else {
 		#	$html .= '<input type="hidden" name="'.$name.'_enabled" value="1" />';
 		}
-        $html .= '<a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable_'.$name.'">'.$img.'</a>';
+        $html .= '<a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable_'.$idname.'">'.$img.'</a>';
 
         $script = "
             EXPONENT.YUI3_CONFIG.modules = {
                 'gallery-calendar': {
                     fullpath: '".PATH_RELATIVE."framework/modules/events/assets/js/calendar.js',
-                    requires: ['node']
+                    requires: ['node','calendar-css']
+                },
+                'calendar-css': {
+                    fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/default.css',
+                    type: 'css'
                 }
             }
 
@@ -114,7 +119,7 @@ class popupdatetimecontrol extends formcontrol {
                 var today = new Date(".$this->default."*1000);
 
                 //Popup
-                var cal = new Y.Calendar('J_popup_closeable_".$name."',{
+                var cal = new Y.Calendar('J_popup_closeable_".$idname."',{
                     popup:true,
                     closeable:true,
                     startDay:".DISPLAY_START_OF_WEEK.",
@@ -124,19 +129,19 @@ class popupdatetimecontrol extends formcontrol {
             //        useShim:true
                 }).on('select',function(d){
                     var unixtime = parseInt(d / 1000);
-                    Y.one('#".$name."').set('value',unixtime);
-                    Y.one('#".$name."_span').setHTML(Y.DataType.Date.format(d,{format:'".DISPLAY_DATE_FORMAT.(!empty($this->showtime)?' '.DISPLAY_TIME_FORMAT:'')."'}));
+                    Y.one('#".$idname."').set('value',unixtime);
+                    Y.one('#".$idname."_span').setHTML(Y.DataType.Date.format(d,{format:'".DISPLAY_DATE_FORMAT.(!empty($this->showtime)?' '.DISPLAY_TIME_FORMAT:'')."'}));
                 }).on('timeselect',function(d){
                     var unixtime = parseInt(d / 1000);
-                    Y.one('#".$name."').set('value',unixtime);
-                    Y.one('#".$name."_span').setHTML(Y.DataType.Date.format(d,{format:'".DISPLAY_DATE_FORMAT.(!empty($this->showtime)?' '.DISPLAY_TIME_FORMAT:'')."'}));
+                    Y.one('#".$idname."').set('value',unixtime);
+                    Y.one('#".$idname."_span').setHTML(Y.DataType.Date.format(d,{format:'".DISPLAY_DATE_FORMAT.(!empty($this->showtime)?' '.DISPLAY_TIME_FORMAT:'')."'}));
                 });
-                Y.one('#J_popup_closeable_".$name."').on('click',function(d){
+                Y.one('#J_popup_closeable_".$idname."').on('click',function(d){
                     cal.show();
                 });
 
-                var handleCheck".$name." = function(e) {
-                    var cal = Y.one('#J_popup_closeable_".$name."');
+                var handleCheck".$idname." = function(e) {
+                    var cal = Y.one('#J_popup_closeable_".$idname."');
                     if (cal.getStyle('display')=='none') {
                         cal.setStyle('display','block');
                     } else {
@@ -145,20 +150,20 @@ class popupdatetimecontrol extends formcontrol {
                 };
 
 //                Y.Global.on('lazyload:cke', function() {
-//                    Y.one('#".$name."_disabled').detach('click',handleCheck".$name.");
-//                    Y.one('#".$name."_disabled').on('click',handleCheck".$name.");
+//                    Y.one('#".$idname."_disabled').detach('click',handleCheck".$idname.");
+//                    Y.one('#".$idname."_disabled').on('click',handleCheck".$idname.");
 //                });
 
             });
         ";
 
-        expCSS::pushToHead(array(
-    	    "unique"=>"popcalcss" . $name,
-    	    "link"=>PATH_RELATIVE.'framework/modules/events/assets/css/default.css',
-//            "css"=>$css
-        ));
+//        expCSS::pushToHead(array(
+//    	    "unique"=>"popcalcss" . $idname,
+//    	    "link"=>PATH_RELATIVE.'framework/modules/events/assets/css/default.css',
+////            "css"=>$css
+//        ));
         expJavascript::pushToFoot(array(
-            "unique"  => 'popcal' . $name,
+            "unique"  => 'popcal' . $idname,
             "yui3mods"=> 1,
             "content" => $script,
         ));

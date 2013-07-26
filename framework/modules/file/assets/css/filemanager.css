@@ -694,7 +694,13 @@ a.fileinfo:hover {
     margin : 0;
 }
 
-.exp-skin .yui-panel .bd table td.file div {
+/*.exp-skin .yui-panel .bd table td.file div {*/
+    /*overflow : auto;*/
+    /*height   : 100%;*/
+    /*width    : 480px;*/
+/*}*/
+
+.exp-skin .yui-panel .bd .image {
     overflow : auto;
     height   : 100%;
     width    : 480px;

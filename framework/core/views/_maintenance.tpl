@@ -55,7 +55,7 @@
                 <h3 style="color:red">{'Database is currently Off-line!'|gettext}</h3>
             {/if}
             <h3>{'Administrator Login'|gettext}</h3>
-            {chain controller=login view=showlogin_stacked title="Administrators Login"|gettext}
+            {chain controller=login action=showlogin view=showlogin_stacked title="Administrators Login"|gettext}
         </div>
         <div style="float:right;">{'Powered by'|gettext} <a style="color:black;" href="http://www.exponentcms.org">ExponentCMS</a></div>
     </body>

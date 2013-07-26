@@ -29,13 +29,15 @@ class mediaController extends expController {
         'categories',
         'comments',
         'ealerts',
+        'facebook',
         'files',
         'rss',
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $codequality = 'beta';
 
     static function displayname() { return gt("Media Player"); }
-    static function description() { return gt("Display video files or YouTube links, or play audio streams on your site."); }
+    static function description() { return gt("Display video files, YouTube links, or play audio streams on your site."); }
     static function isSearchable() { return true; }
     
     function showall() {

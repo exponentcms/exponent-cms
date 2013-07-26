@@ -22,7 +22,6 @@
  */
 
 class reportController extends expController {
-    //public $useractions = array('showall'=>'Show all');
     protected $add_permissions = array(
         'build_report' => 'Manage',
         'cart_summary' => 'View Cart Summary Report',

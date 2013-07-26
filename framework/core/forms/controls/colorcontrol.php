@@ -67,7 +67,8 @@ class colorcontrol extends formcontrol {
             $divID = ' id="' . $this->id . 'Control"';
             $for   = ' for="' . $this->id . '"';
         } else {
-            $divID = '';
+//            $divID = '';
+            $divID = ' id="' . $name . 'Control"';
             $for   = '';
         }
 
@@ -238,7 +239,7 @@ class colorcontrol extends formcontrol {
 ////            "css"=>$css
 //        ));
         expCSS::pushToHead(array(
-    	    "unique"=>"colorpicker1",
+    	    "unique"=>"colorpicker",
     	    "link"=>$assets_path."colorpicker/colorpicker.css"
     	    )
     	);

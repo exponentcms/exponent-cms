@@ -40,17 +40,12 @@ class checkboxcontrol extends formcontrol {
         return true;
     }
 
-    static function useGeneric() {
-        return false;
-    }
-
     static function getFieldDefinition() {
         return array(
             DB_FIELD_TYPE=> DB_DEF_BOOLEAN);
     }
 
     function __construct($default = 1, $flip = false, $required = false) {
-
         $this->default  = $default;
         $this->flip     = $flip;
         $this->jsHooks  = array();
@@ -120,7 +115,7 @@ class checkboxcontrol extends formcontrol {
         $this->value = isset($this->value) ? $this->value : 1;
 //        $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
         $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : ' id="' . $name . '"';
-        $html        = '<input' . $inputID . ' class="checkbox" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
+        $html        = '<input' . $inputID . ' class="checkbox control" type="checkbox control" name="' . $name . '" value="' . $this->value . '"';
         if (!$this->flip) $html .= ' style="float:left;"';
         if ($this->default) $html .= ' checked="checked"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
@@ -155,7 +150,7 @@ class checkboxcontrol extends formcontrol {
         $html .= '<input' . $inputID . ' type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
         if (!empty($this->size) && $this->size) $html .= ' size="' . $this->size . '"';
         if (!empty($this->checked) && $this->checked) $html .= ' checked="checked"';
-        $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox"' : ' class="checkbox"';
+        $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox control"' : ' class="checkbox control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
 //        if ($this->filter != "") {

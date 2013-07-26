@@ -28,7 +28,7 @@
                     <h2>{'Photo Item'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title description='Overrides file manager \'title\''|gettext}
                     {control type="text" name="alt" label="'Alt' tag"|gettext value=$record->alt description='Overrides file manager \'alt\''|gettext}
-                    {control type="files" name="files" label="Files"|gettext value=$record->expFile limit=1}
+                    {control type="files" name="files" label="Files"|gettext accept="image/*" value=$record->expFile limit=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {*{control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}*}
                     {control type=url name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}

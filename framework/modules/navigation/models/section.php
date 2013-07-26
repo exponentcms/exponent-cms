@@ -36,18 +36,31 @@ class section extends expRecord {
     function __construct($params=null, $get_assoc=true, $get_attached=true) {
         parent::__construct($params, $get_assoc,$get_attached);
         if (empty($this->parent)) $this->parent = 0;
+        $this->grouping_sql = " AND parent='".$this->parent."'";
     }
 
     function update($params=array()) {
-        if (empty($params['sef_name'])) $params['sef_name'] = expCore::makeSefUrl($params['name'],'section');
+        $this->grouping_sql = " AND parent='".$this->parent."'";
+        if (empty($this->sef_name) && empty($params['sef_name'])) $params['sef_name'] = expCore::makeSefUrl($params['name'],'section');
         parent::update($params);
         expSession::clearAllUsersSessionCache('navigation');
 //        expHistory::back();
     }
 
+    public function beforeSave() {
+        $this->grouping_sql = " AND parent='".$this->parent."'";
+        parent::beforeSave();
+    }
+
     function delete($where = '') {
-        parent::delete();
-        navigationController::deleteLevel($this->params['id']);
+        if ($this->parent == -1) {
+            unset($this->rank);
+            $where = '';
+        } else {
+            $where = "parent='".$this->parent."'";
+        }
+        parent::delete($where);
+        navigationController::deleteLevel($this->id);
         expSession::clearAllUsersSessionCache('navigation');
 //        expHistory::back();
     }

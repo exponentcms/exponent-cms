@@ -25,11 +25,22 @@ class flickrfeedController extends expController {
     public $useractions = array(
         'showall'=>'Display Public Photostream',
     );
+    public $remove_configs = array(
+        'categories',
+        'comments',
+        'ealerts',
+        'facebook',
+        'files',
+        'pagination',
+        'rss',
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Flickr Feed"); }
     static function description() { return gt("Display your Flickr Photostream"); }
     static function author() { return "Jonathan Worent - OIC Group, Inc"; }
-    static function isSearchable() { return true; }
+//    static function isSearchable() { return true; }
     
     public function showall() { 
         expHistory::set('viewable', $this->params);

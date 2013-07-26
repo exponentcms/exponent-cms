@@ -111,7 +111,15 @@
                 <h2>{"Extension File Upload"|gettext}</h2>
                 <div class="form_header">{'This form allows you to upload custom modules, themes, and views to the website, or patch the installation.  After you upload an archive containing an extension you will be shown a pre-installation summary page outlining exactly what files will be installed where, and what each file contains (for security reasons)'|gettext}</div>
                 <p><h4>{'It is NOT intended to be used to perform a full version upgrade!'|gettext}</h4></p>
-				{$form_html}
+				{*{$form_html}*}
+                <div>
+                    {expCore::maxUploadSizeMessage()}
+                    {form action=install_extension_confirm}
+                        {control type=uploader name=mod_archive label=gt('Extension Archive')}
+                        {control type="checkbox" name="patch" label='Patch Exponent CMS or Install Theme?' value=1 description='All extensions are normally placed within the CURRENT theme (folder)'|gettext}
+                        {control class=uploadfile type=buttongroup submit="Upload Extension"|gettext}
+                    {/form}
+                </div>
 			</div>
 		</div>
 	</div>

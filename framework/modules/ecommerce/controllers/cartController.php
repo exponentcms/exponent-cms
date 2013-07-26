@@ -25,8 +25,6 @@ class cartController extends expController {
     public $basemodel_name = 'order';
     private $checkout_steps = array('productinfo', 'specials', 'form', 'wizards', 'newsletter', 'confirmation', 'postprocess');
 
-    //public $useractions = array('show'=>'Display Cart');
-
     static function displayname() {
         return gt("e-Commerce Shopping Cart");
     }
@@ -618,7 +616,8 @@ class cartController extends expController {
         // call the billing calculators process method - this will handle saving the billing options to the database.
 //        if (!($order->total == 0 && empty($order->shippingmethods))) {
         if ($billing->calculator != null) {
-            $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
+//            $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
+            $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $order);
         } else {
             $opts = expSession::get('billing_options');
             $object = new stdClass();
@@ -652,9 +651,6 @@ class cartController extends expController {
 
             // get the first order status and set it for this order
             $order->update(array('invoice_id'=> $invNum, 'purchased'=> time(), 'updated'=> time(), 'comment'=> serialize($comment))); //FIXME $comment doesn't exist
-            if (!$order->shipping_required) {
-                $order->update(array('shipped'=> -1));
-            }
             //$order->setDefaultStatus(); --FJD?
             //$order->setDefaultOrderType(); --FJD?
             $order->refresh();

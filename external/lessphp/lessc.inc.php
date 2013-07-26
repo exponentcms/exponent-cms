@@ -633,6 +633,10 @@ class lessc {
 			}
 
 			foreach ($mixins as $mixin) {
+				if ($mixin === $block && !$args) {
+					continue;
+				}
+
 				$haveScope = false;
 				if (isset($mixin->parent->scope)) {
 					$haveScope = true;
@@ -1013,19 +1017,24 @@ class lessc {
 	}
 
 	// mixes two colors by weight
-	// mix(@color1, @color2, @weight);
+	// mix(@color1, @color2, [@weight: 50%]);
 	// http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html#mix-instance_method
 	protected function lib_mix($args) {
-		if ($args[0] != "list" || count($args[2]) < 3)
+		if ($args[0] != "list" || count($args[2]) < 2)
 			$this->throwError("mix expects (color1, color2, weight)");
 
-		list($first, $second, $weight) = $args[2];
+		list($first, $second) = $args[2];
 		$first = $this->assertColor($first);
 		$second = $this->assertColor($second);
 
 		$first_a = $this->lib_alpha($first);
 		$second_a = $this->lib_alpha($second);
-		$weight = $weight[1] / 100.0;
+
+		if (isset($args[2][2])) {
+			$weight = $args[2][2][1] / 100.0;
+		} else {
+			$weight = 0.5;
+		}
 
 		$w = $weight * 2 - 1;
 		$a = $first_a - $second_a;
@@ -2065,7 +2074,7 @@ class lessc_parser {
 	static protected $supressDivisionProps =
 		array('/border-radius$/i', '/^font$/i');
 
-	protected $blockDirectives = array("font-face", "keyframes", "page", "-moz-document");
+	protected $blockDirectives = array("font-face", "keyframes", "page", "-moz-document", "viewport", "-moz-viewport", "-o-viewport", "-ms-viewport");
 	protected $lineDirectives = array("charset");
 
 	/**
@@ -2653,7 +2662,6 @@ class lessc_parser {
 			}
 
 			if (!empty($rejectStrs) && in_array($tok, $rejectStrs)) {
-				$ount = null;
 				break;
 			}
 
@@ -3062,7 +3070,7 @@ class lessc_parser {
 	protected function end() {
 		if ($this->literal(';')) {
 			return true;
-		} elseif ($this->count == strlen($this->buffer) || $this->buffer{$this->count} == '}') {
+		} elseif ($this->count == strlen($this->buffer) || $this->buffer[$this->count] == '}') {
 			// if there is end of file or a closing block next then we don't need a ;
 			return true;
 		}

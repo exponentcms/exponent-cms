@@ -61,6 +61,24 @@ class forms_control extends expRecord {
         parent::beforeSave();
     }
 
+    public function afterSave() {
+        global $db;
+
+        $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        parent::afterSave();
+        $pager = $this->find('first',"forms_id='".$this->forms_id."' AND data LIKE '%pagecontrol%'",'rank');
+        // if we have a pagecontrol and it's not rank=1, move it to the top
+        if (!empty($pager) && $pager->rank != 1) {
+            // increment everything below it.
+//            $obj = $db->selectObject($this->tablename, 'rank<' . $pager->rank . $this->grouping_sql);
+//            if (!empty($obj)) {
+            $db->increment($this->tablename, 'rank', 1, 'rank<' . $pager->rank . $this->grouping_sql);
+//            }
+            $pager->rank = 1;
+            $pager->save();
+        }
+    }
+
 }
 
 ?>

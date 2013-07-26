@@ -31,8 +31,11 @@ class form extends baseform {
 	var $controls   = array();
 	var $controlIdx = array();
 	var $controlLbl = array();
-    var $tabs       = array();
-    var $is_tabbed  = false;
+    var $id = null;
+//    var $tabs       = array();
+//    var $is_tabbed  = false;
+    var $div_to_update = null;
+    var $is_paged  = 0;
 
 	var $validationScript = "";
 
@@ -58,12 +61,13 @@ class form extends baseform {
     /**
      * Registers a new Control with the form.  This function will simply append the new Control to the end of the Form.
      *
-     * @param string $name The internal name of the control.  This is used for referring to the control later.  If this is a null string, the Control will not be registered, and this function will return false.
-     * @param string $label
+     * @param string       $name    The internal name of the control.  This is used for referring to the control later.  If this is a null string, the Control will not be registered, and this function will return false.
+     * @param string       $label
      * @param \formcontrol $control The Control object to register with the form.
-     * @param bool $replace boolean dictating what to do if a Control with the specified internal name already exists on the form.  If passed as true (default), the existing Control will be replaced.  Otherwise, the Control registration will fail and return false.
+     * @param bool         $replace boolean dictating what to do if a Control with the specified internal name already exists on the form.  If passed as true (default), the existing Control will be replaced.  Otherwise, the Control registration will fail and return false.
+     * @param string       $tab
+     * @param null         $desc
      *
-     * @param string $tab
      * @return boolean Returns true if the new Control was registered.
      */
 	function register($name,$label, $control,$replace=true,$tab=null,$desc=null) {
@@ -74,7 +78,7 @@ class form extends baseform {
 		$this->controls[$name] = $control;
         if (!empty($desc)) $this->controls[$name]->description = $desc;
 		$this->controlLbl[$name] = $label;
-        $this->tabs[$name] = $tab;
+//        $this->tabs[$name] = $tab;
         if (method_exists($control,'onRegister')) $control->onRegister($this);
 		return true;
 	}
@@ -91,7 +95,7 @@ class form extends baseform {
 			$control = $this->controls[$name];
 			unset($this->controls[$name]);
 			unset($this->controlLbl[$name]);
-            unset($this->tabs[$name]);
+//            unset($this->tabs[$name]);
 
 			$tmp = array_flip($this->controlIdx);
 			unset($tmp[$name]);
@@ -101,7 +105,7 @@ class form extends baseform {
 			foreach ($tmp as $name=>$rank) {
 				$this->controlIdx[] = $name;
 			}
-			$control->onUnregister($this);
+            if (method_exists($control,'onUnRegister')) $control->onUnregister($this);
 		}
 		return true;
 	}
@@ -123,7 +127,7 @@ class form extends baseform {
 		
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
-        $this->tabs[$name] = $tab;
+//        $this->tabs[$name] = $tab;
 		if (!in_array($afterName,$this->controlIdx)) {
 			$this->controlIdx[] = $name;
 			$control->onRegister($this);
@@ -154,7 +158,7 @@ class form extends baseform {
 		
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
-        $this->tabs[$name] = $tab;
+//        $this->tabs[$name] = $tab;
 
 		if (!in_array($beforeName,$this->controlIdx)) {
 			$this->controlIdx[] = $name;
@@ -201,23 +205,30 @@ class form extends baseform {
 			
 			//expSession::un_set("last_POST");
 		}
-        $num_tabs = array();
-		if ($this->is_tabbed) {
-            foreach ($this->tabs as $tab) {
-                if (!in_array($tab,$num_tabs) && $tab != 'base') {
-                    $num_tabs[]=$tab;
-                }
-            }
-        }
+//        $num_tabs = array();
+//		if ($this->is_tabbed) {
+//            foreach ($this->tabs as $tab) {
+//                if (!in_array($tab,$num_tabs) && $tab != 'base') {
+//                    $num_tabs[]=$tab;
+//                }
+//            }
+//        }
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
         if(expSession::get('framework')!='bootstrap'){
-            expCSS::pushToHead(array("corecss"=>"forms"));
+            expCSS::pushToHead(array(
+//                "unique"  => 'forms',
+                "corecss"=>"forms"
+            ));
+        } else {
+            expCSS::pushToHead(array(
+//                "unique"  => 'z-forms-bootstrap',
+                "corecss"=>"forms-bootstrap"
+            ));
         };
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/Modernizr-2.5.3.forms.js',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
         ));
         expJavascript::pushToFoot(array(
@@ -230,23 +241,11 @@ class form extends baseform {
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms4',
-            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+//            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
+            "jquery"=> 'jqueryui,jquery.placeholder',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
-//        expCSS::pushToHead(array(
-//    	    "unique"=>"h5form",
-//    	    "link"=>PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.css'
-//    	    )
-//    	);
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'h5form',
-//            "jquery"=> 'jqueryui',
-//            "src"=> PATH_RELATIVE . 'external/h5form/en/jquery.h5form-2.10.1.js',
-//            "content"=>"$(function() {
-//              $('#abc123').h5form();
-//            });"
-//        ));
-		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
+		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';
 		if (isset($this->ajax_updater)) {
 			$html .= "<form name=\"" . $this->name . "\" method=\"" ;
@@ -254,44 +253,68 @@ class form extends baseform {
 			$html .= " onsubmit=\"new Ajax.Updater('".$this->div_to_update."', '".$this->action."', ";
 			$html .= "{asynchronous:true, parameters:Form.serialize(this)}); return false;\">\r\n";
 		} else {
-			$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+			$html .= "<form id='".$this->id."' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		}
 		//$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
-		$html .= "<div class=\"form_wrapper\">\r\n";
-        if ($this->is_tabbed) {
-            $html .= '<div id="configure-tabs" class="yui-navset exp-skin-tabview hide">'."\r\n";
-            $html .= '<ul class="yui-nav">'."\r\n";
-            foreach ($num_tabs as $key=>$tab_name) {
-                if (!empty($tab_name)) $html .= '<li'.($key==0?' class="selected"':'').'><a href="#tab'.($key+1).'"><em>'.gt($tab_name).'</em></a></li>'."\r\n";
-            }
-            $html .= '</ul>'."\r\n";
-            $html .= '<div class="yui-content">'."\r\n";
-        }
+//		$html .= "<div class=\"form_wrapper\">\r\n";
+//        if ($this->is_tabbed) {
+//            $html .= '<div id="configure-tabs" class="yui-navset exp-skin-tabview hide">'."\r\n";
+//            $html .= '<ul class="yui-nav">'."\r\n";
+//            foreach ($num_tabs as $key=>$tab_name) {
+//                if (!empty($tab_name)) $html .= '<li'.($key==0?' class="selected"':'').'><a href="#tab'.($key+1).'"><em>'.gt($tab_name).'</em></a></li>'."\r\n";
+//            }
+//            $html .= '</ul>'."\r\n";
+//            $html .= '<div class="yui-content">'."\r\n";
+//        }
 
-        $oldname = 'oldname';
-        $save = '';
+//        $oldname = 'oldname';
+//        $save = '';
+        $rank = 0;
 		foreach ($this->controlIdx as $name) {
-            if ($this->is_tabbed && !empty($this->tabs[$name]) && $this->tabs[$name] != $oldname && $this->tabs[$name] != 'base') {
-                if ($oldname != 'oldname') {
-                    $html .= '</div>'."\r\n";
-                }
-                $html .= '<div id="tab'.(array_search($this->tabs[$name],$num_tabs)+1).'">'."\r\n";
+//            if ($this->is_tabbed && !empty($this->tabs[$name]) && $this->tabs[$name] != $oldname && $this->tabs[$name] != 'base') {
+//                if ($oldname != 'oldname') {
+//                    $html .= '</div>'."\r\n";
+//                }
+//                $html .= '<div id="tab'.(array_search($this->tabs[$name],$num_tabs)+1).'">'."\r\n";
+//            }
+            if (get_class($this->controls[$name]) == 'pagecontrol' && $rank) {
+                $html .= '</fieldset>';
             }
-            if ($this->tabs[$name] != 'base') {
+//            if ($this->tabs[$name] != 'base') {
     			$html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
-                $oldname = $this->tabs[$name];
-            } else {
-                $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
-            }
+//                $oldname = $this->tabs[$name];
+//            } else {
+//                $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
+//            }
+            $rank ++;
 		}
 
-        if ($this->is_tabbed) {
-            $html .= '</div></div></div>';
-        }
-		$html .= "</div>\r\n";
-        $html .= $save;
+//        if ($this->is_tabbed) {
+//            $html .= '</div></div></div>';
+//        }
+        if ($this->is_paged) $html .= '</fieldset>';
+//		$html .= "</div>\r\n";
+//        $html .= $save;
 		$html .= "</form>\r\n";
+        if ($this->is_paged) {
+            $content = "
+                $('#".$this->id."').stepy({
+                    validate: true,
+                    block: true,
+                    errorImage: true,
+                //    description: false,
+                //    legend: false,
+                    btnClass: 'awesome ".BTN_SIZE." ".BTN_COLOR."',
+                    titleClick: true,
+                });
+            ";
+            expJavascript::pushToFoot(array(
+                "unique"  => 'stepy-'.$this->id,
+                "jquery"  => 'jquery.validate,jquery.stepy',
+                "content" => $content,
+            ));
+        }
 		return $html;
 	}
 	

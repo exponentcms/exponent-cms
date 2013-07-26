@@ -120,7 +120,7 @@
                     <tbody>                         
                     {if $permissions.manage == 1}
                         <tr><td colspan="2">
-                        {if $order->shipped == -1}
+                        {if !$order->shipping_required}
                             {'No Shipping Required'|gettext}
                         {else}
                             {form action=update_shipping}

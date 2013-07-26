@@ -89,13 +89,13 @@ class giftcard extends expRecord {
             $item->shippingmethods_id = $sm->id;
 
             if (isset($params['card_amount_txt'])) {
-                $params['card_amount_txt'] = preg_replace("/[^0-9.]/", "", $params['card_amount_txt']);
+                $params['card_amount_txt'] = expUtil::currency_to_float($params['card_amount_txt']);
             }
 
             if (!empty($params['card_amount_txt']) && $params['card_amount_txt'] > 0) {
-                $item->products_price = preg_replace("/[^0-9.]/", "", $params['card_amount_txt']);
+                $item->products_price = expUtil::currency_to_float($params['card_amount_txt']);
             } else {
-                $item->products_price = preg_replace("/[^0-9.]/", "", $params['card_amount']);
+                $item->products_price = expUtil::currency_to_float($params['card_amount']);
             }
 
             if ($item->products_price < $min_amount) {

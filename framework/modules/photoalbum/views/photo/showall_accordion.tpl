@@ -19,11 +19,11 @@
 
 {/css}
 
-{if $config.lightbox}
-{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}
+{*{if $config.lightbox}*}
+{*{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}*}
 
-{/css}
-{/if}
+{*{/css}*}
+{*{/if}*}
 {$rel}
 
 {uniqueid assign="id"}
@@ -76,8 +76,15 @@
                             {/if}
                             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
                                 {if $config.lightbox}
+                                    {if $record->expCat[0]->title!= ""}
+                                        {$group = $record->expCat[0]->title}
+                                    {elseif $config.uncat!=''}
+                                        {$group = $config.uncat}
+                                    {else}
+                                        {$group = 'Uncategorized'|gettext}
+                                    {/if}
                                     {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
-                                    <a rel="lightbox[{$name}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$alt|default:$title}">
+                                    <a rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$alt|default:$title}">
                                 {else}
                                     <a href="{link action=show title=$record->sef_url}" title="{$alt|default:$title}">
                                 {/if}
@@ -117,7 +124,11 @@
 EXPONENT.YUI3_CONFIG.modules = {
    'gallery-lightbox' : {
        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-       requires : ['base','node','anim','selector-css3']
+       requires : ['base','node','anim','selector-css3','lightbox-css']
+    },
+    'lightbox-css': {
+        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/css/gallery-lightbox.css',
+        type: 'css'
    }
 }
 

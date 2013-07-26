@@ -23,7 +23,6 @@
 
 class fileController extends expController {
     public $basemodel_name = "expFile";
-    //public $useractions = array('showall'=>'Show all');
     public $add_permissions = array(
 //        'picker'=>'Manage Files',
         'import'=>'Import',
@@ -141,6 +140,7 @@ class fileController extends expController {
     public function get_module_view_config() {
         global $template;
 
+        $framework = expSession::get('framework');
         $controller = new $this->params['mod'];
         // set paths we will search in for the view
         $paths = array(
@@ -154,6 +154,12 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.config';
             if (is_readable($view)) {
+                if ($framework == 'bootstrap') {
+                    $bstrapview = substr($view,0,-6).'bootstrap.config';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
                 $template = new controllertemplate($this, $view);
                 $config_found = true;
             }
@@ -566,17 +572,6 @@ class fileController extends expController {
     }
 
     public function import_eql() {
-        $form = new form();
-        $form->meta('controller','file');
-        $form->meta('action','import_eql_process');
-
-        $form->register('file',gt('EQL File'),new uploadcontrol());
-        //$form->register('select_tables',gt('Select Specific Tables?'), new checkboxcontrol(false));
-        $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
-
-        assign_to_template(array(
-            'form_html' => $form->toHTML(),
-        ));
     }
 
     public  function import_eql_process() {
@@ -584,7 +579,6 @@ class fileController extends expController {
 
         $errors = array();
         expSession::clearAllUsersSessionCache();
-        expSession::clearCurrentUserSessionCache();
 
         // copy in deprecated definitions files to aid in import
         $src = BASE."install/old_definitions";
@@ -609,6 +603,11 @@ class fileController extends expController {
             while(false !== ( $file = readdir($dir)) ) {
                 if (($file != '.') && ($file != '..')) {
                     if (file_exists($dst . '/' . $file)) unlink($dst . '/' . $file);
+                    // remove empty deprecated tables
+                    $table = substr($file,0,-4);
+                    if ($db->tableIsEmpty($table)) {
+                        $db->dropTable($table);
+                    }
                 }
             }
             closedir($dir);
@@ -697,15 +696,6 @@ class fileController extends expController {
     }
 
     public function import_files() {
-        $form = new form();
-        $form->meta('controller','file');
-        $form->meta('action','import_files_process');
-        $form->register('file',gt('Files Archive'),new uploadcontrol());
-        $form->register('submit','',new buttongroupcontrol(gt('Restore'),'','','uploadfile'));
-
-        assign_to_template(array(
-            'form_html' => $form->toHTML(),
-        ));
     }
 
     public function import_files_process() {
@@ -737,7 +727,7 @@ class fileController extends expController {
         		if (!$return) {
         			echo '<br />'.gt('Error extracting TAR archive').'<br />';
         		} else if (!file_exists($dest_dir.'/files') || !is_dir($dest_dir.'/files')) {
-        			echo '<br />'.gt('Invalid archive format').'<br />';
+        			echo '<br />'.gt('Invalid archive format, no \'/files\' folder').'<br />';
         		} else {
         			// Show the form for specifying which mod types to 'extract'
 
