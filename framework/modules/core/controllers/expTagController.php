@@ -45,7 +45,7 @@ class expTagController extends expController {
    	 * default view for individual item
    	 */
    	function show() {
-        global $db;
+//        global $db;
 
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
@@ -65,7 +65,8 @@ class expTagController extends expController {
             $tag = $record->title;
         }
 
-        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+//        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+        foreach (expTag::selectAllTagContentType() as $contenttype) {
             $attatchedat = $record->findWhereAttachedTo($contenttype);
             if (!empty($attatchedat)) {
                 $record->attachedcount = @$record->attachedcount + count($attatchedat);
@@ -83,7 +84,7 @@ class expTagController extends expController {
 	 * manage tags
 	 */
 	function manage() {
-        global $db;
+//        global $db;
 
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
@@ -102,7 +103,8 @@ class expTagController extends expController {
             ),
         ));
 
-        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+//        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+        foreach (expTag::selectAllTagContentType() as $contenttype) {
             foreach ($page->records as $key => $value) {
                 $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
                 if (!empty($attatchedat)) {
@@ -125,7 +127,7 @@ class expTagController extends expController {
    	 * manage tags
    	 */
    	function manage_module() {
-        global $db;
+//        global $db;
 
         expHistory::set('manageable', $this->params);
         $modulename = expModules::getControllerClassName($this->params['model']);
@@ -173,11 +175,12 @@ class expTagController extends expController {
 //                }
 //            }
 //        }
-        $tags = $db->selectObjects('expTags','1','title ASC');
-        $taglist = '';
-        foreach ($tags as $tag) {
-            $taglist .= "'".$tag->title."',";
-        }
+//        $tags = $db->selectObjects('expTags','1','title ASC');
+//        $taglist = '';
+//        foreach ($tags as $tag) {
+//            $taglist .= "'".$tag->title."',";
+//        }
+        $taglist = expTag::getAllTags();
 
         assign_to_template(array(
             'page'=>$page,
@@ -189,7 +192,7 @@ class expTagController extends expController {
      * this method changes the tags of the selected items as requested
      */
     function change_tags() {
-        global $db;
+//        global $db;
 
         if (!empty($this->params['change_tag'])) {
             $addtags = explode(",", trim($this->params['addTag']));
@@ -215,7 +218,8 @@ class expTagController extends expController {
             foreach ($this->params['change_tag'] as $item) {
                 $classname = $this->params['mod'];
                 $object = new $classname($item);
-                $db->delete('content_expTags', 'content_type="'.$this->params['mod'].'" AND content_id='.$object->id);
+//                $db->delete('content_expTags', 'content_type="'.$this->params['mod'].'" AND content_id='.$object->id);
+                expTag::deleteTag($this->params['mod'],$object->id);
                 foreach ($object->expTag as $tag) {
                     if (!in_array($tag->title,$removetags)) {
                         $params['expTag'][] = $tag->id;
@@ -230,7 +234,6 @@ class expTagController extends expController {
         }
         expHistory::returnTo('viewable');
     }
-
 
 }
 

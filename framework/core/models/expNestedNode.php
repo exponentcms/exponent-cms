@@ -275,6 +275,13 @@ abstract class expNestedNode extends expRecord {
 		}
 		return $tree;
 	}
+
+    public static function getTree($model_table) {
+        global $db;
+
+        return $db->selectNestedTree($model_table);
+    }
+
 }
 
 ?>

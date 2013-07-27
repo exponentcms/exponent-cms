@@ -69,8 +69,9 @@ class expNestedNodeController extends expController {
 	}
 
 	function manage() {
-		global $db;
-		$nodes = $db->selectNestedTree($this->model_table);
+//		global $db;
+//		$nodes = $db->selectNestedTree($this->model_table);
+        $nodes = expNestedNode::getTree($this->model_table);
 		foreach($nodes as $i=>$val){
 			$nodes[$i]->draggable = true; 
 			$nodes[$i]->pickable = true; 

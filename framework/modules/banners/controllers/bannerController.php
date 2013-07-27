@@ -72,9 +72,11 @@ class bannerController extends expController {
     }
     
     public function create() {
-        global $db;
+//        global $db;
         //make sure we have companies.
-        $count = $db->countObjects('companies');
+//        $count = $db->countObjects('companies');
+        $comp = new company();
+        $count = $comp->find('count');
         if ($count < 1) {
             flash('message', gt('There are no companies created yet.  You need to create at least one company first.'));
             redirect_to(array('controller'=>'company', 'action'=>'edit'));
@@ -154,11 +156,13 @@ class bannerController extends expController {
     }
 
     function reset_stats() {
-        global $db;
+//        global $db;
 
         // reset the counters
-        $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET impressions=0 WHERE 1');  
-        $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET clicks=0 WHERE 1'); 
+//        $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET impressions=0 WHERE 1');
+        banner::resetImpressions();
+//        $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET clicks=0 WHERE 1');
+        banner::resetClicks();
         
         // let the user know we did stuff.      
         flash('message', gt("Banner statistics reset."));

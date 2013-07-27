@@ -337,7 +337,7 @@ class expValidator {
 		if (SITE_USE_ANTI_SPAM == 0 || ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
 			return true;
 		}
-        $msg = empty($msg) ? 'Anti-spam verification failed.' : $msg;
+        $msg = empty($msg) ? gt('Anti-spam verification failed.') : $msg;
         switch (ANTI_SPAM_CONTROL) {
             case 'recaptcha':
                 if (empty($params["recaptcha_response_field"])) {
@@ -345,7 +345,7 @@ class expValidator {
                 } 
                 
                 if (!defined('RECAPTCHA_PRIVATE_KEY')) {
-                    self::failAndReturnToForm('reCAPTCHA is not properly configured. Please contact an administrator.', $params);
+                    self::failAndReturnToForm(gt('reCAPTCHA is not properly configured. Please contact an administrator.'), $params);
                 }
                 
                 require_once(BASE.'external/recaptchalib.php');

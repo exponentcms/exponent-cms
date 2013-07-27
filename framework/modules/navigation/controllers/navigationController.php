@@ -88,7 +88,8 @@ class navigationController extends expController {
         $id      = $sectionObj->id;
         $current = null;
         // Show not only the location of a page in the hierarchy but also the location of a standalone page
-        $current = $db->selectObject('section', ' id= ' . $id);
+//        $current = $db->selectObject('section', ' id= ' . $id);
+        $current = new section($id);
         if ($current->parent == -1) {  // standalone page
             $navsections = self::levelTemplate(-1, 0);
             foreach ($navsections as $section) {
@@ -627,13 +628,14 @@ class navigationController extends expController {
     }
 
     public static function isPublic($s) {
-        global $db;
+//        global $db;
 
         if ($s == null) {
             return false;
         }
         while ($s->public && $s->parent > 0) {
-            $s = $db->selectObject('section', 'id=' . $s->parent);
+//            $s = $db->selectObject('section', 'id=' . $s->parent);
+            $s = new section($s->parent);
         }
         $lineage = (($s->public) ? 1 : 0);
         return $lineage;

@@ -142,7 +142,7 @@ abstract class expController {
      * @return string
      */
     static function description() {
-        return gt("This is the base controller that most Exponent modules will inherit from.");
+        return gt("This is the base controller which most Exponent modules inherit their methods from.");
     }
 
     /**
@@ -421,7 +421,7 @@ abstract class expController {
      * default view for individual item
      */
     function show() {
-        global $db;
+//        global $db;
 
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
@@ -435,7 +435,8 @@ abstract class expController {
         }
 
         $record = new $modelname($id);
-        $config = expUnserialize($db->selectValue('expConfigs', 'config', "location_data='" . $record->location_data . "'"));
+//        $config = expUnserialize($db->selectValue('expConfigs', 'config', "location_data='" . $record->location_data . "'"));
+        $config = expConfig::getConfig($record->location_data);
 
         assign_to_template(array(
             'record' => $record,
@@ -479,7 +480,7 @@ abstract class expController {
     }
 
     /**
-     * view items referenced by tags
+     * view items referenced by tags  DEPRECATED??
      */
     function showByTags() {
         global $db;
@@ -538,14 +539,15 @@ abstract class expController {
      * edit item in module, also used to copy items
      */
     function edit() {
-        global $db;
+//        global $db;
 
         expHistory::set('editable', $this->params);
-        $tags = $db->selectObjects('expTags', '1', 'title ASC');
-        $taglist = '';
-        foreach ($tags as $tag) {
-            $taglist .= "'" . $tag->title . "',";
-        }
+//        $tags = $db->selectObjects('expTags', '1', 'title ASC');
+//        $taglist = '';
+//        foreach ($tags as $tag) {
+//            $taglist .= "'" . $tag->title . "',";
+//        }
+        $taglist = expTag::getAllTags();
         $modelname = $this->basemodel_name;
         $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
         if (!empty($this->params['copy'])) $record->id = null;

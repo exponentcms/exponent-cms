@@ -352,11 +352,11 @@ class fileController extends expController {
     } 
     
     public function deleter() {
-        global $db;
+//        global $db;
 
         $notafile = array();
-        $files = $db->selectObjects('expFiles',1);
-        foreach ($files as $file) {
+//        $files = $db->selectObjects('expFiles',1);
+        foreach (expFile::selectAllFiles() as $file) {
             if (!is_file($file->directory.$file->filename)) {
                 $notafile[$file->id] = $file;
             }
@@ -410,10 +410,11 @@ class fileController extends expController {
         foreach ($allfiles as $path=>$file) {
             if ($file[0] != '.') {
                 $found = false;
-                $dbfiles = $db->selectObjects('expFiles',"filename='".$file."'");
-                foreach ($dbfiles as $dbfile) {
-                    $found = ($dbfile->directory == str_replace($file,'',$path));
-                }
+//                $dbfiles = $db->selectObjects('expFiles',"filename='".$file."'");
+                $dbfile = $db->selectObject('expFiles',"filename='".$file."'");
+//                foreach ($dbfiles as $dbfile) {
+                    if (!empty($dbfile)) $found = ($dbfile->directory == str_replace($file,'',$path));
+//                }
                 if (!$found) {
                     $notindb[$path] = $file;
                 }
@@ -824,7 +825,7 @@ class fileController extends expController {
     }
 
     public function export_files_process() {
-        global $db;
+//        global $db;
 
         //if (!isset($this->params['mods'])) {
         //	echo gt('You must select at least one module to export files for.');
@@ -836,9 +837,10 @@ class fileController extends expController {
         $files = array();
         //foreach (array_keys($this->params['mods']) as $mod) {
         //	foreach ($db->selectObjects('file',"directory LIKE 'files/".$mod."%'") as $file) {
-            foreach ($db->selectObjects('expFiles',1) as $file) {
-                $files[] = BASE.$file->directory.'/'.$file->filename;
-            }
+//            foreach ($db->selectObjects('expFiles',1) as $file) {
+        foreach (expFile::selectAllFiles() as $file) {
+            $files[] = BASE.$file->directory.'/'.$file->filename;
+        }
         //}
 
         $fname = tempnam(BASE.'/tmp','exporter_files_');

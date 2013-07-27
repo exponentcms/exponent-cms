@@ -36,9 +36,9 @@
     {/permissions}
     {if $imgtot}
         <div class="next-prev">
-            <a href="{link action=show id=$previous}">{"Previous Image"|gettext}</a>
+            <a href="{link action=show id=$record->prev}">{"Previous Image"|gettext}</a>
              | {$imgnum} {"of"|gettext} {$imgtot}|
-            <a href="{link action=show id=$next}">{"Next Image"|gettext}</a>
+            <a href="{link action=show id=$record->next}">{"Next Image"|gettext}</a>
         </div>
     {/if}
     {tags_assigned record=$record}

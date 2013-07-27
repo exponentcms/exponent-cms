@@ -321,6 +321,12 @@ class expFile extends expRecord {
 // =========================================================================
 // Static Methods
 
+    public static function selectAllFiles() {
+        global $db;
+
+        return $db->selectObjects('expFiles',1);
+    }
+
     /**
      * File ($_POST) UPLOAD that also inserts File info into database.
      *

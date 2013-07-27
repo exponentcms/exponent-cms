@@ -179,7 +179,7 @@ class blogController extends expController {
 	}
 	
 	public function show() {
-	    global $db;
+//	    global $db;
 
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
@@ -188,7 +188,8 @@ class blogController extends expController {
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
 	    // populate the location data in the template now.
-        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+//        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+        $config = expConfig::getConfig($record->location_data);
 
         $nextwhere = $this->aggregateWhereClause().' AND publish > '.$record->publish.' ORDER BY publish';
         $record->next = $record->find('first',$nextwhere);
@@ -201,7 +202,7 @@ class blogController extends expController {
 	}
 
     /**
-     * view items referenced by tags
+     * view items referenced by tags  DEPRECATED??
      */
     function showByTags() {
         global $db;

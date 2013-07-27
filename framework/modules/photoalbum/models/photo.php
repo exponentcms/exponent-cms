@@ -33,6 +33,39 @@ class photo extends expRecord {
 	    'content_expCats'=>'expCat',
     	'content_expTags'=>'expTag'
     );
+
+    public function addNextPrev($where=1) {
+        global $db;
+
+        $maxrank = $db->max($this->tablename,'rank','',$where);
+
+//        $this->next = $db->selectValue($this->tablename,'sef_url',$where." AND rank=".($this->rank+1));
+        $next = $this->find('first',$where." AND rank>".($this->rank));
+        if (!empty($next)) $this->next = $next->sef_url;
+
+//        $this->prev = $db->selectValue($this->tablename,'sef_url',$where." AND rank=".($this->rank-1));
+        $prev = $this->find('first',$where." AND rank<".($this->rank));
+        if (!empty($prev)) $this->prev = $prev->sef_url;
+
+//        if ($this->rank==$maxrank) {
+//            $where = $where." AND rank=1";
+//            $this->next = $db->selectValue($this->tablename,'sef_url',$where);
+//        }
+        if (empty($this->next)) {
+            $next = $this->find('first',$where,'rank ASC');
+            $this->next = $next->sef_url;
+        }
+
+//        if ($this->rank==1) {
+//            $where = $where." AND rank=".$maxrank;
+//            $this->prev = $db->selectValue($this->tablename,'sef_url',$where,'rank');
+//        }
+        if (empty($this->prev)) {
+            $prev = $this->find('first',$where,'rank DESC');
+            $this->prev = $prev->sef_url;
+        }
+    }
+
 }
 
 ?>

@@ -77,7 +77,7 @@ class newsController extends expController {
     }
 
     public function show() {
-        global $db;
+//        global $db;
 
         expHistory::set('viewable', $this->params);
 
@@ -90,7 +90,8 @@ class newsController extends expController {
         }
 
         $record = new news($id);
-        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+//        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+        $config = expConfig::getConfig($record->location_data);
 
         $order = !empty($config['order']) ? $config['order'] : 'publish DESC';
         if (strstr($order," ")) {

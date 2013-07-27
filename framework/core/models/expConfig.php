@@ -65,6 +65,19 @@ class expConfig extends expRecord {
 		$this->location_data = (is_object($this->location_data)) ? serialize($this->location_data) : $this->location_data;
 		$this->config = (is_array($this->config)) ? serialize($this->config) : $this->config;
 	}
+
+    public static function getConfig($loc) {
+        global  $db;
+
+        if (is_object($loc)) {
+            $the_loc = serialize($loc);
+        } else {
+            $the_loc = $loc;
+        }
+        return expUnserialize($db->selectValue('expConfigs','config',"location_data='".$the_loc."'"));
+
+    }
+
 }
 
 ?>

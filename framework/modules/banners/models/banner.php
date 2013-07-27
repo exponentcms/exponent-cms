@@ -42,6 +42,21 @@ class banner extends expRecord {
         $this->clicks += 1;
         $this->save();
     }
+
+    public static function resetImpressions() {
+        global $db;
+
+//        $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET impressions=0 WHERE 1');
+        $db->columnUpdate('banner', 'impressions', 0);
+    }
+
+    public static function resetClicks() {
+        global $db;
+
+//        $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET clicks=0 WHERE 1');
+        $db->columnUpdate('banner', 'clicks', 0);
+    }
+
 }
 
 ?>
