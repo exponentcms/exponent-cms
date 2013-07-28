@@ -33,6 +33,7 @@
                 {control type="dropdown" name="help_version_id" label="Version"|gettext frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
                 {*{control type=textarea name=summary label="Summary"|gettext value=$record->summary}*}
                 {control type=html name=body label="General Information"|gettext value=$record->body}
+                {control type="dropdown" name="parent" label="Parent Help Doc"|gettext items=$parents value=$record->parent}
 				{control type="dropdown" name="help_section" label="Help Section"|gettext items=$sections value=$record->loc->src default=$current_section}
             </div>
             <div id="tab2">

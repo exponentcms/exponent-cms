@@ -37,10 +37,16 @@ class help_version extends expRecord {
 	    }
     }
 
-    public static function getCurrentHelpVersion() {
+    public static function getCurrentHelpVersionId() {
         global $db;
 
         return $db->selectValue('help_version', 'id', 'is_current=1');
+    }
+
+    public static function getCurrentHelpVersion() {
+        global $db;
+
+        return $db->selectValue('help_version','version','is_current=1');
     }
 
     public static function getHelpVersionId($version) {

@@ -33,7 +33,12 @@
  * @param \Smarty $smarty
  */
 function smarty_function_get_object($params,&$smarty) {
-	$obj = new $params['object'];
+    if (!empty($params['param'])) {
+        $parm = $params['param'];
+    } else {
+        $parm = null;
+    }
+	$obj = new $params['object']($parm);
 	$smarty->assign($params['assign'],$obj);
 }
 

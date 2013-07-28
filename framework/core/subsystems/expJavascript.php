@@ -178,7 +178,7 @@ class expJavascript {
             if (!empty($jqueryjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') {
                 $scripts .= "\t"."<!-- jQuery Scripts -->"."\r\n";
                 $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
-                if ($head_config['framework'] == 'bootstrap') {
+                if (!empty($head_config['framework']) && $head_config['framework'] == 'bootstrap') {
 //                    $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js"></script>'."\r\n";
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap1',
