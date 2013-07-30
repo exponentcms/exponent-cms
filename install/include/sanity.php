@@ -136,6 +136,7 @@ function sanity_checkServer() {
 		gt('ZLib Support')=>_sanity_checkZlib(),
         gt('cURL Library Support')=>_sanity_checkcURL(),
         gt('FileInfo Support')=>_sanity_checkFileinfo(),
+        gt('File Upload Support')=>_sanity_checkUploadSize(),
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
 		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
 		gt('Open BaseDir Not Enabled')=>_sanity_checkOpenBaseDir(),
@@ -185,6 +186,14 @@ function _sanity_checkFileinfo() {
 	} else {
 //		return array(SANITY_ERROR,gt('Failed'));
         return array(SANITY_WARNING,gt('No FileInfo Support'));
+	}
+}
+
+function _sanity_checkUploadSize() {
+	if (intval(ini_get('upload_max_filesize'))==intval(ini_get('post_max_size'))) {
+		return array(SANITY_FINE,gt('Upload size limit').': '.ini_get('upload_max_filesize'));
+	} else {
+        return array(SANITY_WARNING,gt('php.ini \'"post_max_size\' and \'upload_max_filesize\' don\' match').': '.ini_get('upload_max_filesize'));
 	}
 }
 
