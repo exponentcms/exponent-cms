@@ -469,7 +469,8 @@ class fileController extends expController {
                 echo gt('File saved');
             }
         } else {
-            flash('error',gt('File was not uploaded!'));
+            echo gt('File was NOT uploaded!');
+//            flash('error',gt('File was not uploaded!'));
         }
     } 
 

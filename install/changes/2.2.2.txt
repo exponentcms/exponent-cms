@@ -1,2 +1,4 @@
 version 2.2.2
-Address any issues in v2.2.1
+Address issues in v2.2.1
+  - adds nested help documents
+  - better user feedback for max file upload size and resulting errors

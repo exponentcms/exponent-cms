@@ -8,7 +8,9 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 
 Added / Fixed / changed for 2.2.2
 -----------------------
-### Address any issues in v2.2.1
+### Address issues in v2.2.1
+  - adds nested help documents
+  - better user feedback for max file upload size and resulting errors
   - includes all fixes from v2.2.1 patches
 ### Known Issues
   - 0.9x theme support is deprecated but still present in this distribution, it will be removed in the near future

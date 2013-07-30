@@ -385,7 +385,7 @@ class expFile extends expRecord {
                 // we will get here.
                 return 'file_too_large';
             case UPLOAD_ERR_FORM_SIZE:
-                return 'file_exceeds_form_MAX_FILE_SIZ';
+                return 'file_exceeds_form_MAX_FILE_SIZE';
             case UPLOAD_ERR_PARTIAL:
                 return 'partial_file';
             case UPLOAD_ERR_NO_FILE:

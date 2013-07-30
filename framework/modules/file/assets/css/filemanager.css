@@ -864,3 +864,8 @@ a.resume {
 a.stop, a.stop-one {
     background: url(../images/stop.png) no-repeat 0 50%;
 }
+
+td.filesize.error {
+	color : red;
+	font-weight: bold;
+}
