@@ -281,6 +281,7 @@ class faqController extends expController {
 
                 $origid = $cnt['id'];
                 unset($cnt['id']);
+                //build the search record and save it.
 //                $sql = "original_id=".$origid." AND ref_module='".$this->classname."'";
                 $sql = "original_id=".$origid." AND ref_module='".$this->baseclassname."'";
                 $oldindex = $db->selectObject('search',$sql);

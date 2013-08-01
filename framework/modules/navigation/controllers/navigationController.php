@@ -424,10 +424,11 @@ class navigationController extends expController {
             $search_record->keywords  = $section->keywords;
             // now we're going to grab all the textmodules on this page and build the body for the page based off the content
             // of all the text module added together.
-            $loc            = new stdClass();
-            $loc->mod       = 'text';
-            $loc->src       = '';
-            $loc->int       = '';
+//            $loc            = new stdClass();
+//            $loc->mod       = 'text';
+//            $loc->src       = '';
+//            $loc->int       = '';
+            $loc = expCore::makeLocation('text');
             $controllername = 'text';
             foreach ($db->selectObjects('sectionref', "module='" . $controllername . "' AND section=" . $section->id) as $module) {
                 $loc->src   = $module->source;

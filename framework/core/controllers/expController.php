@@ -728,11 +728,12 @@ abstract class expController {
         ));
 
 //        if (empty($this->params['hcview'])) {
-            $containerloc = new stdClass();
+//            $containerloc = new stdClass();
 //            $containerloc->mod = expModules::getControllerClassName($this->loc->mod);  //FIXME long controller name
-            $containerloc->mod = expModules::getModuleName($this->loc->mod);
-            $containerloc->src = $this->loc->src;
-            $containerloc->int = '';
+//            $containerloc->mod = expModules::getModuleName($this->loc->mod);
+//            $containerloc->src = $this->loc->src;
+//            $containerloc->int = '';
+            $containerloc = expCore::makeLocation(expModules::getModuleName($this->loc->mod),$this->loc->src);
             $container = $db->selectObject('container', "internal='" . serialize($containerloc) . "'");
             if (empty($container)) {
                 $container = new stdClass();
@@ -1111,6 +1112,7 @@ abstract class expController {
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
+           //build the search record and save it.
 //            $sql = "original_id=" . $origid . " AND ref_module='" . $this->classname . "'";
             $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
             $oldindex = $db->selectObject('search', $sql);

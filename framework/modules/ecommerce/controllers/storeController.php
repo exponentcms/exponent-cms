@@ -932,7 +932,18 @@ class storeController extends expController {
                 unset($cnt['id']);
                 //$cnt['title'] = $cnt['title'].' - SKU# '.$cnt['model'];
                 $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $prod->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $cnt['title'] . (!empty($cnt['model']) ? ' - SKU#: ' . $cnt['model'] : '');
-                $search_record = new search($cnt, false, false);
+
+//                $search_record = new search($cnt, false, false);
+               //build the search record and save it.
+                $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
+                $oldindex = $db->selectObject('search', $sql);
+                if (!empty($oldindex)) {
+                    $search_record = new search($oldindex->id, false, false);
+                    $search_record->update($cnt);
+                } else {
+                    $search_record = new search($cnt, false, false);
+                }
+
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
                 $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
 //                $search_record->ref_module = 'store';
