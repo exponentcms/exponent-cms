@@ -191,7 +191,7 @@ function _sanity_checkFileinfo() {
 
 function _sanity_checkUploadSize() {
 	if (intval(ini_get('upload_max_filesize'))==intval(ini_get('post_max_size'))) {
-		return array(SANITY_FINE,gt('Upload size limit').': '.ini_get('upload_max_filesize'));
+		return array(SANITY_FINE,gt('Upload size limit').': '.expCore::maxUploadSize());
 	} else {
         return array(SANITY_WARNING,gt('php.ini \'"post_max_size\' and \'upload_max_filesize\' don\' match').': '.ini_get('upload_max_filesize'));
 	}

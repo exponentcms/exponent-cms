@@ -492,10 +492,11 @@ class expTheme {
 
 				// the only reason we should have a controller down in this section is if we are hitting a common action like
 				// userperms or groupperms...deal with it.
-				$loc = new stdClass();
-				$loc->mod = $module;
-				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
-				$loc->int = (!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : "");
+//				$loc = new stdClass();
+//				$loc->mod = $module;
+//				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
+//				$loc->int = (!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : "");
+                $loc = expCore::makeLocation($module,(isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : ""),(!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : ""));
 				//if (isset($_REQUEST['act'])) $loc->act = $_REQUEST['act'];
 
 				if (isset($_REQUEST['_common'])) {
