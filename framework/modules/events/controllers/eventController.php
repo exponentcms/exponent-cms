@@ -561,9 +561,15 @@ class eventController extends expController {
            $object = new eventdate(intval($router->params['date_id']));
            // set the meta info
            if (!empty($object)) {
+               if (!empty($object->event->body)) {
+                   include_once(BASE.'framework/plugins/modifier.summarize.php');  // hack to use smarty summarize modifier
+                   $desc = smarty_modifier_summarize($object->event->body,'html','paralinks');
+               } else {
+                   $desc = SITE_DESCRIPTION;
+               }
                $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
                $metainfo['keywords'] = empty($object->event->meta_keywords) ? SITE_KEYWORDS : $object->event->meta_keywords;
-               $metainfo['description'] = empty($object->event->meta_description) ? SITE_DESCRIPTION : $object->event->meta_description;
+               $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
                $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
            }
            return $metainfo;

@@ -1221,9 +1221,15 @@ abstract class expController {
                     $object = new $modelname($lookup);
                     // set the meta info
                     if (!empty($object)) {
+                        if (!empty($object->body)) {
+                            include_once(BASE.'framework/plugins/modifier.summarize.php');  // hack to use smarty summarize modifier
+                            $desc = smarty_modifier_summarize($object->body,'html','paralinks');
+                        } else {
+                            $desc = SITE_DESCRIPTION;
+                        }
                         $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
                         $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
-                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                        $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
                     }
                 }
