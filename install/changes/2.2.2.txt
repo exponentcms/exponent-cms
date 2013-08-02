@@ -2,3 +2,5 @@ version 2.2.2
 Address issues in v2.2.1
   - adds nested help documents
   - better user feedback for max file upload size and resulting errors
+  - adds optional tweet button to news posts
+  - changes show item page meta description to fallback to item summary for better display by Facebook when sharing links
