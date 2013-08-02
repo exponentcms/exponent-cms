@@ -31,7 +31,7 @@ class newsController extends expController {
         'comments',
 //        'ealerts',
         'facebook',
-        'twitter',
+//        'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $add_permissions = array(
         'showUnpublished'=>'View Unpublished News'
