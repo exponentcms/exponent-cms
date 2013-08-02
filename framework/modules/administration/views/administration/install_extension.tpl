@@ -38,7 +38,6 @@
                             <em class="date">
                                 {'Dated'|gettext}: {$theme->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
                             </em>
-                            {br}
                             <em class="date">
                                 {'Size'|gettext}: {$theme->length|bytes}
                             </em>
@@ -65,7 +64,6 @@
                             <em class="date">
                                 {'Dated'|gettext}: {$fix->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
                             </em>
-                            {br}
                             <em class="date">
                                 {'Size'|gettext}: {$fix->length|bytes}
                             </em>
@@ -91,7 +89,6 @@
                             <em class="date">
                                 {'Dated'|gettext}: {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
                             </em>
-                            {br}
                             <em class="date">
                                 {'Size'|gettext}: {$mod->length|bytes}
                             </em>
