@@ -31,11 +31,12 @@ class eventController extends expController {
     public $remove_configs = array(
         'comments',
         'ealerts',
+        'facebook',
         'files',
         'pagination',
         'rss',
         'twitter',
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() {
         return "Events";

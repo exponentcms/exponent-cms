@@ -92,7 +92,8 @@
     {if $config.usebody!=2}
         <div class="bodycopy">
             {if $config.usebody==1}
-                <p>{$file->body|summarize:"html":"paralinks"}</p>
+                {*<p>{$file->body|summarize:"html":"paralinks"}</p>*}
+                <p>{$file->body|summarize:"html":"parahtml"}</p>
             {else}
                 {$file->body}
             {/if}

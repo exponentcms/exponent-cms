@@ -42,7 +42,8 @@
                                 {'Size'|gettext}: {$theme->length|bytes}
                             </em>
                             <div class="bodycopy">
-                                {$theme->body|summarize:"html":"paralinks"}
+                                {*{$theme->body|summarize:"html":"paralinks"}*}
+                                {$theme->body|summarize:"html":"parahtml"}
                                 {br}
                                 <a href="{$theme->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
@@ -68,7 +69,8 @@
                                 {'Size'|gettext}: {$fix->length|bytes}
                             </em>
                             <div class="bodycopy">
-                                {$fix->body|summarize:"html":"paralinks"}
+                                {*{$fix->body|summarize:"html":"paralinks"}*}
+                                {$fix->body|summarize:"html":"parahtml"}
                                 {br}
                                 <a href="{$fix->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
@@ -93,7 +95,8 @@
                                 {'Size'|gettext}: {$mod->length|bytes}
                             </em>
                             <div class="bodycopy">
-                                {$mod->body|summarize:"html":"paralinks"}
+                                {*{$mod->body|summarize:"html":"paralinks"}*}
+                                {$mod->body|summarize:"html":"parahtml"}
                                 {br}
                                 <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>

@@ -47,7 +47,8 @@
             
             <div class="bodycopy">
                 {*{$doc->summary}*}
-                {$doc->body|summarize:"html":"paralinks"}
+                {*{$doc->body|summarize:"html":"paralinks"}*}
+                {$doc->body|summarize:"html":"parahtml"}
             </div>
             
         </div>

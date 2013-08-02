@@ -104,8 +104,9 @@
             </div>
             {/permissions}
             <div class="bodycopy">
-                {$parent->body|summarize:"html":"paralinks"}
+                {*{$parent->body|summarize:"html":"paralinks"}*}
             </div>
+                {$parent->body|summarize:"html":"parahtml"}
         </dl>
     </div>
 {/if}
