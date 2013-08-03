@@ -1219,8 +1219,9 @@ abstract class expController {
                     // set the meta info
                     if (!empty($object)) {
                         if (!empty($object->body)) {
-                            include_once(BASE.'framework/plugins/modifier.summarize.php');  // hack to use smarty summarize modifier
-                            $desc = str_replace('"',"'",smarty_modifier_summarize($object->body,'html','para'));
+//                            include_once(BASE.'framework/plugins/modifier.summarize.php');  // hack to use smarty summarize modifier
+//                            $desc = str_replace('"',"'",smarty_modifier_summarize($object->body,'html','para'));
+                            $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
                         } else {
                             $desc = SITE_DESCRIPTION;
                         }

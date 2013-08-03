@@ -37,6 +37,9 @@
  * @return array
  */
 function smarty_modifier_summarize($string, $strtype, $type) {
+    return expString::summarize($string, $strtype, $type);
+
+    //FIXME old routine moved to expString subsystem
     $sep = ($strtype == "html" ? array("</p>", "</div>") : array("\r\n", "\n", "\r"));
     $origstring = $string;
 
@@ -171,6 +174,7 @@ function smarty_modifier_summarize($string, $strtype, $type) {
             return expString::convertSmartQuotes($string);
             break;
     }
+
 }
 
 ?>
