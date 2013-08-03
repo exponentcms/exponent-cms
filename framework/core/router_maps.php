@@ -17,23 +17,90 @@
 
 $maps = array();
 
-// Find news by the title of the news post.  URL would look like news/my-post-title
-// $maps[] = array('controller'=>'blog',
-//      'action'=>'show',
-//      'url_parts'=>array(
-//              'controller'=>'blog',
-//              'title'=>'(.*)'),
-// );
+// Find news by the date of the news post.  URL would look like news/2007/10/18 to find all the posts on Oct 18, 2007
+//$maps[] = array('controller'=>'news',
+//                'action'=>'showall_by_date',
+//                'url_parts'=>array(
+//                    'controller'=>'news',
+//                    'year'=>'(19|20)\d\d',
+//                    'month'=>'[01]?\d',
+//                    'day'=>'[0-3]?\d'
+//                ),
+//);
+//
+//$maps[] = array('controller'=>'news',
+//                'action'=>'showall_by_date',
+//                'url_parts'=>array(
+//                    'controller'=>'news',
+//                    'year'=>'(19|20)\d\d',
+//				    'month'=>'[01]?\d',
+//                ),
+//);
+//
+//$maps[] = array('controller'=>'news',
+//                'action'=>'showall_by_date',
+//                'url_parts'=>array(
+//                    'controller'=>'news',
+//                    'year'=>'(19|20)\d\d'
+//                ),
+//);
+//
+//// Find news by the title.  URL would look like news/my-news-title
+//$maps[] = array('controller' => 'news',
+//                'action'     => 'show',
+//                'url_parts'  => array(
+//                    'controller' => 'news',
+//                    'title'      => '(.*)'
+//                ),
+//);
+//
+//// Find blog post by the title.  URL would look like blog/my-post-title
+//$maps[] = array('controller' => 'blog',
+//                'action'     => 'show',
+//                'url_parts'  => array(
+//                    'controller' => 'blog',
+//                    'title'      => '(.*)'
+//                ),
+//);
+//
+//// Find blog posts by the tag.  URL would look like view-blogs-by-tag/my-tag
+//$maps[] = array('controller' => 'blog',
+//                'action'     => 'showall_by_tags',
+//                'url_parts'  => array(
+//                    'controller' => 'view-blogs-by-tag',
+//                    'title'      => '(.*)'
+//                ),
+//);
+//
+//// Find blog posts by date.  URL would look like blog/2013/05
+//$maps[] = array('controller'=>'blog',
+//                'action'=>'showall_by_date',
+//                'url_parts'=>array(
+//                    'controller'=>'blog',
+//                    'year'=>'(19|20)\d\d',
+//				    'month'=>'[01]?\d',
+//                ),
+//);
+//
+//// Find blog posts by author.  URL would look like view-blogs-by-author/author-username
+//$maps[] = array('controller' => 'blog',
+//                'action'     => 'showall_by_author',
+//                'url_parts'  => array(
+//                    'controller' => 'view-blogs-by-author',
+//                    'author'     => '(.*)'
+//                ),
+//);
+//
+//// Find filedownloads by the title.  URL would look like file/my-file-title
+//$maps[] = array('controller' => 'filedownload',
+//                'action'     => 'show',
+//                'url_parts'  => array(
+//                    'controller' => 'file',
+//                    'title'      => '(.*)'
+//                ),
+//);
 // 
-// // Find news by the title of the news post.  URL would look like news/my-post-title
-// $maps[] = array('controller'=>'news',
-//      'action'=>'show',
-//      'url_parts'=>array(
-//              'controller'=>'news',
-//              'title'=>'(.*)'),
-// );
-// 
-// // Find news by the title of the news post.  URL would look like news/my-post-title
+// //FIXME Find products by the category title .  URL would look like browse-store/my-product-category-title
 // $maps[] = array('controller'=>'store',
 //      'action'=>'showall',
 //      'url_parts'=>array(
@@ -41,7 +108,7 @@ $maps = array();
 //              'title'=>'(.*)'),
 // );
 // 
-// // Find news by the title of the news post.  URL would look like news/my-post-title
+// // Find product by the title .  URL would look like store/my-product-title
 // $maps[] = array('controller'=>'store',
 //      'action'=>'show',
 //      'url_parts'=>array(
@@ -66,33 +133,4 @@ $maps = array();
 //              'title'=>'(.*)'),
 // );
 
-/*
-// Find news by the date of the news post.  URL would look like news/2007/10/18 to find all the posts on Oct 18, 2007
-$maps[] = array('controller'=>'news',
-                'action'=>'findByDate',
-                'url_parts'=>array(
-                    'controller'=>'news',
-                    'year'=>'(19|20)\d\d',
-                    'month'=>'[01]?\d',
-                    'day'=>'[0-3]?\d'
-                ),
-);
-
-$maps[] = array('controller'=>'news',
-                'action'=>'findByDate',
-                'url_parts'=>array(
-                    'controller'=>'news',
-                    'year'=>'(19|20)\d\d'
-                ),
-);
-
-$maps[] = array('controller'=>'news',
-                'action'=>'findByDate',
-                'url_parts'=>array(
-                    'controller'=>'news',
-                    'year'=>'(19|20)\d\d',
-				    'month'=>'[01]?\d',
-                ),
-);
-*/
 ?>

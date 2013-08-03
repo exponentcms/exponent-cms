@@ -136,7 +136,7 @@ class blogController extends expController {
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
             'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
-            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 1,
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
             'order'=>'publish',
             'dir'=>'desc',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),

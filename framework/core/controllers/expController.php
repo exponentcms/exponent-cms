@@ -445,7 +445,7 @@ abstract class expController {
     }
 
     /**
-     * view the item by referring to its title
+     * view the item by referring to its title  DEPRECATED??
      */
     function showByTitle() {
         expHistory::set('viewable', $this->params);
@@ -458,11 +458,8 @@ abstract class expController {
         }
         $this->loc = unserialize($record->location_data);
 
-        // adding src to template's __loc var so that our links get build correct when linking to controller actions.
-//        global $template;
         assign_to_template(array(
             'record' => $record,
-//            "__loc"=>$this->loc
         ));
     }
 
