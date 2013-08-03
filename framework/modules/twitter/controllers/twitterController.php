@@ -255,6 +255,32 @@ class twitterController extends expController {
         flash('error', 'Twitter: ' . $e->getMessage());
     }
 
+    /**
+     * Send a Tweet
+     */
+    public static function postTweet($params=array()) {
+        if (!empty($params)) {
+            $post = new $params['model']($params['id']);
+            if (!empty($params['config']['consumer_key']) && !empty($post->body)) {
+                // create instance
+                if (expPermissions::check('manage', expCore::makeLocation($params['orig_controller'], $params['loc']))) {
+                    $except_handler = 'twitter_exception_admin';
+                } else {
+                    $except_handler = 'twitter_exception';
+                }
+                set_exception_handler(array('twitterController', $except_handler));
+                $twitter = new expTwitter($params['config']['consumer_key'], $params['config']['consumer_secret']);
+                // set tokens
+                $twitter->setOAuthToken($params['config']['oauth_token']);
+                $twitter->setOAuthTokenSecret($params['config']['oauth_token_secret']);
+
+                $twitter->statusesUpdate($params['config']['tweet_prefix'] . ' ' .expString::summarize($post->body) . ' ' . expCore::makeLink(array('controller'=>$params['orig_controller'], 'action'=>'show','title'=>$post->sef_url)));
+                restore_exception_handler();
+                flash('message', gt('New tweet posted'));
+            }
+         }
+    }
+
 }
 
 ?>

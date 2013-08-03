@@ -615,6 +615,20 @@ abstract class expController {
             $this->addContentToSearch($this->params);
         }
 
+        // check for auto send facebook status
+        if (!empty($this->params['send_status'])) {
+            facebookController::postStatus(
+                array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+            );
+        }
+
+        // check for auto send tweet
+        if (!empty($this->params['send_tweet'])) {
+            twitterController::postTweet(
+                array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+            );
+        }
+
         // check for eAlerts
         if (!empty($this->params['send_ealerts'])) {
             redirect_to(array('controller' => 'ealert', 'action' => 'send_confirm', 'model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'orig_controller' => expModules::getControllerName($this->classname)));
@@ -1219,8 +1233,6 @@ abstract class expController {
                     // set the meta info
                     if (!empty($object)) {
                         if (!empty($object->body)) {
-//                            include_once(BASE.'framework/plugins/modifier.summarize.php');  // hack to use smarty summarize modifier
-//                            $desc = str_replace('"',"'",smarty_modifier_summarize($object->body,'html','para'));
                             $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
                         } else {
                             $desc = SITE_DESCRIPTION;

@@ -30,7 +30,7 @@ class newsController extends expController {
         'categories',
         'comments',
 //        'ealerts',
-        'facebook',
+//        'facebook',
 //        'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $add_permissions = array(

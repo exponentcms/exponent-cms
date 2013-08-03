@@ -41,6 +41,12 @@
                     {if $config.enable_ealerts}
                    	    {control type="checkbox" name="send_ealerts" label="Send E-Alert?"|gettext value=1}
                    	{/if}
+                    {if $config.enable_auto_status}
+                   	    {control type="checkbox" name="send_status" label="Post as Facebook Status?"|gettext value=1}
+                   	{/if}
+                    {if $config.enable_auto_tweet}
+                   	    {control type="checkbox" name="send_tweet" label="Post as a Tweet?"|gettext value=1}
+                   	{/if}
                     {if !$config.usescomments || !$config.hidecomments}
                         {if $config.disable_item_comments}
                             {control type="checkbox" name="disable_comments" label="Disable Comments to this Item?"|gettext value=1 checked=$record->disable_comments}

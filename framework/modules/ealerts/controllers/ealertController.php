@@ -113,8 +113,6 @@ class ealertController extends expController {
         if ($ealert->ealert_usebody == 0) {
             $obj->body .= $record->body;
         } elseif ($ealert->ealert_usebody == 1) {
-//            include_once(BASE.'framework/plugins/modifier.summarize.php');  // hack to use smarty summarize modifier
-//            $obj->body .= smarty_modifier_summarize($record->body,'html','paralinks');
             $obj->body .= expString::summarize($record->body,'html','paralinks');
         }
         $link = $router->makelink(array('controller'=>$this->params['model'], 'action'=>'show', 'title'=>$record->sef_url));

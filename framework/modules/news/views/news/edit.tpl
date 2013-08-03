@@ -38,6 +38,12 @@
                 	{if $config.enable_ealerts}
                 	    {control type="checkbox" name="send_ealerts" label="Send E-Alert?"|gettext value=1}
                 	{/if}
+                    {if $config.enable_auto_status}
+                   	    {control type="checkbox" name="send_status" label="Post as Facebook Status?"|gettext value=1}
+                   	{/if}
+                    {if $config.enable_auto_tweet}
+                   	    {control type="checkbox" name="send_tweet" label="Post as a Tweet?"|gettext value=1}
+                   	{/if}
                 </div>
                 <div id="tab2">
                     {control type="yuidatetimecontrol" name="publish" label="Publish Date"|gettext edit_text="Publish Immediately" value=$record->publish}
