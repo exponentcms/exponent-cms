@@ -89,7 +89,7 @@ class facebookController extends expController {
             $fuser = $facebook->getUser();
 
             // Contact Facebook and get token
-            if ($fuser) {
+            if (!empty($fuser)) {
                 // you're logged in, and we'll get user acces token for posting on the wall
                 try {
                     $page_info = $facebook->api("/".$params['config']['facebook_page']."?fields=access_token");
