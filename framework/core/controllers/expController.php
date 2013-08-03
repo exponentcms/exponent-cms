@@ -617,16 +617,28 @@ abstract class expController {
 
         // check for auto send facebook status
         if (!empty($this->params['send_status'])) {
-            facebookController::postStatus(
-                array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
-            );
+            if ($this->classname == 'eventController') {
+                facebookController::postEvent(
+                    array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                );
+            } else {
+                facebookController::postStatus(
+                    array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                );
+            }
         }
 
         // check for auto send tweet
         if (!empty($this->params['send_tweet'])) {
-            twitterController::postTweet(
-                array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
-            );
+            if ($this->classname == 'eventController') {
+                twitterController::postEventTweet(
+                    array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                );
+            } else {
+                twitterController::postTweet(
+                    array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                );
+            }
         }
 
         // check for eAlerts

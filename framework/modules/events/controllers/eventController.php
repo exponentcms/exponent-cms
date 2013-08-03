@@ -31,11 +31,11 @@ class eventController extends expController {
     public $remove_configs = array(
         'comments',
         'ealerts',
-        'facebook',
+//        'facebook',
         'files',
         'pagination',
         'rss',
-        'twitter',
+//        'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() {
@@ -467,10 +467,10 @@ class eventController extends expController {
      */
     function show() {
         expHistory::set('viewable', $this->params);
-        if (!empty($this->params['date_id'])) {
+        if (!empty($this->params['date_id'])) {  // specific event instance
             $eventdate = new eventdate($this->params['date_id']);
             $eventdate->event = new event($eventdate->event_id);
-        } else {
+        } else {  // we'll default to the first event of this series
             $event = new event($this->params['id']);
             $eventdate = new eventdate($event->eventdate[0]->id);
         }

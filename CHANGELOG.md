@@ -12,7 +12,7 @@ Added / Fixed / changed for 2.2.2
   - adds nested help documents
   - better user feedback for max file upload size and resulting errors
   - adds optional facebook like & tweet button to news posts
-  - adds optional auto facebook post/tweet to blog posts, news items, & file downloads
+  - adds optional auto facebook post/tweet to blog posts, news items, file downloads, & events
   - adds showall news by date method
   - changes show item page meta description to fallback to item summary for better display by Facebook when sharing links
   - includes all fixes from v2.2.1 patches
