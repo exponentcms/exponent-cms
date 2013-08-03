@@ -106,7 +106,7 @@ class facebookController extends expController {
 
                         $status = $facebook->api("/".$params['config']['facebook_page']."/feed", "post", $attachment);
                     } else {
-                        $status = 'No Facebook access token received';
+                        $status = gt('No Facebook access token received');
                     }
                 } catch (FacebookApiException $e) {
                     error_log($e);
@@ -115,7 +115,7 @@ class facebookController extends expController {
             } else {
                 // you're not logged in, the application will try to log in to get a access token
                 header("Location:{$facebook->getLoginUrl(array('scope' => 'photo_upload,user_status,publish_stream,user_photos,manage_pages'))}");
-                $status = 'Permissions not yet set on Facebook';
+                $status = gt('Permissions not yet set on Facebook');
                 exit();
             }
             flash('message', $status);
