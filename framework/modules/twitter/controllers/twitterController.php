@@ -276,7 +276,7 @@ class twitterController extends expController {
 
                 $twitter->statusesUpdate($params['config']['tweet_prefix'] . ' ' .expString::summarize($post->body) . ' ' . expCore::makeLink(array('controller'=>$params['orig_controller'], 'action'=>'show','title'=>$post->sef_url)));
                 restore_exception_handler();
-                flash('message', gt('New tweet posted'));
+                flash('message', gt('New Tweet posted'));
             }
          }
     }
