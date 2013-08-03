@@ -564,7 +564,7 @@ class eventController extends expController {
            if (!empty($object)) {
                if (!empty($object->event->body)) {
                    include_once(BASE.'framework/plugins/modifier.summarize.php');  // hack to use smarty summarize modifier
-                   $desc = smarty_modifier_summarize($object->event->body,'html','para');
+                   $desc = str_replace('"',"'",smarty_modifier_summarize($object->event->body,'html','para'));
                } else {
                    $desc = SITE_DESCRIPTION;
                }
