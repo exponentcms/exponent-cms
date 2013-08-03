@@ -29,12 +29,13 @@ class ealertController extends expController {
         'categories',
         'comments',
         'ealerts',
+        'facebook',
         'files',
         'pagination',
         'rss',
         'tags',
         'twitter',
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags','twitter',)
+    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 	
     static function displayname() { return gt("E-Alerts"); }
     static function description() { return gt("This module will allow users to sign up for email alerts on a module by module basis."); }

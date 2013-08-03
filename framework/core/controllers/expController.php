@@ -32,7 +32,7 @@ abstract class expController {
     public $model_table = ''; // holds table name for base model
 
     public $useractions = array(); // available user actions (methods) for this controller
-    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
     protected $permissions = array(  // standard set of permissions for all modules unless add'ed or remove'd
         'manage'    => 'Manage',
         'configure' => 'Configure',
