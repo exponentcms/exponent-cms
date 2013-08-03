@@ -27,7 +27,7 @@ $maps = array();
 // 
 // // Find news by the title of the news post.  URL would look like news/my-post-title
 // $maps[] = array('controller'=>'news',
-//      'action'=>'showByTitle',
+//      'action'=>'show',
 //      'url_parts'=>array(
 //              'controller'=>'news',
 //              'title'=>'(.*)'),
@@ -43,7 +43,7 @@ $maps = array();
 // 
 // // Find news by the title of the news post.  URL would look like news/my-post-title
 // $maps[] = array('controller'=>'store',
-//      'action'=>'showByTitle',
+//      'action'=>'show',
 //      'url_parts'=>array(
 //              'controller'=>'store',
 //              'title'=>'(.*)'),
@@ -69,27 +69,30 @@ $maps = array();
 /*
 // Find news by the date of the news post.  URL would look like news/2007/10/18 to find all the posts on Oct 18, 2007
 $maps[] = array('controller'=>'news',
-		'action'=>'findByDate',
-		'url_parts'=>array(
-				'controller'=>'news',
-				'year'=>'(19|20)\d\d',
-				'month'=>'[01]?\d',
-				'day'=>'[0-3]?\d'),
+                'action'=>'findByDate',
+                'url_parts'=>array(
+                    'controller'=>'news',
+                    'year'=>'(19|20)\d\d',
+                    'month'=>'[01]?\d',
+                    'day'=>'[0-3]?\d'
+                ),
 );
 
 $maps[] = array('controller'=>'news',
                 'action'=>'findByDate',
                 'url_parts'=>array(
-                                'controller'=>'news',
-                                'year'=>'(19|20)\d\d'),
+                    'controller'=>'news',
+                    'year'=>'(19|20)\d\d'
+                ),
 );
 
 $maps[] = array('controller'=>'news',
                 'action'=>'findByDate',
                 'url_parts'=>array(
-                                'controller'=>'news',
-                                'year'=>'(19|20)\d\d',
-				'month'=>'[01]?\d',),
+                    'controller'=>'news',
+                    'year'=>'(19|20)\d\d',
+				    'month'=>'[01]?\d',
+                ),
 );
 */
 ?>
