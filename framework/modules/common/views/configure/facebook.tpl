@@ -26,7 +26,7 @@
     {group label='Facebook Account'|gettext}
         {control type="text" name="facebook_page" label="Facebook Page"|gettext value=$config.facebook_page placeholder='john.smith.666'}
         <blockquote>
-            {'Log in to the Facebook, then visit the Developer\'s create app page'|gettext} <a href="http://developers.facebook.com/setup/" target="_blank">{'website'|gettext}</a>br}
+            {'Log in to the Facebook, then visit the Developer\'s create app page'|gettext} <a href="http://developers.facebook.com/setup/" target="_blank">{'website'|gettext}</a>{br}
             {'First create a new app which will provide you the App ID and App Secret.'|gettext}{br}
             {'Then you must create an Access token which will give you the Access token settings.'|gettext}{br}
             <strong>{'Give your application \'read\' & \'write\' access before requesting a token to create tweets'|gettext}</strong>
