@@ -93,10 +93,11 @@ class facebookController extends expController {
                 try {
 //                    $page_info = $facebook->api("/".$params['config']['facebook_page']."?fields=access_token");
 //                    if (!empty($page_info['access_token'])) {
-                    if (!empty($facebook->getAccessToken())) {
+                    $accesstoken = $facebook->getAccessToken();
+                    if (!empty($accesstoken)) {
                         $attachment = array(
 //                            'access_token' => $page_info['access_token'],
-                            'access_token' => $facebook->getAccessToken(),
+                            'access_token' => $accesstoken,
                             'message' => expString::summarize($post->body),
                             'name' => $post->title,
                             'link' => expCore::makeLink(array('controller'=>$params['orig_controller'], 'action'=>'show','title'=>$post->sef_url)),
