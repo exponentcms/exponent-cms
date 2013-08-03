@@ -619,7 +619,7 @@ abstract class expController {
         if (!empty($this->params['send_status'])) {
             if ($this->classname == 'eventController') {
                 facebookController::postEvent(
-                    array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                    array('model' => $modelname, 'id' => $this->params['date_id'], 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
                 );
             } else {
                 facebookController::postStatus(
@@ -632,7 +632,7 @@ abstract class expController {
         if (!empty($this->params['send_tweet'])) {
             if ($this->classname == 'eventController') {
                 twitterController::postEventTweet(
-                    array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                    array('model' => $modelname, 'id' => $this->params['date_id'], 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
                 );
             } else {
                 twitterController::postTweet(
