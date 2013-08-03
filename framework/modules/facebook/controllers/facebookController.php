@@ -147,7 +147,7 @@ class facebookController extends expController {
                         "name"=>$eventdate->event->title,
                         "description"=>expString::summarize($eventdate->event->body) . ' ' . expCore::makeLink(array('controller'=>$params['orig_controller'], 'action'=>'show','date_id'=>$eventdate->id)),
                         "start_time"=>date('c',$eventdate->date + $eventdate->event->eventstart),
-                        "end_time"=>date('c',$eventdate->date + $eventdate->event->eventend),
+//                        "end_time"=>date('c',$eventdate->date + $eventdate->event->eventend),
 //                        "location"=>$location,
 //                        'description' => $desc,
 //                        'picture'=>$pic,
@@ -155,7 +155,7 @@ class facebookController extends expController {
                     );
                     $result = $facebook->api("/".$params['config']['facebook_page']."/events", "post", $attachment);
                     $facebookEventId = $result['id'];
-                    $status = gt('New Facebook Event posted');
+                    $status = gt('New Facebook Event posted') . ' - ' . $facebookEventId;
                     flash('message', $status);
                 } catch (FacebookApiException $e) {
 //                    header("Location:{$facebook->getLoginUrl(array('scope' => 'photo_upload,user_status,publish_stream,user_photos,manage_pages,create_event'))}");
