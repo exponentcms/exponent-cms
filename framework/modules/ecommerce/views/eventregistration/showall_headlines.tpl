@@ -22,7 +22,7 @@
 {/css}
 
 <div class="module store upcoming-events">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create == true || $permissions.edit == true}

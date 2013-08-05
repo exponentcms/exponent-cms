@@ -22,11 +22,11 @@
 <body>
 	<div id="doc">
 		<div id="hd">
-		    <h1 id="logo">
+		    <div id="logo">
 			<a href="<?php echo URL_FULL; ?>" title="<?php echo SITE_TITLE; ?>">
                 <?php echo ORGANIZATION_NAME; ?>
 			</a>
-			</h1>
+			</div>
 			<?php expTheme::module(array("controller"=>"search","action"=>"show","src"=>"@top")) ?>
 		</div>
 		<div id="bd" class="yui3-g">
