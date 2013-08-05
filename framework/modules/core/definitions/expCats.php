@@ -27,7 +27,7 @@ return array(
         DB_INCREMENT=>true),
     'title'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
-        DB_FIELD_LEN=>100),
+        DB_FIELD_LEN=>200),
     'sef_url'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>200),
