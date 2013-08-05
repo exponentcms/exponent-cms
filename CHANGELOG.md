@@ -8,7 +8,7 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 
 Added / Fixed / changed for 2.2.2
 -----------------------
-### Address issues in v2.2.1
+### Address issues in v2.2.1, enhance SEO and Social Media features
   - adds nested help documents
   - better user feedback for max file upload size and resulting errors
   - adds optional facebook like & tweet button to news posts
