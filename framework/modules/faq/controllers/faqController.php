@@ -48,6 +48,8 @@ class faqController extends expController {
             expCatController::addCats($questions,'rank',!empty($this->config['uncat'])?$this->config['uncat']:gt('Not Categorized'));
             $cats[0] = new stdClass();
             $cats[0]->name = '';
+            $cats[0]->count = 0;
+            $cats[0]->color = null;
             expCatController::sortedByCats($questions,$cats);
             assign_to_template(array(
                 'cats'=>$cats
