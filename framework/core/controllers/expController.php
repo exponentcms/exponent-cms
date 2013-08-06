@@ -1305,8 +1305,10 @@ abstract class expController {
             $metainfo['title'] = gt('Showing all Blog Posts tagged as') . ' ' . $tag;
 //            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
             $metainfo['keywords'] = $request['tag'];
-            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical;
+//            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
+            $metainfo['description'] = SITE_DESCRIPTION;
+//            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical; //FIXME $object not set
+            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
             return $metainfo;
         }
     }
@@ -1321,9 +1323,12 @@ abstract class expController {
             $ts = strftime('%B, %Y', $mk);
             // set the meta info
             $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts;
-            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
-            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical;
+//            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
+            $metainfo['keywords'] = SITE_KEYWORDS;
+//            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
+            $metainfo['description'] = SITE_DESCRIPTION;
+//            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical; //FIXME $object not set
+            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
             return $metainfo;
         }
     }
