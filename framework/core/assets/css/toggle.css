@@ -95,3 +95,7 @@
 	background-image  : url('../images/section_collapsed.png');
 	background-repeat : no-repeat;
 }
+
+.yui3-hd h4 {
+	margin: 0;
+}
