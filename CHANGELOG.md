@@ -14,7 +14,8 @@ Added / Fixed / changed for 2.2.2
   - adds optional facebook like & tweet button to news posts
   - adds optional auto facebook post/tweet to blog posts, news items, file downloads, & events
   - adds showall news by date method
-  - changes show item page meta description to fallback to item summary for better display by Facebook when sharing links
+  - changes 'show item' page meta description to fallback to item summary for better display by Facebook when sharing links
+    -- uses item tags in 'show' view for keywords when no meta keywords available instead of defaulting to site keywords
   - includes all fixes from v2.2.1 patches
 ### Known Issues
   - 0.9x theme support is deprecated but still present in this distribution, it will be removed in the near future
