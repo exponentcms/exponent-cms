@@ -63,9 +63,9 @@ class donationController extends expController {
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
         switch($action) {
             case 'donate':
-                $metainfo['title'] = 'Make a donation';
-                $metainfo['keywords'] = 'donate online';
-                $metainfo['description'] = "Make a donation";    
+                $metainfo['title'] = gt('Make a donation');
+                $metainfo['keywords'] = gt('donate online');
+                $metainfo['description'] = gt("Make a donation");
                 $metainfo['canonical']   = '';
             break;
             default:

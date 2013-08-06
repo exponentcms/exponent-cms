@@ -417,9 +417,9 @@ class eventregistrationController extends expController {
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '');
         switch ($action) {
             case 'donate':
-                $metainfo['title']       = 'Make a eventregistration';
-                $metainfo['keywords']    = 'donate online';
-                $metainfo['description'] = "Make a eventregistration";
+                $metainfo['title']       = gt('Make an event registration');
+                $metainfo['keywords']    = gt('event registration online');
+                $metainfo['description'] = gt("Make an event registration");
                 $metainfo['canonical']   = '';
                 break;
             default:

@@ -1249,8 +1249,17 @@ abstract class expController {
                         } else {
                             $desc = SITE_DESCRIPTION;
                         }
+                        if (!empty($object->expTag)) {
+                            $keyw = '';
+                            foreach ($object->expTag as $tag) {
+                                if (!empty($keyw)) $keyw .= ', ';
+                                $keyw .= $tag->title;
+                            }
+                        } else {
+                            $keyw = SITE_KEYWORDS;
+                        }
                         $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
-                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
                     }
@@ -1261,7 +1270,6 @@ abstract class expController {
                 $functionName = $action . "_meta";
                 $mod = new $this->classname;
                 if (method_exists($mod, $functionName)) {
-//                    $metainfo = $mod->$functionName($_REQUEST);
                     $metainfo = $mod->$functionName($router->params);
                 } else {
                     $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => URL_FULL.substr($router->sefPath, 1));
@@ -1285,6 +1293,40 @@ abstract class expController {
     //         }
     //     }
     // }
+
+    function showall_by_tags_meta($request) {
+        global $router;
+
+        // look up the record.
+        if (isset($request['tag'])) {
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+            $tag = $request['tag'];
+            // set the meta info
+            $metainfo['title'] = gt('Showing all Blog Posts tagged as') . ' ' . $tag;
+//            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
+            $metainfo['keywords'] = $request['tag'];
+            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical;
+            return $metainfo;
+        }
+    }
+
+    function showall_by_date_meta($request) {
+        global $router;
+
+        // look up the record.
+        if (isset($request['month'])) {
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+            $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
+            $ts = strftime('%B, %Y', $mk);
+            // set the meta info
+            $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts;
+            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
+            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical;
+            return $metainfo;
+        }
+    }
 
     /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content

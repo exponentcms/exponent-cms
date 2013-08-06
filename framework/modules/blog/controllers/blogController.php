@@ -337,7 +337,8 @@ class blogController extends expController {
             if (!empty($str)) {
                 $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
                 $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
-                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
+//                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
+                $metainfo['keywords'] = $str;
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
                 $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
 
@@ -346,40 +347,7 @@ class blogController extends expController {
         }
     }
 
-    function showall_by_date_meta($request) {
-        global $router;
-
-        // look up the record.
-        if (isset($request['month'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
-            $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
-            $ts = strftime('%B, %Y',$mk);
-            // set the meta info
-            $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts ;
-            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
-            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
-            return $metainfo;
-        }
-    }
-
-    function showall_by_tags_meta($request) {
-        global $router;
-
-        // look up the record.
-        if (isset($request['tag'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
-            $tag = $request['tag'];
-            // set the meta info
-            $metainfo['title'] = gt('Showing all Blog Posts tagged as') . ' ' . $tag ;
-            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
-            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
-            return $metainfo;
-        }
-    }
-
-//	function metainfo() {
+    //	function metainfo() {
 //        global $router;
 //        if (empty($router->params['action'])) return false;
 //

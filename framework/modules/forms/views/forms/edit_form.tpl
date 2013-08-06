@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 {control type=text name='title' label='Form Name'|gettext value=$form->title required=true}
-                {control type="text" name="sef_url" label="SEF URL"|gettext value=$form->sef_url}
+                {control type="text" name="sef_url" label="SEF URL"|gettext value=$form->sef_url description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
                 {control type=html name='description' label='Form Description'|gettext value=$form->description description='Placed below module description and above the form'|gettext}
                 {control type=html name='response' label='Submission Response Display'|gettext value=$form->response description='Message to display on the site after submitting a form'|gettext}
                 {group label='Form Database Settings'|gettext}

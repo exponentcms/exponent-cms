@@ -51,11 +51,11 @@
                 </div>
                 <div id="tab2">
                     <h2>{'SEO Information'|gettext}</h2>
-                    {control type=text name=sef_name label="SEF URL"|gettext value=$section->sef_name description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes,  and underscores.'|gettext}
-                    {control type=text name=canonical label="Canonical URL"|gettext value=$section->canonical|default description='Helps get rid of dupes'|gettext}
+                    {control type=text name=sef_name label="SEF URL"|gettext value=$section->sef_name description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
+                    {control type=text name=canonical label="Canonical URL"|gettext value=$section->canonical|default description='Helps get rid of duplicate search engine entries'|gettext}
                     {control type=text name=page_title label="Page Title"|gettext value=$section->page_title}
-                    {control type=textarea name=keywords label="Keywords"|gettext value=$section->keywords}
-                    {control type=textarea name=description label="Page Description"|gettext value=$section->description}
+                    {control type=textarea name=keywords label="Keywords"|gettext value=$section->keywords description='Comma separated phrases - overrides site keywords'|gettext}
+                    {control type=textarea name=description label="Page Description"|gettext value=$section->description description='Page description for search engine entries'|gettext}
                 </div>
             </div>
         </div>

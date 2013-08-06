@@ -48,11 +48,11 @@
                         {control type=editor name=body label="Category Description"|gettext value=$node->body}
                     </div>
                     <div id="seo">
-                        {control type=text name=sef_url label="SEF URL"|gettext value=$node->sef_url}
-                        {control type=text name=canonical label="Canonical URL"|gettext value=$node->canonical}
-                        {control type=text name=meta_title label="Meta Title"|gettext value=$node->meta_title}
-                        {control type=text name=meta_description label="Meta Description"|gettext value=$node->meta_description}
-                        {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords}
+                        {control type=text name=sef_url label="SEF URL"|gettext value=$node->sef_url description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
+                        {control type=text name=canonical label="Canonical URL"|gettext value=$node->canonical description='Helps get rid of duplicate search engine entries'|gettext}
+                        {control type=text name=meta_title label="Meta Title"|gettext value=$node->meta_title description='Override the item title for search engine entries'|gettext}
+                        {control type=text name=meta_description label="Meta Description"|gettext value=$node->meta_description description='Override the item summary for search engine entries'|gettext}
+                        {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords description='Comma separated phrases - overrides site keywords and item tags'|gettext}
                     </div>
                      {*<div id="events1">*}
                         {*{control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}*}
