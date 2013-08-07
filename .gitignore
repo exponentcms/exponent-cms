@@ -20,3 +20,5 @@
 
 .gitignore
 .mailmap
+
+phpdoc-*

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Exponent 2.2.0</title>
+    <title>Exponent 2.2.2</title>
     <parser>
         <default-category-name>API Documentation</default-category-name>
         <default-package-name>Framework</default-package-name>
@@ -17,6 +17,13 @@
     <transformer>
         <target>../exponent-api</target>
     </transformer>
+    <logging>
+        <level>warn</level>
+        <paths>
+            <default>{APP_ROOT}/phpdoc/log/{DATE}.log</default>
+            <errors>{APP_ROOT}/phpdoc/log/{DATE}.errors.log</errors>
+        </paths>
+    </logging>
     <transformations>
          <template name="responsive" />
     </transformations>
