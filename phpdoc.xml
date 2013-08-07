@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Exponent 2.2.2</title>
+    <title>Exponent v2.2.2</title>
     <parser>
         <default-category-name>API Documentation</default-category-name>
         <default-package-name>Framework</default-package-name>
-        <target>../exponent-api</target>
+        <target>../exponent-api/phpdoc</target>
         <markers>
             <item>TODO</item>
             <item>FIXME</item>
@@ -20,8 +20,8 @@
     <logging>
         <level>warn</level>
         <paths>
-            <default>{APP_ROOT}/phpdoc/log/{DATE}.log</default>
-            <errors>{APP_ROOT}/phpdoc/log/{DATE}.errors.log</errors>
+            <default>../exponent-api/phpdoc/log/{DATE}.log</default>
+            <errors>../exponent-api/phpdoc/log/{DATE}.errors.log</errors>
         </paths>
     </logging>
     <transformations>
