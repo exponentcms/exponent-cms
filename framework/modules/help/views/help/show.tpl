@@ -30,6 +30,7 @@
             {/if}
             {icon action=edit record=$doc}
             {icon action=copy record=$doc}
+            {icon action=delete record=$doc}
         {/if}
     </div>
     {/permissions}
