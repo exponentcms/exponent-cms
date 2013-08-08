@@ -24,7 +24,7 @@
     {rss_link}
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h2>{/if}
     {permissions}
-		<div clas="module-actions">
+		<div class="module-actions">
 			{if $permissions.edit == 1}
 				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
