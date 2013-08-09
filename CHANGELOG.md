@@ -16,7 +16,8 @@ Added / Fixed / changed for 2.2.2
   - adds showall news by date method
   - adds a new 'toggle' view to faq display
   - adds 'word match only' setting for search results
-  - changes 'show item' page meta description to fallback to item summary for better display by Facebook when sharing links
+  - greatly enhances default page meta data (SEO out of the box)
+    -- changes 'show item' page meta description to fallback to item summary for better display by Facebook when sharing links
     -- uses item tags in 'show' view for keywords when no meta keywords available instead of defaulting to site keywords
   - includes all fixes from v2.2.1 patches
 ### Known Issues

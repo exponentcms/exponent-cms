@@ -271,7 +271,6 @@ class faqController extends expController {
     function addContentToSearch() {
         global $db, $router;
 
-        //FIXME we should probably allow for a single item update/addition
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);
         $where = (!empty($this->params['id'])) ? 'id='.$this->params['id'] : null;

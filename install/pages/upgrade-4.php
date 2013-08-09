@@ -93,39 +93,6 @@ if (is_readable($upgrade_dir)) {
             $i++;
         }
     }
-//FIXME old routine
-//    while (($file = readdir($dh)) !== false) {
-//        if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php') {
-//            include_once($upgrade_dir . '/' . $file);
-//            $classname     = substr($file, 0, -4);
-//            /**
-//             * Stores the upgradescript object
-//             * @var \upgradescript $upgradescript
-//             * @name $upgradescript
-//             */
-//            $upgradescript = new $classname;
-//            if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
-//                echo '<li>';
-//                if (isset($_REQUEST['run'])) {
-//                    echo '<h3>' . $upgradescript->name() . '</h3>';
-//                    if (!$upgradescript->optional || ($upgradescript->optional && !empty($_POST[$classname]))) {
-//                        echo '<p class="success">' . $upgradescript->upgrade();
-//                    } else {
-//                        echo '<p class="failed"> '.gt('Not Selected to Run');
-//                    }
-//                } else {
-//                    if ($upgradescript->optional) {
-//                        echo '<input type="checkbox" name="'.$classname.'" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>'. $upgradescript->name().'</h3></label>';
-//                    } else {
-//                        echo '<input type="checkbox" name="'.$classname.'" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>'. $upgradescript->name().'</h3></label>';
-//                    }
-//                    echo '<p>' . $upgradescript->description();
-//                }
-//                echo '</p></li>';
-//                $i++;
-//            }
-//        }
-//    }
     if ($i==0) {
         echo '<li>
         <h3>'.gt('None Required').'</h3>

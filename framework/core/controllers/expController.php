@@ -536,18 +536,14 @@ abstract class expController {
      * edit item in module, also used to copy items
      */
     function edit() {
-//        global $db;
-
         expHistory::set('editable', $this->params);
-//        $tags = $db->selectObjects('expTags', '1', 'title ASC');
-//        $taglist = '';
-//        foreach ($tags as $tag) {
-//            $taglist .= "'" . $tag->title . "',";
-//        }
         $taglist = expTag::getAllTags();
         $modelname = $this->basemodel_name;
         $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
-        if (!empty($this->params['copy'])) $record->id = null;
+        if (!empty($this->params['copy'])) {
+            $record->id = null;
+            if (isset($record->sef_url)) $record->sef_url = null;
+        }
         assign_to_template(array(
             'record'     => $record,
             'table'      => $this->$modelname->tablename,

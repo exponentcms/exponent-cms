@@ -64,7 +64,6 @@ class search extends expRecord {
         $records = $db->selectObjectsBySql($sql);
         //eDebug($records);
 
-        //FIXME: The page count is off when have to not show 
         // search results due to permissions...not sure what to do about that.
         $recs = $records;
         for ($i = 0; $i < count($records); $i++) {
