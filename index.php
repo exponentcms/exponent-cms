@@ -68,7 +68,7 @@ if ($db->havedb) {
     $section = $router->getSection();
     $sectionObj = $router->getSectionObj($section);
     if ($sectionObj->alias_type == 1) {  // asking for an external link url instead of exponent
-        redirect_to(substr($sectionObj->external_link, 4) == 'http' ? $sectionObj->external_link : 'http://' . $sectionObj->external_link);
+        redirect_to(substr($sectionObj->external_link, 0, 4) == 'http' ? $sectionObj->external_link : 'http://' . $sectionObj->external_link);
     }
 }
 if (ENABLE_TRACKING) $router->updateHistory($section);
