@@ -472,50 +472,51 @@ class expTheme {
 
 			//FIXME: module/controller glue code..remove ASAP
 			$module = empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['module']) : expString::sanitize($_REQUEST['controller']);
-			$isController = expModules::controllerExists($module);
+//			$isController = expModules::controllerExists($module);
 
-			if ($isController && !isset($_REQUEST['_common'])) {
+//			if ($isController && !isset($_REQUEST['_common'])) {
+            if (expModules::controllerExists($module)) {
 				// this is being set just in case the url said module=modname instead of controller=modname
 				// with SEF URls turned on its not really an issue, but with them off some of the links
 				// aren't being made correctly...depending on how the {link} plugin was used in the view.
 				$_REQUEST['controller'] = $module;
 
 				echo renderAction($_REQUEST);
-			} else {
-				if ($_REQUEST['action'] == 'index') {
-					$view = empty($_REQUEST['view']) ? 'Default' : $_REQUEST['view'];
-					$title = empty($_REQUEST['title']) ? '' : expString::sanitize($_REQUEST['title']);
-					$src = empty($_REQUEST['src']) ? null : expString::sanitize($_REQUEST['src']);
-					self::showModule($module, $view, $title, $src);
-					return true;
-				}
-
-				global $db, $user;  // these globals are needed for the old school actions which are loaded
-
-				// the only reason we should have a controller down in this section is if we are hitting a common action like
-				// userperms or groupperms...deal with it.
-//				$loc = new stdClass();
-//				$loc->mod = $module;
-//				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
-//				$loc->int = (!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : "");
-                $loc = expCore::makeLocation($module,(isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : ""),(!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : ""));
-				//if (isset($_REQUEST['act'])) $loc->act = $_REQUEST['act'];
-
-				if (isset($_REQUEST['_common'])) {
-					$actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
-				} else {
-					$actfile = "/" . $module . "/actions/" . $_REQUEST['action'] . ".php";
-				}
-
-				if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
-                    include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
-//				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
-//					include_once(BASE.'framework/modules-1/'.$actfile);
-				} else {
-					echo SITE_404_HTML . '<br /><br /><hr size="1" />';
-					echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($module),strip_tags($_REQUEST['action']));
-					echo '<br />';
-				}
+//			} else {
+//				if ($_REQUEST['action'] == 'index') {
+//					$view = empty($_REQUEST['view']) ? 'Default' : $_REQUEST['view'];
+//					$title = empty($_REQUEST['title']) ? '' : expString::sanitize($_REQUEST['title']);
+//					$src = empty($_REQUEST['src']) ? null : expString::sanitize($_REQUEST['src']);
+//					self::showModule($module, $view, $title, $src);
+//					return true;
+//				}
+//
+//				global $db, $user;  // these globals are needed for the old school actions which are loaded
+//
+//				// the only reason we should have a controller down in this section is if we are hitting a common action like
+//				// userperms or groupperms...deal with it.
+////				$loc = new stdClass();
+////				$loc->mod = $module;
+////				$loc->src = (isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : "");
+////				$loc->int = (!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : "");
+//                $loc = expCore::makeLocation($module,(isset($_REQUEST['src']) ? expString::sanitize($_REQUEST['src']) : ""),(!empty($_REQUEST['int']) ? strval(intval($_REQUEST['int'])) : ""));
+//				//if (isset($_REQUEST['act'])) $loc->act = $_REQUEST['act'];
+//
+//				if (isset($_REQUEST['_common'])) {
+//					$actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
+//				} else {
+//					$actfile = "/" . $module . "/actions/" . $_REQUEST['action'] . ".php";
+//				}
+//
+//				if (is_readable(BASE."themes/".DISPLAY_THEME."/modules".$actfile)) {
+//                    include_once(BASE."themes/".DISPLAY_THEME."/modules".$actfile);
+////				} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
+////					include_once(BASE.'framework/modules-1/'.$actfile);
+//				} else {
+//					echo SITE_404_HTML . '<br /><br /><hr size="1" />';
+//					echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($module),strip_tags($_REQUEST['action']));
+//					echo '<br />';
+//				}
 			}
 		}
         return false;
@@ -939,13 +940,14 @@ class expTheme {
 //				$secref->is_original = 1;
 				$db->insertObject($secref,'sectionref');
 		}
-		$iscontroller = expModules::controllerExists($module);
+//		$iscontroller = expModules::controllerExists($module);
 
 		if (defined('SELECTOR') && call_user_func(array(expModules::getModuleClassName($module),"hasSources"))) {
 //			containermodule::wrapOutput($module,$view,$loc,$title);
             containerController::wrapOutput($module,$view,$loc,$title);
 		} else {
-			if (is_callable(array($module,"show")) || $iscontroller) {
+//			if (is_callable(array($module,"show")) || $iscontroller) {
+            if (expModules::controllerExists($module)) {
 				// FIXME: we are checking here for a new MVC style controller or an old school module. We only need to perform
 				// this check until we get the old modules all gone...until then we have the check and a lot of code duplication
 				// in the if blocks below...oh well, that's life.
@@ -994,7 +996,7 @@ class expTheme {
 //                            $container->info['module'] = $controller::displayname();
 							$container->info['source'] = $loc->src;
                             $container->info['scope'] = $module_scope[$source][$module]->scope;
-							$container->info['hasConfig'] = true;
+//							$container->info['hasConfig'] = true;
 //							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 //							$template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
                             $c2 = new containerController();
@@ -1005,7 +1007,7 @@ class expTheme {
 					}
 //				}
 
-				if ($iscontroller) {
+//				if ($iscontroller) {
 					$params['src'] = $loc->src;
 					$params['controller'] = $module;
 					$params['view'] = $view;
@@ -1014,7 +1016,7 @@ class expTheme {
 					renderAction($params);
 //				} else {
 //					call_user_func(array($module,"show"),$view,$loc,$title);
-				}
+//				}
 			} else {
 				echo sprintf(gt('The module "%s" was not found in the system.'),$module);
 			}

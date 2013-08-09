@@ -124,7 +124,7 @@ class containerController extends expController {
             $location = unserialize($containers[$i]->internal);
 
             // check to see if this is a controller or module
-            $iscontroller = expModules::controllerExists($location->mod);
+//            $iscontroller = expModules::controllerExists($location->mod);
             $modclass = expModules::getModuleClassName($location->mod);
             if (class_exists($modclass)) {
                 $mod = new $modclass();
@@ -132,11 +132,11 @@ class containerController extends expController {
                 ob_start();
 //                $mod->_hasParent = 1;
                 if ($containers[$i]->external != 'N;' && $location->mod == 'container') $containers[$i]->hasParent = 1;
-                if ($iscontroller) {
+//                if ($iscontroller) {
                     renderAction(array('controller'=>$location->mod, 'action'=>$containers[$i]->action, 'src'=>$location->src, 'view'=>$containers[$i]->view, 'moduletitle'=>$containers[$i]->title));
-                } else {
-                    $mod->show($containers[$i]->view, $location, $containers[$i]->title);
-                }
+//                } else {
+//                    $mod->show($containers[$i]->view, $location, $containers[$i]->title);
+//                }
                 $containers[$i]->output = trim(ob_get_contents());
                 ob_end_clean();
 
@@ -149,7 +149,7 @@ class containerController extends expController {
                     'hasViews'            => $mod->hasViews(),
                     'class'               => $modclass,
                     'clickable'           => ($clickable_mods == null || in_array($modclass, $clickable_mods)),
-                    'hasConfig'           => $db->tableExists($modclass . "_config")  //FIXME old school config
+//                    'hasConfig'           => $db->tableExists($modclass . "_config")  //FIXME old school config
                 );
             } else {
                 $containers[$i]->output = sprintf(gt('The module "%s" was not found in the system'), $location->mod);
@@ -161,7 +161,7 @@ class containerController extends expController {
                     'hasSources'          => 0,
                     'hasViews'            => 0,
                     'class'               => $modclass,
-                    'hasConfig'           => $db->tableExists($modclass . "_config"),  //FIXME old school config
+//                    'hasConfig'           => $db->tableExists($modclass . "_config"),  //FIXME old school config
                     'clickable'           => 0
                 );
             }
@@ -381,8 +381,8 @@ class containerController extends expController {
             if (expModules::controllerExists($modclass)) {
                 $action = $db->selectValue('container', 'action', "internal='" . serialize($loc) . "'");
                 renderAction(array('controller' => $modclass, 'action' => $action, 'view' => $view,'src'=>$loc->src));
-            } else {
-                $mod->show($view, $loc, $title);
+//            } else {
+//                $mod->show($view, $loc, $title);
             }
 
             $container = new stdClass();

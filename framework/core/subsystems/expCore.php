@@ -97,7 +97,7 @@ class expCore {
 	}
 
 	/**
-	 * Return a podcast link
+	 * Return an old style podcast link
      * COMPATIBILITY - we now use the {rss_link} smarty function to build rss & podcast links
 	 *
 	 * @static

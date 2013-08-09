@@ -608,6 +608,9 @@ class navigationController extends expController {
         }
     }
 
+    /**
+     * Check for cascading page view permission, esp. if not public
+     */
     public static function canView($section) {
         global $db;
 
@@ -628,14 +631,14 @@ class navigationController extends expController {
         }
     }
 
+    /**
+     * Check to see if page is public with cascading
+     */
     public static function isPublic($s) {
-//        global $db;
-
         if ($s == null) {
             return false;
         }
         while ($s->public && $s->parent > 0) {
-//            $s = $db->selectObject('section', 'id=' . $s->parent);
             $s = new section($s->parent);
         }
         $lineage = (($s->public) ? 1 : 0);
