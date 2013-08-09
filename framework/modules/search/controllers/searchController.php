@@ -68,7 +68,7 @@ class searchController extends expController {
 
         $page = new expPaginator(array(
             //'model'=>'search',
-            'records'=>$search->getSearchResults($terms),
+            'records'=>$search->getSearchResults($terms, !empty($this->config['only_best'])),
             //'sql'=>$sql,
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
@@ -92,13 +92,13 @@ class searchController extends expController {
 	    $db->delete('search');
 
         // old school modules
-	    foreach (expModules::modules_list() as $mod) {
-//		    $name = @call_user_func(array($mod,'name'));
-            $name = @call_user_func(array($mod,'searchName'));
-		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
-                $mods[$name] = call_user_func(array($mod,'spiderContent'));
-		    }
-	    }
+//	    foreach (expModules::modules_list() as $mod) {
+////		    $name = @call_user_func(array($mod,'name'));
+//            $name = @call_user_func(array($mod,'searchName'));
+//		    if (class_exists($mod) && is_callable(array($mod,'spiderContent'))) {
+//                $mods[$name] = call_user_func(array($mod,'spiderContent'));
+//		    }
+//	    }
 
         // 2.0 modules
 	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
@@ -233,7 +233,7 @@ class searchController extends expController {
 				$ctr++;
 			}
 			
-			$result  = $search->getSearchResults($item->query, true);
+			$result  = $search->getSearchResults($item->query, false, true);
 			if(empty($result) && !in_array($item->query, $badSearchArr)) {
 				$badSearchArr[] = $item->query;
 				$badSearch[$ctr2]['query'] = $item->query;

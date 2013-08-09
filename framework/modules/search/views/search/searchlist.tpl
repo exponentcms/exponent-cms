@@ -21,7 +21,7 @@
 		{foreach from=$page->records item=result}
 			{*if $result->canview == 1*}
 				<div class="item {cycle values="odd,even"}">
-					<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}</a> <span class="attribution">({$result->category})</span>
+					<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}</a> <span class="attribution">({$result->category}{if $user->isAdmin()}, {'Score'|gettext}:{$result->score|number_format:"2"}{/if})</span>
 					{if $result->body != ""}{br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
 					{clear}
 				</div>

@@ -40,6 +40,7 @@ function smarty_modifier_highlight($text='', $word='', $highlight='') {
        $highlight = empty($highlight) ? 'style="background-color:#ffff55;"' : $highlight;
        $words = explode(' ',$word);
        foreach ($words as $phrase) {
+           $phrase = str_replace(array('+','-','*'), '', $phrase);
     //      return preg_replace('/\b('.preg_quote($word).')\b/', '<span class="highlight">${1}</span>', $text);
            $text = preg_replace('/('.preg_quote($phrase).')/i', '<span '.$highlight.'>${1}</span>', $text);
        }
