@@ -88,6 +88,7 @@ class update_event_registration extends upgradescript {
 
         // create/update the forms data table
         $tablename = $newform->updateTable();
+        $db->delete('forms_' . $tablename,1); // empty the table
 
         $registrants = $db->selectObjects('eventregistration_registrants','value LIKE \'%a:3:{s:4:"name";%\'');
         $newreg = new stdClass();
@@ -99,21 +100,23 @@ class update_event_registration extends upgradescript {
             $db->updateObject($event,'eventregistration');
             $product = $db->selectObject('product','product_type="eventregistration" and product_type_id='.$event->id);
 
-            $reg = expUnserialize($regs->value);
-            $newreg->name = $reg['name'];
-            $newreg->phone = $reg['phone'];
-            $newreg->email = $reg['email'];
-            $newreg->referrer = $product->id;
-            $newreg->timestamp = $regs->registered_date;
-            $loc_data = new stdClass();
-            $loc_data->order_id = $regs->connector_id;
-            $loc_data->event_id = $product->id;
-            $newreg->location_data = serialize($loc_data);
-            $db->insertObject($newreg,'forms_' . $tablename);
-            $count++;
+            if (!empty($product)) {
+                $reg = expUnserialize($regs->value);
+                $newreg->name = $reg['name'];
+                $newreg->phone = $reg['phone'];
+                $newreg->email = $reg['email'];
+                $newreg->referrer = $product->id;
+                $newreg->timestamp = $regs->registered_date;
+                $loc_data = new stdClass();
+                $loc_data->order_id = $regs->connector_id;
+                $loc_data->event_id = $product->id;
+                $newreg->location_data = serialize($loc_data);
+                $db->insertObject($newreg,'forms_' . $tablename);
+                $count++;
+            }
         }
         // delete the old records
-        $db->delete('eventregistration_registrants','value LIKE "%a:3:{s:4:"name";%"');
+        $db->delete('eventregistration_registrants','value LIKE \'%a:3:{s:4:"name";%\'');
 
         return ($count?$count:gt('No'))." ".gt('Event Registrations were updated to 2.2.0 format.');
 	}
