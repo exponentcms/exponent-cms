@@ -84,19 +84,22 @@ class orderController extends expController {
         } */
 
         // find orders with a "closed" status type
-        $closed_count = 0;
+//        $closed_count = 0;
         if (empty($this->params['showclosed'])) {
             $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
-            $status_where  = '';
+            $closed_status = implode(',',$closed_status);
+//            $status_where  = '';
+            $status_where  = ' AND order_status_id NOT IN (' . $closed_status . ')';
 
-            foreach ($closed_status as $status) {
-                if (empty($status_where)) {
-                    $status_where .= ' AND (order_status_id!=' . $status;
-                } else {
-                    $status_where .= ' AND order_status_id!=' . $status;
-                }
-                $closed_count += $db->countObjects('orders', 'order_status_id=' . $status);
-            }
+//            foreach ($closed_status as $status) {
+//                if (empty($status_where)) {
+//                    $status_where .= ' AND (order_status_id!=' . $status;
+//                } else {
+//                    $status_where .= ' AND order_status_id!=' . $status;
+//                }
+//                $closed_count += $db->countObjects('orders', 'order_status_id=' . $status);
+//            }
+            $closed_count = $db->countObjects('orders', 'order_status_id IN (' . $closed_status . ')');
         } else {
             $closed_count = -1;
         }
@@ -108,10 +111,10 @@ class orderController extends expController {
         $sql .= DB_TABLE_PREFIX . '_order_type ot ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0';
 
-        if (!empty($status_where)) {
-            $status_where .= ')';
+//        if (!empty($status_where)) {
+//            $status_where .= ')';
             $sql .= $status_where;
-        }
+//        }
         $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
         //eDebug($sql, true);
         $page = new expPaginator(array(
