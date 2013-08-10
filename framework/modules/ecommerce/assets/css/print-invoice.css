@@ -80,3 +80,7 @@ font-size: 200%;
     font-style:italic;
 }
 
+.exp-dropmenu ul, .extra-data ul {
+	margin-top : 0;
+	margin-bottom: 0;
+}

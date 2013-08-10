@@ -15,7 +15,7 @@
 
 {if !empty($extra_data)}
     <div class="extra-data">
-        <strong>{'Registering the following people for this event'|gettext}</strong>
+        <strong>{'Registering the following for this event'|gettext}</strong>
         <ul>
             {foreach key=key from=$extra_data[0] item=item}
                 {$key0 = $key}

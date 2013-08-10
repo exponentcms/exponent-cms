@@ -45,11 +45,11 @@
                         {/if}
                         {$oi->getUserInputFields('list')}
 
-                        {if $oi->product_type == "product" || $oi->product_type == "childProduct"}
+                        {*{if $oi->product_type == "product" || $oi->product_type == "childProduct"}*}
                             {$oi->getExtraData()}
-                        {else}
-                            {$oi->getFormattedExtraData('list')}
-                        {/if}
+                        {*{else}*}
+                            {*{$oi->getFormattedExtraData('list')}*}
+                        {*{/if}*}
                         {$oi->getShippingSurchargeMessage()}
                     </td>
                     <td>

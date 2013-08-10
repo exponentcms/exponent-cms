@@ -26,7 +26,7 @@
             <span class="itemname"><strong><a style="margin: 0px; padding:0px" href="{link action=show controller=eventregistration title=$item->product->getSEFURL() orderitem_id=$item->id}">{$item->products_name}</a></strong></span>
             {if $number > 0 || $options|@count > 0}
                 <div class="options">
-                    <a href="javascript:void();" class="infoicon">{'Registering'|gettext} {$number} {'people'|gettext}:</a>
+                    <a href="javascript:void();" class="infoicon">{'Registering'|gettext} {$number}:</a>
                     <div class="exp-dropmenu">
                         {if $options|@count > 0}
                             <div class="hd" style="padding:0 5px">

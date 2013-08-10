@@ -16,9 +16,12 @@
 {if $printerfriendly==1}
     {$pf=1}
     {*{if $include_css == true}*}
-        {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}
-        {/css}
+        {*{css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}*}
+        {*{/css}*}
     {*{/if}*}
+    <style type="text/css">
+        {$css}
+    </style>
 {else}
     {css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/invoice.css"}
     {/css}
@@ -228,11 +231,11 @@
                             {/foreach}
                         {/if}
                         {$oi->getUserInputFields('br')}
-						{if $oi->product_type == "product" || $oi->product_type == "childProduct"}
+						{*{if $oi->product_type == "product" || $oi->product_type == "childProduct"}*}
 							{$oi->getExtraData()}
-						{else}
-							{$oi->getFormattedExtraData('list')}
-						{/if}
+						{*{else}*}
+							{*{$oi->getFormattedExtraData('list')}*}
+						{*{/if}*}
                     </td>
                     <td>
                         {$oi->products_warehouse_location}

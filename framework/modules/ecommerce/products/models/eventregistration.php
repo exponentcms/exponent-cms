@@ -276,7 +276,8 @@ class eventregistration extends expRecord {
         $view->assign('registrants', $registrants);
 
         //assign the number registered to the view
-        $number = count($registrants);
+//        $number = count($registrants);
+        $number = $item->quantity;
         $view->assign('number', $number);
 
         return $view->render();

@@ -145,6 +145,11 @@ table#cart table td {
 	padding : 2px 8px;
 }
 
+.exp-dropmenu ul, .extra-data ul {
+	margin-top : 0;
+	margin-bottom: 0;
+}
+
 #cart .exp-dropmenu ul li {
 	padding     : 2px 0px;
 	font-size   : 85%;

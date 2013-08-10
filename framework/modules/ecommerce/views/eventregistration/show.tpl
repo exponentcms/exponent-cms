@@ -39,7 +39,7 @@
 
     <div class="bd">
         <h2>{$product->eventdate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
-            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|format_date:"%A, %B %e, %Y"}{/if}</h2>
+            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}{/if}</h2>
         <hr>
         <h3>{$product->title}</h3>
         {permissions}

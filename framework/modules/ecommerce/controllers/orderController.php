@@ -182,10 +182,10 @@ class orderController extends expController {
 
         $order->setReferencingIds();
 
-//        $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
+        $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
 
         assign_to_template(array(
-//            'css'            => $css,
+            'css'            => $css,
             'printerfriendly'=> $pf,
             'order'          => $order,
 //            'shipping'       => $order->orderitem[0],  //FIXME what about new orders with no items??
@@ -250,6 +250,7 @@ class orderController extends expController {
         $order->billingmethod[0]->billingtransaction = array_reverse($order->billingmethod[0]->billingtransaction);
         if (isset($this->params['printerfriendly'])) $pf = $this->params['printerfriendly'];
         else $pf = 0;
+        $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
 
         $trackMe = false;
         if (isset($this->params['tc']) && $this->params['tc'] == 1) {
@@ -271,6 +272,7 @@ class orderController extends expController {
         if (DEVELOPMENT != 0) $trackMe = false;
         assign_to_template(array(
             'printerfriendly'=> $pf,
+            'css'            => $css,
             'order'          => $order,
             'shipping'       => $order->orderitem[0],
             'billing'        => $billing,
@@ -288,8 +290,9 @@ class orderController extends expController {
         $template = get_template_for_action($this, 'email_invoice', $this->loc);
         $order    = new order($this->params['id']);
         $billing  = new billing($this->params['id']);
-        //$css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
+        $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
         assign_to_template(array(
+            'css'     => $css,
             'order'   => $order,
             'shipping'=> $order->orderitem[0],
             'billing' => $billing

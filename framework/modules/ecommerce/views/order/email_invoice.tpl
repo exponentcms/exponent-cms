@@ -13,13 +13,21 @@
  *
  *}
 
-{css unique="email-invoice"}
-{literal}
-    .address span {
-        display:block;
-    }
-{/literal}
-{/css}
+<style type="text/css" media="screen">
+    {literal}
+        .address.show span {
+            display:block;
+        }
+        span.pmt-label {
+            color: #555555;
+            display: inline-block;
+            font-weight: bold;
+            padding: 5px;
+            text-align: right;
+            width: 170px;
+        }
+    {/literal}
+</style>
 
 <div id="invoice" style="color:#000000; font-size:100%; position:relative; text-align: left; margin: 0px; padding: 0px;">   
     <div id="invoice-data">
