@@ -24,9 +24,8 @@ $active = ECOM;
 if (!$user->isAdmin() || empty($active)) return false;
 
 //$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = 1');  //FIXME order_status_id of 1 isn't always true
-$open_status = $db->selectColumn('order_status', 'id', 'treat_as_closed != 1');
-$open_status = implode(',',$open_status);
-$new_orders = $db->countObjects('orders', 'purchased !=0 AND (order_status_id IN (' . $open_status . '))');
+$new_status = $db->selectValue('order_status', 'id', 'is_default = 1');
+$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = ' . $new_status);
 if ($new_orders > 0) {
     $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new') . '</em>';
 } else {
