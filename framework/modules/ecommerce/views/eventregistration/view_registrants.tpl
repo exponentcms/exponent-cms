@@ -62,7 +62,7 @@
             <span class="label">{'Price per person:'|gettext} </span>
             <span class="value">{if $event->base_price}{$event->base_price|currency}{else}{'No Cost'|gettext}{/if}</span>{br}
             <span class="label">{'Seats Registered:'|gettext} </span>
-            <span class="value">{$registrants|count} {'of'|gettext} {$event->quantity}</span>{br}
+            <span class="value">{$count} {'of'|gettext} {$event->quantity}</span>{br}
             <span class="label">{'Registration Closes:'|gettext} </span>
             <span class="value">{$event->signup_cutoff|format_date:"%A, %B %e, %Y"}</span>
         </div>

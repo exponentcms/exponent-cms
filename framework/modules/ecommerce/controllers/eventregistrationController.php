@@ -543,10 +543,11 @@ class eventregistrationController extends expController {
         expHistory::set('viewable', $this->params);
         $event = new eventregistration($this->params['id']);
         //Get all the registrants in the event
-        $registrants = $event->getRegistrants();
+//        $registrants = $event->getRegistrants();
         assign_to_template(array(
             'event'=> $event,
-            'registrants'=> $registrants,
+            'registrants'=> $event->getRegistrants(),
+            'count'=> $event->countRegistrants(),
 //            'header'=> $header,
 //            'body'=> $body,
 //            'email'=> $email

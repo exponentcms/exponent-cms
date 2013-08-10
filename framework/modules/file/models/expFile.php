@@ -1901,6 +1901,11 @@ class expFile extends expRecord {
                 }
             }
 
+            // ensure the form data table exists and is current
+            foreach ($db->selectObjects('forms') as $f) {
+                if ($f->is_saved) $f->updateTable();
+            }
+
             // rename mixed case tables if necessary
             expDatabase::fix_table_names();
 //            if ($eql_version != $current_version) {
