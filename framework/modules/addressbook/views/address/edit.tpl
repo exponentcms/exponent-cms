@@ -74,11 +74,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         {if !$user->isLoggedIn()}
             <div id="passwordDiv">
                 {control type="checkbox" flip=1 id="remember_me" name="remember_me" label="Remember Me"|gettext|cat:"?" value=1 checked=true}
-                <blockquote>
-                    {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."|gettext}&#160;&#160;
-                    {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
-                </blockquote>
                 <div class="passwords">
+                    <blockquote>
+                        {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."|gettext}&#160;&#160;
+                        {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
+                    </blockquote>
                     {control type="password" name="password" label="Password"|gettext required=true}
                     {control type="password" name="password2" label="Confirm Password"|gettext required=true}
                 </div>

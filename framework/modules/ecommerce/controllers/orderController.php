@@ -304,13 +304,15 @@ class orderController extends expController {
             $addresses = explode(',', ecomconfig::getConfig('email_invoice_addresses'));
             foreach ($addresses as $address) {
                 $mail = new expMail();
+                $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                if (empty($from)) $from = SMTP_FROMADDRESS;
                 $mail->quickSend(array(
                     'html_message'=> $html,
                     'text_message'=> $txt,
                     'to'          => trim($address),
 //					    'from'=>ecomconfig::getConfig('from_address'),
 //					    'from_name'=>ecomconfig::getConfig('from_name'),
-                    'from'        => array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name')),
+                    'from'        => $from,
                     'subject'     => 'An order was placed on the ' . ecomconfig::getConfig('storename'),
                 ));
             }
@@ -323,6 +325,8 @@ class orderController extends expController {
             $usermsg .= ecomconfig::getConfig('ecomfooter');
 
             $mail = new expMail();
+            $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+            if (empty($from)) $from = SMTP_FROMADDRESS;
             $mail->quickSend(array(
                 'html_message'=> $usermsg,
                 'text_message'=> $txt,
@@ -330,7 +334,7 @@ class orderController extends expController {
                 //'to'=>$order->billingmethod[0]->email,
 //			        'from'=>ecomconfig::getConfig('from_address'),
 //			        'from_name'=>ecomconfig::getConfig('from_name'),
-                'from'        => array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name')),
+                'from'        => $from,
                 'subject'     => ecomconfig::getConfig('invoice_subject'),
             ));
         }
@@ -691,11 +695,13 @@ exit();
                     $html .= ecomconfig::getConfig('ecomfooter');
 
                     $mail = new expMail();
+                    $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                    if (empty($from)) $from = SMTP_FROMADDRESS;
                     $mail->quickSend(array(
                         'html_message'=> $html,
                         'text_message'=> str_replace("<br>", "\r\n", $template->render()),
                         'to'          => $email_addy,
-                        'from'        => ecomconfig::getConfig('from_address'),
+                        'from'        => $from,
                         'subject'     => 'The status of your order (#' . $order->invoice_id . ') has been updated on ' . ecomconfig::getConfig('storename') . '.'
                     ));
                 } else {

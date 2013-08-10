@@ -17,12 +17,16 @@
     <div class="extra-data">
         <strong>{'Registering the following people for this event'|gettext}</strong>
         <ul>
+            {foreach key=key from=$extra_data[0] item=item}
+                {$key0 = $key}
+                {break}
+            {/foreach}
             {foreach from=$extra_data item=person}
                 <li>
                     {if !empty($person.name)}
                         {$person.name}
                     {else}
-                        {$person[0]}
+                        {$person.$key0}
                     {/if}
                 </li>
             {/foreach}

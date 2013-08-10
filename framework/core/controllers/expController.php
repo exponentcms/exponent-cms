@@ -1259,8 +1259,8 @@ abstract class expController {
                         $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
                     }
+                    break;
                 }
-                break;
             default:
                 //check for a function in the controller called 'action'_meta and use it if so
                 $functionName = $action . "_meta";

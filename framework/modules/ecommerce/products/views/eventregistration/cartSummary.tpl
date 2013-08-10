@@ -46,12 +46,16 @@
                             </div>
                             <div class="bd">
                                 <ul>
+                                    {foreach key=key from=$registrants[0] item=item}
+                                        {$key0 = $key}
+                                        {break}
+                                    {/foreach}
                                     {foreach key=key from=$registrants item=person}
                                         <li>
                                             {if !empty($person.name)}
                                                 {$person.name}
                                             {else}
-                                                {$person[0]}
+                                                {$person.$key0}
                                             {/if}
                                         </li>
                                     {/foreach}

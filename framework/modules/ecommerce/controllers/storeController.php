@@ -1324,8 +1324,8 @@ class storeController extends expController {
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
                     $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
+                    break;
                 }
-                break;
             default:
                 $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical'=> '');
         }
@@ -1767,13 +1767,15 @@ class storeController extends expController {
                         $html = $template->render();
                         $html .= ecomconfig::getConfig('ecomfooter');
 
+                        $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                        if (empty($from)) $from = SMTP_FROMADDRESS;
                         try {
                             $mail = new expMail();
                             $mail->quickSend(array(
                                 'html_message' => $html,
                                 'text_message' => str_replace("<br>", "\r\n", $template->render()),
                                 'to'           => $email_addy,
-                                'from'         => ecomconfig::getConfig('from_address'),
+                                'from'         => $from,
                                 'subject'      => 'Your Order Has Been Shipped (#' . $order->invoice_id . ') - ' . ecomconfig::getConfig('storename')
                             ));
                         } catch (Exception $e) {
