@@ -32,7 +32,7 @@
 	            {control type="text" name="fedex_account_number" label="FedEx Account Number"|gettext value=$calculator->configdata.fedex_account_number required=1}
 	            {control type="text" name="fedex_meter_number" label="Meter Number"|gettext value=$calculator->configdata.fedex_meter_number required=1}
 	            {control type="text" name="fedex_key" label="Key"|gettext value=$calculator->configdata.fedex_key required=1}
-	            {control type="text" name="fedex_password" label="Password"|gettext value=$calculator->configdata.fedex_password required=1}
+	            {control type="password" name="fedex_password" label="Password"|gettext value=$calculator->configdata.fedex_password required=1}
 	            {*control type="text" name="shipfrom[shipperNumber]" label="Account #" value=$calculator->configdata.shipfrom.shipperNumber*}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
