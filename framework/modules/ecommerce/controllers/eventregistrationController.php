@@ -75,7 +75,7 @@ class eventregistrationController extends expController {
             $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
             foreach ($events as $event) {
                // $this->signup_cutoff > time()
-               if ($event->eventdate <= time() && $event->signup_cutoff <= time()) {
+               if ($event->eventdate <= time() && $event->eventenddate <= time()) {
                    $pass_events[] = $event;
                }
                // eDebug($event->signup_cutoff, true);
@@ -87,8 +87,13 @@ class eventregistrationController extends expController {
                 $events = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
             }
             foreach ($events as $event) {
+                if ($user->isAdmin()) {
+                    $endtime = $event->eventenddate;
+                } else {
+                    $endtime = $event->signup_cutoff;
+                }
                 // $this->signup_cutoff > time()
-                if ($event->eventdate > time() && $event->signup_cutoff > time()) {
+                if ($event->eventdate > time() && $endtime > time()) {
                     $pass_events[] = $event;
                 }
                 // eDebug($event->signup_cutoff, true);
@@ -358,7 +363,7 @@ class eventregistrationController extends expController {
             $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
             foreach ($events as $event) {
                // $this->signup_cutoff > time()
-               if ($event->eventdate <= time() && $event->signup_cutoff <= time()) {
+               if ($event->eventdate <= time() && $event->eventenddate <= time()) {
                    $pass_events[] = $event;
                }
                // eDebug($event->signup_cutoff, true);
@@ -371,7 +376,12 @@ class eventregistrationController extends expController {
             }
             foreach ($events as $event) {
                 // $this->signup_cutoff > time()
-                if ($event->eventdate > time() && $event->signup_cutoff > time()) {
+                if ($user->isAdmin()) {
+                    $endtime = $event->eventenddate;
+                } else {
+                    $endtime = $event->signup_cutoff;
+                }
+                if ($event->eventdate > time() && $endtime > time()) {
                     $pass_events[] = $event;
                 }
                 // eDebug($event->signup_cutoff, true);
