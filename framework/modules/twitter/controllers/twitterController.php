@@ -117,7 +117,7 @@ class twitterController extends expController {
         $ret = preg_replace('/\\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]/i', "<a href=\"\\0\" class=\"twitterlink\">\\0</a>", $ret);
         $ret = preg_replace('/(^|[^\w])(@[\d\w\-]+)/', '\\1<a href="http://twitter.com/#!/$2" class=\"twitteruser\">$2</a>', $ret);
         //$ret = preg_replace('/(^|[^\w])(#[\d\w\-]+)/', '\\1<a href="http://twitter.com/#!/search/$2" class=\"twittertopic\">$2</a>' , $ret);
-        $ret = preg_replace('/\s+#(\w+)/', ' <a href="http://search.twitter.com/search?q=%23$1">#$1</a>', $ret);
+        $ret = preg_replace('/\s+#(\w+)/', ' <a href="https://twitter.com/search?q=%23$1">#$1</a>', $ret);
         //$ret = preg_replace("/(^| )#(\w+)/", "\\1#\\2", $ret);
         return $ret;
     }
