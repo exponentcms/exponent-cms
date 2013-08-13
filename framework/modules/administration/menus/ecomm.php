@@ -109,14 +109,6 @@ $ecom = array(
                             'url'       => makeLink(array('controller' => 'ecomconfig', 'action' => 'options')),
                         ),
                         array(
-                            'text'      => gt('Manage Definable Fields'),
-                            'classname' => 'manage',
-                            'url'       => makeLink(array(
-                                'controller' => 'expDefinableField',
-                                'action'     => 'manage'
-                            ))
-                        ),
-                        array(
                             'text'      => gt("Manage Store Categories"),
                             'classname' => 'manage',
                             'url'       => makeLink(array('controller' => 'storeCategory', 'action' => 'manage')),
@@ -126,6 +118,14 @@ $ecom = array(
                             'classname' => 'manage',
 //                            'url'=>makeLink(array('controller'=>'company','action'=>'manage')),
                             'url'       => makeLink(array('controller' => 'company', 'action' => 'showall')),
+                        ),
+                        array(
+                            'text'      => gt('Manage Definable Fields'),
+                            'classname' => 'manage',
+                            'url'       => makeLink(array(
+                                'controller' => 'expDefinableField',
+                                'action'     => 'manage'
+                            ))
                         ),
                     ),
                 ),

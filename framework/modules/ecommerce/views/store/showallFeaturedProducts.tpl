@@ -45,6 +45,11 @@
                         {/if}
                         {br}{$listing->title}
                     </a>
+                    {if $listing->featured_body != ""}
+                        <div class="bodycopy">
+                            {$listing->featured_body}
+                        </div>
+                    {/if}
                 </div>
             </div>
         {/if}

@@ -536,9 +536,9 @@ class eventregistrationController extends expController {
             $product->addToCart($this->params['eventregistration']);
         }
 
+        $order->calculateGrandTotal();
         $order->setOrderType($this->params);
         $order->setOrderStatus($this->params);
-        $order->calculateGrandTotal();
 
         $billing = new billing();
         $result  = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order); //FIXME $opts doesn't exist

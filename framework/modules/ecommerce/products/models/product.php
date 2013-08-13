@@ -845,10 +845,9 @@ class product extends expRecord {
 
         //Adjusting Children Products
         if (!empty($originalId) && !empty($this->params['copy_children'])) {
-            $origProd = new $product_type($originalId); //FIXME $product_type is not set
+            $origProd = new $product->product_type($originalId); //FIXME $product_type is not set, changed to $product->product_type
             $children = $origProd->find('all', 'parent_id=' . $originalId);
             foreach ($children as $child) {
-
                 unset($child->id);
                 $child->parent_id = $product->id;
                 $child->title = $product->title;

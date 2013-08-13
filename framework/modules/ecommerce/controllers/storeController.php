@@ -991,7 +991,6 @@ class storeController extends expController {
             // if we have an id lets pull the product type from the products table.
             $product_type = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
         } else {
-
             if (empty($this->params['product_type'])) redirect_to(array('controller' => 'store', 'action' => 'picktype'));
             $product_type = $this->params['product_type'];
         }

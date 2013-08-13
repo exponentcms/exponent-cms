@@ -21,7 +21,7 @@
 
 <div id="editproduct" class="module store edit yui-skin-sam exp-skin exp-admin-skin">
     {if $record->id != ""}
-        <h1>{'Edit Information for'|gettext} {$modelname}</h1>
+        <h1>{'Edit Information for'|gettext}{if $record->childProduct|@count != 0} {'Parent'|gettext}{/if}{if $record->parent_id != 0} {'Child'|gettext}{/if} {$modelname|ucfirst}</h1>
     {else}
         <h1>{'New'|gettext} {$modelname}</h1>
     {/if}

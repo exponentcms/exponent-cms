@@ -637,7 +637,7 @@ exit();
         }
     }
 
-    function set_order_type() {
+    function set_order_type() {  //FIXME never used
         global $db;
 
         if (empty($this->params['id'])) expHistory::back();
@@ -650,6 +650,9 @@ exit();
         expHistory::back();
     }
 
+    /**
+     * Change order status and email notification if necessary
+     */
     function setStatus() {
         global $db, $template;
 

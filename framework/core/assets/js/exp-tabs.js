@@ -40,10 +40,14 @@ YUI.add('exptabs', function(Y) {
         };
 
         // Listener for tab clicks
-        Y.one(o.srcNode+' ul.yui-nav').delegate('click', openTab, 'a');
+        if (Y.one(o.srcNode+' ul.yui-nav') != null) {
+            Y.one(o.srcNode+' ul.yui-nav').delegate('click', openTab, 'a');
+        }
 
         // Clicks the first tab if we don't have a history for this tabset
-        tabs.item(history.get('tab') || 0).simulate('click');
+        if (tabs.item(history.get('tab') || 0) != null) {
+            tabs.item(history.get('tab') || 0).simulate('click');
+        }
 
         // Watches the URL for hash changes
         Y.on('history:change', function(e) {
