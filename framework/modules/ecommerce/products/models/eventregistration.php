@@ -786,6 +786,10 @@ class eventregistration extends expRecord {
         return $count;
     }
 
+    public function isChild() {
+        return false;
+    }
+
 }
 
 ?>

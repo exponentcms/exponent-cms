@@ -79,7 +79,7 @@
                                     {if $permissions.delete == 1}
                                         {icon action=delete record=$listing title="Delete `$listing->title`"}
                                     {/if}
-                                    {if $permissions.edit == 1 && $listing->product_type == "product"}
+                                    {if $permissions.edit == 1 && ($listing->product_type == "product" || $listing->product_type == "eventregistration")}
                                         {icon class=copy action=copyProduct title="Copy `$listing->title` " record=$listing}
                                     {/if}
                                 </div>

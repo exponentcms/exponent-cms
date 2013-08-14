@@ -25,7 +25,7 @@
     <div class="form_header">
         {permissions}
             <div class="module-actions">
-                {if $permissions.create == true || $permissions.edit == true}
+                {if $permissions.create == 1 || $permissions.edit == 1}
                     {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
                 {/if}
                 {if $permissions.manage == 1}
@@ -37,10 +37,11 @@
         <h2>{$event->title}</h2>
         {permissions}
             <div class="item-actions">
-                {if $permissions.edit == true}
+                {if $permissions.edit == 1}
                     {icon controller="store" action=edit record=$event}
+                    {icon controller="store" action=copyProduct class="copy" record=$event text="Copy" title="Copy `$event->title` "}
                 {/if}
-                {if $permissions.delete == true}
+                {if $permissions.delete == 1}
                     {icon controller="store" action=delete record=$event}
                 {/if}
             </div>
@@ -73,7 +74,7 @@
             {permissions}
                 {if $registrants|count < $event->quantity}
                     <div class="module-actions">
-                        {if $permissions.create == true}
+                        {if $permissions.create == 1}
                             {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
                         {/if}
                     </div>
@@ -136,7 +137,7 @@
                                 <td>
                                     {permissions}
                                         <div class="item-actions">
-                                            {if $permissions.edit == true}
+                                            {if $permissions.edit == 1}
                                                 {icon class=edit action=edit_registrant event_id=$event->id id=$registrant->id title='Edit this Registrant'|gettext}
                                             {/if}
                                             {if $permissions.delete == 1}

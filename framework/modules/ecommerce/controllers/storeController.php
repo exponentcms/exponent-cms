@@ -1106,6 +1106,13 @@ class storeController extends expController {
         global $db;
 
         //expHistory::set('editable', $this->params);
+        $f = new forms();
+        $forms_list = array();
+        $forms_list[0] = '- '.gt('No User Input Required').' -';
+        $forms = $f->find('all', 'is_saved=1');
+        if (!empty($forms)) foreach ($forms as $frm) {
+            $forms_list[$frm->id] = $frm->title;
+        }
 
         // first we need to figure out what type of ecomm product we are dealing with
         if (!empty($this->params['id'])) {
@@ -1184,6 +1191,7 @@ class storeController extends expController {
             'parent'            => new $product_type($record->parent_id, false, true),
             'form'              => $record->getForm($record->parent_id == 0 ? 'edit' : 'child_edit'),
             'optiongroups'      => $editable_options,
+            'forms'=> $forms_list,
             'shipping_services' => $shipping_services,
             'shipping_methods'  => $shipping_methods
         ));

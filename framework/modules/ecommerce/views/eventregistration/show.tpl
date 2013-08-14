@@ -44,8 +44,11 @@
         <h3>{$product->title}</h3>
         {permissions}
             <div class="item-actions">
-                {if $permissions.configure == 1 or $permissions.manage == 1}
+                {if $permissions.edit == true}
                     {icon controller="store" action="edit" id=$product->id title="Edit this entry"|gettext}
+                    {icon controller="store" action=copyProduct class="copy" record=$product text="Copy" title="Copy `$product->title` "}
+                {/if}
+                {if $permissions.delete == true}
                     {icon controller="store" action="delete" id=$product->id title="Delete this entry"|gettext}
                 {/if}
             </div>

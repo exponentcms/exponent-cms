@@ -49,6 +49,7 @@
                                 <div class="item-actions">
                                     {if $permissions.edit == true}
                                         {icon controller="store" action=edit record=$item}
+                                        {icon controller="store" action=copyProduct class="copy" record=$item text="Copy" title="Copy `$item->title` "}
                                     {/if}
                                     {if $permissions.delete == true}
                                         {icon controller="store" action=delete record=$item}
