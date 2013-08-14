@@ -13,6 +13,7 @@
  *
  *}
 
+{if $record->parent_id == 0}
 {control type="hidden" name="tab_loaded[images]" value=1}
 <div id="imagefunctionality">              
     {control type="text" name="images[image_alt_tag]" label="Image Alt Tag"|gettext value=$record->image_alt_tag description="The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
@@ -43,7 +44,9 @@
     {control type=files name="featured_image" label="Featured Product Images"|gettext subtype="featured_image" accept="image/*" value=$record->expFile description="Images to use if this item is a featured product"|gettext}
     {control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
 </div>
-
+{else}
+	<h2>{'Images'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
+{/if}
 {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {

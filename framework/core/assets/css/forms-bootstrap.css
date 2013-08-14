@@ -103,3 +103,16 @@ a.icon-sort, .container-chrome ul li a.icon-sort {
 .control .radio label, .control .checkbox label {
 	margin-bottom: 0px!important;
 }
+
+.awesome.add-to-cart-btn,
+.awesome.add-to-cart-btn a {
+	line-height: 2.4!important;
+}
+
+.add-to-cart-btn input[type="text"] {
+    width: 24px!important;
+}
+.add-to-cart-btn .awesome {
+    padding-left: 60px!important;
+
+}

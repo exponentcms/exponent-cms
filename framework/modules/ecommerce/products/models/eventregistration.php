@@ -108,7 +108,7 @@ class eventregistration extends expRecord {
 
             $event->earlydiscountdate = strtotime($params['earlydiscountdate']);
             $event->early_discount_amount = !empty($params['early_discount_amount']) ? $params['early_discount_amount'] : 0;
-            $event->early_discount_amount_mod = $params['early_discount_amount_mod'];
+            $event->early_discount_amount_modifiers = $params['early_discount_amount_mod'];
             $event->use_early_price = !empty($params['use_early_price']) ? $params['use_early_price'] : false;
 
             $event->id = empty($product->product_type_id) ? null : $product->product_type_id;
@@ -244,7 +244,6 @@ class eventregistration extends expRecord {
                                 }
                             }
                         }
-
                         $items[$option->id] = $text . $price;
                     }
                 }

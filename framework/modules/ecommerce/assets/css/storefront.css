@@ -23,12 +23,40 @@
 	vertical-align : top;
 }
 
+.store.showall .product,
+.related-products .product {
+	margin-right : 4%;
+	text-align   : center;
+}
+
+.store.showall .ipr1 .product,
+.related-products.ipr1 .product {
+	width        : 90%;
+}
+
+.store.showall .ipr2 .product,
+.related-products.ipr2 .product {
+	width        : 45%;
+}
+
 .store.showall .ipr3 .product,
 .related-products.ipr3 .product {
 	width        : 30%;
-	*width       : 29%;
-	margin-right : 4%;
-	text-align   : center;
+}
+
+.store.showall .ipr4 .product,
+.related-products.ipr4 .product {
+	width        : 23%;
+}
+
+.store.showall .ipr5 .product,
+.related-products.ipr5 .product {
+	width        : 18%;
+}
+
+.store.showall .ipr6 .product,
+.related-products.ipr6 .product {
+	width        : 15%;
 }
 
 .product .related-products h2 {

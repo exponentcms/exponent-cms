@@ -1179,6 +1179,7 @@ class storeController extends expController {
         }
 
         assign_to_template(array(
+            'copy'              => true,
             'record'            => $record,
             'parent'            => new $product_type($record->parent_id, false, true),
             'form'              => $record->getForm($record->parent_id == 0 ? 'edit' : 'child_edit'),
@@ -1214,20 +1215,24 @@ class storeController extends expController {
             //Create a flash message and redirect to the page accordingly
             if ($record->parent_id != 0) {
                 $parent = new $product_type($record->parent_id, false, false);
-                flash("message", gt("Child product saved."));
+                if (isset($this->params['original_id'])) {
+                    flash("message", gt("Child product saved."));
+                } else {
+                    flash("message", gt("Child product copied and saved."));
+                }
                 redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $parent->sef_url));
             } elseif (isset($this->params['original_id'])) {
                 flash("message", gt("Product copied and saved. You are now viewing your new product."));
-                redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $record->sef_url));
             } else {
                 flash("message", gt("Product saved."));
-                redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $record->sef_url));
             }
+            redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $record->sef_url));
         } elseif ($product_type == "giftcard") {
             flash("message", gt("Giftcard saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         } elseif ($product_type == "eventregistration") {
             //FIXME shouldn't event registrations be added to search index?
+//            $record->addContentToSearch();  //FIXME there is NO eventregistration::addContentToSearch() method
             flash("message", gt("Event saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         } elseif ($product_type == "donation") {

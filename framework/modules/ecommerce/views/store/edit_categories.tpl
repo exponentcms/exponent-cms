@@ -19,5 +19,5 @@
 	{br}
 	{control type="tagtree" name="managecats" id="managecats" controller="store" model="storeCategory" draggable=false addable=false menu=true checkable=true values=$record->storeCategory expandonstart=true }
 {else}
-	<h2>{'Category is inherited from this product\'s parent.'|gettext}</h2>
+	<h2>{'Categories'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
 {/if}

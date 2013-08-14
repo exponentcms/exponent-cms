@@ -26,7 +26,7 @@
  */
 class update_event_registration extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.2.1';  // when we moved to using site form for event registration, we changed data format
+	protected $to_version = '2.2.1';  // when we moved to using site forms for event registration, we changed data format
 
 	/**
 	 * name/title of upgrade script

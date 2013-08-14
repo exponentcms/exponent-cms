@@ -123,15 +123,17 @@
                         {clear}
                         <h4>{'Options'|gettext}</h4>
                         <div class="product-options">
-                            {control type="hidden" name="ticket_types" value="1"}
-                            {control type=hidden name=options_shown value=$product->id}
+                            {control type=hidden name="ticket_types" value="1"}
+                            {control type=hidden name="options_shown" value=$product->id}
                             {foreach from=$product->optiongroup item=og}
                                 {if $og->hasEnabledOptions()}
                                     <div class="option {cycle values="odd,even"}">
                                         {if $og->allow_multiple}
-                                            {optiondisplayer product=$product options=$og->title view=checkboxes_with_quantity display_price_as=total selected=$params.options}
+                                            {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=total selected=$params.options}*}
+                                            {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}
                                         {else}
-                                            {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}
+                                            {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}*}
+                                            {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}
                                         {/if}
                                     </div>
                                 {/if}

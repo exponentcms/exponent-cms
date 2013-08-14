@@ -252,6 +252,7 @@ class cartController extends expController {
 
     function show() {
         global $order;
+
         //$cartinfo->''ecomconfig::getConfig('email_invoice')
         //$back = expHistory::getLast('viewable');
         //eDebug(new expHistory);
