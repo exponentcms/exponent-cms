@@ -323,7 +323,7 @@ class expCommentController extends expController {
         }
         // check the anti-spam control
         if (!ANTI_SPAM_USERS_SKIP && !$user->isLoggedIn()) {
-            expValidator::check_antispam($this->params, gt("Your comment could not be posted because anti-spam verification failed.  Please try again."));
+            expValidator::check_antispam($this->params, gt('Your comment was not posted.') . ' ' . gt("Anti-spam verification failed.  Please try again. Please try again."));
         }
         
         // figure out the name and email address

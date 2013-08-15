@@ -77,7 +77,7 @@
                                     <td>{"If a customer purchases more than"|gettext} </td>
                                     <!--td>{control type="dropdown" name="pricing[quantity_discount_num_items_mod]" label=" " items=$record->quantity_discount_items_modifiers value=$record->quantity_discount_num_items}</td-->
                                     <td>{control type="text" name="pricing[quantity_discount_num_items]" label=" " value=$record->quantity_discount_num_items size=3 filter=integer}</td>
-                                    <td>{'items, than discount the price by'|gettext}</td>
+                                    <td>{'items, then discount the price by'|gettext}</td>
                                     <td>{control type="text" name="pricing[quantity_discount_amount]" label=" " value=$record->quantity_discount_amount size=3 filter=decimal}
                                     <td>{control type="dropdown" name="pricing[quantity_discount_amount_mod]" label=" " items=$record->quantity_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
                                 </tr>
@@ -174,7 +174,7 @@
                         <h2>{'Options'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
                     </div>
                     <div id="uifld">
-                        <h2>{'User Input Fields'|gettext} {'are inherited from this products\'s parent.'|gettext}</h2>
+                        <h2>{'User Input Fields'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
                     </div>
                     <div id="active">
                         {control type="hidden" name="tab_loaded[status]" value=1}
