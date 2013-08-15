@@ -25,8 +25,11 @@
     </div>
    {permissions}
     <div class="item-actions">
-        {if $permissions.configure == 1 or $permissions.manage == 1}
+        {if $permissions.edit == 1}
             {icon action=edit id=$listing->id title="Edit this entry"|gettext}
+            {icon action=copyProduct class="copy" record=$listing text="Copy" title="Copy `$listing->title` "}
+        {/if}
+        {if $permissions.delete == 1}
             {icon action=delete record=$listing title="Delete this product"|gettext}
         {/if}
     </div>

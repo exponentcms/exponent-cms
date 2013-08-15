@@ -52,7 +52,8 @@ class expHTMLEditorController extends expController {
     function update () {
         global $db;
 
-        $obj = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
+//        $obj = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
+        $obj = self::getEditorSettings($this->params['id']);
         $obj->name = $this->params['name'];
         $obj->data = stripSlashes($this->params['data']);
         $obj->skin = $this->params['skin'];
@@ -77,7 +78,8 @@ class expHTMLEditorController extends expController {
         global $db;
 
         expHistory::set('editable', $this->params);
-        $tool = @$db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
+//        $tool = @$db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
+        $tool = self::getEditorSettings($this->params['id']);
         $tool->data = !empty($tool->data) ? @stripSlashes($tool->data) : '';
         $tool->plugins = !empty($tool->plugins) ? @stripSlashes($tool->plugins) : '';
         $tool->stylesset = !empty($tool->stylesset) ? @stripSlashes($tool->stylesset) : '';
@@ -107,7 +109,8 @@ class expHTMLEditorController extends expController {
         
         $db->toggle('htmleditor_ckeditor',"active",'active=1');
         if ($this->params['id']!="default") {
-            $active = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
+//            $active = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
+            $active = self::getEditorSettings($this->params['id']);
             $active->active = 1;
             $db->updateObject($active,'htmleditor_ckeditor',null,'id');
         }
@@ -123,11 +126,24 @@ class expHTMLEditorController extends expController {
             $demo->name="Default";
 			$demo->skin='kama';
         } else {
-            $demo = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
+//            $demo = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
+            $demo = self::getEditorSettings($this->params['id']);
         }
         assign_to_template(array(
             'demo'=>$demo
         ));
+    }
+
+    public static function getEditorSettings($settings_id) {
+        global  $db;
+
+        return @$db->selectObject('htmleditor_ckeditor',"id=".$settings_id);
+    }
+
+    public static function getActiveEditorSettings() {
+        global  $db;
+
+        return $db->selectObject('htmleditor_ckeditor', 'active=1');
     }
 
 }

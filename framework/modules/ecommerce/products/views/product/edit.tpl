@@ -21,7 +21,7 @@
 
 <div id="editproduct" class="module store edit yui-skin-sam exp-skin exp-admin-skin">
     {if $record->id != ""}
-        <h1>{'Edit Information for'|gettext} {$modelname}</h1>
+        <h1>{'Edit Information for'|gettext}{if $record->childProduct|@count != 0} {'Parent'|gettext}{/if}{if $record->parent_id != 0} {'Child'|gettext}{/if} {$modelname|ucfirst}</h1>
     {else}
         <h1>{'New'|gettext} {$modelname}</h1>
     {/if}
@@ -32,7 +32,6 @@
 		{if $record->original_id}
 		{control type="hidden" name="original_id" value=$record->original_id}
 		{/if}
-		{control type="hidden" name="id" value=$record->id}
         <div id="editproduct-tabs" class="yui-navset exp-skin-tabview hide">
             <ul id="dynamicload" class="exp-ajax-tabs yui-nav">
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_general"}">{'General'|gettext}</a></li>
@@ -69,7 +68,6 @@
             {control type="checkbox" name="copy_related" label="Copy Related Products?"|gettext value="1"}
             {control type="checkbox" name="adjust_child_price" label="Reset Price on Child Products?"|gettext value="1"}
             {control type="text" name="new_child_price" label="New Child Price"|gettext value=""}
-            {*control type="checkbox" name="copy_related" label="Copy Related Products?" value="1"*}
         {/if}
     {/form}
 </div>
@@ -86,7 +84,7 @@
 //       var lastTab = !Y.Lang.isNull(Y.Cookie.get("edit-tab")) ? Y.Cookie.get("edit-tab") : 0;
        var tabs = Y.all('#dynamicload li a');
        var cdiv = Y.one('#loadcontent');
-       
+
        tabs.each(function(n,k){
            cdiv.append('<div id="exptab-'+k+'" class="exp-ajax-tab"></div>');
        });
@@ -132,6 +130,12 @@
        
        tabs.on('click',loadTab);
 
+       // load all the tabs if we are copying in order to save all the data
+       if ({/literal}{if $copy}1{else}0{/if}{literal}) {
+           tabs.each(function(n,k){
+               n.simulate('click');
+           }
+       });
 //       tabs.item(lastTab).simulate('click');
        tabs.item(0).simulate('click');
 

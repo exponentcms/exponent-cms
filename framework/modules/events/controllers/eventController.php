@@ -31,11 +31,12 @@ class eventController extends expController {
     public $remove_configs = array(
         'comments',
         'ealerts',
+//        'facebook',
         'files',
         'pagination',
         'rss',
-        'twitter',
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
+//        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
     static function displayname() {
         return "Events";
@@ -466,14 +467,14 @@ class eventController extends expController {
      */
     function show() {
         expHistory::set('viewable', $this->params);
-        if (!empty($this->params['date_id'])) {
+        if (!empty($this->params['date_id'])) {  // specific event instance
             $eventdate = new eventdate($this->params['date_id']);
             $eventdate->event = new event($eventdate->event_id);
-        } else {
+        } else {  // we'll default to the first event of this series
             $event = new event($this->params['id']);
             $eventdate = new eventdate($event->eventdate[0]->id);
         }
-        if (!empty($eventdate->event->feedback_form)) {
+        if (!empty($eventdate->event->feedback_form) && $eventdate->event->feedback_form != 'Disallow Feedback') {
             assign_to_template(array(
                 'feedback_form' => $eventdate->event->feedback_form,
             ));
@@ -561,9 +562,23 @@ class eventController extends expController {
            $object = new eventdate(intval($router->params['date_id']));
            // set the meta info
            if (!empty($object)) {
+               if (!empty($object->event->body)) {
+                   $desc = str_replace('"',"'",expString::summarize($object->event->body,'html','para'));
+               } else {
+                   $desc = SITE_DESCRIPTION;
+               }
+               if (!empty($object->expTag)) {
+                   $keyw = '';
+                   foreach ($object->expTag as $tag) {
+                       if (!empty($keyw)) $keyw .= ', ';
+                       $keyw .= $tag->title;
+                   }
+               } else {
+                   $keyw = SITE_KEYWORDS;
+               }
                $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
-               $metainfo['keywords'] = empty($object->event->meta_keywords) ? SITE_KEYWORDS : $object->event->meta_keywords;
-               $metainfo['description'] = empty($object->event->meta_description) ? SITE_DESCRIPTION : $object->event->meta_description;
+               $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
+               $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
                $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
            }
            return $metainfo;

@@ -34,33 +34,34 @@
  * @return string
  */
 function smarty_function_max_filesize($params,&$smarty) {
-    $size = ini_get("upload_max_filesize");
-//	$size_msg = "";
-	$type = substr($size,-1,1);
-	$shorthand_size = substr($size,0,-1);
-	switch ($type) {
-		case 'M':
-			$size_msg = $shorthand_size . ' MB';
-			break;
-		case 'K':
-			$size_msg = $shorthand_size . ' kB';
-			break;
-		case 'G': // PHP5 +
-			$size_msg = $shorthand_size . ' GB';
-			break;
-		default:
-			if ($size >= 1024*1024*1024) { // Gigs
-				$size_msg = round(($size / (1024*1024*1024)),2) . " GB";
-			} else if ($size >= 1024*1024) { // Megs
-				$size_msg = round(($size / (1024*1024)),2) . " MB";
-			} else if ($size >= 1024) { // Kilo
-				$size_msg = round(($size / 1024),2) . " kB";
-			} else {
-				$size_msg = $size . " ".gt("bytes");
-			}
-	}
-
-	return $size_msg;
+//    $size = ini_get("upload_max_filesize");
+////	$size_msg = "";
+//	$type = substr($size,-1,1);
+//	$shorthand_size = substr($size,0,-1);
+//	switch ($type) {
+//		case 'M':
+//			$size_msg = $shorthand_size . ' MB';
+//			break;
+//		case 'K':
+//			$size_msg = $shorthand_size . ' kB';
+//			break;
+//		case 'G': // PHP5 +
+//			$size_msg = $shorthand_size . ' GB';
+//			break;
+//		default:
+//			if ($size >= 1024*1024*1024) { // Gigs
+//				$size_msg = round(($size / (1024*1024*1024)),2) . " GB";
+//			} else if ($size >= 1024*1024) { // Megs
+//				$size_msg = round(($size / (1024*1024)),2) . " MB";
+//			} else if ($size >= 1024) { // Kilo
+//				$size_msg = round(($size / 1024),2) . " kB";
+//			} else {
+//				$size_msg = $size . " ".gt("bytes");
+//			}
+//	}
+//
+//	return $size_msg;
+    return expCore::maxUploadSize();
 }
 
 ?>

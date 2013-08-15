@@ -48,6 +48,8 @@ class faqController extends expController {
             expCatController::addCats($questions,'rank',!empty($this->config['uncat'])?$this->config['uncat']:gt('Not Categorized'));
             $cats[0] = new stdClass();
             $cats[0]->name = '';
+            $cats[0]->count = 0;
+            $cats[0]->color = null;
             expCatController::sortedByCats($questions,$cats);
             assign_to_template(array(
                 'cats'=>$cats
@@ -269,7 +271,6 @@ class faqController extends expController {
     function addContentToSearch() {
         global $db, $router;
 
-        //FIXME we should probably allow for a single item update/addition
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);
         $where = (!empty($this->params['id'])) ? 'id='.$this->params['id'] : null;
@@ -281,6 +282,7 @@ class faqController extends expController {
 
                 $origid = $cnt['id'];
                 unset($cnt['id']);
+                //build the search record and save it.
 //                $sql = "original_id=".$origid." AND ref_module='".$this->classname."'";
                 $sql = "original_id=".$origid." AND ref_module='".$this->baseclassname."'";
                 $oldindex = $db->selectObject('search',$sql);

@@ -39,13 +39,16 @@
 
     <div class="bd">
         <h2>{$product->eventdate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
-            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|format_date:"%A, %B %e, %Y"}{/if}</h2>
+            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}{/if}</h2>
         <hr>
         <h3>{$product->title}</h3>
         {permissions}
             <div class="item-actions">
-                {if $permissions.configure == 1 or $permissions.manage == 1}
+                {if $permissions.edit == true}
                     {icon controller="store" action="edit" id=$product->id title="Edit this entry"|gettext}
+                    {icon controller="store" action=copyProduct class="copy" record=$product text="Copy" title="Copy `$product->title` "}
+                {/if}
+                {if $permissions.delete == true}
                     {icon controller="store" action="delete" id=$product->id title="Delete this entry"|gettext}
                 {/if}
             </div>
@@ -123,15 +126,17 @@
                         {clear}
                         <h4>{'Options'|gettext}</h4>
                         <div class="product-options">
-                            {control type="hidden" name="ticket_types" value="1"}
-                            {control type=hidden name=options_shown value=$product->id}
+                            {control type=hidden name="ticket_types" value="1"}
+                            {control type=hidden name="options_shown" value=$product->id}
                             {foreach from=$product->optiongroup item=og}
                                 {if $og->hasEnabledOptions()}
                                     <div class="option {cycle values="odd,even"}">
                                         {if $og->allow_multiple}
-                                            {optiondisplayer product=$product options=$og->title view=checkboxes_with_quantity display_price_as=total selected=$params.options}
+                                            {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=total selected=$params.options}*}
+                                            {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}
                                         {else}
-                                            {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}
+                                            {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}*}
+                                            {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}
                                         {/if}
                                     </div>
                                 {/if}

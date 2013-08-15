@@ -1,6 +1,6 @@
 /**
  * Simple Ajax Uploader
- * Version 1.6
+ * Version 1.6.3
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
  * Copyright 2012-2013 LPology, LLC
@@ -9,18 +9,19 @@
 
 YUI.add('SimpleAjaxUploader', function (Y) {
 
+"use strict";
+
     Y.ss = Y.ss || {};
 
 /**
  * Converts object to query string
  */
 Y.ss.obj2string = function(obj, prefix) {
-  var str = [],
-      prop;
+  var str = [];
   if (typeof obj !== 'object') {
     return '';
   }
-  for (prop in obj) {
+  for (var prop in obj) {
     if (obj.hasOwnProperty(prop)) {
       var k = prefix ? prefix + "[" + prop + "]" : prop, v = obj[prop];
       str.push(typeof v === 'object' ?
@@ -35,11 +36,10 @@ Y.ss.obj2string = function(obj, prefix) {
  * Copies all missing properties from second object to first object
  */
 Y.ss.extendObj = function(first, second) {
-  var prop;
   if (typeof first !== 'object' || typeof second !== 'object') {
     return false;
   }
-  for (prop in second) {
+  for (var prop in second) {
     if (second.hasOwnProperty(prop)) {
       first[prop] = second[prop];
     }
@@ -138,11 +138,13 @@ Y.ss.newXHR = function() {
 Y.ss.getOffsetSum = function(elem) {
   var top = 0,
       left = 0;
+
   while (elem) {
     top = top + parseInt(elem.offsetTop, 10);
     left = left + parseInt(elem.offsetLeft, 10);
     elem = elem.offsetParent;
   }
+
   return {top: top, left: left};
 };
 
@@ -160,6 +162,7 @@ Y.ss.getOffsetRect = function(elem) {
       clientLeft = docElem.clientLeft || body.clientLeft || 0,
       top  = box.top +  scrollTop - clientTop,
       left = box.left + scrollLeft - clientLeft;
+
   return { top: Math.round(top), left: Math.round(left) };
 };
 
@@ -185,6 +188,7 @@ Y.ss.getBox = function(el) {
       top,
       bottom,
       offset = Y.ss.getOffset(el);
+
   left = offset.left;
   top = offset.top;
   right = left + el.offsetWidth;
@@ -309,7 +313,7 @@ Y.ss.remove = function(elem) {
 };
 
 /**
- * Accepts a jquery object, a string containing an element ID, or an element,
+ * Accepts either a jQuery object, a string containing an element ID, or an element,
  * verifies that it exists, and returns the element.
  * @param {Mixed} elem
  * @return {Element}
@@ -356,7 +360,7 @@ Y.ss.SimpleUpload = function(options) {
     checkProgressInterval: 50,
     keyParamName: 'APC_UPLOAD_PROGRESS',
     allowedExtensions: [],
-    accept: '',    
+    accept: '',
     maxSize: false,
     name: '',
     data: {},
@@ -377,7 +381,7 @@ Y.ss.SimpleUpload = function(options) {
     onSizeError: function(filename, fileSize) {},
     onError: function(filename, errorType, response) {},
     startXHR: function(filename, fileSize) {},
-    endXHR: function(filename) {},
+    endXHR: function(filename, fileSize) {},
     startNonXHR: function(filename) {},
     endNonXHR: function(filename) {}
   };
@@ -539,6 +543,7 @@ Y.ss.SimpleUpload.prototype = {
   */
   _isXhrUploadSupported: function() {
     var input = document.createElement('input');
+
     input.type = 'file';
     return (
       'multiple' in input &&
@@ -601,7 +606,7 @@ Y.ss.SimpleUpload.prototype = {
           ext,
           total,
           i;
-          
+
       if (!self._input || self._input.value === '') {
         return;
       }
@@ -629,6 +634,8 @@ Y.ss.SimpleUpload.prototype = {
         }
       }
 
+      // Remove the file input and create another after
+      // files have been added to queue array
       self._clearInput();
 
       // Submit when file selected if autoSubmit option is set
@@ -690,6 +697,7 @@ Y.ss.SimpleUpload.prototype = {
   */
   rerouteClicks: function(elem) {
     var self = this;
+
     elem = Y.ss.verifyElem(elem);
 
     Y.ss.addEvent(elem, 'mouseover', function() {
@@ -746,50 +754,84 @@ Y.ss.SimpleUpload.prototype = {
   */
   _createHiddenInput: function(name, value) {
     var input = document.createElement('input');
+
     input.setAttribute('type', 'hidden');
     input.setAttribute('name', name);
     input.setAttribute('value', value);
     return input;
   },
 
-  _finish: function(response, filename, progressBar, fileSizeBox, progressContainer) {
-    this.log('server response: '+response);
+  /**
+  * Completes upload request if an error is detected
+  */
+  _errorFinish: function(errorType, errorMsg, filename, response, progressBar, fileSizeBox, progressContainer) {
     this._activeUploads--;
-
-    if (this._settings.responseType.toLowerCase() == 'json') {
-      response = Y.ss.parseJSON(response);
-    }
-
-    if (response === false) {
-      this.log('bad server response');
-      this._settings.onError.call(this, filename, 'parseerror', response);
-    } else {
-      this._settings.onComplete.call(this, filename, response);
-    }
+    this.log('error: '+errorMsg);
+    this.log('server response :'+response);
 
     if (fileSizeBox) {
       fileSizeBox.innerHTML = '';
     }
-
     if (progressContainer) {
       Y.ss.remove(progressContainer);
     }
 
-    // Set to null to prevent memory leaks from circular reference
+    this._settings.onError.call(this, filename, errorType, response);
+
+    // Set to null to prevent memory leaks
     response = null;
     filename = null;
     progressBar = null;
     fileSizeBox = null;
     progressContainer = null;
 
-    if (this._disabled) {
-      this.enable();
+    this._cycleQueue();
+  },
+
+  /**
+  * Completes upload request if the transfer was successful
+  */
+  _finish: function(response, filename, progressBar, fileSizeBox, progressContainer) {
+    // Save response text in case it can't be parsed as JSON
+    var responseText = response;
+
+    if (this._settings.responseType.toLowerCase() == 'json') {
+      response = Y.ss.parseJSON(response);
+      if (response === false) {
+        this._errorFinish('parseerror', 'Bad server response - unable to parse JSON', filename, responseText, progressBar, fileSizeBox, progressContainer);
+        return;
+      }
     }
+    
+    // Note: errorFinish() also decrements _activeUploads, so
+    // only do it after errorFinish() can no longer be called
+    this._activeUploads--;    
+    this.log('server response: '+responseText);
+
+    if (fileSizeBox) {
+      fileSizeBox.innerHTML = '';
+    }
+    if (progressContainer) {
+      Y.ss.remove(progressContainer);
+    }
+
+    this._settings.onComplete.call(this, filename, response);
+
+    // Set to null to prevent memory leaks
+    response = null;
+    responseText = null;
+    filename = null;
+    progressBar = null;
+    fileSizeBox = null;
+    progressContainer = null;
 
     // Begin uploading next file in the queue
     this._cycleQueue();
   },
 
+  /**
+  * Resets file upload data and submits next file if necessary
+  */
   _cycleQueue: function() {
     this._size = null;
     this._file = null;
@@ -798,6 +840,10 @@ Y.ss.SimpleUpload.prototype = {
     this._fileSizeBox = null;
     this._progressBar = null;
     this._progressContainer = null;
+
+    if (this._disabled) {
+      this.enable();
+    }
 
     if (this._queue.length > 0 && this._settings.autoSubmit) {
       this.submit();
@@ -811,7 +857,7 @@ Y.ss.SimpleUpload.prototype = {
     var self = this,
         settings = this._settings,
         filename = this._filename,
-        fileSize = Math.round(this._size / 1024),
+        fileSize = this._size,
         fileSizeBox = this._fileSizeBox,
         progressBar = this._progressBar,
         progressContainer = this._progressContainer,
@@ -862,9 +908,7 @@ Y.ss.SimpleUpload.prototype = {
     });
 
     Y.ss.addEvent(xhr.upload, 'error', function() {
-      self.log('transfer error during upload');
-      settings.endXHR.call(self, filename, fileSize);
-      settings.onError.call(self, filename, 'transfer error', 'none');
+      self._errorFinish('transfererror', 'Transfer error during upload', filename, 'None', progressBar, fileSizeBox, progressContainer);
     });
 
     xhr.onreadystatechange = function() {
@@ -873,8 +917,7 @@ Y.ss.SimpleUpload.prototype = {
           settings.endXHR.call(self, filename, fileSize);
           self._finish(this.responseText, filename, progressBar, fileSizeBox, progressContainer);
         } else {
-          self.log('Progress key error. Status: '+this.status+' Response: '+this.responseText);
-          settings.onError.call(self, filename, 'server error', this.responseText);
+          self._errorFinish('servererror', 'Server error. Status: '+this.status, filename, this.responseText, progressBar, fileSizeBox, progressContainer);
         }
       }
     };
@@ -1118,7 +1161,7 @@ Y.ss.SimpleUpload.prototype = {
             self.log('upload progress key received. Key: '+response.key);
           }
         } else {
-          self.log('error retrieving progress key. Status: '+this.status+' Server response: '+this.responseText);
+          self.log('Error retrieving progress key. Status: '+this.status+' Server response: '+this.responseText);
         }
       }
     };
@@ -1129,10 +1172,14 @@ Y.ss.SimpleUpload.prototype = {
     xhr.send();
     xhr = null;
   },
-  
+
+  /**
+  * Check file extension against allowedExtensions
+  */
   _checkExtension: function(ext) {
     var allowed = this._settings.allowedExtensions,
         i = allowed.length;
+
     ext = ext.toLowerCase();
     while (i--) {
       if (allowed[i].toLowerCase() == ext) {
@@ -1140,13 +1187,17 @@ Y.ss.SimpleUpload.prototype = {
       }
     }
     return false;
-  },  
+  },
 
+  /**
+  * Verifies that file is allowed
+  * Checks file extension and file size if limits are set
+  */
   _checkFile: function() {
     var filename = this._filename,
         ext = this._ext,
         size = this._size;
-        
+
     if (!this._file || filename === '') {
       this.log('no file to upload');
       return false;
@@ -1162,7 +1213,7 @@ Y.ss.SimpleUpload.prototype = {
       }
     }
 
-    if (size !== null && this._settings.maxSize !== false && size / 1024 > this._settings.maxSize) {
+    if (size !== null && this._settings.maxSize !== false && size > this._settings.maxSize) {
       this.removeCurrent();
       this.log(filename + ' exceeds ' + this._settings.maxSize + 'K limit');
       this._settings.onSizeError.call(this, filename, size);
@@ -1186,7 +1237,7 @@ Y.ss.SimpleUpload.prototype = {
 
     if (this._XhrIsSupported) {
       this._filename = Y.ss.getFilename(this._queue[0].name);
-      this._size = this._queue[0].size;
+      this._size = Math.round( this._queue[0].size / 1024 );
     } else {
       this._filename = Y.ss.getFilename(this._queue[0].value);
     }

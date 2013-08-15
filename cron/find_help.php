@@ -5,27 +5,33 @@ $verbose = false;
 $recur = true;
 $total_new = 0;
 
+include_once('../exponent.php');
 if (php_sapi_name() == 'cli') {
     $nl = "\n";
+    if (!empty($_SERVER['argc'])) for ($ac = 1; $ac < $_SERVER['argc']; $ac++) {
+        if ($_SERVER['argv'][$ac] == '-v') {
+            $verbose = true;
+        } elseif (!empty($_SERVER['argv'][$ac])) {
+            $version_title = $_SERVER['argv'][$ac];
+            $version = $db->selectValue('help_version', 'id', 'version="' . $_SERVER['argv'][$ac] . '"');
+        }
+    }
 } else {
     $nl = '<br>';
+    if (!empty($_GET['verbose'])) {
+        $verbose = true;
+    }
+    if (!empty($_GET['version'])) {
+        $version_title = $_GET['version'];
+        $version = $db->selectValue('help_version', 'id', 'version="' . $_GET['version'] . '"');
+    }
 }
 /**
  * find_help.php - attempts to auto-check all ExponentCMS help links
  * by collecting them and checking them against the doc.exponentcms.org db tables
  */
-include_once('../exponent.php');
-print("Checking the Exponent Help System!" . $nl . $nl);
-print("Grabbing links from the folders!" . $nl);
-if (!empty($_SERVER['argc'])) for ($ac = 1; $ac < $_SERVER['argc']; $ac++) {
-    if ($_SERVER['argv'][$ac] == '-v') {
-        $verbose = true;
-    } elseif (!empty($_SERVER['argv'][$ac])) {
-        $version_title = $_SERVER['argv'][$ac];
-        $version = $db->selectValue('help_version', 'id', 'version="' . $_SERVER['argv'][$ac] . '"');
-        print 'xxxxx';
-    }
-}
+print $nl . "Checking the Exponent Help System!" . $nl . $nl;
+print "Grabbing links from the folders!" . $nl;
 parse_files('..', false);
 $filelist = array('../cron', '../framework', '../install', '../themes');
 foreach ($filelist as $file) {
@@ -33,24 +39,28 @@ foreach ($filelist as $file) {
 }
 
 print $nl . "Completed grabbing " . $total_new . " Total Help Links!" . $nl . $nl;
-
-// match condensed lists against db tables
-print "List of Missing Help Links" . $nl;
-$pages = array_unique($param_array['page']);
-foreach ($pages as $page) {
-    if (!$db->selectObject('section', 'sef_name=' . $page)) {
-        print $page . " Help Page Missing!" . $nl;
-    }
-}
 if (empty($version)) {
     $version = $db->selectValue('help_version', 'id', 'is_current=1');
     $version_title = 'Current';
 }
 print "Using Help Version - " . $version_title . "!" . $nl . $nl;
-$docs = array_unique($param_array['module']);
+
+// match condensed lists against db tables
+print "List of Missing Help Page Links" . $nl;
+$pages = array_unique($param_array['page']);
+sort($pages);
+foreach ($pages as $page) {
+    if (!$db->selectObject('section', 'sef_name=' . $page)) {
+        print $page . $nl;
+    }
+}
+
+print $nl . "List of Missing Help Document Links" . $nl;
+$docs = array_unique(array_merge($param_array['doc'],$param_array['module']));
+sort($docs);
 foreach ($docs as $doc) {
     if (!$db->selectObject('help', 'sef_url=' . $doc . ' AND help_version_id=' . $version)) {
-        print $doc . " Help Doc Missing!" . $nl;
+        print $doc . $nl;
     }
 }
 
@@ -113,7 +123,7 @@ function do_extract($file) {
 // regex for the help shortcut function
     $regex_help = '/(?<=help\s)((page=[\'"]|[^\'"])*)([^}]*)(?=\})/';
 // regex for the parameter list
-    $regex_params = '/([^=\s]+)="([^"]+)"/';
+    $regex_params = '/([^=\s]+)=["\']([^"\']+)["\']/';
     $content = @file_get_contents($file);
     if (empty($content)) {
         return;

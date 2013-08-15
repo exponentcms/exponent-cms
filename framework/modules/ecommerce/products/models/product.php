@@ -428,9 +428,7 @@ class product extends expRecord {
                                     $price = '';
                                 }
                             }
-
                         }
-
                         $items[$option->id] = $text . $price;
                     }
                 }
@@ -701,7 +699,7 @@ class product extends expRecord {
         if ($db->selectValue('product', 'active_type', 'id=' . $id) == 2) return false;
 
         return true;
-        //check if cateegory is 
+        //check if category is
     }
 
 //    public function paginationCallback($item)
@@ -719,11 +717,12 @@ class product extends expRecord {
             parent::update($params);
             return;
         }
+
         //Get the product
         $product = $db->selectObject('product', 'id =' . $params['id']);
+
         //Get product files
         if (empty($product)) $product = new stdClass();
-
         $product->expFile = $this->getProductFiles($params['id']);
         // eDebug($product, true);
 
@@ -734,7 +733,7 @@ class product extends expRecord {
 
         if (!empty($product->parent_id)) $product->sef_url = ''; //if child, set sef_url to nada
 
-        //Tabs with not directly being saved in the product table and need some special operations
+        //Tabs not directly being saved in the product table and need some special operations
         $tab_exceptions = array(
             'categories',
             'options',
@@ -759,62 +758,6 @@ class product extends expRecord {
 
         if (!empty($params['shipping']['required_shipping_calculator_id']) && $params['shipping']['required_shipping_calculator_id'] > 0) {
             $product->required_shipping_method = $params['required_shipping_methods'][$params['shipping']['required_shipping_calculator_id']];
-        }
-
-        if (isset($tab_loaded['categories'])) {
-            $this->saveCategories($params['storeCategory'], null, $params['id'], $this->classname);
-        }
-
-        if (isset($tab_loaded['options'])) {
-            //Option Group Tab
-            if (!empty($params['optiongroups'])) {
-
-                foreach ($params['optiongroups'] as $title => $group) {
-                    if (isset($this->params['original_id']) && $params['original_id'] != 0) $group['id'] = ''; //for copying products
-
-                    $optiongroup = new  optiongroup($group);
-                    $optiongroup->product_id = $product->id;
-                    $optiongroup->save();
-
-                    foreach ($params['optiongroups'][$title]['options'] as $opt_title => $opt) {
-                        if (isset($params['original_id']) && $params['original_id'] != 0) $opt['id'] = ''; //for copying products
-
-                        $opt['product_id'] = $product->id;
-                        $opt['is_default'] = false;
-                        $opt['title'] = $opt_title;
-                        $opt['optiongroup_id'] = $optiongroup->id;
-                        if (isset($params['defaults'][$title]) && $params['defaults'][$title] == $opt['title']) {
-                            $opt['is_default'] = true;
-                        }
-
-                        $option = new option($opt);
-                        $option->save();
-                    }
-                }
-            }
-        }
-
-        if (isset($tab_loaded['related'])) {
-            //Related Products Tab
-            if (!empty($tab_loaded['related']) && (empty($originalId) || !empty($params['copy_related']))) {
-                $relprods = $db->selectObjects('crosssellItem_product', "product_id=" . $product->id);
-                $db->delete('crosssellItem_product', 'product_id=' . $product->id);
-                foreach ($params['relatedProducts'] as $key => $prodid) {
-                    $ptype = new product($prodid);
-                    $tmp = new stdClass();
-                    $tmp->product_id = $product->id;
-                    $tmp->crosssellItem_id = $prodid;
-                    $tmp->product_type = $ptype->product_type;
-                    $db->insertObject($tmp, 'crosssellItem_product');
-
-                    if (isset($params['relateBothWays'][$prodid])) {
-                        $tmp->crosssellItem_id = $product->id;
-                        $tmp->product_id = $prodid;
-                        $tmp->product_type = $ptype->product_type;
-                        $db->insertObject($tmp, 'crosssellItem_product');
-                    }
-                }
-            }
         }
 
         if (isset($tab_loaded['userinput'])) {
@@ -843,37 +786,110 @@ class product extends expRecord {
             }
         }
 
-        //Adjusting Children Products
-        if (!empty($originalId) && !empty($this->params['copy_children'])) {
-            $origProd = new $product_type($originalId); //FIXME $product_type is not set
-            $children = $origProd->find('all', 'parent_id=' . $originalId);
-            foreach ($children as $child) {
-
-                unset($child->id);
-                $child->parent_id = $product->id;
-                $child->title = $product->title;
-                $child->sef_url = '';
-                if (isset($this->params['adjust_child_price']) && isset($this->params['new_child_price']) && is_numeric($this->params['new_child_price'])) {
-                    $child->base_price = $this->params['new_child_price'];
-                }
-
-                if (!empty($originalModel)) {
-                    $child->model = str_ireplace($originalModel, $product->model, $child->model);
-                }
-
-                $child->save();
-            }
-        }
-
         //Check if we are copying and not just editing product
         if (isset($params['original_id'])) {
             // eDebug($product->id, true);
             unset($product->id);
-            unset($product->sef_url);
+//            unset($product->sef_url);
+            $product->sef_url = $params['sef_url'];
             $product->original_id = $params['original_id'];
             // eDebug($product, true);
         }
+        // create/update our product
         parent::update($product);
+        // now $this is our new product
+
+        if (isset($tab_loaded['options'])) {
+            //Option Group Tab
+            if (!empty($params['optiongroups'])) {
+                foreach ($params['optiongroups'] as $title => $group) {
+                    if (isset($params['original_id']) && $params['original_id'] != 0) $group['id'] = ''; //for copying products
+
+                    $optiongroup = new  optiongroup($group);
+                    $optiongroup->product_id = $this->id;
+                    $optiongroup->save();
+
+                    foreach ($params['optiongroups'][$title]['options'] as $opt_title => $opt) {
+                        if (isset($params['original_id']) && $params['original_id'] != 0) $opt['id'] = ''; //for copying products
+
+                        $opt['product_id'] = $this->id;
+                        $opt['is_default'] = false;
+                        $opt['title'] = $opt_title;
+                        $opt['optiongroup_id'] = $optiongroup->id;
+                        if (isset($params['defaults'][$title]) && $params['defaults'][$title] == $opt['title']) {
+                            $opt['is_default'] = true;
+                        }
+
+                        $option = new option($opt);
+                        $option->save();
+                    }
+                }
+            }
+        }
+
+        if (isset($tab_loaded['categories'])) {
+            $this->saveCategories($params['storeCategory'], null, $this->id, $this->classname);
+        }
+
+        // Copy Children Products if needed
+        if (!empty($originalId) && !empty($params['copy_children'])) {
+//            $origProd = new $product->product_type($originalId); //FIXME $product_type is not set, changed to $product->product_type
+            $origProd = new $this->product_type($originalId);
+            $children = $origProd->find('all', 'parent_id=' . $originalId);
+            foreach ($children as $child) {
+                unset($child->id);
+//                $child->parent_id = $product->id;
+//                $child->title = $product->title;
+                $child->parent_id = $this->id;
+                $child->title = $this->title;
+                $child->sef_url = '';
+                if (isset($params['adjust_child_price']) && isset($params['new_child_price']) && is_numeric($params['new_child_price'])) {
+                    $child->base_price = $params['new_child_price'];
+                }
+
+                if (!empty($originalModel)) {
+//                    $child->model = str_ireplace($originalModel, $product->model, $child->model);
+                    $child->model = str_ireplace($originalModel, $this->model, $child->model);
+                }
+                $child->save();
+            }
+        }
+
+        if (isset($tab_loaded['related'])) {
+            //Related Products Tab
+            $db->delete('crosssellItem_product', 'product_id=' . $this->id);
+            foreach ($params['relatedProducts'] as $key => $prodid) {
+                $ptype = new product($prodid);
+                $tmp = new stdClass();
+                $tmp->product_id = $this->id;
+                $tmp->crosssellItem_id = $prodid;
+                $tmp->product_type = $ptype->product_type;
+                $db->insertObject($tmp, 'crosssellItem_product');
+
+                if (isset($params['relateBothWays'][$prodid])) {
+                    $tmp->crosssellItem_id = $this->id;
+                    $tmp->product_id = $prodid;
+                    $tmp->product_type = $ptype->product_type;
+                    $db->insertObject($tmp, 'crosssellItem_product');
+                }
+            }
+        }
+
+        // Copy related products if needed
+        if (!empty($originalId) && !empty($params['copy_related'])) {
+            $relprods = $db->selectObjects('crosssellItem_product', "product_id=" . $params['original_id']);
+            foreach ($relprods as $key => $prodid) {
+                $prodid->product_id = $this->id;
+                $db->insertObject($prodid, 'crosssellItem_product');
+
+                // now relate both ways
+                $tmp = new stdClass();
+                $tmp->product_id = $prodid->crosssellItem_id;
+                $tmp->crosssellItem_id = $prodid->product_id;
+                $tmp->product_type = $prodid->product_type;
+                $db->insertObject($tmp, 'crosssellItem_product');
+            }
+        }
     }
 
     private function getProductFiles($id = '') {

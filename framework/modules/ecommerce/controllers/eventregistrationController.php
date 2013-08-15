@@ -45,11 +45,12 @@ class eventregistrationController extends expController {
         'categories',
         'comments',
         'ealerts',
+        'facebook',
         'files',
         'rss',
         'tags',
         'twitter',
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
     public $add_permissions = array(
         'view_registrants'=> 'View Registrants',
@@ -74,7 +75,7 @@ class eventregistrationController extends expController {
             $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
             foreach ($events as $event) {
                // $this->signup_cutoff > time()
-               if ($event->eventdate <= time() && $event->signup_cutoff <= time()) {
+               if ($event->eventdate <= time() && $event->eventenddate <= time()) {
                    $pass_events[] = $event;
                }
                // eDebug($event->signup_cutoff, true);
@@ -86,8 +87,13 @@ class eventregistrationController extends expController {
                 $events = $this->eventregistration->find('all', 'product_type="eventregistration" && active_type=0', "title ASC", $limit);
             }
             foreach ($events as $event) {
+                if ($user->isAdmin()) {
+                    $endtime = $event->eventenddate;
+                } else {
+                    $endtime = $event->signup_cutoff;
+                }
                 // $this->signup_cutoff > time()
-                if ($event->eventdate > time() && $event->signup_cutoff > time()) {
+                if ($event->eventdate > time() && $endtime > time()) {
                     $pass_events[] = $event;
                 }
                 // eDebug($event->signup_cutoff, true);
@@ -357,7 +363,7 @@ class eventregistrationController extends expController {
             $events = $this->eventregistration->find('all', 'product_type="eventregistration"', "title ASC", $limit);
             foreach ($events as $event) {
                // $this->signup_cutoff > time()
-               if ($event->eventdate <= time() && $event->signup_cutoff <= time()) {
+               if ($event->eventdate <= time() && $event->eventenddate <= time()) {
                    $pass_events[] = $event;
                }
                // eDebug($event->signup_cutoff, true);
@@ -370,7 +376,12 @@ class eventregistrationController extends expController {
             }
             foreach ($events as $event) {
                 // $this->signup_cutoff > time()
-                if ($event->eventdate > time() && $event->signup_cutoff > time()) {
+                if ($user->isAdmin()) {
+                    $endtime = $event->eventenddate;
+                } else {
+                    $endtime = $event->signup_cutoff;
+                }
+                if ($event->eventdate > time() && $endtime > time()) {
                     $pass_events[] = $event;
                 }
                 // eDebug($event->signup_cutoff, true);
@@ -416,9 +427,9 @@ class eventregistrationController extends expController {
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '');
         switch ($action) {
             case 'donate':
-                $metainfo['title']       = 'Make a eventregistration';
-                $metainfo['keywords']    = 'donate online';
-                $metainfo['description'] = "Make a eventregistration";
+                $metainfo['title']       = gt('Make an event registration');
+                $metainfo['keywords']    = gt('event registration online');
+                $metainfo['description'] = gt("Make an event registration");
                 $metainfo['canonical']   = '';
                 break;
             default:
@@ -525,9 +536,9 @@ class eventregistrationController extends expController {
             $product->addToCart($this->params['eventregistration']);
         }
 
+        $order->calculateGrandTotal();
         $order->setOrderType($this->params);
         $order->setOrderStatus($this->params);
-        $order->calculateGrandTotal();
 
         $billing = new billing();
         $result  = $billing->calculator->preprocess($billing->billingmethod, $opts, $this->params, $order); //FIXME $opts doesn't exist
@@ -542,10 +553,11 @@ class eventregistrationController extends expController {
         expHistory::set('viewable', $this->params);
         $event = new eventregistration($this->params['id']);
         //Get all the registrants in the event
-        $registrants = $event->getRegistrants();
+//        $registrants = $event->getRegistrants();
         assign_to_template(array(
             'event'=> $event,
-            'registrants'=> $registrants,
+            'registrants'=> $event->getRegistrants(),
+            'count'=> $event->countRegistrants(),
 //            'header'=> $header,
 //            'body'=> $body,
 //            'email'=> $email

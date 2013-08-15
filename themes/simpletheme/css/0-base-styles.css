@@ -70,7 +70,7 @@ version: 3.3.0
 build: 3167
 */
 /* base.css, part of YUI's CSS Foundation */
-h1 {
+h1, #logo {
 	/*18px via YUI Fonts CSS foundation*/
 	font-size:138.5%;  
 }
@@ -82,12 +82,12 @@ h3 {
 	/*14px via YUI Fonts CSS foundation*/
 	font-size:108%;  
 }
-h1,h2,h3 {
+h1,h2,h3, #logo {
 	/* top & bottom margin based on font size */
 	margin:1em 0;
 	font-family: 'Oswald', serif;
 }
-h1,h2,h3,h4,h5,h6,strong {
+h1,h2,h3,h4,h5,h6,strong, #logo {
 	/*bringing boldness back to headers and the strong element*/
 	font-weight:bold; 
 }

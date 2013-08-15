@@ -105,7 +105,8 @@
                 {$item->body}
             {elseif $config.usebody==2}
             {else}
-                <p>{$item->body|summarize:"html":"paralinks"}</p>
+                {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
+                <p>{$item->body|summarize:"html":"parahtml"}</p>
             {/if}
 		</dd>
 	{foreachelse}

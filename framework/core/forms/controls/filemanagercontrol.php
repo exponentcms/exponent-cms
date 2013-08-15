@@ -155,6 +155,12 @@ class filemanagercontrol extends formcontrol {
                             Y.one('#quickaddfiles-".$name."').removeClass('quick-upload-disabled');
                         }
                     },
+                    onSizeError: function(filename, fileSize){
+                        alert(filename+' ".gt('is is too large to upload')."');
+                    },
+                    onError: function(filename, errorType, response){
+                        alert(filename+' '+errorType+' '+response);
+                    },
                 });
 
                 var listenForAdder = function(){

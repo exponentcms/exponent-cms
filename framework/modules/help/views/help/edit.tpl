@@ -33,6 +33,7 @@
                 {control type="dropdown" name="help_version_id" label="Version"|gettext frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
                 {*{control type=textarea name=summary label="Summary"|gettext value=$record->summary}*}
                 {control type=html name=body label="General Information"|gettext value=$record->body}
+                {control type="dropdown" name="parent" label="Parent Help Doc"|gettext items=$parents value=$record->parent}
 				{control type="dropdown" name="help_section" label="Help Section"|gettext items=$sections value=$record->loc->src default=$current_section}
             </div>
             <div id="tab2">
@@ -53,11 +54,11 @@
             </div>
             <div id="tab6">
                  <h2>{'SEO Settings'|gettext}</h2>
-                {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url}
-                {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical}
-                {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title}
-                {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description}
-                {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords}
+                {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
+                {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical description='Helps get rid of duplicate search engine entries'|gettext}
+                {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title description='Override the item title for search engine entries'|gettext}
+                {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description description='Override the item summary for search engine entries'|gettext}
+                {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords description='Comma separated phrases - overrides site keywords and item tags'|gettext}
             </div>
             </div>
         </div>

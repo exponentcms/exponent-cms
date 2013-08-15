@@ -29,5 +29,5 @@
     </blockquote>
 	{include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
 {else}
-	<h2>{'Options are inherited from this product\'s parent.'|gettext}</h2>
+	<h2>{'Options'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
 {/if}

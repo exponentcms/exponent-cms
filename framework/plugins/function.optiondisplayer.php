@@ -53,6 +53,7 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     
     // find the default option if there is one.
     $default = $db->selectValue('option', 'id', 'optiongroup_id='.$group->id.' AND is_default=1');
+    if (!array_key_exists($default,$options)) $default = null;
     
     $view = $params['view'];
     

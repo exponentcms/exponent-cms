@@ -30,7 +30,7 @@
         <div class="yui-content">
 	        <div id="tab1">
 	            {control type="text" name="username" label="UPS Username"|gettext value=$calculator->configdata.username required=1}
-                {control type="text" name="password" label="Password"|gettext value=$calculator->configdata.password required=1}
+                {control type="password" name="password" label="Password"|gettext value=$calculator->configdata.password required=1}
                 {control type="text" name="shipfrom[shipperNumber]" label="Account #"|gettext value=$calculator->configdata.shipfrom.shipperNumber required=1}
 	            {control type="text" name="accessnumber" label="Access Key"|gettext value=$calculator->configdata.accessnumber required=1}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode"|gettext value=1 checked=$calculator->configdata.testmode}

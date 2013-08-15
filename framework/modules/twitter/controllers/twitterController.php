@@ -117,7 +117,7 @@ class twitterController extends expController {
         $ret = preg_replace('/\\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]/i', "<a href=\"\\0\" class=\"twitterlink\">\\0</a>", $ret);
         $ret = preg_replace('/(^|[^\w])(@[\d\w\-]+)/', '\\1<a href="http://twitter.com/#!/$2" class=\"twitteruser\">$2</a>', $ret);
         //$ret = preg_replace('/(^|[^\w])(#[\d\w\-]+)/', '\\1<a href="http://twitter.com/#!/search/$2" class=\"twittertopic\">$2</a>' , $ret);
-        $ret = preg_replace('/\s+#(\w+)/', ' <a href="http://search.twitter.com/search?q=%23$1">#$1</a>', $ret);
+        $ret = preg_replace('/\s+#(\w+)/', ' <a href="https://twitter.com/search?q=%23$1">#$1</a>', $ret);
         //$ret = preg_replace("/(^| )#(\w+)/", "\\1#\\2", $ret);
         return $ret;
     }
@@ -253,6 +253,59 @@ class twitterController extends expController {
 
     public static function twitter_exception_admin(Exception $e) {
         flash('error', 'Twitter: ' . $e->getMessage());
+    }
+
+    /**
+     * Send a Tweet
+     */
+    public static function postTweet($params=array()) {
+        if (!empty($params)) {
+            $post = new $params['model']($params['id']);
+            if (!empty($params['config']['consumer_key']) && !empty($post->title)) {
+                // create instance
+                if (expPermissions::check('manage', expCore::makeLocation($params['orig_controller'], $params['loc']))) {
+                    $except_handler = 'twitter_exception_admin';
+                } else {
+                    $except_handler = 'twitter_exception';
+                }
+                set_exception_handler(array('twitterController', $except_handler));
+                $twitter = new expTwitter($params['config']['consumer_key'], $params['config']['consumer_secret']);
+                // set tokens
+                $twitter->setOAuthToken($params['config']['oauth_token']);
+                $twitter->setOAuthTokenSecret($params['config']['oauth_token_secret']);
+
+                $twitter->statusesUpdate($params['config']['tweet_prefix'] . ' ' . $post->title . ' ' . expCore::makeLink(array('controller'=>$params['orig_controller'], 'action'=>'show','title'=>$post->sef_url)));
+                restore_exception_handler();
+                flash('message', gt('New Tweet posted'));
+            }
+         }
+    }
+
+    /**
+     * Send an Event Tweet
+     */
+    public static function postEventTweet($params=array()) {
+        if (!empty($params)) {
+            $eventdate = new eventdate($params['id']);
+            $eventdate->event = new event($eventdate->event_id);
+            if (!empty($params['config']['consumer_key']) && !empty($eventdate->event->title)) {
+                // create instance
+                if (expPermissions::check('manage', expCore::makeLocation($params['orig_controller'], $params['loc']))) {
+                    $except_handler = 'twitter_exception_admin';
+                } else {
+                    $except_handler = 'twitter_exception';
+                }
+                set_exception_handler(array('twitterController', $except_handler));
+                $twitter = new expTwitter($params['config']['consumer_key'], $params['config']['consumer_secret']);
+                // set tokens
+                $twitter->setOAuthToken($params['config']['oauth_token']);
+                $twitter->setOAuthTokenSecret($params['config']['oauth_token_secret']);
+
+                $twitter->statusesUpdate($params['config']['tweet_prefix'] . ' ' . expDateTime::format_date($eventdate->date) . ' - ' . $eventdate->event->title . ' ' . expCore::makeLink(array('controller'=>$params['orig_controller'], 'action'=>'show','date_id'=>$eventdate->id)));
+                restore_exception_handler();
+                flash('message', gt('New Event Tweet posted'));
+            }
+         }
     }
 
 }

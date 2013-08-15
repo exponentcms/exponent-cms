@@ -97,7 +97,7 @@ class expCore {
 	}
 
 	/**
-	 * Return a podcast link
+	 * Return an old style podcast link
      * COMPATIBILITY - we now use the {rss_link} smarty function to build rss & podcast links
 	 *
 	 * @static
@@ -184,40 +184,50 @@ class expCore {
 		);
 	}
 
+    /** exdoc
+   	 * Generates and returns a string stating the current maximum accepted size of
+   	 * uploaded files.  It intelligently parses the php.ini configuration, so that settings of
+   	 * 2K and 2048 are treated identically.
+   	 * @node Subsystems:expCore
+   	 * @return string
+   	 */
+   	public static function maxUploadSize() {
+   		$size = ini_get("upload_max_filesize");
+   //		$size_msg = "";
+   		$type = substr($size,-1,1);
+   		$shorthand_size = substr($size,0,-1);
+   		switch ($type) {
+   			case 'M':
+   				$size_msg = $shorthand_size . ' MB';
+   				break;
+   			case 'K':
+   				$size_msg = $shorthand_size . ' kB';
+   				break;
+   			case 'G': // PHP5 +
+   				$size_msg = $shorthand_size . ' GB';
+   				break;
+   			default:
+   				if ($size >= 1024*1024*1024) { // Gigs
+   					$size_msg = round(($size / (1024*1024*1024)),2) . " GB";
+   				} else if ($size >= 1024*1024) { // Megs
+   					$size_msg = round(($size / (1024*1024)),2) . " MB";
+   				} else if ($size >= 1024) { // Kilo
+   					$size_msg = round(($size / 1024),2) . " kB";
+   				} else {
+   					$size_msg = $size . " bytes";
+   				}
+   		}
+   		return $size_msg;
+   	}
+
 	/** exdoc
 	 * Generates and returns a message stating the current maximum accepted size of
-	 * uploaded files.  It intelligently parses the php.ini configuration, so that settings of
-	 * 2K and 2048 are treated identically.
+	 * uploaded files.
 	 * @node Subsystems:expCore
 	 * @return string
 	 */
 	public static function maxUploadSizeMessage() {
-		$size = ini_get("upload_max_filesize");
-//		$size_msg = "";
-		$type = substr($size,-1,1);
-		$shorthand_size = substr($size,0,-1);
-		switch ($type) {
-			case 'M':
-				$size_msg = $shorthand_size . ' MB';
-				break;
-			case 'K':
-				$size_msg = $shorthand_size . ' kB';
-				break;
-			case 'G': // PHP5 +
-				$size_msg = $shorthand_size . ' GB';
-				break;
-			default:
-				if ($size >= 1024*1024*1024) { // Gigs
-					$size_msg = round(($size / (1024*1024*1024)),2) . " GB";
-				} else if ($size >= 1024*1024) { // Megs
-					$size_msg = round(($size / (1024*1024)),2) . " MB";
-				} else if ($size >= 1024) { // Kilo
-					$size_msg = round(($size / 1024),2) . " kB";
-				} else {
-					$size_msg = $size . " bytes";
-				}
-		}
-		return sprintf(gt('The maximum size of uploaded files is %s.  Uploading files larger than that may result in erratic behavior.'),$size_msg);
+		return sprintf(gt('The maximum size of uploaded files is %s.  Uploading files larger than that may result in erratic behavior.'),self::maxUploadSize());
 	}
 
 	/** exdoc

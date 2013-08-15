@@ -270,7 +270,6 @@ if ($passed) {
 
     // version tracking
 	@$db->delete('version',1);  // clear table of old accumulated entries
-//	$vo = new stdClass();
     $vo = expVersion::swVersion();
     $vo->created_at = time();
 //    $ins = @$db->insertObject($vo,'version') or die($db->error());

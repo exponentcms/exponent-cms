@@ -92,6 +92,49 @@ class expDateTime {
 		return $duration;
 	}
 	
+    /** exdoc
+   	 * Given a timestamp, this function will calculate another timestamp
+   	 * that represents the beginning of the year that the passed timestamp
+   	 * falls into.  For instance, passing a timestamp representing January 25th 1984
+   	 * would return a timestamp representing January 1st 1984, at 12:00am.
+   	 *
+   	 * @param int $timestamp The original timestamp to use when calculating.
+   	 * @return int
+   	 * @node Subsystems:expDateTime
+   	 */
+   	public static function startOfYearTimestamp($timestamp) {
+   		$info = getdate($timestamp);
+   		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
+   		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
+   		// of the previous day.
+   		return mktime(0,0,0,1,1,$info['year']);
+   	}
+
+   	/** exdoc
+   	 * Given a timestamp, this function will calculate another timestamp
+   	 * that represents the end of the year that the passed timestamp
+   	 * falls into.  For instance, passing a timestamp representing January 25th 1984
+   	 * would return a timestamp representing December 31st 1984, at 11:59pm.
+   	 *
+   	 * @param int $timestamp The original timestamp to use when calculating.
+   	 * @return int
+   	 * @node Subsystems:expDateTime
+   	 */
+   	public static function endOfYearTimestamp($timestamp) {
+   		$info = getdate($timestamp);
+   		// No month has fewer than 28 days, even in leap year, so start out at 28.
+   		// At most, we will loop through the while loop 3 times (29th, 30th, 31st)
+   //		$info['mday'] = 28;
+   //		// Keep incrementing the mday value until it is not valid, and use last valid value.
+   //		// This should get us the last day in the month, and take into account leap years
+   //		while (checkdate($info['mon'],$info['mday']+1,$info['year'])) $info['mday']++;
+   //		// Calculate the timestamp at 8am, and then subtract 8 hours, for Daylight Savings
+   //		// Time.  If we are in those strange edge cases of DST, 12:00am can turn out to be
+   //		// of the previous day.
+   //		return mktime(23,59,59,$info['mon'],$info['mday'],$info['year']);
+           return mktime(23,59,59,12,31,$info['year']);
+   	}
+
 	/** exdoc
 	 * Given a timestamp, this function will calculate another timestamp
 	 * that represents the beginning of the month that the passed timestamp

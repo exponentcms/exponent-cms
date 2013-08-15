@@ -115,10 +115,11 @@ class fix_database extends upgradescript {
 			$iloc = expUnserialize($container->internal);
 			if ($db->selectObject('sectionref',"module='".$iloc->mod."' AND source='".$iloc->src."'") == null) {
 			// There is no sectionref for this container.  Populate sectionref
-				$newSecRef = new stdClass();
-				$newSecRef->module   = $iloc->mod;
-				$newSecRef->source   = $iloc->src;
-				$newSecRef->internal = '';
+//				$newSecRef = new stdClass();
+//				$newSecRef->module   = $iloc->mod;
+//				$newSecRef->source   = $iloc->src;
+//				$newSecRef->internal = '';
+                $newSecRef = expCore::makeLocation($iloc->mod,$iloc->src);
 				$newSecRef->refcount = 1;
 				$newSecRef->is_original = 1;
 				if ($container->external != "N;") {

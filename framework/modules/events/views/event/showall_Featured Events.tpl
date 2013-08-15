@@ -52,7 +52,8 @@
 							</tr>
 							<tr>
 								<td colspan="2">
-									{$item->body|summarize:html:paralinks}
+									{*{$item->body|summarize:html:paralinks}*}
+                                    {$item->body|summarize:html:parahtml}
 								</td>
 							</tr>
 							<tr>

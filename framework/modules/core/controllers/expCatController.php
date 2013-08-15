@@ -52,7 +52,7 @@ class expCatController extends expController {
 	 * manage categories
 	 */
 	function manage() {
-        global $db;
+//        global $db;
 
         expHistory::set('manageable', $this->params);
         if (!empty($this->params['model'])) {
@@ -98,7 +98,8 @@ class expCatController extends expController {
             ),
         ));
 
-        foreach ($db->selectColumn('content_expCats','content_type',null,null,true) as $contenttype) {
+//        foreach ($db->selectColumn('content_expCats','content_type',null,null,true) as $contenttype) {
+        foreach (expCat::selectAllCatContentType() as $contenttype) {
             foreach ($cats->records as $key => $value) {
                 $attatchedat = $cats->records[$key]->findWhereAttachedTo($contenttype);
                 if (!empty($attatchedat)) {

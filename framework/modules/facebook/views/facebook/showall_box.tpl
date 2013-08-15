@@ -19,7 +19,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    <div class="fb-like-box" data-href="{$facebook_url}" data-width="{$config.width|default:'292'}"{if $config.height} data-height="{$config.height}"{/if} data-show-faces="{if $config.showfaces}true{else}false{/if}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if} data-stream="{if $config.stream}true{else}false{/if}" data-show-border="{if $config.border}true{else}false{/if}" data-header="{if $config.header}true{else}false{/if}"></div>
+    <div class="fb-like-box" data-href="{$facebook_url}" data-width="{$config.width|default:'292'}"{if $config.height} data-height="{$config.height}"{/if} data-show-faces="{if $config.show_faces}true{else}false{/if}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if} data-stream="{if $config.stream}true{else}false{/if}" data-show-border="{if $config.show_border}true{else}false{/if}" data-header="{if $config.show_header}true{else}false{/if}"></div>
 </div>
 
 {script unique='facebook_src'}

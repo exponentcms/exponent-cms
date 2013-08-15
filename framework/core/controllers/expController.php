@@ -32,7 +32,7 @@ abstract class expController {
     public $model_table = ''; // holds table name for base model
 
     public $useractions = array(); // available user actions (methods) for this controller
-    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags')
+    public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
     protected $permissions = array(  // standard set of permissions for all modules unless add'ed or remove'd
         'manage'    => 'Manage',
         'configure' => 'Configure',
@@ -142,7 +142,7 @@ abstract class expController {
      * @return string
      */
     static function description() {
-        return gt("This is the base controller that most Exponent modules will inherit from.");
+        return gt("This is the base controller which most Exponent modules inherit their methods from.");
     }
 
     /**
@@ -421,7 +421,7 @@ abstract class expController {
      * default view for individual item
      */
     function show() {
-        global $db;
+//        global $db;
 
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
@@ -435,7 +435,8 @@ abstract class expController {
         }
 
         $record = new $modelname($id);
-        $config = expUnserialize($db->selectValue('expConfigs', 'config', "location_data='" . $record->location_data . "'"));
+//        $config = expUnserialize($db->selectValue('expConfigs', 'config', "location_data='" . $record->location_data . "'"));
+        $config = expConfig::getConfig($record->location_data);
 
         assign_to_template(array(
             'record' => $record,
@@ -444,7 +445,7 @@ abstract class expController {
     }
 
     /**
-     * view the item by referring to its title
+     * view the item by referring to its title  DEPRECATED??
      */
     function showByTitle() {
         expHistory::set('viewable', $this->params);
@@ -457,11 +458,8 @@ abstract class expController {
         }
         $this->loc = unserialize($record->location_data);
 
-        // adding src to template's __loc var so that our links get build correct when linking to controller actions.
-//        global $template;
         assign_to_template(array(
             'record' => $record,
-//            "__loc"=>$this->loc
         ));
     }
 
@@ -479,7 +477,7 @@ abstract class expController {
     }
 
     /**
-     * view items referenced by tags
+     * view items referenced by tags  DEPRECATED??
      */
     function showByTags() {
         global $db;
@@ -538,17 +536,14 @@ abstract class expController {
      * edit item in module, also used to copy items
      */
     function edit() {
-        global $db;
-
         expHistory::set('editable', $this->params);
-        $tags = $db->selectObjects('expTags', '1', 'title ASC');
-        $taglist = '';
-        foreach ($tags as $tag) {
-            $taglist .= "'" . $tag->title . "',";
-        }
+        $taglist = expTag::getAllTags();
         $modelname = $this->basemodel_name;
         $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
-        if (!empty($this->params['copy'])) $record->id = null;
+        if (!empty($this->params['copy'])) {
+            $record->id = null;
+            if (isset($record->sef_url)) $record->sef_url = null;
+        }
         assign_to_template(array(
             'record'     => $record,
             'table'      => $this->$modelname->tablename,
@@ -614,6 +609,32 @@ abstract class expController {
 
         if ($this->isSearchable()) {
             $this->addContentToSearch($this->params);
+        }
+
+        // check for auto send facebook status
+        if (!empty($this->params['send_status'])) {
+            if ($this->classname == 'eventController') {
+                facebookController::postEvent(
+                    array('model' => $modelname, 'id' => $this->params['date_id'], 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                );
+            } else {
+                facebookController::postStatus(
+                    array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                );
+            }
+        }
+
+        // check for auto send tweet
+        if (!empty($this->params['send_tweet'])) {
+            if ($this->classname == 'eventController') {
+                twitterController::postEventTweet(
+                    array('model' => $modelname, 'id' => $this->params['date_id'], 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                );
+            } else {
+                twitterController::postTweet(
+                    array('model' => $modelname, 'id' => $this->$modelname->id, 'src' => $this->loc->src, 'config' => $this->config, 'orig_controller' => expModules::getControllerName($this->classname))
+                );
+            }
         }
 
         // check for eAlerts
@@ -726,11 +747,12 @@ abstract class expController {
         ));
 
 //        if (empty($this->params['hcview'])) {
-            $containerloc = new stdClass();
+//            $containerloc = new stdClass();
 //            $containerloc->mod = expModules::getControllerClassName($this->loc->mod);  //FIXME long controller name
-            $containerloc->mod = expModules::getModuleName($this->loc->mod);
-            $containerloc->src = $this->loc->src;
-            $containerloc->int = '';
+//            $containerloc->mod = expModules::getModuleName($this->loc->mod);
+//            $containerloc->src = $this->loc->src;
+//            $containerloc->int = '';
+            $containerloc = expCore::makeLocation(expModules::getModuleName($this->loc->mod),$this->loc->src);
             $container = $db->selectObject('container', "internal='" . serialize($containerloc) . "'");
             if (empty($container)) {
                 $container = new stdClass();
@@ -1109,6 +1131,7 @@ abstract class expController {
         foreach ($content as $cnt) {
             $origid = $cnt['id'];
             unset($cnt['id']);
+           //build the search record and save it.
 //            $sql = "original_id=" . $origid . " AND ref_module='" . $this->classname . "'";
             $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
             $oldindex = $db->selectObject('search', $sql);
@@ -1217,19 +1240,32 @@ abstract class expController {
                     $object = new $modelname($lookup);
                     // set the meta info
                     if (!empty($object)) {
+                        if (!empty($object->body)) {
+                            $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
+                        } else {
+                            $desc = SITE_DESCRIPTION;
+                        }
+                        if (!empty($object->expTag)) {
+                            $keyw = '';
+                            foreach ($object->expTag as $tag) {
+                                if (!empty($keyw)) $keyw .= ', ';
+                                $keyw .= $tag->title;
+                            }
+                        } else {
+                            $keyw = SITE_KEYWORDS;
+                        }
                         $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
-                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
-                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
+                        $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
                     }
+                    break;
                 }
-                break;
             default:
                 //check for a function in the controller called 'action'_meta and use it if so
                 $functionName = $action . "_meta";
                 $mod = new $this->classname;
                 if (method_exists($mod, $functionName)) {
-//                    $metainfo = $mod->$functionName($_REQUEST);
                     $metainfo = $mod->$functionName($router->params);
                 } else {
                     $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => URL_FULL.substr($router->sefPath, 1));
@@ -1253,6 +1289,45 @@ abstract class expController {
     //         }
     //     }
     // }
+
+    function showall_by_tags_meta($request) {
+        global $router;
+
+        // look up the record.
+        if (isset($request['tag'])) {
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+            $tag = $request['tag'];
+            // set the meta info
+            $metainfo['title'] = gt('Showing all Blog Posts tagged as') . ' ' . $tag;
+//            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
+            $metainfo['keywords'] = $request['tag'];
+//            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
+            $metainfo['description'] = SITE_DESCRIPTION;
+//            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical; //FIXME $object not set
+            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+            return $metainfo;
+        }
+    }
+
+    function showall_by_date_meta($request) {
+        global $router;
+
+        // look up the record.
+        if (isset($request['month'])) {
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+            $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
+            $ts = strftime('%B, %Y', $mk);
+            // set the meta info
+            $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts;
+//            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
+            $metainfo['keywords'] = SITE_KEYWORDS;
+//            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
+            $metainfo['description'] = SITE_DESCRIPTION;
+//            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical; //FIXME $object not set
+            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+            return $metainfo;
+        }
+    }
 
     /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content

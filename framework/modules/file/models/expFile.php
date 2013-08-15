@@ -321,6 +321,12 @@ class expFile extends expRecord {
 // =========================================================================
 // Static Methods
 
+    public static function selectAllFiles() {
+        global $db;
+
+        return $db->selectObjects('expFiles',1);
+    }
+
     /**
      * File ($_POST) UPLOAD that also inserts File info into database.
      *
@@ -379,7 +385,7 @@ class expFile extends expRecord {
                 // we will get here.
                 return 'file_too_large';
             case UPLOAD_ERR_FORM_SIZE:
-                return 'file_exceeds_form_MAX_FILE_SIZ';
+                return 'file_exceeds_form_MAX_FILE_SIZE';
             case UPLOAD_ERR_PARTIAL:
                 return 'partial_file';
             case UPLOAD_ERR_NO_FILE:
@@ -1893,6 +1899,11 @@ class expFile extends expRecord {
                         $errors[] = sprintf(gt('*  However...we successfully recreated the "forms_%s" Table from the EQL file'), $table);
                     }
                 }
+            }
+
+            // ensure the form data table exists and is current
+            foreach ($db->selectObjects('forms') as $f) {
+                if ($f->is_saved) $f->updateTable();
             }
 
             // rename mixed case tables if necessary

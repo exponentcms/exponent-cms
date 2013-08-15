@@ -76,7 +76,8 @@
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
     			{if $config.usebody==1}
-    				<p>{$item->body|summarize:"html":"paralinks"}</p>
+    				{*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
+                    <p>{$item->body|summarize:"html":"parahtml"}</p>
     			{elseif $config.usebody==2}
     			{else}
     				{$item->body}
@@ -87,7 +88,7 @@
             </div>
             {if $config.enable_facebook_like}
                 <div id="fb-root"></div>
-                <div class="fb-like" data-href="{$smarty.const.URL_FULL}{$item->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
+                <div class="fb-like" data-href="{link action=show title=$item->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
                 {script unique='facebook_src'}
                 {literal}
                     (function(d, s, id) {
@@ -101,7 +102,7 @@
                 {/script}
             {/if}
             {if $config.enable_tweet}
-                <a href="https://twitter.com/share" class="twitter-share-button" data-url="{$smarty.const.URL_FULL}{$item->sef_url}" data-text="{$item->title}"{if $config.layout} data-count="{$config.layout}"{/if}{if $config.size} data-size="{$config.size}"{/if} data-lang="en">{'Tweet'|gettext}</a>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="{link action=show title=$item->sef_url}" data-text="{$item->title}"{if $config.layout} data-count="{$config.layout}"{/if}{if $config.size} data-size="{$config.size}"{/if} data-lang="en">{'Tweet'|gettext}</a>
                 {script unique='tweet_src'}
                 {literal}
                     !function(d,s,id){

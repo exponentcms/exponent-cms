@@ -55,6 +55,7 @@
                             <td>
                             {icon img='groupperms.png' action=view_registrants record=$listing title="View Registrants"|gettext}
                             {icon img='edit.png' controller=store action=edit record=$listing title="Edit this event"|gettext}
+                            {icon img="copy.png" controller=store action=copyProduct record=$listing title="Copy this Event"|gettext}
                             {icon img='delete.png' controller=store action=delete record=$listing title="Delete this event"|gettext}
                         </tr>
                     {/foreach}

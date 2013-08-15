@@ -77,7 +77,8 @@
 									{/if}
 								{/if}
 								{br}
-                                {$item->body|summarize:"html":"paralinks"}
+                                {*{$item->body|summarize:"html":"paralinks"}*}
+                                {$item->body|summarize:"html":"parahtml"}
 							</div>
 						</div>
 					{/foreach}

@@ -318,6 +318,8 @@ function renderAction(array $parms=array()) {
         $perm_action = $parms['action'];
     }
 
+    //FIXME Here is where we'd check for ownership of an item and/or w/ 'create' perm?
+    
     if (array_key_exists($perm_action, $perms)) {
         if (!expPermissions::check($perm_action, $controller->loc)) {
             if (expTheme::inAction()) {

@@ -47,11 +47,12 @@ class storeController extends expController {
         'categories',
         'comments',
         'ealerts',
+        'facebook',
         'files',
         'rss',
         'tags',
         'twitter',
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
     //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
     protected $add_permissions = array(
@@ -932,7 +933,18 @@ class storeController extends expController {
                 unset($cnt['id']);
                 //$cnt['title'] = $cnt['title'].' - SKU# '.$cnt['model'];
                 $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $prod->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $cnt['title'] . (!empty($cnt['model']) ? ' - SKU#: ' . $cnt['model'] : '');
-                $search_record = new search($cnt, false, false);
+
+//                $search_record = new search($cnt, false, false);
+               //build the search record and save it.
+                $sql = "original_id=" . $origid . " AND ref_module='" . $this->baseclassname . "'";
+                $oldindex = $db->selectObject('search', $sql);
+                if (!empty($oldindex)) {
+                    $search_record = new search($oldindex->id, false, false);
+                    $search_record->update($cnt);
+                } else {
+                    $search_record = new search($cnt, false, false);
+                }
+
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
                 $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
 //                $search_record->ref_module = 'store';
@@ -979,7 +991,6 @@ class storeController extends expController {
             // if we have an id lets pull the product type from the products table.
             $product_type = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
         } else {
-
             if (empty($this->params['product_type'])) redirect_to(array('controller' => 'store', 'action' => 'picktype'));
             $product_type = $this->params['product_type'];
         }
@@ -1095,6 +1106,13 @@ class storeController extends expController {
         global $db;
 
         //expHistory::set('editable', $this->params);
+        $f = new forms();
+        $forms_list = array();
+        $forms_list[0] = '- '.gt('No User Input Required').' -';
+        $forms = $f->find('all', 'is_saved=1');
+        if (!empty($forms)) foreach ($forms as $frm) {
+            $forms_list[$frm->id] = $frm->title;
+        }
 
         // first we need to figure out what type of ecomm product we are dealing with
         if (!empty($this->params['id'])) {
@@ -1168,10 +1186,12 @@ class storeController extends expController {
         }
 
         assign_to_template(array(
+            'copy'              => true,
             'record'            => $record,
             'parent'            => new $product_type($record->parent_id, false, true),
             'form'              => $record->getForm($record->parent_id == 0 ? 'edit' : 'child_edit'),
             'optiongroups'      => $editable_options,
+            'forms'=> $forms_list,
             'shipping_services' => $shipping_services,
             'shipping_methods'  => $shipping_methods
         ));
@@ -1203,19 +1223,24 @@ class storeController extends expController {
             //Create a flash message and redirect to the page accordingly
             if ($record->parent_id != 0) {
                 $parent = new $product_type($record->parent_id, false, false);
-                flash("message", gt("Child product saved."));
+                if (isset($this->params['original_id'])) {
+                    flash("message", gt("Child product saved."));
+                } else {
+                    flash("message", gt("Child product copied and saved."));
+                }
                 redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $parent->sef_url));
             } elseif (isset($this->params['original_id'])) {
                 flash("message", gt("Product copied and saved. You are now viewing your new product."));
-                redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $record->sef_url));
             } else {
                 flash("message", gt("Product saved."));
-                redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $record->sef_url));
             }
+            redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $record->sef_url));
         } elseif ($product_type == "giftcard") {
             flash("message", gt("Giftcard saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         } elseif ($product_type == "eventregistration") {
+            //FIXME shouldn't event registrations be added to search index?
+//            $record->addContentToSearch();  //FIXME there is NO eventregistration::addContentToSearch() method
             flash("message", gt("Event saved."));
             redirect_to(array('controller' => 'store', 'action' => 'manage'));
         } elseif ($product_type == "donation") {
@@ -1311,8 +1336,8 @@ class storeController extends expController {
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
                     $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
+                    break;
                 }
-                break;
             default:
                 $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical'=> '');
         }
@@ -1754,13 +1779,15 @@ class storeController extends expController {
                         $html = $template->render();
                         $html .= ecomconfig::getConfig('ecomfooter');
 
+                        $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                        if (empty($from[0])) $from = SMTP_FROMADDRESS;
                         try {
                             $mail = new expMail();
                             $mail->quickSend(array(
                                 'html_message' => $html,
                                 'text_message' => str_replace("<br>", "\r\n", $template->render()),
                                 'to'           => $email_addy,
-                                'from'         => ecomconfig::getConfig('from_address'),
+                                'from'         => $from,
                                 'subject'      => 'Your Order Has Been Shipped (#' . $order->invoice_id . ') - ' . ecomconfig::getConfig('storename')
                             ));
                         } catch (Exception $e) {

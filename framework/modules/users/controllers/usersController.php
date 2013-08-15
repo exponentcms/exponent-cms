@@ -488,7 +488,7 @@ class usersController extends expController {
         $u = new user($u->id);
 
         if (!expValidator::check_antispam($this->params)) {
-            expValidator::failAndReturnToForm(gt('Anti-spam verification failed'), $this->params);
+            expValidator::failAndReturnToForm(gt('Anti-spam verification failed.  Please try again.'), $this->params);
         } elseif (empty($u->id)) {
             expValidator::failAndReturnToForm(gt('We were unable to find an account with that username/email'), $this->params);
         } elseif (empty($u->email)) {

@@ -30,8 +30,8 @@ class newsController extends expController {
         'categories',
         'comments',
 //        'ealerts',
-        'facebook',
-        'twitter',
+//        'facebook',
+//        'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $add_permissions = array(
         'showUnpublished'=>'View Unpublished News'
@@ -76,8 +76,48 @@ class newsController extends expController {
         ));
     }
 
+    public function showall_by_date() {
+	    expHistory::set('viewable', $this->params);
+        if (!empty($this->params['day'])) {
+            $start_date = expDateTime::startOfDayTimestamp(mktime(0, 0, 0, $this->params['month'], $this->params['day'], $this->params['year']));
+            $end_date = expDateTime::endOfDayTimestamp(mktime(23, 59, 59, $this->params['month'], $this->params['day'], $this->params['year']));
+            $format_date = DISPLAY_DATE_FORMAT;
+        } elseif (!empty($this->params['month'])) {
+            $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+            $end_date = expDateTime::endOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
+            $format_date = "%B %Y";
+        } elseif (!empty($this->params['year'])) {
+            $start_date = expDateTime::startOfYearTimestamp(mktime(0, 0, 0, 1, 1, $this->params['year']));
+            $end_date = expDateTime::endOfYearTimestamp(mktime(23, 59, 59, 12, 31, $this->params['year']));
+            $format_date = "%Y";
+        } else {
+            exit();
+        }
+
+		$page = new expPaginator(array(
+            'model'=>$this->basemodel_name,
+//            'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
+            'where'=>"publish >= '".$start_date."' AND publish <= '".$end_date."'",
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
+            'order'=>'publish',
+            'dir'=>'desc',
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
+
+		assign_to_template(array(
+            'page'=>$page,
+            'moduletitle'=>gt('News for').' "'.expDateTime::format_date($start_date,$format_date).'"')
+        );
+	}
+
     public function show() {
-        global $db;
+//        global $db;
 
         expHistory::set('viewable', $this->params);
 
@@ -90,7 +130,8 @@ class newsController extends expController {
         }
 
         $record = new news($id);
-        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+//        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+        $config = expConfig::getConfig($record->location_data);
 
         $order = !empty($config['order']) ? $config['order'] : 'publish DESC';
         if (strstr($order," ")) {

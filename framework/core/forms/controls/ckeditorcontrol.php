@@ -58,9 +58,11 @@ class ckeditorcontrol extends formcontrol {
             $contentCSS = "contentsCss : '" . $css . "',";
         }
         if (empty($this->toolbar)) {
-            $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
+//            $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
+            $settings = expHTMLEditorController::getActiveEditorSettings();
         } elseif (intval($this->toolbar) != 0) {
-            $settings = $db->selectObject('htmleditor_ckeditor', 'id=' . $this->toolbar);
+//            $settings = $db->selectObject('htmleditor_ckeditor', 'id=' . $this->toolbar);
+            $settings = expHTMLEditorController::getEditorSettings($this->toolbar);
         }
         $plugins = '';
         if (!empty($settings)) {

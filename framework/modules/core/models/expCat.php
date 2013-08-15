@@ -101,6 +101,15 @@ class expCat extends expRecord {
 	    $db->delete('content_expCats','expcats_id='.$this->id);
     }
 
+    /*
+     * Return array of all expTag records in system
+     */
+    public static function selectAllCatContentType() {
+        global $db;
+
+        $db->selectColumn('content_expTags','content_type',null,null,true);
+    }
+
 }
 
 ?>

@@ -38,12 +38,12 @@
                             <em class="date">
                                 {'Dated'|gettext}: {$theme->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
                             </em>
-                            {br}
                             <em class="date">
                                 {'Size'|gettext}: {$theme->length|bytes}
                             </em>
                             <div class="bodycopy">
-                                {$theme->body|summarize:"html":"paralinks"}
+                                {*{$theme->body|summarize:"html":"paralinks"}*}
+                                {$theme->body|summarize:"html":"parahtml"}
                                 {br}
                                 <a href="{$theme->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
@@ -65,12 +65,12 @@
                             <em class="date">
                                 {'Dated'|gettext}: {$fix->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
                             </em>
-                            {br}
                             <em class="date">
                                 {'Size'|gettext}: {$fix->length|bytes}
                             </em>
                             <div class="bodycopy">
-                                {$fix->body|summarize:"html":"paralinks"}
+                                {*{$fix->body|summarize:"html":"paralinks"}*}
+                                {$fix->body|summarize:"html":"parahtml"}
                                 {br}
                                 <a href="{$fix->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>
@@ -91,12 +91,12 @@
                             <em class="date">
                                 {'Dated'|gettext}: {$mod->publish_date|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}
                             </em>
-                            {br}
                             <em class="date">
                                 {'Size'|gettext}: {$mod->length|bytes}
                             </em>
                             <div class="bodycopy">
-                                {$mod->body|summarize:"html":"paralinks"}
+                                {*{$mod->body|summarize:"html":"paralinks"}*}
+                                {$mod->body|summarize:"html":"parahtml"}
                                 {br}
                                 <a href="{$mod->rss_link}" title="More Information"|gettext target="_blank">{'More Information'|gettext}</a>
                             </div>

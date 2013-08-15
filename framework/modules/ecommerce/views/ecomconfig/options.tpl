@@ -37,44 +37,45 @@
         {foreach from=$optiongroups item=group}
             <table class="optiontable">
                 <thead>
-                <th>
-                    <h3>
-                        {$group->title}
-                    </h3>
-                </th>
-                <th> </th>
-                <th>
-                    {icon class=edit action=edit_optiongroup_master record=$group}
-                    {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
-                </th>
+                    <th>
+                        <h3>
+                            {$group->title}
+                        </h3>
+                    </th>
+                    <th> </th>
+                    <th>
+                        {icon class=edit action=edit_optiongroup_master record=$group}
+                        {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
+                    </th>
                 </thead>
                 <tbody>
-                <tr>
-                    <td colspan=3>
-                        <strong><a href="{link action=edit_option_master optiongroup_master_id=$group->id}">{'Add an option to'|gettext} {$group->title}</a></strong>
-                        {foreach name=options from=$group->option_master item=optname}
-                <tr>
-                    <td>
-                        {*({$optname->id}) {$optname->title}({$optname->rank})*}
-                        {$optname->title}
-                    </td>
-                    <td> </td>
-                    <td>
-                        {icon class=edit action=edit_option_master record=$optname}
-                        {if $optname->timesImplemented > 0}
-                            {icon class=delete action=delete_option_master record=$optname onclick="alert('This option is being used by `$optname->timesImplemented` products. You may not delete this option until they are removed from the products.'); return false;"}
-                        {else}
-                            {icon class=delete action=delete_option_master record=$optname onclick="return true;"}
-                        {/if}
-                    </td>
-                </tr>
-                {foreachelse}
-                {'This option group doesn\'t have any options yet.'|gettext}
-                {/foreach}
-                </td></tr>
+                    <tr>
+                        <td colspan=3>
+                            <strong><a href="{link action=edit_option_master optiongroup_master_id=$group->id}">{'Add an option to'|gettext} {$group->title}</a></strong>
+                            {foreach name=options from=$group->option_master item=optname}
+                                <tr>
+                                    <td>
+                                        {*({$optname->id}) {$optname->title}({$optname->rank})*}
+                                        {$optname->title}
+                                    </td>
+                                    <td> </td>
+                                    <td>
+                                        {icon class=edit action=edit_option_master record=$optname}
+                                        {if $optname->timesImplemented > 0}
+                                            {icon class=delete action=delete_option_master record=$optname onclick="alert('This option is being used by `$optname->timesImplemented` products. You may not delete this option until they are removed from the products.'); return false;"}
+                                        {else}
+                                            {icon class=delete action=delete_option_master record=$optname onclick="return true;"}
+                                        {/if}
+                                    </td>
+                                </tr>
+                            {foreachelse}
+                                {br}{'This option group doesn\'t have any options yet.'|gettext}
+                            {/foreach}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            {foreachelse}
+        {foreachelse}
             <h2>{'There are no product options setup yet.'|gettext}</h2>
         {/foreach}
     </div>

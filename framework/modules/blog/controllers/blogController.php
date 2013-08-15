@@ -32,7 +32,7 @@ class blogController extends expController {
     public $remove_configs = array(
 //        'categories',
 //        'ealerts'
-    ); // all options: ('aggregation','categories','comments','ealerts','files','module_title','pagination','rss','tags','twitter',)
+    ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
     public $add_permissions = array(
         'approve'=>"Approve Comments"
     );
@@ -136,7 +136,7 @@ class blogController extends expController {
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
             'where'=>($this->aggregateWhereClause()?$this->aggregateWhereClause()." AND ":"")."publish >= '".$start_date."' AND publish <= '".$end_date."'",
-            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 1,
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
             'order'=>'publish',
             'dir'=>'desc',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
@@ -179,7 +179,7 @@ class blogController extends expController {
 	}
 	
 	public function show() {
-	    global $db;
+//	    global $db;
 
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
@@ -188,7 +188,8 @@ class blogController extends expController {
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
 	    // populate the location data in the template now.
-        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+//        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+        $config = expConfig::getConfig($record->location_data);
 
         $nextwhere = $this->aggregateWhereClause().' AND publish > '.$record->publish.' ORDER BY publish';
         $record->next = $record->find('first',$nextwhere);
@@ -201,7 +202,7 @@ class blogController extends expController {
 	}
 
     /**
-     * view items referenced by tags
+     * view items referenced by tags  DEPRECATED??
      */
     function showByTags() {
         global $db;
@@ -336,49 +337,19 @@ class blogController extends expController {
             if (!empty($str)) {
                 $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
                 $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
-                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
-                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-                $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+//                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
+                $metainfo['keywords'] = $str;
+//                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;  //FIXME $object not set
+                $metainfo['description'] =SITE_DESCRIPTION;
+//                $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;  //FIXME $object not set
+                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);  //FIXME $object not set
 
                 return $metainfo;
             }
         }
     }
 
-    function showall_by_date_meta($request) {
-        global $router;
-
-        // look up the record.
-        if (isset($request['month'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
-            $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
-            $ts = strftime('%B, %Y',$mk);
-            // set the meta info
-            $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts ;
-            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
-            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
-            return $metainfo;
-        }
-    }
-
-    function showall_by_tags_meta($request) {
-        global $router;
-
-        // look up the record.
-        if (isset($request['tag'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
-            $tag = $request['tag'];
-            // set the meta info
-            $metainfo['title'] = gt('Showing all Blog Posts tagged as') . ' ' . $tag ;
-            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
-            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
-            return $metainfo;
-        }
-    }
-
-//	function metainfo() {
+    //	function metainfo() {
 //        global $router;
 //        if (empty($router->params['action'])) return false;
 //

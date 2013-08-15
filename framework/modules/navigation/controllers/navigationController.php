@@ -88,7 +88,8 @@ class navigationController extends expController {
         $id      = $sectionObj->id;
         $current = null;
         // Show not only the location of a page in the hierarchy but also the location of a standalone page
-        $current = $db->selectObject('section', ' id= ' . $id);
+//        $current = $db->selectObject('section', ' id= ' . $id);
+        $current = new section($id);
         if ($current->parent == -1) {  // standalone page
             $navsections = self::levelTemplate(-1, 0);
             foreach ($navsections as $section) {
@@ -423,10 +424,11 @@ class navigationController extends expController {
             $search_record->keywords  = $section->keywords;
             // now we're going to grab all the textmodules on this page and build the body for the page based off the content
             // of all the text module added together.
-            $loc            = new stdClass();
-            $loc->mod       = 'text';
-            $loc->src       = '';
-            $loc->int       = '';
+//            $loc            = new stdClass();
+//            $loc->mod       = 'text';
+//            $loc->src       = '';
+//            $loc->int       = '';
+            $loc = expCore::makeLocation('text');
             $controllername = 'text';
             foreach ($db->selectObjects('sectionref', "module='" . $controllername . "' AND section=" . $section->id) as $module) {
                 $loc->src   = $module->source;
@@ -606,6 +608,9 @@ class navigationController extends expController {
         }
     }
 
+    /**
+     * Check for cascading page view permission, esp. if not public
+     */
     public static function canView($section) {
         global $db;
 
@@ -626,14 +631,15 @@ class navigationController extends expController {
         }
     }
 
+    /**
+     * Check to see if page is public with cascading
+     */
     public static function isPublic($s) {
-        global $db;
-
         if ($s == null) {
             return false;
         }
         while ($s->public && $s->parent > 0) {
-            $s = $db->selectObject('section', 'id=' . $s->parent);
+            $s = new section($s->parent);
         }
         $lineage = (($s->public) ? 1 : 0);
         return $lineage;

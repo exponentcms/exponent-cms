@@ -270,6 +270,7 @@ class help extends expRecord {
         
         return $link;
     }
+
 }
 
 ?>

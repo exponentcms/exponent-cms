@@ -292,6 +292,7 @@ class remove_oldfiles extends upgradescript {
             'framework/core/models/storeCategoryFeeds.php',
             'framework/core/models/taxclass.php',
             'framework/core/models/vendor.php',
+            'framework/modules/ecommerce/models/childProduct.php',
              // ecommerce renamed views
             'framework/modules/ecommerce/views/store/showall_featured_products.tpl',
             'framework/modules/ecommerce/views/store/events_calendar.tpl',
@@ -368,9 +369,9 @@ class remove_oldfiles extends upgradescript {
             "compat/",
             "views/",
             "subsystems/",
-//            "conf/",  //FIXME until 2.2.2
-            "conf/data/",  //FIXME until 2.2.2
-            "conf/extensions/",  //FIXME until 2.2.2
+//            "conf/",  //FIXME until 2.2.3
+            "conf/data/",  //FIXME until 2.2.3
+            "conf/extensions/",  //FIXME until 2.2.3
             "install/sitetypes/",
             "themes/common/",
             "themes/bootstraptheme/controls/",

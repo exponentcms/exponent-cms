@@ -59,7 +59,8 @@
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
                 {if $config.usebody==1}
-                    <p>{$item->body|summarize:"html":"paralinks"}</p>
+                    {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
+                    <p>{$item->body|summarize:"html":"parahtml"}</p>
                 {elseif $config.usebody==2}
 				{else}
                     {$item->body}
@@ -69,6 +70,22 @@
                 {/if}
                 <a class="readmore" href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}">{"Read More"|gettext}</a>
             </div>
+            {if $config.enable_tweet}
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="{link action=show title=$item->sef_url}" data-text="{$item->title}"{if $config.layout} data-count="{$config.layout}"{/if}{if $config.size} data-size="{$config.size}"{/if} data-lang="en">{'Tweet'|gettext}</a>
+                {script unique='tweet_src'}
+                {literal}
+                    !function(d,s,id){
+                        var js,fjs=d.getElementsByTagName(s)[0];
+                        if(!d.getElementById(id)){
+                            js=d.createElement(s);
+                            js.id=id;
+                            js.src="https://platform.twitter.com/widgets.js";
+                            fjs.parentNode.insertBefore(js,fjs);
+                        }
+                    }(document,"script","twitter-wjs");
+                {/literal}
+                {/script}
+            {/if}
             {clear}
         </div>
     {/foreach}

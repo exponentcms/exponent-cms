@@ -38,7 +38,7 @@ class order extends expRecord {
     public $forced_shipping = false;
     public $product_forcing_shipping = '';
 
-    protected $attachable_item_types = array(//'content_expFiles'=>'expFile',
+    protected $attachable_item_types = array( //'content_expFiles'=>'expFile',
         //'content_expTags'=>'expTag', 
         //'content_expComments'=>'expComment',
         //'content_expSimpleNote'=>'expSimpleNote',
@@ -59,7 +59,7 @@ class order extends expRecord {
             }
             //$this->shipping_total = 0;
             foreach ($this->getShippingMethods() as $smid) {
-                $this->shippingmethods[$smid]            = new shippingmethod($smid);
+                $this->shippingmethods[$smid] = new shippingmethod($smid);
                 $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
 
                 $requiresShipping = false;
@@ -90,7 +90,7 @@ class order extends expRecord {
             $retArray = array();
         }
 
-        $retArray[] = array('timestamp'=> time(), 'orig_referrer'=> $orig_referrer, 'ectid'=> $router->getTrackingId());
+        $retArray[] = array('timestamp' => time(), 'orig_referrer' => $orig_referrer, 'ectid' => $router->getTrackingId());
         return serialize($retArray);
     }
 
@@ -142,7 +142,7 @@ class order extends expRecord {
             // if ecomm is turned off, no cart.		    
             //$active = ;
             if (empty($active)) return null;
-            $order  = new order(); //initialize a new order object to use the find function from.
+            $order = new order(); //initialize a new order object to use the find function from.
             $ticket = expSession::getTicketString(); //get this users session ticket. this is how we track anonymous users.
             // grab the origional referrer from the session table so that we can transfer it into the cart where it will be used for reporting purposes
             // sessions are temporary so we can't report on the referrer in the session table itsef because it may not be there
@@ -175,7 +175,7 @@ class order extends expRecord {
                         if ($tmpCart->id != $cookie_cart_id) {
                             //cookie set, but we gots no cart in the DB so act as if we had no cookie
                             $cart = new order();
-                            $cart->update(array("sessionticket_ticket"=> $ticket, 'user_id'=> $user->id, 'orig_referrer'=> $orig_referrer, 'return_count'=> $cart->setReturnCount($orig_referrer)));
+                            $cart->update(array("sessionticket_ticket" => $ticket, 'user_id' => $user->id, 'orig_referrer' => $orig_referrer, 'return_count' => $cart->setReturnCount($orig_referrer)));
                             order::setCartCookie($cart);
                         } else {
                             $u = new user($tmpCart->user_id);
@@ -183,7 +183,7 @@ class order extends expRecord {
                             if (empty($tmpCart->user_id) /*&& count($tmpCart->orderitem) == 0*/) {
                                 $cart = new order($cookie_cart_id);
                                 //update the session ticket and return count                                                                
-                                $cart->update(array('sessionticket_ticket'=> $ticket, 'return_count'=> $cart->setReturnCount($orig_referrer)));
+                                $cart->update(array('sessionticket_ticket' => $ticket, 'return_count' => $cart->setReturnCount($orig_referrer)));
                                 order::setCartCookie($cart);
                                 flash('message', gt('Welcome back'));
                             } //2) Was logged in
@@ -192,13 +192,13 @@ class order extends expRecord {
                                 if ($u->isActingAdmin() || $u->isAdmin()) {
                                     //no need to restore anything.
                                     $cart = new order();
-                                    $cart->update(array("sessionticket_ticket"=> $ticket, 'user_id'=> $user->id, 'orig_referrer'=> $orig_referrer));
+                                    $cart->update(array("sessionticket_ticket" => $ticket, 'user_id' => $user->id, 'orig_referrer' => $orig_referrer));
                                     order::setCartCookie($cart);
                                 } //Was Logged in with NO items in cart
                                 else if (!empty($tmpCart->user_id) && count($tmpCart->orderitem) == 0) {
                                     //silently copy tracking data from old order and continue on
                                     $cart = new order();
-                                    $cart->update(array("sessionticket_ticket"=> $ticket, 'user_id'=> $user->id, 'orig_referrer'=> $orig_referrer, 'return_count'=> $tmpCart->setReturnCount($orig_referrer)));
+                                    $cart->update(array("sessionticket_ticket" => $ticket, 'user_id' => $user->id, 'orig_referrer' => $orig_referrer, 'return_count' => $tmpCart->setReturnCount($orig_referrer)));
                                     order::setCartCookie($cart);
                                     flash('message', gt('Welcome back'));
                                 } //3) Was logged in WITH items in cart
@@ -210,14 +210,14 @@ class order extends expRecord {
                                             //already went through validation and we're good to go
                                             $cart = new order($sessAr['cid']);
                                             //update the session ticket and return count                              
-                                            $cart->update(array('sessionticket_ticket'=> $ticket, 'return_count'=> $cart->mergeReturnCount($sessioncart->return_count), 'orig_referrer'=> $sessioncart->orig_referrer));
+                                            $cart->update(array('sessionticket_ticket' => $ticket, 'return_count' => $cart->mergeReturnCount($sessioncart->return_count), 'orig_referrer' => $sessioncart->orig_referrer));
                                             order::setCartCookie($cart);
                                             expSession::un_set('verify_shopper');
                                             $user = new user($cart->user_id);
                                             expSession::login($user);
                                             //Update the last login timestamp for this user.
                                             $user->updateLastLogin();
-                                            flash('message', gt('Welcome back') . ' ' . $sessAr['firstname'] . '! ' . gt('Your shopping cart has been restored - you may continue shopping or') . ' <a href="' . makelink(array("controller"=> "cart", "action"=> "checkout"),true) . '">checkout</a> ' . gt('at your convenience.'));
+                                            flash('message', gt('Welcome back') . ' ' . $sessAr['firstname'] . '! ' . gt('Your shopping cart has been restored - you may continue shopping or') . ' <a href="' . makelink(array("controller" => "cart", "action" => "checkout"), true) . '">checkout</a> ' . gt('at your convenience.'));
                                         } else {
                                             //send to verification? If user has elected to restore their cart
                                             //eDebug($_SESSION);
@@ -232,17 +232,17 @@ class order extends expRecord {
                                                     expSession::un_set('verify_shopper');
                                                     order::setCartCookie($cart);
                                                 } else {
-                                                    flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('We see that you have shopped with us before.') . '<br><br><a id="submit-verify" href="' . makelink(array("controller"=> "order", "action"=> "verifyReturnShopper")) . '" rel="nofollow">' . gt('Click Here to Restore Your Previous Shopping Cart') . '</a><br><br><a class="exp-ecom-link" href="' . makelink(array("controller"=> "order", "action"=> "clearCart", "id"=> $cookie_cart_id)) . '">' . gt('Click Here To Start a New Shopping Cart') . '</a>');
+                                                    flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('We see that you have shopped with us before.') . '<br><br><a id="submit-verify" href="' . makelink(array("controller" => "order", "action" => "verifyReturnShopper")) . '" rel="nofollow">' . gt('Click Here to Restore Your Previous Shopping Cart') . '</a><br><br><a class="exp-ecom-link" href="' . makelink(array("controller" => "order", "action" => "clearCart", "id" => $cookie_cart_id)) . '">' . gt('Click Here To Start a New Shopping Cart') . '</a>');
                                                     $sessAr['orig_path'] = $router->current_url;
                                                     expSession::set('verify_shopper', $sessAr);
                                                 }
                                             } else {
                                                 //first time...create a default cart, issue message, set session, rinse, repeat
                                                 $cart = new order();
-                                                $cart->update(array("sessionticket_ticket"=> $ticket, 'return_count'=> $cart->setReturnCount($orig_referrer)));
-                                                expSession::set('verify_shopper', array('au'=> 1, 'orig_path'=> $router->current_url, 'firstname'=> $u->firstname, 'cid'=> $cookie_cart_id, 'awaiting_choice'=> true));
+                                                $cart->update(array("sessionticket_ticket" => $ticket, 'return_count' => $cart->setReturnCount($orig_referrer)));
+                                                expSession::set('verify_shopper', array('au' => 1, 'orig_path' => $router->current_url, 'firstname' => $u->firstname, 'cid' => $cookie_cart_id, 'awaiting_choice' => true));
                                                 //order::setCartCookie($cart);
-                                                flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('We see that you have shopped with us before.') . '<br><br><a id="submit-verify" href="' . makelink(array("controller"=> "order", "action"=> "verifyReturnShopper")) . '" rel="nofollow">' . gt('Click Here to Restore Your Previous Shopping Cart') . '</a><br><br><a class="exp-ecom-link" href="' . makelink(array("controller"=> "order", "action"=> "clearCart", "id"=> $cookie_cart_id)) . '">' . gt('Click Here To Start a New Shopping Cart') . '</a>');
+                                                flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('We see that you have shopped with us before.') . '<br><br><a id="submit-verify" href="' . makelink(array("controller" => "order", "action" => "verifyReturnShopper")) . '" rel="nofollow">' . gt('Click Here to Restore Your Previous Shopping Cart') . '</a><br><br><a class="exp-ecom-link" href="' . makelink(array("controller" => "order", "action" => "clearCart", "id" => $cookie_cart_id)) . '">' . gt('Click Here To Start a New Shopping Cart') . '</a>');
                                             }
                                         }
                                     } //4) Was Logged in w/ REAL user account: -- check or ADMIN!
@@ -251,7 +251,7 @@ class order extends expRecord {
                                         //this should be all we need to do here
                                         //redirect_to(array("controller"=>"order",'action'=>'verifyReturnShopper','au'=>'0'));
                                         $cart = new order();
-                                        $cart->update(array("sessionticket_ticket"=> $ticket, 'user_id'=> $user->id, 'orig_referrer'=> $orig_referrer));
+                                        $cart->update(array("sessionticket_ticket" => $ticket, 'user_id' => $user->id, 'orig_referrer' => $orig_referrer));
                                         order::setCartCookie($cart);
                                         flash('message', gt('Welcome back') . ' ' . $u->firstname . '! ' . gt('If you would like to pick up where you left off, login and your previous shopping cart will be restored.'));
                                     }
@@ -261,13 +261,13 @@ class order extends expRecord {
                     } else // no cookie, so create a new cart and set the cookie
                     {
                         $cart = new order();
-                        $cart->update(array("sessionticket_ticket"=> $ticket, 'user_id'=> $user->id, 'orig_referrer'=> $orig_referrer));
+                        $cart->update(array("sessionticket_ticket" => $ticket, 'user_id' => $user->id, 'orig_referrer' => $orig_referrer));
                         order::setCartCookie($cart);
                     }
                 } else {
                     //user is logged in, so we grab their usercart and update the session ticket only
                     //$usercart->update(array('sessionticket_ticket'=>$ticket, 'orig_referrer'=>$orig_referrer));
-                    $usercart->update(array('sessionticket_ticket'=> $ticket));
+                    $usercart->update(array('sessionticket_ticket' => $ticket));
                     $cart = $usercart;
                 }
                 //enter here if we HAVE an ACTIVE session/cart, but the user is not logged in
@@ -289,7 +289,7 @@ class order extends expRecord {
 
                     //merge the current session cart with previously saved user cart.
                     foreach ($sessioncart->orderitem as $orderitem) {
-                        $orderitem->merge(array('orders_id'=> $usercart->id, 'user_id'=> $user->id));
+                        $orderitem->merge(array('orders_id' => $usercart->id, 'user_id' => $user->id));
                     }
                     //if session cart HAS coupon codes, delete usercart codes and copy new code to usercart, else leave be
                     if (count($sessioncart->getOrderDiscounts())) {
@@ -312,7 +312,7 @@ class order extends expRecord {
             } elseif (!empty($sessioncart->id) && (empty($usercart->id) && $user->isLoggedIn())) {
 
                 //$sessioncart->update(array('user_id'=>$user->id, 'orig_referrer'=>$orig_referrer));
-                $sessioncart->update(array('user_id'=> $user->id));
+                $sessioncart->update(array('user_id' => $user->id));
                 $cart = $sessioncart;
             }
 
@@ -324,7 +324,7 @@ class order extends expRecord {
             }
 
             $cart->lastcat = expSession::get('last_ecomm_category');
-            $cart->total   = $cart->getCartTotal();
+            $cart->total = $cart->getCartTotal();
             //eDebug($cart,true);
             return $cart;
         }
@@ -337,14 +337,14 @@ class order extends expRecord {
                 $similar_items = $orderitem->find('all', "orders_id=" . $this->id . " AND product_id=" . $orderitem->product_id . " AND product_type='" . $orderitem->product_type . "' AND options='" . $orderitem->options . "' AND id !=" . $orderitem->id);
                 foreach ($similar_items as $similar_item) {
                     $orderitem->quantity = $orderitem->quantity + $similar_item->quantity;
-                    $deleted_items[]     = $similar_item->id;
+                    $deleted_items[] = $similar_item->id;
                     $similar_item->delete();
                 }
 
                 $shippingmethod = new shippingmethod($orderitem->shippingmethods_id);
                 $shippingmethod->delete();
                 $orderitem->shippingmethods_id = 0;
-                $orderitem->products_tax       = 0;
+                $orderitem->products_tax = 0;
                 $orderitem->save();
             }
         }
@@ -352,7 +352,7 @@ class order extends expRecord {
 
     public function getCurrentShippingMethod() {
         $sm_ids = $this->getShippingMethods();
-        $sm     = new shippingmethod(current($sm_ids));
+        $sm = new shippingmethod(current($sm_ids));
         return $sm;
     }
 
@@ -387,7 +387,7 @@ class order extends expRecord {
     }*/
 
     public function setReferencingIds() {
-        $ref_orders            = $this->find('all', 'reference_id=' . $this->id, null, null, null, false, false);
+        $ref_orders = $this->find('all', 'reference_id=' . $this->id, null, null, null, false, false);
         $this->referencing_ids = array();
         foreach ($ref_orders as $ref_id) {
             $this->referencing_ids[] = $ref_id->id;
@@ -399,14 +399,14 @@ class order extends expRecord {
         $this->forced_shipping = false;
         foreach ($this->orderitem as $item) {
             if (!empty($item->product->required_shipping_method)) {
-                $this->forced_shipping          = true;
+                $this->forced_shipping = true;
                 $this->product_forcing_shipping = $item->product;
                 return true;
             }
         }
 
         //check discounts requiring forced shipping
-        $o   = new order_discounts();
+        $o = new order_discounts();
         $ods = $o->find('all', 'orders_id=' . $this->id);
         foreach ($ods as $od) {
             if ($od->requiresForcedShipping()) {
@@ -420,16 +420,16 @@ class order extends expRecord {
     public function getForcedShippingMethod() {
         global $db, $user;
 
-        $forced_calc   = '';
+        $forced_calc = '';
         $forced_method = '';
         foreach ($this->orderitem as $item) {
             if (!empty($item->product->required_shipping_method)) {
-                $method                         = new shippingmethod($item->shippingmethods_id);
-                $forced_calc                    = $item->product->required_shipping_calculator_id;
-                $forced_method                  = $item->product->required_shipping_method;
-                $this->forced_shipping          = true;
+                $method = new shippingmethod($item->shippingmethods_id);
+                $forced_calc = $item->product->required_shipping_calculator_id;
+                $forced_method = $item->product->required_shipping_method;
+                $this->forced_shipping = true;
                 $this->product_forcing_shipping = $item->product;
-                $this->forcing_shipping_reason  = $item->product->title;
+                $this->forcing_shipping_reason = $item->product->title;
                 break;
             }
         }
@@ -439,14 +439,14 @@ class order extends expRecord {
         #method, but the product could require overnight or a high-end shipping, so we need to account for this
         //check discounts requiring forced shipping
         if ($forced_calc == '') {
-            $o   = new order_discounts();
+            $o = new order_discounts();
             $ods = $o->find('all', 'orders_id=' . $this->id);
             foreach ($ods as $od) {
                 if ($od->requiresForcedShipping()) {
-                    $method                        = new shippingmethod($this->orderitem[0]->shippingmethods_id);
-                    $forced_calc                   = $od->getRequiredShippingCalculatorId();
-                    $forced_method                 = $od->getRequiredShippingMethod();
-                    $this->forced_shipping         = true;
+                    $method = new shippingmethod($this->orderitem[0]->shippingmethods_id);
+                    $forced_calc = $od->getRequiredShippingCalculatorId();
+                    $forced_method = $od->getRequiredShippingMethod();
+                    $this->forced_shipping = true;
                     $this->forcing_shipping_reason = gt('The discount code you are using');
                     break;
                 }
@@ -458,21 +458,21 @@ class order extends expRecord {
         // user has set one up yet and default to that if so
         if (empty($method->addresses_id) && $user->isLoggedIn()) {
             $address = new address();
-            $addy    = $address->find('first', 'user_id=' . $user->id . '  AND is_default=1');
+            $addy = $address->find('first', 'user_id=' . $user->id . '  AND is_default=1');
             if (!empty($addy->id)) $method->setAddress($addy);
         }
 
-        $calcname   = $db->selectValue('shippingcalculator', 'calculator_name', 'id=' . $forced_calc);
+        $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id=' . $forced_calc);
         $calculator = new $calcname($forced_calc);
-        $rates      = $calculator->getRates($this);
-        $rate       = $rates[$forced_method];
-        $method->update(array('option'=> $forced_method, 'option_title'=> $rate['title'], 'shipping_cost'=> $rate['cost'], 'shippingcalculator_id'=> $forced_calc));
+        $rates = $calculator->getRates($this);
+        $rate = $rates[$forced_method];
+        $method->update(array('option' => $forced_method, 'option_title' => $rate['title'], 'shipping_cost' => $rate['cost'], 'shippingcalculator_id' => $forced_calc));
         return $method;
     }
 
     public function getCurrentBillingMethod() {
         $bm_ids = $this->getBillingMethods();
-        $bm     = new billingmethod(current($bm_ids));
+        $bm = new billingmethod(current($bm_ids));
         return $bm;
     }
 
@@ -529,7 +529,7 @@ class order extends expRecord {
         $this->total = $this->totalBeforeDiscounts - $this->total_applied_discounts;
     }*/
 
-    function validateDiscounts($redirectOnFailureTo = array('controller'=> 'cart', 'action'=> 'show')) {
+    function validateDiscounts($redirectOnFailureTo = array('controller' => 'cart', 'action' => 'show')) {
         $discounts = $this->getOrderDiscounts();
         if (count($discounts)) {
             foreach ($discounts as $od) {
@@ -569,16 +569,16 @@ class order extends expRecord {
         $cartDiscounts = $this->getOrderDiscounts();
 
         //reset totals
-        $this->total_discounts                 = 0;
-        $this->shipping_total                  = 0;
+        $this->total_discounts = 0;
+        $this->shipping_total = 0;
         $this->shipping_total_before_discounts = 0;
-        $this->shippingDiscount                = 0;
-        $this->surcharge_total                 = 0;
-        $this->subtotal                        = 0;
-        $this->total                           = 0;
-        $this->grand_total                     = 0;
-        $this->tax                             = 0;
-        $validateDiscountMessage               = '';
+        $this->shippingDiscount = 0;
+        $this->surcharge_total = 0;
+        $this->subtotal = 0;
+        $this->total = 0;
+        $this->grand_total = 0;
+        $this->tax = 0;
+        $validateDiscountMessage = '';
         //eDebug($this->surcharge_total);
         //hate doing double loops, but we need to have the subtotal figured out already for 
         //doing the straight dollar disoount calculations below
@@ -639,7 +639,7 @@ class order extends expRecord {
             }
 
             // calculate the tax for this product
-            $taxclass                          = new taxclass($this->orderitem[$i]->product->tax_class_id);
+            $taxclass = new taxclass($this->orderitem[$i]->product->tax_class_id);
             $this->orderitem[$i]->products_tax = $taxclass->getProductTax($this->orderitem[$i]);
             $this->tax += $this->orderitem[$i]->products_tax * $this->orderitem[$i]->quantity;
 
@@ -686,7 +686,7 @@ class order extends expRecord {
 
         if (isset($cartDiscounts)) {
             foreach ($cartDiscounts as $od) {
-                $discount             = new discounts($od->discounts_id);
+                $discount = new discounts($od->discounts_id);
                 $this->shipping_total = $discount->calculateShippingTotal($this->shipping_total);
             }
         }
@@ -708,34 +708,9 @@ class order extends expRecord {
         //eDebug($this, true); 
     }
 
-    public function getOrderType() {
-        global $db;
-        return $db->selectValue('order_type', 'title', 'id=' . $this->order_type_id);
-    }
-
-    /*public function setDefaultOrderType() {
-        global $db;
-        $default = $db->min('order_type', 'rank');
-        $this->order_type_id = $db->selectValue('order_type', 'id', 'rank='.$default);
-        $this->save();
-        return;
-    }*/
-
-    public function getStatus() {
-        global $db;
-        return $db->selectValue('order_status', 'title', 'id=' . $this->order_status_id);
-    }
-
-    /*public function setDefaultStatus() {
-       global $db;
-       $default = $db->min('order_status', 'rank');
-       $this->order_status_id = $db->selectValue('order_status', 'id', 'rank='.$default);
-       $this->save();
-       return;
-   } */
-
     public function getInvoiceNumber() {
         global $db;
+
         $sin = ecomconfig::getConfig('starting_invoice_number');
         //$invoice_num = $db->max('orders', 'invoice_id') + 1;
 
@@ -752,12 +727,12 @@ class order extends expRecord {
         if (empty($invoice_num) || $invoice_num < $sin) {
             $invoice_num = $sin;
             //insert the table with the next available number
-            $obj->id              = 1;
+            $obj->id = 1;
             $obj->next_invoice_id = $invoice_num + 1;
             $db->insertObject($obj, 'orders_next_invoice_id');
         } else {
             //update the table with the next available number
-            $obj->id              = 1;
+            $obj->id = 1;
             $obj->next_invoice_id = $invoice_num + 1;
             $db->updateObject($obj, 'orders_next_invoice_id');
         }
@@ -768,13 +743,13 @@ class order extends expRecord {
         return $invoice_num;
     }
 
-    public function isItemInCart($id, $type, $orderitem_id=null) {
+    public function isItemInCart($id, $type, $orderitem_id = null) {
         if (empty($id) || empty($type)) return false;
 
         foreach ($this->orderitem as $item) {
             // return true if we find the item in the users cart
             if ($item->product_type == $type && $item->product_id == $id) {
-                if (!empty($orderitem_id)) {  // does it need to be a specific order line item
+                if (!empty($orderitem_id)) { // does it need to be a specific order line item
                     if ($item->id == $orderitem_id) {
                         return $item;
                     }
@@ -787,7 +762,6 @@ class order extends expRecord {
     }
 
     public function setOrderType($params) {
-
         if (isset($params['order_type'])) {
             $this->order_type_id = $params['order_type'];
         } else {
@@ -796,18 +770,14 @@ class order extends expRecord {
         $this->save();
     }
 
-    public function setOrderStatus($params) {
+    public function getOrderType() {
+        global $db;
 
-        if (isset($params['order_status'])) {
-            $this->order_status_id = $params['order_status'];
-        } else {
-            $this->order_status_id = $this->getDefaultOrderStatus();
-        }
-        $this->save();
+        return $db->selectValue('order_type', 'title', 'id=' . $this->order_type_id);
     }
 
     public function getOrderTypes() {
-        $ot  = new order_type();
+        $ot = new order_type();
         $ots = $ot->find('all');
         $order_types = array();
         foreach ($ots as $order_type) {
@@ -817,14 +787,37 @@ class order extends expRecord {
     }
 
     public function getDefaultOrderType() {
-        $ot  = new order_type();
+        $ot = new order_type();
         $ots = $ot->find('first', 'is_default=1');
-        //eDebug($ots,true);        
+        //eDebug($ots,true);
         return !empty($ots->id) ? $ots->id : false;
     }
 
+    /*public function setDefaultOrderType() {
+        global $db;
+        $default = $db->min('order_type', 'rank');
+        $this->order_type_id = $db->selectValue('order_type', 'id', 'rank='.$default);
+        $this->save();
+        return;
+    }*/
+
+    public function setOrderStatus($params) {
+        if (isset($params['order_status'])) {
+            $this->order_status_id = $params['order_status'];
+        } else {
+            $this->order_status_id = $this->getDefaultOrderStatus();
+        }
+        $this->save();
+    }
+
+    public function getStatus() {
+        global $db;
+
+        return $db->selectValue('order_status', 'title', 'id=' . $this->order_status_id);
+    }
+
     public function getOrderStatuses() {
-        $os  = new order_status();
+        $os = new order_status();
         $oss = $os->find('all');
         $order_statuses = array();
         foreach ($oss as $order_status) {
@@ -833,9 +826,24 @@ class order extends expRecord {
         return $order_statuses;
     }
 
+    public function getDefaultOrderStatus() {
+        $os = new order_status();
+        $oss = $os->find('first', 'is_default=1');
+        //eDebug($ots,true);
+        return $oss->id;
+    }
+
+    /*public function setDefaultStatus() {
+       global $db;
+       $default = $db->min('order_status', 'rank');
+       $this->order_status_id = $db->selectValue('order_status', 'id', 'rank='.$default);
+       $this->save();
+       return;
+    } */
+
     public function getSalesReps() {
-        $sr         = new sales_rep();
-        $srs        = $sr->find('all');
+        $sr = new sales_rep();
+        $srs = $sr->find('all');
         $sales_reps = array();
         foreach ($srs as $sales_rep) {
             $sales_reps[$sales_rep->id] = $sales_rep->initials;
@@ -843,18 +851,12 @@ class order extends expRecord {
         return $sales_reps;
     }
 
-    public function getDefaultOrderStatus() {
-        $os  = new order_status();
-        $oss = $os->find('first', 'is_default=1');
-        //eDebug($ots,true);        
-        return $oss->id;
-    }
-
     static function sortStatuses($a, $b) {
         if ($a->created_at < $b->created_at) return 1;
         else if ($a->created_at > $b->created_at) return -1;
         else if ($a->created_at == $b->created_at) return 0;
     }
+
 }
 
 ?>

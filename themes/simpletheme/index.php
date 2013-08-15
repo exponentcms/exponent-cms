@@ -23,11 +23,11 @@
 <body>
 	<div id="doc">
 		<div id="hd">
-		    <h1 id="logo">
+		    <div id="logo">
 			<a href="<?php echo URL_FULL; ?>" title="<?php echo SITE_TITLE; ?>">
                 <?php echo ORGANIZATION_NAME; ?>
 			</a>
-			</h1>
+			</div>
             <?php //expTheme::module(array("controller"=>"login","action"=>"showlogin","view"=>"showlogin_flyoutYUI")); ?>
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <?php //expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall_flyoutsidebar","chrome"=>true,"source"=>"flyout")); ?>

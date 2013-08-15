@@ -48,6 +48,12 @@
                 	{if $config.enable_ealerts}
                 	    {control type="checkbox" name="send_ealerts" label="Send E-Alert?"|gettext value=1}
                 	{/if}
+                    {if $config.enable_auto_status}
+                        {control type="checkbox" name="send_status" label="Post as Facebook Event?"|gettext value=1}
+                    {/if}
+                    {if $config.enable_auto_tweet}
+                        {control type="checkbox" name="send_tweet" label="Post as a Tweet?"|gettext value=1}
+                    {/if}
                 </div>
                 <div id="tab2">
                     {control type="yuicalendarcontrol" name="eventdate" label="Event Date"|gettext value=$record->eventdate[0]->date}

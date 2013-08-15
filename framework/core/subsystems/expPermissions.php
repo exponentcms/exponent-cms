@@ -84,6 +84,12 @@ class expPermissions {
 	public static function check($permission,$location) {
 		global $exponent_permissions_r, $user, $db, $module_scope;
 
+        if (!empty($user->id)) {
+            if ($user->isAdmin()) return true;  // admin users always have permissions
+        } else {
+            return false;  // anonymous/logged-out user never has permission
+        }
+
         if (expModules::controllerExists($location->mod)) {
             $mod = expModules::getController($location->mod);
             if (method_exists($mod, 'checkPermissions')){
@@ -91,11 +97,6 @@ class expPermissions {
             }
         }
 
-		if (!empty($user->id)) {
-			if ($user->isAdmin()) return true;  // admin users always have permissions
-		} else {
-			return false;  // anonymous/logged-out user never has permission
-		}
         $ploc = clone $location;
 //        $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;  //FIXME long controller name
         $ploc->mod = expModules::getModuleName(($ploc->mod));

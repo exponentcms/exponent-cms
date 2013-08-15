@@ -188,5 +188,5 @@
 	</div>
     {/group}
 {else}
-	<h2>{'User Input Fields are inherited from this item\'s parent.'|gettext}</h2>
+	<h2>{'User Input Fields'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
 {/if}

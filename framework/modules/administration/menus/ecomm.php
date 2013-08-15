@@ -23,8 +23,9 @@ global $user, $db;
 $active = ECOM;
 if (!$user->isAdmin() || empty($active)) return false;
 
-$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = 1');  //FIXME order_status_id of 1 isn't always true
-// $new_orders = 420; // for testing
+//$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = 1');  //FIXME order_status_id of 1 isn't always true
+$new_status = $db->selectValue('order_status', 'id', 'is_default = 1');
+$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = ' . $new_status);
 if ($new_orders > 0) {
     $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new') . '</em>';
 } else {
@@ -108,14 +109,6 @@ $ecom = array(
                             'url'       => makeLink(array('controller' => 'ecomconfig', 'action' => 'options')),
                         ),
                         array(
-                            'text'      => gt('Manage Definable Fields'),
-                            'classname' => 'manage',
-                            'url'       => makeLink(array(
-                                'controller' => 'expDefinableField',
-                                'action'     => 'manage'
-                            ))
-                        ),
-                        array(
                             'text'      => gt("Manage Store Categories"),
                             'classname' => 'manage',
                             'url'       => makeLink(array('controller' => 'storeCategory', 'action' => 'manage')),
@@ -125,6 +118,14 @@ $ecom = array(
                             'classname' => 'manage',
 //                            'url'=>makeLink(array('controller'=>'company','action'=>'manage')),
                             'url'       => makeLink(array('controller' => 'company', 'action' => 'showall')),
+                        ),
+                        array(
+                            'text'      => gt('Manage Definable Fields'),
+                            'classname' => 'manage',
+                            'url'       => makeLink(array(
+                                'controller' => 'expDefinableField',
+                                'action'     => 'manage'
+                            ))
                         ),
                     ),
                 ),

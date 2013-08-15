@@ -26,7 +26,7 @@
         <div class="yui-content">
 	        <div id="tab1">
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
-	            {control type="text" name="password" label="API Password"|gettext value=$calculator->configdata.password}
+	            {control type="password" name="password" label="API Password"|gettext value=$calculator->configdata.password}
 	            {control type="text" name="signature" label="Signature"|gettext value=$calculator->configdata.signature}
 	            {control type="radiogroup" name="process_mode" label="Processing Mode"|gettext items="Sale, Authorization, Order"|gettxtlist values="Sale,Authorization,Order" default=$calculator->configdata.process_mode|default:'Sale'}
                 <ul>
@@ -40,7 +40,7 @@
                 {"then enter the Sandbox API and Payment Card Credentials below."|gettext}
                 {"Create both a Buyer In-Store and a Seller Test Accounts."|gettext}
                 {control type="text" name="testusername" label="Sandbox API Username"|gettext value=$calculator->configdata.testusername}
- 	            {control type="text" name="testpassword" label="Sandbox API Password"|gettext value=$calculator->configdata.testpassword}
+ 	            {control type="password" name="testpassword" label="Sandbox API Password"|gettext value=$calculator->configdata.testpassword}
  	            {control type="text" name="testsignature" label="Sandbox Signature"|gettext value=$calculator->configdata.testsignature}
                 </p>
 	        </div>

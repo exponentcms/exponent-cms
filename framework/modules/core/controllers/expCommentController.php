@@ -317,10 +317,13 @@ class expCommentController extends expController {
         $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
         $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-        
+
+        if (COMMENTS_REQUIRE_LOGIN && !$user->isLoggedIn()) {
+            expValidator::failAndReturnToForm('You must be logged on to post a comment!', $this->params);
+        }
         // check the anti-spam control
-        if (!$user->isLoggedIn()) {
-            expValidator::check_antispam($this->params, gt("Your comment could not be posted because anti-spam verification failed.  Please try again."));
+        if (!ANTI_SPAM_USERS_SKIP && !$user->isLoggedIn()) {
+            expValidator::check_antispam($this->params, gt('Your comment was not posted.') . ' ' . gt("Anti-spam verification failed.  Please try again. Please try again."));
         }
         
         // figure out the name and email address
@@ -355,9 +358,7 @@ class expCommentController extends expController {
         if ($require_approval==1 && $this->params['approved']==1) {
 		    $this->sendApprovalNotification($this->expComment,$this->params);
         }
-		//if ($require_notification && !$user->isAdmin()) {
-		//}
-		
+
 		flash('message', $msg);
 		
 		expHistory::back();

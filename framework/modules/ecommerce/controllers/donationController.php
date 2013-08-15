@@ -34,11 +34,12 @@ class donationController extends expController {
         'categories',
         'comments',
         'ealerts',
+        'facebook',
         'files',
         'rss',
         'tags',
         'twitter',
-    );  // all options: ('aggregation','categories','comments','ealerts','files','pagination','rss','tags','twitter',)
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
     static function displayname() { return gt("Online Donations"); }
     static function description() { return gt("Allows you to accept donations on your website"); }
@@ -62,9 +63,9 @@ class donationController extends expController {
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
         switch($action) {
             case 'donate':
-                $metainfo['title'] = 'Make a donation';
-                $metainfo['keywords'] = 'donate online';
-                $metainfo['description'] = "Make a donation";    
+                $metainfo['title'] = gt('Make a donation');
+                $metainfo['keywords'] = gt('donate online');
+                $metainfo['description'] = gt("Make a donation");
                 $metainfo['canonical']   = '';
             break;
             default:

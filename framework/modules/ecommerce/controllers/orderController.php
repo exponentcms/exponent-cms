@@ -84,19 +84,22 @@ class orderController extends expController {
         } */
 
         // find orders with a "closed" status type
-        $closed_count = 0;
+//        $closed_count = 0;
         if (empty($this->params['showclosed'])) {
             $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
-            $status_where  = '';
+            $closed_status = implode(',',$closed_status);
+//            $status_where  = '';
+            $status_where  = ' AND order_status_id NOT IN (' . $closed_status . ')';
 
-            foreach ($closed_status as $status) {
-                if (empty($status_where)) {
-                    $status_where .= ' AND (order_status_id!=' . $status;
-                } else {
-                    $status_where .= ' AND order_status_id!=' . $status;
-                }
-                $closed_count += $db->countObjects('orders', 'order_status_id=' . $status);
-            }
+//            foreach ($closed_status as $status) {
+//                if (empty($status_where)) {
+//                    $status_where .= ' AND (order_status_id!=' . $status;
+//                } else {
+//                    $status_where .= ' AND order_status_id!=' . $status;
+//                }
+//                $closed_count += $db->countObjects('orders', 'order_status_id=' . $status);
+//            }
+            $closed_count = $db->countObjects('orders', 'order_status_id IN (' . $closed_status . ')');
         } else {
             $closed_count = -1;
         }
@@ -108,10 +111,10 @@ class orderController extends expController {
         $sql .= DB_TABLE_PREFIX . '_order_type ot ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0';
 
-        if (!empty($status_where)) {
-            $status_where .= ')';
+//        if (!empty($status_where)) {
+//            $status_where .= ')';
             $sql .= $status_where;
-        }
+//        }
         $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
         //eDebug($sql, true);
         $page = new expPaginator(array(
@@ -182,10 +185,10 @@ class orderController extends expController {
 
         $order->setReferencingIds();
 
-//        $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
+        $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
 
         assign_to_template(array(
-//            'css'            => $css,
+            'css'            => $css,
             'printerfriendly'=> $pf,
             'order'          => $order,
 //            'shipping'       => $order->orderitem[0],  //FIXME what about new orders with no items??
@@ -250,6 +253,7 @@ class orderController extends expController {
         $order->billingmethod[0]->billingtransaction = array_reverse($order->billingmethod[0]->billingtransaction);
         if (isset($this->params['printerfriendly'])) $pf = $this->params['printerfriendly'];
         else $pf = 0;
+        $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
 
         $trackMe = false;
         if (isset($this->params['tc']) && $this->params['tc'] == 1) {
@@ -271,6 +275,7 @@ class orderController extends expController {
         if (DEVELOPMENT != 0) $trackMe = false;
         assign_to_template(array(
             'printerfriendly'=> $pf,
+            'css'            => $css,
             'order'          => $order,
             'shipping'       => $order->orderitem[0],
             'billing'        => $billing,
@@ -288,8 +293,9 @@ class orderController extends expController {
         $template = get_template_for_action($this, 'email_invoice', $this->loc);
         $order    = new order($this->params['id']);
         $billing  = new billing($this->params['id']);
-        //$css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
+        $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
         assign_to_template(array(
+            'css'     => $css,
             'order'   => $order,
             'shipping'=> $order->orderitem[0],
             'billing' => $billing
@@ -304,13 +310,15 @@ class orderController extends expController {
             $addresses = explode(',', ecomconfig::getConfig('email_invoice_addresses'));
             foreach ($addresses as $address) {
                 $mail = new expMail();
+                $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                if (empty($from[0])) $from = SMTP_FROMADDRESS;
                 $mail->quickSend(array(
                     'html_message'=> $html,
                     'text_message'=> $txt,
                     'to'          => trim($address),
 //					    'from'=>ecomconfig::getConfig('from_address'),
 //					    'from_name'=>ecomconfig::getConfig('from_name'),
-                    'from'        => array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name')),
+                    'from'        => $from,
                     'subject'     => 'An order was placed on the ' . ecomconfig::getConfig('storename'),
                 ));
             }
@@ -323,6 +331,8 @@ class orderController extends expController {
             $usermsg .= ecomconfig::getConfig('ecomfooter');
 
             $mail = new expMail();
+            $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+            if (empty($from[0])) $from = SMTP_FROMADDRESS;
             $mail->quickSend(array(
                 'html_message'=> $usermsg,
                 'text_message'=> $txt,
@@ -330,7 +340,7 @@ class orderController extends expController {
                 //'to'=>$order->billingmethod[0]->email,
 //			        'from'=>ecomconfig::getConfig('from_address'),
 //			        'from_name'=>ecomconfig::getConfig('from_name'),
-                'from'        => array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name')),
+                'from'        => $from,
                 'subject'     => ecomconfig::getConfig('invoice_subject'),
             ));
         }
@@ -627,7 +637,7 @@ exit();
         }
     }
 
-    function set_order_type() {
+    function set_order_type() {  //FIXME never used
         global $db;
 
         if (empty($this->params['id'])) expHistory::back();
@@ -640,6 +650,9 @@ exit();
         expHistory::back();
     }
 
+    /**
+     * Change order status and email notification if necessary
+     */
     function setStatus() {
         global $db, $template;
 
@@ -691,11 +704,13 @@ exit();
                     $html .= ecomconfig::getConfig('ecomfooter');
 
                     $mail = new expMail();
+                    $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                    if (empty($from[0])) $from = SMTP_FROMADDRESS;
                     $mail->quickSend(array(
                         'html_message'=> $html,
                         'text_message'=> str_replace("<br>", "\r\n", $template->render()),
                         'to'          => $email_addy,
-                        'from'        => ecomconfig::getConfig('from_address'),
+                        'from'        => $from,
                         'subject'     => 'The status of your order (#' . $order->invoice_id . ') has been updated on ' . ecomconfig::getConfig('storename') . '.'
                     ));
                 } else {
@@ -750,7 +765,7 @@ exit();
             } else {
                 $from = ecomconfig::getConfig('from_address');
             }
-            if (empty($from)) $from = SMTP_FROMADDRESS;
+            if (empty($from[0])) $from = SMTP_FROMADDRESS;
 
             if (isset($this->params['email_subject'])) {
                 $email_subject = $this->params['email_subject'];
@@ -834,17 +849,17 @@ exit();
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
         switch ($action) {
             case 'showall':
-                $metainfo = array('title'=> "Managing Invoices", 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
+                $metainfo = array('title'=> gt("Managing Invoices"), 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
                 break;
             case 'show':
             case 'showByTitle':
-                $metainfo['title']       = 'Viewing Invoice';
+                $metainfo['title']       = gt('Viewing Invoice');
                 $metainfo['keywords']    = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object doesn't exist
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object doesn't exist
                 $metainfo['canonical'] = empty($object->canonical) ? '' : $object->canonical; //FIXME $object doesn't exist
                 break;
             default:
-                $metainfo = array('title'=> "Order Management - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
+                $metainfo = array('title'=> gt("Order Management") . " - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
         }
 
         return $metainfo;

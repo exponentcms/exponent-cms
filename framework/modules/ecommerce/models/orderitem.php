@@ -167,7 +167,12 @@ class orderitem extends expRecord {
 
     public function getExtraData() {
         //eDebug($this,true);
-        return ($this->extra_data);
+//        return ($this->extra_data);
+        if ($this->product_type == "product" || $this->product_type == "childProduct") {
+            return ($this->extra_data);
+        } else {
+            return $this->getFormattedExtraData('list');
+        }
         //$product = new $this->product_type($this->product_id);
         //return $product->formatExtraData($this);
     }
