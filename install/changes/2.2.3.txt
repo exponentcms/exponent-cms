@@ -1,0 +1,3 @@
+version 2.2.3
+Address issues in v2.2.2
+  - includes all fixes from v2.2.2 patches
