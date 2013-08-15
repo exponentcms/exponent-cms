@@ -13,4 +13,3 @@ Address issues in v2.2.1, enhance SEO and Social Media features
   - better user feedback for max file upload size and resulting errors
   - adds nested help documents
   - includes all fixes from v2.2.1 patches
-  - includes all fixes from v2.2.1 patches
