@@ -1298,7 +1298,7 @@ abstract class expController {
             $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
             $tag = $request['tag'];
             // set the meta info
-            $metainfo['title'] = gt('Showing all Blog Posts tagged as') . ' ' . $tag;
+            $metainfo['title'] = gt('Showing all') . ' ' . ucwords($this->basemodel_name) . ' ' . gt('tagged as') . ' ' . $tag;
 //            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
             $metainfo['keywords'] = $request['tag'];
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
