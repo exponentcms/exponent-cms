@@ -14,11 +14,3 @@
  *}
 
 {include file="show.tpl"}
-
-{*<h1>{'Showing'|gettext} {$model_name}, id: {$object->id}</h1>*}
-
-{*<div id="scaffold-object">*}
-	{*{list_object object=$record}*}
-    {*<a href="{link controller=$model_name action=showall}">{'Go back to Show All'|gettext} {$model_name}</a> or*}
-    {*<a href="{link controller=$model_name action=edit id=$record->id}"> {'Edit this'|gettext} {$model_name}</a>*}
-{*</div>*}
