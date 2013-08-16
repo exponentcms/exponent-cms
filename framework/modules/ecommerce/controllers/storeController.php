@@ -1298,7 +1298,7 @@ class storeController extends expController {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path . '/' . $file) && substr($file, -4) == '.php') {
+                    if (is_readable($path . '/' . $file) && substr($file, -4) == '.php' && $file != 'childProduct.php') {
                         $classname = substr($file, 0, -4);
                         $products[$path . '/' . $file] = $classname;
                     }
