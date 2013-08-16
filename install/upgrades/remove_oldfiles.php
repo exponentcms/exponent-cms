@@ -346,20 +346,23 @@ class remove_oldfiles extends upgradescript {
         // delete old directories
         $olddirs = array(
             "framework/subsystems/",
-//            "framework/core/compat/",  //FIXME until 2.2.2
+            "framework/core/compat/",  //FIXME until 2.2.3
             "framework/core/database/",
             "framework/core/datatypes/",
             "framework/core/models-1/",
             "framework/core/js/",
             "framework/core/subsystems-1/",
             "framework/core/subsystems/forms/",
-            "framework/modules-1/",
-            "framework/modules/photoalbum/views/photos/",
-            "framework/modules/expEvent/",
             "framework/datatypes/",
             "framework/views/",
+            "framework/modules-1/",
             "framework/modules/container/views/container2/",
             "framework/modules/countdown/assets/js/",
+            "framework/modules/photoalbum/views/photos/",
+            "framework/modules/expEvent/",
+            "framework/modules/headline/",
+            "framework/modules/flowplayer/",
+            "framework/modules/youtube/",
             "plugins/",
             "modules/",
             "js/",
@@ -369,9 +372,9 @@ class remove_oldfiles extends upgradescript {
             "compat/",
             "views/",
             "subsystems/",
-//            "conf/",  //FIXME until 2.2.3
-            "conf/data/",  //FIXME until 2.2.3
-            "conf/extensions/",  //FIXME until 2.2.3
+            "conf/",  //FIXME until 2.2.3
+//            "conf/data/",  //FIXME until 2.2.3
+//            "conf/extensions/",  //FIXME until 2.2.3
             "install/sitetypes/",
             "themes/common/",
             "themes/bootstraptheme/controls/",
@@ -393,6 +396,7 @@ class remove_oldfiles extends upgradescript {
             "external/flowplayer3/",
             "external/flowplayer-3.2.12/",
             "external/flowplayer-3.2.15/",
+            "external/flowplayer-3.2.16/",
             "external/magpierss/",
             "external/yui3/",
             "external/lissa/",

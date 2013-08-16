@@ -129,9 +129,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
 {/script}
 
 {if $config.show_player}
-    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
-    {*{/script}*}
-
     {script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
     {/script}
 
