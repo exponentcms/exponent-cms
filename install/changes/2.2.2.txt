@@ -12,4 +12,3 @@ Address issues in v2.2.1, enhance SEO and Social Media features
   - enhances eCommerce with many fixes and new features to products and event registrations
   - better user feedback for max file upload size and resulting errors
   - adds nested help documents
-  - includes all fixes from v2.2.1 patches
