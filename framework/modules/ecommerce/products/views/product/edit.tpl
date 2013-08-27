@@ -134,8 +134,8 @@
        if ({/literal}{if $copy}1{else}0{/if}{literal}) {
            tabs.each(function(n,k){
                n.simulate('click');
-           }
-       });
+           });
+       };
 //       tabs.item(lastTab).simulate('click');
        tabs.item(0).simulate('click');
 
