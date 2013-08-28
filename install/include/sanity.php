@@ -109,7 +109,8 @@ function sanity_checkFiles() {
 //        'framework/modules/'=>sanity_checkDirectory('framework/modules',SANITY_READWRITE),
 		'framework/conf/config.php'=>sanity_checkFile(BASE.'framework/conf/config.php',true,SANITY_CREATEFILE),
 		'framework/conf/profiles/'=>sanity_checkFile(BASE.'framework/conf/profiles',false,SANITY_READWRITE),
-		'files/'=>sanity_checkDirectory('files',SANITY_READWRITE),
+//		'files/'=>sanity_checkDirectory('files',SANITY_READWRITE),
+        'files/'=>sanity_checkFile('files',false,SANITY_READWRITE),  // we're only concerned about the folder itself and NOT the contents
         'files/uploads/'=>sanity_checkDirectory('files/uploads',SANITY_READWRITE),
         'files/avatars/'=>sanity_checkDirectory('files/avatars',SANITY_READWRITE),
 		'install/'=>sanity_checkFile(BASE.'install',false,SANITY_READWRITE),
