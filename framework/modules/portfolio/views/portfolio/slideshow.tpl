@@ -62,6 +62,7 @@
                                 {/if}
                             {/if}
                             {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
+                            {icon action=copy record=$slide title="Copy"|gettext|cat:" `$item->title`"}
                         {/if}
                         {if $permissions.delete == 1}
                             {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`"}

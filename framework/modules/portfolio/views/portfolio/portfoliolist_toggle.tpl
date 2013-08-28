@@ -32,6 +32,7 @@
                             {/if}
                         {/if}
                         {icon action=edit record=$record title="Edit `$record->title`"}
+                        {icon action=copy record=$record title="Copy `$record->title`"}
                     {/if}
                     {if $permissions.delete == 1}
                         {icon action=delete record=$record title="Delete `$record->title`"}
