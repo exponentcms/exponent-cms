@@ -21,7 +21,7 @@
 
 {/css}
 
-<div class="module login flyout" style="display: none;">
+<div class="module login flyout" style="display: none;" hidden="true">
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
     <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="box login-form one"{/if}>
         {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
@@ -45,7 +45,6 @@
     {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
         <div class="box new-user two">
             <h2>{"New"|gettext} {$usertype}</h2>
-
             <p>
                 {if $smarty.const.ECOM}
                     {if $oicount>0}
