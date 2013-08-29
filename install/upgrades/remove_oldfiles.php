@@ -386,7 +386,7 @@ class remove_oldfiles extends upgradescript {
             "external/ckeditor/",
             "external/editors/connector/lang/",
             "external/editors/FCKeditor/",
-            "external/editors/ckeditor/adapters",
+//            "external/editors/ckeditor/adapters",
             "external/editors/ckeditor/images",
             "external/editors/ckeditor/skins/office2003",
             "external/editors/ckeditor/skins/v2",
