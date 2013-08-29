@@ -1163,6 +1163,14 @@ class administrationController extends expController {
                                             . ' ' . $row['timezone_id'];
         }
 
+        $expcat = new expCat();
+        $cats = $expcat->find('all','module="file"');
+        $catarray = array();
+        $catarray[] = 'Root Folder';
+        foreach ($cats as $key=>$cat) {
+            $catarray[$cat->id] = $cat->title;
+        }
+
         // profiles
         $profiles = expSettings::profiles();
         if (empty($profiles)) {
@@ -1185,6 +1193,7 @@ class administrationController extends expController {
             'file_permisions'=>$file_permisions,
             'dir_permissions'=>$dir_permissions,
             'section_dropdown'=>$section_dropdown,
+            'folders'=>$catarray,
             'profiles'=>$profiles
         ));
     }

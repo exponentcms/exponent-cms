@@ -16,11 +16,14 @@
 #
 ##################################################
 
-if (!defined('FM_THUMBNAILS')) define('FM_THUMBNAILS','0');
-if (!defined('FM_THUMB_SIZE')) define('FM_THUMB_SIZE','48');
 if (!defined('FM_WIDTH')) define('FM_WIDTH','1024');
 if (!defined('FM_HEIGHT')) define('FM_HEIGHT','600');
 if (!defined('FM_LIMIT')) define('FM_LIMIT','25');
 if (!defined('FM_SIMLIMIT')) define('FM_SIMLIMIT','3');
+if (!defined('FM_THUMBNAILS')) define('FM_THUMBNAILS','0');
+if (!defined('FM_THUMB_SIZE')) define('FM_THUMB_SIZE','48');
+if (!defined('UPLOAD_WIDTH')) define('UPLOAD_WIDTH','400');
+if (!defined('QUICK_UPLOAD_WIDTH')) define('QUICK_UPLOAD_WIDTH','');
+if (!defined('QUICK_UPLOAD_FOLDER')) define('QUICK_UPLOAD_FOLDER','');
 
 ?>

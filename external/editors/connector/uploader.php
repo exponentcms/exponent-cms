@@ -25,7 +25,7 @@ require_once("../../../exponent.php");
                 $message = gt("You may be attempting to hack our server.");
             } else {
                 // upload the file, but don't save the record yet...
-                $file = expFile::fileUpload('upload',false,false);
+                $file = expFile::fileUpload('upload',false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
                 // since most likely this function will only get hit via flash in YUI Uploader
                 // and since Flash can't pass cookies, we lose the knowledge of our $user
                 // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,
@@ -34,6 +34,11 @@ require_once("../../../exponent.php");
                     $file->poster = $user->id;
                     $file->posted = $file->last_accessed = time();
                     $file->save();
+                    if (!empty(QUICK_UPLOAD_FOLDER)) {
+                       $expcat = new expCat(QUICK_UPLOAD_FOLDER);
+                       $params['expCat'][0] = $expcat->id;
+                       $file->update($params);
+                    }
                     $url = $file->path_relative;
                 } else {
                     $message = gt('File was not uploaded!').' - '.$file;

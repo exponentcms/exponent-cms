@@ -479,9 +479,15 @@ class fileController extends expController {
 
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
-            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME']);
+            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
+            $file->poster = $user->id;
             $file->posted = $file->last_accessed = time();
             $file->save();
+            if (!empty(QUICK_UPLOAD_FOLDER)) {
+                $expcat = new expCat(QUICK_UPLOAD_FOLDER);
+                $params['expCat'][0] = $expcat->id;
+                $file->update($params);
+            }
             $ar = new expAjaxReply(200, gt('Your File was uploaded successfully'), $file->id);
             $ar->send();
         } else {  //$_POST upload
@@ -495,7 +501,7 @@ class fileController extends expController {
                 $message = gt("You may be attempting to hack our server.");
             } else {
                 // upload the file, but don't save the record yet...
-                $file = expFile::fileUpload('uploadfile',false,false);
+                $file = expFile::fileUpload('uploadfile',false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
                 // since most likely this function will only get hit via flash in YUI Uploader
                 // and since Flash can't pass cookies, we lose the knowledge of our $user
                 // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,
@@ -504,6 +510,11 @@ class fileController extends expController {
                     $file->poster = $user->id;
                     $file->posted = $file->last_accessed = time();
                     $file->save();
+                    if (!empty(QUICK_UPLOAD_FOLDER)) {
+                        $expcat = new expCat(QUICK_UPLOAD_FOLDER);
+                        $params['expCat'][0] = $expcat->id;
+                        $file->update($params);
+                    }
                     $ar = new expAjaxReply(200, gt('Your File was uploaded successfully'), $file->id);
                 } else {
                     $ar = new expAjaxReply(300, gt("File was not uploaded!").' - '.$file);

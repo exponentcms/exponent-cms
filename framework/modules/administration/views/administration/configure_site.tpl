@@ -164,6 +164,10 @@
                     {control type="checkbox" postfalse=1 name="sc[FM_THUMBNAILS]" label="Show Image Thumbnails?"|gettext checked=$smarty.const.FM_THUMBNAILS value=1}
                     {control type="text" name="sc[FM_THUMB_SIZE]" label="Thumbnail Size"|gettext value=$smarty.const.FM_THUMB_SIZE|default:48 size="4"}
                     {control type="text" name="sc[UPLOAD_WIDTH]" label="Uploader Default Max Width/Height to Downsize Graphics"|gettext value=$smarty.const.UPLOAD_WIDTH|default:400 size="4"}
+                    {group label="Quick Add Settings"|gettext}
+                        {control type="text" name="sc[QUICK_UPLOAD_WIDTH]" label="Force Quick Add to Downsize Graphics to Max Width/Height"|gettext value=$smarty.const.QUICK_UPLOAD_WIDTH|default:0 size="4" description='Zero or Empty means do NOT resize on a Quick Add Upload'|gettext}
+                        {control type=dropdown name="sc[QUICK_UPLOAD_FOLDER]" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$smarty.const.QUICK_UPLOAD_FOLDER}
+                    {/group}
                 </div>
                 {if $user->is_admin==1}
                 <div id="tab7">
@@ -243,7 +247,7 @@
                     </div>
                     {control type="text" name="sc[SITE_404_TITLE]" label='Page Title For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_TITLE}
                     {control type="html" name="sc[SITE_404_HTML]" label='\'Not Found\' (404) Error Message'|gettext value=$smarty.const.SITE_404_HTML}
-                    {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
+                    {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403/401) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
                     {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label='\'Session Expired\' Error  Message'|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
                 <div id="tab13">
