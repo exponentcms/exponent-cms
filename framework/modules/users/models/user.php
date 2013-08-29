@@ -49,8 +49,16 @@ class user extends expRecord {
     public function save($overrideUsername = false) {
         global $user;
 
-        if (isset($this->params['is_admin'])) $this->is_admin = $this->params['is_admin'];
-        if (isset($this->params['is_acting_admin'])) $this->is_acting_admin = $this->params['is_acting_admin'];
+        if (isset($this->params['is_admin'])) {
+            $this->is_admin = $this->params['is_admin'];
+        } else {
+            $this->is_admin = 0;
+        }
+        if (isset($this->params['is_acting_admin'])) {
+            $this->is_acting_admin = $this->params['is_acting_admin'];
+        } else {
+            $this->is_acting_admin = 0;
+        }
         // if someone is trying to make this user an admin, lets make sure they have permission to do so.
         if (!empty($this->is_admin) && !$user->isAdmin()) $this->is_admin = 0;
         if (!empty($this->is_acting_admin) && !$user->isAdmin()) $this->is_acting_admin = 0;
