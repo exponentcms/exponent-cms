@@ -215,7 +215,7 @@ class expRouter {
             // check if the URL is looking for a non-existent page or controller (we will check for bad action in renderAction())
             // if page or controller is not found we will route to the not found controller.            
             $_REQUEST['controller'] = 'notfound';
-            $_REQUEST['action'] = 'handle';   
+            $_REQUEST['action'] = 'handle';
         }
     }
 
@@ -233,7 +233,7 @@ class expRouter {
                 $tmpParams[$key] = $value;
             }
         }
-        $trackingObject = new stdClass();  //FIXME php 5.4
+        $trackingObject = new stdClass();
         $trackingObject->params = serialize($tmpParams);
         if ($this->url_type == 'page' || $this->url_type == 'base') {
             $trackingObject->section = $section;

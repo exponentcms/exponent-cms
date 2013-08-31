@@ -747,11 +747,6 @@ abstract class expController {
         ));
 
 //        if (empty($this->params['hcview'])) {
-//            $containerloc = new stdClass();
-//            $containerloc->mod = expModules::getControllerClassName($this->loc->mod);  //FIXME long controller name
-//            $containerloc->mod = expModules::getModuleName($this->loc->mod);
-//            $containerloc->src = $this->loc->src;
-//            $containerloc->int = '';
             $containerloc = expCore::makeLocation(expModules::getModuleName($this->loc->mod),$this->loc->src);
             $container = $db->selectObject('container', "internal='" . serialize($containerloc) . "'");
             if (empty($container)) {

@@ -50,19 +50,20 @@ function smarty_function_simplenote($params,&$smarty) {
         $require_notification = empty($params['require_notification']) ? SIMPLENOTE_REQUIRE_NOTIFICATION : $params['require_notification'];
         $notification_email = empty($params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : $params['notification_email'];
 
-        renderAction(array('controller'=>'expSimpleNote',
-                'action'=>'getNotes',
-                'content_id'=>$params['content_id'],
-                'content_type'=>$params['content_type'],
-                'hideform'=>$hideform,
-                'hidecomments'=>$hidenotes,
-                'title'=>$title,
-                'formtitle'=>$formtitle,
-                'require_login'=>$require_login,
-                'require_approval'=>$require_approval,
-                'require_notification'=>$require_notification,
-                'notification_email'=>$notification_email,
-                'tab'=>$tab
+        renderAction(array(
+            'controller'=>'expSimpleNote',
+            'action'=>'getNotes',
+            'content_id'=>$params['content_id'],
+            'content_type'=>$params['content_type'],
+            'hideform'=>$hideform,
+            'hidecomments'=>$hidenotes,
+            'title'=>$title,
+            'formtitle'=>$formtitle,
+            'require_login'=>$require_login,
+            'require_approval'=>$require_approval,
+            'require_notification'=>$require_notification,
+            'notification_email'=>$notification_email,
+            'tab'=>$tab
         ));
     } else {
         return '<h4>'.gt('You can not attach a note to a new item which has never been saved!  Please save the item first.').'</h4>';

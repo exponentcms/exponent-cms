@@ -58,7 +58,7 @@ class event extends expRecord {
 
                     $this->save(true);  // save new event to get an event id
 
-       				foreach (array_keys($params['dates']) as $date_id) {  // update all the date occurances being changed
+       				foreach (array_keys($params['dates']) as $date_id) {  // update all the date occurrences being changed
                         $eventdate = $calevent->find('first',"id=".$date_id);
                         $eventdate->event_id = $this->id;
                         unset($params['id']);

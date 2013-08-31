@@ -52,9 +52,9 @@
                 <div id="tab2">
                     <h2>{'Event Date/Time'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="eventdate" label="Start Date of Event"|gettext value=$record->eventdate}
-					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate description='Only used for display purposes'|gettext}
                     {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime+$record->eventdate showdate=false}
                     {control type="datetimecontrol" name="event_endtime" label="End Time"|gettext value=$record->event_endtime+$record->eventdate showdate=false}
+					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate description='Only used for display purposes'|gettext}
                     <h2>{'Signup Cutoff'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="signup_cutoff" label="Registrations is closed after"|gettext value=$record->signup_cutoff showtime = true}
                 </div>

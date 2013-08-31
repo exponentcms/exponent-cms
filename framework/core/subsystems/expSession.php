@@ -175,7 +175,6 @@ class expSession {
 			if ($ticket == null || $ticket->last_active < time() - $timeoutval) {
 				define('SITE_403_HTML',SESSION_TIMEOUT_HTML);
 				self::logout();
-//				if (defined('ECOM') && !ECOM) flash('notice',gt('Your user session has expired.').' <a href="'.PATH_RELATIVE.'login.php">'.gt("Please log in again").'</a>');
                 if (defined('ECOM') && !ECOM) flash('notice',gt('Your user session has expired.').' <a href="'.expCore::makeLink(array("controller"=>"login","action"=>"showlogin")).'">'.gt("Please log in again").'</a>');
 				return;
 			}
