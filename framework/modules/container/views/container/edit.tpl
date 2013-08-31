@@ -20,7 +20,7 @@
 <div class="exp-container edit {if !$error}hide{/if}">
     <div class="info-header">
         <div class="related-actions">
-            {if $user->is_admin}
+            {if $user->isSuperAdmin()}
                 <a class="managemodules" href="{link module=expModule action=manage}">{"Manage Active Modules"|gettext}</a>
             {/if}
             {help text="Get Help with"|gettext|cat:" "|cat:("Adding Page Content"|gettext) module="adding-modules-to-a-page"}
@@ -181,7 +181,7 @@
                 //set the current module
                 EXPONENT.setCurMod();
                 //enable recycle bin
-                if (modpicker.get("value")!=-'' && modpicker.get("value")!='container') {
+                if (modpicker.get("value")!='' && modpicker.get("value")!='container') {
                     EXPONENT.enableRecycleBin();
                 } else {
                     EXPONENT.disableRecycleBin();
@@ -286,7 +286,7 @@
         //makes the recycle bin link clickable
         EXPONENT.enableRecycleBin = function() {
             recyclebin.on('click',EXPONENT.recyclebin);
-            if ({/literal}{$user->is_acting_admin}{literal} && modpicker.get("value")!='container') {
+            if ({/literal}{$user->isAdmin()}{literal} && modpicker.get("value")!='container') {
                 recyclebinwrap.removeClass('disabled');
             } else {
                 recyclebin.detach('click');
@@ -308,7 +308,7 @@
             window.open(url,'sourcePicker','title=no,resizable=yes,toolbar=no,width=900,height=750,scrollbars=yes');
         }
 
-        //called from the recyclebin one a trashed item is selected for use
+        //called from the recyclebin when a trashed item is selected for use
         EXPONENT.useRecycled = function(src) {
            var recycledSource = Y.one('#existing_source');
            recycledSource.set('value',src)

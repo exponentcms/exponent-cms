@@ -532,7 +532,8 @@ class eventController extends expController {
             }
             expHistory::back();
         } else {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
         }
     }
 
@@ -852,10 +853,12 @@ class eventController extends expController {
                 echo $msg;
                 exit();
             } else {
-                echo SITE_404_HTML;
+//                echo SITE_404_HTML;
+                notfoundController::handle_not_found();
             }
         } else {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
         }
     }
 
@@ -879,11 +882,13 @@ class eventController extends expController {
             }
 
             if (empty($this->config['reminder_active'])) {
-                echo SITE_404_HTML;
+//                echo SITE_404_HTML;
+                notfoundController::handle_not_found();
                 return;
             }
             if (!empty($this->config['reminder_code']) && (empty($this->params['code']) || ($this->params['code'] != $this->config['reminder_code']))) {
-                echo SITE_403_HTML;
+//                echo SITE_403_HTML;
+                notfoundController::handle_not_authorized();
                 return;
             }
 

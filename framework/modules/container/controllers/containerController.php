@@ -36,12 +36,13 @@ class containerController extends expController {
         'files',
         'pagination',
         'rss',
-		'tags'
-    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags')
+		'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
     public $codequality = 'beta';
 
     static function displayname() { return gt("Container"); }
-    static function description() { return gt("Encapsulates other modules within a styled container (e.g. columns, tabs, etc...)"); }
+    static function description() { return gt("Encapsulates other modules within a formatted container (e.g. columns, tabs, etc...)"); }
 
 	public function showall() {
         global $db, $user, $module_scope, $template;
@@ -65,20 +66,21 @@ class containerController extends expController {
 
         $container = null;
         $container_key = serialize($loc);
+        //TODO we currently don't use the container cache
         $cache = expSession::getCacheValue('containers');
 //        if (!isset($this) || !isset($this->_hasParent) || $this->_hasParent == 0) {
             // Top level container.
 //        if (!isset($cache['top'][$container_key])) {
             $container = $db->selectObject('container', "internal='" . $container_key . "'");
 //            $container = new container("internal='" . $container_key . "'");
-            //if container isn't here already, then create it.
+            // if container isn't here already, then create it...nested containers
             if ($container == null) {
                 $container = new stdClass();
-                $container->external = serialize(null);
                 $container->internal = serialize($loc);
+                $container->external = serialize(null);
+                $container->title = $title;
                 $container->view = $view;
                 $container->action = $action;
-                $container->title = $title;
                 $container->id = $db->insertObject($container, 'container');
             }
             $cache['top'][$container_key] = $container;

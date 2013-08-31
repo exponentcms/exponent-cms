@@ -147,9 +147,18 @@ class expTheme {
 		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
+        //FIXME we need to account for passing parameters  to head() here
+        $str .= "\t".'<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">'.XHTML_CLOSING.'>'."\n";
+
         // favicon
         if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
             $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
+        }
+        if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png')) {
+            $str .= "\t".'<link rel="apple-touch-icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png" '.XHTML_CLOSING.'>'."\n";
+        }
+        if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png')) {
+            $str .= "\t".'<link rel="apple-touch-icon-precomposed" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png" '.XHTML_CLOSING.'>'."\n";
         }
 
 		//the last little bit of IE 6 support
@@ -463,7 +472,8 @@ class expTheme {
 	public static function runAction() {
 		if (self::inAction()) {
 			if (!AUTHORIZED_SECTION) {
-				echo SITE_403_HTML;
+//				echo SITE_403_HTML;
+                notfoundController::handle_not_authorized();
 			}
 //			if (expSession::is_set("themeopt_override")) {
 //				$config = expSession::get("themeopt_override");
@@ -522,13 +532,9 @@ class expTheme {
         return false;
 	}
 
-    public static function showAction($module, $action, $src="", $params=array()) {  //FIXME doesn't seem to be used except by smarty functions, old school?
+    public static function showAction($module, $action, $src="", $params=array()) {  //FIXME only used by smarty functions, old school?
    		global $db, $user;
 
-//   		$loc = new stdClass();;
-//   		$loc->mod = $module;
-//   		$loc->src = (isset($src) ? $src : "");
-//   		$loc->int = (isset($int) ? $int : "");
         $loc = expCore::makeLocation($module,(isset($src) ? $src : ""),(isset($int) ? $int : ""));
 
    		$actfile = "/" . $module . "/actions/" . $action . ".php";
@@ -544,7 +550,9 @@ class expTheme {
 //   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 //   			include(BASE.'framework/modules-1/'.$actfile);
    		} else {
-   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
+//   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
+            notfoundController::handle_not_found();
+            echo '<br /><hr size="1" />';
    			echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($_REQUEST['module']),strip_tags($_REQUEST['action']));
    			echo '<br />';
    		}
@@ -567,7 +575,8 @@ class expTheme {
    				header("Location: ".URL_FULL."index.php?section=".$section->id);
    				exit();
    			} else {
-   				echo SITE_404_HTML;
+//   				echo SITE_404_HTML;
+                notfoundController::handle_not_found();
    			}
    		}
    	}
@@ -615,7 +624,8 @@ class expTheme {
    			// Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
    //			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
    			expHistory::set('manageable', $router->params);
-   			echo SITE_403_HTML;
+//   			echo SITE_403_HTML;
+            notfoundController::handle_not_authorized();
    			return;
    		}
 
@@ -637,6 +647,7 @@ class expTheme {
    	#   }
    	}
 
+     //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific module, in a section-sensitive way.
      *
@@ -677,6 +688,7 @@ class expTheme {
 		self::showModule($module,$view,$title,$src,false,null,$hide_menu);
 	}
 
+     //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific module in such a way that the current
      * section displays the same content as its top-level parent and all of the top-level parent's
@@ -708,6 +720,7 @@ class expTheme {
 		self::showModule($module,$view,$title,$prefix.$section->id,false,null,$hide_menu);
 	}
 
+     //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific controller, in a section-sensitive way.
      *
@@ -736,6 +749,7 @@ class expTheme {
         self::module($params);
     }
 
+    //FIXME Deprecated
     public static function showController($params=array()) {
         $module = !empty($params['module']) ? $params['module'] : $params['controller'];
         $view = !empty($params['action']) ? $params['action'] : $params['view'];
@@ -885,7 +899,7 @@ class expTheme {
     }
 
     /** exdoc
-     * Calls the necessary methods to show a specific module
+     * Calls the necessary methods to show a specific module - NOT intended to be called directly from theme
      *
      * @param string $module The classname of the module to display
      * @param string $view The name of the view to display the module with
@@ -900,7 +914,6 @@ class expTheme {
      */
 	public static function showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
         $module = expModules::getModuleName($module);  //FIXME patch to cleanup module name
-//		if (!AUTHORIZED_SECTION && $module != 'navigationController' && $module != 'loginController') return;
         if (!AUTHORIZED_SECTION && $module != 'navigation' && $module != 'login') return;
 
 		global $db, $sectionObj, $module_scope;
@@ -914,13 +927,13 @@ class expTheme {
 			$sectionObj = $db->selectObject('section','id='.$section_id);
 			//$section->id = $section_id;
 		}
-//		if ($module == "loginController" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) return;
         if ($module == "login" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) return;
 
 //		if (expSession::is_set("themeopt_override")) {
 //			$config = expSession::get("themeopt_override");
 //			if (in_array($module,$config['ignore_mods'])) return;
 //		}
+        if (empty($params['action'])) $params['action'] = $view;
 		$loc = expCore::makeLocation($module,$source."");
 
         if (empty($module_scope[$source][$module]->scope)) {
@@ -929,21 +942,33 @@ class expTheme {
         }
         // make sure we've added this module to the sectionref table
 		if ($db->selectObject("sectionref","module='$module' AND source='".$loc->src."'") == null) {
-				$secref = new stdClass();
-				$secref->module = $module;
-				$secref->source = $loc->src;
-				$secref->internal = "";
-				$secref->refcount = 1000;
-				if ($sectionObj != null) {
-					$secref->section = $sectionObj->id;
-				}
-//				$secref->is_original = 1;
-				$db->insertObject($secref,'sectionref');
+            $secref = new stdClass();
+            $secref->module = $module;
+            $secref->source = $loc->src;
+            $secref->internal = "";
+            $secref->refcount = 1000;
+            if ($sectionObj != null) {
+                $secref->section = $sectionObj->id;
+            }
+//			  $secref->is_original = 1;
+            $db->insertObject($secref,'sectionref');
 		}
+        // add (hard-coded) modules to the container table, nested containers added in container showall method??
+        $container = $db->selectObject('container', "internal='" . serialize($loc) . "'");
+        if (!$container->id) {
+            //if container isn't here already, then create it...hard-coded from theme template
+            $newcontainer = new stdClass();
+            $newcontainer->internal = serialize($loc);
+            $newcontainer->external = serialize(null);
+            $newcontainer->title = $title;
+            $newcontainer->view = $view;
+            $newcontainer->action = $params['action'];
+            $newcontainer->id = $db->insertObject($newcontainer, 'container');
+        }
+        if (empty($title)) $title = $container->title;
 //		$iscontroller = expModules::controllerExists($module);
 
 		if (defined('SELECTOR') && call_user_func(array(expModules::getModuleClassName($module),"hasSources"))) {
-//			containermodule::wrapOutput($module,$view,$loc,$title);
             containerController::wrapOutput($module,$view,$loc,$title);
 		} else {
 //			if (is_callable(array($module,"show")) || $iscontroller) {
@@ -977,31 +1002,31 @@ class expTheme {
 //						}
 //					}
 //				} else {
-					// if we hit here we're dealing with a controller...not a module
+					// if we hit here we're dealing with a hard-coded controller...not a module
 					if (!$hide_menu && $loc->mod != "container") {
 						$controller = expModules::getController($module);
 //                        $controller = expModules::getControllerClassName($module);
-                        $container = new stdClass();  //php 5.4
-						$container->permissions = array(
+                        $hccontainer = new stdClass();  //php 5.4
+                        $hccontainer->permissions = array(
 							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
-						if ($container->permissions['manage'] || $container->permissions['configure']) {
-							$container->randomizer = mt_rand(1,ceil(microtime(1)));
-							$container->view = $view;
-							$container->action = $params['action'];
-							$container->info['class'] = expModules::getModuleClassName($loc->mod);
-							$container->info['module'] = $controller->displayname();
-//                            $container->info['module'] = $controller::displayname();
-							$container->info['source'] = $loc->src;
-                            $container->info['scope'] = $module_scope[$source][$module]->scope;
-//							$container->info['hasConfig'] = true;
+						if ($hccontainer->permissions['manage'] || $hccontainer->permissions['configure']) {
+                            $hccontainer->randomizer = mt_rand(1,ceil(microtime(1)));
+                            $hccontainer->view = $view;
+                            $hccontainer->action = $params['action'];
+                            $hccontainer->info['class'] = expModules::getModuleClassName($loc->mod);
+                            $hccontainer->info['module'] = $controller->displayname();
+//                            $hccontainer->info['module'] = $controller::displayname();
+                            $hccontainer->info['source'] = $loc->src;
+                            $hccontainer->info['scope'] = $module_scope[$source][$module]->scope;
+//							$hccontainer->info['hasConfig'] = true;
 //							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 //							$template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
                             $c2 = new containerController();
                             $template = get_template_for_action($c2,'_hardcoded_module_menu');
-							$template->assign('container', $container);
+							$template->assign('container', $hccontainer);
 							$template->output();
 						}
 					}
@@ -1012,7 +1037,6 @@ class expTheme {
 					$params['controller'] = $module;
 					$params['view'] = $view;
 					$params['moduletitle'] = $title;
-					if (empty($params['action'])) $params['action'] = $view;
 					renderAction($params);
 //				} else {
 //					call_user_func(array($module,"show"),$view,$loc,$title);

@@ -351,6 +351,8 @@ class expPaginator {
 		$this->total_pages = ($this->limit > 0) ? ceil($this->total_records/$this->limit) : 0;
 		if ($this->page > $this->total_pages) {
 			$this->page = $this->total_pages;
+            //FIXME return 404 error for infinite page scroll plugin
+            header(':', true, 404);
 		}
 		//setup the pages for the links
 		if ($this->total_pages > $this->pages_to_show) {
@@ -473,11 +475,7 @@ class expPaginator {
                 
                 if ($col == $current) {
                     $class  = 'current '.strtolower($this->order_direction);
-                    if (isset($params['dir'])) {
-                        $params['dir'] = $params['dir'] == 'ASC' ? 'DESC' : 'ASC';
-                    } else {
-                        $params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
-                    }
+                    $params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
                 } 
 
                 $params['order'] = $col;

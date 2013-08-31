@@ -1044,7 +1044,8 @@ class usersController extends expController {
                 'title'      => ($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name() . ' ' . ($loc->mod != 'container' ? gt('module') : '') . ' ' : gt('Page'),
             ));
         } else {
-            echo SITE_403_HTML;
+//            echo SITE_403_HTML;
+            notfoundController::handle_not_authorized();
         }
     }
 
@@ -1141,7 +1142,8 @@ class usersController extends expController {
                 'title'      => ($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name() . ' ' . ($loc->mod != 'container' ? gt('module') : '') . ' ' : gt('Page'),
             ));
         } else {
-            echo SITE_403_HTML;
+//            echo SITE_403_HTML;
+            notfoundController::handle_not_authorized();
         }
     }
 
