@@ -9,6 +9,9 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.2.3
 -----------------------
 ### Address issues in v2.2.2
+  - adds force image auto-resize and folder on quick-upload/add
+  - adds copy portfolio item command
+  - better theme support for mobile devices with 'meta viewport' and optional apple-touch-icon implementation
   - 0.9x theme support is removed
   - Flowplayer & YouTube modules are removed
     -- There is no media player migration script, but you can migrate to flowplayer/youtube modules, then run the media player upgrade script
