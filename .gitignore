@@ -4,6 +4,7 @@
 
 # Excludes the site's configuration file
 /framework/conf/config.php
+/conf/config.php
 
 # Excludes cache files
 /tmp/*
