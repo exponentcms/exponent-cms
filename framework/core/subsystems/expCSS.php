@@ -58,14 +58,16 @@ class expCSS {
         }
 
         // files in framework/core/assets/css that is general to many views and the system overall
+        // add .less support to corecss
         if (!empty($params['corecss'])){
             $core_array = explode(",",$params['corecss']);
             foreach ($core_array as $filename) {
                 $filename = trim($filename);
-                $existspath = BASE."framework/core/assets/css/".$filename.".css";
-                $filepath = PATH_RELATIVE."framework/core/assets/css/".$filename.".css";
-                if (is_file($existspath)) {
-                    $css_core[$filepath] = $filepath;
+                $css_path = "framework/core/assets/css/".$filename.".css";
+                $less_path = "framework/core/assets/less/".$filename.".less";
+                if (file_exists(BASE.$less_path)) self::auto_compile_less($less_path,$css_path,$less_vars);
+                if (is_file(BASE.$css_path)) {
+                    $css_core[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
                 }
             }
         }
@@ -246,6 +248,8 @@ class expCSS {
      * @param string $less_pname full pathname of the .less file
      * @param string $css_fname  filename of the output css file
      * @param array  $vars       array of variables to pass to parse()
+     *
+     * @return bool
      */
     public static function auto_compile_less($less_pname, $css_fname, $vars=array()) {
         if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
@@ -266,7 +270,7 @@ class expCSS {
             if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
                 $new_cache['vars'] = !empty($vars)?$vars:null;
                 $css_loc = pathinfo(BASE.$css_fname);
-                if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);
+                if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
                 file_put_contents(BASE.$css_fname, $new_cache['compiled']);
                 file_put_contents($cache_fname, serialize($new_cache));
             }

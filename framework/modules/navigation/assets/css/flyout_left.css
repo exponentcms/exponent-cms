@@ -20,6 +20,11 @@
     padding                           : 20px;
     filter                            : alpha(opacity = 85);
     opacity                           : .85;
+	-webkit-moz-opacity : .85;
+	-moz-moz-opacity    : .85;
+	-ms-moz-opacity     : .85;
+	-o-moz-opacity      : .85;
+	moz-opacity         : .85;
 }
 
 .flyout_left p {

@@ -1,0 +1,54 @@
+/* Message Queue */
+
+.msg-queue {
+    position:relative;
+    padding:0px;
+    margin: 10px 0 15px 0;
+    border: 2px solid #999;
+    font-weight: bold;
+    background: #c6f6c6;
+    border: 2px solid #2e6b2e;
+    color: #2e6b2e;
+    -webkit-border-radius: 5px; 
+       -moz-border-radius: 5px; 
+            border-radius: 5px; 
+}
+
+div.msg-queue .msg {
+    list-style: none;
+    margin:5px 25px;
+}
+
+div.msg-queue.error {
+    background: #f1a5a5;
+    border: 2px solid #ff0000;
+    color: #ff0000;
+}
+
+div.msg-queue.notice {
+    background: #f1e778;
+    border: 2px solid #c27b12;
+    color: #c27b12;
+}
+
+div.msg-queue.info {
+    background: #c2f0f0;
+    border: 2px solid #1a18c4;
+    color: #1a18c4;
+}
+
+.msg-queue {
+    position:relative;
+}
+
+.msg-queue .close {
+    position:absolute;
+    top:3px;
+    right:3px;
+    display:block;
+    width:16px;
+    height:0px;
+    padding-top:16px;
+    overflow:hidden;
+    background:url(../images/exp-admin-sprite.png) no-repeat 0px -511px;
+}

@@ -1,0 +1,527 @@
+/****************  basic, light styles  ***********************/
+.control {
+	padding       : 4px 0;
+	margin-bottom : 4px;
+}
+
+.control .label {
+	display       : block;
+	font-size     : 114%;
+	/*margin-bottom : 4px;*/
+	margin-bottom : 0.5px;
+	margin-right  : 5px;
+	font-weight   : bold;
+}
+
+.control .spacer {
+	display : none;
+}
+
+.control .label .required,
+.control.required .label .required {
+	color : #ff0000;
+}
+
+.control .control-desc {
+	font-size  : 85%;
+	font-style : italic;
+}
+
+.control .label .example {
+	color       : #999;
+	font-size   : 80%;
+	font-weight : normal;
+	font-style  : italic;
+	display     : block;
+}
+
+/*.control input.password,*/
+/*.control input.text,*/
+.control textarea {
+	font-size             : 114%;
+	padding               : 5px;
+	border                : 1px solid #D3D3D3;
+	-moz-box-shadow       : inset 0px 0px 4px #dedede;
+	-webkit-box-shadow    : inset 0px 0px 4px #dedede;
+	box-shadow            : inset 0px 0px 4px #dedede;
+	-moz-border-radius    : 4px;
+	-webkit-border-radius : 4px;
+	border-radius         : 4px;
+}
+
+/****************  field errors  ***********************/
+
+.control.field-error label {
+	color       : red;
+	font-weight : bold;
+}
+
+.control.field-error input.text,
+.control.field-error input.password,
+.control.field-error select.select,
+.control.field-error textarea.textarea {
+	border : 2px solid red;
+}
+
+/****************  buttons  ***********************/
+
+button.button,
+input.button {
+	margin-right : 5px;
+}
+
+/****************  checks and radios  ***********************/
+
+.control.radiogroup .control.radio {
+	margin  : 0 0 0 0 !important;
+	padding : 0 0 0 0 !important;
+	border  : 0 !important;
+}
+
+.control.radiogroup table,
+.control.radio table,
+.control.checkbox table {
+	margin : 0 0 0 0;
+	border : 0 !important;
+}
+
+.control.radiogroup td,
+.control.radio td,
+.control.checkbox td {
+	padding        : 0 0 0 0;
+	margin         : 0 0 0 0;
+	border         : 0;
+	vertical-align : middle;
+}
+
+.control.radio td.input,
+.control.checkbox td.input {
+	width : 0px;
+}
+
+.control .nowrap {
+	white-space : nowrap;
+}
+
+.control.checkbox tr td:hover,
+.control.radio tr td:hover {
+	border : 0;
+}
+
+.control.checkbox tr:hover,
+.control.radio tr:hover {
+	border     : 0;
+	background : none;
+}
+
+.control.checkbox .label,
+.control.radio .label {
+
+}
+
+input.checkbox,
+input.radio {
+	/*float:left;*/
+	margin-right : 5px;
+}
+
+.module.forms input.checkbox {
+	/*float:left;*/
+	/*margin-top:12px;*/
+	margin-top : 3px;
+}
+
+.control .radiogroup-label {
+	display     : inline;
+	white-space : normal;
+}
+
+.control .datetime.date {
+	padding-left : 5px;
+}
+
+.datetime.date .text {
+	width: 60px;
+	margin-left : 5px;
+}
+
+/****************  quick style helpers  ***********************/
+.control.thirds {
+	float        : left;
+	margin-right : 2em;
+}
+
+.control.thirds.last {
+	clear : right;
+}
+
+/* ==========
+   Forms Core
+   =========*/
+
+/*
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+	border  : 1px solid #c0c0c0;
+	margin  : 0 2px;
+	padding : 0.35em 0.625em 0.75em;
+}
+
+/*
+ * 1. Corrects color not being inherited in IE 6/7/8/9.
+ * 2. Corrects text not wrapping in Firefox 3.
+ * 3. Corrects alignment displayed oddly in IE 6/7.
+ */
+
+legend {
+	border       : 0; /* 1 */
+	padding      : 0;
+	white-space  : normal; /* 2 */
+	*margin-left : -7px; /* 3 */
+}
+
+/*
+ * 1. Corrects font size not being inherited in all browsers.
+ * 2. Addresses margins set differently in IE 6/7, Firefox 3+, Safari 5,
+ *    and Chrome.
+ * 3. Improves appearance and consistency in all browsers.
+ */
+
+button,
+input,
+select,
+textarea {
+	font-size       : 100%; /* 1 */
+	margin          : 0; /* 2 */
+	vertical-align  : baseline; /* 3 */
+	*vertical-align : middle; /* 3 */
+}
+
+/*
+ * Addresses Firefox 3+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+button,
+input {
+	line-height : normal;
+}
+
+/*
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Corrects inability to style clickable `input` types in iOS.
+ * 3. Improves usability and consistency of cursor style between image-type
+ *    `input` and others.
+ * 4. Removes inner spacing in IE 7 without affecting normal text inputs.
+ *    Known issue: inner spacing remains in IE 6.
+ */
+
+button,
+input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+	-webkit-appearance : button; /* 2 */
+	cursor             : pointer; /* 3 */
+	*overflow          : visible; /* 4 */
+}
+
+/*
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+input[disabled] {
+	cursor : default;
+}
+
+/*
+ * 1. Addresses box sizing set to content-box in IE 8/9.
+ * 2. Removes excess padding in IE 8/9.
+ * 3. Removes excess padding in IE 7.
+ *    Known issue: excess padding remains in IE 6.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+	box-sizing : border-box; /* 1 */
+	padding    : 0; /* 2 */
+	*height    : 13px; /* 3 */
+	*width     : 13px; /* 3 */
+}
+
+/*
+ * 1. Addresses `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Addresses `box-sizing` set to `border-box` in Safari 5 and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+	-webkit-appearance : textfield; /* 1 */
+	-moz-box-sizing    : content-box;
+	-webkit-box-sizing : content-box; /* 2 */
+	box-sizing         : content-box;
+}
+
+/*
+ * Removes inner padding and search cancel button in Safari 5 and Chrome
+ * on OS X.
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+	-webkit-appearance : none;
+}
+
+/*
+ * Removes inner padding and border in Firefox 3+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+	border  : 0;
+	padding : 0;
+}
+
+/*
+ * 1. Removes default vertical scrollbar in IE 6/7/8/9.
+ * 2. Improves readability and alignment in all browsers.
+ */
+
+textarea {
+	overflow       : auto; /* 1 */
+	vertical-align : top; /* 2 */
+}
+
+/****** yui forms css *******/
+input,
+select {
+	padding                : 0.5em 0.6em;
+	display                : inline-block;
+	border                 : 1px solid #ccc;
+	font-size              : 0.9em;
+	box-shadow             : inset 0 1px 3px #ddd;
+	-moz-box-shadow        : inset 0 1px 3px #ddd;
+	-webkit-box-shadow     : inset 0 1px 3px #ddd;
+	border-radius          : 4px;
+	-moz-border-radius     : 4px;
+	-webkit-border-radius  : 4px;
+	-webkit-transition     : 0.3s linear border;
+	-moz-transition        : 0.3s linear border;
+	-ms-transition         : 0.3s linear border;
+	-o-transition          : 0.3s linear border;
+	transition             : 0.3s linear border;
+	-moz-box-sizing        : border-box;
+	-webkit-box-sizing     : border-box;
+	box-sizing             : border-box;
+	-webkit-font-smoothing : antialiased;
+}
+
+select {
+	margin-bottom : 0;
+}
+
+input:focus, input:hover, input:hover:valid,
+textarea:focus, textarea:hover, textarea:hover:valid,
+select:focus, select:hover, select:hover:valid {
+	outline            : 0;
+	outline            : thin dotted   \9;
+	/* IE6-9 */
+
+	border-color       : #8FD6F2;
+	box-shadow         : 0 0 5px #11AFED;
+	-moz-box-shadow    : 0 0 5px #11AFED;
+	-webkit-box-shadow : 0 0 5px #11AFED;
+}
+
+/*.yui3-checkbox,*/
+/*.yui3-radio {*/
+	/*margin  : 0.5em 0;*/
+	/*display : block;*/
+/*}*/
+
+input[disabled],
+select[disabled],
+textarea[disabled],
+input[readonly],
+select[readonly],
+textarea[readonly] {
+	cursor           : not-allowed;
+	background-color : #eaeded;
+	color            : #cad2d3;
+	border-color     : transparent;
+}
+
+input:focus:invalid, input:hover:invalid,
+textarea:focus:invalid, textarea:hover:invalid,
+select:focus:invalid, select:hover:invalid {
+	color  : #b94a48;
+	border : 1px solid #ee5f5b;
+}
+
+input:focus:invalid:focus, input:hover:invalid:hover,
+textarea:focus:invalid:focus, textarea:hover:invalid:hover,
+select:focus:invalid:focus, select:hover:invalid:hover {
+	border-color       : #e9322d;
+	box-shadow         : 0 0 5px #ce1a15;
+	-moz-box-shadow    : 0 0 5px #ce1a15;
+	-webkit-box-shadow : 0 0 5px #ce1a15;
+}
+
+select {
+	/*width: 220px;*/
+	width            : auto;
+	border           : 1px solid #ccc;
+	background-color : white;
+}
+
+select[multiple] {
+	height : auto;
+}
+
+input[type="number"] {
+	width          : 60px;
+}
+
+.range-control.control {
+	width          : 214px;
+}
+
+label {
+	/*display: block;*/
+	padding        : 4px 0;
+	/*margin-bottom  : 2.5px;*/
+	margin-bottom  : 0.5px;
+	vertical-align : middle;
+	/*margin         : 0.5em 0 0.2em;*/
+	/*color          : #999;*/
+	font-size      : 90%;
+}
+
+fieldset {
+	padding : 0;
+	margin  : 0;
+	border  : 0;
+	padding : 0.35em 0 0.75em;
+}
+
+legend {
+	display       : block;
+	width         : 100%;
+	padding       : 10px 0;
+	margin-bottom : 10px;
+	font-size     : 125%;
+	/*line-height: 10px;*/
+	color         : #333;
+	border-bottom : 1px solid #e5e5e5;
+}
+
+/*.yui3-form-stacked input[type='text'],*/
+/*.yui3-form-stacked select,*/
+/*.yui3-form-stacked label {*/
+	/*display : block;*/
+/*}*/
+
+/*.yui3-form-aligned input,*/
+/*.yui3-form-aligned textarea,*/
+/*.yui3-form-aligned select,*/
+/*.yui3-form-aligned .yui3-help-inline {*/
+	/*display        : inline-block;*/
+	/**display       : inline; *//* IE7 inline-block hack */
+	/**zoom          : 1;*/
+	/*vertical-align : middle;*/
+/*}*/
+
+/* aligned Forms */
+/*.yui3-form-aligned .yui3-control-group {*/
+	/*margin-bottom : 0.5em;*/
+/*}*/
+
+/*.yui3-form-aligned .yui3-control-group label {*/
+	/*text-align     : right;*/
+	/*display        : inline-block;*/
+	/*vertical-align : middle;*/
+	/*width          : 10em;*/
+	/*margin         : 0 1em 0 0;*/
+/*}*/
+
+/*.yui3-form-aligned .yui3-controls {*/
+	/*margin : 1.5em 0 0 10em;*/
+/*}*/
+
+/* Rounded Inputs */
+/*.yui3-input-rounded {*/
+	/*border-radius         : 20px;*/
+	/*-moz-border-radius    : 20px;*/
+	/*-webkit-border-radius : 20px;*/
+	/*padding-left          : 1em;*/
+/*}*/
+
+/* Grouped Inputs */
+/*.yui3-group fieldset {*/
+	/*margin-bottom : 10px;*/
+/*}*/
+
+/*.yui3-group input {*/
+	/*display               : block;*/
+	/*padding               : 10px;*/
+	/*margin                : 0;*/
+	/*border-radius         : 0;*/
+	/*-moz-border-radius    : 0;*/
+	/*-webkit-border-radius : 0;*/
+	/*position              : relative;*/
+	/*top                   : -1px;*/
+/*}*/
+
+/*.yui3-group input:focus {*/
+	/*z-index : 2;*/
+/*}*/
+
+/*.yui3-group input:first-child {*/
+	/*top                   : 1px;*/
+	/*border-radius         : 4px 4px 0 0;*/
+	/*-webkit-border-radius : 4px 4px 0 0;*/
+	/*-moz-border-radius    : 4px 4px 0 0;*/
+/*}*/
+
+/*.yui3-group input:last-child {*/
+	/*top                   : -2px;*/
+	/*border-radius         : 0 0 4px 4px;*/
+	/*-webkit-border-radius : 0 0 4px 4px;*/
+	/*-moz-border-radius    : 0 0 4px 4px;*/
+/*}*/
+
+/*.yui3-group button {*/
+	/*margin : 0.35em 0;*/
+/*}*/
+
+/*.yui3-input-1 {*/
+	/*width : 100%;*/
+/*}*/
+
+/*.yui3-input-2-3 {*/
+	/*width : 66%;*/
+/*}*/
+
+/*.yui3-input-1-2 {*/
+	/*width : 50%;*/
+/*}*/
+
+/*.yui3-input-1-3 {*/
+	/*width : 33%;*/
+/*}*/
+
+/*.yui3-input-1-4 {*/
+	/*width : 25%;*/
+/*}*/
+
+/* Inline help for forms */
+/*.yui3-help-inline {*/
+	/*display        : inline-block;*/
+	/*padding-left   : 0.3em;*/
+	/*color          : #666;*/
+	/*vertical-align : middle;*/
+	/*font-size      : 90%;*/
+/*}*/
