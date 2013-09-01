@@ -143,9 +143,9 @@
     bottom: -1px;
     bottom: -3px;
     filter: alpha(opacity=12);
-	opacity: .12;
     left: -1px;
     left: -3px;
+    opacity: .12;
     position: absolute;
     right: -1px;
     right: -3px;

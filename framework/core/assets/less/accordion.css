@@ -1,0 +1,76 @@
+.showall-accordion .piece {
+	overflow    : hidden;
+	margin-left : 25px;
+}
+
+.showall-accordion .dashboard .hd {
+	margin                : 0;
+	position              : relative;
+	background            : url(../../../modules/ecommerce/assets/images/ecom-sprite.png) repeat-x 0 -44px;
+	border                : 1px solid #b6cdde;
+	-moz-border-radius    : 2px;
+	-webkit-border-radius : 2px;
+	border-radius         : 2px;
+}
+
+.showall-accordion .dashboard .hd h2 {
+	margin      : 0;
+	padding     : 5px 0 5px 33px;
+	font-size   : 18px;
+	font-weight : bold;
+	background  : url(../../../modules/ecommerce/assets/images/ecom-sprite.png) no-repeat;
+}
+
+.showall-accordion .dashboard .hd a.expand {
+	background : url('../images/section_collapsed.png') no-repeat right;
+	display    : block;
+}
+
+.showall-accordion .dashboard .hd a.collapse {
+	background : url('../images/section_expanded.png') no-repeat right;
+	display    : block;
+}
+
+.showall-accordion .dashboard .panel .hd a, a:visited {
+	text-decoration : none;
+	color           : #000000;
+}
+
+.showall-accordion .dashboard .panel .hd a:hover {
+	text-decoration : underline;
+	color           : #000000;
+}
+
+.showall-accordion .dashboard ul,
+.showall-accordion .dashboard ul li {
+	margin     : 0;
+	padding    : 0;
+	list-style : none;
+}
+
+.showall-accordion .dashboard div.bd {
+	margin-bottom : 5px;
+	overflow      : hidden;
+}
+
+.showall-accordion .dashboard div.collapsed {
+	height : 0;
+}
+
+.showall-accordion .dashboard ul li {
+	padding : 8px 2px;
+	/*border-bottom:1px dashed #555;*/
+}
+
+.showall-accordion .dashboard ul li strong {
+	display : block;
+}
+
+.showall-accordion .dashboard ul li a {
+	/*color:#035fbc;*/
+}
+
+.showall-accordion .dashboard .control .label {
+	float         : left;
+	padding-right : 10px;
+}

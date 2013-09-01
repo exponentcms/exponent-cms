@@ -68,7 +68,7 @@ a.import {
     display:inline-block;
     zoom:1;
     padding:4px 5px 4px 25px;
-    background:url(../images/upload.png) no-repeat 3px 5px;
+    background:url(../../../modules/file/assets/images/upload.png) no-repeat 3px 5px;
 }
 
 /****************  active / inactive  ***********************/
@@ -141,7 +141,7 @@ a.export {
 }
 
 a.import {
-    background: url(../images/upload.png) no-repeat 0 50%;
+    background: url(../../../modules/file/assets/images/upload.png) no-repeat 0 50%;
 }
 
 a.manage {

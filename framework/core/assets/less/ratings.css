@@ -1,0 +1,71 @@
+.star-stats strong {
+    display:block;
+}
+.star-stats em {
+    height:18px;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    vertical-align:top;
+    padding:3px 5px;
+
+}
+.star-bar {
+    vertical-align:top;
+    width:90px;
+    height:18px;
+    background:url(../images/stars.png) no-repeat;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    position:relative;
+}
+.star-bar .star-average {
+    height:18px;
+    background:url(../images/stars.png) no-repeat 0 -18px;
+}
+
+.my-ratings {
+    position:absolute;
+    top:0;
+    left:0;
+    width:90px;
+    height:18px;
+}
+
+.rating-form {
+    display:none;
+}
+
+.star-bar .u-star:hover,
+.star-bar .u-star.selected {
+    background:url(../images/stars.png) no-repeat -75px -37px;
+}
+
+.star-bar .u-star {
+    position:absolute;
+    top:0;
+    right:0;
+    width:88px;
+    height:18px;
+    margin:0;
+    padding:0;
+}
+
+.star-bar .u-star.st2 {
+    width:70px;
+/*    border-left:1px solid red;*/
+}
+
+.star-bar .u-star.st3 {
+    width:51px;
+}
+
+.star-bar .u-star.st4 {
+    width:33px;
+}
+
+.star-bar .u-star.st5 {
+    width:15px;
+}
+
