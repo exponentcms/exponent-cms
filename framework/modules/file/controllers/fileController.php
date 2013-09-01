@@ -90,7 +90,7 @@ class fileController extends expController {
         global $user;
         //expHistory::set('manageable', $this->params);
         flash('message',gt('Upload size limit').': '.ini_get('upload_max_filesize'));
-        if(intval(ini_get('upload_max_filesize'))!=intval(ini_get('post_max_size')) && $user->is_admin){
+        if(intval(ini_get('upload_max_filesize'))!=intval(ini_get('post_max_size')) && $user->isAdmin()){
             flash('error',gt('In order for the uploader to work correctly, \'"post_max_size\' and \'upload_max_filesize\' within your php.ini file must match one another'));
         }
 
@@ -220,17 +220,17 @@ class fileController extends expController {
 
         if (isset($this->params['query'])) {
 
-            if ($user->is_acting_admin!=1) {
+            if (!$user->isActingAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";
             };
-            if ($this->params['fck']==1) {
+            if ($this->params['update']=='ck') {
                 $filter .= "is_image=1 AND ";
             }
 
 //            $this->params['query'] = expString::sanitize($this->params['query']);
 //            $totalrecords = $this->$modelname->find('count',"filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'");
 //            $files = $this->$modelname->find('all',$filter."filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'".$imagesOnly,$sort.' '.$dir, $results, $startIndex);
-            $files = $this->$modelname->find('all',$filter."filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%'".$imagesOnly,$sort.' '.$dir);
+            $files = $this->$modelname->find('all',$filter."(filename LIKE '%".$this->params['query']."%' OR title LIKE '%".$this->params['query']."%' OR alt LIKE '%".$this->params['query']."%')",$sort.' '.$dir);
 
             //FiXME we need to get all records then group by cat, then trim/paginate
             $querycat = !empty($this->params['cat']) ? $this->params['cat'] : '0';
@@ -265,17 +265,17 @@ class fileController extends expController {
                 'records'=>$files
             );
         } else {
-            if ($user->is_acting_admin!=1) {
+            if (!$user->isActingAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1)";
             };
-            if ($this->params['fck']==1) {
+            if ($this->params['update']=='ck') {
                 $filter .= !empty($filter) ? " AND " : "";
                 $filter .= "is_image=1";
             }
             
 //            $totalrecords = $this->$modelname->find('count',$filter);
 //            $files = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
-            $files = $this->$modelname->find('all',$filter,$sort.' '.$dir);
+            $files = $this->$modelname->find('all', $filter, $sort.' '.$dir);
 
             $groupedfiles = array();
             foreach ($files as $key=>$file) {
@@ -348,7 +348,7 @@ class fileController extends expController {
         } else {
             flash('error',$file->filename.' '.gt('wasn\'t deleted because you don\'t own the file.'));
         }
-        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update']));
     } 
     
     public function deleter() {
@@ -377,7 +377,7 @@ class fileController extends expController {
                 }
             }
         }
-        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update']));
     }
 
     public function batchDelete() {
@@ -387,7 +387,7 @@ class fileController extends expController {
         $error = false;
         foreach ($files as $file) {
             $delfile = new expFile($file->id);
-            if ($user->id==$delfile->poster || $user->is_acting_admin==1) {
+            if ($user->id==$delfile->poster || $user->isActingAdmin()) {
                 $delfile->delete();
                 unlink($delfile->directory.$delfile->filename);
             } else {
@@ -433,7 +433,7 @@ class fileController extends expController {
             $newfile->save();
             flash('message',$newfile->filename.' '.gt('was added to the File Manager.'));
         }
-        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"fck"=>$this->params['fck']));
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update']));
     }
 
     public function upload() {
@@ -527,7 +527,7 @@ class fileController extends expController {
     public function editCat() {
         global $user;
         $file = new expFile($this->params['id']);
-        if ($user->id==$file->poster || $user->is_acting_admin==1) {
+        if ($user->id==$file->poster || $user->isActingAdmin()) {
             $expcat = new expCat($this->params['newValue']);
             $params['expCat'][0] = $expcat->id;
             $file->update($params);
@@ -543,7 +543,7 @@ class fileController extends expController {
     public function editTitle() {
         global $user;
         $file = new expFile($this->params['id']);
-        if ($user->id==$file->poster || $user->is_acting_admin==1) {
+        if ($user->id==$file->poster || $user->isActingAdmin()) {
             $file->title = $this->params['newValue'];
             $file->save();
             $ar = new expAjaxReply(200, gt('Your title was updated successfully'), $file);
@@ -556,7 +556,7 @@ class fileController extends expController {
     public function editAlt() {
         global $user;        
         $file = new expFile($this->params['id']);
-        if ($user->id==$file->poster || $user->is_acting_admin==1) {
+        if ($user->id==$file->poster || $user->isActingAdmin()) {
             $file->alt = $this->params['newValue'];
             $file->save();
             $ar = new expAjaxReply(200, gt('Your alt was updated successfully'), $file);
@@ -573,7 +573,7 @@ class fileController extends expController {
 		if(!isset($this->params['newValue'])) {
 			$this->params['newValue'] = 0;
 		}
-        if ($user->id==$file->poster || $user->is_acting_admin==1) {
+        if ($user->id==$file->poster || $user->isActingAdmin()) {
             $file->shared = $this->params['newValue'];
             $file->save();
             $ar = new expAjaxReply(200, gt('This file is now shared.'), $file);

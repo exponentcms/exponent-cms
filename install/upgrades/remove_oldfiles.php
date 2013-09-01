@@ -346,7 +346,7 @@ class remove_oldfiles extends upgradescript {
         // delete old directories
         $olddirs = array(
             "framework/subsystems/",
-            "framework/core/compat/",  //FIXME until 2.2.3
+            "framework/core/compat/",
             "framework/core/database/",
             "framework/core/datatypes/",
             "framework/core/models-1/",
@@ -372,9 +372,7 @@ class remove_oldfiles extends upgradescript {
             "compat/",
             "views/",
             "subsystems/",
-            "conf/",  //FIXME until 2.2.3
-//            "conf/data/",  //FIXME until 2.2.3
-//            "conf/extensions/",  //FIXME until 2.2.3
+            "conf/",
             "install/sitetypes/",
             "themes/common/",
             "themes/bootstraptheme/controls/",
@@ -384,7 +382,7 @@ class remove_oldfiles extends upgradescript {
             "tmp/pods/",
             "external/bootstrap/font/",
             "external/ckeditor/",
-            "external/editors/connector/lang/",
+            "external/editors/connector/",
             "external/editors/FCKeditor/",
 //            "external/editors/ckeditor/adapters",
             "external/editors/ckeditor/images",

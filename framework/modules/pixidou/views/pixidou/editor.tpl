@@ -263,6 +263,6 @@
         
         <input type=hidden id="update" value="{$update}">
         <input type=hidden id="fid" value="{$image->id}">
-        <input type=hidden id="fromFCK" value="{$smarty.get.fck}">
+        {*<input type=hidden id="fromCK" value="{$smarty.get.ck}">*}
     </body>
 </html>

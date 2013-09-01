@@ -28,7 +28,7 @@
 <div id="exp-deleter">
     <h1>{"Delete Missing Files"|gettext}</h1>
     <div id="actionbar">
-        <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
+        <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 update=$smarty.get.update}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
     </div>
 	<div class="info-header clearfix">
 		<div class="related-actions">
@@ -42,7 +42,7 @@
         {if $files|@count!=0}
             {form action=deleteit}
                 {control type=hidden name=update value=$smarty.get.update}
-                {control type=hidden name=fck value=$smarty.get.fck}
+                {*{control type=hidden name=ck value=$smarty.get.ck}*}
                 <table id="filenames" class="exp-skin-table">
                     <thead>
                        <tr>

@@ -1,8 +1,29 @@
 <?PHP
-	define("SCRIPT_EXP_RELATIVE","external/editors/connector/");
-	define("SCRIPT_FILENAME","CKeditor_link.php");
+
+##################################################
+#
+# Copyright (c) 2004-2013 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
+
+/**
+ * Implements the browse server feature within the CKEditor insert url/link dialogs
+ */
+
+	define("SCRIPT_EXP_RELATIVE","framework/modules/file/connector/");
+	define("SCRIPT_FILENAME","ckeditor_link.php");
 	
-	require_once('../../../exponent.php');
+	require_once('../../../../exponent.php');
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -12,8 +33,8 @@
 
 		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js2.php"></script>
 <!--		<script type="text/javascript" src="popup.js"></script>-->
-<!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'external/editors/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?><!--"></script>-->
-<!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'external/editors/connector/lang/en.js'?><!--"></script>-->
+<!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'framework/modules/file/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?><!--"></script>-->
+<!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'framework/modules/file/connector/lang/en.js'?><!--"></script>-->
   		<script type="text/javascript">
 		/* <![CDATA[ */
 //			I18N = eXp.I18N;
@@ -63,12 +84,11 @@
             function openFileManager() {
                 var funcNum = getUrlParam('CKEditorFuncNum');
                 var partNum = getUrlParam('CKEditor');
-                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&ck=1&update=fck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
+                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&ck=1&update=ck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
             }
 
 			function openContentLinker() {
-//				window.open("../../../source_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=containermodule&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
-                window.open("../../../source_selector.php?dest="+escape("external/editors/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=container&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
+                window.open("../../../../source_selector.php?dest="+escape("framework/modules/file/connector/content_linked.php?dummy")+"&vview=_linkPicker&vmod=container&showmodules=all","contentlinker","toolbar=no,title=no,width=800,height=600,scrollbars=yes");
 			}
 		/* ]]> */
 		</script>

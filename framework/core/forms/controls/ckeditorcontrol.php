@@ -138,14 +138,14 @@ class ckeditorcontrol extends formcontrol {
                     ".$tb."
                     " . $paste_word . "
                     scayt_autoStartup : " . $scayt_on . ",
-                    filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "ck"=> 1, "update"=> "fck")) . "',
-                    filebrowserUploadUrl : '" . PATH_RELATIVE . "external/editors/connector/uploader.php',
+                    filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck")) . "',
+                    filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',
                     filebrowserWindowWidth : " . FM_WIDTH . ",
                     filebrowserWindowHeight : " . FM_HEIGHT . ",
-                    filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "external/editors/connector/ckeditor_link.php',
+                    filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php',
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
-                    filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "external/editors/connector/ckeditor_link.php',
+                    filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php',
                     extraPlugins : 'stylesheetparser,tableresize," . $plugins . "',
                     " . $additionalConfig . "
                     autoGrow_minHeight : 200,
