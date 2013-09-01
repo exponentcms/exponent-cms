@@ -483,8 +483,13 @@ class fileController extends expController {
             $file->poster = $user->id;
             $file->posted = $file->last_accessed = time();
             $file->save();
-            if (!empty(QUICK_UPLOAD_FOLDER)) {
-                $expcat = new expCat(QUICK_UPLOAD_FOLDER);
+            if (defined('QUICK_UPLOAD_FOLDER')) {
+                $quikFolder = QUICK_UPLOAD_FOLDER;
+            } else {
+                $quikFolder = null;
+            }
+            if (!empty($quikFolder)) {
+                $expcat = new expCat($quikFolder);
                 $params['expCat'][0] = $expcat->id;
                 $file->update($params);
             }
@@ -510,8 +515,8 @@ class fileController extends expController {
                     $file->poster = $user->id;
                     $file->posted = $file->last_accessed = time();
                     $file->save();
-                    if (!empty(QUICK_UPLOAD_FOLDER)) {
-                        $expcat = new expCat(QUICK_UPLOAD_FOLDER);
+                    if (!empty($quikFolder)) {
+                        $expcat = new expCat($quikFolder);
                         $params['expCat'][0] = $expcat->id;
                         $file->update($params);
                     }
