@@ -148,7 +148,7 @@ class expTheme {
 		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
         //FIXME we need to account for passing parameters  to head() here
-        $str .= "\t".'<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">'.XHTML_CLOSING.'>'."\n";
+        $str .= "\t".'<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" '.XHTML_CLOSING.'>'."\n";
 
         // favicon
         if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
