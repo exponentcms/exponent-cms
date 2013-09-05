@@ -34,7 +34,7 @@ class formsController extends expController {
         'ealerts',
         'facebook',
         'files',
-        'pagination',
+//        'pagination',
         'rss',
         'tags',
         'twitter',
