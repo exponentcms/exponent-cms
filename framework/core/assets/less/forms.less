@@ -1,3 +1,5 @@
+@import "exponent.less";
+
 /****************  basic, light styles  ***********************/
 .control {
 	padding       : 4px 0;
@@ -44,9 +46,10 @@
 	-moz-box-shadow       : inset 0px 0px 4px #dedede;
 	-webkit-box-shadow    : inset 0px 0px 4px #dedede;
 	box-shadow            : inset 0px 0px 4px #dedede;
-	-moz-border-radius    : 4px;
-	-webkit-border-radius : 4px;
-	border-radius         : 4px;
+//	-moz-border-radius    : 4px;
+//	-webkit-border-radius : 4px;
+//	border-radius         : 4px;
+	.border-radius(4px);
 }
 
 /****************  field errors  ***********************/
@@ -305,14 +308,16 @@ select {
 	box-shadow             : inset 0 1px 3px #ddd;
 	-moz-box-shadow        : inset 0 1px 3px #ddd;
 	-webkit-box-shadow     : inset 0 1px 3px #ddd;
-	border-radius          : 4px;
-	-moz-border-radius     : 4px;
-	-webkit-border-radius  : 4px;
-	-webkit-transition     : 0.3s linear border;
-	-moz-transition        : 0.3s linear border;
-	-ms-transition         : 0.3s linear border;
-	-o-transition          : 0.3s linear border;
-	transition             : 0.3s linear border;
+//	border-radius          : 4px;
+//	-moz-border-radius     : 4px;
+//	-webkit-border-radius  : 4px;
+	.border-radius(4px);
+//	-webkit-transition     : 0.3s linear border;
+//	-moz-transition        : 0.3s linear border;
+//	-ms-transition         : 0.3s linear border;
+//	-o-transition          : 0.3s linear border;
+//	transition             : 0.3s linear border;
+	.transition(0.3s, linear, border);
 	-moz-box-sizing        : border-box;
 	-webkit-box-sizing     : border-box;
 	box-sizing             : border-box;

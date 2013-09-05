@@ -119,14 +119,10 @@ class expTheme {
 		};
 
 		// default the running of view based CSS inclusion to true
-		if(empty($config['css_links'])){
-			$config['css_links'] = true;
-		}
+		if(empty($config['css_links'])) $config['css_links'] = true;
 
 		// default theme css collecting to true if not set
-		if(empty($config['css_theme'])){
-			$config['css_theme'] = true;
-		}
+		if(empty($config['css_theme'])) $config['css_theme'] = true;
 
 		if (empty($sectionObj)) return false;
 
@@ -154,6 +150,7 @@ class expTheme {
         if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
             $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
         }
+        // touch icons
         if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png')) {
             $str .= "\t".'<link rel="apple-touch-icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png" '.XHTML_CLOSING.'>'."\n";
         }
