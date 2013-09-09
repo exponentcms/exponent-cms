@@ -41,29 +41,28 @@
 					</strong>
 				</dt>
 				{foreach from=$events item=event}
-                    {if !$event->is_cancelled}
-                        {$catid=$event->category_id}
-                        <dd>
-                            <strong>
-                                <a class="itemtitle" href="{link controller=event action=show date_id=$event->date_id}">{$event->title}</a>
-                            </strong>
-                            <div>
-                                &#160;-&#160;
-                                {if $event->is_allday == 1}
-                                    {'All Day'|gettext}
-                                {elseif $event->eventstart != $event->eventend}
-                                    {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
-                                {else}
-                                    {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
-                                {/if}
-                                {if $showdetail == 1}
-                                    {*&#160;-&#160;{$event->body|summarize:"html":"paralinks"}*}
-                                    &#160;-&#160;{$event->body|summarize:"html":"parahtml"}
-                                {/if}
-                                {br}
-                            </div>
-                        </dd>
-                    {/if}
+                    {$catid=$event->category_id}
+                    <dd>
+                        <strong>
+                            <a class="itemtitle" href="{link controller=event action=show date_id=$event->date_id}">{$event->title}</a>
+                        </strong>
+                        <div>
+                            {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
+                            &#160;-&#160;
+                            {if $event->is_allday == 1}
+                                {'All Day'|gettext}
+                            {elseif $event->eventstart != $event->eventend}
+                                {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$event->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                            {else}
+                                {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                            {/if}
+                            {if $showdetail == 1}
+                                {*&#160;-&#160;{$event->body|summarize:"html":"paralinks"}*}
+                                &#160;-&#160;{$event->body|summarize:"html":"parahtml"}
+                            {/if}
+                            {br}
+                        </div>
+                    </dd>
 				{/foreach}
 			{/if}
 		{/foreach}
