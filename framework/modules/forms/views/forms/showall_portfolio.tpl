@@ -64,7 +64,7 @@
                     </table>
                 {else}
                     {eval var=$config.report_def}
-                    {clear}{br}
+                    {clear}
                 {/if}
             {/foreach}
         </div>
