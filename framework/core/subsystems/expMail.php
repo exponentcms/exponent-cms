@@ -235,12 +235,13 @@ class expMail {
 		} else {
 			trim($params['to']);
 		}
-		$this->message->setTo((array)$params['to']);
+//		$this->message->setTo((array)$params['to']);
+        $this->addTo((array)$params['to']);
 
     	// set up the from address(es)
 		if (is_array($params['from'])) {
 			$params['from'] = array_filter($params['from']);
-		} elseif (empty($params['to'])) {
+		} elseif (empty($params['from'])) {
 			$params['from'] = SMTP_FROMADDRESS;
 		} else {
 			trim($params['from']);
@@ -355,7 +356,6 @@ class expMail {
 		}
 
     	// set up the to address(es)
-		$this->addTo($params['to']);
 		if (is_array($params['to'])) {
 			$params['to'] = array_filter($params['to']);
 		} elseif (empty($params['to'])) {
@@ -363,11 +363,12 @@ class expMail {
 		} else {
 			$params['to'] = array(trim($params['to']));
 		}
+        $this->addTo($params['to']);
 
     	// set up the from address(es)
 		if (is_array($params['from'])) {
 			$params['from'] = array_filter($params['from']);
-		} elseif (empty($params['to'])) {
+		} elseif (empty($params['from'])) {
 			$params['from'] = SMTP_FROMADDRESS;
 		} else {
 			trim($params['from']);
@@ -633,21 +634,23 @@ class expMail {
      *
      *                Actually, cleanup should be done so that this function only takes associative arrays, and nothing else.
      */
-	public function addTo($email_address_array = array(), $singular_name = '', $where = "to") {
-		if (is_array($email_address_array)) {
-			foreach ($email_address_array as $addr) {
-				$this->to = $addr;
-				$this->message->addTo($addr);
-			}
-		} else {
-			if ($singular_name != '') {
-				$this->to = array($email_address_array, $singular_name);
-				$this->message->addTo($email_address_array, $singular_name);
-			} else {
-				$this->to = $email_address_array;
-				$this->message->addTo($email_address_array);
-			}
-		}
+	public function addTo($email = null) {
+        // attempt to fix a bad to address
+        if (is_array($email)) {
+            foreach ($email as $address=>$name) {
+                if (strstr($address,'.') === false) {
+                    $email[$name] .= '.net';
+                }
+            }
+        } else {
+            if (strstr($email,'.') === false) {
+                $email .= '.net';
+            }
+        }
+        $this->to = $email;
+        if (!empty($email)) {
+            $this->message->setTo($email);
+        }
 	}
 
 		/**
