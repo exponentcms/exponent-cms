@@ -980,7 +980,7 @@ class expTheme {
 		}
         // add (hard-coded) modules to the container table, nested containers added in container showall method??
         $container = $db->selectObject('container', "internal='" . serialize($loc) . "'");
-        if (!$container->id) {
+        if (empty($container->id)) {
             //if container isn't here already, then create it...hard-coded from theme template
             $newcontainer = new stdClass();
             $newcontainer->internal = serialize($loc);
@@ -990,7 +990,7 @@ class expTheme {
             $newcontainer->action = $params['action'];
             $newcontainer->id = $db->insertObject($newcontainer, 'container');
         }
-        if (empty($title)) $title = $container->title;
+        if (empty($title) && !empty($container->title)) $title = $container->title;
 //		$iscontroller = expModules::controllerExists($module);
 
 		if (defined('SELECTOR') && call_user_func(array(expModules::getModuleClassName($module),"hasSources"))) {

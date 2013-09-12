@@ -352,7 +352,7 @@ class expPaginator {
 		if ($this->page > $this->total_pages) {
 			$this->page = $this->total_pages;
             //FIXME return 404 error for infinite page scroll plugin
-            header(':', true, 404);
+            if (!empty($this->total_pages)) header(':', true, 404);
 		}
 		//setup the pages for the links
 		if ($this->total_pages > $this->pages_to_show) {
