@@ -224,11 +224,34 @@ class expRecord {
      */
     public function findBy($column, $value, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false) {
         global $db;
+
         $where = "`" . $column . "`=";
         if (!is_numeric($value)) $where .= "'";
         $where .= $value;
         if (!is_numeric($value)) $where .= "'";
         return $this->find('first', $where, null, null, 0, $get_assoc, $get_attached, $except, $cascade_except);
+    }
+
+    /**
+     * find a value(s) by column
+     *
+     * @param string    $range
+     * @param string    $column
+     * @param string    $where
+     * @param string    $order
+     * @param bool      $distinct
+     *
+     * @return array|bool
+     */
+    public function findValue($range = 'all', $column, $where=null, $order=null, $distinct=false) {
+        global $db;
+
+        if (strcasecmp($range, 'all') == 0) {  // return all items matching request
+            return $db->selectColumn($this->tablename, $column, $where, $order, $distinct);
+        } elseif (strcasecmp($range, 'first') == 0) {  // return single/first item matching request
+            return $db->selectValue($this->tablename, $column, $where);
+        }
+        return false;
     }
 
     /**
