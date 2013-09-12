@@ -143,18 +143,46 @@ class expTheme {
 		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
 		$str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
-        //FIXME we need to account for passing parameters  to head() here
-        $str .= "\t".'<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" '.XHTML_CLOSING.'>'."\n";
+
+        if (empty($config['viewport'])) {
+            $viewport = 'width=device-width, initial-scale=1.0, user-scalable=yes';
+        } else {
+            if (!empty($config['viewport']['width'])) {
+                $viewport = 'width=' . $config['viewport']['width'];
+            } else {
+                $viewport = 'width=device-width';
+            }
+            if (!empty($config['viewport']['height'])) {
+                $viewport .= ', height=' . $config['viewport']['height'];
+            }
+            if (!empty($config['viewport']['initial_scale'])) {
+                $viewport .= ' initial-scale=' . $config['viewport']['initial_scale'];
+            } else {
+                $viewport .= ', initial-scale=1.0';
+            }
+            if (!empty($config['viewport']['minimum_scale'])) {
+                $viewport .= ', minimum-scale=' . $config['viewport']['minimum_scale'];
+            }
+            if (!empty($config['viewport']['maximum_scale'])) {
+                $viewport .= ', maximum-scale=' . $config['viewport']['maximum_scale'];
+            }
+            if (!empty($config['viewport']['user_scalable'])) {
+                $viewport .= ', user-scalable=' . ($config['viewport']['user_scalable'] ? "yes" : "no");
+            } else {
+                $viewport .= ', user-scalable=yes';
+            }
+        }
+        $str .= "\t".'<meta name="viewport" content="'. $viewport . '" '.XHTML_CLOSING.'>'."\n";
 
         // favicon
-        if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
+        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
             $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
         }
         // touch icons
-        if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png')) {
+        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png')) {
             $str .= "\t".'<link rel="apple-touch-icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png" '.XHTML_CLOSING.'>'."\n";
         }
-        if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png')) {
+        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png')) {
             $str .= "\t".'<link rel="apple-touch-icon-precomposed" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png" '.XHTML_CLOSING.'>'."\n";
         }
 
