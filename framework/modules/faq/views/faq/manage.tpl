@@ -31,6 +31,7 @@
 			{/if}
 		</div>
     {/permissions}
+    {$myloc=serialize($__loc)}
     <table class="exp-skin-table">
 		<thead>
 			<tr>
@@ -60,6 +61,13 @@
 					{permissions}
 						<div class="item-actions">
 							{if $permissions.edit == 1}
+                                {if $myloc != $question->location_data}
+                                 {if $permissions.manage == 1}
+                                     {icon action=merge id=$question->id title="Merge Aggregated Content"|gettext}
+                                 {else}
+                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                 {/if}
+                             {/if}
 								{icon action=edit record=$question title="Edit FAQ"|gettext}
 							{/if}
 							{if $permissions.delete == 1}
