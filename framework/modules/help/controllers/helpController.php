@@ -259,8 +259,12 @@ class helpController extends expController {
 	    	    
 	    $help = new help();
         $order = 'rank DESC';
-	    $current_docs = $help->find('all', 'help_version_id='.$from,$order);
+        $old_parents = $help->getHelpParents($from);
+        $new_parents = array();
+        // copy parent help docs
+	    $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent=0',$order);
 	    foreach ($current_docs as $key=>$doc) {
+            $origid = $doc->id;
 	        unset($doc->id);
 	        $doc->help_version_id = $to;
 		    
@@ -270,7 +274,10 @@ class helpController extends expController {
 //	        $doc->sef_url = $tmpsef;
 //	        $doc->do_not_validate = array('sef_url');
 	        $doc->save();
-		    
+            if (in_array($origid, $old_parents)) {
+                $new_parents[$origid] = $doc->id;
+            }
+
 //	        $doc->sef_url = $doc->makeSefUrl();
 //	        $doc->save();
 
@@ -281,6 +288,21 @@ class helpController extends expController {
 	            
 	        }
 	    }
+
+        // copy child help docs
+        $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent!=0',$order);
+   	    foreach ($current_docs as $key=>$doc) {
+   	        unset($doc->id);
+            $doc->parent = $new_parents[$doc->parent];
+   	        $doc->help_version_id = $to;
+   	        $doc->save();
+   	        foreach($doc->expFile as $subtype=>$files) {
+   	            foreach($files as $file) {
+   	                $doc->attachItem($file, $subtype);
+   	            }
+
+   	        }
+   	    }
 
 	    // get version #'s for the two versions
 //	    $oldvers = $db->selectValue('help_version', 'version', 'id='.$from);

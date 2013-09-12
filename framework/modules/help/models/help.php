@@ -271,6 +271,13 @@ class help extends expRecord {
         return $link;
     }
 
+    public static function getHelpParents($version_id) {
+        global $db;
+
+        return $db->selectColumn('help', 'parent', 'help_version_id="'.$version_id.'" AND parent!=0',null,true);
+    }
+
+
 }
 
 ?>
