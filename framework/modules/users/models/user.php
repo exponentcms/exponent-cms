@@ -387,6 +387,16 @@ class user extends expRecord {
         return $SYS_USERS_CACHE[$uid];
     }
 
+    public function globalPerm($perm) {
+        if ($this->isAdmin()) return false;
+        $groups = $this->getGroupMemberships();
+        foreach ($groups as $group) {
+            if (!empty($group->$perm)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 ?>

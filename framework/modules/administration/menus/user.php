@@ -32,13 +32,14 @@ if (expSession::is_set('uilevel')) {
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
 
-$items = array(
-    array(
+$items = array();
+if (!$user->globalPerm('prevent_profile_change')) {
+    $items[] = array(
         'text'      => gt("Edit My Profile"),
         'url'       => makeLink(array('controller' => 'users', 'action' => 'edituser', 'id' => $user->id)),
         'classname' => 'edit',
-    ),
-);
+    );
+}
 
 if ((!USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap) {
     $items[] = array(

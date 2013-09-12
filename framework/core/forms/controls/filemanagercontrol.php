@@ -42,6 +42,8 @@ class filemanagercontrol extends formcontrol {
     }
 
     function toHTML($label,$name) {
+        global $user;
+
     	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         $subTypeName = empty($this->subtype) ? "expFile[]" : "expFile[".$this->subtype."][]";
         $files = $this->buildImages();
@@ -57,7 +59,11 @@ class filemanagercontrol extends formcontrol {
             $hide = ' class="hide"';
         }
         $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="add" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'">'.gt('Add Files').'</a>';
+        if (!$user->globalPerm('prevent_uploads')) {
         $html .= ' | <a class="add" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'">'.gt('Quick Add').'</a></span>';
+        } else {
+        $html .= '</span>';
+        }
         $html .= '</label></div>';
 
         if (empty($files)) {
@@ -92,6 +98,7 @@ class filemanagercontrol extends formcontrol {
                     }
                 };
 
+                if (Y.one('#quickaddfiles-".$name."') != null) {
                 var quickUpload = new Y.ss.SimpleUpload({
                     button: '#quickaddfiles-".$name."',
                     action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
@@ -162,12 +169,15 @@ class filemanagercontrol extends formcontrol {
                         alert(filename+' '+errorType+' '+response);
                     },
                 });
+                }
 
                 var listenForAdder = function(){
                     var af = Y.one('#addfiles-".$name."');
                     af.on('click',openFilePickerWindow);
                     var afq = Y.one('#quickaddfiles-".$name."');
-                    afq.on('click',quickUpload);
+                    if (afq != null) {
+                        afq.on('click',quickUpload);
+                    }
                 };
                 
                 var showEmptyLI = function(){

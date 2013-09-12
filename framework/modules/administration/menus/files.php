@@ -36,6 +36,7 @@ global $user;
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
 
+if ($user->globalPerm('hide_files_menu')) return array();
 $items = array(
     array(
         'text'      => gt("File Manager"),
@@ -43,14 +44,15 @@ $items = array(
         'classname' => 'filemanager',
         'id'        => 'filemanager-toolbar',
     ),
-    array(
+);
+if (!$user->globalPerm('prevent_uploads')) {
+    $items[] = array(
         'text'      => gt("Upload Files"),
         'url'       => '#',
         'classname' => 'fileuploader',
         'id'        => 'fileuploader-toolbar',
-    ),
-);
-
+    );
+}
 if ($user->isSuperAdmin()) {
     $items[] = array(
         'text'      => gt('Import Files'),

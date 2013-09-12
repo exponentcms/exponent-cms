@@ -55,10 +55,11 @@
     <div id="dynamicdata">
     
     </div>
+    {if (!$user->globalPerm('prevent_uploads'))}
     <div id="actionbar">
         <a class="upload awesome green small" href="{link action=uploader ajax_action=1 update=$smarty.get.update}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{"Upload Files"|gettext}</span></a>
     </div>
-
+    {/if}
     <div id="infopanel">
         <div class="hd"></div>
         <div class="bd"></div>

@@ -9,6 +9,8 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.2.3
 -----------------------
 ### Address issues in v2.2.2
+  - Adds user group 'global' permissions/restrictions to: prevent file uploading, prevent user profile changes, hide individual exponent/slingbar menus, or the entire slingbar
+    -- restrictions apply to all non-admin users assigned to that user group
   - adds force image auto-resize and folder on quick-upload/add
   - adds copy portfolio item command
   - better theme support for mobile devices with 'meta viewport' and optional apple-touch-icon implementation

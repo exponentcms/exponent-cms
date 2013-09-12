@@ -257,6 +257,8 @@ class administrationController extends expController {
    	}
 
     public function toolbar() {
+        global $user;
+
         $menu = array();
 		$dirs = array(
 			BASE.'framework/modules/administration/menus',
@@ -268,6 +270,7 @@ class administrationController extends expController {
 			    while (($file = readdir($dh)) !== false) {
 				    if (substr($file,-4,4) == '.php' && is_readable($dir.'/'.$file) && is_file($dir.'/'.$file)) {
 					    $menu[substr($file,0,-4)] = include($dir.'/'.$file);
+                        if (empty($menu[substr($file,0,-4)])) unset($menu[substr($file,0,-4)]);
 				    }
 			    }
 		    }

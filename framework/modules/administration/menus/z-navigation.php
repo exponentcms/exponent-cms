@@ -21,6 +21,7 @@ if (!defined('EXPONENT')) exit('');
 global $user, $router, $db, $section;
 
 // determine if the Pages menu should NOT be displayed
+if ($user->globalPerm('hide_pages_menu')) return array();
 if (!$user->isAdmin()) {
     $pageperms = !$db->selectValue('userpermission', 'uid', "uid='" . $user->id . "' AND source='' AND internal!=''");
     if (!$pageperms) {

@@ -105,7 +105,7 @@ class usersController extends expController {
         $id = !empty($this->params['id']) ? $this->params['id'] : null;
 
         // check to see if we should be editing.  You either need to be an admin, or editing own account.
-        if ($user->isAdmin() || ($user->id == $id)) {
+        if ($user->isAdmin() || ($user->id == $id && !$user->globalPerm('prevent_profile_change'))) {
             $u = new user($id);
         } else {
             flash('error', gt('You do not have the proper permissions to edit this user'));

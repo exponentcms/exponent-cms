@@ -35,7 +35,21 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>1000),
 	'inclusive'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN)
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'prevent_uploads'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'prevent_profile_change'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'hide_exp_menu'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'hide_files_menu'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'hide_pages_menu'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'hide_slingbar'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+//    'display_recyclebin'=>array(
+//   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

@@ -20,6 +20,7 @@ if (!defined('EXPONENT')) exit('');
 
 global $user, $db;
 
+if ($user->globalPerm('hide_exp_menu')) return array();
 //$my_version = gt("Exponent Version") . " : " . EXPONENT_VERSION_MAJOR . "." . EXPONENT_VERSION_MINOR . "." . EXPONENT_VERSION_REVISION . "<br />";
 $my_version = gt("Exponent Version") . " : " . expVersion::getVersion(true, false, false) . "<br />";
 if (EXPONENT_VERSION_TYPE != '') {
