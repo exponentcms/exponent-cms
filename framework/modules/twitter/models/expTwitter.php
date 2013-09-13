@@ -51,14 +51,16 @@ class expTwitter extends Twitter {
         $url, array $parameters = null, $authenticate = false, $method = 'GET',
         $filePath = null, $expectJSON = true, $returnHeaders = false
     ) {
-        // wrap the call in a try/catch to prevent exception fault killing page
+         global $user;
+
+       // wrap the call in a try/catch to prevent exception fault killing page
         try {
             return parent::doCall(
                 $url, $parameters, $authenticate, $method,
                 $filePath, $expectJSON, $returnHeaders
             );
         } catch (Exception $e) {
-            flash('error', 'Twitter: ' . $e->getMessage());
+            if ($user->isAdmin()) flash('error', 'Twitter: ' . $e->getMessage());
         }
 
     }
