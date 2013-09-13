@@ -520,7 +520,7 @@ class expPermissions {
 
 //        $mod = expModules::controllerExists($location->mod) ? expModules::getControllerClassName($location->mod) : $location->mod;  //FIXME long controller name
         $mod = expModules::getModuleName($location->mod);
-		return $db->delete("userpermission","uid=" . $user->id . " AND module='" . $mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
+		return $db->delete("userpermission","uid=" . $user . " AND module='" . $mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
 	}
 
 	/** exdoc
@@ -538,7 +538,7 @@ class expPermissions {
 
 //        $mod = expModules::controllerExists($location->mod) ? expModules::getControllerClassName($location->mod) : $location->mod;  //FIXME long controller name
         $mod = expModules::getModuleName($location->mod);
-		return $db->delete('grouppermission','gid=' . $group->id . " AND module='" . $mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
+		return $db->delete('grouppermission','gid=' . $group . " AND module='" . $mod . "' AND source='" . $location->src . "' AND internal='" . $location->int . "'");
 	}
 
     /** exdoc
