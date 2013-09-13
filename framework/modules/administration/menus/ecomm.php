@@ -23,7 +23,6 @@ global $user, $db;
 $active = ECOM;
 if (!$user->isAdmin() || empty($active)) return false;
 
-//$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = 1');  //FIXME order_status_id of 1 isn't always true
 $new_status = $db->selectValue('order_status', 'id', 'is_default = 1');
 $new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = ' . $new_status);
 if ($new_orders > 0) {
@@ -252,9 +251,5 @@ $ecom = array(
         ),
     )
 );
-// $ecom[] = array(
-//     'text'=>'<form id="orderQuickfinder" method="POST" action="/index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" value="Order Quickfinder" onclick="this.value=\'\';"></form>',
-//     'classname'=>'order',    
-// );
 return $ecom;
 ?>

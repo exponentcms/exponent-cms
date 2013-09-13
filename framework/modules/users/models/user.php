@@ -246,6 +246,7 @@ class user extends expRecord {
         global $db;
 
         if ($this->isAdmin()) return true;
+        if ($this->globalPerm('hide_slingbar')) return false;
 
         //FIXME who should get a slingbar? any non-view permissions? new group setting?
         // check userpermissions to see if the user has the ability to edit anything
@@ -387,10 +388,17 @@ class user extends expRecord {
         return $SYS_USERS_CACHE[$uid];
     }
 
+    /**
+     * This function determines a group global permission/restriction for this user
+     *
+     * @param $perm
+     *
+     * @return bool
+     */
     public function globalPerm($perm) {
         if ($this->isAdmin()) return false;
-        $groups = $this->getGroupMemberships();
-        foreach ($groups as $group) {
+//        $groups = $this->getGroupMemberships();
+        foreach ($this->groups as $group) {
             if (!empty($group->$perm)) {
                 return true;
             }

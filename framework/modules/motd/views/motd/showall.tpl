@@ -25,7 +25,7 @@
     {pagelinks paginate=$page top=1}
     {permissions}
 		<div class="module-actions">
-			{if $permissions.edit == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit text="Add a New Message"|gettext}
 			{/if}
 		</div>

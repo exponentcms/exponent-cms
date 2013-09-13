@@ -25,7 +25,7 @@
     <div class="form_header">
         {permissions}
             <div class="module-actions">
-                {if $permissions.create == 1 || $permissions.edit == 1}
+                {if $permissions.create == 1}
                     {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
                 {/if}
                 {if $permissions.manage == 1}

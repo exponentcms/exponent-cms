@@ -24,10 +24,10 @@
         {group label='Group Global Permissions/Restrictions'|gettext}
             {control type="checkbox" name="prevent_uploads" label="Prevent File Uploads?"|gettext value=1 checked=$record->prevent_uploads description='This group will not be allowed upload files'|gettext}
             {control type="checkbox" name="prevent_profile_change" label="Prevent User Profile Changes?"|gettext value=1 checked=$record->prevent_profile_change description='This group will not be allowed to change their user profiles'|gettext}
-            {control type="checkbox" name="hide_exp_menu" label="Hide Exponent Menu?"|gettext value=1 checked=$record->hide_exp_menu description='This group will not be allowed to view the Exponent menu'|gettext}
-            {control type="checkbox" name="hide_files_menu" label="Hide Files Menu?"|gettext value=1 checked=$record->hide_files_menu description='This group will not be allowed to view the Files menu'|gettext}
-            {control type="checkbox" name="hide_pages_menu" label="Hide Pages Menu?"|gettext value=1 checked=$record->hide_pages_menu description='This group will not be allowed to view the Pages menu'|gettext}
-            {control type="checkbox" name="hide_slingbar" label="Hide Entire Exponent Menu Bar?"|gettext value=1 checked=$record->hide_slingbar description='This group will not be allowed to view the Exponent menu bar'|gettext}
+            {control type="checkbox" name="hide_exp_menu" label="Hide Exponent Menu?"|gettext value=1 checked=$record->hide_exp_menu description='This group will not be shown the Exponent menu'|gettext}
+            {control type="checkbox" name="hide_files_menu" label="Hide Files Menu?"|gettext value=1 checked=$record->hide_files_menu description='This group will not be shown the Files menu'|gettext}
+            {control type="checkbox" name="hide_pages_menu" label="Hide Pages Menu?"|gettext value=1 checked=$record->hide_pages_menu description='This group will not be shown the Pages menu'|gettext}
+            {control type="checkbox" name="hide_slingbar" label="Hide Entire Exponent Menu Bar?"|gettext value=1 checked=$record->hide_slingbar description='This group will not be shown the Exponent menu bar'|gettext}
             {*{control type="checkbox" name="display_recyclebin" label="Allow restoring modules from recycle bin?"|gettext value=1 checked=$record->display_recyclebin description='This group will be allowed to access the recycle bin when creating new modules'|gettext}*}
         {/group}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}

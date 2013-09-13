@@ -24,7 +24,7 @@
     {/if}
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit == true}
+        {if $permissions.create == true}
             {icon class="add" action=create text="Add a Product"|gettext}
         {/if}
         {if $permissions.manage == 1}

@@ -24,7 +24,7 @@
         {/if}
         {permissions}
             <div class="module-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.create == 1}
                     {icon class=add action=enterdata forms_id=$f->id text='Add record'|gettext}
                     &#160;&#160;|&#160;&#160;
                 {/if}

@@ -21,7 +21,7 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
         <div class="module-actions">
-			{if $permissions.create == 1 || $permissions.edit == 1}
+			{if $permissions.create == 1}
 				{icon class=add action=edit text="Add a new link"|gettext}
 			{/if}
 			{if $permissions.manage == 1}

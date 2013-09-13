@@ -28,7 +28,7 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit == true}
+        {if $permissions.create == true}
             {icon class="add" action=create product_type=giftcard text="Add a Gift Card"|gettext}
         {/if}
         {if $permissions.manage == 1}

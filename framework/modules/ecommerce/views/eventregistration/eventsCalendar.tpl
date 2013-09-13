@@ -31,7 +31,7 @@
     <h1>{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}</h1>
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == true || $permissions.edit == true}
+            {if $permissions.create == true}
                 {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
             {/if}
             {if $permissions.manage == 1}

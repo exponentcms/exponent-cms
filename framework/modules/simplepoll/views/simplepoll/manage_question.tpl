@@ -23,7 +23,7 @@
     {icon action=edit record=$question title='Edit the question'|gettext}
     {permissions}
         <div class="module-actions">
-            {if $permissions.edit == 1}
+            {if $permissions.manage == 1}
                 {ddrerank module="simplepoll_answer" model="simplepoll_answer" where="simplepoll_question_id=`$question->id`" sortfield="answer" label="Poll Question Answers"|gettext}
             {/if}
         </div>

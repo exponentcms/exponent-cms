@@ -24,7 +24,7 @@
 
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit == true}
+        {if $permissions.create == true}
             {icon class="add" action=edit rank=1 text="Add a news post"|gettext}
         {/if}
         {if $permissions.manage == 1}
