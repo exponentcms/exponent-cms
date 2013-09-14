@@ -322,7 +322,7 @@ class expCommentController extends expController {
             expValidator::failAndReturnToForm('You must be logged on to post a comment!', $this->params);
         }
         // check the anti-spam control
-        if (!ANTI_SPAM_USERS_SKIP && !$user->isLoggedIn()) {
+        if (!(ANTI_SPAM_USERS_SKIP && $user->isLoggedIn())) {
             expValidator::check_antispam($this->params, gt('Your comment was not posted.') . ' ' . gt("Anti-spam verification failed.  Please try again. Please try again."));
         }
         
