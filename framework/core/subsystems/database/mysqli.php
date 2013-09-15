@@ -221,18 +221,18 @@ class mysqli_database extends database {
             }
         }
         $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
-        /* if (count($primary)) {
-          $sql .= ", PRIMARY KEY(`" . implode("`,`",$primary) . "`)";
-          }
-          foreach ($unique as $key=>$value) {
-          $sql .= ", UNIQUE `".$key."` ( `" . implode("`,`",$value) . "`)";
-          } */
+        if (!empty($primary) && count($primary)) {
+            $sql .= ", DROP PRIMARY KEY, ADD PRIMARY KEY(`" . implode("`,`",$primary) . "`)";
+        }
+        if (!empty($unique)) foreach ($unique as $key=>$value) {
+            $sql .= ", UNIQUE `".$key."` ( `" . implode("`,`",$value) . "`)";
+        }
         foreach ($index as $key => $value) {
             // drop the index first so we don't get dupes
             $drop = "DROP INDEX " . $key . " ON " . $this->prefix . $tablename;
             @mysqli_query($this->connection, $drop);
 
-            // readd the index.
+            // re-add the index
             $sql .= "ADD INDEX (" . $key . ")";
             @mysqli_query($this->connection, $sql);
         }
