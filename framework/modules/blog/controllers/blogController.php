@@ -317,22 +317,22 @@ class blogController extends expController {
         if (isset($request['author'])) {
             // set the meta info
             $u = user::getUserByName(expString::sanitize($request['author']));
-
-            switch (DISPLAY_ATTRIBUTION) {
-                case "firstlast":
-                    $str = $u->firstname . " " . $u->lastname;
-                    break;
-                case "lastfirst":
-                    $str = $u->lastname . ", " . $u->firstname;
-                    break;
-                case "first":
-                    $str = $u->firstname;
-                    break;
-                case "username":
-                default:
-                    $str = $u->username;
-                    break;
-            }
+            $str = user::getUserAttribution($u->id);
+//            switch (DISPLAY_ATTRIBUTION) {
+//                case "firstlast":
+//                    $str = $u->firstname . " " . $u->lastname;
+//                    break;
+//                case "lastfirst":
+//                    $str = $u->lastname . ", " . $u->firstname;
+//                    break;
+//                case "first":
+//                    $str = $u->firstname;
+//                    break;
+//                case "username":
+//                default:
+//                    $str = $u->username;
+//                    break;
+//            }
 
             if (!empty($str)) {
                 $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');

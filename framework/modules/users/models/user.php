@@ -389,6 +389,40 @@ class user extends expRecord {
     }
 
     /**
+     * simple function to return the user's attribution based on system setting
+     *
+     * @static
+     *
+     * @param integer $id
+     * @param string  $display
+     *
+     * @return string
+     */
+    public static function getUserAttribution($id, $display=DISPLAY_ATTRIBUTION) {
+        $u = new user($id);
+        if (!empty($u->id)) {
+            switch ($display) {
+             case "firstlast":
+                 $str = $u->firstname . " " . $u->lastname;
+                 break;
+             case "lastfirst":
+                 $str = $u->lastname . ", " . $u->firstname;
+                 break;
+             case "first":
+                 $str = $u->firstname;
+                 break;
+             case "username":
+             default:
+                 $str = $u->username;
+                 break;
+            }
+        } else {
+            $str = gt('Anonymous User');
+        }
+        return $str;
+    }
+
+    /**
      * This function determines a group global permission/restriction for this user
      *
      * @param $perm

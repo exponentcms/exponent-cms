@@ -1094,7 +1094,9 @@ class expRecord {
     public function getPoster() {
         if (isset($this->poster)) {
             $user = new user($this->poster);
-            return $user->firstname . " " . $user->lastname;
+//            return $user->firstname . " " . $user->lastname;
+        //TODO: should incorporate DISPLAY_ATTRIBUTION here
+            return user::getUserAttribution($user->id);
         } else {
             return null;
         }
@@ -1110,8 +1112,9 @@ class expRecord {
     public function getTimestamp($type = 0) {
         if ($type == 0) $getType = 'created_at';
         else $getType = 'edited_at';
-        if (isset($this->$getType)) return date("F j, Y, g:i a", $this->$getType);
+//        if (isset($this->$getType)) return date("F j, Y, g:i a", $this->$getType);
         //TODO: should incorporate DISPLAY_DATETIME_FORMAT here
+        if (isset($this->$getType)) return expDateTime::format_date($this->$getType, DISPLAY_DATETIME_FORMAT);
         else return null;
     }
 
