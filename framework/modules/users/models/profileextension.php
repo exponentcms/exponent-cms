@@ -49,8 +49,8 @@ class profileextension extends expRecord {
 		$ext = array();
 		// Store the directories in a variable, for readability later on.
         $ext_dirs = array(
-            'framework/modules/users/extensions',
-            THEME_RELATIVE.'modules/users/extensions'
+            BASE . 'framework/modules/users/extensions',
+            THEME_RELATIVE . 'modules/users/extensions'
         );
         foreach ($ext_dirs as $dir) {
             // Profiles directory has to be readable by the web server.

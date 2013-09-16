@@ -68,13 +68,13 @@ class update_profile_paths extends upgradescript {
 		// convert each active user profile extension path from a full to relative path
         $ext_dirs = array(
             'framework/modules/users/extensions',
-            THEME_RELATIVE.'modules/users/extensions'
+            'themes/' . DISPLAY_THEME . 'modules/users/extensions'
         );
         foreach ($ext_dirs as $dir) {
-            if (is_readable(BASE.$dir)) {
-                $dh = opendir(BASE.$dir);
+            if (is_readable(BASE . $dir)) {
+                $dh = opendir(BASE . $dir);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_file(BASE."$dir/$file") && is_readable(BASE."$dir/$file") && substr($file, 0, 1) != '_' && substr($file, 0, 1) != '.') {
+                    if (is_file(BASE . "$dir/$file") && is_readable(BASE . "$dir/$file") && substr($file, 0, 1) != '_' && substr($file, 0, 1) != '.') {
                         $classname = substr($file,0,-4);
                         $extension = $db->selectObject('profileextension', "classname='".$classname."'");
                         if (!empty($extension->id)) {
