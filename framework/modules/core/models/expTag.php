@@ -59,7 +59,7 @@ class expTag extends expRecord {
     public static function selectAllTagContentType() {
         global $db;
 
-        $db->selectColumn('content_expTags','content_type',null,null,true);
+        return $db->selectColumn('content_expTags','content_type',null,null,true);
     }
 
     public static function deleteTag($content_type,$content_id) {
