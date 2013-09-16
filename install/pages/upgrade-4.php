@@ -33,11 +33,9 @@ if (isset($_REQUEST['run'])) {
 }
 
 //display the upgrade scripts
-$upgrade_dir = 'upgrades';
-if (is_readable($upgrade_dir)) {
+if (is_readable('upgrades')) {
     $i = 0;
     if (is_readable('include/upgradescript.php')) include_once('include/upgradescript.php');
-    $dh = opendir($upgrade_dir);
     echo '<form method="post" action="index.php">';
     if (isset($_REQUEST['run'])) {
         echo '<input type="hidden" name="page" value="final" />';
@@ -56,16 +54,25 @@ if (is_readable($upgrade_dir)) {
         'remove_locationref.php',
         'upgrade_attachableitem_tables.php',
     );
-    while (($file = readdir($dh)) !== false) {
-        if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
-            include_once($upgrade_dir . '/' . $file);
-            $classname     = substr($file, 0, -4);
-            /**
-             * Stores the upgradescript object
-             * @var \upgradescript $upgradescripts
-             * @name $upgradescripts
-             */
-            $upgradescripts[] = new $classname;
+    $ext_dirs = array(
+        BASE . 'install/upgrades',
+        THEME_ABSOLUTE . 'modules/upgrades'
+    );
+    foreach ($ext_dirs as $dir) {
+        if (is_readable($dir)) {
+            $dh = opendir($dir);
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable($dir . '/' . $file) && is_file($dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
+                    include_once($dir . '/' . $file);
+                    $classname     = substr($file, 0, -4);
+                    /**
+                     * Stores the upgradescript object
+                     * @var \upgradescript $upgradescripts
+                     * @name $upgradescripts
+                     */
+                    $upgradescripts[] = new $classname;
+                }
+            }
         }
     }
     //  next sort the list by priority
