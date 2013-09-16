@@ -19,7 +19,9 @@
 
 <div class="company showall">
 	<h1>{$moduletitle|default:'Company Listings'|gettext}</h1>
-	{icon class=add controller=$controller action=edit text="Add a new"|gettext|cat:" `$modelname`"}
+    {if $permissions.create}
+        {icon class=add controller=$controller action=edit text="Add a new"|gettext|cat:" `$modelname`"}
+    {/if}
     <table class="exp-skin-table">
     <thead>
         {$page->header_columns}
@@ -39,10 +41,10 @@
             <td>
                 {permissions}
 					<div class="item-actions">
-						{if $permissions.edit == 1}
+						{if $permissions.edit || ($permissions.create && $company->poster == $user->id)}
 							{icon action=edit record=$company title="Edit"|gettext|cat:" `$company->title`"}
 						{/if}
-						{if $permissions.delete == 1}
+						{if $permissions.delete || ($permissions.create && $company->poster == $user->id)}
 							{icon action=delete record=$company title="Delete"|gettext|cat:" `$company->title`"}
 						{/if}
 					</div>

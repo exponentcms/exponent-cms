@@ -22,7 +22,7 @@
 		{form action="vote"}
 			<h2>{$question->question}</h2>
             {permissions}
-                {if $permissions.edit == 1}
+                {if $permissions.edit || ($permissions.create && $question->poster == $user->id)}
                     <div class="item-actions">
                         {icon action=edit record=$question title='Edit this question'|gettext}
                     </div>
@@ -48,7 +48,7 @@
 		{/form}
 	{/if}
 	{permissions}
-		{if $permissions.manage == 1}
+		{if $permissions.manage}
 			<div class="module-actions">
 				{icon class=manage action=manage_questions text="Manage Questions"|gettext}
 			</div>

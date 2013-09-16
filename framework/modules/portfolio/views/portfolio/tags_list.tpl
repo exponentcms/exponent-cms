@@ -17,10 +17,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit text="Add a Portfolio Piece"|gettext}
 			{/if}
-			{if $permissions.manage == 1}
+			{if $permissions.manage}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='portfolio' text="Manage Tags"|gettext}
                 {/if}

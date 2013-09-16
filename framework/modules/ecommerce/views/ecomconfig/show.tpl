@@ -14,7 +14,7 @@
  *}
 
 {*permissions}
-    {if $permissions.show == 1*}
+    {if $permissions.show*}
         <div class="module storeadmin show">
 	        <h1>{$moduletitle|default:"e-Commerce Administration"|gettext}</h1>
 	        <ul>

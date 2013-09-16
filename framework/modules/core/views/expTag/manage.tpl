@@ -21,7 +21,7 @@
         <h1>{"Manage Tags"|gettext}</h1>
     </div>
 	{permissions}
-    	{if $permissions.create == 1}
+    	{if $permissions.create}
     		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
     	{/if}
     {/permissions}
@@ -74,10 +74,10 @@
                     </td>
                     <td>
                         {permissions}
-                            {if $permissions.edit == 1}
+                            {if $permissions.edit}
                                 {icon controller=$controller action=edit record=$listing title="Edit this tag"|gettext}
                             {/if}
-                            {if $permissions.delete == 1}
+                            {if $permissions.delete}
                                 {icon controller=$controller action=delete record=$listing title="Delete this tag"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this tag?"|gettext)|cat:"');"}
                             {/if}
                         {/permissions}

@@ -36,7 +36,7 @@
             <tr class="{cycle values="odd,even"}">
                 <td>
                     {permissions}
-                        {if $permissions.toggle == 1}
+                        {if $permissions.toggle}
                         {if $calc->is_default}
                             <img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}>
                         {else}
@@ -50,7 +50,7 @@
                 <td>
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.toggle == 1}
+                            {if $permissions.toggle}
                                 {if $calc->enabled}
                                     <a href="{link action=toggle id=$calc->id}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}></a>
                                 {else}

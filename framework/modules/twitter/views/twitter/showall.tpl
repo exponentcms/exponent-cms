@@ -17,7 +17,7 @@
 	{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
 	{permissions}
 	    <div class="module-actions">
-	        {if $permissions.create == 1}
+	        {if $permissions.create}
 	            {icon class=add action=edit text="Add a Tweet"|gettext}
 	        {/if}
 	    </div>
@@ -64,10 +64,10 @@
                 <dd>
                     {$tweet.text}
                     {permissions}
-                        {if $permissions.create == 1 && !$tweet.ours && !$tweet.retweetedbyme}
+                        {if $permissions.create && !$tweet.ours && !$tweet.retweetedbyme}
                             &#160;{icon img='retweet.png' id=$tweet.id action=create_retweet title="Retweet"|gettext onclick="return confirm('"|cat:("Are you sure you want to retweet this item?"|gettext)|cat:"');"}
                         {/if}
-                        {if $permissions.delete == 1 && $tweet.ours && !$tweet.retweeted_status}
+                        {if $permissions.delete && $tweet.ours && !$tweet.retweeted_status}
                             &#160;{icon class=delete id=$tweet.id action=delete_tweet}
                         {/if}
                     {/permissions}

@@ -28,10 +28,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == true}
+        {if $permissions.create}
             {icon class="add" action=create product_type=giftcard text="Add a Gift Card"|gettext}
         {/if}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
              {icon action=manage text="Manage Products"|gettext}
         {/if}
     </div>
@@ -60,7 +60,7 @@
                             {foreachelse}
                                 {'There are no gift cards available!'|gettext}
                                 {permissions}
-                                    {if $permissions.create == 1 or $permissions.edit == 1}
+                                    {if $permissions.create || $permissions.edit}
                                         {icon class="add" controller=store action=edit product_type=giftcard text="Add a Gift Card"|gettext}
                                     {/if}
                                 {/permissions}

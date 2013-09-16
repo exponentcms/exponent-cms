@@ -17,10 +17,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == 1}
+            {if $permissions.create}
 				{icon class=add action=edit rank=1 text="Add a snippet at the top"|gettext}
             {/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {ddrerank items=$items model="snippet" label="Code Snippets"|gettext}
             {/if}
         </div>
@@ -33,9 +33,9 @@
         {if $text->title}<h2>{$text->title}</h2>{/if}
         {permissions}
 			<div class="item-actions">
-				{if $permissions.edit == 1}
+				{if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
                     {if $myloc != $text->location_data}
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -43,7 +43,7 @@
                     {/if}
 					{icon action=edit record=$text}
 				{/if}
-				{if $permissions.delete == 1}
+				{if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
 					{icon action=delete record=$text}
 				{/if}
 			</div>
@@ -54,7 +54,7 @@
         </div>
         {permissions}
 			<div class="module-actions">
-				{if $permissions.create == 1}
+				{if $permissions.create}
 					{icon class=add action=edit rank=$text->rank+1 text="Add a snippet here"|gettext}
 				{/if}
 			</div>

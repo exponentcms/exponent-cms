@@ -18,7 +18,7 @@
 {/css}
 
 {permissions}
-{if $permissions.manage == 1}
+{if $permissions.manage}
     <div class="module ecomconfig manage-discounts">
         <div class="form_header">
             <h1>{"Manage Discounts"|gettext}</h1>
@@ -66,7 +66,7 @@
                                     {/if}
                                 </td>
                                 <td>
-                                    {if $permissions.edit == 1}
+                                    {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
                                         {icon class=edit action=edit_discount record=$listing title="Edit Discount"}
                                     {/if}
                                 </td>

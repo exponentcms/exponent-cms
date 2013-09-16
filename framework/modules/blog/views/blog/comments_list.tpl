@@ -16,7 +16,7 @@
 <div class="module blog comments_list">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {icon controller=expComment action=manage text="Manage Comments"|gettext}
         {/if}
     {/permissions}

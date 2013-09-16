@@ -28,10 +28,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent Posts from'|gettext} '{$moduletitle}'</h1>{/if}
     {permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='blog' text="Manage Tags"|gettext}
                 {/if}
@@ -85,9 +85,9 @@
             </div>
             {permissions}
                 <div class="item-actions">
-                    {if $permissions.edit == 1}
+                    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                         {if $myloc != $item->location_data}
-                            {if $permissions.manage == 1}
+                            {if $permissions.manage}
                                 {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                             {else}
                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -95,7 +95,7 @@
                         {/if}
                         {icon action=edit record=$item}
                     {/if}
-                    {if $permissions.delete == 1}
+                    {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                         {icon action=delete record=$item}
                     {/if}
                 </div>

@@ -38,12 +38,12 @@
     
     {permissions}
     <div class="item-actions">
-        {if $permissions.edit == 1}
+        {if $permissions.edit}
             {icon action=edit record=$product title="Edit `$product->title`"}
             {icon action=copyProduct class="copy" text="Copy Product"|gettext title="Copy `$product->title` " record=$product}
             {icon class="add" action=edit parent_id=$product->id product_type='childProduct' text='Add Child Product'|gettext}
         {/if}
-        {if $permissions.delete == 1}
+        {if $permissions.delete}
             {icon action=delete record=$product title="Delete `$product->title`" onclick="return confirm('Are you sure you want to delete this product?');"}
         {/if}
     </div>
@@ -429,10 +429,10 @@
     {clear}
         {permissions}
         <div class="item-actions">
-            {if $permissions.edit == 1}
+            {if $permissions.create || $permissions.edit}
                 {icon class="add" action=edit parent_id=$product->id product_type='childProduct' text='Add Child Product'|gettext}
             {/if}
-            {if $product->childProduct|@count >= 1 && $permissions.delete == 1}
+            {if $product->childProduct|@count >= 1 && $permissions.delete}
                 {icon class=delete action=deleteChildren record=$product text="Delete All Child Products"|gettext title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}
             {/if}
         </div>
@@ -534,11 +534,11 @@
                                 <td>
                                     {permissions}
                                         <div class="item-actions">
-                                            {if $permissions.edit == 1}
+                                            {if $permissions.edit || ($permissions.create && $chiprod->poster == $user->id)}
                                                 {icon img="edit.png" action=edit id=$chiprod->id title="Edit `$chiprod->title`"}
                                                 {icon img="copy.png" action=copyProduct title="Copy `$chiprod->title` " record=$chiprod}
                                             {/if}
-                                            {if $permissions.delete == 1}
+                                            {if $permissions.delete || ($permissions.create && $chiprod->poster == $user->id)}
                                                 {icon img="delete.png" action=delete record=$chiprod title="Delete `$chiprod->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this child product?"|gettext)|cat:"');"}
                                             {/if}
                                         </div>

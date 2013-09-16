@@ -22,17 +22,17 @@
             {tags_assigned record=$media}
             {permissions}
                 <div class="item-actions">
-                    {if $myloc != $media->location_data}
-                        {if $permissions.manage == 1}
-                            {icon action=merge id=$media->id title="Merge Aggregated Content"|gettext}
-                        {else}
-                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                    {if $permissions.edit || ($permissions.create && $media->poster == $user->id)}
+                        {if $myloc != $media->location_data}
+                            {if $permissions.manage}
+                                {icon action=merge id=$media->id title="Merge Aggregated Content"|gettext}
+                            {else}
+                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                            {/if}
                         {/if}
-                    {/if}
-                    {if $permissions.edit == 1}
                         {icon action=edit record=$media title="Edit"|gettext|cat:" "|cat:$media->title|cat:" "|cat:("media piece"|gettext)}
                     {/if}
-                    {if $permissions.delete == 1}
+                    {if $permissions.delete || ($permissions.create && $media->poster == $user->id)}
                         {icon action=delete record=$media title="Delete"|gettext|cat:" "|cat:$media->title|cat:" "|cat:("media piece"|gettext)}
                     {/if}
                 </div>
@@ -66,7 +66,7 @@
         </div>
 		{permissions}
 			<div class="module-actions">		
-				{if $permissions.create == 1}
+				{if $permissions.create}
 					{icon class=add action=edit rank=$media->rank+1 title="Add a Media piece Here"|gettext text="Add a Media piece"|gettext}
 				{/if}
 			</div>

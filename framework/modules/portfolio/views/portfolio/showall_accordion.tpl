@@ -26,10 +26,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add a Portfolio Piece"|gettext}
 			{/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='portfolio' text="Manage Tags"|gettext}
                 {/if}
@@ -37,8 +37,8 @@
                     {icon controller=expCat action=manage model='portfolio' text="Manage Categories"|gettext}
                 {/if}
             {/if}
-			{*{if $permissions.manage == 1 && $rank == 1}*}
-			{if $permissions.manage == 1 && $config.order == 'rank'}
+			{*{if $permissions.manage && $rank == 1}*}
+			{if $permissions.manage && $config.order == 'rank'}
 				{ddrerank items=$page->records model="portfolio" label="Portfolio Pieces"|gettext}
 			{/if}
         </div>

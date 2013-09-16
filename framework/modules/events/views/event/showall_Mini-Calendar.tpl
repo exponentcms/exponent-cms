@@ -26,7 +26,7 @@
     {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext}
 	{br}
 	{permissions}
-		{if $permissions.create == 1}
+		{if $permissions.create}
 			<div class="module-actions">
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			</div>

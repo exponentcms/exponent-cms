@@ -25,10 +25,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == true}
+        {if $permissions.create}
             {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
         {/if}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
              {icon controller=eventregistration action=manage text="Manage Events"|gettext}
         {/if}
     </div>
@@ -44,11 +44,11 @@
                     {*<p>{$item->summary|truncate:75:"..."}</p>*}
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.edit == true}
+                            {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                                 {icon controller="store" action=edit record=$item}
                                 {icon controller="store" action=copyProduct class="copy" record=$item text="Copy" title="Copy `$item->title` "}
                             {/if}
-                            {if $permissions.delete == true}
+                            {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                                 {icon controller="store" action=delete record=$item}
                             {/if}
                         </div>

@@ -35,7 +35,7 @@
                         <!--td>{if $smarty.foreach.listings.first == 1}{img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}{/if}</td-->
                         <td>{$listing->title}</td>
                         <td>
-                            {if $permissions.manage == true}
+                            {if $permissions.manage}
                                 {icon action=edit record=$listing}
                                 {icon action=delete record=$listing}
                             {/if}

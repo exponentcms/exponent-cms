@@ -46,9 +46,9 @@
 					{permissions}
                         {if substr($item->location_data,0,3) == 'O:8'}
                             <div class="item-actions">
-                                {if $permissions.edit == 1}
+                                {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                                     {if $myloc != $item->location_data}
-                                        {if $permissions.manage == 1}
+                                        {if $permissions.manage}
                                             {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                         {else}
                                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -57,7 +57,7 @@
                                     {icon action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
                                     {icon action=copy record=$item date_id=$item->date_id title="Copy this Event"|gettext}
                                 {/if}
-                                {if $permissions.delete == 1}
+                                {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                                     {if $item->is_recurring == 0}
                                         {icon action=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
                                     {else}

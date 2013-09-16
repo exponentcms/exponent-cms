@@ -49,7 +49,7 @@
             <td>
                 {permissions}
 					<div class="item-actions">
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {if $calc->enabled}
                                 <a href="{link action=activate id=$calc->id enabled=0}"><img src={$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}></a>
                             {else}

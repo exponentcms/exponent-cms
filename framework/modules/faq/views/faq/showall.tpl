@@ -24,10 +24,10 @@
     {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle|default:"Frequently Asked Questions"|gettext}</h1>{/if}
     {permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit text="Add a New FAQ"|gettext}
 			{/if}
-			{if $permissions.manage == 1}
+			{if $permissions.manage}
 				{icon action=manage text="Manage FAQs"|gettext}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='faq' text="Manage Tags"|gettext}
@@ -74,9 +74,9 @@
                     <h4>Q{$smarty.foreach.a.iteration}. {$qna->question}</h4>
                         {permissions}
                             <div class="item-actions">
-                                {if $permissions.edit == 1}
+                                {if $permissions.edit || ($permissions.create && $qna->poster == $user->id)}
                                     {if $myloc != $qna->location_data}
-                                        {if $permissions.manage == 1}
+                                        {if $permissions.manage}
                                             {icon action=merge id=$qna->id title="Merge Aggregated Content"|gettext}
                                         {else}
                                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -84,7 +84,7 @@
                                     {/if}
                                     {icon action=edit record=$qna title="Edit FAQ"|gettext}
                                 {/if}
-                                {if $permissions.delete == 1}
+                                {if $permissions.delete || ($permissions.create && $qna->poster == $user->id)}
                                     {icon action=delete record=$qna title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
                                 {/if}
                             </div>
@@ -114,9 +114,9 @@
                 </div>
                     {permissions}
                     <div class="item-actions">
-                        {if $permissions.edit == 1}
+                        {if $permissions.edit || ($permissions.create && $question->poster == $user->id)}
                             {if $myloc != $question->location_data}
-                                {if $permissions.manage == 1}
+                                {if $permissions.manage}
                                     {icon action=merge id=$question->id title="Merge Aggregated Content"|gettext}
                                 {else}
                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -124,7 +124,7 @@
                             {/if}
                             {icon action=edit record=$question title="Edit FAQ"|gettext}
                         {/if}
-                        {if $permissions.delete == 1}
+                        {if $permissions.delete || ($permissions.create && $question->poster == $user->id)}
                             {icon action=delete record=$question title="Delete this FAQ"|gettext|cat:"?" onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
                         {/if}
                     </div>

@@ -16,7 +16,7 @@
 <div class="module search cloud">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {icon controller=expTag action=manage text="Manage Tags"|gettext}
         {/if}
     {/permissions}

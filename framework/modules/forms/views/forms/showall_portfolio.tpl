@@ -24,7 +24,7 @@
         {/if}
         {permissions}
             <div class="module-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.create}
                     {icon class=add action=enterdata forms_id=$f->id text='Add record'|gettext}
                     &#160;&#160;|&#160;&#160;
                 {/if}
@@ -43,10 +43,10 @@
             {foreach from=$page->records item=fields key=key name=fields}
                 <div class="item-actions">
                     <td>
-                        {if $permissions.edit == 1}
+                        {if $permissions.edit}
                             {icon class=edit action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
                         {/if}
-                        {if $permissions.delete == 1}
+                        {if $permissions.delete}
                             {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
                         {/if}
                     </td>

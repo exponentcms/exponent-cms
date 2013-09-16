@@ -51,11 +51,11 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == 1}
+        {if $permissions.create}
             {icon class=add action=edit rank=1 text="Add a Slide"|gettext}
             {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
         {/if}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {if !$config.disabletags}
                 {icon controller=expTag class="manage" action=manage_module model='photo' text="Manage Tags"|gettext}
             {/if}
@@ -88,9 +88,9 @@
                 <li class="slider{if $smarty.foreach.slides.first} on{/if}">
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.edit == 1}
+                            {if $permissions.edit || ($permissions.create && $slide->poster == $user->id)}
                                 {if $myloc != $slide->location_data}
-                                    {if $permissions.manage == 1}
+                                    {if $permissions.manage}
                                         {icon img='arrow_merge.png' action=merge id=$slide->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -98,7 +98,7 @@
                                 {/if}
                                 {icon img="edit.png" action=edit record=$slide title="Edit"|gettext|cat:" `$title`"}
                             {/if}
-                            {if $permissions.delete == 1}
+                            {if $permissions.delete || ($permissions.create && $slide->poster == $user->id)}
                                 {icon img="delete.png" action=delete record=$slide title="Delete"|gettext|cat:" `$title`"}
                             {/if}
                         </div>

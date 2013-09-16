@@ -74,9 +74,9 @@
     </div>
     {permissions}
         <div class="item-actions">
-            {if $permissions.edit == 1}
+            {if $permissions.edit || ($permissions.create && $file->poster == $user->id)}
                 {if $myloc != $file->location_data}
-                    {if $permissions.manage == 1}
+                    {if $permissions.manage}
                         {icon action=merge id=$file->id title="Merge Aggregated Content"|gettext}
                     {else}
                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -84,7 +84,7 @@
                 {/if}
                 {icon action=edit record=$file title="Edit this file"|gettext}
             {/if}
-            {if $permissions.delete == 1}
+            {if $permissions.delete || ($permissions.create && $file->poster == $user->id)}
                 {icon action=delete record=$file title="Delete this file"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this file?"|gettext)|cat:"');"}
             {/if}
         </div>
@@ -167,7 +167,7 @@
     {clear}
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == 1}
+            {if $permissions.create}
                 {icon class=add action=edit title="Add a File Here" text="Add a File"|gettext}
             {/if}
         </div>

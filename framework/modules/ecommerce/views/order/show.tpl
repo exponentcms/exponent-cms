@@ -25,7 +25,7 @@
             <li><a href="#shipinfo"><em>{'Shipping Information'|gettext}</em></a></li>
             <li><a href="#billinfo"><em>{'Billing Information'|gettext}</em></a></li>
             {permissions}
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                     <li><a href="#addinfo"><em>{'Additional Information'|gettext}</em></a></li>
                     <li><a href="#notes"><em>{'Notes & Communications'|gettext}</em></a></li>
                 {/if}
@@ -40,7 +40,7 @@
                         <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number}">{'Download PDF'|gettext}</a>
                     {/if}
                     {permissions}
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip"|gettext view="show_packing" show=1}
                             <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
                         {/if}
@@ -51,7 +51,7 @@
             <div id="ordhistory">
                 <h2>{'Order History'|gettext}</h2>
                 {permissions}
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                     <table class="order-info">
                         <thead>
                             <tr>
@@ -118,7 +118,7 @@
                         </tr> 
                     </thead>
                     <tbody>                         
-                    {if $permissions.manage == 1}
+                    {if $permissions.manage}
                         <tr><td colspan="2">
                         {if !$order->shipping_required}
                             {'No Shipping Required'|gettext}
@@ -166,13 +166,13 @@
                         <td>{'Amount:'|gettext} {$bt->billing_cost|currency}
                         </td>
                     </tr>
-                    {if $permissions.manage == 1}
+                    {if $permissions.manage}
                         <tr>
                             <td>{'By:'|gettext} {$bt->getPoster()} {'on'|gettext} {$bt->getTimestamp()}
                             </td>
                         </tr> 
                     {/if}
-                    {if $permissions.manage == 1 && $smarty.foreach.foo.first}
+                    {if $permissions.manage && $smarty.foreach.foo.first}
                         <tr>
                             <td>
                             {if $bt->transaction_state == "authorized"}
@@ -207,7 +207,7 @@
                 {/foreach}
             </div>
     {permissions}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             <div id="addinfo">              
                 <h2>{'Sales Reps and Referrers'|gettext}</h2>
                 <table border="0" cellspacing="0" cellpadding="0">
@@ -277,7 +277,7 @@
                         <tr>
                             <td>
                             {permissions}
-                            {if $permissions.manage == 1}
+                            {if $permissions.manage}
                                 {form action=emailCustomer}
                                     {control type="hidden" name="id" value=$order->id}
                                     <select id="order_status_messages" name="order_status_messages" size="1">

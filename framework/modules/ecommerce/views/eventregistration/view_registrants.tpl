@@ -25,10 +25,10 @@
     <div class="form_header">
         {permissions}
             <div class="module-actions">
-                {if $permissions.create == 1}
+                {if $permissions.create}
                     {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
                 {/if}
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                      {icon action=manage text="Manage Events"|gettext}
                 {/if}
             </div>
@@ -37,11 +37,11 @@
         <h2>{$event->title}</h2>
         {permissions}
             <div class="item-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.edit || ($permissions.create && $event->poster == $user->id)}
                     {icon controller="store" action=edit record=$event}
                     {icon controller="store" action=copyProduct class="copy" record=$event text="Copy" title="Copy `$event->title` "}
                 {/if}
-                {if $permissions.delete == 1}
+                {if $permissions.delete || ($permissions.create && $event->poster == $user->id)}
                     {icon controller="store" action=delete record=$event}
                 {/if}
             </div>
@@ -74,7 +74,7 @@
             {permissions}
                 {if $registrants|count < $event->quantity}
                     <div class="module-actions">
-                        {if $permissions.create == 1}
+                        {if $permissions.create}
                             {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
                         {/if}
                     </div>
@@ -137,10 +137,10 @@
                                 <td>
                                     {permissions}
                                         <div class="item-actions">
-                                            {if $permissions.edit == 1}
+                                            {if $permissions.edit}
                                                 {icon class=edit action=edit_registrant event_id=$event->id id=$registrant->id title='Edit this Registrant'|gettext}
                                             {/if}
-                                            {if $permissions.delete == 1}
+                                            {if $permissions.delete}
                                                  {icon class="delete" action=delete_registrant event_id=$event->id id=$registrant->id title='Delete this Registrant'|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this registrant from the roster?"|gettext)|cat:"');"}
                                             {/if}
                                         </div>

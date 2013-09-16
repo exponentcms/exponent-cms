@@ -14,21 +14,17 @@
  *}
 
 {uniqueid prepend="text" assign="name"}
-{if $permissions.edit == 1 && !$preview}
-    {$make_edit = ' contenteditable="true" class="editable"'}
-{else}
-    {$make_edit = ''}
-{/if}
+{$inline = false}
 
 <div id="textmodule-{$name}" class="module text showall showall-inline">
     <div id="textcontent-{$name}">
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
         {permissions}
             <div class="module-actions">
-                {if $permissions.create == 1}
+                {if $permissions.create}
                     {icon action=add text="Add more text at bottom"|gettext}
                 {/if}
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                     {ddrerank items=$items model="text" label="Text Items"|gettext}
                 {/if}
             </div>
@@ -38,13 +34,19 @@
         {/if}
         {$myloc=serialize($__loc)}
         {foreach from=$items item=text name=items}
+            {if ($permissions.edit || ($permissions.create && $text->poster == $user->id)) && !$preview}
+                {$make_edit = ' contenteditable="true" class="editable"'}
+                {$inline = true}
+            {else}
+                {$make_edit = ''}
+            {/if}
             <div id="text-{$text->id}" class="item">
                 {if $text->title}<h2><div id="title-{$text->id}"{$make_edit}>{$text->title}</div></h2>{/if}
                 {permissions}
                     <div class="item-actions">
-                        {if $permissions.edit == 1}
+                        {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
                             {if $myloc != $text->location_data}
-                                {if $permissions.manage == 1}
+                                {if $permissions.manage}
                                     {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
                                 {else}
                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -52,10 +54,10 @@
                             {/if}
                             {icon action=edit record=$text}
                         {/if}
-                        {if $permissions.delete == 1}
+                        {if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
                             {icon class=delete action=deleter text='Delete'|gettext}
                         {/if}
-                        {if $permissions.edit == 1}
+                        {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
                             {if $text->title}
                                 <a class="deletetitle" id="deletetitle-{$text->id}" href="#" title="{'Delete Title'|gettext}">{'Delete Title'|gettext}</a>
                             {else}
@@ -81,14 +83,14 @@
     </div>
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == 1}
+            {if $permissions.create}
                 {icon action=add text="Add more text here"|gettext}
             {/if}
         </div>
     {/permissions}
 </div>
 
-{if $permissions.edit == 1 && !$preview}
+{if $inline && !$preview}
 <script src="{$smarty.const.PATH_RELATIVE}external/editors/ckeditor/ckeditor.js"></script>
 {script unique=$name jquery="jqueryui"}
 {literal}

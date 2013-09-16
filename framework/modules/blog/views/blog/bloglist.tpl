@@ -56,9 +56,9 @@
             </div>
             {permissions}
                 <div class="item-actions">
-                    {if $permissions.edit == 1}
+                    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                         {if $myloc != $item->location_data}
-                            {if $permissions.manage == 1}
+                            {if $permissions.manage}
                                 {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                             {else}
                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -66,7 +66,7 @@
                         {/if}
                         {icon action=edit record=$item}
                     {/if}
-                    {if $permissions.delete == 1}
+                    {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                         {icon action=delete record=$item}
                     {/if}
                 </div>

@@ -16,7 +16,7 @@
 <div class="module banner two-per-row">
     {permissions}
         <div class="module-actions">
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
 				{icon action=manage record=$item text="Manage Banners"|gettext}
             {/if}
         </div>

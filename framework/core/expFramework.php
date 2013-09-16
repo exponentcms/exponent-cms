@@ -295,17 +295,19 @@ function renderAction(array $parms=array()) {
     
     // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller constructor above
     //$controller->params = $parms;
-    //check the perms for this action
+    // check the perms for this action
     $perms = $controller->permissions();
     
-    //we have to treat the update permission a little different..it's tied to the create/edit
-    //permissions.  Really the only way this will fail will be if someone bypasses the perm check
-    //on the edit form somehow..like a hacker trying to bypass the form and just submit straight to 
-    //the action. To safeguard, we'll catch if the action is update and change it either to create or
-    //edit depending on whether an id param is passed to. that should be sufficient.
+    // we have to treat the update permission a little different..it's tied to the create/edit
+    // permissions.  Really the only way this will fail will be if someone bypasses the perm check
+    // on the edit form somehow..like a hacker trying to bypass the form and just submit straight to
+    // the action. To safeguard, we'll catch if the action is update and change it either to create or
+    // edit depending on whether an id param is passed to. that should be sufficient.
     $common_action = null;
     if ($parms['action'] == 'update') {
         $perm_action = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';
+    } elseif ($parms['action'] == 'edit' && (!isset($parms['id']) || $parms['id'] == 0)) {
+        $perm_action = 'create';
     } elseif ($parms['action'] == 'saveconfig') {
         $perm_action = 'configure';
     } else {
@@ -318,8 +320,16 @@ function renderAction(array $parms=array()) {
         $perm_action = $parms['action'];
     }
 
-    //FIXME Here is where we'd check for ownership of an item and/or w/ 'create' perm?
-    
+    // Here is where we check for ownership of an item and 'create' perm
+    if (($parms['action'] == 'edit' || $parms['action'] == 'update' || $parms['action'] == 'delete' ||
+        $common_action == 'edit' || $common_action == 'update' || $common_action == 'delete') && !empty($parms['id'])) {
+        $theaction = !empty($common_action) ? $common_action : $parms['action'];
+        $owner = $db->selectValue($model, 'poster', 'id=' . $parms['id']);
+        if ($owner == $user->id && !expPermissions::check($theaction, $controller->loc) && expPermissions::check('create', $controller->loc)) {
+            $perm_action = 'create';
+        }
+    }
+
     if (array_key_exists($perm_action, $perms)) {
         if (!expPermissions::check($perm_action, $controller->loc)) {
             if (expTheme::inAction()) {

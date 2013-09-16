@@ -34,7 +34,7 @@
                         <td>{$listing->last_name}</td>
                         <td>{$listing->initials}</td>
                         <td>
-                            {if $permissions.manage == true}
+                            {if $permissions.manage}
                                 {icon controller=sales_rep action=edit img='edit.png' id=$listing->id}
                                 {icon controller=sales_rep action=delete img='delete.png' id=$listing->id}
                             {/if}

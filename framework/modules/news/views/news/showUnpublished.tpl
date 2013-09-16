@@ -43,9 +43,9 @@
 				<td>
 				    {permissions}
 						<div class="item-actions">
-							{if $permissions.edit == true}
+							{if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
                                 {if $myloc != $listing->location_data}
-                                    {if $permissions.manage == 1}
+                                    {if $permissions.manage}
                                         {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -53,7 +53,7 @@
                                 {/if}
 								{icon action=edit record=$listing}
 							{/if}
-							{if $permissions.delete == true}
+							{if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
 								{icon action=delete record=$listing}
 							{/if}
 						</div>

@@ -50,11 +50,11 @@
 
     {permissions}
         <div class="item-actions">
-            {if $permissions.edit == 1}
+            {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
                 {icon action=edit record=$listing title="Edit `$listing->title`"}
                 {icon action=copyProduct class="copy" record=$listing text="Copy" title="Copy `$listing->title` "}
             {/if}
-            {if $permissions.delete == 1}
+            {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
                 {icon action=delete record=$listing title="Delete `$listing->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this product?"|gettext)|cat:"');"}
             {/if}
         </div>

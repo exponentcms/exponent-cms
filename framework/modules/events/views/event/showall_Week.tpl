@@ -27,7 +27,7 @@
 	<div class="module-actions">
 		{icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
         {permissions}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 &#160;&#160;|&#160;&#160;
                 {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
@@ -52,7 +52,7 @@
     {/if}
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>

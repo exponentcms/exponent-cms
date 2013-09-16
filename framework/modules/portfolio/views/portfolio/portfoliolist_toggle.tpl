@@ -23,9 +23,9 @@
         <div class="item">
             {permissions}
                 <div class="item-actions">
-                    {if $permissions.edit == 1}
+                    {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
                         {if $myloc != $record->location_data}
-                            {if $permissions.manage == 1}
+                            {if $permissions.manage}
                                 {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
                             {else}
                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -34,7 +34,7 @@
                         {icon action=edit record=$record title="Edit `$record->title`"}
                         {icon action=copy record=$record title="Copy `$record->title`"}
                     {/if}
-                    {if $permissions.delete == 1}
+                    {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
                         {icon action=delete record=$record title="Delete `$record->title`"}
                     {/if}
                 </div>
@@ -65,7 +65,7 @@
                 {clear}
             {/toggle}
             {permissions}
-                {if $permissions.create == 1}
+                {if $permissions.create}
                     <div class="module-actions">
                         {icon class="add" action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add a portfolio piece here"|gettext}
                     </div>

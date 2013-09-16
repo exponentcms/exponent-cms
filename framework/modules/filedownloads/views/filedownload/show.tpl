@@ -46,9 +46,9 @@
         {$myloc=serialize($__loc)}
         {permissions}
 			<div class="item-actions">
-				{if $permissions.edit == 1}
+				{if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
                     {if $myloc != $record->location_data}
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -56,7 +56,7 @@
                     {/if}
 					{icon action=edit record=$record title="Edit this file"|gettext}
 				{/if}
-				{if $permissions.delete == 1}
+				{if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
 					{icon action=delete record=$record title="Delete this file"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this file?"|gettext)|cat:"');"}
 				{/if}
 			</div>

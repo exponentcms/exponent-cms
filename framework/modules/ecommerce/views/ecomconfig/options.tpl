@@ -21,15 +21,15 @@
     }
 {/css}
 {permissions}
-{if $permissions.manage == 1}
+{if $permissions.manage}
     <div class="module storeadmin options">
         <h1>{$moduletitle|default:"Manage Product Options"|gettext}</h1>
         {permissions}
             <div class="module-actions">
-                {if $permissions.create == 1}
+                {if $permissions.create}
                     {icon class=add action=edit_optiongroup_master text="Create new option group"|gettext}
                 {/if}
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                     {ddrerank items=$optiongroups model="option_master" label="Product Options"|gettext}
                 {/if}
             </div>

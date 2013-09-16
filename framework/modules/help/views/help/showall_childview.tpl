@@ -28,9 +28,9 @@
             <dd>
             {permissions}
             <div class="item-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.edit || ($permissions.create && $doc->poster == $user->id)}
                     {if $myloc != $doc->location_data}
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {icon action=merge id=$doc->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -39,7 +39,7 @@
                     {icon action=edit record=$doc}
                     {icon action=copy record=$doc}
                 {/if}
-                {if $permissions.delete == 1}
+                {if $permissions.delete || ($permissions.create && $doc->poster == $user->id)}
                     {icon action=delete record=$doc}
                 {/if}
             </div>

@@ -23,10 +23,10 @@
     
     {permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit text="Add a New FAQ"|gettext}
 			{/if}
-			{if $permissions.manage == 1}
+			{if $permissions.manage}
 				{ddrerank items=$page->records model="faq" sortfield="question" label="FAQs"|gettext}
 			{/if}
 		</div>
@@ -60,9 +60,9 @@
 				<td>
 					{permissions}
 						<div class="item-actions">
-							{if $permissions.edit == 1}
+							{if $permissions.edit || ($permissions.create && $question->poster == $user->id)}
                                 {if $myloc != $question->location_data}
-                                 {if $permissions.manage == 1}
+                                 {if $permissions.manage}
                                      {icon action=merge id=$question->id title="Merge Aggregated Content"|gettext}
                                  {else}
                                      {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -70,7 +70,7 @@
                              {/if}
 								{icon action=edit record=$question title="Edit FAQ"|gettext}
 							{/if}
-							{if $permissions.delete == 1}
+							{if $permissions.delete || ($permissions.create && $question->poster == $user->id)}
 								{icon action=delete record=$question title="Delete this FAQ?"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this FAQ?"|gettext)|cat:"');"}
 							{/if} 
 						</div>					

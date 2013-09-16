@@ -44,11 +44,11 @@
         <h3>{$product->title}</h3>
         {permissions}
             <div class="item-actions">
-                {if $permissions.edit == true}
+                {if $permissions.edit || ($permissions.create && $product->poster == $user->id)}
                     {icon controller="store" action="edit" id=$product->id title="Edit this entry"|gettext}
                     {icon controller="store" action=copyProduct class="copy" record=$product text="Copy" title="Copy `$product->title` "}
                 {/if}
-                {if $permissions.delete == true}
+                {if $permissions.delete || ($permissions.create && $product->poster == $user->id)}
                     {icon controller="store" action="delete" id=$product->id title="Delete this entry"|gettext}
                 {/if}
             </div>

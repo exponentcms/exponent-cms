@@ -48,10 +48,10 @@
 			    <td>
 			        {permissions}
 						<div class="item-actions">
-							{if $permissions.edit == true}
+							{if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
 								{icon action=edit record=$listing}
 							{/if}
-							{if $permissions.delete == true}
+							{if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
 								{icon action=delete record=$listing}
 							{/if}
 						</div>

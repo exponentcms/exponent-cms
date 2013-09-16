@@ -14,7 +14,7 @@
  *}
 
 {permissions}
-{if $permissions.manage == 1}
+{if $permissions.manage}
     <div class="module storeadmin edit_option_master">
         <h1>{$moduletitle|default:"Edit Product Options"|gettext}</h1>
         {if $record->timesImplemented > 0}

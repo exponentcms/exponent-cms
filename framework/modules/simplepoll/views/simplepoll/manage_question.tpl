@@ -23,7 +23,7 @@
     {icon action=edit record=$question title='Edit the question'|gettext}
     {permissions}
         <div class="module-actions">
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {ddrerank module="simplepoll_answer" model="simplepoll_answer" where="simplepoll_question_id=`$question->id`" sortfield="answer" label="Poll Question Answers"|gettext}
             {/if}
         </div>
@@ -42,7 +42,7 @@
                         {$answer->answer}
                     </td>
                     <td>
-                        {if $permissions.edit == 1}
+                        {if $permissions.edit || ($permissions.create && $answer->poster == $user->id)}
                             {icon class=edit action=edit_answer record=$answer title='Edit this answer'|gettext}
                             {icon class=delete action=delete_answer record=$answer title='Delete this answer'|gettext}
                         {/if}
@@ -53,7 +53,7 @@
             {/foreach}
         </tbody>
 	</table>
-	{if $permissions.create == 1}
+	{if $permissions.create}
 		{icon class=add action=edit_answer rank=$answer->rank+1 question_id=$question->id text="New Answer"}
 	{/if}
 	<br />

@@ -18,7 +18,7 @@
 
 	{permissions}
 		<div class="module-actions">
-        	{if $permissions.create == 1}
+        	{if $permissions.create}
         		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$modelname`"}{br}
         	{/if}
 		</div>
@@ -32,10 +32,10 @@
 			</p>
 			{permissions}
 				<div class="item-actions">
-					{if $permissions.edit == 1}
+					{if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
 						{icon controller=$controller action=edit record=$listing}
 					{/if}
-					{if $permissions.delete == 1}
+					{if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
 						{icon controller=$controller action=delete record=$listing}
 					{/if}
 				</div>

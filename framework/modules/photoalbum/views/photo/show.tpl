@@ -22,9 +22,9 @@
     {$myloc=serialize($__loc)}
     {permissions}
     <div class="item-actions">
-        {if $permissions.edit == 1}
+        {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
             {if $myloc != $record->location_data}
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                     {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
                 {else}
                     {icon img='arrow_merge.png' title="Merged Content"|gettext}

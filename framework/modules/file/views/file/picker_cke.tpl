@@ -68,7 +68,7 @@
     {if $smarty.get.update!='noupdate' && $smarty.get.update!='ck'}
         <a id="useselected" style="float:right;" class="use awesome medium green" href="#"><span>{'Use Selected Files'|gettext}</span></a>
     {/if}
-    {if $permissions.manage == 1}
+    {if $permissions.manage}
         <a id="deleteselected" style="float:right;margin-right: 12px;height: 18px;" class="delete awesome medium red" href="#" onclick="return confirm('{"Are you sure you want to delete ALL selected files?"|gettext}');"><span>{'Delete Selected Files'|gettext }</span></a>
         <a id="addlink" style="height: 18px;" class="add awesome medium green" href="{link action=adder ajax_action=1 update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&#160;&#160;
         <a id="deletelink" style="height: 18px;" class="delete awesome medium red" href="{link action=deleter ajax_action=1 update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>

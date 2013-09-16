@@ -17,11 +17,11 @@
     {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle|default:"Ask a Question"|gettext}</h1>{/if}
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit text="Add a New FAQ"|gettext}
 			{/if}
 			{br}
-			{if $permissions.manage == 1}
+			{if $permissions.manage}
 				{icon action=manage text="Manage FAQs"|gettext}
 			{/if}
 		</div>

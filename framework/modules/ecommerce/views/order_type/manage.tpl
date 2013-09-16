@@ -42,7 +42,7 @@
                         <td>{if $listing->affects_inventory == 1}{icon img="clean.png"}{/if}</td>
                         <td>{$listing->title}</td>
                         <td>
-                            {if $permissions.manage == true}
+                            {if $permissions.manage}
                                 {icon controller=order_type action=edit record=$listing}
                                 {icon controller=order_type action=delete record=$listing}
                             {/if}

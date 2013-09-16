@@ -20,9 +20,9 @@
     {$myloc=serialize($__loc)}
     {permissions}
     <div class="item-actions">
-        {if $permissions.edit == 1}
+        {if $permissions.edit || ($permissions.create && $doc->poster == $user->id)}
             {if $myloc != $doc->location_data}
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                     {icon action=merge id=$doc->id title="Merge Aggregated Content"|gettext}
                 {else}
                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -95,11 +95,11 @@
             <dd>
             {permissions}
             <div class="item-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.edit || ($permissions.create && $parent->poster == $user->id)}
                     {icon action=edit record=$parent}
                     {icon action=copy record=$parent}
                 {/if}
-                {if $permissions.delete == 1}
+                {if $permissions.delete || ($permissions.create && $parent->poster == $user->id)}
                     {icon action=delete record=$parent}
                 {/if}
             </div>

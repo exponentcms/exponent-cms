@@ -23,7 +23,7 @@
         <h1>{"Manage Definable Fields"|gettext}</h1>
     </div>
 	{*{permissions}*}
-    	{*{if $permissions.create == 1}*}
+    	{*{if $permissions.create}*}
     		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
     	{*{/if}*}
     {*{/permissions}*}
@@ -58,10 +58,10 @@
                     </td>
                     <td>
                         {permissions}
-                            {if $permissions.edit == 1}
+                            {if $permissions.edit}
                                 {icon action="edit" record=$listing title="Edit this field"|gettext}
                             {/if}
-                            {if $permissions.delete == 1}
+                            {if $permissions.delete}
                                 {icon action="delete" record=$listing title="Delete this field"|gettext onclick="return confirm('Are you sure you want to delete this field?');"}
                             {/if}
                         {/permissions}
