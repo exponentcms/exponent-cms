@@ -215,7 +215,7 @@ define('DB_FIELD_LEN',	1);
 define('DB_DEFAULT',	2);
 
 /**
- * Database Incremental Field specifier
+ * Database 'Incremental Field' specifier
  *
  * An index for the Exponent Data Definition Language.
  * This index specifies that the field should automatically
@@ -228,12 +228,12 @@ define('DB_DEFAULT',	2);
 define('DB_INCREMENT',	3);
 
 /**
- * Database Primary Key Field specifier
+ * Database 'Primary Key' Field specifier
  *
  * An index for the Exponent Data Definition Language.
- * This index specifies that the field should be treated as the
- * primary key for the table.  There can only be one primary
- * key field per table.
+ * This single unique index specifies that the field should be treated as
+ * the single primary key for the table.  There can one or more fields
+ * marked as 'primary' to establish a composite primary key in the table.
  *
  * @see DB_DEF_ID
  * @see DB_INCREMENT
@@ -241,17 +241,41 @@ define('DB_INCREMENT',	3);
 define('DB_PRIMARY',	4);
 
 /**
- * ????
+ * Database 'Unique Key' Field specifier
+
+ * An index for the Exponent Data Definition Language.
+ * This index specifies that the field should be treated as a
+ * unique key for the table.  There can zero or multiple unique keys
+ * using single or multiple (composite) fields per table.
+ *
+*@see DB_DEF_ID
+ * @see DB_INCREMENT
  */
 define('DB_UNIQUE',	5);
 
 /**
- * ????
+ * Database 'Index' Field specifier
+
+ * An index or key for the Exponent Data Definition Language.
+ * This index specifies that the field should be treated as a
+ * key for the table for more efficient lookups.  There can be
+ * multiple key fields per table but they will NOT be composite keys.
+ *
+*@see DB_DEF_ID
+ * @see DB_INCREMENT
  */
 define('DB_INDEX',		6);
 
 /**
- * ??????
+ * Database 'Full Text' Index Field specifier
+
+ * An index for the Exponent Data Definition Language.
+ * This index specifies that the field should be treated as a
+ * key for the table where full text searches will be performed.
+ * There is only one (composite) Full Text index per table.
+ *
+*@see DB_DEF_ID
+ * @see DB_INCREMENT
  */
 define('DB_FULLTEXT',		7);
 
