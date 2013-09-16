@@ -66,11 +66,11 @@ class update_profile_paths extends upgradescript {
 	    }
 
 		// convert each active user profile extension path from a full to relative path
-        $extdirs = array(
+        $ext_dirs = array(
             'framework/modules/users/extensions',
-            'themes/'.DISPLAY_THEME.'framework/modules/users/extensions'
+            THEME_RELATIVE.'modules/users/extensions'
         );
-        foreach ($extdirs as $dir) {
+        foreach ($ext_dirs as $dir) {
             if (is_readable(BASE.$dir)) {
                 $dh = opendir(BASE.$dir);
                 while (($file = readdir($dh)) !== false) {
