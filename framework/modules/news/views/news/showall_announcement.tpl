@@ -73,6 +73,8 @@
                 {/if}
                 {if $config.usebody==1}
                     {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
+                {elseif $config.usebody==3}
+                    {$item->body|summarize:"html":"parapaged"}
                 {elseif $config.usebody==2}
                     <p>{$item->body|summarize:"html":"parahtml"}</p>
 				{else}

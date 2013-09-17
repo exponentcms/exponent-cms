@@ -41,6 +41,8 @@
         {if $config.usebody==1}
             {*<p>{$record->body|summarize:"html":"paralinks"}</p>*}
             <p>{$record->body|summarize:"html":"parahtml"}</p>
+        {elseif $config.usebody==3}
+            {$record->body|summarize:"html":"parapaged"}
         {elseif $config.usebody==2}
         {else}
             {$record->body}

@@ -94,6 +94,8 @@
             {if $config.usebody==1}
                 {*<p>{$file->body|summarize:"html":"paralinks"}</p>*}
                 <p>{$file->body|summarize:"html":"parahtml"}</p>
+            {elseif $config.usebody==3}
+                {$file->body|summarize:"html":"parapaged"}
             {else}
                 {$file->body}
             {/if}

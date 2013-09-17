@@ -16,6 +16,7 @@ Added / Fixed / changed for 2.2.3
     -- an 'edit' permission by itself will NOT allow creation of new items
   - Adds user group 'global' permissions/restrictions to: prevent file uploading, prevent user profile changes, hide individual exponent/slingbar menus, or the entire slingbar
     -- restrictions apply to all non-admin users assigned to that user group
+  - adds 'Page' summary type to showall views to allow an editor inserted 'page break' to determine content displayed in list view
   - adds force image auto-resize and folder on quick-upload/add
   - adds copy portfolio item command
   - better theme support for mobile devices with theme configurable 'meta viewport' and optional apple-touch-icon implementation

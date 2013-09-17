@@ -280,6 +280,12 @@ class expString {
     //			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(expString::convertSmartQuotes(strip_tags($string,'<a>')),ENT_QUOTES)));
                 return expString::convertSmartQuotes(strip_tags($string, '<a>'));
                 break;
+            case "parapaged":
+               $s = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
+               $para = explode($s, $string);
+               $string = $para[0];
+               return expString::convertSmartQuotes($string);
+               break;
             case "parahtml":
                 foreach ($sep as $s) {
                     $para = explode($s, $string);
