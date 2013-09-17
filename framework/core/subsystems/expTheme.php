@@ -132,68 +132,103 @@ class expTheme {
         if ($head_config['framework'] == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
         array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
         if (!expSession::is_set('framework')||expSession::get('framework')!=$head_config['framework']) expSession::set('framework',$head_config['framework']);
-        
+
+        // meta
 		$metainfo = self::pageMetaInfo();
 
-		$str = '<title>'.$metainfo['title']."</title>\n";
-		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
-        $locale = strtolower(str_replace('_', '-', LOCALE));
-        $str .= "\t".'<meta content="'.$locale.'" http-equiv="Content-Language" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
-		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
+		// default to showing all meta content
+		if ($config['meta_content_type'] === '') {		$config['meta_content_type'] = true;		}
+		if ($config['meta_content_language'] === '') {	$config['meta_content_language'] = true;	}
+		if ($config['meta_generator'] === '') {			$config['meta_generator'] = true;			}
+		if ($config['meta_keywords'] === '') {			$config['meta_keywords'] = true;			}
+		if ($config['meta_description'] === '') {		$config['meta_description'] = true;			}
+		if ($config['link_canonical'] === '') {			$config['link_canonical'] = true;			}
+		if ($config['link_favicon'] === '') {			$config['link_favicon'] = true;				}
+		if ($config['css_ie_6'] === '') {				$config['css_ie_6'] = true;					}
+		if ($config['css_ie_lt9'] === '') {				$config['css_ie_lt9'] = true;				}
+		if ($config['minify'] === '') {					$config['minify'] = true;					}
+		if ($config['meta_viewport'] === '') {			$config['meta_viewport'] = true;			}
+		if ($config['link_touchicon'] === '') {			$config['link_touchicon'] = true;			}
 
-        if (empty($config['viewport'])) {
-            $viewport = 'width=device-width, initial-scale=1.0, user-scalable=yes';
-        } else {
-            if (!empty($config['viewport']['width'])) {
-                $viewport = 'width=' . $config['viewport']['width'];
-            } else {
-                $viewport = 'width=device-width';
-            }
-            if (!empty($config['viewport']['height'])) {
-                $viewport .= ', height=' . $config['viewport']['height'];
-            }
-            if (!empty($config['viewport']['initial_scale'])) {
-                $viewport .= ' initial-scale=' . $config['viewport']['initial_scale'];
-            } else {
-                $viewport .= ', initial-scale=1.0';
-            }
-            if (!empty($config['viewport']['minimum_scale'])) {
-                $viewport .= ', minimum-scale=' . $config['viewport']['minimum_scale'];
-            }
-            if (!empty($config['viewport']['maximum_scale'])) {
-                $viewport .= ', maximum-scale=' . $config['viewport']['maximum_scale'];
-            }
-            if (!empty($config['viewport']['user_scalable'])) {
-                $viewport .= ', user-scalable=' . ($config['viewport']['user_scalable'] ? "yes" : "no");
-            } else {
-                $viewport .= ', user-scalable=yes';
-            }
-        }
-        $str .= "\t".'<meta name="viewport" content="'. $viewport . '" '.XHTML_CLOSING.'>'."\n";
+		$str = "\n\t<title>".$metainfo['title']."</title>\n";
+		if ($config['meta_content_type'] === true) {
+			$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
+		}
+		if ($config['meta_content_language'] === true) {
+	        $locale = strtolower(str_replace('_', '-', LOCALE));
+    	    $str .= "\t".'<meta content="'.$locale.'" http-equiv="Content-Language" '.XHTML_CLOSING.'>'."\n";
+    	}
+    	if ($config['meta_generator'] === true) {
+			$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
+		}
+		if ($config['meta_keywords'] === true) {
+			$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
+		}
+		if ($config['meta_description'] === true) {
+			$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
+		}
+		if ($config['link_canonical'] === true) {
+			$str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
+		}
+
+		if ($config['meta_viewport'] === true) {
+	        if (empty($config['viewport'])) {
+	            $viewport = 'width=device-width, initial-scale=1.0, user-scalable=yes';
+	        } else {
+	            if (!empty($config['viewport']['width'])) {
+	                $viewport = 'width=' . $config['viewport']['width'];
+	            } else {
+	                $viewport = 'width=device-width';
+	            }
+	            if (!empty($config['viewport']['height'])) {
+	                $viewport .= ', height=' . $config['viewport']['height'];
+	            }
+	            if (!empty($config['viewport']['initial_scale'])) {
+	                $viewport .= ' initial-scale=' . $config['viewport']['initial_scale'];
+	            } else {
+	                $viewport .= ', initial-scale=1.0';
+	            }
+	            if (!empty($config['viewport']['minimum_scale'])) {
+	                $viewport .= ', minimum-scale=' . $config['viewport']['minimum_scale'];
+	            }
+	            if (!empty($config['viewport']['maximum_scale'])) {
+	                $viewport .= ', maximum-scale=' . $config['viewport']['maximum_scale'];
+	            }
+	            if (!empty($config['viewport']['user_scalable'])) {
+	                $viewport .= ', user-scalable=' . ($config['viewport']['user_scalable'] ? "yes" : "no");
+	            } else {
+	                $viewport .= ', user-scalable=yes';
+	            }
+	        }
+	        $str .= "\t".'<meta name="viewport" content="'. $viewport . '" '.XHTML_CLOSING.'>'."\n";
+	    }
 
         // favicon
-        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
+        if ($config['link_favicon'] === true && file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
             $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
         }
         // touch icons
-        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png')) {
+        if ($config['link_touchicon'] === true && file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png')) {
             $str .= "\t".'<link rel="apple-touch-icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png" '.XHTML_CLOSING.'>'."\n";
         }
-        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png')) {
+        if ($config['link_touchicon'] === true && file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png')) {
             $str .= "\t".'<link rel="apple-touch-icon-precomposed" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png" '.XHTML_CLOSING.'>'."\n";
         }
 
 		//the last little bit of IE 6 support
-		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
+		if ($config['css_ie_6'] === true) {
+			$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
+		}
 
         //html5 support for IE 6-8
-		$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-printshiv.js"></script><![endif]-->'."\n";
+        if ($config['css_ie_lt9'] === true) {
+			$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-printshiv.js"></script><![endif]-->'."\n";
+		}
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
-		$str .= '<!-- MINIFY REPLACE -->';
+		if ($config['minify']) {
+			$str .= '<!-- MINIFY REPLACE -->';
+		}
 
 		return $str;
 	}
