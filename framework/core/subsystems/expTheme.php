@@ -137,18 +137,18 @@ class expTheme {
 		$metainfo = self::pageMetaInfo();
 
 		// default to showing all meta content
-		if ($config['meta_content_type'] === '') {		$config['meta_content_type'] = true;		}
-		if ($config['meta_content_language'] === '') {	$config['meta_content_language'] = true;	}
-		if ($config['meta_generator'] === '') {			$config['meta_generator'] = true;			}
-		if ($config['meta_keywords'] === '') {			$config['meta_keywords'] = true;			}
-		if ($config['meta_description'] === '') {		$config['meta_description'] = true;			}
-		if ($config['link_canonical'] === '') {			$config['link_canonical'] = true;			}
-		if ($config['link_favicon'] === '') {			$config['link_favicon'] = true;				}
-		if ($config['css_ie_6'] === '') {				$config['css_ie_6'] = true;					}
-		if ($config['css_ie_lt9'] === '') {				$config['css_ie_lt9'] = true;				}
-		if ($config['minify'] === '') {					$config['minify'] = true;					}
-		if ($config['meta_viewport'] === '') {			$config['meta_viewport'] = true;			}
-		if ($config['link_touchicon'] === '') {			$config['link_touchicon'] = true;			}
+		if (!isset($config['meta_content_type']) || $config['meta_content_type'] === '') {			$config['meta_content_type'] = true;		}
+		if (!isset($config['meta_content_language']) || $config['meta_content_language'] === '') {	$config['meta_content_language'] = true;	}
+		if (!isset($config['meta_generator']) || $config['meta_generator'] === '') {				$config['meta_generator'] = true;			}
+		if (!isset($config['meta_keywords']) || $config['meta_keywords'] === '') {					$config['meta_keywords'] = true;			}
+		if (!isset($config['meta_description']) || $config['meta_description'] === '') {			$config['meta_description'] = true;			}
+		if (!isset($config['link_canonical']) || $config['link_canonical'] === '') {				$config['link_canonical'] = true;			}
+		if (!isset($config['link_favicon']) || $config['link_favicon'] === '') {					$config['link_favicon'] = true;				}
+		if (!isset($config['css_ie_6']) || $config['css_ie_6'] === '') {							$config['css_ie_6'] = true;					}
+		if (!isset($config['css_ie_lt9']) || $config['css_ie_lt9'] === '') {						$config['css_ie_lt9'] = true;				}
+		if (!isset($config['minify']) || $config['minify'] === '') {								$config['minify'] = true;					}
+		if (!isset($config['meta_viewport']) || $config['meta_viewport'] === '') {					$config['meta_viewport'] = true;			}
+		if (!isset($config['link_touchicon']) || $config['link_touchicon'] === '') {				$config['link_touchicon'] = true;			}
 
 		$str = "\n\t<title>".$metainfo['title']."</title>\n";
 		if ($config['meta_content_type'] === true) {
