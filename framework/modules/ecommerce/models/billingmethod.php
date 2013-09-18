@@ -21,11 +21,11 @@
  * @package Core
  */
 class billingmethod extends expRecord {
+    public $table = 'billingmethods';
+
     public $has_one = array('billingcalculator');
     public $has_many = array('billingtransaction');
     public $get_assoc_for = array('billingtransaction');
-    
-	public $table = 'billingmethods';
     
     static public $payment_types = array (
                 'VisaCard' => 'Visa',  

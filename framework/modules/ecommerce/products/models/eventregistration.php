@@ -23,7 +23,11 @@
 
 class eventregistration extends expRecord {
     public $table = 'product';
-    public $has_one = array();
+    public $default_sort_field = 'rank';
+    public $rank_by_field = 'rank';
+    public $default_sort_direction = "asc";
+
+//    public $has_one = array();
     public $has_and_belongs_to_many = array('storeCategory');
     public $has_many = array('optiongroup');
     public $get_assoc_for = array('optiongroup');
@@ -33,10 +37,6 @@ class eventregistration extends expRecord {
     public $requiresShipping = false;
     public $requiresBilling = true; //FIXME only if a cost is involved
     public $isQuantityAdjustable = false;
-
-    public $default_sort_field = 'rank';
-    public $rank_by_field = 'rank';
-    public $default_sort_direction = "asc";
 
     public $early_discount_amount_modifiers = array('$' => '$', '%' => '%');
 

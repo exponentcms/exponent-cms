@@ -22,11 +22,11 @@
  */
 class childProduct extends product {
     public $table = 'product';
-    public $has_one = array();
-    public $has_many = array(); 
-    public $has_many_self = array(); 
-    public $has_and_belongs_to_many = array(); 
-    public $has_and_belongs_to_self = array(); 
+//    public $has_one = array();
+//    public $has_many = array();
+//    public $has_many_self = array();
+//    public $has_and_belongs_to_many = array();
+//    public $has_and_belongs_to_self = array();
     public $has_many_self_id = 'parent_id';
                                                                             
     public $product_name = 'Child Product'; 
