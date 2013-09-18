@@ -1,49 +1,40 @@
-/* 2 column forms...horizontal label - control */
-
-.control  {
-    overflow: auto;
+.control {
+  overflow: auto;
 }
-
-.control .label, .control label {
-    display: block;
-    float: left;
-    width: 150px;  /* non-flexible part truncates label */
-    text-align: right;
-	padding-right: 5px;
-    white-space: normal;
-    line-height: normal;
+.control .label,
+.control label {
+  display: block;
+  float: left;
+  width: 150px;
+  text-align: right;
+  padding-right: 5px;
+  white-space: normal;
+  line-height: normal;
 }
-
 .control .spacer {
-    display: block!important;
-    background: transparent;
+  display: block !important;
+  background: transparent;
 }
-
 .control .label:empty {
-    display: block!important;
+  display: block !important;
 }
-
 .control.radio .label {
-    width: auto;  /* make radio buttons look normal */
+  width: auto;
 }
-
-/*.control.checkbox .label {*/
-    /*width: auto;  make checkboxes look normal*/
-/*}*/
-
-.datetime.date, .control table, .control.radiogroup table, .control.radio table, .control.checkbox table {
-    display: inline;
+.datetime.date,
+.control table,
+.control.radiogroup table,
+.control.radio table,
+.control.checkbox table {
+  display: inline;
 }
-
 .control-desc {
-    margin-left: 160px;  /* make description fall under input */
+  margin-left: 160px;
 }
-
 .control.checkbox .control-desc {
-    margin-left: 175px;
+  margin-left: 175px;
 }
-
 .formmoduleedit .item-actions {
-    display: inline;
-    float:  right;
+  display: inline;
+  float: right;
 }
