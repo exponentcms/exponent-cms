@@ -19,6 +19,7 @@ Added / Fixed / changed for 2.2.3
   - adds 'Page' summary type to showall views to allow an editor inserted 'page break' to determine content displayed in list view
   - adds force image auto-resize and folder on quick-upload/add
   - adds copy portfolio item command
+  - adds new login 'show Login only' view
   - better theme support for mobile devices with theme configurable 'meta viewport' and optional apple-touch-icon implementation
   - 0.9x theme support is removed
   - Flowplayer & YouTube modules are removed
