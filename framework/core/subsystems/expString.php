@@ -253,6 +253,15 @@ class expString {
         return $return;
     }
 
+    /**
+     * Summarize or short a long string
+     *
+     * @param        $string
+     * @param string $strtype
+     * @param string $type
+     *
+     * @return string
+     */
     public static function summarize($string, $strtype='html', $type='para') {
         $sep = ($strtype == "html" ? array("</p>", "</div>") : array("\r\n", "\n", "\r"));
         $origstring = $string;
