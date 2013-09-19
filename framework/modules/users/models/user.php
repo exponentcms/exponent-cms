@@ -46,22 +46,19 @@ class user extends expRecord {
         $this->getsToolbar = $this->getsToolbar();
     }
 
+    public function update($params=array()) {
+        if (!isset($params['is_admin'])) $params['is_admin'] = 0;
+        if (!isset($params['is_acting_admin'])) $params['is_acting_admin'] = 0;
+        parent::update($params);
+    }
+
     public function save($overrideUsername = false) {
         global $user;
 
-        if (isset($this->params['is_admin'])) {
-            $this->is_admin = $this->params['is_admin'];
-        } else {
-            $this->is_admin = 0;
-        }
-        if (isset($this->params['is_acting_admin'])) {
-            $this->is_acting_admin = $this->params['is_acting_admin'];
-        } else {
-            $this->is_acting_admin = 0;
-        }
         // if someone is trying to make this user an admin, lets make sure they have permission to do so.
         if (!empty($this->is_admin) && !$user->isAdmin()) $this->is_admin = 0;
         if (!empty($this->is_acting_admin) && !$user->isAdmin()) $this->is_acting_admin = 0;
+        if (!empty($this->is_admin)) $this->is_acting_admin = 1;
 
         // if the site is configured to use the email addy as the username we need to force the
         // the email address into the username field.
