@@ -55,7 +55,7 @@ require_once("../../../../exponent.php");
                     $file->poster = $user->id;
                     $file->posted = $file->last_accessed = time();
                     $file->save();
-                    if (!empty(QUICK_UPLOAD_FOLDER)) {
+                    if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER) {
                        $expcat = new expCat(QUICK_UPLOAD_FOLDER);
                        $params['expCat'][0] = $expcat->id;
                        $file->update($params);
