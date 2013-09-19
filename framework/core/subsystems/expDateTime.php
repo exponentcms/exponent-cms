@@ -609,12 +609,12 @@ class expDateTime {
 			By Garrett Murray, http://graveyard.maniacalrage.net/etc/relative/
 		**/
         $diff = time()-$posted_date;
-		$posted_date = date('YmdGis',$posted_date);  // convert to expected format
+		$fposted_date = date('YmdGis',$posted_date);  // convert to expected format
 
-//		$in_seconds = strtotime(substr($posted_date,0,8).' '.
-//					  substr($posted_date,8,2).':'.
-//					  substr($posted_date,10,2).':'.
-//					  substr($posted_date,12,2));
+//		$in_seconds = strtotime(substr($fposted_date,0,8).' '.
+//					  substr($fposted_date,8,2).':'.
+//					  substr($fposted_date,10,2).':'.
+//					  substr($fposted_date,12,2));
 //		$diff = time()-$in_seconds;
 		$future = $diff < 0 ? true : false;
 		$diff = abs($diff);
@@ -634,7 +634,8 @@ class expDateTime {
 
 		if ($months>0) {
 			// over a month old, just show date (mm/dd/yyyy format)
-			return 'on '.substr($posted_date,4,2).'/'.substr($posted_date,6,2).'/'.substr($posted_date,0,4);
+//			return 'on '.substr($fposted_date,4,2).'/'.substr($fposted_date,6,2).'/'.substr($fposted_date,0,4);
+            return 'on '.self::format_date($posted_date);
 		} else {
 			if ($weeks>0) {
 				// weeks and days
