@@ -85,7 +85,12 @@ class formsController extends expController {
                 $this->get_defaults($f);
             }
 //            $items = $db->selectObjects('forms_' . $f->table_name, 1);
-            $items = $db->selectArrays('forms_' . $f->table_name, 1);
+            if (empty($this->config['report_filter'])) {
+                $where = '1';
+            } else {
+                $where = $this->config['report_filter'];
+            }
+            $items = $db->selectArrays('forms_' . $f->table_name, $where);
             $columns = array();
             $fc = new forms_control();
             if (empty($this->config['column_names_list'])) {
