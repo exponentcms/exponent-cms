@@ -191,6 +191,7 @@ class expHistory {
     
   	public static function set($url_type, $params) {
   	    global $history;
+
   	    $history->setHistory($url_type, $params);
 	}
 	
@@ -226,6 +227,7 @@ class expHistory {
      */
 	public static function back() {
 	    global $history;
+
         $history->lastNotEditable();
 	}
 
@@ -238,22 +240,26 @@ class expHistory {
 	 */
 	public static function getBack($depth) {
 	    global $history;
+
         $d=$depth?$depth+1:2;
 		return $history->history[$history->history['lasts']['type']][count($history->history[$history->history['lasts']['type']])-$d]['params'];
 	}
 
     public static function returnTo($url_type=null, $params=array()) {
         global $history;
+
         $history->goHere($url_type, $params);
     }
 
     public static function getLast($url_type=null) {
         global $history;
+
         return $history->lastUrl($url_type);
     }
     
     public static function getLastNotEditable() {
         global $history;
+
         return $history->lastUrl($history->history['lasts']['not_editable']);
     }
     

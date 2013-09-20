@@ -177,7 +177,6 @@ class formsController extends expController {
     }
 
     public function show() {
-
         if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
             global $db;
 
@@ -221,7 +220,8 @@ class formsController extends expController {
 
             assign_to_template(array(
     //            "backlink"=>expHistory::getLastNotEditable(),
-                'backlink'    => expHistory::getLast('editable'),
+//                'backlink'    => expHistory::getLast('editable'),
+                'backlink'    => makeLink(expHistory::getBack(1)),
                 "f"           => $f,
                 "record_id"   => $this->params['id'],
                 "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : gt('Viewing Record'),
@@ -761,11 +761,39 @@ class formsController extends expController {
             $f->is_saved = false;
             $f->table_name = null;
         }
+        $fieldlist = '[';
+        if (isset($f->id)) {
+            $fc = new forms_control();
+            foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
+//                $ctl = unserialize($control->data);
+                $ctl = expUnserialize($control->data);
+                $control_type = get_class($ctl);
+                $def = call_user_func(array($control_type, 'getFieldDefinition'));
+                if ($def != null) {
+                    $fields[$control->name] = $control->caption;
+                    if (in_array($control->name, $cols)) {
+                        $column_names[$control->name] = $control->caption;
+                    }
+                }
+                if ($control_type != 'pagecontrol' && $control_type != 'htmlcontrol') {
+                    $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
+                }
+            }
+            $fields['ip'] = gt('IP Address');
+            if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
+            $fields['user_id'] = gt('Posted by');
+            if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
+            $fields['timestamp'] = gt('Timestamp');
+            if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
+//            if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
+        }
+        $fieldlist .= ']';
 
         assign_to_template(array(
             'column_names' => $column_names,
             'fields'       => $fields,
             'form'         => $f,
+            'fieldlist'    => $fieldlist,
         ));
     }
 
@@ -1029,8 +1057,8 @@ class formsController extends expController {
         if (!empty($this->config['column_names_list'])) {
             $cols = $this->config['column_names_list'];
         }
+        $fieldlist = '[';
         if (isset($this->config['forms_id'])) {
-            $fieldlist = '[';
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' AND is_readonly=0','rank') as $control) {
 //                $ctl = unserialize($control->data);
