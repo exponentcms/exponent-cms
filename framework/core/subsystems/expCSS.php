@@ -269,16 +269,34 @@ class expCSS {
             $less->setVariables($vars);
             $new_cache = $less->cachedCompile($cache, false);
             if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
-                $new_cache['vars'] = !empty($vars)?$vars:null;
-                $css_loc = pathinfo(BASE.$css_fname);
-                if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
-                file_put_contents(BASE.$css_fname, $new_cache['compiled']);
-                file_put_contents($cache_fname, serialize($new_cache));
+                if (!empty($new_cache['compiled'])) {
+                    $new_cache['vars'] = !empty($vars)?$vars:null;
+                    $css_loc = pathinfo(BASE.$css_fname);
+                    if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
+                    file_put_contents(BASE.$css_fname, $new_cache['compiled']);
+                    file_put_contents($cache_fname, serialize($new_cache));
+                }
             }
             return true;
         } else {
             flash('notice',$less_pname. ' ' . gt('does not exist!'));
             return false;
+        }
+    }
+
+    public static function updateCoreCss(){
+        $dir = BASE . 'framework/core/assets/less';
+        $files = '';
+        if (is_readable($dir)) {
+            $dh = opendir($dir);
+            while (($file = readdir($dh)) !== false) {
+                if (is_readable($dir . '/' . $file) && is_file($dir . '/' . $file) && substr($file, -5, 5) == '.less') {
+                   $files .= substr($file, 0, strlen($file) -5) . ',';
+                }
+            }
+            expCSS::pushToHead(array(
+                "corecss"=>$files
+            ));
         }
     }
 

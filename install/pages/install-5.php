@@ -26,11 +26,6 @@ echo gt('Pick Your Theme');
 
 <?php
 
-// build core css files from .less
-expCSS::pushToHead(array(
-    "corecss"=>"accordion,admin-global,button,categories,clearfix,comments,common,forms,forms2col,forms-bootstrap,msgq,pagination,panel,panels,ratings,rerank,rerankpanel,tables,toggle,tree"
-));
-
 $themes = array();
 if (is_readable(BASE . 'themes')) {
     echo '<form method="post" action="index.php">';

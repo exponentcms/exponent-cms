@@ -56,9 +56,7 @@ class update_corecss extends upgradescript {
 	 * @return bool
 	 */
 	function upgrade() {
-        expCSS::pushToHead(array(
-            "corecss"=>"accordion,admin-global,button,categories,clearfix,comments,common,forms,forms2col,forms-bootstrap,msgq,pagination,panel,panels,ratings,rerank,rerankpanel,tables,toggle,tree"
-        ));
+        expCSS::updateCoreCss();
 		return gt("All Core CSS files were updated.");
 	}
 

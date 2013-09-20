@@ -54,6 +54,9 @@ if (!defined('LANGUAGE')) {
 </form>
 
 <?php
+// build core css files from .less
+expCSS::updateCoreCss();
+
 // profiles
 $profiles = expSettings::profiles();
 if (!empty($profiles)) {
