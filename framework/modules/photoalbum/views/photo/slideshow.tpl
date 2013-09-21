@@ -144,6 +144,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
     var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal} .slideshow-frame',
     {
         interval:{/literal}{$config.speed|default:5}000{literal},
+//        autoplay:{/literal}{$config.autoplay|default:true}{literal},
+        ti:'{/literal}{$config.anim_in|default:"fadeIn"}{literal}',
+        to:'{/literal}{$config.anim_out|default:"fadeOut"}{literal}',
+        duration:{/literal}{$config.duration|default:0.5}{literal},
         nextButton:"#ss-{/literal}{$name}{literal} .next_slide",
         previousButton:"#ss-{/literal}{$name}{literal} .prev_slide",
         playButton:"#ss-{/literal}{$name}{literal} .play_slide",
