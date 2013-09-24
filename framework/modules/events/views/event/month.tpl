@@ -168,7 +168,7 @@
 {*{/css}*}
 
 {*FIXME convert to yui3*}
-{script unique="shadowbox`$myloc`" yui3mods=1}
+{script unique="shadowbox-`$__loc->src`" yui3mods=1}
 {literal}
     EXPONENT.YUI3_CONFIG.modules = {
         'yui2-lightbox' : {

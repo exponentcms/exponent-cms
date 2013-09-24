@@ -12,6 +12,7 @@ Address issues in v2.2.2 and finally remove deprecated features
   - adds force image auto-resize and folder on quick-upload/add
   - adds copy portfolio item command
   - adds new login 'show Login only' view
+  - changes calendar ajax pagination to become optional (default is off)
   - better theme support for mobile devices with 'meta viewport' and optional apple-touch-icon implementation
   - 0.9x theme support is removed
   - Flowplayer & YouTube modules are removed
