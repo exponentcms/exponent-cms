@@ -44,7 +44,7 @@
                     {control type="files" name="files" label="Media File"|gettext|cat:" (.flv, .f4v, .mp4, m4v, or .mp3)" subtype=media accept="audio/*,video/*" value=$record->expFile limit=1}
                 </div>
                 <div id="youtube-div" class="alt-item" style="display:none;">
-                    {control type=url name=url label="YouTube Video URL"|gettext value=$record->url size=100 description='A link to a YouTube video.  YouTube takes precedence over an attached file.'|gettext}
+                    {control type=url name=url label="YouTube Video URL"|gettext value=$record->url size=100 description='A link to a YouTube video.'|gettext}
                 </div>
             </div>
         </div>
