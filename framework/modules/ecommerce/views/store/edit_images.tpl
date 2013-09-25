@@ -17,6 +17,7 @@
 {control type="hidden" name="tab_loaded[images]" value=1}
 <div id="imagefunctionality">              
     {control type="text" name="images[image_alt_tag]" label="Image Alt Tag"|gettext value=$record->image_alt_tag description="The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
+
     {control type=radiogroup columns=2 name="images[main_image_functionality]" label="Main Image Functionality"|gettext items="Single Image,Image with Swatches"|gettxtlist values="si,iws"  default=$record->main_image_functionality|default:"si"}
     <div id="si-div" class="imngfuncbody">
         {control type=files name=mainimages label="Main Product Image"|gettext subtype="mainimage" accept="image/*" value=$record->expFile limit=1}
@@ -38,6 +39,7 @@
             </tr>
         </table>
     </div>
+
     <div class="additional-images">
         {control type=files name=images label="Additional Images"|gettext subtype="images" accept="image/*" value=$record->expFile description="Additional images to show for your product"|gettext}
     </div>

@@ -52,7 +52,7 @@
                             poster="{$smarty.const.PATH_RELATIVE}{$media->expFile.splash[0]->directory}{$media->expFile.splash[0]->filename}"
                         {/if}
                         controls="controls" preload="none">
-                        {if $media->url == ""}
+                        {if $media->media_type == "file"}
                             <source type="{$media->expFile.media[0]->mimetype}" src="{$smarty.const.PATH_RELATIVE}{$media->expFile.media[0]->directory}{$media->expFile.media[0]->filename}" />
                         {else}
                             <source type="video/youtube" src="{$media->url}" />

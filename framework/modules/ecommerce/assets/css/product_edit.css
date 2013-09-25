@@ -45,9 +45,9 @@
 	position              : relative;
 	background            : url(../images/ecom-sprite.png) repeat-x 0 -44px;
 	border                : 1px solid #b6cdde;
-	-moz-border-radius    : 2px;
-	-webkit-border-radius : 2px;
-	border-radius         : 2px;
+	-moz-border-radius    : 4px;
+	-webkit-border-radius : 4px;
+	border-radius         : 4px;
 }
 
 .store.editproduct .hd a.collapse {
