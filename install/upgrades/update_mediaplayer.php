@@ -33,13 +33,13 @@ class update_mediaplayer extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Upgrade Media Player item to set the media type"; }
+	static function name() { return "Upgrade Media Player and File Download item to set the media/file type"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "The Media Player module was updated in v2.2.3 by storing the media type.  This Script updates Media Player items to set the appropriate media type."; }
+	function description() { return "The Media Player and File Download modules were updated in v2.2.3 by storing the media/file type.  This Script updates Media Player and File Download items to set the appropriate media/file type."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
@@ -50,6 +50,7 @@ class update_mediaplayer extends upgradescript {
 
 //        return true;
         $needed = $db->countObjects('media',"media_type = ''");
+        $needed += $db->countObjects('filedownload',"file_type = ''");
         if ($needed) {
             return true;
         } else return false;
@@ -76,7 +77,20 @@ class update_mediaplayer extends upgradescript {
             $mp_items_converted += 1;
 	    }
 
-		return ($mp_items_converted?$mp_items_converted:gt('No'))." ".gt("Media Player items were updated.");
+        // update each File Download module as required
+	    $fd_items_converted = 0;
+	    $fds = $db->selectObjects('filedownload',"file_type = ''");
+	    foreach ($fds as $fd) {
+            if (!empty($fd->url)) {
+                $fd->file_type = 'ext_file';
+            } else {
+                $fd->file_type = 'file';
+            }
+	        $db->updateObject($fd,'filedownload');
+            $fd_items_converted += 1;
+	    }
+
+		return ($mp_items_converted?$mp_items_converted:gt('No'))." ".gt("Media Player items were updated.") . ' ' . gt(' and ') . ' ' . ($fd_items_converted?$fd_items_converted:gt('No'))." ".gt("File Download items were updated.");
 	}
 }
 

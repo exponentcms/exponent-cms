@@ -46,6 +46,9 @@ return array(
 	'body'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100000),
+    'file_type'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>200),
     'poster'=>array(
    		DB_FIELD_TYPE=>DB_DEF_INTEGER),
    	'created_at'=>array(
