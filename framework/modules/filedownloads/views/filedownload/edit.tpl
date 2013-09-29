@@ -36,7 +36,7 @@
                             <div id="file-div" class="alt-item" style="display:none;">
                                 {control id="downloadable" type="files" name="downloadable" label="Files for Download"|gettext subtype=downloadable value=$record->expFile description='First file is the primary download.'|gettext}
                             </div>
-                            <div id="url-div" class="alt-item" style="display:none;">
+                            <div id="ext_file-div" class="alt-item" style="display:none;">
                                 {control type=url name=ext_file label="External File URL"|gettext value=$record->ext_file size=100 description='A download link on another server used instead of Files above.'|gettext}
                             </div>
                         </div>
