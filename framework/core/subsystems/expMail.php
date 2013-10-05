@@ -563,75 +563,51 @@ class expMail {
 
     /**
      *  addTo() - This adds people to the Recipient List in the To Field.
-     *
      *  If the first variable passed is an array,
      *    it assumes you are sending messages to multiple people.
-     *
      *    If you want to add people with their names associated with the email, you must use an outside for loop.
      *  This function does not yet support the parsing of associative arrays for a quick add to the To recipient list.
      *
-     * @author Tyler Smart <tyleresmart@gmail.com>
-     * @example This will send a basic message, looping through an array of email addresses add adding them to the BCC list.
+     * @author        Tyler Smart <tyleresmart@gmail.com>
+     * @example       This will send a basic message, looping through an array of email addresses add adding them to the BCC list.
+     *                $emailItem = new expMail();
+     *                $emailItem->addText('My Text ');
+     *                $emailItem->addText('Line Two ');
+     *                $emailItem->addText('Line Three ');
+     *                $to_array = array('a@website.com'=>'Mr A.', 'b@website.com'=>'Mr B.', 'c@website.com'=>'Mr C.', 'd@website.com'=>'Mr D.', 'e@website.com'=>'Mr E.', 'f@website.com'=>'Mr F.');
+     *                //add multiple bcc recipients to the email
+     *                foreach ($to_array as $email => $name)
+     *                {
+     *                $emailItem->addBcc($email, $name);
+     *                }
+     *                $emailItem->addFrom('from@sender.com');
+     *                $emailItem->subject('Hello World!');
+     *                $emailItem->send();
+     *                //You can also just specify the email without the name, like so:
+     *                $emailItem = new expMail();
+     *                $emailItem->addText('My Text ');
+     *                $emailItem->addText('Line Two ');
+     *                $emailItem->addText('Line Three ');
+     *                $emailItem->addTo('bob@smith.com');
+     *                $emailItem->addFrom('from@sender.com');
+     *                $emailItem->subject('Hello World!');
+     *                $emailItem->send();
+     *                //You can also send an array of email addresses as the first argument, like so:
+     *                $emailItem = new expMail();
+     *                $emailItem->addText('My Text ');
+     *                $emailItem->addText('Line Two ');
+     *                $emailItem->addText('Line Three ');
+     *                $emailItem->addTo(array('myemail@mysite.com', 'secondemail@website.com', 'third@emailsite.com'));
+     *                $emailItem->addFrom('from@sender.com');
+     *                $emailItem->subject('Hello World!');
+     *                $emailItem->send();
      *
-     *    $emailItem = new expMail();
-     *
-     *   $emailItem->addText('My Text ');
-     *     $emailItem->addText('Line Two ');
-     *   $emailItem->addText('Line Three ');
-     *     $to_array = array('a@website.com'=>'Mr A.', 'b@website.com'=>'Mr B.', 'c@website.com'=>'Mr C.', 'd@website.com'=>'Mr D.', 'e@website.com'=>'Mr E.', 'f@website.com'=>'Mr F.');
-     *
-     *    //add multiple bcc recipients to the email
-     *    foreach ($to_array as $email => $name)
-     *    {
-     *        $emailItem->addBcc($email, $name);
-     *    }
-     *    $emailItem->addFrom('from@sender.com');
-     *    $emailItem->subject('Hello World!');
-     *
-     *    $emailItem->send();
-     *
-     *    //You can also just specify the email without the name, like so:
-     *
-     *    $emailItem = new expMail();
-     *
-     *  $emailItem->addText('My Text ');
-     *    $emailItem->addText('Line Two ');
-     *  $emailItem->addText('Line Three ');
-     *
-     *    $emailItem->addTo('bob@smith.com');
-     *    $emailItem->addFrom('from@sender.com');
-     *    $emailItem->subject('Hello World!');
-     *
-     *    $emailItem->send();
-     *
-     *    //You can also send an array of email addresses as the first argument, like so:
-     *
-     *    $emailItem = new expMail();
-     *
-     *  $emailItem->addText('My Text ');
-     *    $emailItem->addText('Line Two ');
-     *  $emailItem->addText('Line Three ');
-     *
-     *    $emailItem->addTo(array('myemail@mysite.com', 'secondemail@website.com', 'third@emailsite.com'));
-     *    $emailItem->addFrom('from@sender.com');
-     *    $emailItem->subject('Hello World!');
-     *
-     *    $emailItem->send();
-     *
-     * @param array|string $email_address_array This is the array
-     * @param string $singular_name  This is the name associated with the above email address.
-     *
-     * @param string $where
-     * @todo         A nice future feature addition would be to allow the passing in of associative arrays like so:
-     *
+     * @param  array|string $email This is the string or array to send email to
+     * @todo          A nice future feature addition would be to allow the passing in of associative arrays like so:
      *                $emailsToSendTo = array('bob@smith.com'=>'Bob Smith', 'mary@smith.com'=>'Mary Smith');
-     *
      *                $emailItem->addTo($emailsToSendTo);
-     *
      *                OR
-     *
      *                $emailItem->addTo('array('myemail@mysite.com'=>'Website Owner', 'secondemail@website.com'=>'Frank Jones');
-     *
      *                Actually, cleanup should be done so that this function only takes associative arrays, and nothing else.
      */
 	public function addTo($email = null) {
@@ -719,29 +695,25 @@ class expMail {
 		$this->message->addBcc($email, $name);
 	}
 
-	/**
-	 *  addFrom() - This adds the singular From address, if you call it twice, it will replace the old from address.
-	 *    It also sets the private var from with whatever you desire. This is a relic from the Swift 3.x days and should be gutted out
-	 *    the next time someone upgrades the mailer.
-	 *
-	 * @author Tyler Smart <tyleresmart@gmail.com>
-	 * @example This will send a basic message, but you can see how the subject line works.
-	 *	$emailItem = new expMail();
-	 *
-	 *  $emailItem->addText('My Text ');
-	 *	$emailItem->addText('Line Two ');
-	 *  $emailItem->addText('Line Three ');
-	 *
-	 *	$emailItem->addTo(array('myemail@mysite.com', 'secondemail@website.com', 'third@emailsite.com'));
-	 *	$emailItem->addFrom('from@sender.com'); //setting the From field using just the email.
-	 *  $emailItem->addFrom('from@sender.com', 'Mr. Sender'); //resetting the From field using the email and the name.
-	 *	$emailItem->subject('Hello World!');
-	 *
-	 *	$emailItem->send();
-	 *
-	 * @param string $email This is the email address you want to use as the sender.
-	 * @param string $name  This is the name associated with the above email address.
-	 */
+    /**
+     *  addFrom() - This adds the singular From address, if you call it twice, it will replace the old from address.
+     *    It also sets the private var from with whatever you desire. This is a relic from the Swift 3.x days and should be gutted out
+     *    the next time someone upgrades the mailer.
+     *
+     * @author   Tyler Smart <tyleresmart@gmail.com>
+     * @example  This will send a basic message, but you can see how the subject line works.
+     *           $emailItem = new expMail();
+     *           $emailItem->addText('My Text ');
+     *           $emailItem->addText('Line Two ');
+     *           $emailItem->addText('Line Three ');
+     *           $emailItem->addTo(array('myemail@mysite.com', 'secondemail@website.com', 'third@emailsite.com'));
+     *           $emailItem->addFrom('from@sender.com'); //setting the From field using just the email.
+     *           $emailItem->addFrom('from@sender.com', 'Mr. Sender'); //resetting the From field using the email and the name.
+     *           $emailItem->subject('Hello World!');
+     *           $emailItem->send();
+     *
+     * @param string $email This is the email address you want to use as the sender.
+     */
 	public function addFrom($email = null) {
         // attempt to fix a bad from address
         if (is_array($email)) {

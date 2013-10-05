@@ -1652,10 +1652,11 @@ class expFile extends expRecord {
      *
      * @param Database $db The database object to dump to EQL.
      * @param null     $tables
-     * @param null     $force_version
+     * @param null     $type
+     * @param null     $record
      *
      * @return string
-     * @node Model:expFile
+     * @node     Model:expFile
      */
     public static function dumpDatabase($db, $tables = null, $type = null, $record = null) {
         $dump = EQL_HEADER . "\r\n";
@@ -1710,10 +1711,10 @@ class expFile extends expRecord {
      * @param array    $errors A referenced array that stores errors.  Whatever
      *                         variable is passed in this argument will contain all errors encountered
      *                         during the parse/restore.
-     * @param null     $force_version
+     * @param null     $type
      *
      * @return bool
-     * @node Model:expFile
+     * @node     Model:expFile
      */
     public static function restoreDatabase($db, $file, &$errors, $type = null) {
         $errors = array();

@@ -218,7 +218,7 @@ class eventregistration extends expRecord {
     public function optionDropdown($key, $display_price_as) {
         $items = array();
 
-        foreach ($this->optiongroup as $index => $group) {
+        foreach ($this->optiongroup as $group) {
             if ($group->title == $key) {
                 foreach ($group->option as $option) {
                     if ($option->enable == true) {
@@ -253,7 +253,7 @@ class eventregistration extends expRecord {
     }
 
     public function spacesLeft() {
-        global $db;
+//        global $db;
 
 //        return $this->quantity - $this->number_of_registrants;
 //        $f = new forms($this->forms_id);
@@ -702,7 +702,7 @@ class eventregistration extends expRecord {
         $order_ids_complete = array();
         if (!empty($f->is_saved)) {  // is there user input data
             $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$this->id}", "timestamp");
-            foreach ($registrants as $key=>$registrant) {
+            foreach ($registrants as $registrant) {
                 $order_data = expUnserialize($registrant->location_data);
                 $order_ids_complete[] = $order_data->order_id;
             }

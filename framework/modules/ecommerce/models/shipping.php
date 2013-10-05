@@ -164,7 +164,7 @@ class shipping extends expRecord {
             $calcName = $calc->calculator_name;
             $calculator = new $calcName();
             if($calculator->addressRequired()) {
-                global $user;
+//                global $user;
                 //FIXME we need to get current address here
                 if (!empty($order->shippingmethod->addresses_id)) {
                     $rates = $calculator->getRates($order);

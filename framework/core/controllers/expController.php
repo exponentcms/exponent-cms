@@ -556,7 +556,7 @@ abstract class expController {
      * merge/move aggregated item into this module
      */
     function merge() {
-        global $db;
+//        global $db;
 
         expHistory::set('editable', $this->params);
         $modelname = $this->basemodel_name;
@@ -712,7 +712,7 @@ abstract class expController {
      */
     function manage_ranks() {
         $rank = 1;
-        foreach ($this->params['rerank'] as $key => $id) {
+        foreach ($this->params['rerank'] as $id) {
             $modelname = $this->params['model'];
             $obj = new $modelname($id);
             $obj->rank = $rank;
@@ -908,7 +908,7 @@ abstract class expController {
      * @return array
      */
     function getRSSContent() {
-        global $db;
+//        global $db;
 
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
@@ -1056,7 +1056,7 @@ abstract class expController {
      * download a file attached to item
      */
     function downloadfile() {
-        global $db;
+//        global $db;
 
         if (!isset($this->config['allowdownloads']) || $this->config['allowdownloads'] == true) {
             //if ($db->selectObject('content_expFiles', 'content_type="'.$this->baseclassname.'" AND expfiles_id='.$this->params['id']) != null) {
@@ -1117,7 +1117,8 @@ abstract class expController {
      * @return int
      */
     function addContentToSearch() {
-        global $db, $router;
+//        global $db, $router;
+        global $db;
 
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);
@@ -1188,7 +1189,7 @@ abstract class expController {
      * delete module, config, and all its items
      */
     function delete_instance($loc = false) {
-        global $db;
+//        global $db;
 
         $model = new $this->basemodel_name();
 //        $where = null;

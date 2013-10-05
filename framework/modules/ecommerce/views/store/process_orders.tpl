@@ -15,7 +15,9 @@
 
 <table class="exp-skin-table">
     <thead>
-        <th colspan="2">{'Successful EOD Import Results'|gettext}</th>
+        <tr>
+            <th colspan="2">{'Successful EOD Import Results'|gettext}</th>
+        </tr>
     </thead>
     {foreach from=$successSet item=ss key=skey}
         <tr>
@@ -42,7 +44,9 @@
 
 <table class="exp-skin-table" style="color: red;">
     <thead>
-        <th colspan="2">{'FAILED EOD Import Results'|gettext}</th>
+        <tr>
+            <th colspan="2">{'FAILED EOD Import Results'|gettext}</th>
+        </tr>
     </thead>
     {foreach from=$errorSet item=es key=ekey}
         <tr>

@@ -36,7 +36,7 @@ function smarty_function_nbsp($params,&$smarty) {
     if (empty($params['count'])) {
         echo "&#160;";
     } else {
-        for ($i=0; $i++; $i<$params['count']) {
+        for ($i=0; $i<$params['count']; $i++) {
             echo "&#160;";
         }
     }

@@ -38,7 +38,7 @@ class childProduct extends product {
     public $do_not_validate = array('sef_url');
     
     public function __construct($params=array(), $get_assoc=false, $get_attached=true ) {
-        global $db;
+//        global $db;
         parent::__construct($params, $get_assoc, $get_attached);
         //if (!empty($this->id)) $this->extra_fields = expUnserialize($this->extra_fields);
         $this->price = $this->getBasePrice();

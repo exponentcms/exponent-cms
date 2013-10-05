@@ -70,7 +70,7 @@ class product extends expRecord {
     );
 
     public function __construct($params = array(), $get_assoc = true, $get_attached = true) {
-        global $db;
+//        global $db;
 
         parent::__construct($params, $get_assoc, $get_attached);
         $this->extra_fields = expUnserialize($this->extra_fields);
@@ -403,7 +403,7 @@ class product extends expRecord {
     public function optionDropdown($key, $display_price_as) {
         $items = array();
 
-        foreach ($this->optiongroup as $index => $group) {
+        foreach ($this->optiongroup as $group) {
             if ($group->title == $key) {
                 foreach ($group->option as $option) {
                     if ($option->enable == true) {
@@ -593,7 +593,7 @@ class product extends expRecord {
         //eDebug($this->params['storeCategory']); 
         if (empty($catArray)) {
             $db->delete('product_storeCategories', 'product_id=' . $id);
-            $catArray = array(0);
+//            $catArray = array(0);
             $assoc = new stdClass();
             $assoc->storecategories_id = 0;
             $assoc->product_id = $id;
@@ -858,7 +858,7 @@ class product extends expRecord {
         if (isset($tab_loaded['related'])) {
             //Related Products Tab
             $db->delete('crosssellItem_product', 'product_id=' . $this->id);
-            foreach ($params['relatedProducts'] as $key => $prodid) {
+            foreach ($params['relatedProducts'] as $prodid) {
                 $ptype = new product($prodid);
                 $tmp = new stdClass();
                 $tmp->product_id = $this->id;
@@ -878,7 +878,7 @@ class product extends expRecord {
         // Copy related products if needed
         if (!empty($originalId) && !empty($params['copy_related'])) {
             $relprods = $db->selectObjects('crosssellItem_product', "product_id=" . $params['original_id']);
-            foreach ($relprods as $key => $prodid) {
+            foreach ($relprods as $prodid) {
                 $prodid->product_id = $this->id;
                 $db->insertObject($prodid, 'crosssellItem_product');
 

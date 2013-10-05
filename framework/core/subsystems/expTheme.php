@@ -558,7 +558,7 @@ class expTheme {
 	}
 
     public static function showAction($module, $action, $src="", $params=array()) {  //FIXME only used by smarty functions, old school?
-   		global $db, $user;
+//   		global $db, $user;
 
         $loc = expCore::makeLocation($module,(isset($src) ? $src : ""),(isset($int) ? $int : ""));
 

@@ -25,11 +25,11 @@ class product_notes extends expRecord
     public $table = 'product_notes';
     public $has_one = array('product');
     
-    public function __construct($params=array(), $get_assoc=true, $get_attached=true) 
-    {
-        global $db;
-        parent::__construct($params, $get_assoc, $get_attached);
-    }
+//    public function __construct($params=array(), $get_assoc=true, $get_attached=true)
+//    {
+//        global $db;
+//        parent::__construct($params, $get_assoc, $get_attached);
+//    }
 }
 
 ?>

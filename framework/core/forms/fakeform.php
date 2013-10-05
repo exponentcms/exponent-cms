@@ -73,7 +73,7 @@ class fakeform extends form {
             "jquery"=> 'jqueryui,jquery.placeholder',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
-		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
+		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;
 		$html .= "<form id='abc123' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";

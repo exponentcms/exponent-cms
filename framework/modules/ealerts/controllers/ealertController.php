@@ -295,7 +295,7 @@ class ealertController extends expController {
     }
     
     public function pending() {
-        global $db;
+//        global $db;
         
         // make sure we have what we need.
         if (empty($this->params['id'])) expQueue::flashAndFlow('error', gt('Your subscriber ID was not supplied.'));

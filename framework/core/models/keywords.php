@@ -74,7 +74,7 @@ class keywords {
 	}
 
 	public function getKeywordsForSection($section) {
-		global $db;
+//		global $db;
 
 		$id = is_object($section) ? $section->id : $section;
 		return self::getAndWeightKeywords(self::getTextBySection($section));

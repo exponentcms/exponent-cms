@@ -41,7 +41,7 @@ class textController extends expController {
     static function description() { return gt("Places text on your web pages"); }
 
 	public function showall() {
-        global $db;
+//        global $db;
 
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();

@@ -127,7 +127,8 @@ class eventregistrationController extends expController {
     }
 
     function eventsCalendar() {
-        global $db, $user;
+//        global $db, $user;
+        global $user;
 
         expHistory::set('viewable', $this->params);
 
@@ -233,7 +234,7 @@ class eventregistrationController extends expController {
     }
 
     function upcomingEvents() {
-        global $db;
+//        global $db;
 
         $sql = 'SELECT DISTINCT p.*, er.eventdate, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
@@ -792,7 +793,7 @@ class eventregistrationController extends expController {
     }
 
     public function export() {
-        global $db;
+//        global $db;
 
         $event              = new eventregistration($this->params['id']);
 
@@ -1192,7 +1193,8 @@ class eventregistrationController extends expController {
 
     // create a pseudo global view_registrants permission
     public static function checkPermissions($permission,$location) {
-        global $exponent_permissions_r, $user, $db, $router;
+//        global $exponent_permissions_r, $user, $db, $router;
+        global $exponent_permissions_r, $router;
 
         // only applies to the 'view_registrants' method
         if (empty($location->src) && empty($location->int) && $router->params['action'] == 'view_registrants') {

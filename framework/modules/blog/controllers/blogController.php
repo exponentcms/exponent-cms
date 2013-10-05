@@ -256,7 +256,7 @@ class blogController extends expController {
      * @return array
      */
     function getRSSContent() {
-        global $db;
+//        global $db;
 
         $class = new blog();
         $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC');

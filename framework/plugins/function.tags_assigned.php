@@ -48,7 +48,7 @@ function smarty_function_tags_assigned($params,&$smarty) {
     $link = '<span class="label tags">'.gt('Tags').':</span>
              <span class="value">';
     $i = 1;
-    foreach ($item->expTag as $tags=>$tag) {
+    foreach ($item->expTag as $tag) {
         $iloc = expUnserialize($item->location_data);
         $link .= '<a href="'.expCore::makeLink(array('controller'=>$iloc->mod,'action'=>'showall_by_tags','tag'=>$tag->sef_url,'src'=>$iloc->src)).
             '" title="'. gt('View all items tagged with') . ' \'' . $tag->title . '\'' .

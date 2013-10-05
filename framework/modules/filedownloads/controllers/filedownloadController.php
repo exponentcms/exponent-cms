@@ -106,7 +106,7 @@ class filedownloadController extends expController {
     function getRSSContent() {
         include_once(BASE.'external/mp3file.php');
 
-        global $db;     
+//        global $db;
     
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();

@@ -42,5 +42,5 @@ global $router;
   		</script>
 	</head>
     <body onload='chosen();'>
-	<body/>
+	</body>
 </html>

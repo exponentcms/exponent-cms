@@ -252,7 +252,7 @@ class ecomconfigController extends expController {
 	}
 
 	public function update_promocode() {
-	    global $db;
+//	    global $db;
 	    //$id = empty($this->params['id']) ? null : $this->params['id'];
 	    $code = new promocodes();
 	    $code->update($this->params);

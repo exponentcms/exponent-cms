@@ -39,7 +39,7 @@ function smarty_function_bootstrap_navbar($params,&$smarty) {
     if (empty($params['menu'])) {
         return $menu;
     } else {
-        foreach ($params['menu'] as $key=>$page) {
+        foreach ($params['menu'] as $page) {
             $menu .= build_menu($page,$params);
         }
         expJavascript::pushToFoot(array(

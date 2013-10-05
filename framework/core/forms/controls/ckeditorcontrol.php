@@ -45,7 +45,8 @@ class ckeditorcontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label) {
-        global $db, $user;
+//        global $db, $user;
+        global $user;
 
         $contentCSS = '';
         $cssabs     = BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor.css';

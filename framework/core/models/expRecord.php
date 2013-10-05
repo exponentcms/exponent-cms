@@ -225,7 +225,7 @@ class expRecord {
      * @return array
      */
     public function findBy($column, $value, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false) {
-        global $db;
+//        global $db;
 
         $where = "`" . $column . "`=";
         if (!is_numeric($value)) $where .= "'";

@@ -42,7 +42,7 @@ class crosssellItem extends product {
         ));*/
     
     public function __construct($params=array(), $get_assoc=false, $get_attached=true) {
-        global $db;        
+//        global $db;
         parent::__construct($params, $get_assoc, $get_attached);
         $this->price = $this->getBasePrice();
         

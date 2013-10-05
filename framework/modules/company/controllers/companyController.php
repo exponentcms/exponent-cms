@@ -65,7 +65,8 @@ class companyController extends expController {
     
     function show()
     {
-        global $db, $user, $router;
+//        global $db, $user, $router;
+        global $user, $router;
         //eDebug($this->params,true);
         
         expHistory::set('viewable', $this->params);
@@ -122,7 +123,8 @@ class companyController extends expController {
     //TODO this is a misnomer as we only accept an id NOT a title and duplicates the show() method
     function showByTitle()
     {
-        global $db, $user, $router;
+//        global $db, $user, $router;
+        global $user, $router;
         //eDebug($this->params,true);
         
         expHistory::set('viewable', $this->params);

@@ -119,7 +119,8 @@ class user extends expRecord {
     }
 
     public function updateLastLogin() {
-        global $db, $user;
+//        global $db, $user;
+        global $db;
 
         $obj = new stdClass();
         $obj->id = $this->id;
@@ -223,7 +224,8 @@ class user extends expRecord {
     }
 
     public function getGroupMemberships() {
-        global $db, $user;
+//        global $db, $user;
+        global $db;
 
         // Don't have enough information to consult the membership tables. Return an empty array.
         if (!$this->isLoggedIn()) return array();

@@ -335,7 +335,7 @@ class eaasController extends expController {
 
         if (!empty($this->params['groupbydate'])&&!empty($items)) {
             $data['records'] = array();
-            foreach ($items as $key => $value) {
+            foreach ($items as $value) {
                 $data['records'][date('r',$value->eventdate[0]->date)][] = $value;
                 // edebug($value);
             }

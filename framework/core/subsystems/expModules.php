@@ -170,6 +170,7 @@ class expModules {
      * Returns new controller object
      *
      * @param string $controllername
+     * @param null   $param
      *
      * @return null
      */

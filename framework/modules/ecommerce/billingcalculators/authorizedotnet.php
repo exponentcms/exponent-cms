@@ -64,7 +64,7 @@ class authorizedotnet extends creditcard {
 
     function process($method, $opts, $params, $order) {
 //        global $order, $db, $user;
-        global $db, $user;
+        global $user;
 
         // make sure we have some billing options saved.
         if (empty($method) || empty($opts)) return false;

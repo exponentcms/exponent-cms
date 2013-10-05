@@ -59,7 +59,7 @@ class fileController extends expController {
     }
     
     public function picker() {
-        global $user;
+//        global $user;
 
         $expcat = new expCat();
         $cats = $expcat->find('all','module="file"');
@@ -98,7 +98,7 @@ class fileController extends expController {
         $cats = $expcat->find('all','module="file"');
         $catarray = array();
         $catarray[] = 'Root Folder';
-        foreach ($cats as $key=>$cat) {
+        foreach ($cats as $cat) {
             $catarray[$cat->id] = $cat->title;
         }
         assign_to_template(array(
@@ -179,7 +179,8 @@ class fileController extends expController {
     } 
 
     public function getFilesByJSON() {
-        global $db,$user;
+//        global $db,$user;
+        global $user;
 
         $modelname = $this->basemodel_name;
         $results = 25; // default get all
@@ -328,7 +329,7 @@ class fileController extends expController {
             $cats = $expcat->find('all','module="file"','rank');
             $catarray = array();
             $catarray[] = 'Root Folder';
-            foreach ($cats as $key=>$cat) {
+            foreach ($cats as $cat) {
                 $catarray[$cat->id] = $cat->title;
             }
             echo json_encode($catarray);
@@ -336,7 +337,9 @@ class fileController extends expController {
     }
 
     public function delete() {
-        global $db,$user;
+//        global $db,$user;
+        global $user;
+
         $file = new expFile($this->params['id']);
         if ($user->id==$file->poster || $user->isAdmin()) {
             $file->delete();

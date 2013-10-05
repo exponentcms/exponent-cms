@@ -245,7 +245,7 @@ class form extends baseform {
             "jquery"=> 'jqueryui,jquery.placeholder',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
-		foreach ($this->scripts as $name=>$script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
+		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';
 		if (isset($this->ajax_updater)) {
 			$html .= "<form name=\"" . $this->name . "\" method=\"" ;

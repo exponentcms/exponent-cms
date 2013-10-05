@@ -502,7 +502,7 @@ function get_common_template($view, $loc, $controllername='') {
  * @return array
  */
 function get_config_templates($controller, $loc) {
-    global $db;
+//    global $db;
     
     // set paths we will search in for the view
     $commonpaths = array(

@@ -26,7 +26,7 @@
 class controllertemplate extends basetemplate {
 
 	function __construct($controller, $viewfile) {
-        global $head_config;
+//        global $head_config;
 
 		include_once(SMARTY_PATH.'Smarty.class.php');
 

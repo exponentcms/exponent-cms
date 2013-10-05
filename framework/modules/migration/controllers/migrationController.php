@@ -2461,7 +2461,7 @@ class migrationController extends expController {
      * @return void
      */
 	private function add_container($iloc,$m,$linked=false,$newconfig) {
-        global $db;
+//        global $db;
 
         // first the container
 //        $old_db = $this->connect();

@@ -35,7 +35,7 @@
 function smarty_function_getnav($params,&$smarty) {
 	global $sections;
 
-    foreach ($sections as $key=>$value) {
+    foreach ($sections as $value) {
         $rekeyed[$value->id] = $value;
     }
     $linkInQuestion = $rekeyed[$params['of']];
@@ -44,7 +44,7 @@ function smarty_function_getnav($params,&$smarty) {
             $nav = $rekeyed[$linkInQuestion->parent];
             break;
         case "siblings" :
-            foreach ($sections as $key=>$value) {
+            foreach ($sections as $value) {
                 if ($value->parent == $linkInQuestion->parent) {
                     $nav[] = $value;
                 } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
@@ -55,7 +55,7 @@ function smarty_function_getnav($params,&$smarty) {
             }
             break;
         case "children" :
-            foreach ($sections as $key=>$value) {
+            foreach ($sections as $value) {
                 if ($value->parent == $linkInQuestion->id) {
                     $nav[] = $value;
                 } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
@@ -66,7 +66,7 @@ function smarty_function_getnav($params,&$smarty) {
             }
             break;
         case "siblingsandchildren" :
-            foreach ($sections as $key=>$value) {
+            foreach ($sections as $value) {
                 if ($value->depth >= $linkInQuestion->depth && $value->depth <= $linkInQuestion->depth+1) {
                     if ($value->parent == 0) {
                         $nav[] = $value;
@@ -86,7 +86,7 @@ function smarty_function_getnav($params,&$smarty) {
             }
             break;
         case "siblingsandallsubchildren" :
-            foreach ($sections as $key=>$value) {
+            foreach ($sections as $value) {
                 if ($value->depth >= $linkInQuestion->depth) {
                     if ($value->parent == 0) {
                         $nav[] = $value;
@@ -106,8 +106,8 @@ function smarty_function_getnav($params,&$smarty) {
             }
             break;
         case "allsubchildren" :
-            foreach ($sections as $key=>$value) {
-                foreach ($value->parents as $pkey=>$parent) {
+            foreach ($sections as $value) {
+                foreach ($value->parents as $parent) {
                     if ($parent == $linkInQuestion->id) {
                         $nav[] = $value ;
                     } elseif ((!empty($params['parents']) && $value->id == $linkInQuestion->parent) ||
@@ -119,7 +119,7 @@ function smarty_function_getnav($params,&$smarty) {
             }
             break;
         case "haschildren" :
-            foreach ($sections as $key=>$value) {
+            foreach ($sections as $value) {
                 if ($value->parent == $linkInQuestion->id) {
                     $tmp[] = $value;
                 }

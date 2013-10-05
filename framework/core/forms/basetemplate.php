@@ -45,7 +45,7 @@ abstract class basetemplate {
 	//	
 	
 	function __construct($item_type, $item_dir, $view = "Default") {
-        global $head_config;
+//        global $head_config;
 
 		include_once(SMARTY_PATH.'Smarty.class.php');
 
@@ -134,7 +134,7 @@ abstract class basetemplate {
 		// javascript registration
 		
         if (empty($this->file_is_a_config)) {
-            return $this->tpl->display($this->view.'.tpl');
+            $this->tpl->display($this->view.'.tpl');
         }
 	}
 	

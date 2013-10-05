@@ -60,7 +60,7 @@ class storeCategoryController extends expNestedNodeController {
         //Declaration of array variables for product types bing and google
         $arr_product_type = ''; //A Multi-dimentional array to be passed in the view that contains the html of listbuildercontrol for product types like bing and google
 
-        if (!empty($product_types)) foreach ($product_types as $key => $value) {
+        if (!empty($product_types)) foreach ($product_types as $value) {
 
             $product_type = $value . 's';
             $product_type_id = $value . 's_id';
@@ -76,7 +76,7 @@ class storeCategoryController extends expNestedNodeController {
                     // Read in entire file
                     $lines = file($file);
                     // Loop through each line
-                    foreach ($lines as $line_num => $line) {
+                    foreach ($lines as $line) {
                         // Only continue if it's not a comment
                         if (substr($line, 0, 2) != '--' && $line != '') {
                             // Add this line to the current segment
@@ -159,7 +159,7 @@ class storeCategoryController extends expNestedNodeController {
 
         $rank = 1;
         $category = new storeCategory($this->params['id']);
-        foreach ($this->params['rerank'] as $key => $id) {
+        foreach ($this->params['rerank'] as $id) {
             $sql = "SELECT DISTINCT sc.* FROM " . DB_TABLE_PREFIX . "_product_storeCategories sc JOIN " . DB_TABLE_PREFIX . "_product p ON p.id = sc.product_id WHERE p.id=" . $id . " AND sc.storecategories_id IN (SELECT id FROM " . DB_TABLE_PREFIX . "_storeCategories WHERE rgt BETWEEN " . $category->lft . " AND " . $category->rgt . ") ORDER BY rank ASC";
             $prod = $db->selectObjectBySQL($sql);
             $prod->rank = $rank;
@@ -190,19 +190,19 @@ class storeCategoryController extends expNestedNodeController {
     public function update() {
         $product_types = ecomconfig::getConfig('product_types');
 
-        foreach ($product_types as $key => $value) {
+        foreach ($product_types as $value) {
             $this->params["{$value}s"] = listbuildercontrol::parseData($this->params, "{$value}s_list");
         }
 
         $curcat = new storeCategory($this->params);
         $children = $curcat->getChildren();
-        foreach ($children as $key => $child) {
+        foreach ($children as $child) {
             $chldcat = new storeCategory($child->id);
             $chldcat->is_active = $this->params['is_active'];
             $chldcat->save();
         }
 
-        foreach ($product_types as $key => $value) {
+        foreach ($product_types as $value) {
             $type = $value . 's';
             $product_type = new $type();
             $product_type->saveCategories($this->params["{$type}"], $curcat->id, $type);
@@ -213,7 +213,7 @@ class storeCategoryController extends expNestedNodeController {
 
     function fix_categories() {
         //--Flat Structure--//
-        global $db;
+//        global $db;
 
         $baseCat = new storeCategory();
         //$Nodes = $db->selectObjects('storeCategories');

@@ -257,7 +257,7 @@ class administrationController extends expController {
    	}
 
     public function toolbar() {
-        global $user;
+//        global $user;
 
         $menu = array();
 		$dirs = array(
@@ -1168,7 +1168,7 @@ class administrationController extends expController {
 
         array_multisort($offset, SORT_ASC, $data);
         $tzoptions = array();
-        foreach ($data as $key => $row) {
+        foreach ($data as $row) {
             $tzoptions[$row['timezone_id']] = self::formatOffset($row['offset'])
                                             . ' ' . $row['timezone_id'];
         }
@@ -1177,7 +1177,7 @@ class administrationController extends expController {
         $cats = $expcat->find('all','module="file"');
         $catarray = array();
         $catarray[] = 'Root Folder';
-        foreach ($cats as $key=>$cat) {
+        foreach ($cats as $cat) {
             $catarray[$cat->id] = $cat->title;
         }
 

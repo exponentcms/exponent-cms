@@ -466,7 +466,7 @@ class storeController extends expController {
     }
 
     function categoryBreadcrumb() {
-        global $db, $router;
+//        global $db, $router;
 
         //eDebug($this->category);
 
@@ -765,7 +765,7 @@ class storeController extends expController {
     }
 
     function showallSubcategories() {
-        global $db;
+//        global $db;
 
         expHistory::set('viewable', $this->params);
         $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : expSession::get('last_ecomm_category');
@@ -1210,7 +1210,7 @@ class storeController extends expController {
     }
 
     function update() {
-        global $db;
+//        global $db;
         //Get the product type
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
 

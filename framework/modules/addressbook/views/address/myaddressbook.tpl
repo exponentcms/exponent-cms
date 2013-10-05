@@ -30,10 +30,12 @@
     </p>
     <table class="exp-skin-table">
         <thead>
-            <th>{'Use as Billing'|gettext}</th>
-            <th>{'Use as Shipping'|gettext}</th>
-            <th>{'Address'|gettext}</th>
-            <th>&#160;</th>
+            <tr>
+                <th>{'Use as Billing'|gettext}</th>
+                <th>{'Use as Shipping'|gettext}</th>
+                <th>{'Address'|gettext}</th>
+                <th>&#160;</th>
+            </tr>
         </thead>
         <tbody>
             {foreach from=$addresses item=address}

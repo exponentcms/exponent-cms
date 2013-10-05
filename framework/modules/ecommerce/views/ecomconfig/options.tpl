@@ -37,16 +37,18 @@
         {foreach from=$optiongroups item=group}
             <table class="optiontable">
                 <thead>
-                    <th>
-                        <h3>
-                            {$group->title}
-                        </h3>
-                    </th>
-                    <th> </th>
-                    <th>
-                        {icon class=edit action=edit_optiongroup_master record=$group}
-                        {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
-                    </th>
+                    <tr>
+                        <th>
+                            <h3>
+                                {$group->title}
+                            </h3>
+                        </th>
+                        <th> </th>
+                        <th>
+                            {icon class=edit action=edit_optiongroup_master record=$group}
+                            {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>

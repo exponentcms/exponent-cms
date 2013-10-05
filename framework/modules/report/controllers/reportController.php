@@ -424,7 +424,7 @@ class reportController extends expController {
         $diss = $dis->find('all');
         $discounts = array();
         $discounts[-1] = '';
-        foreach ($diss as $dkey => $discount) {
+        foreach ($diss as $discount) {
             $discounts[$discount->id] = $discount->coupon_code;
         }
 
@@ -1266,7 +1266,7 @@ class reportController extends expController {
     }
 
     function print_orders() {
-        global $db, $timer;
+//        global $db, $timer;
         //eDebug($this->params,true);
         //eDebug($timer->mark());
         //eDebug( expSession::get('order_print_query'));
@@ -1464,7 +1464,7 @@ class reportController extends expController {
     }
 
     function productFeed() {
-        global $db;
+//        global $db;
         //check query password to avoid DDOS
         /*
             * condition  = new
@@ -1799,7 +1799,7 @@ class reportController extends expController {
     }
 
     function payment_report() {
-        global $db;
+//        global $db;
         $payment_methods = array('-1' => '', 'V' => 'Visa', 'MC' => 'Mastercard', 'D' => 'Discover', 'AMEX' => 'American Express', 'PP' => 'PayPal', 'GC' => 'Google Checkout', 'Other' => 'Other');
         //5 paypal
         //4 credit card - VisaCard, MasterCard, AmExCard, DiscoverCard

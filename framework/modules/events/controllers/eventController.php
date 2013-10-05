@@ -416,8 +416,8 @@ class eventController extends expController {
                     $extitems = $this->getExternalEvents($this->loc, $begin, $end);
                     // we need to crunch these down
                     $extitem = array();
-                    foreach ($extitems as $key => $days) {
-                        foreach ($days as $key => $event) {
+                    foreach ($extitems as $days) {
+                        foreach ($days as $event) {
                             if (empty($event->eventdate->date) || ($viewrange == 'upcoming' && $event->eventdate->date < time())) break;
                             if (empty($event->eventstart)) $event->eventstart = $event->eventdate->date;
                             $extitem[] = $event;
@@ -427,8 +427,8 @@ class eventController extends expController {
                     if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
                     // we need to crunch these down
                     $regitem = array();
-                    if (!empty($regitems)) foreach ($regitems as $key => $days) {
-                        foreach ($days as $key => $value) {
+                    if (!empty($regitems)) foreach ($regitems as $days) {
+                        foreach ($days as $value) {
                             $regitem[] = $value;
                         }
                     }

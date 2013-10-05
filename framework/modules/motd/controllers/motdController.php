@@ -44,7 +44,7 @@ class motdController extends expController {
     static function isSearchable() { return true; }
     
     function show() {
-        global $db;
+//        global $db;
         expHistory::set('viewable', $this->params);
         $now = time();
         $month = date('n', $now);

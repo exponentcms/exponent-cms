@@ -39,7 +39,9 @@
 		<input type="hidden" name="dest_dir" value="{$dest_dir}" />
 		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="exp-skin-table">
 			<thead>
-				<th colspan="2">{'Files found in this Archive'|gettext}</th>
+                <tr>
+                    <th colspan="2">{'Files found in this Archive'|gettext}</th>
+                </tr>
 			</thead>
 			<tbody>
 				{foreach from=$file_data item=mod_data}

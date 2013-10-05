@@ -109,7 +109,7 @@ class cartController extends expController {
         //$this->params['qty'] = 1; //REMOVE ME
         if ($product->addToCart($this->params)) {
             if (ecomconfig::getConfig('show_cart') || !empty($this->params['quick'])) {
-                global $order;
+//                global $order;
 //                $order->calculateGrandTotal();
 //                if (!$order->grand_total && !$order->shipping_required) {
 //                    redirect_to(array('controller'=>'cart', 'action'=>'quickConfirm'));

@@ -638,7 +638,7 @@ exit();
     }
 
     function set_order_type() {  //FIXME never used
-        global $db;
+//        global $db;
 
         if (empty($this->params['id'])) expHistory::back();
 
@@ -1018,7 +1018,7 @@ exit();
     }
 
     function save_reference_order() {
-        global $user;
+//        global $user;
 
         //eDebug($this->params,true);
         $order = new order($this->params['original_orderid']);
@@ -1124,7 +1124,7 @@ exit();
         customer_type = 1 //new
         customer_type = 2 //existing Internal
         customer_type = 3 //existing external*/
-        global $user, $db;
+//        global $user, $db;
         //eDebug($this->params,true);
         //$order = new order($this->params['original_orderid']);
         //eDebug($order,true); 
@@ -1725,7 +1725,7 @@ exit();
     }
 
     public function verifyReturnShopper() {
-        global $user, $order;
+//        global $user, $order;
 
         $sessAr = expSession::get('verify_shopper');
         if (isset($sessAr)) {
@@ -1743,7 +1743,7 @@ exit();
     }
 
     public function verifyAndRestoreCart() {
-        global $user, $order;
+//        global $user, $order;
 
         $sessAr = expSession::get('verify_shopper');
         if (isset($sessAr) && isset($this->params['cid']) && $this->params['cid'] == $sessAr['cid']) {
@@ -1795,7 +1795,8 @@ exit();
     }
 
     public function search() {
-        global $db, $user;
+//        global $db, $user;
+        global $db;
 
         $sql = "select DISTINCT(a.id) as id, a.firstname as firstname, a.middlename as middlename, a.lastname as lastname, a.organization as organization, a.email as email ";
         $sql .= "from " . $db->prefix . "addresses as a "; //R JOIN " . 
@@ -1810,7 +1811,8 @@ exit();
     }
 
     public function search_external() {
-        global $db, $user;
+//        global $db, $user;
+        global $db;
 
         $sql = "select DISTINCT(a.id) as id, a.source as source, a.firstname as firstname, a.middlename as middlename, a.lastname as lastname, a.organization as organization, a.email as email ";
         $sql .= "from " . $db->prefix . "external_addresses as a "; //R JOIN " . 

@@ -58,7 +58,7 @@ class update_ecom2 extends upgradescript {
 	 * @return bool
 	 */
 	function upgrade() {
-        global $db;
+//        global $db;
 
         $fixed = 0;
         // move cart settings into store settings

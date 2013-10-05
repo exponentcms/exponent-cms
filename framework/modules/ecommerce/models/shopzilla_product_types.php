@@ -23,11 +23,10 @@
 class shopzilla_product_types extends product_type {
 	public $table = 'shopzilla_product_types';
 	
-	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
-		global $db;
-		parent::__construct($params, $get_assoc, $get_attached);
-
-	}
+//	public function __construct($params=array(), $get_assoc=true, $get_attached=true) {
+//		global $db;
+//		parent::__construct($params, $get_assoc, $get_attached);
+//	}
 	
 }
 

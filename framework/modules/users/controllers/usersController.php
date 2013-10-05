@@ -325,7 +325,8 @@ class usersController extends expController {
     }
 
     public function manage_sessions() {
-        global $db, $user;
+//        global $db, $user;
+        global $db;
 
         expHistory::set('manageable', $this->params);
 
@@ -785,7 +786,8 @@ class usersController extends expController {
     }
 
     public function update_memberships() {
-        global $user, $db;
+//        global $user, $db;
+        global $db;
 
         //$memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
         $group = $db->selectObject('group', 'id=' . $this->params['id']);

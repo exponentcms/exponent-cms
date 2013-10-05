@@ -43,7 +43,7 @@ class storeCategory extends expNestedNode {
 	
 	public function getEcomSubcategories() {
 		global $db;
-		$subcats = array();
+//		$subcats = array();
 		if (empty($this->id)) {
 			$children = $this->getTopLevel();
 		} else {

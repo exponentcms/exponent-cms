@@ -57,7 +57,8 @@ class navigationController extends expController {
     function searchName() { return gt('Webpage'); }
 
     public function showall() {
-        global $db, $user, $sectionObj, $sections;
+//        global $db, $user, $sectionObj, $sections;
+        global $user, $sectionObj, $sections;
 
         expHistory::set('viewable', $this->params);
         $id      = $sectionObj->id;
@@ -82,7 +83,8 @@ class navigationController extends expController {
     }
 
     public function breadcrumb() {
-        global $db, $user, $sectionObj, $sections;
+//        global $db, $user, $sectionObj, $sections;
+        global $sectionObj;
 
         expHistory::set('viewable', $this->params);
         $id      = $sectionObj->id;
@@ -270,7 +272,8 @@ class navigationController extends expController {
      * @return array
      */
     public static function levelTemplate($parent, $depth = 0, $parents = array()) {
-        global $db, $user;
+//        global $db, $user;
+        global $user;
 
         if ($parent != 0) $parents[] = $parent;
         $nodes = array();
@@ -345,6 +348,7 @@ class navigationController extends expController {
      * @param bool   $full           include a 'top' level entry
      * @param string $perm           permission level to build list
      * @param bool   $addstandalones should we add the stand-alone pages also
+     * @param bool   $addinternalalias
      *
      * @return array
      */
@@ -1052,7 +1056,8 @@ class navigationController extends expController {
 
     // create a psuedo global manage pages permission
     public static function checkPermissions($permission,$location) {
-        global $exponent_permissions_r, $user, $db, $router;
+//        global $exponent_permissions_r, $user, $db, $router;
+        global $exponent_permissions_r, $router;
 
         // only applies to the 'manage' method
         if (empty($location->src) && empty($location->int) && !empty($router->params['action']) && $router->params['action'] == 'manage') {

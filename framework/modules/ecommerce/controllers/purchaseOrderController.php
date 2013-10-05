@@ -56,7 +56,7 @@ class purchaseOrderController extends expController {
 	}
 	
 	function edit () {
-	    global $db;
+//	    global $db;
 	    assign_to_template(array(
             'record'=>$this->params
         ));
