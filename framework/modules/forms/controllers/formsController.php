@@ -1192,7 +1192,7 @@ class formsController extends expController {
                 }
             }
 
-            foreach ($rpt_columns as $column_name) {
+            foreach ($rpt_columns as $column_name=>$column_caption) {
                 if ($column_name == "ip" || $column_name == "referrer" || $column_name == "location_data") {
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
@@ -1311,12 +1311,12 @@ class formsController extends expController {
     public static function sql2csv($items, $rptcols = null) {
         $str = "";
         foreach ($rptcols as $individual_Header) {
-            if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";
+            if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";  //FIXME $individual_Header is ALWAYS in $rptcols?
         }
         $str .= "\r\n";
-        foreach ($items as $key => $item) {
+        foreach ($items as $item) {
             foreach ($rptcols as $key => $rowitem) {
-                if (!is_array($rptcols) || array_key_exists($key, $rptcols)) {
+                if (!is_array($rptcols) || property_exists($item, $key)) {
                     $rowitem = str_replace(",", " ", $item->$key);
                     $str .= $rowitem . ",";
                 }
