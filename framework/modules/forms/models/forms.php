@@ -96,7 +96,7 @@ class forms extends expRecord {
                 }
 
                 $ctl = null;
-                $control_type = '';
+//                $control_type = '';
                 $tempdef = array();
                 foreach ($db->selectObjects('forms_control', 'forms_id=' . $this->id) as $control) {
                     if ($control->is_readonly == 0) {

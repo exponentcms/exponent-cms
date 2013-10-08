@@ -807,7 +807,7 @@ class usersController extends expController {
     }
 
     public function getUsersByJSON() {
-        global $db, $user;
+//        global $db, $user;
         $modelname = $this->basemodel_name;
         $results = 25; // default get all
         $startIndex = 0; // default start at 0
@@ -1002,7 +1002,7 @@ class usersController extends expController {
             $p[gt("User Name")] = 'username';
             $p[gt("First Name")] = 'firstname';
             $p[gt("Last Name")] = 'lastname';
-            foreach ($mod->permissions() as $key => $value) {
+            foreach ($mod->permissions() as $value) {
                 //        $p[gt($value)]=$key;
                 $p[gt($value)] = 'no-sort';
             }
@@ -1099,7 +1099,7 @@ class usersController extends expController {
             }
 
             $p[gt("Group")] = 'username';
-            foreach ($mod->permissions() as $key => $value) {
+            foreach ($mod->permissions() as $value) {
                 //        $p[gt($value)]=$key;
                 $p[gt($value)] = 'no-sort';
             }

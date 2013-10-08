@@ -1126,7 +1126,7 @@ class formsController extends expController {
         global $router;
 
         if (empty($router->params['action'])) return false;
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
+//        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
 
         // figure out what metadata to pass back based on the action we are in.
         switch ($router->params['action']) {
@@ -1639,7 +1639,7 @@ class formsController extends expController {
     }
 
     public function import_csv_data_mapper() {
-        global $template;
+//        global $template;
         //Get the temp directory to put the uploaded file
         $directory = "tmp";
 

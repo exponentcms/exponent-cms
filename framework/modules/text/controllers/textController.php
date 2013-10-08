@@ -104,8 +104,10 @@ class textController extends expController {
         
         // update the search index since text is relegated to page content.
         //FIXME need to come up with a better method
-        navigationController::addContentToSearch();
-        
+//        navigationController::addContentToSearch();
+        $nav = new navigationController();
+        $nav->addContentToSearch();
+
         // go back to where we came from.
         expHistory::back();
     }
