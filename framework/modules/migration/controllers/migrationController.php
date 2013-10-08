@@ -43,8 +43,8 @@ class migrationController extends expController {
         'linkmodule'=>'links',
         'weblogmodule'=>'blog',
         'listingmodule'=>'portfolio',
-        'youtubemodule'=>'youtube',
-        'mediaplayermodule'=>'flowplayer',
+        'youtubemodule'=>'media',
+        'mediaplayermodule'=>'media',
         'bannermodule'=>'banner',
         'feedlistmodule'=>'rss',
         'simplepollmodule'=>'simplePoll',
@@ -347,8 +347,7 @@ class migrationController extends expController {
 //            $db->delete('faqs');
             $db->delete('faq');
             $db->delete('portfolio');
-            $db->delete('youtube');
-            $db->delete('flowplayer');
+            $db->delete('media');
             $db->delete('banner');
             $db->delete('companies');
             $db->delete('addresses');
@@ -457,10 +456,8 @@ class migrationController extends expController {
                         $db->delete('forms_control');
 						break;
 					case 'youtubemodule':
-						$db->delete('youtube');
-						break;
 					case 'mediaplayermodule':
-						$db->delete('flowplayer');
+						$db->delete('media');
 						break;
 					case 'bannermodule':
 						$db->delete('banner');
@@ -1759,11 +1756,11 @@ class migrationController extends expController {
                     }
                 }
 				break;
-            case 'youtubemodule':
+            case 'youtubemodule':  //FIXME must convert media player
 				//check to see if it's already pulled in (circumvent !is_original)
                 $ploc = clone($iloc);
-				$ploc->mod = "youtube";
-				if ($db->countObjects('youtube', "location_data='".serialize($ploc)."'")) {
+				$ploc->mod = "media";
+				if ($db->countObjects('media', "location_data='".serialize($ploc)."'")) {
 //					$iloc->mod = 'youtubemodule';
 //					$linked = true;
 					break;
@@ -1774,31 +1771,32 @@ class migrationController extends expController {
 				if ($videos) {
 					foreach ($videos as $vi) {
 						unset ($vi['id']);
-						$video = new youtube($vi);
+						$video = new media($vi);
 						$loc = expUnserialize($vi['location_data']);
-						$loc->mod = "youtube";
+						$loc->mod = "media";
 						$video->title = $vi['name'];
 						if (empty($video->title)) { $video->title = 'Untitled'; }
 						$video->location_data = serialize($loc);
-						$yt = explode("watch?v=",$vi['url']);
-						if (empty($yt[1])) {
-							break;
-						} else {
-							$ytid = $yt[1];			
-						}
-						unset ($video->url);
-						$video->embed_code = '<iframe title="YouTube video player" width="'.$vi['width'].'" height="'.$vi['height'].'" src="http://www.youtube.com/embed/'.$ytid.'" frameborder="0" allowfullscreen></iframe>';
+                        $video->body = $vi['description'];
+//						$yt = explode("watch?v=",$vi['url']);
+//						if (empty($yt[1])) {
+//							break;
+//						} else {
+//							$ytid = $yt[1];
+//						}
+//						unset ($video->url);
+//						$video->embed_code = '<iframe title="YouTube video player" width="'.$vi['width'].'" height="'.$vi['height'].'" src="http://www.youtube.com/embed/'.$ytid.'" frameborder="0" allowfullscreen></iframe>';
 						$video->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;
 						@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 					}
 				}
 				break;
-            case 'mediaplayermodule':
+            case 'mediaplayermodule':  //FIXME must now convert media player
 				//check to see if it's already pulled in (circumvent !is_original)
                 $ploc = clone($iloc);
-				$ploc->mod = "flowplayer";
-				if ($db->countObjects('flowplayer', "location_data='".serialize($ploc)."'")) {
+				$ploc->mod = "media";
+				if ($db->countObjects('media', "location_data='".serialize($ploc)."'")) {
 //					$iloc->mod = 'mediaplayermodule';
 //					$linked = true;
 					break;
@@ -1809,11 +1807,12 @@ class migrationController extends expController {
 				if ($movies) {
 					foreach ($movies as $mi) {
 						unset ($mi['id']);
-						$movie = new flowplayer($mi);
+						$movie = new media($mi);
 						$loc = expUnserialize($mi['location_data']);
-						$loc->mod = "flowplayer";
+						$loc->mod = "media";
 						$movie->title = $mi['name'];
 						if (empty($movie->title)) { $movie->title = 'Untitled'; }
+                        $movie->body = $mi['description'];
 						unset ($mi['bgcolor']);
 						unset ($mi['alignment']);
 						unset ($mi['loop_media']);
@@ -1828,7 +1827,7 @@ class migrationController extends expController {
 							@$this->msg['migrated'][$iloc->mod]['count']++;
 							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 							$file = new expFile($mi['media_id']);
-							$movie->attachitem($file,'video');
+							$movie->attachitem($file,'files');
 							if (!empty($mi['alt_image_id'])) {
 								$file = new expFile($mi['alt_image_id']);
 								$movie->attachitem($file,'splash');					
