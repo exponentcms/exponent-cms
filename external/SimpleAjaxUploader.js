@@ -37,7 +37,7 @@ YUI.add('SimpleAjaxUploader', function (Y) {
   // Check whether XHR uploads are supported
   // This also is done here so it only occurs once
   input = document.createElement( 'input' ),
-  XhrOk;
+//  XhrOk;
   input.type = 'file';
   XhrOk = (
     'multiple' in input &&
