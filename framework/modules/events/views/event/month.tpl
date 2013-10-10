@@ -163,9 +163,6 @@
 	</table>
 
 {if $config.lightbox}
-{*{css unique="cal-lightbox" link="`$asset_path`css/lightbox.css"}*}
-
-{*{/css}*}
 
 {*FIXME convert to yui3*}
 {script unique="shadowbox-`$__loc->src`" yui3mods=1}

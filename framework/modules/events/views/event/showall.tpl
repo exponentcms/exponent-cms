@@ -19,10 +19,6 @@
 
 {/css}
 
-{*{css unique="cal-popup" link="`$asset_path`css/default.css"}*}
-
-{*{/css}*}
-
 <div class="module events default">
 	<div class="module-actions">
 		{*<span class="monthviewlink">{'Calendar View'|gettext}</span>*}

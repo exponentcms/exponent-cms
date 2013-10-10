@@ -121,9 +121,6 @@
 	</table>
 
 {if $config.lightbox}
-{*{css unique="cal-lightbox" link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/lightbox.css"}*}
-
-{*{/css}*}
 
 {*FIXME convert to yui3*}
 {script unique="shadowbox" yui3mods=1}

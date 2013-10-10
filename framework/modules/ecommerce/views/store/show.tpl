@@ -21,12 +21,6 @@
 
 {/css}
 
-{*{if $config.enable_lightbox}*}
-{*{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}*}
-
-{*{/css}    *}
-{*{/if}*}
-
 {if $product->user_message != ''}
     <div id="msg-queue" class="msg-queue notice">
         <div class="msg">{$product->user_message}</div>

@@ -19,11 +19,6 @@
 
 {/css}
 
-{*{if $config.lightbox}*}
-{*{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}*}
-
-{*{/css}*}
-{*{/if}*}
 {$rel}
 
 {uniqueid assign="id"}

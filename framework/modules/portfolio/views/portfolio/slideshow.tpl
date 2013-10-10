@@ -18,9 +18,6 @@
 {css unique="portfolio`$name`" corecss="common,pagination"}
 
 {/css}
-{*{css unique="portfolio`$name`" corecss="common,pagination" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}*}
-
-{*{/css}*}
 
 <div class="module photoalbum portfolio slideshow">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}

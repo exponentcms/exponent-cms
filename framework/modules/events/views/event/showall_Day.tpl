@@ -19,10 +19,6 @@
 
 {/css}
 
-{*{css unique="calpopup" link="`$asset_path`css/default.css"}*}
-
-{*{/css}*}
-
 <div class="module events viewday">
 	<div class="module-actions">
 		{icon class="weekviewlink" action=showall view=showall_Week time=$time title='View Entire Week'|gettext text='View Week'|gettext}

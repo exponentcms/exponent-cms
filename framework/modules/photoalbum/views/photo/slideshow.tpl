@@ -18,9 +18,6 @@
 {css unique="photoalbum`$name`" corecss="common"}
 
 {/css}
-{*{css unique="photoalbum`$name`" corecss="common" link="`$asset_path`css/yui3-slideshow.css"}*}
-
-{*{/css}*}
 
 <div class="module photoalbum slideshow">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}

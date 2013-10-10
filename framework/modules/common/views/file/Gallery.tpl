@@ -19,12 +19,6 @@
 
 {/css}
 
-{*{if $config.lightbox}*}
-{*{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}*}
-
-{*{/css}    *}
-{*{/if}*}
-
 {if $config.floatthumb!="No Float" && $config.floatthumb!="Bottom"}
     {capture assign="imgflot"}
     float:{$config.floatthumb|lower};

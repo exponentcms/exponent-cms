@@ -23,10 +23,6 @@
 
 {/css}
 
-{*{css unique="eventreg2" link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/default.css"}*}
-
-{*{/css}*}
-
 <div class="store events_calendar events default">
     <h1>{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}</h1>
     {permissions}

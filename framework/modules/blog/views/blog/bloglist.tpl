@@ -90,7 +90,7 @@
             </div>
             {if $config.enable_facebook_like}
                 <div id="fb-root"></div>
-                <div class="fb-like" data-href="{link action=show title=$item->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
+                <div class="fb-like" data-href="{link action=show title=$item->sef_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
                 {script unique='facebook_src'}
                 {literal}
                     (function(d, s, id) {

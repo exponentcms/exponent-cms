@@ -20,7 +20,6 @@
     {$sel_height = round($config.height/($slides|count+1))}
 {/if}
 
-{*{css unique="photoalbum`$name`" link="`$asset_path`css/slider.css"}*}
 {css unique="photoalbum`$name`"}
 {literal}
     .sliderlist {

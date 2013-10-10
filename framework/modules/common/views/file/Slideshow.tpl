@@ -19,10 +19,6 @@
 
 {/css}
 
-{*{css unique="photoalbum`$name`" corecss="common" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}*}
-
-{*{/css}*}
-
 <div id="ss-{$name}" class="slideshow slideshow-container" style="width:{$config.width|default:350}px;">
     <ul class="slideshow-frame"{if $config.width} style="width:{$config.width}px;height:{$config.height}px;"{/if}>
         {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
