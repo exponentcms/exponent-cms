@@ -1025,7 +1025,7 @@ Y.ss.SimpleUpload.prototype = {
       progBar.style.width = '0%';
     }
 
-    settings.onProgreY.ss.call( this, 0 );
+    settings.onProgress.call( this, 0 );
 
     // Borrows heavily from jQuery ajax transport
     callback = function( _, isAbort ) {
@@ -1100,7 +1100,7 @@ Y.ss.SimpleUpload.prototype = {
       if ( event.lengthComputable ) {
         var pct = Math.round( ( event.loaded / event.total ) * 100 );
 
-        settings.onProgreY.ss.call( self, pct );
+        settings.onProgress.call( self, pct );
 
         if ( pctBox ) {
           pctBox.innerHTML = pct + '%';
@@ -1188,7 +1188,7 @@ Y.ss.SimpleUpload.prototype = {
     form.appendChild( this._file );
 
     // Begin progress bars at 0%
-    settings.onProgreY.ss.call( this, 0 );
+    settings.onProgress.call( this, 0 );
 
     if ( pctBox ) {
       pctBox.innerHTML = '0%';
@@ -1342,7 +1342,7 @@ Y.ss.SimpleUpload.prototype = {
               if ( progBar ) {
                 progBar.style.width = pct + '%';
               }
-              self._opts.onProgreY.ss.call( self, pct );
+              self._opts.onProgress.call( self, pct );
             }
 
             // Update file size box if we haven't yet done so
