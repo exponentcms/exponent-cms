@@ -90,7 +90,7 @@ class update_mediaplayer extends upgradescript {
             $fd_items_converted += 1;
 	    }
 
-		return ($mp_items_converted?$mp_items_converted:gt('No'))." ".gt("Media Player items were updated.") . ' ' . gt(' and ') . ' ' . ($fd_items_converted?$fd_items_converted:gt('No'))." ".gt("File Download items were updated.");
+		return ($mp_items_converted?$mp_items_converted:gt('No'))." ".gt("Media Player items were updated.") . ' ' . gt('and') . ' ' . ($fd_items_converted?$fd_items_converted:gt('No'))." ".gt("File Download items were updated.");
 	}
 }
 
