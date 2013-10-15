@@ -614,8 +614,10 @@ class expMail {
         // attempt to fix a bad to address
         if (is_array($email)) {
             foreach ($email as $address=>$name) {
-                if (strstr($address,'.') === false) {
-                    $email[$name] .= '.net';
+                if (is_integer($address)) {
+                    if (strstr($name,'.') === false) {
+                        $email[$address] .= $name.'.net';
+                    }
                 }
             }
         } else {
