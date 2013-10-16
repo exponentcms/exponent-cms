@@ -20,6 +20,7 @@
     {control type=text name="quality" label="Slide thumbnail JPEG quality"|gettext|cat:" (0 - 95, 100)" description="If quality is set to 100, the raw image will be used instead of thumbnailing"|gettext value=$config.quality|default:$smarty.const.THUMB_QUALITY size="5"}
     {{control type=checkbox name="hidetext" label="Hide slide title"|gettext checked=$config.hidetext value=1}}
     {control type="checkbox" name="hidecontrols" label="Hide slide controls"|gettext checked=$config.hidecontrols|default:0 value=1}
+    {control type="checkbox" name="dimcontrols" label="Dim controls"|gettext checked=$config.dimcontrols|default:0 value=1}
 
     {*{control type="checkbox" name="autoplay" label="Autoplay"|gettext checked=$config.autoplay|default:1 value=1}*}
 

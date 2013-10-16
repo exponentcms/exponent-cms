@@ -99,7 +99,7 @@
             {/foreach}
         </ul>
         {if !$config.hidecontrols}
-            <div class="slideshow-buttons">
+            <div class="slideshow-buttons{if $config.dimcontrols} buttons-dim{/if}">
                 <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Previous Slide">
                     &lt;&lt; {'Previous'|gettext}
                 </a>

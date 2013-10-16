@@ -32,6 +32,11 @@
     left:5px;
     bottom:5px;
     z-index:5;
+	display: none;
+}
+
+.slideshow-frame:hover .item-actions {
+	display: block;
 }
 
 .slideshow-frame .item-actions a {
@@ -69,8 +74,8 @@
 
 .slideshow .slideshow-buttons {
     position:absolute;
-    bottom:20px;
-    right:20px;
+    bottom:5px;
+    right:5px;
     z-index:20;
     text-align:left;
     padding:5px;
@@ -78,7 +83,14 @@
     line-height:0;
        -moz-border-radius: 3px; 
     -webkit-border-radius: 3px; 
-            border-radius: 3px; 
+            border-radius: 3px;
+}
+.slideshow .slideshow-buttons.buttons-dim {
+	display: none;
+}
+
+.slideshow:hover .slideshow-buttons.buttons-dim {
+	display: block;
 }
 
 .slideshow .slideshow-buttons a.slide-page-link,
