@@ -19,6 +19,7 @@ Added / Fixed / changed for 2.2.3
   - adds forms showall view data filtering to module configuration settings
   - adds 'Page' summary type to showall views to allow an editor inserted 'page break' to determine content displayed in list view
   - adds force image auto-resize and folder on quick-upload/add
+  - adds new 'dim controls' to slideshow views to only display slide controls when the cursor is over the slide
   - adds copy portfolio item command
   - adds new login 'show Login only' view
   - adds slideshow transition options (some combinations do NOT work together)
