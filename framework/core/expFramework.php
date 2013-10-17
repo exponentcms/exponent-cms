@@ -330,10 +330,48 @@ function renderAction(array $parms=array()) {
         }
     }
 
+    // check to see if it's on a private page and we shouldn't see it
+    if ($perm_action == 'showall' || $perm_action == 'show' || $perm_action == 'downloadfile' || $common_action == 'showall' || $common_action == 'show' || $common_action == 'downloadfile') {
+        if (!empty($parms['src'])) {
+            $loc = expCore::makeLocation($parms['controller'], $parms['src']);
+        } elseif (!empty($parms['id']) || !empty($parms['title']) || !empty($parms['sef_url'])) {
+            if (!empty($parms['id'])) {
+                $record = new $controller->basemodel_name($parms['id']);
+            } elseif (!empty($parms['title'])) {
+                $record = new $controller->basemodel_name($parms['title']);
+            } elseif (!empty($parms['sef_url'])) {
+                $record = new $controller->basemodel_name($parms['sef_url']);
+            }
+            if (!empty($record)) $loc = expUnserialize($record->location_data);
+        }
+        if (!empty($loc)) {
+            $section = new section();
+            $sectionref = new sectionref();
+            $container = new container();
+            $secref = $sectionref->find('first',"module='".$parms['controller']."' AND source='" . $loc->src . "'");
+            if (!empty($secref)) {
+                $page = $section->find('first','id='.$secref->section);
+                $module = $container->find('first',"internal='" . serialize($loc) . "'");
+                if (empty($page->public) || !empty($module->is_private)) {
+                    if (!expPermissions::check('view',expCore::makeLocation('navigation', $page->id))) {
+                        if (expTheme::inAction()) {
+                            flash('error', gt("You don't have permission to view that item"));
+                            notfoundController::handle_not_authorized();
+                            expHistory::returnTo('viewable');
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     if (array_key_exists($perm_action, $perms)) {
         if (!expPermissions::check($perm_action, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', gt("You don't have permission to")." ".$perms[$perm_action]);
+                notfoundController::handle_not_authorized();
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -343,6 +381,7 @@ function renderAction(array $parms=array()) {
         if (!expPermissions::check($common_action, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', gt("You don't have permission to")." ".$perms[$common_action]);
+                notfoundController::handle_not_authorized();
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -353,6 +392,7 @@ function renderAction(array $parms=array()) {
         if (!$user->isLoggedIn()) {
             $msg = empty($controller->requires_login[$perm_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$perm_action];
             flash('error', $msg);
+            notfoundController::handle_not_authorized();
             expHistory::redirecto_login();
         }
     } elseif (array_key_exists($common_action, $controller->requires_login)) {
@@ -360,6 +400,7 @@ function renderAction(array $parms=array()) {
         if (!$user->isLoggedIn()) {
             $msg = empty($controller->requires_login[$common_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$common_action];
             flash('error', $msg);
+            notfoundController::handle_not_authorized();
             expHistory::redirecto_login();
         }
     } 

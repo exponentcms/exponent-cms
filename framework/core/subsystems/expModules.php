@@ -139,26 +139,26 @@ class expModules {
      */
 	public static function listInstalledControllers($type=null, $loc=null) {
 	    if (empty($type)) return array();
-	        global $db;
+        global $db;
 
-	        // setup the where clause
-	        $where = 'module="'.$type.'"';
-	        if (!empty($loc)) $where .= " AND source != '".$loc->src."'";
+        // setup the where clause
+        $where = 'module="'.$type.'"';
+        if (!empty($loc)) $where .= " AND source != '".$loc->src."'";
 
-	        $refs = $db->selectObjects('sectionref', $where);
-	        $modules = array();
-	        foreach ($refs as $ref) {
-	            if ($ref->refcount > 0) {
-	                $instance = $db->selectObject('container', 'internal like "%'.$ref->source.'%"');
-	                $mod = new stdClass();
-	                $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
-	                $mod->section = $db->selectvalue('section', 'name', 'id='.$ref->section);
-                    $mod->src = $ref->source;
-	                $modules[$ref->source] = $mod;
-	            }
-	        }
+        $refs = $db->selectObjects('sectionref', $where);
+        $modules = array();
+        foreach ($refs as $ref) {
+            if ($ref->refcount > 0) {
+                $instance = $db->selectObject('container', 'internal like "%'.$ref->source.'%"');
+                $mod = new stdClass();
+                $mod->title = !empty($instance->title) ? $instance->title : "Untitled";
+                $mod->section = $db->selectvalue('section', 'name', 'id='.$ref->section);
+                $mod->src = $ref->source;
+                $modules[$ref->source] = $mod;
+            }
+        }
 
-	        return $modules;
+        return $modules;
 	}
 
 	public static function listControllers() {
