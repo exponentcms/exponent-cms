@@ -220,12 +220,12 @@ class mysqli_database extends database {
                 }
             }
         }
-        $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+        $sql = "ALTER" . (empty($aggressive) ? "" : " IGNORE") . " TABLE `" . $this->prefix . "$tablename` ";
         if (!empty($primary) && count($primary)) {
             $sql .= ", DROP PRIMARY KEY, ADD PRIMARY KEY(`" . implode("`,`",$primary) . "`)";
         }
         if (!empty($unique)) foreach ($unique as $key=>$value) {
-            $sql .= ", UNIQUE `".$key."` ( `" . implode("`,`",$value) . "`)";
+            $sql .= ", ADD UNIQUE `".$key."` ( `" . implode("`,`",$value) . "`)";
         }
         foreach ($index as $key => $value) {
             // drop the index first so we don't get dupes
