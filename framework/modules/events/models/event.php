@@ -52,17 +52,15 @@ class event extends expRecord {
        				// No, create new and relink affected dates
        				unset($this->id);
 //                    $calevent = new event($params);  // create a new event based on parameters
-       				if (count($params['dates']) == 1) {
-                        $this->is_recurring = 0; // Back to a single event.
-       				}
+       				if (count($params['dates']) == 1) $this->is_recurring = 0; // Back to a single event.
 
                     $this->save(true);  // save new event to get an event id
 
+                    unset($params['id']);
        				foreach (array_keys($params['dates']) as $date_id) {  // update all the date occurrences being changed
                         $eventdate = $calevent->find('first',"id=".$date_id);
                         $eventdate->event_id = $this->id;
-                        unset($params['id']);
-                        $eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
+                        if (count($params['dates']) == 1) $eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
                         $eventdate->update($params);
        				}
        			} else { // all existing event occurrences have changed
