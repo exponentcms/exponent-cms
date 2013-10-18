@@ -27,3 +27,5 @@ Disallow: /cgi-bin/
 Disallow: /cart/
 Disallow: /login/
 Disallow: /users/
+Disallow: /files/
+Disallow: /tmp/
