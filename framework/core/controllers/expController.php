@@ -1219,12 +1219,14 @@ abstract class expController {
         // figure out what metadata to pass back based on the action we are in.
 //        $action = $_REQUEST['action'];
         $action = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
         $modelname = $this->basemodel_name;
 
         switch ($action) {
             case 'showall':
-                $metainfo = array('title' => gt("Showing all") . " - " . $this->displayname(), 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => '');
+                $metainfo['title'] = gt("Showing all") . " - " . $this->displayname();
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
             case 'showByTitle':
@@ -1254,6 +1256,8 @@ abstract class expController {
                         $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+                        $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
+                        $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
                     }
                     break;
                 }
@@ -1264,7 +1268,10 @@ abstract class expController {
                 if (method_exists($mod, $functionName)) {
                     $metainfo = $mod->$functionName($router->params);
                 } else {
-                    $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => URL_FULL.substr($router->sefPath, 1));
+                    $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
+                    $metainfo['keywords'] = SITE_KEYWORDS;
+                    $metainfo['description'] = SITE_DESCRIPTION;
+                    $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
                 }
         }
 

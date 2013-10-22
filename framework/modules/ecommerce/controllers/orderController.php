@@ -846,10 +846,12 @@ exit();
         // we are in.
 //        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'showall':
-                $metainfo = array('title'=> gt("Managing Invoices"), 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
+                $metainfo['title']       = gt("Managing Invoices");
+                $metainfo['keywords']    = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
             case 'showByTitle':
@@ -857,9 +859,13 @@ exit();
                 $metainfo['keywords']    = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object doesn't exist
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object doesn't exist
                 $metainfo['canonical'] = empty($object->canonical) ? '' : $object->canonical; //FIXME $object doesn't exist
+                $metainfo['noindex'] = empty($object->meta_noindex) ? '' : $object->meta_noindex; //FIXME $object doesn't exist
+                $metainfo['nofollow'] = empty($object->meta_nofollow) ? '' : $object->meta_nofollow; //FIXME $object doesn't exist
                 break;
             default:
-                $metainfo = array('title'=> gt("Order Management") . " - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
+                $metainfo['title']       = gt("Order Management") . " - " . SITE_TITLE;
+                $metainfo['keywords']    = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
         }
 
         return $metainfo;

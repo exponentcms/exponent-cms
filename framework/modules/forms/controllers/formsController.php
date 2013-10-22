@@ -1128,25 +1128,19 @@ class formsController extends expController {
         global $router;
 
         if (empty($router->params['action'])) return false;
-//        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
 
         // figure out what metadata to pass back based on the action we are in.
         switch ($router->params['action']) {
             case 'showall':
-                $metainfo = array(
-                    'title'       => gt("Showing all Form Records"),
-                    'keywords'    => SITE_KEYWORDS,
-                    'description' => SITE_DESCRIPTION,
-                    'canonical'   => ''
-                );
+                $metainfo['title'] = gt("Showing all Form Record");
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
-                $metainfo = array(
-                    'title'       => gt("Showing Form Record"),
-                    'keywords'    => SITE_KEYWORDS,
-                    'description' => SITE_DESCRIPTION,
-                    'canonical'   => ''
-                );
+                $metainfo['title'] = gt("Showing Form Record");
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             default:
                 $metainfo = parent::metainfo();

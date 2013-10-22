@@ -134,15 +134,43 @@ class expTheme {
         if (!expSession::is_set('framework')||expSession::get('framework')!=$head_config['framework']) expSession::set('framework',$head_config['framework']);
         
 		$metainfo = self::pageMetaInfo();
+        // default to showing all meta content
+        if (empty($config['meta_content_type'])) {
+            $config['meta_content_type'] = true;
+        }
+        if (empty($config['meta_content_language'])) {
+            $config['meta_content_language'] = true;
+        }
+        if (empty($config['meta_generator'])) {
+            $config['meta_generator'] = true;
+        }
+        if (empty($config['meta_keywords'])) {
+            $config['meta_keywords'] = true;
+        }
+        if (empty($config['meta_description'])) {
+            $config['meta_description'] = true;
+        }
+        if (empty($config['link_canonical'])) {
+            $config['link_canonical'] = true;
+        }
+        if (empty($config['meta_viewport'])) {
+            $config['meta_viewport'] = true;
+        }
+        if (empty($config['ie_compat'])) {
+            $config['ie_compat'] = true;
+        }
 
-		$str = '<title>'.$metainfo['title']."</title>\n";
-		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
+        $str = '<title>'.$metainfo['title']."</title>\n";
+        if ($config['meta_content_type']) $str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
         $locale = strtolower(str_replace('_', '-', LOCALE));
-        $str .= "\t".'<meta content="'.$locale.'" http-equiv="Content-Language" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
-		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta_content_language']) $str .= "\t".'<meta content="'.$locale.'" http-equiv="Content-Language" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta_generator']) $str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
+        if ($config['meta_keywords']) $str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta_description']) $str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
+        if ($config['link_canonical'] && !empty($metainfo['canonical'])) $str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
+        if ($metainfo['noindex'] || $metainfo['nofollow']) {
+            $str .= "\t".'<meta name="robots" content="'.(!empty($metainfo['noindex'])?'noindex':'').' '.($metainfo['nofollow']?'nofollow':''). '" '.XHTML_CLOSING.'>'."\n";
+        }
 
         if (empty($config['viewport'])) {
             $viewport = 'width=device-width, initial-scale=1.0, user-scalable=yes';
@@ -172,7 +200,7 @@ class expTheme {
                 $viewport .= ', user-scalable=yes';
             }
         }
-        $str .= "\t".'<meta name="viewport" content="'. $viewport . '" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta_viewport']) $str .= "\t".'<meta name="viewport" content="'. $viewport . '" '.XHTML_CLOSING.'>'."\n";
 
         // favicon
         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
@@ -186,11 +214,13 @@ class expTheme {
             $str .= "\t".'<link rel="apple-touch-icon-precomposed" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png" '.XHTML_CLOSING.'>'."\n";
         }
 
-		//the last little bit of IE 6 support
-		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
+        if ($config['ie_compat']) {
+            //the last little bit of IE 6 support
+            $str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
-        //html5 support for IE 6-8
-		$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-printshiv.js"></script><![endif]-->'."\n";
+            //html5 support for IE 6-8
+            $str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-shiv.js"></script><![endif]-->'."\n";
+        }
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MINIFY REPLACE -->';
@@ -238,6 +268,8 @@ class expTheme {
 	        $metainfo['keywords'] = empty($sectionObj->keywords) ? SITE_KEYWORDS : $sectionObj->keywords;
 	        $metainfo['description'] = empty($sectionObj->description) ? SITE_DESCRIPTION : $sectionObj->description;
 	        $metainfo['canonical'] = empty($sectionObj->canonical) ? URL_FULL.$sectionObj->sef_name : $sectionObj->canonical;
+            $metainfo['noindex'] = empty($sectionObj->noindex) ? false : $sectionObj->noindex;
+            $metainfo['nofollow'] = empty($sectionObj->nofollow) ? false : $sectionObj->nofollow;
         }
 
         return $metainfo;

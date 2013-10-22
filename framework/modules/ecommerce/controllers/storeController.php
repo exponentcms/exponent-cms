@@ -1316,7 +1316,7 @@ class storeController extends expController {
 
         // figure out what metadata to pass back based on the action we are in.
         $action = $_REQUEST['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'showall': //category page
                 //$cat = new storeCategory(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
@@ -1326,6 +1326,8 @@ class storeController extends expController {
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
                     $metainfo['canonical'] = empty($cat->canonical) ? '' : strip_tags($cat->canonical);
+                    $metainfo['noindex'] = empty($cat->meta_noindex) ? '' : strip_tags($cat->meta_noindex);
+                    $metainfo['nofollow'] = empty($cat->meta_nofollow) ? '' : strip_tags($cat->meta_nofollow);
                 }
                 break;
             case 'show':
@@ -1336,10 +1338,14 @@ class storeController extends expController {
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
                     $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
+                    $metainfo['noindex'] = empty($prod->meta_noindex) ? '' : strip_tags($prod->meta_noindex);
+                    $metainfo['nofollow'] = empty($prod->meta_nofollow) ? '' : strip_tags($prod->meta_nofollow);
                     break;
                 }
             default:
-                $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical'=> '');
+                $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
         }
 
         // Remove any quotes if there are any.
@@ -1347,6 +1353,8 @@ class storeController extends expController {
         $metainfo['description'] = expString::parseAndTrim($metainfo['description'], true);
         $metainfo['keywords'] = expString::parseAndTrim($metainfo['keywords'], true);
         $metainfo['canonical'] = expString::parseAndTrim($metainfo['canonical'], true);
+        $metainfo['noindex'] = expString::parseAndTrim($metainfo['noindex'], true);
+        $metainfo['nofollow'] = expString::parseAndTrim($metainfo['nofollow'], true);
 
         return $metainfo;
     }
