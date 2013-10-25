@@ -342,7 +342,7 @@ function renderAction(array $parms=array()) {
             } elseif (!empty($parms['sef_url'])) {
                 $record = new $controller->basemodel_name($parms['sef_url']);
             }
-            if (!empty($record)) $loc = expUnserialize($record->location_data);
+            if (!empty($record->location_data)) $loc = expUnserialize($record->location_data);
         }
         if (!empty($loc)) {
             $section = new section();

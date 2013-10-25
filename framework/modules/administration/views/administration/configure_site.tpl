@@ -257,21 +257,70 @@
                         </div>
 		                <h2>{"PDF Generation"|gettext}</h2>
                     </div>
-                    {group label="WKHTMLtoPDF - Store Orders"|gettext}
-                        {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
-                        {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
-                        <blockquote>
-                        {'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate binary application from'|gettext} <a href="http://code.google.com/p/wkhtmltopdf/downloads/list" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
-                            {"and then install it on your server."|gettext}
-                        </blockquote>
-                    {/group}
-                    {group label="DOMPDF - Export as PDF"|gettext}
-                        {control type="checkbox" postfalse=1 name="sc[HTML2PDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTML2PDF_OUTPUT value=1 description='Force a file download instead of display in window'|gettext}
-                        <blockquote>
-                        {'DOMPDF is an optional package.  To obtain it, you must first download'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">dompdf.zip</a>.
-                            {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
-                        </blockquote>
-                    {/group}
+                    <div id="alt-control" class="alt-control">
+                        <div class="control"><label class="label">{'PDF Generation Engine'|gettext}</label></div>
+                        <div class="alt-body">
+                            {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF,dompdf,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expDOMPDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
+                            <div id="none-div" class="alt-item" style="display:none;">
+                                <blockquote>
+                                {'Export as PDF will be unavailable since there is no PDF Generation Engine installed and configured.'|gettext}
+                                </blockquote>
+                            </div>
+                            <div id="expMPDF-div" class="alt-item" style="display:none;">
+                                {if !file_exists("`$smarty.const.BASE`external/MPDF57/mpdf.php")}
+                                    <div style="color:#ff0000;font-weight:bold;">
+                                        {'mPDF is NOT installed!'|gettext}
+                                    </div>
+                                {else}
+                                    <div>
+                                        {'mPDF is installed!'|gettext}
+                                    </div>
+                                {/if}
+                                <blockquote>
+                                    {'MPDF is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using one of the methods below.'|gettext}
+                                    <ol>
+                                        <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF57.zip" target="_blank">MPDF57.zip</a>
+                                            {'and then extract it on your server into the \'external\' folder.'|gettext} {'You should also download any updates and extract them to that same folder.'|gettext} <a href="http://www.mpdf1.com/mpdf/download" target="_blank">{'mPDF Downloads'|gettext}</a></li>
+                                        <li>{'(or) Download the Exponent Extension package'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/mpdf.zip" target="_blank">mpdf.zip</a>.
+                                            {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
+                                    </ol>
+                                </blockquote>
+                            </div>
+                            <div id="expDOMPDF-div" class="alt-item" style="display:none;">
+                                {if !file_exists("`$smarty.const.BASE`external/dompdf/dompdf.php")}
+                                    <div style="color:#ff0000;font-weight:bold;">
+                                        {'dompdf is NOT installed!'|gettext}
+                                    </div>
+                                {else}
+                                    <div>
+                                        {'dompdf is installed!'|gettext}
+                                    </div>
+                                {/if}
+                                <blockquote>
+                                    {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">dompdf.zip</a>.
+                                    {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
+                                </blockquote>
+                            </div>
+                            <div id="expWKPDF-div" class="alt-item" style="display:none;">
+                                {if !file_exists("$smarty.const.HTMLTOPDF_PATH")}
+                                    <div style="color:#ff0000;font-weight:bold;">
+                                        {'WKHTMLtoPDF is NOT installed/configured!'|gettext}
+                                    </div>
+                                {else}
+                                    <div>
+                                        {'WKHTMLtoPDF is installed!'|gettext}
+                                    </div>
+                                {/if}
+                                {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
+                                {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
+                                <blockquote>
+                                    {'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate binary application from'|gettext} <a href="http://code.google.com/p/wkhtmltopdf/downloads/list" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
+                                    {"and then install it on your server."|gettext}
+                                </blockquote>
+                            </div>
+                            {control type="checkbox" postfalse=1 name="sc[HTMLTOPDF_OUTPUT]" label="Force PDF File Download?"|gettext checked=$smarty.const.HTMLTOPDF_OUTPUT value=1 description='Force a file download instead of display in window'|gettext}
+                        </div>
+                    </div>
                 </div>
 				<div id="tab14">
 					<div class="info-header">
@@ -420,5 +469,24 @@
             }
         }
     }
+{/literal}
+{/script}
+
+{script unique="pdf-type" yui3mods="node,node-event-simulate"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+    var radioSwitchers = Y.all('#alt-control input[type="radio"]');
+    radioSwitchers.on('click',function(e){
+        Y.all(".alt-item").setStyle('display','none');
+        var curdiv = Y.one("#" + e.target.get('value') + "-div");
+        curdiv.setStyle('display','block');
+    });
+
+    radioSwitchers.each(function(node,k){
+        if(node.get('checked')==true){
+            node.simulate('click');
+        }
+    });
+});
 {/literal}
 {/script}

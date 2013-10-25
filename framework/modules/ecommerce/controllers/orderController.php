@@ -399,20 +399,19 @@ class orderController extends expController {
          * to do this same thing as below using dompdf
          * //FIXME uncomment to implement, comment out above
         require_once(BASE.'external/dompdf/dompdf_config.inc.php');
-        $dompdf = new DOMPDF();
-        $dompdf->load_html($invoice);
-        $dompdf->set_paper('letter','portrait');
-        $dompdf->render();
-        $dompdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
+        $mypdf = new DOMPDF();
+        $mypdf->load_html($invoice);
+        $mypdf->set_paper('letter','portrait');
+        $mypdf->render();
+        $mypdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
         exit();
          */
         /**
-         * to do this same thing as below using expHtmlToPDF2
-         * //FIXME uncomment to implement, comment out above
-        $dompdf = new HTML2PDF2('letter','portrait',$invoice);
-        $dompdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$org_name . "_Invoice" . ".pdf");
-        exit();
+         * to do this same thing as below using expHtmlToPDF/2/3
          */
+        $mypdf = new expHtmlToPDF('Letter','portrait',$invoice);
+        $mypdf->createpdf('D',$org_name . "_Invoice" . ".pdf");
+        exit();
 
         if (stristr(PHP_OS, 'Win')) {
             if (file_exists(HTMLTOPDF_PATH)) {
@@ -524,17 +523,16 @@ exit();
             $pdf->Output($org_name . "_Invoice" . ".pdf", 'I');
             exit();*/
             eDebug("Done rendering invoice html. Starting PDF Generation: " . $timer->mark());
-            $pdfer = new expHtmlToPDF();
-            $pdfer->set_html($invoice);
-            $pdfer->set_orientation('Portrait');
-            $pdfer->set_page_size('Letter');
+            $pdfer = new expHtmlToPDF('Letter', 'Portrait', $invoice);
+//            $pdfer->set_html($invoice);
+//            $pdfer->set_orientation('Portrait');
+//            $pdfer->set_page_size('Letter');
             $pdfer->set_grayscale(true);
-
-            $pdfer->render();
+//            $pdfer->render();
             eDebug("Done rendering PDF " . $timer->mark());
             exit();
             ob_clean();
-            $pdfer->output('D', $org_name . "_Invoice" . ".pdf");
+            $pdfer->createpdf('D', $org_name . "_Invoice" . ".pdf");
             exit();
         }
     }

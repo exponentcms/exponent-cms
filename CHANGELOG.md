@@ -17,6 +17,7 @@ Added / Fixed / changed for 2.2.3
   - adds user group 'global' permissions/restrictions to: prevent file uploading, prevent user profile changes, hide individual exponent/slingbar menus, or the entire slingbar
     -- restrictions apply to all non-admin users assigned to that user group
   - now enforces non-public page and hidden module restrictions to content on/in those pages/modules to prevent access by search engines, etc...
+  - adds 'noindex' and 'nofollow' SEO meta tag options to pages/items to prevent addition to search engines
   - adds forms showall view data filtering to module configuration settings
   - adds 'Page' summary type to showall views to allow an editor inserted 'page break' to determine content displayed in list view
   - adds force image auto-resize and folder on quick-upload/add
@@ -24,6 +25,7 @@ Added / Fixed / changed for 2.2.3
   - adds copy portfolio item command
   - adds new login 'show Login only' view
   - adds slideshow transition options (some combinations do NOT work together)
+  - adds new optional universal PDF generation via mPDF, PDF generator engine now selectible in site configuration
   - changes calendar ajax pagination to become optional (default is off)
   - better theme support for mobile devices with theme configurable 'meta viewport' and optional apple-touch-icon implementation
   - 0.9x theme support is removed
