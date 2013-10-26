@@ -18,6 +18,8 @@ Added / Fixed / changed for 2.2.3
     -- restrictions apply to all non-admin users assigned to that user group
   - now enforces non-public page and hidden module restrictions to content on/in those pages/modules to prevent access by search engines, etc...
   - adds 'noindex' and 'nofollow' SEO meta tag options to pages/items to prevent addition to search engines
+  * revises navigation flyout sidebar view to display module title vertically and allow more than one navigation flyout sidebar on a page
+    ** NOTE, any previous use of the navigation flyout sidebar contents will be invisible since we move away from a single hard-coded source reference!
   - adds forms showall view data filtering to module configuration settings
   - adds 'Page' summary type to showall views to allow an editor inserted 'page break' to determine content displayed in list view
   - adds force image auto-resize and folder on quick-upload/add

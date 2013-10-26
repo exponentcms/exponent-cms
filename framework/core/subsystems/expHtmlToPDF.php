@@ -690,7 +690,7 @@ class expDOMPDF extends expHtmlToPDF
 
 /**
  * This is the class expHtmlToPDF3
- * a wrapper for using MPDF
+ * a wrapper for using mPDF
  *
  * @package    Subsystems
  * @subpackage Subsystems
@@ -711,8 +711,8 @@ class expMPDF extends expHtmlToPDF
     public function __construct($paper_size = "A4", $orientation = "portrait", $html, $use_file = false)
     {
         if (file_exists(BASE . 'external/MPDF57/mpdf.php')) {
-            define("_MPDF_TEMP_PATH", PATH_RELATIVE . 'tmp/tmp');
-            define("_MPDF_TTFONTDATAPATH", PATH_RELATIVE . 'tmp/ttfontdata');
+            define("_MPDF_TEMP_PATH", PATH_RELATIVE . 'tmp/tmp/');
+            define("_MPDF_TTFONTDATAPATH", PATH_RELATIVE . 'tmp/ttfontdata/');
             require_once(BASE . 'external/MPDF57/mpdf.php');
             $this->size = $paper_size;
             $this->orient = strtoupper(substr($orientation, 0, 1));
