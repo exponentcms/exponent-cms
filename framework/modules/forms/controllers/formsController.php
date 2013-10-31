@@ -420,13 +420,13 @@ class formsController extends expController {
 
             if (!empty($this->params[$col->name])) {
                 if ($coltype == 'checkboxcontrol') {
-                    $responses[$col->caption . $num] = 'Yes';
+                    $responses[$col->caption . $num] = gt('Yes');
                 } else {
                     $responses[$col->caption . $num] = $value;
                 }
             } else {
                 if ($coltype == 'checkboxcontrol') {
-                    $responses[$col->caption . $num] = 'No';
+                    $responses[$col->caption . $num] = gt('No');
                 } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol') {
                     $responses[$col->name] = $value;
                 } elseif ($coltype == 'uploadcontrol') {
