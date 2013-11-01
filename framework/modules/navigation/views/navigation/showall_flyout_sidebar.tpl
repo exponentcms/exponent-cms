@@ -31,13 +31,14 @@
 {/css}
 
 <div class="module container flyout{$side} thetop" style="display: none;">
+    {if !empty($moduletitle) && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
+        {$tag = $moduletitle}
+        <h4>{$moduletitle}</h4>
+    {else}
+        {$tag = 'View Panel'|gettext}
+    {/if}
     {showmodule module='container' action="showall" view="showall" source="@flyout_sidebar_`$__loc->src`" scope=$scope chrome=true}
 </div>
-{if !empty($moduletitle) && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
-    {$tag = $moduletitle}
-{else}
-    {$tag = 'View Panel'|gettext}
-{/if}
 <a class="triggerlogin {$class} thetop" href="#" title="{'Click to open this panel'|gettext}">{$tag}</a>
 
 {script unique="flyoutsidebar" jquery=1}
