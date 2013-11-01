@@ -56,9 +56,9 @@
             </div>
             {permissions}
                 <div class="item-actions">
-                    {if $permissions.edit == 1}
+                    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                         {if $myloc != $item->location_data}
-                            {if $permissions.manage == 1}
+                            {if $permissions.manage}
                                 {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                             {else}
                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -66,7 +66,7 @@
                         {/if}
                         {icon action=edit record=$item}
                     {/if}
-                    {if $permissions.delete == 1}
+                    {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                         {icon action=delete record=$item}
                     {/if}
                 </div>
@@ -78,6 +78,8 @@
     			{if $config.usebody==1}
     				{*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
                     <p>{$item->body|summarize:"html":"parahtml"}</p>
+                {elseif $config.usebody==3}
+                    {$item->body|summarize:"html":"parapaged"}
     			{elseif $config.usebody==2}
     			{else}
     				{$item->body}
@@ -88,7 +90,7 @@
             </div>
             {if $config.enable_facebook_like}
                 <div id="fb-root"></div>
-                <div class="fb-like" data-href="{link action=show title=$item->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
+                <div class="fb-like" data-href="{link action=show title=$item->sef_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
                 {script unique='facebook_src'}
                 {literal}
                     (function(d, s, id) {

@@ -15,8 +15,8 @@
 
 {permissions}
     {if $top->external == 'N;'}
-        {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
-          || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
+        {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure
+          || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
             {$mainNeedsClosing=1}
 
             {css unique="admin-container" link="`$asset_path`css/admin-container.css"}
@@ -28,7 +28,7 @@
             <div id="cont{$top->id}" class="exp-container-module-wrapper">
         {/if}
         {*if $hasParent == 0 && ($permissions.edit || $permissions.create || $permissions.delete || $permissions.order_module || $permissions.manage)*}
-        {if empty($container->hasParent) && ($permissions.configure == 1 || $container->permissions.configure == 1)}
+        {if empty($container->hasParent) && ($permissions.configure || $container->permissions.configure)}
         {** top level container module **}
             <div class="container-chrome">
                 <a href="#" class="trigger" title="Container">{'Container'|gettext} ({if $top->scope == 'top-sectional'}{'Top'|gettext}{else}{$top->scope|gettext}{/if})</a>
@@ -45,7 +45,7 @@
                     {/foreach}
                     {capture name=rerank}{ddrerank module=container model=container where="external='`$top->internal`'" label="Modules"|gettext}{/capture}
                     {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
-                    {if ($permissions.configure == 1 || $container->permissions.configure == 1)}
+                    {if ($permissions.configure || $container->permissions.configure)}
                    		<li><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod">{"Configure Settings"|gettext}</a></li>
                    	{/if}
                     {if $smarty.const.HELP_ACTIVE}<li>{help text="Get Help with"|gettext|cat:" "|cat:("Containers"|gettext)}</li>{/if}
@@ -53,7 +53,7 @@
             </div>
         {/if}
     {/if}
-	{if $permissions.create == 1 && empty($hidebox)}
+	{if $permissions.create && empty($hidebox)}
 		<a class="addmodule" href="{link action=edit rerank=1 rank=1}"><span class="addtext">{"Add Module"|gettext}</span></a>
 	{/if}
 {/permissions}
@@ -67,8 +67,8 @@
 	{else}
 		<div name="mod_{$container->id}" id="mod_{$container->id}"></div>
 		{permissions}
-            {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
-                 || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
+            {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure
+                 || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
                 
                 {* repeating css and JS calls in case they only have module management, and are not admins *}
                 {css unique="admin-container" link="`$asset_path`css/admin-container.css"}
@@ -94,14 +94,14 @@
                     {$container->output}
 
         {permissions}
-                {if ($permissions.manage == 1 || $permissions.edit == 1 || $permissions.delete == 1 || $permissions.create == 1 || $permissions.configure == 1
-                     || $container->permissions.manage == 1 || $container->permissions.edit == 1 || $container->permissions.delete == 1 || $container->permissions.configure == 1)}
+                {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure
+                     || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
                 </div>
             {/if}
 		{/permissions}
 
 		{permissions}
-			{if $permissions.create == 1 && $hidebox == 0}
+			{if $permissions.create && $hidebox == 0}
 				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration+1}"><span class="addtext">{"Add Module"|gettext}</span></a>
 			{/if}
 		{/permissions}

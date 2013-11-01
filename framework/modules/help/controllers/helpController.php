@@ -155,7 +155,8 @@ class helpController extends expController {
      * Create or Edit a help document
      */
 	public function edit() {
-	    global $db, $sectionObj;
+//	    global $db, $sectionObj;
+        global $db;
 
 	    expHistory::set('editable', $this->params);
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
@@ -263,7 +264,7 @@ class helpController extends expController {
         $new_parents = array();
         // copy parent help docs
 	    $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent=0',$order);
-	    foreach ($current_docs as $key=>$doc) {
+	    foreach ($current_docs as $doc) {
             $origid = $doc->id;
 	        unset($doc->id);
 	        $doc->help_version_id = $to;
@@ -292,6 +293,21 @@ class helpController extends expController {
         // copy child help docs
         $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent!=0',$order);
    	    foreach ($current_docs as $key=>$doc) {
+   	        unset($doc->id);
+            $doc->parent = $new_parents[$doc->parent];
+   	        $doc->help_version_id = $to;
+   	        $doc->save();
+   	        foreach($doc->expFile as $subtype=>$files) {
+   	            foreach($files as $file) {
+   	                $doc->attachItem($file, $subtype);
+   	            }
+
+   	        }
+   	    }
+
+        // copy child help docs
+        $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent!=0',$order);
+   	    foreach ($current_docs as $doc) {
    	        unset($doc->id);
             $doc->parent = $new_parents[$doc->parent];
    	        $doc->help_version_id = $to;
@@ -392,7 +408,7 @@ class helpController extends expController {
      * Creates a new help version, possibly based on existing help version
      */
 	public function update_version() {
-	    global $db;
+//	    global $db;
 	    
 	    // get the current version
 	    $hv = new help_version();
@@ -485,7 +501,8 @@ class helpController extends expController {
    	 * @return int
    	 */
    	function addContentToSearch() {
-       global $db, $router;
+//       global $db, $router;
+        global $db;
 
        $count = 0;
        $help = new help();

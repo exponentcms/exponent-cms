@@ -24,11 +24,11 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
                 {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
 			{/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='photo' text="Manage Tags"|gettext}
                 {/if}
@@ -66,9 +66,9 @@
                 </a>
                 {permissions}
                     <div class="item-actions">
-                        {if $permissions.edit == 1}
+                        {if $permissions.edit || ($permissions.create && $records[0]->poster == $user->id)}
                             {if $myloc != $cat->records[0]->location_data}
-                                {if $permissions.manage == 1}
+                                {if $permissions.manage}
                                     {icon action=merge id=$cat->records[0]->id title="Merge Aggregated Content"|gettext}
                                 {else}
                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -76,10 +76,10 @@
                             {/if}
                             {icon action=edit record=$cat->records[0] title="Edit"|gettext|cat:" `$modelname`"}
                         {/if}
-                        {if $permissions.delete == 1}
+                        {if $permissions.delete || ($permissions.create && $records[0]->poster == $user->id)}
                             {icon action=delete record=$cat->records[0] title="Delete"|gettext|cat:" `$modelname`"}
                         {/if}
-                        {if $permissions.create == 1}
+                        {if $permissions.create}
                             {icon class=add action=edit rank=$cat->records[0]->rank+1 title="Add another here"|gettext  text="Add After"|gettext}
                         {/if}
                     </div>

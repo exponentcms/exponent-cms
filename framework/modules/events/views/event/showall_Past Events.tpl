@@ -23,7 +23,7 @@
         &#160;&#160;|&#160;&#160;
         {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
 		{permissions}
-			{if $permissions.manage == 1}
+			{if $permissions.manage}
 				&#160;&#160;|&#160;&#160;
                 {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
@@ -42,7 +42,7 @@
             &#160;&#160;|&#160;&#160;
 			{*<span class="listviewlink">{'Past Events View'|gettext}</span>*}
             {icon class="listviewlink" text='Past Events View'|gettext}
-			{if $permissions.manage == 1}
+			{if $permissions.manage}
 				&#160;&#160;|&#160;&#160;
 				{icon class=delete action=delete_all_past onclick="return confirm('"|cat:("Delete All Past Events?"|gettext)|cat:"');" title="Delete All Past Events"|gettext text="Purge All Past Events"|gettext}
 				{br}
@@ -60,7 +60,7 @@
     {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>
@@ -91,9 +91,9 @@
 				<td>
 					{permissions}
 						<div class="item-actions">
-							{if $permissions.edit == 1}
+							{if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                                 {if $myloc != $item->location_data}
-                                    {if $permissions.manage == 1}
+                                    {if $permissions.manage}
                                         {icon img='arrow_merge.png' action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -102,7 +102,7 @@
 								{icon img='edit.png' action=edit record=$item date_id=$item->date_id title="Edit this Event"|gettext}
                                 {icon img='copy.png' action=copy record=$item date_id=$item->date_id title="Copy this Event"|gettext}
 							{/if}
-							{if $permissions.delete == 1}
+							{if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
 								{if $item->is_recurring == 0}
 									{icon img='delete.png' action=delete record=$item date_id=$item->date_id title="Delete this Event"|gettext}
 								{else}

@@ -23,15 +23,14 @@
 class product_type extends expNestedNode {
     public $table = 'product_type';
 
-	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
-		global $db;
-		parent::__construct($params, $get_assoc, $get_attached);
-
-	}
+//	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
+//		global $db;
+//		parent::__construct($params, $get_assoc, $get_attached);
+//	}
 	
 	public function saveCategories($catArray, $cat_id, $type) {
-	
         global $db;
+
 		$product_type_id = $type . "_id";
         // We need to reset the current category
 		$db->delete("{$type}_storeCategories", "storecategories_id =".$cat_id);

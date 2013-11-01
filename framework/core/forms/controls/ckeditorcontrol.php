@@ -45,7 +45,8 @@ class ckeditorcontrol extends formcontrol {
     }
 
     function controlToHTML($name, $label) {
-        global $db;
+//        global $db, $user;
+        global $user;
 
         $contentCSS = '';
         $cssabs     = BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor.css';
@@ -84,8 +85,9 @@ class ckeditorcontrol extends formcontrol {
         }
 
         // set defaults
+        if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
         if (empty($tb)) {
-            if ($this->toolbar == 'basic') {
+              if ($this->toolbar == 'basic') {
                 $tb = "
                 toolbar : [
                     ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','About']
@@ -113,9 +115,13 @@ class ckeditorcontrol extends formcontrol {
         } else {
             $tb = "toolbar : [".$tb."],";
         }
-        if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
-        if (empty($scayt_on)) $scayt_on = 'true';
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
+        if (!$user->globalPerm('prevent_uploads')) {
+            $upload = "filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',";
+        } else {
+            $upload = '';
+        }
+        if (empty($scayt_on)) $scayt_on = 'true';
         if (empty($stylesset)) $stylesset = "'default'";
         if (empty($formattags)) $formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
         if (empty($fontnames)) $fontnames = "'Arial/Arial, Helvetica, sans-serif;' +
@@ -135,17 +141,17 @@ class ckeditorcontrol extends formcontrol {
                 };
                 EXPONENT.editor" . createValidId($name) . " = CKEDITOR.replace('" . createValidId($name) . "', {
                     skin : '" . $skin . "',
-                    ".$tb."
+                    " . $tb . "
                     " . $paste_word . "
                     scayt_autoStartup : " . $scayt_on . ",
-                    filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "ck"=> 1, "update"=> "fck")) . "',
-                    filebrowserUploadUrl : '" . PATH_RELATIVE . "external/editors/connector/uploader.php',
+                    filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck")) . "',
+                    " . $upload . "
                     filebrowserWindowWidth : " . FM_WIDTH . ",
                     filebrowserWindowHeight : " . FM_HEIGHT . ",
-                    filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "external/editors/connector/ckeditor_link.php',
+                    filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php',
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
-                    filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "external/editors/connector/ckeditor_link.php',
+                    filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php',
                     extraPlugins : 'stylesheetparser,tableresize," . $plugins . "',
                     " . $additionalConfig . "
                     autoGrow_minHeight : 200,

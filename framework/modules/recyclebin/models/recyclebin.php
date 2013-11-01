@@ -52,10 +52,6 @@ class recyclebin extends expRecord {
         //foreach ($orphans as $orphan) {
         $numrecycled = count($orphans);
         for($i=0; $i<$numrecycled; $i++) {
-//            $loc = new stdClass();
-//            $loc->mod = $orphans[$i]->module;
-//            $loc->src = $orphans[$i]->source;
-//            $loc->int = $orphans[$i]->internal;
             $loc = expCore::makeLocation($orphans[$i]->module,$orphans[$i]->source,$orphans[$i]->internal);
             $orphans[$i]->loc = serialize($loc);
             if ($orphans[$i]->module == 'recyclebin') {

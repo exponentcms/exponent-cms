@@ -35,10 +35,10 @@
                 <td>{$listing->base_price|currency}</td>
                 <td>
                     {permissions}
-                        {if $permissions.edit == 1}
+                        {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
                             {icon img='edit.png' action=edit id=$listing->id title="Edit `$listing->title`"}
                         {/if}
-                        {if $permissions.delete == 1}
+                        {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
                             {icon img='delete.png' action=delete id=$listing->id title="Delete `$listing->title`"}
                         {/if}
                     {/permissions}  

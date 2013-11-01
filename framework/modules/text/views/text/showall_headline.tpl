@@ -14,15 +14,15 @@
  *}
 
 <div class="module text headline headline-show">
-
-    {if $items[0]->title}<h1>{$items[0]->title}</h1>{/if}
-
+    <div class="item">
+        {if $items[0]->title}<h1>{$items[0]->title}</h1>{/if}
+    </div>
     {permissions}
         <div class="module-actions">
-            {if $permissions.edit == 1}
+            {if $permissions.edit || ($permissions.create && $items[0]->poster == $user->id)}
                 {icon action=edit record=$items[0]}
             {/if}
-            {if $permissions.delete == 1}
+            {if $permissions.delete || ($permissions.create && $items[0]->poster == $user->id)}
                 {icon action=delete record=$items[0]}
             {/if}
         </div>

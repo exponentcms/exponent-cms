@@ -64,9 +64,7 @@
 
 <div id="recur_monthly" style="display: none">
 	{'Every'|gettext} <input type="text" size="2" name="recur_freq_recur_monthly" maxlength="2" value="1" /> {'month(s)'|gettext}
-	{*<br />*}
 	<input type="radio" name="month_type" value="1" checked="1" /> {'By Day'|gettext}
-	{*<br />*}
 	<input type="radio" name="month_type" value="0" /> {'By Date'|gettext}
 </div>
 
@@ -75,7 +73,6 @@
 </div>
 
 <div id="until_date" style="display: none">
-    {*{'Until'|gettext}*}
   {if empty($record->eventdate->date)}
         {$until = $smarty.now}
     {else}

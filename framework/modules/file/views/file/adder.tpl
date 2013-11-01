@@ -28,7 +28,7 @@
 <div id="exp-adder">
     <h1>{"Add Existing Files"|gettext}</h1>
     <div id="actionbar">
-        <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
+        <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 update=$smarty.get.update}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
     </div>
 	<div class="info-header clearfix">
 		<div class="related-actions">
@@ -42,8 +42,8 @@
         {if $files|@count!=0}
             {form action=addit}
                 {control type=hidden name=update value=$smarty.get.update}
-                {control type=hidden name=fck value=$smarty.get.fck}
-                <table id="filenames" class="exp-skin-table">
+                {*{control type=hidden name=ck value=$smarty.get.ck}*}
+                <table id="ffilenames" class="exp-skin-table">
                     <thead>
                        <tr>
                            <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" onChange="selectAll(this.checked)"></th>

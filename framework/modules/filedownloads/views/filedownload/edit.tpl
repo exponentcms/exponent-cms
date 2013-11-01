@@ -28,9 +28,20 @@
                 <div id="tab1">
                     <h2>{'File Download'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title}
-                    {control id="downloadable" type="files" name="downloadable" label="Files for Download"|gettext subtype=downloadable value=$record->expFile description='First file is the primary download.'|gettext}
-                    {*{control type=text name=ext_file label="External File URL"|gettext value=$record->ext_file description='A download link on another server used instead of Files above.'|gettext}*}
-                    {control type=url name=ext_file label="External File URL"|gettext value=$record->ext_file description='A download link on another server used instead of Files above.'|gettext}
+
+                    <div id="alt-control" class="alt-control">
+                        <div class="control"><label class="label">{'Type of Media'|gettext}</label></div>
+                        <div class="alt-body">
+                            {control type=radiogroup columns=2 name="file_type" items="Uploaded File,External File"|gettxtlist values="file,ext_file" default=$record->file_type|default:"file"}
+                            <div id="file-div" class="alt-item" style="display:none;">
+                                {control id="downloadable" type="files" name="downloadable" label="Files for Download"|gettext subtype=downloadable value=$record->expFile description='First file is the primary download.'|gettext}
+                            </div>
+                            <div id="ext_file-div" class="alt-item" style="display:none;">
+                                {control type=url name=ext_file label="External File URL"|gettext value=$record->ext_file size=100 description='A download link on another server used instead of Files above.'|gettext}
+                            </div>
+                        </div>
+                    </div>
+
                     {control id="preview" type="files" name="preview" label="Preview Image to display"|gettext subtype=preview accept="image/*" value=$record->expFile limit=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {if !$config.disabletags}
@@ -62,6 +73,8 @@
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title description='Override the item title for search engine entries'|gettext}
                     {control type="textarea" name="meta_description" label="Meta Description"|gettext rows=5 cols=35 value=$record->meta_description description='Override the item summary for search engine entries'|gettext}
                     {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext rows=5 cols=35 value=$record->meta_keywords description='Comma separated phrases - overrides site keywords and item tags'|gettext}
+                    {control type="checkbox" name="meta_noindex" label="Do Not Index"|gettext|cat:"?" checked=$section->meta_noindex|default:1 value=1 description='Should this page be indexed by search engines?'|gettext}
+                    {control type="checkbox" name="meta_nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->meta_nofollow|default:1 value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
                 </div>
             </div>
         </div>
@@ -82,5 +95,24 @@
 		Y.one('#editfile-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });
+{/literal}
+{/script}
+
+{script unique="file-type" yui3mods="node,node-event-simulate"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+    var radioSwitchers = Y.all('#alt-control input[type="radio"]');
+    radioSwitchers.on('click',function(e){
+        Y.all(".alt-item").setStyle('display','none');
+        var curdiv = Y.one("#" + e.target.get('value') + "-div");
+        curdiv.setStyle('display','block');
+    });
+
+    radioSwitchers.each(function(node,k){
+        if(node.get('checked')==true){
+            node.simulate('click');
+        }
+    });
+});
 {/literal}
 {/script}

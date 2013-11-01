@@ -22,11 +22,11 @@
  */
 class crosssellItem extends product {
     public $table = 'product';
-    public $has_one = array();
-    public $has_many = array(); 
-    public $has_many_self = array(); 
-    public $has_and_belongs_to_many = array(); 
-    public $has_and_belongs_to_self = array(); 
+//    public $has_one = array();
+//    public $has_many = array();
+//    public $has_many_self = array();
+//    public $has_and_belongs_to_many = array();
+//    public $has_and_belongs_to_self = array();
     
     public $product_name = 'Crosssell Item'; 
     protected $attachable_item_types = array(
@@ -42,7 +42,7 @@ class crosssellItem extends product {
         ));*/
     
     public function __construct($params=array(), $get_assoc=false, $get_attached=true) {
-        global $db;        
+//        global $db;
         parent::__construct($params, $get_assoc, $get_attached);
         $this->price = $this->getBasePrice();
         

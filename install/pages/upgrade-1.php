@@ -24,6 +24,9 @@ if (!defined('EXPONENT')) exit('');
 <br>
 <p>
 <?php
+    // build core css files from .less
+    expCSS::updateCoreCss();
+
     $upgradedb = 'upgrade-2';
     $upgradedbstr = gt('Continue to Check System Requirements');
     if ($db->tableExists('textitem')) {

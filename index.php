@@ -136,7 +136,7 @@ if (EXPORT_AS_PDF == 1) {
     $content = ob_get_clean();
 
     // convert to PDF
-    $pdf = new expHtmlToPDF2('A4',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);
+    $pdf = new expHtmlToPDF('Letter',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);
     $pdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
     echo '<script type="text/javascript">
         <!--

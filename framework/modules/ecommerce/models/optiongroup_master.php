@@ -23,7 +23,7 @@
 class optiongroup_master extends expRecord {
 	public $has_many = array('option_master');
     //public $has_many_options = array('option_master'=>array('sort'=>'rank', 'sortdir'=>'ASC'));
-	protected $attachable_item_types = array();
+//	protected $attachable_item_types = array();
     
 	public $validates = array(
 		'presence_of'=>array(

@@ -37,7 +37,7 @@ class tagtreecontrol extends formcontrol {
     }
 
     function __construct($params) {
-        global $db;
+//        global $db;
 
         if (!empty($params['values'])) {
             foreach ($params['values'] as $key=> $var) {

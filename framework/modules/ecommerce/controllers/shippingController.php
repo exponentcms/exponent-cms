@@ -84,8 +84,10 @@ class shippingController extends expController {
 	}
 	
 	function renderOptions() {
-	    global $db, $order;	    
-	    $shipping = new shipping(); 
+//	    global $db, $order;
+        global $order;
+
+	    $shipping = new shipping();
         $shipping->pricelist = $shipping->calculator->getRates($order);
         
         if (empty($shipping->shippingmethod->option)) {

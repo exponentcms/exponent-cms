@@ -22,7 +22,7 @@
     
     {permissions}
 		<div class="module-actions">
-			{if $permissions.configure == 1}
+			{if $permissions.configure}
 				{icon class=configure action=configure text="Configure Service"|gettext}
 			{/if}
 

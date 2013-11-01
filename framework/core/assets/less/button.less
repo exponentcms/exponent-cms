@@ -1,0 +1,172 @@
+@import "exponent.less";
+
+.awesome, .awesome:visited {
+	background            : #222 url(../images/button/gradient.png) repeat-x;
+	display               : inline-block;
+	padding               : 5px 10px 6px;
+	color                 : #fff;
+	text-decoration       : none;
+//	-moz-border-radius    : 22px;
+//	-webkit-border-radius : 22px;
+//	border-radius         : 22px;
+	.border-radius(22px);
+//	box-shadow            : 0 1px 2px rgba(0, 0, 0, 0.4);
+//	-moz-box-shadow       : 0 1px 2px rgba(0, 0, 0, 0.4);
+//	-webkit-box-shadow    : 0 1px 2px rgba(0, 0, 0, 0.4);
+	.box-shadow(0, 1px, 2px, 0.4);
+	text-shadow           : 0 -1px 1px rgba(0, 0, 0, 0.25);
+	border                : 1px solid #999;
+	border                : 1px solid rgba(0, 0, 0, 0.25);
+	*border               : 0;
+	position              : relative;
+	cursor                : pointer;
+}
+
+.awesome:hover {
+	background-color : #111;
+	color            : #fff;
+}
+
+.awesome:active {
+	top : 1px
+}
+
+.small.awesome,
+.small.awesome:visited {
+	font-size : 10px;
+	/*padding: ;*/
+}
+
+.awesome,
+.awesome:visited,
+.medium.awesome,
+.medium.awesome:visited {
+	font-size   : 13px;
+	font-weight : bold;
+	line-height : 1;
+	text-shadow : 0 -1px 1px rgba(0, 0, 0, 0.25);
+}
+
+.large.awesome,
+.large.awesome:visited {
+	font-size : 14px;
+	padding   : 8px 14px 9px;
+}
+
+/**************** colors  ***********************/
+
+.green.awesome,
+.green.awesome:visited {
+	background-color : #91bd09
+}
+
+.green.awesome:hover {
+	background-color : #749a02
+}
+
+.blue.awesome,
+.blue.awesome:visited {
+	background-color : #005293
+}
+
+.blue.awesome:hover {
+	background-color : #0162b0
+}
+
+.red.awesome,
+.red.awesome:visited {
+	background-color : #b70700
+}
+
+.red.awesome:hover {
+	background-color : #e90800
+}
+
+.magenta.awesome,
+.magenta.awesome:visited {
+	background-color : #a9014b
+}
+
+.magenta.awesome:hover {
+	background-color : #630030
+}
+
+.orange.awesome,
+.orange.awesome:visited {
+	background-color : #E37222
+}
+
+.orange.awesome:hover {
+	background-color : #f77f2a
+}
+
+.yellow.awesome,
+.yellow.awesome:visited {
+	background-color : #ffb515
+}
+
+.yellow.awesome:hover {
+	background-color : #fc9200
+}
+
+.grey.awesome,
+.grey.awesome:visited {
+	background-color : #c1c1c1;
+	color            : #525252;
+	text-shadow      : none;
+}
+
+.grey.awesome:hover {
+	background-color : #d4d4d4;
+	color            : #6d6d6d;
+}
+
+.purple.awesome,
+.purple.awesome:visited {
+	background-color : #8e1f8f
+}
+
+.purple.awesome:hover {
+	background-color : #660066
+}
+
+.black.awesome,
+.black.awesome:visited {
+	background-color : #111
+}
+
+.black.awesome:hover {
+	background-color : #666666
+}
+
+.pink.awesome,
+.pink.awesome:visited {
+	background-color : #ef6fd8
+}
+
+.pink.awesome:hover {
+	background-color : #cc0099
+}
+
+/****************  dissabled  ***********************/
+.disabled.awesome,
+.disabled.awesome:visited {
+	background-color   : #999999;
+	color              : #525252;
+	text-shadow        : none;
+//	box-shadow         : 0 0 0 0;
+//	-moz-box-shadow    : 0 0 0 0;
+//	-webkit-box-shadow : 0 0 0 0;
+	.box-shadow(0, 0, 0, 0);
+	border             : 1px solid #aaa;
+}
+
+.disabled.awesome:hover {
+	background-color : #999999;
+	color            : #525252;
+	cursor           : default;
+}
+
+.disabled.awesome:active {
+	top : 0px
+}

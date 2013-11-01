@@ -26,8 +26,10 @@
     {$warn=0}
 	<table cellspacing="0" cellpadding="0" border="0" width="100%" class="exp-skin-table">
 		<thead>
-			<th>{'Filename'|gettext}</th>
-			<th></th>
+            <tr>
+                <th>{'Filename'|gettext}</th>
+                <th></th>
+            </tr>
 		</thead>
 		<tbody>
 			{foreach from=$files_data item=status key=filename }

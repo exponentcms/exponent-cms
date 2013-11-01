@@ -29,7 +29,7 @@ class expTheme {
 		global $auto_dirs2;
 //        global $user;
 		// Initialize the theme subsystem 1.0 compatibility layer
-		require_once(BASE.'framework/core/compat/theme.php');
+//		require_once(BASE.'framework/core/compat/theme.php');
 
 		if (!defined('DISPLAY_THEME')) {
 			/* exdoc
@@ -119,14 +119,10 @@ class expTheme {
 		};
 
 		// default the running of view based CSS inclusion to true
-		if(empty($config['css_links'])){
-			$config['css_links'] = true;
-		}
+		if(empty($config['css_links'])) $config['css_links'] = true;
 
 		// default theme css collecting to true if not set
-		if(empty($config['css_theme'])){
-			$config['css_theme'] = true;
-		}
+		if(empty($config['css_theme'])) $config['css_theme'] = true;
 
 		if (empty($sectionObj)) return false;
 
@@ -139,24 +135,93 @@ class expTheme {
         
 		$metainfo = self::pageMetaInfo();
 
-		$str = '<title>'.$metainfo['title']."</title>\n";
-		$str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
-        $locale = strtolower(str_replace('_', '-', LOCALE));
-        $str .= "\t".'<meta content="'.$locale.'" http-equiv="Content-Language" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
-		$str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
-		$str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
-        // favicon
-        if(file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
-            $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
+        // default to showing all meta tags unless specifically set to false
+        if (!isset($config['meta']['content_type'])) {
+            $config['meta']['content_type'] = true;
+        }
+        if (!isset($config['meta']['content_language'])) {
+            $config['meta']['content_language'] = true;
+        }
+        if (!isset($config['meta']['generator'])) {
+            $config['meta']['generator'] = true;
+        }
+        if (!isset($config['meta']['keywords'])) {
+            $config['meta']['keywords'] = true;
+        }
+        if (!isset($config['meta']['description'])) {
+            $config['meta']['description'] = true;
+        }
+        if (!isset($config['meta']['canonical'])) {
+            $config['meta']['canonical'] = true;
+        }
+        if (!isset($config['meta']['viewport'])) {
+            $config['meta']['viewport'] = true;
+        }
+        if (!isset($config['meta']['ie_compat'])) {
+            $config['meta']['ie_compat'] = true;
         }
 
-		//the last little bit of IE 6 support
-		$str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
+        $str = '<title>'.$metainfo['title']."</title>\n";
+        if ($config['meta']['content_type']) $str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
+        $locale = strtolower(str_replace('_', '-', LOCALE));
+        if ($config['meta']['content_language']) $str .= "\t".'<meta content="'.$locale.'" http-equiv="Content-Language" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['generator']) $str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
+        if ($config['meta']['keywords']) $str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['description']) $str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['canonical'] && !empty($metainfo['canonical'])) $str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
+        if ($metainfo['noindex'] || $metainfo['nofollow']) {
+            $str .= "\t".'<meta name="robots" content="'.(!empty($metainfo['noindex'])?'noindex':'').' '.($metainfo['nofollow']?'nofollow':''). '" '.XHTML_CLOSING.'>'."\n";
+        }
 
-        //html5 support for IE 6-8
-		$str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-printshiv.js"></script><![endif]-->'."\n";
+        if (empty($config['viewport'])) {
+            $viewport = 'width=device-width, initial-scale=1.0, user-scalable=yes';
+        } else {
+            if (!empty($config['viewport']['width'])) {
+                $viewport = 'width=' . $config['viewport']['width'];
+            } else {
+                $viewport = 'width=device-width';
+            }
+            if (!empty($config['viewport']['height'])) {
+                $viewport .= ', height=' . $config['viewport']['height'];
+            }
+            if (!empty($config['viewport']['initial_scale'])) {
+                $viewport .= ' initial-scale=' . $config['viewport']['initial_scale'];
+            } else {
+                $viewport .= ', initial-scale=1.0';
+            }
+            if (!empty($config['viewport']['minimum_scale'])) {
+                $viewport .= ', minimum-scale=' . $config['viewport']['minimum_scale'];
+            }
+            if (!empty($config['viewport']['maximum_scale'])) {
+                $viewport .= ', maximum-scale=' . $config['viewport']['maximum_scale'];
+            }
+            if (!empty($config['viewport']['user_scalable'])) {
+                $viewport .= ', user-scalable=' . ($config['viewport']['user_scalable'] ? "yes" : "no");
+            } else {
+                $viewport .= ', user-scalable=yes';
+            }
+        }
+        if ($config['meta']['viewport']) $str .= "\t".'<meta name="viewport" content="'. $viewport . '" '.XHTML_CLOSING.'>'."\n";
+
+        // favicon
+        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
+            $str .= "\t".'<link rel="shortcut icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/favicon.ico" type="image/x-icon" '.XHTML_CLOSING.'>'."\n";
+        }
+        // touch icons
+        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png')) {
+            $str .= "\t".'<link rel="apple-touch-icon" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon.png" '.XHTML_CLOSING.'>'."\n";
+        }
+        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png')) {
+            $str .= "\t".'<link rel="apple-touch-icon-precomposed" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png" '.XHTML_CLOSING.'>'."\n";
+        }
+
+        if ($config['meta']['ie_compat']) {
+            //the last little bit of IE 6 support
+            $str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
+
+            //html5 support for IE 6-8
+            $str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-shiv.js"></script><![endif]-->'."\n";
+        }
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
 		$str .= '<!-- MINIFY REPLACE -->';
@@ -204,6 +269,8 @@ class expTheme {
 	        $metainfo['keywords'] = empty($sectionObj->keywords) ? SITE_KEYWORDS : $sectionObj->keywords;
 	        $metainfo['description'] = empty($sectionObj->description) ? SITE_DESCRIPTION : $sectionObj->description;
 	        $metainfo['canonical'] = empty($sectionObj->canonical) ? URL_FULL.$sectionObj->sef_name : $sectionObj->canonical;
+            $metainfo['noindex'] = empty($sectionObj->noindex) ? false : $sectionObj->noindex;
+            $metainfo['nofollow'] = empty($sectionObj->nofollow) ? false : $sectionObj->nofollow;
         }
 
         return $metainfo;
@@ -463,7 +530,8 @@ class expTheme {
 	public static function runAction() {
 		if (self::inAction()) {
 			if (!AUTHORIZED_SECTION) {
-				echo SITE_403_HTML;
+//				echo SITE_403_HTML;
+                notfoundController::handle_not_authorized();
 			}
 //			if (expSession::is_set("themeopt_override")) {
 //				$config = expSession::get("themeopt_override");
@@ -522,13 +590,9 @@ class expTheme {
         return false;
 	}
 
-    public static function showAction($module, $action, $src="", $params=array()) {  //FIXME doesn't seem to be used except by smarty functions, old school?
-   		global $db, $user;
+    public static function showAction($module, $action, $src="", $params=array()) {  //FIXME only used by smarty functions, old school?
+//   		global $db, $user;
 
-//   		$loc = new stdClass();;
-//   		$loc->mod = $module;
-//   		$loc->src = (isset($src) ? $src : "");
-//   		$loc->int = (isset($int) ? $int : "");
         $loc = expCore::makeLocation($module,(isset($src) ? $src : ""),(isset($int) ? $int : ""));
 
    		$actfile = "/" . $module . "/actions/" . $action . ".php";
@@ -544,7 +608,9 @@ class expTheme {
 //   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 //   			include(BASE.'framework/modules-1/'.$actfile);
    		} else {
-   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
+//   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
+            notfoundController::handle_not_found();
+            echo '<br /><hr size="1" />';
    			echo sprintf(gt('No such module action').' : %1 : %2',strip_tags($_REQUEST['module']),strip_tags($_REQUEST['action']));
    			echo '<br />';
    		}
@@ -567,7 +633,8 @@ class expTheme {
    				header("Location: ".URL_FULL."index.php?section=".$section->id);
    				exit();
    			} else {
-   				echo SITE_404_HTML;
+//   				echo SITE_404_HTML;
+                notfoundController::handle_not_found();
    			}
    		}
    	}
@@ -615,7 +682,8 @@ class expTheme {
    			// Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
    //			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
    			expHistory::set('manageable', $router->params);
-   			echo SITE_403_HTML;
+//   			echo SITE_403_HTML;
+            notfoundController::handle_not_authorized();
    			return;
    		}
 
@@ -637,6 +705,7 @@ class expTheme {
    	#   }
    	}
 
+     //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific module, in a section-sensitive way.
      *
@@ -677,6 +746,7 @@ class expTheme {
 		self::showModule($module,$view,$title,$src,false,null,$hide_menu);
 	}
 
+     //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific module in such a way that the current
      * section displays the same content as its top-level parent and all of the top-level parent's
@@ -708,6 +778,7 @@ class expTheme {
 		self::showModule($module,$view,$title,$prefix.$section->id,false,null,$hide_menu);
 	}
 
+     //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific controller, in a section-sensitive way.
      *
@@ -736,6 +807,7 @@ class expTheme {
         self::module($params);
     }
 
+    //FIXME Deprecated
     public static function showController($params=array()) {
         $module = !empty($params['module']) ? $params['module'] : $params['controller'];
         $view = !empty($params['action']) ? $params['action'] : $params['view'];
@@ -885,7 +957,7 @@ class expTheme {
     }
 
     /** exdoc
-     * Calls the necessary methods to show a specific module
+     * Calls the necessary methods to show a specific module - NOT intended to be called directly from theme
      *
      * @param string $module The classname of the module to display
      * @param string $view The name of the view to display the module with
@@ -900,7 +972,6 @@ class expTheme {
      */
 	public static function showModule($module,$view="Default",$title="",$source=null,$pickable=false,$section=null,$hide_menu=false,$params=array()) {
         $module = expModules::getModuleName($module);  //FIXME patch to cleanup module name
-//		if (!AUTHORIZED_SECTION && $module != 'navigationController' && $module != 'loginController') return;
         if (!AUTHORIZED_SECTION && $module != 'navigation' && $module != 'login') return;
 
 		global $db, $sectionObj, $module_scope;
@@ -914,13 +985,13 @@ class expTheme {
 			$sectionObj = $db->selectObject('section','id='.$section_id);
 			//$section->id = $section_id;
 		}
-//		if ($module == "loginController" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) return;
         if ($module == "login" && defined('PREVIEW_READONLY') && PREVIEW_READONLY == 1) return;
 
 //		if (expSession::is_set("themeopt_override")) {
 //			$config = expSession::get("themeopt_override");
 //			if (in_array($module,$config['ignore_mods'])) return;
 //		}
+        if (empty($params['action'])) $params['action'] = $view;
 		$loc = expCore::makeLocation($module,$source."");
 
         if (empty($module_scope[$source][$module]->scope)) {
@@ -929,21 +1000,33 @@ class expTheme {
         }
         // make sure we've added this module to the sectionref table
 		if ($db->selectObject("sectionref","module='$module' AND source='".$loc->src."'") == null) {
-				$secref = new stdClass();
-				$secref->module = $module;
-				$secref->source = $loc->src;
-				$secref->internal = "";
-				$secref->refcount = 1000;
-				if ($sectionObj != null) {
-					$secref->section = $sectionObj->id;
-				}
-//				$secref->is_original = 1;
-				$db->insertObject($secref,'sectionref');
+            $secref = new stdClass();
+            $secref->module = $module;
+            $secref->source = $loc->src;
+            $secref->internal = "";
+            $secref->refcount = 1000;
+            if ($sectionObj != null) {
+                $secref->section = $sectionObj->id;
+            }
+//			  $secref->is_original = 1;
+            $db->insertObject($secref,'sectionref');
 		}
+        // add (hard-coded) modules to the container table, nested containers added in container showall method??
+        $container = $db->selectObject('container', "internal='" . serialize($loc) . "'");
+        if (empty($container->id)) {
+            //if container isn't here already, then create it...hard-coded from theme template
+            $newcontainer = new stdClass();
+            $newcontainer->internal = serialize($loc);
+            $newcontainer->external = serialize(null);
+            $newcontainer->title = $title;
+            $newcontainer->view = $view;
+            $newcontainer->action = $params['action'];
+            $newcontainer->id = $db->insertObject($newcontainer, 'container');
+        }
+        if (empty($title) && !empty($container->title)) $title = $container->title;
 //		$iscontroller = expModules::controllerExists($module);
 
 		if (defined('SELECTOR') && call_user_func(array(expModules::getModuleClassName($module),"hasSources"))) {
-//			containermodule::wrapOutput($module,$view,$loc,$title);
             containerController::wrapOutput($module,$view,$loc,$title);
 		} else {
 //			if (is_callable(array($module,"show")) || $iscontroller) {
@@ -977,31 +1060,31 @@ class expTheme {
 //						}
 //					}
 //				} else {
-					// if we hit here we're dealing with a controller...not a module
+					// if we hit here we're dealing with a hard-coded controller...not a module
 					if (!$hide_menu && $loc->mod != "container") {
 						$controller = expModules::getController($module);
 //                        $controller = expModules::getControllerClassName($module);
-                        $container = new stdClass();  //php 5.4
-						$container->permissions = array(
+                        $hccontainer = new stdClass();  //php 5.4
+                        $hccontainer->permissions = array(
 							'manage'=>(expPermissions::check('manage',$loc) ? 1 : 0),
 							'configure'=>(expPermissions::check('configure',$loc) ? 1 : 0)
 						);
 
-						if ($container->permissions['manage'] || $container->permissions['configure']) {
-							$container->randomizer = mt_rand(1,ceil(microtime(1)));
-							$container->view = $view;
-							$container->action = $params['action'];
-							$container->info['class'] = expModules::getModuleClassName($loc->mod);
-							$container->info['module'] = $controller->displayname();
-//                            $container->info['module'] = $controller::displayname();
-							$container->info['source'] = $loc->src;
-                            $container->info['scope'] = $module_scope[$source][$module]->scope;
-//							$container->info['hasConfig'] = true;
+						if ($hccontainer->permissions['manage'] || $hccontainer->permissions['configure']) {
+                            $hccontainer->randomizer = mt_rand(1,ceil(microtime(1)));
+                            $hccontainer->view = $view;
+                            $hccontainer->action = $params['action'];
+                            $hccontainer->info['class'] = expModules::getModuleClassName($loc->mod);
+                            $hccontainer->info['module'] = $controller->displayname();
+//                            $hccontainer->info['module'] = $controller::displayname();
+                            $hccontainer->info['source'] = $loc->src;
+                            $hccontainer->info['scope'] = $module_scope[$source][$module]->scope;
+//							$hccontainer->info['hasConfig'] = true;
 //							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 //							$template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
                             $c2 = new containerController();
                             $template = get_template_for_action($c2,'_hardcoded_module_menu');
-							$template->assign('container', $container);
+							$template->assign('container', $hccontainer);
 							$template->output();
 						}
 					}
@@ -1012,7 +1095,6 @@ class expTheme {
 					$params['controller'] = $module;
 					$params['view'] = $view;
 					$params['moduletitle'] = $title;
-					if (empty($params['action'])) $params['action'] = $view;
 					renderAction($params);
 //				} else {
 //					call_user_func(array($module,"show"),$view,$loc,$title);

@@ -40,24 +40,24 @@ function smarty_function_attribution($params,&$smarty) {
 	}
 
 	if (!empty($u->id)) {
-//		$str = "";
-		$display = isset($params['display']) ? $params['display'] : DISPLAY_ATTRIBUTION;
-		switch ($display) {
-			case "firstlast":
-				$str = $u->firstname . " " . $u->lastname;
-				break;
-			case "lastfirst":
-				$str = $u->lastname . ", " . $u->firstname;
-				break;
-			case "first":
-				$str = $u->firstname;
-				break;
-			case "username":
-			default:
-				$str = $u->username;
-				break;
-		}
-		echo $str;
+        $display = isset($params['display']) ? $params['display'] : DISPLAY_ATTRIBUTION;
+        echo user::getUserAttribution($u->id, $display);
+//		switch ($display) {
+//			case "firstlast":
+//				$str = $u->firstname . " " . $u->lastname;
+//				break;
+//			case "lastfirst":
+//				$str = $u->lastname . ", " . $u->firstname;
+//				break;
+//			case "first":
+//				$str = $u->firstname;
+//				break;
+//			case "username":
+//			default:
+//				$str = $u->username;
+//				break;
+//		}
+//		echo $str;
 	} else {
 		echo gt('Anonymous User');
 	}

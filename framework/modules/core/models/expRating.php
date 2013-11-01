@@ -24,12 +24,12 @@
 class expRating extends expRecord {
 	public $table = 'expRatings';
 	public $attachable_table = 'content_expRatings';
-    protected $attachable_item_types = array(
-        //'content_expFiles'=>'expFile', 
-        //'content_expTags'=>'expTag', 
-        //'content_expComments'=>'expComment',
-        //'content_expSimpleNote'=>'expSimpleNote',
-    );
+//    protected $attachable_item_types = array(
+//        //'content_expFiles'=>'expFile',
+//        //'content_expTags'=>'expTag',
+//        //'content_expComments'=>'expComment',
+//        //'content_expSimpleNote'=>'expSimpleNote',
+//    );
 
     public function afterDelete() {
         global $db;

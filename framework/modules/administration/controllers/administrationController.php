@@ -257,6 +257,8 @@ class administrationController extends expController {
    	}
 
     public function toolbar() {
+//        global $user;
+
         $menu = array();
 		$dirs = array(
 			BASE.'framework/modules/administration/menus',
@@ -268,6 +270,7 @@ class administrationController extends expController {
 			    while (($file = readdir($dh)) !== false) {
 				    if (substr($file,-4,4) == '.php' && is_readable($dir.'/'.$file) && is_file($dir.'/'.$file)) {
 					    $menu[substr($file,0,-4)] = include($dir.'/'.$file);
+                        if (empty($menu[substr($file,0,-4)])) unset($menu[substr($file,0,-4)]);
 				    }
 			    }
 		    }
@@ -805,11 +808,9 @@ class administrationController extends expController {
      */
     public function install_upgrades() {
         //display the upgrade scripts
-        $upgrade_dir = BASE.'install/upgrades';
-        if (is_readable($upgrade_dir)) {
+        if (is_readable(BASE.'install/upgrades')) {
             $i = 0;
             if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
-            $dh = opendir($upgrade_dir);
 
             // first build a list of valid upgrade scripts
             $oldscripts = array(
@@ -819,16 +820,25 @@ class administrationController extends expController {
                 'remove_locationref.php',
                 'upgrade_attachableitem_tables.php',
             );
-            while (($file = readdir($dh)) !== false) {
-                if (is_readable($upgrade_dir . '/' . $file) && is_file($upgrade_dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
-                    include_once($upgrade_dir . '/' . $file);
-                    $classname     = substr($file, 0, -4);
-                    /**
-                     * Stores the upgradescript object
-                     * @var \upgradescript $upgradescripts
-                     * @name $upgradescripts
-                     */
-                    $upgradescripts[] = new $classname;
+            $ext_dirs = array(
+               BASE . 'install/upgrades',
+                THEME_ABSOLUTE . 'modules/upgrades'
+            );
+            foreach ($ext_dirs as $dir) {
+                if (is_readable($dir)) {
+                    $dh = opendir($dir);
+                    while (($file = readdir($dh)) !== false) {
+                        if (is_readable($dir . '/' . $file) && is_file($dir . '/' . $file) && substr($file, -4, 4) == '.php'  && !in_array($file,$oldscripts)) {
+                            include_once($dir . '/' . $file);
+                            $classname     = substr($file, 0, -4);
+                            /**
+                             * Stores the upgradescript object
+                             * @var \upgradescript $upgradescripts
+                             * @name $upgradescripts
+                             */
+                             $upgradescripts[] = new $classname;
+                        }
+                    }
                 }
             }
             //  next sort the list by priority
@@ -1158,9 +1168,17 @@ class administrationController extends expController {
 
         array_multisort($offset, SORT_ASC, $data);
         $tzoptions = array();
-        foreach ($data as $key => $row) {
+        foreach ($data as $row) {
             $tzoptions[$row['timezone_id']] = self::formatOffset($row['offset'])
                                             . ' ' . $row['timezone_id'];
+        }
+
+        $expcat = new expCat();
+        $cats = $expcat->find('all','module="file"');
+        $catarray = array();
+        $catarray[] = 'Root Folder';
+        foreach ($cats as $cat) {
+            $catarray[$cat->id] = $cat->title;
         }
 
         // profiles
@@ -1185,6 +1203,7 @@ class administrationController extends expController {
             'file_permisions'=>$file_permisions,
             'dir_permissions'=>$dir_permissions,
             'section_dropdown'=>$section_dropdown,
+            'folders'=>$catarray,
             'profiles'=>$profiles
         ));
     }

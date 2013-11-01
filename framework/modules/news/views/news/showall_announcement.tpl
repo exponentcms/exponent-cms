@@ -24,10 +24,10 @@
 
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit == true}
+        {if $permissions.create}
             {icon class="add" action=edit rank=1 text="Add a news post"|gettext}
         {/if}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {if !$config.disabletags}
             |  {icon controller=expTag class="manage" action=manage_module model='news' text="Manage Tags"|gettext}
             {/if}
@@ -36,7 +36,7 @@
             |  {ddrerank items=$page->records model="news" label="News Items"|gettext}
             {/if}
         {/if}
-        {if $permissions.showUnpublished == 1 }
+        {if $permissions.showUnpublished}
              |  {icon class="view" action=showUnpublished text="View Expired/Unpublished News"|gettext}
         {/if}
     </div>
@@ -51,9 +51,9 @@
             {if $item->isRss != true}
                 {permissions}
                     <div class="item-actions">
-                        {if $permissions.edit == true}
+                        {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                             {if $myloc != $item->location_data}
-                                {if $permissions.manage == 1}
+                                {if $permissions.manage}
                                     {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                 {else}
                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -61,7 +61,7 @@
                             {/if}
                             {icon action=edit record=$item}
                         {/if}
-                        {if $permissions.delete == true}
+                        {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                             {icon action=delete record=$item}
                         {/if}
                     </div>
@@ -73,6 +73,8 @@
                 {/if}
                 {if $config.usebody==1}
                     {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
+                {elseif $config.usebody==3}
+                    {$item->body|summarize:"html":"parapaged"}
                 {elseif $config.usebody==2}
                     <p>{$item->body|summarize:"html":"parahtml"}</p>
 				{else}

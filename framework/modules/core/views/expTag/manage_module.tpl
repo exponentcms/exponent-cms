@@ -21,7 +21,7 @@
         <h1>{"Manage Module Tags"|gettext}</h1>
     </div>
 	{permissions}
-    	{if $permissions.create == 1}
+    	{if $permissions.create}
     		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
     	{/if}
     {/permissions}

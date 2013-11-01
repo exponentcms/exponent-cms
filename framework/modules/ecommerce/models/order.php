@@ -22,9 +22,11 @@
  */
 class order extends expRecord {
     protected $table = 'orders';
+
     public $has_many = array('orderitem', 'order_discounts', 'billingmethod', 'order_status_changes');
     public $has_one = array('order_status', 'order_type', 'shippingmethod');
     public $get_assoc_for = array('orderitem', 'billingmethod', 'order_discounts');
+
     public $total = 0;
     public $shippingmethods = array();
     public $orderitem = array();
@@ -38,11 +40,11 @@ class order extends expRecord {
     public $forced_shipping = false;
     public $product_forcing_shipping = '';
 
-    protected $attachable_item_types = array( //'content_expFiles'=>'expFile',
-        //'content_expTags'=>'expTag', 
-        //'content_expComments'=>'expComment',
-        //'content_expSimpleNote'=>'expSimpleNote',
-    );
+//    protected $attachable_item_types = array( //'content_expFiles'=>'expFile',
+//        //'content_expTags'=>'expTag',
+//        //'content_expComments'=>'expComment',
+//        //'content_expSimpleNote'=>'expSimpleNote',
+//    );
 
     //public $status_codes = array(0=>'New', 1=>'Opened', 2=>'Processing', 3=>'Shipped');
 

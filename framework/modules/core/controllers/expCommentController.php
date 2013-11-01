@@ -95,7 +95,7 @@ class expCommentController extends expController {
         ));
 
         $refs[][] = array();
-        foreach ($page->records as $key=>$record) {
+        foreach ($page->records as $record) {
             $item = new $record->content_type($record->content_id);
             $refs[$record->content_type][$record->content_id] = $item->title;
         }
@@ -234,7 +234,8 @@ class expCommentController extends expController {
      * @return int
      */
     public static function countComments($params) {
-        global $user, $db;
+//        global $user, $db;
+        global $user;
 
         $sql  = 'SELECT c.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
@@ -488,7 +489,7 @@ class expCommentController extends expController {
 	}
 	
 	private function sendNotification($comment,$params) {
-	    global $db;
+//	    global $db;
 	    if (empty($comment)) return false;
         
         //eDebug($comment,1);

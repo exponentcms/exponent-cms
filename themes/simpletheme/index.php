@@ -18,7 +18,6 @@
     );
 	?>
     <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-<!--    <script>document.cookie='resolution='+Math.max(screen.width,screen.height)+'; path=/';</script>-->
 </head>
 <body>
 	<div id="doc">

@@ -27,10 +27,10 @@
     <div class="module forms show">
         {permissions}
             <div class="item-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.edit}
                     {icon class=edit action=enterdata forms_id=$f->id id=$record_id title='Edit this record'|gettext}
                 {/if}
-                {if $permissions.delete == 1}
+                {if $permissions.delete}
                     {icon class=delete action=delete forms_id=$f->id id=$record_id title='Delete this record'|gettext}
                 {/if}
             </div>

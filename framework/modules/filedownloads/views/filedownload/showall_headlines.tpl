@@ -40,10 +40,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h2>{/if}
     {permissions}
         <div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit rank=1 title="Add a File at the Top"|gettext text="Add a File"|gettext}
 			{/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='filedownload' text="Manage Tags"|gettext}
                 {/if}
@@ -119,9 +119,9 @@
                 </div>
                 {permissions}
                     <div class="item-actions">
-                        {if $permissions.edit == 1}
+                        {if $permissions.edit || ($permissions.create && $file->poster == $user->id)}
                             {if $myloc != $file->location_data}
-                                {if $permissions.manage == 1}
+                                {if $permissions.manage}
                                     {icon action=merge id=$file->id title="Merge Aggregated Content"|gettext}
                                 {else}
                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -129,7 +129,7 @@
                             {/if}
                             {icon action=edit record=$file title="Edit this file"|gettext}
                         {/if}
-                        {if $permissions.delete == 1}
+                        {if $permissions.delete || ($permissions.create && $file->poster == $user->id)}
                             {icon action=delete record=$file title="Delete this file"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this file?"|gettext)|cat:"');"}
                         {/if}
                     </div>
@@ -145,7 +145,7 @@
                 {clear}
                 {permissions}
                     <div class="module-actions">
-                        {if $permissions.create == 1}
+                        {if $permissions.create}
                             {icon class=add action=edit title="Add a File Here" text="Add a File"|gettext}
                         {/if}
                     </div>
@@ -160,36 +160,7 @@
     {/if}
 </div>
 
-{*{if $config.show_player}*}
-    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
-    {*{/script}*}
-
-    {*{script unique="flowplayer"}*}
-    {*{literal}*}
-    {*flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",*}
-        {*{*}
-    		{*wmode: 'transparent',*}
-    		{*clip: {*}
-    			{*autoPlay: false,*}
-    			{*},*}
-            {*plugins:  {*}
-                {*controls: {*}
-                    {*play: true,*}
-                    {*scrubber: true,*}
-                    {*fullscreen: false,*}
-                    {*autoHide: false*}
-                {*}*}
-            {*}*}
-        {*}*}
-    {*);*}
-    {*{/literal}*}
-    {*{/script}*}
-{*{/if}*}
-
 {if $config.show_player}
-    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
-    {*{/script}*}
-
     {script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
     {/script}
 

@@ -39,10 +39,10 @@ class event extends expRecord {
 //        $calevent->update($params);  // prime the record with the parameters
 
         if (!empty($params['id'])) {  // update existing event
+            $calevent = new eventdate();
        		if (!empty($params['is_recurring'])) {
        			// For recurring events, check some stuff.
        			// Were all dates selected?
-                $calevent = new eventdate();
                 $eventdates = $calevent->find('all',"event_id=".$this->id);
        			if (count($params['dates']) != count($eventdates)) {  // only part of list changed
        				// yes.  just update the original
@@ -52,17 +52,15 @@ class event extends expRecord {
        				// No, create new and relink affected dates
        				unset($this->id);
 //                    $calevent = new event($params);  // create a new event based on parameters
-       				if (count($params['dates']) == 1) {
-                        $this->is_recurring = 0; // Back to a single event.
-       				}
+       				if (count($params['dates']) == 1) $this->is_recurring = 0; // Back to a single event.
 
                     $this->save(true);  // save new event to get an event id
 
-       				foreach (array_keys($params['dates']) as $date_id) {  // update all the date occurances being changed
+                    unset($params['id']);
+       				foreach (array_keys($params['dates']) as $date_id) {  // update all the date occurrences being changed
                         $eventdate = $calevent->find('first',"id=".$date_id);
                         $eventdate->event_id = $this->id;
-                        unset($params['id']);
-                        $eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
+                        if (count($params['dates']) == 1) $eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
                         $eventdate->update($params);
        				}
        			} else { // all existing event occurrences have changed
@@ -75,7 +73,6 @@ class event extends expRecord {
 //                $calevent->update();
        			// There should be only one eventdate
 //                $eventdate = $calevent->eventdate[0]->find('first','event_id = '.$calevent->id);
-                $calevent = new eventdate();
                 $eventdate = $calevent->find('first','event_id = '.$this->id);
        			$eventdate->date = expDateTime::startOfDayTimestamp(yuicalendarcontrol::parseData("eventdate",$params));
                 $eventdate->update();

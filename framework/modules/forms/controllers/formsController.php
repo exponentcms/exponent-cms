@@ -85,7 +85,12 @@ class formsController extends expController {
                 $this->get_defaults($f);
             }
 //            $items = $db->selectObjects('forms_' . $f->table_name, 1);
-            $items = $db->selectArrays('forms_' . $f->table_name, 1);
+            if (empty($this->config['report_filter'])) {
+                $where = '1';
+            } else {
+                $where = $this->config['report_filter'];
+            }
+            $items = $db->selectArrays('forms_' . $f->table_name, $where);
             $columns = array();
             $fc = new forms_control();
             if (empty($this->config['column_names_list'])) {
@@ -172,7 +177,6 @@ class formsController extends expController {
     }
 
     public function show() {
-
         if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
             global $db;
 
@@ -216,7 +220,8 @@ class formsController extends expController {
 
             assign_to_template(array(
     //            "backlink"=>expHistory::getLastNotEditable(),
-                'backlink'    => expHistory::getLast('editable'),
+//                'backlink'    => expHistory::getLast('editable'),
+                'backlink'    => makeLink(expHistory::getBack(1)),
                 "f"           => $f,
                 "record_id"   => $this->params['id'],
                 "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : gt('Viewing Record'),
@@ -414,14 +419,14 @@ class formsController extends expController {
             $num = $counts[$col->caption] > 1 ? $counts[$col->caption] : '';
 
             if (!empty($this->params[$col->name])) {
-                if ($coltype == 'checkboxcontrol') {
-                    $responses[$col->caption . $num] = 'Yes';
-                } else {
+//                if ($coltype == 'checkboxcontrol') {
+//                    $responses[$col->caption . $num] = gt('Yes');
+//                } else {
                     $responses[$col->caption . $num] = $value;
-                }
+//                }
             } else {
                 if ($coltype == 'checkboxcontrol') {
-                    $responses[$col->caption . $num] = 'No';
+                    $responses[$col->caption . $num] = gt('No');
                 } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol') {
                     $responses[$col->name] = $value;
                 } elseif ($coltype == 'uploadcontrol') {
@@ -594,11 +599,13 @@ class formsController extends expController {
                     $mail = new expMail();
                     if (!empty($attachments)) {
                         foreach ($attachments as $attachment) {
-                            $relpath = str_replace(PATH_RELATIVE, '', BASE);
+                            if (file_exists(BASE.$attachment)) {
+                                $relpath = str_replace(PATH_RELATIVE, '', BASE);
 //                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                            $ftype = finfo_file($finfo, $relpath . $attachment);
 //                            finfo_close($finfo);
-                            $mail->attach_file_on_disk($relpath . $attachment, expFile::getMimeType(BASE.$dest));
+                                $mail->attach_file_on_disk($relpath . $attachment, expFile::getMimeType($attachment));
+                            }
                         }
                     }
                     $mail->quickSend(array(
@@ -756,11 +763,39 @@ class formsController extends expController {
             $f->is_saved = false;
             $f->table_name = null;
         }
+        $fieldlist = '[';
+        if (isset($f->id)) {
+            $fc = new forms_control();
+            foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
+//                $ctl = unserialize($control->data);
+                $ctl = expUnserialize($control->data);
+                $control_type = get_class($ctl);
+                $def = call_user_func(array($control_type, 'getFieldDefinition'));
+                if ($def != null) {
+                    $fields[$control->name] = $control->caption;
+                    if (in_array($control->name, $cols)) {
+                        $column_names[$control->name] = $control->caption;
+                    }
+                }
+                if ($control_type != 'pagecontrol' && $control_type != 'htmlcontrol') {
+                    $fieldlist .= '["{\$fields[\'' . $control->name . '\']}","' . $control->caption . '","' . gt('Insert') . ' ' . $control->caption . ' ' . gt('Field') . '"],';
+                }
+            }
+            $fields['ip'] = gt('IP Address');
+            if (in_array('ip', $cols)) $column_names['ip'] = gt('IP Address');
+            $fields['user_id'] = gt('Posted by');
+            if (in_array('user_id', $cols)) $column_names['user_id'] = gt('Posted by');
+            $fields['timestamp'] = gt('Timestamp');
+            if (in_array('timestamp', $cols)) $column_names['timestamp'] = gt('Timestamp');
+//            if (in_array('location_data', $cols)) $column_names['location_data'] = gt('Entry Point');
+        }
+        $fieldlist .= ']';
 
         assign_to_template(array(
             'column_names' => $column_names,
             'fields'       => $fields,
             'form'         => $f,
+            'fieldlist'    => $fieldlist,
         ));
     }
 
@@ -1024,8 +1059,8 @@ class formsController extends expController {
         if (!empty($this->config['column_names_list'])) {
             $cols = $this->config['column_names_list'];
         }
+        $fieldlist = '[';
         if (isset($this->config['forms_id'])) {
-            $fieldlist = '[';
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' AND is_readonly=0','rank') as $control) {
 //                $ctl = unserialize($control->data);
@@ -1093,25 +1128,19 @@ class formsController extends expController {
         global $router;
 
         if (empty($router->params['action'])) return false;
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
 
         // figure out what metadata to pass back based on the action we are in.
         switch ($router->params['action']) {
             case 'showall':
-                $metainfo = array(
-                    'title'       => gt("Showing all Form Records"),
-                    'keywords'    => SITE_KEYWORDS,
-                    'description' => SITE_DESCRIPTION,
-                    'canonical'   => ''
-                );
+                $metainfo['title'] = gt("Showing all Form Records");
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
-                $metainfo = array(
-                    'title'       => gt("Showing Form Record"),
-                    'keywords'    => SITE_KEYWORDS,
-                    'description' => SITE_DESCRIPTION,
-                    'canonical'   => ''
-                );
+                $metainfo['title'] = gt("Showing Form Record");
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             default:
                 $metainfo = parent::metainfo();
@@ -1159,7 +1188,7 @@ class formsController extends expController {
                 }
             }
 
-            foreach ($rpt_columns as $column_name) {
+            foreach ($rpt_columns as $column_name=>$column_caption) {
                 if ($column_name == "ip" || $column_name == "referrer" || $column_name == "location_data") {
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
@@ -1278,12 +1307,12 @@ class formsController extends expController {
     public static function sql2csv($items, $rptcols = null) {
         $str = "";
         foreach ($rptcols as $individual_Header) {
-            if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";
+            if (!is_array($rptcols) || in_array($individual_Header, $rptcols)) $str .= $individual_Header . ",";  //FIXME $individual_Header is ALWAYS in $rptcols?
         }
         $str .= "\r\n";
-        foreach ($items as $key => $item) {
+        foreach ($items as $item) {
             foreach ($rptcols as $key => $rowitem) {
-                if (!is_array($rptcols) || array_key_exists($key, $rptcols)) {
+                if (!is_array($rptcols) || property_exists($item, $key)) {
                     $rowitem = str_replace(",", " ", $item->$key);
                     $str .= $rowitem . ",";
                 }
@@ -1606,7 +1635,7 @@ class formsController extends expController {
     }
 
     public function import_csv_data_mapper() {
-        global $template;
+//        global $template;
         //Get the temp directory to put the uploaded file
         $directory = "tmp";
 

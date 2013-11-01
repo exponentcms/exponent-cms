@@ -6,9 +6,17 @@
             "xhtml"=>false,
             "normalize"=>true,
             "framework"=>"bootstrap",
+            "viewport"=>array(
+                "width"=>"device-width",
+                "height"=>"device-height",
+                "initial_scale"=>1,
+                "minimum_scale"=>0.25,
+                "maximum_scale"=>5.0,
+                "user_scalable"=>true,
+            ),
             "css_core"=>array(
                 "common"
-                ),
+            ),
             "lessvars"=>array(
                 'menu_height'=>MENU_HEIGHT,
             ),

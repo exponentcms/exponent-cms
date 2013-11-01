@@ -16,10 +16,10 @@
 <div class="module help showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
-        {if $permissions.create == 1}
+        {if $permissions.create}
             {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
         {/if}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {icon action=manage version=$current_version->id text="Manage Help Docs for version"|gettext|cat:" `$current_version->version`"}{br}
             {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}{br}
             {*{if $rank == 1}*}
@@ -44,9 +44,9 @@
             <dd>
             {permissions}
             <div class="item-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.edit || ($permissions.create && $doc->poster == $user->id)}
                     {if $myloc != $doc->location_data}
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {icon action=merge id=$doc->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -55,7 +55,7 @@
                     {icon action=edit record=$doc}
                     {icon action=copy record=$doc}
                 {/if}
-                {if $permissions.delete == 1}
+                {if $permissions.delete || ($permissions.create && $doc->poster == $user->id)}
                     {icon action=delete record=$doc}
                 {/if}
             </div>

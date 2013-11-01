@@ -24,12 +24,14 @@
 	</div>
 	<table cellspacing="0" cellpadding="2" border="0" width="100%" class="exp-skin-table">
         <thead>
-            <th class="header importer_header">{'Status'|gettext}</th>
-            <th class="header importer_header">{'Username'|gettext}</th>
-            <th class="header importer_header">{'Password'|gettext}</th>
-            <th class="header importer_header">{'First Name'|gettext}</th>
-            <th class="header importer_header">{'Last Name'|gettext}</th>
-            <th class="header importer_header">{'Email'|gettext}</th>
+            <tr>
+                <th class="header importer_header">{'Status'|gettext}</th>
+                <th class="header importer_header">{'Username'|gettext}</th>
+                <th class="header importer_header">{'Password'|gettext}</th>
+                <th class="header importer_header">{'First Name'|gettext}</th>
+                <th class="header importer_header">{'Last Name'|gettext}</th>
+                <th class="header importer_header">{'Email'|gettext}</th>
+            </tr>
         </thead>
         <tbody>
             {foreach from=$userarray item=user}

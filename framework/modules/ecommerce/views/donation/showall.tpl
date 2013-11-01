@@ -16,7 +16,7 @@
 <div class="module donation showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
-        {if $permissions.edit == 1 or $permissions.manage == 1}
+        {if $permissions.edit || $permissions.manage}
             <div id="prod-admin">
                 {icon class="add" controller=store action=edit id=0 product_type=donation text="Add a new donation cause"|gettext}
             </div>
@@ -36,10 +36,10 @@
                     <h3>{$cause->title}</h3>
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.edit == 1}
+                            {if $permissions.edit || ($permissions.create && $cause->poster == $user->id)}
                                 {icon controller=store action=edit record=$cause title="Edit Donation"|gettext}
                             {/if}
-                            {if $permissions.delete == 1}
+                            {if $permissions.delete || ($permissions.create && $cause->poster == $user->id)}
                                 {icon controller=store action=delete record=$cause title="Remove Donation"|gettext}
                             {/if}
                         </div>
@@ -51,7 +51,7 @@
                 </td>
              </tr>
         {foreachelse}
-            {if $permissions.create == 1}
+            {if $permissions.create}
                 <h2>{"No causes have been setup for donations."|gettext}</h2>
             {/if}
         {/foreach}

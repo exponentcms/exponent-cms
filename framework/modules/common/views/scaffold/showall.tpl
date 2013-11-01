@@ -16,7 +16,7 @@
 <div class="scaffold showall">
 	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$modelname`"}</h1>
 	{permissions}
-        	{if $permissions.create == 1}
+        	{if $permissions.create}
         		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$modelname`"}{br}
         	{/if}
         {/permissions}
@@ -27,10 +27,10 @@
 				<a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a>
 				{permissions}
 					<div class="item-actions">
-						{if $permissions.edit == 1}
+						{if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
 							{icon controller=$controller action=edit record=$listing}
 						{/if}
-						{if $permissions.delete == 1}
+						{if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
 							{icon controller=$controller action=delete record=$listing}
 						{/if}
 					</div>

@@ -17,10 +17,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit == true}
+        {if $permissions.create}
             {icon class="add" action=create text="Add a Product"|gettext}
         {/if}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {icon action=manage text="Manage Products"|gettext}
             {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
             {icon class="manage" controller="company" action="showall" text="Manage Manufacturers"|gettext}
@@ -37,7 +37,7 @@
 		{/foreach}
 	</ul>	
 	{permissions}
-        {if $permissions.create == 1 or $permissions.edit == 1}
+        {if $permissions.create || $permissions.edit}
             <div id="prod-admin">
                 {icon class=add controller=company action=create text="Add a New Company"|gettext}
             </div>

@@ -256,7 +256,7 @@ class blogController extends expController {
      * @return array
      */
     function getRSSContent() {
-        global $db;
+//        global $db;
 
         $class = new blog();
         $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC');
@@ -317,25 +317,25 @@ class blogController extends expController {
         if (isset($request['author'])) {
             // set the meta info
             $u = user::getUserByName(expString::sanitize($request['author']));
-
-            switch (DISPLAY_ATTRIBUTION) {
-                case "firstlast":
-                    $str = $u->firstname . " " . $u->lastname;
-                    break;
-                case "lastfirst":
-                    $str = $u->lastname . ", " . $u->firstname;
-                    break;
-                case "first":
-                    $str = $u->firstname;
-                    break;
-                case "username":
-                default:
-                    $str = $u->username;
-                    break;
-            }
+            $str = user::getUserAttribution($u->id);
+//            switch (DISPLAY_ATTRIBUTION) {
+//                case "firstlast":
+//                    $str = $u->firstname . " " . $u->lastname;
+//                    break;
+//                case "lastfirst":
+//                    $str = $u->lastname . ", " . $u->firstname;
+//                    break;
+//                case "first":
+//                    $str = $u->firstname;
+//                    break;
+//                case "username":
+//                default:
+//                    $str = $u->username;
+//                    break;
+//            }
 
             if (!empty($str)) {
-                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
                 $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
 //                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                 $metainfo['keywords'] = $str;

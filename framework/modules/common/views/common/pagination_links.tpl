@@ -20,7 +20,7 @@
 {if $page->total_records > 0}
     <div class="pagination-links">
         <span class="pagination">
-            {if $page->previous_page != ''}<a class="pager" href="{$page->previous_page}" rel="{$page->previous_pagenum}">&laquo;</a> {/if}
+            {if $page->previous_page != ''}<a class="pager prev" href="{$page->previous_page}" rel="{$page->previous_pagenum}">&laquo;</a> {/if}
             {if $page->firstpage != ''}<a class="pager" href="{$page->firstpage}" rel="1">1</a> {/if}
             {if $page->previous_shift != ''}<a class="pager" href="{$page->previous_shift}" rel="{$page->previous_shiftnum}">...</a> {/if}
             {if $page->total_pages > 1}
@@ -36,7 +36,7 @@
             {/if}
             {if $page->next_shift != ''}<a class="pager" href="{$page->next_shift}" rel="{$page->next_shiftnum}">...</a> {/if}
             {if $page->lastpage != ''}<a class="pager" href="{$page->lastpage}" rel="{$page->total_pages}">{$page->total_pages}</a> {/if}
-            {if $page->next_page != ''} <a class="pager" href="{$page->next_page}" rel="{$page->next_pagenum}">&raquo;</a>{/if}
+            {if $page->next_page != ''} <a class="pager next" href="{$page->next_page}" rel="{$page->next_pagenum}">&raquo;</a>{/if}
         </span>
         <span class="pagetotals">{'Showing'|gettext} <span class="frecord">{$page->firstrecord}</span>-<span class="lrecord">{$page->lastrecord}</span> {'of'|gettext} <span class="total">{$page->total_records}</span></span>
     </div>

@@ -75,7 +75,7 @@ class help extends expRecord {
      *
      */
     public function beforeSave() {
-        global $db;
+//        global $db;
 
         $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
 //		if (isset($this->params['help_section'])) {

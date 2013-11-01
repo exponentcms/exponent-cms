@@ -105,7 +105,8 @@ class faqController extends expController {
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
             'model'=>'faq',
-            'where' => "location_data='".serialize($this->loc)."'",
+//            'where' => "location_data='".serialize($this->loc)."'",
+            'where' => $this->aggregateWhereClause(),
 		    'limit'=>25,
             'order'=>'rank',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
@@ -127,7 +128,7 @@ class faqController extends expController {
     }
     
     public function ask_question() {
-        global $user;
+//        global $user;
         
         expHistory::set('editable', $this->params);
 //        if ($user->isAdmin()) {
@@ -269,7 +270,8 @@ class faqController extends expController {
     }
 
     function addContentToSearch() {
-        global $db, $router;
+//        global $db, $router;
+        global $db;
 
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);

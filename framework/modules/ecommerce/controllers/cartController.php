@@ -109,7 +109,7 @@ class cartController extends expController {
         //$this->params['qty'] = 1; //REMOVE ME
         if ($product->addToCart($this->params)) {
             if (ecomconfig::getConfig('show_cart') || !empty($this->params['quick'])) {
-                global $order;
+//                global $order;
 //                $order->calculateGrandTotal();
 //                if (!$order->grand_total && !$order->shipping_required) {
 //                    redirect_to(array('controller'=>'cart', 'action'=>'quickConfirm'));
@@ -550,7 +550,9 @@ class cartController extends expController {
     }
 
     public function confirm() {
-        global $order, $user, $db;
+//        global $order, $user, $db;
+        global $order;
+
         //eDebug($this->params);
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
 
@@ -588,7 +590,8 @@ class cartController extends expController {
     }
 
     public function process() {
-        global $db, $order, $user;
+//        global $db, $order, $user;
+        global $order, $user;
 
         //eDebug($order,true);
         if (!$user->isLoggedIn() && empty($this->params['nologin'])) {
@@ -943,7 +946,9 @@ class cartController extends expController {
     }
 
     function createaddress() {
-        global $db, $user;
+//        global $db, $user;
+        global $user;
+
         if ($user->isLoggedIn()) {
             // save the address, make it default if it is the users first one
             $address = new address();
@@ -1003,7 +1008,8 @@ class cartController extends expController {
      }   */
 
     function addDiscountToCart() {
-        global $user, $order;
+//        global $user, $order;
+        global $order;
         //lookup discount to see if it's real and valid, and not already in our cart
         //this will change once we allow more than one coupon code
 

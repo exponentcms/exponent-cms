@@ -17,10 +17,10 @@
     <h1>{'All Products for'|gettext} {$company->title}</h1>
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == true || $permissions.edit == true}
+        {if $permissions.create}
             {icon class="add" action=create text="Add a Product"|gettext}
         {/if}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {icon action=manage text="Manage Products"|gettext}
             {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
             {icon class="manage" controller="company" action="showall" text="Manage Manufacturers"|gettext}
@@ -41,7 +41,7 @@
     {pagelinks paginate=$page bottom=1}
     {permissions}
 		<div class="module-actions">
-			{if $permissions.edit == 1}
+			{if $permissions.create}
 				{icon class=add action=create text="Add a New Product"|gettext}
 			{/if}
 		</div>

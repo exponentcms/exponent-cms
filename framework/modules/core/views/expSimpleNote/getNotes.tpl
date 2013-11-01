@@ -25,7 +25,9 @@
         <tbody>
             <tr class="note {cycle values="odd,even"}">
                 <td>
-                {icon action=edit class="add" content_id=$content_id content_type=$content_type tab=$tab text="Add a Note"|gettext}
+                {if $permissions.create}
+                    {icon action=edit class="add" content_id=$content_id content_type=$content_type tab=$tab text="Add a Note"|gettext}
+                {/if}
                 {if $unapproved > 0}
                 <div class="unapproved">
                     || {'There are'|gettext} {$unapproved} {'notes awaiting approval'|gettext}.
@@ -44,10 +46,10 @@
                 </h3>
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.manage == 1}
+                            {if $permissions.edit}
                                 {icon action=edit record=$note tab=$tab content_id=$content_id content_type=$content_type title="Edit this note"|gettext}
                             {/if}
-                            {if $permissions.delete == 1}
+                            {if $permissions.delete}
                                 {icon action=delete record=$note tab=$tab content_id=$content_id content_type=$content_type title="Delete this note"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this note?"|gettext)|cat:"');"}
                             {/if}
                         </div>

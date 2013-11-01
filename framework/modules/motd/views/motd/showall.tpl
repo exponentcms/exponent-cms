@@ -25,7 +25,7 @@
     {pagelinks paginate=$page top=1}
     {permissions}
 		<div class="module-actions">
-			{if $permissions.edit == 1}
+			{if $permissions.create}
 				{icon class=add action=edit text="Add a New Message"|gettext}
 			{/if}
 		</div>
@@ -49,9 +49,9 @@
                     <td>
                         {permissions}
                             <div class="item-actions">
-                                {if $permissions.edit == 1}
+                                {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
                                     {if $myloc != $listing->location_data}
-                                        {if $permissions.manage == 1}
+                                        {if $permissions.manage}
                                             {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
                                         {else}
                                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -59,7 +59,7 @@
                                     {/if}
                                     {icon action=edit record=$listing title="Edit this message"|gettext}
                                 {/if}
-                                {if $permissions.delete == 1}
+                                {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
                                     {icon action=delete record=$listing title="Delete this message"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this message?"|gettext)|cat:"');"}
                                 {/if}
                             </div>

@@ -91,11 +91,11 @@
                                     </a>
                                     {permissions}
                                         <div class="item-actions">
-                                            {if $permissions.edit == 1}
+                                            {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                                                 {icon img="edit.png" action=edit record=$item title="Edit this Event"|gettext}
                                                 {icon img="copy.png" action=copyProduct record=$item title="Copy this Event"|gettext}
                                             {/if}
-                                            {if $permissions.delete == 1}
+                                            {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                                                 {icon img="delete.png" action=delete record=$item title="Delete this Event"|gettext}
                                             {/if}
                                         </div>
@@ -121,9 +121,6 @@
 	</table>
 
 {if $config.lightbox}
-{*{css unique="cal-lightbox" link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/lightbox.css"}*}
-
-{*{/css}*}
 
 {*FIXME convert to yui3*}
 {script unique="shadowbox" yui3mods=1}

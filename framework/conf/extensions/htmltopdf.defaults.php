@@ -18,6 +18,7 @@
 
 if (!defined('HTMLTOPDF_PATH')) define('HTMLTOPDF_PATH','');
 if (!defined('HTMLTOPDF_PATH_TMP')) define('HTMLTOPDF_PATH_TMP','');
-if (!defined('HTML2PDF_OUTPUT')) define('HTML2PDF_OUTPUT','0');
+if (!defined('HTMLTOPDF_OUTPUT')) define('HTMLTOPDF_OUTPUT','0');
+if (!defined('HTMLTOPDF_ENGINE')) define('HTMLTOPDF_ENGINE','none');
 
 ?>

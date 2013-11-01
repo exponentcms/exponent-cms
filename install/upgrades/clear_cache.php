@@ -54,7 +54,7 @@ class clear_cache extends upgradescript {
 		$files = array(
 			BASE.'tmp/css',  // exponent minified css cache
 			BASE.'tmp/minify', // minify cache
-			BASE.'tmp/pixidou', // (new) pixidou cache
+			BASE.'tmp/pixidou', // pixidou cache
 		    BASE.'tmp/rsscache',  // SimplePie cache
 		    BASE.'tmp/views_c',  // smarty compiler cache
 		    BASE.'tmp/cache',  // smarty rendering cache (not currently active)

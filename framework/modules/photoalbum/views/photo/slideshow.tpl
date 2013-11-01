@@ -18,19 +18,16 @@
 {css unique="photoalbum`$name`" corecss="common"}
 
 {/css}
-{*{css unique="photoalbum`$name`" corecss="common" link="`$asset_path`css/yui3-slideshow.css"}*}
-
-{*{/css}*}
 
 <div class="module photoalbum slideshow">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
     <div class="module-actions">
-        {if $permissions.create == 1}
+        {if $permissions.create}
             {icon class=add action=edit rank=1 text="Add a Slide"|gettext}
             {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
         {/if}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {if !$config.disabletags}
                 {icon controller=expTag class="manage" action=manage_module model='photo' text="Manage Tags"|gettext}
             {/if}
@@ -54,9 +51,9 @@
                 <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}">
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.edit == 1}
+                            {if $permissions.edit || ($permissions.create && $slide->poster == $user->id)}
                                 {if $myloc != $slide->location_data}
-                                    {if $permissions.manage == 1}
+                                    {if $permissions.manage}
                                         {icon action=merge id=$slide->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -64,10 +61,10 @@
                                 {/if}
                                 {icon action=edit record=$slide title="Edit"|gettext|cat:" `$item->title`"}
                             {/if}
-                            {if $permissions.delete == 1}
+                            {if $permissions.delete || ($permissions.create && $slide->poster == $user->id)}
                                 {icon action=delete record=$slide title="Delete"|gettext|cat:" `$item->title`"}
                             {/if}
-                            {if $permissions.create == 1}
+                            {if $permissions.create}
                                 {icon class=add action=edit rank=$slide->rank+1 title="Add another slide here"|gettext  text="Add After"|gettext}
                             {/if}
                         </div>
@@ -102,7 +99,7 @@
             {/foreach}
         </ul>
         {if !$config.hidecontrols}
-            <div class="slideshow-buttons">
+            <div class="slideshow-buttons{if $config.dimcontrols} buttons-dim{/if}">
                 <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Previous Slide">
                     &lt;&lt; {'Previous'|gettext}
                 </a>
@@ -144,6 +141,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
     var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal} .slideshow-frame',
     {
         interval:{/literal}{$config.speed|default:5}000{literal},
+//        autoplay:{/literal}{$config.autoplay|default:true}{literal},
+        ti:'{/literal}{$config.anim_in|default:"fadeIn"}{literal}',
+        to:'{/literal}{$config.anim_out|default:"fadeOut"}{literal}',
+        duration:{/literal}{$config.duration|default:0.5}{literal},
         nextButton:"#ss-{/literal}{$name}{literal} .next_slide",
         previousButton:"#ss-{/literal}{$name}{literal} .prev_slide",
         playButton:"#ss-{/literal}{$name}{literal} .play_slide",

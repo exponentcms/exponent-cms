@@ -169,11 +169,15 @@ class expTemplate {
 		return $vparam;
 	}
 
-	/** exdoc
-	 * @state <b>UNDOCUMENTED</b>
-	 * @node Undocumented
-	 * @return array
-	 */
+    /** exdoc
+     * @state <b>UNDOCUMENTED</b>
+     *
+     * @node Undocumented
+     *
+     * @param bool $include_static
+     *
+     * @return array
+     */
     //FIXME we need to also look for custom & jquery controls
 	public static function listControlTypes($include_static = true) {
 		$cdh = opendir(BASE."framework/core/forms/controls");

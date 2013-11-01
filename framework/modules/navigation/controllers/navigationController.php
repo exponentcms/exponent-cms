@@ -57,7 +57,8 @@ class navigationController extends expController {
     function searchName() { return gt('Webpage'); }
 
     public function showall() {
-        global $db, $user, $sectionObj, $sections;
+//        global $db, $user, $sectionObj, $sections;
+        global $user, $sectionObj, $sections;
 
         expHistory::set('viewable', $this->params);
         $id      = $sectionObj->id;
@@ -82,7 +83,8 @@ class navigationController extends expController {
     }
 
     public function breadcrumb() {
-        global $db, $user, $sectionObj, $sections;
+//        global $db, $user, $sectionObj, $sections;
+        global $sectionObj;
 
         expHistory::set('viewable', $this->params);
         $id      = $sectionObj->id;
@@ -270,7 +272,8 @@ class navigationController extends expController {
      * @return array
      */
     public static function levelTemplate($parent, $depth = 0, $parents = array()) {
-        global $db, $user;
+//        global $db, $user;
+        global $user;
 
         if ($parent != 0) $parents[] = $parent;
         $nodes = array();
@@ -345,6 +348,7 @@ class navigationController extends expController {
      * @param bool   $full           include a 'top' level entry
      * @param string $perm           permission level to build list
      * @param bool   $addstandalones should we add the stand-alone pages also
+     * @param bool   $addinternalalias
      *
      * @return array
      */
@@ -424,10 +428,6 @@ class navigationController extends expController {
             $search_record->keywords  = $section->keywords;
             // now we're going to grab all the textmodules on this page and build the body for the page based off the content
             // of all the text module added together.
-//            $loc            = new stdClass();
-//            $loc->mod       = 'text';
-//            $loc->src       = '';
-//            $loc->int       = '';
             $loc = expCore::makeLocation('text');
             $controllername = 'text';
             foreach ($db->selectObjects('sectionref', "module='" . $controllername . "' AND section=" . $section->id) as $module) {
@@ -886,7 +886,8 @@ class navigationController extends expController {
             // ALWAYS be invoked with a parent or id value.
             $section  = new section($this->params);
         } else {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
             exit;
         }
         if (!empty($section->id)) {
@@ -902,7 +903,9 @@ class navigationController extends expController {
                     // This is another precaution.  The parent attribute
                     // should ALWAYS be set by the caller.
                     //FJD - if that's the case, then we should die.
-                    die(SITE_403_HTML);
+//                    die(SITE_403_HTML);
+                    notfoundController::handle_not_authorized();
+                    exit;
                     //$section->parent = 0;
                 }
             }
@@ -910,14 +913,16 @@ class navigationController extends expController {
                 'section' => $section,
             ));
         } else {  // User does not have permission to manage sections.  Throw a 403
-            echo SITE_403_HTML;
+//            echo SITE_403_HTML;
+            notfoundController::handle_not_authorized();
         }
     }
 
     function edit_internalalias() {
         $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
         if ($section->parent == -1) {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
             exit;
         } // doesn't work for standalone pages
         if (empty($section->id)) {
@@ -926,7 +931,9 @@ class navigationController extends expController {
                 // This is another precaution.  The parent attribute
                 // should ALWAYS be set by the caller.
                 //FJD - if that's the case, then we should die.
-                die(SITE_403_HTML);
+//                die(SITE_403_HTML);
+                notfoundController::handle_not_authorized();
+                exit;
                 //$section->parent = 0;
             }
         }
@@ -938,7 +945,8 @@ class navigationController extends expController {
     function edit_freeform() {
         $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
         if ($section->parent == -1) {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
             exit;
         } // doesn't work for standalone pages
         if (empty($section->id)) {
@@ -947,7 +955,9 @@ class navigationController extends expController {
                 // This is another precaution.  The parent attribute
                 // should ALWAYS be set by the caller.
                 //FJD - if that's the case, then we should die.
-                die(SITE_403_HTML);
+//                die(SITE_403_HTML);
+                notfoundController::handle_not_authorized();
+                exit;
                 //$section->parent = 0;
             }
         }
@@ -959,7 +969,8 @@ class navigationController extends expController {
     function edit_externalalias() {
         $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
         if ($section->parent == -1) {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
             exit;
         } // doesn't work for standalone pages
         if (empty($section->id)) {
@@ -968,7 +979,9 @@ class navigationController extends expController {
                 // This is another precaution.  The parent attribute
                 // should ALWAYS be set by the caller.
                 //FJD - if that's the case, then we should die.
-                die(SITE_403_HTML);
+//                die(SITE_403_HTML);
+                notfoundController::handle_not_authorized();
+                exit;
                 //$section->parent = 0;
             }
         }
@@ -1001,7 +1014,8 @@ class navigationController extends expController {
             expSession::clearAllUsersSessionCache('navigation');
             expHistory::back();
         } else {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
         }
     }
 
@@ -1021,7 +1035,8 @@ class navigationController extends expController {
             expSession::clearAllUsersSessionCache('navigation');
             expHistory::back();
         } else {
-            echo SITE_403_HTML;
+//            echo SITE_403_HTML;
+            notfoundController::handle_not_authorized();
         }
     }
 
@@ -1041,7 +1056,8 @@ class navigationController extends expController {
 
     // create a psuedo global manage pages permission
     public static function checkPermissions($permission,$location) {
-        global $exponent_permissions_r, $user, $db, $router;
+//        global $exponent_permissions_r, $user, $db, $router;
+        global $exponent_permissions_r, $router;
 
         // only applies to the 'manage' method
         if (empty($location->src) && empty($location->int) && !empty($router->params['action']) && $router->params['action'] == 'manage') {

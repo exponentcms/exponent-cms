@@ -21,6 +21,7 @@ if (!defined('EXPONENT')) exit('');
 global $user, $router, $db, $section;
 
 // determine if the Pages menu should NOT be displayed
+if ($user->globalPerm('hide_pages_menu')) return array();
 if (!$user->isAdmin()) {
     $pageperms = !$db->selectValue('userpermission', 'uid', "uid='" . $user->id . "' AND source='' AND internal!=''");
     if (!$pageperms) {
@@ -61,8 +62,6 @@ if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $sec
 }
 
 if ($user->isAdmin()) {
-//    $info['itemdata'][] = array('text'=>gt('Manage User Permissions'),'classname'=>'user', 'url'=>makeLink(array('module'=>'navigation','action'=>'userperms',"_common"=>"1","int"=>$page->id)));
-//    $info['itemdata'][] = array('text'=>gt('Manage Group Permissions'),'classname'=>'group', 'url'=>makeLink(array('module'=>'navigation','action'=>'groupperms',"_common"=>"1","int"=>$page->id)));
     $info['itemdata'][] = array('text' => gt('Manage User Permissions'), 'classname' => 'user', 'url' => makeLink(array('controller' => 'users', 'action' => 'userperms', 'mod' => 'navigation', "int" => $page->id)));
     $info['itemdata'][] = array('text' => gt('Manage Group Permissions'), 'classname' => 'group', 'url' => makeLink(array('controller' => 'users', 'action' => 'groupperms', 'mod' => 'navigation', "int" => $page->id)));
 }
@@ -85,7 +84,6 @@ if ($user->isAdmin()) {
     }
 }
 
-//if (expPermissions::check('manage',expCore::makeLocation('navigation','',$section))) {
 if ($manageperms) {
     $info['itemdata'][] = array('text' => gt('Manage all pages'), 'classname' => 'sitetree', 'url' => makeLink(array('module' => 'navigation', 'action' => 'manage')));
 }
@@ -95,6 +93,5 @@ return array(
     'classname' => 'thispage',
     'submenu'   => $info
 );
-
 
 ?>

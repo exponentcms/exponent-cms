@@ -127,7 +127,8 @@ class eventregistrationController extends expController {
     }
 
     function eventsCalendar() {
-        global $db, $user;
+//        global $db, $user;
+        global $user;
 
         expHistory::set('viewable', $this->params);
 
@@ -233,7 +234,7 @@ class eventregistrationController extends expController {
     }
 
     function upcomingEvents() {
-        global $db;
+//        global $db;
 
         $sql = 'SELECT DISTINCT p.*, er.eventdate, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
@@ -424,16 +425,17 @@ class eventregistrationController extends expController {
         // figure out what metadata to pass back based on the action we are in.
 //        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '');
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'donate':
                 $metainfo['title']       = gt('Make an event registration');
                 $metainfo['keywords']    = gt('event registration online');
                 $metainfo['description'] = gt("Make an event registration");
-                $metainfo['canonical']   = '';
                 break;
             default:
-                $metainfo = array('title'=> $this->displayname() . " - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
+                $metainfo['title']       = $this->displayname() . " - " . SITE_TITLE;
+                $metainfo['keywords']    = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
         }
 
         return $metainfo;
@@ -792,7 +794,7 @@ class eventregistrationController extends expController {
     }
 
     public function export() {
-        global $db;
+//        global $db;
 
         $event              = new eventregistration($this->params['id']);
 
@@ -1192,7 +1194,8 @@ class eventregistrationController extends expController {
 
     // create a pseudo global view_registrants permission
     public static function checkPermissions($permission,$location) {
-        global $exponent_permissions_r, $user, $db, $router;
+//        global $exponent_permissions_r, $user, $db, $router;
+        global $exponent_permissions_r, $router;
 
         // only applies to the 'view_registrants' method
         if (empty($location->src) && empty($location->int) && $router->params['action'] == 'view_registrants') {

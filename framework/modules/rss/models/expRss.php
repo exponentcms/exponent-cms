@@ -25,12 +25,12 @@
 
 class expRss extends expRecord {
     public $table = 'expRss';
-    protected $attachable_item_types = array(
-        //'content_expFiles'=>'expFile', 
-        //'content_expTags'=>'expTag', 
-        //'content_expComments'=>'expComment',
-        //'content_expSimpleNote'=>'expSimpleNote',
-    );
+//    protected $attachable_item_types = array(
+//        //'content_expFiles'=>'expFile',
+//        //'content_expTags'=>'expTag',
+//        //'content_expComments'=>'expComment',
+//        //'content_expSimpleNote'=>'expSimpleNote',
+//    );
 
     public function __construct($params=array()) {
         global $db;

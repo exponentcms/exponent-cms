@@ -24,26 +24,3 @@
         {$cat=$file->expCat[0]->id}
     {/foreach}
     {pagelinks paginate=$page bottom=1}
-
-{*{if $config.show_player}*}
-    {*{script unique="filedownload"}*}
-    {*{literal}*}
-    {*flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",*}
-        {*{*}
-    		{*wmode: 'transparent',*}
-    		{*clip: {*}
-    			{*autoPlay: false,*}
-    			{*},*}
-            {*plugins:  {*}
-                {*controls: {*}
-                    {*play: true,*}
-                    {*scrubber: true,*}
-                    {*fullscreen: false,*}
-                    {*autoHide: false*}
-                {*}*}
-            {*}*}
-        {*}*}
-    {*);*}
-    {*{/literal}*}
-    {*{/script}*}
-{*{/if}*}

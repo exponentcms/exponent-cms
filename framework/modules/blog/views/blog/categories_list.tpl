@@ -16,7 +16,7 @@
 <div class="module blog categories_list">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
-        {if $permissions.manage == 1}
+        {if $permissions.manage}
             {if $config.use_categories}
                 {icon controller=expCat class="manage" action=manage_module model='blog' text="Manage Categories"|gettext}
             {/if}

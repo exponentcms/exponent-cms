@@ -24,7 +24,7 @@
         {/if}
         {permissions}
             <div class="module-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.create}
                     {icon class=add action=enterdata forms_id=$f->id text='Add record'|gettext}
                     &#160;&#160;|&#160;&#160;
                 {/if}
@@ -64,10 +64,10 @@
                             <div class="item-actions">
                                 <td>
                                     {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
-                                    {if $permissions.edit == 1}
+                                    {if $permissions.edit}
                                         {icon img="edit.png" action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
                                     {/if}
-                                    {if $permissions.delete == 1}
+                                    {if $permissions.delete}
                                         {icon img="delete.png" action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
                                     {/if}
                                 </td>

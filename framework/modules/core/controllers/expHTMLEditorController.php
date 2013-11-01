@@ -30,7 +30,7 @@ class expHTMLEditorController extends expController {
     static function hasContent() { return false; }
 	protected $add_permissions = array(
         'activate'=>"Activate",
-        'preview'=>"Preview CKEditor Toolbars"
+        'preview'=>"Preview Editor Toolbars"
     );
     
     function manage () {
@@ -75,10 +75,7 @@ class expHTMLEditorController extends expController {
     }
 
     function edit() {
-        global $db;
-
         expHistory::set('editable', $this->params);
-//        $tool = @$db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
         $tool = self::getEditorSettings($this->params['id']);
         $tool->data = !empty($tool->data) ? @stripSlashes($tool->data) : '';
         $tool->plugins = !empty($tool->plugins) ? @stripSlashes($tool->plugins) : '';
@@ -118,15 +115,12 @@ class expHTMLEditorController extends expController {
     }
 
     function preview () {
-        global $db;
-
         if ($this->params['id']==0) {  // we want the default editor
             $demo = new stdClass();
             $demo->id=0;
             $demo->name="Default";
 			$demo->skin='kama';
         } else {
-//            $demo = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
             $demo = self::getEditorSettings($this->params['id']);
         }
         assign_to_template(array(

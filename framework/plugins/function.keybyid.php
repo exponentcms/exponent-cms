@@ -36,7 +36,7 @@ function smarty_function_keybyid($params,&$smarty) {
 
 	$obj = $params['obj'];
 	
-	foreach($obj as $key=>$value){
+	foreach($obj as $value){
 		$rekeyed[$value->id] = $value;
 	}
 

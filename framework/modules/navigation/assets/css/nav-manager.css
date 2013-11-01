@@ -185,7 +185,9 @@
     background-repeat:no-repeat;
 }
 .navigation.manager-hierarchy .ghost {
-    filter: alpha(opacity=30); -moz-opacity:.3;
+	opacity: .3;
+	-moz-opacity:.3;
+    filter: alpha(opacity=30);
 }
 .navigation.manager-hierarchy .addbefore {
     width:100%;

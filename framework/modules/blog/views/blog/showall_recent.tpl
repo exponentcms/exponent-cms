@@ -28,10 +28,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent Posts from'|gettext} '{$moduletitle}'</h1>{/if}
     {permissions}
 		<div class="module-actions">
-			{if $permissions.edit == 1}
+			{if $permissions.create}
 				{icon class=add action=edit text="Add a new blog article"|gettext}
 			{/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='blog' text="Manage Tags"|gettext}
                 {/if}
@@ -85,9 +85,9 @@
             </div>
             {permissions}
                 <div class="item-actions">
-                    {if $permissions.edit == 1}
+                    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                         {if $myloc != $item->location_data}
-                            {if $permissions.manage == 1}
+                            {if $permissions.manage}
                                 {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                             {else}
                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -95,7 +95,7 @@
                         {/if}
                         {icon action=edit record=$item}
                     {/if}
-                    {if $permissions.delete == 1}
+                    {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                         {icon action=delete record=$item}
                     {/if}
                 </div>
@@ -108,6 +108,8 @@
                     {if $config.usebody==1}
                         {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
                         <p>{$item->body|summarize:"html":"parahtml"}</p>
+                    {elseif $config.usebody==3}
+                        {$item->body|summarize:"html":"parapaged"}
                     {elseif $config.usebody==2}
                     {else}
                         {$item->body}
@@ -118,7 +120,7 @@
                 </div>
             {if $config.enable_facebook_like}
                 <div id="fb-root"></div>
-                <div class="fb-like" data-href="{$smarty.const.URL_FULL}{$item->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
+                <div class="fb-like" data-href="{$smarty.const.URL_FULL}{$item->sef_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
                 {script unique='facebook_src'}
                 {literal}
                     (function(d, s, id) {

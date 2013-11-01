@@ -50,7 +50,7 @@
 	<h2>{'Modify existing group discount'|gettext}</h2>
         {permissions}
             <div class="module-actions">
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                     {ddrerank items=$group_discounts model="groupdiscounts" label="Group Discounts"|gettext}
                 {/if}
             </div>
@@ -73,7 +73,7 @@
                     <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " value=$discount->discounts_id}</td>
                     <td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1 checked=$discount->dont_allow_other_discounts}</td>
                     <td>
-                        {if $permissions.manage == true}
+                        {if $permissions.manage}
                             {if $smarty.foreach.items.first == 0}
                                 {icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
                             {/if}

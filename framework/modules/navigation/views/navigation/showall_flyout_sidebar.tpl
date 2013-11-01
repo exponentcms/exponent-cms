@@ -13,17 +13,32 @@
  *
  *}
 
-{if $config.which_side == 'left'}{$side='_left'}{else}{$side=''}{/if}
+{if $config.which_side == 'left'}
+    {$side = '_left'}
+      {$class = 'rotate-90 origin-tl fix-rotate-90'}
+{else}
+    {$side = ''}
+    {$class = 'rotate-270 origin-tr fix-rotate-270'}
+{/if}
 {if $config.view_scope == 'sectional' || $config.view_scope == 'top-sectional'}{$scope=$config.view_scope}{else}{$scope='global'}{/if}
 
 {css unique="flyout" link="`$asset_path`css/flyout`$side`.css"}
-
+{literal}
+.thetop {
+    top : {/literal}{$config.top_mx}{literal}px
+}
+{/literal}
 {/css}
 
-<div class="module container flyout{$side}" style="display: none;">
-    {showmodule module='container' action="showall" view="showall" source="@flyout_sidebar" scope=$scope chrome=true}
+<div class="module container flyout{$side} thetop" style="display: none;">
+    {showmodule module='container' action="showall" view="showall" source="@flyout_sidebar_`$__loc->src`" scope=$scope chrome=true}
 </div>
-<a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">{'View Panel'|gettext}</a>
+{if !empty($moduletitle) && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
+    {$tag = $moduletitle}
+{else}
+    {$tag = 'View Panel'|gettext}
+{/if}
+<a class="triggerlogin {$class} thetop" href="#" title="{'Click to open this panel'|gettext}">{$tag}</a>
 
 {script unique="flyoutsidebar" jquery=1}
 {literal}

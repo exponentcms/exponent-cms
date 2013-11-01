@@ -25,11 +25,11 @@
     </div>
    {permissions}
     <div class="item-actions">
-        {if $permissions.edit == 1}
+        {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
             {icon action=edit id=$listing->id title="Edit this entry"|gettext}
             {icon action=copyProduct class="copy" record=$listing text="Copy" title="Copy `$listing->title` "}
         {/if}
-        {if $permissions.delete == 1}
+        {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
             {icon action=delete record=$listing title="Delete this product"|gettext}
         {/if}
     </div>

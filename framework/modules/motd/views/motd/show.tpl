@@ -29,9 +29,9 @@
         <a class="link" href="{link action=showall}">{'View Previous Tips'|gettext}</a>
         {permissions}
 			<div class="module-actions">
-				{if $permissions.edit == 1}
+				{if $permissions.edit || ($permissions.create && $message->poster == $user->id)}
                     {if !empty($message->location_data) && $myloc != $message->location_data}
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {icon action=merge id=$message->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}

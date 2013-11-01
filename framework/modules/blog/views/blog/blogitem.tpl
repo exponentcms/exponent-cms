@@ -76,9 +76,9 @@
         </div>
         {permissions}
             <div class="item-actions">
-                {if $permissions.edit == 1}
+                {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
                     {if $myloc != $record->location_data}
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -86,7 +86,7 @@
                     {/if}
                     {icon action=edit record=$record}
                 {/if}
-                {if $permissions.delete == 1}
+                {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
                     {icon action=delete record=$record}
                 {/if}
             </div>
@@ -105,7 +105,7 @@
         </div>
         {if $config.enable_facebook_like}
             <div id="fb-root"></div>
-            <div class="fb-like" data-href="{$smarty.const.URL_FULL}{$record->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
+            <div class="fb-like" data-href="{$smarty.const.URL_FULL}{$record->sef_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
             {script unique='facebook_src'}
             {literal}
                 (function(d, s, id) {

@@ -52,9 +52,9 @@
                 <div id="tab2">
                     <h2>{'Event Date/Time'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="eventdate" label="Start Date of Event"|gettext value=$record->eventdate}
-					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate description='Only used for display purposes'|gettext}
                     {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime+$record->eventdate showdate=false}
                     {control type="datetimecontrol" name="event_endtime" label="End Time"|gettext value=$record->event_endtime+$record->eventdate showdate=false}
+					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate description='Only used for display purposes'|gettext}
                     <h2>{'Signup Cutoff'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="signup_cutoff" label="Registrations is closed after"|gettext value=$record->signup_cutoff showtime = true}
                 </div>
@@ -165,6 +165,8 @@
                     {control type="text" name="meta_title" label="Meta Title"|gettext value=$record->meta_title description='Override the item title for search engine entries'|gettext}
                     {control type="textarea" name="meta_description" label="Meta Description"|gettext value=$record->meta_description description='Override the item summary for search engine entries'|gettext}
                     {control type="textarea" name="meta_keywords" label="Meta Keywords"|gettext value=$record->meta_keywords description='Comma separated phrases - overrides site keywords and item tags'|gettext}
+                    {control type="checkbox" name="meta_noindex" label="Do Not Index"|gettext|cat:"?" checked=$section->meta_noindex|default:1 value=1 description='Should this page be indexed by search engines?'|gettext}
+                    {control type="checkbox" name="meta_nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->meta_nofollow|default:1 value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
                 </div>
 
 				<div id="tab8">

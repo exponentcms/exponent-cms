@@ -21,7 +21,7 @@
  * @package Core
  */
 class option extends expRecord {
-    protected $attachable_item_types = array();
+//    protected $attachable_item_types = array();
     
 	public $validates = array(
 		'presence_of'=>array(

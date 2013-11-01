@@ -100,7 +100,7 @@ class expJavascript {
                		    "lesscss"=>"external/bootstrap/less/responsive.less",
                     ));
                 }
-                if (!empty($jqueryjs)) foreach ($jqueryjs as $key=>$mod) {
+                if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
                     if ($mod == 'jqueryui') {
                         if (strlen($srt[$i])+strlen(JQUERYUI_SCRIPT) <= $strlen && $i <= MINIFY_MAX_FILES) {
                             $srt[$i] .= JQUERYUI_SCRIPT.",";
@@ -192,7 +192,7 @@ class expJavascript {
                		    "lesscss"=>"external/bootstrap/less/responsive.less",
                     ));
                 }
-                if (!empty($jqueryjs)) foreach ($jqueryjs as $key=>$mod) {
+                if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
                     if ($mod == 'jqueryui') {
                         $scripts .= "\t".'<script type="text/javascript" src="'.JQUERYUI_SCRIPT.'"></script>'."\r\n";
                         expCSS::pushToHead(array(
@@ -237,7 +237,7 @@ class expJavascript {
             $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Script -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_RELATIVE.'yui/yui-min.js"></script>'."\r\n" : "";
             if (!empty($expJS)) {
                 $scripts .= "\t"."<!-- Other Scripts -->"."\r\n";
-                foreach ($expJS as $key=>$mod) {
+                foreach ($expJS as $mod) {
                     $scripts .= "\t".'<script type="text/javascript" src="'.$mod['fullpath'].'"></script>'."\r\n";
                 }
             }
@@ -254,7 +254,7 @@ class expJavascript {
         // solution: alphabetical by unique
         if(!empty($js2foot)){
             ksort($js2foot);
-            foreach($js2foot as $key=>$file){
+            foreach($js2foot as $file){
                 $html.= $file."\r\n";
             }            
         } 
@@ -318,7 +318,7 @@ class expJavascript {
             $stripmodquotes = str_replace($toreplace, "", $params['yui3mods']);               
             $splitmods = explode(",",$stripmodquotes);
 
-            foreach ($splitmods as $key=>$val){
+            foreach ($splitmods as $val){
                 $yui3js[$val] = $val;
             }
         }
@@ -328,7 +328,7 @@ class expJavascript {
             $stripmodquotes = str_replace($toreplace, "", $params['jquery']);
             $splitmods = explode(",",$stripmodquotes);
 
-            foreach ($splitmods as $key=>$val){
+            foreach ($splitmods as $val){
                 $jqueryjs[$val] = $val;
             }
         }

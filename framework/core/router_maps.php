@@ -17,7 +17,7 @@
 
 $maps = array();
 
-//// Find news by the date of the news post.  URL would look like news/20137/10/18 to find all the posts on Oct 18, 2013
+//// Find news by the date of the news post.  URL would look like news/2013/10/18 to find all the posts on Oct 18, 2013
 //$maps[] = array('controller' => 'news',
 //                'action'     => 'showall_by_date',
 //                'url_parts'  => array(
@@ -27,6 +27,7 @@ $maps = array();
 //                    'day'        => '[0-3]?\d'
 //                ),
 //);
+//// Find news by the date of the news post.  year/month URL would look like news/2013/10 to find all the posts in Oct, 2013
 //$maps[] = array('controller' => 'news',
 //                'action'     => 'showall_by_date',
 //                'url_parts'  => array(
@@ -35,6 +36,7 @@ $maps = array();
 //                    'month'      => '[01]?\d',
 //                ),
 //);
+//// Find news by the date of the news post.  year URL would look like news/2013 to find all the posts in  2013
 //$maps[] = array('controller' => 'news',
 //                'action'     => 'showall_by_date',
 //                'url_parts'  => array(

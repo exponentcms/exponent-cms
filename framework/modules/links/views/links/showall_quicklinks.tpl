@@ -21,10 +21,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
     {permissions}
         <div class="module-actions">
-			{if $permissions.create == 1 || $permissions.edit == 1}
+			{if $permissions.create}
 				{icon class=add action=edit text="Add a new link"|gettext}
 			{/if}
-			{if $permissions.manage == 1}
+			{if $permissions.manage}
                 {if $config.usecategories}
                     {icon controller=expCat action=manage model='links' text="Manage Categories"|gettext}
                 {/if}
@@ -52,9 +52,9 @@
                     </div>
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.edit == 1}
+                            {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                                 {if $myloc != $item->location_data}
-                                    {if $permissions.manage == 1}
+                                    {if $permissions.manage}
                                         {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -62,7 +62,7 @@
                                 {/if}
                                 {icon action=edit record=$item}
                             {/if}
-                            {if $permissions.delete == 1}
+                            {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                                 {icon action=delete record=$item}
                             {/if}
                         </div>
@@ -82,9 +82,9 @@
                     <a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.edit == 1}
+                            {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                                 {if $myloc != $item->location_data}
-                                    {if $permissions.manage == 1}
+                                    {if $permissions.manage}
                                         {icon img='arrow_merge.png' action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -92,7 +92,7 @@
                                 {/if}
                                 {icon action=edit text='notext' record=$item}
                             {/if}
-                            {if $permissions.delete == 1}
+                            {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                                 {icon action=delete text='notext' record=$item}
                             {/if}
                         </div>

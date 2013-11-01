@@ -21,10 +21,10 @@
 	<h1>{$moduletitle|default:"Manage Status Codes"|gettext}</h1>
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == 1}
+            {if $permissions.create}
                 {icon class=add action=create text="Create a new status code"|gettext}
             {/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {ddrerank items=$page->records model="order_status" label="Order Statuses"|gettext}
             {/if}
         </div>
@@ -59,7 +59,7 @@
                         </td>
                         <td>{$listing->title}</td>
                         <td>
-                            {if $permissions.manage == true}
+                            {if $permissions.manage}
                                 {icon controller=order_status action=edit record=$listing}
                                 {icon controller=order_status action=delete record=$listing}
                             {/if}

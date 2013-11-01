@@ -25,7 +25,7 @@
 	    {if $title}<h3>{$title}</h3>{/if}
         {if $comments->records|@count!=0}
             {permissions}
-                {if $permissions.approve == 1}
+                {if $permissions.approve}
                     <div {if $unapproved > 0}class="unapproved msg-queue notice"{/if}>
                         <div class="msg">
                             {icon action=manage content_id=$content_id content_type=$content_type text='Manage Comments'|gettext}
@@ -65,10 +65,10 @@
                                     {/if}
                                     {permissions}
                                         <div class="item-actions">
-                                            {if $permissions.manage == 1}
+                                            {if $permissions.edit}
                                                 {icon action=edit record=$cmt content_id=$content_id content_type=$content_type title="Edit this comment"|gettext}
                                             {/if}
-                                            {if $permissions.delete == 1}
+                                            {if $permissions.delete}
                                                 {icon action=delete record=$cmt title="Delete this comment"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this comment?"|gettext)|cat:"');"}
                                             {/if}
                                         </div>

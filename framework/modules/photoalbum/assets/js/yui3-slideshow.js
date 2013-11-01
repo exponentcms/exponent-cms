@@ -223,9 +223,9 @@ YUI.add('gallery-yui-slideshow', function(Y) {
 			currentSlide: 4
 		};
 		
-		this.transIn = Y.Transitions.fadeIn;
-		this.transOut = Y.Transitions.fadeOut;
-		
+//		this.transIn = Y.Transitions.fadeIn;
+//		this.transOut = Y.Transitions.fadeOut;
+
 		this.easingIn = Y.Easing.easeOut;
 		this.easingOut = Y.Easing.easeOut;
 		
@@ -245,6 +245,9 @@ YUI.add('gallery-yui-slideshow', function(Y) {
 		this.pagination = false;
 		this.stopOnUser = true;
 		this.paused = false;
+
+        this.ti = 'fadeIn';
+        this.to = 'fadeOut';
 		
 		// Config:
 		
@@ -287,6 +290,9 @@ YUI.add('gallery-yui-slideshow', function(Y) {
 			
 			oInAnimObject.node.setStyle('zIndex', this.zIndex.nextSlide);
 			
+            this.transIn = Y.Transitions[this.ti];
+            this.transOut = Y.Transitions[this.to];
+
 			for(var i in this.transOut){
 				if(this.transOut.hasOwnProperty(i)){
 					oOutAnimObject[i] = this.transOut[i];

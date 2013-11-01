@@ -21,15 +21,15 @@
     }
 {/css}
 {permissions}
-{if $permissions.manage == 1}
+{if $permissions.manage}
     <div class="module storeadmin options">
         <h1>{$moduletitle|default:"Manage Product Options"|gettext}</h1>
         {permissions}
             <div class="module-actions">
-                {if $permissions.create == 1}
+                {if $permissions.create}
                     {icon class=add action=edit_optiongroup_master text="Create new option group"|gettext}
                 {/if}
-                {if $permissions.manage == 1}
+                {if $permissions.manage}
                     {ddrerank items=$optiongroups model="option_master" label="Product Options"|gettext}
                 {/if}
             </div>
@@ -37,16 +37,18 @@
         {foreach from=$optiongroups item=group}
             <table class="optiontable">
                 <thead>
-                    <th>
-                        <h3>
-                            {$group->title}
-                        </h3>
-                    </th>
-                    <th> </th>
-                    <th>
-                        {icon class=edit action=edit_optiongroup_master record=$group}
-                        {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
-                    </th>
+                    <tr>
+                        <th>
+                            <h3>
+                                {$group->title}
+                            </h3>
+                        </th>
+                        <th> </th>
+                        <th>
+                            {icon class=edit action=edit_optiongroup_master record=$group}
+                            {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>

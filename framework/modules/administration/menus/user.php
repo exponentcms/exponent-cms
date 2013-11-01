@@ -32,13 +32,14 @@ if (expSession::is_set('uilevel')) {
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
 
-$items = array(
-    array(
+$items = array();
+if (!$user->globalPerm('prevent_profile_change')) {
+    $items[] = array(
         'text'      => gt("Edit My Profile"),
         'url'       => makeLink(array('controller' => 'users', 'action' => 'edituser', 'id' => $user->id)),
         'classname' => 'edit',
-    ),
-);
+    );
+}
 
 if ((!USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap) {
     $items[] = array(
@@ -84,35 +85,5 @@ return array(
         'itemdata' => $items,
     )
 );
-
-//return array(
-//    'text'=>$user->firstname.' '.$user->lastname,
-//    'classname'=>'quicklink user',
-//    'submenu'=>array(
-//        'id'=>'user',
-//        'itemdata'=>array(
-//            array(
-//                'text'=>gt("Edit My Profile"),
-//                'url'=>makeLink(array('controller'=>'users','action'=>'edituser','id'=>$user->id)),
-//                'classname'=>'edit',
-//            ),
-//            array(
-//                'text'=>gt("Change My Password"),
-//                'url'=>makeLink(array('controller'=>'users','action'=>'change_password')),
-//                'classname'=>'password',
-//            ),
-//            array(
-//                'text'=>gt("Log Out"),
-//                'url'=>makeLink(array('controller'=>'login','action'=>'logout')),
-//                'classname'=>'logout',
-//            ),
-//            array(
-//                'text' => ($level == UILEVEL_PREVIEW)?gt('Turn Preview Mode off'):gt('Turn Preview Mode on'),
-//                'classname' => ($level == UILEVEL_PREVIEW)?'preview_on':'preview_off',
-//				'url' => makeLink(array('controller' => 'administration','action' => 'toggle_preview'))
-//            ),
-//        ),
-//    )
-//);
 
 ?>

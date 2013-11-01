@@ -19,10 +19,6 @@
 
 {/css}
 
-{*{css unique="photoalbum`$name`" corecss="common" link="`$smarty.const.PATH_RELATIVE`framework/modules/photoalbum/assets/css/yui3-slideshow.css"}*}
-
-{*{/css}*}
-
 <div id="ss-{$name}" class="slideshow slideshow-container" style="width:{$config.width|default:350}px;">
     <ul class="slideshow-frame"{if $config.width} style="width:{$config.width}px;height:{$config.height}px;"{/if}>
         {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
@@ -50,7 +46,7 @@
         {/foreach}
     </ul>
     {if !$config.hidecontrols}
-    <div class="slideshow-buttons">
+    <div class="slideshow-buttons{if $config.dimcontrols} buttons-dim{/if}">
         <a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Previous Slide"|gettext>
             &lt;&lt; {'Previous'|gettext}
         </a>
@@ -92,6 +88,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
     var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal} .slideshow-frame',
     {
         interval:{/literal}{$config.speed|default:5}000{literal},
+//        autoplay:{/literal}{$config.autoplay|default:true}{literal},
+        ti:'{/literal}{$config.anim_in|default:"fadeIn"}{literal}',
+        to:'{/literal}{$config.anim_out|default:"fadeOut"}{literal}',
+        duration:{/literal}{$config.duration|default:0.5}{literal},
         nextButton:"#ss-{/literal}{$name}{literal} .next_slide",
         previousButton:"#ss-{/literal}{$name}{literal} .prev_slide",
         playButton:"#ss-{/literal}{$name}{literal} .play_slide",

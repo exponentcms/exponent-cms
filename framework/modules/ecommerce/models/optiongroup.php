@@ -26,7 +26,7 @@ class optiongroup extends expRecord {
    public $default_sort_field = 'rank';
    public $default_sort_direction = 'ASC';
    
-    protected $attachable_item_types = array();
+//    protected $attachable_item_types = array();
 	
 	public $validates = array(
 		'presence_of'=>array(

@@ -19,11 +19,6 @@
 
 {/css}
 
-{*{if $config.lightbox}*}
-{*{css unique="files-gallery" link="`$smarty.const.PATH_RELATIVE`framework/modules/common/assets/css/gallery-lightbox.css"}*}
-
-{*{/css}*}
-{*{/if}*}
 {$rel}
 
 {uniqueid assign="id"}
@@ -32,11 +27,11 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit rank=1 title="Add to the top"|gettext text="Add Image"|gettext}
                 {icon class=add action=multi_add title="Quickly Add Many Images"|gettext text="Add Multiple Images"|gettext}
 			{/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {if !$config.disabletags}
                     {icon controller=expTag class="manage" action=manage_module model='photo' text="Manage Tags"|gettext}
                 {/if}
@@ -92,9 +87,9 @@
                                 </a>
                                 {permissions}
                                     <div class="item-actions">
-                                        {if $permissions.edit == 1}
+                                        {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
                                             {if $myloc != $record->location_data}
-                                                {if $permissions.manage == 1}
+                                                {if $permissions.manage}
                                                     {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
                                                 {else}
                                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -102,10 +97,10 @@
                                             {/if}
                                             {icon action=edit record=$record title="Edit"|gettext|cat:" `$modelname`"}
                                         {/if}
-                                        {if $permissions.delete == 1}
+                                        {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
                                             {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
                                         {/if}
-                                        {if $permissions.create == 1}
+                                        {if $permissions.create}
                                             {icon class=add action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add After"|gettext}
                                         {/if}
                                     </div>

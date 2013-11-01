@@ -23,10 +23,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == 1}
+            {if $permissions.create}
                 {icon class=add action=edit rank=1 text="Add text at the top"|gettext}
             {/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {ddrerank items=$items model="text" label="Text Items"|gettext}
             {/if}
         </div>
@@ -37,16 +37,16 @@
     {$myloc=serialize($__loc)}
     <div id="text-{$id}" class="dashboard">
         {foreach from=$items item=text name=items}
-            <div id="item{$text->id}" class="panel">
+            <div id="item{$text->id}" class="panel item">
                 <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $text->title ==""}&#160;{else}{$text->title}{/if}</h2></a></div>
                 <div class="piece bd {if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}expanded{else}collapsed{/if}">
                     <ul>
                         <li>
                             {permissions}
         						<div class="item-actions">
-        						   {if $permissions.edit == 1}
+        						   {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
                                         {if $myloc != $text->location_data}
-                                            {if $permissions.manage == 1}
+                                            {if $permissions.manage}
                                                 {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
                                             {else}
                                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -54,7 +54,7 @@
                                         {/if}
         								{icon action=edit record=$text}
         							{/if}
-        							{if $permissions.delete == 1}
+        							{if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
         								{icon action=delete record=$text}
         							{/if}
         						</div>
@@ -75,7 +75,7 @@
             </div>
             {permissions}
                 <div class="module-actions">
-                    {if $permissions.create == 1}
+                    {if $permissions.create}
                         {icon class=add action=edit rank=$text->rank+1 text="Add more text here"|gettext}
                     {/if}
                 </div>

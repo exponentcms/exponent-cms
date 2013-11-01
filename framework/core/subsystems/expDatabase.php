@@ -333,8 +333,8 @@ abstract class database {
 	   if ($additional_where == null) {
 	       $additional_where = '1';
 	   }
-        $a = intval($a);
-        $b = intval($b);
+       $a = intval($a);
+       $b = intval($b);
 	   $object_a = $this->selectObject($table, "$field='$a' AND $additional_where");
 	   $object_b = $this->selectObject($table, "$field='$b' AND $additional_where");
 
@@ -937,7 +937,8 @@ abstract class database {
 	       return DB_DEF_TIMESTAMP;
        elseif ($type == "datetime")
   	       return DB_DEF_TIMESTAMP;
-	   //else if (substr($type,5) == "double") return DB_DEF_DECIMAL;
+	   //else if (substr($type,5) == "double")
+           //return DB_DEF_DECIMAL;
 	   elseif ($type == "double")
 	       return DB_DEF_DECIMAL;
 	   // Strings

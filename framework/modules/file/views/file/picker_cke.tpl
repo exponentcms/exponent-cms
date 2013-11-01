@@ -55,22 +55,23 @@
     <div id="dynamicdata">
     
     </div>
+    {if (!$user->globalPerm('prevent_uploads'))}
     <div id="actionbar">
-        <a class="upload awesome green small" href="{link action=uploader ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update fck=$smarty.get.fck}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{"Upload Files"|gettext}</span></a>
+        <a class="upload awesome green small" href="{link action=uploader ajax_action=1 update=$smarty.get.update}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{"Upload Files"|gettext}</span></a>
     </div>
-
+    {/if}
     <div id="infopanel">
         <div class="hd"></div>
         <div class="bd"></div>
     </div>
     {br}
-    {if $smarty.get.update!='noupdate' && $smarty.get.update!='fck'}
+    {if $smarty.get.update!='noupdate' && $smarty.get.update!='ck'}
         <a id="useselected" style="float:right;" class="use awesome medium green" href="#"><span>{'Use Selected Files'|gettext}</span></a>
     {/if}
-    {if $permissions.manage == 1}
+    {if $permissions.manage}
         <a id="deleteselected" style="float:right;margin-right: 12px;height: 18px;" class="delete awesome medium red" href="#" onclick="return confirm('{"Are you sure you want to delete ALL selected files?"|gettext}');"><span>{'Delete Selected Files'|gettext }</span></a>
-        <a id="addlink" style="height: 18px;" class="add awesome medium green" href="{link action=adder ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&#160;&#160;
-        <a id="deletelink" style="height: 18px;" class="delete awesome medium red" href="{link action=deleter ajax_action=1 ck=$smarty.get.ck update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
+        <a id="addlink" style="height: 18px;" class="add awesome medium green" href="{link action=adder ajax_action=1 update=$smarty.get.update}"><span>{'Add Existing Files'|gettext}</span></a>&#160;&#160;
+        <a id="deletelink" style="height: 18px;" class="delete awesome medium red" href="{link action=deleter ajax_action=1 update=$smarty.get.update}"><span>{'Delete Missing Files'|gettext}</span></a>
         {br}{br}
     {/if}
 </div>
@@ -84,9 +85,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     var YAHOO=Y.YUI2;
     EXPONENT.fileManager = function() {
 //        var queryString = '&results=50&output=json'; //autocomplete query
-        var fck = {/literal}{if $smarty.get.fck}{$smarty.get.fck}{else}0{/if}{literal}; //are we coming from FCK as the window launcher?
+//        var ck = "{/literal}{$smarty.get.update}{literal}"; //are we coming from CKEditor as the window launcher?
         var usr = {/literal}{obj2json obj=$user}{literal}; //user
-        var update = "{/literal}{if $smarty.get.update}{$smarty.get.update}{else}0{/if}{literal}"; //user
+        var update = "{/literal}{if $smarty.get.update}{$smarty.get.update}{else}noupdate{/if}{literal}";
         var thumbnails = {/literal}{$smarty.const.FM_THUMBNAILS}{literal};
         var myDataSource = null;
         var myDataTable = null;
@@ -103,12 +104,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     	routBackToSource = function (fo, fi) {
     		var funcNum = getUrlParam('CKEditorFuncNum');
     		var fileUrl = fo;
-    		var ck = getUrlParam('ck');
+//    		var ck = getUrlParam('ck');
     		{/literal}
-    		{if $update|strstr:"fck"}
-    		window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+    		{if $update|strstr:"ck"}
+    		    window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
     		{else}
-    		window.opener.EXPONENT.passBackFile{$update}(fi);
+    		    window.opener.EXPONENT.passBackFile{$update}(fi);
     		{/if}
     		{literal}
     	}
@@ -271,7 +272,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             } else {
                 catvalue = cat.get('value');
             }
-            myDataSource.sendRequest('sort=id&dir=desc&startIndex=0&fck='+fck+'&results={/literal}{$smarty.const.FM_LIMIT}{literal}&query=' + query + '&cat=' + catvalue,myDataTable.onDataReturnInitializeTable, myDataTable);
+            myDataSource.sendRequest('sort=id&dir=desc&startIndex=0&update='+update+'&results={/literal}{$smarty.const.FM_LIMIT}{literal}&query=' + query + '&cat=' + catvalue,myDataTable.onDataReturnInitializeTable, myDataTable);
         };
     
         var oACDS = new YAHOO.util.FunctionDataSource(getTerms);
@@ -357,7 +358,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             var deletestring = '<a title="{/literal}{"Delete this File"|gettext}{literal}" href="#" onclick="if (confirm(\'{/literal}{"Are you sure you want to delete this file?"|gettext}{literal}\'))deleteOne(replacewithid);"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}delete.png" /></a>';
             deletestring = deletestring.replace('replacewithid',oRecord._oData.id);
             if (oRecord._oData.is_image==1){
-                var editorstring = '<a title="{/literal}{"Edit Image"|gettext}{literal}" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update fck=$smarty.get.fck}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}edit-image.png" /></a>&#160;&#160;&#160;';
+                var editorstring = '<a title="{/literal}{"Edit Image"|gettext}{literal}" href="{/literal}{link controller=pixidou action=editor ajax_action=1 id="replacewithid" update=$update}{literal}"><img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}edit-image.png" /></a>&#160;&#160;&#160;';
                 editorstring = editorstring.replace('replacewithid',oRecord._oData.id);
             } else {
                 var editorstring = '<img width=16 height=16 style="border:none;" src="{/literal}{$smarty.const.ICON_RELATIVE}{literal}cant-edit-image.png" />&#160;&#160;&#160;';
@@ -459,12 +460,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             
         ];
 
-//        if (update != 'noupdate' && update !='fck') {
+//        if (update != 'noupdate' && update !='ck') {
             myColumnDefs.push({ label:"{/literal}{"Select"|gettext}{literal}",sortable:false,formatter: formatBatch})
 //        };
 
         // DataSource instance
-        var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=getFilesByJSON&json=1&ajax_action=1&fck="+fck+"&");
+        var myDataSource = new YAHOO.util.DataSource(EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=getFilesByJSON&json=1&ajax_action=1&");
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
         myDataSource.responseSchema = {
             resultsList: "records",
@@ -514,6 +515,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             return "sort=" + sort +
                 "&dir=" + dir +
                 "&results=" + {/literal}{$smarty.const.FM_LIMIT}{literal} +
+                "&update={/literal}{if $smarty.get.update}{$smarty.get.update}{else}noupdate{/if}{literal}" +
                 "&startIndex=" + startIndex +
                 "&query=" + queryvalue +
                 "&cat=" + catvalue;
@@ -522,7 +524,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         // DataTable configuration
         var myConfigs = {
 //            initialRequest: "sort=id&dir=desc&startIndex=0&results={/literal}{$smarty.const.FM_LIMIT}{literal}", // Initial request for first page of data
-            initialRequest: "sort=posted&dir=desc&startIndex=0&results={/literal}{$smarty.const.FM_LIMIT}{literal}", // Initial request for first page of data
+            initialRequest: "sort=posted&dir=desc&update={/literal}{if $smarty.get.update}{$smarty.get.update}{else}noupdate{/if}{literal}&startIndex=0&results={/literal}{$smarty.const.FM_LIMIT}{literal}", // Initial request for first page of data
             dynamicData: true, // Enables dynamic server-driven data
 //            sortedBy : {key:"id", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow
             sortedBy : {key:"posted", dir:YAHOO.widget.DataTable.CLASS_DESC}, // Sets UI initial sort arrow

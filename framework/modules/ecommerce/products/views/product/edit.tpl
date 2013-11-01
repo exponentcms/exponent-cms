@@ -18,6 +18,7 @@
 {/css}
 
 <script src="{$smarty.const.PATH_RELATIVE}external/editors/ckeditor/ckeditor.js"></script>
+<script src="{$smarty.const.PATH_RELATIVE}external/editors/tinymce/tinymce.min.js"></script>
 
 <div id="editproduct" class="module store edit yui-skin-sam exp-skin exp-admin-skin">
     {if $record->id != ""}
@@ -115,7 +116,7 @@
                    eval(n.get('innerHTML'));
                } else {
                    var url = n.get('src');
-                   if (url.indexOf("ckeditor")) {
+                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")) {
                        Y.Get.script(url);
                    };
                };

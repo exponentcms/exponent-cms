@@ -23,38 +23,31 @@
  */
 class expRecord {
     protected $classinfo = null;
-    public $tablename = '';
     public $classname = '';
-    public $identifier = 'id';
 
+    // database
+    public $tablename = '';
+    public $identifier = 'id';
+    public $rank_by_field = '';
+    // for segregating items into uniqueness within a subgroup instead of unique amongst all like items in system
+    public $grouping_sql = '';
+
+    // associated objects
     public $has_extended_fields = array();
     public $has_one = array();
     public $has_many = array();
     public $has_many_self = array();
     public $has_and_belongs_to_many = array();
     public $has_and_belongs_to_self = array();
-
-    public $get_assoc_for = array();
-    public $get_attachable_for = array();
-
+    // sort order/direction for associated objects
     public $default_sort_field = '';
     public $default_sort_direction = '';
+    // what associated objects should also receive associated objects when associated
+    public $get_assoc_for = array();
 
-    public $rank_by_field = '';
-
-    public $validate = array();
-    public $do_not_validate = array();
-
-    public $supports_revisions = false;
-
-    //changed to nothing by default to speed things up. FJD
+    // attachable items
     protected $attachable_item_types = array();
-    public $attachable_items_to_save;
-
-    // for segregating items into uniqueness within a subgroup instead of unique amongst all items
-    public $grouping_sql = '';
-
-    /* protected $attachable_item_types = array(
+    /* protected $attachable_item_types = array(  // list of available attachments
         'content_expCats'=>'expCat'
         'content_expComments'=>'expComment',
         'content_expDefinableFields'=> 'expDefinableField'
@@ -63,6 +56,15 @@ class expRecord {
         'content_expSimpleNote'=>'expSimpleNote',
         'content_expTags'=>'expTag',
     );*/
+    public $attachable_items_to_save;
+    // what associated objects should also receive attachments when associated
+    public $get_attachable_for = array();
+
+    // field validation settings
+    public $validate = array();
+    public $do_not_validate = array();
+
+    public $supports_revisions = false;
 
     /**
      * is model content searchable?
@@ -223,12 +225,35 @@ class expRecord {
      * @return array
      */
     public function findBy($column, $value, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false) {
-        global $db;
+//        global $db;
+
         $where = "`" . $column . "`=";
         if (!is_numeric($value)) $where .= "'";
         $where .= $value;
         if (!is_numeric($value)) $where .= "'";
         return $this->find('first', $where, null, null, 0, $get_assoc, $get_attached, $except, $cascade_except);
+    }
+
+    /**
+     * find a value(s) by column
+     *
+     * @param string    $range
+     * @param string    $column
+     * @param string    $where
+     * @param string    $order
+     * @param bool      $distinct
+     *
+     * @return array|bool
+     */
+    public function findValue($range = 'all', $column, $where=null, $order=null, $distinct=false) {
+        global $db;
+
+        if (strcasecmp($range, 'all') == 0) {  // return all items matching request
+            return $db->selectColumn($this->tablename, $column, $where, $order, $distinct);
+        } elseif (strcasecmp($range, 'first') == 0) {  // return single/first item matching request
+            return $db->selectValue($this->tablename, $column, $where);
+        }
+        return false;
     }
 
     /**
@@ -345,6 +370,7 @@ class expRecord {
      */
     public function rerank($direction, $where = '') {
         global $db;
+
         if (!empty($this->rank)) {
             $next_prev = $direction == 'up' ? $this->rank - 1 : $this->rank + 1;
             $where .= empty($this->location_data) ? null : (!empty($where) ? " AND " : '') . "location_data='" . $this->location_data . "'" . $this->grouping_sql;
@@ -368,7 +394,7 @@ class expRecord {
         // save the attachable items
 //        $refname = strtolower($item->classname).'s_id';  //FIXME plural vs single?
 //        $refname = strtolower($item->classname) . '_id'; //FIXME plural vs single?
-        $refname = strtolower($item->tablename) . '_id'; //FIXME: find a better way to pluralize these names!!!
+        $refname = strtolower($item->tablename) . '_id';
         $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND ' . $refname . '=' . $item->id);
         $obj               = new stdClass();
         $obj->$refname     = $item->id;
@@ -385,7 +411,7 @@ class expRecord {
      * @param bool $validate
      */
     public function save($validate = false) {
-        global $db, $user;
+        global $db;
 
         // call the validation callback functions if we need to.
         if ($validate) {
@@ -630,7 +656,7 @@ class expRecord {
                                 $obj->subtype      = $subtype;
                                 $obj->content_id   = $this->id;
                                 $obj->content_type = $this->classname;
-                                if ($type == 'expFile') $obj->rank = $item->rank + 1;
+                                if ($type == 'expFile' || $type == 'expCats') $obj->rank = $item->rank + 1;
                                 $db->insertObject($obj, $itemtype->attachable_table);
                             }
                         } elseif (is_array($item)) {
@@ -640,7 +666,7 @@ class expRecord {
                                     $obj->subtype      = $subtype;
                                     $obj->content_id   = $this->id;
                                     $obj->content_type = $this->classname;
-                                    if ($type == 'expFile') $obj->rank = $rank + 1;
+                                    if ($type == 'expFile' || $type == 'expCats') $obj->rank = $rank + 1;
                                     $db->insertObject($obj, $itemtype->attachable_table);
                                 }
                             }
@@ -648,7 +674,7 @@ class expRecord {
                             $obj->$refname     = $item;
                             $obj->content_id   = $this->id;
                             $obj->content_type = $this->classname;
-                            if ($type == 'expFile') $obj->rank = $subtype + 1;
+                            if ($type == 'expFile' || $type == 'expCats') $obj->rank = $subtype + 1;
                             $db->insertObject($obj, $itemtype->attachable_table);
                         }
                     }
@@ -684,13 +710,7 @@ class expRecord {
         foreach ($this->attachable_item_types as $content_table=> $type) {
             $db->delete($content_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id);
         }
-        //FIXME shouldn't we also delete associated items?
-//        if (property_exists($this, 'has_many')) {
-//            foreach ($this->has_many as $assoc) {
-//                $obj = new $assoc();
-////                $obj->delete();
-//            }
-//        }
+        //FIXME shouldn't we also delete associated items or leave them to the afterDelete method?
         $this->afterDelete();
     }
 
@@ -725,6 +745,7 @@ class expRecord {
      */
     public function makeSefUrl() {
         global $db, $router;
+
         if (!empty($this->title)) {
 			$this->sef_url = $router->encode($this->title);
 		} else {
@@ -750,8 +771,9 @@ class expRecord {
      *
      * @return null
      */
-    public function getAssociatedObjects($obj = null) {
+    public function getAssociatedObjects($obj = null) { //FIXME not used??
         global $db;
+
         $records = array();
 
         foreach ($this->has_one as $assoc_object) {
@@ -793,10 +815,11 @@ class expRecord {
      */
     public function findWhereAttachedTo($content_type) {
         global $db;
+
         $objarray = array();
         if (!empty($this->id) && !empty($this->attachable_table)) {
 //            $assocs = $db->selectObjects($this->attachable_table, $this->classname.'s_id='.$this->id.' AND content_type="'.$content_type.'"');  //FIXME is it plural where others are single?
-            $assocs = $db->selectObjects($this->attachable_table, strtolower($this->tablename) . '_id=' . $this->id . ' AND content_type="' . $content_type . '"'); //FIXME is it plural where others are single?
+            $assocs = $db->selectObjects($this->attachable_table, strtolower($this->tablename) . '_id=' . $this->id . ' AND content_type="' . $content_type . '"');
             foreach ($assocs as $assoc) {
                 $objarray[] = new $assoc->content_type($assoc->content_id);
             }
@@ -843,7 +866,7 @@ class expRecord {
                     $sql .= " AND approved='1'";
                 }
 
-                $order = ($type == 'expFile' || $type == 'expDefinableField') ? ' ORDER BY rank ASC' : null;
+                $order = ($type == 'expFile' || $type == 'expCats' || $type == 'expDefinableField') ? ' ORDER BY rank ASC' : null;
                 $sql .= $order;
 
                 $items = $db->selectArraysBySql($sql);
@@ -909,6 +932,7 @@ class expRecord {
         foreach ($this->has_many as $assoc_object) {
             if (!in_array($assoc_object, $except)) {
                 $assoc_obj = new $assoc_object();
+
                 $ret       = $db->selectArrays($assoc_obj->tablename, $this->tablename . '_id=' . $this->id, $assoc_obj->default_sort_field != '' ? $assoc_obj->default_sort_field . " " . $assoc_obj->default_sort_direction : null);
                 $records   = array();
                 if ($cascade_except) {
@@ -928,6 +952,7 @@ class expRecord {
         foreach ($this->has_many_self as $assoc_object) {
             if (!in_array($assoc_object, $except)) {
                 $assoc_obj = new $assoc_object();
+
                 $ret       = $db->selectArrays($assoc_obj->tablename, $assoc_obj->has_many_self_id . '=' . $this->id, $assoc_obj->default_sort_field != '' ? $assoc_obj->default_sort_field . " " . $assoc_obj->default_sort_direction : null);
                 $records   = array();
                 foreach ($ret as $record) {
@@ -949,7 +974,7 @@ class expRecord {
                 foreach ($ret as $record) {
                     $record_array = object2Array($record);
                     // put in the current model as an exception, otherwise the auto assoc's keep initializing instances of each other in an
-                    // infinant loop
+                    // infinite loop
                     $record_array['except'] = array($this->classinfo->name);
                     if ($cascade_except) {
                         $record_array['except']         = array_merge($record_array['except'], $except);
@@ -973,7 +998,7 @@ class expRecord {
                 foreach ($ret as $record) {
                     $record_array = object2Array($record);
                     // put in the current model as an exception, otherwise the auto assoc's keep initializing instances of each other in an
-                    // infinant loop
+                    // infinite loop
                     $record_array['except'] = array($this->classinfo->name);
                     $records[]              = new $assoc_object($record_array, in_array($assoc_object, $this->get_assoc_for), in_array($assoc_object, $this->get_attachable_for));
                 }
@@ -1017,7 +1042,7 @@ class expRecord {
      *
      */
     public function saveAssociatedObjects() {
-        global $db;
+//        global $db;
 
         foreach ($this->has_one as $assoc_object) {
             $obj = $this->$assoc_object;
@@ -1046,24 +1071,6 @@ class expRecord {
     }
 
     /**
-     * convert an object to an array
-     *
-     * @param null $object
-     *
-     * @return array
-     */
-//    private function object2Array($object = null) {
-//        $ret_array = array();
-//        if (empty($object)) return $ret_array;
-//
-//        foreach ($object as $key=> $value) {
-//            $ret_array[$key] = $value;
-//        }
-//
-//        return $ret_array;
-//    }
-
-    /**
      * return the item poster
      *
      * @return null|string
@@ -1071,7 +1078,9 @@ class expRecord {
     public function getPoster() {
         if (isset($this->poster)) {
             $user = new user($this->poster);
-            return $user->firstname . " " . $user->lastname;
+//            return $user->firstname . " " . $user->lastname;
+        //TODO: should incorporate DISPLAY_ATTRIBUTION here
+            return user::getUserAttribution($user->id);
         } else {
             return null;
         }
@@ -1087,8 +1096,9 @@ class expRecord {
     public function getTimestamp($type = 0) {
         if ($type == 0) $getType = 'created_at';
         else $getType = 'edited_at';
-        if (isset($this->$getType)) return date("F j, Y, g:i a", $this->$getType);
+//        if (isset($this->$getType)) return date("F j, Y, g:i a", $this->$getType);
         //TODO: should incorporate DISPLAY_DATETIME_FORMAT here
+        if (isset($this->$getType)) return expDateTime::format_date($this->$getType, DISPLAY_DATETIME_FORMAT);
         else return null;
     }
 

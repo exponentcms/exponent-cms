@@ -75,7 +75,7 @@ define("LDAP_BIND_USER",'not_configured');
 define("LDAP_BIND_PASS",'not_configured');
 define("HTMLTOPDF_PATH",'');
 define("HTMLTOPDF_PATH_TMP",'');
-define("HTML2PDF_OUTPUT",'0');
+define("HTMLTOPDF_OUTPUT",'0');
 define("FM_THUMBNAILS",'0');
 define("FM_THUMB_SIZE",'48');
 define("FM_WIDTH",'1024');

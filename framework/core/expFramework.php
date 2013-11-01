@@ -295,17 +295,19 @@ function renderAction(array $parms=array()) {
     
     // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller constructor above
     //$controller->params = $parms;
-    //check the perms for this action
+    // check the perms for this action
     $perms = $controller->permissions();
     
-    //we have to treat the update permission a little different..it's tied to the create/edit
-    //permissions.  Really the only way this will fail will be if someone bypasses the perm check
-    //on the edit form somehow..like a hacker trying to bypass the form and just submit straight to 
-    //the action. To safeguard, we'll catch if the action is update and change it either to create or
-    //edit depending on whether an id param is passed to. that should be sufficient.
+    // we have to treat the update permission a little different..it's tied to the create/edit
+    // permissions.  Really the only way this will fail will be if someone bypasses the perm check
+    // on the edit form somehow..like a hacker trying to bypass the form and just submit straight to
+    // the action. To safeguard, we'll catch if the action is update and change it either to create or
+    // edit depending on whether an id param is passed to. that should be sufficient.
     $common_action = null;
     if ($parms['action'] == 'update') {
         $perm_action = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';
+    } elseif ($parms['action'] == 'edit' && (!isset($parms['id']) || $parms['id'] == 0)) {
+        $perm_action = 'create';
     } elseif ($parms['action'] == 'saveconfig') {
         $perm_action = 'configure';
     } else {
@@ -318,12 +320,58 @@ function renderAction(array $parms=array()) {
         $perm_action = $parms['action'];
     }
 
-    //FIXME Here is where we'd check for ownership of an item and/or w/ 'create' perm?
-    
+    // Here is where we check for ownership of an item and 'create' perm
+    if (($parms['action'] == 'edit' || $parms['action'] == 'update' || $parms['action'] == 'delete' ||
+        $common_action == 'edit' || $common_action == 'update' || $common_action == 'delete') && !empty($parms['id'])) {
+        $theaction = !empty($common_action) ? $common_action : $parms['action'];
+        $owner = $db->selectValue($model, 'poster', 'id=' . $parms['id']);
+        if ($owner == $user->id && !expPermissions::check($theaction, $controller->loc) && expPermissions::check('create', $controller->loc)) {
+            $perm_action = 'create';
+        }
+    }
+
+    // check to see if it's on a private page and we shouldn't see it
+    if ($perm_action == 'showall' || $perm_action == 'show' || $perm_action == 'downloadfile' || $common_action == 'showall' || $common_action == 'show' || $common_action == 'downloadfile') {
+        if (!empty($parms['src'])) {
+            $loc = expCore::makeLocation($parms['controller'], $parms['src']);
+        } elseif (!empty($parms['id']) || !empty($parms['title']) || !empty($parms['sef_url'])) {
+            if (!empty($parms['id'])) {
+                $record = new $controller->basemodel_name($parms['id']);
+            } elseif (!empty($parms['title'])) {
+                $record = new $controller->basemodel_name($parms['title']);
+            } elseif (!empty($parms['sef_url'])) {
+                $record = new $controller->basemodel_name($parms['sef_url']);
+            }
+            if (!empty($record->location_data)) $loc = expUnserialize($record->location_data);
+        }
+        if (!empty($loc)) {
+            $section = new section();
+            $sectionref = new sectionref();
+            $container = new container();
+            $secref = $sectionref->find('first',"module='".$parms['controller']."' AND source='" . $loc->src . "'");
+            if (!empty($secref)) {
+                $page = $section->find('first','id='.$secref->section);
+                $module = $container->find('first',"internal='" . serialize($loc) . "'");
+                if (empty($page->public) || !empty($module->is_private)) {
+                    if (!expPermissions::check('view',expCore::makeLocation('navigation', $page->id))) {
+                        if (expTheme::inAction()) {
+                            flash('error', gt("You don't have permission to view that item"));
+                            notfoundController::handle_not_authorized();
+                            expHistory::returnTo('viewable');
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     if (array_key_exists($perm_action, $perms)) {
         if (!expPermissions::check($perm_action, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', gt("You don't have permission to")." ".$perms[$perm_action]);
+                notfoundController::handle_not_authorized();
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -333,6 +381,7 @@ function renderAction(array $parms=array()) {
         if (!expPermissions::check($common_action, $controller->loc)) {
             if (expTheme::inAction()) {
                 flash('error', gt("You don't have permission to")." ".$perms[$common_action]);
+                notfoundController::handle_not_authorized();
                 expHistory::returnTo('viewable');
             } else {
                 return false;
@@ -343,6 +392,7 @@ function renderAction(array $parms=array()) {
         if (!$user->isLoggedIn()) {
             $msg = empty($controller->requires_login[$perm_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$perm_action];
             flash('error', $msg);
+            notfoundController::handle_not_authorized();
             expHistory::redirecto_login();
         }
     } elseif (array_key_exists($common_action, $controller->requires_login)) {
@@ -350,6 +400,7 @@ function renderAction(array $parms=array()) {
         if (!$user->isLoggedIn()) {
             $msg = empty($controller->requires_login[$common_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$common_action];
             flash('error', $msg);
+            notfoundController::handle_not_authorized();
             expHistory::redirecto_login();
         }
     } 
@@ -492,7 +543,7 @@ function get_common_template($view, $loc, $controllername='') {
  * @return array
  */
 function get_config_templates($controller, $loc) {
-    global $db;
+//    global $db;
     
     // set paths we will search in for the view
     $commonpaths = array(

@@ -17,10 +17,10 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == 1}
+            {if $permissions.create}
                 {icon class=add action=edit rank=1 text="Add text at the top"|gettext}
             {/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {ddrerank items=$items model="text" label="Text Items"|gettext}
             {/if}
         </div>
@@ -30,44 +30,46 @@
     {/if}
     {$myloc=serialize($__loc)}
     {foreach from=$items item=text name=items}
-        {permissions}
-            <div class="item-actions">
-                {if $permissions.edit == 1}
-                    {if $myloc != $text->location_data}
-                        {if $permissions.manage == 1}
-                            {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
-                        {else}
-                            {icon img='arrow_merge.png' title="Merged Content"|gettext}
+        <div class="item">
+            {permissions}
+                <div class="item-actions">
+                    {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
+                        {if $myloc != $text->location_data}
+                            {if $permissions.manage}
+                                {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
+                            {else}
+                                {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                            {/if}
                         {/if}
+                        {icon action=edit record=$text}
                     {/if}
-                    {icon action=edit record=$text}
-                {/if}
-                {if $permissions.delete == 1}
-                    {icon action=delete record=$text}
-                {/if}
-            </div>
-        {/permissions}
-        {if $config.show_summary}
-            {$summary = $text->body|summarize:"html":"parahtml"}
-        {else}
-            {$summary = ''}
-        {/if}
-        {*{toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}*}
-        {toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$summary}
-            <div class="bodycopy">
-                {if $config.ffloat != "Below"}
-                    {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
-                {/if}
-                {$text->body}
-                {if $config.ffloat == "Below"}
-                    {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
-                {/if}
-            </div>
-            {clear}
-        {/toggle}
+                    {if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
+                        {icon action=delete record=$text}
+                    {/if}
+                </div>
+            {/permissions}
+            {if $config.show_summary}
+                {$summary = $text->body|summarize:"html":"parahtml"}
+            {else}
+                {$summary = ''}
+            {/if}
+            {*{toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$config.summary_height}*}
+            {toggle unique="text`$text->id`" title=$text->title|default:'Click to Hide/View'|gettext collapsed=$config.show_collapsed summary=$summary}
+                <div class="bodycopy">
+                    {if $config.ffloat != "Below"}
+                        {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                    {/if}
+                    {$text->body}
+                    {if $config.ffloat == "Below"}
+                        {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                    {/if}
+                </div>
+                {clear}
+            {/toggle}
+        </div>
         {permissions}
 			<div class="module-actions">
-				{if $permissions.create == 1}
+				{if $permissions.create}
 					{icon class=add action=edit rank=$text->rank+1 text="Add more text here"|gettext}
 				{/if}
 			</div>

@@ -50,7 +50,7 @@ foreach ($status as $file=>$stat) {
 	else echo ' class="bodytext success">';
 	switch ($stat) {
 		case SANITY_NOT_E:
-			echo gt('File Not Found');
+			echo gt('Not Found');
 			break;
 		case SANITY_NOT_R:
 			echo gt('Not Readable');

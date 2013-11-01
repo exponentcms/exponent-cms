@@ -18,10 +18,10 @@
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
         {permissions}
         <div class="module-actions">
-            {if $permissions.create == true || $permissions.edit == true}
+            {if $permissions.create}
                 {icon class="add" action=create text="Add a Product"|gettext}
             {/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {icon action=manage text="Manage Products"|gettext}
                 {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
             {/if}
@@ -35,16 +35,16 @@
         {if $current_category->title}<h2>{$current_category->title}</h2>{/if}
         {if $current_category->id}
             {permissions}
-                {if $permissions.edit == 1}
+                {if $permissions.edit}
                     {icon class="edit" action=edit module=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
                 {/if}
-                {*{if $permissions.manage == 1}*}
+                {*{if $permissions.manage}*}
                     {*{icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}*}
                 {*{/if}*}
-                {*{if $permissions.manage == 1}*}
+                {*{if $permissions.manage}*}
                     {*{icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}*}
                 {*{/if}*}
-                {if $permissions.edit == 1 && $config.orderby=="rank"}
+                {if $permissions.edit && $config.orderby=="rank"}
                     {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
                 {/if}
             {/permissions}

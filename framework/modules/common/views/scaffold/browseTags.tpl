@@ -19,5 +19,4 @@
     {foreach from=$tags item=tag names=tags}
         <a href="{link action=browseTags tags=$tag->id}">{$tag->title}</a>
     {/foreach}
-
 </div>

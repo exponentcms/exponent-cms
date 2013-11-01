@@ -46,9 +46,9 @@
         {$myloc=serialize($__loc)}
         {permissions}
 			<div class="item-actions">
-				{if $permissions.edit == 1}
+				{if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
                     {if $myloc != $record->location_data}
-                        {if $permissions.manage == 1}
+                        {if $permissions.manage}
                             {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -56,7 +56,7 @@
                     {/if}
 					{icon action=edit record=$record title="Edit this file"|gettext}
 				{/if}
-				{if $permissions.delete == 1}
+				{if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
 					{icon action=delete record=$record title="Delete this file"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this file?"|gettext)|cat:"');"}
 				{/if}
 			</div>
@@ -132,7 +132,7 @@
         {/if}
         {if $config.enable_facebook_like}
             <div id="fb-root"></div>
-            <div class="fb-like" data-href="{link action=show title=$record->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
+            <div class="fb-like" data-href="{link action=show title=$record->sef_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
             {script unique='facebook_src'}
             {literal}
                 (function(d, s, id) {
@@ -178,29 +178,3 @@
         });
     {/script}
 {/if}
-
-{*{if $config.show_player}*}
-    {*{script unique="flowplayer" src="`$smarty.const.FLOWPLAYER_RELATIVE`flowplayer-`$smarty.const.FLOWPLAYER_MIN_VERSION`.min.js"}*}
-    {*{/script}*}
-
-    {*{script unique="filedownload"}*}
-    {*{literal}*}
-    {*flowplayer("a.filedownload-media", EXPONENT.FLOWPLAYER_RELATIVE+"flowplayer-"+EXPONENT.FLOWPLAYER_VERSION+".swf",*}
-        {*{*}
-    		{*wmode: 'transparent',*}
-    		{*clip: {*}
-    			{*autoPlay: false,*}
-    			{*},*}
-            {*plugins:  {*}
-                {*controls: {*}
-                    {*play: true,*}
-                    {*scrubber: true,*}
-                    {*fullscreen: false,*}
-                    {*autoHide: false*}
-                {*}*}
-            {*}*}
-        {*}*}
-    {*);*}
-    {*{/literal}*}
-    {*{/script}*}
-{*{/if}*}

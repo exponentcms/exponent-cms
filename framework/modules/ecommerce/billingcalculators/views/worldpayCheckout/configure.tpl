@@ -20,8 +20,8 @@
     <div id="worldpay-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'Wordpay Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
-	        <li><a href="#tab3"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
-	        <li><a href="#tab4"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}}</em></a></li>
+	        <li><a href="#tab2"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
+	        <li><a href="#tab3"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">

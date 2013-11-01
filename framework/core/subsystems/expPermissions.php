@@ -104,10 +104,10 @@ class expPermissions {
 		if (!is_array($permission)) $permission = array($permission);
         // always check for 'manage' permission
         $permission[] = 'manage';
-        // create permission implies edit permission
-        if (array_intersect(array('edit'),$permission)) {
-            $permission[] = 'create';
-        }
+        // create permission implies edit permission  //FIXME for v2.2.2 and earlier this was true
+//        if (array_intersect(array('edit'),$permission)) {
+//            $permission[] = 'create';
+//        }
         $permission = array_unique($permission);  // strip out duplicates
 
 //		if (is_callable(array($ploc->mod,"getLocationHierarchy"))) {  //FIXME this is only available in calendarmodule, may not be needed if there is no 'int' property?

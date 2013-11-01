@@ -117,6 +117,7 @@ class yuicalendarcontrol extends formcontrol {
                 calendar.on('dateClick', function (ev) {
                     // Format the date and output it to a DOM element.
                     Y.one('#" . $idname . "').set('value',dtdate.format(ev.date,{format:'%m/%d/%Y'}));
+                    Y.one('#" . $idname . "').simulate('change');
                 });
 
                 function updateCal() {

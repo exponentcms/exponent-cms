@@ -22,11 +22,11 @@
  */
 class childProduct extends product {
     public $table = 'product';
-    public $has_one = array();
-    public $has_many = array(); 
-    public $has_many_self = array(); 
-    public $has_and_belongs_to_many = array(); 
-    public $has_and_belongs_to_self = array(); 
+//    public $has_one = array();
+//    public $has_many = array();
+//    public $has_many_self = array();
+//    public $has_and_belongs_to_many = array();
+//    public $has_and_belongs_to_self = array();
     public $has_many_self_id = 'parent_id';
                                                                             
     public $product_name = 'Child Product'; 
@@ -38,7 +38,7 @@ class childProduct extends product {
     public $do_not_validate = array('sef_url');
     
     public function __construct($params=array(), $get_assoc=false, $get_attached=true ) {
-        global $db;
+//        global $db;
         parent::__construct($params, $get_assoc, $get_attached);
         //if (!empty($this->id)) $this->extra_fields = expUnserialize($this->extra_fields);
         $this->price = $this->getBasePrice();

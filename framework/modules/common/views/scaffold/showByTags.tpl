@@ -13,35 +13,4 @@
  *
  *}
 
-<div class="scaffold showByTags">
-	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$modelname`"}</h1>
-
-	{permissions}
-		<div class="module-actions">
-        	{if $permissions.create == 1}
-        		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$modelname`"}{br}
-        	{/if}
-		</div>
-    {/permissions}
-	<ul>
-        {foreach from=$items item=listing}
-		<li class="listing">
-			<h3><a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a></h3>
-			<p>
-				{$listing->body}
-			</p>
-			{permissions}
-				<div class="item-actions">
-					{if $permissions.edit == 1}
-						{icon controller=$controller action=edit record=$listing}
-					{/if}
-					{if $permissions.delete == 1}
-						{icon controller=$controller action=delete record=$listing}
-					{/if}
-				</div>
-			{/permissions}
-			{clear}
-		</li>
-        {/foreach}
-	</ul>
-</div>
+{include file="showall_by_tags.tpl"}

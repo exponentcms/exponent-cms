@@ -6,7 +6,7 @@
 .news.announcement .item.announcement {
 	background-color      : #ffed9f;
 	color                 : black;
-	padding               : 20px;
+	padding-left          : 20px;
 	margin                : 0 10px 20px;
 	border                : 4px;
 	border-style          : solid;

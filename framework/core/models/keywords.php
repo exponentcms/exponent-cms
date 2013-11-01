@@ -52,10 +52,6 @@ class keywords {
 		ob_start();
 		$mods = array();
 		foreach ($refs as $ref) {
-//			$loc = new stdClass();;
-//			$loc->mod = $ref->module;
-//			$loc->src = $ref->source;
-//			$loc->int = $ref->internal;
             $loc = expCore::makeLocation($ref->module,$ref->source,$ref->internal);
 			if (!empty($loc->src)) {
 				if ($ref->module == 'container') {
@@ -78,7 +74,7 @@ class keywords {
 	}
 
 	public function getKeywordsForSection($section) {
-		global $db;
+//		global $db;
 
 		$id = is_object($section) ? $section->id : $section;
 		return self::getAndWeightKeywords(self::getTextBySection($section));

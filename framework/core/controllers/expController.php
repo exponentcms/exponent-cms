@@ -556,7 +556,7 @@ abstract class expController {
      * merge/move aggregated item into this module
      */
     function merge() {
-        global $db;
+//        global $db;
 
         expHistory::set('editable', $this->params);
         $modelname = $this->basemodel_name;
@@ -712,7 +712,7 @@ abstract class expController {
      */
     function manage_ranks() {
         $rank = 1;
-        foreach ($this->params['rerank'] as $key => $id) {
+        foreach ($this->params['rerank'] as $id) {
             $modelname = $this->params['model'];
             $obj = new $modelname($id);
             $obj->rank = $rank;
@@ -747,11 +747,6 @@ abstract class expController {
         ));
 
 //        if (empty($this->params['hcview'])) {
-//            $containerloc = new stdClass();
-//            $containerloc->mod = expModules::getControllerClassName($this->loc->mod);  //FIXME long controller name
-//            $containerloc->mod = expModules::getModuleName($this->loc->mod);
-//            $containerloc->src = $this->loc->src;
-//            $containerloc->int = '';
             $containerloc = expCore::makeLocation(expModules::getModuleName($this->loc->mod),$this->loc->src);
             $container = $db->selectObject('container', "internal='" . serialize($containerloc) . "'");
             if (empty($container)) {
@@ -913,7 +908,7 @@ abstract class expController {
      * @return array
      */
     function getRSSContent() {
-        global $db;
+//        global $db;
 
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
@@ -1061,7 +1056,7 @@ abstract class expController {
      * download a file attached to item
      */
     function downloadfile() {
-        global $db;
+//        global $db;
 
         if (!isset($this->config['allowdownloads']) || $this->config['allowdownloads'] == true) {
             //if ($db->selectObject('content_expFiles', 'content_type="'.$this->baseclassname.'" AND expfiles_id='.$this->params['id']) != null) {
@@ -1122,7 +1117,8 @@ abstract class expController {
      * @return int
      */
     function addContentToSearch() {
-        global $db, $router;
+//        global $db, $router;
+        global $db;
 
         $count = 0;
         $model = new $this->basemodel_name(null, false, false);
@@ -1193,7 +1189,7 @@ abstract class expController {
      * delete module, config, and all its items
      */
     function delete_instance($loc = false) {
-        global $db;
+//        global $db;
 
         $model = new $this->basemodel_name();
 //        $where = null;
@@ -1223,12 +1219,14 @@ abstract class expController {
         // figure out what metadata to pass back based on the action we are in.
 //        $action = $_REQUEST['action'];
         $action = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
         $modelname = $this->basemodel_name;
 
         switch ($action) {
             case 'showall':
-                $metainfo = array('title' => gt("Showing all") . " - " . $this->displayname(), 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => '');
+                $metainfo['title'] = gt("Showing all") . " - " . $this->displayname();
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
             case 'showByTitle':
@@ -1258,6 +1256,8 @@ abstract class expController {
                         $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+                        $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
+                        $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
                     }
                     break;
                 }
@@ -1268,7 +1268,10 @@ abstract class expController {
                 if (method_exists($mod, $functionName)) {
                     $metainfo = $mod->$functionName($router->params);
                 } else {
-                    $metainfo = array('title' => $this->displayname() . " - " . SITE_TITLE, 'keywords' => SITE_KEYWORDS, 'description' => SITE_DESCRIPTION, 'canonical' => URL_FULL.substr($router->sefPath, 1));
+                    $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
+                    $metainfo['keywords'] = SITE_KEYWORDS;
+                    $metainfo['description'] = SITE_DESCRIPTION;
+                    $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
                 }
         }
 
@@ -1295,7 +1298,7 @@ abstract class expController {
 
         // look up the record.
         if (isset($request['tag'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
             $tag = $request['tag'];
             // set the meta info
             $metainfo['title'] = gt('Showing all') . ' ' . ucwords($this->basemodel_name) . ' ' . gt('tagged as') . ' ' . $tag;
@@ -1314,7 +1317,7 @@ abstract class expController {
 
         // look up the record.
         if (isset($request['month'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
             $ts = strftime('%B, %Y', $mk);
             // set the meta info

@@ -105,7 +105,7 @@ class usersController extends expController {
         $id = !empty($this->params['id']) ? $this->params['id'] : null;
 
         // check to see if we should be editing.  You either need to be an admin, or editing own account.
-        if ($user->isAdmin() || ($user->id == $id)) {
+        if ($user->isAdmin() || ($user->id == $id && !$user->globalPerm('prevent_profile_change'))) {
             $u = new user($id);
         } else {
             flash('error', gt('You do not have the proper permissions to edit this user'));
@@ -325,7 +325,8 @@ class usersController extends expController {
     }
 
     public function manage_sessions() {
-        global $db, $user;
+//        global $db, $user;
+        global $db;
 
         expHistory::set('manageable', $this->params);
 
@@ -785,7 +786,8 @@ class usersController extends expController {
     }
 
     public function update_memberships() {
-        global $user, $db;
+//        global $user, $db;
+        global $db;
 
         //$memb = $db->selectObject('groupmembership','member_id='.$user->id.' AND group_id='.$this->params['id'].' AND is_admin=1');
         $group = $db->selectObject('group', 'id=' . $this->params['id']);
@@ -805,7 +807,7 @@ class usersController extends expController {
     }
 
     public function getUsersByJSON() {
-        global $db, $user;
+//        global $db, $user;
         $modelname = $this->basemodel_name;
         $results = 25; // default get all
         $startIndex = 0; // default start at 0
@@ -1000,7 +1002,7 @@ class usersController extends expController {
             $p[gt("User Name")] = 'username';
             $p[gt("First Name")] = 'firstname';
             $p[gt("Last Name")] = 'lastname';
-            foreach ($mod->permissions() as $key => $value) {
+            foreach ($mod->permissions() as $value) {
                 //        $p[gt($value)]=$key;
                 $p[gt($value)] = 'no-sort';
             }
@@ -1044,7 +1046,8 @@ class usersController extends expController {
                 'title'      => ($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name() . ' ' . ($loc->mod != 'container' ? gt('module') : '') . ' ' : gt('Page'),
             ));
         } else {
-            echo SITE_403_HTML;
+//            echo SITE_403_HTML;
+            notfoundController::handle_not_authorized();
         }
     }
 
@@ -1096,7 +1099,7 @@ class usersController extends expController {
             }
 
             $p[gt("Group")] = 'username';
-            foreach ($mod->permissions() as $key => $value) {
+            foreach ($mod->permissions() as $value) {
                 //        $p[gt($value)]=$key;
                 $p[gt($value)] = 'no-sort';
             }
@@ -1141,7 +1144,8 @@ class usersController extends expController {
                 'title'      => ($loc->mod != 'navigation' || ($loc->mod == 'navigation' && !empty($loc->src))) ? $mod->name() . ' ' . ($loc->mod != 'container' ? gt('module') : '') . ' ' : gt('Page'),
             ));
         } else {
-            echo SITE_403_HTML;
+//            echo SITE_403_HTML;
+            notfoundController::handle_not_authorized();
         }
     }
 

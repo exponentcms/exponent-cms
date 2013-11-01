@@ -41,7 +41,7 @@ class textController extends expController {
     static function description() { return gt("Places text on your web pages"); }
 
 	public function showall() {
-        global $db;
+//        global $db;
 
 	    expHistory::set('viewable', $this->params);
 		$where = $this->aggregateWhereClause();
@@ -104,8 +104,10 @@ class textController extends expController {
         
         // update the search index since text is relegated to page content.
         //FIXME need to come up with a better method
-        navigationController::addContentToSearch();
-        
+//        navigationController::addContentToSearch();
+        $nav = new navigationController();
+        $nav->addContentToSearch();
+
         // go back to where we came from.
         expHistory::back();
     }

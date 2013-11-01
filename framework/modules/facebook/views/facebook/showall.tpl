@@ -19,7 +19,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    <div class="fb-like" data-href="{$facebook_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
+    <div class="fb-like" data-href="{$facebook_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
 </div>
 
 {script unique='facebook_src'}

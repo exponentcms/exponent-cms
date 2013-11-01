@@ -399,20 +399,19 @@ class orderController extends expController {
          * to do this same thing as below using dompdf
          * //FIXME uncomment to implement, comment out above
         require_once(BASE.'external/dompdf/dompdf_config.inc.php');
-        $dompdf = new DOMPDF();
-        $dompdf->load_html($invoice);
-        $dompdf->set_paper('letter','portrait');
-        $dompdf->render();
-        $dompdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
+        $mypdf = new DOMPDF();
+        $mypdf->load_html($invoice);
+        $mypdf->set_paper('letter','portrait');
+        $mypdf->render();
+        $mypdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
         exit();
          */
         /**
-         * to do this same thing as below using expHtmlToPDF2
-         * //FIXME uncomment to implement, comment out above
-        $dompdf = new HTML2PDF2('letter','portrait',$invoice);
-        $dompdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$org_name . "_Invoice" . ".pdf");
-        exit();
+         * to do this same thing as below using expHtmlToPDF/2/3
          */
+        $mypdf = new expHtmlToPDF('Letter','portrait',$invoice);
+        $mypdf->createpdf('D',$org_name . "_Invoice" . ".pdf");
+        exit();
 
         if (stristr(PHP_OS, 'Win')) {
             if (file_exists(HTMLTOPDF_PATH)) {
@@ -524,17 +523,16 @@ exit();
             $pdf->Output($org_name . "_Invoice" . ".pdf", 'I');
             exit();*/
             eDebug("Done rendering invoice html. Starting PDF Generation: " . $timer->mark());
-            $pdfer = new expHtmlToPDF();
-            $pdfer->set_html($invoice);
-            $pdfer->set_orientation('Portrait');
-            $pdfer->set_page_size('Letter');
+            $pdfer = new expHtmlToPDF('Letter', 'Portrait', $invoice);
+//            $pdfer->set_html($invoice);
+//            $pdfer->set_orientation('Portrait');
+//            $pdfer->set_page_size('Letter');
             $pdfer->set_grayscale(true);
-
-            $pdfer->render();
+//            $pdfer->render();
             eDebug("Done rendering PDF " . $timer->mark());
             exit();
             ob_clean();
-            $pdfer->output('D', $org_name . "_Invoice" . ".pdf");
+            $pdfer->createpdf('D', $org_name . "_Invoice" . ".pdf");
             exit();
         }
     }
@@ -638,7 +636,7 @@ exit();
     }
 
     function set_order_type() {  //FIXME never used
-        global $db;
+//        global $db;
 
         if (empty($this->params['id'])) expHistory::back();
 
@@ -846,10 +844,12 @@ exit();
         // we are in.
 //        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'showall':
-                $metainfo = array('title'=> gt("Managing Invoices"), 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
+                $metainfo['title']       = gt("Managing Invoices");
+                $metainfo['keywords']    = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
             case 'showByTitle':
@@ -857,9 +857,13 @@ exit();
                 $metainfo['keywords']    = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object doesn't exist
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object doesn't exist
                 $metainfo['canonical'] = empty($object->canonical) ? '' : $object->canonical; //FIXME $object doesn't exist
+                $metainfo['noindex'] = empty($object->meta_noindex) ? '' : $object->meta_noindex; //FIXME $object doesn't exist
+                $metainfo['nofollow'] = empty($object->meta_nofollow) ? '' : $object->meta_nofollow; //FIXME $object doesn't exist
                 break;
             default:
-                $metainfo = array('title'=> gt("Order Management") . " - " . SITE_TITLE, 'keywords'=> SITE_KEYWORDS, 'description'=> SITE_DESCRIPTION, 'canonical'=> '');
+                $metainfo['title']       = gt("Order Management") . " - " . SITE_TITLE;
+                $metainfo['keywords']    = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
         }
 
         return $metainfo;
@@ -1018,7 +1022,7 @@ exit();
     }
 
     function save_reference_order() {
-        global $user;
+//        global $user;
 
         //eDebug($this->params,true);
         $order = new order($this->params['original_orderid']);
@@ -1124,7 +1128,7 @@ exit();
         customer_type = 1 //new
         customer_type = 2 //existing Internal
         customer_type = 3 //existing external*/
-        global $user, $db;
+//        global $user, $db;
         //eDebug($this->params,true);
         //$order = new order($this->params['original_orderid']);
         //eDebug($order,true); 
@@ -1725,7 +1729,7 @@ exit();
     }
 
     public function verifyReturnShopper() {
-        global $user, $order;
+//        global $user, $order;
 
         $sessAr = expSession::get('verify_shopper');
         if (isset($sessAr)) {
@@ -1743,7 +1747,7 @@ exit();
     }
 
     public function verifyAndRestoreCart() {
-        global $user, $order;
+//        global $user, $order;
 
         $sessAr = expSession::get('verify_shopper');
         if (isset($sessAr) && isset($this->params['cid']) && $this->params['cid'] == $sessAr['cid']) {
@@ -1795,7 +1799,8 @@ exit();
     }
 
     public function search() {
-        global $db, $user;
+//        global $db, $user;
+        global $db;
 
         $sql = "select DISTINCT(a.id) as id, a.firstname as firstname, a.middlename as middlename, a.lastname as lastname, a.organization as organization, a.email as email ";
         $sql .= "from " . $db->prefix . "addresses as a "; //R JOIN " . 
@@ -1810,7 +1815,8 @@ exit();
     }
 
     public function search_external() {
-        global $db, $user;
+//        global $db, $user;
+        global $db;
 
         $sql = "select DISTINCT(a.id) as id, a.source as source, a.firstname as firstname, a.middlename as middlename, a.lastname as lastname, a.organization as organization, a.email as email ";
         $sql .= "from " . $db->prefix . "external_addresses as a "; //R JOIN " . 

@@ -196,14 +196,16 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "editor":
             case "html":
+                $control = new htmleditorcontrol();
                 if (SITE_WYSIWYG_EDITOR == "ckeditor") {
-                    $control           = new ckeditorcontrol();
+//                    $control           = new ckeditorcontrol();
                     $control->toolbar  = empty($params['toolbar']) ? '' : $params['toolbar'];
                     $control->lazyload = empty($params['lazyload']) ? 0 : 1;
                     $control->plugin = empty($params['plugin']) ? '' : $params['plugin'];
                     $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
+                } elseif (SITE_WYSIWYG_EDITOR == "tinymce") {
+//                    $control           = new tinymcecontrol();
                 } else {
-                    $control = new htmleditorcontrol();
                     if (isset($params['module'])) $control->module = $params['module'];
                     if (isset($params['rows'])) $control->rows = $params['rows'];
                     if (isset($params['cols'])) $control->cols = $params['cols'];
@@ -467,8 +469,8 @@ function smarty_function_control($params, &$smarty) {
         $control->name  = $params['name'];
 //        $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
         //$newid = str_replace($badvals, "", $params['name']);
-        $params['id'] = !empty($params['id']) ? $params['id'] : '';
-        $control->id  = isset($params['id']) && $params['id'] != "" ? $params['id'] : "";
+        $params['id'] = createValidId(!empty($params['id']) ? $params['id'] : '');
+        $control->id  = createValidId(isset($params['id']) && $params['id'] != "" ? $params['id'] : "");
         //echo $control->id;
         if (empty($control->id)) $control->id = $params['name'];
         if (empty($control->name)) $control->name = $params['id'];

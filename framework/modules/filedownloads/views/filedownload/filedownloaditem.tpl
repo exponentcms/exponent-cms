@@ -74,9 +74,9 @@
     </div>
     {permissions}
         <div class="item-actions">
-            {if $permissions.edit == 1}
+            {if $permissions.edit || ($permissions.create && $file->poster == $user->id)}
                 {if $myloc != $file->location_data}
-                    {if $permissions.manage == 1}
+                    {if $permissions.manage}
                         {icon action=merge id=$file->id title="Merge Aggregated Content"|gettext}
                     {else}
                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
@@ -84,7 +84,7 @@
                 {/if}
                 {icon action=edit record=$file title="Edit this file"|gettext}
             {/if}
-            {if $permissions.delete == 1}
+            {if $permissions.delete || ($permissions.create && $file->poster == $user->id)}
                 {icon action=delete record=$file title="Delete this file"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this file?"|gettext)|cat:"');"}
             {/if}
         </div>
@@ -94,6 +94,8 @@
             {if $config.usebody==1}
                 {*<p>{$file->body|summarize:"html":"paralinks"}</p>*}
                 <p>{$file->body|summarize:"html":"parahtml"}</p>
+            {elseif $config.usebody==3}
+                {$file->body|summarize:"html":"parapaged"}
             {else}
                 {$file->body}
             {/if}
@@ -135,7 +137,7 @@
     {/if}
     {if $config.enable_facebook_like}
         <div id="fb-root"></div>
-        <div class="fb-like" data-href="{link action=show title=$file->sef_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
+        <div class="fb-like" data-href="{link action=show title=$file->sef_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
         {script unique='facebook_src'}
         {literal}
             (function(d, s, id) {
@@ -167,7 +169,7 @@
     {clear}
     {permissions}
         <div class="module-actions">
-            {if $permissions.create == 1}
+            {if $permissions.create}
                 {icon class=add action=edit title="Add a File Here" text="Add a File"|gettext}
             {/if}
         </div>

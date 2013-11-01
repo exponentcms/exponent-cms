@@ -38,7 +38,7 @@
             
             {permissions}
             <div class="item-actions">
-                {if $permissions.configure == 1 or $permissions.manage == 1}
+                {if $permissions.configure || $permissions.manage}
                     <a href="{link action=edit id=$listing->id}" title="{"Edit this entry"|gettext}">
                         <img src="{$smarty.const.ICON_RELATIVE|cat:'edit.png'}" title="{"Edit this entry"|gettext}" alt="{"Edit this entry"|gettext}" />
                     </a>

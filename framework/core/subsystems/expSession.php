@@ -175,7 +175,6 @@ class expSession {
 			if ($ticket == null || $ticket->last_active < time() - $timeoutval) {
 				define('SITE_403_HTML',SESSION_TIMEOUT_HTML);
 				self::logout();
-//				if (defined('ECOM') && !ECOM) flash('notice',gt('Your user session has expired.').' <a href="'.PATH_RELATIVE.'login.php">'.gt("Please log in again").'</a>');
                 if (defined('ECOM') && !ECOM) flash('notice',gt('Your user session has expired.').' <a href="'.expCore::makeLink(array("controller"=>"login","action"=>"showlogin")).'">'.gt("Please log in again").'</a>');
 				return;
 			}
@@ -288,7 +287,9 @@ class expSession {
 	 * @node Subsystems:Sessions
 	 */
 	public static function logout() {
-		global $db, $user;
+//		global $db, $user;
+        global $db;
+
 		$ticket = $db->delete('sessionticket', "ticket='" . $_SESSION[SYS_SESSION_KEY]['ticket'] . "'");
 		self::set('display_theme',DISPLAY_THEME_REAL);
 		unset($_SESSION[SYS_SESSION_KEY]['user']);

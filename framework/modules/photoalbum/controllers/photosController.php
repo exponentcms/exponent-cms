@@ -73,7 +73,7 @@ class photosController extends expController {
     }
     
     function show() {
-        global $db;
+//        global $db;
 
         expHistory::set('viewable', $this->params);
         
@@ -190,7 +190,7 @@ class photosController extends expController {
     }
 
     public function multi_update() {
-        global $db;
+//        global $db;
 
         if (!empty($this->params['expFile'])) {
             if (!empty($this->params['title'])) {

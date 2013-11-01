@@ -83,7 +83,9 @@ class addressController extends expController {
 	}
 
 	public function update() {
-		global $db, $user;
+//		global $db, $user;
+        global $user;
+
 		if ($user->isLoggedIn()) {
 			// check to see how many other addresses this user has already.
 			$count = $this->address->find('count', 'user_id='.$user->id);

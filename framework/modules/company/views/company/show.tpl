@@ -21,10 +21,10 @@
         {'Products from'|gettext} {$record->title}
     </h1>
     {permissions}
-        {if $permissions.edit == 1}
+        {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
             {icon img='edit.png' action=edit id=$record->id title="Edit"|gettext|cat:" `$record->title`"}
         {/if}
-        {if $permissions.delete == 1}
+        {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
             {icon img='delete.png' action=delete id=$record->id title="Delete"|gettext|cat:" `$record->title`"}
         {/if}
     {/permissions}

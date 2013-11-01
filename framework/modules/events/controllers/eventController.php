@@ -416,8 +416,8 @@ class eventController extends expController {
                     $extitems = $this->getExternalEvents($this->loc, $begin, $end);
                     // we need to crunch these down
                     $extitem = array();
-                    foreach ($extitems as $key => $days) {
-                        foreach ($days as $key => $event) {
+                    foreach ($extitems as $days) {
+                        foreach ($days as $event) {
                             if (empty($event->eventdate->date) || ($viewrange == 'upcoming' && $event->eventdate->date < time())) break;
                             if (empty($event->eventstart)) $event->eventstart = $event->eventdate->date;
                             $extitem[] = $event;
@@ -427,8 +427,8 @@ class eventController extends expController {
                     if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
                     // we need to crunch these down
                     $regitem = array();
-                    if (!empty($regitems)) foreach ($regitems as $key => $days) {
-                        foreach ($days as $key => $value) {
+                    if (!empty($regitems)) foreach ($regitems as $days) {
+                        foreach ($days as $value) {
                             $regitem[] = $value;
                         }
                     }
@@ -532,7 +532,8 @@ class eventController extends expController {
             }
             expHistory::back();
         } else {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
         }
     }
 
@@ -553,7 +554,7 @@ class eventController extends expController {
    	function metainfo() {
        global $router;
 
-       $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '');
+       $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
        // look for event date_id which expController::metainfo won't detect
 //       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
        if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($router->params['id']) && isset($router->params['date_id'])) {
@@ -580,6 +581,8 @@ class eventController extends expController {
                $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
                $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
                $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
+               $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
+               $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
            }
            return $metainfo;
        } else {
@@ -852,10 +855,12 @@ class eventController extends expController {
                 echo $msg;
                 exit();
             } else {
-                echo SITE_404_HTML;
+//                echo SITE_404_HTML;
+                notfoundController::handle_not_found();
             }
         } else {
-            echo SITE_404_HTML;
+//            echo SITE_404_HTML;
+            notfoundController::handle_not_found();
         }
     }
 
@@ -879,11 +884,13 @@ class eventController extends expController {
             }
 
             if (empty($this->config['reminder_active'])) {
-                echo SITE_404_HTML;
+//                echo SITE_404_HTML;
+                notfoundController::handle_not_found();
                 return;
             }
             if (!empty($this->config['reminder_code']) && (empty($this->params['code']) || ($this->params['code'] != $this->config['reminder_code']))) {
-                echo SITE_403_HTML;
+//                echo SITE_403_HTML;
+                notfoundController::handle_not_authorized();
                 return;
             }
 

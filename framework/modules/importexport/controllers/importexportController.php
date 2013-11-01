@@ -111,7 +111,7 @@ class importexportController extends expController {
             $cats1count = count($cats1);
             $counter = 1;
             $categories1 = array();
-            foreach ($cats1 as $key => $cat) {
+            foreach ($cats1 as $cat) {
                 //eDebug($cat);
                 if ($counter == 1) $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=0');
                 else $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=' . $categories1[$counter - 1]->id);
@@ -133,7 +133,7 @@ class importexportController extends expController {
     }
 
     function validate() {
-        global $db;
+//        global $db;
         //eDebug($this->params,true); 
         set_time_limit(0);
         //$file = new expFile($this->params['expFile']['import_file'][0]);
@@ -305,7 +305,7 @@ class importexportController extends expController {
         $handle = fopen($file->path, "r");
         $data = fgetcsv($handle, 10000, ",");
         //eDebug($data);        
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             $dataset[$value] = '';
         }
 

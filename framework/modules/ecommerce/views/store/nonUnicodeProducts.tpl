@@ -34,7 +34,7 @@
                     <td>{$listing.nonunicode}</td>
                     <td>
                         {permissions}
-                            {if $permissions.edit == 1}
+                            {if $permissions.edit || ($permissions.create && $listing.poster == $user->id)}
                                 {icon img='edit.png' action=edit id=$listing.id title="Edit `$listing.title`"}
                             {/if}
                         {/permissions}

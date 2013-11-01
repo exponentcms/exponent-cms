@@ -107,7 +107,7 @@ class expCat extends expRecord {
     public static function selectAllCatContentType() {
         global $db;
 
-        $db->selectColumn('content_expTags','content_type',null,null,true);
+        return $db->selectColumn('content_expTags','content_type',null,null,true);
     }
 
 }

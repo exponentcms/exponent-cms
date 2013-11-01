@@ -49,7 +49,7 @@ function smarty_block_script($params,$content,&$smarty, &$repeat) {
 
             $y3wrap = "YUI(EXPONENT.YUI3_CONFIG).use(";            
             $y3wrap .= "'yui2-yahoo-dom-event', ";
-            foreach ($splitmods as $key=>$mod) {
+            foreach ($splitmods as $mod) {
                 if ($mod=="menu") {
                     $y3wrap .= "'yui2-container', ";
                 }

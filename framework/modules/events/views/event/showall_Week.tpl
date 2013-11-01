@@ -19,15 +19,11 @@
 
 {/css}
 
-{*{css unique="calpopup" link="`$asset_path`css/default.css"}*}
-
-{*{/css}*}
-
 <div class="module events viewweek">
 	<div class="module-actions">
 		{icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
         {permissions}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 &#160;&#160;|&#160;&#160;
                 {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
@@ -52,7 +48,7 @@
     {/if}
 	{permissions}
 		<div class="module-actions">
-			{if $permissions.create == 1}
+			{if $permissions.create}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
 		</div>
@@ -65,9 +61,8 @@
     </div>
 </div>
 
-{script unique=$name yui3mods=1}
+{script unique=$name|cat:'-popup' yui3mods=1}
 {literal}
-
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-calendar': {
 		fullpath: '{/literal}{$asset_path}js/calendar.js{literal}',
@@ -79,16 +74,9 @@ EXPONENT.YUI3_CONFIG.modules = {
     }
 }
 
-YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegate',function(Y){
+YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
     var monthcal = Y.one('#week-{/literal}{$name}{literal}');
-    var cfg = {
-                method: "POST",
-                headers: { 'X-Transaction': 'Load Minical'},
-                arguments : { 'X-Transaction': 'Load Minical'}
-            };
-    src = '{/literal}{$__loc->src}{literal}';
-    var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=week&ajax_action=1&src="+src;
 
 	// Popup
 	var cal = new Y.Calendar('J_popup_closeable{/literal}{$__loc->src|replace:'@':'_'}{literal}',{
@@ -107,6 +95,22 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
     Y.one('#J_popup_closeable{/literal}{$__loc->src|replace:'@':'_'}{literal}').on('click',function(d){
         cal.show();
     });
+});
+{/literal}
+{/script}
+
+{if $config.ajax_paging}
+{script unique=`$name`-ajax yui3mods=1}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate',function(Y){
+    var monthcal = Y.one('#week-{/literal}{$name}{literal}');
+    var cfg = {
+                method: "POST",
+                headers: { 'X-Transaction': 'Load Minical'},
+                arguments : { 'X-Transaction': 'Load Minical'}
+            };
+    src = '{/literal}{$__loc->src}{literal}';
+    var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=week&ajax_action=1&src="+src;
 
     // ajax load new month
 	var handleSuccess = function(ioId, o){
@@ -152,3 +156,4 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 });
 {/literal}
 {/script}
+{/if}

@@ -21,10 +21,10 @@
     <h1>{'Manage Products'|gettext}</h1>
     {permissions}
 		<div class="module-actions">
-			{if $permissions.edit == 1}
+			{if $permissions.create}
 				{icon class=add action=edit title="Create a new product"|gettext text="Add a product"|gettext}
 			{/if}
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {icon controller=storeCategory action=manage text="Manage Categories"|gettext}
                 {icon class=configure controller=store action=config text="Configure Store"|gettext}{br}
                 {icon class=report controller=store action=nonUnicodeProducts text="Show Non-Unicode Products"|gettext}
@@ -73,13 +73,13 @@
                         <td>
                             {permissions}
                                 <div class="item-actions">
-                                    {if $permissions.edit == 1}
+                                    {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
                                         {icon action=edit record=$listing title="Edit `$listing->title`"}
                                     {/if}
-                                    {if $permissions.delete == 1}
+                                    {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
                                         {icon action=delete record=$listing title="Delete `$listing->title`"}
                                     {/if}
-                                    {if $permissions.edit == 1 && ($listing->product_type == "product" || $listing->product_type == "eventregistration")}
+                                    {if $permissions.edit && ($listing->product_type == "product" || $listing->product_type == "eventregistration")}
                                         {icon class=copy action=copyProduct title="Copy `$listing->title` " record=$listing}
                                     {/if}
                                 </div>

@@ -154,10 +154,10 @@
          Y.on('toolbar:loaded',function(){
              if (document.getElementById("reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
              if (document.getElementById("manage-db")) Y.one('#manage-db').on('click', adminerwindow);
-             Y.one('#docs-toolbar').on('click',docswindow);
-             Y.one('#forums-toolbar').on('click',forumswindow);
-             Y.one('#filemanager-toolbar').on('click',filepickerwindow);
-             Y.one('#fileuploader-toolbar').on('click',fileuploaderwindow);
+             if (document.getElementById("docs-toolbar")) Y.one('#docs-toolbar').on('click',docswindow);
+             if (document.getElementById("forums-toolbar")) Y.one('#forums-toolbar').on('click',forumswindow);
+             if (document.getElementById("filemanager-toolbar")) Y.one('#filemanager-toolbar').on('click',filepickerwindow);
+             if (document.getElementById("fileuploader-toolbar")) Y.one('#fileuploader-toolbar').on('click',fileuploaderwindow);
              // Y.later(900,this,function(){
              //     tb.setStyles({'opacity':'0.3'});
              // });

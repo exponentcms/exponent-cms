@@ -27,7 +27,7 @@ class expNestedNodeController extends expController {
     static function description() { return gt("This module is for managing your Nested Nodes"); }
 
 	function edit() {
-		global $db;
+//		global $db;
 		if (empty($this->params['id'])) { 
 			//$parent = new $this->basemodel_name($this->params['parent_id']);
 			$node = new $this->basemodel_name(array('parent_id'=>$this->params['parent'])); 
@@ -47,7 +47,7 @@ class expNestedNodeController extends expController {
 	}
 	
 	function reorder() {
-		global $db;
+//		global $db;
 		if (empty($this->params['type'])) return false;
 	
 		$movenode = new $this->basemodel_name($this->params['move']);

@@ -45,7 +45,7 @@ abstract class basetemplate {
 	//	
 	
 	function __construct($item_type, $item_dir, $view = "Default") {
-        global $head_config;
+//        global $head_config;
 
 		include_once(SMARTY_PATH.'Smarty.class.php');
 
@@ -134,7 +134,7 @@ abstract class basetemplate {
 		// javascript registration
 		
         if (empty($this->file_is_a_config)) {
-            return $this->tpl->display($this->view.'.tpl');
+            $this->tpl->display($this->view.'.tpl');
         }
 	}
 	
@@ -144,12 +144,6 @@ abstract class basetemplate {
 		if (!is_array($locs)) $locs = array($locs);
 		foreach ($perms as $perm) {
 			foreach ($locs as $loc) {
-//                $ploc = new stdClass();
-//                $ploc->mod   = $loc->mod;
-//                $ploc->mod = expModules::controllerExists($ploc->mod) ? expModules::getControllerClassName($ploc->mod) : $ploc->mod;  //FIXME long controller name
-//                $ploc->mod   = expModules::getModuleName($loc->mod);
-//                $ploc->src   = $loc->src;
-//                $ploc->int   = $loc->int;
                 $ploc = expCore::makeLocation(expModules::getModuleName($loc->mod),$loc->src,$loc->int);
 				$permissions_register[$perm] = (expPermissions::check($perm, $ploc) ? 1 : 0);
 			}

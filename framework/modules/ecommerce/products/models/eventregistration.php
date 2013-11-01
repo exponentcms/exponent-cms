@@ -23,7 +23,11 @@
 
 class eventregistration extends expRecord {
     public $table = 'product';
-    public $has_one = array();
+    public $default_sort_field = 'rank';
+    public $rank_by_field = 'rank';
+    public $default_sort_direction = "asc";
+
+//    public $has_one = array();
     public $has_and_belongs_to_many = array('storeCategory');
     public $has_many = array('optiongroup');
     public $get_assoc_for = array('optiongroup');
@@ -33,10 +37,6 @@ class eventregistration extends expRecord {
     public $requiresShipping = false;
     public $requiresBilling = true; //FIXME only if a cost is involved
     public $isQuantityAdjustable = false;
-
-    public $default_sort_field = 'rank';
-    public $rank_by_field = 'rank';
-    public $default_sort_direction = "asc";
 
     public $early_discount_amount_modifiers = array('$' => '$', '%' => '%');
 
@@ -218,7 +218,7 @@ class eventregistration extends expRecord {
     public function optionDropdown($key, $display_price_as) {
         $items = array();
 
-        foreach ($this->optiongroup as $index => $group) {
+        foreach ($this->optiongroup as $group) {
             if ($group->title == $key) {
                 foreach ($group->option as $option) {
                     if ($option->enable == true) {
@@ -253,7 +253,7 @@ class eventregistration extends expRecord {
     }
 
     public function spacesLeft() {
-        global $db;
+//        global $db;
 
 //        return $this->quantity - $this->number_of_registrants;
 //        $f = new forms($this->forms_id);
@@ -702,7 +702,7 @@ class eventregistration extends expRecord {
         $order_ids_complete = array();
         if (!empty($f->is_saved)) {  // is there user input data
             $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$this->id}", "timestamp");
-            foreach ($registrants as $key=>$registrant) {
+            foreach ($registrants as $registrant) {
                 $order_data = expUnserialize($registrant->location_data);
                 $order_ids_complete[] = $order_data->order_id;
             }

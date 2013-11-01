@@ -42,7 +42,7 @@
     </div>
     {permissions}
         <div class="module-actions">
-            {if $permissions.manage == 1}
+            {if $permissions.manage}
                 {icon class=delete action=delete_search_queries text="Delete Past Queries"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete all past search queries?"|gettext)|cat:"');"}
             {/if}
         </div>

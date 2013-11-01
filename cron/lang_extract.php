@@ -136,6 +136,7 @@ function do_extract($file, $regex, $isalist=false) {
 // processes file for assoc strings
 function do_file($file, $fileext) {
 	global $regex_gt, $regex_gettext_mod, $regex_gettxtlist_mod, $regex_gettext_func, $regex_glist;
+
     if ($fileext == 'tpl') {
         do_extract($file,$regex_gettext_mod);
         do_extract($file,$regex_gettxtlist_mod,true);
