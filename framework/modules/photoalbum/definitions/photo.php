@@ -46,6 +46,10 @@ return array(
     'meta_description'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000),
+    'noindex'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'nofollow'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'body'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100000),

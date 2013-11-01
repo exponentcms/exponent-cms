@@ -335,7 +335,7 @@ class blogController extends expController {
 //            }
 
             if (!empty($str)) {
-                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '');
+                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
                 $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
 //                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                 $metainfo['keywords'] = $str;
