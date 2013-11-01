@@ -134,40 +134,41 @@ class expTheme {
         if (!expSession::is_set('framework')||expSession::get('framework')!=$head_config['framework']) expSession::set('framework',$head_config['framework']);
         
 		$metainfo = self::pageMetaInfo();
-        // default to showing all meta content
-        if (empty($config['meta_content_type'])) {
-            $config['meta_content_type'] = true;
+
+        // default to showing all meta tags unless specifically set to false
+        if (!isset($config['meta']['content_type'])) {
+            $config['meta']['content_type'] = true;
         }
-        if (empty($config['meta_content_language'])) {
-            $config['meta_content_language'] = true;
+        if (!isset($config['meta']['content_language'])) {
+            $config['meta']['content_language'] = true;
         }
-        if (empty($config['meta_generator'])) {
-            $config['meta_generator'] = true;
+        if (!isset($config['meta']['generator'])) {
+            $config['meta']['generator'] = true;
         }
-        if (empty($config['meta_keywords'])) {
-            $config['meta_keywords'] = true;
+        if (!isset($config['meta']['keywords'])) {
+            $config['meta']['keywords'] = true;
         }
-        if (empty($config['meta_description'])) {
-            $config['meta_description'] = true;
+        if (!isset($config['meta']['description'])) {
+            $config['meta']['description'] = true;
         }
-        if (empty($config['link_canonical'])) {
-            $config['link_canonical'] = true;
+        if (!isset($config['meta']['canonical'])) {
+            $config['meta']['canonical'] = true;
         }
-        if (empty($config['meta_viewport'])) {
-            $config['meta_viewport'] = true;
+        if (!isset($config['meta']['viewport'])) {
+            $config['meta']['viewport'] = true;
         }
-        if (empty($config['ie_compat'])) {
-            $config['ie_compat'] = true;
+        if (!isset($config['meta']['ie_compat'])) {
+            $config['meta']['ie_compat'] = true;
         }
 
         $str = '<title>'.$metainfo['title']."</title>\n";
-        if ($config['meta_content_type']) $str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['content_type']) $str .= "\t".'<meta http-equiv="Content-Type" content="text/html; charset='.LANG_CHARSET.'" '.XHTML_CLOSING.'>'."\n";
         $locale = strtolower(str_replace('_', '-', LOCALE));
-        if ($config['meta_content_language']) $str .= "\t".'<meta content="'.$locale.'" http-equiv="Content-Language" '.XHTML_CLOSING.'>'."\n";
-        if ($config['meta_generator']) $str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
-        if ($config['meta_keywords']) $str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
-        if ($config['meta_description']) $str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
-        if ($config['link_canonical'] && !empty($metainfo['canonical'])) $str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['content_language']) $str .= "\t".'<meta content="'.$locale.'" http-equiv="Content-Language" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['generator']) $str .= "\t".'<meta name="Generator" content="Exponent Content Management System - v'.expVersion::getVersion(true).'" '.XHTML_CLOSING.'>' . "\n";
+        if ($config['meta']['keywords']) $str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['description']) $str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['canonical'] && !empty($metainfo['canonical'])) $str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
         if ($metainfo['noindex'] || $metainfo['nofollow']) {
             $str .= "\t".'<meta name="robots" content="'.(!empty($metainfo['noindex'])?'noindex':'').' '.($metainfo['nofollow']?'nofollow':''). '" '.XHTML_CLOSING.'>'."\n";
         }
@@ -200,7 +201,7 @@ class expTheme {
                 $viewport .= ', user-scalable=yes';
             }
         }
-        if ($config['meta_viewport']) $str .= "\t".'<meta name="viewport" content="'. $viewport . '" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['viewport']) $str .= "\t".'<meta name="viewport" content="'. $viewport . '" '.XHTML_CLOSING.'>'."\n";
 
         // favicon
         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/favicon.ico')) {
@@ -214,7 +215,7 @@ class expTheme {
             $str .= "\t".'<link rel="apple-touch-icon-precomposed" href="'.URL_FULL.'themes/'.DISPLAY_THEME.'/apple-touch-icon-precomposed.png" '.XHTML_CLOSING.'>'."\n";
         }
 
-        if ($config['ie_compat']) {
+        if ($config['meta']['ie_compat']) {
             //the last little bit of IE 6 support
             $str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 

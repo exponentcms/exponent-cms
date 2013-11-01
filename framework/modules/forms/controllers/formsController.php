@@ -419,11 +419,11 @@ class formsController extends expController {
             $num = $counts[$col->caption] > 1 ? $counts[$col->caption] : '';
 
             if (!empty($this->params[$col->name])) {
-                if ($coltype == 'checkboxcontrol') {
-                    $responses[$col->caption . $num] = gt('Yes');
-                } else {
+//                if ($coltype == 'checkboxcontrol') {
+//                    $responses[$col->caption . $num] = gt('Yes');
+//                } else {
                     $responses[$col->caption . $num] = $value;
-                }
+//                }
             } else {
                 if ($coltype == 'checkboxcontrol') {
                     $responses[$col->caption . $num] = gt('No');
