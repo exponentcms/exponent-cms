@@ -188,6 +188,7 @@ class upgrade_calendar extends upgradescript {
         // convert each calendar to an event
 	    $cals = $db->selectObjects('calendar',"1");
 	    foreach ($cals as $cal) {
+            $old_id = $cal->id;
             unset($cal->id);
             unset($cal->approved);
             unset($cal->category_id);
@@ -201,7 +202,7 @@ class upgrade_calendar extends upgradescript {
             $cal->edited_at = $cal->edited;
             unset($cal->edited);
             $db->insertObject($cal,'event');
-            $ev = new event($cal->id);
+            $ev = new event($old_id);
             $ev->save();
 	    }
 

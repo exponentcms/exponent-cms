@@ -39,7 +39,7 @@ class invert_news_items_rank extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.0.8 a manual sort/rank option was added for News items, however they are ranked in reverse order in earlier versions.  This script inverts the rank order of all news items it finds, so it must only be run once."; }
+	function description() { return "In v2.0.8 a manual sort/rank option was added for News items, however they are ranked in reverse order in earlier versions.  This script inverts the rank order of all news items it finds, so it MUST only be run ONCE."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)

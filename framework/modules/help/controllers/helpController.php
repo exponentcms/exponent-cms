@@ -292,6 +292,21 @@ class helpController extends expController {
 
         // copy child help docs
         $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent!=0',$order);
+   	    foreach ($current_docs as $key=>$doc) {
+   	        unset($doc->id);
+            $doc->parent = $new_parents[$doc->parent];
+   	        $doc->help_version_id = $to;
+   	        $doc->save();
+   	        foreach($doc->expFile as $subtype=>$files) {
+   	            foreach($files as $file) {
+   	                $doc->attachItem($file, $subtype);
+   	            }
+
+   	        }
+   	    }
+
+        // copy child help docs
+        $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent!=0',$order);
    	    foreach ($current_docs as $doc) {
    	        unset($doc->id);
             $doc->parent = $new_parents[$doc->parent];

@@ -871,7 +871,7 @@ class expTheme {
         if (isset($params['view']) && $params['view'] != $params['action']) {
             $test = explode('_',$params['view']);
             if ($test[0] != $params['action']) {
-                $params['view'] = $params['action'].'_'.$params['view'];
+                    $params['view'] = $params['action'].'_'.$params['view'];
             }
         } elseif (!empty($params['action'])) {
             $params['view'] = $params['action'];
