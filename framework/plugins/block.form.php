@@ -54,11 +54,13 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 //                "unique"  => 'forms',
                 "corecss"=>"forms"
             ));
+            $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
 		} else {
             expCSS::pushToHead(array(
 //                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap"
             ));
+            $btn_class = 'btn btn-default';
         }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
@@ -87,7 +89,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     errorImage: true,
                 //    description: false,
                 //    legend: false,
-                    btnClass: 'awesome ".BTN_SIZE." ".BTN_COLOR."',
+                    btnClass: '" . $btn_class . "',
                     titleClick: true,
                 });
             ";

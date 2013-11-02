@@ -31,7 +31,7 @@
             {*<button type="submit" class="btn">{$config.buttontext|default:"Search"|gettext}</button>*}
         {*</div>*}
         <div class="input-append">
-            <input type="search" name="search_string" id="search_string" type="text" placeholder="{$config.inputtext|default:"Keywords"|gettext}">
+            <input type="search" name="search_string" id="search_string" placeholder="{$config.inputtext|default:"Keywords"|gettext}">
             <button type="submit" class="btn"><i class="icon-search"></i></button>
         </div>
     {/form}

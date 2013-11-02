@@ -65,9 +65,9 @@ class filemanagercontrol extends formcontrol {
             $btn_size = 'btn-mini';
             $icon_size = '';
         }
-        $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Add Files').'</a>';
+        $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn btn-success '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Add Files').'</a>';
         if (!$user->globalPerm('prevent_uploads')) {
-        $html .= ' | <a class="btn '. $btn_size.'" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Quick Add').'</a></span>';
+        $html .= ' | <a class="btn btn-success '. $btn_size.'" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Quick Add').'</a></span>';
         } else {
         $html .= '</span>';
         }

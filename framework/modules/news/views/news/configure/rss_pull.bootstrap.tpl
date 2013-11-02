@@ -32,7 +32,7 @@
         {$btn_size = 'btn-mini'}
         {$icon_size = ''}
     {/if}
-    <a class="addtolist btn {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
+    <a class="addtolist btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current Feeds"|gettext}</h4>
     <ul id="rsspull-feeds">
         {foreach from=$config.pull_rss item=feed}

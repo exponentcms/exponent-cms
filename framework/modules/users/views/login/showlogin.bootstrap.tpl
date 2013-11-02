@@ -17,6 +17,12 @@
 
 {/css}
 
+{if $smarty.const.BTN_SIZE == 'large'}
+    {$btn_size = 'btn-small'}
+{else}
+    {$btn_size = 'btn-mini'}
+{/if}
+
 {messagequeue}
 <div class="login default">
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
@@ -46,16 +52,16 @@
                         {if $oicount>0}
                             {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
                             {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
-                            <a class="btn {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
+                            <a class="btn btn-default {$btn_size}"
                                href="{link module=cart action=customerSignup}">{"Continue Checking Out"|gettext}</a>
                         {else}
                             {"If you are a new customer, add an item to your cart to continue with the checkout process."|gettext}{br}{br}
-                            <a class="btn {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
+                            <a class="btn btn-default {$btn_size}"
                                href="{backlink}">{"Keep Shopping"|gettext}</a>
                         {/if}
                     {else}
                         {"Create a new account here."|gettext}{br}{br}
-                        <a class="btn {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
+                        <a class="btn btn-default {$btn_size}"
                            href="{link controller=users action=create}">{"Create an Account"|gettext}</a>
                     {/if}
                 </p>
@@ -64,7 +70,7 @@
     {else}
         {if !$smarty.const.ECOM}
             <div class=" logout">
-                <a class="btn {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
+                <a class="btn btn-default {$btn_size}"
                    href="{link action=logout}">{'Logout'|gettext}</a>
             </div>
         {/if}

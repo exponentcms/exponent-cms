@@ -32,7 +32,7 @@
         {$btn_size = 'btn-mini'}
         {$icon_size = ''}
     {/if}
-    <a class="addtogooglelist btn {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
+    <a class="addtogooglelist btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current Google Calendar Feeds"|gettext}</h4>
     <ul id="googlepull-feeds">
         {foreach from=$config.pull_gcal item=feed name=feed}
