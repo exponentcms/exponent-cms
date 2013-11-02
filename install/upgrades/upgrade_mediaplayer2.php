@@ -26,7 +26,7 @@
  */
 class upgrade_mediaplayer2 extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.2.3';  // mediaplayer module was added in v2.2.0
+	protected $to_version = '2.2.4';  // mediaplayer module was added in v2.2.0
 //    public $optional = true;
 
 	/**
@@ -68,25 +68,17 @@ class upgrade_mediaplayer2 extends upgradescript {
 	    $yt_modules_converted = 0;
 	    $cns = $db->selectObjects('container',"internal LIKE '%eaas%'");
 	    foreach ($cns as $cn) {
-            $config = $db->selectObject('expConfigs', "location_data='".$cn->internal."'");
-            $old_internal = $cn->internal;
-            $cloc = expUnserialize($cn->internal);
-
+            $config = new expConfig(expUnserialize($cn->internal));
             if (!empty($config->config)) {
-                $oldconfig = expUnserialize($config->config);
-                if (!empty($oldconfig)) {
-                    $mpcn = $db->selectObject('container',"internal LIKE '%media%' AND internal LIKE '%" . $cloc->loc . "%'");
-                    $config->config = serialize($oldconfig);
-                    if (empty($config->media_image)) $config->media_image = $config->youtube_image;
-                    unset($config->youtube_image);
-                    if (empty($config->media_body)) $config->media_body = $config->youtube_body;
-                    unset($config->youtube_body);
-                    $config->media_aggregate = array_merge($config->media_aggregate,$config->youtube_aggregate);
-                    unset($config->youtube_aggregate);
-                    $db->updateObject($config,'expConfigs',"location_data='".$old_internal."'");
-                }
+                $newconfig = array();
+                $newconfig['config']['expFile']['media_image'] = $config->config['expFile']['youtube_image'];
+                $newconfig['config']['youtube_image'] = array();
+                if (empty($config->config['media_body']) && !empty($config->config['youtube_body'])) $newconfig['config']['media_body'] = $config->config['youtube_body'];
+                $newconfig['config']['youtube_body'] = '';
+                if (!empty($config->config['youtube_aggregate'])) $newconfig['config']['media_aggregate'] = array_merge($config->config['media_aggregate'],$config->config['youtube_aggregate']);
+                $newconfig['config']['youtube_aggregate'] = '';
+                $config->update($newconfig);
             }
-
             $yt_modules_converted += 1;
 	    }
 
