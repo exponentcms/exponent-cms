@@ -32,7 +32,7 @@
         {$btn_size = 'btn-mini'}
         {$icon_size = ''}
     {/if}
-    <a class="addtoicallist btn {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
+    <a class="addtoicallist btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current iCal Feeds"|gettext}</h4>
     <ul id="icalpull-feeds">
         {foreach from=$config.pull_ical item=feed name=feed}
