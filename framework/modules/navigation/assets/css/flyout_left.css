@@ -5,6 +5,7 @@
 	/*top                               : 30px;*/
 	left                               : 0;
 	min-width                          : 160px;
+	width                              : auto !important;
 	/*display: none;*/
 	background                         : #000000;
 	color                              : #cccccc;
@@ -108,9 +109,10 @@ a.triggerlogin:hover, a.triggerlogin:hover:visited {
 /*}*/
 
 a.active.triggerlogin, a.active.triggerlogin:visited {
-	background : #222222 url(../../../../modules/users/assets/images/minus.png) 100% 55% no-repeat;
-	font-size  : 0px;
-	padding    : 12px 22px 10px 0px;
+	background      : #222222 url(../../../../modules/users/assets/images/minus.png) 100% 55% no-repeat;
+	text-decoration : none !important;
+	font-size       : 0px;
+	padding         : 12px 22px 10px 0px;
 }
 
 .columns {
