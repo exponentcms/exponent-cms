@@ -34,7 +34,7 @@ class mediaController extends expController {
         'rss',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     static function displayname() { return gt("Media Player"); }
     static function description() { return gt("Display video files, YouTube links, or play audio streams on your site."); }
