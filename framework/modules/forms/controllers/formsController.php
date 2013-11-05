@@ -43,7 +43,7 @@ class formsController extends expController {
         'viewdata'  => "View Data",
         'enter_data' => "Enter Data"  // slight naming variation to not fully restrict enterdata method
     );
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     static function displayname() {
         return gt("Forms");
