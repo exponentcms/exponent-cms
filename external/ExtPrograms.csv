@@ -8,7 +8,7 @@ Smarty,3.1.15,smarty.net,3.1.15,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.1.5,github.com/mrclay/minify,2.1.5,
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.12.0,developer.yahoo.com/yui/3,3.13.0,
+YUI3,3.13.0,developer.yahoo.com/yui/3,3.13.0,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11,code.google.com/p/recaptcha,1.11,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
@@ -22,9 +22,9 @@ iCalCreator,2.18,kigkonsult.se/iCalcreator,2.18,
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,
 jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
 jQueryUI,1.10.3,jqueryui.com,1.10.3,
-Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.0,"patched bootstrap.less for & includes swatches, fontawesome"
-Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0,
-Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
+Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.0.1,"patched bootstrap.less for & includes swatches, fontawesome"
+Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.1,
+Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.1,updated FontAwesomePath in variables.less
 Adminer,3.7.1,www.adminer.org,3.7.1,
 html5shiv,v3.7.0,https://github.com/aFarkas/html5shiv,v3.7.0,
 SimpleAjaxUploader,1.8.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.8.1,converted to yui module
