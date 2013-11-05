@@ -549,6 +549,18 @@ class expTheme {
 				// aren't being made correctly...depending on how the {link} plugin was used in the view.
 				$_REQUEST['controller'] = $module;
 
+                if (!isset($_REQUEST['action'])) $_REQUEST['action'] = 'showall';
+                if (isset($_REQUEST['view']) && $_REQUEST['view'] != $_REQUEST['action']) {
+                    $test = explode('_',$_REQUEST['view']);
+                    if ($test[0] != $_REQUEST['action']) {
+                        $_REQUEST['view'] = $_REQUEST['action'].'_'.$_REQUEST['view'];
+                    }
+                } elseif (!empty($_REQUEST['action'])) {
+                    $_REQUEST['view'] = $_REQUEST['action'];
+                } else {
+                    $_REQUEST['view'] = 'showall';
+                }
+
 				echo renderAction($_REQUEST);
 //			} else {
 //				if ($_REQUEST['action'] == 'index') {
@@ -871,7 +883,7 @@ class expTheme {
         if (isset($params['view']) && $params['view'] != $params['action']) {
             $test = explode('_',$params['view']);
             if ($test[0] != $params['action']) {
-                    $params['view'] = $params['action'].'_'.$params['view'];
+                $params['view'] = $params['action'].'_'.$params['view'];
             }
         } elseif (!empty($params['action'])) {
             $params['view'] = $params['action'];
@@ -881,7 +893,7 @@ class expTheme {
 //	    if (isset($params['controller'])) {
 //            $controller = expModules::getControllerClassName($params['controller']);  //FIXME long controller name
             $controller = expModules::getModuleName($params['controller']);
-            $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
+//            $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
             $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
             $params['chrome'] = (!isset($params['chrome']) || (isset($params['chrome'])&&empty($params['chrome']))) ? true : false;
             $params['scope'] = isset($params['scope']) ? $params['scope'] : 'global';
@@ -889,8 +901,8 @@ class expTheme {
             // set the controller and action to the one called via the function params
             $requestvars = isset($params['params']) ? $params['params'] : array();
             $requestvars['controller'] = $controller;
-            $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
-            $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+//            $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+//            $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
 
             // figure out the scope of the module and set the source accordingly
             if ($params['scope'] == 'global') {
