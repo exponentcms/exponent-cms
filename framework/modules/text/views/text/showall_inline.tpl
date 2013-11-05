@@ -130,8 +130,9 @@
                                             type: "POST",
                                             url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                                             data: "id="+item[1] + "&type=revert",
-                                            success: function(data) {
-                                                msg = $.parseJSON(data);
+                                //            success:function(data) {
+                                            success:function(msg) {
+                                //                var msg = $.parseJSON(data);
                                                 data = $.parseJSON(msg.data);
                                                 CKEDITOR.instances['body-' + data.id].setData(data.body);
                                                 CKEDITOR.instances['title-' + data.id].setData(data.title);
@@ -198,8 +199,9 @@
             type: "POST",
             url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
             data: "id=0",
-            success:function(data) {
-                var msg = $.parseJSON(data);
+//            success: function(data) {
+            success: function(msg) {
+//                msg = $.parseJSON(data);
                 newItem = '<div id="text-' + msg.data + '" class="item"><h2><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></h2>';
                 newItem += '<div class="item-actions"><a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="http://localhost/exp2/text/edit/id/' + msg.data + '/src/' + src + '">{/literal}{'Edit'|gettext}{literal}</a>';
                 newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="#">{/literal}{'Delete'|gettext}{literal}</a>';
@@ -222,8 +224,9 @@
             type: "POST",
             url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
             data: "id="+item[1] + "&type=title&value=title+placeholder",
-            success: function(data) {
-                msg = $.parseJSON(data);
+//            success: function(data) {
+            success: function(msg) {
+//                msg = $.parseJSON(data);
                 newItem = '<h2><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></h2>';
                 $('#text-' + msg.data).prepend(newItem);
                 $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('title placeholder');
@@ -245,8 +248,9 @@
                 type: "POST",
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=deleteItem&ajax_action=1&json=1&src="+src,
                 data: "id=" + item[1],
-                success: function(data) {
-                    msg = $.parseJSON(data);
+    //            success: function(data) {
+                success: function(msg) {
+    //                msg = $.parseJSON(data);
                     $('#text-' + msg.data).remove();
                     $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').parent().remove();
                     CKEDITOR.instances['title-' + msg.data].destroy();
@@ -265,8 +269,9 @@
                 type: "POST",
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                 data: "id="+item[1] + "&type=title",
-                success: function(data) {
-                    msg = $.parseJSON(data);
+    //            success: function(data) {
+                success: function(msg) {
+    //                msg = $.parseJSON(data);
                     $('#title-' + msg.data).parent().remove();
                     $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('{/literal}{'Untitled'|gettext}{literal}');
                     chgItem ='<a class="addtitle" id="addtitle-' + msg.data + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}">{/literal}{'Add Title'|gettext}{literal}</a>';
