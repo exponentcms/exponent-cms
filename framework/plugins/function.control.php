@@ -327,7 +327,7 @@ function smarty_function_control($params, &$smarty) {
                 //eDebug(ANTI_SPAM_CONTROL, true);
                 if (SITE_USE_ANTI_SPAM && ANTI_SPAM_CONTROL == 'recaptcha') {
                     // make sure we have the proper config.
-                    if (!defined('RECAPTCHA_PUB_KEY') || empty(RECAPTCHA_PUB_KEY)) {
+                    if (!defined('RECAPTCHA_PUB_KEY') || RECAPTCHA_PUB_KEY == '') {
                         echo '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
                         return;
                     }
