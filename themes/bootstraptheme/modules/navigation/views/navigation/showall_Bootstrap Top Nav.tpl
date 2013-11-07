@@ -24,11 +24,19 @@
 <div class="navigation navbar navbar-{if $smarty.const.MENU_LOCATION}{$smarty.const.MENU_LOCATION}{else}fixed-top{/if}">
     <div class="navbar-inner">
         <div class="container">
+            <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
             <a class="brand" href="{$smarty.const.URL_FULL}">{$smarty.const.ORGANIZATION_NAME}</a>
+            <div class="nav-collapse collapse">
             <ul class="nav{if $smarty.const.MENU_ALIGN == 'right'} pull-right{/if}">
                 {getnav type='hierarchy' assign=hierarchy}
                 {bootstrap_navbar menu=$hierarchy}
             </ul>
+            </div>
         </div>
     </div>
 </div>

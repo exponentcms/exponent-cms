@@ -88,16 +88,16 @@ class expJavascript {
 ////                        $srt[$i] = "";
 //                        $srt[$i] = 'external/bootstrap/js/bootstrap.min.js'.",";
 //                    }
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), $head_config['lessvars']);
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap1',
                		    "lesscss"=>"external/bootstrap/less/bootstrap.less",
-                        "lessvars"=>array(
-                            'swatch'=>SWATCH,
-                        ),
+                        "lessvars"=>$lessvars,
                     ));
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap2',
                		    "lesscss"=>"external/bootstrap/less/responsive.less",
+                        "lessvars"=>$lessvars,
                     ));
                 }
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
@@ -179,17 +179,16 @@ class expJavascript {
                 $scripts .= "\t"."<!-- jQuery Scripts -->"."\r\n";
                 $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
                 if (!empty($head_config['framework']) && $head_config['framework'] == 'bootstrap') {
-//                    $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js"></script>'."\r\n";
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), $head_config['lessvars']);
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap1',
                		    "lesscss"=>"external/bootstrap/less/bootstrap.less",
-                        "lessvars"=>array(
-                            'swatch'=>SWATCH,
-                        ),
+                        "lessvars"=>$lessvars,
                     ));
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap2',
                		    "lesscss"=>"external/bootstrap/less/responsive.less",
+                        "lessvars"=>$lessvars,
                     ));
                 }
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
