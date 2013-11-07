@@ -216,11 +216,14 @@ class expTheme {
         }
 
         if ($config['meta']['ie_compat']) {
-            //the last little bit of IE 6 support
+            // the last little bit of IE 6 support
             $str .= "\t".'<!--[if IE 6]><style type="text/css">  body { behavior: url('.PATH_RELATIVE.'external/csshover.htc); }</style><![endif]-->'."\n";
 
-            //html5 support for IE 6-8
+            // html5 support for IE 6-8
             $str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/html5shiv/html5shiv-shiv.js"></script><![endif]-->'."\n";
+
+            // media css support for IE 6-8
+            $str .= "\t".'<!--[if lt IE 9]><script src="'.PATH_RELATIVE.'external/Respond-1.3.0/respond.min.js"></script><![endif]-->'."\n";
         }
 
 		// when minification is used, the comment below gets replaced when the buffer is dumped
