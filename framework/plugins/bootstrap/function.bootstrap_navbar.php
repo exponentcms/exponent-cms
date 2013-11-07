@@ -47,6 +47,11 @@ function smarty_function_bootstrap_navbar($params,&$smarty) {
             "jquery"=> '1',
             "src"=> PATH_RELATIVE . 'external/bootstrap/js/bootstrap-dropdown.js',
         ));
+        expJavascript::pushToFoot(array(
+            "unique"  => 'bootstrap-collapse',
+            "jquery"=> '1',
+            "src"=> PATH_RELATIVE . 'external/bootstrap/js/bootstrap-collapse.js',
+        ));
         return $menu;
     }
 }

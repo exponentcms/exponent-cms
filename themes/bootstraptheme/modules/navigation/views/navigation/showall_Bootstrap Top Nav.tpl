@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="bootstrap-top-nav"}
+{css unique="bootstrap-top-nav"  link="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/css/dropdown-bootstrap.css"}
 {if $smarty.const.MENU_LOCATION == 'static-top'}
     .navbar-spacer {
         height: 0;
