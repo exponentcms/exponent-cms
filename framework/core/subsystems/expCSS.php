@@ -111,6 +111,7 @@ class expCSS {
         unset($head_config['normalize']);
         unset($head_config['framework']);
         unset($head_config['viewport']);
+        unset($head_config['meta']);
 
         $css_files = array();
         foreach($head_config as $key=>$value) {

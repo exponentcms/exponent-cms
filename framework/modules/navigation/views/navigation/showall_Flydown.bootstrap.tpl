@@ -17,8 +17,9 @@
 
 {/css}
 
-<ul class="nav{if $smarty.const.MENU_ALIGN == 'right'} pull-right{/if}">
-    {getnav type='hierarchy' assign=hierarchy}
-    {bootstrap_navbar menu=$hierarchy}
-</ul>
-
+<div class="nav-collapse collapse">
+    <ul class="nav{if $smarty.const.MENU_ALIGN == 'right'} pull-right{/if}">
+        {getnav type='hierarchy' assign=hierarchy}
+        {bootstrap_navbar menu=$hierarchy}
+    </ul>
+</div>
