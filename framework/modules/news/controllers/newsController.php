@@ -219,7 +219,8 @@ class newsController extends expController {
             $rss_item->description = $item->body;
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->authorEmail = user::getEmailById($item->poster);
-            $rss_item->date = date('r',$item->publish_date);
+//            $rss_item->date = date(DATE_RSS,$item->publish_date);
+            $rss_item->date = $item->publish_date;
             $rssitems[$key] = $rss_item;
         }
         return $rssitems;

@@ -20,9 +20,7 @@
             {control type=hidden name=id value=$event->id}
             {control type=hidden name=subject value="RSVP for {$event->event->title}"}
             {control type=text name=name label="Your Name"|gettext}
-            {*{control type=text name=email label="Your Email Address"|gettext}*}
             {control type=email name=email label="Your Email Address"|gettext}
-            {*{control type=text name=phone label="Your Phone"|gettext}*}
             {control type=tel name=phone label="Your Phone"|gettext}
             {control type=text name=attendees label="Number of Attendees"|gettext}
             {control type="textarea" name="comments" label='Comments'|gettext}

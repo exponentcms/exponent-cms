@@ -127,7 +127,8 @@ class filedownloadController extends expController {
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->authorEmail = user::getEmailById($item->poster);
-            $rss_item->date = isset($item->publish_date) ? date('r',$item->publish_date) : date('r', $item->created_at);
+//            $rss_item->date = isset($item->publish_date) ? date(DATE_RSS,$item->publish_date) : date(DATE_RSS, $item->created_at);
+            $rss_item->date = isset($item->publish_date) ? $item->publish_date : $item->created_at;
             if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
 
             // Add the attachment/enclosure info
