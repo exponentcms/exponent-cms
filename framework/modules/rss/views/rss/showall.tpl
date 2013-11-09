@@ -20,9 +20,14 @@
     {/if}
     {foreach from=$feeds item=feed}
 		<div class="item">
-			{*<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">{'Subscribe to'|gettext} {$feed->feed_title}</a>*}
-            {*<a class="rsslink" href="{rsslink}" title="{$feed->feed_desc}">{'Subscribe to'|gettext} {$feed->title}</a>*}
             {rss_link feed=$feed text=$feed->title}
+            {permissions}
+                <div class="item-actions">
+                    {if $permissions.manage}
+                        {icon module=$feed->module action=configure src=$feed->src title='Configure this RSS Feed'|gettext}
+                    {/if}
+                </div>
+            {/permissions}
 		</div>
     {/foreach}    
 </div>
