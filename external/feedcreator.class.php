@@ -903,7 +903,8 @@ class FeedDate {
 	function FeedDate($dateString="") {
 		if ($dateString=="") $dateString = date("r");
 		
-        if (is_integer($dateString)) {
+//        if (is_integer($dateString)) {
+        if (is_numeric($dateString)) {
 			$this->unix = $dateString;
 			return;
 		}

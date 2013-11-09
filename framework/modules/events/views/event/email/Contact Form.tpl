@@ -18,7 +18,6 @@
         {form action=send_feedback}
             {control type=hidden name=formname value=$feedback_form}
             {control type=hidden name=id value=$event->id}
-            {*{control type=text name=email label="Your Email Address"|gettext}*}
             {control type=email name=email label="Your Email Address"|gettext}
             {control type=text name=subject label="Subject"|gettext}
             {control type="textarea" name="message" label='Message'|gettext}

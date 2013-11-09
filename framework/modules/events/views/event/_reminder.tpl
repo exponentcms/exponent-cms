@@ -57,7 +57,6 @@
                                 {$event->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
                             {/if}
                             {if $showdetail == 1}
-                                {*&#160;-&#160;{$event->body|summarize:"html":"paralinks"}*}
                                 &#160;-&#160;{$event->body|summarize:"html":"parahtml"}
                             {/if}
                             {br}
