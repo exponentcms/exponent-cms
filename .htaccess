@@ -37,3 +37,7 @@ DirectoryIndex index.php
     # RewriteRule ^login.php$ login/showlogin
 
 </IfModule>
+
+ErrorDocument 403 /index.php?controller=notfound&action=handle_not_authorized&error=403
+ErrorDocument 404 /index.php?notfound&action=handle&error=404
+ErrorDocument 500 /index.php?notfound&action=handle_internal_error&error=500
