@@ -100,7 +100,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',fu
 {/script}
 
 {if $config.ajax_paging}
-{script unique=`$name`-ajax yui3mods=1}
+{script unique="`$name`-ajax" yui3mods=1}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate',function(Y){
     var monthcal = Y.one('#week-{/literal}{$name}{literal}');
