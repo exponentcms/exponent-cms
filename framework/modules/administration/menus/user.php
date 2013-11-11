@@ -18,7 +18,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
-global $user;
+global $user, $db;
 
 /////////////////////////////////////////////////////////////////////////
 // FIGURE OUT IF WE"RE IN PREVIEW MODE OR NOT
