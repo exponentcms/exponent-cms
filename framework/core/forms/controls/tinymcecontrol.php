@@ -66,10 +66,11 @@ class tinymcecontrol extends formcontrol {
             $settings = expHTMLEditorController::getEditorSettings($this->toolbar);
         }
         $plugins = 'plugins: [
-                 "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-                 "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-                 "save table contextmenu directionality emoticons template paste textcolor"
-           ],
+                "advlist autolink lists link image charmap print preview hr anchor pagebreak spellchecker",
+                "searchreplace wordcount visualblocks visualchars code fullscreen",
+                "insertdatetime media nonbreaking save table contextmenu directionality",
+                "emoticons paste textcolor visualblocks importcss"
+            ],
         ';
         if (!empty($settings)) {
             $tb         = stripSlashes($settings->data);
@@ -144,6 +145,9 @@ class tinymcecontrol extends formcontrol {
                     " . $plugins . "
                     " . $contentCSS . "
                     document_base_url : '" . PATH_RELATIVE . "',
+                    toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                    toolbar2: 'print preview media | forecolor backcolor emoticons',
+                    image_advtab: true,
                     style_formats: [
                         {title: 'Image Left', selector: 'img', styles: {
                             'float' : 'left',
@@ -152,8 +156,30 @@ class tinymcecontrol extends formcontrol {
                         {title: 'Image Right', selector: 'img', styles: {
                             'float' : 'right',
                             'margin': '0 10px 0 10px'
-                        }}
+                        }},
+                        {title: 'Headers', items: [
+                            {title: 'h1', block: 'h1'},
+                            {title: 'h2', block: 'h2'},
+                            {title: 'h3', block: 'h3'},
+                            {title: 'h4', block: 'h4'},
+                            {title: 'h5', block: 'h5'},
+                            {title: 'h6', block: 'h6'}
+                        ]},
+                        {title: 'Blocks', items: [
+                            {title: 'p', block: 'p'},
+                            {title: 'div', block: 'div'},
+                            {title: 'pre', block: 'pre'}
+                        ]},
+                        {title: 'Containers', items: [
+                            {title: 'section', block: 'section', wrapper: true, merge_siblings: false},
+                            {title: 'article', block: 'article', wrapper: true, merge_siblings: false},
+                            {title: 'blockquote', block: 'blockquote', wrapper: true},
+                            {title: 'hgroup', block: 'hgroup', wrapper: true},
+                            {title: 'aside', block: 'aside', wrapper: true},
+                            {title: 'figure', block: 'figure', wrapper: true}
+                        ]}
                     ],
+                    end_container_on_empty_block: true,
                     file_browser_callback: function expBrowser (field_name, url, type, win) {
                         tinymce.activeEditor.windowManager.open({
                             file: '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "tiny")) . "',

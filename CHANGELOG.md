@@ -10,6 +10,7 @@ Added / Fixed / changed for 2.2.4
 -----------------------
 ### Implement revisions/workflow/approval, multi-day events and event caching, integrate Twitter-Bootstrap v3 &
 Font-Awesome 4,implement form data filtering both actively in the view, plus address any issues in v2.2.3
+  - initial support for alternate WYSIWYG editor, TinyMCE (works on Android devices)
   - includes all fixes from v2.2.3 patches
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
