@@ -65,7 +65,7 @@
         <div class="bd"></div>
     </div>
     {br}
-    {if $smarty.get.update!='noupdate' && $smarty.get.update!='ck'}
+    {if $smarty.get.update!='noupdate' && $smarty.get.update!='ck' && update !='tiny'}
         <a id="useselected" style="float:right;" class="use awesome medium green" href="#"><span>{'Use Selected Files'|gettext}</span></a>
     {/if}
     {if $permissions.manage}
@@ -108,6 +108,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
     		{/literal}
     		{if $update|strstr:"ck"}
     		    window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+            {elseif $update|strstr:"tiny"}
+                // pass selected file path to TinyMCE
+                top.tinymce.activeEditor.windowManager.getParams().setUrl(fileUrl);
+                // close popup window
+                top.tinymce.activeEditor.windowManager.close();
     		{else}
     		    window.opener.EXPONENT.passBackFile{$update}(fi);
     		{/if}
@@ -460,7 +465,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             
         ];
 
-//        if (update != 'noupdate' && update !='ck') {
+//        if (update != 'noupdate' && update !='ck' && update !='tiny') {
             myColumnDefs.push({ label:"{/literal}{"Select"|gettext}{literal}",sortable:false,formatter: formatBatch})
 //        };
 
