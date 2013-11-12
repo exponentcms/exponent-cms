@@ -82,7 +82,7 @@ class expLDAP {
         // populate user data
         if (!empty($user)) {
             $userdata = array('username'  => $username,
-                              'password'  => $password,
+                              'password'  => md5($password),
                               'firstname' => $user['givenname'][0],
                               'lastname'  => $user['sn'][0],
                               'email'     => $user['mail'][0],
