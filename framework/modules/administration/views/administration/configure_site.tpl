@@ -231,7 +231,7 @@
                         </div>
 		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
-                    {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor"|gettext items="CKEditor" values="ckeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
+                    {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor"|gettext items="CKEditor,TinyMCE (test)" values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
 	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
                         {group label="Editor Configuration"|gettext}
                             {chain module=expHTMLEditor view=manage}
