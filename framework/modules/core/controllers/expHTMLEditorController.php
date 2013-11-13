@@ -18,42 +18,77 @@
 /**
  * This is the class expHTMLEditorController
  *
- * @package Core
+ * @package    Core
  * @subpackage Controllers
  */
 
-class expHTMLEditorController extends expController {
-    static function displayname() { return gt("Editors"); }
-    static function description() { return gt("Mostly for CKEditor"); }
-    static function author() { return "Phillip Ball"; }
-    static function hasSources() { return false; }
-    static function hasContent() { return false; }
-	protected $add_permissions = array(
-        'activate'=>"Activate",
-        'preview'=>"Preview Editor Toolbars"
-    );
-    
-    function manage () {
-        global $db;
-
-        if (SITE_WYSIWYG_EDITOR=="FCKeditor") {
-	        flash('error',gt('FCKeditor is deprecated!'));
-	        redirect_to(array("module"=>"administration","action"=>"configure_site"));
-        }
-
-        // otherwise, on to cke
-        $configs = $db->selectObjects('htmleditor_ckeditor',1);
-        
-        assign_to_template(array(
-            'configs'=>$configs
-        ));
+class expHTMLEditorController extends expController
+{
+    static function displayname()
+    {
+        return gt("Editors");
     }
 
-    function update () {
+    static function description()
+    {
+        return gt("Mostly for CKEditor");
+    }
+
+    static function author()
+    {
+        return "Phillip Ball";
+    }
+
+    static function hasSources()
+    {
+        return false;
+    }
+
+    static function hasContent()
+    {
+        return false;
+    }
+
+    protected $add_permissions = array(
+        'activate' => "Activate",
+        'preview'  => "Preview Editor Toolbars"
+    );
+
+    function __construct($src = null, $params = array())
+    {
+        parent:: __construct($src, $params);
+        if (empty($this->params['editor'])) {
+            $this->params['editor'] = SITE_WYSIWYG_EDITOR;
+        }
+    }
+
+    function manage()
+    {
+        global $db;
+
+        if (SITE_WYSIWYG_EDITOR == "FCKeditor") {
+            flash('error', gt('FCKeditor is deprecated!'));
+            redirect_to(array("module" => "administration", "action" => "configure_site"));
+        }
+
+        // otherwise, on to the show
+//        $configs = $db->selectObjects('htmleditor_ckeditor',1);
+        $configs = $db->selectObjects('htmleditor_' . $this->params['editor'], 1);
+
+        assign_to_template(
+            array(
+                'configs' => $configs,
+                'editor' => $this->params['editor']
+            )
+        );
+    }
+
+    function update()
+    {
         global $db;
 
 //        $obj = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
-        $obj = self::getEditorSettings($this->params['id']);
+        $obj = self::getEditorSettings($this->params['id'], $this->params['editor']);
         $obj->name = $this->params['name'];
         $obj->data = stripSlashes($this->params['data']);
         $obj->skin = $this->params['skin'];
@@ -64,80 +99,105 @@ class expHTMLEditorController extends expController {
         $obj->formattags = stripSlashes($this->params['formattags']);
         $obj->fontnames = stripSlashes($this->params['fontnames']);
         if (empty($this->params['id'])) {
-            $this->params['id'] = $db->insertObject($obj,'htmleditor_ckeditor');
+//            $this->params['id'] = $db->insertObject($obj,'htmleditor_ckeditor');
+            $this->params['id'] = $db->insertObject($obj, 'htmleditor_' . $this->params['editor']);
         } else {
-            $db->updateObject($obj,'htmleditor_ckeditor',null,'id');
+//            $db->updateObject($obj,'htmleditor_ckeditor',null,'id');
+            $db->updateObject($obj, 'htmleditor_' . $this->params['editor'], null, 'id');
         }
-		if ($this->params['active']) {
-			$this->activate();
-		}
-	    expHistory::returnTo('manageable');
+        if ($this->params['active']) {
+            $this->activate();
+        }
+        expHistory::returnTo('manageable');
     }
 
-    function edit() {
+    function edit()
+    {
         expHistory::set('editable', $this->params);
-        $tool = self::getEditorSettings($this->params['id']);
+        $tool = self::getEditorSettings($this->params['id'], $this->params['editor']);
         $tool->data = !empty($tool->data) ? @stripSlashes($tool->data) : '';
         $tool->plugins = !empty($tool->plugins) ? @stripSlashes($tool->plugins) : '';
         $tool->stylesset = !empty($tool->stylesset) ? @stripSlashes($tool->stylesset) : '';
         $tool->formattags = !empty($tool->formattags) ? @stripSlashes($tool->formattags) : '';
         $tool->fontnames = !empty($tool->fontnames) ? @stripSlashes($tool->fontnames) : '';
-        $skins_dir = opendir(BASE.'external/editors/ckeditor/skins');
+//        $skins_dir = opendir(BASE . 'external/editors/ckeditor/skins');
+        $skins_dir = opendir(BASE . 'external/editors/' . $this->params['editor'] . '/skins');
         while (($skin = readdir($skins_dir)) !== false) {
-            if ($skin != '.' && $skin != '..')
+            if ($skin != '.' && $skin != '..') {
                 $skins[] = $skin;
+            }
         }
-        assign_to_template(array(
-            'record'=>$tool,
-            'skins'=>$skins
-        ));
+        assign_to_template(
+            array(
+                'record' => $tool,
+                'skins'  => $skins,
+                'editor' => $this->params['editor']
+            )
+        );
     }
-    
-	function delete() {
-	    global $db;
 
-	    expHistory::set('editable', $this->params);
-	    @$db->delete('htmleditor_ckeditor',"id=".$this->params['id']);
-		expHistory::returnTo('manageable');
-	}
-
-    function activate () {
+    function delete()
+    {
         global $db;
-        
-        $db->toggle('htmleditor_ckeditor',"active",'active=1');
-        if ($this->params['id']!="default") {
+
+        expHistory::set('editable', $this->params);
+//	    @$db->delete('htmleditor_ckeditor',"id=".$this->params['id']);
+        @$db->delete('htmleditor_' . $this->params['editor'], "id=" . $this->params['id']);
+        expHistory::returnTo('manageable');
+    }
+
+    function activate()
+    {
+        global $db;
+
+//        $db->toggle('htmleditor_ckeditor',"active",'active=1');
+        $db->toggle('htmleditor_' . $this->params['editor'], "active", 'active=1');
+        if ($this->params['id'] != "default") {
 //            $active = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
-            $active = self::getEditorSettings($this->params['id']);
+            $active = self::getEditorSettings($this->params['id'], $this->params['editor']);
             $active->active = 1;
-            $db->updateObject($active,'htmleditor_ckeditor',null,'id');
+//            $db->updateObject($active,'htmleditor_ckeditor',null,'id');
+            $db->updateObject($active, 'htmleditor_' . $this->params['editor'], null, 'id');
         }
-	    expHistory::returnTo('manageable');
+        expHistory::returnTo('manageable');
     }
 
-    function preview () {
-        if ($this->params['id']==0) {  // we want the default editor
+    function preview()
+    {
+        if ($this->params['id'] == 0) { // we want the default editor
             $demo = new stdClass();
-            $demo->id=0;
-            $demo->name="Default";
-			$demo->skin='kama';
+            $demo->id = 0;
+            $demo->name = "Default";
+            if ($this->params['editor'] == 'ckeditor') {
+                $demo->skin = 'kama';
+            } elseif ($this->params['editor'] == 'tinymce') {
+                $demo->skin = 'lightgray';
+            }
         } else {
-            $demo = self::getEditorSettings($this->params['id']);
+            $demo = self::getEditorSettings($this->params['id'], $this->params['editor']);
         }
-        assign_to_template(array(
-            'demo'=>$demo
-        ));
+        assign_to_template(
+            array(
+                'demo' => $demo,
+                'editor' => $this->params['editor']
+            )
+        );
     }
 
-    public static function getEditorSettings($settings_id) {
-        global  $db;
+    public static function getEditorSettings($settings_id, $editor)
+    {
+        global $db;
 
-        return @$db->selectObject('htmleditor_ckeditor',"id=".$settings_id);
+//        return @$db->selectObject('htmleditor_ckeditor',"id=".$settings_id);
+        return @$db->selectObject('htmleditor_' . $editor, "id=" . $settings_id);
     }
 
-    public static function getActiveEditorSettings() {
-        global  $db;
+    public static function getActiveEditorSettings($editor)
+    {
+        global $db;
 
-        return $db->selectObject('htmleditor_ckeditor', 'active=1');
+//        return $db->selectObject('htmleditor_ckeditor', 'active=1');
+        return $db->selectObject('htmleditor_' . $editor, 'active=1');
     }
 
 }

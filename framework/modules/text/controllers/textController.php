@@ -54,7 +54,7 @@ class textController extends expController {
         	$level = expSession::get('uilevel');
         }
 //        $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
-        $settings = expHTMLEditorController::getActiveEditorSettings();
+        $settings = expHTMLEditorController::getActiveEditorSettings(SITE_WYSIWYG_EDITOR);
         if (empty($settings->name)) $settings = new stdClass();
 //        if (empty($settings->data)) {
 //            $settings->data = "

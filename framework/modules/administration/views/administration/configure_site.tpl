@@ -231,12 +231,26 @@
                         </div>
 		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
-                    {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor"|gettext items="CKEditor,TinyMCE (test)" values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
-	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
-                        {group label="Editor Configuration"|gettext}
-                            {chain module=expHTMLEditor view=manage}
-                        {/group}
-	                {/if}
+                    {assocarray}
+                        paramc: [
+                            editor: "ckeditor"
+                        ]
+                        paramt: [
+                            editor: "tinymce"
+                        ]
+                    {/assocarray}
+                    <div id="alt-control" class="alt-control">
+                        <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
+                        <div class="alt-body">
+                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE (test)"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
+                            <div id="ckeditor-div" class="alt-item" style="display:none;">
+                                {showmodule module=expHTMLEditor action=manage params=$paramc}
+                            </div>
+                            <div id="tinymce-div" class="alt-item" style="display:none;">
+                                {showmodule module=expHTMLEditor action=manage params=$paramt}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="tab12">
 	                <div class="info-header">

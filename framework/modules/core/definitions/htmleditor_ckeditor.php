@@ -28,6 +28,8 @@ return array(
 	'name'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
+    'active'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'skin'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
@@ -40,8 +42,6 @@ return array(
 	'scayt_on'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'paste_word'=>array(
-		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
-	'active'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'stylesset'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,

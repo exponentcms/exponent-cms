@@ -58,12 +58,12 @@ class ckeditorcontrol extends formcontrol {
         if (is_file($cssabs)) {
             $contentCSS = "contentsCss : '" . $css . "',";
         }
-        if (empty($this->toolbar)) {
+        if ($this->toolbar === '') {
 //            $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
-            $settings = expHTMLEditorController::getActiveEditorSettings();
+            $settings = expHTMLEditorController::getActiveEditorSettings('ckeditor');
         } elseif (intval($this->toolbar) != 0) {
 //            $settings = $db->selectObject('htmleditor_ckeditor', 'id=' . $this->toolbar);
-            $settings = expHTMLEditorController::getEditorSettings($this->toolbar);
+            $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'ckeditor');
         }
         $plugins = '';
         if (!empty($settings)) {
@@ -87,7 +87,7 @@ class ckeditorcontrol extends formcontrol {
         // set defaults
         if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
         if (empty($tb)) {
-              if ($this->toolbar == 'basic') {
+              if ($this->toolbar === 'basic') {
                 $tb = "
                 toolbar : [
                     ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','About']

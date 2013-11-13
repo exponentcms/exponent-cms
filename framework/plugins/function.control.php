@@ -196,16 +196,25 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "editor":
             case "html":
-                $control = new htmleditorcontrol();
-                if (SITE_WYSIWYG_EDITOR == "ckeditor") {
-//                    $control           = new ckeditorcontrol();
-                    $control->toolbar  = empty($params['toolbar']) ? '' : $params['toolbar'];
+                if (empty($params['editor'])) {
+                    $editor = SITE_WYSIWYG_EDITOR;
+                } else {
+                    $editor = $params['editor'];
+                }
+                if ($editor == "ckeditor") {
+                    $control = new ckeditorcontrol();
+                    $control->toolbar  = !isset($params['toolbar']) ? '' : $params['toolbar'];
                     $control->lazyload = empty($params['lazyload']) ? 0 : 1;
                     $control->plugin = empty($params['plugin']) ? '' : $params['plugin'];
                     $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
-                } elseif (SITE_WYSIWYG_EDITOR == "tinymce") {
-//                    $control           = new tinymcecontrol();
+                } elseif ($editor == "tinymce") {
+                    $control = new tinymcecontrol();
+                    $control->toolbar  = !isset($params['toolbar']) ? '' : $params['toolbar'];
+                    $control->lazyload = empty($params['lazyload']) ? 0 : 1;
+                    $control->plugin = empty($params['plugin']) ? '' : $params['plugin'];
+                    $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
                 } else {
+                    $control = new htmleditorcontrol();
                     if (isset($params['module'])) $control->module = $params['module'];
                     if (isset($params['rows'])) $control->rows = $params['rows'];
                     if (isset($params['cols'])) $control->cols = $params['cols'];
