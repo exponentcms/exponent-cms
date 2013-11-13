@@ -405,7 +405,7 @@ class usersController extends expController {
         // in the database yet.  If not we will add them.
         $ext_dirs = array(
             'framework/modules/users/extensions',
-            'themes/' . DISPLAY_THEME . 'modules/users/extensions'
+            'themes/' . DISPLAY_THEME . '/modules/users/extensions'
         );
         foreach ($ext_dirs as $dir) {
             if (is_readable(BASE . $dir)) {
