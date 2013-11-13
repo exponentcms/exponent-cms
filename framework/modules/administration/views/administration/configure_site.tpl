@@ -239,7 +239,7 @@
                             editor: "tinymce"
                         ]
                     {/assocarray}
-                    <div id="alt-control" class="alt-control">
+                    <div id="alt-controlw" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
                             {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE (test)"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
@@ -483,6 +483,25 @@
             }
         }
     }
+{/literal}
+{/script}
+
+{script unique="wysiwyg-type" yui3mods="node,node-event-simulate"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+    var radioSwitchers = Y.all('#alt-controlw input[type="radio"]');
+    radioSwitchers.on('click',function(e){
+        Y.all(".alt-item").setStyle('display','none');
+        var curdiv = Y.one("#" + e.target.get('value') + "-div");
+        curdiv.setStyle('display','block');
+    });
+
+    radioSwitchers.each(function(node,k){
+        if(node.get('checked')==true){
+            node.simulate('click');
+        }
+    });
+});
 {/literal}
 {/script}
 
