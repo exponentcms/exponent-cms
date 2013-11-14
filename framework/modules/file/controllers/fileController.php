@@ -224,7 +224,7 @@ class fileController extends expController {
             if (!$user->isActingAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";
             };
-            if ($this->params['update']=='ck') {
+            if ($this->params['update']=='ck' || $this->params['update']=='tiny') {
                 $filter .= "is_image=1 AND ";
             }
 
@@ -269,7 +269,7 @@ class fileController extends expController {
             if (!$user->isActingAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1)";
             };
-            if ($this->params['update']=='ck') {
+            if ($this->params['update']=='ck' || $this->params['update']=='tiny') {
                 $filter .= !empty($filter) ? " AND " : "";
                 $filter .= "is_image=1";
             }

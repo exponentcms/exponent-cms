@@ -32,17 +32,8 @@
 		<title><?PHP echo gt('Insert/Modify Link'); ?></title>
 
 		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js2.php"></script>
-<!--		<script type="text/javascript" src="popup.js"></script>-->
-<!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'framework/modules/file/connector/lang/' . exponent_lang_convertLangCode(LANG) . '.js'?><!--"></script>-->
-<!--		<script type="text/javascript" src="--><?PHP //echo PATH_RELATIVE . 'framework/modules/file/connector/lang/en.js'?><!--"></script>-->
   		<script type="text/javascript">
-		/* <![CDATA[ */
-//			I18N = eXp.I18N;
-//
-//			function i18n(str) {
-//  				return (I18N[str] || str);
-//			};
-			
+
 			function getUrlParam(paramName) {
 				var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
 				var match = window.location.search.match(reParam) ;
@@ -84,7 +75,7 @@
             function openFileManager() {
                 var funcNum = getUrlParam('CKEditorFuncNum');
                 var partNum = getUrlParam('CKEditor');
-                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&ck=1&update=ck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
+                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=noupdate&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
             }
 
 			function openContentLinker() {
