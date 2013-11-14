@@ -37,6 +37,8 @@
         <div class="navbar-spacer"></div>
         <div class="navbar-spacer-bottom"></div>
         <div class="container <?php echo (MENU_LOCATION) ? 'fixedmenu' : '' ?>">
+            <!-- optional flyout sidebar container -->
+            <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
                 <aside id="sidebar" class="span3">
                     <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"sectional")); ?>
