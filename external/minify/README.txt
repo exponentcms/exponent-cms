@@ -21,19 +21,23 @@ INSTALLATION
 Place the /min/ directory as a child of your DOCUMENT_ROOT
 directory: i.e. you will have: /home/example/www/min
 
+You can see verify that it is working by visiting these two URLs:
+  http://example.org/min/?f=min/quick-test.js
+  http://example.org/min/?f=min/quick-test.css
+
+If your server supports mod_rewrite, this URL should also work:
+  http://example.org/min/f=min/quick-test.js
 
 CONFIGURATION & USAGE
 
 See the MIN.txt file and http://code.google.com/p/minify/wiki/UserGuide
 
 Minify also comes with a URI Builder application that can help you write URLs
-for use with Minify or configure groups of files.
+for use with Minify or configure groups of files. See here for details:
+  http://code.google.com/p/minify/wiki/BuilderApp
 
-To enable this, edit min/config.php, set $min_enableBuilder = true; and visit
-  http://example.org/min/builder/
-
-When you're finished with this, please set $min_enableBuilder = false;
-
+The cookbook also provides some more advanced options for minification:
+  http://code.google.com/p/minify/wiki/CookBook
 
 UPGRADING
 
