@@ -673,12 +673,17 @@ class expRouter {
             }
         // Lighty
 //        } elseif (strpos($_SERVER['SERVER_SOFTWARE'],'lighttpd') === 0) {
-        } elseif (strpos($_SERVER['SERVER_SOFTWARE'],'lighttpd') !== false) {
+        } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']),'lighttpd') !== false) {
+            //FIXME, we still need a good lighttpd.conf rewrite config for sef_urls to work
             if (isset($_SERVER['ORIG_PATH_INFO'])) {
                 $this->sefPath = urldecode($_SERVER['ORIG_PATH_INFO']);
             } elseif (isset($_SERVER['REDIRECT_URI'])){
                 $this->sefPath = urldecode(substr($_SERVER['REDIRECT_URI'],9));
+            } elseif (isset($_SERVER['REQUEST_URI'])){
+                $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
             }
+        } else {
+            $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
         }
         
         $this->sefPath = substr($this->sefPath,strlen(substr(PATH_RELATIVE,0,-1))); 
