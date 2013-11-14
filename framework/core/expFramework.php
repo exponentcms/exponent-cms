@@ -788,8 +788,22 @@ function expUnserialize($serial_str) {
         eDebug('problem:<br>'.$out.'<br>'.$out1);
     }
     $out2 = unserialize($out);
-    if (is_array($out2) && !empty($out2['moduledescription'])) {  // work-around for links in module descriptions
-        $out2['moduledescription'] = stripslashes($out2['moduledescription']);
+    if (is_array($out2)) {
+        if (!empty($out2['moduledescription'])) {  // work-around for links in module descriptions
+            $out2['moduledescription'] = stripslashes($out2['moduledescription']);
+        }
+        if (!empty($out2['description'])) {  // work-around for links in forms descriptions
+            $out2['description'] = stripslashes($out2['description']);
+        }
+        if (!empty($out2['report_desc'])) {  // work-around for links in forms report descriptions
+            $out2['report_desc'] = stripslashes($out2['report_desc']);
+        }
+        if (!empty($out2['response'])) {  // work-around for links in forms response
+            $out2['response'] = stripslashes($out2['response']);
+        }
+        if (!empty($out2['auto_respond_body'])) {  // work-around for links in forms auto respond
+            $out2['auto_respond_body'] = stripslashes($out2['auto_respond_body']);
+        }
     } elseif (is_object($out2) && get_class($out2) == 'htmlcontrol') {
         $out2->html = stripslashes($out2->html);
     }
