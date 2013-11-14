@@ -904,8 +904,8 @@ class expTheme {
             // set the controller and action to the one called via the function params
             $requestvars = isset($params['params']) ? $params['params'] : array();
             $requestvars['controller'] = $controller;
-//            $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
-//            $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
+            $requestvars['action'] = isset($params['action']) ? $params['action'] : null;
+            $requestvars['view'] = isset($params['view']) ? $params['view'] : null;
 
             // figure out the scope of the module and set the source accordingly
             if ($params['scope'] == 'global') {
@@ -1007,7 +1007,7 @@ class expTheme {
 //			if (in_array($module,$config['ignore_mods'])) return;
 //		}
         if (empty($params['action'])) $params['action'] = $view;
-		$loc = expCore::makeLocation($module,$source."");
+		$loc = expCore::makeLocation($module, $source."");
 
         if (empty($module_scope[$source][$module]->scope)) {
             $module_scope[$source][$module] = new stdClass();
