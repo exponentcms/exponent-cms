@@ -43,7 +43,7 @@
                 <aside id="sidebar" class="span3">
                     <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"sectional")); ?>
                 </aside>
-                <section id="content" class="span9">
+                <section id="content" class="span8">
                     <?php expTheme::main(); ?>
                 </section>
             </section>

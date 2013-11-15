@@ -52,13 +52,13 @@
         <div class="container <?php echo (MENU_LOCATION) ? 'fixedmenu' : '' ?>">
             <!-- optional flyout sidebar container -->
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
-            <!-- left column -->
             <section id="main" class="row">
-                <aside id="sidebar" class="span3">
+                <!-- left column -->
+                <aside id="sidebar" class="span3 well">
                     <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
                 </aside>
                 <!-- main column -->
-                <section id="content" class="span9">
+                <section id="content" class="span8">
                     <?php expTheme::main(); ?>
                 </section>
             </section>
