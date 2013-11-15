@@ -899,7 +899,7 @@ class eventController extends expController {
 
             $view = (isset($this->params['view']) ? $this->params['view'] : '');
             if ($view == "") {
-                $view = "_reminder"; // default reminder view
+                $view = "send_reminders"; // default reminder view
             }
 
             $template = get_template_for_action($this, $view, $this->loc);
@@ -961,7 +961,7 @@ class eventController extends expController {
             );
 
             // set up the html message
-            $template->assign("showdetail", $this->config['email_showdetail']);
+            $template->assign("showdetail", !empty($this->config['email_showdetail']));
             $htmlmsg = $template->render();
 
             // now the same thing for the text message
