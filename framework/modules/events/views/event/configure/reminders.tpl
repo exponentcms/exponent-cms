@@ -23,8 +23,8 @@
 </div>
 {control type="checkbox" postfalse=1 name="reminder_active" label="Enable Email Reminder feature?"|gettext checked=$config.reminder_active value=1}
 <blockquote>
-    {'Reminders feature requires setting up a server cron task such as:'|gettext}
-<code> curl -G -s {$smarty.const.URL_BASE}/event/send_reminders/title/calendar_sef_url/days/14/code/MyCode1</code>
+    {'Reminders feature requires setting up a server cron task such as:'|gettext}{br}
+<code>curl -G -s {$smarty.const.URL_FUL}/event/send_reminders/title/THE_CALENDAR_SEF_URL/days/14/code/THE_CODE_FROM_BELOW</code>
 </blockquote>
 {control type="text" name="reminder_code" label="Code to restrict sending Email Reminders"|gettext description="Enter an optional alphanumeric code to better secure sending reminder emails"|gettext value=$config.reminder_code}
 {group label="Email Recepients"|gettext}
