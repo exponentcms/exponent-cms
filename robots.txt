@@ -1,5 +1,6 @@
 User-agent: *
 Crawl-delay: 5
+
 Disallow: /exponent.js.php
 Disallow: /exponent.js2.php
 Disallow: /exponent.php
@@ -29,3 +30,6 @@ Disallow: /login/
 Disallow: /users/
 Disallow: /files/
 Disallow: /tmp/
+Disallow: /search/
+
+# Sitemap: http://www.mysite.com/sitemap.xml
