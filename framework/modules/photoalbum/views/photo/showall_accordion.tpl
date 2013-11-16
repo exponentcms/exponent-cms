@@ -64,7 +64,7 @@
                                     {else}
                                         {$group = 'Uncategorized'|gettext}
                                     {/if}
-                                    {if $record->expFile[0]->width >= $record->expFile[0]->height}{$x="w"}{else}{$x="w"}{/if}
+                                    {if $record->expFile[0]->image_width >= $record->expFile[0]->image_height}{$x="w"}{else}{$x="w"}{/if}
                                     <a rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->alt|default:$record->title}">
                                 {else}
                                     <a href="{link action=show title=$record->sef_url}" title="{$record->alt|default:$record->title}">

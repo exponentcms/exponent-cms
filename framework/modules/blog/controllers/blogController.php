@@ -310,7 +310,6 @@ class blogController extends expController {
         parent::delete_instance(true);
     }
 
-
     function showall_by_author_meta($request) {
         global $router;
 
@@ -341,9 +340,9 @@ class blogController extends expController {
 //                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                 $metainfo['keywords'] = $str;
 //                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;  //FIXME $object not set
-                $metainfo['description'] =SITE_DESCRIPTION;
+                $metainfo['description'] = SITE_DESCRIPTION;
 //                $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;  //FIXME $object not set
-                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);  //FIXME $object not set
+                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
 
                 return $metainfo;
             }

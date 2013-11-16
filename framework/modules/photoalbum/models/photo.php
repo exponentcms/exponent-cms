@@ -72,7 +72,7 @@ class photo extends expRecord {
 //        }
         if (empty($this->next)) {
             $next = $this->find('first',$where,'rank ASC');
-            $this->next = $next->sef_url;
+            $this->next = !empty($next->sef_url) ? $next->sef_url : null;
         }
 
 //        if ($this->rank==1) {
@@ -81,7 +81,7 @@ class photo extends expRecord {
 //        }
         if (empty($this->prev)) {
             $prev = $this->find('first',$where,'rank DESC');
-            $this->prev = $prev->sef_url;
+            $this->prev = !empty($prev->sef_url) ? $prev->sef_url : null;
         }
     }
 

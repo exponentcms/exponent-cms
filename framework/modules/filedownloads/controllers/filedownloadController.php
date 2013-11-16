@@ -65,8 +65,8 @@ class filedownloadController extends expController {
 
         include_once(BASE.'external/mp3file.php');
         foreach ($page->records as $file) {
-            if (!empty($file->expFile['downloadable'][0]) && ($file->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$file->expFile['downloadable'][0]->directory.'/'.$file->expFile['downloadable'][0]->filename))) {
-                $mp3 = new mp3file(BASE.$file->expFile['downloadable'][0]->directory.'/'.$file->expFile['downloadable'][0]->filename);
+            if (!empty($file->expFile['downloadable'][0]) && ($file->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$file->expFile['downloadable'][0]->directory.$file->expFile['downloadable'][0]->filename))) {
+                $mp3 = new mp3file(BASE.$file->expFile['downloadable'][0]->directory.$file->expFile['downloadable'][0]->filename);
                 $id3 = $mp3->get_metadata();
                 if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
                     $file->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
@@ -102,7 +102,28 @@ class filedownloadController extends expController {
         $this->params['id'] = $fd->expFile['downloadable'][$this->params['filenum']]->id;
         parent::downloadfile();        
     }
-    
+
+    /**
+     * Returns rich snippet PageMap meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return string
+     */
+    function meta_rich($request, $object) {
+        $rich_meta = '<!--
+        <PageMap>
+            <DataObject type="action">
+                <Attribute name="label" value="'.gt('Download').'"/>
+                <Attribute name="url" value="'.$object->download_link().'"/>
+                <Attribute name="class" value="download"/>
+            </DataObject>
+        </PageMap>
+    -->';
+        return $rich_meta;
+    }
+
     function getRSSContent() {
         include_once(BASE.'external/mp3file.php');
 
@@ -150,8 +171,8 @@ class filedownloadController extends expController {
             if (!empty($tags)) {
                 $rss_item->itunes->keywords = $tags;
             }
-            if (($rss_item->enclosure->type == "audio/mpg") && (file_exists(BASE.$item->expFile['downloadable'][0]->directory.'/'.$item->expFile['downloadable'][0]->filename))) {
-                $mp3 = new mp3file(BASE.$item->expFile['downloadable'][0]->directory.'/'.$item->expFile['downloadable'][0]->filename);
+            if (($rss_item->enclosure->type == "audio/mpg") && (file_exists(BASE.$item->expFile['downloadable'][0]->directory.$item->expFile['downloadable'][0]->filename))) {
+                $mp3 = new mp3file(BASE.$item->expFile['downloadable'][0]->directory.$item->expFile['downloadable'][0]->filename);
                 $id3 = $mp3->get_metadata();
                 if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
                     $rss_item->itunes->duration = $id3['Length mm:ss'];
