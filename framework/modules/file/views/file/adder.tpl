@@ -28,7 +28,7 @@
 <div id="exp-adder">
     <h1>{"Add Existing Files"|gettext}</h1>
     <div id="actionbar">
-        <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 update=$smarty.get.update}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
+        <a id="backlink" class="back awesome small green" href="{link action=picker ajax_action=1 update=$smarty.get.update filter=$smarty.get.filter}{if $smarty.const.SEF_URLS}?{else}&{/if}CKEditor={$smarty.get.CKEditor}&CKEditorFuncNum={$smarty.get.CKEditorFuncNum}&langCode={$smarty.get.langCode}"><span>{'Back to Manager'|gettext}</span></a>
     </div>
 	<div class="info-header clearfix">
 		<div class="related-actions">

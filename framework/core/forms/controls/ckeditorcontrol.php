@@ -146,7 +146,7 @@ class ckeditorcontrol extends formcontrol {
                     " . $tb . "
                     " . $paste_word . "
                     scayt_autoStartup : " . $scayt_on . ",
-                    filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck")) . "',
+                    filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck", "filter"=> 1)) . "',
                     " . $upload . "
                     filebrowserWindowWidth : " . FM_WIDTH . ",
                     filebrowserWindowHeight : " . FM_HEIGHT . ",

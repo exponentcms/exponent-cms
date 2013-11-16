@@ -85,6 +85,11 @@ class filemanagercontrol extends formcontrol {
         if ($this->limit>1) $this->description .= " " . gt('Drag the files to change their sequence.');
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
         $html .= '</div>';
+        if (strpos($this->accept,'image/*') !== false) {
+            $filter = 'image';
+        } else {
+            $filter = 0;
+        }
         $js = "
             EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
                 fullpath: EXPONENT.URL_FULL+'external/SimpleAjaxUploader.js'
@@ -98,7 +103,7 @@ class filemanagercontrol extends formcontrol {
                 // file picker window opener
                 function openFilePickerWindow(e){
                     e.halt();
-                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker
                         alert('".gt('Please disable your popup blocker')."!!');

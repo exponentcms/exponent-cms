@@ -48,7 +48,7 @@ class pixidouController extends expController {
             ));
 	    } else {
 		    flash('error',gt('The file').' "'.BASE.$file->directory.$file->filename.'" '.gt('does not exist on the server.'));
-		    redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update']));
+		    redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"filter"=>$this->params['filter']));
 	    }
     }
     
@@ -105,7 +105,7 @@ class pixidouController extends expController {
             }
         }
         
-        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update']));
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"filter"=>$this->params['filter']));
     }
     
 }

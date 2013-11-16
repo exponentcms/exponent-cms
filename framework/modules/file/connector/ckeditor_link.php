@@ -75,7 +75,7 @@
             function openFileManager() {
                 var funcNum = getUrlParam('CKEditorFuncNum');
                 var partNum = getUrlParam('CKEditor');
-                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=noupdate&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
+                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=ck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
             }
 
 			function openContentLinker() {
