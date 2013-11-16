@@ -170,10 +170,6 @@
                     foreach ($videos as $video) {
                         if ($video->expFile['media'][0]->mimetype != 'audio/mpeg' && file_exists(BASE.$video->expFile['media'][0]->directory.$video->expFile['media'][0]->filename)) {
                             $columns.='    <video:video>'.chr(13).chr(10);
-                            $columns.='        <video:loc>';
-                            $mloc = expUnserialize($video->location_data);
-                            $columns.=URL_FULL.'media/showall/src/'.$mloc->src;
-                            $columns.='</video:loc>'.chr(13).chr(10);
                             $columns.='        <video:thumbnail_loc>';
                             if (!empty($video->expFile['splash'][0]->url)) {
                                 $columns.=$video->expFile['splash'][0]->url;
@@ -181,6 +177,7 @@
                                 $columns.=URL_FULL.'framework/core/assets/images/default_preview.gif';
                             }
                             $columns.='</video:thumbnail_loc>'.chr(13).chr(10);
+                            $mloc = expUnserialize($video->location_data);
                             $columns.='        <video:player_loc>';
                             $columns.=URL_FULL.'media/showall/src/'.$mloc->src;
                             $columns.='</video:player_loc>'.chr(13).chr(10);
