@@ -859,7 +859,7 @@ class fileController extends expController {
         //	foreach ($db->selectObjects('file',"directory LIKE 'files/".$mod."%'") as $file) {
 //            foreach ($db->selectObjects('expFiles',1) as $file) {
         foreach (expFile::selectAllFiles() as $file) {
-            $files[] = BASE.$file->directory.'/'.$file->filename;
+            $files[] = BASE.$file->directory.$file->filename;
         }
         //}
 
