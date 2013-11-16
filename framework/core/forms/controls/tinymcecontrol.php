@@ -187,7 +187,7 @@ class tinymcecontrol extends formcontrol
                         tinymce.activeEditor.windowManager.open({
                             file: '" . makelink(
                                     array("controller" => "file", "action" => "picker", "ajax_action" => 1, "update" => "tiny")
-                                ) . "',
+                                ) . "?filter='+type,
                             title: 'File Manager',
                             width: " . FM_WIDTH . ",
                             height: " . FM_HEIGHT . ",
