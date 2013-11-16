@@ -43,22 +43,8 @@
     {/if}
     {tags_assigned record=$record}
     <div class="bodycopy">
-        {if !empty($record->title)}
-            {$title = $record->title}
-        {elseif !empty($record->expFile[0]->title)}
-            {$title = $record->expFile[0]->title}
-        {else}
-            {$title = ''}
-        {/if}
-        {if !empty($record->alt)}
-            {$alt = $record->alt}
-        {elseif !empty($record->expFile[0]->alt)}
-            {$alt = $record->expFile[0]->alt}
-        {else}
-            {$alt = $title}
-        {/if}
         {capture assign="float"}{$config.pa_float_enlarged|lower|replace:" ":""}{/capture}
-        {img alt=$alt file_id=$record->expFile[0]->id w=$config.pa_showall_enlarged class="img-large float-`$float`" title=$alt|default:$title style="float:`$float`;"}
+        {img alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_enlarged class="img-large float-`$float`" title=$record->alt|default:$record->title style="float:`$float`;"}
         {$record->body}
     </div>
     
