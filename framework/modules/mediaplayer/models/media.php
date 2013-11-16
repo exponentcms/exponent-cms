@@ -33,7 +33,7 @@ class media extends expRecord {
     //     'presence_of'=>array(
     //         'title'=>array('message'=>'Title is a required field.')
     //     ));
-        
+
 }
 
 ?>

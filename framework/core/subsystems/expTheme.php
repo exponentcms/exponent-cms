@@ -154,6 +154,9 @@ class expTheme {
         if (!isset($config['meta']['canonical'])) {
             $config['meta']['canonical'] = true;
         }
+        if (!isset($config['meta']['rich'])) {
+            $config['meta']['rich'] = true;
+        }
         if (!isset($config['meta']['viewport'])) {
             $config['meta']['viewport'] = true;
         }
@@ -169,6 +172,7 @@ class expTheme {
         if ($config['meta']['keywords']) $str .= "\t".'<meta name="Keywords" content="'.$metainfo['keywords'] . '" '.XHTML_CLOSING.'>'."\n";
         if ($config['meta']['description']) $str .= "\t".'<meta name="Description" content="'.$metainfo['description']. '" '.XHTML_CLOSING.'>'."\n";
         if ($config['meta']['canonical'] && !empty($metainfo['canonical'])) $str .= "\t".'<link rel="canonical" href="'.$metainfo['canonical'].'" '.XHTML_CLOSING.'>'."\n";
+        if ($config['meta']['rich'] && !empty($metainfo['rich'])) $str .= "\t".$metainfo['rich']."\n";
         if ($metainfo['noindex'] || $metainfo['nofollow']) {
             $str .= "\t".'<meta name="robots" content="'.(!empty($metainfo['noindex'])?'noindex':'').' '.($metainfo['nofollow']?'nofollow':''). '" '.XHTML_CLOSING.'>'."\n";
         }

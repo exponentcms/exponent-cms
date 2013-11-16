@@ -54,14 +54,15 @@
 	{/permissions}
 	<dl class="viewweek">
 	{foreach from=$items item=item}
+        <div class="vevent">
 		<dt>
             {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
 			<strong>
-                <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
+                <a class="url itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
                     {if substr($item->location_data,1,8) != 'calevent'}
                         href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                     {/if}
-                    >{$item->title}
+                    ><div><span class="summary">{$item->title}</span></div>
                 </a>
             </strong>
 			{permissions}
@@ -92,15 +93,17 @@
 		<dd>
             <strong>
 				{if $item->is_allday == 1}
-					{$item->eventstart|format_date}
+                    <span class="dtstart">{$item->eventstart|format_date}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
 				{elseif $item->eventstart != $item->eventend}
-					{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT} {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                    <span class="dtstart">{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
+                    {'to'|gettext} {$item->eventend|format_date:$smarty.const.DISPLAY_TIME_FORMAT}<span class="duration"><span class="value-title" title="{expDateTime::duration($item->eventstart,$item->eventend,true)}"></span></span>
 				{else}
-					{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
+                    <span class="dtstart">{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
 				{/if}
 			</strong>
 		</dd>
 		<dd>
+            <span class="description">
             {if $config.usebody=='0'}
                 {$item->body}
             {elseif $config.usebody==3}
@@ -110,7 +113,16 @@
                 {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
                 <p>{$item->body|summarize:"html":"parahtml"}</p>
             {/if}
+            </span>
+            <span class="hide">
+                {'Location'|gettext}:
+                <span class="location">
+                    {$smarty.const.ORGANIZATION_NAME}
+                </span>
+                {if !empty($item->event->expCat[0]->title)}<span class="category">{$item->event->expCat[0]->title}</span>{/if}
+            </span>
 		</dd>
+        </div>
 	{foreachelse}
 		<dd><em>{'No upcoming events.'|gettext}</em></dd>
 	{/foreach}

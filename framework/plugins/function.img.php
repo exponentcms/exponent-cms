@@ -419,11 +419,15 @@ function smarty_function_img($params,&$smarty) {
 	}
 	
 	$source = ' src="'.$src.'"';
-    
+
+    $itemprop = '';
+    if (isset($params['itemprop'])) {
+        $itemprop = ' itemprop="image"';
+    }
     if (empty($params['return'])) {
-    	echo '<img'.$id.$class.$source.$dims.$alt.$style.$title.$closing;
+    	echo '<img'.$itemprop.$id.$class.$source.$dims.$alt.$style.$title.$closing;
     } else {
-    	return '<img'.$id.$class.$source.$dims.$alt.$style.$title.$rel.$closing;
+    	return '<img'.$itemprop.$id.$class.$source.$dims.$alt.$style.$title.$rel.$closing;
     }
 }
 

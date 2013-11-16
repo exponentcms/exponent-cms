@@ -107,6 +107,11 @@ function smarty_function_rating($params,&$smarty) {
         </div>
     </div>
     ';
+    if (isset($params['itemprop'])) {
+        $html .= '<span itemprop="review" itemscope itemtype="http://data-vocabulary.org/Review-aggregate" class="hide">
+            <span itemprop="rating">'.$total_average.'</span><span itemprop="count">'.$rating_count.'</span>
+        </span>';
+    }
 
     if (empty($myrate)) $myrate = 0;
     $content = "

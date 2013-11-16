@@ -62,7 +62,8 @@ class filedownload extends expRecord {
         if (!empty($this->ext_file)) {
             return $this->ext_file;
         } else {
-            return URL_FULL.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename;
+            $url = makeLink(array('controller'=>'filedownload','action'=>'downloadfile','file_id'=>$this->id));
+            return $url;
         }
     }
 }

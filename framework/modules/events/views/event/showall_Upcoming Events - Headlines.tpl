@@ -40,22 +40,31 @@
         {$item_number=0}
 		{foreach from=$items item=item}
 			{if (!$config.headcount || $item_number < $config.headcount) }
+                <div class="vevent">
 				<li>
                     {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
-                    <a class="link{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
+                    <a class="url link{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
                             href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                         {/if}
                        title="{$item->body|summarize:"html":"para"}"
-                        >{$item->title}
+                        ><span class="summary">{$item->title}</span>
                     </a>
 					<em class="date">
 						{if $item->is_allday == 1}
-							{$item->eventstart|format_date}
+                            <span class="dtstart">{$item->eventstart|format_date}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
 						{else}
-							{$item->eventstart|format_date} @ {$item->eventstart|format_date:"%l:%M %p"}
+                            <span class="dtstart">{$item->eventstart|format_date} @ {$item->eventstart|format_date:"%l:%M %p"}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
 						{/if}
 					</em>
+                    <span class="hide">
+                        {'Location'|gettext}:
+                        <span class="location">
+                            {$smarty.const.ORGANIZATION_NAME}
+                        </span>
+                        {if !empty($item->event->expCat[0]->title)}<span class="category">{$item->event->expCat[0]->title}</span>{/if}
+                    </span>
+
 					{permissions}
                         {if substr($item->location_data,0,3) == 'O:8'}
                             <div class="item-actions">
@@ -81,6 +90,7 @@
                         {/if}
 					{/permissions}
 				</li>
+                </div>
                 {$item_number=$item_number+1}
 			{else}
                 {$more_events=1}

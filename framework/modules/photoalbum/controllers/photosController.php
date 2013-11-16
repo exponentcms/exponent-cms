@@ -161,7 +161,29 @@ class photosController extends expController {
             'tags'=>$used_tags
         ));
     }           
-    
+
+    /**
+     * Returns rich snippet PageMap meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return string
+     */
+    function meta_rich($request, $object) {
+        if (file_exists(BASE.$object->expFile[0]->directory.$object->expFile[0]->filename)) {
+            return '<!--
+        <PageMap>
+            <DataObject type="thumbnail">
+                <Attribute name="src" value="'.URL_FULL.$object->expFile[0]->directory.$object->expFile[0]->filename.'"/>
+                <Attribute name="width" value="'.$object->expFile[0]->image_width.'"/>
+                <Attribute name="height" value="'.$object->expFile[0]->image_width.'"/>
+            </DataObject>
+        </PageMap>
+    -->';
+        } else return null;
+    }
+
     public function update() {
 
         //populate the alt tag field if the user didn't

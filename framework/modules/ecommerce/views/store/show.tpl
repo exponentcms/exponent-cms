@@ -28,8 +28,9 @@
 {/if}
 
 <div class="module store show product">
-    <h1>{$product->title}</h1>
-    
+<div itemscope itemtype="http://data-vocabulary.org/Product">
+    <h1><span itemprop="name">{$product->title}</span></h1>
+    {if !empty($product->storeCategory[0]->title)}<span itemprop="category" content="{$product->storeCategory[0]->title}"></span>{/if}
     {permissions}
     <div class="item-actions">
         {if $permissions.edit}
@@ -48,9 +49,9 @@
         {if $product->main_image_functionality=="iws"}
             {* Image with swatches *}
             {if $product->expFile.imagesforswatches[0]->id != ""}
-                {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+                {img file_id=$product->expFile.imagesforswatches[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image" itemprop=1}
             {else}
-                {img src="`$asset_path`images/no-image.jpg" w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+                {img src="`$asset_path`images/no-image.jpg" w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image" itemprop=1}
             {/if}
             {$mainimg=$product->expFile.imagesforswatches.0}
         {else}
@@ -58,9 +59,9 @@
                 <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
             {/if}
             {if $product->expFile.mainimage[0]->id != ""}
-                {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image"}
+                {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image" itemprop=1}
             {else}
-                {img src="`$asset_path`images/no-image.jpg" w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+                {img src="`$asset_path`images/no-image.jpg" w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image" itemprop=1}
             {/if}
             {if $config.enable_lightbox}
                 </a>
@@ -244,12 +245,19 @@
     {*{/if}   *}
     
     <div class="prod-price"> 
-        {* 
+        <span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
+        <meta itemprop="currency" content="{$smarty.const.ECOM_CURRENCY}" />
+        {*
             [0] => Always available even if out of stock.
             [1] => Available but shown as backordered if out of stock.
             [2] => Unavailable if out of stock.
             [3] => Show as &quot;Call for Price&quot;.
         *}                                                                                      
+        {if $product->availability_type == 2}
+            <span itemprop="availability" content="out_of_stock"></span>
+        {else}
+            <span itemprop="availability" content="in_stock"></span>
+        {/if}
         {if $product->availability_type == 3}
             <strong>{"Call for Price"|gettext}</strong>
         {elseif $product->childProduct|@count >= 1}
@@ -260,15 +268,16 @@
                     {if $child_price > $chiprod->special_price}{$child_price = $chiprod->special_price}{/if}
                 {/if}
             {/foreach}
-            <span class="regular-price">{'Starting at'|gettext} {$child_price|currency}</span>
+            <span class="regular-price">{'Starting at'|gettext} <span itemprop="price">{$child_price|currency}</span></span>
         {else}
             {if $product->use_special_price}                     
                 <span class="regular-price on-sale">{$product->base_price|currency}</span>
-                <span class="sale-price">{$product->special_price|currency}&#160;<sup>{"SALE!"|gettext}</sup></span>
+                <span class="sale-price"><span itemprop="price">{$product->special_price|currency}</span>&#160;<sup>{"SALE!"|gettext}</sup></span>
             {else}
-                <span class="regular-price">{$product->base_price|currency}</span>
+                <span class="regular-price"><span itemprop="price">{$product->base_price|currency}</span></span>
             {/if}
         {/if}
+        </span>
     </div>    
     
     {if $product->company->id}
@@ -278,7 +287,7 @@
                 {if $product->company->expFile.logo[0]->id}
                     {img file_id=$product->company->expFile.logo[0]->id w=24 alt="Image of `$product->company->title`" title="`$product->company->title`" class="large-img" id="enlarged-image"}
                 {/if}
-                {$product->company->title}
+                <span itemprop="brand">{$product->company->title}</span>
             </a>
         </p>
     {/if}
@@ -286,7 +295,7 @@
     {if $product->model && ($product->childProduct|@count == 0)}
         <p class="sku">
             {"SKU"|gettext}:
-            <strong>{$product->model}</strong>
+            <strong><span itemprop="identifier" content="{$product->model}">{$product->model}</span></strong>
         </p>
     {/if}
 
@@ -321,7 +330,7 @@
     </div>
     {/if*}
     {if $config.enable_ratings_and_reviews}
-        {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product}
+        {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product itemprop=1}
     {/if}
     
     {if $product->main_image_functionality=="iws"}
@@ -343,7 +352,9 @@
     {/if}
             
     <div class="bodycopy">
-        {$product->body}        
+        <span itemprop="description">
+        {$product->body}
+        </span>
     </div>
 
     {if $product->expFile.brochures[0]->id}
@@ -621,4 +632,4 @@
          </div>
      {/if}
 </div>
-
+</div>

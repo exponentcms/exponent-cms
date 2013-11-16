@@ -1133,12 +1133,12 @@ class formsController extends expController {
         // figure out what metadata to pass back based on the action we are in.
         switch ($router->params['action']) {
             case 'showall':
-                $metainfo['title'] = gt("Showing all Form Records");
+                $metainfo['title'] = gt("Showing Form Records") . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
-                $metainfo['title'] = gt("Showing Form Record");
+                $metainfo['title'] = gt("Showing Form Record") . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
