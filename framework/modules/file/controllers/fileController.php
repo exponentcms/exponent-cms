@@ -224,7 +224,8 @@ class fileController extends expController {
             if (!$user->isActingAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";
             };
-            if ($this->params['update']=='ck' || $this->params['update']=='tiny') {
+//            if ($this->params['update']=='ck' || $this->params['update']=='tiny') {
+            if (!empty($this->params['filter']) && $this->params['filter'] == 'image') {
                 $filter .= "is_image=1 AND ";
             }
 
@@ -269,7 +270,8 @@ class fileController extends expController {
             if (!$user->isActingAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1)";
             };
-            if ($this->params['update']=='ck' || $this->params['update']=='tiny') {
+//            if ($this->params['update']=='ck' || $this->params['update']=='tiny') {
+            if (!empty($this->params['filter']) && $this->params['filter'] == 'image') {
                 $filter .= !empty($filter) ? " AND " : "";
                 $filter .= "is_image=1";
             }
@@ -351,7 +353,7 @@ class fileController extends expController {
         } else {
             flash('error',$file->filename.' '.gt('wasn\'t deleted because you don\'t own the file.'));
         }
-        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update']));
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"filter"=>$this->params['filter']));
     } 
     
     public function deleter() {
@@ -380,7 +382,7 @@ class fileController extends expController {
                 }
             }
         }
-        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update']));
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"filter"=>$this->params['filter']));
     }
 
     public function batchDelete() {
@@ -436,7 +438,7 @@ class fileController extends expController {
             $newfile->save();
             flash('message',$newfile->filename.' '.gt('was added to the File Manager.'));
         }
-        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update']));
+        redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"filter"=>$this->params['filter']));
     }
 
     public function upload() {
