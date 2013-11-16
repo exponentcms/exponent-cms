@@ -37,8 +37,13 @@ function smarty_modifier_signature($userid) {
 
     $sig = $db->selectValue('user_signature','signature','user_id='.intval($userid));
     if (!empty($sig)) {
-        return '<h3>'.gt('About the author').'</h3>'.$sig;
-    } return $sig;
+        $sig = '<h3>'.gt('About the author').'</h3>'.$sig;
+    }
+    $googleplus = $db->selectValue('user_signature','googleplus','user_id='.intval($userid));
+    if (!empty($googleplus)) {
+        $sig .= ' <a href="'.$googleplus.'?rel=author">'.gt('Google+').'</a>';
+    }
+    return $sig;
 }
 
 ?>
