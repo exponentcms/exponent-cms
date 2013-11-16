@@ -149,10 +149,10 @@
                             $columns.=$photo->expFile[0]->url;
                             $columns.='</image:loc>'.chr(13).chr(10);
                             $columns.='        <image:title>';
-                            $columns.=$photo->title;
+                            $columns.=htmlspecialchars($photo->title);
                             $columns.='</image:title>'.chr(13).chr(10);
                             $columns.='        <image:caption>';
-                            $columns.=$photo->alt;
+                            $columns.=htmlspecialchars($photo->alt);
                             $columns.='</image:caption>'.chr(13).chr(10);
                             $columns.='    </image:image>'.chr(13).chr(10);
                             $num_images++;
@@ -192,14 +192,14 @@
                             $columns.='</video:publication_date>'.chr(13).chr(10);
                             foreach ($video->expTag as $tag) {
                                 $columns.='        <video:tag>';
-                                $columns.=$tag->title;
+                                $columns.=htmlspecialchars($tag->title);
                                 $columns.='</video:tag>'.chr(13).chr(10);
                             }
                             $columns.='        <video:title>';
-                            $columns.=$video->title;
+                            $columns.=htmlspecialchars($video->title);
                             $columns.='</video:title>'.chr(13).chr(10);
                             $columns.='        <video:description>';
-                            $columns.=$video->body;
+                            $columns.=htmlspecialchars($video->body);
                             $columns.='</video:description>'.chr(13).chr(10);
                             $columns.='    </video:video>'.chr(13).chr(10);
                             $num_videos++;
