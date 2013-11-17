@@ -54,7 +54,8 @@ class container extends expRecord {
         // send module to recycle bin first
         recyclebin::sendToRecycleBin($internal,expSession::get("last_section"));
         // delete the container table reference
-        parent::delete("internal='" . $this->internal . "'");  // param is for reranking remaining objects
+        $this->grouping_sql = " AND external='".$this->external."'";
+        parent::delete();  // param is for reranking remaining objects
         expSession::clearAllUsersSessionCache('containers');
     }
 
