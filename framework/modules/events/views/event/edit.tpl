@@ -56,7 +56,7 @@
                     {/if}
                 </div>
                 <div id="tab2">
-                    {control type="yuicalendarcontrol" name="eventdate" label="Event Date"|gettext value=$record->eventdate[0]->date}
+                    {control type="yuicalendarcontrol" name="eventdate" label="Event Date"|gettext value=$record->eventdate[$event_key]->date}
                     {*{control type="calendar" name="eventdate" label="Event Date"|gettext default_date=$record->eventdate[0]->date}*}
                     {$jsHooks = ['onclick'=>'exponent_forms_disable_datetime(\'eventstart\',this.form,this.checked); exponent_forms_disable_datetime(\'eventend\',this.form,this.checked);']}
                   	{control type="checkbox" name="is_allday" label="All Day Event?"|gettext value=1 checked=$record->is_allday hooks=$jsHooks}

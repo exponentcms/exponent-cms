@@ -486,12 +486,21 @@ class eventController extends expController {
     }
 
     function edit() {
+        global $template;
+
         parent::edit();
         $allforms = array();
         $allforms[""] = gt('Disallow Feedback');
+        // calculate which event date is the one being edited
+        $event_key = 0;
+        foreach ($template->tpl->tpl_vars['record']->value->eventdate as $key=>$d) {
+       	    if ($d->id == $this->params['date_id']) $event_key = $key;
+       	}
+
         assign_to_template(array(
             'allforms'     => array_merge($allforms, expCore::buildNameList("forms", "event/email", "tpl", "[!_]*")),
             'checked_date' => !empty($this->params['date_id']) ? $this->params['date_id'] : null,
+            'event_key'    => $event_key,
         ));
     }
 
