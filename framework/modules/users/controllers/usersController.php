@@ -248,7 +248,7 @@ class usersController extends expController {
 //            expPermissions::load($u);  //FIXME why are we doing this? this loads the edited user perms over the current user???
 
             //signup email stuff
-            if (USER_REGISTRATION_SEND_WELCOME) {
+            if (USER_REGISTRATION_SEND_WELCOME && !empty($u->email)) {
                 $msg = $u->firstname . ", \n\n";
                 $msg .= sprintf(USER_REGISTRATION_WELCOME_MSG, $u->firstname, $u->lastname, $u->username);
 
