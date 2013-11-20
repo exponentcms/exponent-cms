@@ -23,7 +23,7 @@ lessphp,0.4.0,leafo.net/lessphp,0.4.0,
 jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
 jQueryUI,1.10.3,jqueryui.com,1.10.3,
 Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.0.2,"patched bootstrap.less for & includes swatches, fontawesome"
-Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.2,
+Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.2+1,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.3,updated FontAwesomePath in variables.less
 Adminer,3.7.1,www.adminer.org,3.7.1,
 html5shiv,v3.7.0,https://github.com/aFarkas/html5shiv,v3.7.0,
