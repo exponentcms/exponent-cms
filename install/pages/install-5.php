@@ -47,7 +47,7 @@ if (is_readable(BASE . 'themes')) {
     echo "</div>";
     $dh = opendir(BASE . 'themes');
     while (($file = readdir($dh)) !== false) {
-        if (is_readable(BASE . "themes/$file/class.php")) {
+        if ($file != '.' && $file != '..' && is_dir(BASE."themes/$file") && is_readable(BASE . "themes/$file/class.php")) {
             include_once(BASE . "themes/$file/class.php");
             /**
              * Stores the theme object
