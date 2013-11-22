@@ -165,7 +165,7 @@ class navigationController extends expController {
         return json_encode(self::navhierarchy());
     }
 
-    public static function getChildren(&$i,$notyui=false) {
+    public static function getChildren(&$i, $notyui=false) {
         global $sections;
 
         //		echo "i=".$i."<br>";
@@ -493,7 +493,7 @@ class navigationController extends expController {
      *
      * @return array
      */
-    public static function getTemplateHierarchyFlat($parent, $depth = 1) {
+    public static function getTemplateHierarchyFlat($parent, $depth = 1) { //FIXME is this only for deprecated templates?
         global $db;
 
         $arr  = array();
@@ -540,7 +540,7 @@ class navigationController extends expController {
 
     }
 
-    function process_subsections($parent_section, $subtpl) {
+    function process_subsections($parent_section, $subtpl) { //FIXME is this only for deprecated templates?
         global $db, $router;
 
         $section              = new stdClass();
