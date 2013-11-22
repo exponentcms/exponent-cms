@@ -93,6 +93,7 @@ class recyclebin extends expRecord {
 //            $oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
             $oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
             $oldSecRef->refcount = 0;
+            $oldSecRef->section = 0;
 //            $db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
             $db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
         } else {
@@ -123,11 +124,14 @@ class recyclebin extends expRecord {
     public static function restoreFromRecycleBin($loc,$section) {
         global $db;
 
-        $newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
+//        $newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
+        $newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
         if ($newSecRef != null) {
             // Pulled an existing source for this section.  Update refcount
-            $newSecRef->refcount = 1;  // we need to do this for pulling stuff from the recycle bin
-            $db->updateObject($newSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
+            $newSecRef->refcount = 1;        // we need to do this for pulling stuff from the recycle bin
+            $newSecRef->section = $section;  // we need to do this for pulling stuff from the recycle bin
+//            $db->updateObject($newSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
+            $db->updateObject($newSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
         } else {
             // New source for this section.  Populate reference
             $newSecRef = new stdClass();
