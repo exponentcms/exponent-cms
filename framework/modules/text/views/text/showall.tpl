@@ -36,6 +36,7 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
+                        <span class="revisionnum approval" title="{'Revision'|gettext}">{$text->revision_id}</span>
                         {if $myloc != $text->location_data}
                             {if $permissions.manage}
                                 {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}

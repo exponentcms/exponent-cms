@@ -106,14 +106,14 @@ class expRecord {
         if (!is_object($params) && !is_array($params)) {
             $where = '';
             if (is_numeric($params)) {
-                $this->build($db->selectArray($this->tablename, $this->identifier . '=' . $params, $this->supports_revisions));
+                $this->build($db->selectArray($this->tablename, $this->identifier . '=' . $params, null, $this->supports_revisions));
                 $identifier = $this->identifier;
                 $params     = array($identifier=> $params); // Convert $params (given number value) into an key/value pair
             } else {
                 // try to look up by sef_url
-                $values = $db->selectArray($this->tablename, "sef_url='" . expString::sanitize($params) . "'", $this->supports_revisions);
+                $values = $db->selectArray($this->tablename, "sef_url='" . expString::sanitize($params) . "'", null, $this->supports_revisions);
                 // if we didn't find it via sef_url then we should check by title
-                if (empty($values)) $values = $db->selectArray($this->tablename, "title='" . expString::sanitize($params) . "'", $this->supports_revisions);
+                if (empty($values)) $values = $db->selectArray($this->tablename, "title='" . expString::sanitize($params) . "'", null, $this->supports_revisions);
                 $this->build($values);
                 $params = array('title'=> $params);
             }
@@ -166,24 +166,32 @@ class expRecord {
 
         $sql = empty($where) ? 1 : $where;
         //eDebug("Supports Revisions:" . $this->supports_revisions);
-        if ($this->supports_revisions && $range != 'revisions') $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE $where)";
-        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
+//        if ($this->supports_revisions && $range != 'revisions') $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE $where)";
+//        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
 
-        if (strcasecmp($range, 'all') == 0 || strcasecmp($range, 'revisions') == 0) {  // return all items matching request
-            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
-            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
+        if (strcasecmp($range, 'all') == 0) {  // return all items matching request
+//            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
+            $limitsql = empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
+            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions);
+        } elseif (strcasecmp($range, 'revisions') == 0) {  // return all items matching request
+//            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
+            $limitsql = empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
+            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql);
         } elseif (strcasecmp($range, 'first') == 0) {  // return the first item matching request
-            $sql .= ' LIMIT 0,1';
-            $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
+//            $sql .= ' LIMIT 0,1';
+            $limitsql = ' LIMIT 0,1';
+            $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'bytitle') == 0) {  // return items requested by title/sef_url (will there be more than one?)
-            $records = $db->selectExpObjects($this->tablename, "title='" . $where . "' OR sef_url='" . $where . "'", $this->classname, $get_assoc, $get_attached, $except, $cascade_except);
+            $limitsql = ' LIMIT 0,1';
+            $records = $db->selectExpObjects($this->tablename, "title='" . $where . "' OR sef_url='" . $where . "'", $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'count') == 0) {  // return count of items
-            return $db->countObjects($this->tablename, $sql);
+            return $db->countObjects($this->tablename, $sql, $this->supports_revisions);
         } elseif (strcasecmp($range, 'in') == 0) {  // return items requested by array of id#
             if (!is_array($where)) return array();
-            foreach ($where as $id) $records[] = new $this->classname($id);
+            foreach ($where as $id)
+                $records[] = new $this->classname($id);
             return $records;
         } elseif (strcasecmp($range, 'bytag') == 0) {  // return items tagged with request (id or title/sef_url)
             if (!is_int($where))  $where = $db->selectObject(DB_TABLE_PREFIX . '_expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
@@ -262,6 +270,10 @@ class expRecord {
      * @param array $params
      */
     public function update($params = array()) {
+        if (is_array($params) && isset($params['current_revision_id'])) {
+            $params['revision_id'] = $params['current_revision_id'];
+            unset($params['current_revision_id']);
+        }
         $this->checkForAttachableItems($params);
         $this->build($params);
         if (is_array($params)) {
@@ -359,6 +371,8 @@ class expRecord {
                 $this->$col = stripslashes($this->$col);
             }
             //}
+            if ($this->supports_revisions && $col == 'revision_id' && $this->$col == null)
+                $this->$col = 1;  // first revision is #1
         }
     }
 
@@ -409,8 +423,9 @@ class expRecord {
      * save item
      *
      * @param bool $validate
+     * @param bool $force_no_revisions
      */
-    public function save($validate = false) {
+    public function save($validate = false, $force_no_revisions = false) {
         global $db;
 
         // call the validation callback functions if we need to.
@@ -435,7 +450,8 @@ class expRecord {
 
         $identifier = $this->identifier;
         if (!empty($saveObj->$identifier)) {
-            $db->updateObject($saveObj, $this->tablename, null, $identifier, $this->supports_revisions);
+            $revise = $force_no_revisions ? false : $this->supports_revisions;
+            $db->updateObject($saveObj, $this->tablename, null, $identifier, $revise);
             $this->afterUpdate();
         } else {
             $this->$identifier = $db->insertObject($saveObj, $this->tablename);
@@ -1078,8 +1094,6 @@ class expRecord {
     public function getPoster() {
         if (isset($this->poster)) {
             $user = new user($this->poster);
-//            return $user->firstname . " " . $user->lastname;
-        //TODO: should incorporate DISPLAY_ATTRIBUTION here
             return user::getUserAttribution($user->id);
         } else {
             return null;
@@ -1096,8 +1110,6 @@ class expRecord {
     public function getTimestamp($type = 0) {
         if ($type == 0) $getType = 'created_at';
         else $getType = 'edited_at';
-//        if (isset($this->$getType)) return date("F j, Y, g:i a", $this->$getType);
-        //TODO: should incorporate DISPLAY_DATETIME_FORMAT here
         if (isset($this->$getType)) return expDateTime::format_date($this->$getType, DISPLAY_DATETIME_FORMAT);
         else return null;
     }

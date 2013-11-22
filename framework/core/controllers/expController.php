@@ -539,7 +539,19 @@ abstract class expController {
         expHistory::set('editable', $this->params);
         $taglist = expTag::getAllTags();
         $modelname = $this->basemodel_name;
-        $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
+//        $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
+        if (isset($this->params['id'])) {
+            if (!isset($this->params['revision_id'])) {
+                $record = $this->$modelname->find($this->params['id']);
+            } else {
+                $currentrecord = $this->$modelname->find($this->params['id']);
+                $records = $this->$modelname->find('revisions', $this->$modelname->identifier . '=' . intval($this->params['id']) . ' AND revision_id=' . intval($this->params['revision_id']));
+                $record = $records[0];
+                $record->current_revision_id = $currentrecord->revision_id;
+            }
+        } else {
+            $record = new $modelname($this->params);
+        }
         if (!empty($this->params['copy'])) {
             $record->id = null;
             if (isset($record->sef_url)) $record->sef_url = null;
@@ -716,7 +728,7 @@ abstract class expController {
             $modelname = $this->params['model'];
             $obj = new $modelname($id);
             $obj->rank = $rank;
-            $obj->save();
+            $obj->save(false, true);
             $rank += 1;
         }
 

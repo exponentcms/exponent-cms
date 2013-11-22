@@ -28,6 +28,8 @@ class text extends expRecord {
         'content_expFiles'=>'expFile'
     );
 
+    public $supports_revisions = true;
+
 #	public $validates = array(
 #		'presence_of'=>array(
 #			'body'=>array('message'=>'Body is a required field.'),

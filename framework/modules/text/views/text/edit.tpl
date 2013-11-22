@@ -22,6 +22,10 @@
 
     {form action=update}
         {control type=hidden name=id value=$record->id}
+        {control type=hidden name=revision_id value=$record->revision_id}
+        {if !empty($record->current_revision_id)}
+        {control type=hidden name=current_revision_id value=$record->current_revision_id}
+        {/if}
         {control type=hidden name=rank value=$record->rank}
         {control type=text name=title label="Title"|gettext value=$record->title|escape:"html"}
         {control type=html name=body label="Text Block"|gettext value=$record->body}
@@ -29,5 +33,26 @@
             {control type="files" name="files" label="Files"|gettext value=$record->expFile}
         {/if}
         {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
-    {/form}   
+    {/form}
+    {selectobjects table=$record->tablename where="id=`$record->id`" orderby='revision_id DESC' item=revisions}
+    {if count($revisions) > 1}
+        {toggle unique='text-edit' label='Revisons'|gettext collapsed=true}
+            {foreach from=$revisions item=revision name=revision}
+                {$class = ''}
+                {if $revision->revision_id == $record->revision_id}{$class = 'current-revision revision'}{else}{$class = 'revision'}{/if}
+                {$label = 'Revision'|gettext|cat:(' #'|cat:($revision->revision_id|cat:(' '|cat:('from'|gettext|cat:(' '|cat:($revision->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT))))))}
+                {if $revision->revision_id == $record->revision_id}{$label = 'Editing'|gettext|cat:(' '|cat:$label)}{/if}
+                {$label = $label|cat:(' - '|cat:$revision->title)}
+                {group label=$label class=$class}
+                    {if $revision->revision_id != $record->revision_id}
+                    <a class="revision" href="{link action=edit id=$revision->id revision_id=$revision->revision_id}" title="{'Restore this version'|gettext}">
+                    {/if}
+                        {$revision->body|summarize:"html":"parahtml"}
+                    {if $revision->revision_id != $record->revision_id}
+                    </a>
+                    {/if}
+                {/group}
+            {/foreach}
+        {/toggle}
+    {/if}
 </div>

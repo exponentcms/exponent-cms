@@ -25,21 +25,21 @@
 class expModules {
 
     /**
-     * Initializes list of system and custom (theme) controllers and models
+     * Initializes list of system and custom (theme) controllers
      *
      * @return array
      */
     public static function initializeControllers() {
 	    $controllers = array();
-	    self::loadModulesDir(BASE.'themes/'.DISPLAY_THEME.'/modules', $controllers);
-	    self::loadModulesDir(BASE.'framework/modules', $controllers);
+	    self::loadModules(BASE.'themes/'.DISPLAY_THEME.'/modules', $controllers);
+	    self::loadModules(BASE.'framework/modules', $controllers);
 	    return $controllers;
 	}
 
 	/**
-     * Recursive function used to (auto?)load 2.0 modules controllers & models
+     * Recursive function used to load 2.0 modules controllers
      */
-	public static function loadModulesDir($dir, &$controllers) {
+	public static function loadModules($dir, &$controllers) {
 //		global $db;
 	    if (is_readable($dir)) {
 	        $dh = opendir($dir);
@@ -69,23 +69,86 @@ class expModules {
 	                    }
 	                }
 	                // load models
-	                $dirpath = $dir.'/'.$file.'/models';
-	                if (file_exists($dirpath)) {
-	                    $controller_dir = opendir($dirpath);
-	                    while (($ctl_file = readdir($controller_dir)) !== false) {
-	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
-	                            include_once($dirpath.'/'.$ctl_file);
-	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
-	//                            $module->module = substr($ctl_file,0,-4);
-	//                            $module->path = $dirpath.'/'.$ctl_file;
-	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
-	                        }
-	                    }
-	                }
+//	                $dirpath = $dir.'/'.$file.'/models';
+//	                if (file_exists($dirpath)) {
+//	                    $controller_dir = opendir($dirpath);
+//	                    while (($ctl_file = readdir($controller_dir)) !== false) {
+//	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
+//	                            include_once($dirpath.'/'.$ctl_file);
+//	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
+//	//                            $module->module = substr($ctl_file,0,-4);
+//	//                            $module->path = $dirpath.'/'.$ctl_file;
+//	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
+//	                        }
+//	                    }
+//	                }
 	            }
 	        }
 	    }
 	}
+
+    /**
+     * Initializes list of system and custom (theme) models
+     *
+     * @return array
+     */
+    public static function initializeModels() {
+        $models = array();
+	    self::loadModels(BASE.'themes/'.DISPLAY_THEME.'/modules', $models);
+	    self::loadModels(BASE.'framework/modules', $models);
+	    return $models;
+	}
+
+    /**
+        * Recursive function used to load 2.0 models
+        */
+   	public static function loadModels($dir, &$models) {
+   //		global $db;
+   	    if (is_readable($dir)) {
+   	        $dh = opendir($dir);
+   	        while (($file = readdir($dh)) !== false) {
+   	            if (is_dir($dir.'/'.$file) && ($file != '..' && $file != '.')) {
+//   	                // load controllers
+//   	                $dirpath = $dir.'/'.$file.'/controllers';
+//   	                if (file_exists($dirpath)) {
+//   	                    $model_dir = opendir($dirpath);
+//   	                    while (($ctl_file = readdir($model_dir)) !== false) {
+//   	                        if (empty($controllers[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
+//   	                            include_once($dirpath.'/'.$ctl_file);
+//   	                            $controllers[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
+//   	//	                          $module->module = substr($ctl_file,0,-4);
+//   //                                $controller = new $module->module();
+//   //                       	      if (!empty($controller->useractions)) $controllers[] = $module->user_runnable = 1;
+//   	//	                          $module->active = 1;
+//   	//	                          $module->controller = 1;
+//   //                                $module->class = $module->module;  //FIXME, not needed?
+//   //                                $module->name = $controller->name();
+//   //                                $module->author = $controller->author();
+//   //                                $module->description = $controller->description();
+//   //                                $module->codequality = isset($controller->codequality) ? $controller->codequality : 'alpha';
+//   	//	                          $module->path = $dirpath.'/'.$ctl_file;
+//   	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
+//   	                        }
+//   	                    }
+//   	                }
+   	                // load models
+   	                $dirpath = $dir.'/'.$file.'/models';
+   	                if (file_exists($dirpath)) {
+   	                    $model_dir = opendir($dirpath);
+   	                    while (($ctl_file = readdir($model_dir)) !== false) {
+   	                        if (empty($models[substr($ctl_file,0,-4)]) && substr($ctl_file,-4,4) == ".php") {
+   	                            include_once($dirpath.'/'.$ctl_file);
+                                $models[substr($ctl_file,0,-4)] = $dirpath.'/'.$ctl_file;
+   	//                            $module->module = substr($ctl_file,0,-4);
+   	//                            $module->path = $dirpath.'/'.$ctl_file;
+   	//	                          if (($db->selectObject('modstate','module = "'.substr($ctl_file,0,-4).'"')) == null) $db->insertObject($module,'modstate');
+   	                        }
+   	                    }
+   	                }
+   	            }
+   	        }
+   	    }
+   	}
 
     /**
      * Returns list of active controllers
@@ -300,6 +363,33 @@ class expModules {
 //        return $controllerclassname::displayname();
    	}
 
+    /**
+   	 * Looks through the database returns a list of all module class
+   	 * names that exist in the system and have been turned on by
+   	 * the administrator.  Inactive modules will not be included.
+   	 * Returns the list of active module class names.
+        *
+   	 * @node Subsystems:Modules
+   	 * @return array
+   	 */
+   	public static function getActiveControllersList() {
+   		global $db;
+
+        $modulestates = $db->selectObjects("modstate","active='1'");
+   	    $ctls = array();  // 2.0 modules
+   	    foreach($modulestates as $state) {
+   	        if (self::controllerExists($state->module)) {
+   //	            $controller = new $state->module();
+                   $controller = self::getController($state->module);
+   	            if (!empty($controller->useractions)) {
+   		            $ctls[] = $state->module;
+   	            }
+   	        }
+   	    }
+
+        return $ctls;
+    }
+
 	/**
 	 * Looks through the database returns a list of all module class
 	 * names that exist in the system and have been turned on by
@@ -314,10 +404,10 @@ class expModules {
 
         $modulestates = $db->selectObjects("modstate","active='1'");
 
-        $mods = array();  // 1.0 modules
-        foreach ($modulestates as $state) {
-            if (class_exists($state->module)) $mods[] = $state->module;
-        }
+//        $mods = array();  // 1.0 modules
+//        foreach ($modulestates as $state) {
+//            if (class_exists($state->module)) $mods[] = $state->module;
+//        }
 
 	    $ctls = array();  // 2.0 modules
 	    foreach($modulestates as $state) {
@@ -330,52 +420,53 @@ class expModules {
 	        }
 	    }
 
-	    return array_merge($ctls, $mods);
+//	    return array_merge($ctls, $mods);
+        return $ctls;
 	}
 
-    /**
-     * Returns list of old school modules
-     *
-     * @return array
-     */
-    public static function modules_list() {
-    	$mods = array();
-//    	if (is_readable(BASE."framework/modules-1")) {
-//    		$dh = opendir(BASE."framework/modules-1");
-//    		while (($file = readdir($dh)) !== false) {
-//    			if (substr($file,-6,6) == "module") $mods[] = $file;
-//    		}
-//    	}
-    	return $mods;
-    }
+//    /**
+//     * Returns list of old school modules
+//     *
+//     * @return array
+//     */
+//    public static function modules_list() {
+//    	$mods = array();
+////    	if (is_readable(BASE."framework/modules-1")) {
+////    		$dh = opendir(BASE."framework/modules-1");
+////    		while (($file = readdir($dh)) !== false) {
+////    			if (substr($file,-6,6) == "module") $mods[] = $file;
+////    		}
+////    	}
+//    	return $mods;
+//    }
 
-    /**
-     * Returns list of active old school modules
-     *
-     * @return mixed
-     */
-    public static function listActiveOSMods() {
-		global $db;
-
-		$osmods = self::modules_list();
-
-		foreach ($osmods as $module) {
-			if (class_exists($module)) {
-				 $mod = new $module();
-				 $modstate = $db->selectObject("modstate","module='$module'");
-
-				 if (!method_exists($mod,"dontShowInModManager")) {
-				     $moduleInfo[$module] = new stdClass();
-				     $moduleInfo[$module]->class = $module;
-				     $moduleInfo[$module]->name = $mod->name();
-				     $moduleInfo[$module]->author = $mod->author();
-				     $moduleInfo[$module]->description = $mod->description();
-				     $moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
-				 }
-			}
-		}
-		return $moduleInfo;
-	}
+//    /**
+//     * Returns list of active old school modules
+//     *
+//     * @return mixed
+//     */
+//    public static function listActiveOSMods() {
+//		global $db;
+//
+//		$osmods = self::modules_list();
+//
+//		foreach ($osmods as $module) {
+//			if (class_exists($module)) {
+//				 $mod = new $module();
+//				 $modstate = $db->selectObject("modstate","module='$module'");
+//
+//				 if (!method_exists($mod,"dontShowInModManager")) {
+//				     $moduleInfo[$module] = new stdClass();
+//				     $moduleInfo[$module]->class = $module;
+//				     $moduleInfo[$module]->name = $mod->name();
+//				     $moduleInfo[$module]->author = $mod->author();
+//				     $moduleInfo[$module]->description = $mod->description();
+//				     $moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
+//				 }
+//			}
+//		}
+//		return $moduleInfo;
+//	}
 
 }
 
