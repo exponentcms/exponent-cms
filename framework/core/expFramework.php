@@ -352,7 +352,7 @@ function renderAction(array $parms=array()) {
             if (!empty($secref)) {
                 $page = $section->find('first','id='.$secref->section);
                 $module = $container->find('first',"internal='" . serialize($loc) . "'");
-                if (empty($page->public) || !empty($module->is_private)) {
+                if ($page !== null && $module !== null && (empty($page->public) || !empty($module->is_private))) {
                     if (!expPermissions::check('view',expCore::makeLocation('navigation', $page->id))) {
                         if (expTheme::inAction()) {
                             flash('error', gt("You don't have permission to view that item"));
