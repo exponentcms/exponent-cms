@@ -1,6 +1,6 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 CKEditor,4.2.3,ckeditor.com,4.2.3/4.3,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
-Swift,5.0.1,swiftmailer.org,5.0.1,we add  eDebugLogger plugin
+Swift,5.0.1,swiftmailer.org,5.0.2,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 swfobject,2.2,code.google.com/p/swfobject,2.2,
@@ -23,7 +23,7 @@ lessphp,0.4.0,leafo.net/lessphp,0.4.0,
 jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
 jQueryUI,1.10.3,jqueryui.com,1.10.3,
 Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.0.2,"patched bootstrap.less for & includes swatches, fontawesome"
-Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.2+1,
+Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.2+2,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.3,updated FontAwesomePath in variables.less
 Adminer,3.7.1,www.adminer.org,3.7.1,
 html5shiv,v3.7.0,https://github.com/aFarkas/html5shiv,v3.7.0,
