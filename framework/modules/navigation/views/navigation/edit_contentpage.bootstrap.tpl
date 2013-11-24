@@ -60,8 +60,8 @@
                     {control type=text name=page_title label="Page Title"|gettext value=$section->page_title description='Override the page/menu name for search engine entries'|gettext}
                     {control type=textarea name=keywords label="Keywords"|gettext value=$section->keywords description='Comma separated phrases - overrides site keywords'|gettext}
                     {control type=textarea name=description label="Page Description"|gettext value=$section->description description='Page description for search engine entries'|gettext}
-                    {control type="checkbox" name="noindex" label="Do Not Index"|gettext|cat:"?" checked=$section->noindex|default:1 value=1 description='Should this page be indexed by search engines?'|gettext}
-                    {control type="checkbox" name="nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->nofollow|default:1 value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
+                    {control type="checkbox" name="noindex" label="Do Not Index"|gettext|cat:"?" checked=$section->noindex value=1 description='Should this page be indexed by search engines?'|gettext}
+                    {control type="checkbox" name="nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->nofollow value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
                 </div>
             </div>
         </div>

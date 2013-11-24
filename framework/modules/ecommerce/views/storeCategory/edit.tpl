@@ -53,8 +53,8 @@
                         {control type=text name=meta_title label="Meta Title"|gettext value=$node->meta_title description='Override the item title for search engine entries'|gettext}
                         {control type=text name=meta_description label="Meta Description"|gettext value=$node->meta_description description='Override the item summary for search engine entries'|gettext}
                         {control type=text name=meta_keywords label="Meta Keywords"|gettext value=$node->meta_keywords description='Comma separated phrases - overrides site keywords and item tags'|gettext}
-                        {control type="checkbox" name="meta_noindex" label="Do Not Index"|gettext|cat:"?" checked=$section->meta_noindex|default:1 value=1 description='Should this page be indexed by search engines?'|gettext}
-                        {control type="checkbox" name="meta_nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->meta_nofollow|default:1 value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
+                        {control type="checkbox" name="meta_noindex" label="Do Not Index"|gettext|cat:"?" checked=$section->meta_noindex value=1 description='Should this page be indexed by search engines?'|gettext}
+                        {control type="checkbox" name="meta_nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->meta_nofollow value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
                     </div>
                      {*<div id="events1">*}
                         {*{control type="checkbox" name="is_events" label="This category is used for events"|gettext value=1 checked=$node->is_events}*}
