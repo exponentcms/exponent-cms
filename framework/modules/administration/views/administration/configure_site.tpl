@@ -213,6 +213,7 @@
                     {control type="checkbox" postfalse=1 name="sc[ENABLE_SSL]" label="Enable SSL (https://) Support?"|gettext checked=$smarty.const.ENABLE_SSL value=1}
                     {*{control type="text" name="sc[NONSSL_URL]" label="Non-SSL URL Base"|gettext value=$smarty.const.NONSSL_URL}*}
                     {*{control type="text" name="sc[SSL_URL]" label="SSL URL Base"|gettext value=$smarty.const.SSL_URL}*}
+                    {control type="checkbox" postfalse=1 name="sc[DISABLE_PRIVACY]" label="Disable Privacy Check?"|gettext checked=$smarty.const.DISABLE_PRIVACY value=1 description='Exponent protects private page and module content; but this can prevent display of content in some scenarios'|gettext}
                 </div>
                 <div id="tab10">
 	                <div class="info-header">
