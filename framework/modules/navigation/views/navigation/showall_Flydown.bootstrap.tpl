@@ -23,3 +23,16 @@
         {bootstrap_navbar menu=$hierarchy}
     </ul>
 </div>
+
+{script unique="navbar-fix" jquery=1}
+{literal}
+$('.dropdown-toggle').click(function(e) {
+  e.preventDefault();
+  setTimeout($.proxy(function() {
+    if ('ontouchstart' in document.documentElement) {
+      $(this).siblings('.dropdown-backdrop').off().remove();
+    }
+  }, this), 0);
+});
+{/literal}
+{/script}

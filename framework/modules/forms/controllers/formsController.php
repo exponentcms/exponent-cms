@@ -90,18 +90,18 @@ class formsController extends expController {
             } else {
                 $where = $this->config['report_filter'];
             }
-            $items = $db->selectArrays('forms_' . $f->table_name, $where);
-            $columns = array();
             $fc = new forms_control();
             if (empty($this->config['column_names_list'])) {
                 //define some default columns...
                 $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
-                foreach (array_slice($controls, 0, 5) as $control) {
+                foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
                     $this->config['column_names_list'][] = $control->name;
                 }
             }
 
             // pre-process records
+            $items = $db->selectArrays('forms_' . $f->table_name, $where);
+            $columns = array();
             foreach ($this->config['column_names_list'] as $column_name) {
                 if ($column_name == "ip") {
                     $columns[gt('IP Address')] = 'ip';
@@ -1157,6 +1157,7 @@ class formsController extends expController {
             $items = $db->selectObjects("forms_" . $f->table_name);
 
             $fc = new forms_control();
+            //FIXME should we defaul to only 5 columns or all columns?
             if ($f->column_names_list == '') {
                 //define some default columns...
                 $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");

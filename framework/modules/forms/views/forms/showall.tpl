@@ -40,7 +40,7 @@
         {/permissions}
         {$page->links}
         <div style="overflow: auto; overflow-y: hidden;">
-            <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                 <thead>
                     <tr>
                         {$page->header_columns}
@@ -52,10 +52,12 @@
                 <tbody>
                     {foreach from=$page->records item=fields key=ukey name=fields}
                         <tr class="{cycle values="even,odd"}">
-                            {foreach from=$page->columns item=column name=column}
+                            {foreach from=$page->columns item=column key=field name=column}
                                 <td>
                                     {if $smarty.foreach.column.iteration == 1}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>{$fields.$column}</a>
+                                    {elseif $column == 'email'}
+                                        <a href="mailto:{$fields.$column}">{$fields.$column}</a>
                                     {else}
                                         {$fields.$column}
                                     {/if}
@@ -81,3 +83,11 @@
         {*<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>*}
     </div>
 {/if}
+
+{script unique="form-showall" jquery='jquery.dataTables'}
+{literal}
+    $(document).ready(function() {
+        $('#forms-showall').dataTable();
+    } );
+{/literal}
+{/script}
