@@ -286,7 +286,7 @@
         //makes the recycle bin link clickable
         EXPONENT.enableRecycleBin = function() {
             recyclebin.on('click',EXPONENT.recyclebin);
-            if ({/literal}{$user->isAdmin()}{literal} && modpicker.get("value")!='container') {
+            if ({/literal}{$user->is_acting_admin}{literal} && modpicker.get("value")!='container') {
                 recyclebinwrap.removeClass('disabled');
             } else {
                 recyclebin.detach('click');
