@@ -241,7 +241,7 @@ $order = null;
  * @return bool|mixed|string
  */
 function renderAction(array $parms=array()) {
-    global $user, $db;
+    global $user, $db, $sectionObj;
 
     //Get some info about the controller
 //    $baseControllerName = expModules::getControllerName($parms['controller']);
@@ -349,7 +349,7 @@ function renderAction(array $parms=array()) {
             $sectionref = new sectionref();
             $container = new container();
             $secref = $sectionref->find('first',"module='".$parms['controller']."' AND source='" . $loc->src . "'");
-            if (!empty($secref)) {
+            if (!empty($secref) && $sectionObj->id == $secref->section) {
                 $page = $section->find('first','id='.$secref->section);
                 $module = $container->find('first',"internal='" . serialize($loc) . "'");
                 if ($page !== null && $module !== null && (empty($page->public) || !empty($module->is_private))) {
