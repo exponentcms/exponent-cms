@@ -330,7 +330,7 @@ function renderAction(array $parms=array()) {
         }
     }
 
-    if (defined('DISABLE_PRIVACY') && !DISABLE_PRIVACY) {
+    if (!DISABLE_PRIVACY) {
     // check to see if it's on a private page and we shouldn't see it
         if ($perm_action == 'showall' || $perm_action == 'show' || $perm_action == 'downloadfile' || $common_action == 'showall' || $common_action == 'show' || $common_action == 'downloadfile') {
             if (!empty($parms['src'])) {
