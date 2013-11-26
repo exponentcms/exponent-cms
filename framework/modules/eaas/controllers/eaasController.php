@@ -442,7 +442,6 @@ class eaasController extends expController {
         $sql .= '(';
         $sql .= "location_data ='".serialize($this->loc)."'";
 
-        
         if (!empty($this->config[$type.'_aggregate'])) {
             foreach ($this->config[$type.'_aggregate'] as $src) {
                 $loc = expCore::makeLocation($type, $src);

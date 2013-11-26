@@ -552,17 +552,17 @@ class expTheme {
 				// aren't being made correctly...depending on how the {link} plugin was used in the view.
 				$_REQUEST['controller'] = $module;
 
-                if (!isset($_REQUEST['action'])) $_REQUEST['action'] = 'showall';
-                if (isset($_REQUEST['view']) && $_REQUEST['view'] != $_REQUEST['action']) {
-                    $test = explode('_',$_REQUEST['view']);
-                    if ($test[0] != $_REQUEST['action']) {
-                        $_REQUEST['view'] = $_REQUEST['action'].'_'.$_REQUEST['view'];
-                    }
-                } elseif (!empty($_REQUEST['action'])) {
-                    $_REQUEST['view'] = $_REQUEST['action'];
-                } else {
-                    $_REQUEST['view'] = 'showall';
-                }
+//                if (!isset($_REQUEST['action'])) $_REQUEST['action'] = 'showall';
+//                if (isset($_REQUEST['view']) && $_REQUEST['view'] != $_REQUEST['action']) {
+//                    $test = explode('_',$_REQUEST['view']);
+//                    if ($test[0] != $_REQUEST['action']) {
+//                        $_REQUEST['view'] = $_REQUEST['action'].'_'.$_REQUEST['view'];
+//                    }
+//                } elseif (!empty($_REQUEST['action'])) {
+//                    $_REQUEST['view'] = $_REQUEST['action'];
+//                } else {
+//                    $_REQUEST['view'] = 'showall';
+//                }
 
 				echo renderAction($_REQUEST);
 //			} else {

@@ -127,22 +127,24 @@ class expTagController extends expController {
    	 * manage tags
    	 */
    	function manage_module() {
-//        global $db;
-
         expHistory::set('manageable', $this->params);
         $modulename = expModules::getControllerClassName($this->params['model']);
         $module = new $modulename($this->params['src']);
         $where = $module->aggregateWhereClause();
+        if ($this->params['model'] == 'sermonseries') {
+            $model = 'sermons';
+        } else {
+            $model = $this->params['model'];
+        }
         $page = new expPaginator(array(
-            'model'=>$this->params['model'],
-//            'where'=>"location_data='".serialize(expCore::makeLocation($this->params['model'],$this->loc->src,''))."'",
+            'model'=>$model,
             'where'=>$where,
-            //                        'order'=>'module,rank',
+//            'order'=>'module,rank',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['model'],
-            //                        'action'=>$this->params['action'],
-            //                        'src'=>$this->hasSources() == true ? $this->loc->src : null,
-            //                        'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
+//            'action'=>$this->params['action'],
+//            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//            'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
         ));
         if ($this->params['model'] == 'faq') {
             foreach ($page->records as $record) {
