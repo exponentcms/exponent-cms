@@ -197,6 +197,7 @@ class expTagController extends expController {
 //        global $db;
 
         if (!empty($this->params['change_tag'])) {
+            // build array of tags to add
             $addtags = explode(",", trim($this->params['addTag']));
    	        foreach($addtags as $key=>$tag) {
                if (!empty($tag)) {
@@ -205,9 +206,10 @@ class expTagController extends expController {
                    $tag = str_replace("'", "", $tag); // strip single quotes
                    $addtags[$key] = $tag;
                    $expTag = new expTag($tag);
-                   if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
+                   if (empty($expTag->id)) $expTag->update(array('title'=>$tag));  // create the new tag
                }
    	        }
+            // build array of tags to remove
             $removetags = explode(",", trim($this->params['removeTag']));
    	        foreach($removetags as $key=>$tag) {
                if (!empty($tag)) {
@@ -218,18 +220,20 @@ class expTagController extends expController {
                }
    	        }
             foreach ($this->params['change_tag'] as $item) {
+                $params['expTag'] = array();
                 $classname = $this->params['mod'];
                 $object = new $classname($item);
-//                $db->delete('content_expTags', 'content_type="'.$this->params['mod'].'" AND content_id='.$object->id);
-                expTag::deleteTag($this->params['mod'],$object->id);
-                foreach ($object->expTag as $tag) {
-                    if (!in_array($tag->title,$removetags)) {
-                        $params['expTag'][] = $tag->id;
+                expTag::deleteTag($this->params['mod'], $object->id);
+                $tags = $object->expTag;
+                $object->expTag = array();
+                foreach ($tags as $tag) {
+                    if (!in_array($tag->title, $removetags)) {
+                        $params['expTag'][] = $tag->id;  // add back any tags not being removed
                     }
                 }
                 foreach ($addtags as $tag) {
                     $expTag = new expTag($tag);
-                    $params['expTag'][] = $expTag->id;
+                    $params['expTag'][] = $expTag->id;  // add new tags
                 }
                 $object->update($params);
             }
