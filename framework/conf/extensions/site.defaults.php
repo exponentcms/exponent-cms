@@ -38,7 +38,7 @@ if (!defined('SESSION_TIMEOUT_HTML')) define('SESSION_TIMEOUT_HTML',exponent_unh
 if (!defined('ENABLE_SSL')) define('ENABLE_SSL','0');
 if (!defined('DISABLE_SSL_WARNING')) define('DISABLE_SSL_WARNING','0');
 
-if (!defined('DISABLE_PRIVACY')) define('DISABLE_PRIVACY','0');
+if (!defined('DISABLE_PRIVACY')) define('DISABLE_PRIVACY','1');
 
 if (!defined('FILE_DEFAULT_MODE_STR')) define('FILE_DEFAULT_MODE_STR','0666');
 if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');
