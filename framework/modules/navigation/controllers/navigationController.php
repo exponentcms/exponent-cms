@@ -1070,6 +1070,45 @@ class navigationController extends expController {
         return false;
     }
 
+    /**
+     * Rebuild the sectionref table as a list of modules on a page
+     */
+    public static function rebuild_sectionrefs() {
+
+        function scan_container($container_id, $page_id) {
+            global $db;
+
+            $containers = $db->selectObjects('container',"external='" . $container_id . "'");
+            $ret = '';
+            foreach ($containers as $container) {
+                $iLoc = expUnserialize($container->internal);
+                $newret = recyclebin::restoreFromRecycleBin($iLoc, $page_id);
+                if (!empty($newret)) $ret .= $newret . '<br>';
+                if ($iLoc->mod == 'container') {
+                    $ret .= scan_container($container->internal, $page_id);
+                }
+            }
+            return $ret;
+        }
+
+        function scan_page($parent_id) {
+            global $db;
+
+            $sections = $db->selectObjects('section','parent=' . $parent_id);
+            $ret = '';
+            foreach ($sections as $page) {
+                $cLoc = serialize(expCore::makeLocation('container','@section' . $page->id));
+                $ret .= scan_container($cLoc, $page->id);
+                $ret .= scan_page($page->id);
+            }
+            return $ret;
+        }
+
+        $ret = scan_page(0);  // the page hierarchy
+        $ret .= scan_page(-1);  // now the stand alone pages
+        return $ret;
+    }
+
 }
 
 ?>
