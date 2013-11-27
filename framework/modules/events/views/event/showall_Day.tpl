@@ -66,21 +66,27 @@
 {script unique=$name|cat:'-popup' yui3mods=1}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
-	'gallery-calendar': {
-		fullpath: '{/literal}{$asset_path}js/calendar.js{literal}',
+    'gallery-calendar': {
+        fullpath: '{/literal}{$asset_path}js/calendar.js{literal}',
         requires: ['node','calendar-css']
     },
     'calendar-css': {
         fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/default.css',
         type: 'css'
-	}
+    }
 }
-
-YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',function(Y){
+YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegate',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
     var monthcal = Y.one('#day-{/literal}{$name}{literal}');
+    var cfg = {
+                method: "POST",
+                headers: { 'X-Transaction': 'Load Day'},
+                arguments : { 'X-Transaction': 'Load Day'}
+            };
+    src = '{/literal}{$__loc->src}{literal}';
+    var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=day&ajax_action=1&src="+src;
 
-	// Popup
+	// Popup calendar
 	var cal = new Y.Calendar('J_popup_closeable{/literal}{$__loc->src|replace:'@':'_'}{literal}',{
 		popup:true,
 		closeable:true,
@@ -90,33 +96,28 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',fu
 //        useShim:true
 	}).on('select',function(d){
 		var unixtime = parseInt(d / 1000);
-        cfg.data = "time="+unixtime;
-        var request = Y.io(sUrl, cfg);
-        monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+        {/literal}
+        {if $config.ajax_paging}
+            {literal}
+                cfg.data = "time="+unixtime;
+                var request = Y.io(sUrl, cfg);
+                monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+            {/literal}
+        {else}
+            {if ($smarty.const.SEF_URLS == 1)} {literal}
+                window.location=eXp.PATH_RELATIVE+'event/showall/time/view/showall_Day/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
+            {/literal} {else} {literal}
+                window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&view=showall_Day&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
+            {/literal} {/if}
+        {/if}
+        {literal}
 	});
     Y.one('#J_popup_closeable{/literal}{$__loc->src|replace:'@':'_'}{literal}').on('click',function(d){
         cal.show();
     });
-});
-{/literal}
-{/script}
-
-{if $config.ajax_paging}
-{script unique=$name|cat:'-ajax' yui3mods=1}
-{literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate',function(Y){
-    var monthcal = Y.one('#day-{/literal}{$name}{literal}');
-    var cfg = {
-                method: "POST",
-                headers: { 'X-Transaction': 'Load Minical'},
-                arguments : { 'X-Transaction': 'Load Minical'}
-            };
-    src = '{/literal}{$__loc->src}{literal}';
-    var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=day&ajax_action=1&src="+src;
 
     // ajax load new month
 	var handleSuccess = function(ioId, o){
-//		Y.log(o.responseText);
 		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
 
         if(o.responseText){
@@ -135,8 +136,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',fu
                 var url = n.get('href');
                 Y.Get.css(url);
             });
+            Y.one('#lb-bg').setStyle('display','none');
+//            monthcal.setStyle('opacity',1);
         } else {
-            Y.one('#day-{/literal}{$name}{literal}.loadingdiv').remove();
+            Y.one('#month-{/literal}{$name}{literal}.loadingdiv').remove();
+            monthcal.setContent('Unable to load content');
+            monthcal.setStyle('opacity',1);
         }
 	};
 
@@ -149,13 +154,21 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',fu
 	Y.on('io:success', handleSuccess);
 	Y.on('io:failure', handleFailure);
 
+{/literal}
+{if $config.ajax_paging}
+    {literal}
     monthcal.delegate('click', function(e){
         e.halt();
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+//        monthcal.setStyle('opacity',0.5);
+//        Y.one('#lb-bg').setStyle('display','block');
     }, 'a.nav');
+    {/literal}
+{/if}
+{literal}
+
 });
 {/literal}
 {/script}
-{/if}

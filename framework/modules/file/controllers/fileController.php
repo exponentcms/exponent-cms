@@ -488,7 +488,7 @@ class fileController extends expController {
             $file->poster = $user->id;
             $file->posted = $file->last_accessed = time();
             $file->save();
-            if (defined('QUICK_UPLOAD_FOLDER')) {
+            if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '') {
                 $quikFolder = QUICK_UPLOAD_FOLDER;
             } else {
                 $quikFolder = null;

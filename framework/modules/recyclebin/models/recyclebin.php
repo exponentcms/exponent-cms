@@ -18,11 +18,13 @@
 
 /**
  * @subpackage Models
- * @package Modules
+ * @package    Modules
  */
 
-class recyclebin extends expRecord {
+class recyclebin extends expRecord
+{
     public $table = 'sectionref';
+
     //public $validates = '';
 
     /**
@@ -32,7 +34,8 @@ class recyclebin extends expRecord {
      *
      * @return array
      */
-    public function moduleOrphans($module) {
+    public function moduleOrphans($module)
+    {
         global $db;
 
         // we only want a preview, not an admin view
@@ -40,25 +43,35 @@ class recyclebin extends expRecord {
         if (expSession::is_set('uilevel')) {
             $level = expSession::get('uilevel');
         }
-        expSession::set("uilevel",UILEVEL_PREVIEW);
+        expSession::set("uilevel", UILEVEL_PREVIEW);
 
         if (empty($module)) {
-            $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' ORDER BY module');
+            $orphans = $db->selectObjects($this->table, 'refcount = 0 AND source!=\'\' ORDER BY module');
         } else {
-            $orphans = $db->selectObjects($this->table,'refcount = 0 AND source!=\'\' AND module=\''.expModules::getModuleName($module).'\'');
+            $orphans = $db->selectObjects(
+                $this->table,
+                'refcount = 0 AND source!=\'\' AND module=\'' . expModules::getModuleName($module) . '\''
+            );
         }
-        $loc =null;
+        $loc = null;
 
         //foreach ($orphans as $orphan) {
         $numrecycled = count($orphans);
-        for($i=0; $i<$numrecycled; $i++) {
-            $loc = expCore::makeLocation($orphans[$i]->module,$orphans[$i]->source,$orphans[$i]->internal);
+        for ($i = 0; $i < $numrecycled; $i++) {
+            $loc = expCore::makeLocation($orphans[$i]->module, $orphans[$i]->source, $orphans[$i]->internal);
             $orphans[$i]->loc = serialize($loc);
             if ($orphans[$i]->module == 'recyclebin') {
                 unset($orphans[$i]);
             } else {
 //                if (expModules::controllerExists($orphans[$i]->module)) {
-                    $orphans[$i]->html = renderAction(array('controller'=>$orphans[$i]->module, 'action'=>'showall','src'=>$orphans[$i]->source,"no_output"=>true));
+                $orphans[$i]->html = renderAction(
+                    array(
+                        'controller' => $orphans[$i]->module,
+                        'action'     => 'showall',
+                        'src'        => $orphans[$i]->source,
+                        "no_output"  => true
+                    )
+                );
 //                } else {
 //                    echo($module).'...';
 //                    if (in_array($orphans[$i]->module,expModules::modules_list())) {
@@ -73,7 +86,7 @@ class recyclebin extends expRecord {
 //                }
             }
         }
-        expSession::set("uilevel",$level);
+        expSession::set("uilevel", $level);
 
         return $orphans;
     }
@@ -82,23 +95,31 @@ class recyclebin extends expRecord {
      * Decrement the reference count for a given sectionref location.  This is used by the Container and Navigation Modules,
      * and probably won't be needed by 95% of the code in Exponent.
      *
-     * @param object $loc The location object to decrement references for.
+     * @param object  $loc     The location object to decrement references for.
      * @param integer $section The id of the section that the location exists in.
      */
-    public static function sendToRecycleBin($loc,$section) {
+    public static function sendToRecycleBin($loc, $section)
+    {
         global $db;
 
         //FIXME we should only send module with sources or configs to the recycle bin NOT things like navigation or rss
         if ($loc->mod != 'container') {
 //            $oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-            $oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+            $oldSecRef = $db->selectObject(
+                "sectionref",
+                "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "'"
+            );
             $oldSecRef->refcount = 0;
             $oldSecRef->section = 0;
 //            $db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-            $db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+            $db->updateObject(
+                $oldSecRef,
+                "sectionref",
+                "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "'"
+            );
         } else {
             // send contained modules to recycle bin
-            $modules = $db->selectObjects('container',"external='".serialize($loc)."'");
+            $modules = $db->selectObjects('container', "external='" . serialize($loc) . "'");
             foreach ($modules as $module) {
                 $obj = new container($module->id);
                 $obj->delete();
@@ -118,30 +139,44 @@ class recyclebin extends expRecord {
      * Increment the reference count for a given sectionref location.  This is used by the Container Module,
      * and probably won't be needed by 95% of the code in Exponent.
      *
-     * @param object $loc The location object to increment references for.
+     * @param object  $loc     The location object to increment references for.
      * @param integer $section The id of the section that the location exists in.
      */
-    public static function restoreFromRecycleBin($loc,$section) {
+    public static function restoreFromRecycleBin($loc, $section)
+    {
         global $db;
 
 //        $newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-        $newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+        $newSecRef = $db->selectObject(
+            "sectionref",
+            "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "'"
+        );
+        $ret = '';
         if ($newSecRef != null) {
             // Pulled an existing source for this section.  Update refcount
-            $newSecRef->refcount = 1;        // we need to do this for pulling stuff from the recycle bin
-            $newSecRef->section = $section;  // we need to do this for pulling stuff from the recycle bin
-//            $db->updateObject($newSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
-            $db->updateObject($newSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."'");
+            if ($newSecRef->section != $section) {
+                $ret = 'Changed sectionref entry for ' . $loc->mod . ' - ' . $loc->src . ' from section ' . $newSecRef->section . ' to section ' . $section;
+            }
+            $newSecRef->refcount = 1; // we need to do this for pulling stuff from the recycle bin
+            $newSecRef->section = $section; // we need to do this for pulling stuff from the recycle bin
+            $db->updateObject(
+                $newSecRef,
+                "sectionref",
+                "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "'"
+            );
         } else {
             // New source for this section.  Populate reference
             $newSecRef = new stdClass();
-            $newSecRef->module   = $loc->mod;
-            $newSecRef->source   = $loc->src;
+            $newSecRef->module = $loc->mod;
+            $newSecRef->source = $loc->src;
             $newSecRef->internal = $loc->int;
             $newSecRef->section = $section;
             $newSecRef->refcount = 1;
-            $db->insertObject($newSecRef,"sectionref");
+            $db->insertObject($newSecRef, "sectionref");
+            $ret = 'New sectionref entry for ' . $loc->mod . ' - ' . $loc->src . ' on section ' . $section;
+
         }
+        return $ret;
     }
 
 }
