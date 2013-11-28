@@ -1074,6 +1074,7 @@ class navigationController extends expController {
      * Rebuild the sectionref table as a list of modules on a page
      */
     public static function rebuild_sectionrefs() {
+        global $db;
 
         function scan_container($container_id, $page_id) {
             global $db;
@@ -1104,6 +1105,7 @@ class navigationController extends expController {
             return $ret;
         }
 
+        $db->sql('DELETE FROM ' . DB_TABLE_PREFIX . '_sectionref WHERE id NOT IN (SELECT * FROM (SELECT MIN(n.id) FROM ' . DB_TABLE_PREFIX . '_sectionref n GROUP BY n.module, n.source) x)');
         $ret = scan_page(0);  // the page hierarchy
         $ret .= scan_page(-1);  // now the stand alone pages
         return $ret;
