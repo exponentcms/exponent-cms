@@ -1076,6 +1076,7 @@ class navigationController extends expController {
     public static function rebuild_sectionrefs() {
         global $db;
 
+        // recursive run though all the nested containers
         function scan_container($container_id, $page_id) {
             global $db;
 
@@ -1092,6 +1093,7 @@ class navigationController extends expController {
             return $ret;
         }
 
+        // recursive run through all the nested pages
         function scan_page($parent_id) {
             global $db;
 
@@ -1105,9 +1107,33 @@ class navigationController extends expController {
             return $ret;
         }
 
+        // first remove duplicate records
         $db->sql('DELETE FROM ' . DB_TABLE_PREFIX . '_sectionref WHERE id NOT IN (SELECT * FROM (SELECT MIN(n.id) FROM ' . DB_TABLE_PREFIX . '_sectionref n GROUP BY n.module, n.source) x)');
         $ret = scan_page(0);  // the page hierarchy
         $ret .= scan_page(-1);  // now the stand alone pages
+
+        // we need to get the non-main containers such as sidebars, footers, etc...
+        $hardcodedmods = $db->selectObjects('sectionref',"refcount=1000 AND source NOT LIKE '%@section%' AND source NOT LIKE '%@random%'");
+        foreach ($hardcodedmods as $hardcodedmod) {
+            if ($hardcodedmod->module == 'container') {
+                $page_id = intval(preg_replace('/\D/', '', $hardcodedmod->source));
+                if (empty($page_id)) {
+                    $page_id = SITE_DEFAULT_SECTION;  // we'll default to the home page
+                }
+                $ret .= scan_container(serialize(expCore::makeLocation($hardcodedmod->module, $hardcodedmod->source)), $page_id);
+            } else {
+                $hardcodedmod->section = 0;  // this is a hard-coded non-container module
+                $db->updateObject($hardcodedmod, 'sectionref');
+            }
+        }
+
+        // mark modules in the recycle bin as section 0
+        $db->columnUpdate('sectionref', 'section', 0, "refcount=0");
+//        $recycledmods = $db->selectObjects('sectionref',"refcount=0");
+//        foreach ($recycledmods as $recycledmod) {
+//            $recycledmod->section = 0;  // this is a module in the recycle bin
+//            $db->updateObject($recycledmod, 'sectionref');
+//        }
         return $ret;
     }
 
