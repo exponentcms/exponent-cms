@@ -104,14 +104,12 @@ class recyclebin extends expRecord
 
         //FIXME we should only send module with sources or configs to the recycle bin NOT things like navigation or rss
         if ($loc->mod != 'container') {
-//            $oldSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
             $oldSecRef = $db->selectObject(
                 "sectionref",
                 "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "'"
             );
-            $oldSecRef->refcount = 0;
             $oldSecRef->section = 0;
-//            $db->updateObject($oldSecRef,"sectionref","module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
+            $oldSecRef->refcount = 0;
             $db->updateObject(
                 $oldSecRef,
                 "sectionref",
@@ -128,9 +126,6 @@ class recyclebin extends expRecord
 //                // then remove the container table reference
 //                $db->delete('container', "internal='".$module->internal."'");
             }
-            // then remove the container table reference
-//            $db->delete('container', "internal='".serialize($loc)."'");
-//            $db->delete('sectionref', 'section=' . $section . ' AND source="' . $loc->src . '" and module="container"');
             $db->delete('sectionref', "source='" . $loc->src . "' and module='container'");
         }
     }
@@ -141,12 +136,13 @@ class recyclebin extends expRecord
      *
      * @param object  $loc     The location object to increment references for.
      * @param integer $section The id of the section that the location exists in.
+     *
+     * @return string
      */
     public static function restoreFromRecycleBin($loc, $section)
     {
         global $db;
 
-//        $newSecRef = $db->selectObject("sectionref", "module='".$loc->mod."' AND source='".$loc->src."' AND internal='".$loc->int."' AND section=$section");
         $newSecRef = $db->selectObject(
             "sectionref",
             "module='" . $loc->mod . "' AND source='" . $loc->src . "' AND internal='" . $loc->int . "'"
@@ -157,8 +153,8 @@ class recyclebin extends expRecord
             if ($newSecRef->section != $section) {
                 $ret = 'Changed sectionref entry for ' . $loc->mod . ' - ' . $loc->src . ' from section ' . $newSecRef->section . ' to section ' . $section;
             }
-            $newSecRef->refcount = 1; // we need to do this for pulling stuff from the recycle bin
             $newSecRef->section = $section; // we need to do this for pulling stuff from the recycle bin
+            $newSecRef->refcount = 1; // we need to do this for pulling stuff from the recycle bin
             $db->updateObject(
                 $newSecRef,
                 "sectionref",
