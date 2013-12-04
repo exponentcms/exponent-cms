@@ -599,3 +599,9 @@
 	top     : 32px;
 	z-index : 10;
 }
+
+#admintoolbar *,
+#admintoolbar *:before,
+#admintoolbar *:after {
+    -moz-box-sizing: content-box;
+}

@@ -216,18 +216,24 @@ class form extends baseform {
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
-        if(expSession::get('framework')!='bootstrap'){
-            expCSS::pushToHead(array(
-//                "unique"  => 'forms',
-                "corecss"=>"forms"
-            ));
-            $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
-        } else {
+        if (expSession::get('framework') == 'bootstrap') {
             expCSS::pushToHead(array(
 //                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn btn-default';
+        } elseif (expSession::get('framework') == 'bootstrap3') {
+            expCSS::pushToHead(array(
+//                "unique"  => 'z-forms-bootstrap',
+                "corecss"=>"forms-bootstrap3"
+            ));
+            $btn_class = 'btn btn-default';
+        } else {
+            expCSS::pushToHead(array(
+//                "unique"  => 'forms',
+                "corecss"=>"forms"
+            ));
+            $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
         };
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',

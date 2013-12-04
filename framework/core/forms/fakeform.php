@@ -79,18 +79,28 @@ class fakeform extends form {
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
 		$rank = 0;
 		$even = "odd";
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-small';
-            $icon_size = 'icon-large';
-        } else {
-            $btn_size = 'btn-mini';
-            $icon_size = '';
-        }
         $edit_class = '';
         $delete_class = '';
         if ($head_config['framework'] == 'bootstrap') {
+            if (BTN_SIZE == 'large') {
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
+            } else {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            }
             $edit_class = ' class="btn '.$btn_size.' icon-edit'.$icon_size.'"';
             $delete_class = ' class="btn btn-danger '.$btn_size.' icon-remove-sign'.$icon_size.'"';
+        } elseif ($head_config['framework'] == 'bootstrap3') {
+            if (BTN_SIZE == 'large') {
+                $btn_size = 'btn-sm';
+                $icon_size = 'fa-lg';
+            } else {
+                $btn_size = 'btn-xs';
+                $icon_size = '';
+            }
+            $edit_class = ' class="btn btn-default '.$btn_size.' fa fa-pencil-square-o'.$icon_size.'"';
+            $delete_class = ' class="btn btn-danger '.$btn_size.' fa fa-times-circle'.$icon_size.'"';
         }
 		foreach ($this->controlIdx as $name) {
 			$even = ($even=="odd") ? "even" : "odd";
@@ -99,13 +109,15 @@ class fakeform extends form {
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
 				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
-                if (!$head_config['framework'] == 'bootstrap') $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
+                if ($head_config['framework'] != 'bootstrap') $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
 				$html .= '</a>';
 			} else {
-                if (!$head_config['framework'] == 'bootstrap') {
-                    $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
-                } else {
+                if ($head_config['framework'] == 'bootstrap') {
                     $html .= '<div class="btn disabled '.$btn_size.' icon-edit'.$icon_size.'"> </div>';
+                } elseif ($head_config['framework'] == 'bootstrap3') {
+                    $html .= '<div class="btn btn-default disabled '.$btn_size.' fa fa-pencil-square-o'.$icon_size.'"> </div>';
+                } else {
+                    $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
                 }
 			}
 

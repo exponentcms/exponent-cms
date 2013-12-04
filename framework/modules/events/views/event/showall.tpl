@@ -58,7 +58,7 @@
 		</div>
 	{/permissions}
     <div id="popup">
-        <a href="javascript:void(0);" class="nav module-actions" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
+        <a href="javascript:void(0);" class="evnav module-actions" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="lb-bg" style="display:none;">
         </div>
         <div id="month-{$name}">
@@ -122,7 +122,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 
     // ajax load new month
 	var handleSuccess = function(ioId, o){
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal evnav");
 
         if(o.responseText){
             monthcal.setContent(o.responseText);
@@ -151,7 +151,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal evnav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:
@@ -168,7 +168,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
 //        monthcal.setStyle('opacity',0.5);
 //        Y.one('#lb-bg').setStyle('display','block');
-    }, 'a.nav');
+    }, 'a.evnav');
     {/literal}
 {/if}
 {literal}

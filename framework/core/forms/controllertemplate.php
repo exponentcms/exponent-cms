@@ -48,7 +48,6 @@ class controllertemplate extends basetemplate {
         // set up plugin search order based on framework
         $framework = expSession::get('framework');
 //        if (empty($head_config['framework'])) $head_config['framework'] = '';
-//        if ($head_config['framework'] == 'bootstrap') {
         if ($framework == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
@@ -57,7 +56,14 @@ class controllertemplate extends basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-//        } elseif ($head_config['framework'] == 'jquery') {
+        } elseif ($framework == 'bootstrap3') {
+            $this->tpl->setPluginsDir(array(
+                BASE.'themes/'.DISPLAY_THEME.'/plugins',
+                BASE.'framework/plugins/bootstrap3',
+                BASE.'framework/plugins/jquery',
+                BASE.'framework/plugins',
+                SMARTY_PATH.'plugins',
+            ));
         } elseif ($framework == 'jquery') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',

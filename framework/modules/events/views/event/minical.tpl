@@ -14,9 +14,9 @@
  *}
  
 <table class="mini-cal">
-    <a class="nav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$prevmonth}" rel={$prevmonth} title="{'Prev Month'|gettext}">&laquo;</a>
+    <a class="evnav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$prevmonth}" rel={$prevmonth} title="{'Prev Month'|gettext}">&laquo;</a>
     &#160;&#160;{$now|format_date:"%B"}&#160;&#160;
-    <a class="nav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$nextmonth}" rel={$nextmonth} title="{'Next Month'|gettext}">&raquo;</a>
+    <a class="evnav module-actions" href="{link action=showall view='showall_Mini-Calendar' time=$nextmonth}" rel={$nextmonth} title="{'Next Month'|gettext}">&raquo;</a>
 
     <tr class="daysoftheweek">
         {if $smarty.const.DISPLAY_START_OF_WEEK == 0}

@@ -130,7 +130,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal evnav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:

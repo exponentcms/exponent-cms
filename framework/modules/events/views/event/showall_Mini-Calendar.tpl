@@ -50,7 +50,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical nav");
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical evnav");
 
         if(o.responseText){
             minical.setContent(o.responseText);
@@ -75,7 +75,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "minical nav");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "minical evnav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:
@@ -87,7 +87,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-    }, 'a.nav');
+    }, 'a.evnav');
 });
 {/literal}
 {/script}
