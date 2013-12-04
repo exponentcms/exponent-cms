@@ -45,10 +45,20 @@
     <ul>
         {foreach name=items from=$page->records item=item}
             {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
+                <div class="vevent">
                 <li>
-                    <h3><a class="link" href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
-                        {$item->title}
+                    <h3><a class="url link" href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
+                        <span class="summary">{$item->title}</span>
                     </a></h3>
+                    <span class="hide">
+                        <span class="location">
+                        {if !empty($item->location)}
+                            {$item->location}
+                        {else}
+                            {$smarty.const.ORGANIZATION_NAME}
+                        {/if}
+                        </span>
+                    </span>
                     {if $item->isRss != true}
                         {permissions}
                             <div class="item-actions">
@@ -66,20 +76,27 @@
                         <div class="event-image">
                             <a href="{link action=show title=$item->sef_url}">
                                 {if $item->expFile.mainimage[0]->id != ""}
-                                    {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
+                                    {img file_id=$item->expFile.mainimage[0]->id w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`" class="photo"}
                                 {else}
                                     {img src="`$asset_path`images/no-image.jpg" w=125 alt=$item->image_alt_tag|default:"Image of `$item->title`" title="`$item->title`"}
                                 {/if}
                             </a>
                         </div>
                         <div class="event-info">
-                            <em class="date{if $item->eventdate < time()} past{/if}">{$item->eventdate|format_date:"%A, %B %e, %Y"}</em>
-                            {if $item->getBasePrice()}<p>{'Cost'|gettext}: {$item->getBasePrice()|currency}</p>{/if}
-                            <p>{$item->body|truncate:175:"..."}</p>
+                            <em class="date{if $item->eventdate < time()} past{/if}"><span class="dtstart">{$item->eventdate|format_date:"%A, %B %e, %Y"}<span class="value-title" title="{date('c',$item->eventdate)}"></span></span></em>
+                            <span class="tickets">
+                              <span class="hoffer">
+                              <span class="currency hide">{$smarty.const.ECOM_CURRENCY}</span>
+                                  {if $item->getBasePrice()}<p>{'Cost'|gettext}: <span class="price">{$item->getBasePrice()|currency}</span></p>{/if}
+                                  <span class="quantity hide">{$item->spacesLeft()}</span>
+                              </span>
+                            </span>
+                            <span class="description">{$item->body|truncate:175:"..."}</span>
                             {*<a href="{link action=show title=$item->sef_url}" class="readmore">{'Read More...'|gettext}</a>*}
                         </div>
                     </div>
                 </li>
+                </div>
             {/if}
         {/foreach}
     </ul>

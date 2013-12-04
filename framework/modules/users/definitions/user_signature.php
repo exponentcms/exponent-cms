@@ -27,6 +27,9 @@ return array(
     'signature'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000),
+    'googleplus'=>array(
+        DB_FIELD_TYPE=>DB_DEF_STRING,
+        DB_FIELD_LEN=>150),
 );
 
 ?>

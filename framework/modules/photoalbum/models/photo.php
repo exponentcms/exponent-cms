@@ -34,6 +34,25 @@ class photo extends expRecord {
     	'content_expTags'=>'expTag'
     );
 
+    function __construct($params = null, $get_assoc = true, $get_attached = true) {
+        parent::__construct($params, $get_assoc, $get_attached);
+        // do our best to give this photo a title and an alt
+        if (empty($this->title)) {
+            if (!empty($this->expFile[0]->title)) {
+                $this->title = $this->expFile[0]->title;
+            } elseif (!empty($this->meta_title)) {
+                $this->title = $this->meta_title;
+            }
+        }
+        if (empty($this->alt)) {
+            if (!empty($this->expFile[0]->alt)) {
+                $this->alt = $this->expFile[0]->alt;
+            } elseif (!empty($this->title)) {
+                $this->alt = $this->title;
+            }
+        }
+    }
+
     public function addNextPrev($where=1) {
         global $db;
 

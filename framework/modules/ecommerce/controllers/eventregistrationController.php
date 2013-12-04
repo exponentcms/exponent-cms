@@ -423,15 +423,46 @@ class eventregistrationController extends expController {
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
-//        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
-            case 'donate':
-                $metainfo['title']       = gt('Make an event registration');
+            case 'showall':
+            case 'eventsCalendar':
+            case 'upcomingEvents':
+                $metainfo['title']       = gt('Event Registration') . ' - ' . SITE_TITLE;
                 $metainfo['keywords']    = gt('event registration online');
                 $metainfo['description'] = gt("Make an event registration");
                 break;
+            case 'show':
+            case 'showByTitle':
+                if (isset($router->params['id']) || isset($router->params['title'])) {
+                    $lookup = isset($router->params['id']) ? $router->params['id'] : $router->params['title'];
+                    $object = new eventregistration($lookup);
+                    // set the meta info
+                    if (!empty($object)) {
+                        if (!empty($object->body)) {
+                            $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
+                        } else {
+                            $desc = SITE_DESCRIPTION;
+                        }
+                        if (!empty($object->expTag)) {
+                            $keyw = '';
+                            foreach ($object->expTag as $tag) {
+                                if (!empty($keyw)) $keyw .= ', ';
+                                $keyw .= $tag->title;
+                            }
+                        } else {
+                            $keyw = SITE_KEYWORDS;
+                        }
+                        $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
+                        $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
+                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+                        $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
+                        $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
+                    }
+                    break;
+                }
             default:
                 $metainfo['title']       = $this->displayname() . " - " . SITE_TITLE;
                 $metainfo['keywords']    = SITE_KEYWORDS;

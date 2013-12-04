@@ -18,7 +18,8 @@
 {/css}
 
 <div class="module migration manage-files">
- 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><strong>{'Skip to Next Step -> Migrate Content'|gettext}</strong></a>
+ 	{*<a class="{button_style}" href="{link module=migration action=manage_content}"><strong>{'Skip to Next Step -> Migrate Content'|gettext}</strong></a>*}
+    {icon button=true module=migration action=manage_content text={'Skip to Next Step -> Migrate Content'|gettext}
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
@@ -36,5 +37,5 @@
         </span>
     </blockquote>
     <h3>{if $count > 0}{$count}{else}{'No'|gettext}{/if} {'files found in the database'|gettext} '{$config.database}'</h3>
-    {br}<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=migrate_files}"><strong>{'Migrate Files'|gettext}</strong></a>{br}
+    {br}<a class="{button_style}" href="{link module=migration action=migrate_files}"><strong>{'Migrate Files'|gettext}</strong></a>{br}
 </div>

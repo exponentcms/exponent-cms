@@ -33,11 +33,13 @@
 	}
 	{/literal}
 	{/script}
-	<form method="post" action="">
-		<input type="hidden" name="controller" value="file" />
-		<input type="hidden" name="action" value="import_files_extract" />
-		<input type="hidden" name="dest_dir" value="{$dest_dir}" />
-		<table cellspacing="0" cellpadding="0" border="0" width="100%" class="exp-skin-table">
+	{*<form method="post" action="">*}
+		{*<input type="hidden" name="controller" value="file" />*}
+		{*<input type="hidden" name="action" value="import_files_extract" />*}
+		{*<input type="hidden" name="dest_dir" value="{$dest_dir}" />*}
+    {form action=import_files_extract}
+        {control type="hidden" name="dest_dir" value=$dest_dir}
+        <table cellspacing="0" cellpadding="0" border="0" width="100%" class="exp-skin-table">
 			<thead>
                 <tr>
                     <th colspan="2">{'Files found in this Archive'|gettext}</th>
@@ -47,7 +49,9 @@
 				{foreach from=$file_data item=mod_data}
 					{foreach from=$mod_data[1] item=file}
 						<tr class="{cycle values='even,odd'}">
-							<td class="header" width="16"><input type="checkbox" checked="checked" name="mods[{$file}]" /></td>
+							<td class="header" width="16">
+                                <input type="checkbox" checked="checked" name="mods[{$file}]" />
+                            </td>
 							<td>{$file}</td>
 						</tr>
 					{/foreach}
@@ -57,11 +61,12 @@
                 </td></tr>
 				<tr>
 					<td colspan="2">
-                        {*<input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Process'|gettext}" />*}
+                        {*<input class="{button_style}" type="submit" value="{'Process'|gettext}" />*}
                         {control type=buttongroup submit='Process'|gettext}
                     </td>
 				</tr>
 			</tbody>
 		</table>
-	</form>
+	{*</form>*}
+    {/form}
 </div>

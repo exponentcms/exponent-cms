@@ -39,9 +39,19 @@
     <ul>
         {foreach name=uce from=$page->records item=item}
             {if $smarty.foreach.uce.iteration<=$config.headcount || !$config.headcount}
+                <div class="vevent">
                 <li>
-                    <a {if $item->eventdate < time()}class="date past" {/if}href="{link controller=eventregistration action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->eventdate|format_date:"%A, %B %e, %Y"}</a>
+                    <a class="url{if $item->eventdate < time()} date past{/if}" href="{link controller=eventregistration action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}"><span class="dtstart">{$item->eventdate|format_date:"%A, %B %e, %Y"}<span class="value-title" title="{date('c',$item->eventdate)}"></span></span></a>
                     {*<p>{$item->summary|truncate:75:"..."}</p>*}
+                    <span class="hide">
+                        <span class="location">
+                        {if !empty($item->location)}
+                            {$item->location}
+                        {else}
+                            {$smarty.const.ORGANIZATION_NAME}
+                        {/if}
+                        </span>
+                    </span>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
@@ -54,10 +64,17 @@
                         </div>
                     {/permissions}
                     <p>
-                        {$item->title}
-                        {if $item->getBasePrice()}- {'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
+                        <span class="summary">{$item->title}</span>
+                        <span class="tickets">
+                          <span class="hoffer">
+                          <span class="currency hide">{$smarty.const.ECOM_CURRENCY}</span>
+                          {if $item->getBasePrice()}- {'Cost'|gettext}: <span class="price">{$item->getBasePrice()|currency}</span>{/if}
+                          <span class="quantity hide">{$item->spacesLeft()}</span>
+                          </span>
+                        </span>
                     </p>
                 </li>
+                </div>
             {/if}
         {/foreach}
     </ul>

@@ -847,13 +847,13 @@ exit();
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'showall':
-                $metainfo['title']       = gt("Managing Invoices");
+                $metainfo['title']       = gt("Managing Invoices") . ' - ' . SITE_TITLE;
                 $metainfo['keywords']    = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
             case 'showByTitle':
-                $metainfo['title']       = gt('Viewing Invoice');
+                $metainfo['title']       = gt('Viewing Invoice') . ' - ' . SITE_TITLE;
                 $metainfo['keywords']    = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object doesn't exist
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object doesn't exist
                 $metainfo['canonical'] = empty($object->canonical) ? '' : $object->canonical; //FIXME $object doesn't exist

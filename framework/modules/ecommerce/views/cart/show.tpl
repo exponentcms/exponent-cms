@@ -21,10 +21,14 @@
 	<h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='cart_description_text' default=""}</div>
     <div style="padding:8px; 0">
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Continue Shopping"|gettext}</a>
+        {*<a class="{button_style}" href="{backlink}">{"Continue Shopping"|gettext}</a>*}
+        {$backlink = makeLink(expHistory::getBack(1))}
+        {icon class="reply" button=true link=$backlink text="Continue Shopping"|gettext}
         {if $items|@count gt 0}
-            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>
-            <a class="awesome small red" style="float:right; margin-left: 18px;" href="{link action=empty_cart}"  onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">Empty Cart</a>
+            {*<a class="{button_style}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>*}
+            {icon class="shopping-cart" button=true controller=cart action=checkout secure=true text="Checkout Now"|gettext}
+            {*<a class="{button_style color=red size=small}" style="float:right; margin-left: 18px;" href="{link action=empty_cart}" onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">{'Empty Cart'|gettext}</a>*}
+            <span style="float:right; margin-left: 18px;">{icon class=delete button=true action=empty_cart onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');" text='Empty Cart'|gettext}</span>
         {/if}
     </div>
 	<div id="cartbox">        
@@ -163,9 +167,11 @@
         {/if}
 	</div>
     <div style="padding:8px; 0">
-        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Continue Shopping"|gettext}</a>
+        {*<a class="{button_style}" href="{backlink}">{"Continue Shopping"|gettext}</a>*}
+        {icon class="reply" button=true link=$backlink text="Continue Shopping"|gettext}
         {if $items|@count gt 0}
-            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>
+            {*<a class="{button_style}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>*}
+            {icon class="shopping-cart" button=true controller=cart action=checkout secure=true text="Checkout Now"|gettext}
         {/if}
     </div>
 </div>

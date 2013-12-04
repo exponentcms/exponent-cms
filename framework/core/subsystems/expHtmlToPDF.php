@@ -27,7 +27,7 @@ class expHtmlToPDF
     /**
      * Private use variables.
      */
-    protected  $pdf = null;  // pdf engine object
+    public  $pdf = null;  // pdf engine object
     protected $size = 'A4';
     protected $orient = 'portrait';
 
@@ -711,8 +711,8 @@ class expMPDF extends expHtmlToPDF
     public function __construct($paper_size = "A4", $orientation = "portrait", $html, $use_file = false)
     {
         if (file_exists(BASE . 'external/MPDF57/mpdf.php')) {
-            define("_MPDF_TEMP_PATH", PATH_RELATIVE . 'tmp/tmp/');
-            define("_MPDF_TTFONTDATAPATH", PATH_RELATIVE . 'tmp/ttfontdata/');
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", PATH_RELATIVE . 'tmp/tmp/');
+            if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", PATH_RELATIVE . 'tmp/ttfontdata/');
             require_once(BASE . 'external/MPDF57/mpdf.php');
             $this->size = $paper_size;
             $this->orient = strtoupper(substr($orientation, 0, 1));

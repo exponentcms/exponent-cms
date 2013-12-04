@@ -52,10 +52,12 @@
                 <tbody>
                     {foreach from=$page->records item=fields key=ukey name=fields}
                         <tr class="{cycle values="even,odd"}">
-                            {foreach from=$page->columns item=column name=column}
+                            {foreach from=$page->columns item=column key=field name=column}
                                 <td>
                                     {if $smarty.foreach.column.iteration == 1}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>{$fields.$column}</a>
+                                    {elseif $column == 'email'}
+                                        <a href="mailto:{$fields.$column}">{$fields.$column}</a>
                                     {else}
                                         {$fields.$column}
                                     {/if}
@@ -78,7 +80,7 @@
             </table>
         </div>
         {$page->links}
-        {*<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>*}
+        {*<a class="{button_style}" href="{$backlink}">{'Back'|gettext}</a>*}
     </div>
 {/if}
 

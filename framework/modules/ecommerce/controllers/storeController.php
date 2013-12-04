@@ -1319,7 +1319,6 @@ class storeController extends expController {
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'showall': //category page
-                //$cat = new storeCategory(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
                 $cat = $this->category;
                 if (!empty($cat)) {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title : $cat->meta_title;
@@ -1340,6 +1339,17 @@ class storeController extends expController {
                     $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
                     $metainfo['noindex'] = empty($prod->meta_noindex) ? '' : strip_tags($prod->meta_noindex);
                     $metainfo['nofollow'] = empty($prod->meta_nofollow) ? '' : strip_tags($prod->meta_nofollow);
+                    if (file_exists(BASE.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename)) {
+                        $metainfo['rich'] = '<!--
+        <PageMap>
+            <DataObject type="thumbnail">
+                <Attribute name="src" value="'.URL_FULL.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename.'"/>
+                <Attribute name="width" value="'.$prod->expFile['mainimage'][0]->image_width.'"/>
+                <Attribute name="height" value="'.$prod->expFile['mainimage'][0]->image_width.'"/>
+            </DataObject>
+        </PageMap>
+    -->';
+                    }
                     break;
                 }
             default:

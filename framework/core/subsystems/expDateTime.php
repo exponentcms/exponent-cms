@@ -59,36 +59,58 @@ class expDateTime {
 		return $html;
 	}
 
-	/** exdoc
-	 * Looks at a start and end time and figures out
-	 * how many seconds elapsed since between the earlier
-	 * timestamp and the later timestamp.  It doesn't matter
-	 * if the bigger argument is specified first or not. Returns
-	 * the number of seconds between $time_a and $time_b
-	 *
-	 * @param int $time_a The first timestamp
-	 * @param int $time_b The second timestamp
-	 * @return array
-	 * @node Subsystems:expDateTime
-	 */
-	public static function duration($time_a,$time_b) {
+    /** exdoc
+     * Looks at a start and end time and figures out
+     * how many seconds elapsed since between the earlier
+     * timestamp and the later timestamp.  It doesn't matter
+     * if the bigger argument is specified first or not. Returns
+     * the number of seconds between $time_a and $time_b
+     *
+     * @param int  $time_a The first timestamp
+     * @param int  $time_b The second timestamp
+     * @param bool $iso8601 return duration as an iso8601 string
+     *
+     * @return array
+     * @node Subsystems:expDateTime
+     */
+	public static function duration($time_a,$time_b,$iso8601=false) {
 		$d = abs($time_b-$time_a);
-		$duration = array();
-		if ($d >= 86400) {
-			$duration['days'] = floor($d / 86400);
-			$d %= 86400;
-		}
-		if (isset($duration['days']) || $d >= 3600) {
-			if ($d) $duration['hours'] = floor($d / 3600);
-			else $duration['hours'] = 0;
-			$d %= 3600;
-		}
-		if (isset($duration['hours']) || $d >= 60) {
-			if ($d) $duration['minutes'] = floor($d / 60);
-			else $duration['minutes'] = 0;
-			$d %= 60;
-		}
-		$duration['seconds'] = $d;
+        if (!$iso8601) {
+            $duration = array();
+            if ($d >= 86400) {
+                $duration['days'] = floor($d / 86400);
+                $d %= 86400;
+            }
+            if (isset($duration['days']) || $d >= 3600) {
+                if ($d) $duration['hours'] = floor($d / 3600);
+                else $duration['hours'] = 0;
+                $d %= 3600;
+            }
+            if (isset($duration['hours']) || $d >= 60) {
+                if ($d) $duration['minutes'] = floor($d / 60);
+                else $duration['minutes'] = 0;
+                $d %= 60;
+            }
+            $duration['seconds'] = $d;
+        } else {
+           $parts = array();
+           $multipliers = array(
+               'hours' => 3600,
+               'minutes' => 60,
+               'seconds' => 1
+           );
+           foreach ($multipliers as $type => $m) {
+               $parts[$type] = (int)($d / $m);
+               $d -= ($parts[$type] * $m);
+           }
+           $default = array(
+               'hours' => 0,
+               'minutes' => 0,
+               'seconds' => 0
+           );
+           extract(array_merge($default, $parts));
+            $duration = "PT{$hours}H{$minutes}M{$seconds}S";
+        }
 		return $duration;
 	}
 

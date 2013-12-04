@@ -423,7 +423,7 @@ class expCore {
 	 * @return array
 	 * @node Subsystems:expCore
 	 */
-	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by 1) calendarmodule edit action (email forms) & 2) expTemplate::listModuleViews for OS modules
+	public static function buildNameList($type, $name, $subtype, $subname) {  //FIXME only used by 1) event module edit action (email forms) & 2) expTemplate::listModuleViews for OS modules
 		$nameList = array();
 		$fileList = self::resolveFilePaths($type, $name, $subtype, $subname);
 		if ($fileList != false) {
@@ -548,5 +548,121 @@ class expCore {
         }
         return $destination;
     }
+
+    /**
+     * Return the 'color code' for the other framework
+     * default is to convert a standard button color to the bootstrap button color
+     *
+     * @param        $color
+     * @param string $returntype
+     *
+     * @return mixed|string
+     */
+    public static function buttonColor($color, $returntype='bootstrap') {
+        $colors = array(
+            'red' => 'btn-danger',
+            'yellow' => 'btn-warning',
+            'grey' => 'btn-default',
+            'green' => 'btn-success',
+            'blue' => 'btn-primary'
+        );
+        if ($returntype == 'bootstrap') {
+            if (!empty($colors[$color])) {
+                $found = $colors[$color];
+            } else {
+                $found = 'btn-default';
+            }
+            return $found;
+        } else {
+            return array_search($color, $colors);
+        }
+    }
+
+    /**
+     * Return the bootstrap icon type associated with standard icon name/type
+     *
+     * @param        $class
+     * @param string $returntype
+     *
+     * @return stdClass|string
+     */
+    public static function buttonIcon($class, $returntype='bootstrap') {
+        if ($returntype == 'bootstrap') {
+            $btn_type = '';
+            switch ($class) {
+                case 'delete' :
+                case 'deletetitle' :
+                    $class = "remove-sign";
+                    $btn_type = "btn-danger";  // red
+                    break;
+                case 'add' :
+                case 'addtitle' :
+                case 'switchtheme add' :
+                    $class = "plus-sign add";
+                    $btn_type = "btn-success";  // green
+                    break;
+                case 'copy' :
+                    $class = "copy";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download-alt";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload-alt";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "signin";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class ='double-angle-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'double-angle-left';
+                    break;
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check';
+                    break;
+                case 'groupperms' :
+                    $class = 'group';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+            }
+            $found = new stdClass();
+            $found->type = $btn_type;
+            $found->class = $class;
+            return $found;
+        } else {
+            return $class;
+        }
+    }
+
 }
 ?>

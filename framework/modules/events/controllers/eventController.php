@@ -563,41 +563,45 @@ class eventController extends expController {
    	function metainfo() {
        global $router;
 
-       $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
-       // look for event date_id which expController::metainfo won't detect
-//       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
-       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($router->params['id']) && isset($router->params['date_id'])) {
-           // look up the record.
-//           $object = new eventdate(intval($_REQUEST['date_id']));
-           $object = new eventdate(intval($router->params['date_id']));
-           // set the meta info
-           if (!empty($object)) {
-               if (!empty($object->event->body)) {
-                   $desc = str_replace('"',"'",expString::summarize($object->event->body,'html','para'));
-               } else {
-                   $desc = SITE_DESCRIPTION;
-               }
-               if (!empty($object->expTag)) {
-                   $keyw = '';
-                   foreach ($object->expTag as $tag) {
-                       if (!empty($keyw)) $keyw .= ', ';
-                       $keyw .= $tag->title;
-                   }
-               } else {
-                   $keyw = SITE_KEYWORDS;
-               }
-               $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
-               $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
-               $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
-               $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
-               $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
-               $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
-           }
-           return $metainfo;
-       } else {
-           return parent::metainfo();
-       }
-   }
+        $action = $router->params['action'];
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        // look for event date_id which expController::metainfo won't detect
+//        if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($router->params['id']) && isset($router->params['date_id'])) {
+        switch ($action) {
+            case 'show':
+                if (!isset($router->params['id']) && isset($router->params['date_id'])) {
+                    // look up the record.
+                    $object = new eventdate(intval($router->params['date_id']));
+                    // set the meta info
+                    if (!empty($object)) {
+                        if (!empty($object->event->body)) {
+                            $desc = str_replace('"',"'",expString::summarize($object->event->body,'html','para'));
+                        } else {
+                            $desc = SITE_DESCRIPTION;
+                        }
+                        if (!empty($object->expTag)) {
+                            $keyw = '';
+                            foreach ($object->expTag as $tag) {
+                                if (!empty($keyw)) $keyw .= ', ';
+                                $keyw .= $tag->title;
+                            }
+                        } else {
+                            $keyw = SITE_KEYWORDS;
+                        }
+                        $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
+                        $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
+                        $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
+                        $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
+                        $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
+                        $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
+                        return $metainfo;
+                        break;
+                    }
+                }
+            default:
+                return parent::metainfo();
+        }
+    }
 
     function send_feedback() {
         $success = false;

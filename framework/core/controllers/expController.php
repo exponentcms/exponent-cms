@@ -1225,16 +1225,14 @@ abstract class expController {
 
         switch ($action) {
             case 'showall':
-                $metainfo['title'] = gt("Showing all") . " - " . $this->displayname();
+                $metainfo['title'] = gt("Showing") . " " . $this->displayname() . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
             case 'showByTitle':
                 // look up the record.
-//                if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
                 if (isset($router->params['id']) || isset($router->params['title'])) {
-//                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : expString::sanitize($_REQUEST['title']);
                     $lookup = isset($router->params['id']) ? $router->params['id'] : $router->params['title'];
                     $object = new $modelname($lookup);
                     // set the meta info
@@ -1259,6 +1257,7 @@ abstract class expController {
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
                         $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
                         $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
+                        $metainfo['rich'] = $this->meta_rich($router->params, $object);
                     }
                     break;
                 }
@@ -1294,6 +1293,18 @@ abstract class expController {
     //     }
     // }
 
+    /**
+     * Returns rich snippet PageMap meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return null
+     */
+    function meta_rich($request, $object) {
+        return null;
+    }
+
     function showall_by_tags_meta($request) {
         global $router;
 
@@ -1322,7 +1333,7 @@ abstract class expController {
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
             $ts = strftime('%B, %Y', $mk);
             // set the meta info
-            $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts;
+            $metainfo['title'] = gt('Showing all') . ' ' . ucwords($this->basemodel_name) . ' ' . gt('written in') . ' ' . $ts;
 //            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
             $metainfo['keywords'] = SITE_KEYWORDS;
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set

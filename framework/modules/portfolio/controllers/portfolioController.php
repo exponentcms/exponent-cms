@@ -83,6 +83,27 @@ class portfolioController extends expController {
     }
 
     /**
+     * Returns rich snippet PageMap meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return string
+     */
+    function meta_rich($request, $object) {
+        $rich_meta = '<!--
+        <PageMap>
+            <DataObject type="thumbnail">
+                <Attribute name="src" value="'.URL_FULL.$object->expFile[0]->directory.$object->expFile[0]->filename.'"/>
+                <Attribute name="width" value="'.$object->expFile[0]->image_width.'"/>
+                <Attribute name="height" value="'.$object->expFile[0]->image_height.'"/>
+            </DataObject>
+        </PageMap>
+    -->';
+        return $rich_meta;
+    }
+
+    /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
      *
      * @param string $type

@@ -27,14 +27,15 @@
 			{if $user->isAdmin()}
 			<tr>
 				<td>
-					<input type="checkbox" name="save_sample" value="1" class="checkbox">
-					<strong><label class="label ">{'Save as Sample Content for the'|gettext} '{$smarty.const.DISPLAY_THEME}' {'Theme'|gettext}?</label></strong>
+					<input type="checkbox" name="save_sample" id="save_sample" value="1" class="checkbox">
+					<strong><label class="label" for="save_sample">{'Save as Sample Content for the'|gettext} '{$smarty.const.DISPLAY_THEME}' {'Theme'|gettext}?</label></strong>
 				</td>
 			</tr>
 			{/if}
 			<tr>
 				<td valign="top"><strong>{'File Name Template'|gettext}:</strong>
-					<input type="text" name="filename" size="20" value="files" />
+					{*<input type="text" name="filename" size="20" value="files" />*}
+                    {control type="text" name="filename" size="20" value="files" }
 				</td>
 			</tr>
 				<td>
@@ -43,7 +44,7 @@
 			</tr>
 			<tr>
 				<td>
-					{*<input class="downloadfile awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Files'|gettext}" />*}
+					{*<input class="downloadfile {button_style}" type="submit" value="{'Export Files'|gettext}" />*}
                     {control type=buttongroup class="downloadfile" submit='Export Files'|gettext}
 				</td>
 			</tr>

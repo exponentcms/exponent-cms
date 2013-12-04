@@ -62,8 +62,9 @@ class donationController extends expController {
         $action   = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch($action) {
-            case 'donate':
-                $metainfo['title'] = gt('Make a donation');
+            case 'showall':
+            case 'show':
+                $metainfo['title'] = gt('Online Donations') . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = gt('donate online');
                 $metainfo['description'] = gt("Make a donation");
             break;

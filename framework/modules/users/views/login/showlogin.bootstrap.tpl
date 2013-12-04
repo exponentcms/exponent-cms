@@ -17,12 +17,6 @@
 
 {/css}
 
-{if $smarty.const.BTN_SIZE == 'large'}
-    {$btn_size = 'btn-small'}
-{else}
-    {$btn_size = 'btn-mini'}
-{/if}
-
 {messagequeue}
 <div class="login default">
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
@@ -39,9 +33,10 @@
             {form action=login}
                 {control type="text" name="username" label=$label size=25 required=1 prepend="user"}
                 {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
-                <a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
-                <br><br>
+                {*<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>*}
                 {control type="buttongroup" submit="Log In"|gettext}
+                {br}
+                {icon controller=users action=reset_password text='Forgot Your Password?'|gettext}
             {/form}
         </div>
         {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
@@ -52,17 +47,18 @@
                         {if $oicount>0}
                             {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
                             {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
-                            <a class="btn btn-default {$btn_size}"
-                               href="{link module=cart action=customerSignup}">{"Continue Checking Out"|gettext}</a>
+                            {*<a class="btn btn-default {$btn_size}" href="{link module=cart action=customerSignup}">{"Continue Checking Out"|gettext}</a>*}
+                            {icon button=true module=cart action=customerSignup text="Continue Checking Out"|gettext}
                         {else}
                             {"If you are a new customer, add an item to your cart to continue with the checkout process."|gettext}{br}{br}
-                            <a class="btn btn-default {$btn_size}"
-                               href="{backlink}">{"Keep Shopping"|gettext}</a>
+                            {*<a class="btn btn-default {$btn_size}" href="{backlink}">{"Keep Shopping"|gettext}</a>*}
+                            {$backlink = makeLink(expHistory::getBack(1))}
+                            {icon button=true link=$backlink text="Keep Shopping"|gettext}
                         {/if}
                     {else}
                         {"Create a new account here."|gettext}{br}{br}
-                        <a class="btn btn-default {$btn_size}"
-                           href="{link controller=users action=create}">{"Create an Account"|gettext}</a>
+                        {*<a class="btn btn-default {$btn_size}" href="{link controller=users action=create}">{"Create an Account"|gettext}</a>*}
+                        {icon button=true controller=users action=create text="Create an Account"|gettext}
                     {/if}
                 </p>
             </div>
@@ -70,8 +66,8 @@
     {else}
         {if !$smarty.const.ECOM}
             <div class=" logout">
-                <a class="btn btn-default {$btn_size}"
-                   href="{link action=logout}">{'Logout'|gettext}</a>
+                {*<a class="btn btn-default {$btn_size}" href="{link action=logout}">{'Logout'|gettext}</a>*}
+                {icon button=true action=logout text='Logout'|gettext}
             </div>
         {/if}
     {/if}

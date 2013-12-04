@@ -50,19 +50,8 @@
         <ul class="image-list">
         {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
-                {if !empty($cat->records[0]->alt)}
-                    {$alt = $cat->records[0]->alt}
-                {elseif !empty($cat->records[0]->expFile[0]->alt)}
-                    {$alt = $cat->records[0]->expFile[0]->alt}
-                {elseif !empty($cat->records[0]->title)}
-                    {$alt = $cat->records[0]->title}
-                {elseif !empty($cat->records[0]->expFile[0]->title)}
-                    {$alt = $cat->records[0]->expFile[0]->title}
-                {else}
-                    {$alt = ''}
-                {/if}
                 <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}">
-                    {img class="img-small" alt=$alt file_id=$cat->records[0]->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
+                    {img class="img-small" alt=$cat->records[0]->alt file_id=$cat->records[0]->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
                 </a>
                 {permissions}
                     <div class="item-actions">

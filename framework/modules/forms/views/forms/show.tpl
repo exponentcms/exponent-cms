@@ -48,7 +48,13 @@
                     {foreach from=$fields key=fieldname item=value}
                         <tr class="{cycle values="even,odd"}">
                             <td>{$captions[$fieldname]}</td>
-                            <td>{$value}</td>
+                            <td>
+                                {if $fieldname == 'email'}
+                                    <a href="mailto:{$value}">{$value}</a>
+                                {else}
+                                    {$value}
+                                {/if}
+                            </td>
                         </tr>
                     {/foreach}
                 </tbody>
@@ -62,8 +68,8 @@
             <p>{'Referrer'|gettext}: {$referrer}</p>
         {/if}
         {if !$is_email}
-            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
-               href="{$backlink}">{'Back'|gettext}</a>
+            {*<a class="{button_style}" href="{$backlink}">{'Back'|gettext}</a>*}
+            {icon button=true link=$backlink text='Back'|gettext}
         {/if}
     </div>
 {/if}
