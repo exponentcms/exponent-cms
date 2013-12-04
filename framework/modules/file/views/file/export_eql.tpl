@@ -61,7 +61,9 @@
 
                     {$nextid=$smarty.section.tid.index+1}
 					<td>
-						{if $tables[$nextid] != ""}<input type="checkbox" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' && $tables[$nextid] != 'search'}checked {/if}/>{/if}
+						{if $tables[$nextid] != ""}
+                            <input type="checkbox" name="tables[{$tables[$nextid]}]" {if $tables[$nextid] != 'sessionticket' && $tables[$nextid] != 'search'}checked {/if}/>
+                        {/if}
 					</td>
 
 					<td>{$tables[$nextid]}</td>
@@ -84,18 +86,19 @@
 			</tr>
 			{if $user->isAdmin()}
 			<tr>
-				<td colspan="1">
-					<input type="checkbox" name="save_sample" value="1" class="checkbox">
+				<td>
+					<input type="checkbox" name="save_sample" id="save_sample" value="1" class="checkbox">
 				</td>
-				<td colspan="4" valign="top">
-					<strong><label class="label ">{'Save as Sample Content for the'|gettext} '{$smarty.const.DISPLAY_THEME}' {'Theme'|gettext}?</label></strong>
+				<td colspan="3" valign="top">
+					<strong><label class="label" for="save_sample">{'Save as Sample Content for the'|gettext} '{$smarty.const.DISPLAY_THEME}' {'Theme'|gettext}?</label></strong>
 				</td>
 			</tr>
 			{/if}
 			<tr>
-				<td colspan="3" valign="top"><strong>{'File Name Template'|gettext}:</strong></td>
-				<td colspan="2">
-					<input type="text" name="filename" size="20" value="database" />
+				<td colspan="2" valign="top"><strong>{'File Name Template'|gettext}:</strong></td>
+				<td colspan="3">
+					{*<input type="text" name="filename" size="20" value="database" />*}
+                    {control  type="text" name="filename" size="20" value="database"}
 				</td>
 			</tr>
 			<tr>
@@ -106,7 +109,8 @@
 			<tr>
 				<td colspan="2">&#160;</td>
 				<td colspan="3">
-					<input class="downloadfile awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />
+					{*<input type="submit" class="downloadfile {button_style}" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />*}
+                    {control type=buttongroup class="downloadfile" submit='Export Data'|gettext onclick="return isOneSelected();"}
 				</td>
 			</tr>
 		</table>

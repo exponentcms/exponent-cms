@@ -25,15 +25,18 @@
     {if $loggedin == true || $smarty.const.PREVIEW_READONLY == 1}
         {'Welcome'|gettext|cat:', %s'|sprintf:$displayname}<br/>
         {if !$user->globalPerm('prevent_profile_change')}
-            <a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>
+            {*<a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>*}
+            {icon class="profile" controller=users action=edituser id=$user->id text='Edit Profile'|gettext}
             &#160;|&#160;
         {/if}
         {if $is_group_admin}
-            <a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>
+            {*<a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>*}
+            {icon class="groups" controller=users action=manage_group_memberships text='My Groups'|gettext}
             &#160;|&#160;
         {/if}
         {if ((!$smarty.const.USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap)}
-            <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>
+            {*<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>*}
+            {icon class="password" controller=users action=change_password text='Change Password'|gettext}
         {/if}
         &#160;|&#160;
         <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>
@@ -45,18 +48,21 @@
     {if $smarty.const.PREVIEW_READONLY == 1}
         <hr size="1"/>
         <em>{'Anonymous visitors see this'|gettext}:</em>
-        <br/>
+        {*{br}*}
     {/if}
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-            {form action=login}
-                {control type="text" name="username" label='' placeholder='Username'|gettext size=15 required=1 prepend="user"}
-                {control type="password" name="password" label='' placeholder='Password'|gettext size=15 required=1 prepend="key"}
-                {control type="buttongroup" submit="Log In"|gettext}
-            {/form}
+        {form action=login}
+            {control type="text" name="username" label='' placeholder='Username'|gettext size=15 required=1 prepend="user"}
+            {control type="password" name="password" label='' placeholder='Password'|gettext size=15 required=1 prepend="key"}
+            {control type="buttongroup" submit="Log In"|gettext}
+            {br}
             {if $smarty.const.SITE_ALLOW_REGISTRATION == 1}
-                <a href="{link controller=users action=create}">{'Create Account'|gettext}</a>
+                {*<a href="{link controller=users action=create}">{'Create Account'|gettext}</a>*}
+                {icon controller=users action=create text='Create Account'|gettext}
                 &#160;|&#160;
             {/if}
-            <a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
+            {*<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>*}
+            {icon controller=users action=reset_password text='Forgot Your Password?'|gettext}
+        {/form}
     {/if}
 </div>

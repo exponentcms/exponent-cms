@@ -28,9 +28,11 @@
                 {control type=tel id="registrations_phones" name="registrant_phones[]" label="Registrant Phone:"|gettext}
                 <hr>
             </div>
-            <a class="exp-ecom-link plus addtocart add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" id="newregistrant" href="#"><em>{'Add another registrant'|gettext}</em> <span></span></a>
+            {*<a class="exp-ecom-link plus addtocart add-to-cart-btn {button_style} rc-link" id="newregistrant" href="#"><em>{'Add another registrant'|gettext}</em> <span></span></a>*}
+            {icon class="exp-ecom-link plus addtocart add-to-cart-btn rc-link" id="newregistrant" button=true action=scriptaction text='Add another registrant'|gettext}<span></span>
             &#160;&#160; {'OR'|gettext} &#160;
-            <a class="exp-ecom-link addtocart add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" onclick="EXPONENT.validateReg()" href="#"><em>{'Add Registration to Cart'|gettext}</em><span></span></a>
+            {*<a class="exp-ecom-link addtocart add-to-cart-btn {button_style} rc-link" onclick="EXPONENT.validateReg()" href="#"><em>{'Add Registration to Cart'|gettext}</em><span></span></a>*}
+            {icon class="exp-ecom-link addtocart add-to-cart-btn rc-link" button=true onclick="EXPONENT.validateReg()" action=noaction text='Add Registration to Cart'|gettext}<span></span>
         {/form}
     </div>
 

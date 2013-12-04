@@ -27,7 +27,10 @@
         <table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">
             {include file="_recur_dates.tpl"}
             <tr>
-                <td colspan="2"><input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Delete Selected'|gettext}" /></td>
+                <td colspan="2">
+                    {*<input class="{button_style}" type="submit" value="{'Delete Selected'|gettext}" />*}
+                    {control type=buttongroup submit='Delete Selected'|gettext}
+                </td>
             </tr>
         </table>
     {/form}

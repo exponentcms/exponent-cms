@@ -18,7 +18,8 @@
 {/css}
 
 <div class="module migration manage-pages">
- 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><strong>{'Skip to Next Step -> Migrate Files'|gettext}</strong></a>
+ 	{*<a class="{button_style}" href="{link module=migration action=manage_files}"><strong>{'Skip to Next Step -> Migrate Files'|gettext}</strong></a>*}
+    {icon button=true module=migration action=manage_files text='Skip to Next Step -> Migrate Files'|gettext}
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">

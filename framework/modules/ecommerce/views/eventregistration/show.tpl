@@ -226,7 +226,7 @@
                                         validate: true,
                                         block: true,
                                         errorImage: true,
-                                        btnClass: 'awesome {/literal}$smarty.const.BTN_SIZE $smarty.const.BTN_COLOR{literal}',
+                                        btnClass: '{/literal}{button_style}{literal}',
                                         titleClick: true,
                                         titleTarget: '#form-pages',
                                     });
@@ -251,7 +251,7 @@
                         </div>
                     {/if}
                     {clear}
-                    <button type="submit" class="add-to-cart-btn awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
+                    <button type="submit" class="add-to-cart-btn {button_style}"
                             style="margin: 20px auto; display: block;" rel="nofollow">
                         {"Register for this Event"|gettext}
                     </button>

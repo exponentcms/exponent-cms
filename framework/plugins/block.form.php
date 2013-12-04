@@ -49,12 +49,12 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
-		if(expSession::get('framework')!='bootstrap'){
+		if (expSession::get('framework') != 'bootstrap') {
 			expCSS::pushToHead(array(
 //                "unique"  => 'forms',
                 "corecss"=>"forms"
             ));
-            $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
+            $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
 		} else {
             expCSS::pushToHead(array(
 //                "unique"  => 'z-forms-bootstrap',

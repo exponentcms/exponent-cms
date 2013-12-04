@@ -25,8 +25,10 @@
         {control type="text" name="dollar_amount" label="Dollar Amount:"|gettext value=$product->base_price size=7 filter=money}
         {*control type="buttongroup" name="add2cart" submit="Pay now"*}
     {/form}
-    <a id="paynow" class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" href="">{'Donate now'|gettext}<span></span></a> or
-    <a id="continue" class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR} rc-link" href="{link controller=cart action=addItem}">{'Add to cart and continue shopping'|gettext}<span></span></a>
+    {*<a id="paynow" class="add-to-cart-btn {button_style} rc-link" href="">{'Donate now'|gettext}<span></span></a> or*}
+    {icon id="paynow" class="add-to-cart-btn rc-link" button=true action=scriptaction text='Donate now'|gettext}<span></span></a> {'OR'|gettext}
+    {*<a id="continue" class="add-to-cart-btn {button_style} rc-link" href="{link controller=cart action=addItem}">{'Add to cart and continue shopping'|gettext}<span></span></a>*}
+    {icon id="continue" class="add-to-cart-btn rc-link" button=true controller=cart action=addItem text='Add to cart and continue shopping'|gettext}<span></span>
 </div>
 
 {*FIXME convert to yui3*}

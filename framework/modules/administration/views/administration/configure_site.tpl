@@ -136,7 +136,8 @@
                     </div>
                     {control type="dropdown" name="sc[LANGUAGE]" label="Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
-	                <h3><a href="manage_themes">{'Display Theme Options'|gettext}</a></h3>
+	                {*<h3><a href="manage_themes">{'Display Theme Options'|gettext}</a></h3>*}
+                    {icon button=true link="manage_themes" text='Display Theme Options'|gettext}
 	                {control type="checkbox" postfalse=1 name="sc[INVERT_HIDE_TITLE]" label="Reverse the Logic of Hide Module Title setting?"|gettext checked=$smarty.const.INVERT_HIDE_TITLE value=1 description='Changes default of always show title to always hide title, unless module setting is checked.'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[FORCE_MOBILE]" label="Force Display of the Mobile Theme Variation (if available)?"|gettext checked=$smarty.const.FORCE_MOBILE value=1}
                     {group label="Display Formats"|gettext}
@@ -262,7 +263,7 @@
                     </div>
                     {control type="text" name="sc[SITE_404_TITLE]" label='Page Title For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_TITLE}
                     {control type="html" name="sc[SITE_404_HTML]" label='\'Not Found\' (404) Error Message'|gettext value=$smarty.const.SITE_404_HTML}
-                    {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403/401) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
+                    {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
                     {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label='\'Session Expired\' Error  Message'|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
                 <div id="tab13">
@@ -446,7 +447,8 @@
                     </div>
                     {control type="dropdown" name="profiles" label="Load configuration profile"|gettext items=$profiles default=$smarty.const.CURRENTCONFIGNAME onchange="changeProfile(this.value)"}
                     {control type="text" name="profile_name" label="New Profile Name"|gettext value=$smarty.const.CURRENTCONFIGNAME}
-                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" onclick="saveProfile()"><strong>{'Save New Profile'|gettext}</strong></a>
+                    {*<a class="{button_style}" href="#" onclick="saveProfile()"><strong>{'Save New Profile'|gettext}</strong></a>*}
+                    {icon button=true action=scriptaction onclick="saveProfile()" text='Save New Profile'|gettext}
                 </div>
                 {/if}
             </div>
@@ -490,14 +492,14 @@
 {script unique="wysiwyg-type" yui3mods="node,node-event-simulate"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
-    var radioSwitchers = Y.all('#alt-controlw input[type="radio"]');
-    radioSwitchers.on('click',function(e){
-        Y.all(".alt-item").setStyle('display','none');
+    var radioSwitchersw = Y.all('#alt-controlw input[type="radio"]');
+    radioSwitchersw.on('click',function(e){
+        Y.all("#alt-controlw .alt-item").setStyle('display','none');
         var curdiv = Y.one("#" + e.target.get('value') + "-div");
         curdiv.setStyle('display','block');
     });
 
-    radioSwitchers.each(function(node,k){
+    radioSwitchersw.each(function(node,k){
         if(node.get('checked')==true){
             node.simulate('click');
         }
@@ -511,7 +513,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
 YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
     var radioSwitchers = Y.all('#alt-control input[type="radio"]');
     radioSwitchers.on('click',function(e){
-        Y.all(".alt-item").setStyle('display','none');
+        Y.all("#alt-control .alt-item").setStyle('display','none');
         var curdiv = Y.one("#" + e.target.get('value') + "-div");
         curdiv.setStyle('display','block');
     });

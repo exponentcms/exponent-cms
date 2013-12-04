@@ -17,7 +17,8 @@
 {if $success == 1}
 	<h2>{'Data was restored successfully from backup.'|gettext}</h2>
     <blockquote>{'If an upgrade notice is displayed above, please upgrade your restored database.'|gettext}</blockquote>
-    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$smarty.const.URL_FULL}">{'Take me to my home page'|gettext}</a>
+    {*<a class="{button_style}" href="{$smarty.const.URL_FULL}">{'Take me to my home page'|gettext}</a>*}
+    {icon button=true link=$smarty.const.URL_FULL text='Take me to my home page'|gettext}
 {else}
 	<h2>{'Some Errors were encountered trying to restore the database from the EQL file'|gettext}</h2>
     <ul style="list-style:disc;">
@@ -42,4 +43,5 @@
 {/if}
 <hr>
 <blockquote>{'If you have not yet imported your saved files (graphics, etc...), you may do so now.'|gettext}</blockquote>
-<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller=file action=import_files}">{'Import Files Archive'|gettext}</a>
+{*<a class="{button_style}" href="{link controller=file action=import_files}">{'Import Files Archive'|gettext}</a>*}
+{icon button=true controller=file action=import_files text='Import Files Archive'|gettext}

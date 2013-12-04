@@ -46,7 +46,7 @@
                 {$product->body}
             </td>
             <td style="padding: 5px;">
-                <a class="add-to-cart-btn awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href={link controller=cart action=addItem product_type=$product->product_type product_id=$product->id quick=$quickadd}>{'Donate'|gettext} {if $config.quickadd}{$product->base_price|currency}{/if}</a>
+                <a class="add-to-cart-btn {button_style size=large}" href={link controller=cart action=addItem product_type=$product->product_type product_id=$product->id quick=$quickadd}>{'Donate'|gettext} {if $config.quickadd}{$product->base_price|currency}{/if}</a>
             </td>
          </tr>
     </table>

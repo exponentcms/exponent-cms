@@ -39,7 +39,7 @@
     <div class="col two">
         <h3>{'I am not'|gettext} {$firstname}, {'or I would like to start over with a fresh shopping cart.'|gettext}</h3>
         <p>
-            <a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}" href="{link controller='order' action='clearCart' id=$order->id}">{'Start a New Shopping Cart'|gettext}</a>
+            <a class="{button_style}" href="{link controller='order' action='clearCart' id=$order->id}">{'Start a New Shopping Cart'|gettext}</a>
         </p>
     </div>    
         

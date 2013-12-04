@@ -98,7 +98,7 @@
             </tbody>
         </table>
 
-        <a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} exp-ecom-link" rel="nofollow"><strong><em>{'Add selected items to cart'|gettext}</em></strong></a>
+        <a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="{button_style} exp-ecom-link" rel="nofollow"><strong><em>{'Add selected items to cart'|gettext}</em></strong></a>
 	{/form}
 </div>
 

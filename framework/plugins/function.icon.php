@@ -120,24 +120,43 @@ function smarty_function_icon($params, &$smarty) {
     unset($params['img']);
     unset($params['class']);
     unset($params['record']);
+    unset($params['style']);
+    unset($params['icon']);
     $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
     unset($params['onclick']);
+    $secure = !empty($params['secure']) ? $params['secure'] : false;
+    unset($params['secure']);
+    $button = !empty($params['button']) ? $params['button'] : false;
+    unset($params['button']);
     //eDebug($params);
-    if (!empty($params['action']) && $params['action'] != 'scriptaction') {
+
+    if(!empty($params['action']) && $params['action'] == 'scriptaction') {
+        echo '<a href="#" title="' . $title . '" class="' . $class . '"';
+        if (!empty($onclick))
+            echo ' onclick="' . $onclick . '"';
+        echo '>' . $linktext . '</a>';
+    } elseif ((!empty($params['action']) && $params['action'] != 'scriptaction') || $button) {
         if ($params['action'] == 'copy') {
             $params['copy'] = true;
             $params['action'] = 'edit';
         }
-        echo '<a href="' . expCore::makeLink($params) . '" title="' . $title . '" class="' . $class . '"';
+        if ($button) {
+            $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
+            $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
+            $class = "awesome " . $btn_size . " " . $btn_color;
+            unset($params['size']);
+            unset($params['color']);
+        }
+        if (!empty($params['link'])) {
+            $link = $params['link'];
+        } else {
+            $link = makeLink($params,$secure);
+        }
+        echo '<a href="' . $link . '" title="' . $title . '" class="' . $class . '"';
         if (($params['action'] == "delete" || $params['action'] == "merge" || $class == "delete" || $class == "merge") && empty($onclick))
             echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
 //        if ($params['action']=="merge" && empty($onclick))
 //            echo ' onclick="return confirm(\''.gt('Are you sure you want to merge this').' '.$smarty->getTemplateVars('modelname').' '.gt('item').'?\');"';
-        if (!empty($onclick))
-            echo ' onclick="' . $onclick . '"';
-        echo '>' . $linktext . '</a>';
-    } elseif(!empty($params['action']) && $params['action'] == 'scriptaction') {
-        echo '<a href="#" title="' . $title . '" class="' . $class . '"';
         if (!empty($onclick))
             echo ' onclick="' . $onclick . '"';
         echo '>' . $linktext . '</a>';

@@ -82,5 +82,7 @@
 			{/foreach}
 		</tbody>
     </table>
-    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Done"|gettext}</a>
+    {*<a class="{button_style}" href="{backlink}">{"Done"|gettext}</a>*}
+    {$backlink = makeLink(expHistory::getBack(1))}
+    {icon button=true link=$backlink text="Done"|gettext}
 </div>

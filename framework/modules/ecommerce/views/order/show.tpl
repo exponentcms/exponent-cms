@@ -35,14 +35,14 @@
         <div class="yui-content exp-ecom-table">
             <div id="invoice">
                 <div id="buttons">
-                    {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print this invoice"|gettext view="show_printable" show=1}
+                    {printer_friendly_link class="{button_style}" text="Print this invoice"|gettext view="show_printable" show=1}
                     {if $smarty.const.HTMLTOPDF_ENGINE != 'none'}
-                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number ajax_action=1}">{'Download PDF'|gettext}</a>
+                        <a class="{button_style}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number ajax_action=1}">{'Download PDF'|gettext}</a>
                     {/if}
                     {permissions}
                         {if $permissions.manage}
-                            {printer_friendly_link class="awesome `$smarty.const.BTN_SIZE` `$smarty.const.BTN_COLOR`" text="Print Packing Slip"|gettext view="show_packing" show=1}
-                            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
+                            {printer_friendly_link class="{button_style}" text="Print Packing Slip"|gettext view="show_packing" show=1}
+                            <a class="{button_style}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
                         {/if}
                     {/permissions} 
                 </div>               

@@ -34,7 +34,8 @@
             {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
             {control type="buttongroup" submit="Log In"|gettext}
         {/form}
-        <a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
+        {*<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>*}
+        {icon controller=users action=reset_password text='Forgot Your Password?'|gettext}
         {br}
     </div>
     {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
@@ -45,15 +46,15 @@
                     {if $oicount>0}
                         {"If you are a new customer, select this option  <br />to continue with the checkout process."|gettext}{br}{br}
                         {"We will gather billing and shipping information, <br />and you will have the option to create an account  <br />so can track your order status."|gettext}{br}{br}
-                        <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
-                           href="{link module=cart action=customerSignup}">{"Continue Checking Out"|gettext}</a>
+                        {*<a class="{button_style}" href="{link module=cart action=customerSignup}">{"Continue Checking Out"|gettext}</a>*}
+                        {icon button=true module=cart action=customerSignup text="Continue Checking Out"|gettext}
                     {else}
                         {"If you are a new customer,add an item to your cart  <br />to continue with the checkout process."|gettext}
                     {/if}
                 {else}
                     {"Create a new account here."|gettext}{br}{br}
-                    <a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
-                       href="{link controller=users action=create}">{"Create an Account"|gettext}</a>
+                    {*<a class="{button_style}" href="{link controller=users action=create}">{"Create an Account"|gettext}</a>*}
+                    {icon button=true controller=users action=create text="Create an Account"|gettext}
                 {/if}
             </p>
         </div>
@@ -63,20 +64,25 @@
     <div>
         <strong>{'Welcome'|gettext|cat:', %s'|sprintf:$displayname}</strong>{br}{br}
         {if !$user->globalPerm('prevent_profile_change')}
-            <a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>{br}
+            {*<a class="profile" href="{link controller=users action=edituser id=$user->id}">{'Edit Profile'|gettext}</a>{br}*}
+            {icon class="profile" controller=users action=edituser id=$user->id text='Edit Profile'|gettext}
         {/if}
         {if $is_group_admin}
-            <a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}
+            {*<a class="groups" href="{link controller=users action=manage_group_memberships}">{'My Groups'|gettext}</a>{br}*}
+            {icon class="groups" controller=users action=manage_group_memberships text='My Groups'|gettext}
         {/if}
         {if ((!$smarty.const.USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap)}
-            <a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}
+            {*<a class="password" href="{link controller=users action=change_password}">{'Change Password'|gettext}</a>{br}*}
+            {icon class="password" controller=users action=change_password text='Change Password'|gettext}
         {/if}
-        <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}
+        {*<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>{br}*}
+        {icon class="logout" action=logout text='Logout'|gettext}
         {if $smarty.const.ECOM && $oicount}
             {icon class='cart' controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount}){br}
         {/if}
         {if $user->isAdmin()}
-            <a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}
+            {*<a class="{$previewclass}" href="{link controller=administration action=toggle_preview}">{$previewtext}</a>{br}*}
+            {icon class=$previewclass controller=administration action=toggle_preview text=$previewtext}
         {/if}
     </div>
 </div>
