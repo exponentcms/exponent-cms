@@ -9,7 +9,9 @@
  */
 
 // Core variables and mixins
-@import "variables.less";
+//@import "variables.less";
+@import @swatch+"/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import @themepath+"/variables.less"; // Modify this for custom colors, font-sizes, etc
 @import "mixins.less";
 
 // Reset
@@ -53,6 +55,8 @@
 @import "tooltip.less";
 @import "popovers.less";
 @import "carousel.less";
+
+@import @swatch+"/bootswatch.less";  // local patch for theme
 
 // Utility classes
 @import "utilities.less";
